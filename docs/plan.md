@@ -1,7 +1,7 @@
 # ZenML Website v2 — Migration Plan
 
 > Last updated: 2026-02-10
-> Status: **Phase 0 nearly complete** — scaffold, design tokens, Cloudflare Pages + R2 all done. Remaining: GitHub auto-deploy, Webflow code export, screenshots, forms audit.
+> Status: **Phase 0 complete** — scaffold, design tokens, Cloudflare Pages + R2, GitHub Actions auto-deploy, forms audit, custom code audit, baseline screenshots all done. Ready for Phase 1.
 
 ---
 
@@ -56,7 +56,7 @@ Tasks:
 
 **Critical decisions (do first):**
 - [x] **Trailing slash policy**: `never` — Webflow 301-redirects trailing slashes. Locked in `astro.config.ts`.
-- [ ] **Forms architecture audit**: Identify all form destinations (Cal.com, newsletter, Attio, gated content). Decide on implementation approach before building pages.
+- [x] **Forms architecture audit**: 8 form types identified across 4 categories (Webflow native, Brevo newsletter, Cal.com embeds, client-side widgets). Full audit in `docs/forms-audit.md`. Architecture decision deferred to Phase 5 (9 open questions documented).
 - [x] Note: DNS stays on Route 53 for POC. Assets use `r2.dev` URLs. Migrate DNS to Cloudflare + custom asset domain after team buy-in.
 
 **Project scaffold:**
@@ -76,9 +76,9 @@ Tasks:
 
 **Design extraction:**
 - [x] Extract design tokens from Webflow (variables, styles) → populated `src/styles/global.css` with `@theme` block (Tailwind v4 approach). Full reference in `docs/design-tokens.md`.
-- [ ] Download Webflow code export as reference (save to `design/webflow-export/`)
-- [ ] Capture baseline screenshots of key pages (save to `design/screenshots/baseline/`)
-- [ ] Audit Webflow site-level custom code (head/body scripts, third-party tags)
+- [x] Download Webflow code export as reference (saved to `design/webflow-export/`)
+- [x] Capture baseline screenshots of key pages — 34/36 captured (12 pages × 3 viewports; LLMOps DB timed out at desktop/tablet). Saved to `design/screenshots/baseline/`.
+- [x] Audit Webflow site-level custom code — 14 third-party services, 20 scripts cataloged with replicate/skip recommendations. Full audit in `docs/custom-code-audit.md`.
 
 **Documentation:**
 - [x] Move plan `.md` files from `design/` to `docs/`
