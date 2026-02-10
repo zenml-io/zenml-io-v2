@@ -23,7 +23,7 @@ customize freely.
 
 ## Content Architecture (Webflow)
 
-Full inventory is in `design/webflow-inventory.md`.
+Full inventory is in `docs/webflow-inventory.md`.
 
 ### Major CMS Collections
 
@@ -104,7 +104,7 @@ query the live site. The site ID is `64a817a2e7e2208272d1ce30`.
   building one
 - Skills help the whole team (devs + designer + content people) work faster
   with Claude Code
-- Likely skill candidates are listed at the bottom of `design/plan.md`
+- Likely skill candidates are listed at the bottom of `docs/plan.md`
 
 ## Key Files
 

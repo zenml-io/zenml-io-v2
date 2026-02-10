@@ -1,7 +1,7 @@
 # ZenML Website v2 — Migration Plan
 
 > Last updated: 2026-02-10
-> Status: Plan reviewed, addressing critical findings before Phase 0 execution
+> Status: **Phase 0 in progress** — scaffold complete, design tokens extracted, pending Cloudflare infra setup
 
 ---
 
@@ -31,7 +31,7 @@
 |----------|--------|-------|
 | **DNS** | **Stay on Route 53 for POC**, move to Cloudflare after team buy-in | No DNS changes needed for the proof of concept |
 | **Asset domain** | **Use `r2.dev` URLs for POC**, switch to `assets.zenml.io` later | Find-and-replace in content when DNS moves to Cloudflare |
-| **Trailing slash policy** | **Must match Webflow's current behavior** — lock before any URLs are generated | Check current site and configure `trailingSlash` in Astro |
+| **Trailing slash policy** | **`never`** — Webflow 301-redirects trailing slashes to non-trailing | Confirmed via HTTP headers: `/blog/` → 301 → `/blog`. Locked as `trailingSlash: "never"` + `build.format: "file"` in Astro config. |
 
 ---
 
@@ -55,17 +55,17 @@ configure deployment, verify the full pipeline works.
 Tasks:
 
 **Critical decisions (do first):**
-- [ ] **Trailing slash policy**: Check Webflow's current URL format and lock `trailingSlash` config in Astro
+- [x] **Trailing slash policy**: `never` — Webflow 301-redirects trailing slashes. Locked in `astro.config.ts`.
 - [ ] **Forms architecture audit**: Identify all form destinations (Cal.com, newsletter, Attio, gated content). Decide on implementation approach before building pages.
-- [ ] Note: DNS stays on Route 53 for POC. Assets use `r2.dev` URLs. Migrate DNS to Cloudflare + custom asset domain after team buy-in.
+- [x] Note: DNS stays on Route 53 for POC. Assets use `r2.dev` URLs. Migrate DNS to Cloudflare + custom asset domain after team buy-in.
 
 **Project scaffold:**
-- [ ] Initialize Astro project with TypeScript
-- [ ] Add Tailwind CSS, Cloudflare adapter, Preact, Sitemap, MDX integrations
-- [ ] Configure `astro.config.ts` for static output + Cloudflare
-- [ ] Set up basic project structure (`src/content/`, `src/layouts/`, `src/components/`, `src/pages/`)
-- [ ] Add basic linting/formatting (Biome)
-- [ ] Verify local build (`dev`, `build`, `preview`, `check`)
+- [x] Initialize Astro project with TypeScript
+- [x] Add Tailwind CSS v4, Cloudflare adapter, Preact, Sitemap, MDX integrations
+- [x] Configure `astro.config.ts` for static output + Cloudflare
+- [x] Set up basic project structure (`src/content/`, `src/layouts/`, `src/components/`, `src/pages/`)
+- [x] Add basic linting/formatting (Biome 2.3)
+- [x] Verify local build (`build`, `check`, `lint` all pass)
 
 **Infrastructure:**
 - [ ] Set up Cloudflare R2 bucket for assets (with chosen domain strategy)
@@ -74,14 +74,14 @@ Tasks:
 - [ ] Ensure preview deployments are `noindex` (`X-Robots-Tag` header or `robots.txt` via `CF_PAGES_BRANCH` env var)
 
 **Design extraction:**
-- [ ] Extract design tokens from Webflow (variables, styles) → populate `tailwind.config.ts`
+- [x] Extract design tokens from Webflow (variables, styles) → populated `src/styles/global.css` with `@theme` block (Tailwind v4 approach). Full reference in `docs/design-tokens.md`.
 - [ ] Download Webflow code export as reference (save to `design/webflow-export/`)
 - [ ] Capture baseline screenshots of key pages (save to `design/screenshots/baseline/`)
 - [ ] Audit Webflow site-level custom code (head/body scripts, third-party tags)
 
 **Documentation:**
-- [ ] Move plan `.md` files from `design/` to `docs/`
-- [ ] Update `.gitignore` accordingly
+- [x] Move plan `.md` files from `design/` to `docs/`
+- [x] Update `.gitignore` accordingly
 
 **Detailed plan**: `docs/phase-0-plan.md`
 

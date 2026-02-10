@@ -1,41 +1,37 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# Dependencies
+node_modules/
 
-# dependencies
-/node_modules
-/.pnp
-.pnp.js
+# Astro build output
+dist/
+.astro/
 
-# testing
-/coverage
+# Environment variables
+.env
+.env.*
+!.env.example
 
-# next.js
-/.next/
-/out/
-
-# production
-/build
-
-# misc
+# OS files
 .DS_Store
-*.pem
+Thumbs.db
 
-# debug
+# Editor
+*.swp
+*.swo
+
+# TypeScript
+*.tsbuildinfo
+
+# Debug logs
 npm-debug.log*
+pnpm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# local env files
-.env*.local
-.env
+# Cloudflare
+.wrangler/
+.dev.vars
 
-# vercel
-.vercel
-
-# typescript
-*.tsbuildinfo
-next-env.d.ts
-
-# ZenML Stuff
+# ZenML project (not committed)
 .claude/
 design/
 .mcp.json

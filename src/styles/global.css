@@ -1,0 +1,117 @@
+@import "tailwindcss";
+
+/*
+ * ZenML design tokens — extracted from the Webflow production site.
+ * See docs/design-tokens.md for full reference.
+ */
+@theme {
+  /* === Brand Colors === */
+  --color-zenml-25: #f1ebfe;
+  --color-zenml-50: #f6f2ff;
+  --color-zenml-500: #7a3ef4;
+  --color-zenml-600: #361776;
+  --color-zenml-700: #281158;
+  --color-zenml-800: #1b0c3b;
+
+  /* === Gray Scale (from Untitled UI design system) === */
+  --color-gray-25: #fcfcfd;
+  --color-gray-50: #f9fafb;
+  --color-gray-100: #f2f4f7;
+  --color-gray-200: #e5e7eb;
+  --color-gray-300: #d1d5db;
+  --color-gray-400: #9ca3af;
+  --color-gray-500: #6b7280;
+  --color-gray-600: #4b5563;
+  --color-gray-700: #374151;
+  --color-gray-800: #1f2937;
+  --color-gray-900: #111827;
+
+  /* === Legacy Purple Scale (Untitled UI) === */
+  --color-purple-25: #fcfaff;
+  --color-purple-50: #f9f5ff;
+  --color-purple-100: #f4ebff;
+  --color-purple-300: #d6bbfb;
+  --color-purple-500: #9e77ed;
+  --color-purple-600: #7f56d9;
+  --color-purple-700: #6941c6;
+  --color-purple-800: #53389e;
+
+  /* === Status Colors === */
+  --color-success-50: #ecfdf3;
+  --color-success-500: #12b76a;
+  --color-success-700: #137f31;
+  --color-warning-300: #fec84b;
+  --color-warning-500: #f79009;
+  --color-blue-50: #eff8ff;
+  --color-blue-500: #2e90fa;
+  --color-blue-700: #175cd3;
+  --color-orange-50: #fef6ee;
+  --color-orange-400: #fb923c;
+  --color-orange-700: #b93815;
+  --color-indigo-50: #eef4ff;
+  --color-indigo-500: #6172f3;
+  --color-indigo-700: #3538cd;
+  --color-pink-50: #fdf2fa;
+  --color-pink-500: #ee46bc;
+  --color-pink-700: #c11574;
+  --color-light-green: #dbf2ec;
+
+  /* === Typography === */
+  --font-sans: "Plus Jakarta Sans", sans-serif;
+  --font-mono: "Inconsolata", monospace;
+
+  /* === Custom Spacing === */
+  --spacing-space-xxs: 0.5rem;
+  --spacing-space-xs: 1rem;
+  --spacing-space-sm: 1.5rem;
+  --spacing-space-md: 2rem;
+  --spacing-space-lg: 3rem;
+  --spacing-space-xxl: 5rem;
+
+  /* === Container Width === */
+  --container-lg: 80rem;
+
+  /* === Border Radius === */
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-pill: 10rem;
+
+  /* === Box Shadows === */
+  --shadow-button: 0 1px 2px rgba(16, 24, 40, 0.05);
+  --shadow-card: 0 4px 24px rgba(150, 163, 181, 0.08);
+  --shadow-medium: 0 12px 16px -4px rgba(0, 0, 0, 0.08),
+    0 4px 6px -2px rgba(16, 24, 40, 0.03);
+  --shadow-large: 0 24px 48px -12px rgba(16, 24, 40, 0.18);
+  --shadow-subtle: 0 8px 50px rgba(0, 0, 0, 0.05);
+  --shadow-focus-primary: 0 1px 2px 0 rgba(16, 24, 40, 0.05),
+    0 0 0 4px #f4ebff;
+  --shadow-focus-gray: 0 1px 2px 0 rgba(16, 24, 40, 0.05), 0 0 0 4px #f2f4f7;
+
+  /* === Breakpoints === */
+  --breakpoint-2xl: 1440px;
+}
+
+/* Plus Jakarta Sans — variable font, single file handles weights 400–700 */
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url("/fonts/plus-jakarta-sans-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
+    U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122,
+    U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url("/fonts/plus-jakarta-sans-latin-ext.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7,
+    U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F,
+    U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F,
+    U+A720-A7FF;
+}
