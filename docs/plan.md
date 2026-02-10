@@ -1,7 +1,7 @@
 # ZenML Website v2 — Migration Plan
 
 > Last updated: 2026-02-10
-> Status: **Phase 0 in progress** — scaffold complete, design tokens extracted, pending Cloudflare infra setup
+> Status: **Phase 0 nearly complete** — scaffold, design tokens, Cloudflare Pages + R2 all done. Remaining: GitHub auto-deploy, Webflow code export, screenshots, forms audit.
 
 ---
 
@@ -68,10 +68,11 @@ Tasks:
 - [x] Verify local build (`build`, `check`, `lint` all pass)
 
 **Infrastructure:**
-- [ ] Set up Cloudflare R2 bucket for assets (with chosen domain strategy)
-- [ ] Connect repo to Cloudflare Pages (auto-deploy on push)
-- [ ] Verify branch preview deployments work (push a test branch)
-- [ ] Ensure preview deployments are `noindex` (`X-Robots-Tag` header or `robots.txt` via `CF_PAGES_BRANCH` env var)
+- [x] Set up Cloudflare R2 bucket (`zenml-assets`) on `zenml_migration@fastmail.org` account
+- [x] Cloudflare Pages project created (`zenml-io-v2`), deployed to `zenml-io-v2.pages.dev`
+- [x] Branch preview deployments verified (`test-preview.zenml-io-v2.pages.dev`)
+- [x] Preview deployments confirmed `noindex` (Cloudflare adds `X-Robots-Tag: noindex` automatically)
+- [ ] Connect repo to Cloudflare Pages via dashboard for auto-deploy on push (or set up GitHub Actions)
 
 **Design extraction:**
 - [x] Extract design tokens from Webflow (variables, styles) → populated `src/styles/global.css` with `@theme` block (Tailwind v4 approach). Full reference in `docs/design-tokens.md`.
