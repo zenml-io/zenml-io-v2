@@ -72,7 +72,7 @@ Tasks:
 - [x] Cloudflare Pages project created (`zenml-io-v2`), deployed to `zenml-io-v2.pages.dev`
 - [x] Branch preview deployments verified (`test-preview.zenml-io-v2.pages.dev`)
 - [x] Preview deployments confirmed `noindex` (Cloudflare adds `X-Robots-Tag: noindex` automatically)
-- [ ] Connect repo to Cloudflare Pages via dashboard for auto-deploy on push (or set up GitHub Actions)
+- [x] Auto-deploy via GitHub Actions (`wrangler pages deploy`): push to `main` → production, PRs → preview branches
 
 **Design extraction:**
 - [x] Extract design tokens from Webflow (variables, styles) → populated `src/styles/global.css` with `@theme` block (Tailwind v4 approach). Full reference in `docs/design-tokens.md`.
