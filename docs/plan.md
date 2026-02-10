@@ -1,7 +1,7 @@
 # ZenML Website v2 — Migration Plan
 
 > Last updated: 2026-02-10
-> Status: **Phase 0 complete** — scaffold, design tokens, Cloudflare Pages + R2, GitHub Actions auto-deploy, forms audit, custom code audit, baseline screenshots all done. Ready for Phase 1.
+> Status: **Phase 1 starting** — Phase 0 complete. Phase 1 pre-flight checklist resolved (all 9 questions answered). Detailed plan at `docs/phase-1-plan.md`. Webflow redirect CSV already exported (45 rules). Ready to implement Phase 1 scripts.
 
 ---
 
@@ -22,7 +22,7 @@
 | Design approach | **Pixel-perfect first, iterate later** | Replicate current design, then improve post-launch |
 | Migration strategy | **Full cutover** (not Strangler) | Build complete site, test thoroughly, switch DNS in one go |
 | Canonical domain | **www.zenml.io** | `zenml.io` redirects → `www.zenml.io`. All URLs/sitemaps use www. |
-| Image optimization | **TBD** — Astro built-in or Cloudflare | Decide once we see the asset volume |
+| Image optimization | **Upload 1:1 for Phase 1**, optimize post-launch | Convert to WebP/AVIF after launch using Astro built-in or Cloudflare Image Resizing |
 | Content sync | **Re-export before launch** | Export now to build against; final export right before cutover |
 
 ### Decisions Needed (Phase 0)
@@ -133,13 +133,17 @@ Tasks:
 - [ ] Export existing Webflow 301 redirect rules
 - [ ] Catalog all Webflow interactions/animations (by page, with priority: must-replicate vs acceptable-downgrade)
 
-Scripts to write (`scripts/` directory):
-- `export-cms.py` — export CMS collections via Webflow API v2
-- `export-assets.py` — download all images/files from Webflow URLs
-- `upload-assets.sh` — bulk upload to R2 via Wrangler
-- `transform-content.py` — HTML → MDX conversion, URL rewriting, frontmatter generation
-- `export-redirects.py` — export existing redirect rules from Webflow
-- `crawl-seo-baseline.py` — crawl all URLs and snapshot SEO metadata
+Scripts to write (`scripts/phase1/` directory, TypeScript):
+- `crawl-seo-baseline.ts` — crawl all public URLs, snapshot SEO fields
+- `export-webflow-cms.ts` — export all 17 collections (live + staged) via Webflow API v2
+- `snapshot-static-pages.ts` — save raw HTML for non-CMS pages
+- `build-asset-inventory.ts` — aggregate + dedupe assets from all sources
+- `download-assets.ts` — download assets with retry + manifest
+- `upload-assets-to-r2.ts` — upload to R2, generate URL map
+- `transform-cms-to-mdx.ts` — HTML → MDX conversion, URL rewriting, frontmatter
+- `export-redirects.ts` — normalize Webflow redirect CSV + flatten chains
+- `generate-auto-redirects.ts` — diff runs, detect slug changes/deletions
+- `catalog-animations.ts` — parse HTML for interactions + scripts
 
 Key considerations:
 - Export **both** live AND staged items — live items become published content,
@@ -149,8 +153,13 @@ Key considerations:
 - Keep Webflow item IDs in frontmatter for traceability
 - Scripts must be **idempotent/re-runnable** (will run twice: now + before cutover)
 - Handle item deletions between exports (old slug → 301 redirect)
+- **Two CDN URL patterns**: `cdn.prod.website-files.com` (newer) + `uploads-ssl.webflow.com` (older)
+- **SEO metadata not in CMS**: merge from baseline crawl during transform
+- **Redirect CSV already exported**: `design/zenml-website-2026-02-10.csv` (45 rules)
+- **RSS feeds to preserve**: `/blog/rss.xml` and `/llmops-database/rss.xml` (Phase 4, but crawl validates URLs exist)
+- **R2 public access not yet enabled**: enable before upload step (Phase 1G)
 
-**Detailed plan**: `docs/phase-1-plan.md` (create when starting this phase)
+**Detailed plan**: `docs/phase-1-plan.md`
 
 ---
 

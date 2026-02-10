@@ -44,6 +44,17 @@ All artifacts must support **two runs**:
   - `<link rel="canonical">` (host: `https://www.zenml.io`, trailing slash: `never`)
   - OG tags: `og:title`, `og:description`, `og:image`
   - Twitter card: `twitter:card`, `twitter:title`, `twitter:description`
+- **SEO metadata source**: Blog posts have NO SEO-specific fields in their CMS
+  schema. SEO metadata comes from the **baseline crawl** (Phase 1B) and is
+  merged with CMS data during the MDX transform step (Phase 1H). The crawl
+  captures actual `<title>`, `<meta>`, and OG tags from rendered pages.
+
+### RSS Feed Preservation
+- Must preserve exact feed URLs:
+  - `https://www.zenml.io/blog/rss.xml`
+  - `https://www.zenml.io/llmops-database/rss.xml`
+- Feed format and item structure should match current Webflow-generated feeds
+- Implementation is in Phase 4, but Phase 1 SEO crawl captures feed URLs for validation
 
 ### Live + staged export
 - Export **both**:
@@ -59,13 +70,22 @@ All artifacts must support **two runs**:
 - Support resuming after interruption via manifests
 - Manifests track download/upload state to avoid redundant work
 
+### Two CDN URL patterns (confirmed)
+- **Newer content**: `cdn.prod.website-files.com/65264f6bf54e751c3a776db1/...`
+- **Older content**: `uploads-ssl.webflow.com/65264f6bf54e751c3a776db1/...`
+- Both use the same site ID prefix but different hostnames
+- All asset discovery scripts MUST match both patterns
+
 ### Asset re-hosting (mandatory)
 - Every Webflow-hosted asset referenced in content must migrate to R2:
-  - `cdn.prod.website-files.com/...`
-  - `d3e54v103j8qbb.cloudfront.net/...`
+  - `cdn.prod.website-files.com/...` (newer content)
+  - `uploads-ssl.webflow.com/...` (older content, pre ~mid-2024)
+  - `d3e54v103j8qbb.cloudfront.net/...` (legacy CloudFront CDN, if any)
   - Any Webflow-hosted custom scripts (e.g., Clarity)
 - Content rewritten to reference `ASSET_BASE_URL` (currently `r2.dev`, later
   `assets.zenml.io`)
+- **Image optimization**: Upload 1:1 for Phase 1. Conversion to WebP/AVIF
+  deferred to post-launch optimization phase.
 
 ### Traceability (Webflow IDs)
 - Preserve in frontmatter: item ID, collection ID, export timestamp
@@ -249,9 +269,15 @@ collections. This enables replacing IDs with slugs in frontmatter (e.g.,
 
 **Key observations from actual data:**
 - Blog post image fields are objects: `{ fileId, url, alt }`
-- URLs point to `cdn.prod.website-files.com/65264f6bf54e751c3a776db1/...`
-- Rich text HTML contains inline `<img>` with same CDN base
+- Newer URLs: `cdn.prod.website-files.com/65264f6bf54e751c3a776db1/...`
+- Older URLs: `uploads-ssl.webflow.com/65264f6bf54e751c3a776db1/...`
+- Rich text HTML contains inline `<img>` with same CDN bases
 - `srcset` attributes contain multiple URLs per image (each is a separate asset)
+
+**URL pattern matching (must catch both):**
+```regex
+https?://(cdn\.prod\.website-files\.com|uploads-ssl\.webflow\.com)/65264f6bf54e751c3a776db1/.*
+```
 
 **Normalization:** Strip fragments, keep query strings, dedupe by normalized URL.
 
@@ -376,11 +402,30 @@ intact, no Webflow CDN URLs remaining.
 
 **Goal:** Capture existing redirects and auto-generate new ones from slug changes.
 
-**Webflow redirects:**
-- **Preferred:** API export (if endpoint available)
-- **Fallback:** Manual CSV export from Webflow UI → normalize to JSON
+**Webflow redirects: ✅ ALREADY EXPORTED**
+- Exported CSV at `design/zenml-website-2026-02-10.csv` — **45 redirect rules**
+- Format: `source,target` (standard Webflow redirect export)
+- No API endpoint needed — CSV export covers everything
 
-**Known redirect pages** (from `docs/webflow-inventory.md`):
+**Redirect analysis (from exported CSV):**
+
+| Category | Count | Examples |
+|---|---|---|
+| Internal path changes | ~25 | `/cloud` → `/pro`, `/plans` → `/pricing` |
+| Feature consolidation | ~10 | `/features/run-anywhere` → `/features`, etc. |
+| External redirects | ~8 | `/changelog` → `docs.zenml.io/changelog`, `/demo-video` → YouTube |
+| Marketing/short URLs | ~5 | `/qr` → `/book-your-demo`, `/scratch-card` → `/book-your-demo` |
+
+**Redirect chains to flatten (important!):**
+- `/open-source-vs-paid` → `/open-source-vs-managed` → `/open-source-vs-cloud` → `/open-source-vs-pro` (3 hops → flatten to 1)
+- `/live-demo-mcp` → `/live-demo-cloud` → `/interactive-demo-mcp` (2 hops → flatten to 1)
+
+**Special case:** `/p4t78tnt73bkujthrd1zausuvs9advz3.txt` redirects to a
+Webflow-hosted file — this asset needs to be migrated to R2 and the redirect
+target updated.
+
+**Known redirect pages** (from `docs/webflow-inventory.md`, NOT in the CSV —
+these are Webflow pages configured as redirects, not 301 rules):
 - `/discussion` → GitHub Discussions
 - `/slack`, `/slack-invite` → Slack community
 - `/roadmap` → `zenml.featureos.app/roadmap`
@@ -439,12 +484,17 @@ intact, no Webflow CDN URLs remaining.
 
 ### Environment variables
 ```bash
-WEBFLOW_TOKEN=...              # Webflow API v2 bearer token
+WEBFLOW_TOKEN=...              # Webflow API v2 bearer token (user confirmed available)
 WEBFLOW_SITE_ID=64a817a2e7e2208272d1ce30
 SITE_URL=https://www.zenml.io  # default
 R2_BUCKET=zenml-assets         # default
-ASSET_BASE_URL=https://pub-PLACEHOLDER.r2.dev  # update when R2 public access configured
+ASSET_BASE_URL=https://pub-PLACEHOLDER.r2.dev  # R2 public access NOT yet enabled — enable via Wrangler or Cloudflare Dashboard before Phase 1G
 ```
+
+> **Note:** R2 public access must be enabled before the upload step (Phase 1G).
+> This can be done via `wrangler r2 bucket ...` or the Cloudflare Dashboard
+> (R2 → zenml-assets → Settings → Public access). Phases 1A–1F can proceed
+> without it.
 
 ### Script catalog
 
@@ -457,7 +507,7 @@ ASSET_BASE_URL=https://pub-PLACEHOLDER.r2.dev  # update when R2 public access co
 | `download-assets.ts` | Download assets with retry + manifest | `inventory.json` | `download/**`, `download-manifest.json` |
 | `upload-assets-to-r2.ts` | Upload to R2, generate URL map | Downloads, R2 bucket | `upload-manifest.json`, `url-map.json` |
 | `transform-cms-to-mdx.ts` | Convert rich text → MDX, rewrite URLs | CMS items, `url-map.json` | `<slug>.mdx`, `transform-manifest.json` |
-| `export-redirects.ts` | Normalize Webflow redirect export | Raw CSV/JSON | `webflow-redirects.json` |
+| `export-redirects.ts` | Normalize Webflow redirect CSV + flatten chains | `design/zenml-website-2026-02-10.csv` | `webflow-redirects.json`, `_redirects.webflow` |
 | `generate-auto-redirects.ts` | Diff runs, detect slug changes/deletions | Run A items, Run B items | `redirects.auto.json` |
 | `catalog-animations.ts` | Parse HTML for interactions + scripts | Code export, pages | `catalog.json`, `notes.md` |
 
@@ -502,13 +552,15 @@ ASSET_BASE_URL=https://pub-PLACEHOLDER.r2.dev  # update when R2 public access co
 
 ## 7) Decisions to Make During Phase 1
 
-| Decision | Options | Recommendation |
+| Decision | Options | Status |
 |---|---|---|
-| **Staged edits to live items** | Capture only (diff.json) vs generate draft variant | Capture only; publish from live |
-| **Static page transform scope** | Snapshot only vs auto-convert to MDX | Snapshot all; auto-convert only legal/copy pages; rebuild marketing pages in Phase 3 |
-| **R2 key scheme** | Hash-based vs path-based | Hash of URL + original filename (stable across runs) |
-| **Redirect source** | API export vs manual CSV | Try API first; fall back to manual CSV with defined schema |
-| **LLMOps body handling** | Full HTML→MDX conversion vs passthrough | Verify it's Markdown; if so, light cleanup only |
+| **Staged edits to live items** | Capture only (diff.json) vs generate draft variant | **Decided:** Capture only; publish from live |
+| **Static page transform scope** | Snapshot only vs auto-convert to MDX | **Decided:** Snapshot all; auto-convert only legal/copy pages; rebuild marketing pages in Phase 3 |
+| **R2 key scheme** | Hash-based vs path-based | **Decided:** Hash of URL + original filename (stable across runs) |
+| **Redirect source** | API export vs manual CSV | **Resolved:** CSV already exported (`design/zenml-website-2026-02-10.csv`, 45 rules) |
+| **LLMOps body handling** | Full HTML→MDX conversion vs passthrough | **Decided:** Verify it's Markdown; if so, light cleanup only |
+| **Image optimization** | Convert during upload vs upload 1:1 | **Decided:** Upload 1:1 now; WebP/AVIF conversion in post-launch phase |
+| **SEO metadata source** | CMS fields vs crawl merge | **Decided:** Merge from SEO baseline crawl (CMS has no SEO fields) |
 
 ---
 
