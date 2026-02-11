@@ -1,0 +1,84 @@
+---
+/**
+ * Blog post detail page.
+ *
+ * Generates a static page for each published blog post.
+ * Resolves author, category, and tag references from their respective collections.
+ */
+import { getCollection, getEntry, render } from "astro:content";
+import BlogLayout from "../../layouts/BlogLayout.astro";
+import Badge from "../../components/Badge.astro";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog", ({ data }) => !data.draft);
+  return posts.map((post) => ({
+    params: { slug: post.data.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+// Resolve author reference
+const authorEntry = post.data.author
+  ? await getEntry("authors", post.data.author)
+  : undefined;
+
+const author = authorEntry
+  ? {
+      name: authorEntry.data.name,
+      slug: authorEntry.data.slug,
+      avatar: authorEntry.data.avatar,
+    }
+  : undefined;
+
+// Resolve category reference
+const categoryEntry = post.data.category
+  ? await getEntry("categories", post.data.category)
+  : undefined;
+
+// Resolve tag references
+const tagEntries = await Promise.all(
+  post.data.tags.map((tagSlug: string) => getEntry("tags", tagSlug)),
+);
+const tags = tagEntries.filter(Boolean).map((t) => ({
+  name: t!.data.name,
+  slug: t!.data.slug,
+}));
+
+// Build SEO props from frontmatter
+const seoTitle = post.data.seo?.title || `${post.data.title} - ZenML Blog`;
+const seoDescription = post.data.seo?.description;
+const ogImage = post.data.seo?.ogImage || post.data.mainImage?.url;
+---
+
+<BlogLayout
+  title={seoTitle}
+  description={seoDescription}
+  ogImage={ogImage}
+  ogTitle={post.data.seo?.ogTitle}
+  ogDescription={post.data.seo?.ogDescription}
+  canonical={post.data.seo?.canonical}
+  date={post.data.date}
+  author={author}
+  category={categoryEntry?.data.name}
+  categorySlug={categoryEntry?.data.slug}
+  readingTime={post.data.readingTime}
+  mainImage={post.data.mainImage}
+>
+  <Content />
+
+  {/* Tags section */}
+  {tags.length > 0 && (
+    <div class="mt-10 border-t border-gray-200 pt-6">
+      <div class="flex flex-wrap gap-2">
+        {tags.map((tag) => (
+          <Badge href={`/tags/${tag.slug}`} variant="gray">
+            {tag.name}
+          </Badge>
+        ))}
+      </div>
+    </div>
+  )}
+</BlogLayout>
