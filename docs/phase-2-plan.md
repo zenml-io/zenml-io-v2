@@ -1,8 +1,8 @@
 # Phase 2: Content Collections & Schemas — Detailed Plan (REVISED)
 
 **Created:** 2026-02-11
-**Revised:** 2026-02-11 (post-RepoPrompt audit)
-**Status:** Phase 2A, 2B & 2C COMPLETE ✅ — Ready for Phase 2D (Define Reference Schemas)
+**Revised:** 2026-02-11 (post-RepoPrompt audit + Astro v5 migration)
+**Status:** Phase 2A, 2B, 2C & 2D COMPLETE ✅ — Ready for Phase 2E (Define Main Collection Schemas)
 **Prerequisites:** Phase 1 complete (1,904 MDX files, 2,397 R2 assets)
 
 ---
@@ -296,7 +296,7 @@ webflow:
 
 ---
 
-### 2D: Define Reference Collection Schemas
+### 2D: Define Reference Collection Schemas ✅ COMPLETE
 
 **Goal:** Define typed schemas for all 10 reference collections.
 
@@ -320,9 +320,22 @@ const authorsCollection = defineCollection({
 ```
 
 **Tasks:**
-- [ ] Define schema for each reference collection (10 total)
-- [ ] Add to `src/content/config.ts` collections export
-- [ ] Ensure slug field is present and validated
+- [x] Define schema for each reference collection (10 total) ✅
+- [x] Migrate from `src/content/config.ts` to `src/content.config.ts` (Astro v5) ✅
+- [x] Add glob loaders for all collections (Astro v5 Content Layer API) ✅
+- [x] Ensure slug field is present and validated ✅
+
+**Completion Notes (2026-02-11):**
+- **Critical discovery**: Astro v5 uses `src/content.config.ts` (not `src/content/config.ts`)
+- **Breaking change**: Astro v5 requires explicit `glob` loaders (no automatic folder discovery)
+- **All 10 reference collections validated successfully**: 425 items, 0 validation errors
+- **Schema patterns defined**:
+  - Simple tags (6 collections): `name` + `slug` + `webflow`
+  - Authors: Basic info + optional avatar/bio/social
+  - Advantages: Title + content + image
+  - Quotes: Testimonial with author details + company branding
+  - Integration-types: Name + slug + optional icon
+- **Validation results**: `pnpm astro check` passed for all content collections
 
 ---
 

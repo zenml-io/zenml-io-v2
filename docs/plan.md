@@ -1,7 +1,7 @@
 # ZenML Website v2 — Migration Plan
 
 > Last updated: 2026-02-11
-> Status: **Phase 1 COMPLETE** — All content, assets, redirects, and animations exported and transformed. 1,904 MDX files, 2,397 R2 assets, 44 redirects, 11 animations cataloged. Ready for Phase 2 (Content Collections & Schemas).
+> Status: **Phase 1 COMPLETE, Phase 2A-2D COMPLETE** — All content exported, transformed, and reference collections defined. 1,904 MDX files, 2,397 R2 assets. 425 reference items with validated schemas (Astro v5). Ready for Phase 2E (Main Collection Schemas).
 
 ---
 
@@ -181,35 +181,43 @@ Key considerations:
 
 ---
 
-### Phase 2: Content Collections & Schemas
+### Phase 2: Content Collections & Schemas (IN PROGRESS)
 
 **Goal**: Define typed schemas for all content types in Astro. Validate that
 imported content is clean and well-structured.
 
+**Status:** Phase 2A-2D COMPLETE ✅ — Reference collections defined and validated. Ready for Phase 2E (Main Collection Schemas).
+
 Note: **Collection directory names should align with route segments** to
 minimize glue code (e.g., `tags/` not `blog-tags/` if the route is `/tags/`).
 
-Tasks:
-- [ ] Define Astro Content Collection schemas for each content type:
-  - Blog Posts (title, date, author ref, tags refs, category ref, excerpt, cover image, SEO fields, body)
-  - Blog Authors (name, avatar, bio)
-  - Tags — maps to `/tags/[slug]` route
-  - Categories — maps to `/category/[slug]` route
-  - LLMOps Database entries (structured fields + rich body)
-  - LLMOps Tags, Industry Tags
-  - Integrations (logo, description, code example, features, type ref)
-  - Integration Types
-  - VS/Compare Pages (comparison tables, code examples, advantages refs)
-  - Team Members (name, photo, position, bullet points, email, LinkedIn)
-  - Projects (new + old)
-  - Quotes
-  - Advantages
-  - Product Categories
-- [ ] Organize content into `src/content/<collection>/` directories
-- [ ] Run Astro build to validate all content passes schema checks
-- [ ] Fix any content that fails validation
+Progress:
+- [x] **Phase 2A**: Re-transform ALL collections with complete frontmatter ✅
+- [x] **Phase 2B**: Set up reusable schema helpers in `src/content.config.ts` (Astro v5) ✅
+- [x] **Phase 2C**: Export 10 reference collections (425 items total) ✅
+- [x] **Phase 2D**: Define schemas for 10 reference collections ✅
+  - Authors (27) — name, avatar, bio, email, linkedin
+  - Categories (14) — simple tags
+  - Tags (118) — simple tags
+  - LLMOps Tags (107) — simple tags
+  - Industry Tags (17) — simple tags
+  - Integration Types (16) — name, slug, optional icon
+  - Advantages (45) — title, content, image
+  - Quotes (6) — testimonials with author + company
+  - Product Categories (5) — simple tags
+  - Project Tags (70) — simple tags
+- [ ] **Phase 2E**: Define schemas for 7 main collections (blog, integrations, llmops, etc.)
+- [ ] **Phase 2F-2H**: Define remaining collection schemas
+- [ ] **Phase 2I**: Add validation gates (slug uniqueness, URL checks)
+- [ ] **Phase 2J**: Run full Astro build validation
+- [ ] **Phase 2K**: Document final content model
 
-**Detailed plan**: `docs/phase-2-plan.md` (create when starting this phase)
+**Key discoveries:**
+- **Astro v5 Content Layer API**: Config moved to `src/content.config.ts`, requires explicit `glob` loaders
+- **425 reference items validated successfully** with 0 errors
+- **Schema patterns**: Simple tags (name+slug), rich authors, testimonials, advantages
+
+**Detailed plan**: `docs/phase-2-plan.md`
 
 ---
 
