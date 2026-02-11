@@ -5,7 +5,7 @@ draft: false
 webflow:
   siteId: "64a817a2e7e2208272d1ce30"
   itemId: "6911f1d7455337499f261010"
-  exportedAt: "2026-02-11T10:23:34.071Z"
+  exportedAt: "2026-02-11T13:30:32.135Z"
   source: "live"
   lastPublished: "2025-12-23T12:21:17.478Z"
   lastUpdated: "2025-12-18T17:26:30.828Z"
@@ -24,6 +24,7 @@ llmopsTags:
   - "scaling"
   - "orchestration"
   - "microsoft-azure"
+industryTags: "hr"
 company: "LinkedIn"
 summary: "LinkedIn's Hiring Assistant, an AI agent for recruiters, faced significant latency challenges when generating long structured outputs (1,000+ tokens) from thousands of input tokens including job descriptions and candidate profiles. To address this, LinkedIn implemented n-gram speculative decoding within their vLLM serving stack, a technique that drafts multiple tokens ahead and verifies them in parallel without compromising output quality. This approach proved ideal for their use case due to the structured, repetitive nature of their outputs (rubric-style summaries with ratings and evidence) and high lexical overlap with prompts. The implementation resulted in nearly 4× higher throughput at the same QPS and SLA ceiling, along with a 66% reduction in P90 end-to-end latency, all while maintaining identical output quality as verified by their evaluation pipelines."
 link: "https://www.linkedin.com/blog/engineering/ai/accelerating-llm-inference-with-speculative-decoding-lessons-from-linkedins-hiring-assistant"

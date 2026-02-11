@@ -5,7 +5,7 @@ draft: false
 webflow:
   siteId: "64a817a2e7e2208272d1ce30"
   itemId: "694ad7908cbf51555475bc8b"
-  exportedAt: "2026-02-11T10:23:34.071Z"
+  exportedAt: "2026-02-11T13:30:32.135Z"
   source: "live"
   lastPublished: "2026-01-07T09:40:39.763Z"
   lastUpdated: "2025-12-23T20:12:19.176Z"
@@ -28,6 +28,7 @@ llmopsTags:
   - "google-gcp"
   - "microsoft-azure"
   - "amazon-aws"
+industryTags: "finance"
 company: "Gradient Labs"
 summary: "Gradient Labs built an AI agent that handles customer interactions for financial services companies, requiring high reliability in production. The company architected a sophisticated failover system that spans multiple LLM providers (OpenAI, Anthropic, Google) and hosting platforms (native APIs, Azure, AWS, GCP), enabling both traffic distribution across rate limits and automatic failover during errors, rate limiting, or latency spikes. They use Temporal for durable execution to checkpoint progress across long-running agentic workflows, and have implemented both provider-level and model-level failover strategies with tailored prompts for backup models, ensuring continuous operation even during catastrophic provider outages."
 link: "https://blog.gradient-labs.ai/p/building-resilient-agentic-systems"

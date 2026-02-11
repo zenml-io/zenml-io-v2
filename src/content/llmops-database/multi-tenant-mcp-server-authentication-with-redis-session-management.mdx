@@ -5,7 +5,7 @@ draft: false
 webflow:
   siteId: "64a817a2e7e2208272d1ce30"
   itemId: "69089f300406c1114372a014"
-  exportedAt: "2026-02-11T10:23:34.071Z"
+  exportedAt: "2026-02-11T13:30:32.135Z"
   source: "live"
   lastPublished: "2025-12-23T12:21:17.478Z"
   lastUpdated: "2025-12-18T17:23:50.497Z"
@@ -44,6 +44,7 @@ llmopsTags:
   - "microsoft-azure"
   - "google-gcp"
   - "cloudflare"
+industryTags: "tech"
 company: "BrainGrid"
 summary: "BrainGrid faced the challenge of transforming their Model Context Protocol (MCP) server from a local development tool into a production-ready, multi-tenant service that could be deployed to customers. The core problem was that serverless platforms like Cloud Run and Vercel don't maintain session state, causing users to re-authenticate repeatedly as instances scaled to zero or requests hit different instances. BrainGrid solved this by implementing a Redis-based session store with AES-256-GCM encryption, OAuth integration via WorkOS, and a fast-path/slow-path authentication pattern that caches validated JWT sessions. The solution reduced authentication overhead from 50-100ms per request to near-instantaneous for cached sessions, eliminated re-authentication fatigue, and enabled the MCP server to scale from single-user to multi-tenant deployment while maintaining security and performance."
 link: "https://www.braingrid.ai/blog/how-we-solved-mcp-authentication"

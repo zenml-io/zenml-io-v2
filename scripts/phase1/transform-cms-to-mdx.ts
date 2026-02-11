@@ -548,21 +548,13 @@ class CMSTransformer {
         }
       }
 
-      // FIX: Webflow uses "industry" not "industry-tags"
-      if (Array.isArray(fd["industry"])) {
-        const industrySlugs = fd["industry"]
-          .map((tagId) => {
-            const ref = this.referenceMap.get(tagId);
-            if (!ref) {
-              warnings.push(`Could not resolve industry-tag ID: ${tagId}`);
-            }
-            return ref?.slug;
-          })
-          .filter(Boolean);
-
-        if (industrySlugs.length > 0) {
-          lines.push(`industryTags:`);
-          industrySlugs.forEach((slug) => lines.push(`  - "${slug}"`));
+      // FIX: Webflow uses "industry" as a single ID (not array like tags)
+      if (typeof fd["industry"] === "string" && fd["industry"]) {
+        const ref = this.referenceMap.get(fd["industry"]);
+        if (ref) {
+          lines.push(`industryTags: "${ref.slug}"`);
+        } else {
+          warnings.push(`Could not resolve industry-tag ID: ${fd["industry"]}`);
         }
       }
 

@@ -5,7 +5,7 @@ draft: false
 webflow:
   siteId: "64a817a2e7e2208272d1ce30"
   itemId: "687636a179c00796695d4364"
-  exportedAt: "2026-02-11T10:23:34.071Z"
+  exportedAt: "2026-02-11T13:30:32.135Z"
   source: "live"
   lastPublished: "2025-12-23T12:21:17.478Z"
   lastUpdated: "2025-12-18T17:13:22.473Z"
@@ -31,6 +31,7 @@ llmopsTags:
   - "monitoring"
   - "nvidia"
   - "amazon-aws"
+industryTags: "tech"
 company: "Snowflake"
 summary: "Snowflake faced performance bottlenecks when scaling embedding models for their Cortex AI platform, which processes trillions of tokens monthly. Through profiling vLLM, they identified CPU-bound inefficiencies in tokenization and serialization that left GPUs underutilized. They implemented three key optimizations: encoding embedding vectors as little-endian bytes for faster serialization, disaggregating tokenization and inference into a pipeline, and running multiple model replicas on single GPUs. These improvements delivered 16x throughput gains for short sequences and 4.2x for long sequences, while reducing costs by 16x and achieving 3x throughput improvement in production."
 link: "https://www.snowflake.com/en/engineering-blog/embedding-inference-arctic-16x-faster/"

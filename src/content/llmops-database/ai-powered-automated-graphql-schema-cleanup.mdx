@@ -5,7 +5,7 @@ draft: false
 webflow:
   siteId: "64a817a2e7e2208272d1ce30"
   itemId: "694ad8024e470ee001a8e3a4"
-  exportedAt: "2026-02-11T10:23:34.071Z"
+  exportedAt: "2026-02-11T13:30:32.135Z"
   source: "live"
   lastPublished: "2026-01-07T09:40:39.763Z"
   lastUpdated: "2025-12-23T20:12:19.457Z"
@@ -20,6 +20,7 @@ llmopsTags:
   - "cicd"
   - "open-source"
   - "documentation"
+industryTags: "e-commerce"
 company: "Whatnot"
 summary: "Whatnot, a livestream shopping platform, faced significant technical debt in their GraphQL schema with over 2,600 unused fields accumulated from deprecated features and old endpoints. Manual cleanup was time-consuming and risky, requiring 1-2 hours per field and deep domain knowledge. The engineering team built an AI subagent integrated into a GitHub Action that automatically identifies unused fields through traffic analysis and generates pull requests to safely remove them. The agent follows the same process an engineer would—removing schema fields, resolvers, dead code, and updating tests—but operates autonomously in the background. Running daily at $1-3 per execution, the system has successfully removed 24 of approximately 200 unused root fields with minimal human intervention, requiring edits to only three PRs, transforming schema maintenance from a neglected one-time project into an ongoing automated process."
 link: "https://medium.com/whatnot-engineering/eliminating-graphql-schema-bloat-with-ai-so-you-dont-have-to-5f6ae84d0ee1"

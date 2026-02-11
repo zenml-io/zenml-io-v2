@@ -345,7 +345,7 @@ const llmopsSchema = z.object({
 
   // LLMOps-specific fields (ACTUAL field names from transform)
   llmopsTags: slugReferenceArray('llmops-tags', referenceSlugSets['llmops-tags']),
-  // Note: industryTags field does NOT exist in actual output
+  industryTags: slugReference('industry-tags', referenceSlugSets['industry-tags']).optional(),
   company: z.string().optional(),
   summary: z.string().optional(),
   link: z.string().url().optional(),
