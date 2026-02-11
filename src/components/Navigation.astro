@@ -34,7 +34,7 @@ const { currentPath = Astro.url.pathname } = Astro.props;
         {NAV_DROPDOWNS.map((dropdown) => (
           <div class="group relative">
             <button
-              class="flex items-center gap-1 rounded-radius-md px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50 hover:text-gray-900"
+              class="flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50 hover:text-gray-900"
               aria-expanded="false"
               aria-haspopup="true"
             >
@@ -45,7 +45,7 @@ const { currentPath = Astro.url.pathname } = Astro.props;
             </button>
             {/* Dropdown panel */}
             <div class="pointer-events-none invisible absolute left-1/2 top-full z-50 w-[640px] -translate-x-1/2 pt-2 opacity-0 transition-all duration-200 group-hover:pointer-events-auto group-hover:visible group-hover:opacity-100">
-              <div class="overflow-hidden rounded-radius-xl border border-gray-200 bg-white shadow-large">
+              <div class="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-large">
                 <div class="flex">
                   {/* Left: link columns */}
                   <div class="flex flex-1 gap-0 p-5">
@@ -58,11 +58,11 @@ const { currentPath = Astro.url.pathname } = Astro.props;
                           {section.links.map((link) => (
                             <a
                               href={link.href}
-                              class="group/link flex items-start gap-3 rounded-radius-md p-2 transition-colors hover:bg-gray-50"
+                              class="group/link flex items-start gap-3 rounded-md p-2 transition-colors hover:bg-gray-50"
                               target={link.external ? "_blank" : undefined}
                               rel={link.external ? "noopener noreferrer" : undefined}
                             >
-                              <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-radius-md bg-zenml-25 text-zenml-500">
+                              <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-zenml-25 text-zenml-500">
                                 <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                   <path d="M13 2L4.09 12.69a.5.5 0 00.41.81H12l-1 10 8.91-10.69a.5.5 0 00-.41-.81H12l1-10z" />
                                 </svg>
@@ -95,7 +95,7 @@ const { currentPath = Astro.url.pathname } = Astro.props;
                             {dropdown.sections[2].links.map((link) => (
                               <a
                                 href={link.href}
-                                class="group/link flex items-start gap-3 rounded-radius-md p-2 transition-colors hover:bg-gray-100"
+                                class="group/link flex items-start gap-3 rounded-md p-2 transition-colors hover:bg-gray-100"
                               >
                                 <div>
                                   <div class="text-sm font-medium text-gray-900 group-hover/link:text-zenml-500">
@@ -120,7 +120,7 @@ const { currentPath = Astro.url.pathname } = Astro.props;
                           {dropdown.featured.caseStudies?.map((cs) => (
                             <a
                               href={cs.href}
-                              class="mb-2 block rounded-radius-md p-2 transition-colors hover:bg-gray-100"
+                              class="mb-2 block rounded-md p-2 transition-colors hover:bg-gray-100"
                             >
                               <div class="text-sm font-medium text-gray-900">{cs.label}</div>
                               <div class="text-xs text-gray-500">{cs.subtitle}</div>
@@ -129,7 +129,7 @@ const { currentPath = Astro.url.pathname } = Astro.props;
                           {dropdown.featured.links?.map((link) => (
                             <a
                               href={link.href}
-                              class="mb-2 block rounded-radius-md p-2 transition-colors hover:bg-gray-100"
+                              class="mb-2 block rounded-md p-2 transition-colors hover:bg-gray-100"
                               target={link.external ? "_blank" : undefined}
                               rel={link.external ? "noopener noreferrer" : undefined}
                             >
@@ -165,7 +165,7 @@ const { currentPath = Astro.url.pathname } = Astro.props;
           <a
             href={link.href}
             class:list={[
-              "rounded-radius-md px-3 py-2 text-sm font-medium transition-colors hover:bg-gray-50",
+              "rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-gray-50",
               isActivePath(currentPath, link.href)
                 ? "text-zenml-500"
                 : "text-gray-700 hover:text-gray-900",
@@ -189,7 +189,7 @@ const { currentPath = Astro.url.pathname } = Astro.props;
       {/* Mobile menu button */}
       <button
         type="button"
-        class="lg:hidden rounded-radius-md p-2 text-gray-700 hover:bg-gray-50"
+        class="lg:hidden rounded-md p-2 text-gray-700 hover:bg-gray-50"
         aria-label="Toggle menu"
         data-mobile-toggle
       >
@@ -213,7 +213,7 @@ const { currentPath = Astro.url.pathname } = Astro.props;
         {/* Mobile dropdown sections (as accordions) */}
         {NAV_DROPDOWNS.map((dropdown) => (
           <details class="group/accordion">
-            <summary class="flex cursor-pointer items-center justify-between rounded-radius-md px-3 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 list-none [&::-webkit-details-marker]:hidden">
+            <summary class="flex cursor-pointer items-center justify-between rounded-md px-3 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 list-none [&::-webkit-details-marker]:hidden">
               {dropdown.label}
               <svg class="h-4 w-4 text-gray-400 transition-transform group-open/accordion:rotate-180" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M5 7.5L10 12.5L15 7.5" />
@@ -228,7 +228,7 @@ const { currentPath = Astro.url.pathname } = Astro.props;
                   {section.links.map((link) => (
                     <a
                       href={link.href}
-                      class="block rounded-radius-md px-2 py-1.5 text-sm text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                      class="block rounded-md px-2 py-1.5 text-sm text-gray-600 hover:bg-gray-50 hover:text-gray-900"
                       target={link.external ? "_blank" : undefined}
                       rel={link.external ? "noopener noreferrer" : undefined}
                     >
@@ -240,7 +240,7 @@ const { currentPath = Astro.url.pathname } = Astro.props;
               {dropdown.featured?.links?.map((link) => (
                 <a
                   href={link.href}
-                  class="block rounded-radius-md px-2 py-1.5 text-sm text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                  class="block rounded-md px-2 py-1.5 text-sm text-gray-600 hover:bg-gray-50 hover:text-gray-900"
                   target={link.external ? "_blank" : undefined}
                   rel={link.external ? "noopener noreferrer" : undefined}
                 >
@@ -256,7 +256,7 @@ const { currentPath = Astro.url.pathname } = Astro.props;
           <a
             href={link.href}
             class:list={[
-              "block rounded-radius-md px-3 py-2.5 text-sm font-medium hover:bg-gray-50",
+              "block rounded-md px-3 py-2.5 text-sm font-medium hover:bg-gray-50",
               isActivePath(currentPath, link.href)
                 ? "text-zenml-500"
                 : "text-gray-700",

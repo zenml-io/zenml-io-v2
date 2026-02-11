@@ -14,7 +14,7 @@ interface Props {
 const { href, variant = "gray", class: className } = Astro.props;
 
 const baseClasses =
-  "inline-flex items-center rounded-radius-pill px-2.5 py-0.5 text-xs font-medium transition-colors";
+  "inline-flex items-center rounded-pill px-2.5 py-0.5 text-xs font-medium transition-colors";
 
 const variantClasses: Record<Variant, string> = {
   gray: "bg-gray-100 text-gray-700 hover:bg-gray-200",

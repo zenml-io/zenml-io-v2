@@ -48,7 +48,7 @@ const SOCIAL_ICONS: Record<SocialPlatform, string> = {
                 href={social.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="flex h-9 w-9 items-center justify-center rounded-radius-md text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700"
+                class="flex h-9 w-9 items-center justify-center rounded-md text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700"
                 aria-label={social.label}
               >
                 <Fragment set:html={SOCIAL_ICONS[social.platform]} />

@@ -13,6 +13,14 @@
   --color-zenml-700: #281158;
   --color-zenml-800: #1b0c3b;
 
+  /* === Primary Palette (aliases to zenml brand for utility classes) === */
+  --color-primary-50: #f6f2ff;
+  --color-primary-100: #f1ebfe;
+  --color-primary-300: #d6bbfb;
+  --color-primary-600: #7a3ef4;
+  --color-primary-700: #361776;
+  --color-primary-800: #281158;
+
   /* === Gray Scale (from Untitled UI design system) === */
   --color-gray-25: #fcfcfd;
   --color-gray-50: #f9fafb;

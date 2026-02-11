@@ -12,7 +12,7 @@ interface Props {
 const { href, class: className, padded = true } = Astro.props;
 
 const baseClasses = [
-  "block rounded-radius-xl border border-gray-200 bg-white shadow-card transition-all duration-200",
+  "block rounded-xl border border-gray-200 bg-white shadow-card transition-all duration-200",
   padded ? "p-6" : "",
   href ? "hover:shadow-medium hover:-translate-y-0.5" : "",
   className,
