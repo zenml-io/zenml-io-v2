@@ -1,8 +1,8 @@
 # Phase 3: Templates & Pages — Detailed Plan
 
 **Created:** 2026-02-11
-**Last Updated:** 2026-02-11 (3H-1a + 3H-1b complete)
-**Status:** 3A–3G COMPLETE, 3H-1a + 3H-1b COMPLETE — 3H-3 through 3H-7 remaining
+**Last Updated:** 2026-02-11 (3H-3 complete)
+**Status:** 3A–3G COMPLETE, 3H-1a + 3H-1b + 3H-3 COMPLETE — 3H-4 through 3H-7 remaining
 **Prerequisites:**
 - Phase 2 complete (2,392 content files, 17 collections, all validation passing)
 - **Content format:** Switched from .mdx to .md (MDX v2 too strict for Webflow HTML)
@@ -609,30 +609,42 @@ Tasks:
 **Architectural decision:** Create a **content collection** `src/content/feature-pages/` with frontmatter (title, description, hero image, sections) and a dynamic route `src/pages/features/[slug].astro`. This avoids 12 hand-coded pages and ensures consistent SEO/CTAs.
 
 **Pages:**
-- [ ] `/features` — features hub page (grid of all 12 features)
-- [ ] `/features/iterate-at-warp-speed`
-- [ ] `/features/auto-track-everything`
-- [ ] `/features/shared-ml-building-blocks`
-- [ ] `/features/backend-flexibility-zero-lock-in`
-- [ ] `/features/limitless-scaling`
-- [ ] `/features/streamline-cloud-expenses`
-- [ ] `/features/security-guardrails-always`
-- [ ] `/features/centralized-model-control-plane`
-- [ ] `/features/organize-assets-into-projects`
-- [ ] `/features/streamlined-pipeline-management`
-- [ ] `/features/role-based-access-control-and-permissions`
-- [ ] `/features/enterprise-grade-support-and-onboarding`
+- [x] `/features` — features hub page (grid of all 12 features)
+- [x] `/features/iterate-at-warp-speed`
+- [x] `/features/auto-track-everything`
+- [x] `/features/shared-ml-building-blocks`
+- [x] `/features/backend-flexibility-zero-lock-in`
+- [x] `/features/limitless-scaling`
+- [x] `/features/streamline-cloud-expenses`
+- [x] `/features/security-guardrails-always`
+- [x] `/features/centralized-model-control-plane`
+- [x] `/features/organize-assets-into-projects`
+- [x] `/features/streamlined-pipeline-management`
+- [x] `/features/role-based-access-control-and-permissions`
+- [x] `/features/enterprise-grade-support-and-onboarding`
 
 **Tasks:**
-- [ ] Define `featurePages` schema in `src/content.config.ts`
-- [ ] Create 12 content files in `src/content/feature-pages/`
-- [ ] Create `src/pages/features/[slug].astro` (dynamic route template)
-- [ ] Create `src/pages/features/index.astro` (hub page with grid)
+- [x] Define `featurePages` schema in `src/content.config.ts`
+- [x] Create 12 content files in `src/content/feature-pages/`
+- [x] Create `src/pages/features/[slug].astro` (dynamic route template)
+- [x] Create `src/pages/features/index.astro` (hub page with grid)
+
+**Components added:**
+- `FeatureHero.astro` — hero section (category, H1, deck, image, CTAs)
+- `FeatureValueSection.astro` — two-column text + image block
+- `FeatureComplianceBanner.astro` — SOC2/ISO banner (security page only)
+- `FeatureTestimonial.astro` — customer quote block
+- `FeatureCard.astro` — hub grid card component
+- `FeaturesHubCTA.astro` — dark CTA band
 
 **Validation:**
-- All 12 feature pages render with correct content
-- Features hub links to all 12 pages
-- Navigation dropdown feature links resolve correctly
+- [x] All 12 feature pages render with correct content
+- [x] Features hub links to all 12 pages
+- [x] Navigation dropdown feature links resolve correctly
+- [x] Security page has compliance banner with SOC2/ISO badges
+- [x] Build passes (~31s)
+
+**Known limitation:** Feature page images use Webflow CDN URLs (not R2). See "Non-CMS Image Migration" note below.
 
 ---
 
@@ -1300,7 +1312,8 @@ Phase 6 will be QA + cutover:
 - GitHub stars live count widget — nice-to-have
 - R2 URL hash verification — spot-check needed
 - Feature tab AVIF images — need to verify they load from R2
+- **Non-CMS image migration to R2** — Phase 1 asset pipeline only migrated CMS-referenced images. Static page images (feature pages, case studies, marketing pages) still reference Webflow CDN URLs (`cdn.prod.website-files.com`). These MUST be downloaded and uploaded to R2 before the Webflow site is deleted, or they will break. Scope: ~50-100 images across ~50 static pages. Suggested approach: extend `build-asset-inventory.ts` to scan extracted HTML for image URLs, then batch-download + upload to R2 with the same `{sha256prefix}/{filename}` convention.
 
 ---
 
-**3H-1a + 3H-1b COMPLETE. Next: 3H-3 (Feature detail pages) or 3H-4 (Case studies).**
+**3H-1a + 3H-1b + 3H-3 COMPLETE. Next: 3H-4 (Case studies + VS pages).**
