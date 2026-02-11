@@ -1,0 +1,102 @@
+---
+title: "What's New in v0.10.0: A Kubernetes Native Orchestrator!"
+slug: "whats-new-in-v0-10-0-a-kubernetes-native-orchestrator"
+draft: true
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "65315e77f86103b0fb7ac70e"
+  exportedAt: "2026-02-11T13:30:32.135Z"
+  source: "staged-only"
+  lastUpdated: "2024-01-26T10:05:16.681Z"
+  createdOn: "2023-10-19T16:51:03.751Z"
+author: "jayesh-sharma"
+category: "zenml"
+tags:
+  - "release-notes"
+  - "zenml"
+date: "2022-06-28T00:00:00.000Z"
+readingTime: 3 Mins Read
+mainImage:
+  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/936fceb2/65315e3776349a66e3b6a406_release-zero-ten-balloon.jpg"
+---
+
+**Last updated:** October 17, 2022.
+
+The 0.10.0 release continues our streak of extending ZenML with support for new orchestrators, this time by adding the Kubernetes Native Orchestrator. Also included are: a Data Validator stack component and Great Expectations implementation and a community-contributed Vault secret manager among a host of other things! ✨
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/ab63e14a/65315e3e4d86cd944826151f_release_GIF.gif" alt="Release GIF" />
+</figure>
+
+Beyond this, as usual we included a number of smaller bugfixes and documentation changes to cumulatively improve experience of using ZenML as a user. For a detailed look at what’s changed, give [our full release notes](https://github.com/zenml-io/zenml/releases/tag/0.10.0) a glance.
+
+## 🛳️ Kubernetes Native Orchestrator
+
+We’ve heard you! With this new addition to our increasing list of orchestrators, you can now run your ZenML pipelines natively on your Kubernetes Cluster.
+
+This orchestrator is a lightweight alternative to other distributed orchestrators like Airflow or Kubeflow that gives our users the ability to run pipelines in any Kubernetes cluster without having to install and manage additional tools or components.
+
+It’s amazing but don’t take my word for it; try it on your own or wait for the dedicated blog post that we’ve planned, which, by the way, also features a little surprise to make it easier for you to follow along 😉
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/31b96efe/65315e3e879138498a1c30b5_k8s.png" alt="Kubernetes Orchestration pods" />
+</figure>
+
+There’s a lot to love about this integration.
+
+<ul><li>Every step gets executed in its own pod and the logs from all of them are streamed to your terminal!</li><li>You can schedule pipeline runs as CRON jobs.</li><li>It automatically spins up a MySQL metadata store for you when you do zenml stack up!</li></ul>
+
+We can’t wait to hear your thoughts on this 🙂
+
+## 🎉 Great Expectations as the new Data Validator
+
+Want to run data quality checks as part of a ZenML pipeline? We’ve got you covered!
+
+We introduce Data Validators and The Great Expectations integration which eliminates the complexity associated with configuring the store backends for Great Expectations by reusing our Artifact Store concept for that purpose and gives ZenML users immediate access to Great Expectations in both local and cloud settings.
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/1012d18b/65315e3ef86103b0fb7a76fa_great_expectations_validation_result.png" alt="Great Expectation Validation Result" />
+</figure>
+
+In addition, there are two new standard steps:
+
+<ul><li>a Great Expectations profiler that can be used to automatically generate Expectation Suites from input datasets.</li><li>a Great Expectations validator that uses an existing Expectation Suite to validate an input dataset.</li></ul>
+
+A ZenML visualizer that is tied to the generated Great Expectations data docs is also included and can be used to visualize the expectation suites and checkpoint results created by pipeline steps 😍
+
+Got feedback or just want to let us know how you feel? [Connect with us](https://zenml.io/slack-invite/) or join us for a [Community Meetup](https://www.eventbrite.de/e/zenml-meet-the-community-tickets-354426688767?utm-campaign=social&utm-content=attendeeshare&utm-medium=discovery&utm-term=listing&utm-source=cp&aff=escb) 👋 which happens every Wednesday!
+
+## 🔐 A Vault Secret Manager
+
+To add to our growing list of secret managers, we now have a Vault integration, courtesy of one of our community members, [Karim Habouch](https://github.com/karimhabush)! We are grateful for their contribution ⭐
+
+## ⌨️ CLI Improvements
+
+A new release means new improvements to the CLI. We made changes to make handling stacks a bit easier 🥰:
+
+<ul><li>When registering and updating stack components through the CLI, the configuration attribute values can now also be loaded from files (by using the @path/to/file syntax).</li></ul>
+
+## 📖 Documentation & User Guides
+
+As usual, user-facing documentation is really important for us and we made a bunch of fixes and additions towards that end.
+
+## ➕ Other Updates, Additions and Fixes
+
+The latest release include several smaller features and updates to existing functionality:
+
+<ul><li>We fixed an error that happened if you ran MLflow deployer twice.</li><li>We fixed some dead links in integrations docs and other guides.</li><li>We made some fixes to the GCP artifact store implementation.</li><li>We have replaced the alerter standard steps to slack specific alerter standard steps.</li></ul>
+
+## 🙌 Community Contributions
+
+We received several new community contributions during this release cycle. We mentioned Karim’s Vault Secret Manager above already, but here’s everybody who contributed towards this release:
+
+<ul><li><a href="https://github.com/chethanuk-plutoflume">@chethanuk-plutoflume</a> made their first contribution in https://github.com/zenml-io/zenml/pull/716</li><li><a href="https://github.com/dnth">@dnth</a> made their first contribution in https://github.com/zenml-io/zenml/pull/722</li><li><a href="https://github.com/karimhabush">@karimhabush</a> made their first contribution in https://github.com/zenml-io/zenml/pull/689</li></ul>
+
+## 👩💻 Contribute to ZenML!
+
+Join our [Slack](https://zenml.io/slack-invite/) to let us know if you have an idea for a feature or something you’d like to contribute to the framework.
+
+We have a [new home for our roadmap](https://zenml.io/roadmap) where you can vote on your favorite upcoming feature or propose new ideas for what the core team should work on. You can vote without needing to log in, so please do let us know what you want us to build!
+
+[Photo by [Roberto Arias](https://unsplash.com/@ayoo_twitch) on [Unsplash](https://unsplash.com/photos/5V_pMmsv7wk)]
+

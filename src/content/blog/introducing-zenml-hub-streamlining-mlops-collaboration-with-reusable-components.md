@@ -1,0 +1,104 @@
+---
+title: "Introducing ZenML Hub: Streamlining MLOps Collaboration with Reusable Components"
+slug: "introducing-zenml-hub-streamlining-mlops-collaboration-with-reusable-components"
+draft: true
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "652d00eaac2fb6a71a0b6d31"
+  exportedAt: "2026-02-11T13:30:32.135Z"
+  source: "staged-only"
+  lastUpdated: "2024-01-26T09:49:06.990Z"
+  createdOn: "2023-10-16T09:22:50.166Z"
+author: "hamza-tahir"
+category: "zenml-updates"
+tags:
+  - "evergreen"
+  - "tooling"
+  - "zenml"
+  - "foundationmodels"
+  - "hub"
+  - "llm"
+date: "2023-04-12T00:00:00.000Z"
+readingTime: 6 mins read
+mainImage:
+  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/958ab376/652cffb7ac2fb6a71a0a0994_hub.jpg"
+---
+
+Today, we are excited to announce the launch of the ZenML Hub, a major game-changer for our open-source MLOps framework. This [novel plugin system](https://docs.zenml.io/user-guide/advanced-guide/environment-management/use-the-hub) allows users to contribute and consume [stack component flavors](https://docs.zenml.io/stacks-and-components/component-guide), [pipelines](https://docs.zenml.io/user-guide/starter-guide/create-an-ml-pipeline), [steps](https://docs.zenml.io/user-guide/starter-guide/create-an-ml-pipeline), [materializers](https://docs.zenml.io/user-guide/advanced-guide/artifact-management), and other pieces of code seamlessly in their ML pipelines.
+
+The goal of ZenML is to [standardize MLOps workflows](https://blog.zenml.io/zenml-mlops-framework/) across a rich and diverse ML tooling ecosystem. To achieve this, we have built key abstractions of components that allow users to integrate together a variety of tooling and infrastructure backends, without having to change their business layer logic. This allows MLOps practitioners to standardize processes, prevent vendor lock-in, and ensure reliability across their workflows:
+
+<figure class="w-richtext-figure-type- w-richtext-align-fullwidth" style="max-width:960px" data-rt-type="" data-rt-align="fullwidth" data-rt-max-width="960px"><img src="https://uploads-ssl.webflow.com/65264f6bf54e751c3a776db1/652cff7f6bb740b2dbdf12b6_hub.png" alt="ZenML: Standardizing and integrating MLOps components agnostic of tooling and infrastructure" width="auto" height="auto" loading="auto" /><figcaption>ZenML: Standardizing and integrating MLOps components agnostic of tooling and infrastructure</figcaption></figure>
+
+Some examples of using these components in practice are:
+
+<ul><li>Starting locally and transitioning to a production-ready <a href="https://docs.zenml.io/stacks-and-components/component-guide/orchestrators">orchestrator</a> like <a href="https://www.kubeflow.org/">Kubeflow</a> or <a href="https://airflow.apache.org/">Airflow</a> with no code changes</li><li>Versioning and tracking data locally and in an <a href="https://docs.zenml.io/stacks-and-components/component-guide/artifact-stores/s3">S3</a> bucket by just changing the <a href="https://docs.zenml.io/stacks-and-components/component-guide/artifact-stores">artifact store</a></li><li><a href="https://docs.zenml.io/stacks-and-components/component-guide/experiment-trackers">Tracking experiments</a> and models in <a href="https://docs.zenml.io/stacks-and-components/component-guide/experiment-trackers/mlflow">MLflow</a>, <a href="https://docs.zenml.io/stacks-and-components/component-guide/experiment-trackers/wandb">Weights &amp; Biases</a>, and <a href="https://docs.zenml.io/stacks-and-components/component-guide/experiment-trackers/neptune">Neptune</a> seamlessly within a pipeline</li><li>Running steps in <a href="https://docs.zenml.io/stacks-and-components/component-guide/step-operators">dedicated environments</a> for preprocessing and training like <a href="https://docs.zenml.io/stacks-and-components/component-guide/step-operators/sagemaker">Sagemaker</a> or <a href="https://docs.zenml.io/stacks-and-components/component-guide/step-operators/spark-kubernetes">Spark</a> jobs</li><li>Deploying models with production-grade deployment tools like <a href="https://docs.zenml.io/stacks-and-components/component-guide/model-deployers/bentoml">BentoML</a>, <a href="https://docs.zenml.io/stacks-and-components/component-guide/model-deployers/seldon">Seldon</a>, etc.</li></ul>
+
+## 🔌 Leveraging standard plugins
+
+Before today, these ZenML components were packaged within the core ZenML package and exposed via the <code>zenml integration</code> command line. While useful, this made it harder to modify and contribute more of these components for users and our community. With the launch of the ZenML Hub, we’re making big strides toward making these components more widely accessible and easier to use than ever. In the hub, ZenML stack component flavors, steps, materializers, and other pieces of useful code are packaged in <code>plugins</code>. These <code>plugins</code> are accessible [via a central registry that is available directly from the ZenML dashboard](https://docs.zenml.io/user-guide/advanced-guide/environment-management/use-the-hub). Each plugin contains descriptions, tags, and helpful information on how to use it.
+
+<figure class="w-richtext-figure-type- w-richtext-align-fullwidth" style="max-width:1920px" data-rt-type="" data-rt-align="fullwidth" data-rt-max-width="1920px"><img src="https://uploads-ssl.webflow.com/65264f6bf54e751c3a776db1/652cff7f34643bdb173e629e_hub_search_plugins.gif" alt="ZenML plugins are searchable from within the dashboard" width="auto" height="auto" loading="auto" /><figcaption>ZenML plugins are searchable from within the dashboard</figcaption></figure>
+
+To use a plugin, one simply needs to install it as follows:
+
+```
+zenml hub install langchain_qa_example
+```
+
+… and then directly import and use it in Python, for example:
+
+```
+from zenml.hub.langchain_qa_example import qa_pipeline
+```
+
+💡 Currently, the ZenML Hub supports steps and pipelines, with support for all other ZenML abstractions coming soon (flavors, materializers, etc).
+
+## 🌪️ Creating reproducible, standardized, and testable code for your team
+
+<figure class="w-richtext-figure-type- w-richtext-align-fullwidth" style="max-width:1920px" data-rt-type="" data-rt-align="fullwidth" data-rt-max-width="1920px"><img src="https://uploads-ssl.webflow.com/65264f6bf54e751c3a776db1/652cff7f8f2e7a8d696b6d53_hub_submit_plugin.gif" alt="Easily create a plugin through the ZenML dashboard" width="auto" height="auto" loading="auto" /><figcaption>Easily create a plugin through the ZenML dashboard</figcaption></figure>
+
+With the hub, extending ZenML has never been easier. Contributing a plugin is a breeze: simply create and submit a public Github repository (like [this](https://github.com/zenml-io/zenml-hub-plugin-template)). After processing, your plugin is installable for all ZenML users, including your company and the community at large. This will foster a community-driven approach to building machine learning workflows. As more users contribute to the hub, the community will benefit from a growing repository of high-quality, reusable components that can be used to build more complex workflows. This in turn enables users to create more impactful and efficient models while also providing the opportunity to collaborate with other community members.
+
+We believe that the ZenML Hub will help democratize MLOps by making it easier for everyone to contribute and consume code. By removing the barriers to entry for new contributors, we hope to accelerate innovation in the field and ultimately lead to more impactful solutions. The ultimate goal is to come to a series of standardized, reusable, components that will help all of us who are putting models in production.
+
+<figure class="w-richtext-figure-type- w-richtext-align-fullwidth" style="max-width:1916px" data-rt-type="" data-rt-align="fullwidth" data-rt-max-width="1916px"><img src="https://uploads-ssl.webflow.com/65264f6bf54e751c3a776db1/652cff7fb62af154c4abf9a8_hub_list_plugins.png" alt="Plugins allow you to reuse code across projects" width="auto" height="auto" loading="auto" /><figcaption>Plugins allow you to reuse code across projects</figcaption></figure>
+
+One of the key use cases for the ZenML Hub is sharing reproducible code across different projects within an organization. Take for example a company that is implementing multiple machine learning pipelines for various use-cases. These steps may include data loading, preprocessing, feature engineering, model training, and evaluation. The ZenML Hub will enable the creation of commonly-used steps that will then be shared across all projects, saving time and effort.
+
+Imagine a process where one user in your organization creates a standard wrapper to run a preprocessing job on Spark, a training job on Sagemaker, and a deployment job on AzureML. With the ZenML Hub, these components are discoverable, fully documented, and tested. The work is only done once, and the plugins can be updated, versioned, and maintained separately from the actual machine learning code.
+
+## 🤖 Example: QA Bot with LangChain, LLamaIndex and OpenAI
+
+As part of this launch, we are excited to introduce several new plugins that are added to the ZenML Hub. These plugins include standard steps and pipelines that can be easily and freely used for standard use cases with ZenML. We look forward to seeing how these new plugins will streamline the ML workflow and help everyone build better models faster.
+
+<figure class="w-richtext-figure-type- w-richtext-align-fullwidth" style="max-width:1919px" data-rt-type="" data-rt-align="fullwidth" data-rt-max-width="1919px"><img src="https://uploads-ssl.webflow.com/65264f6bf54e751c3a776db1/652cff7f1b4433a6c888bd24_hub_plugin_details.png" alt="Gather all details into one central interface" width="auto" height="auto" loading="auto" /><figcaption>Gather all details into one central interface</figcaption></figure>
+
+One of the most intuitive examples to get started with is the <code>langchain_qa_example</code> plugin. The plugin features a simple pipeline and steps that allow users to fetch data from a variety of sources (via [Langchain](https://github.com/hwchase17/langchain) and [LlamaIndex](https://github.com/jerryjliu/llama_index) data loading steps), create an index, and answer a query across the corpus using a GPT-3.5 (and beyond) LLM powered by OpenAI. To reproduce it locally, simply run:
+
+```
+zenml hub install langchain_qa_example
+export OPENAI_API_KEY=<your_key> # get it from https://platform.openai.com/account/api-keys</your_key>
+```
+
+```
+from zenml.hub.langchain_qa_example import build_zenml_docs_qa_pipeline
+
+pipeline = build_zenml_docs_qa_pipeline(question="What is ZenML?", load_all_paths=False).run()
+```
+
+(When you first run this pipeline, it will run a series of steps that will scrape the [ZenML docs](https://docs.zenml.io/), and build an index. Subsequent runs will be faster and re-use the index because of ZenML’s internal cache.)
+
+And there you go: You can now recreate a simple question-answering MLOps pipeline using cutting-edge LLMs and the latest libraries, which you can now go on to deploy on custom infrastructure. Of course, if you did want to use the individual steps or pipelines directly, feel free to check out the corresponding project and source code [here](https://github.com/zenml-io/zenml-projects/tree/main/langchain-qa-hub).
+
+## 📡 What next?
+
+In the future, we plan to add more plugins, with steps like an ONNX converter and step operators like Sagemaker, Spark, EMR, etc. We’re also working on workflows to easily pull and fork public plugins, automated testing, and a playground to test steps.
+
+For now ([release 0.38.0 onwards](https://github.com/zenml-io/zenml/releases)), the ZenML Hub is officially supported within the main ZenML package. Get started with using your [first plugin](https://docs.zenml.io/user-guide/advanced-guide/environment-management/use-the-hub) and [start contributing](https://github.com/zenml-io/zenml-hub-plugin-template) today. Your contributions will help build a better future for machine learning and benefit the entire community.
+
+As always, drop by the community [Slack](https://zenml.io/) to give feedback, or ask any questions. Thank you for your continued support, and stay tuned for more exciting updates from the ZenML team!
+
+## We’re hiring! 👀
+
+ZenML is currently hiring for a number of positions. Check out [our careers page](https://zenml.io/careers) for more details!

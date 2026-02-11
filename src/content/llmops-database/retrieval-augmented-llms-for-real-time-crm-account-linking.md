@@ -1,0 +1,150 @@
+---
+title: "Retrieval Augmented LLMs for Real-time CRM Account Linking"
+slug: "retrieval-augmented-llms-for-real-time-crm-account-linking"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f40363d7ca3d6302a4df7"
+  exportedAt: "2026-02-11T13:30:32.135Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:36:37.071Z"
+  createdOn: "2024-11-21T14:14:14.368Z"
+llmopsTags:
+  - "amazon-aws"
+  - "data-integration"
+  - "databases"
+  - "error-handling"
+  - "fallback-strategies"
+  - "google-gcp"
+  - "langchain"
+  - "monitoring"
+  - "prompt-engineering"
+  - "rag"
+  - "regulatory-compliance"
+  - "reliability"
+  - "scalability"
+  - "semantic-search"
+  - "structured-output"
+industryTags: "energy"
+company: "Schneider Electric"
+summary: "Schneider Electric partnered with AWS Machine Learning Solutions Lab to automate their CRM account linking process using Retrieval Augmented Generation (RAG) with Flan-T5-XXL model. The solution combines LangChain, Google Search API, and SEC-10K data to identify and maintain up-to-date parent-subsidiary relationships between customer accounts, improving accuracy from 55% to 71% through domain-specific prompt engineering."
+link: "https://aws.amazon.com/blogs/machine-learning/schneider-electric-leverages-retrieval-augmented-llms-on-sagemaker-to-ensure-real-time-updates-in-their-crm-systems?tag=soumet-20"
+year: 2023
+seo:
+  title: "Schneider Electric: Retrieval Augmented LLMs for Real-time CRM Account Linking - ZenML LLMOps Database"
+  description: "Schneider Electric partnered with AWS Machine Learning Solutions Lab to automate their CRM account linking process using Retrieval Augmented Generation (RAG) with Flan-T5-XXL model. The solution combines LangChain, Google Search API, and SEC-10K data to identify and maintain up-to-date parent-subsidiary relationships between customer accounts, improving accuracy from 55% to 71% through domain-specific prompt engineering."
+  canonical: "https://www.zenml.io/llmops-database/retrieval-augmented-llms-for-real-time-crm-account-linking"
+  ogTitle: "Schneider Electric: Retrieval Augmented LLMs for Real-time CRM Account Linking - ZenML LLMOps Database"
+  ogDescription: "Schneider Electric partnered with AWS Machine Learning Solutions Lab to automate their CRM account linking process using Retrieval Augmented Generation (RAG) with Flan-T5-XXL model. The solution combines LangChain, Google Search API, and SEC-10K data to identify and maintain up-to-date parent-subsidiary relationships between customer accounts, improving accuracy from 55% to 71% through domain-specific prompt engineering."
+---
+
+## Overview
+
+Schneider Electric, a global leader in digital transformation of energy management and industrial automation, faced a significant operational challenge in maintaining accurate customer relationship data across their CRM systems. As their customer base grew, new customer accounts needed to be manually linked to their proper parent entities—a process that required domain-specific knowledge and access to the most current information about corporate acquisitions, market news, and organizational restructuring. The manual nature of this process was time-consuming and struggled to keep pace with the dynamic nature of corporate relationships.
+
+In early 2023, Schneider Electric partnered with the AWS Machine Learning Solutions Lab (MLSL) to develop an AI-powered solution that would automate significant portions of this account linking workflow. The resulting system demonstrates a practical implementation of LLMs in a production environment, addressing both the capabilities and limitations of large language models through thoughtful architectural decisions.
+
+## The Core Challenge: LLM Knowledge Cutoffs
+
+A fundamental limitation of LLMs is their knowledge cutoff date—the model only knows information up to the point at which it was trained. For Schneider Electric's use case, this was a critical problem because account linking decisions often depend on recent corporate events like acquisitions. The case study provides a concrete example: the acquisition of One Medical by Amazon occurred in February 2023, which would not be captured by many LLMs trained before that date.
+
+This limitation necessitated an architecture that could supplement the LLM's inherent knowledge with real-time external information, leading to the adoption of a Retrieval Augmented Generation (RAG) approach.
+
+## Technical Architecture
+
+### Model Selection and Deployment
+
+The team selected the Flan-T5-XXL model from the Flan-T5 family, an 11-billion parameter instruction-tuned model. This choice was deliberate and reflects thoughtful consideration of the task requirements. The case study notes that for their downstream task, there was no need to accommodate vast amounts of world knowledge—rather, the model needed to perform well on question answering given a context of texts provided through search results. The instruction-tuned nature of Flan-T5 made it capable of performing various zero-shot NLP tasks without fine-tuning.
+
+The model was deployed using Amazon SageMaker JumpStart, which provides convenient deployment options through both Amazon SageMaker Studio and the SageMaker SDK. JumpStart offers the entire Flan-T5 family (Small, Base, Large, XL, and XXL) and provides multiple versions of Flan-T5 XXL at different levels of quantization, offering flexibility in balancing model performance against computational requirements.
+
+The deployment process is relatively straightforward, with the model being spun up as a SageMaker endpoint:
+
+```python
+llm = SagemakerEndpoint(...)
+```
+
+### RAG Implementation with LangChain
+
+LangChain was selected as the orchestration framework, described as a "popular and fast growing framework" for developing LLM-powered applications. The framework's concept of chains—combinations of different components designed to improve LLM functionality for specific tasks—proved well-suited to the use case.
+
+The RAG implementation consists of two core steps:
+
+**Retrieval**: The system uses Google Serper API (via LangChain's GoogleSerperAPIWrapper) to perform web searches. Given a company name, the system constructs a query like "&#123;company&#125; parent company" and retrieves relevant text chunks from external sources.
+
+**Augmentation**: The retrieved information is combined with a prompt template and the original question, then passed to the LLM for processing. This approach ensures the model has access to the most current publicly available information about corporate relationships.
+
+The LangChain implementation chains these components together using a custom prompt template:
+
+```python
+my_template = """
+Answer the following question using the information. \n
+Question : {question}? \n
+Information : {search_result} \n
+Answer: """
+```
+
+### Domain-Specific Prompt Engineering
+
+One of the more interesting LLMOps insights from this case study is the significant impact of domain-specific prompt engineering. The team discovered that a blanket prompt asking for "the parent company" performed well for most business sectors but failed to generalize to education and healthcare, where the concept of a parent company may not be meaningful.
+
+To address this, they implemented a two-step process:
+
+**Step 1 - Domain Classification**: A RAG query first determines what domain a given account belongs to using a multiple-choice question: "What is the domain of &#123;account&#125;?" with options including healthcare, education, oil and gas, banking, pharma, and other domains.
+
+**Step 2 - Domain-Specific Query**: Based on the identified domain, the system selects an appropriate prompt template. While the case study doesn't specify the exact alternative prompts for education and healthcare, it notes that different terminology is used to query relationships in these sectors.
+
+The impact of this prompt engineering work was substantial: overall accuracy improved from 55% to 71%, representing a 16 percentage point improvement. The case study emphasizes that "the effort and time invested to develop effective prompts appear to significantly improve the quality of LLM response"—a valuable lesson for production LLM deployments.
+
+### Integration with Structured Data Sources
+
+Beyond web search, the solution also incorporates SEC 10K filings as an additional data source. These annual filings from publicly traded companies contain reliable information about subsidiaries and corporate structures, available through SEC EDGAR or the CorpWatch API.
+
+For working with this tabular data, the team used LangChain's `create_pandas_dataframe_agent` abstraction. This approach offers two key advantages:
+
+- **Natural Language Interface**: Downstream consumers can interact with the dataset using natural language rather than writing code or SQL queries
+- **Robustness to Variations**: The LLM-based approach is more tolerant of misspellings and different naming conventions for accounts
+
+The agent translates natural language queries into pandas operations, as demonstrated in the case study:
+
+```python
+query = "Who is the parent of WHOLE FOODS MARKET?"
+agent.run(query)
+# Agent translates to: df[df['subsidiary'] == 'WHOLE FOODS MARKET']
+# Returns: AMAZON
+```
+
+## Production Considerations
+
+### Accuracy and Evaluation
+
+The case study provides concrete accuracy metrics, which is valuable for understanding the real-world performance of the system. The baseline accuracy of 55% with generic prompts improved to 71% with domain-specific prompts. While 71% is not perfect, it represents a significant reduction in manual effort—the system can confidently handle a large portion of account linking decisions, with human review reserved for uncertain cases or edge situations.
+
+### Scalability and Integration
+
+The architecture is designed for scalability, leveraging AWS services:
+
+- SageMaker endpoints can be scaled based on demand
+- The Google Search API provides real-time access to current information
+- The modular LangChain architecture allows for component updates and additions
+
+The solution is positioned to enable Schneider Electric to "maintain up-to-date and accurate organizational structures of their customers, and unlock the ability to do analytics on top of this data."
+
+### Extensibility
+
+The case study notes that Schneider Electric's team will be able to extend and design their own prompts, mimicking the way they classify public sector accounts. This extensibility is important for production systems, as business requirements evolve and domain experts identify new patterns or edge cases.
+
+## Critical Assessment
+
+While the case study presents a well-architected solution, a few considerations merit attention:
+
+**Accuracy Ceiling**: A 71% accuracy rate means nearly 30% of decisions still require human intervention or correction. For critical business processes, organizations should plan for appropriate human-in-the-loop workflows.
+
+**External API Dependencies**: The reliance on Google Search API introduces external dependencies that could affect availability, cost, and consistency of results over time.
+
+**SEC Data Limitations**: SEC 10K filings only cover publicly traded US companies, limiting the utility of this data source for private companies or international entities.
+
+**Prompt Maintenance**: Domain-specific prompts may require ongoing maintenance as business terminology evolves or new sectors are added.
+
+Despite these considerations, the case study demonstrates a practical, production-grade implementation of RAG for a real business problem, with measurable improvements in efficiency and accuracy. The combination of web search, structured data sources, and domain-specific prompt engineering represents a thoughtful approach to deploying LLMs in production environments where up-to-date, accurate information is essential.

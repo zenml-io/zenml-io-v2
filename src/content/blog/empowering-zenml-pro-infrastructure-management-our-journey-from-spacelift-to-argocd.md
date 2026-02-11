@@ -1,0 +1,136 @@
+---
+title: "Empowering ZenML Pro Infrastructure Management: Our Journey from Spacelift to ArgoCD"
+slug: "empowering-zenml-pro-infrastructure-management-our-journey-from-spacelift-to-argocd"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "66f287631bf5ddab6445a415"
+  exportedAt: "2026-02-11T13:30:32.135Z"
+  source: "live"
+  lastPublished: "2024-10-23T13:30:09.357Z"
+  lastUpdated: "2024-10-23T13:30:09.357Z"
+  createdOn: "2024-09-24T09:33:23.174Z"
+author: "andrei-vishniakov"
+category: "case-studies"
+tags:
+  - "zenml"
+  - "gitops"
+  - "kubernetes"
+  - "infrastructure"
+  - "cloud"
+date: "2024-10-11T00:00:00.000Z"
+readingTime: 4 mins
+mainImage:
+  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/97b245de/6718fa5dcc5d876e01be2531_zenml-infrastructure.png"
+seo:
+  title: "Empowering ZenML Pro Infrastructure Management: Our Journey from Spacelift to ArgoCD - ZenML Blog"
+  description: "The combination of ZenML and Neptune can streamline machine learning workflows and provide unprecedented visibility into experiments. ZenML is an extensible framework for creating production-ready pipelines, while Neptune is a metadata store for MLOps. When combined, these tools offer a robust solution for managing the entire ML lifecycle, from experimentation to production. The combination of these tools can significantly accelerate the development process, especially when working with complex tasks like language model fine-tuning. This integration offers the ability to focus more on innovating and less on managing the intricacies of your ML pipelines."
+  canonical: "https://www.zenml.io/blog/empowering-zenml-pro-infrastructure-management-our-journey-from-spacelift-to-argocd"
+  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/97b245de/6718fa5dcc5d876e01be2531_zenml-infrastructure.png"
+  ogTitle: "Empowering ZenML Pro Infrastructure Management: Our Journey from Spacelift to ArgoCD - ZenML Blog"
+  ogDescription: "The combination of ZenML and Neptune can streamline machine learning workflows and provide unprecedented visibility into experiments. ZenML is an extensible framework for creating production-ready pipelines, while Neptune is a metadata store for MLOps. When combined, these tools offer a robust solution for managing the entire ML lifecycle, from experimentation to production. The combination of these tools can significantly accelerate the development process, especially when working with complex tasks like language model fine-tuning. This integration offers the ability to focus more on innovating and less on managing the intricacies of your ML pipelines."
+---
+
+At ZenML, we're constantly striving to improve our infrastructure and processes. Recently, we embarked on an exciting journey to migrate our ZenML Pro tenant lifecycle management from Spacelift to a more robust and flexible solution using Kubernetes (ArgoCD) and native Terraform capabilities. This blog post details our motivation, the challenges we faced, and the benefits we've reaped from this migration.
+
+## Why We Made the Switch
+
+Our decision to move away from Spacelift was driven by several factors:
+
+1. **Scalability Constraints**: Spacelift's paid plan limited the number of parallel runners, which became a bottleneck as we grew.
+
+2. **Data Ownership**: All metadata and states were stored on Spacelift's end, reducing our control over critical information.
+
+3. **Limited Control**: We needed more low-level control over the lifecycle processes of our tenants.
+
+4. **Performance Issues**: Long start times due to repeated provider downloads during initialization were slowing us down.
+
+5. **User Experience**: New user onboarding was hampered by lengthy tenant provisioning times, often taking around 3 minutes.
+
+## What We're Deploying
+
+Our new infrastructure setup deploys a variety of resources to support each ZenML Pro tenant. Here's a summary of the key components:
+
+1. **AWS IAM Roles and Policies**
+
+2. **Kubernetes Resources:**
+
+<ul><li>A dedicated namespace for each tenant.</li><li>Role and RoleBinding for the ZenML server.</li><li>Service accounts for the ZenML server and jobs.</li></ul>
+
+3. **Helm Release:** Deploys the ZenML chart with tenant-specific configurations.
+
+4. **Authentication secrets **
+
+This infrastructure ensures each tenant has isolated, secure, and efficiently managed resources within our AWS and Kubernetes environment.
+
+## Embracing Kubernetes with ArgoCD, Terraform, and GitOps
+
+By leveraging Kubernetes with ArgoCD, Terraform's native lifecycle management, and GitOps principles, we've gained:
+
+### Improved Scalability
+
+Our move to Kubernetes significantly enhances scalability:
+
+<ul><li>Dynamically scale Argo CD runners for more concurrent deployments</li><li>Automatically adjust Kubernetes nodes based on demand</li><li>Optimize compute resources with auto-scaling pods</li><li>Efficiently distribute network traffic across the cluster</li></ul>
+
+### GitOps-Driven Configuration Management
+
+Our migration to ArgoCD has allowed us to fully embrace GitOps principles, significantly improving our configuration management and deployment processes:
+
+<ul><li><strong>Version-Controlled Configurations</strong>: All infrastructure configurations are stored in our GitHub repository, providing a single source of truth for our entire system state.</li><li><strong>Automated Synchronization</strong>: ArgoCD Applications are configured to watch specific paths in our GitHub repository. When changes are pushed, ArgoCD automatically detects and applies these updates. We don't use this functionality by intent, to let the ZenML Pro decide on needed changes to the tenants, so the users are never interrupted with unexpected changes being applied.</li><li><strong>Push-Based Updates</strong>: ZenML Pro pushes updated configurations directly to GitHub, triggering the GitOps workflow.</li><li><strong>Reproducible Deployments</strong>: To ensure reproducibility and stability, our ArgoCD Applications are configured to point to exact commit SHAs rather than branches. This practice guarantees that we always know precisely which version of our configuration is deployed.</li><li><strong>Audit Trail</strong>: By using Git as the backend for our configurations, we maintain a comprehensive audit trail of all changes, including who made them and when.</li><li><strong>Easy Rollbacks</strong>: If issues arise, we can quickly roll back to a previous known-good state by reverting commits in our Git repository.</li><li><strong>Infrastructure as Code</strong>: Our GitOps approach extends the "Infrastructure as Code" paradigm, treating our entire infrastructure configuration as a versioned codebase.</li><li><strong>Increased Transparency</strong>: Team members can review proposed changes through pull requests before they're applied to the live environment.</li></ul>
+
+This GitOps-driven approach has significantly enhanced our ability to manage and deploy ZenML Pro tenants efficiently and reliably. It provides us with a clear, auditable, and reproducible process for managing our infrastructure, aligning perfectly with our goals for scalability, control, and performance.
+
+### Faster Provisioning
+
+Optimized processes slash tenant creation times:
+
+<ul><li><strong>Reduced from 3 minutes to under 1 minute 🚀</strong></li><li>Parallel resource creation where possible</li><li>Efficient use of Kubernetes' declarative model</li><li>Streamlined Terraform execution</li><li>Caching of common resources and configurations</li></ul>
+
+### Smoother Onboarding
+
+New users can start in less than a minute:
+
+<ul><li><strong>Faster access to ZenML Pro environment</strong></li><li>Reduced waiting time improves first impression</li><li>Allows for quicker iterative testing and setup</li><li>Enables rapid proof-of-concept deployments</li><li>Increases overall user satisfaction and adoption rates</li></ul>
+
+### Enhanced Data Control
+
+We now manage all states and metadata in-house:
+
+<ul><li>Full ownership of critical data</li><li>Improved security and compliance</li><li>Easier backups and disaster recovery</li><li>Ability to perform advanced analytics on infrastructure data</li><li>Seamless integration with our existing systems</li></ul>
+
+### Granular Process Control
+
+Direct control over the entire tenant lifecycle:
+
+<ul><li>Customize provisioning steps for specific needs</li><li>Implement fine-tuned security policies</li><li>Easily add or modify lifecycle stages</li><li>Rapid troubleshooting and issue resolution</li><li>Flexibility to integrate with other tools and services</li></ul>
+
+## Optimizing Tenant Provisioning Time
+
+In our quest for efficiency, we tackled one of the most time-consuming aspects of our deployment process: the spin-up time for Terraform pods. Initially, these pods took approximately 30-40 seconds to become operational, which was a significant bottleneck in our deployment pipeline. Through careful optimization, we managed to reduce this time to around 5 seconds, marking a substantial improvement in our overall deployment speed.
+
+### Key Optimizations
+
+#### 1. Image Puller DaemonSet
+
+   We implemented an image puller DaemonSet to ensure that the Terraform images are always "warm" and readily available on all nodes in our Kubernetes cluster. This DaemonSet:      - Preloads the Terraform image on every node   - Keeps the image updated to the latest version   - Eliminates the need to pull the image at pod creation time
+
+   By having the Terraform image pre-pulled and cached on each node, we significantly reduced the time required to start new Terraform pods.
+
+#### 2. Custom Terraform Image with Pre-initialized Providers
+
+   We created a specialized Terraform image that includes pre-initialized providers. This custom image:      - Runs `terraform init` during the image build process   - Pre-downloads all necessary providers and modules   - Caches these components within the image
+
+   This approach eliminates the need to download providers on Terraform initialization every time a new pod starts, which was previously a major contributor to the long spin-up times.
+
+### Results and Benefits
+
+The combination of these optimizations yielded impressive results:
+
+- **Reduced Spin-up Time for Terraform Pods**: From 30-40 seconds down to approximately 5 seconds- **Faster Deployments**: Quicker pod initialization leads to faster overall deployments (from 3 minutes to less than a minute)- **Improved Resource Efficiency**: Less time spent waiting for pods to become ready- **Enhanced User Experience**: Faster response times for tenant-related operations
+
+## Looking Ahead
+
+This migration significantly improves our ability to provide a robust, scalable, and efficient ZenML Pro experience. By embracing open-source tools and cloud-native technologies, we're not just solving today's challenges – we're building a foundation for the future of ZenML Pro.
+
+We're excited about the possibilities this new setup brings and are constantly looking for ways to further improve our service. Stay tuned for more updates as we continue to evolve our infrastructure!

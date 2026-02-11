@@ -1,0 +1,96 @@
+---
+title: "Introducing mlstacks: a refreshed way to deploy MLOps infrastructure"
+slug: "introducing-mlstacks-a-refreshed-way-to-deploy-mlops-infrastructure"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "6529498f52e1ef43a2d41a21"
+  exportedAt: "2026-02-11T13:30:32.135Z"
+  source: "live"
+  lastPublished: "2023-10-27T07:24:49.581Z"
+  lastUpdated: "2023-10-27T07:24:49.581Z"
+  createdOn: "2023-10-13T13:43:43.859Z"
+author: "alex-strick-van-linschoten"
+category: "mlstacks"
+tags:
+  - "evergreen"
+  - "mlops"
+  - "mlstacks"
+  - "production"
+  - "tooling"
+  - "zenml"
+date: "2023-09-01T00:00:00.000Z"
+readingTime: 3 Mins Read
+mainImage:
+  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/37243c82/65294ca22f17b3dbe1f52300_mlstacks_blog.jpg"
+seo:
+  title: "Introducing mlstacks: a refreshed way to deploy MLOps infrastructure - ZenML Blog"
+  description: "We released an updated way to deploy MLOps infrastructure, building on the success of the `mlops-stack` repo and its stack recipes. All the new goodies are available via the `mlstacks` Python package."
+  canonical: "https://www.zenml.io/blog/introducing-mlstacks-a-refreshed-way-to-deploy-mlops-infrastructure"
+  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/c5585946/65294ca22f17b3dbe1f52300_mlstacks_blog.jpg"
+  ogTitle: "Introducing mlstacks: a refreshed way to deploy MLOps infrastructure - ZenML Blog"
+  ogDescription: "We released an updated way to deploy MLOps infrastructure, building on the success of the `mlops-stack` repo and its stack recipes. All the new goodies are available via the `mlstacks` Python package."
+---
+
+**Last updated:** September 1, 2023
+
+We're excited to launch [the new mlstacks Python package](https://mlstacks.zenml.io/). MLStacks builds on the work done to create [Stack Recipes](https://github.com/zenml-io/mlstacks/tree/release/0.6.1#readme), allowing you to quickly spin up MLOps infrastructure using Terraform. It is designed to be used with ZenML, but can be used with any MLOps tool or platform.
+
+You can use mlstacks [directly as a Python package](https://pypi.org/project/mlstacks/), deploying infrastructure with the CLI after defining your stacks in YAML. Alternatively, you can let ZenML handle writing the stack and component specification files by [using the ZenML CLI](https://docs.zenml.io/stacks-and-components/stack-deployment) to define which components you want to deploy. We currently support modular MLOps stacks on AWS, GCP and K3D (for local use).
+
+We reworked the previous way of doing things to be more stable and reliable. We even added new features like the ability to get a cost estimate for your MLOps stacks.
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/100abd95/65294917457744f21f063c4b_mlstacks_breakdown.png" alt="" />
+</figure>
+
+We were inspired by [the work done by the FuzzyLabs team on Matcha](https://github.com/fuzzylabs/matcha) as well as by conversations with users of the old mlops-stacks repository / functionality. In that spirit, MLStacks is also designed to be able to work as a standalone deployment option independent of ZenML. All of this is available in the new mlstacks Python package and with [ZenML's latest release (0.44.1)](https://github.com/zenml-io/zenml/releases/tag/0.44.1).
+
+## How can I try it out?
+
+To use mlstacks directly you'll want to create .yaml files to define your stack and the individual components in your stack. (Examples of how to do this can be found in [the dedicated mlstacks documentation site.](https://mlstacks.zenml.io/getting-started/quickstart))
+
+<figure class="w-richtext-figure-type-video w-richtext-align-center" style="padding-bottom:44.97287522603979%" data-rt-type="video" data-rt-align="center" data-rt-max-width="" data-rt-max-height="44.97287522603979%" data-rt-dimensions="1106:829" data-page-url="https://www.loom.com/embed/1a37379a5e1c463d914041b9124afa78?sid=feaf1422-708a-442c-9cd6-a6814858d4d9"><iframe allowFullScreen={true} frameBorder="0" scrolling="no" src="//cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.loom.com%2Fembed%2F1a37379a5e1c463d914041b9124afa78&amp;display_name=Loom&amp;url=https%3A%2F%2Fwww.loom.com%2Fembed%2F1a37379a5e1c463d914041b9124afa78%3Fsid%3Dfeaf1422-708a-442c-9cd6-a6814858d4d9&amp;image=https%3A%2F%2Fcdn.loom.com%2Fsessions%2Fthumbnails%2F1a37379a5e1c463d914041b9124afa78-1693325842350.gif&amp;key=96f1f04c5f4143bcb0f2e68c87d65feb&amp;type=text%2Fhtml&amp;schema=loom" title="MLStacks used on its own"></iframe></figure>
+
+Using mlstacks with ZenML is easier as you aren't required to define your stacks and components in .yaml files; ZenML handles all of that for you. As a quick example, you can run:
+
+```bash
+zenml stack deploy -p gcp -a -n
+my_mlstacks_stack -r us-east1 -t env=dev -x 
+bucket_name=my-new-bucket -x project_id=zenml
+```
+
+This would deploy a stack to GCP that has an artifact store created for you in the us-east1 region. It will also import that stack (with the name my_mlstacks_stack) into ZenML ready for you to use.
+
+<figure class="w-richtext-figure-type-video w-richtext-align-center" style="padding-bottom:44.97287522603979%" data-rt-type="video" data-rt-align="center" data-rt-max-width="" data-rt-max-height="44.97287522603979%" data-rt-dimensions="1106:829" data-page-url="https://www.loom.com/embed/cf73550229ce488eba6c071b7c61b1f4?sid=2d428b25-8e8d-4711-8c24-a6c6c1292b54"><iframe allowFullScreen={true} frameBorder="0" scrolling="no" src="//cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.loom.com%2Fembed%2Fcf73550229ce488eba6c071b7c61b1f4&amp;display_name=Loom&amp;url=https%3A%2F%2Fwww.loom.com%2Fembed%2Fcf73550229ce488eba6c071b7c61b1f4%3Fsid%3D2d428b25-8e8d-4711-8c24-a6c6c1292b54&amp;image=https%3A%2F%2Fcdn.loom.com%2Fsessions%2Fthumbnails%2Fcf73550229ce488eba6c071b7c61b1f4-1693326585436.gif&amp;key=96f1f04c5f4143bcb0f2e68c87d65feb&amp;type=text%2Fhtml&amp;schema=loom" title=""></iframe></figure>
+
+Most of the examples shown here are fairly simple as they allow you to try things out without needing to wait for too long or to incur significant cloud costs, but you're encouraged to try it out for stacks that suit your needs!
+
+## How it works
+
+<figure class="w-richtext-figure-type-video w-richtext-align-center" style="padding-bottom:45%" data-rt-type="video" data-rt-align="center" data-rt-max-width="" data-rt-max-height="45%" data-rt-dimensions="800:600" data-page-url="https://www.loom.com/embed/4fd5c428728b4f729234cb4c96f8d5a5?sid=cf73a6c1-b099-4723-8e19-31ff3f09625f"><iframe allowFullScreen={true} frameBorder="0" scrolling="no" src="//cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.loom.com%2Fembed%2F4fd5c428728b4f729234cb4c96f8d5a5&amp;display_name=Loom&amp;url=https%3A%2F%2Fwww.loom.com%2Fembed%2F4fd5c428728b4f729234cb4c96f8d5a5%3Fsid%3Dcf73a6c1-b099-4723-8e19-31ff3f09625f&amp;image=https%3A%2F%2Fcdn.loom.com%2Fsessions%2Fthumbnails%2F4fd5c428728b4f729234cb4c96f8d5a5-1693326960850.gif&amp;key=96f1f04c5f4143bcb0f2e68c87d65feb&amp;type=text%2Fhtml&amp;schema=loom" title="How ZenML + MLStacks work"></iframe></figure>
+
+MLStacks works by taking stack and component specification files and parsing them into Terraform files which are in turn deployed to your cloud (or local, in the case of k3d) infrastructure. Our Python package will validate your specification files to ensure that you're not using invalid or unsupported combinations of components.
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/5dc0b37e/652949178546cb4cca7a88c3_mlstacks.jpeg" alt="" />
+</figure>
+
+If you find something that we don't yet support but that you need for your work, we encourage you to contribute to the project!
+
+When using mlstacks through ZenML, you don't have to do the work of writing the stack specification .yaml files. You simply need to compose the CLI command that specifies which components you need in your stack.
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/4a8f6f43/65294917e659b133a3db73e0_zenml-with-mlstacks.jpeg" alt="" />
+</figure>
+
+We're working to provide other (easier) ways to deploy your infrastructure using ZenML but for now CLI deployments offer all the flexibility of the mlstacks package without the need to write your own stack and component specifications!
+
+## Try it out!
+
+We encourage you to try out mlstacks and to deploy MLOps stacks, either through ZenML or by writing your own stack specifications. Full guides for both options are available in our documentation:
+
+<ul><li>To spin up infrastructure using ZenML, <a href="https://docs.zenml.io/stacks-and-components/stack-deployment/deploy-a-stack-component">start with our introduction</a> to deploying individual stack components via the CLI</li><li>To try out mlstacks directly and see how easy it is to specify your stacks using the .yaml specification files, <a href="https://mlstacks.zenml.io/getting-started/quickstart">check out one of our QuickStart guides</a> appropriate to your favorite cloud platform (or use the k3d guide to test deployment locally)</li></ul>
+
+We'd love to hear your feedback, good and bad! Please [let us know](https://zenml.io/slack-invite) how you got on with mlstacks [in Slack](https://zenml.io/slack-invite). Happy deploying!
+

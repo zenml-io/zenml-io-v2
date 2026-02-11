@@ -1,0 +1,21 @@
+---
+title: "Zuri Negrín"
+slug: "zuri-negrin"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "652f91e9461e66d1b9b5f213"
+  exportedAt: "2026-02-11T13:30:32.135Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-22T13:07:24.922Z"
+  createdOn: "2023-10-18T08:06:01.343Z"
+position: "Founding Product Designer"
+photo:
+  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/c06e7c2a/652f91e606daec38e93ef1c4_zuri.jpeg"
+email: "zuri.ext@zenml.io"
+linkedin: "https://www.linkedin.com/in/zurinegrin/"
+order: 12
+---
+
+<ul><li>Design system fanatic</li><li>Perpetual learner and researcher, soaking up knowledge daily</li><li>Roller coaster adrenaline enthusiast</li></ul>

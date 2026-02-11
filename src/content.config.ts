@@ -93,11 +93,11 @@ function getContentDirAbs(): string {
 }
 
 /**
- * Load slug Set from a collection directory by reading .mdx filenames
+ * Load slug Set from a collection directory by reading .md filenames
  * Fails fast if directory doesn't exist (better diagnostics than empty set)
  *
  * @param collectionDirName - Directory name under src/content/
- * @returns Set of slugs (filenames without .mdx extension)
+ * @returns Set of slugs (filenames without .md extension)
  */
 function loadSlugSetFromCollectionDir(collectionDirName: string): Set<string> {
   const contentDir = getContentDirAbs();
@@ -109,8 +109,8 @@ function loadSlugSetFromCollectionDir(collectionDirName: string): Set<string> {
 
   return new Set(
     readdirSync(absDir)
-      .filter((f) => extname(f) === '.mdx')
-      .map((f) => basename(f, '.mdx'))
+      .filter((f) => extname(f) === '.md')
+      .map((f) => basename(f, '.md'))
   );
 }
 
@@ -492,73 +492,73 @@ const oldProjectSchema = z.object({
 export const collections = {
   // Reference collections (Phase 2D)
   authors: defineCollection({
-    loader: glob({ pattern: '**/*.mdx', base: './src/content/authors' }),
+    loader: glob({ pattern: '**/*.md', base: './src/content/authors' }),
     schema: authorSchema,
   }),
   categories: defineCollection({
-    loader: glob({ pattern: '**/*.mdx', base: './src/content/categories' }),
+    loader: glob({ pattern: '**/*.md', base: './src/content/categories' }),
     schema: categorySchema,
   }),
   tags: defineCollection({
-    loader: glob({ pattern: '**/*.mdx', base: './src/content/tags' }),
+    loader: glob({ pattern: '**/*.md', base: './src/content/tags' }),
     schema: tagSchema,
   }),
   'llmops-tags': defineCollection({
-    loader: glob({ pattern: '**/*.mdx', base: './src/content/llmops-tags' }),
+    loader: glob({ pattern: '**/*.md', base: './src/content/llmops-tags' }),
     schema: llmopsTagSchema,
   }),
   'industry-tags': defineCollection({
-    loader: glob({ pattern: '**/*.mdx', base: './src/content/industry-tags' }),
+    loader: glob({ pattern: '**/*.md', base: './src/content/industry-tags' }),
     schema: industryTagSchema,
   }),
   'project-tags': defineCollection({
-    loader: glob({ pattern: '**/*.mdx', base: './src/content/project-tags' }),
+    loader: glob({ pattern: '**/*.md', base: './src/content/project-tags' }),
     schema: projectTagSchema,
   }),
   'product-categories': defineCollection({
-    loader: glob({ pattern: '**/*.mdx', base: './src/content/product-categories' }),
+    loader: glob({ pattern: '**/*.md', base: './src/content/product-categories' }),
     schema: productCategorySchema,
   }),
   'integration-types': defineCollection({
-    loader: glob({ pattern: '**/*.mdx', base: './src/content/integration-types' }),
+    loader: glob({ pattern: '**/*.md', base: './src/content/integration-types' }),
     schema: integrationTypeSchema,
   }),
   advantages: defineCollection({
-    loader: glob({ pattern: '**/*.mdx', base: './src/content/advantages' }),
+    loader: glob({ pattern: '**/*.md', base: './src/content/advantages' }),
     schema: advantageSchema,
   }),
   quotes: defineCollection({
-    loader: glob({ pattern: '**/*.mdx', base: './src/content/quotes' }),
+    loader: glob({ pattern: '**/*.md', base: './src/content/quotes' }),
     schema: quoteSchema,
   }),
 
   // Main collection loaders (Phase 2F)
   blog: defineCollection({
-    loader: glob({ pattern: '**/*.mdx', base: './src/content/blog' }),
+    loader: glob({ pattern: '**/*.md', base: './src/content/blog' }),
     schema: blogSchema,
   }),
   integrations: defineCollection({
-    loader: glob({ pattern: '**/*.mdx', base: './src/content/integrations' }),
+    loader: glob({ pattern: '**/*.md', base: './src/content/integrations' }),
     schema: integrationSchema,
   }),
   'llmops-database': defineCollection({
-    loader: glob({ pattern: '**/*.mdx', base: './src/content/llmops-database' }),
+    loader: glob({ pattern: '**/*.md', base: './src/content/llmops-database' }),
     schema: llmopsSchema,
   }),
   compare: defineCollection({
-    loader: glob({ pattern: '**/*.mdx', base: './src/content/compare' }),
+    loader: glob({ pattern: '**/*.md', base: './src/content/compare' }),
     schema: compareSchema,
   }),
   team: defineCollection({
-    loader: glob({ pattern: '**/*.mdx', base: './src/content/team' }),
+    loader: glob({ pattern: '**/*.md', base: './src/content/team' }),
     schema: teamSchema,
   }),
   projects: defineCollection({
-    loader: glob({ pattern: '**/*.mdx', base: './src/content/projects' }),
+    loader: glob({ pattern: '**/*.md', base: './src/content/projects' }),
     schema: projectSchema,
   }),
   'old-projects': defineCollection({
-    loader: glob({ pattern: '**/*.mdx', base: './src/content/old-projects' }),
+    loader: glob({ pattern: '**/*.md', base: './src/content/old-projects' }),
     schema: oldProjectSchema,
   }),
 };

@@ -1,0 +1,122 @@
+---
+title: "LLM-Powered Multi-Tool Architecture for Oil & Gas Data Exploration"
+slug: "llm-powered-multi-tool-architecture-for-oil-gas-data-exploration"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f3bb5793b499b152dc627"
+  exportedAt: "2026-02-11T13:30:32.135Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:42:51.313Z"
+  createdOn: "2024-11-21T13:55:01.599Z"
+llmopsTags:
+  - "amazon-aws"
+  - "anthropic"
+  - "data-analysis"
+  - "data-integration"
+  - "databases"
+  - "error-handling"
+  - "guardrails"
+  - "multi-agent-systems"
+  - "prompt-engineering"
+  - "rag"
+  - "reliability"
+  - "scalability"
+  - "security"
+  - "semantic-search"
+  - "serverless"
+  - "system-prompts"
+  - "unstructured-data"
+industryTags: "energy"
+company: "DXC"
+summary: "DXC developed an AI assistant to accelerate oil and gas data exploration by integrating multiple specialized LLM-powered tools. The solution uses a router to direct queries to specialized tools optimized for different data types including text, tables, and industry-specific formats like LAS files. Built using Anthropic's Claude on Amazon Bedrock, the system includes conversational capabilities and semantic search to help users efficiently analyze complex datasets, reducing exploration time from hours to minutes."
+link: "https://aws.amazon.com/blogs/machine-learning/dxc-transforms-data-exploration-for-their-oil-and-gas-customers-with-llm-powered-tools?tag=soumet-20"
+year: 2024
+seo:
+  title: "DXC: LLM-Powered Multi-Tool Architecture for Oil & Gas Data Exploration - ZenML LLMOps Database"
+  description: "DXC developed an AI assistant to accelerate oil and gas data exploration by integrating multiple specialized LLM-powered tools. The solution uses a router to direct queries to specialized tools optimized for different data types including text, tables, and industry-specific formats like LAS files. Built using Anthropic's Claude on Amazon Bedrock, the system includes conversational capabilities and semantic search to help users efficiently analyze complex datasets, reducing exploration time from hours to minutes."
+  canonical: "https://www.zenml.io/llmops-database/llm-powered-multi-tool-architecture-for-oil-gas-data-exploration"
+  ogTitle: "DXC: LLM-Powered Multi-Tool Architecture for Oil & Gas Data Exploration - ZenML LLMOps Database"
+  ogDescription: "DXC developed an AI assistant to accelerate oil and gas data exploration by integrating multiple specialized LLM-powered tools. The solution uses a router to direct queries to specialized tools optimized for different data types including text, tables, and industry-specific formats like LAS files. Built using Anthropic's Claude on Amazon Bedrock, the system includes conversational capabilities and semantic search to help users efficiently analyze complex datasets, reducing exploration time from hours to minutes."
+---
+
+## Overview
+
+DXC Technology, an IT services company with over 130,000 employees serving 6,000 customers in more than 70 countries, partnered with AWS to develop an AI assistant for data exploration in the oil and gas industry. The energy sector faces unique challenges with data scattered across remote sites, offshore drilling locations, branch offices, and corporate offices. This data exists in various formats ranging from spreadsheets to complex datasets like satellite images, GIS data, and industry-specific formats like Log ASCII Standard (LAS) files. The solution aims to accelerate the discovery of new drilling sites, where reducing even a single day in the time to first oil can impact operational costs and revenue by millions of dollars.
+
+The case study demonstrates a comprehensive LLMOps architecture that leverages Anthropic's Claude models on Amazon Bedrock to build a multi-tool AI assistant capable of handling diverse query types through intelligent routing, specialized processing tools, and conversational context management.
+
+## Architecture and Model Selection
+
+The solution is built on Amazon Bedrock, a fully managed service that provides access to foundation models from multiple providers through a single API. A key advantage highlighted in the case study is the ability to seamlessly switch between different Claude model variants based on task complexity. The team uses smaller, faster models (like Claude Haiku) for basic tasks such as routing, while reserving more powerful models (like Claude v2.1) for complex processes such as code generation. This tiered approach to model selection represents a practical LLMOps strategy for balancing cost, latency, and capability.
+
+Amazon S3 serves as the primary data storage layer, with data indexed by relevant tools during solution deployment. The system uses signed S3 URLs to provide secure access to data sources in the user interface.
+
+## LLM-Powered Router
+
+The router is a critical component that analyzes incoming user queries and directs them to the appropriate specialized tool. The routing prompt demonstrates several prompt engineering best practices for production systems:
+
+The prompt establishes domain context by explaining industry-specific concepts such as API well numbers and LAS file formats. It defines clear category boundaries with descriptions for each routing destination: filename, production, las, directional_survey, knowledge_base, and unrelated queries. The prompt includes explicit guardrails to dismiss queries not pertaining to oil and gas data. It uses XML tags for structured output parsing, allowing the system to extract both the routing decision and the reasoning behind it.
+
+The router uses Claude v2.1 and produces structured XML output with `&lt;reason>` and `&lt;labels>` tags, enabling reliable parsing of the routing decision. The prompt also handles ambiguous cases by allowing comma-separated labels when multiple categories might be relevant.
+
+## Specialized LLM-Powered Tools
+
+### File Search Tool
+
+The file search capability is divided into two distinct approaches:
+
+**File Name-Based Search** operates through a three-step process. First, an LLM call extracts file extensions and keywords from the user query using structured XML output. Then, simple string matching retrieves files matching the extracted criteria from a pre-crawled file list. Finally, another LLM call confirms that retrieved files match the user query and provides a final answer with structured output including success status, resource locations, and the answer text.
+
+The implementation includes controls for token limits to ensure retrieved context doesn't exceed the context window and that responses aren't truncated when many files match a query.
+
+**Semantic Content-Based Search** leverages Amazon Bedrock Knowledge Bases, a managed RAG (Retrieval-Augmented Generation) service. The team deliberately chose to use the retrieve API rather than the retrieve_and_reply API, maintaining control over the final prompt construction and output formatting. This approach trades some convenience for greater flexibility in prompt engineering and consistent output structure.
+
+### Tables Tool
+
+The tables tool represents a sophisticated approach to structured data analysis through code generation. Rather than using off-the-shelf solutions like LangChain's Pandas agent, the team built a custom agent to address specific limitations:
+
+Traditional code-writing agents generate Python code, execute it, and pass results back to the LLM for final response generation. This introduces latency and hallucination risk, particularly when returning large filtered DataFrames. The custom agent returns code execution results directly to the user without an additional LLM synthesis step, reducing both latency and the potential for data corruption in the output.
+
+The agent includes self-correction capabilities when generated code produces errors. It explicitly prompts the LLM to store final results in a variable called `result` for consistent frontend integration. The implementation uses XML tags (`&lt;scratchpad>`, `<code>`, `&lt;answer>`) to structure the LLM's reasoning, code generation, and explanation.
+
+The tables tool is designed as a generic component that can be instantiated for different CSV or Excel files with optional table descriptions and table-specific instructions. This modular design means the production data tool and directional survey tool are essentially the same underlying tool configured with different data sources.
+
+### LAS Tool
+
+The LAS tool handles Log ASCII Standard files, an industry-specific format containing well log data essential for petroleum engineering analysis. The implementation uses the lasio Python library and demonstrates how to enable LLMs to work with specialized, less common libraries.
+
+Since lasio isn't a widely-known library, the prompt includes detailed usage instructions showing how to load files, convert to DataFrames, and extract measurements. The tool uses LangChain's XML agent with the Python REPL tool, allowing iterative code execution and self-correction.
+
+## Conversational Capabilities
+
+The conversational layer adds query rewriting to enable context-aware follow-up questions. This is implemented as a preprocessing step before the router, taking the user query and conversation history to produce either a direct answer or a rewritten query with appropriate context.
+
+The query rewriting prompt gives the LLM two options: answer directly for translation or summarization tasks that don't require tool use, or rewrite the query with context for forwarding to the router. The prompt uses `&lt;answer>` tags for direct responses and `&lt;new_query>` tags for forwarded queries, with `&lt;thinking>` tags to encourage explicit reasoning about which path to take.
+
+Few-shot examples in the prompt demonstrate expected behavior for various scenarios: translation requests, summarization, unrelated questions, and context-dependent follow-ups. The case study notes these examples were "instrumental to the success of query rewriting."
+
+The conversational capability adds approximately one second of latency and could be toggled off, but significantly enhances user experience. The team considered combining query rewriting and routing into a single prompt but found that LLMs perform better when handling tasks separately rather than managing multiple complex instructions simultaneously.
+
+## Production Considerations and Trade-offs
+
+Several LLMOps best practices emerge from this case study:
+
+**Modular Architecture**: The separation of concerns between routing, specialized tools, and conversational context management allows for independent optimization and testing of each component. This also enables the use of different model sizes and types for different tasks based on complexity requirements.
+
+**Structured Output Parsing**: Consistent use of XML tags throughout the system enables reliable parsing of LLM outputs. This approach is specifically noted as working well with Anthropic's Claude models.
+
+**Guardrails**: The routing prompt explicitly handles out-of-domain queries, ensuring the system gracefully declines non-oil-and-gas questions rather than attempting to answer them.
+
+**Token Management**: The file search tool implements controls to prevent context window overflow and response truncation, addressing common production issues with retrieval-augmented systems.
+
+**Direct Code Execution**: The custom tables agent bypasses the traditional LLM-synthesized response pattern, reducing both latency and hallucination risk when returning structured data.
+
+**Prompt Engineering for Specialized Libraries**: The LAS tool demonstrates how to enable LLMs to work with domain-specific, less common libraries through detailed in-prompt documentation.
+
+## Results and Impact
+
+The case study claims that data exploration tasks that previously took hours can now be accomplished in minutes, "dramatically reducing time to first oil" for DXC's customers. While specific metrics are not provided, the architecture demonstrates a practical approach to building specialized AI assistants for complex, multi-modal data exploration in regulated industries.
+
+The solution showcases how LLMs can be combined with specialized tools and conversational interfaces to transform domain-specific workflows. The modular design allows for extension to additional tools such as SQL database queries or analysis of other industry-specific formats, and the team suggests the dataset selection process could itself be integrated into the tables tool to reduce preprocessing requirements during onboarding.

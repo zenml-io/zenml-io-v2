@@ -1,0 +1,131 @@
+---
+title: "Improving Error Handling for AI Agents in Production"
+slug: "improving-error-handling-for-ai-agents-in-production"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "67cb0e34bf36e484785dc12d"
+  exportedAt: "2026-02-11T13:30:32.135Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:02:30.388Z"
+  createdOn: "2025-03-07T15:18:12.232Z"
+llmopsTags:
+  - "code-interpretation"
+  - "structured-output"
+  - "error-handling"
+  - "prompt-engineering"
+  - "agent-based"
+  - "human-in-the-loop"
+  - "fastapi"
+  - "documentation"
+  - "reliability"
+  - "anthropic"
+  - "meta"
+industryTags: "tech"
+company: "fewsats"
+summary: "A case study exploring how fewsats improved their domain management AI agents by enhancing error handling in their HTTP SDK. They discovered that while different LLM models (Claude, Llama 3, Replit Agent) could interact with their domain management API, the agents often failed due to incomplete error information. By modifying their SDK to surface complete error details instead of just status codes, they enabled the AI agents to self-correct and handle API errors more effectively, demonstrating the importance of error visibility in production LLM systems."
+link: "https://medium.com/@pol.avec/handling-http-errors-in-ai-agents-lessons-from-the-field-4d22d991a269"
+year: 2025
+seo:
+  title: "fewsats: Improving Error Handling for AI Agents in Production - ZenML LLMOps Database"
+  description: "A case study exploring how fewsats improved their domain management AI agents by enhancing error handling in their HTTP SDK. They discovered that while different LLM models (Claude, Llama 3, Replit Agent) could interact with their domain management API, the agents often failed due to incomplete error information. By modifying their SDK to surface complete error details instead of just status codes, they enabled the AI agents to self-correct and handle API errors more effectively, demonstrating the importance of error visibility in production LLM systems."
+  canonical: "https://www.zenml.io/llmops-database/improving-error-handling-for-ai-agents-in-production"
+  ogTitle: "fewsats: Improving Error Handling for AI Agents in Production - ZenML LLMOps Database"
+  ogDescription: "A case study exploring how fewsats improved their domain management AI agents by enhancing error handling in their HTTP SDK. They discovered that while different LLM models (Claude, Llama 3, Replit Agent) could interact with their domain management API, the agents often failed due to incomplete error information. By modifying their SDK to surface complete error details instead of just status codes, they enabled the AI agents to self-correct and handle API errors more effectively, demonstrating the importance of error visibility in production LLM systems."
+---
+
+## Overview
+
+This case study from fewsats details a practical lesson learned while building AI agents that make API calls to their Sherlock Domains Python SDK, a tool for managing domain names and DNS records. The core insight is deceptively simple but has significant implications for LLMOps: AI agents can only self-correct if they can see the complete error information, including HTTP response bodies. The team discovered this while integrating their SDK with various LLM-powered agents including Claude (via Claudette wrapper), Llama 3 running locally, and the Replit Agent during a hackathon collaboration.
+
+## The Problem: Blind Agents in Error Loops
+
+The fundamental issue arose from a common pattern in HTTP libraries: using `response.raise_for_status()` which raises exceptions based solely on status codes while discarding the valuable error details contained in response bodies. When an API returned a 422 Unprocessable Entity error, the AI agent would only see "HTTP Error 422: Unprocessable Entity" rather than the actual response body that contained specific field-level validation errors.
+
+In the specific case encountered, the Replit Agent consistently tried to set contact information using a single `name` field instead of the required `first_name` and `last_name` fields. Despite documentation clearly showing the correct format, the agent persisted in this error. The actual API response contained detailed information showing exactly which fields were missing:
+
+```json
+{
+  "detail":[
+    {"type":"missing","loc":["body","data","first_name"],"msg":"Field required"},
+    {"type":"missing","loc":["body","data","last_name"],"msg":"Field required"}
+  ]
+}
+```
+
+Without access to this information, the agent would enter what the authors describe as a "doom loop"—trying random variations without ever addressing the actual problem. The behavior was described as "quite pitiful to see." The team initially attempted to fix this by improving prompts and adding more detailed documentation to the `llms.txt` file, but this was addressing the wrong problem.
+
+## The Solution: Surfacing Complete Error Details
+
+The fix was straightforward but required a shift in thinking about how SDKs should handle errors when AI agents are the consumers. Instead of the typical pattern:
+
+```python
+response = requests.post(url, json=payload)
+response.raise_for_status()  # Discards response body on error
+data = response.json()
+```
+
+The team modified their approach to preserve error details:
+
+```python
+response = requests.post(url, json=payload)
+try: 
+    response.raise_for_status()
+except HTTPError as e:
+    raise CustomHTTPError(str(e), payload=r.text)
+return response.json()
+```
+
+Once the SDK surfaced complete error details, the agent immediately adapted—correctly splitting the name into first and last name components and proceeding with the operation. The agent was capable all along; it simply needed access to the full information.
+
+## Observations Across Different Models and Platforms
+
+The case study provides interesting observations about how different AI agents handled the SDK integration:
+
+- **Claudette (Claude wrapper)**: Everything worked "surprisingly well" initially. The model could search for domains, understand response formats, and handle purchase flows with minimal documentation.
+
+- **Llama 3 (local)**: Struggled more with chaining multiple API calls. For example, when buying a domain requires providing an ID returned by a search, Llama would frequently get this wrong. Adding more documentation helped but reliability remained an issue.
+
+- **Replit Agent**: During a hackathon environment, the team found themselves caught in a "classic debugging loop" of tweaking the `llms.txt` file without addressing the root cause. The pressure of the hackathon environment actually obscured the simpler solution of ensuring complete error visibility.
+
+This variation across models highlights an important LLMOps consideration: SDK and API design choices that seem minor can have dramatically different impacts depending on the LLM being used, with smaller or locally-run models being more sensitive to information availability.
+
+## The Diversity of API Error Formats
+
+The article catalogs various ways APIs communicate errors, each presenting challenges for AI agent integration:
+
+- **Standard REST Error Responses**: Non-200 status codes with JSON bodies containing structured error details
+- **Minimalist Error Responses**: Status codes with minimal text explanations
+- **Custom Error Formats**: Each API may structure errors differently with varying field names and hierarchies
+- **Success Status with Error Content**: Some APIs return 200 OK even for errors, embedding error information in the response body
+- **GraphQL Errors**: Typically return 200 OK with errors in a dedicated `errors` array in the response body
+
+The GraphQL case is particularly interesting because traditional status-code-based error checking will completely miss these errors. This diversity means there's no universal solution—each integration requires understanding how the specific API communicates errors.
+
+## Broader LLMOps Implications
+
+The case study references Hamel Husain's article "What we learned from a year of building with LLMs" to emphasize that monitoring LLM inputs and outputs daily is crucial. For AI agents, this monitoring must extend to the intermediate steps—especially error responses from API calls that agents handle internally. This is a key observability consideration for production LLM systems.
+
+The authors identify what they call "The Two-Audience Problem": modern SDKs must serve both human developers and AI agents simultaneously, despite their different needs. Traditional SDKs are designed for humans who expect structured data, exception-based error handling, abstractions that hide HTTP details, and type hints. AI agents, conversely, might work better with plain text descriptions, simple success/failure flags with detailed messages, and verbose information that would be tedious for humans to parse.
+
+The article speculates that an AI agent might be perfectly content receiving: "HTTP Error 422: Unprocessable Entity. The server responded with: &#123;'detail':[&#123;'type':'missing','loc':['body','data','first_name'],'msg':'Field required'&#125;...]&#125;" as a simple text string, and the LLM would "likely understand exactly what to do."
+
+## Why Plain Text Isn't the Full Solution Yet
+
+Despite the potential for text-only interfaces, the authors note several reasons this isn't optimal today:
+
+- Human developers still need to build and test systems before AI agents use them
+- Many projects involve hybrid workflows with collaboration between humans and AI
+- When things go wrong, humans need to debug and understand what happened
+- Maintaining consistent interfaces helps both humans and AI agents adapt to SDK evolution
+
+The current solution—enhanced exceptions with detailed payloads—represents a pragmatic middle ground for this transitional period where systems must serve both audiences.
+
+## Key Takeaways for LLMOps Practitioners
+
+The central insight is that "your AI agent can only be as good as the information it sees." By ensuring complete error visibility, practitioners can unlock the self-healing capabilities of AI agent systems, allowing them to adapt and overcome challenges without constant human intervention. Sometimes the most powerful enhancement isn't a more sophisticated model or better prompting—it's simply ensuring the agent has access to the full picture, especially when things go wrong.
+
+This has direct implications for anyone building production systems where LLMs interact with APIs: error handling code that was perfectly adequate for human developers may create significant blind spots for AI agents. Reviewing and potentially refactoring error handling across an SDK or integration layer is a relatively low-effort change that can dramatically improve agent reliability.
+
+The case study also highlights the value of testing AI agent integrations across multiple models and platforms, as capability differences can expose issues that might not be apparent with more capable models. What works smoothly with Claude may fail with Llama 3, revealing underlying design issues that affect reliability across the board.

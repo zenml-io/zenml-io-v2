@@ -1,0 +1,167 @@
+---
+title: "Optimizing RAG Systems: Lessons from Production"
+slug: "optimizing-rag-systems-lessons-from-production"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f3abb061209badc48e6a8"
+  exportedAt: "2026-02-11T13:30:32.135Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:43:58.975Z"
+  createdOn: "2024-11-21T13:50:51.076Z"
+llmopsTags:
+  - "amazon-aws"
+  - "chunking"
+  - "elasticsearch"
+  - "embeddings"
+  - "error-handling"
+  - "monitoring"
+  - "prompt-engineering"
+  - "rag"
+  - "reliability"
+  - "scalability"
+  - "semantic-search"
+  - "serverless"
+  - "structured-output"
+  - "unstructured-data"
+industryTags: "tech"
+company: "AWS GenAIIC"
+summary: "AWS GenAIIC shares comprehensive lessons learned from implementing Retrieval-Augmented Generation (RAG) systems across multiple industries. The case study covers key challenges in RAG implementation and provides detailed solutions for improving retrieval accuracy, managing context, and ensuring response reliability. Solutions include hybrid search techniques, metadata filtering, query rewriting, and advanced prompting strategies to reduce hallucinations."
+link: "https://aws.amazon.com/blogs/machine-learning/from-rag-to-fabric-lessons-learned-from-building-real-world-rags-at-genaiic-part-1?tag=soumet-20"
+year: 2024
+seo:
+  title: "AWS GenAIIC: Optimizing RAG Systems: Lessons from Production - ZenML LLMOps Database"
+  description: "AWS GenAIIC shares comprehensive lessons learned from implementing Retrieval-Augmented Generation (RAG) systems across multiple industries. The case study covers key challenges in RAG implementation and provides detailed solutions for improving retrieval accuracy, managing context, and ensuring response reliability. Solutions include hybrid search techniques, metadata filtering, query rewriting, and advanced prompting strategies to reduce hallucinations."
+  canonical: "https://www.zenml.io/llmops-database/optimizing-rag-systems-lessons-from-production"
+  ogTitle: "AWS GenAIIC: Optimizing RAG Systems: Lessons from Production - ZenML LLMOps Database"
+  ogDescription: "AWS GenAIIC shares comprehensive lessons learned from implementing Retrieval-Augmented Generation (RAG) systems across multiple industries. The case study covers key challenges in RAG implementation and provides detailed solutions for improving retrieval accuracy, managing context, and ensuring response reliability. Solutions include hybrid search techniques, metadata filtering, query rewriting, and advanced prompting strategies to reduce hallucinations."
+---
+
+## Overview
+
+This case study comes from the AWS Generative AI Innovation Center (GenAIIC), a team of AWS science and strategy experts who help customers build proofs of concept using generative AI. Since its inception in May 2023, the team has observed significant demand for chatbots capable of extracting information and generating insights from large, heterogeneous knowledge bases. This document represents a distillation of lessons learned from building RAG solutions across diverse industries, making it particularly valuable for understanding real-world LLMOps challenges.
+
+The case study is notably comprehensive and technically detailed, covering the entire RAG pipeline from document ingestion to answer generation, with particular emphasis on production-ready optimization techniques. While the content originates from AWS and naturally promotes AWS services like Amazon Bedrock, the techniques and insights are broadly applicable and represent genuine field experience rather than pure marketing material.
+
+## RAG Architecture Fundamentals
+
+The document provides a clear breakdown of the RAG (Retrieval-Augmented Generation) architecture into three core components: retrieval, augmentation, and generation. The retrieval component takes a user question and fetches relevant information from a knowledge base (typically an OpenSearch index). The augmentation phase adds this retrieved information to the FM (Foundation Model) prompt alongside the user query. Finally, the generation step produces an answer using the augmented context.
+
+A key insight emphasized throughout is that "a RAG is only as good as its retriever." The team found that when RAG systems perform poorly, the retrieval component is almost always the culprit. This observation drives much of the optimization focus in the document.
+
+The document describes two main retrieval failure modes encountered in production:
+
+- **Missing relevant information**: When the relevant content isn't present in retrieved documents, the FM may hallucinate or use its own training knowledge, which may be outdated or incorrect.
+- **Information overload**: When too much irrelevant data is retrieved, the FM can become confused and mix up multiple sources, producing incorrect answers.
+
+## Document Ingestion and Vector Store Implementation
+
+The ingestion pipeline involves chunking documents into manageable pieces and transforming each chunk into high-dimensional vectors using embedding models like Amazon Titan. These embeddings have the property that semantically similar text chunks have vectors that are close in cosine or Euclidean distance.
+
+The implementation uses OpenSearch Serverless as the vector store, with custom chunking and ingestion functions. The document emphasizes that vectors must be stored alongside their corresponding text chunks so that when relevant vectors are identified during search, the actual text can be retrieved and passed to the FM prompt.
+
+An important operational consideration is consistency between ingestion and retrieval: the same embedding model must be used at both ingestion time and search time for semantic search to work correctly.
+
+## Evaluation and Monitoring
+
+The document acknowledges that evaluating RAG systems is "still an open problem," which reflects a genuine challenge in the LLMOps space. The evaluation framework described includes:
+
+**Retrieval Metrics:**
+- Top-k accuracy: Whether at least one relevant document appears in the top k results
+- Mean Reciprocal Rank (MRR): Considers the ranking position of the first relevant document
+- Recall: Ability to retrieve relevant documents from the corpus
+- Precision: Ability to avoid retrieving irrelevant documents
+
+The document notes that if documents are chunked, metrics must be computed at the chunk level, requiring ground truth in the form of question and relevant chunk pairs.
+
+**Generation Evaluation:**
+The team describes two main approaches for evaluating generated responses:
+- Subject matter expert evaluation (highest reliability but doesn't scale)
+- FM-based evaluation (LLM-as-a-judge), which can use either human-created ground truth or FM-generated question-answer pairs
+
+The recommendation is to use FM-based evaluation for rapid iteration but rely on human evaluation for final assessment before deployment. This balanced approach acknowledges both the practical need for automated evaluation and the limitations of current LLM-based judging.
+
+Several evaluation frameworks are mentioned: Ragas, LlamaIndex, and RefChecker (an Amazon Science library for fine-grained hallucination detection).
+
+## Retrieval Optimization Techniques
+
+### Hybrid Search
+
+The document advocates for combining vector search with keyword search to handle domain-specific terms, abbreviations, and product names that embedding models may struggle with. The implementation combines k-nearest neighbors (k-NN) queries with keyword matching in OpenSearch, with adjustable weights for semantic versus keyword components. The example code shows how to structure these queries with `function_score` clauses.
+
+A concrete use case described involves a manufacturer's product specification chatbot, where queries like "What is the viscosity of product XYZ?" need to match both the product name (via keywords) and the semantic concept (via embeddings).
+
+### Metadata Enhancement and Filtering
+
+When product specifications span multiple pages and the product name appears only in the header, chunks without the product name become difficult to retrieve. The solution is to prepend document metadata (like title or product name) to each chunk during ingestion, improving both keyword and semantic matching.
+
+For more structured filtering, the document describes using OpenSearch metadata fields with `match_phrase` clauses to ensure exact product name matching. This requires extracting metadata at ingestion time, potentially using an FM to extract structured information from unstructured documents.
+
+### Query Rewriting
+
+Query rewriting uses an FM (specifically recommending smaller models like Claude Haiku for latency reasons) to transform user queries into better search queries. The technique can:
+- Remove formatting instructions irrelevant to search
+- Extract keywords for hybrid search
+- Extract entity names for metadata filtering
+
+The example shows a prompt that outputs structured JSON with `rewritten_query`, `keywords`, and `product_name` fields.
+
+### Small-to-Large Chunk Retrieval
+
+This technique addresses the context fragmentation problem where relevant information spans multiple chunks. After retrieving the most relevant chunks through semantic or hybrid search, adjacent chunks are also retrieved based on chunk number metadata and merged before being passed to the FM.
+
+A more sophisticated variant is hierarchical chunking, where child chunks are linked to parent chunks, and retrieval returns the parent chunks even when child chunks match. Amazon Bedrock Knowledge Bases supports this capability.
+
+### Section-Based Chunking
+
+For structured documents, using section delimiters (from HTML or Markdown) to determine chunk boundaries creates more coherent chunks. This is particularly useful for how-to guides, maintenance manuals, and documents requiring broad context for answers.
+
+The document notes an important practical consideration: section-based chunking creates variable-sized chunks that may exceed the context window of some embedding models (Cohere Embed is limited to 500 tokens), making Amazon Titan Text Embeddings (8,192 token context) more suitable.
+
+### Custom Embedding Training
+
+As a last resort when other optimizations fail, the document describes fine-tuning custom embeddings using the FlagEmbedding library. This requires gathering positive question-document pairs, generating hard negatives (documents that seem relevant but aren't), and fine-tuning on these pairs. The fine-tuned model should be combined with a pre-trained model to avoid overfitting.
+
+## Hallucination Mitigation and Answer Reliability
+
+### Prompt Engineering Guardrails
+
+The document provides practical prompt engineering techniques:
+- Instructing the FM to only use information from provided documents
+- Giving the FM explicit permission to say "I don't know" when information is insufficient
+
+An example from a sports scouting chatbot illustrates how without guardrails, the FM might fill gaps using its training knowledge or fabricate information about well-known players.
+
+### Quote Generation and Verification
+
+A more sophisticated approach involves prompting the FM to output supporting quotations, either in structured form (with `&lt;scratchpad>` and `&lt;answer>` tags) or as inline citations with quotation marks. This has dual benefits: it guides the FM to ground its responses in source material, and it enables programmatic verification of citations.
+
+The document provides detailed prompts for both approaches and notes tradeoffs: structured quotes work well for simple queries but may not capture enough information for complex questions; inline quotes integrate better with comprehensive summaries but are harder to verify.
+
+### Programmatic Quote Verification
+
+The case study describes implementing Python scripts to verify that quotations actually appear in referenced documents. However, it acknowledges limitations: FM-generated quotes may have minor formatting differences (removed punctuation, corrected spelling) that cause false negatives in verification. The recommended UX approach displays verification status to users and suggests manual checking when quotes aren't found verbatim.
+
+## Production Implementation Considerations
+
+The document describes a fully custom RAG implementation using:
+- OpenSearch Serverless vector search collection as the vector store
+- Custom chunking and ingestion functions
+- Custom retrieval functions with hybrid search
+- Amazon Bedrock FM calls for generation
+
+While Amazon Bedrock Knowledge Bases provides a managed alternative (with the `retrieve_and_generate` and `retrieve` APIs), the custom approach enables more control over the pipeline and allows implementation of advanced techniques like query rewriting and metadata filtering.
+
+## Industry Use Cases
+
+The document describes several production use cases across industries:
+- **Customer service**: Internal chatbots for live agents, external customer-facing bots, or hybrid smart-reply systems
+- **Employee resources**: Training manuals, HR resources, IT service documentation
+- **Industrial maintenance**: Maintenance manuals for complex machinery (often multimodal with images)
+- **Product information**: Technical specifications and product matching
+- **Financial analysis**: News retrieval and summarization for market analysts
+
+## Critical Assessment
+
+This case study provides substantial practical value for LLMOps practitioners, offering specific code examples and detailed implementation guidance. The techniques described address real production challenges based on actual customer deployments. However, as AWS content, it naturally emphasizes AWS services and may not adequately cover alternative implementations or potential limitations of the AWS-centric approach. The evaluation section acknowledges the immaturity of RAG evaluation methodologies, which is honest but also highlights an area where practitioners need to develop their own robust testing frameworks rather than relying solely on the mentioned libraries.

@@ -1,0 +1,20 @@
+---
+title: "Aaron Douchinsky"
+slug: "aaron-douchinsky"
+draft: true
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "6912fb4eea295c60aa82317e"
+  exportedAt: "2026-02-11T13:30:32.135Z"
+  source: "staged-only"
+  lastUpdated: "2026-02-03T15:13:56.649Z"
+  createdOn: "2025-11-11T09:01:02.396Z"
+position: "Strategic Growth"
+photo:
+  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/c89b37a6/6912face7e28cc5d030ef955_aaron.jpg"
+email: "aaron.ext@zenml.io"
+linkedin: "https://www.linkedin.com/in/aarondouchinsky/"
+order: 4
+---
+
+<ul><li>Proud girl dad and certified dog dude.</li><li>Lives for beach vibes and all things music.</li><li>Once bowled a perfect game — still chasing that high.</li></ul>

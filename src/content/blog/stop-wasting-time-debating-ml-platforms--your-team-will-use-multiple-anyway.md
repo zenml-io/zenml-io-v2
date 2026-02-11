@@ -1,0 +1,267 @@
+---
+title: "Stop Wasting Time Debating ML Platforms—Your Team Will Use Multiple Anyway"
+slug: "stop-wasting-time-debating-ml-platforms--your-team-will-use-multiple-anyway"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "682aecc687a80cdbb4810ee0"
+  exportedAt: "2026-02-11T13:30:32.135Z"
+  source: "live"
+  lastPublished: "2025-05-20T08:49:46.635Z"
+  lastUpdated: "2025-05-19T08:54:51.681Z"
+  createdOn: "2025-05-19T08:33:10.425Z"
+author: "alex-strick-van-linschoten"
+category: "mlops"
+tags:
+  - "mlops"
+  - "teams"
+  - "bigger-picture"
+  - "stacks"
+date: "2025-05-19T00:00:00.000Z"
+readingTime: 7 mins
+mainImage:
+  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/9e3d0f95/682aef103777dd48ba17665c_Stop_Wasting_Time__1_.png"
+seo:
+  title: "Stop Wasting Time Debating ML Platforms—Your Team Will Use Multiple Anyway - ZenML Blog"
+  description: "Future-proof your ML operations by building portable pipelines that work across multiple platforms instead of forcing standardization on a single solution."
+  canonical: "https://www.zenml.io/blog/stop-wasting-time-debating-ml-platforms--your-team-will-use-multiple-anyway"
+  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/9e3d0f95/682aef103777dd48ba17665c_Stop_Wasting_Time__1_.png"
+  ogTitle: "Stop Wasting Time Debating ML Platforms—Your Team Will Use Multiple Anyway - ZenML Blog"
+  ogDescription: "Future-proof your ML operations by building portable pipelines that work across multiple platforms instead of forcing standardization on a single solution."
+---
+
+Every planning cycle, valuable time is wasted on the same circular debate:
+
+<ul><li><em>"Let's move everything to Databricks, one throat to choke."</em></li><li><em>"We're already on GKE—just run Kubeflow and call it a day."</em></li><li><em>"Why not Vertex AI? It's managed, less yak‑shaving."</em></li></ul>
+
+Meanwhile, real projects stall, PoCs fork into snowflake repositories, and your engineering team rewrites infrastructure code instead of delivering value. Here's the uncomfortable truth: **your organization will inevitably use multiple ML platforms anyway**. Acquisitions bring new tech stacks, compliance requirements demand specific deployments, and evolving business needs shift infrastructure priorities.
+
+The question isn't *"which platform should we standardize on?"* but **"how do we make our ML pipelines portable across whatever platforms we'll need to use?"**
+
+## The platform landscape — more diverse than you think
+
+<table> <thead> <tr> <th>Platform Type</th> <th>Examples</th> <th>Typical sweet‑spot</th> <th>Inevitable Challenges</th> </tr> </thead> <tbody> <tr> <td>K8s-backed Platforms</td> <td>GKE, EKS, AKS, OpenShift</td> <td>Cloud-native microservices, teams fluent in Kubernetes</td> <td>Infra maintenance overhead, YAML complexity, cross-region deployment</td> </tr> <tr> <td>SaaS Data Platforms</td> <td>Databricks, Snowflake, Dataiku</td> <td>Unified data workflows, SQL/notebook-centric teams, rapid prototyping</td> <td>License costs, vendor lock-in, limited customization, compliance constraints</td> </tr> <tr> <td>Open-source Orchestrators</td> <td>Kubeflow, Airflow, MLflow, Flyte</td> <td>Full control, on-prem requirements, regulated industries</td> <td>Integration complexity, maintenance burden, expertise requirements</td> </tr> <tr> <td>Cloud ML Services</td> <td>Vertex AI, SageMaker, Azure ML</td> <td>Managed infrastructure, integration with respective cloud ecosystems</td> <td>Cloud-specific patterns, egress costs, limited portability</td> </tr> <tr> <td>Edge/Hybrid Solutions</td> <td>Azure IoT Edge, AWS Greengrass, TensorRT</td> <td>Edge deployment, offline capability, hardware optimization</td> <td>Divergent deployment patterns, synchronization complexity</td> </tr> </tbody></table>
+
+Reality check: Analyst research consistently shows that most companies no longer bet on a single ML stack:
+
+<ul><li><strong>71% of enterprise AI teams rely on two or more ML platforms</strong>, according to Omdia's <a href="https://omdia.tech.informa.com/om013894/omdia-universe-selecting-an-enterprise-mlops-platform-2021"><em>"Selecting an Enterprise MLOps Platform"</em></a> report (2021).</li><li>IDC's <a href="https://centarus.co/2025s-top-cybersecurity-threats-what-your-business-needs-to-know/"><em>Cloud Pulse</em> survey (Q3 2024)</a> found <strong>79% of organizations already run workloads across multiple cloud providers</strong>, further confirming the multi-platform trend across infrastructure layers.</li></ul>
+
+This isn't a failure of standardization—it reflects the reality that different tools excel at different stages of the ML lifecycle (e.g., a SaaS platform for feature engineering paired with a Kubernetes orchestrator for model serving).
+
+## Why multi-platform is inevitable, not optional
+
+The multi-platform reality isn't a planning failure—it's a response to business needs. Your data science team prefers interactive notebooks. Your production engineers optimize for reliability and scalability. Compliance requires certain workloads remain on-premise. An acquisition brings Azure-based systems into your GCP environment. A strategic partner insists on their Snowflake-based data share.
+
+Instead of fighting this reality with endless standardization debates, smart teams focus on creating a portable abstraction layer that allows them to:
+
+<ol><li>Write ML pipeline code once</li><li>Deploy it anywhere the business requires</li><li>Maintain consistent lineage and governance across platforms</li><li>Adapt quickly when infrastructure needs change</li></ol>
+
+**Real-World Example: DENSO Corporation**
+
+DENSO, one of the world's largest automotive suppliers, faced serious challenges building their connected car platform. They needed to support ML workloads across vehicle edge computers (with limited connectivity) and cloud platforms. Their solution? A unified Kubernetes architecture that spans from vehicle edge to multiple managed Kubernetes services (GKE, EKS, AKS). As a Tier-1 supplier working with multiple vendors, DENSO recognized that "trying to have the same portability between vehicle edge and cloud platform" was essential—maintaining two separate systems wasn't viable as they scaled to thousands of vehicles.
+
+[Read the DENSO case study →](https://kubernetes.io/case-studies/denso/)
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/cfb14aae/682aec546875750998412de0_CleanShot_May_19_from_ML_Platforms.png" alt="__wf_reserved_inherit" />
+</figure>
+
+## When each platform type excels
+
+Each platform category serves a specific set of needs in the ML lifecycle, which is precisely why organizations inevitably end up using multiple platforms. Understanding these strengths helps teams make informed decisions about where to deploy specific workloads—while maintaining portable pipeline code that can move between platforms.
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/2f4e2f55/682aec639f9cccb93f409ddc_Visual_Selection__1___1_.png" alt="__wf_reserved_inherit" />
+</figure>
+
+### Kubernetes-backed Platforms shine when...
+
+Kubernetes-based platforms like GKE, EKS, and AKS deliver exceptional value when your organization needs fine-grained control over compute resources and infrastructure. Their containerized approach makes them ideal for teams that have already invested in cloud-native architectures and need to run inference at scale alongside other microservices.
+
+These platforms excel at workloads that benefit from automated scaling, load balancing, and self-healing capabilities. When your production engineers need to integrate ML systems with existing DevOps practices—including GitOps deployment, canary releases, and robust observability—Kubernetes platforms provide battle-tested solutions.
+
+### SaaS Data Platforms excel when...
+
+Data-centric SaaS platforms like Databricks and Snowflake become indispensable when your data scientists need to rapidly prototype and iterate on models without managing infrastructure. Their notebook-centric environments combine code, visualizations, and collaboration in ways that accelerate experimentation.
+
+These platforms particularly shine for organizations with large-scale data processing needs, where the integrated processing engines (like Spark) and optimized storage formats provide significant performance advantages. When your teams need to seamlessly transition from interactive exploration to scheduled production jobs without changing their environment, these platforms offer compelling workflow continuity.
+
+### Open-source Orchestrators thrive when...
+
+Open-source orchestration frameworks like Kubeflow, Airflow, and MLflow become essential when your organization requires complete control over every aspect of the ML lifecycle. They're the platform of choice for regulated industries with strict compliance requirements, air-gapped environments, or teams with unique workflow patterns that commercial platforms don't accommodate.
+
+These orchestrators excel in hybrid scenarios where you need to coordinate workloads across on-premise and cloud environments under a unified control plane. When you need to avoid vendor lock-in while maintaining the flexibility to customize every component of your ML system, open-source orchestrators provide the necessary foundation.
+
+### Cloud ML Services deliver when...
+
+Cloud-native ML services like Vertex AI, SageMaker, and Azure ML provide exceptional value when speed-to-market outweighs customization needs. Their fully-managed infrastructure eliminates operational overhead, allowing teams to focus exclusively on model development rather than platform maintenance.
+
+These services particularly shine when you need seamless integration with other services in the same cloud ecosystem. When your organization values automated MLOps capabilities like model monitoring, versioning, and deployment without building these systems from scratch, cloud ML services offer pre-built solutions that accelerate development cycles.
+
+### Edge/Hybrid Solutions become critical when...
+
+Edge computing platforms become indispensable when your models need to operate in environments with limited connectivity, strict latency requirements, or specialized hardware. They excel at bringing ML capabilities to remote locations, IoT devices, and scenarios where sending data to the cloud isn't practical.
+
+These solutions shine when regulatory requirements mandate local data processing, or when real-time inference is needed for time-sensitive applications. When your organization needs to distribute intelligence across a network of devices while maintaining central management, edge platforms provide the necessary architecture.
+
+## ...and when each reveals its limitations
+
+The multi-platform reality becomes most apparent when you encounter the inherent limitations of each platform type. These constraints aren't design flaws—they're natural trade-offs that emerge from each platform's architectural choices and priorities.
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/937d23f2/682aec78b42d096beec54543_Visual_Selection_from_Napkin_AI__2___1_.png" alt="__wf_reserved_inherit" />
+</figure>
+
+### Kubernetes-backed Platforms falter when...
+
+The flexibility of Kubernetes comes at a cost of complexity. Organizations frequently underestimate the operational burden of maintaining these platforms, especially as they scale. The infamous "YAML sprawl" can quickly overwhelm teams without dedicated platform engineers, while multi-region deployments introduce challenging problems around secret management, networking, and observability.
+
+Cross-environment consistency becomes particularly challenging, as subtle differences between cloud provider implementations can lead to mysterious runtime behaviors. And while Kubernetes excels at orchestrating containers, it provides no inherent data processing capabilities—requiring teams to bolt on additional components for ML-specific needs.
+
+### SaaS Data Platforms stumble when...
+
+The convenience of SaaS platforms often collides with harsh economic realities as scale increases. What starts as an affordable solution can quickly transform into budget-breaking expenses as workloads grow. The notorious "pay-as-you-go becomes pay-as-you-*gasp*" phenomenon has derailed many ML initiatives that failed to accurately forecast costs.
+
+These platforms also impose significant limitations for sensitive workloads, with compliance requirements sometimes forcing organizations to maintain parallel infrastructure for regulated data. The vendor lock-in concerns are real, as deep integration with proprietary APIs and storage formats can make migration painfully expensive.
+
+**Real-World Example: Airbnb's ML Architecture**
+
+Airbnb's machine learning infrastructure highlights this multi-platform challenge. With ML needs spanning search ranking, pricing recommendations, and fraud detection, Airbnb required a solution that worked across diverse infrastructure. Rather than standardizing on a single platform, Airbnb developed Bighead—a unified ML platform that allows data scientists to develop in notebook environments but deploy to various infrastructure backends. This approach recognized that different ML workloads had different requirements, and forcing everything into a single platform would compromise either development speed or production efficiency.
+
+[Learn about Airbnb's Bighead →](https://www.youtube.com/watch?v=yBiyT1azwtQ)
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e11de570/682aec9618d15bb5486d1c89_CleanShot_May_19_from_ML_Platforms__1_.png" alt="__wf_reserved_inherit" />
+</figure>
+
+### Open-source Orchestrators struggle when...
+
+The freedom of open-source comes with substantial maintenance overhead. Organizations consistently underestimate the resources required to keep these platforms operational, especially through major version upgrades. The "community documentation gap" means teams often find themselves alone when troubleshooting obscure issues in complex deployments.
+
+Integration challenges multiply when connecting these orchestrators to enterprise systems, and the lack of commercial support means your team becomes responsible for security patches and compatibility issues. The flexibility that makes these platforms attractive also means more decisions, more components to maintain, and more potential failure points.
+
+### Cloud ML Services disappoint when...
+
+The convenience of cloud ML services evaporates when organizations need to work across multiple cloud providers or incorporate on-premise workloads. The proprietary nature of these services creates significant friction for multi-cloud strategies, while data transfer costs between regions or providers can quickly escalate into budget concerns.
+
+These services also impose architectural constraints that may conflict with existing systems, forcing uncomfortable compromises or parallel implementations. When customization needs evolve beyond what the service offers, organizations find themselves hitting frustrating capability ceilings that require either complex workarounds or painful migrations.
+
+### Edge/Hybrid Solutions falter when...
+
+The distributed nature of edge deployments introduces significant complexity in model management, versioning, and synchronization. Organizations frequently underestimate the operational challenges of maintaining consistent ML capabilities across heterogeneous devices with varying capabilities and connectivity patterns.
+
+The resource constraints of edge environments force difficult compromises in model size and capability, while the diversity of deployment targets creates painful fragmentation in operational processes. When business needs require rapid model updates across the entire device fleet, edge architectures can introduce frustrating delays and inconsistencies.
+
+## The inevitable multi-platform journey
+
+What emerges from this landscape isn't a recommendation to choose the "best" platform—it's a recognition that each platform type serves different aspects of the ML lifecycle. The real challenges arise when organizations attempt to standardize on a single platform, only to discover that changing requirements, acquisitions, or new business initiatives invariably lead to multi-platform environments.
+
+Regional data regulations might force specific workloads into European data centers while others remain in US clouds. An acquisition brings Azure-based ML systems into your GCP-centric architecture. Your edge devices require specialized deployment pipelines that don't match your cloud patterns. A critical partner insists on data exchange through their Snowflake instance.
+
+**Real-World Example: DoorDash's Multi-Platform ML Architecture**
+
+DoorDash's ML infrastructure perfectly illustrates the multi-platform reality. They use Apache Airflow for scheduling training jobs, AWS S3 for model storage, and Kubernetes for deploying their prediction service ("Sibyl"). Their feature store leverages Redis for caching, while their model serving layer supports both shadow predictions and A/B testing. Rather than forcing all these components into a single platform, DoorDash created a unified abstraction layer that allows different services to use the appropriate infrastructure while maintaining consistent lineage. This approach has allowed them to scale their ML operations while keeping their data scientists focused on business impact rather than infrastructure integration.
+
+[Explore DoorDash's ML architecture →](https://neptune.ai/blog/how-these-8-companies-implement-mlops)
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/9ccefd4d/682aec962ae7e2dc1d8ddab7_Stop_Wasting_Time_Debating_ML_Platforms.png" alt="__wf_reserved_inherit" />
+</figure>
+
+These scenarios aren't exceptions—they're the rule. The question isn't whether you'll operate in a multi-platform world, but how effectively you'll navigate it.
+
+## The Solution: Decouple What Your Pipeline Does from Where It Runs
+
+After examining the inevitable multi-platform reality, the solution becomes clear: stop tying your ML code to specific platforms. The organizations in our examples all embraced a similar principle—separating what their pipelines do from where they run.
+
+Think of ML pipelines like shipping containers: standardized boxes that travel seamlessly via truck, rail, or cargo ship. The logistics layer changes, but the container—with all its contents—remains intact.
+
+This decoupling approach delivers key benefits:
+
+<ul><li><strong>Declarative pipeline definitions</strong> describe what your workflow does—not how the infrastructure provisions resources</li><li><strong>Pluggable orchestration backends</strong> allow the same pipeline to run on GKE today, Databricks tomorrow, and Kubeflow next month without changing code</li><li><strong>Centralized artifact tracking</strong> maintains consistent lineage across platforms, ensuring governance and reproducibility</li></ul>
+
+When Kubernetes becomes too complex, shift components to a managed service. When SaaS costs explode at scale, migrate compute-intensive portions to your infrastructure. When compliance requires on-premises processing, route only those components to your private cloud.
+
+### Enter ZenML
+
+ZenML gives you a standard abstraction: a Python SDK where you define pipelines once, swap an *orchestrator* or *stack*, and rerun on [any of the orchestrators we support](https://docs.zenml.io/stacks/stack-components/orchestrators) (or write [your own custom one](https://docs.zenml.io/stacks/stack-components/orchestrators/custom)!).
+
+```
+# !zenml stack set kubeflow  (swap to "databricks" or "gke" later)
+
+@step
+def trainer(data: pd.DataFrame) -> Model:
+    …
+
+@pipeline
+def forecast_pipeline():
+    df = ingest()
+    model = trainer(df)
+    deploy(model)
+```
+
+No step code changes. Switching from Databricks dev cluster to GKE prod is a single CLI call:
+
+```
+zenml orchestrator register gke_prod --flavor=kubernetes ...
+zenml stack register gke --orchestrator gke_prod --artifact_store gcs_bucket
+python run.py --stack=gke
+```
+
+## Common objections to portable pipelines
+
+When organizations first consider a portable approach to ML pipelines, several concerns typically arise. Let's address the most common ones:
+
+**"Portability means least-common-denominator features."**
+
+This is a misconception. Modern abstraction layers like ZenML expose advanced platform-specific capabilities through pluggable components called *flavors*. You can still use Spark on Databricks, TPUs on Vertex AI, and GPUs on your on-premise clusters—all while maintaining the same core pipeline structure.
+
+The key difference is that these platform-specific optimizations become configuration choices rather than code dependencies. When you need to leverage the unique capabilities of a specific platform, you simply configure the appropriate flavor without embedding platform-specific code throughout your pipeline.
+
+**"We can write adapters ourselves."**
+
+Many teams start down this path, creating thin adapter layers that translate between their code and various platforms. This approach seems straightforward initially but becomes a significant maintenance burden as your ML systems mature.
+
+The true cost emerges when you need enterprise-grade features like CI/CD integration, intelligent caching, artifact lineage, secrets management, monitoring dashboards, and multi-tenant isolation. Each of these capabilities must be implemented and maintained for every platform you support. This "glue code tax" compounds over time, draining resources that should be focused on model innovation.
+
+**"We'll lose vendor optimizations we've worked hard to implement."**
+
+Portable pipelines don't require abandoning the specialized capabilities you've developed. Instead, they provide a framework where these optimizations can be cleanly separated from core pipeline logic.
+
+For example, you can build your pipeline once but still access Databricks' Delta Lake optimizations or Vertex AI's hyperparameter tuning via step-specific integrations. The difference is that these integrations become modular components that can be swapped out rather than foundational dependencies that lock you in.
+
+**"This sounds complex to implement in our existing workflow."**
+
+Transitioning to portable pipelines doesn't require a "big bang" rewrite of your existing systems. The most successful organizations start with a single pipeline or team, prove the concept, and gradually expand. The decoupling approach can be applied incrementally, starting with new projects while existing systems continue to operate normally.
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/090ffa63/682aec9f126887eebd7c3bde_Visual_Selection_from_Napkin_AI__3___1_.png" alt="__wf_reserved_inherit" />
+</figure>
+
+## Cost lens — the hidden ROI of pipeline portability
+
+While technical benefits of portable pipelines are compelling, the financial impact often drives executive decision-making. Our analysis of organizations that have adopted portable pipeline architectures reveals significant ROI across multiple dimensions:
+
+<table> <thead> <tr> <th>Cost category</th> <th>Locked single‑vendor approach</th> <th>Portable pipeline approach</th> </tr> </thead> <tbody> <tr> <td>Re‑platforming after M&amp;A</td> <td>4–6 engineer-months of rewriting pipelines and fixing broken integrations</td> <td>Configuration change + infrastructure provisioning = days of work</td> </tr> <tr> <td>Edge roll‑out of computer vision models</td> <td>Maintaining separate codebases for cloud and edge deployments</td> <td>Same pipeline code deployed via KServe to both environments</td> </tr> <tr> <td>Experiment → production lead‑time</td> <td>6–10 weeks of reengineering notebook code for production</td> <td>1–3 weeks from prototype to production (based on retail customer data)</td> </tr> <tr> <td>Knowledge transfer during talent transitions</td> <td>New team members spend weeks deciphering undocumented platform-specific implementations</td> <td>Standardized patterns enable productive work after minimal onboarding</td> </tr> <tr> <td>Platform evaluation costs</td> <td>High-friction proof-of-concepts requiring significant rework for each potential platform</td> <td>Run the same pipelines on multiple platforms to directly compare performance and cost</td> </tr> </tbody></table>
+
+The most dramatic ROI comes from avoiding forced re-platforming projects. When the business landscape changes (through acquisition, new compliance requirements, or cost-cutting mandates), portable pipelines transform what would have been months-long rewrites into configuration updates that can be completed in days.
+
+Even a single avoided replatforming project can save hundreds of engineering hours and prevent significant disruption to your ML delivery pipeline—creating both direct cost savings and indirect business value through reduced time-to-market for model improvements.
+
+## Future-Proof Your ML Pipelines
+
+Infrastructure changes are inevitable. Your ML platforms will evolve faster than your models. New vendors will emerge, compliance requirements will shift, and acquisitions will introduce new technology stacks. What remains constant is the business need to deliver ML value quickly and reliably.
+
+**Stop rewriting your pipelines every time your infrastructure changes.** Define your ML workflows once, deploy them anywhere, and focus your precious engineering resources on solving business problems rather than reengineering infrastructure code.
+
+### Ready to make your ML pipelines platform-agnostic?
+
+**Try ZenML today:**
+
+<ul><li><a href="https://github.com/zenml-io/zenml">Install our open-source framework</a> and run the quickstart examples</li><li><a href="https://github.com/zenml-io/zenml-projects">Clone our multi-platform demo repository</a> to see real-world examples</li><li><a href="https://docs.zenml.io/">Read our documentation</a> to learn about integrations with your existing tools</li></ul>
+
+**Want expert guidance?**
+
+<ul><li><a href="https://www.zenml.io/book-your-demo">Schedule a personalized demo</a> with our team or startyour POC with our team to port over one of your existing pipelines!</li><li><a href="https://zenml.io/slack">Join our Slack community</a> to connect with other organizations solving similar challenges</li></ul>
+
+The real question isn't whether you'll need to use multiple ML platforms—it's whether you'll be prepared when it happens. Start building platform-agnostic pipelines today, and transform infrastructure changes from painful migrations into simple configuration updates.

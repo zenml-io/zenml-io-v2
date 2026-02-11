@@ -1,0 +1,53 @@
+---
+title: "Podcast: Edge Computer Vision with Karthik Kannan"
+slug: "podcast-edge-computer-vision-with-karthik-kannan"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "65310af1f9cd5d593b3fec2e"
+  exportedAt: "2026-02-11T13:30:32.135Z"
+  source: "live"
+  lastPublished: "2024-08-21T12:32:08.204Z"
+  lastUpdated: "2024-08-21T12:29:18.865Z"
+  createdOn: "2023-10-19T10:54:41.249Z"
+author: "alex-strick-van-linschoten"
+category: "podcast"
+tags:
+  - "bigger-picture"
+  - "computer-vision"
+  - "edge"
+  - "evergreen"
+  - "podcast"
+date: "2022-06-30T00:00:00.000Z"
+readingTime: 1 Min Read
+mainImage:
+  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/2d86e957/65310a493a348150f9aa7f40_1561516119854.jpeg"
+seo:
+  title: "Podcast: Edge Computer Vision with Karthik Kannan - ZenML Blog"
+  description: "I spoke with Karthik Kannan, cofounder and CTO of Envision, a company that builds on top of the Google Glass and using Augmented Reality features of phones to allow visually impaired people to better sense the environment or objects around them."
+  canonical: "https://www.zenml.io/blog/podcast-edge-computer-vision-with-karthik-kannan"
+  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/1622e7f7/65310a493a348150f9aa7f40_1561516119854.jpeg"
+  ogTitle: "Podcast: Edge Computer Vision with Karthik Kannan - ZenML Blog"
+  ogDescription: "I spoke with Karthik Kannan, cofounder and CTO of Envision, a company that builds on top of the Google Glass and using Augmented Reality features of phones to allow visually impaired people to better sense the environment or objects around them."
+---
+
+**Last updated:** June 30, 2022.
+
+This week I spoke with Karthik Kannan, cofounder and CTO of Envision, a company that builds on top of the Google Glass and using Augmented Reality features of phones to allow visually impaired people to better sense the environment or objects around them.
+
+Their software and devices are pretty popular and as you’ll hear in this conversation, they’ve been on a real journey to get to where they are now.
+
+In particular, I really enjoyed the parts where Karthik explained their development and deployment process in detail. It’s not too often that you get a deep dive into the workflows and stacks of an embedded computer vision company and tool and so I think you’re going to really enjoy this one.
+
+In this clip, Karthik explains how they had to adapt and build their own image datasets suited to the specific purpose and use cases of visually impaired users.
+
+<figure class="w-richtext-figure-type-video w-richtext-align-fullwidth" style="padding-bottom:56.25%" data-rt-type="video" data-rt-align="fullwidth" data-rt-max-width="" data-rt-max-height="56.25%" data-rt-dimensions="0:0" data-page-url=""><iframe src="https://share.descript.com/embed/fLCj4qrgir5" frameBorder="0" allowfullscreen=""></iframe></figure>
+
+Pre-trained models and some open datasets were useful, he says, but they don’t give best-in-class performance if the thing you’re building doesn’t use similar kinds and qualities of data.
+
+As always, full show notes and links are available on [our dedicated podcast page](https://podcast.zenml.io/).
+
+<iframe src="https://player.fireside.fm/v2/vA-gqsEV+edbXLK87?theme=dark" width="740" height="200" frameBorder="0" scrolling="no"></iframe>
+
+[Subscribe to Pipeline Conversations](https://podcast.zenml.io/subscribe)* with* *your favorite podcast player *[here](https://podcast.zenml.io/subscribe)*.*
+

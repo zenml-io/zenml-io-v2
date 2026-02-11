@@ -1,0 +1,76 @@
+---
+title: "New Features: Improved Sagemaker Orchestration, New DAG Visualizer, Skypilot with Kubernetes, and more"
+slug: "new-features-improved-sagemaker-orchestration-new-dag-visualizer-skypilot-with-kubernetes-and-more"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "66fc09bef85e396225d28d45"
+  exportedAt: "2026-02-11T13:30:32.135Z"
+  source: "live"
+  lastPublished: "2026-02-03T15:19:04.226Z"
+  lastUpdated: "2026-02-03T10:53:51.290Z"
+  createdOn: "2024-10-01T14:39:58.739Z"
+author: "zenml-team"
+category: "zenml-updates"
+tags:
+  - "sagemaker"
+  - "kubernetes"
+  - "pipeline"
+  - "pipelines"
+  - "release"
+  - "release-notes"
+  - "cloud"
+  - "deepchecks"
+  - "dashboard"
+date: "2024-10-01T00:00:00.000Z"
+readingTime: 3 min
+mainImage:
+  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/220158b4/6981d36ce92aa039b696b89e_6981d2af5c146b4b5a8cdcc3_zenml-release.avif"
+seo:
+  title: "New Features: Improved Sagemaker Orchestration, New DAG Visualizer, Skypilot with Kubernetes, and more - ZenML Blog"
+  description: "This release incorporates updates to the SageMaker Orchestrator, DAG Visualizer, and environment variable handling. It also includes Kubernetes support for Skypilot and an updated Deepchecks integration. Various other improvements and bug fixes have been implemented across different areas of the platform."
+  canonical: "https://www.zenml.io/blog/new-features-improved-sagemaker-orchestration-new-dag-visualizer-skypilot-with-kubernetes-and-more"
+  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/220158b4/6981d36ce92aa039b696b89e_6981d2af5c146b4b5a8cdcc3_zenml-release.avif"
+  ogTitle: "New Features: Improved Sagemaker Orchestration, New DAG Visualizer, Skypilot with Kubernetes, and more - ZenML Blog"
+  ogDescription: "This release incorporates updates to the SageMaker Orchestrator, DAG Visualizer, and environment variable handling. It also includes Kubernetes support for Skypilot and an updated Deepchecks integration. Various other improvements and bug fixes have been implemented across different areas of the platform."
+---
+
+We are thrilled the announce the next release of ZenML, 0.67.0. Our recent update introduces several new features and enhancements. Here's an overview of the key changes:
+
+#### Enhanced SageMaker Orchestration
+
+Our latest release brings significant improvements to the SageMaker Orchestrator. It now supports the usage of `TrainingJob`s, that can use warm pools for AWS SageMaker to enhance overall performance and reduce startup times. This upgrade not only improves efficiency but may also lead to cost reductions by maintaining a pool of pre-initialized instances.
+
+#### Revamped DAG Visualizer
+
+The DAG Visualizer for Pipeline Runs has undergone a major overhaul. Users can now preview the actual DAG before pipeline completion, providing early insights into workflow structure. We've also made visual adjustments to improve clarity, making complex pipelines easier to understand.
+
+#### Flexible Environment Configuration
+
+We've introduced a powerful new feature for configuration flexibility. Users can now reference environment variables in both code and configuration files using the syntax `$&#123;ENV_VARIABLE_NAME&#125;`. This enhancement significantly improves adaptability across different environments and deployments.
+
+#### Improved Cloud Integration Experience
+
+For users working with major cloud platforms (AWS, Azure, and GCP), we've enhanced the experience by displaying direct pipeline and log URLs. This improvement streamlines access to critical information, saving time and reducing friction in workflow management.
+
+#### Kubernetes Support for Skypilot
+
+In a move to expand orchestration options, we've added compatibility for running the Skypilot orchestrator on Kubernetes clusters. This addition allows users to leverage Kubernetes for resource management and scaling of Skypilot workloads, offering greater flexibility in infrastructure choices.
+
+#### Updated Deepchecks Integration
+
+Our integration with Deepchecks has been refreshed to incorporate the latest features and improvements from the Deepchecks platform. This update enhances data validation and testing capabilities within workflows, providing users with more robust tools for ensuring data quality.
+
+#### Expanded Documentation and Bug Fixes
+
+We've extensively updated our documentation, covering integrations such as Lightning AI, Kubeflow, Comet, Neptune, Hugging Face deployer, and Weights & Biases. New documentation for run templates has also been added and numerous bug fixes have been implemented.
+
+#### Conclusion
+
+From major enhancements to core components like the SageMaker Orchestrator and DAG Visualizer, to the introduction of flexible environment variable references and expanded Kubernetes support, these updates aim to provide a more powerful, and user-friendly experience.
+
+We encourage you to update to ZenML 0.67.0 and explore these new features. As always, we welcome your feedback and look forward to seeing how these improvements accelerate your ML projects.
+
+For a complete list of changes and improvements, please check out [our full release notes on GitHub](https://github.com/zenml-io/zenml/releases/tag/0.67.0).
+
+Happy coding with ZenML!

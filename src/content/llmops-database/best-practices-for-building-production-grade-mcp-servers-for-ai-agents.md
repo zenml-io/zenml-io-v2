@@ -1,0 +1,179 @@
+---
+title: "Best Practices for Building Production-Grade MCP Servers for AI Agents"
+slug: "best-practices-for-building-production-grade-mcp-servers-for-ai-agents"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "69661d8a5ed566bd18e7d619"
+  exportedAt: "2026-02-11T13:30:32.135Z"
+  source: "live"
+  lastPublished: "2026-02-03T15:19:04.226Z"
+  lastUpdated: "2026-01-13T12:35:33.335Z"
+  createdOn: "2026-01-13T10:25:14.727Z"
+llmopsTags:
+  - "chatbot"
+  - "code-generation"
+  - "question-answering"
+  - "prompt-engineering"
+  - "token-optimization"
+  - "agent-based"
+  - "multi-agent-systems"
+  - "error-handling"
+  - "few-shot"
+  - "latency-optimization"
+  - "fastapi"
+  - "docker"
+  - "kubernetes"
+  - "documentation"
+  - "open-source"
+  - "orchestration"
+  - "langchain"
+  - "anthropic"
+  - "openai"
+  - "cloudflare"
+industryTags: "tech"
+company: "Prefect"
+summary: "This case study presents best practices for designing and implementing Model Context Protocol (MCP) servers for AI agents in production environments, addressing the widespread problem of poorly designed MCP servers that fail to account for agent-specific constraints. The speaker, founder and CEO of Prefect Technologies and creator of fastmcp (a widely-adopted framework downloaded 1.5 million times daily), identifies key design principles including outcome-oriented tool design, flattened arguments, comprehensive documentation, token budget management, and ruthless curation. The solution involves treating MCP servers as agent-optimized user interfaces rather than simple REST API wrappers, acknowledging fundamental differences between human and agent capabilities in discovery, iteration, and context management. Results include actionable guidelines that have shaped the MCP ecosystem, with the fastmcp framework becoming the de facto standard for building MCP servers and influencing the official Anthropic SDK design."
+link: "https://www.youtube.com/watch?v=96G7FLab8xc"
+year: 2026
+seo:
+  title: "Prefect: Best Practices for Building Production-Grade MCP Servers for AI Agents - ZenML LLMOps Database"
+  description: "This case study presents best practices for designing and implementing Model Context Protocol (MCP) servers for AI agents in production environments, addressing the widespread problem of poorly designed MCP servers that fail to account for agent-specific constraints. The speaker, founder and CEO of Prefect Technologies and creator of fastmcp (a widely-adopted framework downloaded 1.5 million times daily), identifies key design principles including outcome-oriented tool design, flattened arguments, comprehensive documentation, token budget management, and ruthless curation. The solution involves treating MCP servers as agent-optimized user interfaces rather than simple REST API wrappers, acknowledging fundamental differences between human and agent capabilities in discovery, iteration, and context management. Results include actionable guidelines that have shaped the MCP ecosystem, with the fastmcp framework becoming the de facto standard for building MCP servers and influencing the official Anthropic SDK design."
+  canonical: "https://www.zenml.io/llmops-database/best-practices-for-building-production-grade-mcp-servers-for-ai-agents"
+  ogTitle: "Prefect: Best Practices for Building Production-Grade MCP Servers for AI Agents - ZenML LLMOps Database"
+  ogDescription: "This case study presents best practices for designing and implementing Model Context Protocol (MCP) servers for AI agents in production environments, addressing the widespread problem of poorly designed MCP servers that fail to account for agent-specific constraints. The speaker, founder and CEO of Prefect Technologies and creator of fastmcp (a widely-adopted framework downloaded 1.5 million times daily), identifies key design principles including outcome-oriented tool design, flattened arguments, comprehensive documentation, token budget management, and ruthless curation. The solution involves treating MCP servers as agent-optimized user interfaces rather than simple REST API wrappers, acknowledging fundamental differences between human and agent capabilities in discovery, iteration, and context management. Results include actionable guidelines that have shaped the MCP ecosystem, with the fastmcp framework becoming the de facto standard for building MCP servers and influencing the official Anthropic SDK design."
+---
+
+## Overview
+
+This case study centers on the production deployment challenges of AI agents using the Model Context Protocol (MCP), drawing from extensive experience building fastmcp, a high-level framework that has become the de facto standard for MCP server development. The speaker, founder and CEO of Prefect Technologies (a company specializing in data automation and orchestration software for seven to eight years), brings a unique vantage point having developed the Marvin agent framework and subsequently fastmcp, which was introduced shortly after MCP's launch approximately one year prior to this talk. With fastmcp achieving unprecedented adoption (1.5 million downloads per day), the speaker has observed patterns across thousands of MCP server implementations, revealing systematic design flaws that compromise agent performance in production.
+
+The fundamental problem addressed is that most MCP servers are poorly designed for agent consumption, typically built as direct wrappers around REST APIs without consideration for agent-specific constraints. This represents a critical LLMOps challenge because agents operate under fundamentally different constraints than human developers, yet most implementations ignore these differences. The speaker argues that agents deserve their own optimized interface, just as humans receive carefully designed UIs rather than raw API access.
+
+## Core Agent-Specific Design Constraints
+
+The case study identifies three critical dimensions where agents differ fundamentally from human users, each with significant implications for production LLMOps:
+
+**Discovery costs:** For human developers, discovery is cheap and performed once—you consult API documentation, identify needed endpoints, and proceed. For agents, discovery is expensive and repeated on every connection. Each time an agent connects to an MCP server, it enumerates every tool and downloads all descriptions, consuming substantial tokens from the context window. This handshake process typically downloads all tool schemas upfront rather than progressively, making the initial connection particularly costly.
+
+**Iteration costs:** Human developers iterate quickly and cheaply—after initial discovery, they write scripts calling APIs in sequence as fast as the language allows. For agents, iteration is slow and expensive. Every additional tool call potentially sends the entire conversation history over the wire (subject to caching configuration), making iteration the enemy of efficient agent operation. Multiple round trips compound latency and token costs dramatically.
+
+**Context limitations:** Humans bring vast contextual memory and experience to problems, comparing information against different timescales and knowledge domains. Agents have severely limited context—typically 200,000 tokens representing their entire accessible memory, beyond what's embedded in their weights. The speaker draws an analogy to Apollo 11's minimal RAM, suggesting we should think of even powerful LLMs as operating under extreme resource constraints despite their seemingly magical capabilities.
+
+These constraints mean that APIs optimized for human developers—with atomic operations, comprehensive coverage, and RESTful design—create terrible agent experiences. The speaker emphasizes a counterintuitive insight: "An agent can find a needle in a haystack, but it's going to look at every piece of hay and decide if it's a needle." This metaphor captures why exposing too many options or requiring too many calls fundamentally undermines agent performance.
+
+## Five Core Design Principles for Production MCP Servers
+
+The case study presents five actionable principles for building production-grade MCP servers, illustrated through refactoring a poorly designed example:
+
+### 1. Outcomes Not Operations
+
+The most important principle is outcome-oriented design rather than operation-oriented design. The initial bad example showed separate tools for getting user information, filtering orders, and checking status—requiring agents to orchestrate multiple API calls. This forces the agent into an orchestrator role, where it must determine call order, handle intermediate state, and manage data flow between calls.
+
+The refactored version combines these into a single tool like "track latest order by email" that handles the entire workflow internally. This encapsulates the three API calls within one agent-facing tool, shifting orchestration responsibility from the expensive, slow agent to fast, deterministic code. The speaker emphasizes this is not about eliminating API calls but about who performs the orchestration—the agent or the server implementation.
+
+This represents crucial product thinking for agents: you cannot expose functionality unless you know it will produce a useful outcome. Unlike traditional API design where you provide building blocks for developers to compose, agent APIs must be complete solutions to specific agent stories (the agent analog of user stories). The guidance is "one tool equals one agent story"—each tool should solve a complete problem the agent is trying to achieve.
+
+### 2. Flatten Your Arguments
+
+The second principle addresses argument structure. Agents struggle with complex, nested arguments like configuration dictionaries or structured objects. The case study highlights a practical problem where Claude Desktop (a major MCP client) had a bug sending all structured arguments as strings, forcing fastmcp to implement automatic string-to-object deserialization despite this feeling architecturally wrong.
+
+The solution is using top-level primitives: instead of a config dictionary parameter, expose email as a string, include_cancelled as a boolean flag, and status as a literal type or enum. This makes tool signatures immediately clear to agents without requiring them to construct complex objects or parse documentation about nested structure.
+
+A particularly valuable specific recommendation is using Python's literal types or enums for constrained choices rather than strings. While most LLMs don't yet know this syntax is supported (they typically write format: string = "basic" instead of format: Literal["basic", "detailed"]), defining arguments this way provides stronger type constraints that reduce agent errors.
+
+The speaker warns about "tightly coupled arguments"—where one argument's value determines valid options for another argument (like file type determining valid processing options). This creates additional cognitive load for agents that should be avoided through careful interface design.
+
+### 3. Instructions as Context
+
+The third principle treats all documentation and error messages as context that directly shapes agent behavior. Many MCP servers lack documentation entirely, forcing agents to guess tool usage based solely on signatures and names. This results in the guesses appearing in conversation history, potentially confusing future tool calls.
+
+Comprehensive documentation should cover the server itself (MCP provides an instructions field for server-level documentation, though not all clients respect it), individual tools (detailed docstrings), and arguments. The case study particularly emphasizes examples, noting they're a "double-edged sword"—extremely helpful for showing correct usage, but agents tend to replicate implicit patterns like the number of items in an array example. The speaker shares a specific experience where an example with two tags consistently resulted in the agent producing exactly two tags, never more or fewer, regardless of instructions to use at least ten.
+
+A critical insight is that "errors are prompts"—error messages become part of the agent's next prompt, providing an opportunity for progressive disclosure of information. Rather than cryptic error codes or generic Python exceptions, error messages should explain how to recover from common failures. The speaker suggests a somewhat counterintuitive strategy: for complex APIs that cannot be fully flattened, instead of documenting every possibility upfront (consuming precious tokens), document recovery from common failures in error messages. This acknowledges that agents will likely get the first call wrong but provides guidance on how to correct course. However, error messages must be carefully crafted—overly aggressive or scary messages may cause agents to permanently avoid the tool, concluding it's inoperable.
+
+The MCP specification also supports annotations like readOnly hints. Clients can use these to optimize user experience—for example, ChatGPT requests additional permission for tools without the readOnly annotation, presuming they have side effects. Using these annotations helps clients provide better, safer agent experiences.
+
+### 4. Respect the Token Budget
+
+The fourth principle addresses the most critical constraint: token budget. This is characterized as the only rule where violation results in an unusable server rather than merely poor performance. The speaker shares a compelling real-world example: a major, highly respected company was converting 800 REST API endpoints to MCP. With a typical 200,000 token context window, each tool would have just 250 tokens for its name, schema, and documentation combined. After consuming this budget, the agent would be "lobotomized"—having no context window remaining for actual work. Adding even one more tool with a single-word docstring would cause overflow.
+
+This constraint is particularly challenging because clients typically download all tool descriptions on initial handshake rather than using progressive disclosure. Claude Desktop compounds this problem by hashing all received tools and storing them in a SQLite database, ignoring spec-compliant mechanisms for providing additional information later. This makes the initial handshake critical and extremely expensive.
+
+The recommendation is to be "parsimmonious" with token usage, treating tokens as the scarce resource they are. Your server is not the only one the agent connects to—multiple servers compound the token budget problem. Some advanced strategies exist, like providing meta-tools that allow agents to learn about other tools, but these introduce their own complexity (now you need tools to learn about tools and tools to call tools).
+
+### 5. Curate Ruthlessly
+
+The final principle is ruthless curation. The speaker draws a line at 50 tools per agent (not per server—if you have a 50-tool server and another developer has a 50-tool server, that's 100 tools to the agent). Beyond 50 tools, performance degradation becomes noticeable. While exceptions exist (GitHub's server has approximately 170 tools and uses sophisticated semantic routing), having many tools is a "smell" suggesting potential issues.
+
+Ideal ranges are 5-15 tools, though this isn't achievable for all use cases. When servers exceed these thresholds, designers should question whether admin tools are mixed with user tools, whether namespacing could help, or whether splitting into multiple servers would improve agent experience.
+
+The case study references a particularly instructive blog post sequence by Kelly Kaffl at Fiverr, who wrote about building up to 188 tools and then, one month later, curating down to just 5 tools. These posts together tell the story of "making something work and then making something work well"—the natural product journey for agent interfaces.
+
+## REST-to-MCP Anti-Pattern
+
+A significant portion of the case study addresses what the speaker calls the fastest way to violate every principle: automatically converting REST APIs to MCP servers. Ironically, fastmcp provides this capability and it's one of its most popular features, creating a complex situation where the creator must advocate against widespread use of his own framework's functionality.
+
+The problem with REST-to-MCP conversion is that REST APIs are optimized for human developers along exactly the dimensions where agents struggle: many atomic operations, rich functionality requiring orchestration, complex argument structures, and comprehensive but verbose documentation. Converting these directly to MCP violates outcomes over operations (exposing operations), argument flattening (preserving complex REST payloads), token budget (exposing all endpoints), and curation principles.
+
+However, the speaker acknowledges REST-to-MCP conversion has legitimate value as a bootstrapping mechanism. The recommended workflow is: use automated conversion to quickly get something working and prove basic agent-tool integration, solving one problem at a time. Once the agent can successfully call tools, strip out the REST wrapper and apply proper MCP design principles, curating and optimizing for agent consumption. The mistake is shipping the REST API wrapper to production—it provides an initial dopamine hit but results in payment (in tokens, latency, and failures) later.
+
+The speaker wrote a blog post that went viral titled "Stop Converting REST APIs into MCP Servers" despite having introduced the capability himself. The fastmcp documentation now includes guidance on this, representing a complicated but honest stance: the feature isn't going away due to popularity, but it should be used carefully with full understanding of its limitations.
+
+## Production Deployment Considerations
+
+Several aspects of the case study address production deployment challenges beyond initial design:
+
+**Client variability:** A recurring theme is that MCP client implementations vary significantly in spec compliance and quality. Claude Desktop is specifically cited multiple times for non-compliant behavior, including the structured argument string bug, storing tools in SQLite and ignoring updates, and potentially not respecting server instructions fields. The speaker expresses frustration that Claude Desktop, as the flagship product from MCP's creator (Anthropic), represents a "real missed opportunity" for demonstrating best practices. Claude Code is mentioned more positively.
+
+**Controlling the client:** Many advanced techniques become available when you control the client. For internal deployments or custom applications (like a mobile app with an agentic interface), you can optimize token budgets, implement progressive disclosure, dictate caching strategies, and use non-standard features. For external-facing servers, you must assume the worst possible client and design defensively.
+
+**Observability:** The speaker suggests that within a year, a compelling reason to use MCP servers even in local agent framework scenarios (where you might just write Python tools directly) will be improved observability. Agent frameworks often mask tool call failures, surfacing them back to the LLM rather than providing clear debugging information to developers. MCP infrastructure will provide standardized observability into what failed and why.
+
+**Asynchronous operations:** Near the talk's end, a question addresses the upcoming SEP 1686 proposal adding asynchronous background tasks to MCP. This is characterized as an opt-in mode where clients can request async execution and take responsibility for polling results. From a server design perspective, the same principles apply—the only new question is whether a particular tool should be blocking or non-blocking for the client. This represents infrastructure evolution that doesn't require fundamental design changes.
+
+**Code execution mode:** Another advanced technique mentioned is "code mode," where agents write code that calls MCP tools in sequence rather than making individual tool calls. Anthropic and Cloudflare have blogged about this approach. It sidesteps many orchestration problems but introduces sandboxing and code execution concerns. A fastmcp colleague built an extension supporting this, which is planned for inclusion in an "experiments" or "optimize" feature flag. This represents an emerging pattern for optimizing tool call sequences in specific scenarios.
+
+## Elicitation Pattern
+
+The case study briefly discusses elicitation, an advanced MCP feature allowing tools to request additional input mid-execution through structured prompts. The most common use case is approvals for irreversible side effects—the tool asks for yes/no confirmation before proceeding.
+
+When elicitation works, it's powerful, particularly for user-facing clients where forms can be presented directly to users. However, client support is inconsistent, and implementing elicitation properly is complex. Some clients are automated or backgrounded, making it unclear what to do with elicitation requests. If an LLM simply fills in the elicitation automatically, it may or may not satisfy requirements appropriately.
+
+The speaker wishes elicitation were more widely adopted because it would enable better patterns for tightly coupled arguments (where one argument determines valid values for another) and for confirmations that are more reliable than simply defaulting a confirm parameter to false. However, the current state means designers cannot depend on elicitation being available, limiting its production viability.
+
+## Framework and Ecosystem Context
+
+The case study provides valuable context on fastmcp's role in the LLMOps ecosystem. Introduced days after MCP itself (approximately one year before the talk), fastmcp was called out by David from Anthropic as exemplifying how people should build servers. A version was incorporated into the official SDK. Subsequently, the ecosystem evolved to position fastmcp as the high-level interface while the official SDK focuses on low-level primitives. The two things called "fastmcp" were creating confusion, so the plan is to remove fastmcp vocabulary from the low-level SDK within a couple months, clearly differentiating the layers.
+
+The explosive growth (1.5 million daily downloads) is described as overwhelming, putting the speaker back in an open source maintenance role after several years away from that position. This unprecedented scale provides unique visibility into how thousands of developers build MCP servers, making the observed patterns and anti-patterns highly statistically significant rather than anecdotal.
+
+The speaker references work by others in the space, particularly praising Block's team for their MCP playbook blog post and GitHub's recent best practices documentation. Block's team has been a Prefect customer for six years on the data automation side, and their MCP work is characterized as exceptionally thoughtful and worth studying alongside this talk's recommendations.
+
+The speaker also mentions Marvin, an agent framework they developed as their entry into AI development from a developer experience standpoint, characterized as not "wildly popular" but providing valuable learning. This background in both orchestration software (Apache Airflow PMC membership, founding Prefect) and agent frameworks informs the perspective on when agents should and shouldn't serve as orchestrators.
+
+## Meta-Level Design Philosophy
+
+Perhaps the most important contribution of this case study is establishing product thinking for agent interfaces as a fundamental LLMOps discipline. The speaker repeatedly emphasizes: "You are not building a tool. You are building a user interface." Just as we have human interface guidelines, user experience principles, and user stories for human-facing products, we need analogous frameworks for agent-facing interfaces.
+
+The core argument is that treating agents as perfect oracles leads to poor design. A frequently encountered pushback is "if a human can use an API, why can't an AI?" This question is problematic on multiple levels: it assumes AI perfection (ignoring their fallibility and limitations), and humans don't actually use APIs—they use products with websites, SDKs, clients, and mobile apps carefully designed to shield them from raw APIs. Agents deserve the same consideration: interfaces optimized for their specific strengths and limitations.
+
+The vocabulary of "agentic product design" with "agent stories" rather than user stories represents an attempt to build this discipline systematically. The speaker notes this isn't discussed nearly as much as it should be given how many agents are using how many products in production today.
+
+The curate verb is positioned as potentially the most important word for MCP developers—taking comprehensive information amenable to humans and systematically reducing it to what agents can effectively consume given their discovery, iteration, and context constraints.
+
+## Practical Recommendations Summary
+
+For LLMOps practitioners building MCP servers or similar agent interfaces in production, the actionable takeaways are:
+
+Start with workflow design, not API endpoints. Design top-down from what agents need to accomplish, not bottom-up from available operations. Each tool should solve a complete agent story. Use automated REST-to-MCP conversion only for bootstrapping and initial proof-of-concept, never for production deployment. Strip it out and redesign once basic integration is proven.
+
+Use top-level primitive arguments (strings, booleans, integers) rather than nested structures or dictionaries. Employ literal types or enums for constrained choices. Avoid tightly coupled arguments where possible. Name tools and arguments for agent clarity, not developer elegance or REST convention.
+
+Provide comprehensive documentation in docstrings, use examples carefully (understanding they become implicit contracts), and craft error messages as if they're part of the prompt because they are. Consider progressive disclosure through errors for complex cases. Use MCP annotations like readOnly hints to enable better client behavior.
+
+Treat token budget as the hardest constraint. Understand that discovery happens on every connection and is expensive. Assume 200,000 token context windows and remember your server isn't the only one consuming tokens. Be parsimmonious with descriptions and ruthlessly eliminate unnecessary tools.
+
+Curate down to 50 tools per agent maximum, ideally 5-15. Split servers by role or namespace if needed. Continuously refactor toward simplicity. Treat initial implementations as drafts requiring iterative refinement toward agent-optimized interfaces.
+
+This represents a mature set of production LLMOps practices derived from real-world observation of thousands of implementations, offering a counterbalance to the rapid but often naive adoption of agent technologies in production systems.

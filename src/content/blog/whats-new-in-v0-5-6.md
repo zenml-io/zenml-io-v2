@@ -1,0 +1,58 @@
+---
+title: "What's New in v0.5.6"
+slug: "whats-new-in-v0-5-6"
+draft: true
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "65311d05db5e37f19347b96f"
+  exportedAt: "2026-02-11T13:30:32.135Z"
+  source: "staged-only"
+  lastUpdated: "2024-01-26T10:24:35.373Z"
+  createdOn: "2023-10-19T12:11:49.660Z"
+author: "hamza-tahir"
+category: "zenml"
+tags:
+  - "release-notes"
+  - "zenml"
+date: "2021-12-23T00:00:00.000Z"
+readingTime: 1 Min Read
+mainImage:
+  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/a3e4cbf1/65311cae44672e646fc04baf_balloons-unsplash-0-5-6.jpeg"
+---
+
+**Last updated:** November 3, 2022.
+
+This release fixes some known bugs from previous releases and especially [0.5.5](https://blog.zenml.io/zero-five-six-release/2021-12-13-zero-five-five-release.md). Therefore, upgrading to 0.5.6 is a **breaking change**. You must do the following in order to proceed with this version:
+
+```bash
+cd zenml_enabled_repo
+rm -rf .zen/
+```
+
+And then start again with ZenML init:
+
+```bash
+pip install --upgrade zenml
+zenml init
+```
+
+## New Features
+
+<ul><li>Added zenml example run [EXAMPLE_RUN_NAME] feature: The ability to run an example with one command. In order to run this, do zenml example pull first and see all examples available by running zenml example list.</li><li>Added ability to specify a .dockerignore file before running pipelines on Kubeflow.</li><li>Kubeflow Orchestrator is now leaner and faster.</li><li>Added the describe command group to the CLI for groups stack, orchestrator, artifact-store, and metadata-store. E.g. zenml stack describe</li></ul>
+
+## Bug fixes and minor improvements
+
+<ul><li>Adding StepContext to a branch now invalidates caching by default. Disable explicitly with enable_cache=True.</li><li>Docs updated to reflect minor changes in CLI commands.</li><li>CLI list commands now mentions active component. Try zenml stack list to check this out.</li><li>zenml version now has cooler art.</li></ul>
+
+ZenML 0.5.6 is jam-packed with new features to take your ML pipelines to the next level. In this blog post we will highlight our three biggest new features: Kubeflow Pipelines, CLI support for our integrations and Standard Interfaces. That’s right, Standard Interfaces are back!
+
+For a detailed look at what’s changed, give [our full release notes](https://github.com/zenml-io/zenml/releases/tag/0.5.6) a glance.
+
+## Contribute to ZenML!
+
+Join our [Slack](https://zenml.io/slack-invite/) to let us know what you think we should build next!
+
+Keep your eyes open for future releases and make sure to vote on your favorite feature of our [roadmap](https://zenml.io/roadmap) to make sure it gets implemented as soon as possible.
+
+[Photo by [Adi Goldstein](https://unsplash.com/@adigold1?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com/?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)]
+

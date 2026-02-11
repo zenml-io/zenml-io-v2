@@ -1,0 +1,71 @@
+---
+title: "EuroRate Predictor"
+slug: "eurorate-predictor"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "67e0ee8a7ae852dc72b45d4e"
+  exportedAt: "2026-02-11T13:30:32.135Z"
+  source: "live"
+  lastPublished: "2025-08-26T08:34:18.968Z"
+  lastUpdated: "2025-08-26T08:34:06.647Z"
+  createdOn: "2025-03-24T05:32:58.938Z"
+description: "Turn European Central Bank data into actionable interest rate forecasts with this comprehensive MLOps solution."
+githubUrl: "https://github.com/zenml-io/zenml-projects/tree/main/eurorate-predictor"
+mainImageLink: "https://public-flavor-logos.s3.eu-central-1.amazonaws.com/projects/2.jpg"
+previewImage:
+  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/cadf5fdb/67e242f1a208f582c1a63b7b_zenml_airflow_vertex_gcp_mlops.png"
+tags:
+  - "etl"
+  - "time-series"
+  - "feature-engineering"
+  - "regression"
+  - "workflow-orchestration"
+tools:
+  - "zenml"
+  - "cloud-composer"
+  - "airflow"
+  - "vertex-ai-16c14"
+  - "bigquery"
+  - "xgboost"
+  - "gcp"
+createdAt: "2025-03-24T11:02:58.100Z"
+updatedAt: "2025-08-26T08:33:58.317Z"
+projectId: "eurorate-predictor"
+seo:
+  title: "EuroRate Predictor"
+  description: "Turn European Central Bank data into actionable interest rate forecasts with this comprehensive MLOps solution."
+  canonical: "https://www.zenml.io/projects/eurorate-predictor"
+  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/cadf5fdb/67e242f1a208f582c1a63b7b_zenml_airflow_vertex_gcp_mlops.png"
+  ogTitle: "EuroRate Predictor"
+  ogDescription: "Turn European Central Bank data into actionable interest rate forecasts with this comprehensive MLOps solution."
+---
+
+#### ETL Pipeline
+
+Pipeline that extracts raw ECB interest rate data, transforms and cleans it.
+
+#### Feature Engineering Pipeline
+
+Pipeline that augments the transformed dataset with additional features.
+
+#### Model Training Pipeline
+
+Pipeline that trains an XGBoost regression model and evaluates it for potential promotion.#### Stack Components
+
+<ul><li><strong>Orchestrator:</strong> cloud-composer</li><li><strong>Artifact Store:</strong> gcs</li><li><strong>Step Operator:</strong> vertex-ai</li></ul>EuroRate Predictor transforms European Central Bank data into accurate interest rate forecasts, empowering financial decision-makers with reliable predictive insights.
+
+### What It Does
+
+EuroRate Predictor delivers production-ready interest rate forecasts through an enterprise-grade MLOps solution. It processes raw ECB data through automated pipelines that ensure data quality, feature richness, and model accuracy, making financial predictions accessible for both development and production environments.
+
+### How It Works
+
+<ul>
+<li>Extracts raw interest rate data from authoritative European Central Bank sources</li>
+<li>Transforms financial data through robust cleaning and standardization processes</li>
+<li>Engineers domain-specific features optimized for time-series financial prediction</li>
+<li>Trains advanced XGBoost regression models on Google's Vertex AI platform</li>
+<li>Evaluates models rigorously to ensure prediction accuracy meets quality thresholds</li>
+<li>Promotes only high-performing models to production automatically</li>
+</ul>
