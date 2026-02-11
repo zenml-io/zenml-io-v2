@@ -1,0 +1,42 @@
+---
+/**
+ * Imprint — legal company information page (required by German law).
+ *
+ * Uses ContentLayout for the prose wrapper, but the content is a simple
+ * three-column grid rather than long-form text.
+ *
+ * Route: /imprint
+ */
+import ContentLayout from "../layouts/ContentLayout.astro";
+---
+
+<ContentLayout
+  title="Imprint — ZenML"
+  description="Legal company information for ZenML GmbH, Munich, Germany."
+>
+  <h1>Imprint</h1>
+
+  <div class="not-prose mt-8 grid grid-cols-1 gap-8 sm:grid-cols-3">
+    <div>
+      <p class="text-sm text-gray-700">
+        <strong>ZenML GmbH</strong><br /><br />
+        Schellingstr. 36<br />
+        80799 Munich, Germany
+      </p>
+    </div>
+    <div>
+      <p class="text-sm text-gray-700">
+        <strong>Commercial Register:</strong><br /><br />
+        Munich HRB 268487<br />
+        VAT-ID: DE347731347
+      </p>
+    </div>
+    <div>
+      <p class="text-sm text-gray-700">
+        <strong>Represented by:</strong><br /><br />
+        Adam Probst<br />
+        Hamza Tahir
+      </p>
+    </div>
+  </div>
+</ContentLayout>

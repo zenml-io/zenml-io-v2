@@ -1,0 +1,32 @@
+---
+/**
+ * CLA — Contributor License Agreement redirect.
+ *
+ * Matches Webflow behavior: redirects to the CLA GitHub Gist.
+ * Uses noindex + meta refresh + JS redirect for maximum compatibility.
+ *
+ * Route: /cla
+ */
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const CLA_URL = "https://gist.github.com/htahir1/5fb2645b62662f2c723c529f7d9fca09";
+---
+
+<BaseLayout title="CLA — ZenML" noindex>
+  <main class="flex min-h-[40vh] items-center justify-center px-4 py-16">
+    <div class="text-center">
+      <p class="text-lg text-gray-600">
+        Redirecting to the ZenML Contributor License Agreement…
+      </p>
+      <p class="mt-4 text-sm text-gray-500">
+        If you are not redirected automatically,
+        <a href={CLA_URL} class="text-zenml-500 underline hover:text-zenml-600">
+          click here
+        </a>.
+      </p>
+    </div>
+  </main>
+  <script define:vars={{ CLA_URL }}>
+    window.location.replace(CLA_URL);
+  </script>
+</BaseLayout>

@@ -1,0 +1,37 @@
+---
+/**
+ * 404 — custom not-found page.
+ *
+ * Uses BaseLayout directly (not ContentLayout) because this is a utility
+ * page with a visual + CTA, not long-form prose content.
+ *
+ * Route: Astro serves this as /404.html automatically.
+ */
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Button from "../components/Button.astro";
+---
+
+<BaseLayout title="Page Not Found — ZenML" noindex>
+  <main class="flex min-h-[60vh] items-center justify-center px-4 py-16">
+    <div class="flex flex-col items-center gap-8 md:flex-row md:gap-16">
+      <img
+        src="/images/404.svg"
+        alt=""
+        class="w-64 max-w-full md:w-80"
+        width="320"
+        height="320"
+      />
+      <div class="text-center md:text-left">
+        <h1 class="text-3xl font-bold text-gray-900 sm:text-4xl">
+          Oops! Page Not Found
+        </h1>
+        <p class="mt-4 max-w-md text-lg text-gray-600">
+          The page you are looking for doesn't exist or has been moved.
+        </p>
+        <div class="mt-8">
+          <Button href="/" size="lg">Go back home</Button>
+        </div>
+      </div>
+    </div>
+  </main>
+</BaseLayout>
