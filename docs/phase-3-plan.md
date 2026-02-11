@@ -2,10 +2,25 @@
 
 **Created:** 2026-02-11
 **Last Updated:** 2026-02-11 (post-critical review)
-**Status:** Ready to start — Phase 2 complete, industryTags fixed, content layer validated
+**Status:** 3A+3B COMPLETE — ready for 3C (Other CMS Collection Pages)
 **Prerequisites:**
-- Phase 2 complete (2,392 MDX files, 17 collections, all validation passing)
+- Phase 2 complete (2,392 content files, 17 collections, all validation passing)
+- **Content format:** Switched from .mdx to .md (MDX v2 too strict for Webflow HTML)
 - **industryTags extraction fixed** (commit 900cda5) — all 1,453 LLMOps entries now have industry filtering data
+
+### 3A Implementation Progress (2026-02-11)
+
+| # | Task | Status | Files |
+|---|------|--------|-------|
+| 1 | SEO utility | ✅ | `src/lib/seo.ts` (SEOProps interface, resolveSeo, buildCanonical) |
+| 2 | Constants + CSS | ✅ | `src/lib/constants.ts` (DEFAULT_OG_IMAGE), `src/styles/global.css` (.prose scope + raw HTML compat) |
+| 3 | UI primitives | ✅ | `src/components/{Button,Card,Badge,Image}.astro` |
+| 4 | Navigation data | ✅ | `src/lib/navigation.ts` (full dropdown/link/CTA data from Webflow export) |
+| 5 | Navigation component | ✅ | `src/components/Navigation.astro` (desktop dropdowns + mobile hamburger) |
+| 6 | Footer | ✅ | `src/lib/footer.ts` + `src/components/Footer.astro` (social SVG icons inlined) |
+| 7 | BaseLayout upgrade | ✅ | SEO meta, nav/footer chrome, Plausible analytics, updated index.astro |
+| 8 | Content layouts | ✅ | `src/layouts/ContentLayout.astro` (prose wrapper) + `BlogLayout.astro` (author/date/tags) |
+| 9 | Build validation | ✅ | `pnpm build` passes cleanly (commit 79491b0) |
 
 ---
 
