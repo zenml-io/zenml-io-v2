@@ -1,0 +1,103 @@
+---
+/**
+ * Integrations listing page.
+ *
+ * Grid of all integrations, grouped by integration type.
+ * Route: /integrations
+ */
+import { getCollection, getEntry } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Badge from "../../components/Badge.astro";
+
+// Get all published integrations
+const allIntegrations = (
+  await getCollection("integrations", ({ data }) => !data.draft)
+).sort((a, b) => a.data.title.localeCompare(b.data.title));
+
+// Get all integration types for filter display
+const allTypes = await getCollection("integration-types");
+const typeMap = new Map(allTypes.map((t) => [t.data.slug, t.data.name]));
+
+// Group integrations by type
+const grouped = new Map<string, typeof allIntegrations>();
+for (const integration of allIntegrations) {
+  const type = integration.data.integrationType || "other";
+  if (!grouped.has(type)) grouped.set(type, []);
+  grouped.get(type)!.push(integration);
+}
+
+// Sort groups by type name
+const sortedGroups = [...grouped.entries()].sort((a, b) => {
+  const nameA = typeMap.get(a[0]) || a[0];
+  const nameB = typeMap.get(b[0]) || b[0];
+  return nameA.localeCompare(nameB);
+});
+---
+
+<BaseLayout
+  title="Integrations - ZenML"
+  description="Browse ZenML's integrations for orchestrators, experiment trackers, artifact stores, and more."
+>
+  <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+    <header class="mb-12">
+      <h1 class="text-4xl font-bold tracking-tight text-gray-900">Integrations</h1>
+      <p class="mt-4 text-lg text-gray-600">
+        Connect ZenML with your favorite MLOps tools. {allIntegrations.length} integrations across {allTypes.length} categories.
+      </p>
+    </header>
+
+    {/* Type filter chips */}
+    <div class="mb-10 flex flex-wrap gap-2">
+      {sortedGroups.map(([typeSlug, integrations]) => (
+        <a
+          href={`#${typeSlug}`}
+          class="inline-flex items-center gap-1.5 rounded-full border border-gray-200 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 transition-colors hover:border-primary-300 hover:bg-primary-50 hover:text-primary-700"
+        >
+          {typeMap.get(typeSlug) || typeSlug}
+          <span class="text-xs text-gray-400">({integrations.length})</span>
+        </a>
+      ))}
+    </div>
+
+    {/* Grouped integration grids */}
+    {sortedGroups.map(([typeSlug, integrations]) => (
+      <section id={typeSlug} class="mb-12">
+        <h2 class="mb-6 flex items-center gap-3 text-2xl font-bold text-gray-900">
+          {typeMap.get(typeSlug) || typeSlug}
+          <span class="text-base font-normal text-gray-400">({integrations.length})</span>
+        </h2>
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {integrations.map((integration) => (
+            <a
+              href={`/integrations/${integration.data.slug}`}
+              class="group flex items-center gap-3 rounded-lg border border-gray-200 bg-white p-4 transition-shadow hover:shadow-md"
+            >
+              {integration.data.logo ? (
+                <img
+                  src={integration.data.logo.url}
+                  alt={integration.data.logo.alt || integration.data.title}
+                  class="h-10 w-10 shrink-0 rounded-lg object-contain"
+                  loading="lazy"
+                />
+              ) : (
+                <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gray-100 text-sm font-bold text-gray-400">
+                  {integration.data.title[0]}
+                </div>
+              )}
+              <div class="min-w-0">
+                <h3 class="truncate font-medium text-gray-900 group-hover:text-primary-600">
+                  {integration.data.title}
+                </h3>
+                {integration.data.shortDescription && (
+                  <p class="mt-0.5 truncate text-xs text-gray-500">
+                    {integration.data.shortDescription}
+                  </p>
+                )}
+              </div>
+            </a>
+          ))}
+        </div>
+      </section>
+    ))}
+  </div>
+</BaseLayout>

@@ -1,0 +1,63 @@
+---
+/**
+ * Team listing page.
+ *
+ * Grid of all team members, sorted by order field (then alphabetically).
+ * Route: /team
+ */
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+// Get all published team members, sorted by order then name
+const allMembers = (
+  await getCollection("team", ({ data }) => !data.draft)
+).sort((a, b) => {
+  // Sort by order first (lower = earlier), then alphabetically
+  const orderA = a.data.order ?? 999;
+  const orderB = b.data.order ?? 999;
+  if (orderA !== orderB) return orderA - orderB;
+  return a.data.title.localeCompare(b.data.title);
+});
+---
+
+<BaseLayout
+  title="Team - ZenML"
+  description="Meet the people behind ZenML."
+>
+  <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+    <header class="mb-12">
+      <h1 class="text-4xl font-bold tracking-tight text-gray-900">Our Team</h1>
+      <p class="mt-4 text-lg text-gray-600">
+        Meet the people building the future of MLOps.
+      </p>
+    </header>
+
+    <div class="grid gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+      {allMembers.map((member) => (
+        <a
+          href={`/team/${member.data.slug}`}
+          class="group flex flex-col items-center text-center"
+        >
+          {member.data.photo ? (
+            <img
+              src={member.data.photo.url}
+              alt={member.data.photo.alt || member.data.title}
+              class="h-40 w-40 rounded-2xl object-cover transition-transform group-hover:scale-105"
+              loading="lazy"
+            />
+          ) : (
+            <div class="flex h-40 w-40 items-center justify-center rounded-2xl bg-gray-100 text-4xl font-bold text-gray-300">
+              {member.data.title[0]}
+            </div>
+          )}
+          <h2 class="mt-4 font-semibold text-gray-900 group-hover:text-primary-600">
+            {member.data.title}
+          </h2>
+          {member.data.position && (
+            <p class="mt-1 text-sm text-gray-500">{member.data.position}</p>
+          )}
+        </a>
+      ))}
+    </div>
+  </div>
+</BaseLayout>

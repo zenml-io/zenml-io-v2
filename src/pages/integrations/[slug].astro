@@ -1,0 +1,122 @@
+---
+/**
+ * Integration detail page.
+ *
+ * Renders individual integration pages with logo, description, features,
+ * and links to docs/GitHub. Resolves integration type for badge display.
+ *
+ * Generates /integrations/<slug> for each published integration.
+ */
+import { getCollection, getEntry, render } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Badge from "../../components/Badge.astro";
+
+export async function getStaticPaths() {
+  const integrations = await getCollection("integrations", ({ data }) => !data.draft);
+  return integrations.map((integration) => ({
+    params: { slug: integration.data.slug },
+    props: { integration },
+  }));
+}
+
+const { integration } = Astro.props;
+const { Content } = await render(integration);
+
+// Resolve integration type
+const typeEntry = integration.data.integrationType
+  ? await getEntry("integration-types", integration.data.integrationType)
+  : undefined;
+
+// SEO
+const seoTitle = integration.data.seo?.title || `${integration.data.title} Integration - ZenML`;
+const seoDescription = integration.data.seo?.description || integration.data.shortDescription;
+const ogImage = integration.data.seo?.ogImage || integration.data.mainImage?.url;
+---
+
+<BaseLayout
+  title={seoTitle}
+  description={seoDescription}
+  ogImage={ogImage}
+  ogTitle={integration.data.seo?.ogTitle}
+  ogDescription={integration.data.seo?.ogDescription}
+  canonical={integration.data.seo?.canonical}
+>
+  <div class="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
+    {/* Breadcrumb */}
+    <nav class="mb-8 text-sm text-gray-500">
+      <a href="/integrations" class="hover:text-primary-600">Integrations</a>
+      {typeEntry && (
+        <>
+          <span class="mx-2">/</span>
+          <a href={`/integration-type/${typeEntry.data.slug}`} class="hover:text-primary-600">
+            {typeEntry.data.name}
+          </a>
+        </>
+      )}
+      <span class="mx-2">/</span>
+      <span class="text-gray-900">{integration.data.title}</span>
+    </nav>
+
+    {/* Header */}
+    <header class="mb-10 flex items-start gap-6">
+      {integration.data.logo && (
+        <img
+          src={integration.data.logo.url}
+          alt={integration.data.logo.alt || integration.data.title}
+          class="h-16 w-16 shrink-0 rounded-xl object-contain"
+        />
+      )}
+      <div>
+        <h1 class="text-3xl font-bold tracking-tight text-gray-900">
+          {integration.data.title}
+        </h1>
+        {integration.data.shortDescription && (
+          <p class="mt-2 text-lg text-gray-600">{integration.data.shortDescription}</p>
+        )}
+        <div class="mt-3 flex flex-wrap items-center gap-3">
+          {typeEntry && (
+            <Badge href={`/integration-type/${typeEntry.data.slug}`} variant="primary">
+              {typeEntry.data.name}
+            </Badge>
+          )}
+          {integration.data.docsUrl && (
+            <a
+              href={integration.data.docsUrl}
+              class="inline-flex items-center gap-1 text-sm font-medium text-primary-600 hover:text-primary-700"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Documentation &rarr;
+            </a>
+          )}
+          {integration.data.githubUrl && (
+            <a
+              href={integration.data.githubUrl}
+              class="inline-flex items-center gap-1 text-sm font-medium text-gray-600 hover:text-gray-900"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              GitHub &rarr;
+            </a>
+          )}
+        </div>
+      </div>
+    </header>
+
+    {/* Main image */}
+    {integration.data.mainImage && (
+      <div class="mb-10 overflow-hidden rounded-xl border border-gray-200">
+        <img
+          src={integration.data.mainImage.url}
+          alt={integration.data.mainImage.alt || `${integration.data.title} integration`}
+          class="w-full object-cover"
+        />
+      </div>
+    )}
+
+    {/* Body content (features list, code examples, etc.) */}
+    <div class="prose prose-gray max-w-none">
+      <Content />
+    </div>
+  </div>
+</BaseLayout>

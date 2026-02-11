@@ -1,0 +1,71 @@
+---
+/**
+ * Team member detail page.
+ *
+ * Renders individual team member pages with photo, bio, and social links.
+ * Generates /team/<slug> for each published team member.
+ */
+import { getCollection, render } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+export async function getStaticPaths() {
+  const members = await getCollection("team", ({ data }) => !data.draft);
+  return members.map((member) => ({
+    params: { slug: member.data.slug },
+    props: { member },
+  }));
+}
+
+const { member } = Astro.props;
+const { Content } = await render(member);
+---
+
+<BaseLayout
+  title={`${member.data.title} - ZenML Team`}
+  description={member.data.bio || `${member.data.title} at ZenML.`}
+>
+  <div class="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
+    {/* Back link */}
+    <a href="/team" class="mb-8 inline-block text-sm text-primary-600 hover:text-primary-700">
+      &larr; Back to team
+    </a>
+
+    <div class="flex flex-col items-start gap-8 md:flex-row">
+      {/* Photo */}
+      {member.data.photo && (
+        <img
+          src={member.data.photo.url}
+          alt={member.data.photo.alt || member.data.title}
+          class="h-48 w-48 shrink-0 rounded-2xl object-cover"
+        />
+      )}
+
+      {/* Info */}
+      <div>
+        <h1 class="text-3xl font-bold tracking-tight text-gray-900">{member.data.title}</h1>
+        {member.data.position && (
+          <p class="mt-2 text-lg text-primary-600">{member.data.position}</p>
+        )}
+
+        {/* Social links */}
+        <div class="mt-4 flex gap-3">
+          {member.data.email && (
+            <a href={`mailto:${member.data.email}`} class="text-sm text-gray-600 hover:text-gray-900">
+              Email
+            </a>
+          )}
+          {member.data.linkedin && (
+            <a href={member.data.linkedin} class="text-sm text-gray-600 hover:text-gray-900" target="_blank" rel="noopener noreferrer">
+              LinkedIn
+            </a>
+          )}
+        </div>
+
+        {/* Bio content */}
+        <div class="prose prose-gray mt-6 max-w-none">
+          <Content />
+        </div>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

@@ -1,0 +1,68 @@
+---
+/**
+ * Projects listing page.
+ *
+ * Grid of all published ZenML projects.
+ * Route: /projects
+ */
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Badge from "../../components/Badge.astro";
+
+// Get all published projects
+const allProjects = (
+  await getCollection("projects", ({ data }) => !data.draft)
+).sort((a, b) => a.data.title.localeCompare(b.data.title));
+---
+
+<BaseLayout
+  title="Projects - ZenML"
+  description="Explore example projects built with ZenML."
+>
+  <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+    <header class="mb-12">
+      <h1 class="text-4xl font-bold tracking-tight text-gray-900">Projects</h1>
+      <p class="mt-4 text-lg text-gray-600">
+        Explore example projects built with ZenML. {allProjects.length} projects to learn from.
+      </p>
+    </header>
+
+    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {allProjects.map((project) => (
+        <a
+          href={`/projects/${project.data.slug}`}
+          class="group flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white transition-shadow hover:shadow-md"
+        >
+          {project.data.mainImageLink && (
+            <div class="aspect-[16/9] overflow-hidden">
+              <img
+                src={project.data.mainImageLink}
+                alt={project.data.title}
+                class="h-full w-full object-cover transition-transform group-hover:scale-105"
+                loading="lazy"
+              />
+            </div>
+          )}
+          <div class="flex flex-1 flex-col p-5">
+            <h2 class="text-lg font-semibold text-gray-900 group-hover:text-primary-600">
+              {project.data.title}
+            </h2>
+            {project.data.description && (
+              <p class="mt-2 line-clamp-2 text-sm text-gray-600">{project.data.description}</p>
+            )}
+            {project.data.tools.length > 0 && (
+              <div class="mt-auto flex flex-wrap gap-1.5 pt-4">
+                {project.data.tools.slice(0, 4).map((tool: string) => (
+                  <Badge variant="gray">{tool}</Badge>
+                ))}
+                {project.data.tools.length > 4 && (
+                  <Badge variant="gray">+{project.data.tools.length - 4}</Badge>
+                )}
+              </div>
+            )}
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</BaseLayout>

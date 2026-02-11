@@ -1,0 +1,161 @@
+---
+/**
+ * Compare/VS detail page.
+ *
+ * Renders comparison pages (e.g., ZenML vs MLflow) with:
+ * - Hero section with tool icons and headline
+ * - Advantages list (fetched from advantages collection)
+ * - Comparison table (from body content)
+ * - Customer testimonial quote (fetched from quotes collection)
+ *
+ * Generates /compare/<slug> for each published compare item.
+ */
+import { getCollection, getEntry, render } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Badge from "../../components/Badge.astro";
+
+export async function getStaticPaths() {
+  const compareItems = await getCollection("compare", ({ data }) => !data.draft);
+  return compareItems.map((item) => ({
+    params: { slug: item.data.slug },
+    props: { item },
+  }));
+}
+
+const { item } = Astro.props;
+const { Content } = await render(item);
+
+// Resolve advantages
+const advantageEntries = await Promise.all(
+  item.data.advantages.map((slug: string) => getEntry("advantages", slug))
+);
+const advantages = advantageEntries.filter(Boolean);
+
+// Resolve quote
+const quoteEntry = item.data.quote
+  ? await getEntry("quotes", item.data.quote)
+  : undefined;
+
+// SEO
+const seoTitle = item.data.seo?.title || `${item.data.title} - ZenML`;
+const seoDescription = item.data.seo?.description || item.data.seoDescription || item.data.heroText;
+const ogImage = item.data.seo?.ogImage || item.data.openGraphImage?.url;
+---
+
+<BaseLayout
+  title={seoTitle}
+  description={seoDescription}
+  ogImage={ogImage}
+  ogTitle={item.data.seo?.ogTitle}
+  ogDescription={item.data.seo?.ogDescription}
+  canonical={item.data.seo?.canonical}
+>
+  <div class="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
+    {/* Hero */}
+    <header class="mb-12 text-center">
+      <div class="mb-6 flex items-center justify-center gap-4">
+        {/* ZenML logo placeholder */}
+        <div class="flex h-14 w-14 items-center justify-center rounded-xl bg-primary-100 text-xl font-bold text-primary-700">
+          Z
+        </div>
+        <span class="text-2xl font-light text-gray-400">vs</span>
+        {item.data.toolIcon ? (
+          <img
+            src={item.data.toolIcon.url}
+            alt={item.data.toolName || "Competitor"}
+            class="h-14 w-14 rounded-xl object-contain"
+          />
+        ) : (
+          <div class="flex h-14 w-14 items-center justify-center rounded-xl bg-gray-100 text-xl font-bold text-gray-400">
+            {(item.data.toolName || "?")[0]}
+          </div>
+        )}
+      </div>
+      <h1 class="text-4xl font-bold tracking-tight text-gray-900">
+        {item.data.headline || item.data.title}
+      </h1>
+      {item.data.heroText && (
+        <p class="mx-auto mt-6 max-w-3xl text-lg text-gray-600">
+          {item.data.heroText}
+        </p>
+      )}
+      {item.data.learnMoreUrl && (
+        <a
+          href={item.data.learnMoreUrl}
+          class="mt-6 inline-block rounded-lg bg-primary-600 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-primary-700"
+        >
+          Try ZenML Free
+        </a>
+      )}
+    </header>
+
+    {/* Advantages */}
+    {advantages.length > 0 && (
+      <section class="mb-12">
+        <h2 class="mb-6 text-2xl font-bold text-gray-900">Key Advantages</h2>
+        <div class="grid gap-6 md:grid-cols-3">
+          {advantages.map((adv) => (
+            <div class="rounded-lg border border-gray-200 bg-white p-5">
+              {adv!.data.image && (
+                <img
+                  src={adv!.data.image.url}
+                  alt={adv!.data.title}
+                  class="mb-4 h-12 w-12 object-contain"
+                />
+              )}
+              <h3 class="font-semibold text-gray-900">{adv!.data.title}</h3>
+              <p class="mt-2 text-sm text-gray-600">{adv!.data.content}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+    )}
+
+    {/* Comparison table (from body content) */}
+    <section class="mb-12">
+      <h2 class="mb-6 text-2xl font-bold text-gray-900">Feature Comparison</h2>
+      <div class="compare-table overflow-x-auto rounded-lg border border-gray-200">
+        <div class="prose prose-gray max-w-none">
+          <Content />
+        </div>
+      </div>
+    </section>
+
+    {/* Quote / Testimonial */}
+    {quoteEntry && (
+      <section class="mb-12 rounded-xl bg-gray-50 p-8">
+        <blockquote class="text-lg italic text-gray-700">
+          &ldquo;{quoteEntry.data.text}&rdquo;
+        </blockquote>
+        <div class="mt-4 flex items-center gap-3">
+          {quoteEntry.data.avatar && (
+            <img
+              src={quoteEntry.data.avatar.url}
+              alt={quoteEntry.data.author}
+              class="h-10 w-10 rounded-full object-cover"
+            />
+          )}
+          <div>
+            <p class="font-semibold text-gray-900">{quoteEntry.data.author}</p>
+            <p class="text-sm text-gray-500">{quoteEntry.data.position}</p>
+          </div>
+        </div>
+      </section>
+    )}
+
+    {/* CTA */}
+    {item.data.ctaHeadline && (
+      <section class="text-center">
+        <h2 class="text-2xl font-bold text-gray-900">{item.data.ctaHeadline}</h2>
+        {item.data.learnMoreUrl && (
+          <a
+            href={item.data.learnMoreUrl}
+            class="mt-4 inline-block rounded-lg bg-primary-600 px-8 py-3 text-sm font-semibold text-white transition-colors hover:bg-primary-700"
+          >
+            Get Started
+          </a>
+        )}
+      </section>
+    )}
+  </div>
+</BaseLayout>
