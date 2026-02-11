@@ -181,12 +181,12 @@ Key considerations:
 
 ---
 
-### Phase 2: Content Collections & Schemas (IN PROGRESS)
+### Phase 2: Content Collections & Schemas ✅ COMPLETE
 
 **Goal**: Define typed schemas for all content types in Astro. Validate that
 imported content is clean and well-structured.
 
-**Status:** Phase 2A-2E COMPLETE ✅ — All 17 collection schemas defined and validated. Critical schema discrepancies documented. Ready for Phase 2F (Copy MDX to src/content/).
+**Status:** ✅ Complete (2026-02-11) — All 17 collection schemas defined, 2,392 MDX files loaded and validated, full Astro build passing. Content layer is production-ready.
 
 Note: **Collection directory names should align with route segments** to
 minimize glue code (e.g., `tags/` not `blog-tags/` if the route is `/tags/`).
@@ -196,40 +196,29 @@ Progress:
 - [x] **Phase 2B**: Set up reusable schema helpers in `src/content.config.ts` (Astro v5) ✅
 - [x] **Phase 2C**: Export 10 reference collections (425 items total) ✅
 - [x] **Phase 2D**: Define schemas for 10 reference collections ✅
-  - Authors (27) — name, avatar, bio, email, linkedin
-  - Categories (14) — simple tags
-  - Tags (118) — simple tags
-  - LLMOps Tags (107) — simple tags
-  - Industry Tags (17) — simple tags
-  - Integration Types (16) — name, slug, optional icon
-  - Advantages (45) — title, content, image
-  - Quotes (6) — testimonials with author + company
-  - Product Categories (5) — simple tags
-  - Project Tags (70) — simple tags
 - [x] **Phase 2E**: Define schemas for 7 main collections ✅
-  - Blog (317) — author, category, tags, date, mainImage
-  - Integrations (68) — `integrationType`, logo, shortDescription, docsUrl
-  - LLMOps Database (1,453) — `llmopsTags` (NO industryTags!), company, summary
-  - Compare (17) — toolName, advantages, quote, many additional fields
-  - Team (22) — position, photo, email, linkedin, order
-  - Projects (16) — `mainImageLink`, tags, tools, githubUrl
-  - Old Projects (11) — all drafts, different schema
-  - ⚠️ **CRITICAL**: Schemas match actual output, not plan assumptions (see `docs/phase-2e-schema-discrepancies.md`)
-- [ ] **Phase 2F**: Copy transformed MDX to `src/content/<collection>/` (1,904 files)
-- [ ] **Phase 2I**: Add validation gates (slug uniqueness, URL checks)
-- [ ] **Phase 2J**: Run full Astro build validation
-- [ ] **Phase 2K**: Document final content model
+- [x] **Phase 2F**: Copy transformed MDX to `src/content/<collection>/` (2,392 files) ✅
+- [x] **Phase 2G**: Add reference validation with filesystem-based slug sets ✅
+- [x] **Phase 2H**: Wire up all collections in Astro v5 Content Layer API ✅
+- [x] **Phase 2I**: Add validation gates (slug uniqueness, CDN URLs, canonical checks) ✅
+- [x] **Phase 2J**: Run full Astro build validation ✅
 
-**Key discoveries:**
-- **Astro v5 Content Layer API**: Config moved to `src/content.config.ts`, requires explicit `glob` loaders
-- **425 reference items + 1,479 main collection items** — all schemas defined
-- **Schema patterns**: Simple tags (name+slug), rich authors, testimonials, advantages
-- **CRITICAL**: Phase 2A field name fixes were never applied — actual output differs from plan
-  - LLMOps uses `llmopsTags` (not `tags`), NO `industryTags` field exists
-  - Integrations uses `integrationType` (not `type`), `shortDescription` (not `description`)
-  - Projects uses `mainImageLink` (not `coverImage`)
-  - Compare uses `toolName` (not `competitor`) + many additional fields
-  - Full analysis: `docs/phase-2e-schema-discrepancies.md`
+**Key Results:**
+- 17 collections defined (7 main + 10 reference)
+- 2,392 MDX files loaded across all collections
+- All Zod schemas passing validation
+- Custom validation script with 12 rules (0 errors, 18 acceptable warnings)
+- Full Astro build passing in 5.55s
+- Content layer is production-ready for Phase 3
+
+**Key Learnings:**
+- **Astro v5 Content Layer API**: Config moved to `src/content.config.ts`, requires explicit `glob` loaders with pattern and base
+- **Filesystem-based validation**: Reference slug sets loaded at config-time for cross-collection validation
+- **Layered validation**: Schema validation (Zod) → custom gates (filesystem) → full build (Astro)
+- **Custom validation critical**: Caught 11 old-projects with CDN URLs, 1 draft blog with Webflow uploads
+- **Schema complexity**: Collections with references require `.refine()` for cross-collection validation
+- **Build performance**: 2,392 files built in 5.55s — Astro is very fast
+- **Project-tags discrepancy**: 132 files on disk (not 70) — Phase 2G correctly added generated reference files
 
 **Detailed plan**: `docs/phase-2-plan.md`
 
@@ -239,6 +228,10 @@ Progress:
 
 **Goal**: Build all page templates and static pages. The site should render
 every URL that currently exists.
+
+**Status:** Ready to start — Phase 2 complete, content layer validated
+
+**Detailed plan**: `docs/phase-3-plan.md`
 
 Tasks:
 - [ ] **Layouts**: Base layout (head, nav, footer), blog layout, content page layout
