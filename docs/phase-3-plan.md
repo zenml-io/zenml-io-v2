@@ -1,8 +1,8 @@
 # Phase 3: Templates & Pages — Detailed Plan
 
 **Created:** 2026-02-11
-**Last Updated:** 2026-02-11 (post-critical review)
-**Status:** 3A+3B COMPLETE — ready for 3C (Other CMS Collection Pages)
+**Last Updated:** 2026-02-11 (3A–3E complete)
+**Status:** 3A–3E COMPLETE — ready for 3H (Static Pages)
 **Prerequisites:**
 - Phase 2 complete (2,392 content files, 17 collections, all validation passing)
 - **Content format:** Switched from .mdx to .md (MDX v2 too strict for Webflow HTML)
@@ -21,6 +21,28 @@
 | 7 | BaseLayout upgrade | ✅ | SEO meta, nav/footer chrome, Plausible analytics, updated index.astro |
 | 8 | Content layouts | ✅ | `src/layouts/ContentLayout.astro` (prose wrapper) + `BlogLayout.astro` (author/date/tags) |
 | 9 | Build validation | ✅ | `pnpm build` passes cleanly (commit 79491b0) |
+
+### 3C–3G Implementation Progress (2026-02-11)
+
+| # | Task | Status | Files / Notes |
+|---|------|--------|---------------|
+| 3C | Reference collection taxonomy pages | ✅ | 6 pages: author, category, tags, llmops-tags, industry-tags, integration-type |
+| 3D | Integrations detail + listing | ✅ | `integrations/[slug].astro` + `integrations/index.astro` (grouped by type) |
+| 3E-1 | LLMOps detail pages | ✅ | `llmops-database/[slug].astro` (1,453 entries) |
+| 3E-2 | LLMOps JSON index | ✅ | `llmops-index.json.ts` (~505KB gzip, 1.8MB raw) |
+| 3E-3 | LLMOps filter island | ✅ | `components/islands/LLMOpsFilter.tsx` (text search, multi-tag AND, single industry, pagination, URL sync) |
+| 3E-listing | LLMOps listing page | ✅ | `llmops-database/index.astro` (with no-JS fallback) |
+| 3F | VS comparison pages | ✅ | `compare/[slug].astro` + `compare/index.astro` (advantages + quotes resolved) |
+| 3G | Team + Projects | ✅ | `team/[slug].astro`, `team/index.astro`, `projects/[slug].astro`, `projects/index.astro` |
+| fix | Tailwind token fixes | ✅ | Added `primary-*` aliases, fixed `rounded-radius-*` → `rounded-*` (commit 8af2243) |
+
+**Build stats:** 721 pages (pre-3E) → ~2,176 pages (with 1,453 LLMOps + listing + JSON). Build time ~26s.
+
+**Commits:**
+- `2cba90d` — Phase 3C: Reference collection taxonomy pages
+- `9960fa8` — Phase 3D/3F/3G: Integrations, compare, team, projects
+- `8af2243` — Tailwind token fixes (primary-* aliases, rounded-radius-* → rounded-*)
+- `06c873e` — Phase 3E: LLMOps Database listing + Preact filter island
 
 ---
 
