@@ -10,7 +10,7 @@ customize freely.
 - **Traffic**: ~7k unique visitors / ~10k page views per week (and growing)
 - **Hosting target**: Cloudflare Pages (confirmed, deployed at `zenml-io-v2.pages.dev`)
 - **Context**: This is being built as part of a Claude hackathon using Opus 4.6
-- **Status**: Phase 0 complete. Phase 1 (Content Export & Transform) starting.
+- **Status**: Phase 0 complete. **Phase 1 COMPLETE** (2026-02-11). All content exported, transformed to MDX, assets migrated to R2. Ready for Phase 2 (Content Collections & Schemas).
 
 ## Key Constraints
 
@@ -94,6 +94,31 @@ query the live site. The site ID is `64a817a2e7e2208272d1ce30`.
 - **Cloudflare R2**: bucket `zenml-assets` (public access not yet enabled)
 - **CI/CD**: GitHub Actions — push to `main` → production, PRs → preview branches
 - **Preview SEO**: Cloudflare auto-adds `X-Robots-Tag: noindex` on preview URLs
+
+## Phase 1 Complete (2026-02-11)
+
+**All content exported and transformed:**
+- ✅ 2,151 URLs crawled for SEO baseline
+- ✅ 2,340 CMS items exported (17 collections, live + staged)
+- ✅ 44 static pages + 13 drafts captured
+- ✅ 2,397 assets downloaded and uploaded to R2 (384 MB, 0 failures)
+- ✅ 1,904 MDX files generated with frontmatter + SEO metadata
+- ✅ 44 redirects normalized, 11 chains flattened
+- ✅ 325 Webflow interactions + 11 custom scripts cataloged
+
+**Run artifacts:** `design/migration/phase1/runs/2026-02-11T0626Z/`
+
+**Key scripts created (10):**
+- `crawl-seo-baseline.ts` — SEO snapshot for parity testing
+- `export-webflow-cms.ts` — CMS export via Webflow API v2
+- `snapshot-static-pages.ts` — HTML snapshots of non-CMS pages
+- `build-asset-inventory.ts` — Deduplicated asset discovery
+- `download-assets.ts` — Asset download with retry + manifest
+- `upload-to-r2-boto3.py` — Parallel R2 upload via boto3 (fast!)
+- `transform-cms-to-mdx.ts` — HTML→MDX with URL rewriting
+- `export-redirects.ts` — Redirect normalization + chain flattening
+- `generate-auto-redirects.ts` — Slug change/deletion detection
+- `catalog-animations.ts` — Animation/interaction catalog
 
 ## Development Conventions
 
