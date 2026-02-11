@@ -102,6 +102,9 @@ query the live site. The site ID is `64a817a2e7e2208272d1ce30`.
 - Phase 1 scripts go in `scripts/phase1/` as TypeScript, run via `pnpm exec tsx`
 - Make targeted git commits (only relevant files)
 - After running tests, re-run them if you make subsequent changes
+- **Scripts with verbose output**: Run scripts that generate a lot of text output (e.g., data exports, bulk processing) in **background mode** (`run_in_background: true`) to avoid cluttering the conversation
+- **API uncertainty**: If uncertain about Webflow, Cloudflare, or other third-party APIs, **use websearch or the exa MCP** to look up the current API documentation before writing code — better to verify than to write code that doesn't work
+- **Credential management**: When you receive API credentials, tokens, or keys, **always add them to `.env`** for persistence across sessions. The `.env` file is gitignored and safe for secrets. This prevents having to re-enter credentials every time you run a script
 
 ## Plan Management
 
