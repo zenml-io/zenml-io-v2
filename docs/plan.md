@@ -15,7 +15,7 @@
 | Asset storage | **Cloudflare R2** | Object storage for images/files, referenced by URL in content |
 | Styling | **Tailwind CSS** | Utility-first, designer works directly in components |
 | Interactive UI | **Preact islands** | LLMOps filter + search, and other client-side widgets. Only hydrate what needs JS |
-| Search | **Pagefind** (Phase 3) | Build-time search index for LLMOps DB text search. Parity-critical. |
+| Search | **Pagefind** (Phase 3 or 4) | Build-time search index for LLMOps DB full-text search. **Tag/industry filtering is parity-critical** (Phase 3); full-text search via Pagefind is nice-to-have (defer to Phase 4 if integration is complex). |
 | Forms | **TBD** — Cal.com embeds + Cloudflare Workers | Architecture decision in Phase 0; implementation in Phase 5 |
 | Analytics | **Plausible** (keep existing) | Already in use, privacy-friendly |
 | CRM | **Attio** (keep existing) | Forms may need to push data here |

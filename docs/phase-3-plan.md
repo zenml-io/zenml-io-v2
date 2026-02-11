@@ -916,6 +916,43 @@ Phase 6 will be QA + cutover:
 - `static-pages/` → `pages/` (actual location)
 - `animations-catalog.json` → `animations/catalog.json` (actual filename)
 
+### 2026-02-11: Post-Verification Review (Second Pass)
+
+**Context:** RepoPrompt's `context_builder` performed final verification review and found 3 BLOCKERS + 5 MAJOR issues missed in manual review.
+
+**Critical Fixes (commit 0db071d):**
+
+1. ✅ **Removed stale industryTags note** (BLOCKER)
+   - Section 3E-1 line 245 had contradictory "NO industryTags field" note
+   - Fixed: Clarified single string value with correct field description
+
+2. ✅ **Fixed case studies routing** (BLOCKER)
+   - Hub was wrong: `/case-study/` → correct: `/case-studies` (plural)
+   - Detail correct: `/case-study/[slug]` (singular)
+   - Per `page-index.json` source of truth
+
+3. ✅ **Corrected form page classification** (BLOCKER)
+   - Was: `/book-a-demo` labeled as Cal.com embed
+   - Correct: Webflow native form (Cal.com embeds are /book-your-demo, /schedule-a-demo)
+   - Per `docs/forms-audit.md` source of truth
+
+4. ✅ **Fixed static page count heading** (MAJOR)
+   - Section 3H title still said "~44 pages" → now "64 published pages"
+
+5. ✅ **Fixed animation notes path** (MAJOR)
+   - Was incomplete: `animations/notes.md`
+   - Now complete: `design/migration/phase1/runs/2026-02-11T0626Z/animations/notes.md`
+
+6. ✅ **Fixed LLMOps JSON index field mapping** (MAJOR)
+   - Clarified: schema uses `title` not `name`
+   - Noted: industryTags is single value (not array)
+   - Added: `export const prerender = true;` requirement
+
+7. ✅ **Fixed Pagefind priority conflict** (MAJOR - updated `docs/plan.md`)
+   - Master plan now consistent: filtering critical, full-text search nice-to-have
+
+**Verification Status:** Plan is now **ready for Phase 3 implementation** with no known blockers.
+
 ---
 
 **Ready to start Phase 3!** 🚀
