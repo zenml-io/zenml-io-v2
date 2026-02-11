@@ -2,7 +2,7 @@
 
 **Created:** 2026-02-11
 **Revised:** 2026-02-11 (post-RepoPrompt audit)
-**Status:** Phase 2A COMPLETE ✅ — Ready for Phase 2B
+**Status:** Phase 2A & 2B COMPLETE ✅ — Ready for Phase 2C (Export Reference Collections)
 **Prerequisites:** Phase 1 complete (1,904 MDX files, 2,397 R2 assets)
 
 ---
@@ -172,18 +172,23 @@ From Phase 1 transform output (to be re-transformed):
 
 ---
 
-### 2B: Define Reusable Schema Helpers
+### 2B: Define Reusable Schema Helpers — ✅ COMPLETE
 
 **Goal:** Create shared Zod schemas for common patterns (SEO, Webflow metadata, images, references).
 
+**Status:** ✅ Complete (2026-02-11)
+- `src/content/config.ts` created with empty collections export
+- All reusable schemas defined (seo, webflow, image, base content)
+- Helper functions for slug references created
+
 **Tasks:**
-- [ ] Create `src/content/config.ts` with Astro's `defineCollection()` setup
-- [ ] Define reusable schemas:
-  - `seoSchema` — **optional at top level**, all fields optional inside
-  - `webflowMetaSchema` — handle corrupted `collectionId: "null"` string
-  - `imageSchema` — for R2 URLs (url, alt, width?, height?)
-  - `referenceSchema` — slug-based references with validation helpers
-- [ ] Export helper functions for reference validation
+- [x] Create `src/content/config.ts` with Astro's `defineCollection()` setup
+- [x] Define reusable schemas:
+  - `seoSchema` — **optional at top level**, all fields optional inside ✅
+  - `webflowMetaSchema` — handle optional `collectionId` field ✅
+  - `imageSchema` — for R2 URLs (url, alt, width?, height?) ✅
+  - `baseContentSchema` — common fields for all content ✅
+- [x] Export helper functions for reference validation (`slugReference`, `slugReferenceArray`) ✅
 
 **SEO schema (REVISED)**:
 
