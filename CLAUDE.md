@@ -8,8 +8,9 @@ customize freely.
 
 - **Current site**: www.zenml.io (Webflow, site ID: `64a817a2e7e2208272d1ce30`)
 - **Traffic**: ~7k unique visitors / ~10k page views per week (and growing)
-- **Hosting target**: Cloudflare Pages (or similar edge-first platform)
+- **Hosting target**: Cloudflare Pages (confirmed, deployed at `zenml-io-v2.pages.dev`)
 - **Context**: This is being built as part of a Claude hackathon using Opus 4.6
+- **Status**: Phase 0 complete. Phase 1 (Content Export & Transform) starting.
 
 ## Key Constraints
 
@@ -67,7 +68,7 @@ Full inventory is in `docs/webflow-inventory.md`.
 | Styling | **Tailwind CSS** — utility-first |
 | Interactive | **Preact islands** — for LLMOps filter and other client-side widgets |
 | Search | **Pagefind** (later) — build-time search index, no server |
-| Forms | Cal.com embeds + Cloudflare Workers (TBD: audit form destinations) |
+| Forms | Cal.com embeds + Cloudflare Workers (architecture decided, see `docs/forms-audit.md`) |
 | Analytics | **Plausible** (keep existing) |
 | CRM | **Attio** (keep existing) |
 | Design approach | Pixel-perfect recreation first, then iterate |
@@ -77,11 +78,28 @@ Full inventory is in `docs/webflow-inventory.md`.
 We have a Webflow MCP server connected. Use the `mcp__webflow__*` tools to
 query the live site. The site ID is `64a817a2e7e2208272d1ce30`.
 
+## Key Technical Decisions
+
+| Decision | Value |
+|----------|-------|
+| Trailing slash | `never` — matches Webflow behavior, locked in `astro.config.ts` |
+| Canonical domain | `www.zenml.io` (bare `zenml.io` redirects to www) |
+| Migration strategy | Full cutover (not strangler) — build complete site, switch DNS |
+| Asset URLs (POC) | `r2.dev` URLs for now; switch to `assets.zenml.io` when DNS moves to Cloudflare |
+| Image optimization | Upload 1:1 for now; convert to WebP/AVIF post-launch |
+
+## Infrastructure (Phase 0)
+
+- **Cloudflare Pages**: `zenml-io-v2.pages.dev` (production), branch previews auto-deploy
+- **Cloudflare R2**: bucket `zenml-assets` (public access not yet enabled)
+- **CI/CD**: GitHub Actions — push to `main` → production, PRs → preview branches
+- **Preview SEO**: Cloudflare auto-adds `X-Robots-Tag: noindex` on preview URLs
+
 ## Development Conventions
 
 - `docs/` folder is for plan docs and investigations — **committed to git**
 - `design/` folder is for heavy artifacts only (exports, screenshots, JSON dumps) — **never commit to git**
-- Use `uv pip install` instead of `pip install`
+- Phase 1 scripts go in `scripts/phase1/` as TypeScript, run via `pnpm exec tsx`
 - Make targeted git commits (only relevant files)
 - After running tests, re-run them if you make subsequent changes
 
@@ -109,7 +127,11 @@ query the live site. The site ID is `64a817a2e7e2208272d1ce30`.
 ## Key Files
 
 - `docs/plan.md` — **Master migration plan** (phases, decisions, content model)
-- `docs/phase-N-plan.md` — Detailed plan for each phase (created as needed)
+- `docs/phase-0-plan.md` — Phase 0 detailed plan (complete)
+- `docs/phase-1-plan.md` — Phase 1 detailed plan (Content Export & Transform)
 - `docs/investigation_1.md` — Research on what others used to replace Webflow
 - `docs/investigation_2.md` — Practical playbook for the migration
 - `docs/webflow-inventory.md` — Full inventory of the Webflow site
+- `docs/forms-audit.md` — Forms architecture audit (8 types, 4 categories)
+- `docs/custom-code-audit.md` — Third-party scripts audit (14 services, 20 scripts)
+- `docs/design-tokens.md` — Extracted design tokens reference
