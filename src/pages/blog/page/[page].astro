@@ -1,0 +1,165 @@
+---
+/**
+ * Paginated blog listing (page 2+).
+ *
+ * Page 1 is handled by blog/index.astro.
+ * Generates /blog/page/2, /blog/page/3, etc.
+ */
+import { getCollection, getEntry } from "astro:content";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import Badge from "../../../components/Badge.astro";
+
+export async function getStaticPaths() {
+  const pageSize = 12;
+  const allPosts = (await getCollection("blog", ({ data }) => !data.draft))
+    .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+
+  const totalPages = Math.ceil(allPosts.length / pageSize);
+
+  // Generate pages 2 through totalPages (page 1 is index.astro)
+  return Array.from({ length: totalPages - 1 }, (_, i) => {
+    const page = i + 2;
+    const start = (page - 1) * pageSize;
+    return {
+      params: { page: String(page) },
+      props: {
+        posts: allPosts.slice(start, start + pageSize),
+        currentPage: page,
+        totalPages,
+      },
+    };
+  });
+}
+
+const { posts, currentPage, totalPages } = Astro.props;
+
+// Resolve categories for display
+const categoryMap = new Map<string, { name: string; slug: string }>();
+for (const post of posts) {
+  if (post.data.category && !categoryMap.has(post.data.category)) {
+    const cat = await getEntry("categories", post.data.category);
+    if (cat) categoryMap.set(post.data.category, { name: cat.data.name, slug: cat.data.slug });
+  }
+}
+---
+
+<BaseLayout
+  title={`Blog - Page ${currentPage} - ZenML`}
+  description="Insights on MLOps, LLMOps, and production machine learning from the ZenML team."
+>
+  <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+    <header class="mb-12">
+      <h1 class="text-4xl font-bold tracking-tight text-gray-900">Blog</h1>
+      <p class="mt-4 text-lg text-gray-600">
+        Insights on MLOps, LLMOps, and production machine learning.
+      </p>
+    </header>
+
+    {/* Post grid */}
+    <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+      {posts.map((post) => {
+        const category = categoryMap.get(post.data.category || "");
+        return (
+          <article class="group flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white transition-shadow hover:shadow-md">
+            {post.data.mainImage && (
+              <a href={`/blog/${post.data.slug}`} class="block aspect-[16/9] overflow-hidden">
+                <img
+                  src={post.data.mainImage.url}
+                  alt={post.data.mainImage.alt || post.data.title}
+                  class="h-full w-full object-cover transition-transform group-hover:scale-105"
+                  loading="lazy"
+                />
+              </a>
+            )}
+            <div class="flex flex-1 flex-col p-5">
+              {category && (
+                <Badge href={`/category/${category.slug}`} variant="primary" class="mb-2 self-start">
+                  {category.name}
+                </Badge>
+              )}
+              <h2 class="mb-2 text-lg font-semibold leading-snug text-gray-900">
+                <a href={`/blog/${post.data.slug}`} class="hover:text-primary-600">
+                  {post.data.title}
+                </a>
+              </h2>
+              <div class="mt-auto flex items-center gap-3 pt-4 text-sm text-gray-500">
+                <time datetime={new Date(post.data.date).toISOString().split("T")[0]}>
+                  {new Date(post.data.date).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                  })}
+                </time>
+                {post.data.readingTime && (
+                  <>
+                    <span aria-hidden="true">&middot;</span>
+                    <span>{post.data.readingTime}</span>
+                  </>
+                )}
+              </div>
+            </div>
+          </article>
+        );
+      })}
+    </div>
+
+    {/* Pagination */}
+    <nav class="mt-12 flex items-center justify-center gap-2" aria-label="Blog pagination">
+      {/* Previous */}
+      <a
+        href={currentPage === 2 ? "/blog" : `/blog/page/${currentPage - 1}`}
+        class="mr-2 inline-flex items-center gap-1 rounded-md border border-gray-300 px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+      >
+        &larr; Prev
+      </a>
+
+      {/* Page numbers */}
+      <a
+        href="/blog"
+        class="inline-flex h-10 w-10 items-center justify-center rounded-md border border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-50"
+      >
+        1
+      </a>
+      {currentPage > 4 && <span class="px-2 text-gray-500">&hellip;</span>}
+      {Array.from({ length: totalPages }, (_, i) => i + 1)
+        .filter((p) => p > 1 && p < totalPages && Math.abs(p - currentPage) <= 1)
+        .map((page) =>
+          page === currentPage ? (
+            <span class="inline-flex h-10 w-10 items-center justify-center rounded-md bg-primary-600 text-sm font-medium text-white">
+              {page}
+            </span>
+          ) : (
+            <a
+              href={`/blog/page/${page}`}
+              class="inline-flex h-10 w-10 items-center justify-center rounded-md border border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-50"
+            >
+              {page}
+            </a>
+          ),
+        )}
+      {currentPage < totalPages - 3 && <span class="px-2 text-gray-500">&hellip;</span>}
+      {totalPages > 1 && (
+        <a
+          href={`/blog/page/${totalPages}`}
+          class={`inline-flex h-10 w-10 items-center justify-center rounded-md text-sm font-medium ${
+            currentPage === totalPages
+              ? "bg-primary-600 text-white"
+              : "border border-gray-300 text-gray-700 hover:bg-gray-50"
+          }`}
+        >
+          {totalPages}
+        </a>
+      )}
+
+      {/* Next */}
+      {currentPage < totalPages && (
+        <a
+          href={`/blog/page/${currentPage + 1}`}
+          class="ml-2 inline-flex items-center gap-1 rounded-md border border-gray-300 px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+        >
+          Next &rarr;
+        </a>
+      )}
+    </nav>
+  </div>
+</BaseLayout>
