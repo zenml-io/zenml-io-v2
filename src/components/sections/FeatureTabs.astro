@@ -85,28 +85,25 @@ import { FEATURE_TABS_HEADER, FEATURE_TABS, STATS } from "../../lib/homepage";
 </section>
 
 <script>
+  const ACTIVE_CLASSES = ["border-b-2", "border-zenml-500", "text-zenml-500"];
+  const INACTIVE_CLASSES = ["text-gray-500", "hover:border-b-2", "hover:border-gray-300", "hover:text-gray-700"];
+
   const tabBtns = document.querySelectorAll<HTMLButtonElement>(".feature-tab-btn");
   const tabPanels = document.querySelectorAll<HTMLDivElement>(".feature-tab-panel");
 
   tabBtns.forEach((btn) => {
     btn.addEventListener("click", () => {
-      const idx = btn.dataset.tabIndex;
+      const idx = Number(btn.dataset.tabIndex);
 
-      // Update buttons
       tabBtns.forEach((b) => {
-        b.setAttribute("aria-selected", "false");
-        b.className = b.className
-          .replace("border-b-2 border-zenml-500 text-zenml-500", "")
-          .concat(" text-gray-500 hover:border-b-2 hover:border-gray-300 hover:text-gray-700");
+        const isActive = b === btn;
+        b.setAttribute("aria-selected", String(isActive));
+        ACTIVE_CLASSES.forEach((c) => b.classList.toggle(c, isActive));
+        INACTIVE_CLASSES.forEach((c) => b.classList.toggle(c, !isActive));
       });
-      btn.setAttribute("aria-selected", "true");
-      btn.className = btn.className
-        .replace("text-gray-500 hover:border-b-2 hover:border-gray-300 hover:text-gray-700", "")
-        .concat(" border-b-2 border-zenml-500 text-zenml-500");
 
-      // Update panels
       tabPanels.forEach((panel, i) => {
-        panel.classList.toggle("hidden", i !== Number(idx));
+        panel.classList.toggle("hidden", i !== idx);
       });
     });
   });

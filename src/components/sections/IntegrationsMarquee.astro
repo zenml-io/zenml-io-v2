@@ -65,4 +65,9 @@ const logos = integrations
     animation: marquee-slide 60s linear infinite;
     width: max-content;
   }
+  @media (prefers-reduced-motion: reduce) {
+    .animate-marquee {
+      animation: none;
+    }
+  }
 </style>
