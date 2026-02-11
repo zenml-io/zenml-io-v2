@@ -1,0 +1,54 @@
+---
+/**
+ * Image — thin wrapper around <img> that normalizes R2-hosted image props.
+ * Accepts either individual props or an imageSchema-shaped object.
+ * No optimization yet (Phase 3: use R2 URLs directly).
+ */
+interface ImageLike {
+  url: string;
+  alt?: string;
+  width?: number;
+  height?: number;
+}
+
+interface Props {
+  src?: string;
+  image?: ImageLike;
+  alt?: string;
+  width?: number;
+  height?: number;
+  loading?: "lazy" | "eager";
+  decoding?: "async" | "auto" | "sync";
+  class?: string;
+}
+
+const {
+  src,
+  image,
+  alt,
+  width,
+  height,
+  loading = "lazy",
+  decoding = "async",
+  class: className,
+} = Astro.props;
+
+const finalSrc = src || image?.url;
+const finalAlt = alt || image?.alt || "";
+const finalWidth = width || image?.width;
+const finalHeight = height || image?.height;
+---
+
+{
+  finalSrc && (
+    <img
+      src={finalSrc}
+      alt={finalAlt}
+      width={finalWidth}
+      height={finalHeight}
+      loading={loading}
+      decoding={decoding}
+      class={className}
+    />
+  )
+}

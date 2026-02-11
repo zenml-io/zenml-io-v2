@@ -1,0 +1,71 @@
+---
+/**
+ * Button — renders <a> when href is provided, <button> otherwise.
+ * Encapsulates consistent CTA styling (shadows, radius, hover effects).
+ */
+type Variant = "primary" | "secondary" | "ghost";
+type Size = "sm" | "md" | "lg";
+
+interface Props {
+  href?: string;
+  type?: "button" | "submit" | "reset";
+  variant?: Variant;
+  size?: Size;
+  target?: string;
+  rel?: string;
+  disabled?: boolean;
+  class?: string;
+}
+
+const {
+  href,
+  type = "button",
+  variant = "primary",
+  size = "md",
+  target,
+  rel,
+  disabled = false,
+  class: className,
+} = Astro.props;
+
+const baseClasses =
+  "inline-flex items-center justify-center font-semibold rounded-radius-md transition-all duration-200 cursor-pointer";
+
+const variantClasses: Record<Variant, string> = {
+  primary:
+    "bg-zenml-500 text-white shadow-button hover:bg-zenml-600 focus:shadow-focus-primary",
+  secondary:
+    "bg-white text-gray-700 border border-gray-300 shadow-button hover:bg-gray-50 focus:shadow-focus-gray",
+  ghost: "text-zenml-500 hover:text-zenml-600 hover:bg-zenml-25",
+};
+
+const sizeClasses: Record<Size, string> = {
+  sm: "px-3.5 py-2 text-sm gap-1.5",
+  md: "px-4 py-2.5 text-sm gap-2",
+  lg: "px-5 py-3 text-base gap-2",
+};
+
+const disabledClasses = disabled ? "opacity-50 pointer-events-none" : "";
+
+const classes = [
+  baseClasses,
+  variantClasses[variant],
+  sizeClasses[size],
+  disabledClasses,
+  className,
+]
+  .filter(Boolean)
+  .join(" ");
+---
+
+{
+  href ? (
+    <a href={href} class={classes} target={target} rel={rel}>
+      <slot />
+    </a>
+  ) : (
+    <button type={type} class={classes} disabled={disabled}>
+      <slot />
+    </button>
+  )
+}

@@ -1,0 +1,123 @@
+---
+/**
+ * BlogLayout — chrome for blog post detail pages.
+ *
+ * Renders: category pill, title, author byline, date, reading time,
+ * featured image, then the MDX body inside a .prose wrapper.
+ *
+ * Composes over BaseLayout directly (not ContentLayout) because
+ * blog posts have a unique header structure above the prose content.
+ */
+import BaseLayout from "./BaseLayout.astro";
+import Badge from "../components/Badge.astro";
+import Image from "../components/Image.astro";
+import type { SEOProps } from "../lib/seo";
+
+interface Author {
+  name: string;
+  slug: string;
+  avatar?: { url: string; alt?: string; width?: number; height?: number };
+}
+
+interface Props extends SEOProps {
+  /** Post date (ISO string or Date) */
+  date: Date;
+  /** Author data (resolved from collection) */
+  author?: Author;
+  /** Category name */
+  category?: string;
+  /** Category slug (for linking) */
+  categorySlug?: string;
+  /** Reading time string (e.g. "5 min read") */
+  readingTime?: string;
+  /** Featured image */
+  mainImage?: { url: string; alt?: string; width?: number; height?: number };
+}
+
+const {
+  date,
+  author,
+  category,
+  categorySlug,
+  readingTime,
+  mainImage,
+  ...seoProps
+} = Astro.props;
+
+const formattedDate = new Date(date).toLocaleDateString("en-US", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
+---
+
+<BaseLayout {...seoProps}>
+  <article class="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:py-16">
+    {/* Post header */}
+    <header class="mb-8">
+      {/* Category pill */}
+      {category && (
+        <div class="mb-4">
+          <Badge href={categorySlug ? `/category/${categorySlug}` : undefined} variant="primary">
+            {category}
+          </Badge>
+        </div>
+      )}
+
+      {/* Title */}
+      <h1 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+        {seoProps.title}
+      </h1>
+
+      {/* Meta row: author, date, reading time */}
+      <div class="mt-6 flex items-center gap-4 text-sm text-gray-500">
+        {author && (
+          <div class="flex items-center gap-2">
+            {author.avatar && (
+              <Image
+                image={author.avatar}
+                alt={author.name}
+                class="h-8 w-8 rounded-full object-cover"
+                loading="eager"
+              />
+            )}
+            <a
+              href={`/author/${author.slug}`}
+              class="font-medium text-gray-900 hover:text-zenml-500"
+            >
+              {author.name}
+            </a>
+          </div>
+        )}
+
+        <time datetime={new Date(date).toISOString()}>
+          {formattedDate}
+        </time>
+
+        {readingTime && (
+          <>
+            <span class="text-gray-300">·</span>
+            <span>{readingTime}</span>
+          </>
+        )}
+      </div>
+    </header>
+
+    {/* Featured image */}
+    {mainImage && (
+      <div class="mb-10 overflow-hidden rounded-radius-xl">
+        <Image
+          image={mainImage}
+          alt={mainImage.alt || seoProps.title}
+          class="w-full"
+          loading="eager"
+        />
+      </div>
+    )}
+
+    {/* Post body (MDX content) */}
+    <div class="prose">
+      <slot />
+    </div>
+  </article>
+</BaseLayout>

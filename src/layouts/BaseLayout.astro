@@ -1,13 +1,23 @@
 ---
-interface Props {
-  title: string;
-  description?: string;
+/**
+ * BaseLayout — the root HTML shell for every page.
+ * Renders <head> with full SEO meta, plus Navigation and Footer chrome.
+ *
+ * All page templates (ContentLayout, BlogLayout, etc.) wrap this layout
+ * and pass SEOProps through to control their meta tags.
+ */
+import { resolveSeo, type SEOProps } from "../lib/seo";
+import Navigation from "../components/Navigation.astro";
+import Footer from "../components/Footer.astro";
+import "../styles/global.css";
+
+interface Props extends SEOProps {
+  /** Additional classes on <body> */
+  bodyClass?: string;
 }
 
-const {
-  title,
-  description = "ZenML — Build portable, production-ready MLOps pipelines.",
-} = Astro.props;
+const { bodyClass, ...seoProps } = Astro.props;
+const seo = resolveSeo(seoProps, Astro.url.pathname);
 ---
 
 <!doctype html>
@@ -15,11 +25,38 @@ const {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content={description} />
-    <title>{title}</title>
+
+    {/* Core SEO */}
+    <title>{seo.title}</title>
+    <meta name="description" content={seo.description} />
+    <link rel="canonical" href={seo.canonical} />
+    {seo.noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    {/* Open Graph */}
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={seo.ogTitle} />
+    <meta property="og:description" content={seo.ogDescription} />
+    <meta property="og:url" content={seo.canonical} />
+    {seo.ogImage && <meta property="og:image" content={seo.ogImage} />}
+
+    {/* Twitter Card */}
+    <meta name="twitter:card" content={seo.twitterCard} />
+    <meta name="twitter:title" content={seo.ogTitle} />
+    <meta name="twitter:description" content={seo.ogDescription} />
+    {seo.ogImage && <meta name="twitter:image" content={seo.ogImage} />}
+
+    {/* Favicon */}
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    {/* Plausible analytics (production only) */}
+    {import.meta.env.PROD && (
+      <script defer data-domain="zenml.io" src="https://plausible.io/js/script.js" />
+    )}
   </head>
-  <body>
+  <body class:list={["min-h-screen bg-white text-gray-900 antialiased", bodyClass]}>
+    <Navigation currentPath={Astro.url.pathname} />
     <slot />
+    <Footer />
   </body>
 </html>

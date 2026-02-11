@@ -1,0 +1,31 @@
+---
+/**
+ * ContentLayout — generic prose wrapper for content pages.
+ *
+ * Used by: blog posts, compare pages, integration detail pages, etc.
+ * Wraps BaseLayout and adds a centered content column with `.prose` styling
+ * for Webflow raw HTML compatibility (tables, code blocks, tooltips, etc.).
+ *
+ * Pages that need custom chrome (like BlogLayout) compose over this layout.
+ */
+import BaseLayout from "./BaseLayout.astro";
+import type { SEOProps } from "../lib/seo";
+
+interface Props extends SEOProps {
+  /** Narrow content column (default) or wide (for pages with sidebars) */
+  wide?: boolean;
+  /** Additional classes on the <main> element */
+  class?: string;
+}
+
+const { wide = false, class: className, ...seoProps } = Astro.props;
+const maxWidth = wide ? "max-w-[var(--container-lg)]" : "max-w-3xl";
+---
+
+<BaseLayout {...seoProps}>
+  <main class:list={["mx-auto px-4 py-12 sm:px-6 lg:px-8 lg:py-16", maxWidth, className]}>
+    <article class="prose">
+      <slot />
+    </article>
+  </main>
+</BaseLayout>
