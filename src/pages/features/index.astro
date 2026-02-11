@@ -1,0 +1,71 @@
+---
+/**
+ * Features hub page — grid of all 12 feature pages.
+ *
+ * Route: /features
+ *
+ * Renders a hero section, a grid of feature cards grouped by category,
+ * and a dark CTA band at the bottom.
+ */
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import FeatureCard from "../../components/sections/FeatureCard.astro";
+import FeaturesHubCTA from "../../components/sections/FeaturesHubCTA.astro";
+import Button from "../../components/Button.astro";
+import { FEATURES_HUB_HERO, FEATURES_HUB_CTA } from "../../lib/features";
+
+const allFeatures = await getCollection("feature-pages", ({ data }) => !data.draft);
+const features = allFeatures.sort((a, b) => (a.data.hub.order ?? 99) - (b.data.hub.order ?? 99));
+---
+
+<BaseLayout
+  title="ZenML - MLOps Framework Features"
+  description="Revolutionize ML workflows with ZenML's MLOps Framework: End manual deployments and non-reproducible experiments for production-ready solutions."
+  ogTitle="ZenML - MLOps Framework Features"
+>
+  <main>
+    {/* Hero */}
+    <section class="bg-white pt-16 pb-12 sm:pt-24 sm:pb-16">
+      <div class="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
+        <h1 class="text-3xl font-bold text-gray-900 sm:text-4xl lg:text-5xl">
+          {FEATURES_HUB_HERO.headline}
+        </h1>
+        <p class="mt-4 text-lg text-gray-600 leading-relaxed">
+          {FEATURES_HUB_HERO.body}
+        </p>
+        <div class="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+          <Button href={FEATURES_HUB_HERO.primaryCta.href} size="lg">
+            {FEATURES_HUB_HERO.primaryCta.label}
+          </Button>
+          <Button href={FEATURES_HUB_HERO.secondaryCta.href} variant="secondary" size="lg">
+            {FEATURES_HUB_HERO.secondaryCta.label}
+          </Button>
+        </div>
+      </div>
+    </section>
+
+    {/* Feature grid */}
+    <section class="bg-gray-50 py-16 sm:py-20">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {features.map((f) => (
+            <FeatureCard
+              href={`/features/${f.data.slug}`}
+              category={f.data.hub.category}
+              title={f.data.hub.title}
+              summary={f.data.hub.summary || f.data.hero.deck}
+              badge={f.data.hub.badge}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <FeaturesHubCTA
+      headline={FEATURES_HUB_CTA.headline}
+      body={FEATURES_HUB_CTA.body}
+      primaryCta={FEATURES_HUB_CTA.primaryCta}
+      secondaryCta={FEATURES_HUB_CTA.secondaryCta}
+    />
+  </main>
+</BaseLayout>

@@ -1,0 +1,43 @@
+---
+/**
+ * FeatureCard — card component for the features hub grid.
+ *
+ * Renders a clickable card with category label, title, summary,
+ * and optional PRO badge. Links to the feature detail page.
+ */
+interface Props {
+  href: string;
+  category: string;
+  title: string;
+  summary: string;
+  badge?: "PRO";
+}
+
+const { href, category, title, summary, badge } = Astro.props;
+---
+
+<a
+  href={href}
+  class="group flex flex-col rounded-xl border border-gray-200 bg-white p-6 shadow-sm transition hover:border-zenml-300 hover:shadow-md"
+>
+  <div class="flex items-center gap-2">
+    <span class="text-xs font-semibold uppercase tracking-wider text-zenml-500">
+      {category}
+    </span>
+    {badge === "PRO" && (
+      <span class="rounded bg-zenml-100 px-1.5 py-0.5 text-[10px] font-bold uppercase text-zenml-600">
+        PRO
+      </span>
+    )}
+  </div>
+  <h3 class="mt-2 text-lg font-semibold text-gray-900 group-hover:text-zenml-500 transition">
+    {title}
+  </h3>
+  <p class="mt-2 flex-1 text-sm text-gray-600 leading-relaxed">{summary}</p>
+  <span class="mt-4 inline-flex items-center text-sm font-semibold text-zenml-500 group-hover:text-zenml-600">
+    Learn more
+    <svg class="ml-1 h-4 w-4 transition group-hover:translate-x-0.5" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M4.667 10h11.666m0 0L10.5 4.167M16.333 10 10.5 15.833" stroke="currentColor" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </span>
+</a>

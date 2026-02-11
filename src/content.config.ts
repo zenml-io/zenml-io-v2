@@ -480,6 +480,76 @@ const oldProjectSchema = z.object({
 });
 
 // ============================================================================
+// Feature Pages Schema (Phase 3H-3)
+// ============================================================================
+
+const ctaSchema = z.object({
+  label: z.string(),
+  href: z.string(),
+  external: z.boolean().optional(),
+});
+
+const featureHubSchema = z.object({
+  title: z.string(),
+  summary: z.string().optional(),
+  category: z.string(),
+  badge: z.enum(['PRO']).optional(),
+  order: z.number().optional(),
+});
+
+const featureHeroSchema = z.object({
+  deck: z.string(),
+  image: imageSchema.optional(),
+  primaryCta: ctaSchema,
+  secondaryCta: ctaSchema.optional(),
+});
+
+const valueBlockSchema = z.object({
+  kind: z.literal('value'),
+  title: z.string(),
+  body: z.string().optional(),
+  bullets: z.array(z.string()).optional(),
+  image: imageSchema.optional(),
+  imageSide: z.enum(['left', 'right']).optional(),
+});
+
+const complianceBannerBlockSchema = z.object({
+  kind: z.literal('complianceBanner'),
+  eyebrow: z.string().optional(),
+  headline: z.string().optional(),
+  body: z.string().optional(),
+  badges: z.array(imageSchema).optional(),
+});
+
+const featureTestimonialSchema = z.object({
+  quote: z.string(),
+  name: z.string(),
+  title: z.string().optional(),
+  avatar: imageSchema.optional(),
+  companyLogo: imageSchema.optional(),
+});
+
+/**
+ * Feature Pages schema
+ * Route: /features/<slug>
+ * Count: 12 items
+ *
+ * Highly templated pages: hero → value blocks → testimonial → CTA.
+ * Content is structured frontmatter (not markdown body).
+ * The security page has an extra complianceBanner block.
+ */
+const featurePageSchema = baseContentSchema.extend({
+  hub: featureHubSchema,
+  hero: featureHeroSchema,
+  blocks: z.array(z.discriminatedUnion('kind', [
+    valueBlockSchema,
+    complianceBannerBlockSchema,
+  ])),
+  testimonial: featureTestimonialSchema.optional(),
+  showFinalCta: z.boolean().default(true),
+});
+
+// ============================================================================
 // Collection Definitions (Astro v5 with glob loaders)
 // ============================================================================
 
@@ -560,5 +630,9 @@ export const collections = {
   'old-projects': defineCollection({
     loader: glob({ pattern: '**/*.md', base: './src/content/old-projects' }),
     schema: oldProjectSchema,
+  }),
+  'feature-pages': defineCollection({
+    loader: glob({ pattern: '**/*.md', base: './src/content/feature-pages' }),
+    schema: featurePageSchema,
   }),
 };

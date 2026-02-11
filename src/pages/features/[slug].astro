@@ -1,0 +1,98 @@
+---
+/**
+ * Feature detail page.
+ *
+ * Renders individual feature pages with hero, value blocks,
+ * optional compliance banner, testimonial, and final CTA.
+ *
+ * Generates /features/<slug> for each of the 12 published feature pages.
+ */
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import FeatureHero from "../../components/sections/FeatureHero.astro";
+import FeatureValueSection from "../../components/sections/FeatureValueSection.astro";
+import FeatureComplianceBanner from "../../components/sections/FeatureComplianceBanner.astro";
+import FeatureTestimonial from "../../components/sections/FeatureTestimonial.astro";
+import FinalCTA from "../../components/sections/FinalCTA.astro";
+
+export async function getStaticPaths() {
+  const features = await getCollection("feature-pages", ({ data }) => !data.draft);
+  return features.map((feature) => ({
+    params: { slug: feature.data.slug },
+    props: { feature },
+  }));
+}
+
+const { feature } = Astro.props;
+const { data } = feature;
+
+// SEO
+const seoTitle = data.seo?.title || `${data.hub.title} - ZenML Features`;
+const seoDescription = data.seo?.description || data.hero.deck;
+const ogImage = data.seo?.ogImage || data.hero.image?.url;
+---
+
+<BaseLayout
+  title={seoTitle}
+  description={seoDescription}
+  ogImage={ogImage}
+  ogTitle={data.seo?.ogTitle}
+  ogDescription={data.seo?.ogDescription}
+  canonical={data.seo?.canonical}
+>
+  <main>
+    {/* Breadcrumb */}
+    <div class="mx-auto max-w-7xl px-4 pt-6 sm:px-6 lg:px-8">
+      <nav class="text-sm text-gray-500">
+        <a href="/features" class="hover:text-zenml-500">Features</a>
+        <span class="mx-2">/</span>
+        <span class="text-gray-900">{data.hub.title}</span>
+      </nav>
+    </div>
+
+    <FeatureHero
+      title={data.title}
+      category={data.hub.category}
+      deck={data.hero.deck}
+      image={data.hero.image}
+      primaryCta={data.hero.primaryCta}
+      secondaryCta={data.hero.secondaryCta}
+    />
+
+    {data.blocks.map((block) => {
+      if (block.kind === "value") {
+        return (
+          <FeatureValueSection
+            title={block.title}
+            body={block.body}
+            bullets={block.bullets}
+            image={block.image}
+            imageSide={block.imageSide}
+          />
+        );
+      }
+      if (block.kind === "complianceBanner") {
+        return (
+          <FeatureComplianceBanner
+            eyebrow={block.eyebrow}
+            headline={block.headline}
+            body={block.body}
+            badges={block.badges}
+          />
+        );
+      }
+    })}
+
+    {data.testimonial && (
+      <FeatureTestimonial
+        quote={data.testimonial.quote}
+        name={data.testimonial.name}
+        title={data.testimonial.title}
+        avatar={data.testimonial.avatar}
+        companyLogo={data.testimonial.companyLogo}
+      />
+    )}
+
+    {data.showFinalCta && <FinalCTA />}
+  </main>
+</BaseLayout>
