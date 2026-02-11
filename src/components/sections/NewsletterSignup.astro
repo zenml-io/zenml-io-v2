@@ -1,0 +1,39 @@
+---
+/**
+ * NewsletterSignup — email signup form for the ZenML newsletter.
+ *
+ * Placeholder form for now. The Brevo integration will be added
+ * post-launch per the forms architecture in docs/forms-audit.md.
+ */
+import { NEWSLETTER } from "../../lib/homepage";
+---
+
+<section class="border-y border-gray-100 bg-gray-50 py-16 sm:py-20">
+  <div class="mx-auto max-w-2xl px-4 text-center sm:px-6 lg:px-8">
+    <h2 class="text-2xl font-bold text-gray-900 sm:text-3xl">
+      {NEWSLETTER.headline}
+    </h2>
+    <p class="mt-3 text-gray-600">{NEWSLETTER.body}</p>
+    <form class="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center" data-newsletter-form>
+      <input
+        type="email"
+        name="email"
+        required
+        placeholder="Enter your email"
+        class="rounded-md border border-gray-300 px-4 py-3 text-sm shadow-sm focus:border-zenml-500 focus:outline-none focus:ring-1 focus:ring-zenml-500 sm:w-72"
+      />
+      <button
+        type="submit"
+        class="inline-flex items-center justify-center rounded-md bg-zenml-500 px-5 py-3 text-sm font-semibold text-white shadow-button hover:bg-zenml-600 transition"
+      >
+        Subscribe
+      </button>
+    </form>
+    <p class="mt-4 text-xs text-gray-500">
+      {NEWSLETTER.privacyNote}{" "}
+      <a href={NEWSLETTER.privacyLink.href} class="text-zenml-500 underline">
+        {NEWSLETTER.privacyLink.label}
+      </a>.
+    </p>
+  </div>
+</section>

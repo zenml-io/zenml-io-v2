@@ -1,0 +1,113 @@
+---
+/**
+ * FeatureTabs — tabbed feature showcase with stats grid.
+ *
+ * Shows an eyebrow + headline, a 4-stat grid, and 5 feature tabs.
+ * Tabs switch content via CSS-only :target or a tiny inline script.
+ * Each tab has a title, description, and screenshot image.
+ */
+import { FEATURE_TABS_HEADER, FEATURE_TABS, STATS } from "../../lib/homepage";
+---
+
+<section class="bg-white py-16 sm:py-24">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <!-- Header -->
+    <div class="text-center">
+      <p class="text-sm font-semibold uppercase tracking-wider text-zenml-500">
+        {FEATURE_TABS_HEADER.eyebrow}
+      </p>
+      <h2 class="mt-2 text-3xl font-bold text-gray-900 sm:text-4xl">
+        {FEATURE_TABS_HEADER.headline}
+      </h2>
+      <p class="mt-2 text-lg text-gray-600">
+        {FEATURE_TABS_HEADER.subheadline}
+      </p>
+    </div>
+
+    <!-- Stats grid -->
+    <div class="mt-12 grid grid-cols-2 gap-6 sm:grid-cols-4">
+      {STATS.map((stat) => (
+        <div class="text-center">
+          <p class="text-3xl font-bold text-zenml-500 sm:text-4xl">{stat.value}</p>
+          <p class="mt-1 text-sm text-gray-600">{stat.label}</p>
+        </div>
+      ))}
+    </div>
+
+    <!-- Tabs -->
+    <div class="mt-16" id="feature-tabs">
+      <!-- Tab buttons -->
+      <div class="flex flex-wrap justify-center gap-2 border-b border-gray-200" role="tablist">
+        {FEATURE_TABS.map((tab, i) => (
+          <button
+            role="tab"
+            aria-selected={i === 0 ? "true" : "false"}
+            aria-controls={`tab-panel-${i}`}
+            data-tab-index={i}
+            class:list={[
+              "feature-tab-btn whitespace-nowrap px-4 py-3 text-sm font-medium transition",
+              i === 0
+                ? "border-b-2 border-zenml-500 text-zenml-500"
+                : "text-gray-500 hover:border-b-2 hover:border-gray-300 hover:text-gray-700",
+            ]}
+          >
+            {tab.title}
+          </button>
+        ))}
+      </div>
+
+      <!-- Tab panels -->
+      {FEATURE_TABS.map((tab, i) => (
+        <div
+          id={`tab-panel-${i}`}
+          role="tabpanel"
+          class:list={[
+            "feature-tab-panel mt-8 grid items-center gap-8 lg:grid-cols-2",
+            i === 0 ? "" : "hidden",
+          ]}
+        >
+          <div>
+            <h3 class="text-xl font-semibold text-gray-900">{tab.title}</h3>
+            <p class="mt-3 text-gray-600 leading-relaxed">{tab.description}</p>
+          </div>
+          <div class="overflow-hidden rounded-xl border border-gray-200 shadow-lg">
+            <img
+              src={tab.image}
+              alt={tab.imageAlt}
+              class="w-full"
+              loading="lazy"
+            />
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  const tabBtns = document.querySelectorAll<HTMLButtonElement>(".feature-tab-btn");
+  const tabPanels = document.querySelectorAll<HTMLDivElement>(".feature-tab-panel");
+
+  tabBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const idx = btn.dataset.tabIndex;
+
+      // Update buttons
+      tabBtns.forEach((b) => {
+        b.setAttribute("aria-selected", "false");
+        b.className = b.className
+          .replace("border-b-2 border-zenml-500 text-zenml-500", "")
+          .concat(" text-gray-500 hover:border-b-2 hover:border-gray-300 hover:text-gray-700");
+      });
+      btn.setAttribute("aria-selected", "true");
+      btn.className = btn.className
+        .replace("text-gray-500 hover:border-b-2 hover:border-gray-300 hover:text-gray-700", "")
+        .concat(" border-b-2 border-zenml-500 text-zenml-500");
+
+      // Update panels
+      tabPanels.forEach((panel, i) => {
+        panel.classList.toggle("hidden", i !== Number(idx));
+      });
+    });
+  });
+</script>

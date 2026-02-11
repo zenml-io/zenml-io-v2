@@ -1,0 +1,57 @@
+---
+/**
+ * FinalCTA — full-width CTA with feature bullets and product screenshot.
+ *
+ * Last section before the footer. Shows a headline, 3 value bullets
+ * with check icons, dual CTAs, and a product screenshot.
+ */
+import { FINAL_CTA } from "../../lib/homepage";
+import Button from "../Button.astro";
+---
+
+<section class="bg-gray-900 py-16 sm:py-24">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="grid items-center gap-12 lg:grid-cols-2">
+      <!-- Text column -->
+      <div>
+        <h2 class="text-3xl font-bold text-white sm:text-4xl">
+          {FINAL_CTA.headline}
+        </h2>
+        <ul class="mt-8 space-y-4">
+          {FINAL_CTA.bullets.map((bullet) => (
+            <li class="flex items-start gap-3 text-gray-300">
+              <svg
+                class="mt-0.5 h-5 w-5 flex-shrink-0 text-zenml-400"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+              <span>{bullet}</span>
+            </li>
+          ))}
+        </ul>
+        <div class="mt-10 flex flex-wrap gap-4">
+          <Button href={FINAL_CTA.primaryCta.href} size="lg">
+            {FINAL_CTA.primaryCta.label}
+          </Button>
+          <Button href={FINAL_CTA.secondaryCta.href} variant="secondary" size="lg">
+            {FINAL_CTA.secondaryCta.label}
+          </Button>
+        </div>
+      </div>
+
+      <!-- Image column -->
+      <div class="overflow-hidden rounded-xl shadow-2xl">
+        <img
+          src={FINAL_CTA.image}
+          alt={FINAL_CTA.imageAlt}
+          class="w-full"
+          loading="lazy"
+        />
+      </div>
+    </div>
+  </div>
+</section>

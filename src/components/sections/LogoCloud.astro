@@ -1,0 +1,27 @@
+---
+/**
+ * LogoCloud — trust bar showing customer/partner logos.
+ *
+ * Displays a label + row of company logos. Logos are loaded from
+ * the centralized homepage data to keep the component markup clean.
+ */
+import { LOGO_CLOUD } from "../../lib/homepage";
+---
+
+<section class="border-y border-gray-100 bg-gray-50 py-10 sm:py-12">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <p class="text-center text-sm font-medium text-gray-500">
+      {LOGO_CLOUD.label}
+    </p>
+    <div class="mt-8 flex flex-wrap items-center justify-center gap-x-10 gap-y-6">
+      {LOGO_CLOUD.tier1.map((logo) => (
+        <img
+          src={logo.src}
+          alt={logo.name}
+          class="h-8 w-auto opacity-60 grayscale transition hover:opacity-100 hover:grayscale-0 sm:h-10"
+          loading="lazy"
+        />
+      ))}
+    </div>
+  </div>
+</section>

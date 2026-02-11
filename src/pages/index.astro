@@ -1,12 +1,48 @@
 ---
+/**
+ * Homepage — the main landing page for zenml.io.
+ *
+ * Composes all section components into a single page. Each section
+ * is a self-contained Astro component that pulls its data from
+ * src/lib/homepage.ts or from Content Collections at build time.
+ *
+ * Route: / (homepage)
+ */
 import BaseLayout from "../layouts/BaseLayout.astro";
+import AnnouncementBanner from "../components/sections/AnnouncementBanner.astro";
+import Hero from "../components/sections/Hero.astro";
+import LogoCloud from "../components/sections/LogoCloud.astro";
+import FeatureTabs from "../components/sections/FeatureTabs.astro";
+import ValueProps from "../components/sections/ValueProps.astro";
+import IntegrationsMarquee from "../components/sections/IntegrationsMarquee.astro";
+import WhitepaperCTA from "../components/sections/WhitepaperCTA.astro";
+import CustomerStories from "../components/sections/CustomerStories.astro";
+import NewsSection from "../components/sections/NewsSection.astro";
+import ComplianceSection from "../components/sections/ComplianceSection.astro";
+import NewsletterSignup from "../components/sections/NewsletterSignup.astro";
+import FAQAccordion from "../components/sections/FAQAccordion.astro";
+import FinalCTA from "../components/sections/FinalCTA.astro";
 ---
 
-<BaseLayout title="ZenML — Build portable, production-ready MLOps pipelines">
-  <main class="flex min-h-[60vh] items-center justify-center">
-    <div class="text-center">
-      <h1 class="text-4xl font-bold text-gray-900">ZenML v2</h1>
-      <p class="mt-4 text-lg text-gray-600">Site migration in progress.</p>
-    </div>
+<BaseLayout
+  title="ZenML — The AI Control Plane"
+  description="One layer for orchestration, versioning, and governance — from training pipelines to agent evals, local to Kubernetes."
+  ogTitle="ZenML — The AI Control Plane"
+>
+  <AnnouncementBanner slot="before-nav" />
+
+  <main>
+    <Hero />
+    <LogoCloud />
+    <FeatureTabs />
+    <ValueProps />
+    <IntegrationsMarquee />
+    <WhitepaperCTA />
+    <CustomerStories />
+    <NewsSection />
+    <ComplianceSection />
+    <NewsletterSignup />
+    <FAQAccordion />
+    <FinalCTA />
   </main>
 </BaseLayout>

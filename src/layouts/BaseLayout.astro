@@ -55,6 +55,7 @@ const seo = resolveSeo(seoProps, Astro.url.pathname);
     )}
   </head>
   <body class:list={["min-h-screen bg-white text-gray-900 antialiased", bodyClass]}>
+    <slot name="before-nav" />
     <Navigation currentPath={Astro.url.pathname} />
     <slot />
     <Footer />

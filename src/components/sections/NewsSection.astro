@@ -1,0 +1,75 @@
+---
+/**
+ * NewsSection — latest blog posts + GitHub stars badge.
+ *
+ * Fetches the 3 most recent published blog posts at build time
+ * and renders them as cards. Includes a "See all news" link.
+ */
+import { getCollection } from "astro:content";
+
+const allPosts = await getCollection("blog", ({ data }) => !data.draft);
+const latestPosts = allPosts
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
+  .slice(0, 3);
+---
+
+<section class="bg-white py-16 sm:py-24">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <!-- Header -->
+    <div class="flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <p class="text-sm font-semibold uppercase tracking-wider text-zenml-500">
+          News
+        </p>
+        <h2 class="mt-2 text-3xl font-bold text-gray-900 sm:text-4xl">
+          Latest ZenML Updates
+        </h2>
+        <p class="mt-2 text-lg text-gray-600">
+          Stay updated on the latest developments, announcements, and updates
+          from the ZenML ecosystem.
+        </p>
+      </div>
+      <a
+        href="/blog"
+        class="text-sm font-semibold text-zenml-500 hover:text-zenml-600"
+      >
+        See all news &rarr;
+      </a>
+    </div>
+
+    <!-- Blog cards -->
+    <div class="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+      {latestPosts.map((post) => (
+        <a
+          href={`/blog/${post.data.slug}`}
+          class="group flex flex-col overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition hover:shadow-md"
+        >
+          {post.data.mainImage?.url && (
+            <div class="aspect-video overflow-hidden bg-gray-100">
+              <img
+                src={post.data.mainImage.url}
+                alt={post.data.title}
+                class="h-full w-full object-cover transition group-hover:scale-105"
+                loading="lazy"
+              />
+            </div>
+          )}
+          <div class="flex flex-1 flex-col p-5">
+            <h3 class="text-base font-semibold text-gray-900 group-hover:text-zenml-500 transition">
+              {post.data.title}
+            </h3>
+            {post.data.date && (
+              <p class="mt-2 text-xs text-gray-500">
+                {new Date(post.data.date).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </p>
+            )}
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>

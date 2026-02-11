@@ -1,0 +1,19 @@
+---
+/**
+ * AnnouncementBanner — dismissable ribbon above the navigation.
+ *
+ * Displays a promotional message with a link. Sits above the nav bar
+ * with a gradient background matching the Webflow original.
+ */
+import { ANNOUNCEMENT_BANNER } from "../../lib/homepage";
+---
+
+<div class="bg-gradient-to-r from-zenml-600 to-purple-600 px-4 py-2.5 text-center text-sm text-white">
+  <span>{ANNOUNCEMENT_BANNER.text}</span>
+  <a
+    href={ANNOUNCEMENT_BANNER.href}
+    class="ml-2 inline-flex items-center font-semibold underline decoration-white/40 underline-offset-2 hover:decoration-white"
+  >
+    {ANNOUNCEMENT_BANNER.linkText}
+  </a>
+</div>
