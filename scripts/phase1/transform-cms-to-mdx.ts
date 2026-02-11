@@ -17,6 +17,7 @@ import { readFileSync, writeFileSync, mkdirSync } from "fs";
 import { join } from "path";
 import { parseArgs } from "util";
 import * as cheerio from "cheerio";
+import type { Element, AnyNode } from "domhandler";
 
 // ============================================================================
 // Configuration
@@ -947,7 +948,6 @@ class CMSTransformer {
    */
   private convertHTMLToMDX(html: string, warnings: string[]): string {
     const $ = cheerio.load(html, {
-      decodeEntities: false,
       xmlMode: false,
     });
 
@@ -966,7 +966,7 @@ class CMSTransformer {
    */
   private convertElement(
     $: cheerio.CheerioAPI,
-    elem: cheerio.Element,
+    elem: Element,
     warnings: string[]
   ): string {
     const $elem = $(elem);
@@ -1075,7 +1075,7 @@ class CMSTransformer {
    */
   private processInlineContent(
     $: cheerio.CheerioAPI,
-    $elem: cheerio.Cheerio<cheerio.Element>,
+    $elem: cheerio.Cheerio<Element>,
     warnings: string[]
   ): string {
     let text = "";

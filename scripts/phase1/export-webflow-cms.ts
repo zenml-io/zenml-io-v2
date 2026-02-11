@@ -367,7 +367,7 @@ class WebflowCMSExporter {
 
     this.stats.totalLiveItems += liveItems.length;
     this.stats.totalStagedItems += stagedItems.length;
-    this.stats.totalDrafts += draftIds.size;
+    this.stats.totalDrafts += draftIds.length;
   }
 
   private async saveManifests(): Promise<void> {
