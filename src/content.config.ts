@@ -550,6 +550,109 @@ const featurePageSchema = baseContentSchema.extend({
 });
 
 // ============================================================================
+// Case Studies Schema (Phase 3H-4)
+// ============================================================================
+
+const caseStudyHubSchema = z.object({
+  cardTitle: z.string(),
+  order: z.number().optional(),
+  logos: z.array(imageSchema).default([]),
+});
+
+const caseStudySidebarSchema = z.object({
+  company: z.string(),
+  website: z.object({
+    label: z.string(),
+    href: z.string().url(),
+  }).optional(),
+  mlTeamSize: z.string().optional(),
+  cloudProvider: z.string().optional(),
+  industry: z.string().optional(),
+  useCases: z.array(z.string()).default([]),
+  pdfDownload: z.object({
+    label: z.string(),
+    href: z.string(),
+  }).optional(),
+});
+
+/**
+ * Case Studies schema
+ * Route: /case-study/<slug>
+ * Count: 5 items
+ *
+ * Body-driven: long-form narrative in markdown body (like /compare/[slug]).
+ * Structured frontmatter for hero, sidebar, and hub card chrome.
+ */
+const caseStudySchema = baseContentSchema.extend({
+  hub: caseStudyHubSchema,
+  hero: z.object({
+    logos: z.array(imageSchema).default([]),
+  }),
+  sidebar: caseStudySidebarSchema,
+});
+
+// ============================================================================
+// VS Category Pages Schema (Phase 3H-4)
+// ============================================================================
+
+const vsHeroSchema = z.object({
+  eyebrow: z.string().optional(),
+  headline: z.string(),
+  deck: z.string().optional(),
+  primaryCta: ctaSchema,
+  secondaryCta: ctaSchema.optional(),
+  compareCategory: z.string(),
+});
+
+const vsIntroBlockSchema = z.object({
+  kind: z.literal('intro'),
+  body: z.string(),
+});
+
+const vsTestimonialBlockSchema = z.object({
+  kind: z.literal('testimonial'),
+  quote: z.string(),
+  name: z.string(),
+  title: z.string().optional(),
+  avatar: imageSchema.optional(),
+  companyLogo: imageSchema.optional(),
+});
+
+const vsRelatedCompareBlockSchema = z.object({
+  kind: z.literal('relatedCompare'),
+  eyebrow: z.string().optional(),
+  headline: z.string().optional(),
+});
+
+const vsCta02BlockSchema = z.object({
+  kind: z.literal('cta02'),
+  headline: z.string(),
+  bullets: z.array(z.string()).default([]),
+  primaryCta: ctaSchema,
+  secondaryCta: ctaSchema.optional(),
+  image: imageSchema.optional(),
+});
+
+/**
+ * VS Category Pages schema
+ * Route: /vs/<slug>
+ * Count: 3 items
+ *
+ * Block-driven: structured sections with discriminated union (like feature pages).
+ * The relatedCompare block triggers dynamic lookup from the compare collection.
+ */
+const vsPageSchema = baseContentSchema.extend({
+  hero: vsHeroSchema,
+  blocks: z.array(z.discriminatedUnion('kind', [
+    vsIntroBlockSchema,
+    valueBlockSchema,
+    vsTestimonialBlockSchema,
+    vsRelatedCompareBlockSchema,
+    vsCta02BlockSchema,
+  ])),
+});
+
+// ============================================================================
 // Collection Definitions (Astro v5 with glob loaders)
 // ============================================================================
 
@@ -634,5 +737,13 @@ export const collections = {
   'feature-pages': defineCollection({
     loader: glob({ pattern: '**/*.md', base: './src/content/feature-pages' }),
     schema: featurePageSchema,
+  }),
+  'case-studies': defineCollection({
+    loader: glob({ pattern: '**/*.md', base: './src/content/case-studies' }),
+    schema: caseStudySchema,
+  }),
+  'vs-pages': defineCollection({
+    loader: glob({ pattern: '**/*.md', base: './src/content/vs-pages' }),
+    schema: vsPageSchema,
   }),
 };

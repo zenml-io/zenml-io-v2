@@ -1,0 +1,87 @@
+---
+/**
+ * CaseStudySidebar — metadata sidebar for case study detail pages.
+ *
+ * Renders company info, website link, ML team size, cloud provider,
+ * industry, use case badges, and optional PDF download.
+ */
+interface Props {
+  company: string;
+  website?: { label: string; href: string };
+  mlTeamSize?: string;
+  cloudProvider?: string;
+  industry?: string;
+  useCases: string[];
+  pdfDownload?: { label: string; href: string };
+}
+
+const { company, website, mlTeamSize, cloudProvider, industry, useCases, pdfDownload } = Astro.props;
+---
+
+<aside class="space-y-5 rounded-xl border border-gray-200 bg-gray-50 p-6">
+  {pdfDownload && (
+    <a
+      href={pdfDownload.href}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="inline-flex items-center gap-2 text-sm font-semibold text-zenml-600 hover:text-zenml-700"
+    >
+      <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15v3.6c0 .56 0 .84-.109 1.054a1 1 0 0 1-.437.437C20.24 20.2 19.96 20.2 19.4 20.2H4.6c-.56 0-.84 0-1.054-.109a1 1 0 0 1-.437-.437C3 19.44 3 19.16 3 18.6V15M17 10l-5 5m0 0-5-5m5 5V3" />
+      </svg>
+      {pdfDownload.label}
+    </a>
+  )}
+
+  {company && (
+    <div>
+      <dt class="text-xs font-semibold uppercase tracking-wider text-gray-500">Company</dt>
+      <dd class="mt-1 text-sm font-medium text-gray-900">{company}</dd>
+    </div>
+  )}
+
+  {website && (
+    <div>
+      <dt class="text-xs font-semibold uppercase tracking-wider text-gray-500">Website</dt>
+      <dd class="mt-1">
+        <a href={website.href} target="_blank" rel="noopener noreferrer" class="text-sm font-medium text-zenml-600 hover:text-zenml-700">
+          {website.label} &rarr;
+        </a>
+      </dd>
+    </div>
+  )}
+
+  {mlTeamSize && (
+    <div>
+      <dt class="text-xs font-semibold uppercase tracking-wider text-gray-500">ML Team Size</dt>
+      <dd class="mt-1 text-sm font-medium text-gray-900">{mlTeamSize}</dd>
+    </div>
+  )}
+
+  {cloudProvider && (
+    <div>
+      <dt class="text-xs font-semibold uppercase tracking-wider text-gray-500">Cloud Provider</dt>
+      <dd class="mt-1 text-sm font-medium text-gray-900">{cloudProvider}</dd>
+    </div>
+  )}
+
+  {industry && (
+    <div>
+      <dt class="text-xs font-semibold uppercase tracking-wider text-gray-500">Industry</dt>
+      <dd class="mt-1 text-sm font-medium text-gray-900">{industry}</dd>
+    </div>
+  )}
+
+  {useCases.length > 0 && (
+    <div>
+      <dt class="text-xs font-semibold uppercase tracking-wider text-gray-500">Use Cases</dt>
+      <dd class="mt-2 flex flex-wrap gap-2">
+        {useCases.map((uc) => (
+          <span class="rounded-full bg-zenml-100 px-3 py-1 text-xs font-medium text-zenml-700">
+            {uc}
+          </span>
+        ))}
+      </dd>
+    </div>
+  )}
+</aside>

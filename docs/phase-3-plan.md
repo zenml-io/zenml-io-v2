@@ -648,39 +648,59 @@ Tasks:
 
 ---
 
-#### 3H-4: Case Studies (5 + hub) + VS Category Pages (3)
+#### 3H-4: Case Studies (5 + hub) + VS Category Pages (3) ✅
 
-**Goal:** Build case study and VS page families using shared templates. Both are repeatable structures.
+**Status: COMPLETE** (2026-02-11)
 
 **Architectural decisions:**
-- **Case studies:** Create content collection `src/content/case-studies/` with dynamic route `src/pages/case-study/[slug].astro`
-- **VS pages:** Use a single template + typed config object (only 3 pages)
+- **Case studies:** Body-driven content collection `src/content/case-studies/` (narrative in markdown body, structured frontmatter for hero/sidebar/hub chrome) with dynamic route `src/pages/case-study/[slug].astro`
+- **VS pages:** Block-driven content collection `src/content/vs-pages/` using discriminated union blocks (same pattern as feature pages) with dynamic route `src/pages/vs/[slug].astro`
+- **Cross-collection linking:** VS pages dynamically pull related `/compare/` entries by `compareCategory` field
 
 **Case study pages (P0):**
-- [ ] `/case-studies` — hub page (grid of all case studies)
-- [ ] `/case-study/jetbrains`
-- [ ] `/case-study/adeo-leroy-merlin`
-- [ ] `/case-study/cross-screen-media`
-- [ ] `/case-study/brevo`
-- [ ] `/case-study/zuiver`
+- [x] `/case-studies` — hub page (hero, card grid sorted by order, LLMOps banner, CTA band)
+- [x] `/case-study/jetbrains`
+- [x] `/case-study/adeo-leroy-merlin`
+- [x] `/case-study/cross-screen-media`
+- [x] `/case-study/brevo`
+- [x] `/case-study/zuiver`
 
 **VS category pages (P1):**
-- [ ] `/vs/zenml-vs-orchestrators`
-- [ ] `/vs/zenml-vs-experiment-trackers`
-- [ ] `/vs/zenml-vs-e2e-platforms`
+- [x] `/vs/zenml-vs-orchestrators` (7 blocks: intro + 3 value + testimonial + relatedCompare + cta02)
+- [x] `/vs/zenml-vs-experiment-trackers` (5 blocks)
+- [x] `/vs/zenml-vs-e2e-platforms` (5 blocks)
 
 **Tasks:**
-- [ ] Define `caseStudies` schema in `src/content.config.ts`
-- [ ] Create 5 content files in `src/content/case-studies/`
-- [ ] Create `src/pages/case-study/[slug].astro` (template with challenge/solution/results structure)
-- [ ] Create `src/pages/case-studies.astro` (hub)
-- [ ] Create VS page template + data config
-- [ ] Create 3 VS pages (or dynamic route if using config)
+- [x] Define `caseStudies` + `vsPages` schemas in `src/content.config.ts`
+- [x] Create extraction script `scripts/phase3/extract-case-studies.ts`
+- [x] Create extraction script `scripts/phase3/extract-vs-pages.ts`
+- [x] Create 5 content files in `src/content/case-studies/`
+- [x] Create 3 content files in `src/content/vs-pages/`
+- [x] Create `src/pages/case-study/[slug].astro` (breadcrumb + hero + sidebar + prose body + CTA)
+- [x] Create `src/pages/case-studies/index.astro` (hub)
+- [x] Create `src/pages/vs/[slug].astro` (block-driven)
+- [x] Create case study components (CaseStudySidebar, CaseStudyCard)
+- [x] Create VS components (VsHero, VsTestimonial, VsRelatedCompareGrid, VsCta02)
+- [x] Create `src/lib/case-studies.ts` (hub marketing copy)
+
+**Components added:**
+- `CaseStudySidebar.astro` — metadata aside (company, website, ML team size, cloud, industry, use cases, PDF)
+- `CaseStudyCard.astro` — hub grid card with logo(s) + title
+- `VsHero.astro` — hero with eyebrow badge, headline, deck, dual CTAs
+- `VsTestimonial.astro` — dark-themed customer quote (bg-gray-900)
+- `VsRelatedCompareGrid.astro` — grid of related /compare/ entries with tool icons
+- `VsCta02.astro` — dark CTA with bullet list, dual CTAs, optional image
 
 **Validation:**
-- All 5 case studies + hub render correctly
-- Case study nav links resolve (JetBrains, Adeo, Cross Screen featured in nav)
-- VS pages linked from footer render correctly
+- [x] All 5 case studies + hub render correctly
+- [x] All sidebar metadata (company, website, ML team size, cloud provider, industry, use cases) rendered
+- [x] 3 VS category pages render all block types
+- [x] VS pages link related compare entries by category
+- [x] Build passes (27.25s)
+
+**Implementation learning:** Webflow HTML uses non-breaking space (U+00A0) in some heading text (e.g., "ML\u00A0Team size"). Must normalize with `.replace(/\u00A0/g, ' ')` before string comparison in extraction scripts.
+
+**Known limitation:** Case study and VS page images use Webflow CDN URLs (not R2). See "Non-CMS Image Migration" note below.
 
 ---
 

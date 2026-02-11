@@ -1,0 +1,120 @@
+---
+/**
+ * VS category page.
+ *
+ * Renders static marketing pages comparing ZenML to categories of tools
+ * (orchestrators, experiment trackers, e2e platforms).
+ *
+ * The relatedCompare block dynamically pulls matching entries from the
+ * compare collection by category.
+ *
+ * Generates /vs/<slug> for each of the 3 VS category pages.
+ */
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import VsHero from "../../components/sections/VsHero.astro";
+import FeatureValueSection from "../../components/sections/FeatureValueSection.astro";
+import VsTestimonial from "../../components/sections/VsTestimonial.astro";
+import VsRelatedCompareGrid from "../../components/sections/VsRelatedCompareGrid.astro";
+import VsCta02 from "../../components/sections/VsCta02.astro";
+
+export async function getStaticPaths() {
+  const vsPages = await getCollection("vs-pages", ({ data }) => !data.draft);
+  const compareEntries = await getCollection("compare", ({ data }) => !data.draft);
+
+  return vsPages.map((page) => {
+    // Filter compare entries by this page's category
+    const related = compareEntries
+      .filter((c) => c.data.category === page.data.hero.compareCategory)
+      .map((c) => ({
+        title: `ZenML vs ${c.data.toolName || c.data.title}`,
+        href: `/compare/${c.data.slug}`,
+        toolIcon: c.data.toolIcon,
+      }));
+
+    return {
+      params: { slug: page.data.slug },
+      props: { page, related },
+    };
+  });
+}
+
+const { page, related } = Astro.props;
+const { data } = page;
+
+// SEO
+const seoTitle = data.seo?.title || `${data.hero.headline} - ZenML`;
+const seoDescription = data.seo?.description || data.hero.deck;
+---
+
+<BaseLayout
+  title={seoTitle}
+  description={seoDescription}
+  ogTitle={data.seo?.ogTitle}
+  ogDescription={data.seo?.ogDescription}
+  ogImage={data.seo?.ogImage}
+  canonical={data.seo?.canonical}
+>
+  <main>
+    <VsHero
+      eyebrow={data.hero.eyebrow}
+      headline={data.hero.headline}
+      deck={data.hero.deck}
+      primaryCta={data.hero.primaryCta}
+      secondaryCta={data.hero.secondaryCta}
+    />
+
+    {data.blocks.map((block) => {
+      if (block.kind === "intro") {
+        return (
+          <section class="bg-white py-8">
+            <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+              <p class="text-lg text-gray-600 leading-relaxed">{block.body}</p>
+            </div>
+          </section>
+        );
+      }
+      if (block.kind === "value") {
+        return (
+          <FeatureValueSection
+            title={block.title}
+            bullets={block.bullets}
+            image={block.image}
+            imageSide={block.imageSide}
+          />
+        );
+      }
+      if (block.kind === "testimonial") {
+        return (
+          <VsTestimonial
+            quote={block.quote}
+            name={block.name}
+            title={block.title}
+            avatar={block.avatar}
+            companyLogo={block.companyLogo}
+          />
+        );
+      }
+      if (block.kind === "relatedCompare") {
+        return (
+          <VsRelatedCompareGrid
+            eyebrow={block.eyebrow}
+            headline={block.headline}
+            items={related}
+          />
+        );
+      }
+      if (block.kind === "cta02") {
+        return (
+          <VsCta02
+            headline={block.headline}
+            bullets={block.bullets}
+            primaryCta={block.primaryCta}
+            secondaryCta={block.secondaryCta}
+            image={block.image}
+          />
+        );
+      }
+    })}
+  </main>
+</BaseLayout>

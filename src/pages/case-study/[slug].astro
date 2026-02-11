@@ -1,0 +1,94 @@
+---
+/**
+ * Case study detail page.
+ *
+ * Renders individual case study pages with hero logos, sidebar metadata,
+ * and long-form narrative content (markdown body).
+ *
+ * Generates /case-study/<slug> for each of the 5 published case studies.
+ */
+import { getCollection, render } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import CaseStudySidebar from "../../components/sections/CaseStudySidebar.astro";
+import FinalCTA from "../../components/sections/FinalCTA.astro";
+
+export async function getStaticPaths() {
+  const caseStudies = await getCollection("case-studies", ({ data }) => !data.draft);
+  return caseStudies.map((cs) => ({
+    params: { slug: cs.data.slug },
+    props: { cs },
+  }));
+}
+
+const { cs } = Astro.props;
+const { data } = cs;
+const { Content } = await render(cs);
+
+// SEO
+const seoTitle = data.seo?.title || `${data.title} - ZenML Case Study`;
+const seoDescription = data.seo?.description || `How ${data.sidebar.company} uses ZenML to build production AI workflows.`;
+const ogImage = data.seo?.ogImage;
+---
+
+<BaseLayout
+  title={seoTitle}
+  description={seoDescription}
+  ogImage={ogImage}
+  ogTitle={data.seo?.ogTitle}
+  ogDescription={data.seo?.ogDescription}
+  canonical={data.seo?.canonical}
+>
+  <main>
+    {/* Breadcrumb */}
+    <div class="mx-auto max-w-7xl px-4 pt-6 sm:px-6 lg:px-8">
+      <nav class="text-sm text-gray-500">
+        <a href="/case-studies" class="hover:text-zenml-500">Case Studies</a>
+        <span class="mx-2">/</span>
+        <span class="text-gray-900">{data.sidebar.company}</span>
+      </nav>
+    </div>
+
+    {/* Hero: logos + title */}
+    <section class="bg-white py-12 sm:py-16">
+      <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+        {data.hero.logos.length > 0 && (
+          <div class="mb-6 flex items-center justify-center gap-4">
+            {data.hero.logos.map((logo) => (
+              <img
+                src={logo.url}
+                alt={logo.alt || data.sidebar.company}
+                class="h-12 max-w-[120px] object-contain"
+                loading="eager"
+              />
+            ))}
+          </div>
+        )}
+        <h1 class="text-2xl font-bold text-gray-900 sm:text-3xl lg:text-4xl leading-tight">
+          {data.title}
+        </h1>
+      </div>
+    </section>
+
+    {/* Main content: sidebar + body */}
+    <section class="bg-white pb-16 sm:pb-20">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="grid gap-10 lg:grid-cols-[280px_1fr]">
+          <CaseStudySidebar
+            company={data.sidebar.company}
+            website={data.sidebar.website}
+            mlTeamSize={data.sidebar.mlTeamSize}
+            cloudProvider={data.sidebar.cloudProvider}
+            industry={data.sidebar.industry}
+            useCases={data.sidebar.useCases}
+            pdfDownload={data.sidebar.pdfDownload}
+          />
+          <div class="prose prose-gray max-w-none">
+            <Content />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <FinalCTA />
+  </main>
+</BaseLayout>

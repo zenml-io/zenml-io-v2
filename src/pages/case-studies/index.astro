@@ -1,0 +1,97 @@
+---
+/**
+ * Case studies hub page — grid of all 5 case studies.
+ *
+ * Route: /case-studies
+ *
+ * Renders a hero section, a grid of case study cards,
+ * a banner link to the LLMOps database, and a dark CTA band.
+ */
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import CaseStudyCard from "../../components/sections/CaseStudyCard.astro";
+import FeaturesHubCTA from "../../components/sections/FeaturesHubCTA.astro";
+import Button from "../../components/Button.astro";
+import {
+  CASE_STUDIES_HUB_HERO,
+  CASE_STUDIES_HUB_BANNER,
+  CASE_STUDIES_HUB_CTA,
+} from "../../lib/case-studies";
+
+const allCaseStudies = await getCollection("case-studies", ({ data }) => !data.draft);
+const caseStudies = allCaseStudies.sort(
+  (a, b) => (a.data.hub.order ?? 99) - (b.data.hub.order ?? 99)
+);
+---
+
+<BaseLayout
+  title="ZenML Case Studies - Real Teams, Real AI Workflows"
+  description="See how teams are using ZenML to unify their AI platforms—from batch evaluations to real-time serving, traditional ML to GenAI workflows."
+  ogTitle="ZenML Case Studies"
+>
+  <main>
+    {/* Hero */}
+    <section class="bg-white pt-16 pb-12 sm:pt-24 sm:pb-16">
+      <div class="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
+        <span class="mb-3 inline-block text-xs font-semibold uppercase tracking-wider text-zenml-500">
+          {CASE_STUDIES_HUB_HERO.eyebrow}
+        </span>
+        <h1 class="text-3xl font-bold text-gray-900 sm:text-4xl lg:text-5xl">
+          {CASE_STUDIES_HUB_HERO.headline}
+        </h1>
+        <p class="mt-4 text-lg text-gray-600 leading-relaxed">
+          {CASE_STUDIES_HUB_HERO.body}
+        </p>
+        <div class="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+          <Button href={CASE_STUDIES_HUB_HERO.primaryCta.href} size="lg">
+            {CASE_STUDIES_HUB_HERO.primaryCta.label}
+          </Button>
+          <Button href={CASE_STUDIES_HUB_HERO.secondaryCta.href} variant="secondary" size="lg">
+            {CASE_STUDIES_HUB_HERO.secondaryCta.label}
+          </Button>
+        </div>
+      </div>
+    </section>
+
+    {/* Case study grid */}
+    <section class="bg-gray-50 py-16 sm:py-20">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {caseStudies.map((cs) => (
+            <CaseStudyCard
+              href={`/case-study/${cs.data.slug}`}
+              title={cs.data.hub.cardTitle}
+              logos={cs.data.hub.logos}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* LLMOps banner */}
+    <section class="bg-white py-4">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <a
+          href={CASE_STUDIES_HUB_BANNER.href}
+          class="flex items-center justify-between rounded-xl border border-gray-200 bg-gray-50 px-6 py-4 transition hover:border-zenml-300 hover:shadow-sm"
+        >
+          <div>
+            <p class="font-semibold text-gray-900">{CASE_STUDIES_HUB_BANNER.text}</p>
+            <p class="text-sm text-gray-500">{CASE_STUDIES_HUB_BANNER.supporting}</p>
+          </div>
+          <svg class="h-5 w-5 shrink-0 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14M19 12l-7-7M19 12l-7 7" />
+          </svg>
+        </a>
+      </div>
+    </section>
+
+    {/* CTA band */}
+    <FeaturesHubCTA
+      headline={CASE_STUDIES_HUB_CTA.headline}
+      body={CASE_STUDIES_HUB_CTA.body}
+      primaryCta={CASE_STUDIES_HUB_CTA.primaryCta}
+      secondaryCta={CASE_STUDIES_HUB_CTA.secondaryCta}
+    />
+  </main>
+</BaseLayout>

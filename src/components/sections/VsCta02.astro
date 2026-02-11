@@ -1,0 +1,62 @@
+---
+/**
+ * VsCta02 — dark CTA section with bullet list and optional image.
+ *
+ * CTA02-style section used on VS category pages.
+ * Features a headline, checkmark bullet list, two CTAs, and an optional
+ * dashboard screenshot on the right.
+ */
+import Button from "../Button.astro";
+
+interface Props {
+  headline: string;
+  bullets: string[];
+  primaryCta: { label: string; href: string };
+  secondaryCta?: { label: string; href: string };
+  image?: { url: string; alt: string };
+}
+
+const { headline, bullets, primaryCta, secondaryCta, image } = Astro.props;
+---
+
+<section class="bg-gray-900 py-16 sm:py-20">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="grid items-center gap-10 lg:grid-cols-2">
+      <div>
+        <h2 class="text-2xl font-bold text-white sm:text-3xl">{headline}</h2>
+        {bullets.length > 0 && (
+          <ul class="mt-6 space-y-3">
+            {bullets.map((bullet) => (
+              <li class="flex items-start gap-3">
+                <svg class="mt-0.5 h-5 w-5 shrink-0 text-zenml-400" viewBox="0 0 28 28" fill="none">
+                  <path d="M8.75 14l3.5 3.5 7-7M25.667 14c0 6.443-5.224 11.667-11.667 11.667S2.333 20.443 2.333 14 7.557 2.333 14 2.333 25.667 7.557 25.667 14Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span class="text-base text-gray-200">{bullet}</span>
+              </li>
+            ))}
+          </ul>
+        )}
+        <div class="mt-8 flex flex-col items-start gap-3 sm:flex-row">
+          <Button href={primaryCta.href} size="lg">
+            {primaryCta.label}
+          </Button>
+          {secondaryCta && (
+            <Button href={secondaryCta.href} variant="secondary" size="lg">
+              {secondaryCta.label}
+            </Button>
+          )}
+        </div>
+      </div>
+      {image && (
+        <div class="hidden lg:block">
+          <img
+            src={image.url}
+            alt={image.alt}
+            class="rounded-xl shadow-2xl"
+            loading="lazy"
+          />
+        </div>
+      )}
+    </div>
+  </div>
+</section>
