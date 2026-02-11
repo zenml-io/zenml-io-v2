@@ -242,7 +242,7 @@ Tasks:
   - Render entry name, company, logo
   - Render summary (short description)
   - Render llmops-tags badges (fetch from llmops-tags collection)
-  - Render industry-tags badges (if present — VERIFY: current schema has NO industryTags field!)
+  - Render industry-tags badge (single value: `industryTags?: string` — tech, healthcare, finance, etc.)
   - Render full MDX body (features, pricing, use cases, etc.)
   - Link to website URL (external)
   - Link to related entries (same tags — optional, can defer)
@@ -261,11 +261,15 @@ Tasks:
 - [ ] Create `src/pages/llmops-index.json.ts` (Astro endpoint)
   - Import LLMOps collection via `getCollection('llmops-database')`
   - Filter out drafts
-  - Extract structured fields only:
-    - `slug`, `name`, `company`, `summary`
-    - `llmopsTags` (array of slugs)
-    - `industryTags` (single slug string)
-    - Any other filterable fields (year, link)
+  - Extract structured fields with correct mapping:
+    - `slug` → `entry.id`
+    - `name` → `entry.data.title` (schema uses `title` not `name`)
+    - `company` → `entry.data.company`
+    - `summary` → `entry.data.summary`
+    - `llmopsTags` → `entry.data.llmopsTags` (array of slugs)
+    - `industryTags` → `entry.data.industryTags` (single slug string, optional)
+    - `year`, `link` → optional additional fields
+  - Add `export const prerender = true;` for static generation
   - Return JSON via `Response` object
   - Target size: <500 KB (1,453 entries × ~300 bytes each)
 - [ ] Verify JSON is generated at build time in `dist/llmops-index.json`
@@ -289,9 +293,9 @@ Tasks:
     - Text search input (searches name, company, summary fields)
     - Clear filters button
   - Filter logic:
-    - Tag filters are AND (entry must have ALL selected tags)
-    - Industry filters are OR (entry has ANY selected industry)
-    - Text search is fuzzy match (case-insensitive substring)
+    - Tag filters are AND (entry must have ALL selected tags from llmopsTags array)
+    - Industry filters are OR (entry's single industryTags value matches ANY selected industry)
+    - Text search is substring match (case-insensitive search on name, company, summary)
   - Render filtered results as a grid of cards
   - Pagination or infinite scroll (10-20 entries per page)
 - [ ] Create `src/pages/llmops-database/index.astro`
@@ -413,7 +417,7 @@ Tasks:
 
 ---
 
-### 3H: Static Pages (~44 pages)
+### 3H: Static Pages (64 published pages)
 
 **Goal:** Build all non-CMS pages (home, pricing, features, case studies, legal, etc.).
 
@@ -450,9 +454,12 @@ Tasks:
 - [ ] **Careers** (`src/pages/careers.astro`)
   - Job listings (can be hardcoded or fetch from external API)
   - Company culture section
-- [ ] **Case Studies Hub** (`src/pages/case-study/index.astro`)
+- [ ] **Case Studies Hub** (`src/pages/case-studies.astro`)
   - Grid of case study cards
-- [ ] **Case Study Pages** (5 pages, e.g., `src/pages/case-study/[slug].astro`)
+  - Route: `/case-studies` (plural)
+- [ ] **Case Study Pages** (5 pages, `src/pages/case-study/[slug].astro`)
+  - Detail pages for individual case studies
+  - Route: `/case-study/<slug>` (singular)
   - Case study content (challenge, solution, results)
   - Testimonial quote
   - CTA (contact sales)
@@ -473,16 +480,17 @@ Tasks:
 #### ⚠️ Form Pages Placeholder Strategy
 
 **Issue:** 4+ pages are primarily forms (per `docs/forms-audit.md`):
-- `/book-a-demo`, `/signup-for-demo` (Cal.com embeds)
-- `/whitepaper-architecting-an-enterprise-grade-mlops-platform` (gated content)
-- `/startups-and-academics` (application form)
+- `/book-a-demo`, `/signup-for-demo` (Webflow native demo request forms)
+- `/book-your-demo`, `/schedule-a-demo` (Cal.com embeds)
+- `/whitepaper-architecting-an-enterprise-grade-mlops-platform` (gated content with Webflow form)
+- `/startups-and-academics` (Webflow application form)
 
-**Phase 3 Scope** (render pages without functional forms):
+**Phase 3 Scope** (render pages with appropriate placeholder):
 - Build page layouts with form UI (HTML structure, styling)
-- Add **placeholder behavior**:
-  - Cal.com pages: Render Cal.com embed (iframe), but forms won't submit (Phase 5)
-  - Whitepaper download: Show form UI, but disable submit (Phase 5 adds gating logic)
-  - Application forms: Show form UI, but disable submit (Phase 5 adds backend)
+- Add **placeholder behavior by type**:
+  - **Cal.com pages**: Render Cal.com embed (iframe) — these should work immediately (no Phase 5 dependency)
+  - **Webflow native forms**: Show form UI structure, but disable submit (Phase 5 adds Cloudflare Workers backend)
+  - **Gated content**: Show form UI structure, but disable submit (Phase 5 adds download gating logic)
 
 **Phase 5 Scope** (make forms functional):
 - Wire up Cal.com embeds for actual booking
@@ -493,7 +501,7 @@ Tasks:
 
 **Validation:**
 - Build succeeds for all static pages
-- Spot-check 5 high-priority pages for visual parity (home, pricing, features/pipelines, case-study/jetbrains, company)
+- Spot-check 5 high-priority pages for visual parity (home, pricing, features/iterate-at-warp-speed, case-studies, company)
 - Verify all links work (internal + external)
 
 **Note:** Content for static pages comes from `design/migration/phase1/runs/2026-02-11T0626Z/pages/` (HTML snapshots, cataloged in `page-index.json`). We'll need to manually convert HTML → Astro components.
@@ -504,7 +512,7 @@ Tasks:
 
 **Goal:** Recreate the most important Webflow interactions cataloged in Phase 1.
 
-**Reference:** `design/migration/phase1/runs/2026-02-11T0626Z/animations/catalog.json` (325 unique interaction IDs) and `animations/notes.md` (11 patterns cataloged with must-replicate classifications)
+**Reference:** `design/migration/phase1/runs/2026-02-11T0626Z/animations/catalog.json` (325 unique interaction IDs) and `design/migration/phase1/runs/2026-02-11T0626Z/animations/notes.md` (11 patterns cataloged with must-replicate classifications)
 
 **Strategy:** Prioritize **must-replicate** interactions (visible, user-facing) over **nice-to-have** (subtle micro-interactions).
 
