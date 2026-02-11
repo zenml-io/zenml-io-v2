@@ -1,0 +1,41 @@
+---
+/**
+ * Book a Demo — placeholder demo request form.
+ *
+ * Route: /book-a-demo
+ */
+import BaseLayout from "../layouts/BaseLayout.astro";
+import FormPlaceholder from "../components/sections/FormPlaceholder.astro";
+import {
+  BOOK_A_DEMO_SEO,
+  BOOK_A_DEMO_HERO,
+  BOOK_A_DEMO_FIELDS,
+  BOOK_A_DEMO_FALLBACK_CTA,
+} from "../lib/bookADemo";
+---
+
+<BaseLayout
+  title={BOOK_A_DEMO_SEO.title}
+  description={BOOK_A_DEMO_SEO.description}
+  ogTitle={BOOK_A_DEMO_SEO.ogTitle}
+  ogDescription={BOOK_A_DEMO_SEO.ogDescription}
+>
+  <main>
+    <section class="bg-white py-16 sm:py-24">
+      <div class="mx-auto max-w-xl px-4 sm:px-6 lg:px-8">
+        <div class="mb-8 text-center">
+          <h1 class="text-3xl font-bold text-gray-900 sm:text-4xl">
+            {BOOK_A_DEMO_HERO.headline}
+          </h1>
+          <p class="mt-3 text-lg text-gray-600">{BOOK_A_DEMO_HERO.deck}</p>
+        </div>
+
+        <FormPlaceholder
+          fields={BOOK_A_DEMO_FIELDS}
+          submitLabel="Send Request"
+          fallbackCta={BOOK_A_DEMO_FALLBACK_CTA}
+        />
+      </div>
+    </section>
+  </main>
+</BaseLayout>

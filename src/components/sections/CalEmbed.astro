@@ -1,0 +1,78 @@
+---
+/**
+ * CalEmbed — Cal.com inline calendar widget.
+ *
+ * Loads the Cal.com embed.js script and initializes an inline calendar
+ * in the target div. Includes a fallback link for ad-blocker users.
+ */
+import type { CalEmbedConfig } from "../../lib/formTypes";
+import { CAL_ORIGIN, CAL_EMBED_SCRIPT } from "../../lib/formConstants";
+
+interface Props {
+  config: CalEmbedConfig;
+}
+
+const { config } = Astro.props;
+const layout = config.layout ?? "month_view";
+---
+
+<div class="mx-auto w-full max-w-4xl">
+  <div
+    id={config.elementId}
+    class="min-h-[700px] w-full overflow-auto"
+  ></div>
+
+  <p class="mt-4 text-center text-sm text-gray-500">
+    Can't see the calendar?{" "}
+    <a
+      href={`${CAL_ORIGIN}/${config.calLink}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="text-zenml-500 underline"
+    >
+      Open directly &rarr;
+    </a>
+  </p>
+</div>
+
+<script is:inline
+  define:vars={{ namespace: config.namespace, elementId: config.elementId, calLink: config.calLink, layout, CAL_EMBED_SCRIPT, CAL_ORIGIN }}
+>
+  // Cal.com embed IIFE — loads embed.js and registers the namespace
+  (function (C, A, L) {
+    let p = function (a, ar) { a.q.push(ar); };
+    let d = C.document;
+    C.Cal = C.Cal || function () {
+      let cal = C.Cal;
+      let ar = arguments;
+      if (!cal.loaded) {
+        cal.ns = {};
+        cal.q = cal.q || [];
+        d.head.appendChild(d.createElement("script")).src = A;
+        cal.loaded = true;
+      }
+      if (ar[0] === L) {
+        const api = function () { p(api, arguments); };
+        const ns = ar[1];
+        api.q = api.q || [];
+        if (typeof ns === "string") {
+          cal.ns[ns] = cal.ns[ns] || api;
+          p(cal.ns[ns], ar);
+          p(cal, ["initNamespace", ns]);
+        } else {
+          p(cal, ar);
+        }
+        return;
+      }
+      p(cal, ar);
+    };
+  })(window, CAL_EMBED_SCRIPT, "init");
+
+  Cal("init", namespace, { origin: CAL_ORIGIN });
+  Cal.ns[namespace]("inline", {
+    elementOrSelector: "#" + elementId,
+    config: { layout: layout },
+    calLink: calLink,
+  });
+  Cal.ns[namespace]("ui", { hideEventTypeDetails: false, layout: layout });
+</script>

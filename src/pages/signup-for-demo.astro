@@ -1,0 +1,41 @@
+---
+/**
+ * Signup for Demo — identical form to /book-a-demo, different route.
+ *
+ * Route: /signup-for-demo
+ */
+import BaseLayout from "../layouts/BaseLayout.astro";
+import FormPlaceholder from "../components/sections/FormPlaceholder.astro";
+import {
+  SIGNUP_FOR_DEMO_SEO,
+  SIGNUP_FOR_DEMO_HERO,
+  SIGNUP_FOR_DEMO_FIELDS,
+  SIGNUP_FOR_DEMO_FALLBACK_CTA,
+} from "../lib/signupForDemo";
+---
+
+<BaseLayout
+  title={SIGNUP_FOR_DEMO_SEO.title}
+  description={SIGNUP_FOR_DEMO_SEO.description}
+  ogTitle={SIGNUP_FOR_DEMO_SEO.ogTitle}
+  ogDescription={SIGNUP_FOR_DEMO_SEO.ogDescription}
+>
+  <main>
+    <section class="bg-white py-16 sm:py-24">
+      <div class="mx-auto max-w-xl px-4 sm:px-6 lg:px-8">
+        <div class="mb-8 text-center">
+          <h1 class="text-3xl font-bold text-gray-900 sm:text-4xl">
+            {SIGNUP_FOR_DEMO_HERO.headline}
+          </h1>
+          <p class="mt-3 text-lg text-gray-600">{SIGNUP_FOR_DEMO_HERO.deck}</p>
+        </div>
+
+        <FormPlaceholder
+          fields={SIGNUP_FOR_DEMO_FIELDS}
+          submitLabel="Send Request"
+          fallbackCta={SIGNUP_FOR_DEMO_FALLBACK_CTA}
+        />
+      </div>
+    </section>
+  </main>
+</BaseLayout>

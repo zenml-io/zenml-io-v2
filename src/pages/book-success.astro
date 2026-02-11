@@ -1,0 +1,20 @@
+---
+/**
+ * Book Success — thank-you with link to success-calendar.
+ *
+ * Route: /book-success (noindex)
+ */
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SuccessPanel from "../components/sections/SuccessPanel.astro";
+import { BOOK_SUCCESS_SEO, BOOK_SUCCESS_DATA } from "../lib/bookSuccess";
+---
+
+<BaseLayout
+  title={BOOK_SUCCESS_SEO.title}
+  description={BOOK_SUCCESS_SEO.description}
+  noindex={BOOK_SUCCESS_SEO.noindex}
+>
+  <main>
+    <SuccessPanel data={BOOK_SUCCESS_DATA} />
+  </main>
+</BaseLayout>

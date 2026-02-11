@@ -1,0 +1,98 @@
+---
+/**
+ * BrevoNewsletterForm — email signup form that POSTs to Brevo (Sendinblue).
+ *
+ * Uses fetch with mode: 'no-cors' to submit the form data.
+ * Progressive enhancement: without JS the form POSTs directly to Brevo.
+ * Scoped DOM queries via data-brevo-form attribute — safe for multiple instances.
+ */
+import type { BrevoFormConfig } from "../../lib/formTypes";
+
+interface Props {
+  config: BrevoFormConfig;
+  privacyHtml?: string;
+}
+
+const { config, privacyHtml } = Astro.props;
+---
+
+<div data-brevo-form={config.formId}>
+  <form
+    method="POST"
+    action={config.action}
+    class="flex flex-col gap-3 sm:flex-row"
+    data-brevo-newsletter
+  >
+    <label for={`brevo-email-${config.formId}`} class="sr-only">Email address</label>
+    <input
+      id={`brevo-email-${config.formId}`}
+      type="email"
+      name="EMAIL"
+      required
+      placeholder="Email address"
+      autocomplete="email"
+      class="rounded-md border border-gray-300 px-4 py-3 text-sm shadow-sm focus:border-zenml-500 focus:outline-none focus:ring-1 focus:ring-zenml-500 sm:w-72"
+    />
+    <button
+      type="submit"
+      class="inline-flex items-center justify-center rounded-md bg-zenml-500 px-5 py-3 text-sm font-semibold text-white shadow-button hover:bg-zenml-600 transition disabled:opacity-50 disabled:cursor-not-allowed"
+    >
+      {config.submitLabel}
+    </button>
+    {/* Brevo honeypot + locale */}
+    <input type="text" name="email_address_check" value="" class="hidden" tabindex="-1" aria-hidden="true" />
+    <input type="hidden" name="locale" value="en" />
+  </form>
+
+  <p class="mt-3 hidden text-sm font-medium text-green-600" data-brevo-success>
+    Thanks for subscribing! Check your inbox to confirm.
+  </p>
+  <p class="mt-3 hidden text-sm font-medium text-red-600" data-brevo-error></p>
+
+  {privacyHtml && <p class="mt-4 text-xs text-gray-500" set:html={privacyHtml} />}
+</div>
+
+<script is:inline define:vars={{ formId: config.formId, loadingLabel: config.loadingLabel }}>
+  (function () {
+    const root = document.querySelector('[data-brevo-form="' + formId + '"]');
+    if (!root) return;
+
+    const form = root.querySelector("[data-brevo-newsletter]");
+    const successMsg = root.querySelector("[data-brevo-success]");
+    const errorMsg = root.querySelector("[data-brevo-error]");
+
+    form?.addEventListener("submit", function (e) {
+      e.preventDefault();
+      const btn = form.querySelector("button[type=submit]");
+      const originalText = btn?.textContent;
+
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = loadingLabel;
+      }
+
+      const formData = new FormData(form);
+
+      fetch(form.action, {
+        method: "POST",
+        body: formData,
+        mode: "no-cors",
+      })
+        .then(function () {
+          form.classList.add("hidden");
+          successMsg?.classList.remove("hidden");
+        })
+        .catch(function (err) {
+          console.error("Brevo submit error:", err);
+          if (errorMsg) {
+            errorMsg.textContent = "Subscription failed. Please try again.";
+            errorMsg.classList.remove("hidden");
+          }
+          if (btn) {
+            btn.textContent = originalText;
+            btn.disabled = false;
+          }
+        });
+    });
+  })();
+</script>

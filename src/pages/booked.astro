@@ -1,0 +1,20 @@
+---
+/**
+ * Booked — thank-you page after Cal.com booking.
+ *
+ * Route: /booked (noindex)
+ */
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SuccessPanel from "../components/sections/SuccessPanel.astro";
+import { BOOKED_SEO, BOOKED_DATA } from "../lib/booked";
+---
+
+<BaseLayout
+  title={BOOKED_SEO.title}
+  description={BOOKED_SEO.description}
+  noindex={BOOKED_SEO.noindex}
+>
+  <main>
+    <SuccessPanel data={BOOKED_DATA} />
+  </main>
+</BaseLayout>

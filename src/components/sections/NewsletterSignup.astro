@@ -2,10 +2,14 @@
 /**
  * NewsletterSignup — email signup form for the ZenML newsletter.
  *
- * Placeholder form for now. The Brevo integration will be added
- * post-launch per the forms architecture in docs/forms-audit.md.
+ * Uses the real Brevo integration via BrevoNewsletterForm component.
+ * Used on the homepage and potentially other pages.
  */
 import { NEWSLETTER } from "../../lib/homepage";
+import { BREVO_MAIN_CONFIG } from "../../lib/formConstants";
+import BrevoNewsletterForm from "./BrevoNewsletterForm.astro";
+
+const privacyHtml = `${NEWSLETTER.privacyNote} <a href="${NEWSLETTER.privacyLink.href}" class="text-zenml-500 underline">${NEWSLETTER.privacyLink.label}</a>.`;
 ---
 
 <section class="border-y border-gray-100 bg-gray-50 py-16 sm:py-20">
@@ -14,56 +18,8 @@ import { NEWSLETTER } from "../../lib/homepage";
       {NEWSLETTER.headline}
     </h2>
     <p class="mt-3 text-gray-600">{NEWSLETTER.body}</p>
-    <form class="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center" data-newsletter-form>
-      <label for="newsletter-email" class="sr-only">Email address</label>
-      <input
-        id="newsletter-email"
-        type="email"
-        name="email"
-        required
-        placeholder="Enter your email"
-        autocomplete="email"
-        class="rounded-md border border-gray-300 px-4 py-3 text-sm shadow-sm focus:border-zenml-500 focus:outline-none focus:ring-1 focus:ring-zenml-500 sm:w-72"
-      />
-      <button
-        type="submit"
-        class="inline-flex items-center justify-center rounded-md bg-zenml-500 px-5 py-3 text-sm font-semibold text-white shadow-button hover:bg-zenml-600 transition disabled:opacity-50 disabled:cursor-not-allowed"
-      >
-        Subscribe
-      </button>
-    </form>
-    <p class="mt-3 hidden text-sm font-medium text-green-600" data-newsletter-success>
-      Thanks for subscribing! Check your inbox to confirm.
-    </p>
-    <p class="mt-3 hidden text-sm font-medium text-red-600" data-newsletter-error></p>
-    <p class="mt-4 text-xs text-gray-500">
-      {NEWSLETTER.privacyNote}{" "}
-      <a href={NEWSLETTER.privacyLink.href} class="text-zenml-500 underline">
-        {NEWSLETTER.privacyLink.label}
-      </a>.
-    </p>
+    <div class="mt-8 flex justify-center">
+      <BrevoNewsletterForm config={BREVO_MAIN_CONFIG} privacyHtml={privacyHtml} />
+    </div>
   </div>
 </section>
-
-<script>
-  const form = document.querySelector<HTMLFormElement>("[data-newsletter-form]");
-  const successMsg = document.querySelector<HTMLElement>("[data-newsletter-success]");
-  const errorMsg = document.querySelector<HTMLElement>("[data-newsletter-error]");
-
-  form?.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const btn = form.querySelector<HTMLButtonElement>("button[type=submit]");
-
-    // Brevo integration coming in Phase 5 — for now show success placeholder
-    if (btn) {
-      btn.disabled = true;
-      btn.textContent = "Subscribing…";
-    }
-
-    // Simulate brief delay then show success (replace with real Brevo call later)
-    setTimeout(() => {
-      form.classList.add("hidden");
-      successMsg?.classList.remove("hidden");
-    }, 600);
-  });
-</script>

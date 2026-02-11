@@ -1,8 +1,8 @@
 # Phase 3: Templates & Pages — Detailed Plan
 
 **Created:** 2026-02-11
-**Last Updated:** 2026-02-11 (3H-5 complete)
-**Status:** 3A–3G COMPLETE, 3H-1a + 3H-1b + 3H-3 + 3H-4 + 3H-5 COMPLETE — 3H-6 through 3H-7 remaining
+**Last Updated:** 2026-02-11 (3H-6 complete)
+**Status:** 3A–3G COMPLETE, 3H-1a + 3H-1b + 3H-3 + 3H-4 + 3H-5 + 3H-6 COMPLETE — 3H-7 remaining
 **Prerequisites:**
 - Phase 2 complete (2,392 content files, 17 collections, all validation passing)
 - **Content format:** Switched from .mdx to .md (MDX v2 too strict for Webflow HTML)
@@ -753,7 +753,7 @@ Tasks:
 
 ---
 
-#### 3H-6: Form/Conversion + Success + Newsletter Pages
+#### 3H-6: Form/Conversion + Success + Newsletter Pages ✅
 
 **Goal:** Build form and scheduling pages. Cal.com embeds and Brevo newsletter should be **functional in 3H**. Webflow-native forms get UI parity with graceful fallback (full backend in Phase 5).
 
@@ -768,24 +768,37 @@ Tasks:
 | **Gated content form** | UI parity + disabled submit | `/whitepaper-*` (P1) |
 | **Success pages** | Simple confirmation text | `/booked`, `/book-success`, `/book-a-demo-success`, `/newsletter-success` (P2) |
 
-**Pages (14 total):**
-- [ ] `/book-your-demo` — Cal.com embed, **must be functional** (P0)
-- [ ] `/schedule-a-demo` — Cal.com embed (reschedule variant) (P1)
-- [ ] `/success-calendar` — Cal.com embed (post-form-submission) (P1)
-- [ ] `/newsletter-signup` — Brevo embed, functional (P1)
-- [ ] `/newsletter-success` — simple confirmation (P2)
-- [ ] `/book-a-demo` — form UI + redirect CTA to `/book-your-demo` (P1)
-- [ ] `/signup-for-demo` — form UI + redirect CTA to `/book-your-demo` (P1)
-- [ ] `/startups-and-academics` — application form placeholder (P1)
-- [ ] `/whitepaper-architecting-an-enterprise-grade-mlops-platform` — gated content placeholder (P1)
-- [ ] `/booked` — success page (P2)
-- [ ] `/book-success` — success page (P2)
-- [ ] `/book-a-demo-success` — success page (P2)
+**Pages (12 total):**
+- [x] `/book-your-demo` — Cal.com embed, **must be functional** (P0)
+- [x] `/schedule-a-demo` — Cal.com embed (reschedule variant) (P1)
+- [x] `/success-calendar` — Cal.com embed (post-form-submission) (P1, noindex)
+- [x] `/newsletter-signup` — Brevo embed, functional (P1)
+- [x] `/newsletter-success` — simple confirmation (P2, noindex)
+- [x] `/book-a-demo` — form UI + redirect CTA to `/book-your-demo` (P1)
+- [x] `/signup-for-demo` — form UI + redirect CTA to `/book-your-demo` (P1)
+- [x] `/startups-and-academics` — application form placeholder (P1)
+- [x] `/whitepaper-architecting-an-enterprise-grade-mlops-platform` — gated content placeholder (P1)
+- [x] `/booked` — success page (P2, noindex)
+- [x] `/book-success` — success page (P2, noindex)
+- [x] `/book-a-demo-success` — success page with Cal.com embed (P2, noindex)
+
+**Component upgrade:**
+- [x] Upgraded `NewsletterSignup.astro` from placeholder to real Brevo via `BrevoNewsletterForm` component
+
+**Shared infrastructure created:**
+- `src/lib/formTypes.ts` — CalEmbedConfig, BrevoFormConfig, PlaceholderField, SuccessPageData
+- `src/lib/formConstants.ts` — Cal origin, Brevo URLs, job title / role option lists
+- `src/components/sections/CalEmbed.astro` — Cal.com inline embed with namespace isolation
+- `src/components/sections/BrevoNewsletterForm.astro` — Brevo form with fetch POST (no-cors)
+- `src/components/sections/SuccessPanel.astro` — centered thank-you panel
+- `src/components/sections/FormPlaceholder.astro` — disabled form UI with fallback CTA
 
 **Validation:**
-- Cal.com embed loads and shows calendar on `/book-your-demo`
-- Newsletter signup on `/newsletter-signup` submits to Brevo
-- Form placeholder pages have clear path to actual booking
+- ✅ All 12 pages build without errors
+- ✅ Cal.com embed script present on booking pages
+- ✅ Brevo sibforms endpoint present on newsletter-signup and homepage
+- ✅ All 5 success/noindex pages have `<meta name="robots" content="noindex, nofollow" />`
+- ✅ Build time: ~30s for ~2,210+ pages
 
 ---
 
@@ -849,18 +862,19 @@ Implement using FeatureDetail template (same as `/features/*` family) with disti
 
 **Wave 1 exit condition:** Every link in `src/lib/navigation.ts` and `src/lib/footer.ts` resolves to a real page or redirect.
 
-**Wave 2 (P1 — "complete the static surface area"):**
-1. 3H-3 remaining: 6 more feature detail pages
-2. 3H-4 remaining: 2 more case studies + 3 VS pages
-3. 3H-5: `/pricing`, `/pro`, `/company`, `/careers`, `/deployments`
-4. 3H-6: newsletter pages, scheduling pages, form placeholder pages
+**Wave 2 (P1 — "complete the static surface area"):** ✅
+1. 3H-3 remaining: 6 more feature detail pages ✅
+2. 3H-4 remaining: 2 more case studies + 3 VS pages ✅
+3. 3H-5: `/pricing`, `/pro`, `/company`, `/careers`, `/deployments` ✅
+4. 3H-6: newsletter pages, scheduling pages, form placeholder pages ✅
 5. Redirect-only: `/discussion`, `/meet`, `/zenml-meet`
 
 **Wave 3 (P2 — "nice-to-have + legacy"):**
-1. 3H-6 remaining: success/thank-you pages
+1. ~~3H-6 remaining: success/thank-you pages~~ ✅ (done in 3H-6)
 2. 3H-7: ROI calculator, live-demo, interactive-demo-mcp
 3. `/components`, `/cloud-features/ml-models-control-plane`
-4. Decide: keep `/book-a-demo` + `/signup-for-demo` or redirect to `/book-your-demo`
+4. Redirect-only: `/discussion`, `/meet`, `/zenml-meet`
+5. Decide: keep `/book-a-demo` + `/signup-for-demo` or redirect to `/book-your-demo`
 
 ---
 

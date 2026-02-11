@@ -1,0 +1,70 @@
+---
+/**
+ * Whitepaper Landing Page — gated content with form placeholder.
+ *
+ * Route: /whitepaper-architecting-an-enterprise-grade-mlops-platform
+ * Two-column layout: left = copy + image, right = form.
+ */
+import BaseLayout from "../layouts/BaseLayout.astro";
+import FormPlaceholder from "../components/sections/FormPlaceholder.astro";
+import {
+  WHITEPAPER_SEO,
+  WHITEPAPER_CONTENT,
+  WHITEPAPER_FIELDS,
+  WHITEPAPER_FALLBACK_CTA,
+} from "../lib/whitepaper";
+---
+
+<BaseLayout
+  title={WHITEPAPER_SEO.title}
+  description={WHITEPAPER_SEO.description}
+  ogTitle={WHITEPAPER_SEO.ogTitle}
+  ogDescription={WHITEPAPER_SEO.ogDescription}
+>
+  <main>
+    {/* Heading */}
+    <section class="bg-white pt-16 pb-4 sm:pt-24 sm:pb-8">
+      <div class="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
+        <h1 class="text-3xl font-bold text-gray-900 sm:text-4xl">
+          {WHITEPAPER_CONTENT.headline}
+        </h1>
+      </div>
+    </section>
+
+    {/* Two-column: copy + form */}
+    <section class="bg-white pb-16 sm:pb-24">
+      <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div class="grid items-start gap-12 lg:grid-cols-2">
+          {/* Left: marketing copy + preview image */}
+          <div>
+            <h2 class="text-xl font-bold text-gray-900 sm:text-2xl">
+              {WHITEPAPER_CONTENT.subheadline}
+            </h2>
+            <div
+              class="mt-4 text-gray-600 leading-relaxed prose prose-sm"
+              set:html={WHITEPAPER_CONTENT.body}
+            />
+            <img
+              src={WHITEPAPER_CONTENT.image.previewUrl}
+              alt={WHITEPAPER_CONTENT.image.alt}
+              class="mt-8 w-full max-w-md rounded-lg"
+              loading="lazy"
+            />
+          </div>
+
+          {/* Right: form */}
+          <div>
+            <h3 class="mb-4 text-lg font-bold text-gray-900">
+              {WHITEPAPER_CONTENT.formHeadline}
+            </h3>
+            <FormPlaceholder
+              fields={WHITEPAPER_FIELDS}
+              submitLabel="Send Request"
+              fallbackCta={WHITEPAPER_FALLBACK_CTA}
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>

@@ -1,0 +1,38 @@
+---
+/**
+ * Schedule a Demo — Cal.com reschedule booking page.
+ *
+ * Route: /schedule-a-demo
+ */
+import BaseLayout from "../layouts/BaseLayout.astro";
+import CalEmbed from "../components/sections/CalEmbed.astro";
+import {
+  SCHEDULE_A_DEMO_SEO,
+  SCHEDULE_A_DEMO_HERO,
+  SCHEDULE_A_DEMO_CAL,
+} from "../lib/scheduleADemo";
+---
+
+<BaseLayout
+  title={SCHEDULE_A_DEMO_SEO.title}
+  description={SCHEDULE_A_DEMO_SEO.description}
+  ogTitle={SCHEDULE_A_DEMO_SEO.ogTitle}
+  ogDescription={SCHEDULE_A_DEMO_SEO.ogDescription}
+>
+  <main>
+    <section class="bg-white pt-16 pb-4 sm:pt-24 sm:pb-8">
+      <div class="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
+        <h1 class="text-3xl font-bold text-gray-900 sm:text-4xl">
+          {SCHEDULE_A_DEMO_HERO.headline}
+        </h1>
+        <p class="mt-3 text-lg text-gray-600">{SCHEDULE_A_DEMO_HERO.deck}</p>
+      </div>
+    </section>
+
+    <section class="bg-white pb-16 sm:pb-20">
+      <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+        <CalEmbed config={SCHEDULE_A_DEMO_CAL} />
+      </div>
+    </section>
+  </main>
+</BaseLayout>

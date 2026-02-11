@@ -1,0 +1,23 @@
+---
+/**
+ * Newsletter Success — subscription confirmed.
+ *
+ * Route: /newsletter-success (noindex)
+ */
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SuccessPanel from "../components/sections/SuccessPanel.astro";
+import {
+  NEWSLETTER_SUCCESS_SEO,
+  NEWSLETTER_SUCCESS_DATA,
+} from "../lib/newsletterSuccess";
+---
+
+<BaseLayout
+  title={NEWSLETTER_SUCCESS_SEO.title}
+  description={NEWSLETTER_SUCCESS_SEO.description}
+  noindex={NEWSLETTER_SUCCESS_SEO.noindex}
+>
+  <main>
+    <SuccessPanel data={NEWSLETTER_SUCCESS_DATA} />
+  </main>
+</BaseLayout>

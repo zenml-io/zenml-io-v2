@@ -1,0 +1,46 @@
+---
+/**
+ * Startups and Academics — application form for ZenML Pro program.
+ *
+ * Route: /startups-and-academics
+ */
+import BaseLayout from "../layouts/BaseLayout.astro";
+import FormPlaceholder from "../components/sections/FormPlaceholder.astro";
+import {
+  STARTUPS_SEO,
+  STARTUPS_HERO,
+  STARTUPS_FIELDS,
+  STARTUPS_FALLBACK_CTA,
+} from "../lib/startupsAndAcademics";
+---
+
+<BaseLayout
+  title={STARTUPS_SEO.title}
+  description={STARTUPS_SEO.description}
+  ogTitle={STARTUPS_SEO.ogTitle}
+  ogDescription={STARTUPS_SEO.ogDescription}
+>
+  <main>
+    <section class="bg-white py-16 sm:py-24">
+      <div class="mx-auto max-w-xl px-4 sm:px-6 lg:px-8">
+        <div class="mb-8 text-center">
+          {STARTUPS_HERO.eyebrow && (
+            <p class="text-sm font-semibold uppercase tracking-wider text-zenml-500">
+              {STARTUPS_HERO.eyebrow}
+            </p>
+          )}
+          <h1 class="mt-2 text-3xl font-bold text-gray-900 sm:text-4xl">
+            {STARTUPS_HERO.headline}
+          </h1>
+          <p class="mt-3 text-lg text-gray-600">{STARTUPS_HERO.deck}</p>
+        </div>
+
+        <FormPlaceholder
+          fields={STARTUPS_FIELDS}
+          submitLabel="Apply"
+          fallbackCta={STARTUPS_FALLBACK_CTA}
+        />
+      </div>
+    </section>
+  </main>
+</BaseLayout>
