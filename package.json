@@ -8,6 +8,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
+    "validate:content": "tsx scripts/phase2/validate-content.ts",
     "lint": "biome check src/",
     "lint:fix": "biome check --fix src/",
     "format": "biome format --write src/",
@@ -37,6 +38,7 @@
     "@types/node": "^22.19.11",
     "cheerio": "^1.2.0",
     "domhandler": "^5.0.3",
+    "gray-matter": "^4.0.3",
     "playwright": "^1.58.2",
     "tsx": "^4.21.0",
     "wrangler": "^4.64.0"
