@@ -210,12 +210,225 @@ const quoteSchema = z.object({
 });
 
 // ============================================================================
+// Main Collection Schemas (Phase 2E)
+// ============================================================================
+
+/**
+ * Blog Posts schema
+ * Route: /blog/<slug>
+ * Count: 317 items
+ * Fields: author, category, tags, date, readingTime, mainImage
+ */
+const blogSchema = z.object({
+  title: z.string(),
+  slug: z.string(),
+  draft: z.boolean().default(false),
+
+  // Blog-specific fields
+  author: slugReference('authors'),
+  category: slugReference('categories'),
+  tags: slugReferenceArray('tags'),
+  date: z.coerce.date(),
+  readingTime: z.string().optional(),
+
+  // Media
+  mainImage: imageSchema.optional(),
+
+  // SEO & Webflow
+  seo: seoSchema,
+  webflow: webflowMetaSchema,
+});
+
+/**
+ * Integrations schema
+ * Route: /integrations/<slug>
+ * Count: 68 items
+ *
+ * DISCREPANCIES FROM PLAN:
+ * - Field is "integrationType" (not "type")
+ * - Field is "shortDescription" (not "description")
+ * - Additional fields: docsUrl, githubUrl, mainImage, relatedBlogPosts
+ */
+const integrationSchema = z.object({
+  title: z.string(),
+  slug: z.string(),
+  draft: z.boolean().default(false),
+
+  // Integration-specific fields
+  integrationType: slugReference('integration-types'),
+  logo: imageSchema.optional(),
+  shortDescription: z.string().optional(),
+  docsUrl: z.string().url().optional(),
+  githubUrl: z.string().url().optional(),
+  mainImage: imageSchema.optional(),
+  relatedBlogPosts: z.array(z.string()).default([]), // slug references to blog
+
+  // SEO & Webflow
+  seo: seoSchema,
+  webflow: webflowMetaSchema,
+});
+
+/**
+ * LLMOps Database schema
+ * Route: /llmops-database/<slug>
+ * Count: 1,453 items
+ *
+ * CRITICAL DISCREPANCIES FROM PLAN:
+ * - Field is "llmopsTags" (not "tags")
+ * - NO "industryTags" field exists in actual output!
+ * - Phase 2A claimed to fix these field names but didn't
+ * - Additional fields: company, summary, link, year
+ */
+const llmopsSchema = z.object({
+  title: z.string(),
+  slug: z.string(),
+  draft: z.boolean().default(false),
+
+  // LLMOps-specific fields (ACTUAL field names from transform)
+  llmopsTags: slugReferenceArray('llmops-tags'),
+  // Note: industryTags field does NOT exist in actual output
+  company: z.string().optional(),
+  summary: z.string().optional(),
+  link: z.string().url().optional(),
+  year: z.number().optional(),
+
+  // SEO & Webflow
+  seo: seoSchema,
+  webflow: webflowMetaSchema,
+});
+
+/**
+ * Compare/VS Pages schema
+ * Route: /compare/<slug>
+ * Count: 17 items
+ *
+ * MAJOR DISCREPANCIES FROM PLAN:
+ * - Field is "toolName" (not "competitor")
+ * - Many additional fields for VS page rendering:
+ *   toolIcon, category, integrationType, quote, headline, heroText,
+ *   ctaHeadline, learnMoreUrl, seoDescription, openGraphImage
+ */
+const compareSchema = z.object({
+  title: z.string(),
+  slug: z.string(),
+  draft: z.boolean().default(false),
+
+  // VS page-specific fields
+  toolName: z.string().optional(),
+  toolIcon: imageSchema.optional(),
+  category: z.string().optional(),
+  integrationType: slugReference('integration-types').optional(),
+  advantages: slugReferenceArray('advantages'),
+  quote: slugReference('quotes').optional(),
+  headline: z.string().optional(),
+  heroText: z.string().optional(),
+  ctaHeadline: z.string().optional(),
+  learnMoreUrl: z.string().url().optional(),
+  seoDescription: z.string().optional(),
+  openGraphImage: imageSchema.optional(),
+
+  // SEO & Webflow
+  seo: seoSchema,
+  webflow: webflowMetaSchema,
+});
+
+/**
+ * Team Members schema
+ * Route: /team/<slug>
+ * Count: 22 items
+ *
+ * DISCREPANCY FROM PLAN:
+ * - Additional field: order (number for display ordering)
+ */
+const teamSchema = z.object({
+  title: z.string(), // Full name
+  slug: z.string(),
+  draft: z.boolean().default(false),
+
+  // Team-specific fields
+  position: z.string().optional(),
+  photo: imageSchema.optional(),
+  bio: z.string().optional(),
+  email: z.string().email().optional(),
+  linkedin: z.string().url().optional(),
+  order: z.number().optional(), // Display order
+
+  // Webflow metadata (no SEO for team pages)
+  webflow: webflowMetaSchema,
+});
+
+/**
+ * Projects schema
+ * Route: /projects/<slug>
+ * Count: 16 items
+ *
+ * DISCREPANCIES FROM PLAN:
+ * - Field is "mainImageLink" (not "coverImage")
+ * - Additional fields: tools, createdAt, updatedAt, projectId
+ * - tags references project-tags (confirmed correct)
+ */
+const projectSchema = z.object({
+  title: z.string(),
+  slug: z.string(),
+  draft: z.boolean().default(false),
+
+  // Project-specific fields
+  description: z.string().optional(),
+  tags: slugReferenceArray('project-tags'),
+  mainImageLink: z.string().url().optional(), // Note: NOT "coverImage"
+  githubUrl: z.string().url().optional(),
+  demoUrl: z.string().url().optional(),
+  tools: z.array(z.string()).default([]), // Tool names
+  createdAt: z.string().optional(),
+  updatedAt: z.string().optional(),
+  projectId: z.string().optional(),
+
+  // SEO & Webflow
+  seo: seoSchema,
+  webflow: webflowMetaSchema,
+});
+
+/**
+ * Old Projects schema
+ * Route: N/A (all drafts, not published)
+ * Count: 11 items (all draft: true)
+ *
+ * COMPLETELY DIFFERENT SCHEMA from projects:
+ * - Different field set entirely
+ * - All items are staged-only drafts in Webflow
+ * - Won't generate routes in Phase 3
+ */
+const oldProjectSchema = z.object({
+  title: z.string(),
+  slug: z.string(),
+  draft: z.boolean().default(true), // All old-projects are drafts
+
+  // Old project-specific fields
+  date: z.string().optional(),
+  originalDate: z.string().optional(),
+  category: z.string().optional(),
+  tags: z.array(z.string()).default([]),
+  image: imageSchema.optional(),
+  description: z.string().optional(),
+  seoTitle: z.string().optional(),
+  seoDescription: z.string().optional(),
+  readingTime: z.string().optional(),
+  isFeatured: z.boolean().optional(),
+
+  // SEO & Webflow
+  seo: seoSchema,
+  webflow: webflowMetaSchema,
+});
+
+// ============================================================================
 // Collection Definitions (Astro v5 with glob loaders)
 // ============================================================================
 
 /**
  * Export all collections with glob loaders
  * Astro v5 requires explicit loader configuration for each collection
+ *
+ * NOTE: Main collection loaders are commented out until Phase 2F (Copy MDX files to src/content/)
  */
 export const collections = {
   // Reference collections (Phase 2D)
@@ -260,5 +473,6 @@ export const collections = {
     schema: quoteSchema,
   }),
 
-  // Main collections will be added in Phase 2E-2H
+  // Main collection loaders will be added in Phase 2F after copying MDX files to src/content/
+  // Schemas are defined above: blog, integrations, llmops-database, compare, team, projects, old-projects
 };

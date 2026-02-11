@@ -1,8 +1,8 @@
 # Phase 2: Content Collections & Schemas — Detailed Plan (REVISED)
 
 **Created:** 2026-02-11
-**Revised:** 2026-02-11 (post-RepoPrompt audit + Astro v5 migration)
-**Status:** Phase 2A, 2B, 2C & 2D COMPLETE ✅ — Ready for Phase 2E (Define Main Collection Schemas)
+**Revised:** 2026-02-11 (post-RepoPrompt audit + Astro v5 migration + Phase 2E schema discrepancies)
+**Status:** Phase 2A, 2B, 2C, 2D & 2E COMPLETE ✅ — Ready for Phase 2F (Copy MDX to src/content/)
 **Prerequisites:** Phase 1 complete (1,904 MDX files, 2,397 R2 assets)
 
 ---
@@ -339,11 +339,27 @@ const authorsCollection = defineCollection({
 
 ---
 
-### 2E: Define Main Collection Schemas (REVISED)
+### 2E: Define Main Collection Schemas (REVISED) — ✅ COMPLETE
 
 **Goal:** Define typed schemas for the 7 main content collections, **based on actual transformed output** (not assumed Webflow schema).
 
 **Critical principle**: Schemas must validate what Phase 2A **actually outputs**, not what we wish Webflow had.
+
+**Completion Notes (2026-02-11):**
+- ✅ **All 7 main collection schemas defined** in `src/content.config.ts`
+- ✅ **Schemas match actual transformed output** (not plan assumptions)
+- ⚠️ **CRITICAL DISCREPANCIES FOUND** — see `docs/phase-2e-schema-discrepancies.md` for full analysis
+- ✅ **TypeScript compilation successful** (types generated, content synced)
+- 📋 **Collection loaders commented out** (will be activated in Phase 2F when files are copied)
+
+**Key Discrepancies:**
+1. **LLMOps**: Field is `llmopsTags` (not `tags`), NO `industryTags` field exists
+2. **Integrations**: Field is `integrationType` (not `type`), `shortDescription` (not `description`)
+3. **Compare**: Field is `toolName` (not `competitor`), many additional fields
+4. **Projects**: Field is `mainImageLink` (not `coverImage`), additional fields
+5. **Team**: Additional `order` field
+6. **Blog**: ✓ Schema correct (no discrepancies)
+7. **Old Projects**: Different schema (expected)
 
 #### Blog Posts Schema
 

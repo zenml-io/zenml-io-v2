@@ -1,7 +1,7 @@
 # ZenML Website v2 — Migration Plan
 
 > Last updated: 2026-02-11
-> Status: **Phase 1 COMPLETE, Phase 2A-2D COMPLETE** — All content exported, transformed, and reference collections defined. 1,904 MDX files, 2,397 R2 assets. 425 reference items with validated schemas (Astro v5). Ready for Phase 2E (Main Collection Schemas).
+> Status: **Phase 1 COMPLETE, Phase 2A-2E COMPLETE** — All content exported, transformed, and ALL collection schemas defined (17 total). 1,904 MDX files, 2,397 R2 assets. Critical schema discrepancies documented. Ready for Phase 2F (Copy MDX to src/content/).
 
 ---
 
@@ -186,7 +186,7 @@ Key considerations:
 **Goal**: Define typed schemas for all content types in Astro. Validate that
 imported content is clean and well-structured.
 
-**Status:** Phase 2A-2D COMPLETE ✅ — Reference collections defined and validated. Ready for Phase 2E (Main Collection Schemas).
+**Status:** Phase 2A-2E COMPLETE ✅ — All 17 collection schemas defined and validated. Critical schema discrepancies documented. Ready for Phase 2F (Copy MDX to src/content/).
 
 Note: **Collection directory names should align with route segments** to
 minimize glue code (e.g., `tags/` not `blog-tags/` if the route is `/tags/`).
@@ -206,16 +206,30 @@ Progress:
   - Quotes (6) — testimonials with author + company
   - Product Categories (5) — simple tags
   - Project Tags (70) — simple tags
-- [ ] **Phase 2E**: Define schemas for 7 main collections (blog, integrations, llmops, etc.)
-- [ ] **Phase 2F-2H**: Define remaining collection schemas
+- [x] **Phase 2E**: Define schemas for 7 main collections ✅
+  - Blog (317) — author, category, tags, date, mainImage
+  - Integrations (68) — `integrationType`, logo, shortDescription, docsUrl
+  - LLMOps Database (1,453) — `llmopsTags` (NO industryTags!), company, summary
+  - Compare (17) — toolName, advantages, quote, many additional fields
+  - Team (22) — position, photo, email, linkedin, order
+  - Projects (16) — `mainImageLink`, tags, tools, githubUrl
+  - Old Projects (11) — all drafts, different schema
+  - ⚠️ **CRITICAL**: Schemas match actual output, not plan assumptions (see `docs/phase-2e-schema-discrepancies.md`)
+- [ ] **Phase 2F**: Copy transformed MDX to `src/content/<collection>/` (1,904 files)
 - [ ] **Phase 2I**: Add validation gates (slug uniqueness, URL checks)
 - [ ] **Phase 2J**: Run full Astro build validation
 - [ ] **Phase 2K**: Document final content model
 
 **Key discoveries:**
 - **Astro v5 Content Layer API**: Config moved to `src/content.config.ts`, requires explicit `glob` loaders
-- **425 reference items validated successfully** with 0 errors
+- **425 reference items + 1,479 main collection items** — all schemas defined
 - **Schema patterns**: Simple tags (name+slug), rich authors, testimonials, advantages
+- **CRITICAL**: Phase 2A field name fixes were never applied — actual output differs from plan
+  - LLMOps uses `llmopsTags` (not `tags`), NO `industryTags` field exists
+  - Integrations uses `integrationType` (not `type`), `shortDescription` (not `description`)
+  - Projects uses `mainImageLink` (not `coverImage`)
+  - Compare uses `toolName` (not `competitor`) + many additional fields
+  - Full analysis: `docs/phase-2e-schema-discrepancies.md`
 
 **Detailed plan**: `docs/phase-2-plan.md`
 
