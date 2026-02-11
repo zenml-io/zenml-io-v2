@@ -1,7 +1,7 @@
 # ZenML Website v2 — Migration Plan
 
 > Last updated: 2026-02-11
-> Status: **Phase 1 COMPLETE, Phase 2 COMPLETE (A-J)** — All content exported, transformed to MDX, schemas defined and validated, 2,392 files loaded across 17 collections, full build passing. Content layer is production-ready. Ready for Phase 3 (Templates & Pages).
+> Status: **Phase 1 COMPLETE, Phase 2 COMPLETE, Phase 3 IN PROGRESS** — 3A–3G complete (layouts, blog, all CMS templates, LLMOps filter island). 3H-1a (legal/404) + 3H-1b (homepage + 13 section components) complete. ~2,180 pages building in ~22s. Next: 3H-3 through 3H-7 (feature detail, case studies, marketing, forms, redirects).
 
 ---
 
@@ -229,7 +229,7 @@ Progress:
 **Goal**: Build all page templates and static pages. The site should render
 every URL that currently exists.
 
-**Status:** Ready to start — Phase 2 complete, content layer validated
+**Status:** 3A–3G COMPLETE, 3H-1a + 3H-1b COMPLETE. Next: 3H-3 through 3H-7 (feature detail, case studies, marketing, forms, redirects)
 
 **Detailed plan**: `docs/phase-3-plan.md`
 

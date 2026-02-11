@@ -1,8 +1,8 @@
 # Phase 3: Templates & Pages — Detailed Plan
 
 **Created:** 2026-02-11
-**Last Updated:** 2026-02-11 (3A–3E complete)
-**Status:** 3A–3E COMPLETE — ready for 3H (Static Pages)
+**Last Updated:** 2026-02-11 (3H-1a + 3H-1b complete)
+**Status:** 3A–3G COMPLETE, 3H-1a + 3H-1b COMPLETE — 3H-3 through 3H-7 remaining
 **Prerequisites:**
 - Phase 2 complete (2,392 content files, 17 collections, all validation passing)
 - **Content format:** Switched from .mdx to .md (MDX v2 too strict for Webflow HTML)
@@ -43,6 +43,46 @@
 - `9960fa8` — Phase 3D/3F/3G: Integrations, compare, team, projects
 - `8af2243` — Tailwind token fixes (primary-* aliases, rounded-radius-* → rounded-*)
 - `06c873e` — Phase 3E: LLMOps Database listing + Preact filter island
+
+### 3H-1a + 3H-1b Implementation Progress (2026-02-11)
+
+| # | Task | Status | Files / Notes |
+|---|------|--------|---------------|
+| 3H-1a | Legal pages + 404 | ✅ | `404.astro`, `cla.astro`, `imprint.astro`, `privacy-policy.astro`, `terms-of-service.astro`, `public/images/404.svg` |
+| 3H-1b | Homepage + section components | ✅ | `src/pages/index.astro` (full 13-section composition), `src/lib/homepage.ts` (data), 11 section components in `src/components/sections/` |
+| — | BaseLayout slot | ✅ | Added `before-nav` named slot for AnnouncementBanner injection |
+
+**Homepage section components created (11):**
+
+| Component | Section | Notes |
+|-----------|---------|-------|
+| `AnnouncementBanner.astro` | Gradient ribbon above nav | Uses `before-nav` named slot |
+| `Hero.astro` | Headline + CTAs + visual placeholder | Lottie animation deferred (gradient placeholder for now) |
+| `LogoCloud.astro` | 8 customer logos trust bar | Grayscale → color on hover |
+| `FeatureTabs.astro` | 5-tab showcase + 4-stat grid | JS tab switching, ARIA roles |
+| `ValueProps.astro` | 4-card grid + CTA | Value propositions below features |
+| `IntegrationsMarquee.astro` | CSS-animated logo strip | Fetches from integrations collection, 60s infinite loop, hover pause |
+| `WhitepaperCTA.astro` | Dark promotional banner | Gradient bg, links to whitepaper page |
+| `CustomerStories.astro` | Case study cards + testimonials | Merges CMS quotes (6) + hardcoded extras (7) |
+| `NewsSection.astro` | 3 latest blog posts | Build-time fetch from blog collection |
+| `ComplianceSection.astro` | SOC2/ISO badges + arch diagram | Split layout with `<picture>` for mobile |
+| `NewsletterSignup.astro` | Email form placeholder | Brevo integration deferred to Phase 5 |
+| `FAQAccordion.astro` | 5 Q&A items | Native `<details>` elements, zero JS |
+| `FinalCTA.astro` | Dark section with bullets + screenshot | Product screenshot + dual CTAs |
+
+**Key decisions made:**
+- All marketing copy centralized in `src/lib/homepage.ts` (~320 lines of typed data)
+- 7 testimonials hardcoded in homepage.ts (not in CMS quotes collection) — can add to collection later
+- Hero Lottie animation deferred (gradient placeholder) — needs Preact island
+- Newsletter Brevo form is placeholder UI only — functional form in Phase 5
+- GitHub stars link only (no live count widget yet)
+- Feature tab images use R2 AVIF URLs (need hash verification)
+
+**Build stats:** ~2,180 pages, homepage output 147KB. Build time ~22s.
+
+**Commits:**
+- `504a006` — Phase 3H-1a: Legal pages + 404
+- `3bbca80` — Phase 3H-1b: Homepage with 13 section components
 
 ---
 
@@ -454,94 +494,334 @@ Tasks:
 
 ---
 
-### 3H: Static Pages (64 published pages)
+### 3H: Static Pages (58 pages to build — 64 published minus 6 CMS listings already done)
 
-**Goal:** Build all non-CMS pages (home, pricing, features, case studies, legal, etc.).
+**Goal:** Build all non-CMS pages (home, pricing, features, case studies, legal, forms, redirects, etc.).
 
-**Strategy:** Start with highest-traffic pages (home, pricing, features), then systematically build the rest.
+**Source material:**
+- HTML snapshots: `design/migration/phase1/runs/2026-02-11T0626Z/pages/published/`
+- Page inventory: `design/migration/phase1/runs/2026-02-11T0626Z/pages/page-index.json`
+- Forms reference: `docs/forms-audit.md`
+- Baseline screenshots: `design/screenshots/baseline/`
 
-#### High-Priority Static Pages (build first)
+**Strategy:** Build in 8 sub-phases, ordered by dependency + business impact. Components are built just-in-time alongside the pages that need them (not speculatively upfront).
 
-- [ ] **Home** (`src/pages/index.astro`)
-  - Hero section with headline, CTA buttons
-  - Features section (3-6 key features with icons)
-  - Testimonials carousel (fetch from quotes collection)
-  - Blog highlights (fetch 3 latest blog posts)
-  - CTA section (demo booking, newsletter signup)
-- [ ] **Pricing** (`src/pages/pricing.astro`)
-  - Pricing tiers (Open Source, Pro, Cloud)
-  - Feature comparison table
-  - FAQ section
-  - CTA buttons (demo booking, contact sales)
-- [ ] **ZenML Pro** (`src/pages/pro.astro`)
-  - Pro features overview
-  - Use cases section
-  - CTA (demo booking, contact sales)
-- [ ] **Features Hub** (`src/pages/features/index.astro`)
-  - Overview of all features with links to detail pages
-- [ ] **Feature Detail Pages** (12 pages, e.g., `src/pages/features/pipelines.astro`)
-  - Feature-specific content (hero, description, code examples, screenshots)
-  - CTA (demo booking, docs link)
+**Already built (Phase 3A–3G) — NOT in scope for 3H:**
+`/blog`, `/integrations`, `/projects`, `/llmops-database`, `/compare`, `/team` (6 CMS listing pages)
 
-#### Medium-Priority Static Pages
+---
 
-- [ ] **Company** (`src/pages/company.astro`)
-  - Company story, mission, values
-  - Team section (fetch from team collection)
-- [ ] **Careers** (`src/pages/careers.astro`)
-  - Job listings (can be hardcoded or fetch from external API)
-  - Company culture section
-- [ ] **Case Studies Hub** (`src/pages/case-studies.astro`)
-  - Grid of case study cards
-  - Route: `/case-studies` (plural)
-- [ ] **Case Study Pages** (5 pages, `src/pages/case-study/[slug].astro`)
-  - Detail pages for individual case studies
-  - Route: `/case-study/<slug>` (singular)
-  - Case study content (challenge, solution, results)
-  - Testimonial quote
-  - CTA (contact sales)
+#### 3H Inventory: All 58 Pages by Group
 
-#### Low-Priority Static Pages (can defer if time-constrained)
+| Group | Pages | Count | Complexity | Priority |
+|-------|-------|-------|------------|----------|
+| **B) Core marketing hubs** | `/`, `/pricing`, `/pro`, `/features`, `/case-studies`, `/company`, `/careers` | 7 | H | P0/P1 |
+| **C) Feature detail family** | `/features/*` (12 pages) | 12 | M (repeatable) | P0 |
+| **D) Case study family** | `/case-study/*` (5 pages) | 5 | M (repeatable) | P0 |
+| **E) VS category pages** | `/vs/zenml-vs-*` (3 pages) | 3 | M (repeatable) | P1 |
+| **F) Conversion support** | `/open-source-vs-pro`, `/get-started`, `/deployments`, `/startups-and-academics`, `/whitepaper-*` | 5 | M/H | P0/P1 |
+| **G) Form/scheduling/success** | `/book-your-demo`, `/schedule-a-demo`, `/success-calendar`, `/book-a-demo`, `/signup-for-demo`, `/booked`, `/book-success`, `/book-a-demo-success`, `/newsletter-signup`, `/newsletter-success` | 10 | L–H | P0–P2 |
+| **H) Interactive/utility** | `/roi-calculator`, `/live-demo`, `/interactive-demo-mcp`, `/components` | 4 | H/M/L | P2 |
+| **I) Legal/compliance** | `/privacy-policy`, `/terms-of-service`, `/imprint`, `/cla` | 4 | M | P0/P1 |
+| **J) Redirect-only URLs** | `/slack`, `/slack-invite`, `/roadmap`, `/discussion`, `/meet`, `/zenml-meet` | 6 | L | P0/P1 |
+| **Other** | `/404`, `/cloud-features/ml-models-control-plane` | 2 | L/M | P0/P2 |
+| | | **58** | | |
 
-- [ ] **Legal Pages**
-  - Privacy Policy (`src/pages/privacy-policy.astro`)
-  - Terms of Service (`src/pages/terms-of-service.astro`)
-  - Imprint (`src/pages/imprint.astro`)
-  - CLA (`src/pages/cla.astro`)
-- [ ] **Redirect Pages** (e.g., `/slack`, `/roadmap`, `/meet`)
-  - These may just be 301 redirects (handled in Phase 4), not actual pages
-- [ ] **Newsletter Pages** (if present)
-  - Newsletter signup confirmation, thank you pages
-- [ ] **Demo/Booking Pages** (if not handled by Cal.com embed)
+---
 
-#### ⚠️ Form Pages Placeholder Strategy
+#### 3H-1a: Legal Pages + 404
 
-**Issue:** 4+ pages are primarily forms (per `docs/forms-audit.md`):
-- `/book-a-demo`, `/signup-for-demo` (Webflow native demo request forms)
-- `/book-your-demo`, `/schedule-a-demo` (Cal.com embeds)
-- `/whitepaper-architecting-an-enterprise-grade-mlops-platform` (gated content with Webflow form)
-- `/startups-and-academics` (Webflow application form)
+**Goal:** Build the simplest P0 pages first. These need no new section components — just ContentLayout + prose styling for legal text, and a simple 404 page.
 
-**Phase 3 Scope** (render pages with appropriate placeholder):
-- Build page layouts with form UI (HTML structure, styling)
-- Add **placeholder behavior by type**:
-  - **Cal.com pages**: Render Cal.com embed (iframe) — these should work immediately (no Phase 5 dependency)
-  - **Webflow native forms**: Show form UI structure, but disable submit (Phase 5 adds Cloudflare Workers backend)
-  - **Gated content**: Show form UI structure, but disable submit (Phase 5 adds download gating logic)
+**Pages (5):**
+- [x] `/404` — custom not-found page (P0)
+- [x] `/privacy-policy` — legal text (P0, linked from footer)
+- [x] `/terms-of-service` — legal text (P0, linked from footer)
+- [x] `/imprint` — legal text (P0, linked from footer)
+- [x] `/cla` — contributor license agreement (P1, JS redirect to GitHub Gist)
 
-**Phase 5 Scope** (make forms functional):
-- Wire up Cal.com embeds for actual booking
-- Implement whitepaper gating (signed URLs + email capture)
-- Implement form submission handlers (Cloudflare Workers + Attio CRM integration)
-
-**Rationale:** Pixel parity can be achieved without functional forms, but business-critical flows (demo booking) must work by launch. Coordinate with user on cutover timing.
+**Approach:**
+- Extract text content from HTML snapshots in `design/migration/phase1/runs/2026-02-11T0626Z/pages/published/`
+- Wrap in ContentLayout (existing) for legal pages
+- 404 page: simple BaseLayout with friendly message + search/home link
 
 **Validation:**
-- Build succeeds for all static pages
-- Spot-check 5 high-priority pages for visual parity (home, pricing, features/iterate-at-warp-speed, case-studies, company)
-- Verify all links work (internal + external)
+- All 4 legal pages render with correct content
+- Footer legal links (`src/lib/footer.ts` → FOOTER_LEGAL) resolve to real pages
+- 404 page works when navigating to non-existent URLs
+- `pnpm build` passes
 
-**Note:** Content for static pages comes from `design/migration/phase1/runs/2026-02-11T0626Z/pages/` (HTML snapshots, cataloged in `page-index.json`). We'll need to manually convert HTML → Astro components.
+---
+
+#### 3H-1b: Homepage + Section Components
+
+**Goal:** Build the homepage — the most complex single page (769 lines in Webflow snapshot), highest traffic. Build section components **just-in-time** as the homepage needs them (~7 components). These components then get reused by later sub-phases.
+
+**Page:** `/` (`src/pages/index.astro`) — **P0, Complexity: H**
+
+**New section components created (11, vs original estimate of ~7):**
+- [x] `Hero.astro` — headline, CTAs, GitHub link, visual placeholder (Lottie deferred)
+- [x] `LogoCloud.astro` — 8 customer logos, grayscale → color on hover
+- [x] `FeatureTabs.astro` — 5-tab feature showcase + 4-stat grid (replaces FeatureGrid + StatsStrip)
+- [x] `ValueProps.astro` — 4-card value propositions grid + CTA
+- [x] `IntegrationsMarquee.astro` — CSS-animated integration logo strip (from collection)
+- [x] `WhitepaperCTA.astro` — dark/purple promotional banner
+- [x] `CustomerStories.astro` — 4 case study cards + testimonial grid (replaces TestimonialQuote)
+- [x] `ComplianceSection.astro` — SOC2/ISO badges + architecture diagram (replaces SplitSection)
+- [x] `NewsSection.astro` — 3 latest blog posts (build-time fetch)
+- [x] `NewsletterSignup.astro` — email form placeholder (Brevo deferred)
+- [x] `FAQAccordion.astro` — 5 Q&A items using native `<details>` (moved from 3H-5 since homepage needed it)
+- [x] `FinalCTA.astro` — dark section with bullets + product screenshot (replaces CTASection)
+- [x] `AnnouncementBanner.astro` — gradient ribbon above navigation
+
+**Homepage sections (from Webflow snapshot analysis — all 13 built):**
+- [x] Announcement banner (above nav, gradient ribbon)
+- [x] Hero with headline, sub-headline, CTA buttons
+- [x] Logo cloud (customer logos)
+- [x] Feature tabs (5 tabs with screenshots + 4 stats)
+- [x] Value propositions (4-card grid)
+- [x] Integrations marquee (CSS-animated logo slider)
+- [x] Whitepaper CTA (dark banner)
+- [x] Customer stories (case study cards + testimonial grid)
+- [x] Blog highlights (3 latest posts)
+- [x] Compliance section (SOC2/ISO + architecture diagram)
+- [x] Newsletter signup CTA (placeholder form)
+- [x] FAQ accordion (5 questions)
+- [x] Final CTA section
+
+**Components deferred to later sub-phases (built when needed):**
+- `PricingPlans.astro`, `PricingComparisonTable.astro` → 3H-5 (pricing)
+- `CalEmbed.astro`, `BrevoNewsletterForm.astro`, `SuccessPanel.astro` → 3H-6 (form pages)
+- `RedirectPage.astro` → 3H-7 (redirects)
+
+**Validation:**
+- Visual parity with `design/screenshots/baseline/` homepage screenshots
+- All section components render correctly
+- Links in hero and CTAs work
+- `pnpm build` passes
+
+---
+
+#### 3H-3: Feature Detail Pages (12 + hub)
+
+**Goal:** Build all 12 feature detail pages using a shared template. These are P0 because they're directly linked from the navigation dropdown.
+
+**Architectural decision:** Create a **content collection** `src/content/feature-pages/` with frontmatter (title, description, hero image, sections) and a dynamic route `src/pages/features/[slug].astro`. This avoids 12 hand-coded pages and ensures consistent SEO/CTAs.
+
+**Pages:**
+- [ ] `/features` — features hub page (grid of all 12 features)
+- [ ] `/features/iterate-at-warp-speed`
+- [ ] `/features/auto-track-everything`
+- [ ] `/features/shared-ml-building-blocks`
+- [ ] `/features/backend-flexibility-zero-lock-in`
+- [ ] `/features/limitless-scaling`
+- [ ] `/features/streamline-cloud-expenses`
+- [ ] `/features/security-guardrails-always`
+- [ ] `/features/centralized-model-control-plane`
+- [ ] `/features/organize-assets-into-projects`
+- [ ] `/features/streamlined-pipeline-management`
+- [ ] `/features/role-based-access-control-and-permissions`
+- [ ] `/features/enterprise-grade-support-and-onboarding`
+
+**Tasks:**
+- [ ] Define `featurePages` schema in `src/content.config.ts`
+- [ ] Create 12 content files in `src/content/feature-pages/`
+- [ ] Create `src/pages/features/[slug].astro` (dynamic route template)
+- [ ] Create `src/pages/features/index.astro` (hub page with grid)
+
+**Validation:**
+- All 12 feature pages render with correct content
+- Features hub links to all 12 pages
+- Navigation dropdown feature links resolve correctly
+
+---
+
+#### 3H-4: Case Studies (5 + hub) + VS Category Pages (3)
+
+**Goal:** Build case study and VS page families using shared templates. Both are repeatable structures.
+
+**Architectural decisions:**
+- **Case studies:** Create content collection `src/content/case-studies/` with dynamic route `src/pages/case-study/[slug].astro`
+- **VS pages:** Use a single template + typed config object (only 3 pages)
+
+**Case study pages (P0):**
+- [ ] `/case-studies` — hub page (grid of all case studies)
+- [ ] `/case-study/jetbrains`
+- [ ] `/case-study/adeo-leroy-merlin`
+- [ ] `/case-study/cross-screen-media`
+- [ ] `/case-study/brevo`
+- [ ] `/case-study/zuiver`
+
+**VS category pages (P1):**
+- [ ] `/vs/zenml-vs-orchestrators`
+- [ ] `/vs/zenml-vs-experiment-trackers`
+- [ ] `/vs/zenml-vs-e2e-platforms`
+
+**Tasks:**
+- [ ] Define `caseStudies` schema in `src/content.config.ts`
+- [ ] Create 5 content files in `src/content/case-studies/`
+- [ ] Create `src/pages/case-study/[slug].astro` (template with challenge/solution/results structure)
+- [ ] Create `src/pages/case-studies.astro` (hub)
+- [ ] Create VS page template + data config
+- [ ] Create 3 VS pages (or dynamic route if using config)
+
+**Validation:**
+- All 5 case studies + hub render correctly
+- Case study nav links resolve (JetBrains, Adeo, Cross Screen featured in nav)
+- VS pages linked from footer render correctly
+
+---
+
+#### 3H-5: Core Marketing Pages
+
+**Goal:** Build the bespoke marketing pages that reuse section components from 3H-1. These are the hardest pages because each has unique content and layout.
+
+**Pages:**
+- [ ] `/pricing` — P0, H (pricing tiers, comparison table, FAQ)
+- [ ] `/pro` — P0, H (ZenML Pro product marketing)
+- [ ] `/open-source-vs-pro` — P0, H (comparison/positioning)
+- [ ] `/get-started` — P0, M/H (onboarding funnel)
+- [ ] `/deployments` — P1, M/H (technical explainer)
+- [ ] `/company` — P1, H (company story, values, team grid)
+- [ ] `/careers` — P1, M/H (job listings via Notion links)
+
+**Validation:**
+- Visual parity on pricing page (most scrutinized page after home)
+- All nav/footer links to these pages resolve
+- Pricing tiers render correctly with correct feature lists
+
+---
+
+#### 3H-6: Form/Conversion + Success + Newsletter Pages
+
+**Goal:** Build form and scheduling pages. Cal.com embeds and Brevo newsletter should be **functional in 3H**. Webflow-native forms get UI parity with graceful fallback (full backend in Phase 5).
+
+**Form strategy (per `docs/forms-audit.md`):**
+
+| Type | Phase 3H behavior | Pages |
+|------|-------------------|-------|
+| **Cal.com embed** | **Fully functional** — render Cal.com inline embed | `/book-your-demo` (P0), `/schedule-a-demo` (P1), `/success-calendar` (P1) |
+| **Brevo newsletter** | **Fully functional** — replicate fetch() POST | `/newsletter-signup` (P1) |
+| **Webflow native form** | **UI parity + conversion-safe fallback** — render form styling but link primary CTA to `/book-your-demo` instead of dead submit | `/book-a-demo` (P1), `/signup-for-demo` (P1) |
+| **Application form** | UI parity + disabled submit | `/startups-and-academics` (P1) |
+| **Gated content form** | UI parity + disabled submit | `/whitepaper-*` (P1) |
+| **Success pages** | Simple confirmation text | `/booked`, `/book-success`, `/book-a-demo-success`, `/newsletter-success` (P2) |
+
+**Pages (14 total):**
+- [ ] `/book-your-demo` — Cal.com embed, **must be functional** (P0)
+- [ ] `/schedule-a-demo` — Cal.com embed (reschedule variant) (P1)
+- [ ] `/success-calendar` — Cal.com embed (post-form-submission) (P1)
+- [ ] `/newsletter-signup` — Brevo embed, functional (P1)
+- [ ] `/newsletter-success` — simple confirmation (P2)
+- [ ] `/book-a-demo` — form UI + redirect CTA to `/book-your-demo` (P1)
+- [ ] `/signup-for-demo` — form UI + redirect CTA to `/book-your-demo` (P1)
+- [ ] `/startups-and-academics` — application form placeholder (P1)
+- [ ] `/whitepaper-architecting-an-enterprise-grade-mlops-platform` — gated content placeholder (P1)
+- [ ] `/booked` — success page (P2)
+- [ ] `/book-success` — success page (P2)
+- [ ] `/book-a-demo-success` — success page (P2)
+
+**Validation:**
+- Cal.com embed loads and shows calendar on `/book-your-demo`
+- Newsletter signup on `/newsletter-signup` submits to Brevo
+- Form placeholder pages have clear path to actual booking
+
+---
+
+#### 3H-7: Redirects + Interactive/Utility + Remaining
+
+**Goal:** Handle redirect-only URLs, interactive utility pages, and any remaining miscellaneous pages.
+
+**Redirect-only URLs (6 pages):**
+Short-term: ship minimal Astro pages with `noindex` + JS redirect (matches Webflow behavior).
+Long-term (Phase 4): migrate to `_redirects` file for 301 redirects via Cloudflare Pages.
+
+- [ ] `/slack` → Slack community invite URL (P0, referenced in nav/footer)
+- [ ] `/slack-invite` → Slack invite link (P1)
+- [ ] `/roadmap` → `zenml.featureos.app/roadmap` (P0, referenced in nav/footer)
+- [ ] `/discussion` → GitHub discussions (P1)
+- [ ] `/meet` → redirect (P2)
+- [ ] `/zenml-meet` → redirect (P2)
+
+**Interactive/utility pages:**
+- [ ] `/roi-calculator` — client-side widget, Preact island (P2, 692 lines in snapshot)
+- [ ] `/live-demo` — interactive demo page (P2)
+- [ ] `/interactive-demo-mcp` — interactive demo page (P2)
+- [ ] `/components` — internal styleguide (P2, may skip entirely)
+- [ ] `/cloud-features/ml-models-control-plane` — similar to feature detail page (P2)
+
+**Validation:**
+- Redirect URLs don't 404 (either page or redirect)
+- ROI calculator sliders work (if built)
+
+---
+
+#### 3H Architectural Decisions
+
+**Decision 1 — Feature + case study pages as data-driven content collections**
+Create `src/content/feature-pages/` and `src/content/case-studies/` collections (NOT hand-coded `.astro` pages). This gives consistent SEO, CTAs, and auto-generated hub pages. Adds schemas to `src/content.config.ts`.
+
+**Decision 2 — VS category pages: static data module + one template**
+A single template + typed config object (title, description, recommended `/compare/*` children). Only 3 pages, strong reuse.
+
+**Decision 3 — Redirect-only URLs: temporary JS redirect pages → `_redirects` 301s in Phase 4**
+Don't keep JS redirects long-term (worse SEO, slower). Phase 3H ships temporary redirect pages; Phase 4 migrates to Cloudflare Pages `_redirects` file.
+
+**Decision 4 — Forms: functional where embed-only; graceful fallback where backend-needed**
+Cal.com and Brevo embeds work in Phase 3H. Webflow-native forms get UI parity but redirect primary CTA to `/book-your-demo` so leads can still convert. Full form backend (Workers → Attio) in Phase 5.
+
+**Decision 5 — `/cloud-features/ml-models-control-plane` handling**
+Implement using FeatureDetail template (same as `/features/*` family) with distinct content. If truly redundant with `/features/centralized-model-control-plane`, can 301 redirect instead.
+
+---
+
+#### 3H Wave Implementation Order
+
+**Wave 1 (P0 — "no broken nav + money pages"):**
+1. 3H-1a: Legal pages + 404
+2. 3H-1b: Homepage + core section components (~7)
+3. 3H-3: First 6 nav-linked feature pages + features hub
+4. 3H-4: First 3 nav-featured case studies + hub
+5. `/book-your-demo` (Cal.com embed, functional)
+6. `/open-source-vs-pro`, `/get-started`
+7. Redirect-only: `/slack`, `/roadmap`, `/slack-invite`
+
+**Wave 1 exit condition:** Every link in `src/lib/navigation.ts` and `src/lib/footer.ts` resolves to a real page or redirect.
+
+**Wave 2 (P1 — "complete the static surface area"):**
+1. 3H-3 remaining: 6 more feature detail pages
+2. 3H-4 remaining: 2 more case studies + 3 VS pages
+3. 3H-5: `/pricing`, `/pro`, `/company`, `/careers`, `/deployments`
+4. 3H-6: newsletter pages, scheduling pages, form placeholder pages
+5. Redirect-only: `/discussion`, `/meet`, `/zenml-meet`
+
+**Wave 3 (P2 — "nice-to-have + legacy"):**
+1. 3H-6 remaining: success/thank-you pages
+2. 3H-7: ROI calculator, live-demo, interactive-demo-mcp
+3. `/components`, `/cloud-features/ml-models-control-plane`
+4. Decide: keep `/book-a-demo` + `/signup-for-demo` or redirect to `/book-your-demo`
+
+---
+
+#### 3H Estimated New Component Count: ~18–24
+
+| Category | Count | Examples |
+|----------|-------|---------|
+| Page templates | 3–4 | FeatureDetailPage, CaseStudyDetailPage, VSCategoryPage, (MarketingPage conventions) |
+| Section components | 10–14 | Hero, FeatureGrid, SplitSection, CTASection, FAQAccordion, PricingPlans, StatsStrip, TestimonialQuote, LogoCloud, PricingComparisonTable |
+| Embed/form components | 4–6 | CalEmbed, BrevoNewsletterForm, SuccessPanel, RedirectPage, WebflowFormPlaceholder |
+
+---
+
+#### 3H Risks & Mitigations
+
+| Risk | Mitigation |
+|------|------------|
+| Conversion loss on form pages | Ensure `/book-your-demo` is fully functional in Wave 1; link all form placeholders to it |
+| Nav/footer link rot during phased rollout | Wave 1 exit condition = every URL in navigation.ts + footer.ts resolves |
+| Scope explosion from bespoke marketing pages | Enforce section library approach; build Home first, reuse to assemble Pricing/Pro |
+| SEO regression on case studies | CaseStudy template owns JSON-LD; use frontmatter, avoid per-page hand edits |
+| Redirect pages implemented as JS redirects (SEO) | Migrate to 301 via `_redirects` in Phase 4; keep JS redirects only as temporary scaffolding |
 
 ---
 
@@ -990,6 +1270,37 @@ Phase 6 will be QA + cutover:
 
 **Verification Status:** Plan is now **ready for Phase 3 implementation** with no known blockers.
 
+### 2026-02-11: 3H-1a + 3H-1b Implementation Learnings
+
+**Context:** Built legal pages + 404 (3H-1a) and full homepage with 13 section components (3H-1b).
+
+**What we learned:**
+
+1. **Homepage has 13 sections, not 9.** Original plan estimated ~9 sections and ~7 components. Actual Webflow homepage has 13 distinct sections requiring 11 new components + 2 more (AnnouncementBanner, FAQAccordion) that weren't anticipated. The FAQ accordion was originally scoped for 3H-5 (pricing) but the homepage needs it too.
+
+2. **BaseLayout needed a `before-nav` named slot.** The AnnouncementBanner sits above the Navigation in the DOM. Since BaseLayout hardcodes `<Navigation>` before the main `<slot>`, we added a named `<slot name="before-nav" />`. Named slots in Astro render nothing if unused, so no impact on other pages.
+
+3. **Centralized data file is essential for marketing pages.** All homepage copy, URLs, stats, and FAQ content lives in `src/lib/homepage.ts` (~320 lines). This pattern should be reused for pricing, features, and other marketing pages in later sub-phases. Marketing can update copy without touching component HTML.
+
+4. **Testimonial gap: 7 of 11 homepage testimonials aren't in the CMS.** The Webflow homepage has 11 testimonials but only 6 exist in the `quotes` collection (Clement Depraz, Francois Serra ×3, Goku Mohandas, Richard Socher). The other 7 (Harold Gimenez/HashiCorp, Chris Manning/Stanford, Maximillian Baluff/IT4IPM, Liza Bykhanova/Competera, Francesco Pudda/WiseTech, Christian Versloot/Infoplaza, Dragos Ciupureanu/Koble) are hardcoded in Webflow page HTML. Decision: hardcoded in `homepage.ts` for now; can add to quotes collection later.
+
+5. **CLA page: BaseLayout has no `<slot name="head">`.** Originally tried to inject `<meta http-equiv="refresh">` via a named head slot, but BaseLayout doesn't define one. Solved by using JS `window.location.replace()` + visible fallback link. Adding a head slot to BaseLayout would be a useful enhancement if other pages need custom head injection.
+
+6. **R2 asset URL hashes need verification.** The hash portion of R2 URLs (e.g., `${R2}/6a2ae7e3/670e2f23...`) was inferred from Webflow CDN URLs during Phase 1 asset migration. Some hashes may be incorrect if the R2 upload used different naming. Need to spot-check a few images load correctly.
+
+7. **Hero Lottie animation needs a Preact island.** The Webflow hero uses a Lottie JSON animation (hero-0925.json, 6.4s, autoplay, no loop, SVG renderer). For now we have a gradient placeholder. Adding Lottie support requires: (a) downloading the JSON to public/, (b) installing `@lottiefiles/dotlottie-web` or similar, (c) creating a Preact island component. This is a nice visual polish item.
+
+8. **Integrations marquee works via CSS animation + collection fetch.** The `IntegrationsMarquee.astro` component fetches all integration logos from the content collection at build time and renders them in a CSS `@keyframes marquee-slide` animation (60s loop). The strip is duplicated for seamless looping and pauses on hover.
+
+9. **Webflow HTML snapshot extraction workflow.** The snapshots are massive single-line HTML files (40k+ tokens). Effective workflow: use Grep to find content markers (`w-richtext`, section class names), then Read specific line ranges. For complex pages like the homepage, delegating extraction to a background subagent with Python regex scripts is much more efficient.
+
+**TODOs carried forward:**
+- Hero Lottie animation (Preact island) — visual polish, not blocking
+- Newsletter Brevo integration — Phase 5
+- GitHub stars live count widget — nice-to-have
+- R2 URL hash verification — spot-check needed
+- Feature tab AVIF images — need to verify they load from R2
+
 ---
 
-**Ready to start Phase 3!** 🚀
+**3H-1a + 3H-1b COMPLETE. Next: 3H-3 (Feature detail pages) or 3H-4 (Case studies).**
