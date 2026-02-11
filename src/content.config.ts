@@ -17,6 +17,9 @@
 
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
+import { readdirSync, existsSync } from 'node:fs';
+import { join, extname, basename } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 // ============================================================================
 // Reusable Schema Helpers
@@ -82,14 +85,69 @@ export const baseContentSchema = z.object({
 // ============================================================================
 
 /**
+ * Get absolute path to src/content directory
+ * Uses import.meta.url for robust path resolution
+ */
+function getContentDirAbs(): string {
+  return fileURLToPath(new URL('./content', import.meta.url));
+}
+
+/**
+ * Load slug Set from a collection directory by reading .mdx filenames
+ * Fails fast if directory doesn't exist (better diagnostics than empty set)
+ *
+ * @param collectionDirName - Directory name under src/content/
+ * @returns Set of slugs (filenames without .mdx extension)
+ */
+function loadSlugSetFromCollectionDir(collectionDirName: string): Set<string> {
+  const contentDir = getContentDirAbs();
+  const absDir = join(contentDir, collectionDirName);
+
+  if (!existsSync(absDir)) {
+    throw new Error(`Missing content directory: ${absDir}`);
+  }
+
+  return new Set(
+    readdirSync(absDir)
+      .filter((f) => extname(f) === '.mdx')
+      .map((f) => basename(f, '.mdx'))
+  );
+}
+
+/**
+ * Reference collection slug lookup sets
+ * Built at config evaluation time by reading filesystem
+ */
+const referenceSlugSets = {
+  authors: loadSlugSetFromCollectionDir('authors'),
+  categories: loadSlugSetFromCollectionDir('categories'),
+  tags: loadSlugSetFromCollectionDir('tags'),
+  'llmops-tags': loadSlugSetFromCollectionDir('llmops-tags'),
+  'industry-tags': loadSlugSetFromCollectionDir('industry-tags'),
+  'project-tags': loadSlugSetFromCollectionDir('project-tags'),
+  'product-categories': loadSlugSetFromCollectionDir('product-categories'),
+  'integration-types': loadSlugSetFromCollectionDir('integration-types'),
+  advantages: loadSlugSetFromCollectionDir('advantages'),
+  quotes: loadSlugSetFromCollectionDir('quotes'),
+} as const;
+
+/**
  * Creates a slug reference schema with validation
  * Used for relationships between collections (e.g., blog -> author)
  *
  * @param collectionName - Name of the referenced collection (for error messages)
- * @returns Zod schema that validates slug format
+ * @param validSlugs - Optional Set of valid slugs for runtime validation
+ * @returns Zod schema that validates slug format and optionally checks existence
  */
-export function slugReference(collectionName: string) {
-  return z.string().describe(`Slug reference to ${collectionName} collection`);
+export function slugReference(collectionName: string, validSlugs?: Set<string>) {
+  const base = z.string().describe(`Slug reference to ${collectionName} collection`);
+
+  if (!validSlugs) return base;
+
+  return base.refine(
+    (slug) => validSlugs.has(slug),
+    (slug) => ({ message: `Invalid reference: "${slug}" not found in ${collectionName}` })
+  );
 }
 
 /**
@@ -97,10 +155,11 @@ export function slugReference(collectionName: string) {
  * Used for many-to-many relationships (e.g., blog -> tags)
  *
  * @param collectionName - Name of the referenced collection
+ * @param validSlugs - Optional Set of valid slugs for runtime validation
  * @returns Zod schema that validates array of slugs
  */
-export function slugReferenceArray(collectionName: string) {
-  return z.array(slugReference(collectionName)).default([]);
+export function slugReferenceArray(collectionName: string, validSlugs?: Set<string>) {
+  return z.array(slugReference(collectionName, validSlugs)).default([]);
 }
 
 // ============================================================================
@@ -225,9 +284,9 @@ const blogSchema = z.object({
   draft: z.boolean().default(false),
 
   // Blog-specific fields
-  author: slugReference('authors'),
-  category: slugReference('categories').optional(), // 8 posts have no category in Webflow
-  tags: slugReferenceArray('tags'),
+  author: slugReference('authors', referenceSlugSets.authors),
+  category: slugReference('categories', referenceSlugSets.categories).optional(), // 8 posts have no category in Webflow
+  tags: slugReferenceArray('tags', referenceSlugSets.tags),
   date: z.coerce.date(),
   readingTime: z.string().optional(),
 
@@ -255,7 +314,7 @@ const integrationSchema = z.object({
   draft: z.boolean().default(false),
 
   // Integration-specific fields
-  integrationType: slugReference('integration-types'),
+  integrationType: slugReference('integration-types', referenceSlugSets['integration-types']),
   logo: imageSchema.optional(),
   shortDescription: z.string().optional(),
   docsUrl: z.string().url().optional(),
@@ -285,7 +344,7 @@ const llmopsSchema = z.object({
   draft: z.boolean().default(false),
 
   // LLMOps-specific fields (ACTUAL field names from transform)
-  llmopsTags: slugReferenceArray('llmops-tags'),
+  llmopsTags: slugReferenceArray('llmops-tags', referenceSlugSets['llmops-tags']),
   // Note: industryTags field does NOT exist in actual output
   company: z.string().optional(),
   summary: z.string().optional(),
@@ -317,9 +376,9 @@ const compareSchema = z.object({
   toolName: z.string().optional(),
   toolIcon: imageSchema.optional(),
   category: z.string().optional(),
-  integrationType: slugReference('integration-types').optional(),
-  advantages: slugReferenceArray('advantages'),
-  quote: slugReference('quotes').optional(),
+  integrationType: slugReference('integration-types', referenceSlugSets['integration-types']).optional(),
+  advantages: slugReferenceArray('advantages', referenceSlugSets.advantages),
+  quote: slugReference('quotes', referenceSlugSets.quotes).optional(),
   headline: z.string().optional(),
   heroText: z.string().optional(),
   ctaHeadline: z.string().optional(),
@@ -374,7 +433,7 @@ const projectSchema = z.object({
 
   // Project-specific fields
   description: z.string().optional(),
-  tags: slugReferenceArray('project-tags'),
+  tags: slugReferenceArray('project-tags', referenceSlugSets['project-tags']),
   mainImageLink: z.string().url().optional(), // Note: NOT "coverImage"
   githubUrl: z.string().url().optional(),
   demoUrl: z.string().url().optional(),
