@@ -1,0 +1,324 @@
+---
+/**
+ * Pricing page.
+ *
+ * Route: /pricing
+ *
+ * Tabbed pricing page: Self-Hosted (2 plans) and SaaS (4 plans),
+ * each with plan cards and a feature comparison table.
+ * Additional sections: startup/academic banner, compliance, FAQ,
+ * stats/trust, and final CTA.
+ */
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Button from "../components/Button.astro";
+import PricingComparisonTable from "../components/sections/PricingComparisonTable.astro";
+import FaqSection from "../components/sections/FaqSection.astro";
+import FeaturesHubCTA from "../components/sections/FeaturesHubCTA.astro";
+import {
+  PRICING_SEO,
+  PRICING_HERO,
+  PRICING_TABS,
+  PRICING_STARTUP_BANNER,
+  PRICING_COMPLIANCE,
+  PRICING_FAQ,
+  PRICING_STATS,
+  PRICING_FINAL_CTA,
+} from "../lib/pricing";
+---
+
+<BaseLayout
+  title={PRICING_SEO.title}
+  description={PRICING_SEO.description}
+  ogTitle={PRICING_SEO.ogTitle}
+  ogDescription={PRICING_SEO.ogDescription}
+  ogImage={PRICING_SEO.ogImage}
+>
+  <main>
+    {/* Hero */}
+    <section class="bg-white pt-16 pb-8 sm:pt-24 sm:pb-12">
+      <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+        <h1 class="text-3xl font-bold text-gray-900 sm:text-4xl lg:text-5xl">
+          {PRICING_HERO.headline}
+        </h1>
+        <p class="mt-4 text-lg text-gray-600">{PRICING_HERO.deck}</p>
+      </div>
+    </section>
+
+    {/* Tabbed pricing */}
+    <section class="bg-white pb-16 sm:pb-20">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        {/* Tab switcher */}
+        <div class="flex justify-center">
+          <div class="inline-flex rounded-lg border border-gray-200 bg-gray-100 p-1" role="tablist">
+            {PRICING_TABS.map((tab, i) => (
+              <button
+                type="button"
+                role="tab"
+                aria-selected={i === 0 ? "true" : "false"}
+                aria-controls={`panel-${i}`}
+                data-tab-index={i}
+                class:list={[
+                  "pricing-tab-btn rounded-md px-6 py-2 text-sm font-semibold transition-all",
+                  i === 0
+                    ? "bg-white text-gray-900 shadow-sm"
+                    : "text-gray-500 hover:text-gray-700",
+                ]}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Tab panels */}
+        {PRICING_TABS.map((tab, tabIdx) => (
+          <div
+            id={`panel-${tabIdx}`}
+            role="tabpanel"
+            class:list={["mt-10", tabIdx !== 0 && "hidden"]}
+          >
+            {/* Plan cards */}
+            <div class:list={[
+              "grid gap-6",
+              tab.plans.length === 2
+                ? "mx-auto max-w-4xl sm:grid-cols-2"
+                : "sm:grid-cols-2 lg:grid-cols-4",
+            ]}>
+              {tab.plans.map((plan) => (
+                <div class:list={[
+                  "relative flex flex-col rounded-xl border p-6",
+                  plan.badge
+                    ? "border-zenml-500 bg-white shadow-lg"
+                    : "border-gray-200 bg-white",
+                ]}>
+                  {plan.badge && (
+                    <span class="absolute -top-3 right-4 rounded-full bg-zenml-500 px-3 py-1 text-xs font-semibold text-white">
+                      {plan.badge}
+                    </span>
+                  )}
+                  <h3 class="text-sm font-bold uppercase tracking-wider text-zenml-500">
+                    {plan.name}
+                  </h3>
+                  <p class="mt-1 text-sm text-gray-500">{plan.subtitle}</p>
+                  <div class="mt-4">
+                    <span class="text-3xl font-bold text-gray-900">{plan.price}</span>
+                    {plan.priceSuffix && (
+                      <span class="ml-1 text-sm text-gray-500">{plan.priceSuffix}</span>
+                    )}
+                  </div>
+                  <div class="mt-4 space-y-1">
+                    {plan.limits.map((limit) => (
+                      <p class="text-sm text-gray-600">
+                        <strong>{limit.value}</strong> {limit.label}
+                      </p>
+                    ))}
+                  </div>
+                  <hr class="my-4 border-gray-200" />
+                  {plan.featuresPrefix && (
+                    <p class="mb-2 text-sm font-semibold text-gray-900">{plan.featuresPrefix}</p>
+                  )}
+                  <ul class="flex-1 space-y-2">
+                    {plan.features.map((feature) => (
+                      <li class="flex items-start gap-2 text-sm text-gray-600">
+                        <svg class="mt-0.5 h-4 w-4 flex-shrink-0 text-zenml-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" />
+                        </svg>
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+                  <div class="mt-6">
+                    <Button
+                      href={plan.cta.href}
+                      variant={plan.ctaVariant || "primary"}
+                      class="w-full"
+                    >
+                      {plan.cta.label}
+                    </Button>
+                  </div>
+                  {plan.secondaryLink && (
+                    <a
+                      href={plan.secondaryLink.href}
+                      class="mt-3 text-center text-sm text-gray-500 hover:text-gray-700"
+                    >
+                      {plan.secondaryLink.label} &rarr;
+                    </a>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {/* Info block */}
+            {tab.infoBlock && (
+              <div class="mx-auto mt-6 max-w-3xl text-center text-xs text-gray-500" set:html={tab.infoBlock} />
+            )}
+
+            {/* Comparison table */}
+            <PricingComparisonTable data={tab.compareTable} />
+          </div>
+        ))}
+      </div>
+    </section>
+
+    {/* Startup / Academic banner */}
+    <section class="bg-gray-50 py-12">
+      <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col items-center gap-6 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <h2 class="text-xl font-bold text-gray-900">{PRICING_STARTUP_BANNER.headline}</h2>
+            <p class="mt-2 text-sm text-gray-600 leading-relaxed">{PRICING_STARTUP_BANNER.body}</p>
+          </div>
+          <Button href={PRICING_STARTUP_BANNER.cta.href} class="flex-shrink-0">
+            {PRICING_STARTUP_BANNER.cta.label}
+          </Button>
+        </div>
+      </div>
+    </section>
+
+    {/* Compliance: "Your VPC, your data" */}
+    <section class="bg-white py-16 sm:py-20">
+      <div class="mx-auto max-w-5xl px-4 text-center sm:px-6 lg:px-8">
+        <p class="text-sm font-semibold uppercase tracking-wider text-zenml-500">
+          {PRICING_COMPLIANCE.eyebrow}
+        </p>
+        <h2 class="mt-2 text-2xl font-bold text-gray-900 sm:text-3xl">
+          {PRICING_COMPLIANCE.headline}
+        </h2>
+        <p class="mt-3 text-lg text-gray-600">{PRICING_COMPLIANCE.body}</p>
+        <div class="mt-8">
+          <picture>
+            <source media="(max-width: 767px)" srcset={PRICING_COMPLIANCE.image.mobile.url} />
+            <img
+              src={PRICING_COMPLIANCE.image.desktop.url}
+              alt={PRICING_COMPLIANCE.image.desktop.alt}
+              class="w-full rounded-xl"
+              loading="lazy"
+            />
+          </picture>
+        </div>
+        {/* SOC2/ISO banner */}
+        <div class="mt-8 rounded-xl border border-gray-200 bg-gray-50 p-6">
+          <div class="flex flex-col items-center gap-6 sm:flex-row">
+            <div class="flex gap-4">
+              {PRICING_COMPLIANCE.badges.map((badge) => (
+                <img
+                  src={badge.url}
+                  alt={badge.alt}
+                  class="h-16 w-auto"
+                  loading="lazy"
+                />
+              ))}
+            </div>
+            <div class="text-left">
+              <p class="text-xs font-semibold uppercase tracking-wider text-zenml-500">
+                {PRICING_COMPLIANCE.bannerEyebrow}
+              </p>
+              <h3 class="mt-1 text-lg font-semibold text-gray-900">
+                {PRICING_COMPLIANCE.bannerHeadline}
+              </h3>
+              <p class="mt-1 text-sm text-gray-600">{PRICING_COMPLIANCE.bannerBody}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* FAQ */}
+    <FaqSection
+      eyebrow={PRICING_FAQ.eyebrow}
+      headline={PRICING_FAQ.headline}
+      subheadline={PRICING_FAQ.subheadline}
+      items={PRICING_FAQ.items}
+      slackCta={PRICING_FAQ.slackCta}
+    />
+
+    {/* Stats + Trust */}
+    <section class="bg-white py-16 sm:py-20">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="text-center">
+          <h2 class="text-2xl font-bold text-gray-900 sm:text-3xl">
+            {PRICING_STATS.headline}
+          </h2>
+          <p class="mt-2 text-lg text-gray-600">{PRICING_STATS.deck}</p>
+        </div>
+        <div class="mt-10 grid items-center gap-10 lg:grid-cols-2">
+          {/* Stats grid */}
+          <div class="grid gap-6 sm:grid-cols-2">
+            {PRICING_STATS.items.map((stat) => (
+              <div class="text-center">
+                <p class="text-3xl font-bold text-gray-900">{stat.value}</p>
+                <p class="mt-1 text-sm text-gray-600">{stat.label}</p>
+              </div>
+            ))}
+          </div>
+          {/* Testimonial */}
+          <div class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+            <p class="text-lg font-medium text-gray-900 leading-relaxed">
+              {PRICING_STATS.testimonial.quote}
+            </p>
+            <div class="mt-4 flex items-center gap-3">
+              <img
+                src={PRICING_STATS.testimonial.avatar}
+                alt={PRICING_STATS.testimonial.name}
+                class="h-12 w-12 rounded-full object-cover"
+                loading="lazy"
+              />
+              <div>
+                <p class="font-semibold text-gray-900">{PRICING_STATS.testimonial.name}</p>
+                <p class="text-sm text-gray-500">{PRICING_STATS.testimonial.title}</p>
+              </div>
+              <img
+                src={PRICING_STATS.testimonial.companyLogo}
+                alt="HashiCorp"
+                class="ml-auto h-6 object-contain"
+                loading="lazy"
+              />
+            </div>
+          </div>
+        </div>
+        {/* Logo bar */}
+        <div class="mt-12 flex flex-wrap items-center justify-center gap-8">
+          {PRICING_STATS.logos.map((logo) => (
+            <img
+              src={logo.src}
+              alt={logo.alt}
+              class="h-8 object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition"
+              loading="lazy"
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* Final CTA */}
+    <FeaturesHubCTA
+      headline={PRICING_FINAL_CTA.headline}
+      body={PRICING_FINAL_CTA.body}
+      primaryCta={PRICING_FINAL_CTA.primaryCta}
+      secondaryCta={PRICING_FINAL_CTA.secondaryCta}
+    />
+  </main>
+</BaseLayout>
+
+{/* Tab switching script — toggles visibility of tab panels */}
+<script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>(".pricing-tab-btn");
+  buttons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const idx = btn.dataset.tabIndex;
+      // Update button states
+      buttons.forEach((b, i) => {
+        const isActive = String(i) === idx;
+        b.setAttribute("aria-selected", String(isActive));
+        b.classList.toggle("bg-white", isActive);
+        b.classList.toggle("text-gray-900", isActive);
+        b.classList.toggle("shadow-sm", isActive);
+        b.classList.toggle("text-gray-500", !isActive);
+      });
+      // Toggle panels
+      document.querySelectorAll<HTMLDivElement>("[role='tabpanel']").forEach((panel, i) => {
+        panel.classList.toggle("hidden", String(i) !== idx);
+      });
+    });
+  });
+</script>

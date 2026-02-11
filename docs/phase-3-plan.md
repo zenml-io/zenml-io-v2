@@ -1,8 +1,8 @@
 # Phase 3: Templates & Pages — Detailed Plan
 
 **Created:** 2026-02-11
-**Last Updated:** 2026-02-11 (3H-3 complete)
-**Status:** 3A–3G COMPLETE, 3H-1a + 3H-1b + 3H-3 COMPLETE — 3H-4 through 3H-7 remaining
+**Last Updated:** 2026-02-11 (3H-5 complete)
+**Status:** 3A–3G COMPLETE, 3H-1a + 3H-1b + 3H-3 + 3H-4 + 3H-5 COMPLETE — 3H-6 through 3H-7 remaining
 **Prerequisites:**
 - Phase 2 complete (2,392 content files, 17 collections, all validation passing)
 - **Content format:** Switched from .mdx to .md (MDX v2 too strict for Webflow HTML)
@@ -704,23 +704,52 @@ Tasks:
 
 ---
 
-#### 3H-5: Core Marketing Pages
+#### 3H-5: Core Marketing Pages ✅
+
+**Status: COMPLETE** (2026-02-11)
 
 **Goal:** Build the bespoke marketing pages that reuse section components from 3H-1. These are the hardest pages because each has unique content and layout.
 
 **Pages:**
-- [ ] `/pricing` — P0, H (pricing tiers, comparison table, FAQ)
-- [ ] `/pro` — P0, H (ZenML Pro product marketing)
-- [ ] `/open-source-vs-pro` — P0, H (comparison/positioning)
-- [ ] `/get-started` — P0, M/H (onboarding funnel)
-- [ ] `/deployments` — P1, M/H (technical explainer)
-- [ ] `/company` — P1, H (company story, values, team grid)
-- [ ] `/careers` — P1, M/H (job listings via Notion links)
+- [x] `/pricing` — P0, H (pricing tiers, comparison table, FAQ)
+- [x] `/pro` — P0, H (ZenML Pro product marketing)
+- [x] `/open-source-vs-pro` — P0, H (comparison/positioning)
+- [x] `/get-started` — P0, M/H (onboarding funnel)
+- [x] `/deployments` — P1, M/H (technical explainer)
+- [x] `/company` — P1, H (company story, values, team grid)
+- [x] `/careers` — P1, M/H (job listings via Notion links)
+
+**Implementation details:**
+
+| Page | Data File | Output Size | Key Components |
+|------|-----------|-------------|----------------|
+| `/pricing` | `src/lib/pricing.ts` (~350 lines) | 113KB | Tabbed pricing (Self-Hosted/SaaS), `PricingComparisonTable`, `FaqSection`, `FeaturesHubCTA` |
+| `/pro` | `src/lib/pro.ts` | 72KB | Dark hero, subway-map pain points, feature grid, compliance, stats, testimonials |
+| `/open-source-vs-pro` | `src/lib/openSourceVsPro.ts` | 59KB | `ComparisonTable` (reusable), feature grid, FAQ |
+| `/get-started` | `src/lib/getStarted.ts` | 58KB | Code steps (dark bg), architecture diagram, projects from CMS, resources grid |
+| `/deployments` | `src/lib/deployments.ts` (~240 lines) | 70KB | Dark architecture overview, OSS vs Pro comparison, 3 scenario layouts, tabbed diagrams |
+| `/company` | `src/lib/company.ts` | 73KB | Team photo + about, 5 values grid, CMS team members, shared open positions |
+| `/careers` | `src/lib/careers.ts` | 56KB | Mission section, "Why work here" grid, 4-step hiring process, shared open positions |
+
+**Shared components created:**
+- `src/components/sections/PricingComparisonTable.astro` — Sectioned feature comparison with ✓/✗ icons (distinct from `ComparisonTable.astro`)
+- `src/lib/marketingPageTypes.ts` — Extended with 5 pricing types (`PricingPlan`, `PricingCompareSection`, `PricingCompareRow`, `PricingCompareTableData`, `PricingTab`)
+- Open positions shared between `/company` and `/careers` via `OPEN_POSITIONS` export
+
+**Key decisions:**
+- **Marketing page data pattern confirmed**: Centralize copy in `src/lib/{page}.ts`, components import from there (same pattern as homepage.ts)
+- **Two tabbed pages**: Pricing (Self-Hosted/SaaS) and Deployments (Local/SaaS/Self-hosted) both render all tabs at build time for SEO, with minimal inline `<script>` for client-side toggling
+- **Pricing data inconsistency resolved**: Webflow SaaS comparison table had column values in wrong order — used plan card prices as canonical source
+- **Deployment scenarios use CSS-only alternating layout**: `lg:[direction:rtl]` trick for reversing grid order on even items (no JS)
+
+**Build stats:** All 7 pages build successfully. Total ~2,200+ pages, build time ~34s.
 
 **Validation:**
-- Visual parity on pricing page (most scrutinized page after home)
-- All nav/footer links to these pages resolve
-- Pricing tiers render correctly with correct feature lists
+- ✅ All 7 pages render successfully with correct content
+- ✅ All nav/footer links to these pages resolve
+- ✅ Pricing tiers render correctly with correct feature lists
+- ✅ Tabbed UIs work (pricing, deployments)
+- ✅ Team members from CMS render on company page
 
 ---
 
@@ -1336,4 +1365,22 @@ Phase 6 will be QA + cutover:
 
 ---
 
-**3H-1a + 3H-1b + 3H-3 COMPLETE. Next: 3H-4 (Case studies + VS pages).**
+**3H-1a + 3H-1b + 3H-3 + 3H-4 + 3H-5 COMPLETE. Next: 3H-6 (Form/conversion pages).**
+
+---
+
+### Implementation Learnings — 3H-5 (Core Marketing Pages)
+
+**Context:** Built 7 marketing pages: pricing, pro, open-source-vs-pro, get-started, deployments, company, careers.
+
+**What we learned:**
+
+1. **Two comparison table patterns emerged.** Simple text-column tables (OSS vs Pro on `/open-source-vs-pro`) use `ComparisonTable.astro` with string values. Pricing comparison tables need boolean rendering (✓/✗ SVGs) + section headers, so `PricingComparisonTable.astro` was created separately. Keeping them as distinct components is cleaner than a single mega-component with branching logic.
+
+2. **Shared data across pages is common.** Open positions appear on both `/company` and `/careers`. Extracting `OPEN_POSITIONS` into `company.ts` and importing it in `careers.astro` prevents drift. Same pattern works for compliance sections shared between `/pricing` and `/pro`.
+
+3. **Tabbed UIs should render all content at build time.** Both pricing and deployments pages render all tab panels in the HTML (SEO-friendly), then use a tiny inline `<script>` to toggle `hidden` class + ARIA states. This gives search engines full access to all content while users see a clean tabbed interface.
+
+4. **Deployment page is the most section-heavy.** With 6 distinct sections (hero, dark architecture, dark comparison, scenarios, methods grid, tabbed diagrams, CTA), it's the most complex single page. Each section has its own data structure in `deployments.ts` (~240 lines).
+
+5. **CMS + static data hybrid works well.** Company page pulls team members from the `team` content collection (dynamic) while using static data for hero, values, and positions. This pattern — mixing CMS and hardcoded marketing copy — scales well.

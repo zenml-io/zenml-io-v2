@@ -1,0 +1,142 @@
+---
+/**
+ * Open Source vs Pro page.
+ *
+ * Route: /open-source-vs-pro
+ *
+ * Compares ZenML OSS and Pro editions: hero, feature grid,
+ * subway map readiness section, feature comparison table, final CTA.
+ */
+import BaseLayout from "../layouts/BaseLayout.astro";
+import VsHero from "../components/sections/VsHero.astro";
+import ComparisonTable from "../components/sections/ComparisonTable.astro";
+import FeaturesHubCTA from "../components/sections/FeaturesHubCTA.astro";
+import Button from "../components/Button.astro";
+import {
+  OSS_VS_PRO_SEO,
+  OSS_VS_PRO_HERO,
+  OSS_VS_PRO_FEATURE_GRID,
+  OSS_VS_PRO_SUBWAY_MAP,
+  OSS_VS_PRO_COMPARISON,
+  OSS_VS_PRO_FINAL_CTA,
+} from "../lib/openSourceVsPro";
+---
+
+<BaseLayout
+  title={OSS_VS_PRO_SEO.title}
+  description={OSS_VS_PRO_SEO.description}
+  ogTitle={OSS_VS_PRO_SEO.ogTitle}
+  ogDescription={OSS_VS_PRO_SEO.ogDescription}
+  ogImage={OSS_VS_PRO_SEO.ogImage}
+>
+  <main>
+    {/* Hero */}
+    <VsHero
+      eyebrow={OSS_VS_PRO_HERO.eyebrow}
+      headline={OSS_VS_PRO_HERO.headline}
+      deck={OSS_VS_PRO_HERO.deck}
+      primaryCta={OSS_VS_PRO_HERO.primaryCta}
+      secondaryCta={OSS_VS_PRO_HERO.secondaryCta}
+    />
+
+    {/* Feature grid: "ZenML Pro is Open Source and More" */}
+    <section class="bg-white py-16 sm:py-20">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="max-w-3xl">
+          <p class="text-sm font-semibold uppercase tracking-wider text-zenml-500">
+            {OSS_VS_PRO_FEATURE_GRID.eyebrow}
+          </p>
+          <h2 class="mt-2 text-2xl font-bold text-gray-900 sm:text-3xl">
+            {OSS_VS_PRO_FEATURE_GRID.headline}
+          </h2>
+          <p class="mt-3 text-lg text-gray-600 leading-relaxed">
+            {OSS_VS_PRO_FEATURE_GRID.body}
+          </p>
+        </div>
+
+        <div class="mt-10 grid items-center gap-10 lg:grid-cols-2">
+          <div class="grid gap-6 sm:grid-cols-2">
+            {OSS_VS_PRO_FEATURE_GRID.items.map((item) => (
+              <div class="rounded-lg border border-gray-100 bg-gray-50 p-6">
+                <h3 class="text-lg font-semibold text-gray-900">{item.title}</h3>
+                <p class="mt-2 text-sm text-gray-600 leading-relaxed">{item.body}</p>
+              </div>
+            ))}
+          </div>
+          <div class="flex justify-center">
+            <img
+              src={OSS_VS_PRO_FEATURE_GRID.image.url}
+              alt={OSS_VS_PRO_FEATURE_GRID.image.alt}
+              class="max-w-sm"
+              loading="lazy"
+            />
+          </div>
+        </div>
+
+        <div class="mt-8 flex flex-col items-start gap-3 sm:flex-row">
+          <Button href={OSS_VS_PRO_FEATURE_GRID.primaryCta.href} size="lg">
+            {OSS_VS_PRO_FEATURE_GRID.primaryCta.label}
+          </Button>
+          <Button href={OSS_VS_PRO_FEATURE_GRID.secondaryCta.href} variant="secondary" size="lg">
+            {OSS_VS_PRO_FEATURE_GRID.secondaryCta.label}
+          </Button>
+        </div>
+      </div>
+    </section>
+
+    {/* Subway map: "Is Your ML Team Ready for the Next Station?" */}
+    <section class="bg-gray-900 py-16 sm:py-20">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="grid items-start gap-10 lg:grid-cols-[1fr_1.5fr]">
+          <div>
+            <img
+              src={OSS_VS_PRO_SUBWAY_MAP.image.url}
+              alt={OSS_VS_PRO_SUBWAY_MAP.image.alt}
+              class="w-full max-w-md"
+              loading="lazy"
+            />
+          </div>
+          <div>
+            <h2 class="text-2xl font-bold text-white sm:text-3xl">
+              {OSS_VS_PRO_SUBWAY_MAP.headline}
+            </h2>
+            <p class="mt-3 text-lg text-gray-300">
+              {OSS_VS_PRO_SUBWAY_MAP.body}
+            </p>
+            <div class="mt-8 grid gap-6 sm:grid-cols-2">
+              {OSS_VS_PRO_SUBWAY_MAP.cards.map((card) => (
+                <div class="rounded-lg border border-gray-700 bg-gray-800 p-5">
+                  <h3 class="text-lg font-semibold text-white">{card.title}</h3>
+                  <p class="mt-1 text-sm italic text-amber-300">{card.painQuote}</p>
+                  <p class="mt-2 text-sm text-gray-300 leading-relaxed">{card.body}</p>
+                </div>
+              ))}
+            </div>
+            <div class="mt-8">
+              <Button href={OSS_VS_PRO_SUBWAY_MAP.cta.href} variant="secondary" size="lg">
+                {OSS_VS_PRO_SUBWAY_MAP.cta.label}
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* Comparison table */}
+    <ComparisonTable
+      eyebrow={OSS_VS_PRO_COMPARISON.eyebrow}
+      headline={OSS_VS_PRO_COMPARISON.headline}
+      subheadline={OSS_VS_PRO_COMPARISON.subheadline}
+      columnHeaders={OSS_VS_PRO_COMPARISON.columnHeaders}
+      rows={OSS_VS_PRO_COMPARISON.rows}
+    />
+
+    {/* Final CTA */}
+    <FeaturesHubCTA
+      headline={OSS_VS_PRO_FINAL_CTA.headline}
+      body={OSS_VS_PRO_FINAL_CTA.body}
+      primaryCta={OSS_VS_PRO_FINAL_CTA.primaryCta}
+      secondaryCta={OSS_VS_PRO_FINAL_CTA.secondaryCta}
+    />
+  </main>
+</BaseLayout>

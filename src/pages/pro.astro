@@ -1,0 +1,321 @@
+---
+/**
+ * ZenML Pro marketing page.
+ *
+ * Route: /pro
+ *
+ * Long-form product marketing page: hero, logo trust bar, testimonials,
+ * onboarding, feature showcases, compliance, OSS-vs-Pro grid, FAQ, and CTA.
+ */
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Button from "../components/Button.astro";
+import FeatureValueSection from "../components/sections/FeatureValueSection.astro";
+import FaqSection from "../components/sections/FaqSection.astro";
+import VsCta02 from "../components/sections/VsCta02.astro";
+import {
+  PRO_SEO,
+  PRO_HERO,
+  PRO_TRUST_HEADLINE,
+  PRO_FEATURED_TESTIMONIAL,
+  PRO_ONBOARDING,
+  PRO_FEATURES,
+  PRO_COMPLIANCE,
+  PRO_OSS_GRID,
+  PRO_HASHICORP_TESTIMONIAL,
+  PRO_TESTIMONIALS,
+  PRO_FAQ,
+  PRO_FINAL_CTA,
+} from "../lib/pro";
+---
+
+<BaseLayout
+  title={PRO_SEO.title}
+  description={PRO_SEO.description}
+  ogTitle={PRO_SEO.ogTitle}
+  ogDescription={PRO_SEO.ogDescription}
+  ogImage={PRO_SEO.ogImage}
+>
+  <main>
+    {/* Hero */}
+    <section class="bg-white pt-16 pb-12 sm:pt-24 sm:pb-16">
+      <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+        <h1 class="text-3xl font-bold text-gray-900 sm:text-4xl lg:text-5xl">
+          {PRO_HERO.headline}
+        </h1>
+        <p class="mt-4 text-lg text-gray-600 leading-relaxed">
+          {PRO_HERO.deck}
+        </p>
+        <div class="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+          <Button href={PRO_HERO.primaryCta.href} size="lg">
+            {PRO_HERO.primaryCta.label}
+          </Button>
+          {PRO_HERO.secondaryCta && (
+            <Button href={PRO_HERO.secondaryCta.href} variant="secondary" size="lg">
+              {PRO_HERO.secondaryCta.label}
+            </Button>
+          )}
+        </div>
+        {PRO_HERO.image && (
+          <div class="mt-10">
+            <img
+              src={PRO_HERO.image.url}
+              alt={PRO_HERO.image.alt}
+              class="w-full rounded-xl shadow-2xl"
+              loading="eager"
+            />
+          </div>
+        )}
+      </div>
+    </section>
+
+    {/* Logo trust bar */}
+    <section class="bg-white py-8">
+      <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+        <h2 class="text-xl font-semibold text-gray-900">
+          {PRO_TRUST_HEADLINE}
+        </h2>
+      </div>
+    </section>
+
+    {/* Featured testimonial (Hema.to) */}
+    <section class="bg-white py-8">
+      <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+        <div class="grid items-center gap-8 lg:grid-cols-[auto_1fr]">
+          <img
+            src={PRO_FEATURED_TESTIMONIAL.avatar}
+            alt={PRO_FEATURED_TESTIMONIAL.name}
+            class="h-48 w-48 rounded-xl object-cover shadow-lg"
+            loading="lazy"
+          />
+          <div>
+            <p class="text-lg font-medium text-gray-900 leading-relaxed">
+              {PRO_FEATURED_TESTIMONIAL.quote}
+            </p>
+            <div class="mt-4 flex items-center gap-3">
+              <div>
+                <p class="font-semibold text-gray-900">{PRO_FEATURED_TESTIMONIAL.name}</p>
+                <p class="text-sm text-gray-500">{PRO_FEATURED_TESTIMONIAL.title}</p>
+              </div>
+              <div class="ml-auto">
+                <img
+                  src={PRO_FEATURED_TESTIMONIAL.companyLogo}
+                  alt="Company logo"
+                  class="h-5 object-contain"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* "Get set up in less than a day" */}
+    <section class="bg-gray-900 py-16 sm:py-20">
+      <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+        <p class="text-sm font-semibold uppercase tracking-wider text-zenml-400">
+          {PRO_ONBOARDING.eyebrow}
+        </p>
+        <h2 class="mt-2 text-2xl font-bold text-white sm:text-3xl">
+          {PRO_ONBOARDING.headline}
+        </h2>
+        <p class="mt-3 text-lg text-gray-300 leading-relaxed">
+          {PRO_ONBOARDING.body}
+        </p>
+        <div class="mt-10 grid gap-6 sm:grid-cols-3">
+          {PRO_ONBOARDING.items.map((item) => (
+            <div class="rounded-lg border border-gray-700 bg-gray-800 p-6">
+              <h3 class="text-lg font-semibold text-white">{item.title}</h3>
+              <p class="mt-2 text-sm text-gray-300 leading-relaxed">{item.body}</p>
+            </div>
+          ))}
+        </div>
+        <div class="mt-8 flex flex-col items-start gap-3 sm:flex-row">
+          <Button href={PRO_ONBOARDING.primaryCta.href} size="lg">
+            {PRO_ONBOARDING.primaryCta.label}
+          </Button>
+          <Button href={PRO_ONBOARDING.secondaryCta.href} variant="secondary" size="lg">
+            {PRO_ONBOARDING.secondaryCta.label}
+          </Button>
+        </div>
+      </div>
+    </section>
+
+    {/* Pro cloud features (alternating image/text) */}
+    {PRO_FEATURES.map((feature, i) => (
+      <FeatureValueSection
+        title={feature.title}
+        body={feature.body}
+        image={feature.image}
+        imageSide={i % 2 === 0 ? "right" : "left"}
+      />
+    ))}
+
+    {/* Compliance: "Your VPC, your data" */}
+    <section class="bg-white py-16 sm:py-20">
+      <div class="mx-auto max-w-5xl px-4 text-center sm:px-6 lg:px-8">
+        <p class="text-sm font-semibold uppercase tracking-wider text-zenml-500">
+          {PRO_COMPLIANCE.eyebrow}
+        </p>
+        <h2 class="mt-2 text-2xl font-bold text-gray-900 sm:text-3xl">
+          {PRO_COMPLIANCE.headline}
+        </h2>
+        <p class="mt-3 text-lg text-gray-600">{PRO_COMPLIANCE.body}</p>
+        <div class="mt-8">
+          <picture>
+            <source media="(max-width: 767px)" srcset={PRO_COMPLIANCE.image.mobile.url} />
+            <img
+              src={PRO_COMPLIANCE.image.desktop.url}
+              alt={PRO_COMPLIANCE.image.desktop.alt}
+              class="w-full rounded-xl"
+              loading="lazy"
+            />
+          </picture>
+        </div>
+        {/* SOC2/ISO banner */}
+        <div class="mt-8 rounded-xl border border-gray-200 bg-gray-50 p-6">
+          <div class="flex flex-col items-center gap-6 sm:flex-row">
+            <div class="flex gap-4">
+              {PRO_COMPLIANCE.badges.map((badge) => (
+                <img
+                  src={badge.url}
+                  alt={badge.alt}
+                  class="h-16 w-auto"
+                  loading="lazy"
+                />
+              ))}
+            </div>
+            <div class="text-left">
+              <p class="text-xs font-semibold uppercase tracking-wider text-zenml-500">
+                {PRO_COMPLIANCE.bannerEyebrow}
+              </p>
+              <h3 class="mt-1 text-lg font-semibold text-gray-900">
+                {PRO_COMPLIANCE.bannerHeadline}
+              </h3>
+              <p class="mt-1 text-sm text-gray-600">{PRO_COMPLIANCE.bannerBody}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* "ZenML Pro is Open Source and More" feature grid */}
+    <section class="bg-gray-50 py-16 sm:py-20">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="max-w-3xl">
+          <p class="text-sm font-semibold uppercase tracking-wider text-zenml-500">
+            {PRO_OSS_GRID.eyebrow}
+          </p>
+          <h2 class="mt-2 text-2xl font-bold text-gray-900 sm:text-3xl">
+            {PRO_OSS_GRID.headline}
+          </h2>
+          <p class="mt-3 text-lg text-gray-600 leading-relaxed">{PRO_OSS_GRID.body}</p>
+        </div>
+        <div class="mt-10 grid items-center gap-10 lg:grid-cols-2">
+          <div class="grid gap-6 sm:grid-cols-2">
+            {PRO_OSS_GRID.items.map((item) => (
+              <div class="rounded-lg border border-gray-200 bg-white p-6">
+                <h3 class="text-lg font-semibold text-gray-900">{item.title}</h3>
+                <p class="mt-2 text-sm text-gray-600 leading-relaxed">{item.body}</p>
+              </div>
+            ))}
+          </div>
+          <div class="flex justify-center">
+            <img
+              src={PRO_OSS_GRID.image.url}
+              alt={PRO_OSS_GRID.image.alt}
+              class="max-w-sm"
+              loading="lazy"
+            />
+          </div>
+        </div>
+        <div class="mt-8 flex flex-col items-start gap-3 sm:flex-row">
+          <Button href={PRO_OSS_GRID.primaryCta.href} size="lg">
+            {PRO_OSS_GRID.primaryCta.label}
+          </Button>
+          <Button href={PRO_OSS_GRID.secondaryCta.href} variant="secondary" size="lg">
+            {PRO_OSS_GRID.secondaryCta.label}
+          </Button>
+        </div>
+      </div>
+    </section>
+
+    {/* HashiCorp testimonial (dark) */}
+    <section class="bg-gray-900 py-16 sm:py-20">
+      <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+        <p class="text-xl font-medium text-white leading-relaxed sm:text-2xl">
+          {PRO_HASHICORP_TESTIMONIAL.quote}
+        </p>
+        <div class="mt-8 flex items-center justify-center gap-4">
+          <img
+            src={PRO_HASHICORP_TESTIMONIAL.avatar}
+            alt={PRO_HASHICORP_TESTIMONIAL.name}
+            class="h-12 w-12 rounded-full object-cover"
+            loading="lazy"
+          />
+          <div class="text-left">
+            <p class="font-semibold text-white">{PRO_HASHICORP_TESTIMONIAL.name}</p>
+            <p class="text-sm text-gray-400">{PRO_HASHICORP_TESTIMONIAL.title}</p>
+          </div>
+          <img
+            src={PRO_HASHICORP_TESTIMONIAL.companyLogo}
+            alt="HashiCorp"
+            class="ml-4 h-6 object-contain"
+            loading="lazy"
+          />
+        </div>
+      </div>
+    </section>
+
+    {/* Testimonial grid (static, no carousel) */}
+    <section class="bg-white py-16 sm:py-20">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {PRO_TESTIMONIALS.map((t) => (
+            <div class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+              <img
+                src={t.companyLogo}
+                alt="Company logo"
+                class="mb-4 h-6 object-contain"
+                loading="lazy"
+              />
+              <p class="text-sm font-medium text-gray-900 leading-relaxed">
+                {t.quote}
+              </p>
+              <div class="mt-4 flex items-center gap-3">
+                <img
+                  src={t.avatar}
+                  alt={t.name}
+                  class="h-10 w-10 rounded-full object-cover"
+                  loading="lazy"
+                />
+                <div>
+                  <p class="text-sm font-semibold text-gray-900">{t.name}</p>
+                  <p class="text-xs text-gray-500">{t.title}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* FAQ */}
+    <FaqSection
+      eyebrow={PRO_FAQ.eyebrow}
+      headline={PRO_FAQ.headline}
+      subheadline={PRO_FAQ.subheadline}
+      items={PRO_FAQ.items}
+      slackCta={PRO_FAQ.slackCta}
+    />
+
+    {/* Final CTA */}
+    <VsCta02
+      headline={PRO_FINAL_CTA.headline}
+      bullets={PRO_FINAL_CTA.bullets}
+      primaryCta={PRO_FINAL_CTA.primaryCta}
+      secondaryCta={PRO_FINAL_CTA.secondaryCta}
+      image={PRO_FINAL_CTA.image}
+    />
+  </main>
+</BaseLayout>
