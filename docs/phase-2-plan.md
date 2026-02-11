@@ -2,7 +2,7 @@
 
 **Created:** 2026-02-11
 **Revised:** 2026-02-11 (post-RepoPrompt audit)
-**Status:** Phase 2A & 2B COMPLETE ✅ — Ready for Phase 2C (Export Reference Collections)
+**Status:** Phase 2A, 2B & 2C COMPLETE ✅ — Ready for Phase 2D (Define Reference Schemas)
 **Prerequisites:** Phase 1 complete (1,904 MDX files, 2,397 R2 assets)
 
 ---
@@ -224,13 +224,18 @@ const webflowMetaSchema = z.object({
 
 ---
 
-### 2C: Export Reference Collections from Webflow
+### 2C: Export Reference Collections from Webflow — ✅ COMPLETE
 
 **Goal:** Export reference collections (authors, categories, tags, etc.) from Phase 1 Webflow export as **minimal MDX files** for Content Collections (not JSON).
 
+**Status:** ✅ Complete (2026-02-11)
+- 425 reference items exported (100% success rate)
+- All Webflow CDN URLs rewritten to R2
+- File counts match Webflow export exactly
+
 **Changed from original plan**: We're creating Content Collections, not JSON files, so Phase 3 can generate routes and use consistent querying API.
 
-**Script**: Create `scripts/phase2/export-references.ts`
+**Script**: `scripts/phase2/export-references.ts` ✅
 
 **Input**: `design/migration/phase1/runs/2026-02-11T0626Z/webflow/items/<collection>/live.json`
 
@@ -272,9 +277,22 @@ webflow:
 **IMPORTANT**: Rewrite avatar/icon/image URLs to R2 using `design/.../r2/url-map.json`.
 
 **Validation**: After export, verify:
-- [ ] All slugs match references used in main content frontmatter
-- [ ] No Webflow CDN URLs remain (all R2)
-- [ ] Item counts match Webflow export stats
+- [x] All slugs match references used in main content frontmatter ✅
+- [x] No Webflow CDN URLs remain (all R2) ✅ (0 CDN URLs found)
+- [x] Item counts match Webflow export stats ✅
+
+**Export Results:**
+- authors: 27 items ✅
+- categories: 14 items ✅
+- tags: 118 items ✅
+- llmops-tags: 107 items ✅
+- industry-tags: 17 items ✅
+- integration-types: 16 items ✅
+- advantages: 45 items ✅
+- quotes: 6 items ✅
+- product-categories: 5 items ✅
+- project-tags: 70 items ✅
+- **Total: 425 items (0 failures)**
 
 ---
 
