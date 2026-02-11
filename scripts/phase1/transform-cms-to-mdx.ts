@@ -333,8 +333,9 @@ class CMSTransformer {
       // Combine frontmatter + body
       const mdxContent = `---\n${frontmatter}\n---\n\n${bodyContent}`;
 
-      // Write MDX file
-      const filename = `${item.id}.${slug}.mdx`;
+      // Write MDX file (filename = slug only, no Webflow ID)
+      // IMPORTANT: Astro derives entry slug from FILENAME, not frontmatter
+      const filename = `${slug}.mdx`;
       const outputPath = join(outputDir, filename);
       writeFileSync(outputPath, mdxContent, "utf-8");
 
@@ -395,7 +396,10 @@ class CMSTransformer {
     // Webflow metadata
     lines.push(`webflow:`);
     lines.push(`  siteId: "${SITE_ID}"`);
-    lines.push(`  collectionId: "${item.cmsLocaleId}"`);
+    // Only include collectionId if not null (avoid string "null")
+    if (item.cmsLocaleId) {
+      lines.push(`  collectionId: "${item.cmsLocaleId}"`);
+    }
     lines.push(`  itemId: "${item.id}"`);
     lines.push(`  exportedAt: "${this.manifest.transformedAt}"`);
     lines.push(
@@ -525,8 +529,9 @@ class CMSTransformer {
 
     // LLMOps-specific fields
     if (collectionSlug === "llmops-database") {
-      if (Array.isArray(fd["llmops-tags"])) {
-        const tagSlugs = fd["llmops-tags"]
+      // FIX: Webflow uses "tags" not "llmops-tags"
+      if (Array.isArray(fd["tags"])) {
+        const tagSlugs = fd["tags"]
           .map((tagId) => {
             const ref = this.referenceMap.get(tagId);
             if (!ref) {
@@ -542,8 +547,9 @@ class CMSTransformer {
         }
       }
 
-      if (Array.isArray(fd["industry-tags"])) {
-        const tagSlugs = fd["industry-tags"]
+      // FIX: Webflow uses "industry" not "industry-tags"
+      if (Array.isArray(fd["industry"])) {
+        const industrySlugs = fd["industry"]
           .map((tagId) => {
             const ref = this.referenceMap.get(tagId);
             if (!ref) {
@@ -553,15 +559,359 @@ class CMSTransformer {
           })
           .filter(Boolean);
 
-        if (tagSlugs.length > 0) {
+        if (industrySlugs.length > 0) {
           lines.push(`industryTags:`);
-          tagSlugs.forEach((slug) => lines.push(`  - "${slug}"`));
+          industrySlugs.forEach((slug) => lines.push(`  - "${slug}"`));
+        }
+      }
+
+      // Other LLMOps fields
+      if (fd.company) {
+        lines.push(`company: "${this.escapeYAML(String(fd.company))}"`);
+      }
+      if (fd.summary) {
+        lines.push(`summary: "${this.escapeYAML(String(fd.summary))}"`);
+      }
+      if (fd.link) {
+        lines.push(`link: "${fd.link}"`);
+      }
+      if (fd.year) {
+        lines.push(`year: ${fd.year}`);
+      }
+    }
+
+    // Integrations-specific fields
+    if (collectionSlug === "integrations") {
+      if (fd["integration-type-2"] && typeof fd["integration-type-2"] === "string") {
+        const typeRef = this.referenceMap.get(fd["integration-type-2"]);
+        if (typeRef) {
+          lines.push(`integrationType: "${typeRef.slug}"`);
+        } else {
+          warnings.push(`Could not resolve integration-type ID: ${fd["integration-type-2"]}`);
+        }
+      }
+
+      if (fd["integration-logo"] && typeof fd["integration-logo"] === "object") {
+        const logo = fd["integration-logo"] as { url?: string; alt?: string };
+        if (logo.url) {
+          const rewrittenUrl = this.rewriteURL(logo.url);
+          lines.push(`logo:`);
+          lines.push(`  url: "${rewrittenUrl}"`);
+          if (logo.alt) {
+            lines.push(`  alt: "${this.escapeYAML(logo.alt)}"`);
+          }
+        }
+      }
+
+      if (fd["short-description"]) {
+        lines.push(`shortDescription: "${this.escapeYAML(String(fd["short-description"]))}"`);
+      }
+
+      if (fd["docs-url"]) {
+        lines.push(`docsUrl: "${fd["docs-url"]}"`);
+      }
+
+      if (fd["github-url"]) {
+        lines.push(`githubUrl: "${fd["github-url"]}"`);
+      }
+
+      if (fd["main-image"] && typeof fd["main-image"] === "object") {
+        const mainImage = fd["main-image"] as { url?: string; alt?: string };
+        if (mainImage.url) {
+          const rewrittenUrl = this.rewriteURL(mainImage.url);
+          lines.push(`mainImage:`);
+          lines.push(`  url: "${rewrittenUrl}"`);
+          if (mainImage.alt) {
+            lines.push(`  alt: "${this.escapeYAML(mainImage.alt)}"`);
+          }
+        }
+      }
+
+      if (Array.isArray(fd["related-blog-posts"])) {
+        const blogPostSlugs = fd["related-blog-posts"]
+          .map((postId) => {
+            const ref = this.referenceMap.get(postId);
+            if (!ref) {
+              warnings.push(`Could not resolve related-blog-post ID: ${postId}`);
+            }
+            return ref?.slug;
+          })
+          .filter(Boolean);
+
+        if (blogPostSlugs.length > 0) {
+          lines.push(`relatedBlogPosts:`);
+          blogPostSlugs.forEach((slug) => lines.push(`  - "${slug}"`));
         }
       }
     }
 
-    // Add other collection-specific fields as needed
-    // (integrations, team, projects, etc.)
+    // Compare (VS pages) specific fields
+    if (collectionSlug === "compare") {
+      if (fd["tool-name"]) {
+        lines.push(`toolName: "${this.escapeYAML(String(fd["tool-name"]))}"`);
+      }
+
+      if (fd["tool-icon"] && typeof fd["tool-icon"] === "object") {
+        const icon = fd["tool-icon"] as { url?: string; alt?: string };
+        if (icon.url) {
+          const rewrittenUrl = this.rewriteURL(icon.url);
+          lines.push(`toolIcon:`);
+          lines.push(`  url: "${rewrittenUrl}"`);
+          if (icon.alt) {
+            lines.push(`  alt: "${this.escapeYAML(icon.alt)}"`);
+          }
+        }
+      }
+
+      if (fd.category && typeof fd.category === "string") {
+        const categoryRef = this.referenceMap.get(fd.category);
+        if (categoryRef) {
+          lines.push(`category: "${categoryRef.slug}"`);
+        } else {
+          warnings.push(`Could not resolve category ID: ${fd.category}`);
+        }
+      }
+
+      if (fd["integration-type"] && typeof fd["integration-type"] === "string") {
+        const typeRef = this.referenceMap.get(fd["integration-type"]);
+        if (typeRef) {
+          lines.push(`integrationType: "${typeRef.slug}"`);
+        } else {
+          warnings.push(`Could not resolve integration-type ID: ${fd["integration-type"]}`);
+        }
+      }
+
+      if (Array.isArray(fd["advantages-2"])) {
+        const advantageSlugs = fd["advantages-2"]
+          .map((advId) => {
+            const ref = this.referenceMap.get(advId);
+            if (!ref) {
+              warnings.push(`Could not resolve advantage ID: ${advId}`);
+            }
+            return ref?.slug;
+          })
+          .filter(Boolean);
+
+        if (advantageSlugs.length > 0) {
+          lines.push(`advantages:`);
+          advantageSlugs.forEach((slug) => lines.push(`  - "${slug}"`));
+        }
+      }
+
+      if (fd["quote-2"] && typeof fd["quote-2"] === "string") {
+        const quoteRef = this.referenceMap.get(fd["quote-2"]);
+        if (quoteRef) {
+          lines.push(`quote: "${quoteRef.slug}"`);
+        } else {
+          warnings.push(`Could not resolve quote ID: ${fd["quote-2"]}`);
+        }
+      }
+
+      if (fd.headline) {
+        lines.push(`headline: "${this.escapeYAML(String(fd.headline))}"`);
+      }
+
+      if (fd["hero-text"]) {
+        lines.push(`heroText: "${this.escapeYAML(String(fd["hero-text"]))}"`);
+      }
+
+      if (fd["cta-headline"]) {
+        lines.push(`ctaHeadline: "${this.escapeYAML(String(fd["cta-headline"]))}"`);
+      }
+
+      if (fd["learn-more-url"]) {
+        lines.push(`learnMoreUrl: "${fd["learn-more-url"]}"`);
+      }
+
+      if (fd["seo-description"]) {
+        lines.push(`seoDescription: "${this.escapeYAML(String(fd["seo-description"]))}"`);
+      }
+
+      if (fd["open-graph-image"] && typeof fd["open-graph-image"] === "object") {
+        const ogImage = fd["open-graph-image"] as { url?: string; alt?: string };
+        if (ogImage.url) {
+          const rewrittenUrl = this.rewriteURL(ogImage.url);
+          lines.push(`openGraphImage:`);
+          lines.push(`  url: "${rewrittenUrl}"`);
+          if (ogImage.alt) {
+            lines.push(`  alt: "${this.escapeYAML(ogImage.alt)}"`);
+          }
+        }
+      }
+    }
+
+    // Team-specific fields
+    if (collectionSlug === "team") {
+      if (fd.position) {
+        lines.push(`position: "${this.escapeYAML(String(fd.position))}"`);
+      }
+
+      if (fd.photo && typeof fd.photo === "object") {
+        const photo = fd.photo as { url?: string; alt?: string };
+        if (photo.url) {
+          const rewrittenUrl = this.rewriteURL(photo.url);
+          lines.push(`photo:`);
+          lines.push(`  url: "${rewrittenUrl}"`);
+          if (photo.alt) {
+            lines.push(`  alt: "${this.escapeYAML(photo.alt)}"`);
+          }
+        }
+      }
+
+      if (fd.email) {
+        lines.push(`email: "${fd.email}"`);
+      }
+
+      if (fd.linkedin) {
+        lines.push(`linkedin: "${fd.linkedin}"`);
+      }
+
+      if (fd.order !== undefined) {
+        lines.push(`order: ${fd.order}`);
+      }
+    }
+
+    // Projects-specific fields
+    if (collectionSlug === "projects") {
+      if (fd.description) {
+        lines.push(`description: "${this.escapeYAML(String(fd.description))}"`);
+      }
+
+      if (fd["github-url"]) {
+        lines.push(`githubUrl: "${fd["github-url"]}"`);
+      }
+
+      if (fd["main-image-link"]) {
+        lines.push(`mainImageLink: "${fd["main-image-link"]}"`);
+      }
+
+      if (fd["preview-image"] && typeof fd["preview-image"] === "object") {
+        const previewImage = fd["preview-image"] as { url?: string; alt?: string };
+        if (previewImage.url) {
+          const rewrittenUrl = this.rewriteURL(previewImage.url);
+          lines.push(`previewImage:`);
+          lines.push(`  url: "${rewrittenUrl}"`);
+          if (previewImage.alt) {
+            lines.push(`  alt: "${this.escapeYAML(previewImage.alt)}"`);
+          }
+        }
+      }
+
+      if (Array.isArray(fd.tags)) {
+        const tagSlugs = fd.tags
+          .map((tagId) => {
+            const ref = this.referenceMap.get(tagId);
+            if (!ref) {
+              warnings.push(`Could not resolve project-tag ID: ${tagId}`);
+            }
+            return ref?.slug;
+          })
+          .filter(Boolean);
+
+        if (tagSlugs.length > 0) {
+          lines.push(`tags:`);
+          tagSlugs.forEach((slug) => lines.push(`  - "${slug}"`));
+        }
+      }
+
+      if (Array.isArray(fd.tools)) {
+        const toolSlugs = fd.tools
+          .map((toolId) => {
+            const ref = this.referenceMap.get(toolId);
+            if (!ref) {
+              warnings.push(`Could not resolve tool ID: ${toolId}`);
+            }
+            return ref?.slug;
+          })
+          .filter(Boolean);
+
+        if (toolSlugs.length > 0) {
+          lines.push(`tools:`);
+          toolSlugs.forEach((slug) => lines.push(`  - "${slug}"`));
+        }
+      }
+
+      if (fd["created-at"]) {
+        lines.push(`createdAt: "${fd["created-at"]}"`);
+      }
+
+      if (fd["updated-at"]) {
+        lines.push(`updatedAt: "${fd["updated-at"]}"`);
+      }
+
+      if (fd["project-id"]) {
+        lines.push(`projectId: "${fd["project-id"]}"`);
+      }
+    }
+
+    // Old-projects-specific fields
+    if (collectionSlug === "old-projects") {
+      if (fd.date) {
+        lines.push(`date: "${fd.date}"`);
+      }
+
+      if (fd["original-date"]) {
+        lines.push(`originalDate: "${fd["original-date"]}"`);
+      }
+
+      if (fd.category && typeof fd.category === "string") {
+        const categoryRef = this.referenceMap.get(fd.category);
+        if (categoryRef) {
+          lines.push(`category: "${categoryRef.slug}"`);
+        } else {
+          warnings.push(`Could not resolve category ID: ${fd.category}`);
+        }
+      }
+
+      if (Array.isArray(fd.tags)) {
+        const tagSlugs = fd.tags
+          .map((tagId) => {
+            const ref = this.referenceMap.get(tagId);
+            if (!ref) {
+              warnings.push(`Could not resolve project-category tag ID: ${tagId}`);
+            }
+            return ref?.slug;
+          })
+          .filter(Boolean);
+
+        if (tagSlugs.length > 0) {
+          lines.push(`tags:`);
+          tagSlugs.forEach((slug) => lines.push(`  - "${slug}"`));
+        }
+      }
+
+      if (fd.image && typeof fd.image === "object") {
+        const image = fd.image as { url?: string; alt?: string };
+        if (image.url) {
+          const rewrittenUrl = this.rewriteURL(image.url);
+          lines.push(`image:`);
+          lines.push(`  url: "${rewrittenUrl}"`);
+          if (image.alt) {
+            lines.push(`  alt: "${this.escapeYAML(image.alt)}"`);
+          }
+        }
+      }
+
+      if (fd.description) {
+        lines.push(`description: "${this.escapeYAML(String(fd.description))}"`);
+      }
+
+      if (fd["seo-title"]) {
+        lines.push(`seoTitle: "${this.escapeYAML(String(fd["seo-title"]))}"`);
+      }
+
+      if (fd["seo-description"]) {
+        lines.push(`seoDescription: "${this.escapeYAML(String(fd["seo-description"]))}"`);
+      }
+
+      if (fd["reading-time"]) {
+        lines.push(`readingTime: ${fd["reading-time"]}`);
+      }
+
+      if (fd["is-featured"]) {
+        lines.push(`isFeatured: ${fd["is-featured"]}`);
+      }
+    }
   }
 
   /**
