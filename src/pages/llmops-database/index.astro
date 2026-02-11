@@ -1,0 +1,89 @@
+---
+/**
+ * LLMOps Database listing page.
+ *
+ * Server-side: resolves tag/industry display names, passes to Preact island.
+ * Client-side: LLMOpsFilter island fetches /llmops-index.json and handles
+ * filtering, search, and pagination entirely in the browser.
+ *
+ * Route: /llmops-database
+ */
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import LLMOpsFilter from "../../components/islands/LLMOpsFilter";
+
+// Resolve tag + industry display names for the filter UI
+const allTags = (await getCollection("llmops-tags"))
+  .map((t) => ({ slug: t.data.slug, name: t.data.name }))
+  .sort((a, b) => a.name.localeCompare(b.name));
+
+const allIndustries = (await getCollection("industry-tags"))
+  .map((i) => ({ slug: i.data.slug, name: i.data.name }))
+  .sort((a, b) => a.name.localeCompare(b.name));
+
+// Count for hero text (non-draft entries)
+const entryCount = (await getCollection("llmops-database", ({ data }) => !data.draft)).length;
+---
+
+<BaseLayout
+  title="LLMOps Database - ZenML"
+  description={`Explore ${entryCount} real-world LLMOps use cases, tools, and implementations. Filter by technology, industry, and more.`}
+>
+  <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+    <header class="mb-10">
+      <h1 class="text-4xl font-bold tracking-tight text-gray-900">LLMOps Database</h1>
+      <p class="mt-4 max-w-2xl text-lg text-gray-600">
+        Explore {entryCount} real-world LLMOps use cases, tools, and implementations.
+        Filter by technology, industry, or search for specific topics.
+      </p>
+    </header>
+
+    {/* Interactive filter island — hydrates immediately */}
+    <LLMOpsFilter
+      client:load
+      tags={allTags}
+      industries={allIndustries}
+      pageSize={24}
+    />
+
+    {/* No-JS fallback */}
+    <noscript>
+      <div class="mt-8 rounded-lg border border-gray-200 bg-gray-50 p-6">
+        <p class="mb-4 text-sm text-gray-700">
+          JavaScript is required for the interactive filter. Browse by category instead:
+        </p>
+        <div class="space-y-4">
+          <div>
+            <h2 class="mb-2 text-sm font-semibold text-gray-900">Browse by Tag</h2>
+            <div class="flex flex-wrap gap-2">
+              {allTags.slice(0, 20).map((tag) => (
+                <a
+                  href={`/llmops-tags/${tag.slug}`}
+                  class="rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700 hover:bg-blue-100"
+                >
+                  {tag.name}
+                </a>
+              ))}
+              {allTags.length > 20 && (
+                <span class="text-xs text-gray-400">+{allTags.length - 20} more</span>
+              )}
+            </div>
+          </div>
+          <div>
+            <h2 class="mb-2 text-sm font-semibold text-gray-900">Browse by Industry</h2>
+            <div class="flex flex-wrap gap-2">
+              {allIndustries.map((ind) => (
+                <a
+                  href={`/industry-tags/${ind.slug}`}
+                  class="rounded-full bg-purple-50 px-3 py-1 text-xs font-medium text-purple-700 hover:bg-purple-100"
+                >
+                  {ind.name}
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </noscript>
+  </div>
+</BaseLayout>
