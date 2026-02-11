@@ -1,8 +1,11 @@
 # Phase 3: Templates & Pages — Detailed Plan
 
 **Created:** 2026-02-11
-**Status:** Ready to start — Phase 2 complete, content layer validated
-**Prerequisites:** Phase 2 complete (2,392 MDX files, 17 collections, all validation passing)
+**Last Updated:** 2026-02-11 (post-critical review)
+**Status:** Ready to start — Phase 2 complete, industryTags fixed, content layer validated
+**Prerequisites:**
+- Phase 2 complete (2,392 MDX files, 17 collections, all validation passing)
+- **industryTags extraction fixed** (commit 900cda5) — all 1,453 LLMOps entries now have industry filtering data
 
 ---
 
@@ -19,8 +22,8 @@ Phase 3 is where the site becomes **visible**. We'll build every page template a
 1. **Build base layouts** — shared structure (head, nav, footer) for all pages
 2. **Build CMS template pages** — individual item pages for all 17 collections
 3. **Build listing/index pages** — blog index, integrations grid, LLMOps filter, etc.
-4. **Build static pages** — home, pricing, features, case studies (~44 pages)
-5. **Implement LLMOps filter + search** — Preact island with Pagefind integration
+4. **Build static pages** — home, pricing, features, case studies (**64 published pages**, per `page-index.json`)
+5. **Implement LLMOps filter + search** — Preact island with tag/industry filtering (critical) + optional Pagefind text search
 6. **Recreate Webflow animations** — CSS/JS for cataloged interactions
 7. **Build navigation & footer** — consistent across all pages
 8. **Validate render output** — spot-check 20 key URLs for visual parity
@@ -32,8 +35,8 @@ Phase 3 is where the site becomes **visible**. We'll build every page template a
 - ✅ All 2,392 content items render successfully (no build errors)
 - ✅ All CMS collections have working template pages
 - ✅ All listing pages render with correct filtering/sorting
-- ✅ All static pages render with correct content
-- ✅ LLMOps filter works with tag/industry/text filtering
+- ✅ All static pages render with correct content (64 published pages from `page-index.json`)
+- ✅ LLMOps filter works with tag/industry filtering (CRITICAL) + substring text search (full-text search via Pagefind is nice-to-have, can defer to Phase 4)
 - ✅ Navigation and footer match current site
 - ✅ Build completes in <30 seconds (reasonable for 2,300+ pages)
 - ✅ Spot-check visual parity on 20 key pages
@@ -253,16 +256,19 @@ Tasks:
 
 **Goal:** Build a lightweight JSON file with structured fields only (NOT MDX bodies) for the client-side filter island.
 
-- [ ] Create build script: `scripts/phase3/generate-llmops-index.ts`
-  - Load all LLMOps entries from Astro Content Collections
+**Build Strategy:** Use an **Astro endpoint** (recommended) instead of external script. This avoids `astro:content` import issues in plain Node/tsx scripts.
+
+- [ ] Create `src/pages/llmops-index.json.ts` (Astro endpoint)
+  - Import LLMOps collection via `getCollection('llmops-database')`
+  - Filter out drafts
   - Extract structured fields only:
-    - `slug`, `name`, `company`, `logo`, `summary`
+    - `slug`, `name`, `company`, `summary`
     - `llmopsTags` (array of slugs)
-    - `industryTags` (array of slugs — VERIFY if this exists!)
-    - Any other filterable fields
-  - Write to `public/llmops-index.json`
+    - `industryTags` (single slug string)
+    - Any other filterable fields (year, link)
+  - Return JSON via `Response` object
   - Target size: <500 KB (1,453 entries × ~300 bytes each)
-- [ ] Add to build pipeline: run before `astro build`
+- [ ] Verify JSON is generated at build time in `dist/llmops-index.json`
 
 **Rationale:** Shipping 1,453 MDX bodies to the browser would be massive (10+ MB). We only need structured metadata for filtering.
 
@@ -304,16 +310,56 @@ Tasks:
 
 **Note:** Pagefind integration (text search) is listed in plan.md as Phase 3. If Pagefind setup is complex, we can defer to Phase 4 and use simple substring search for Phase 3.
 
-#### 3E-4: Pagefind Integration (Optional — can defer to Phase 4)
+#### 3E-4: Pagefind Integration (Optional — defer to Phase 4 unless trivial)
 
-Pagefind is a build-time search index generator. It's **parity-critical** because the current site has full-text search on LLMOps database.
+Pagefind is a build-time search index generator for full-text search. The current site has text search on LLMOps database, BUT:
+- **Tag/industry filtering is CRITICAL** (must work in Phase 3)
+- **Full-text search is nice-to-have** (substring search may be sufficient for launch)
 
+If Pagefind integration is straightforward:
 - [ ] Install `pagefind` and `astro-pagefind` integration
 - [ ] Configure Pagefind to index LLMOps pages
 - [ ] Add Pagefind search UI to LLMOps filter island
 - [ ] Verify search works across all 1,453 entries
 
-**Rationale:** If substring search is "good enough" for Phase 3, defer Pagefind to Phase 4. If full-text search is critical for parity, implement in Phase 3.
+If Pagefind integration is complex (build pipeline issues, Cloudflare Pages compatibility), defer to Phase 4. Implement simple substring search (case-insensitive search on name/company/summary fields) in Phase 3.
+
+#### 3E-5: MDX Raw HTML Rendering Strategy ⚠️ CRITICAL
+
+**Issue:** Content from Webflow contains raw HTML structures that won't automatically render correctly:
+- Code blocks: `<div><pre><code class="language-python">` with Webflow-specific classes
+- Compare tables: `<table>` with `.tooltip`, `.icon`, `.tooltiptext` classes
+- These won't be touched by Shiki (which only processes Markdown fenced code blocks)
+
+**Hybrid Strategy:**
+
+1. **CSS Styling for Raw HTML** (Phase 3A — add to global.css):
+   - Add styles for Webflow HTML structures:
+     - `pre code[class*="language-"]` — code block styling
+     - `.tooltip`, `.tooltiptext`, `.icon` — comparison table styles
+   - Ensure prose styling doesn't break these structures
+
+2. **Optional: Transform at Build Time** (if CSS isn't sufficient):
+   - Create custom MDX components:
+     - `CodeBlock.astro` — wraps raw HTML code blocks with proper syntax highlighting
+     - `CompareTable.astro` — renders comparison tables with tooltip support
+   - Pass to `<Content components={{ ... }} />`
+
+3. **Long-term: Fix at Transform Time** (Phase 1 script improvement — post-launch):
+   - Update `transform-cms-to-mdx.ts` to normalize HTML → clean Markdown
+   - Convert `<div><pre><code>` → proper fenced code blocks
+   - Convert complex HTML tables → Markdown tables (where feasible)
+
+**Tasks:**
+- [ ] Audit content for raw HTML patterns (code blocks, tables, embeds)
+- [ ] Add CSS for Webflow HTML structures to `src/styles/global.css`
+- [ ] Test rendering on 5 "gnarly" posts (blog, integrations, compare)
+- [ ] Create custom MDX components only if CSS approach fails
+
+**Validation:**
+- Spot-check blog posts with code examples (blog/zenml-llm-llmops)
+- Spot-check compare pages with tables (compare/zenml-vs-mlflow)
+- Verify tooltips work on hover
 
 ---
 
@@ -404,9 +450,9 @@ Tasks:
 - [ ] **Careers** (`src/pages/careers.astro`)
   - Job listings (can be hardcoded or fetch from external API)
   - Company culture section
-- [ ] **Case Studies Hub** (`src/pages/case-studies/index.astro`)
+- [ ] **Case Studies Hub** (`src/pages/case-study/index.astro`)
   - Grid of case study cards
-- [ ] **Case Study Pages** (5 pages, e.g., `src/pages/case-studies/company-name.astro`)
+- [ ] **Case Study Pages** (5 pages, e.g., `src/pages/case-study/[slug].astro`)
   - Case study content (challenge, solution, results)
   - Testimonial quote
   - CTA (contact sales)
@@ -414,8 +460,8 @@ Tasks:
 #### Low-Priority Static Pages (can defer if time-constrained)
 
 - [ ] **Legal Pages**
-  - Privacy Policy (`src/pages/privacy.astro`)
-  - Terms of Service (`src/pages/terms.astro`)
+  - Privacy Policy (`src/pages/privacy-policy.astro`)
+  - Terms of Service (`src/pages/terms-of-service.astro`)
   - Imprint (`src/pages/imprint.astro`)
   - CLA (`src/pages/cla.astro`)
 - [ ] **Redirect Pages** (e.g., `/slack`, `/roadmap`, `/meet`)
@@ -424,12 +470,33 @@ Tasks:
   - Newsletter signup confirmation, thank you pages
 - [ ] **Demo/Booking Pages** (if not handled by Cal.com embed)
 
+#### ⚠️ Form Pages Placeholder Strategy
+
+**Issue:** 4+ pages are primarily forms (per `docs/forms-audit.md`):
+- `/book-a-demo`, `/signup-for-demo` (Cal.com embeds)
+- `/whitepaper-architecting-an-enterprise-grade-mlops-platform` (gated content)
+- `/startups-and-academics` (application form)
+
+**Phase 3 Scope** (render pages without functional forms):
+- Build page layouts with form UI (HTML structure, styling)
+- Add **placeholder behavior**:
+  - Cal.com pages: Render Cal.com embed (iframe), but forms won't submit (Phase 5)
+  - Whitepaper download: Show form UI, but disable submit (Phase 5 adds gating logic)
+  - Application forms: Show form UI, but disable submit (Phase 5 adds backend)
+
+**Phase 5 Scope** (make forms functional):
+- Wire up Cal.com embeds for actual booking
+- Implement whitepaper gating (signed URLs + email capture)
+- Implement form submission handlers (Cloudflare Workers + Attio CRM integration)
+
+**Rationale:** Pixel parity can be achieved without functional forms, but business-critical flows (demo booking) must work by launch. Coordinate with user on cutover timing.
+
 **Validation:**
 - Build succeeds for all static pages
-- Spot-check 5 high-priority pages for visual parity (home, pricing, features/pipelines, case-studies, company)
+- Spot-check 5 high-priority pages for visual parity (home, pricing, features/pipelines, case-study/jetbrains, company)
 - Verify all links work (internal + external)
 
-**Note:** Content for static pages comes from `design/migration/phase1/runs/2026-02-11T0626Z/static-pages/` (HTML snapshots). We'll need to manually convert HTML → Astro components.
+**Note:** Content for static pages comes from `design/migration/phase1/runs/2026-02-11T0626Z/pages/` (HTML snapshots, cataloged in `page-index.json`). We'll need to manually convert HTML → Astro components.
 
 ---
 
@@ -437,9 +504,28 @@ Tasks:
 
 **Goal:** Recreate the most important Webflow interactions cataloged in Phase 1.
 
-**Reference:** `design/migration/phase1/runs/2026-02-11T0626Z/animations-catalog.json` (325 unique interaction IDs, 11 patterns cataloged)
+**Reference:** `design/migration/phase1/runs/2026-02-11T0626Z/animations/catalog.json` (325 unique interaction IDs) and `animations/notes.md` (11 patterns cataloged with must-replicate classifications)
 
 **Strategy:** Prioritize **must-replicate** interactions (visible, user-facing) over **nice-to-have** (subtle micro-interactions).
+
+**⚠️ CRITICAL: Cookie Consent is Cross-Cutting** (not just an animation)
+
+The animation catalog lists `cookie-consent` as **must-replicate**, BUT this is NOT just a UI animation—it's a **cross-cutting runtime policy** that gates analytics/tracking scripts in Phase 5.
+
+**Implications for Phase 3:**
+- Cookie consent banner must render (UI component)
+- Cookie preference storage (localStorage)
+- BUT: Actual script gating logic deferred to Phase 5 (when analytics/Hotjar are added)
+
+**Phase 3 Scope:**
+- Build cookie consent UI component (banner, accept/reject/customize buttons)
+- Store user preferences in localStorage
+- Add CSS for banner styling
+
+**Phase 5 Scope:**
+- Implement script gating logic (only load analytics if consent given)
+- Integrate with Plausible, Hotjar, etc.
+- Respect consent categories (necessary, analytics, marketing)
 
 #### Must-Replicate Interactions (high visual impact)
 
@@ -525,6 +611,14 @@ Tasks:
   - Verify build completes in <30 seconds (reasonable for 2,300+ pages)
   - Verify no build errors or warnings (except acceptable TypeScript warnings)
   - Verify output size is reasonable (<50 MB for dist/)
+- [ ] **Route Coverage Check** (prevent invisible missing pages):
+  - Compare built routes in `dist/` against expected routes:
+    - Static pages: 64 published from `page-index.json`
+    - CMS pages: 2,392 content files (minus drafts, minus old-projects)
+    - Taxonomy pages: authors, categories, tags, etc.
+  - Flag any missing routes (pages that should exist but don't)
+  - Flag any unexpected routes (pages that shouldn't exist)
+  - **Tool:** Create `scripts/phase3/verify-route-coverage.ts` (optional but recommended)
 - [ ] Spot-check 20 key URLs in `dist/` directory:
   - `/index.html` (home)
   - `/blog/some-post.html` (blog post)
@@ -572,7 +666,7 @@ Webflow code export is saved in `design/webflow-export/` (exported on 2026-02-10
 
 ### Static Page Snapshots
 
-Static page HTML snapshots are in `design/migration/phase1/runs/2026-02-11T0626Z/static-pages/`.
+Static page HTML snapshots are in `design/migration/phase1/runs/2026-02-11T0626Z/pages/` with inventory at `pages/page-index.json` (64 published, 12 drafts).
 
 **Use cases:**
 - Extract content text for static pages (headlines, body copy, CTAs)
@@ -651,6 +745,45 @@ Baseline screenshots (34 captured, 2 timeouts) are in `design/screenshots/baseli
 - Images must have alt text (from frontmatter)
 - Semantic HTML (proper heading hierarchy, landmarks)
 
+### 9. SEO Interface (Phase 3→4 Handoff Contract) ⚠️ CRITICAL
+
+**Issue:** Phase 3 builds BaseLayout with SEO tags, Phase 4 does SEO parity testing. Without a stable interface, Phase 4 will require refactoring all templates.
+
+**Define NOW (Phase 3A):**
+
+1. **SEO Props Interface** for BaseLayout:
+   ```typescript
+   interface SEOProps {
+     title: string;
+     description: string;
+     canonical?: string;
+     ogTitle?: string;
+     ogDescription?: string;
+     ogImage?: string;
+     twitterCard?: 'summary' | 'summary_large_image';
+     noindex?: boolean;
+   }
+   ```
+
+2. **Field Resolution Strategy** (handle schema variations):
+   - **Compare pages**: Have BOTH `seo.description` AND `seoDescription` fields
+   - **Blog/LLMOps**: Have `seo: { title, description, ogImage }` object
+   - **Strategy**: Prefer `data.seo.*` if exists, fall back to top-level fields
+
+3. **Default Values**:
+   - Canonical: Always `${SITE_URL}${Astro.url.pathname}` (no trailing slash)
+   - OG Title: Falls back to `title` if not specified
+   - OG Description: Falls back to `description` if not specified
+   - OG Image: Falls back to site-wide default if not specified
+
+4. **Phase 4 Responsibilities** (NOT Phase 3):
+   - Automated parity testing against Phase 1 SEO baseline
+   - Open Graph image generation (satori + sharp)
+   - Structured data (JSON-LD)
+   - Sitemap generation (already works via Astro integration)
+
+**Benefit:** Phase 3 templates implement once; Phase 4 adds generation/testing without refactoring.
+
 ---
 
 ## Risks & Mitigations
@@ -674,7 +807,7 @@ At the end of Phase 3, we should have:
 
 - ✅ **2,392 pages rendering** — all content items generate valid HTML
 - ✅ **17 working templates** — one per collection (minus old-projects)
-- ✅ **~44 static pages** — home, pricing, features, case studies, legal, etc.
+- ✅ **64 static pages** — home, pricing, features, case studies, legal, etc. (per `page-index.json`)
 - ✅ **LLMOps filter working** — tag/industry/text filtering with <100ms response time
 - ✅ **Navigation & footer consistent** — match current site structure
 - ✅ **Build time <30s** — reasonable for 2,300+ pages
@@ -719,6 +852,61 @@ Phase 6 will be QA + cutover:
 - **Defer if blocked**: If Pagefind integration is complex, defer to Phase 4. If animations are hard, defer nice-to-haves.
 - **Ask for help**: If stuck on design decisions, ask the user for screenshots or Webflow URLs.
 - **Document as you go**: Add comments to complex components, update this plan if scope changes.
+
+---
+
+## Revision History
+
+### 2026-02-11: Post-Critical Review Updates
+
+**Context:** RepoPrompt's `context_builder` performed a critical architectural review and identified 10 issues. All issues addressed in this revision.
+
+**Changes Made:**
+
+1. ✅ **LLMOps industryTags** (BLOCKER)
+   - **Issue:** Schema had no `industryTags` field; filter couldn't work
+   - **Fix:** Fixed transform script (commit 900cda5), updated schema, re-ran transform
+   - **Result:** All 1,453 entries now have industry filtering data
+
+2. ✅ **Static Page Count** (Scope Underestimate)
+   - **Issue:** Plan said "~44 pages", actual count is 64 published
+   - **Fix:** Updated all references to 64, added `page-index.json` as source of truth
+
+3. ✅ **Route Path Corrections** (Parity Breaking)
+   - **Issue:** Examples used wrong paths (case-studies, /privacy, /terms)
+   - **Fix:** Corrected to match inventory (/case-study/, /privacy-policy, /terms-of-service)
+
+4. ✅ **Pagefind Priority** (Conflict)
+   - **Issue:** Master plan said "critical", Phase 3 said "optional"
+   - **Fix:** Clarified: filtering is CRITICAL, full-text search is nice-to-have (defer if complex)
+
+5. ✅ **LLMOps JSON Index Build Strategy** (Feasibility Gap)
+   - **Issue:** No clear strategy; importing `astro:content` from external scripts is hard
+   - **Fix:** Recommended Astro endpoint approach (`src/pages/llmops-index.json.ts`)
+
+6. ✅ **MDX Raw HTML Rendering** (Missing Strategy)
+   - **Issue:** Content has raw HTML (code blocks, tables) that won't auto-render
+   - **Fix:** Added 3E-5 with hybrid strategy (CSS + optional MDX components)
+
+7. ✅ **SEO Interface** (Phase 3→4 Handoff Gap)
+   - **Issue:** No stable interface = Phase 4 refactoring all templates
+   - **Fix:** Added section 9 defining SEO props interface and resolution strategy
+
+8. ✅ **Cookie Consent** (Cross-Cutting Not Animation)
+   - **Issue:** Treated as simple animation, but it's a runtime policy for Phase 5
+   - **Fix:** Added warning to 3I clarifying Phase 3 vs Phase 5 scope
+
+9. ✅ **Form Pages** (Placeholder Strategy Missing)
+   - **Issue:** 4+ pages are primarily forms; no strategy for Phase 3 rendering
+   - **Fix:** Added placeholder strategy (render UI, disable submit until Phase 5)
+
+10. ✅ **Validation Strengthening** (Coverage Gap)
+    - **Issue:** "Spot-check 20 URLs" too weak for 2,300+ pages
+    - **Fix:** Added route coverage check to 3K (compare built routes vs expected)
+
+**Artifact Path Corrections:**
+- `static-pages/` → `pages/` (actual location)
+- `animations-catalog.json` → `animations/catalog.json` (actual filename)
 
 ---
 
