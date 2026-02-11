@@ -1,0 +1,139 @@
+---
+title: "Building a Production-Grade GenAI Customer Support Assistant with Comprehensive Observability"
+slug: "building-a-production-grade-genai-customer-support-assistant-with-comprehensive-observability"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "67e565fe9d571968f1326301"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:04:44.617Z"
+  createdOn: "2025-03-27T14:51:42.808Z"
+llmopsTags:
+  - "customer-support"
+  - "chatbot"
+  - "regulatory-compliance"
+  - "rag"
+  - "prompt-engineering"
+  - "error-handling"
+  - "latency-optimization"
+  - "cost-optimization"
+  - "fallback-strategies"
+  - "system-prompts"
+  - "monitoring"
+  - "api-gateway"
+  - "load-balancing"
+  - "elasticsearch"
+  - "fastapi"
+  - "redis"
+  - "cache"
+  - "microsoft-azure"
+company: "Elastic"
+summary: "Elastic developed a customer support chatbot using generative AI and RAG, focusing heavily on production-grade observability practices. They implemented a comprehensive observability strategy using Elastic's own stack, including APM traces, custom dashboards, alerting systems, and detailed monitoring of LLM interactions. The system successfully launched with features like streaming responses, rate limiting, and abuse prevention, while maintaining high reliability through careful monitoring of latency, errors, and usage patterns."
+link: "https://www.elastic.co/search-labs/blog/genai-customer-support-observability"
+year: 2024
+seo:
+  title: "Elastic: Building a Production-Grade GenAI Customer Support Assistant with Comprehensive Observability - ZenML LLMOps Database"
+  description: "Elastic developed a customer support chatbot using generative AI and RAG, focusing heavily on production-grade observability practices. They implemented a comprehensive observability strategy using Elastic's own stack, including APM traces, custom dashboards, alerting systems, and detailed monitoring of LLM interactions. The system successfully launched with features like streaming responses, rate limiting, and abuse prevention, while maintaining high reliability through careful monitoring of latency, errors, and usage patterns."
+  canonical: "https://www.zenml.io/llmops-database/building-a-production-grade-genai-customer-support-assistant-with-comprehensive-observability"
+  ogTitle: "Elastic: Building a Production-Grade GenAI Customer Support Assistant with Comprehensive Observability - ZenML LLMOps Database"
+  ogDescription: "Elastic developed a customer support chatbot using generative AI and RAG, focusing heavily on production-grade observability practices. They implemented a comprehensive observability strategy using Elastic's own stack, including APM traces, custom dashboards, alerting systems, and detailed monitoring of LLM interactions. The system successfully launched with features like streaming responses, rate limiting, and abuse prevention, while maintaining high reliability through careful monitoring of latency, errors, and usage patterns."
+---
+
+## Summary
+
+Elastic's Field Engineering team developed a comprehensive observability infrastructure for their Support Assistant, a generative AI-powered customer support chatbot. This case study is part of a broader series documenting how Elastic built their customer support chatbot, with this particular entry focusing on the observability aspects critical to running LLMs in production. The Support Assistant uses RAG (Retrieval-Augmented Generation) with GPT-4 and GPT-4o models through Azure OpenAI to help customers get technical support for Elastic products.
+
+The key insight from this case study is that observability serves dual purposes: demonstrating value during good times (tracking metrics like chat completions and unique users) and enabling rapid troubleshooting during incidents. The team discovered a bug causing repeated data loading (100+ transactions per minute instead of the expected 1 TPM) through their APM data, and tracked their launch success (100th chat completion just 21 hours post-launch).
+
+## Observability Architecture
+
+### Data Collection Infrastructure
+
+The team maintains a dedicated Elastic Cloud cluster for monitoring purposes, separate from their production and staging data clusters. This separation is a best practice that ensures monitoring workloads don't impact production performance and vice versa.
+
+Their observability stack consists of several components:
+- **Elastic Node APM Client**: Runs within their Node.js API application to capture transaction and span data
+- **Filebeat**: Captures and ships logs to the monitoring cluster
+- **Custom Log Wrapper**: A wrapper function around `console.log` and `console.error` that appends APM trace information using `apm.currentTraceIds`, enabling correlation between logs and transaction traces
+- **Elastic Synthetics Monitoring**: HTTP monitors check the liveliness of the application and critical upstream dependencies like Salesforce and data clusters from multiple geographic locations
+- **Stack Monitoring**: Shipped from application data clusters for infrastructure visibility
+- **Azure OpenAI Integration**: Logs and metrics from the LLM service shipped via Elastic Agent running on a GCP Virtual Machine
+
+The APM configuration emphasizes using environment variables for configuration (`ELASTIC_APM_ENVIRONMENT`, `ELASTIC_APM_SERVER_URL`, `ELASTIC_APM_SECRET_TOKEN`) and the importance of setting the `environment` field to distinguish between production, staging, and development traffic. The team recommends integrating APM early in development rather than waiting until the end, as it helps with debugging during development and establishes baseline metrics for alerting thresholds.
+
+## Dashboard Strategy
+
+### Status Dashboard
+
+The status dashboard serves as the primary operational view, organized around usage, latency, errors, and capacity. Key visualizations include:
+
+- **Summary Statistics**: Total chat completions, unique users, and error counts for the selected time range
+- **Time Series Charts**: RAG search latency and chat completion latency over time
+- **Usage Metrics**: Chat completions, unique users, returning users, and comparison of assistant users to total Support Portal users
+- **Error Tracking**: Time series views of HTTP status codes and errors, plus tables showing users experiencing the most errors
+
+The team uses Kibana's markdown visualization for convenient links to related resources in the dashboard's prime real estate. They save default time ranges with dashboards—initially pinned from launch time to "now" to show the feature's entire life, with plans to update to rolling windows like "last 30 days" as the feature matures.
+
+### APM Traces for GenAI
+
+The APM traces capture the full journey of a request through the frontend server and API service. Custom spans are used to monitor GenAI-specific performance characteristics:
+- Time to first token generation (critical for streaming responses)
+- Total completion duration
+
+These custom spans provide the data needed to chart average durations on the dashboard and understand the user experience beyond raw HTTP latency.
+
+### ES|QL for Complex Analytics
+
+The team used ES|QL to solve a challenging analytics problem: visualizing returning users. Computing overlapping windows for determining first-time vs. returning users per day isn't compatible with standard histogram visualizations. ES|QL enabled processing the dataset to generate unique combinations of user email and request date, enabling counts of unique visit days per user.
+
+### Milestones Dashboard
+
+A separate dashboard highlights achievements and growth, featuring horizontal bullet visualizations as gauges with target goals. Metrics are displayed across multiple time windows (all time, last 7 days, last 30 days) with bar charts aggregating by day to visualize growth trends.
+
+## Alerting Strategy
+
+The team applies a thoughtful framework for alert configuration. Thresholds can be based on either defined quality of service targets or observed baselines from production data with tolerance for deviation. A key best practice mentioned: only page on-call staff for alerts with well-defined investigation/resolution steps—otherwise, send less demanding notifications like emails to avoid training the team to ignore alerts.
+
+Alert severity determines notification channel—email for warnings, Slack messages tagging the team for critical issues. The team recommends testing alert formatting by temporarily configuring triggers that fire immediately.
+
+## GenAI-Specific Observability Challenges
+
+### First Generation Timeouts
+
+The Support Assistant uses streaming responses to avoid waiting for full LLM generation before showing output. A 10-second timeout on receiving the first chunk of generated text helps maintain a responsive experience. Initially configured in client-side code, this created observability challenges because the server never became aware when the client aborted the request.
+
+The solution was moving the timeout and `AbortController` to the API layer talking directly to the LLM. When timeouts occur, the server can now send errors to APM via `captureError` and properly close the connection. An additional refinement was added: before closing the connection, the server sends an Error event through the streaming protocol (which uses Started, Generation, End, and Error event types) so the client can properly update the UI state.
+
+For error grouping, parameterized message objects are passed to the error handler so APM groups all errors from the same handler together despite varying error messages. Parameters include error message, error code, and which LLM was used.
+
+### Declined Request Monitoring
+
+The Support Assistant is designed to decline two categories of requests: off-topic queries (email drafting, song lyrics, etc.) and topics it cannot answer well (like billing questions where inaccurate answers are worse than none).
+
+The team uses prompt engineering rather than a separate moderation service, though they may evolve this approach. A key observability insight: by using a standardized decline response in the prompt, they can compare the LLM's output to this predefined message and use `captureError` when there's a match. This enables monitoring for spikes in rejections that might indicate users attempting to bypass restrictions.
+
+An optimization suggested by a colleague: instead of buffering the entire response for comparison, track an index into the expected decline message and compare tokens as they stream—if any don't match, it's not a declined request. This avoids memory overhead, though the team hasn't implemented it since they haven't observed performance issues.
+
+### Rate Limiting
+
+The chat completion endpoint has a dedicated rate limit separate from the general API limit. Using internal usage data (heaviest users sent 10-20 messages/day, top user sent 70 in one day) and latency metrics (20-second average completion time, implying a theoretical max of ~180 chats/hour for a single tab), the team set a limit of 20 chat completions per one-hour window. This matches heavy internal usage while limiting malicious users to ~11% of theoretical maximum throughput.
+
+The monitoring includes alerts for HTTP 429 responses and a dashboard table listing users who triggered the limit, frequency, and recency.
+
+### Ban Flags
+
+The feature flag system was enhanced to support features that are on by default and flags that block access. This enables customer organizations to block employee access to the Support Assistant if desired, and allows Elastic to cut off access to users consistently violating usage policies while outreach occurs.
+
+### Large Context Payloads
+
+Observability caught an issue where HTTP 413 status codes indicated payloads exceeding server limits. The cause was RAG search context combined with user input exceeding size limits. The short-term fix increased accepted payload size for the chat completion endpoint. The planned long-term solution involves refactoring to send only RAG result metadata (ID, title) to the client, with the completion endpoint fetching full content by ID server-side.
+
+## Model Upgrades
+
+The team upgraded from GPT-4 to GPT-4o during the observation period, which is visible in the latency metrics on their dashboard—a testament to the value of continuous observability in understanding system behavior changes.
+
+## Key Takeaways
+
+This case study demonstrates mature LLMOps practices: separating monitoring infrastructure from production, instrumenting early in development, building dashboards around questions that matter, configuring actionable alerts with appropriate escalation paths, and implementing GenAI-specific observability for streaming responses, content moderation, rate limiting, and abuse prevention. The Elastic stack (APM, Kibana, Elasticsearch, ES|QL) provides the foundation, but the practices are largely transferable to other observability platforms.

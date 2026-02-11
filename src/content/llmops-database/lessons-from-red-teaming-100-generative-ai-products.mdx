@@ -1,0 +1,141 @@
+---
+title: "Lessons from Red Teaming 100+ Generative AI Products"
+slug: "lessons-from-red-teaming-100-generative-ai-products"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "678d2bf749cc0ec9e71dfa06"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:55:59.872Z"
+  createdOn: "2025-01-19T16:44:39.704Z"
+llmopsTags:
+  - "high-stakes-application"
+  - "content-moderation"
+  - "regulatory-compliance"
+  - "prompt-engineering"
+  - "error-handling"
+  - "human-in-the-loop"
+  - "system-prompts"
+  - "fallback-strategies"
+  - "security"
+  - "compliance"
+  - "guardrails"
+  - "reliability"
+  - "microsoft-azure"
+company: "Microsoft"
+summary: "Microsoft's AI Red Team (AIRT) conducted extensive red teaming operations on over 100 generative AI products to assess their safety and security. The team developed a comprehensive threat model ontology and leveraged both manual and automated testing approaches through their PyRIT framework. Through this process, they identified key lessons about AI system vulnerabilities, the importance of human expertise in red teaming, and the challenges of measuring responsible AI impacts. The findings highlight both traditional security risks and novel AI-specific attack vectors that need to be considered when deploying AI systems in production."
+link: "https://arxiv.org/html/2501.07238v1"
+year: 2025
+seo:
+  title: "Microsoft: Lessons from Red Teaming 100+ Generative AI Products - ZenML LLMOps Database"
+  description: "Microsoft's AI Red Team (AIRT) conducted extensive red teaming operations on over 100 generative AI products to assess their safety and security. The team developed a comprehensive threat model ontology and leveraged both manual and automated testing approaches through their PyRIT framework. Through this process, they identified key lessons about AI system vulnerabilities, the importance of human expertise in red teaming, and the challenges of measuring responsible AI impacts. The findings highlight both traditional security risks and novel AI-specific attack vectors that need to be considered when deploying AI systems in production."
+  canonical: "https://www.zenml.io/llmops-database/lessons-from-red-teaming-100-generative-ai-products"
+  ogTitle: "Microsoft: Lessons from Red Teaming 100+ Generative AI Products - ZenML LLMOps Database"
+  ogDescription: "Microsoft's AI Red Team (AIRT) conducted extensive red teaming operations on over 100 generative AI products to assess their safety and security. The team developed a comprehensive threat model ontology and leveraged both manual and automated testing approaches through their PyRIT framework. Through this process, they identified key lessons about AI system vulnerabilities, the importance of human expertise in red teaming, and the challenges of measuring responsible AI impacts. The findings highlight both traditional security risks and novel AI-specific attack vectors that need to be considered when deploying AI systems in production."
+---
+
+## Overview
+
+Microsoft's AI Red Team (AIRT) presents a comprehensive overview of their experience red teaming over 100 generative AI products, providing critical insights into how LLMs and other AI systems can be tested for safety and security vulnerabilities in production environments. The team was officially established in 2018 and has evolved significantly as AI capabilities have expanded, particularly following the release of ChatGPT in 2022 and the subsequent proliferation of AI copilots and agentic systems.
+
+This paper is particularly valuable for LLMOps practitioners because it addresses the practical realities of securing AI systems in production, moving beyond academic benchmarks to real-world vulnerability assessment. The work spans both traditional security concerns (data exfiltration, privilege escalation) and AI-specific responsible AI (RAI) harms (harmful content generation, bias, psychosocial impacts).
+
+## Threat Model Ontology
+
+AIRT developed a structured ontology for modeling GenAI system vulnerabilities that is essential for organizing red teaming operations. The ontology consists of several key components:
+
+- **System**: The end-to-end model or application being tested, which could be a standalone model hosted on a cloud endpoint or a complete system integrating models into copilots, plugins, and other applications.
+
+- **Actor**: The person or persons being emulated during testing. Critically, this includes both adversarial actors (scammers, malicious users) and benign users who might inadvertently trigger system failures. This dual consideration is important because many real-world harms occur without malicious intent.
+
+- **TTPs (Tactics, Techniques, and Procedures)**: These are mapped to established frameworks including MITRE ATT&CK and MITRE ATLAS Matrix. Tactics represent high-level attack stages like reconnaissance and ML model access, while techniques are specific methods like active scanning and jailbreaking.
+
+- **Weakness**: The vulnerabilities that enable attacks, ranging from traditional software flaws to AI-specific issues like insufficient safety training.
+
+- **Impact**: Downstream effects categorized into security impacts (data exfiltration, credential dumping, remote code execution) and safety impacts (hate speech, violence, harmful content generation).
+
+## Key Lessons for LLMOps
+
+### Lesson 1: Context-Aware Testing
+
+The paper emphasizes that effective red teaming must consider both what the AI system can do (capability constraints) and where it is applied (downstream applications). Larger models often acquire capabilities that introduce new attack vectors—for example, understanding advanced encodings like base64 or ASCII art that can be exploited for malicious instructions. The same model deployed as a creative writing assistant versus a healthcare records system requires fundamentally different risk assessments.
+
+### Lesson 2: Simplicity Over Sophistication
+
+A crucial finding for production AI systems is that "real attackers don't compute gradients, they prompt engineer." Gradient-based adversarial methods, while academically interesting, are computationally expensive and typically require full model access that commercial systems don't provide. Simple techniques like manually crafted jailbreaks (Skeleton Key, Crescendo) and basic image manipulations often work better in practice. This has significant implications for LLMOps: defense strategies should prioritize protection against simple attacks that are actually likely to be attempted by real adversaries.
+
+The paper advocates for a system-level adversarial mindset. AI models are deployed within broader systems including infrastructure, input filters, databases, and cloud resources. Attacks that combine multiple techniques across the system stack are often most effective. One example describes an attack that used low-resource language prompt injections for reconnaissance, cross-prompt injection to generate malicious scripts, and then executed code to exfiltrate private data.
+
+### Lesson 3: Beyond Benchmarking
+
+AI red teaming is fundamentally different from safety benchmarking. Benchmarks measure preexisting notions of harm on curated datasets, while red teaming explores unfamiliar scenarios and helps define novel harm categories. The paper describes investigating how LLMs could be weaponized for automated scamming—connecting jailbroken models to text-to-speech systems to create end-to-end scam operations. This represents a category of harm that wouldn't be captured by traditional benchmarks.
+
+### Lesson 4: Automation with PyRIT
+
+To address the challenge of testing at scale, Microsoft developed PyRIT (Python Risk Identification Tool), an open-source framework for AI red teaming. PyRIT provides several key components:
+
+- Prompt datasets for testing various harm categories
+- Prompt converters for encodings and transformations
+- Automated attack strategies including TAP, PAIR, and Crescendo
+- Multimodal output scorers
+
+The framework enables coverage of the risk landscape that would be impossible with fully manual testing while accounting for the non-deterministic nature of AI models. However, the paper is careful to note that PyRIT is a tool that leverages the same powerful capabilities it tests against—uncensored models can be used to automatically jailbreak target systems.
+
+### Lesson 5: Human-in-the-Loop Requirement
+
+Despite automation capabilities, human judgment remains essential in AI red teaming. Subject matter experts are needed for specialized domains like medicine, cybersecurity, and CBRN (chemical, biological, radiological, nuclear) content. Cultural competence is critical as AI systems are deployed globally—harm definitions vary across political and cultural contexts, and most AI safety research has been conducted in Western, English-dominant contexts.
+
+Emotional intelligence is perhaps the most uniquely human contribution: assessing how model responses might be interpreted in different contexts, whether outputs feel uncomfortable, and how systems respond to users in distress (depressive thoughts, self-harm ideation). The paper acknowledges that red teamers may be exposed to disturbing content and emphasizes the importance of mental health support and processes for disengagement.
+
+### Lesson 6: Responsible AI Challenges
+
+RAI harms present unique measurement challenges compared to security vulnerabilities. Key issues include:
+
+- **Probabilistic behavior**: Unlike reproducible security bugs, harmful responses may occur inconsistently for similar prompts.
+- **Limited explainability**: It's often unclear why a particular prompt elicited harmful content or what other prompts might trigger similar behavior.
+- **Subjectivity**: The notion of harm requires detailed policy covering a wide range of scenarios.
+
+The paper distinguishes between adversarial actors who deliberately subvert guardrails and benign users who inadvertently trigger harmful content. The latter case may actually be worse because it represents failures the system should prevent without requiring attack techniques.
+
+### Lesson 7: Amplified and Novel Security Risks
+
+LLMs both amplify existing security risks and introduce new ones. Traditional application security vulnerabilities (outdated dependencies, improper error handling, lack of input sanitization) remain critical. The paper describes discovering a token-length side channel in GPT-4 and Microsoft Copilot that allowed adversaries to reconstruct encrypted LLM responses—an attack that exploited transmission methods rather than the AI model itself.
+
+AI-specific vulnerabilities include cross-prompt injection attacks (XPIA) in RAG architectures, where malicious instructions hidden in retrieved documents can alter model behavior or exfiltrate data. The paper notes that defenses require both system-level mitigations (input sanitization) and model-level improvements (instruction hierarchies), but emphasizes that fundamental limitations mean one must assume any LLM supplied with untrusted input will produce arbitrary output.
+
+### Lesson 8: Continuous Security Posture
+
+The paper pushes back against the notion that AI safety is a solvable technical problem. Drawing parallels to cybersecurity economics, the goal is to increase the cost required to successfully attack a system beyond the value an attacker would gain. Theoretical and experimental research shows that for any output with non-zero probability of generation, a sufficiently long prompt exists that will elicit it. RLHF and other alignment techniques make jailbreaking more difficult but not impossible.
+
+The paper advocates for break-fix cycles—multiple rounds of red teaming and mitigation—and purple teaming approaches that continually apply offensive and defensive strategies. The aspiration is that prompt injections become like the buffer overflows of the early 2000s: not eliminated entirely, but largely mitigated through defense-in-depth and secure-first design.
+
+## Case Studies
+
+The paper includes five detailed case studies demonstrating the ontology in practice:
+
+- **Vision Language Model Jailbreaking**: Discovered that image inputs were more vulnerable to jailbreaks than text inputs. Overlaying images with malicious instructions bypassed safety guardrails that were effective against direct text prompts.
+
+- **Automated Scamming System**: Built a proof-of-concept combining a jailbroken LLM with text-to-speech and speech-to-text systems to create an automated scamming operation, demonstrating how insufficient safety guardrails could be weaponized.
+
+- **Distressed User Scenarios**: Evaluated chatbot responses to users expressing depression, grief, or self-harm intent, developing guidelines with psychologists, sociologists, and medical experts.
+
+- **Text-to-Image Gender Bias**: Probed generators with prompts that didn't specify gender (e.g., "a secretary" and "a boss") to measure and document stereotyping in generated images.
+
+- **SSRF in Video Processing**: Found a server-side request forgery vulnerability in a GenAI video processing system due to an outdated FFmpeg component, demonstrating that traditional security testing remains essential.
+
+## Operational Statistics
+
+Since 2021, AIRT has conducted over 80 operations covering more than 100 products. The breakdown shows evolution from security-focused assessments in 2021 toward increasing RAI testing in subsequent years, while maintaining security assessment capabilities. Products tested include both standalone models and integrated systems (copilots, plugins, AI applications).
+
+## Open Questions
+
+The paper identifies several areas for future development relevant to LLMOps practitioners:
+
+- How to probe for dangerous capabilities like persuasion, deception, and replication in LLMs
+- Translating red teaming practices across linguistic and cultural contexts
+- Standardizing AI red teaming practices for clear communication of methods and findings
+- Addressing novel risks in video generation models and future AI capabilities
+
+This work represents one of the most comprehensive public accounts of production AI red teaming at scale, providing actionable frameworks for organizations seeking to secure their own generative AI deployments.

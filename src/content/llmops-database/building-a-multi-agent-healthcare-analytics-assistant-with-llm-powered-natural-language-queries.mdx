@@ -1,0 +1,269 @@
+---
+title: "Building a Multi-Agent Healthcare Analytics Assistant with LLM-Powered Natural Language Queries"
+slug: "building-a-multi-agent-healthcare-analytics-assistant-with-llm-powered-natural-language-queries"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "693bdf9505f0362dfd63bdab"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:35:31.175Z"
+  createdOn: "2025-12-12T09:25:41.722Z"
+llmopsTags:
+  - "healthcare"
+  - "data-analysis"
+  - "chatbot"
+  - "structured-output"
+  - "high-stakes-application"
+  - "regulatory-compliance"
+  - "multi-agent-systems"
+  - "prompt-engineering"
+  - "agent-based"
+  - "few-shot"
+  - "fine-tuning"
+  - "evals"
+  - "error-handling"
+  - "latency-optimization"
+  - "cost-optimization"
+  - "system-prompts"
+  - "langchain"
+  - "monitoring"
+  - "api-gateway"
+  - "databases"
+  - "guardrails"
+  - "fastapi"
+  - "documentation"
+  - "anthropic"
+  - "openai"
+  - "google-gcp"
+company: "Komodo Health"
+summary: "Komodo Health, a company with a large database of anonymized American patient medical events, developed an AI assistant over two years to answer complex healthcare analytics queries through natural language. The system evolved from a simple chaining architecture with fine-tuned models to a sophisticated multi-agent system using a supervisor pattern, where an intelligent agent-based supervisor routes queries to either deterministic workflows or sub-agents as needed. The architecture prioritizes trust by ensuring raw database outputs are presented directly to users rather than LLM-generated content, with LLMs primarily handling natural language to structured query conversion and explanations. The production system balances autonomous AI capabilities with control, avoiding the cost and latency issues of pure agentic approaches while maintaining flexibility for unexpected user queries."
+link: "https://www.youtube.com/watch?v=dQIpU-X4QvU"
+year: 2025
+seo:
+  title: "Komodo Health: Building a Multi-Agent Healthcare Analytics Assistant with LLM-Powered Natural Language Queries - ZenML LLMOps Database"
+  description: "Komodo Health, a company with a large database of anonymized American patient medical events, developed an AI assistant over two years to answer complex healthcare analytics queries through natural language. The system evolved from a simple chaining architecture with fine-tuned models to a sophisticated multi-agent system using a supervisor pattern, where an intelligent agent-based supervisor routes queries to either deterministic workflows or sub-agents as needed. The architecture prioritizes trust by ensuring raw database outputs are presented directly to users rather than LLM-generated content, with LLMs primarily handling natural language to structured query conversion and explanations. The production system balances autonomous AI capabilities with control, avoiding the cost and latency issues of pure agentic approaches while maintaining flexibility for unexpected user queries."
+  canonical: "https://www.zenml.io/llmops-database/building-a-multi-agent-healthcare-analytics-assistant-with-llm-powered-natural-language-queries"
+  ogTitle: "Komodo Health: Building a Multi-Agent Healthcare Analytics Assistant with LLM-Powered Natural Language Queries - ZenML LLMOps Database"
+  ogDescription: "Komodo Health, a company with a large database of anonymized American patient medical events, developed an AI assistant over two years to answer complex healthcare analytics queries through natural language. The system evolved from a simple chaining architecture with fine-tuned models to a sophisticated multi-agent system using a supervisor pattern, where an intelligent agent-based supervisor routes queries to either deterministic workflows or sub-agents as needed. The architecture prioritizes trust by ensuring raw database outputs are presented directly to users rather than LLM-generated content, with LLMs primarily handling natural language to structured query conversion and explanations. The production system balances autonomous AI capabilities with control, avoiding the cost and latency issues of pure agentic approaches while maintaining flexibility for unexpected user queries."
+---
+
+## Overview and Company Context
+
+Komodo Health is an American healthcare analytics company that maintains a comprehensive database of medical events from American citizens. When patients visit doctors or hospitals, these encounters create anonymized records in their database containing information about diseases, drugs, demographics, and healthcare providers. The company built various products to extract insights from this data, including an AI assistant that allows users to query the database using natural language.
+
+The AI assistant project spanned approximately two years: one year of prototyping followed by one year in production. The speaker, Mahets, joined during the production phase as an AI engineer and co-authored one of the first books on AI engineering published by O'Reilly in summer 2023. The assistant was designed with three primary goals: answering analytic queries (such as finding cohorts of patients with specific conditions and demographics), leveraging existing APIs and services, and maintaining easy extensibility and maintainability.
+
+## Architectural Evolution: From Simple Chains to Multi-Agent Systems
+
+The system underwent significant architectural evolution, demonstrating important lessons about production LLM deployment. The journey illustrates the tradeoffs between control, flexibility, cost, and latency that teams face when building production AI systems.
+
+### Initial Approach: Single LLM Call
+
+The simplest approach would involve a single prompt where the user query is sent to an LLM with instructions to answer based on its knowledge. This works adequately for general medical questions like "what is hypertension" where the LLM can provide answers from its training data. However, this approach fails for company-specific queries requiring access to proprietary data, such as "how many patients were diagnosed with hypertension in Florida last year," where the LLM would either claim not to know or potentially hallucinate an answer.
+
+### Chaining Pattern with Tool Execution
+
+To address this limitation, the team implemented a chaining approach where the LLM converts natural language queries into structured payloads (like JSON objects) that are then passed to APIs which query the database. Critically, in this design, the final output comes directly from the tool (the database API) rather than from the LLM itself. This architectural decision ensures no hallucinations in the final results presented to users, which is essential in healthcare contexts. The LLM serves purely as a translation layer between natural language and structured queries, with post-processing applied to make the raw database results user-friendly.
+
+This approach worked well because it maintained control over what could happen and built user trust—answers came directly from trusted data sources rather than being generated by the LLM. Additionally, this pattern worked with smaller, less capable models since the LLMs only needed to follow simple instructions for format conversion rather than perform complex reasoning.
+
+### Router Architecture with Multiple Workflows
+
+As the system needed to support more types of queries, the team added a router for intent detection, directing user queries to different workflows or tool chains based on what the user was asking. This multi-workflow router architecture ran in production successfully for a period. It maintained the benefits of control and trust while supporting diverse use cases. The smaller models used in this phase were adequate because they didn't require sophisticated reasoning capabilities—just the ability to follow instructions for converting natural language to structured formats.
+
+However, this router-based approach quickly became too rigid and constrained. When users asked questions outside the predefined workflows, the system would either route to an approximately correct workflow (producing answers that didn't quite match the user's intent) or simply state it didn't know how to help, with no fallback options.
+
+### Failed Experiment: Pure Multi-Agent Architecture
+
+To address the rigidity problem, the team initially tried replacing the entire system with a multi-agent architecture using the supervisor pattern—having agents managing other agents, sometimes nested multiple levels deep. This approach was based on the ReAct (Reasoning and Action) pattern from research literature, where agents are autonomous entities that can reason about goals, use tools to take actions, and observe the results of those actions.
+
+In this pure agentic approach, the system prompt becomes much more complex, containing goal descriptions, tool descriptions, and output format specifications. The agent autonomously decides which tools to call and in what order, with full visibility into the results of each action. While this approach theoretically could handle extremely complex tasks, answer unanticipated questions, and be fault-tolerant and self-correcting, it proved impractical in production. The system was extremely slow because every query involved multiple rounds of "inner thoughts" where the agent would reason about which workflow to call, that agent would reason about which tools to call, and so on with extensive back-and-forth. The cost was also prohibitive, and the team lost control since everything operated as a black box with fully autonomous decision-making.
+
+### Final Production Architecture: Hybrid Approach
+
+The production system that ultimately worked represents a carefully balanced hybrid approach. The supervisor itself uses an agent (ReAct-based autonomous reasoning) to handle unexpected user questions, correct typos, and provide intelligent routing. However, sub-agents only use the agentic ReAct pattern when truly necessary for complex tasks. Whenever possible, the system uses deterministic code instead of autonomous agents.
+
+Crucially, the architectural principle of having tool outputs rather than LLM outputs serve as the final answer is maintained throughout. The raw database results still flow directly to users, ensuring no hallucinations in the core data. The supervisor agent's outputs are reserved for explanations, error handling, and conversational elements, not for presenting analytical results.
+
+This hybrid approach balances the router architecture's control and trust with the agent architecture's flexibility and ability to handle unexpected inputs. It avoids the overhead, cost, latency, and black-box nature of pure agentic systems while maintaining intelligent behavior from the user's perspective.
+
+## Fine-Tuning vs. Foundation Models
+
+The team's journey also illustrates important lessons about model selection and customization. In the earlier router-based architecture, they used fine-tuned models to improve performance, which was particularly valuable when working with models that weren't as capable as current generation LLMs. However, fine-tuning introduced significant challenges.
+
+### Fine-Tuning Pitfalls
+
+The team discovered that fine-tuned models learned unintended patterns from their training data. In one notable example, the system consistently converted queries about patients "in their 60s" to the age range 60-67, while "in their 50s" became 50-59, and most other decades correctly became X0-X9. The anomaly for the 60s range persisted consistently across all tests. Investigation revealed that their training dataset contained this glitch specifically for the 60s range, and the model had learned this error along with the intended patterns.
+
+Despite attempts to use diverse training data with typos and varied formatting, the models still learned unwanted artifacts from the examples. This represents a fundamental challenge with fine-tuning: the models learn everything in the training data, including errors and biases that weren't intended to be learned. This is particularly problematic when you want models to learn general patterns (like how to format date ranges) rather than memorize specific examples.
+
+### Foundation Models for Agents
+
+For the agentic architecture, foundation models (large, pre-trained models used without fine-tuning) proved more appropriate. Agents require sophisticated reasoning capabilities and the ability to understand complex system prompts and tool usage patterns, which are strengths of foundation models. The team particularly noted that Claude (Anthropic's models, especially the Sonnet versions) became popular for agent development because of large context windows, strong tool-calling capabilities, and adherence to system prompt instructions without hallucinating.
+
+### The Evaluation Dataset Requirement
+
+An important insight is that both approaches—fine-tuning and prompt engineering with foundation models—require evaluation datasets. Fine-tuning obviously needs training data, but prompt engineering also requires test datasets to evaluate whether prompt changes improve or degrade performance. Without evaluation data, prompt engineering is conducted blindly, making it easy to introduce regressions without noticing. This is a "lose-lose" situation where both approaches have this requirement, making the choice between them less about data availability and more about architectural fit and task requirements.
+
+The team's choice between fine-tuning and foundation models became tightly coupled with their architecture choice: the router-based architecture worked well with fine-tuned models, while the multi-agent architecture required foundation models with strong reasoning capabilities.
+
+## Evaluation and Monitoring
+
+Komodo Health's approach to evaluation demonstrates sophisticated thinking about what can and should be measured in production LLM systems. The company's architecture, which ensures structured outputs from tools rather than free-form LLM generation, enables rigorous automated testing.
+
+### Testing Structured Outputs
+
+Because the final outputs are structured JSON payloads passed to APIs, the team can write deterministic automated tests. When a user asks for "a cohort of patients with diabetes," the intermediate LLM reasoning ("inner thoughts") doesn't matter—what matters is that the final structured object is exactly correct. This structured output can be compared programmatically against expected results, allowing hundreds of automated tests that produce clear performance metrics.
+
+The team can test at different granularities: individual sub-agent performance or whole-system end-to-end behavior. This testing approach would be much more difficult if the system relied on free-form LLM-generated text as final outputs, where determining correctness becomes a more subjective evaluation problem.
+
+### Monitoring Metrics
+
+Beyond correctness, the team monitors several operational metrics critical to production LLM systems:
+
+- **Token counts**: Direct indicator of cost since they use pay-per-token cloud APIs
+- **Latency**: Critical for user experience, particularly important in multi-agent systems where multiple LLM calls can accumulate significant delays
+- **Number of tool calls**: Affects both cost and user experience; excessive tool calling suggests inefficiency
+- **Execution graphs**: For complex multi-agent systems, understanding the actual execution paths is essential for debugging and optimization
+
+### Monitoring Tools
+
+For their Python-based implementation, the team evaluated both LangSmith and Langfuse for observability. These tools provide visibility into the execution of complex LLM systems, particularly important for multi-agent architectures where understanding what actually happened during a query becomes challenging without proper instrumentation.
+
+### User Feedback Mechanisms
+
+The production system includes thumbs-up/thumbs-down feedback buttons, allowing users to flag unsatisfactory responses. Each flagged interaction is reviewed to determine root cause: was it an LLM issue, an unsupported use case, or simply a bug (not all problems are LLM-related)? This human-in-the-loop feedback complements automated metrics and provides qualitative insights into system performance.
+
+## Security Considerations
+
+The speaker noted that security is a topic people should ask about more often but rarely do. For LLM-based systems, prompt injection represents the primary new security concern, with three categories of risk:
+
+### Behavioral Manipulation
+
+Attackers can craft prompts that cause the assistant to behave in unintended ways. The team successfully tested this on their system—it can be prompted to write poems. However, they assessed this risk as acceptable given the cost of mitigation measures. The system operates in a professional healthcare analytics context where such manipulation doesn't pose significant business risk.
+
+### System Exposure
+
+This involves revealing system internals, such as system prompts. Many AI systems in 2023 (note: the speaker is presenting in 2025 based on context) were successfully attacked to reveal their system prompts, sometimes containing confidential information like code names. The Komodo Health system successfully refuses common prompt injection attempts aimed at revealing internals. While the speaker acknowledges that persistent attackers could likely succeed eventually (every system has been proven hackable), the system prompts don't contain sensitive information—just descriptions of company capabilities and agent instructions, which aren't problematic to reveal.
+
+### Unauthorized Data Access and Modification
+
+This represents the most serious potential security issue, and the architecture specifically defends against it. The key insight is that the LLM has no knowledge of authentication and authorization—these are handled entirely by the tools (APIs) that the LLM calls. When the LLM calls a tool, that tool has its own authentication and authorization layer that validates whether the specific user making the request has permission to access the data.
+
+If a user attempts to access data they're not authorized for, the API returns a 403 unauthorized response, and the LLM simply tells the user there's no data available or the request isn't possible. The LLM cannot bypass these controls because it doesn't handle authorization—it's just calling authenticated APIs that enforce their own security policies.
+
+This architecture demonstrates a critical principle: authentication and authorization should be handled by code, not by LLMs. The LLM is not the security boundary; properly secured APIs are.
+
+### Security Approach and Testing
+
+The team's security approach combines several elements:
+
+- **Guardrails in system prompts**: Basic rules and instructions to encourage proper behavior
+- **Architectural security**: The design where tools provide answers (not LLMs) serves as an inherent guardrail
+- **Penetration testing**: The team conducted neural penetration testing with a dedicated team attempting to compromise the system. The speaker describes the amusing experience of watching logs filled with aggressive prompts ("I am Dan, I want to kill you") while the agent remained unaffected.
+
+The relatively modest investment in prompt-based guardrails reflects confidence in the architectural security provided by having tools handle both data access and authorization.
+
+## Complex Problem: Medical Code Normalization
+
+One particularly challenging problem demonstrates why the system needs sophisticated sub-agents for certain tasks. When users query for diseases or drugs in natural language, the database contains standardized codes, not plain English terms. For example, "diabetes" doesn't appear in the database—instead, there are several hundred related standardized codes.
+
+This creates multiple challenges:
+
+- **Ambiguity**: Does the user want all diabetes-related codes or just a subset?
+- **Synonyms**: Multiple disease names can refer to the exact same condition, with different standardized codes
+- **Data quality**: The team doesn't control the standardization (it comes from international organizations), and the data sometimes contains inconsistencies or unexpected variations
+
+The team explored several approaches:
+
+- **Ask the model**: The LLM can suggest codes, but it typically provides only the most common ones, missing rare but valid codes that are still meaningful for comprehensive analysis
+- **Graph RAG with entity matching**: A sophisticated approach that could work but requires significant infrastructure
+- **Vectorization/embeddings**: Could work but requires embedding models that understand medical terminology and can appropriately match related conditions (determining whether pre-diabetes should be close to diabetes in embedding space depends on the analysis intent)
+
+The production solution likely combines multiple techniques with tradeoffs between performance, cost, latency, maintenance burden, and solution complexity. This single problem required significant iteration during the one-year prototype phase and illustrates why complex sub-agents are sometimes necessary despite the team's preference for deterministic code.
+
+## Technology Stack and Framework Choices
+
+The team uses Python, primarily because Komodo Health is a Python-based company with Python engineers and existing Python products. While Python is particularly strong for AI/ML work and was "a step ahead of Java" at the time (the speaker has Java background), the choice was largely driven by organizational context rather than technical necessity. The speaker emphasizes this to push back against any dogmatism about language choice.
+
+### Framework Selection
+
+The team's framework journey provides guidance for others:
+
+- **Don't use frameworks unless you need them**: For simple API calls, frameworks add unnecessary abstraction layers (particularly problematic in Python). The abstraction cost isn't worth it for simple use cases.
+- **Don't reinvent the wheel for complex cases**: When building sophisticated multi-agent systems, use established frameworks rather than building everything from scratch.
+- **LangChain was too complex**: The team started with LangChain (Python version) and found it was a poor fit for their needs.
+- **LangGraph is much better**: For their multi-agent architecture, LangGraph proved much more suitable.
+- **Consider lighter alternatives**: For simpler use cases, frameworks like SmallAgents or Python AI might be more appropriate than heavy frameworks.
+
+The speaker particularly recommends LangGraph's documentation for learning about multi-agent architectures, even for those not using the framework.
+
+### Model Selection Philosophy
+
+The team takes a pragmatic approach to model selection rather than chasing benchmarks or hype:
+
+- **Don't chase the "most powerful" model**: Statements like "GPT-5 is a PhD-level expert" miss the point. The team doesn't want PhD-level general intelligence; they want models with good context windows for complex prompts with many tools, strong tool-calling capabilities, and low hallucination rates. These requirements differ significantly from general intelligence benchmarks.
+- **Model changes require holistic updates**: The team has changed model families three times over two years, but each change coincided with architectural changes. Changing models means retesting everything, so it's not worth doing unless making broader changes. The entire system (model, architecture, prompts) evolves together.
+- **Don't be limited by model constraints**: Architecture should not be limited by LLM context windows. Having a good multi-agent architecture means the system isn't bottlenecked by any single model's capacity.
+- **Prepare to evolve**: Despite not chasing hype, the field moves so fast that evolution is necessary. The team couldn't have stayed with the router and fine-tuned models indefinitely.
+
+Claude models (especially Sonnet) became popular for agent development in the community due to large context windows and strong tool-calling with minimal hallucination. Google models also received positive mentions. The key is matching model capabilities to architectural requirements rather than selecting based on benchmark rankings.
+
+## Operational Challenges and Lessons
+
+The speaker shares several broader insights about operating LLM systems in production:
+
+### The Novelty Challenge
+
+One of the hardest aspects is that everyone is new to this field, including providers, colleagues, and the entire industry. The speaker, despite co-authoring one of the first AI engineering books, doesn't have "10 years of hands-on experience" (an impossible requirement for technology that's only been accessible for 2-3 years).
+
+The novelty creates several challenges:
+
+- **Provider issues**: The team experienced problems where they were "almost certain" (99%) that their cloud provider changed the model behind an API endpoint without notification. When questioned, the provider didn't have clear answers, suggesting they were "figuring things out just like we are."
+- **Limited community knowledge**: Traditional resources like Stack Overflow don't have answers for cutting-edge LLM engineering problems. Teams must often solve problems independently or rely on rapidly evolving documentation.
+- **High user expectations**: Users are accustomed to ChatGPT's impressive capabilities and expect similar performance from specialized systems. Meeting these expectations with domain-specific systems that don't have ChatGPT's resources is challenging.
+
+### Vision and Value Creation
+
+Moving from "let's put our current platform in a chat interface" (a common 2024 approach that wasn't useful) to something that genuinely provides value proved difficult. Simply replacing button clicks with natural language queries doesn't create value—clicking buttons is often faster. Finding use cases where natural language AI assistants genuinely improve workflows required significant iteration and experimentation.
+
+### Scalability Concerns
+
+When the speaker mentions "scalability" with foundation models, they don't mean user concurrency (cloud APIs handle that automatically with pay-per-token pricing). Instead, they mean feature scalability: as you add more tools and features, the context window fills up, and model performance may degrade. A model with limited context window can become a bottleneck for feature development.
+
+The multi-agent architecture helps address this by distributing responsibilities across multiple agents with focused capabilities rather than requiring one super-intelligent agent that knows everything. This prevents the system from being bottlenecked by any single model's capacity limitations.
+
+### Preventing Hallucinations in Explanatory Text
+
+While the structured outputs from tools are hallucination-proof, the LLM-generated explanatory text (like "Florida diabetes cohort" labels) could theoretically contain hallucinations. The team addresses this through:
+
+- **Guardrails in prompts**: Instructions encouraging the model not to hallucinate
+- **Obvious errors**: The design makes hallucinations detectable. If the cohort card says "Florida diabetes cohort" but the query was about California, users can easily spot the error and provide feedback ("you didn't understand what I said").
+- **Simple outputs**: The expected LLM output is very simple (short labels and explanations), which minimizes hallucination risk. The speaker notes never seeing hallucinations in this component during extensive testing.
+- **Focus on misunderstanding**: More common than hallucination are misunderstandings where the LLM forgets part of the question or misinterprets intent, but these are also obvious to users.
+
+The question "why include the text at all" has a pragmatic answer: for complex queries, LLM-generated explanations of what was done and why improve user experience, and the system is a chatbot where natural language responses feel appropriate. The risk is acceptable given the detectability of errors and the rarity of hallucinations in simple text generation tasks.
+
+## Key Takeaways for LLMOps
+
+This case study illustrates several important principles for production LLM systems:
+
+**Architectural evolution is expected and necessary**. The system progressed through multiple distinct architectures, each appropriate for its time and the available technology. Starting with simpler approaches and evolving toward complexity proved more effective than trying to build the optimal architecture immediately.
+
+**Balance control and flexibility**. Pure agentic systems offer maximum flexibility but become impractically slow and expensive. Pure deterministic systems offer maximum control but become too rigid. The hybrid approach—agent-based supervisor with deterministic sub-components wherever possible—proved optimal.
+
+**Keep LLMs away from being the source of truth**. In high-stakes domains like healthcare, ensuring that final analytical outputs come directly from trusted data sources (APIs, databases) rather than being generated by LLMs is critical for building user trust and preventing consequential hallucinations.
+
+**Evaluation requires datasets regardless of approach**. Both fine-tuning and prompt engineering require evaluation data. You cannot effectively develop production LLM systems without rigorous testing and measurement infrastructure.
+
+**Security must be architectural, not just prompt-based**. Authorization and authentication should be handled by code and APIs, not entrusted to LLMs. The architecture should make security violations impossible, not merely discouraged.
+
+**Framework choices should match complexity**. Use frameworks when building complex multi-agent systems; avoid them for simple use cases. The abstraction overhead must be justified by the complexity being managed.
+
+**Model selection should be requirements-driven**. Focus on context window size, tool-calling capabilities, and hallucination rates rather than chasing benchmark scores or "most powerful" models. The model must fit the architecture and use case.
+
+**Prepare for provider uncertainty**. Cloud API providers are also navigating new territory. Production systems must be resilient to unexpected behavior changes and should not assume perfect stability from providers.
+
+This comprehensive case study demonstrates the practical realities of deploying LLM systems in production healthcare analytics, showing both the significant challenges and the thoughtful engineering approaches required to build reliable, trustworthy AI assistants for high-stakes domains.

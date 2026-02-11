@@ -1,0 +1,140 @@
+---
+title: "Automating Healthcare Procedure Code Selection Through Domain-Specific LLM Platform"
+slug: "automating-healthcare-procedure-code-selection-through-domain-specific-llm-platform"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "68949975d546f186419c51d9"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:17:56.108Z"
+  createdOn: "2025-08-07T12:17:57.946Z"
+llmopsTags:
+  - "healthcare"
+  - "customer-support"
+  - "code-generation"
+  - "structured-output"
+  - "high-stakes-application"
+  - "regulatory-compliance"
+  - "prompt-engineering"
+  - "few-shot"
+  - "system-prompts"
+  - "human-in-the-loop"
+  - "error-handling"
+  - "fallback-strategies"
+  - "api-gateway"
+  - "devops"
+  - "continuous-deployment"
+  - "continuous-integration"
+  - "documentation"
+  - "security"
+  - "compliance"
+  - "guardrails"
+  - "reliability"
+  - "open-source"
+company: "Hasura / PromptQL"
+summary: "A large public healthcare company specializing in radiology software deployed an AI-powered automation solution to streamline the complex process of procedure code selection during patient appointment scheduling. The traditional manual process took 12-15 minutes per call, requiring operators to navigate complex UIs and select from hundreds of procedure codes that varied by clinic, regulations, and patient circumstances. Using PromptQL's domain-specific LLM platform, non-technical healthcare administrators can now write automation logic in natural language that gets converted into executable code, reducing call times and potentially delivering $50-100 million in business impact through increased efficiency and reduced training costs."
+link: "https://www.youtube.com/watch?v=WnTq5Mc5bIU"
+year: 2025
+seo:
+  title: "Hasura / PromptQL: Automating Healthcare Procedure Code Selection Through Domain-Specific LLM Platform - ZenML LLMOps Database"
+  description: "A large public healthcare company specializing in radiology software deployed an AI-powered automation solution to streamline the complex process of procedure code selection during patient appointment scheduling. The traditional manual process took 12-15 minutes per call, requiring operators to navigate complex UIs and select from hundreds of procedure codes that varied by clinic, regulations, and patient circumstances. Using PromptQL's domain-specific LLM platform, non-technical healthcare administrators can now write automation logic in natural language that gets converted into executable code, reducing call times and potentially delivering $50-100 million in business impact through increased efficiency and reduced training costs."
+  canonical: "https://www.zenml.io/llmops-database/automating-healthcare-procedure-code-selection-through-domain-specific-llm-platform"
+  ogTitle: "Hasura / PromptQL: Automating Healthcare Procedure Code Selection Through Domain-Specific LLM Platform - ZenML LLMOps Database"
+  ogDescription: "A large public healthcare company specializing in radiology software deployed an AI-powered automation solution to streamline the complex process of procedure code selection during patient appointment scheduling. The traditional manual process took 12-15 minutes per call, requiring operators to navigate complex UIs and select from hundreds of procedure codes that varied by clinic, regulations, and patient circumstances. Using PromptQL's domain-specific LLM platform, non-technical healthcare administrators can now write automation logic in natural language that gets converted into executable code, reducing call times and potentially delivering $50-100 million in business impact through increased efficiency and reduced training costs."
+---
+
+## Case Study Overview
+
+This case study presents a compelling example of LLMOps implementation in healthcare through Hasura/PromptQL's work with a large public healthcare company that creates software for radiologists and radiology clinics. The partnership demonstrates how domain-specific LLM platforms can address complex business automation challenges that traditional rule-based systems struggle to handle effectively.
+
+The healthcare company faced a significant operational bottleneck in their patient appointment scheduling process. When patients called to schedule appointments, operators needed 12-15 minutes per call to navigate through complex enterprise software interfaces, gather patient information, and most critically, determine the correct medical procedure codes. The presenter noted that reducing call times by just 3 minutes could yield approximately $50 million in business impact across their network servicing thousands of clinics globally, primarily in the US and Europe.
+
+## The Technical Challenge
+
+The core technical challenge centered around what the presenter calls "the automation paradox" - the people who understand the business rules (healthcare administrators) cannot code the automation, while the people who can code (developers) don't understand the domain-specific rules. This creates a fundamental bottleneck in traditional software development approaches.
+
+The procedure code selection process exemplifies this complexity. Different medical scenarios require different codes - for instance, a mammogram might have codes like "mm123" for basic screening, but become "mm123wa" if wheelchair assistance is needed. The permutations become explosive when considering factors such as:
+
+- Patient demographics, symptoms, age, and gender
+- Previous visit history at the clinic  
+- State, federal, and local regulations
+- Individual clinic preferences and operational constraints
+- Varying procedure code sets across different clinic families (ranging from 5 to 250 codes just for mammograms)
+
+The existing solution involved developers creating extensive configuration systems to handle edge cases, leading to configuration explosion, increased training burden for operators, and significant maintenance overhead. Many business rules remained uncoded because the cost of encoding them exceeded their perceived benefit.
+
+## LLMOps Architecture and Implementation
+
+PromptQL's solution addresses this challenge through a multi-layered LLM architecture that bridges the gap between natural language business requirements and executable code. The system introduces several key components:
+
+**Domain-Specific Language Generation**: Instead of having developers use foundation models with general programming knowledge, the platform creates company-specific query languages (referred to as "AcmeQL" in the presentation). Non-technical users interact with models that have been trained on the specific domain language and ontologies of their organization.
+
+**Natural Language to Executable Logic Pipeline**: The system converts natural language business rules into deterministic, executable plans written in the company-specific query language. This creates a crucial abstraction layer that maintains the precision needed for production systems while enabling natural language interaction.
+
+**Semantic Layer Integration**: The platform requires extensive setup of semantic layers that encode domain-specific terminology, entities, procedures, and ontologies. This ensures that when business users reference domain concepts, the LLM understands the specific context and constraints of their organization.
+
+## Production Deployment and Testing
+
+The case study demonstrates several important LLMOps practices through a GitHub issue assignment demo that parallels the healthcare use case. The system supports an iterative development process where non-technical users can:
+
+- Express business logic in conversational natural language
+- Convert requirements into testable automations with defined inputs and outputs
+- Run comprehensive testing against various scenarios
+- Iteratively refine rules based on test results
+- Deploy changes through a simplified interface
+
+The testing approach is particularly noteworthy. When the user discovered that "Tom" was being assigned issues but belonged to an external company, they could immediately add exclusion rules in natural language: "remove somebody from an external company." The system then re-tests the automation against various scenarios to ensure the new rule works correctly across different inputs.
+
+**Security and Authorization Model**: The platform addresses security concerns through a multi-tenant architecture where the domain-specific query language (AcmeQL) runs strictly in user space rather than data space. This containment approach allows extensive "vibe coding" by non-technical users while maintaining security boundaries and preventing unauthorized data access.
+
+## DevOps for Non-Technical Users
+
+A significant innovation in this LLMOps implementation is the creation of software development lifecycle (SDLC) processes designed specifically for non-technical users. The platform abstracts away traditional DevOps complexity while maintaining essential practices like:
+
+- Version control through conversational interfaces
+- Staging and production deployment workflows
+- Testing and validation processes
+- Troubleshooting and debugging capabilities
+
+This represents a fundamental shift in how LLMOps platforms can democratize software development while maintaining production-quality standards.
+
+## Business Impact and Results
+
+The healthcare implementation reportedly delivers substantial business value, with the presenter claiming $100 million or more in impact that the company expects to realize over the course of the year. This impact stems from multiple sources:
+
+- **Operational Efficiency**: Reduced call handling times translate directly to cost savings and increased capacity
+- **Training Cost Reduction**: Simplified processes reduce the time and resources needed to train new operators
+- **Scalability**: The system can handle the complex, variable rule sets across thousands of clinics without requiring extensive developer involvement for each change
+- **Agility**: Healthcare administrators can modify business logic in response to changing regulations or operational requirements without waiting for development cycles
+
+## Technical Architecture Considerations
+
+The case study reveals several important architectural decisions that enable successful LLMOps deployment:
+
+**Model Specialization**: Rather than using general-purpose foundation models, the platform invests heavily in domain-specific model training and fine-tuning. This specialization is crucial for handling the nuanced terminology and business rules specific to healthcare operations.
+
+**Deterministic Execution**: The intermediate query language ensures that despite the non-deterministic nature of LLM interactions, the final execution is completely deterministic and auditable. This is particularly important in healthcare where compliance and traceability are essential.
+
+**Data Layer Separation**: The architecture maintains clear separation between the AI-powered business logic layer and the underlying data access layer, ensuring that security and authorization rules are enforced consistently regardless of how business logic is authored.
+
+## Challenges and Limitations
+
+While the case study presents impressive results, several challenges and limitations should be considered:
+
+**Domain Complexity**: The system requires extensive upfront investment in creating domain-specific semantic layers and ontologies. This setup cost may be prohibitive for smaller organizations or less complex use cases.
+
+**Model Training and Maintenance**: Maintaining domain-specific models requires ongoing investment in training data curation, model updates, and performance monitoring. The case study doesn't detail these ongoing operational requirements.
+
+**User Adoption**: Successfully transitioning non-technical users from traditional interfaces to conversational AI systems requires change management and training, though presumably less than traditional programming approaches.
+
+**Validation and Testing**: While the demo shows testing capabilities, the case study doesn't deeply address how complex business rules are validated for correctness, especially when they interact with each other in unexpected ways.
+
+## Industry Implications
+
+This case study demonstrates the potential for LLMOps to address a fundamental challenge in enterprise software: the gap between business domain expertise and technical implementation capability. The healthcare industry, with its complex regulations, varying operational requirements, and high stakes for accuracy, provides an excellent test case for these approaches.
+
+The success of this implementation suggests that similar approaches could be valuable across other heavily regulated industries where business rules are complex, frequently changing, and require domain expertise to implement correctly. Industries like finance, insurance, and legal services could benefit from similar domain-specific LLM platforms.
+
+The case study also highlights the importance of building LLMOps platforms that are specifically designed for non-technical users, rather than simply providing better tools for developers. This represents a significant shift in how organizations might structure their technology teams and development processes in the age of AI.

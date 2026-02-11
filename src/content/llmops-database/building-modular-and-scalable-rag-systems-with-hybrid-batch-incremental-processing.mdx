@@ -1,0 +1,185 @@
+---
+title: "Building Modular and Scalable RAG Systems with Hybrid Batch/Incremental Processing"
+slug: "building-modular-and-scalable-rag-systems-with-hybrid-batch-incremental-processing"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "67c9b2288b5da6e5a3d2f0c2"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:02:20.931Z"
+  createdOn: "2025-03-06T14:33:12.095Z"
+llmopsTags:
+  - "question-answering"
+  - "document-processing"
+  - "regulatory-compliance"
+  - "rag"
+  - "embeddings"
+  - "chunking"
+  - "error-handling"
+  - "latency-optimization"
+  - "cost-optimization"
+  - "kubernetes"
+  - "docker"
+  - "monitoring"
+  - "databases"
+  - "cicd"
+  - "scaling"
+  - "devops"
+  - "orchestration"
+  - "continuous-deployment"
+  - "continuous-integration"
+  - "documentation"
+  - "security"
+  - "compliance"
+  - "reliability"
+  - "scalability"
+  - "fastapi"
+  - "postgresql"
+  - "redis"
+  - "elasticsearch"
+  - "langchain"
+  - "google-gcp"
+company: "Bell"
+summary: "Bell developed a sophisticated hybrid RAG (Retrieval Augmented Generation) system combining batch and incremental processing to handle both static and dynamic knowledge bases. The solution addresses challenges in managing constantly changing documentation while maintaining system performance. They created a modular architecture using Apache Beam, Cloud Composer (Airflow), and GCP services, allowing for both scheduled batch updates and real-time document processing. The system has been successfully deployed for multiple use cases including HR policy queries and dynamic Confluence documentation management."
+link: "https://www.youtube.com/watch?v=w5FZh0R4JaQ"
+year: 2023
+seo:
+  title: "Bell: Building Modular and Scalable RAG Systems with Hybrid Batch/Incremental Processing - ZenML LLMOps Database"
+  description: "Bell developed a sophisticated hybrid RAG (Retrieval Augmented Generation) system combining batch and incremental processing to handle both static and dynamic knowledge bases. The solution addresses challenges in managing constantly changing documentation while maintaining system performance. They created a modular architecture using Apache Beam, Cloud Composer (Airflow), and GCP services, allowing for both scheduled batch updates and real-time document processing. The system has been successfully deployed for multiple use cases including HR policy queries and dynamic Confluence documentation management."
+  canonical: "https://www.zenml.io/llmops-database/building-modular-and-scalable-rag-systems-with-hybrid-batch-incremental-processing"
+  ogTitle: "Bell: Building Modular and Scalable RAG Systems with Hybrid Batch/Incremental Processing - ZenML LLMOps Database"
+  ogDescription: "Bell developed a sophisticated hybrid RAG (Retrieval Augmented Generation) system combining batch and incremental processing to handle both static and dynamic knowledge bases. The solution addresses challenges in managing constantly changing documentation while maintaining system performance. They created a modular architecture using Apache Beam, Cloud Composer (Airflow), and GCP services, allowing for both scheduled batch updates and real-time document processing. The system has been successfully deployed for multiple use cases including HR policy queries and dynamic Confluence documentation management."
+---
+
+## Overview
+
+This case study comes from Bell Canada, one of the largest telecommunications companies in Canada, and was presented at the Toronto Machine Learning Summit (TMLS). The presenters are Lyndon (Senior Manager of AI) and Adam (Senior Machine Learning Engineer) from Bell's ML Engineering and MLOps team. Their team is responsible for taking data science work—including generative AI applications—and engineering it for production deployment, along with handling operations and DevOps.
+
+The focus of this presentation is on a specific challenge within RAG (Retrieval Augmented Generation) systems: knowledge base management and document embedding pipelines. While RAG architectures have become popular for grounding LLM responses in domain-specific information, the speakers highlight that the operational complexity of maintaining dynamic knowledge bases at scale is often underestimated. Their solution treats document embedding pipelines and knowledge base management as a product, built with modularity, reusability, and maintainability in mind.
+
+## Problem Context
+
+Bell uses RAG systems for various internal applications, including an HR chatbot that allows employees to query company policies (such as vacation day entitlements based on tenure, role transitions, and union considerations). The HR policy example illustrates how enterprise knowledge bases are inherently complex—vacation policies at Bell are not simple lookups but depend on numerous factors documented across extensive policy documents.
+
+The core challenges identified include:
+
+- **Additional moving parts**: RAG architectures introduce components beyond a basic LLM chatbot, including knowledge bases, vector databases, and embedding pipelines that must all work in harmony.
+- **Dynamic knowledge bases**: Real-world use cases involve constantly changing documents. While HR policies might update quarterly, other use cases (like sales documentation on Confluence) may change daily.
+- **Synchronization**: The system must efficiently sync changes in source documents to the vector database without full rebuilds every time.
+- **Cost and quota management**: With GCP quotas limiting API requests (e.g., 100 requests per minute for Gecko embedding model), naive approaches to document processing can exhaust quotas and impact production chatbot availability.
+
+## Solution Architecture Philosophy
+
+The team drew inspiration from two key areas to design their solution:
+
+### Traditional ML Concepts
+
+Data lineage and data provenance practices from traditional ML informed their approach. Just as tracking data from source to model helps explain model performance and detect drift, tracking documents from raw form through chunking and embedding helps explain chatbot responses and enables comparison of different pre-processing configurations. This is particularly important because there are multiple ways to chunk and process documents, and maintaining lineage allows for systematic experimentation and debugging.
+
+### Software Engineering Best Practices
+
+The team emphasized modularity as the primary design principle. Each component of the system can be independently tested, changed, debugged, and scaled. Separation of concerns ensures each module has a distinct function. Test-driven development practices were applied despite the novelty of the solution space, with unit tests for every component and integration tests for the system as a whole. CI/CD pipelines are integral to making the system easily deployable and maintainable.
+
+## Problem Constraints and Solution Matrix
+
+The team carefully defined the constraints and variables of their problem:
+
+**Constraints:**
+- GCP quotas (100 requests/minute for online embedding, 30,000 prompts per batch request, concurrent batch job limits)
+- Compute resources for pipelines and vector databases
+- Service level agreements regarding document update latency
+
+**Problem Deltas (Variables):**
+- **Configuration Delta**: Changes to pre-processing parameters (chunk size, separators, embedding model, etc.)
+- **Document Delta**: Changes to the actual documents in the knowledge base
+
+The team developed a solution matrix mapping scenarios to appropriate processing approaches:
+
+- **Configuration changes or large document changes**: Require batch processing to rebuild the knowledge base and vector database from scratch. Using online methods would exhaust API quotas and potentially impact production chatbots sharing the same project.
+- **Small document changes with immediate reflection needs**: Warrant incremental/real-time processing that can share quota with the production chatbot.
+- **Large document changes with real-time requirements**: A "unicorn case" that would require self-hosted LLM models to avoid quota constraints, with QPS (queries per second) dictated by provisioned serving resources rather than API quotas.
+
+## Batch Pipeline Architecture
+
+The batch pipeline is the primary pipeline—every use case requires one. It serves for initialization, scheduled runs, and handling large document or configuration changes.
+
+The architecture includes:
+- **Orchestration project**: Contains the orchestrator (Cloud Composer/Apache Airflow) and common pipeline resources shared across pipelines
+- **Execution project**: Houses the actual processing jobs:
+  - Pre-processing job (document loading and processing using LangChain)
+  - Embedding job
+  - Post-processing job (formatting embeddings for the target vector database)
+- **Knowledge base bucket**: Stores raw documents and intermediate artifacts (raw chunks, pre-processed chunks, embeddings)
+- **Vector database**: GCP Vector Search (though noted as interchangeable with other options)
+
+Apache Beam is used for all processing steps, chosen for its unified programming model for batch and streaming data processing and its excellent support for parallel processing. Documents are processed as small bundles of data (individual documents in pre-processing, individual chunk embeddings in post-processing).
+
+## Incremental Pipeline Architecture
+
+The incremental pipeline is supplementary and addresses high-velocity document scenarios. The key addition is a Pub/Sub topic that listens to changes in the knowledge base bucket (document additions, updates, deletions).
+
+A single Dataflow job encompasses pre-processing, embedding, and post-processing, consuming messages from the Pub/Sub topic and processing changed documents atomically.
+
+The team specifically chose Pub/Sub over Cloud Functions to avoid race conditions. The presenters give an illustrative example: if a librarian uploads a bad document and immediately tries to delete it, Cloud Functions (being isolated atomic events with no coordination) could result in the bad document being processed and synced after the deletion completes, leaving the system out of sync. With Pub/Sub and Apache Beam, events can be windowed and grouped (e.g., sliding windows of 60 seconds), and only the most recent action within that window is processed.
+
+## Hybrid Solution
+
+The production deployment combines both pipelines:
+
+- The batch pipeline is triggered for initialization, scheduled refreshes, and configuration changes
+- Orchestration drains the incremental pipeline, stops acknowledging Pub/Sub messages, stops the incremental Dataflow job, runs the batch pipeline, then restarts the incremental pipeline
+- Any changes made to the knowledge base during batch processing leave unacknowledged messages in Pub/Sub, which the incremental pipeline consumes upon restart to reflect the most recent changes
+
+## Deployment and Configuration
+
+The solution is highly configurable through YAML files. Each component (pre-processing, embedding, post-processing) has its own configuration section specifying:
+- Loader type, chunk size, chunk overlap, separators
+- Embedding model, region, project, endpoint (for self-hosted models)
+- Vector database sync location, knowledge base URIs
+
+Components are treated as services following DevOps best practices. One-time resources (Dataflow Flex templates, knowledge bucket initialization, Pub/Sub and bucket notifications, vector index initialization) are managed as infrastructure as code.
+
+Rather than defining custom pipelines for each use case, the team created a standardized pipeline process. A DAG generator automatically creates the associated Airflow DAG from a YAML configuration file when it's uploaded to Cloud Composer. This enables essentially low-code/no-code deployment of new RAG pipelines within minutes.
+
+## Knowledge Base Structure
+
+The knowledge base structure draws heavy inspiration from TensorFlow Extended (TFX) and its concept of pipeline routes and experiment runs. Each use case has its own root folder containing:
+- Raw documents subfolder (curated by a librarian or automated pipeline)
+- Processed chunks folder
+- Processed embeddings folder
+
+For batch pipeline runs, timestamped subfolders are created for each run, providing data lineage and provenance. The most recent timestamp folder is synced to a "current" subfolder that the chatbot API reads from. For incremental processing, files in the current folder are modified directly since there's no concept of timestamped runs in real-time processing.
+
+## Document Ingestion Approaches
+
+The team categorizes LangChain loaders into document loaders (processing specific URIs/documents atomically) and source loaders (processing undefined numbers of documents from a directory or source). They focus on document loaders because source loaders would require reprocessing the entire knowledge base with no notion of which specific documents changed.
+
+Two methods exist for getting documents into the raw folder:
+
+**Librarian Approach**: A person or group explicitly performs operations on documents—similar to using a file explorer. This is the simplest solution for low-velocity use cases like HR policies.
+
+**Automated Pipeline**: For high-velocity sources like frequently updated Confluence pages, an automated pipeline determines which documents have changed at the source and reflects only those changes. The process involves:
+- Grabbing a list of documents from the source
+- Maintaining an intermediate landing zone
+- Comparing source to landing zone (using content comparison, timestamps, or source-specific APIs)
+- Using rsync to sync only changed documents to the knowledge base
+
+## Technology Stack Summary
+
+- **Orchestration**: Google Cloud Composer (managed Apache Airflow)
+- **Processing**: Apache Beam on Google Dataflow
+- **Messaging**: Google Cloud Pub/Sub
+- **Vector Database**: GCP Vector Search (interchangeable)
+- **Embedding Models**: Google Gecko/Gemini (noted as platform-agnostic design)
+- **Document Processing**: LangChain document loaders
+- **Infrastructure as Code**: CI/CD pipelines managed by DevOps team
+
+## Notable Observations
+
+The presenters were candid about trade-offs. When asked about handling partial document updates (only embedding changed sections), they acknowledged they treat documents as atomic units and re-process entirely rather than attempting complex chunk preservation logic—a pragmatic engineering decision given the marginal time savings.
+
+The solution is not open source, but the team indicated willingness to engage with interested parties about implementation details.
+
+While the presentation focuses heavily on the infrastructure and operational aspects, it notably lacks detailed discussion of evaluation, testing of RAG quality, or metrics beyond the operational level. The feedback loop mentioned (thumbs up/down on chatbot responses) suggests iteration on chunking parameters but the systematic approach to measuring and improving RAG performance is not elaborated.

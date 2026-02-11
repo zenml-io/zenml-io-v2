@@ -1,0 +1,174 @@
+---
+title: "Scaling Content Production and Fan Engagement with Gen AI"
+slug: "scaling-content-production-and-fan-engagement-with-gen-ai"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "69305c39aae0f5b4fd236333"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:31:25.943Z"
+  createdOn: "2025-12-03T15:50:17.337Z"
+llmopsTags:
+  - "content-moderation"
+  - "summarization"
+  - "chatbot"
+  - "translation"
+  - "multi-modality"
+  - "caption-generation"
+  - "question-answering"
+  - "classification"
+  - "prompt-engineering"
+  - "embeddings"
+  - "rag"
+  - "few-shot"
+  - "multi-agent-systems"
+  - "human-in-the-loop"
+  - "cost-optimization"
+  - "latency-optimization"
+  - "error-handling"
+  - "evals"
+  - "postgresql"
+  - "elasticsearch"
+  - "fastapi"
+  - "langchain"
+  - "monitoring"
+  - "api-gateway"
+  - "serverless"
+  - "orchestration"
+  - "databases"
+  - "microservices"
+  - "devops"
+  - "documentation"
+  - "amazon-aws"
+  - "anthropic"
+company: "Bundesliga"
+summary: "Bundesliga (DFL), Germany's premier soccer league, deployed multiple Gen AI solutions to address two key challenges: scaling content production for over 1 billion global fans across 200 countries, and enhancing personalized fan engagement to reduce \"second screen chaos\" during live matches. The organization implemented three main production-scale solutions: automated match report generation that saves editors 90% of their time, AI-powered story creation from existing articles that reduces production time by 80%, and on-demand video localization that cuts processing time by 75% while reducing costs by 3.5x. Additionally, they developed MatchMade, an AI-powered fan companion featuring dynamic text-to-SQL workflows and proactive content nudging. By leveraging Amazon Nova for cost-performance optimization alongside other models like Anthropic's Claude, Bundesliga achieved a 70% cost reduction in image assignment tasks, 35% cost reduction through dynamic routing, and scaled personalized content delivery by 5x per user while serving over 100,000 fans in production."
+link: "https://www.youtube.com/watch?v=4_M_QdjJiL4"
+year: 2025
+seo:
+  title: "Bundesliga: Scaling Content Production and Fan Engagement with Gen AI - ZenML LLMOps Database"
+  description: "Bundesliga (DFL), Germany's premier soccer league, deployed multiple Gen AI solutions to address two key challenges: scaling content production for over 1 billion global fans across 200 countries, and enhancing personalized fan engagement to reduce \"second screen chaos\" during live matches. The organization implemented three main production-scale solutions: automated match report generation that saves editors 90% of their time, AI-powered story creation from existing articles that reduces production time by 80%, and on-demand video localization that cuts processing time by 75% while reducing costs by 3.5x. Additionally, they developed MatchMade, an AI-powered fan companion featuring dynamic text-to-SQL workflows and proactive content nudging. By leveraging Amazon Nova for cost-performance optimization alongside other models like Anthropic's Claude, Bundesliga achieved a 70% cost reduction in image assignment tasks, 35% cost reduction through dynamic routing, and scaled personalized content delivery by 5x per user while serving over 100,000 fans in production."
+  canonical: "https://www.zenml.io/llmops-database/scaling-content-production-and-fan-engagement-with-gen-ai"
+  ogTitle: "Bundesliga: Scaling Content Production and Fan Engagement with Gen AI - ZenML LLMOps Database"
+  ogDescription: "Bundesliga (DFL), Germany's premier soccer league, deployed multiple Gen AI solutions to address two key challenges: scaling content production for over 1 billion global fans across 200 countries, and enhancing personalized fan engagement to reduce \"second screen chaos\" during live matches. The organization implemented three main production-scale solutions: automated match report generation that saves editors 90% of their time, AI-powered story creation from existing articles that reduces production time by 80%, and on-demand video localization that cuts processing time by 75% while reducing costs by 3.5x. Additionally, they developed MatchMade, an AI-powered fan companion featuring dynamic text-to-SQL workflows and proactive content nudging. By leveraging Amazon Nova for cost-performance optimization alongside other models like Anthropic's Claude, Bundesliga achieved a 70% cost reduction in image assignment tasks, 35% cost reduction through dynamic routing, and scaled personalized content delivery by 5x per user while serving over 100,000 fans in production."
+---
+
+## Overview
+
+Bundesliga (operated by the DFL - Deutsche Fußball Liga) represents a sophisticated, multi-faceted case study in production LLMOps at scale. The German soccer league serves over 1 billion fans globally across 200 countries and has been building on AWS infrastructure since 2016, with AWS becoming the official technology provider in 2020. By 2024, when they renewed their AWS contract, Bundesliga was already running Gen AI solutions in production serving over 100,000 fans in their app—a notable achievement when many organizations were still experimenting with prototypes.
+
+The organization's unique "glass to glass" strategy gives them control over the entire value chain, from camera lens in the stadium to the end consumer device (TV or smartphone), enabling them to build and commercialize products end-to-end. This vertical integration, combined with touchpoints reaching 50 million social media followers and generating 5 billion video views per season, positions them uniquely to leverage AI for both content production and fan engagement. The DFL's five guiding principles for their app include personalization, continuous pathways, video and story centricity, discoverability, and engagement—all of which are supported by their Gen AI infrastructure.
+
+## Match Reports: Automated Long-Form Content Generation
+
+The automated match report generation system represents a comprehensive end-to-end LLMOps workflow that demonstrates sophisticated human-in-the-loop design. Bundesliga editors face significant pressure during live matches, simultaneously composing live blog entries, push notifications, and match stories. The automation alleviates this stress while maintaining editorial quality standards.
+
+The match report structure follows a predictable pattern: introduction, pre-game discussion, first half, second half, statistics, and MVP selection—each complemented with licensed photographer images. The system taps into multiple data sources including live blog commentary composed by editors, match event data with winning probabilities, historical match data for context (particularly important for derby matches), team lineups with correct player name spellings, and match statistics.
+
+The architecture uses AWS Lambda to transform ingested match data into OpenSearch, where it's stored and made available for prompt construction. An editor initiates the process through a content management system, selecting the match and choosing a persona (which varies based on match type—derby matches focus on teams rather than outcomes, while lopsided matches might emphasize particular halves). Editors can provide additional instructions to focus on specific aspects.
+
+A particularly innovative aspect is the multi-modal approach to image selection. Rather than using traditional vector search, they supply image blobs directly to the LLM along with the generated text and assignment instructions, receiving back references to appropriate images. This approach was chosen despite higher token usage and latency because they know which images are relevant (taken during the match by licensed photographers) and don't need to search databases. The limitation of most LLMs handling only approximately 20 images is acceptable given their specific use case.
+
+The system faces common Gen AI pain points including hallucinations (particularly incorrect stat references), paragraph styling inconsistencies relative to editorial guidelines, incorrect quotes, and American versus British English usage. Their solution involves a two-stage review process: first, the LLM generates the match report, then Amazon Nova performs a review pass to identify style inaccuracies, fact-check claims, and validate quotes. While not 100% accurate, editors report that Nova finds approximately 70% applicable corrections—examples include spelling corrections and catching incorrect top scorer attributions.
+
+The results are striking: editors save approximately 90% of their time on match report creation. Previously, editors would begin writing during the second half; now they generate reports with one button click. This time savings translates to approximately 20 additional content articles per match day, representing significant scaling of content production capacity.
+
+## Bundesliga Stories: Short-Form Swipeable Content
+
+Recognizing that younger cohorts engage more with image-centric, short-form content similar to Instagram Stories, Bundesliga developed an automated system to transform existing long-form articles into engaging swipeable slide decks. This represents intelligent content repurposing that maximizes the value of editorial investments.
+
+The solution uses a three-step AWS Step Functions workflow orchestrated with Amazon Bedrock and Amazon Rekognition. In the first step, a Bundesliga article is decomposed into separate slides, each containing only text and metadata. The second step assigns images that were already embedded in the original article to the generated slides—this is accomplished using computer vision with Amazon Nova, chosen specifically for its price-performance characteristics and fast response times. The multi-modal approach is applied similarly to the match reports.
+
+However, most articles generate more slides than available embedded images, necessitating a third step that employs vector search against their comprehensive metadata store containing approximately 150,000 new images per season. This image selection process is particularly sophisticated, guided by four editorial criteria: relevance (complementing storytelling and matching mood/intent), focus (featuring teams or players prominently), motives (varying scenery—stadium images, interviews, close-ups—rather than repetitive imagery), and recency (most recent jerseys and games).
+
+The image ingestion workflow demonstrates impressive engineering with synchronous and asynchronous processing paths. Synchronously, when an image is uploaded, EXIF data is extracted and stored in the metadata store, making it immediately available for embedding, resizing, and CloudFront delivery. Asynchronously, the system determines match-related metadata (competition ID, season ID) often heuristically by analyzing fixtures and visible teams/players. Amazon Rekognition detects player faces (with high accuracy enabled by 360-degree high-resolution shots taken during DFL media days at the start of each season). Amazon Titan multi-modal embeddings are generated for vector search. Additionally, they trained Amazon Rekognition's custom label feature with approximately 1,000 images per category to classify motives into categories like action, celebration, goal, with subcategories including general shot, tackling, behind-the-goal, and sideways-from-goal views.
+
+The image scoring algorithm is particularly sophisticated, combining multiple factors. The base score comes from the similarity between the LLM-generated search phrase and the image (normalized 0-1). This is then multiplied by a 10% motive boost when the suggested motive is present in the image. An additional recency boost of up to 20% is applied—but notably, editorial preference dictated an exponential distribution rather than the developers' initial linear approach or wholesale boost. Images older than 250 days receive no recency boost. This scoring is implemented as a custom script in Amazon OpenSearch Service that filters and ranks images, automatically selecting the highest-scoring image—which editors report is typically the image they would have chosen manually.
+
+The LLM generates not just search phrases but also suggested motives and players to be visible, along with a "depiction" field that serves as chain-of-thought reasoning to help the model generate cohesive suggestions. The output includes the slide type (text, quote, video preview), title, description, suggested player, scene type, search phrase, and depiction.
+
+The impact metrics are substantial: Bundesliga fans who engage with stories show 40% higher time spent in app, 70% more sessions, and 20% increased one-week retention. Editors save approximately 80% of time compared to creating stories from scratch. Amazon Nova reduced costs for the crucial image assignment step by 70% while maintaining speed and quality parity with other models.
+
+## Video Localization: Scaling Global Content Distribution
+
+With over 1 billion fans across 200 countries but content produced primarily in German and English, Bundesliga faced a significant distribution challenge. Broadcasting partners needed to invest time localizing content, limiting global reach. The automated video localization solution removes language barriers and scales market reach.
+
+The solution demonstrates sophisticated editorial understanding. Rather than simple translation, it preserves the editorial design of videos—for example, maintaining multiple voice types in a single video (narrative voice translated from German to English, live calls kept in original English). The system targets markets from Latin America to Middle East to Asia with appropriate languages.
+
+The architecture exposes the localization service through Amazon API Gateway to the Bundesliga media portal, where media partners discover content and request localization to their native language. Requests are handled by Lambda, placed on SQS, and processed by Step Functions workflows. The workflow composition varies by product—Bundesliga produces over 20 different products, each with distinct editorial design requiring tailored localization workflows. This modular approach allows different steps to be combined based on product type and available inputs (some videos include "shortlists" describing content, which aids localization).
+
+A representative workflow begins with demultiplexing (separating audio tracks from video signal for faster, more cost-efficient processing). Amazon Transcribe generates transcriptions, followed by LLM-based correction using Amazon Nova Pro to address transcription errors. Amazon Rekognition segments the video to preserve editorial design by identifying different segments and assigning appropriate processing. Translation generates new voiceovers and subtitles. Finally, video and audio are multiplexed back together with subtitles.
+
+The translation quality evaluation demonstrates mature LLMOps practices. They use Word Error Rate (WER) as their primary metric, measuring how many words need to be changed, removed, or updated to turn an AI translation into a correct translation. To handle the challenge that multiple correct translations exist for any given input, they employ machine translation checks: professional translators receive AI translations and make minimal changes to correct them, creating ground truth references. A WER of approximately 5% corresponds to changing roughly two words in three sentences, providing intuitive understanding of translation quality.
+
+Comparative evaluation showed that LLM-based translation (Amazon Bedrock) significantly outperformed Amazon Translate, primarily by avoiding idiomatic errors in sports commentary. When comparing different LLMs across language pairs, they observed WERs ranging from 2% to 7% depending on the specific language pair. Their strategy is to always select the LLM with the lowest WER for each language pair, preferring Amazon Nova when results are comparable due to superior price-performance characteristics.
+
+An impressive feature is the automatic learning from human feedback. Media partners can review localized videos and request corrections, giving them quality control while providing valuable training data to Bundesliga. When partners submit corrections, Amazon Nova processes the human feedback to derive correction rules, which are stored in an Amazon Bedrock knowledge base and applied to future translations. For example, if a partner changes "uncomfortable" to "challenging" in the context of describing team play style, the system generates a rule: "When translating from German to English, do not use the word 'uncomfortable' when describing how tough a team plays." Subsequent translations query the knowledge base to avoid repeating mistakes, creating a continuously improving system.
+
+The results are impressive: 75% reduction in video processing time, and 3.5x cost reduction when leveraging Amazon Nova Pro's price-performance advantages. This enables Bundesliga to offer localized content at scale to media partners, dramatically expanding global distribution potential.
+
+## MatchMade: AI-Powered Interactive Fan Companion
+
+MatchMade represents the most ambitious application, currently in private preview with plans for public release. It addresses the observation that 80% of fans juggle multiple apps during live matches to access data, and 70% of younger cohorts chat during matches—what Bundesliga calls "second screen chaos." The goal is to provide a one-stop shop experience that democratizes statistical data access.
+
+The architecture uses event-driven design with Amazon EventBridge as the central event bus. When fans raise questions through the app, backend services publish to EventBridge, which routes to the chatbot service. The chatbot service responds with natural language answers but also integrates with a video service (enabling video search) and receives input from a "nudging engine" that proactively pushes relevant content based on match events.
+
+The user experience demonstrates sophisticated personalization. During a match, fans receive notifications of goals with score cards and celebrating player images. But MatchMade goes beyond simple notifications—it automatically researches goals and provides context about what the goal means to the player and club, mimicking how a live commentator would provide color commentary. Fans can then ask questions through natural language: "Show me the top 5 of the table" displays live standings; "What's up next for Bayern Munich?" shows upcoming fixtures. MatchMade proactively re-engages, offering statistical analyses of upcoming matches. Fans can ask statistical questions like comparing team performance, or request specific video content like "show me our goals of Harry Kane scored in the second half at home"—and the system retrieves and plays the relevant videos.
+
+The chatbot service implements a sophisticated dynamic routing system for cost optimization. Rather than using one static workflow for all questions, they first classify the question type and complexity using Amazon Nova Lite (chosen for its low cost and fast response for this classification task). Query types include individual player stats, team stats, or comparisons. Complexity is classified as simple, medium, or complex.
+
+Based on classification, questions are routed through different paths. Simple questions (approximately half of all queries) leverage Amazon Nova Pro's price-performance advantages for text-to-SQL generation. More complex questions route through Anthropic's Claude Sonnet. This dynamic routing achieves a 35% cost reduction while maintaining quality.
+
+The classification also informs few-shot learning by pulling relevant examples based on query type for inclusion in the prompt. The resulting SQL query runs against Amazon Athena to query data from S3, and results are formulated into natural language responses.
+
+Video search integration demonstrates clever design. Rather than traditional semantic video search (which would be computationally expensive), they recognize that fans seeking videos are actually looking for specific moments in matches. The chatbot identifies these moments through text-to-SQL workflows, returning event identifiers—precise timestamps for events in Bundesliga matches. These event identifiers are passed to the video search service, which performs metadata search on Amazon OpenSearch to retrieve videos capturing those exact moments.
+
+The nudging engine represents proactive AI engagement. By monitoring match events in real-time, it identifies content relevant to each fan based on their preferences and pushes it proactively—such as automatic research on goals by their favorite players or statistical insights about their preferred teams.
+
+The results demonstrate significant scaling: MatchMade enables Bundesliga to scale personalized content delivery by 5x per user. The dynamic workflow routing reduces costs by 35% by intelligently using Amazon Nova for appropriate query types. Perhaps most importantly, early testers (including the presenters themselves) report that the experience is "awesome," suggesting strong product-market fit.
+
+## LLMOps Maturity and Architectural Patterns
+
+This case study demonstrates several hallmarks of mature LLMOps practices. The organization has moved well beyond experimentation to production deployment at scale, serving over 100,000 users. They employ sophisticated evaluation methodologies (Word Error Rate for translation quality, human evaluation of image selection) rather than relying solely on vibes. Their human-in-the-loop designs are thoughtful—editors maintain control while AI handles routine work, with AI review layers (like Nova checking match reports) providing quality assistance rather than full automation.
+
+The dynamic routing pattern for cost optimization is particularly noteworthy. Rather than using the most capable (and expensive) model for all tasks, they classify request complexity and route accordingly, achieving 35% cost reductions in the chatbot service. Similar cost consciousness appears throughout: choosing Nova for specific tasks based on price-performance benchmarks (70% cost reduction for image assignment, 3.5x reduction for video localization), demultiplexing video/audio for separate processing efficiency, and using Lite models for classification tasks.
+
+Their multi-modal approaches demonstrate practical engineering rather than over-reliance on single techniques. They use direct image blob passing when the image set is known and constrained, but fall back to vector search with sophisticated custom scoring when needed. Their embeddings strategy combines Titan multi-modal embeddings with custom-trained Rekognition models for domain-specific classification (image motives).
+
+The feedback loop in video localization—where human corrections automatically generate rules stored in a knowledge base for future reference—represents a practical implementation of continuous improvement in production systems. This is genuine learning from deployment rather than periodic retraining.
+
+Event-driven architecture with EventBridge for the MatchMade system demonstrates scalable patterns for real-time applications. The separation of concerns—chatbot service, video service, nudging engine—allows independent scaling and evolution of components.
+
+Workflow orchestration with Step Functions appears throughout, providing robust coordination of multi-step processes (match report generation, story creation, video localization). This orchestration layer handles the complexity of coordinating LLM calls, data retrieval, storage operations, and human review steps.
+
+## Balanced Assessment
+
+The presentation clearly aims to showcase AWS services and Amazon Nova in particular, which requires some critical evaluation. The cost reduction and performance claims (70% cost reduction, 35% cost reduction, 3.5x improvement) are substantial but lack independent verification. We don't see detailed information about baseline costs, the specific configurations compared, or whether these represent best-case or average-case scenarios.
+
+The Word Error Rate evaluation methodology for translation is sound and demonstrates maturity, but we only see results for the final chosen approach. Understanding the full distribution of quality across different content types, edge cases, and failure modes would provide more complete assessment. Similarly, the "70% applicable corrections" rate for Nova's review of match reports is promising but leaves 30% of suggestions inapplicable—understanding the nature of these misses would be valuable.
+
+The heavy reliance on Amazon services creates vendor lock-in concerns. While OpenSearch is open source, the tight integration with Bedrock, Nova, Rekognition, Transcribe, EventBridge, Step Functions, Lambda, and Athena makes migration to alternative providers challenging. For an organization like Bundesliga with its strategic partnership with AWS, this may be an acceptable tradeoff, but it's worth noting.
+
+The "90% time saved" and "80% time saved" metrics for match reports and stories are impressive but represent best-case scenarios for structured content. The human-in-the-loop design means editors still need to review and potentially correct outputs, and the time required for this review isn't fully detailed. The quality consistency across different types of matches, languages, and edge cases also isn't fully explored.
+
+MatchMade remains in private preview, so production metrics at scale aren't yet available. The "5x scaling of personalized content" is mentioned but not fully explained—is this content variety, content volume, or something else? Early tester enthusiasm is positive but doesn't substitute for large-scale user acceptance testing.
+
+That said, the overall architectural approach demonstrates thoughtful engineering. The dynamic routing for cost optimization shows they're thinking beyond just getting things working to operational efficiency. The multi-modal approaches are pragmatic rather than overly complex. The human-in-the-loop designs appropriately balance automation with editorial control. The feedback loops for continuous improvement show operational maturity.
+
+The use case selection is intelligent—match reports, stories, and video localization all have relatively structured formats that play to LLM strengths while serving genuine business needs (scaling content production, reaching global audiences). The fan engagement application (MatchMade) is more ambitious and complex, appropriately staged as a preview before full rollout.
+
+## Production LLMOps Considerations
+
+Several production considerations emerge from this case study. The importance of evaluation metrics appropriate to the domain (WER for translation, editorial assessment for image selection) rather than generic benchmarks is clear. Cost optimization through dynamic routing and appropriate model selection for task complexity demonstrates operational maturity beyond initial prototyping.
+
+The human-in-the-loop patterns show careful consideration of where AI adds value versus where human judgment remains essential. Editors initiate processes, provide guidance (personas, focus areas), review outputs, and make final publication decisions. AI handles time-consuming structured work, provides quality assistance, and scales production capacity.
+
+The multi-modal integration demonstrates that production systems often need to combine multiple AI capabilities (language models, computer vision, embeddings, custom classifiers) rather than relying on single model types. The architectural integration of these components through services like Step Functions, EventBridge, and OpenSearch provides the orchestration needed for complex workflows.
+
+Data infrastructure investment is evident—the comprehensive image metadata store with 150,000 new images per season, sophisticated ingestion pipelines with synchronous and asynchronous processing, match event databases with precise timestamps, and historical data all require significant engineering. This data infrastructure is what makes the AI applications possible.
+
+The case study demonstrates that production LLMOps at scale requires not just models but complete systems: APIs for access, orchestration for workflows, databases for state and retrieval, monitoring (implied but not detailed), quality review mechanisms, and feedback loops for improvement. The partnership between Bundesliga's domain expertise and AWS's infrastructure capabilities enabled rapid progression from prototype to production serving 100,000+ users.
+
+Overall, this represents a mature, sophisticated LLMOps deployment that goes well beyond typical experimentation to deliver genuine business value through content scaling and enhanced fan engagement, while maintaining appropriate editorial control and quality standards.

@@ -1,0 +1,148 @@
+---
+title: "Optimizing LLM Training with Efficient GPU Kernels"
+slug: "optimizing-llm-training-with-efficient-gpu-kernels"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "6792006c29b6b0a6f422e676"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:56:52.093Z"
+  createdOn: "2025-01-23T08:40:12.295Z"
+llmopsTags:
+  - "high-stakes-application"
+  - "structured-output"
+  - "model-optimization"
+  - "token-optimization"
+  - "latency-optimization"
+  - "cost-optimization"
+  - "kubernetes"
+  - "triton"
+  - "tensorflow"
+  - "pytorch"
+  - "microservices"
+  - "microsoft-azure"
+  - "openai"
+company: "LinkedIn"
+summary: "LinkedIn developed and open-sourced LIER (LinkedIn Efficient and Reusable) kernels to address the fundamental challenge of memory consumption in LLM training. By optimizing core operations like layer normalization, rotary position encoding, and activation functions, they achieved up to 3-4x reduction in memory allocation and 20% throughput improvements for large models. The solution, implemented using Python and Triton, focuses on minimizing data movement between GPU memory and compute units, making LLM training faster and more cost-effective."
+link: "https://www.youtube.com/watch?v=yx_BKcAPoQs&list=PLlcxuf1qTrwDDRUmXJA-x-uqp-qutke_x&index=19"
+year: 2024
+seo:
+  title: "LinkedIn: Optimizing LLM Training with Efficient GPU Kernels - ZenML LLMOps Database"
+  description: "LinkedIn developed and open-sourced LIER (LinkedIn Efficient and Reusable) kernels to address the fundamental challenge of memory consumption in LLM training. By optimizing core operations like layer normalization, rotary position encoding, and activation functions, they achieved up to 3-4x reduction in memory allocation and 20% throughput improvements for large models. The solution, implemented using Python and Triton, focuses on minimizing data movement between GPU memory and compute units, making LLM training faster and more cost-effective."
+  canonical: "https://www.zenml.io/llmops-database/optimizing-llm-training-with-efficient-gpu-kernels"
+  ogTitle: "LinkedIn: Optimizing LLM Training with Efficient GPU Kernels - ZenML LLMOps Database"
+  ogDescription: "LinkedIn developed and open-sourced LIER (LinkedIn Efficient and Reusable) kernels to address the fundamental challenge of memory consumption in LLM training. By optimizing core operations like layer normalization, rotary position encoding, and activation functions, they achieved up to 3-4x reduction in memory allocation and 20% throughput improvements for large models. The solution, implemented using Python and Triton, focuses on minimizing data movement between GPU memory and compute units, making LLM training faster and more cost-effective."
+---
+
+## Overview
+
+LinkedIn, the professional networking platform with over 1 billion members, 67 million companies, and 41,000 skills in their knowledge graph, has invested significantly in LLM technology to power a range of AI-driven features across their platform. This case study, presented at what appears to be a technical conference (likely Ray Summit based on references), focuses on LinkedIn's internal efforts to optimize LLM training efficiency through the development of custom GPU kernels called "Liger Kernels."
+
+The presentation was given by a LinkedIn engineer named Dre, who detailed both the business context for LinkedIn's LLM investments and the deep technical work they've done to reduce training costs and improve efficiency. As part of Microsoft, LinkedIn has a relationship with OpenAI, but the focus here is on their in-house infrastructure and optimization work.
+
+## Business Context and LLM Applications
+
+LinkedIn uses LLMs across multiple product lines to power various features:
+
+- **Profile Summary Generation**: Premium members can generate appealing summaries to describe themselves and build their personal brand
+- **Learning Platform Enhancement**: The platform helps "knowledge seekers" understand educational content better through AI-powered tools
+- **Message Generation**: Automated generation of outreach messages for recruiters and members trying to connect with others
+- **Agentic Recruiter Experience**: A recently launched feature that provides an integrated agentic experience for recruiters, helping those who may not have extensive recruitment experience to perform well-thought-out hiring functions
+
+The breadth and scale of LinkedIn's operations—mapping jobs to skills, skills to products, and products to companies through their knowledge graph—creates substantial demand for efficient LLM training and inference.
+
+## Training Infrastructure Stack
+
+LinkedIn's training infrastructure is built on well-established components:
+
+- **Compute**: Stacks of GPUs (both NVIDIA and now AMD)
+- **Orchestration**: Kubernetes-based infrastructure
+- **Frameworks**: TensorFlow, PyTorch, and Lightning
+- **Traditional ML**: XGBoost for smaller linear and gradient boosting models
+- **Multi-process Orchestration**: Ray (referenced in Q&A, with a prior Ray Summit talk discussing their usage in detail)
+
+The diversity of their systems and the scale of their operations made training efficiency a critical concern, leading to the investment in custom kernel development.
+
+## The Core Problem: Memory Bottlenecks in LLM Training
+
+The presentation provided an excellent technical explanation of why LLM training is often bottlenecked by memory rather than raw compute. Using a "roofline graph" model, Dre explained that as you move from compute-bound to memory-bound operations, GPUs increasingly sit idle waiting for data.
+
+Modern GPUs have two key subsystems: High Bandwidth Memory (HBM), which serves as fast DRAM on the side of the GPU, and the computational units that perform actual operations. The challenge is that data must flow through a "narrow pipe" from HBM to compute units. For models with 70-80 billion parameters (or even 405 billion for Llama), this data transfer becomes the limiting factor.
+
+The naive implementation of Transformers fetches the same weights multiple times from GPU memory, causing significant inefficiency. The fundamental insight driving Liger Kernels is that reducing memory consumption and memory transfers is what unlocks higher speeds and lower costs—not necessarily having more compute power.
+
+## Liger Kernels: Technical Implementation
+
+After profiling their training workloads, LinkedIn identified the most impactful kernels to optimize:
+
+- **RMSNorm and LayerNorm**: Normalization operations used to normalize outputs of layers in Transformers
+- **RoPE (Rotary Position Encoding)**: Used to encode token positions in a way that allows arbitrarily long context lengths
+- **SiGLU and GeGLU**: Activation units (including the Gaussian approximation of GELU)
+- **Cross-entropy variants**: For measuring prediction loss, including a "fused linear cross-entropy" that combines the linear layer preceding cross-entropy
+
+The kernels are written in **Triton**, OpenAI's domain-specific language for GPU programming. This choice offers several advantages:
+
+- **Pythonic syntax**: Triton code looks similar to Python, allowing it to be placed alongside model code without context-switching between Python and CUDA/C++
+- **Single toolchain**: The system relies solely on PyTorch and Triton, simplifying the development workflow
+- **Fine-grained control**: Parameters like block size and stride allow engineers to control exactly how data is fetched in chunks, enabling optimization of how matrices are processed
+
+The key concept is maximizing FLOPs (floating-point operations) per byte brought into the GPU. Ideally, each byte would only be brought into GPU memory once and used for all necessary computations before being discarded.
+
+## Fused Linear Cross-Entropy: A Case Study
+
+One particularly impactful optimization was the fused linear cross-entropy kernel. Cross-entropy is typically the last stage of a layer, and it's often preceded by a linear layer. In the naive implementation, results must be written back to memory after the linear stage and then read back in for cross-entropy.
+
+This is especially problematic for systems with large vocabularies. Memory requirements scale with three factors:
+- **B**: Batch size (how many predictions running in parallel)
+- **Context length**: How deep the sequence goes
+- **Vocabulary size**: Modern English vocabularies have 40-50K tokens, but some systems require much larger vocabularies
+
+By fusing these two operations, LinkedIn reduced the memory profile significantly. The presentation showed graphs demonstrating that as vocabulary size increases, the fused kernel maintains a much lower and flatter memory consumption curve compared to naive implementations.
+
+## Results and Performance Gains
+
+The optimizations delivered substantial improvements:
+
+- **Memory reduction**: Up to 3-4x less memory allocation in some cases for SiGLU and GeGLU operations
+- **Throughput improvements**: Up to 20% increase in throughput for large batch sizes
+- **Peak memory reduction for Llama 3 8B**: "Significant" reduction (up to 3x) in peak allocated memory, which is often the limiting factor in training
+
+These gains come from operating more efficiently and not having to bring each byte of data into GPU compute units multiple times.
+
+## Integration and Usability
+
+LinkedIn designed Liger Kernels with multiple integration levels to accommodate different developer needs:
+
+- **Drop-in replacement**: A single line at the top of training code can substitute standard kernels with Liger kernels
+- **Library integration**: Experienced developers can include specific kernels in their training code
+- **Low-level usage**: Developers building custom Transformers can substitute individual normalization or activation functions as needed
+
+The ease of use has been a key factor in adoption. The fact that developers only need PyTorch and Triton, and can work in a familiar Python-like environment, has allowed LinkedIn's engineers to explore and build systems naturally.
+
+## Open Source and Ecosystem
+
+Liger Kernels are available on GitHub and have gained significant popularity. As of the presentation (which appears to be recent, with references to features "launched just a few days ago"), the kernels have been ported to AMD GPUs in addition to the original NVIDIA implementation. This cross-platform support extends the reach of the optimizations to a broader set of hardware.
+
+LinkedIn is also building integrations with existing training frameworks, making it easy for external developers to adopt these optimizations in their own workflows.
+
+## Organizational Considerations
+
+In the Q&A session, Dre addressed how LinkedIn prioritizes generative AI opportunities. Given that LinkedIn is a large organization with multiple business lines, there's no single decision-maker determining all AI initiatives. Instead, different business units identify and pursue use cases based on their needs. Some use cases are easier to enter (like the profile summary generation), and as the technology matures and understanding deepens, more complex use cases are being explored from a growing backlog.
+
+The ease of experimentation—enabled in part by tools like Liger Kernels that reduce the cost and complexity of training—is a key factor in determining which projects get prioritized.
+
+## Critical Assessment
+
+While the presentation makes compelling claims about performance improvements, a few caveats are worth noting:
+
+- The specific percentage improvements (20% throughput, 3x memory reduction) are for particular configurations and may not generalize to all use cases
+- The presentation is from LinkedIn engineers showcasing their own work, so there's inherent promotional bias
+- Real-world production improvements depend on the specific models, hardware, and workloads being used
+
+That said, the technical explanations are sound and align with well-understood principles of GPU optimization. The open-source nature of the project allows independent verification of claims, and the port to AMD GPUs suggests genuine community interest and adoption.
+
+## Conclusion
+
+This case study demonstrates how a large-scale tech company with substantial LLM training needs approached infrastructure optimization from first principles. Rather than accepting the efficiency of standard implementations, LinkedIn's team profiled their workloads, identified bottlenecks, and developed custom solutions that are now benefiting the broader ML community. The work represents a mature approach to LLMOps where optimization happens at multiple levels of the stack, from high-level product integration down to low-level GPU kernel implementation.

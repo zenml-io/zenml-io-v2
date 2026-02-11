@@ -1,0 +1,118 @@
+---
+title: "AI-Powered Chatbot Automation with Hybrid NLU and LLM Approach"
+slug: "ai-powered-chatbot-automation-with-hybrid-nlu-and-llm-approach"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "67c9b176224b63bda36d91f4"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:02:28.100Z"
+  createdOn: "2025-03-06T14:30:14.379Z"
+llmopsTags:
+  - "customer-support"
+  - "chatbot"
+  - "classification"
+  - "summarization"
+  - "prompt-engineering"
+  - "few-shot"
+  - "error-handling"
+  - "human-in-the-loop"
+  - "system-prompts"
+  - "monitoring"
+  - "google-gcp"
+company: "Scotiabank"
+summary: "Scotiabank developed a hybrid chatbot system combining traditional NLU with modern LLM capabilities to handle customer service inquiries. They created an innovative \"AI for AI\" approach using three ML models (nicknamed Luigi, Eva, and Peach) to automate the review and improvement of chatbot responses, resulting in 80% time savings in the review process. The system includes LLM-powered conversation summarization to help human agents quickly understand customer contexts, marking the bank's first production use of generative AI features."
+link: "https://www.youtube.com/watch?v=Fhtig6TrZdk"
+year: 2022
+seo:
+  title: "Scotiabank: AI-Powered Chatbot Automation with Hybrid NLU and LLM Approach - ZenML LLMOps Database"
+  description: "Scotiabank developed a hybrid chatbot system combining traditional NLU with modern LLM capabilities to handle customer service inquiries. They created an innovative \"AI for AI\" approach using three ML models (nicknamed Luigi, Eva, and Peach) to automate the review and improvement of chatbot responses, resulting in 80% time savings in the review process. The system includes LLM-powered conversation summarization to help human agents quickly understand customer contexts, marking the bank's first production use of generative AI features."
+  canonical: "https://www.zenml.io/llmops-database/ai-powered-chatbot-automation-with-hybrid-nlu-and-llm-approach"
+  ogTitle: "Scotiabank: AI-Powered Chatbot Automation with Hybrid NLU and LLM Approach - ZenML LLMOps Database"
+  ogDescription: "Scotiabank developed a hybrid chatbot system combining traditional NLU with modern LLM capabilities to handle customer service inquiries. They created an innovative \"AI for AI\" approach using three ML models (nicknamed Luigi, Eva, and Peach) to automate the review and improvement of chatbot responses, resulting in 80% time savings in the review process. The system includes LLM-powered conversation summarization to help human agents quickly understand customer contexts, marking the bank's first production use of generative AI features."
+---
+
+## Overview
+
+Scotiabank, a major financial institution, developed a comprehensive system for optimizing their customer-facing chatbot through what they call "AI for AI" - using machine learning models to improve and maintain another AI system. This case study, presented by Naris and Andres (data science managers in Scotiabank's Global AI/ML department), covers both traditional ML approaches for chatbot sustainment and their first production deployment of generative AI features for conversation summarization.
+
+The chatbot in question is an NLU (Natural Language Understanding) intent-based system, not an LLM-based conversational agent. This is an important distinction as the presenters emphasize that for financial institutions, control over conversations and responses is paramount, making traditional intent-based chatbots still highly relevant. The chatbot was fully released in November 2022 within Scotiabank's mobile app and handles over 700 different response types across banking topics including accounts, investments, credit cards, loans, and mortgages.
+
+## The AI for AI Concept
+
+The core innovation presented is the concept of self-sustaining AI systems. The team identified three stages for such systems: monitoring (tracking KPIs in production), adaptation (responding to changes in KPIs), and self-optimization (tuning and retraining to maintain optimal performance). Before implementing automation, Scotiabank had a two-week sustainment cycle where AI trainers manually reviewed customer queries on a daily basis - typically two trainers spending one hour each per day reviewing utterances and discussing potential improvements.
+
+This manual process represented a significant opportunity for automation since it was repetitive, time-consuming, and potentially subject to human bias (trainers being "too nice" or "too harsh" with the bot). The team developed three ML models to address different parts of this workflow.
+
+## The Three ML Models (Luigi, Eva, and Peach)
+
+### Peach - Similarity Algorithm
+
+Peach serves as an AI trainer's assistant during the training process. Its objective is to help trainers understand the potential impact of adding new training phrases to the dataset before actually adding them. This addresses one of the fundamental challenges in ML training: knowing how training data will affect model results.
+
+The algorithm uses TF-IDF (Term Frequency-Inverse Document Frequency) for feature extraction, converting text into numerical representations. It then creates vector representations that serve as inputs for similarity calculations, comparing new utterances against existing training phrases. The similarity values are aggregated per intent to show trainers which intent a new phrase is most similar to.
+
+For example, if a trainer wants to add "open an account," Peach shows the similarity score with all existing intents, helping them verify the phrase will train the intended intent rather than creating confusion. The data preparation phase includes removing duplicates, cleaning format, and removing stop words.
+
+### Luigi - Binary Classifier (First Human Reviewer Replacement)
+
+Luigi replaces the first layer of human review. It's a binary classifier that uses confidence scores from the NLU tool to determine whether the chatbot's response was likely correct (true) or incorrect (false). The model doesn't suggest better intents - it simply labels interactions as correct or incorrect.
+
+The primary challenge with Luigi is class imbalance, as there are significantly more correct classifications than incorrect ones. The team addressed this through data augmentation techniques. Luigi uses features extracted from the NLU tool itself (confidence thresholds and other parameters) rather than the customer utterances directly.
+
+### Eva - Multiclass Classifier (Second Human Reviewer Replacement)
+
+Eva is described as "more advanced" and replaces the second human reviewer. Unlike Luigi, Eva can not only assign true/false labels but also propose better intents when the bot's response was incorrect. This more closely mirrors what a human reviewer does.
+
+Eva works differently from Luigi in that it extracts features directly from the customer utterances rather than relying on NLU tool outputs. It uses n-grams (specifically trigrams) to capture semantic context while managing vector space dimensionality. The team experimented with unigrams (which create huge vector spaces) and found that trigrams provided the right balance between capturing context and computational efficiency.
+
+When Eva and Luigi disagree, a human oversight layer intervenes to make the final determination. This third layer of human review still exists but handles only about 20% of cases, representing an 80% reduction in manual review workload.
+
+## Bias Control and Governance
+
+The team emphasized five key approaches to bias control: conducting bias audits during development and in production, using different training sets for Luigi and Eva, leveraging diverse features (Eva uses utterance information while Luigi uses NLU tool information), following bank-wide transparency practices for AI development, and maintaining human oversight for disagreements.
+
+The presenters acknowledged that while they're replacing potential human bias, they must be careful not to perpetuate or introduce algorithmic bias. The use of different data sources and features for each model helps ensure independence similar to having separate human reviewers who don't see each other's work.
+
+Getting production approval required navigating multiple layers including data governance, ethics review, model risk assessment, and a bank-specific ethics approval tool.
+
+## LLM-Powered Summarization Feature
+
+The most significant LLMOps aspect of this case study is the conversation summarization feature, which the presenters describe as "the first GenAI use case in production at the bank." When conversations are handed off from the chatbot to live agents, agents previously had to either ask customers to repeat their issue or read through entire chat transcripts.
+
+The team implemented LLM-powered summarization that reduces conversation length by approximately 80%, providing agents with a short summary including a title and key transaction information. This reduced average handle time significantly.
+
+### Prompt Engineering Process
+
+The team went through a structured prompt engineering process that included:
+
+- **Objective definition**: Clearly specifying what the summary should achieve
+- **Prompt type evaluation**: Comparing zero-shot, few-shot, and chain-of-thought approaches
+- **Context vs. examples testing**: Experimenting with whether providing example summaries or contextual instructions (like "create a 200-word summary using banking terms") produced better results
+- **Evaluation methodology**: Using ROUGE-N metrics to measure n-gram overlap between candidate summaries and reference summaries
+- **Iterative refinement**: Continuous testing and feedback loops
+
+### LLM Model Evolution and Hallucination Management
+
+The team initially used Google's text-bison model and has since migrated to Gemini, which they report has improved hallucination rates. They acknowledged that hallucination is always a risk with LLMs but implemented specific controls.
+
+For critical information like transaction details and amounts, they implemented parameters that extract specific pieces of information directly from the conversation rather than relying on the LLM's summarization. This ensures accuracy for key data points while allowing the LLM more flexibility in generating the narrative summary portion. The philosophy is that if the LLM hallucinates, it will be in less critical parts of the summary rather than on transaction specifics.
+
+## Results and Impact
+
+The combined system saves approximately 1,000 hours annually. The team emphasizes four key impacts:
+
+- **Time savings**: Managing routine tasks more efficiently and freeing teams for higher-value activities
+- **Bias control**: Ensuring ML models operate fairly through systematic controls
+- **GenAI capabilities**: Establishing a foundation for more sophisticated generative features
+- **Stakeholder alignment**: Building solutions that address real needs of both internal stakeholders and customers
+
+The presenters were careful to credit the broader team effort, noting that multiple teams across the bank contributed to these implementations, including AI trainers and various data science team members.
+
+## Technical Architecture Considerations
+
+While the presenters couldn't share all technical details due to confidentiality, some key architectural decisions emerged: the separation of concerns between Luigi and Eva (different features, different training sets, different algorithms), the use of trigrams as an optimal balance point for n-gram modeling, the human-in-the-loop design for handling model disagreements, and the structured approach to prompt engineering with quantitative evaluation using ROUGE-N scores.
+
+The case study represents a practical example of combining traditional ML techniques with emerging LLM capabilities in a regulated industry where control, governance, and bias management are paramount concerns.

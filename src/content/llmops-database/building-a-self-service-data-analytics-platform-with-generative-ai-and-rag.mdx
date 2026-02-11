@@ -1,0 +1,115 @@
+---
+title: "Building a Self-Service Data Analytics Platform with Generative AI and RAG"
+slug: "building-a-self-service-data-analytics-platform-with-generative-ai-and-rag"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "675b19b5c553389cc75b07c0"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:48:25.225Z"
+  createdOn: "2024-12-12T17:13:25.012Z"
+llmopsTags:
+  - "data-analysis"
+  - "question-answering"
+  - "structured-output"
+  - "data-integration"
+  - "healthcare"
+  - "regulatory-compliance"
+  - "rag"
+  - "fine-tuning"
+  - "semantic-search"
+  - "vector-search"
+  - "model-optimization"
+  - "multi-agent-systems"
+  - "langchain"
+  - "fastapi"
+  - "databases"
+  - "microservices"
+  - "monitoring"
+  - "databricks"
+  - "microsoft-azure"
+  - "amazon-aws"
+company: "zeb"
+summary: "zeb developed SuperInsight, a generative AI-powered self-service reporting engine that transforms natural language data requests into actionable insights. Using Databricks' DBRX model and combining fine-tuning with RAG approaches, they created a system that reduced data analyst workload by 80-90% while increasing report generation requests by 72%. The solution integrates with existing communication platforms and can generate reports, forecasts, and ML models based on user queries."
+link: "https://www.databricks.com/customers/zeb"
+year: 2024
+seo:
+  title: "zeb: Building a Self-Service Data Analytics Platform with Generative AI and RAG - ZenML LLMOps Database"
+  description: "zeb developed SuperInsight, a generative AI-powered self-service reporting engine that transforms natural language data requests into actionable insights. Using Databricks' DBRX model and combining fine-tuning with RAG approaches, they created a system that reduced data analyst workload by 80-90% while increasing report generation requests by 72%. The solution integrates with existing communication platforms and can generate reports, forecasts, and ML models based on user queries."
+  canonical: "https://www.zenml.io/llmops-database/building-a-self-service-data-analytics-platform-with-generative-ai-and-rag"
+  ogTitle: "zeb: Building a Self-Service Data Analytics Platform with Generative AI and RAG - ZenML LLMOps Database"
+  ogDescription: "zeb developed SuperInsight, a generative AI-powered self-service reporting engine that transforms natural language data requests into actionable insights. Using Databricks' DBRX model and combining fine-tuning with RAG approaches, they created a system that reduced data analyst workload by 80-90% while increasing report generation requests by 72%. The solution integrates with existing communication platforms and can generate reports, forecasts, and ML models based on user queries."
+---
+
+## Overview
+
+zeb is a consulting firm specializing in digital transformation with over 15 years of experience and more than 1,500 experts. They developed SuperInsight, a self-service reporting engine that is part of their SuperDesk suite of AI-powered service desk products. The core problem SuperInsight addresses is the significant workload burden placed on data analysts who manually process numerous data requests from business users. The solution enables non-technical users to interact with their data through natural language queries submitted via familiar communication platforms like Slack, Microsoft Teams, or email, receiving actionable insights in return.
+
+The genesis of SuperInsight came from a deployment for a large enterprise logistics company where data plays a critical role. Prior to the AI implementation, a team of several data analysts managed a substantial backlog of data requests. The initial GenAI-based system reportedly reduced the workload on data analysts by 80–90%, which is an impressive claim though it should be noted this figure comes from zeb themselves. The success of this pilot led to the development of a more generalized product that could serve multiple industries including logistics and supply chain, retail, fintech, and healthcare/life sciences.
+
+## Technical Architecture and LLMOps Implementation
+
+The SuperInsight system is built entirely on the Databricks Data Intelligence Platform, representing an end-to-end LLMOps solution that consolidates what would otherwise require "30 different solutions to piece together," according to the case study. The architecture employs a compound AI system approach, combining multiple AI techniques to achieve robust, production-ready performance.
+
+### Compound AI System Design
+
+The solution uses both Retrieval-Augmented Generation (RAG) and fine-tuning, applying them for distinct purposes within the pipeline. According to Sid Vivek, Head of AI at zeb, fine-tuning is used to "change the behavior and scope of the model itself and put it within the context understanding of a specific industry." Meanwhile, RAG is applied with the assumption that the model is already industry-trained, but needs to understand "a particular organization's data schema and context." This dual approach represents a sophisticated understanding of when to apply each technique in production LLM systems.
+
+### Model Selection: DBRX
+
+zeb selected the open-source DBRX model from Databricks for both fine-tuning and RAG components. The decision was driven by DBRX's ability to handle instruction-based fine-tuning with reduced latency, as well as its Mixture-of-Experts (MoE) architecture which allows for faster inference while maintaining accuracy. The MoE architecture is particularly relevant for production deployments where latency matters, as it enables the model to activate only relevant "expert" sub-networks for each query rather than the full parameter count.
+
+### Request Processing Pipeline
+
+The production pipeline follows this flow:
+
+- End users submit requests through email, Slack, or other communication channels
+- The request is processed by a DBRX model that classifies the intent of the query
+- Databricks Vector Search retrieves relevant context from a knowledge base stored in Unity Catalog
+- A Model Serving endpoint combines another DBRX model with a fine-tuned adapter based on the customer's specific industry
+- The output is routed to the appropriate destination: a data warehouse for CSV generation, a deployed AutoML endpoint for predictions, or a reporting tool for visual report generation
+
+This multi-stage pipeline demonstrates several key LLMOps patterns including intent classification, retrieval augmentation, model composition with adapters, and flexible output routing.
+
+### Infrastructure and Governance
+
+The solution leverages several Databricks components for production operations. Model Serving endpoints handle inference requests, while Unity Catalog provides federated security and governance for both data and models. The Mosaic AI Agent Framework is used for RAG implementation, and Mosaic AI Training handles fine-tuning workflows. This consolidated approach within a single platform addresses common LLMOps challenges around security, data governance, and operational complexity.
+
+The use of Unity Catalog for securing and federating both data and model assets is noteworthy from an enterprise governance perspective. Organizations deploying LLM systems often struggle with ensuring that the AI system respects existing data access controls and audit requirements. By building on Unity Catalog, SuperInsight inherits these governance capabilities.
+
+## Production Deployment Considerations
+
+### Multi-Tenancy and Industry Customization
+
+A key architectural decision was the development of canonical data models aligned with four different industries (logistics/supply chain, retail, fintech, and health/life sciences). This approach allows zeb to deploy SuperInsight across different customer contexts while maintaining industry-specific understanding. The fine-tuned adapters enable industry customization without requiring complete model retraining for each deployment.
+
+### Integration Architecture
+
+The solution's integration with existing workflow tools (Slack, Teams, ServiceNow, Jira) is critical for production adoption. By meeting users where they already work rather than requiring them to adopt new interfaces, the system reduces friction and increases adoption. This is a common pattern in successful enterprise AI deployments.
+
+### Continuous Improvement
+
+The case study mentions that zeb is "constantly trying to improve as we do more implementations," gathering data understanding and knowledge that feeds back into their canonical data models. This suggests an ongoing MLOps/LLMOps process where production data and feedback inform model improvements over time.
+
+## Results and Business Impact
+
+The claimed results include:
+
+- 40% faster time to develop the solution compared to a non-Databricks approach
+- 40% cost savings for customers through augmentation of data analyst teams
+- 72% increase in the number of reports requested compared to the previous manual process
+- 80-90% reduction in data analyst workload (from the initial logistics company deployment)
+
+The 72% increase in report requests is particularly interesting from an LLMOps perspective, as it demonstrates the common phenomenon where making a capability easier to access leads to increased demand. This has implications for capacity planning and cost management in production LLM systems.
+
+## Critical Assessment
+
+While the case study presents impressive results, several points merit consideration. The quantitative claims (40% development time reduction, 40% cost savings, 72% increase in requests, 80-90% workload reduction) come from zeb and Databricks, who have commercial interests in presenting favorable outcomes. Independent verification of these metrics is not provided.
+
+The development timeline of "just a few months" for the initial version is plausible given the use of a unified platform and pre-built components, though the scope and complexity of that initial version is not detailed.
+
+The case study also demonstrates the vendor lock-in tradeoff common in LLMOps: while using a unified platform like Databricks simplifies development and operations, it creates dependency on that ecosystem. The comparison to needing "30 different solutions" without Databricks may be somewhat exaggerated for rhetorical effect.
+
+Overall, this case study illustrates a well-architected compound AI system for enterprise self-service analytics, with thoughtful application of both RAG and fine-tuning techniques, strong governance integration, and attention to user experience through familiar communication channels. The architecture patterns demonstrated here are broadly applicable to similar enterprise LLM deployments.

@@ -1,0 +1,240 @@
+---
+title: "Building a Microservices-Based Multi-Agent Platform for Financial Advisors"
+slug: "building-a-microservices-based-multi-agent-platform-for-financial-advisors"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "6930585a0769c215b02264bf"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:31:13.059Z"
+  createdOn: "2025-12-03T15:33:46.467Z"
+llmopsTags:
+  - "healthcare"
+  - "fraud-detection"
+  - "customer-support"
+  - "document-processing"
+  - "question-answering"
+  - "classification"
+  - "high-stakes-application"
+  - "structured-output"
+  - "regulatory-compliance"
+  - "data-analysis"
+  - "rag"
+  - "prompt-engineering"
+  - "multi-agent-systems"
+  - "agent-based"
+  - "human-in-the-loop"
+  - "error-handling"
+  - "few-shot"
+  - "mcp"
+  - "a2a"
+  - "evals"
+  - "semantic-search"
+  - "vector-search"
+  - "kubernetes"
+  - "docker"
+  - "monitoring"
+  - "databases"
+  - "api-gateway"
+  - "microservices"
+  - "cicd"
+  - "scaling"
+  - "serverless"
+  - "devops"
+  - "orchestration"
+  - "continuous-deployment"
+  - "continuous-integration"
+  - "documentation"
+  - "security"
+  - "compliance"
+  - "guardrails"
+  - "reliability"
+  - "scalability"
+  - "fastapi"
+  - "postgresql"
+  - "redis"
+  - "cache"
+  - "elasticsearch"
+  - "chromadb"
+  - "pinecone"
+  - "amazon-aws"
+  - "anthropic"
+  - "openai"
+company: "Prudential"
+summary: "Prudential Financial, in partnership with AWS GenAI Innovation Center, built a scalable multi-agent platform to support 100,000+ financial advisors across insurance and financial services. The system addresses fragmented workflows where advisors previously had to navigate dozens of disconnected IT systems for client engagement, underwriting, product information, and servicing. The solution features an orchestration agent that routes requests to specialized sub-agents (quick quote, forms, product, illustration, book of business) while maintaining context and enforcing governance. The platform-based microservices architecture reduced time-to-value from 6-8 weeks to 3-4 weeks for new agent deployments, enabled cross-business reusability, and provided standardized frameworks for authentication, LLM gateway access, knowledge management, and observability while handling the complexity of scaling multi-agent systems in a regulated financial services environment."
+link: "https://www.youtube.com/watch?v=9UTzSY40e9I"
+year: 2025
+seo:
+  title: "Prudential: Building a Microservices-Based Multi-Agent Platform for Financial Advisors - ZenML LLMOps Database"
+  description: "Prudential Financial, in partnership with AWS GenAI Innovation Center, built a scalable multi-agent platform to support 100,000+ financial advisors across insurance and financial services. The system addresses fragmented workflows where advisors previously had to navigate dozens of disconnected IT systems for client engagement, underwriting, product information, and servicing. The solution features an orchestration agent that routes requests to specialized sub-agents (quick quote, forms, product, illustration, book of business) while maintaining context and enforcing governance. The platform-based microservices architecture reduced time-to-value from 6-8 weeks to 3-4 weeks for new agent deployments, enabled cross-business reusability, and provided standardized frameworks for authentication, LLM gateway access, knowledge management, and observability while handling the complexity of scaling multi-agent systems in a regulated financial services environment."
+  canonical: "https://www.zenml.io/llmops-database/building-a-microservices-based-multi-agent-platform-for-financial-advisors"
+  ogTitle: "Prudential: Building a Microservices-Based Multi-Agent Platform for Financial Advisors - ZenML LLMOps Database"
+  ogDescription: "Prudential Financial, in partnership with AWS GenAI Innovation Center, built a scalable multi-agent platform to support 100,000+ financial advisors across insurance and financial services. The system addresses fragmented workflows where advisors previously had to navigate dozens of disconnected IT systems for client engagement, underwriting, product information, and servicing. The solution features an orchestration agent that routes requests to specialized sub-agents (quick quote, forms, product, illustration, book of business) while maintaining context and enforcing governance. The platform-based microservices architecture reduced time-to-value from 6-8 weeks to 3-4 weeks for new agent deployments, enabled cross-business reusability, and provided standardized frameworks for authentication, LLM gateway access, knowledge management, and observability while handling the complexity of scaling multi-agent systems in a regulated financial services environment."
+---
+
+## Overview
+
+Prudential Financial, a major American financial services company operating in 40+ countries, partnered with AWS GenAI Innovation Center to develop a comprehensive multi-agent platform addressing the complexity of scaling AI solutions across multiple business units. The initiative is presented by Moon Kim (Lead ML Engineer at AWS GenAI Innovation Center), Rohit Kapa (VP of Data Science at Prudential), and Subir Das (Director of Machine Learning Engineering at Prudential), reflecting a collaborative effort between the enterprise and AWS consulting teams.
+
+The case study centers on addressing a fundamental challenge in financial services: advisors were forced to interact with 50-60 different IT systems across multiple carriers to serve clients throughout the life insurance lifecycle. This fragmentation created significant inefficiencies, with processes like manual "quick quotes" for underwriting taking 1-2 days and advisors spending more time navigating backend systems than providing actual financial advice. Prudential's ambition extended beyond solving this single use case—they envisioned thousands of agents across retirement, group insurance, and life insurance business units, each serving different business functions including distribution and sales, underwriting and risk, customer service and claims, product development, and marketing.
+
+## The Business Problem and Initial Approach
+
+The life insurance advisory workflow illustrates the core problem. A typical advisor must handle client engagement, needs assessment, solution design, product presentation and illustration, application and underwriting support, and ongoing service and follow-ups over 10-20 years. Each step requires different backend systems, and advisors working with multiple carriers compound the complexity. The manual quick quote process exemplifies the inefficiency: advisors would request quotes for prospective clients with medical conditions (diabetes, hypertension, cancer), and underwriters would take 1-2 days to respond due to high request volumes. Similar delays occurred with form retrieval and product information queries.
+
+Prudential recognized that multiple teams were building "multiple solutions, multiple agent tech solutions within one repo," often the same repositories used for RAG applications 2-3 years prior. This approach broke down as agent implementations became entangled, ownership boundaries blurred, deployments extended from minutes to days (with single-line changes triggering security alerts from multiple teams), and managing sensitive data like PII and PHI became increasingly difficult.
+
+## The Multi-Agent Architecture
+
+The solution features a sophisticated multi-agent system with clear separation of concerns. At the user-facing level, advisors interact through a chat interface providing natural language-driven, context-rich conversations. Behind this interface operates an orchestration agent serving as a single point of entry. This orchestration layer is non-deterministic—it understands advisor intent and dynamically routes requests to appropriate sub-agents based on context.
+
+The sub-agent ecosystem includes five specialized agents:
+
+**Quick Quote Agent**: This agent replicates underwriter decision-making to provide instant medical quotes. It is trained on "several hundred documents" containing detailed risk rating procedures for various medical conditions. The agent employs intelligent follow-up questioning—if an advisor mentions a client with diabetes, the agent automatically asks for A1C values, blood sugar levels, and medication details. For cancer cases, it inquires about remission dates, treatment history, chemotherapy, and cancer stage. The system includes training and validation pipelines for automatic prompt optimization and determining what information is necessary for decisions. Importantly, Rohit notes this is "not an agentic solution by itself" but rather "a stand-alone LLM application, where for a particular task, you are trying to replicate an underwriter using a complex LLM application system by design."
+
+**Forms Agent**: Trained on hundreds of forms across different areas, this agent provides instant form retrieval with intelligent follow-up questions about transaction type, state-specific requirements, and other contextual factors.
+
+**Product Agent**: Functions as a smart search feature for product information, enabling advisors to ask detailed questions about product features, applicability to specific client situations, and product suitability.
+
+**Illustration Agent**: Serves product illustrations through an API-like interface accessed through the agent framework.
+
+**Book of Business Agent**: Provides advisors access to their portfolio of placed policies (potentially hundreds of thousands), offering next-best-action recommendations and policy-specific guidance, addressing the challenge of advisors managing large books of business over extended timeframes.
+
+The orchestration agent manages context sharing between itself and sub-agents, with guardrails implemented at both the orchestration level and individual agent levels to handle invalid queries, sub-queries, and facilitate follow-up interactions.
+
+## Microservices Architecture and LLMOps Infrastructure
+
+Subir Das details the production deployment architecture, which needed to scale to 100,000+ users while supporting intent-driven orchestration, component reusability, security, and compliance. The microservices architecture implements multiple security and operational layers:
+
+**Authentication and Authorization**: Users interact through a UI application where SSO authentication occurs based on user home access level control. Upon authentication, a secure token is generated and passed to the agent layer, which revalidates the token. The system then generates a context-specific window ID mapped to the secure token. This pairing is passed to the orchestration agent and subsequently to individual sub-agents.
+
+**Session and Context Management**: The orchestration agent uses the secure token and window ID pairing to maintain session continuity and enable context engineering throughout agentic discussions. This becomes critical at scale—managing context engineering for 100,000 users, each with paired secure tokens and context window IDs, represents a significant technical challenge. The team notes that "Model in a typical sense, right, sometimes they drop performance for unknown reasons and debugging this context engineering frame in order to span, separate it out, and find out exactly why it happened. It is challenging in this environment."
+
+**LLM Gateway**: Individual agents access LLMs through a secure LLM gateway rather than direct access, providing centralized governance, monitoring, and control over model interactions.
+
+**Knowledge Management System**: Agents requiring document retrieval or knowledge base access utilize a centralized knowledge management system, enabling RAG capabilities across the platform.
+
+**Monitoring and Observability**: The platform includes active development of monitoring and observability frameworks at the agent layer, with evaluation frameworks being added to support ongoing performance assessment.
+
+## Scaling with Time: The Core Challenge
+
+A recurring theme throughout the presentation is "scaling with time"—not just handling more concurrent users, but adapting to the rapid evolution of the GenAI landscape. Moon Kim emphasizes that "in the AI GenAI space, the information in the space is changing at a very rapid speed. In order for the system to address correctness, completeness, and accuracy of a particular system. And at the same point in time, we would like to take advantage of those enhancements, those frameworks, be it from a prompt management standpoint, be it from a context engineering standpoint, be it from SDKs, be it from a pipeline, anything that is coming up, we would like to take advantage of it."
+
+This challenge manifests in several ways:
+
+- New models are released regularly with different capabilities and performance characteristics
+- Context management frameworks evolve (the team references the ACE framework under active development)
+- SDKs and tooling change frequently
+- Prompt optimization techniques advance
+- New patterns like Model Context Protocol (MCP) and Agent-to-Agent (A2A) protocols emerge
+
+The team addresses this through **modularity as a key architectural principle**. By identifying core components (runtime, memory, code interpreter, browser tools) and separating concerns for business logic, runtime execution, governance, and scaling, they enable component swapping when necessary. This fungibility—a term borrowed from finance and technology—allows building blocks to be replaced with improved alternatives without rebuilding the entire system.
+
+## Advanced Agent Architecture and Protocols
+
+The internal architecture of individual agents reveals sophisticated patterns. Agents access data planes and utilize multiple frameworks and protocols:
+
+**MCP (Model Context Protocol)**: Used for standardized tool access, enabling agents to interact with various tools and resources through a consistent interface.
+
+**React Framework**: Employed within agent reasoning processes.
+
+**Memory Management**: Agents implement both short-term and long-term memory access patterns, with active development on more sophisticated context engineering frameworks based on the ACE (Autonomous Cognitive Entity) framework.
+
+**A2A (Agent-to-Agent) Protocol**: Enables transitions between agents within the same multi-agent system and, critically, between different multi-agent systems. The presentation mentions other Prudential systems including "Planned Provision" (a retirement multi-agent system) and "IDP" (an intelligent document processing multi-agent system). The A2A protocol allows the life insurance advisory assistant to interact with these separate systems when needed.
+
+The team is actively developing a context engineering framework to address performance challenges at scale. They note that "debugging this context engineering frame in order to span, separate it out, and find out exactly why it happened" when models drop performance is particularly challenging with 100,000 concurrent users.
+
+## The Platform-Based Approach
+
+The architecture transitions from individual solutions to a comprehensive platform approach with three distinct layers:
+
+**Traditional ML Infrastructure**: SageMaker inference handles traditional model serving, which agents can access via MCP when needed.
+
+**GenAI Core Services**: This layer includes vector stores for knowledge management, Bedrock-based agents, the LLM gateway, and developing management and evaluation frameworks. The platform relies on enterprise services for agent operations (AgentOps) and CI/CD through GitHub Actions, with the entire DevSecOps pipeline provided through enterprise services.
+
+**Data and Infrastructure**: Enterprise data services provide data access, while AWS infrastructure forms the technical foundation.
+
+The platform serves distinct user groups. Data scientists and machine learning engineers use it for model development and deployment, while business users and applications consume the deployed services.
+
+## Three-Tier Vision for Enterprise Scale
+
+Rohit presents an ambitious vision for scaling across Prudential's enterprise with a three-tier architecture:
+
+**Agent Development Layer (Top)**: This layer democratizes agent building, enabling data scientists, software engineers, and AI enthusiasts to build their own agents using various SDKs and frameworks. Capabilities include deep research agents, IDP, call summarizations, customer service summarizations, and image recognition. The key principle is providing core services (interpreter, execution, browser, etc.) as tools and making agents self-discoverable and reusable. Developers focus purely on agent logic without concerning themselves with platform components.
+
+**Core Platform Layer (Middle)**: This foundational layer handles centralized Bedrock environment access, context engineering, development environments (SageMaker Unified Studio), and enterprise data stacks. Critical additions under development include:
+- MCP Gateway: Centralized management of Model Context Protocol interactions
+- A2A Gateway: Facilitating agent-to-agent communications
+- GenAI Gateway: Centralized LLM access control
+- Agent Registry: For agent discoverability, management, and "report cards" (performance tracking)
+- MCP Registry and Management: Centralized MCP resource management
+
+**Enterprise Infrastructure Layer (Bottom)**: Provides crude base services including Splunk, ServiceNow, and other enterprise infrastructure services.
+
+This modular approach enables teams to build on top using standardized patterns for agent configuration, discovery, performance identification, and deployment, with all agents leveraging core functionalities from the platform layer.
+
+## Business Outcomes and Impact
+
+The platform has achieved measurable business impact:
+
+**Time-to-Value Reduction**: Turnaround time for new AI use cases decreased from 6-8 weeks to 3-4 weeks. Once the foundational advisory assistant system was established, adding new agents and deploying to production takes 4-5 weeks for both development and deployment combined. User-requested features (like adding new products to the product agent) can be delivered and deployed quickly as stand-alone solutions.
+
+**Reusability and Standardization**: The platform enables scaling from single use cases to multiple use cases, with solutions built for one business unit being reused across other business units. This standardization reduces technical debt as the platform can be upgraded centrally rather than updating each individual solution.
+
+**Integration Capabilities**: The architecture facilitates integration with existing IT applications and workflows, critical for an enterprise with extensive legacy systems.
+
+**Business Feedback Incorporation**: Standardized solutions enable earlier incorporation of business feedback in the development cycle. Previously, data scientists and engineers focused on both agent building and surrounding components (context handling, environment promotion from dev to stage/UAT), which often broke when scale was added and LLM performance would drop. With standardized solutions, teams can access tracing, debugging, chain-of-prompts observability, and production monitoring, enabling faster incorporation of business feedback and building business trust in AI systems.
+
+**Performance Focus**: Data scientists can now focus on improving model and agent performance rather than engineering infrastructure, particularly critical in financial services where "performance is a key part, and a lack of performance usually adds a distrust from an underwriters or the user's standpoint."
+
+The system is currently live with "more than 100,000 advisors actually using this," representing significant production scale.
+
+## Challenges and Lessons Learned
+
+The team provides candid assessment of challenges and lessons:
+
+**Not All Problems Suit Agents**: The quick quote system, while appearing agentic, is actually "a stand-alone LLM application" rather than a true multi-agent solution. Similarly, simple IDP solutions may not work for complex use cases involving handwriting or complex information extraction.
+
+**End-to-End Value Chain**: Solutions must address complete business processes. For example, solving "not in good order" (NIGO) cases requires IDP plus business rule processing and workflow management on top—the IDP alone doesn't deliver complete business value.
+
+**Unpredictable Performance Degradation**: Production scaling reveals performance drops from two primary sources. First, model upgrades from providers can affect agent performance unexpectedly. Second, training and validation datasets may not cover all real-world cases encountered in production. The team notes this as "one of the bigger aspects that we are trying to solve."
+
+**Context Engineering Complexity**: At scale, especially with agent-to-agent interactions and reusing agents across systems, context engineering becomes extraordinarily challenging. The team emphasizes: "How do we actually maintain that? How do we actually log it? How do we do the debugging or tracing? I think this becomes a key important aspects when we are trying to solve this kind of use cases."
+
+**Memory and Context Management**: Managing separate databases, cache memory, short-term and long-term memory, and static memory for each multi-agent system doesn't scale. "One pattern for one particular agent system might work, but if I switch from advisory assistant to maybe some real-time system or from there to IDP or from other use case, use case by use case, it becomes very harder to scale." The team advocates adopting industry-standard solutions like Agent Core rather than re-engineering for each use case, reserving custom solutions only for genuinely complex edge cases.
+
+## Future Directions and Industry Adoption
+
+The platform is evolving to support:
+
+**Integration with Other Line of Business Agents**: Reusing agents across business units provides key wins, as use cases solved in one business can benefit others.
+
+**Standardized Memory and Observability**: Rather than each multi-agent system creating its own infrastructure, standardizing approaches to memory (short-term, long-term, static) and observability will enable scaling across the enterprise.
+
+**Industry Framework Adoption**: The team is moving toward adopting frameworks the industry is heading toward (like Agent Core) for generic use cases, providing features like built-in context engineering while reserving custom development for truly unique requirements.
+
+**MCP and A2A Integration**: Active development continues on Model Context Protocol and Agent-to-Agent protocol implementations, with dedicated gateways being developed for each.
+
+**Enhanced Evaluation and Monitoring**: The platform is adding comprehensive evaluation frameworks and agent monitoring capabilities, including agent span measurement, traceability, and observability.
+
+## Critical Assessment and Balanced Perspective
+
+While the presentation showcases impressive achievements, several considerations warrant attention:
+
+**Maturity and Stability**: The platform is clearly in active development with multiple components "under active development" or "actively developing." The context engineering framework based on ACE, MCP/A2A gateways, agent registry, and evaluation frameworks are all works in progress, suggesting the platform hasn't reached full maturity.
+
+**Performance Unpredictability**: The candid acknowledgment of "unpredictable drop in agentic performance" in production represents a significant operational challenge. The inability to fully debug context engineering issues at scale suggests monitoring and observability gaps remain.
+
+**Complexity vs. Benefits Trade-off**: The architecture is undeniably complex, with multiple layers, protocols, gateways, and frameworks. While this provides flexibility and scalability, it also introduces operational overhead, potential points of failure, and steep learning curves for development teams.
+
+**Quantified Business Impact**: While time-to-value improvements (6-8 weeks to 3-4 weeks) are significant, the presentation lacks detailed quantification of business outcomes like cost savings, productivity improvements, advisor satisfaction, or customer experience metrics. The quick quote process reducing from 1-2 days to "instant" is compelling, but adoption rates, accuracy metrics, and business user trust levels would provide fuller context.
+
+**Agent vs. LLM Application Ambiguity**: The clarification that the quick quote system isn't truly "agentic" raises questions about terminology and architecture choices. If core components are actually complex LLM applications rather than autonomous agents, the multi-agent framework may add complexity without commensurate benefit for certain use cases.
+
+**Vendor Lock-in Considerations**: The deep integration with AWS services (Bedrock, SageMaker, enterprise infrastructure) creates potential vendor lock-in, though this is likely acceptable given Prudential's existing AWS relationship and the presentation context (AWS partnership).
+
+**Governance and Responsible AI**: While mentioned as benefits of the platform approach, the actual implementation of responsible AI frameworks, guardrails effectiveness, and governance enforcement mechanisms receive limited technical detail.
+
+Nevertheless, the case study represents a sophisticated approach to enterprise LLMOps challenges, demonstrating thoughtful architectural choices, clear lessons learned from production experience, and pragmatic evolution from monolithic to modular approaches. The emphasis on modularity, standardization, and "scaling with time" reflects mature thinking about long-term platform sustainability in rapidly evolving AI landscapes. The production deployment to 100,000+ users demonstrates real-world validation at significant scale, and the partnership between Prudential and AWS GenAI Innovation Center illustrates effective collaboration between enterprise and consulting teams in building production-ready LLM platforms.

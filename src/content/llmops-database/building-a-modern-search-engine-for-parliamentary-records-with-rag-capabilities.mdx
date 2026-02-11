@@ -1,0 +1,116 @@
+---
+title: "Building a Modern Search Engine for Parliamentary Records with RAG Capabilities"
+slug: "building-a-modern-search-engine-for-parliamentary-records-with-rag-capabilities"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "674f1fc51dd9a470763b14dd"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:47:01.972Z"
+  createdOn: "2024-12-03T15:12:05.902Z"
+llmopsTags:
+  - "document-processing"
+  - "question-answering"
+  - "unstructured-data"
+  - "rag"
+  - "embeddings"
+  - "semantic-search"
+  - "reranking"
+  - "elasticsearch"
+  - "fastapi"
+  - "openai"
+company: "Hansard"
+summary: "The Singapore government developed Pair Search, a modern search engine for accessing Parliamentary records (Hansard), addressing the limitations of traditional keyword-based search. The system combines semantic search using e5 embeddings with ColbertV2 reranking, and is designed to serve both human users and as a retrieval backend for RAG applications. Early deployment shows significant user satisfaction with around 150 daily users and 200 daily searches, demonstrating improved search result quality over the previous system."
+link: "https://hack.gov.sg/hack-for-public-good-2024/2024-projects/pairsearch/"
+year: 2024
+seo:
+  title: "Hansard: Building a Modern Search Engine for Parliamentary Records with RAG Capabilities - ZenML LLMOps Database"
+  description: "The Singapore government developed Pair Search, a modern search engine for accessing Parliamentary records (Hansard), addressing the limitations of traditional keyword-based search. The system combines semantic search using e5 embeddings with ColbertV2 reranking, and is designed to serve both human users and as a retrieval backend for RAG applications. Early deployment shows significant user satisfaction with around 150 daily users and 200 daily searches, demonstrating improved search result quality over the previous system."
+  canonical: "https://www.zenml.io/llmops-database/building-a-modern-search-engine-for-parliamentary-records-with-rag-capabilities"
+  ogTitle: "Hansard: Building a Modern Search Engine for Parliamentary Records with RAG Capabilities - ZenML LLMOps Database"
+  ogDescription: "The Singapore government developed Pair Search, a modern search engine for accessing Parliamentary records (Hansard), addressing the limitations of traditional keyword-based search. The system combines semantic search using e5 embeddings with ColbertV2 reranking, and is designed to serve both human users and as a retrieval backend for RAG applications. Early deployment shows significant user satisfaction with around 150 daily users and 200 daily searches, demonstrating improved search result quality over the previous system."
+---
+
+## Overview
+
+Pair Search is a prototype search engine developed by Singapore's Open Government Products (OGP) team during the Hack for Public Good 2024 hackathon. The project addresses a significant pain point in government information retrieval: searching through decades of parliamentary records (Hansard) that were previously only accessible via poor-quality keyword search. The system is explicitly designed with a dual purpose in mind—serving human users directly while also functioning as the retrieval component for Retrieval Augmented Generation (RAG) systems used by other government LLM products.
+
+The Hansard database contains the official record of every word spoken in Singapore's Parliament, dating back to 1955 when Parliament was known as the Legislative Assembly. This represents over 30,000 reports spanning nearly 70 years of evolving data formats. Policy makers, legal professionals, and the public all rely on this information, but the existing search infrastructure was woefully inadequate for modern needs.
+
+## The Problem with Legacy Search
+
+The original Hansard search engine relied entirely on keyword-based matching, which produced poor results for complex queries. The case study provides a concrete example: searching for "covid 19 rapid testing" in the legacy system returns results flooded with documents that merely mention "Covid" frequently, rather than documents actually discussing rapid testing protocols. The system lacked semantic understanding and couldn't interpret user intent beyond literal word matching.
+
+Additionally, the legacy interface only displayed document titles without contextual snippets, forcing users to click through multiple links to determine relevance. This created significant friction for policy officers who needed to research topics quickly and thoroughly.
+
+## Technical Architecture
+
+### Document Processing Pipeline
+
+The team faced substantial data engineering challenges in preparing the corpus for indexing. The Hansard database spans decades during which data formats evolved significantly. Standardizing this heterogeneous information into a uniform format suitable for modern search indexing required careful parsing and transformation. While the case study doesn't detail the specific ETL processes used, this kind of historical document processing is a common but often underestimated component of production search systems.
+
+### Search Engine Infrastructure
+
+Pair Search is built on Vespa.ai, an open-source big data serving engine. This choice reflects several strategic considerations: Vespa provides both keyword and vector search capabilities in a single platform, it's designed for production-scale workloads, and it has active integration of state-of-the-art models and techniques. The open-source nature also aligns with government preferences for avoiding vendor lock-in and maintaining transparency.
+
+### Hybrid Retrieval Strategy
+
+The retrieval mechanism employs a dual-pronged approach combining keyword and semantic search:
+
+**Keyword Search Component:** Uses Vespa's weakAnd operator with nativeRank and BM25 text matching algorithms. BM25 is a well-established probabilistic ranking function that considers term frequency and document length normalization. The weakAnd operator allows efficient approximate matching without exhaustively scoring every document.
+
+**Semantic Search Component:** Incorporates e5 embeddings for vector-based similarity search. The team explicitly chose e5 over alternatives like OpenAI's ada embeddings, citing better speed, cost-effectiveness, and performance. This reflects a pragmatic production decision—while OpenAI embeddings are popular, e5 models (particularly the multilingual variants like M3 mentioned in the text) can be self-hosted, reducing API dependencies and costs for high-volume government applications.
+
+The hybrid approach captures both the literal textual content users specify and the semantic intent behind their queries. This is particularly valuable for parliamentary records where the same concept may be expressed using different terminology across decades.
+
+### Three-Phase Reranking Pipeline
+
+To maintain low latency despite complex ranking algorithms, Pair Search implements a tiered reranking approach:
+
+**Phase 1 (Content Node Level):** Each content node applies cost-effective initial filtering algorithms to reduce the candidate set. This distributes the computational load and eliminates clearly irrelevant results early.
+
+**Phase 2 (ColBERT v2 Reranking):** A more resource-intensive pass using ColBERT v2, which performs late interaction between query and document token embeddings. ColBERT is known for providing high-quality relevance scores while being more efficient than cross-encoder approaches, making it suitable for production reranking.
+
+**Phase 3 (Global Aggregation):** The final phase combines top results from all content nodes, computing a hybrid score that integrates semantic similarity, keyword matching, and ColBERT scores. The team notes that this multi-signal approach significantly outperforms single-metric ranking, which tends to be "overly biased towards one dimension of result quality."
+
+This architecture represents a classic production ML pattern: use cheap, fast models to filter at scale, then apply expensive, accurate models to a smaller candidate set.
+
+## RAG Integration and Broader LLMOps Context
+
+A key strategic aspect of Pair Search is its explicit design as RAG infrastructure. The team frames the project within a larger context: advances in LLMs have created widespread demand for data-augmented generation, and the quality of RAG systems fundamentally depends on retrieval quality. By building a high-quality search engine, OGP creates reusable infrastructure for multiple LLM applications across government.
+
+The case study mentions that Pair Search is designed to work "out of the box as the retrieval stack for a Retrieval Augmented Generation system" and that they've been trialing this integration with an "Assistants feature in Pair Chat" (presumably another OGP product). By exposing APIs for both base search and RAG-specific retrieval, the team enables multiple applications to benefit from the same underlying engine.
+
+This architectural approach—building specialized retrieval infrastructure that serves multiple LLM applications—reflects emerging best practices in LLMOps. Rather than embedding search logic into individual applications, centralizing retrieval creates opportunities for optimization, monitoring, and improvement that benefit all downstream systems.
+
+## Production Deployment and Metrics
+
+The system was soft-launched with specific user groups including the Attorney-General's Chambers (AGC), Ministry of Law legal policy officers, Communications Operations officers at MCI and PMO, and Committee of Supply coordinators. Early metrics showed approximately 150 daily users and 200 daily searches.
+
+The team describes using engagement metrics for ongoing optimization: average rank of clicked results and number of pages users traverse before finding relevant content. These metrics inform tuning of the hybrid algorithm weights to improve both accuracy and relevance. This represents a reasonable production evaluation approach, though it's worth noting that click-based metrics can have biases (users may click on first results regardless of true relevance).
+
+User feedback quoted in the case study is uniformly positive, with policy officers describing significant productivity improvements. The project also received political recognition when Prime Minister Lee Hsien Loong referenced it in Parliament, noting that "soon, we will be able to do a generative AI search on it."
+
+## Future Directions
+
+The team outlines several planned enhancements that further integrate LLM capabilities:
+
+**LLM-Augmented Indexing:** Using language models to enrich the search index through automated tagging and potential-question generation. This preprocessing approach can improve retrieval without changing query-time complexity.
+
+**Query Expansion:** Leveraging LLMs to enhance queries by appending related terms and phrases, increasing the probability of matching relevant documents. This is a well-established information retrieval technique that LLMs can automate effectively.
+
+**Magic Summary Feature:** The case study mentions a feature that "automatically generates a summary of the best results in a chronological timeline" that was deprioritized for initial launch. This suggests plans for generative summarization as a post-retrieval enhancement.
+
+**Expansion to Other Corpora:** The team plans to extend indexing to other government data sources including High Court and Court of Appeal case judgments, addressing similar search quality issues in legal research.
+
+## Assessment
+
+Pair Search represents a well-architected production search system that thoughtfully combines established information retrieval techniques with modern embedding-based approaches. The choice of Vespa.ai, hybrid retrieval, and tiered reranking reflects pragmatic engineering decisions appropriate for government production systems where reliability, cost-control, and maintainability matter.
+
+The explicit framing as RAG infrastructure is notable—the team recognizes that search quality underlies LLM application quality and has designed accordingly. The three-phase reranking pipeline demonstrates understanding of production ML tradeoffs between accuracy and latency.
+
+The case study is relatively light on operational details such as monitoring, testing strategies, or handling of edge cases. The evaluation approach based on click metrics, while practical, could be supplemented with more rigorous relevance assessment. The user testimonials, while positive, come from a small group of early adopters during soft launch.
+
+Overall, Pair Search illustrates how government technology teams are building foundational infrastructure for LLM applications, with retrieval quality recognized as a critical enabler for downstream generative AI use cases.

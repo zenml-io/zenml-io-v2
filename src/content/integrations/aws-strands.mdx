@@ -1,0 +1,45 @@
+---
+title: "AWS Strands"
+slug: "aws-strands"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "68ad93ec832a3a50938f738e"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-08-26T13:39:39.566Z"
+  lastUpdated: "2025-08-26T13:02:20.812Z"
+  createdOn: "2025-08-26T11:01:00.201Z"
+integrationType: "agents"
+logo:
+  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/7035354b/68ad93f3f7b83030996de1af_aws-strands.png"
+shortDescription: "Build and orchestrate Strands agents with reproducible ZenML pipelines."
+docsUrl: "https://docs.zenml.io"
+githubUrl: "https://github.com/zenml-io/zenml/tree/main/examples/agent_framework_integrations/autogen"
+mainImage:
+  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/c8617db2/68ada471e15a1cc0b3f503d4_aws-strands-img.png"
+relatedBlogPosts:
+  - "production-ready-ai-agents-why-your-mlops-stack-is-missing-piece"
+seo:
+  title: "Integrate AWS Strands with ZenML - Agents Integrations"
+  description: "Build and orchestrate Strands agents with reproducible ZenML pipelines."
+  canonical: "https://www.zenml.io/integrations/aws-strands"
+  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/c8617db2/68ada471e15a1cc0b3f503d4_aws-strands-img.png"
+  ogTitle: "Integrate AWS Strands with ZenML - Agents Integrations"
+  ogDescription: "Build and orchestrate Strands agents with reproducible ZenML pipelines."
+---
+
+<ul id=""><li id=""><strong id="">Run Strands agents</strong> as reproducible ZenML pipeline steps.</li><li id="">Automatically <strong id="">log and version agent inputs and outputs</strong> with ZenML’s artifact store.</li><li id="">Insert <strong id="">evaluation or monitoring steps</strong> alongside agent execution for observability.</li><li id="">Seamlessly scale from <strong id="">local execution to cloud orchestrators</strong> (Kubernetes, Airflow, etc.).</li></ul><ul><li><strong id="">Simple Callable Agents.</strong> Run Strands agents directly inside ZenML steps with a clean Pythonic interface.</li><li>‍<strong id="">Built-in Tools.</strong> Extend agent capabilities easily with the <code id="">@tool</code> decorator.</li><li>‍<strong id="">Math &amp; Reasoning.</strong> Enable agents to handle math operations and logical calculations out of the box.</li><li>‍<strong id="">Artifact Management.</strong> Automatically capture and version all inputs and outputs with ZenML’s artifact store.</li><li>‍<strong id="">Scalable Deployment.</strong> Move seamlessly from local experiments to production pipelines on Kubernetes, Airflow, or other orchestrators.</li></ul><div data-rt-embed-type="true"><pre><code fs-codehighlight-element="code">from zenml import ExternalArtifact, pipeline, step
+from agent import agent
+
+@step
+def run_strands(query: str) -&gt; str:
+    return str(agent(query))
+
+@pipeline
+def strands_weather_pipeline() -&gt; str:
+    q = ExternalArtifact(value="What's the weather like in Tokyo?")
+    return run_strands(q.value)
+
+if __name__ == "__main__":
+    print(strands_weather_pipeline())</code></pre></div>This is a minimal example. See the [full weather agent pipeline](https://github.com/zenml-io/zenml/tree/main/examples/agent_framework_integrations) for advanced usage with artifacts, formatting, and error handling.

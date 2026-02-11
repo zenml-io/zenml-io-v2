@@ -1,0 +1,89 @@
+---
+title: "Large-Scale Personalization System Using LLMs for Buyer Profile Generation"
+slug: "large-scale-personalization-system-using-llms-for-buyer-profile-generation"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "68be93fca927480d7439a451"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:20:42.741Z"
+  createdOn: "2025-09-08T08:29:48.155Z"
+llmopsTags:
+  - "customer-support"
+  - "classification"
+  - "structured-output"
+  - "unstructured-data"
+  - "prompt-engineering"
+  - "cost-optimization"
+  - "few-shot"
+  - "semantic-search"
+  - "chunking"
+  - "system-prompts"
+  - "databases"
+  - "api-gateway"
+  - "load-balancing"
+  - "scaling"
+  - "orchestration"
+  - "continuous-deployment"
+  - "open-source"
+  - "cache"
+  - "openai"
+company: "Etsy"
+summary: "Etsy tackled the challenge of personalizing shopping experiences for nearly 90 million buyers across 100+ million listings by implementing an LLM-based system to generate detailed buyer profiles from browsing and purchasing behaviors. The system analyzes user session data including searches, views, purchases, and favorites to create structured profiles capturing nuanced interests like style preferences and shopping missions. Through significant optimization efforts including data source improvements, token reduction, batch processing, and parallel execution, Etsy reduced profile generation time from 21 days to 3 days for 10 million users while cutting costs by 94% per million users, enabling economically viable large-scale personalization for search query rewriting and refinement pills."
+link: "https://www.etsy.com/codeascraft/building-etsy-buyer-profiles-with-llms"
+year: 2025
+seo:
+  title: "Etsy: Large-Scale Personalization System Using LLMs for Buyer Profile Generation - ZenML LLMOps Database"
+  description: "Etsy tackled the challenge of personalizing shopping experiences for nearly 90 million buyers across 100+ million listings by implementing an LLM-based system to generate detailed buyer profiles from browsing and purchasing behaviors. The system analyzes user session data including searches, views, purchases, and favorites to create structured profiles capturing nuanced interests like style preferences and shopping missions. Through significant optimization efforts including data source improvements, token reduction, batch processing, and parallel execution, Etsy reduced profile generation time from 21 days to 3 days for 10 million users while cutting costs by 94% per million users, enabling economically viable large-scale personalization for search query rewriting and refinement pills."
+  canonical: "https://www.zenml.io/llmops-database/large-scale-personalization-system-using-llms-for-buyer-profile-generation"
+  ogTitle: "Etsy: Large-Scale Personalization System Using LLMs for Buyer Profile Generation - ZenML LLMOps Database"
+  ogDescription: "Etsy tackled the challenge of personalizing shopping experiences for nearly 90 million buyers across 100+ million listings by implementing an LLM-based system to generate detailed buyer profiles from browsing and purchasing behaviors. The system analyzes user session data including searches, views, purchases, and favorites to create structured profiles capturing nuanced interests like style preferences and shopping missions. Through significant optimization efforts including data source improvements, token reduction, batch processing, and parallel execution, Etsy reduced profile generation time from 21 days to 3 days for 10 million users while cutting costs by 94% per million users, enabling economically viable large-scale personalization for search query rewriting and refinement pills."
+---
+
+## Overview
+
+Etsy's implementation of LLM-powered buyer profile generation represents a compelling case study in scaling personalization systems for e-commerce platforms. The company faced the fundamental challenge of helping nearly 90 million buyers discover relevant items among over 100 million listings, where traditional search and recommendation systems struggled to capture the nuanced, aesthetic preferences that make each buyer unique. Their solution involved deploying large language models in production to analyze user behavioral data and generate structured buyer profiles that capture both categorical interests and specific shopping missions.
+
+## Technical Architecture and Implementation
+
+The system's technical foundation demonstrates thoughtful LLMOps practices, beginning with a comprehensive data pipeline that retrieves user activity data from multiple internal sources including Etsy's feature store and BigQuery. The data includes recent searches, item views, purchases, and favorites, which are then processed through carefully engineered prompts to generate structured buyer profiles. The profiles follow a specific data structure that includes categorical interests, confidence scores, explanations, and observed behaviors, with built-in logic to handle cases where insufficient data exists to make confident inferences.
+
+What's particularly noteworthy from an LLMOps perspective is how Etsy approached the challenge of scaling this system to handle their massive user base. Initially, the naive implementation would have required weeks to process all users and been prohibitively expensive. The engineering team implemented several critical optimizations that showcase mature LLMOps thinking. They shifted from API-based data retrieval to optimized BigQuery tables with proper clustering and partitioning, demonstrating the importance of data infrastructure in LLM systems. The reduction of input context from two years to nine months of session data shows pragmatic prompt engineering that balances context richness with computational efficiency while also addressing seasonal bias in user behavior.
+
+## Production Optimization and Cost Management
+
+The cost optimization achievements are particularly impressive from an operational standpoint. Etsy reduced their estimated processing costs by 94% per million users through a combination of strategies including model selection (moving to smaller, more efficient models while maintaining quality), batch size optimization, and sophisticated prompt engineering. This cost reduction was crucial for making the system economically viable at scale, highlighting how cost considerations must be central to LLMOps planning for large-scale deployments.
+
+The system's orchestration using Apache Airflow demonstrates proper workflow management for LLM systems in production. The implementation includes batching strategies, staggered processing by user ID, and careful management of API rate limits for both BigQuery and OpenAI APIs. The directed acyclic graph (DAG) approach allows for parallel processing while respecting system constraints, showing how traditional data engineering practices integrate with LLM operations.
+
+## Privacy and Compliance Considerations
+
+An important aspect of this implementation is Etsy's attention to privacy compliance, building the system in alignment with GDPR and CCPA/CPRA requirements with user opt-out capabilities. This demonstrates how production LLM systems must integrate privacy considerations from the ground up rather than as an afterthought, which is increasingly critical for consumer-facing applications processing personal behavioral data.
+
+## Real-World Applications and Performance Measurement
+
+The system's practical applications in query rewriting and refinement pills showcase how LLM-generated insights can be operationalized to improve user experience. Query rewriting transforms simple searches like "cool posters" into enriched queries with predicted style preferences, while refinement pills provide interactive filtering options based on buyer profiles. These applications demonstrate the system's ability to translate abstract user understanding into concrete interface improvements.
+
+The measurement framework Etsy describes shows mature thinking about LLM system evaluation in production. Rather than relying solely on offline metrics, they focus on business-relevant measurements including click-through rate lifts, conversion rate impacts, and user engagement with personalized features. This approach recognizes that LLM system success must ultimately be measured by downstream business outcomes rather than just model performance metrics.
+
+## Challenges and Limitations
+
+While the case study presents impressive results, there are several areas where a balanced assessment reveals potential challenges. The system's dependence on historical behavioral data creates inherent limitations for new users, which Etsy acknowledges through their exploration of "inheritance profiles" using collaborative filtering. This cold-start problem is common in personalization systems but becomes more complex when LLMs are involved due to the structured nature of the profiles and the need for sufficient context.
+
+The profile refresh strategy, while thoughtfully designed with dynamic timing based on user activity levels, introduces operational complexity around when and how to update profiles. The system must balance freshness with computational costs while detecting interest drift and seasonal variations. This ongoing maintenance requirement represents a significant operational overhead that organizations should consider when implementing similar systems.
+
+## Scalability and Infrastructure Requirements
+
+The infrastructure requirements for this system are substantial, involving coordination between multiple data sources, LLM APIs, and downstream applications. The 94% cost reduction still implies significant ongoing expenses for a user base of nearly 90 million, and the three-day processing time for 10 million users suggests that maintaining fresh profiles across the entire user base requires considerable computational resources and careful scheduling.
+
+The system's reliance on external LLM APIs (OpenAI) introduces dependency risks and potential latency issues that could affect the user experience. While the batch processing approach mitigates some of these concerns, the system's architecture creates tight coupling between Etsy's personalization capabilities and external service availability.
+
+## Future Directions and Lessons Learned
+
+Etsy's exploration of collaborative filtering for new users indicates recognition of the system's current limitations and suggests potential paths for improvement. However, this approach introduces additional complexity around profile matching and inheritance logic that could complicate the already sophisticated system.
+
+The case study demonstrates several key lessons for LLMOps practitioners: the critical importance of cost optimization in large-scale deployments, the value of iterative prompt engineering and data pipeline optimization, and the need for business-relevant measurement frameworks. The success in reducing processing time and costs while maintaining quality shows that significant optimization is possible through systematic engineering effort.
+
+However, organizations considering similar implementations should carefully evaluate the substantial infrastructure requirements, ongoing operational costs, and complexity of maintaining such systems at scale. The impressive results Etsy achieved required significant engineering investment and operational sophistication that may not be feasible for all organizations. The system represents a mature approach to production LLM deployment but also illustrates the substantial resources required to implement personalization at this scale effectively.

@@ -1,0 +1,100 @@
+---
+title: "Enterprise Knowledge Base Assistant Using Multi-Model GenAI Architecture"
+slug: "enterprise-knowledge-base-assistant-using-multi-model-genai-architecture"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "674f21e1679d4306c40f9b3c"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:46:02.476Z"
+  createdOn: "2024-12-03T15:21:05.777Z"
+llmopsTags:
+  - "healthcare"
+  - "customer-support"
+  - "question-answering"
+  - "chatbot"
+  - "translation"
+  - "regulatory-compliance"
+  - "rag"
+  - "prompt-engineering"
+  - "embeddings"
+  - "semantic-search"
+  - "vector-search"
+  - "langchain"
+  - "fastapi"
+  - "pinecone"
+  - "redis"
+  - "elasticsearch"
+  - "amazon-aws"
+  - "anthropic"
+company: "Accenture"
+summary: "Accenture developed Knowledge Assist, a generative AI solution for a public health sector client to transform how enterprise knowledge is accessed and utilized. The solution combines multiple foundation models through Amazon Bedrock to provide accurate, contextual responses to user queries in multiple languages. Using a hybrid intent approach and RAG architecture, the system achieved over 50% reduction in new hire training time and 40% reduction in query escalations while maintaining high accuracy and compliance requirements."
+link: "https://aws.amazon.com/blogs/machine-learning/accenture-creates-a-knowledge-assist-solution-using-generative-ai-services-on-aws?tag=soumet-20"
+year: 2023
+seo:
+  title: "Accenture: Enterprise Knowledge Base Assistant Using Multi-Model GenAI Architecture - ZenML LLMOps Database"
+  description: "Accenture developed Knowledge Assist, a generative AI solution for a public health sector client to transform how enterprise knowledge is accessed and utilized. The solution combines multiple foundation models through Amazon Bedrock to provide accurate, contextual responses to user queries in multiple languages. Using a hybrid intent approach and RAG architecture, the system achieved over 50% reduction in new hire training time and 40% reduction in query escalations while maintaining high accuracy and compliance requirements."
+  canonical: "https://www.zenml.io/llmops-database/enterprise-knowledge-base-assistant-using-multi-model-genai-architecture"
+  ogTitle: "Accenture: Enterprise Knowledge Base Assistant Using Multi-Model GenAI Architecture - ZenML LLMOps Database"
+  ogDescription: "Accenture developed Knowledge Assist, a generative AI solution for a public health sector client to transform how enterprise knowledge is accessed and utilized. The solution combines multiple foundation models through Amazon Bedrock to provide accurate, contextual responses to user queries in multiple languages. Using a hybrid intent approach and RAG architecture, the system achieved over 50% reduction in new hire training time and 40% reduction in query escalations while maintaining high accuracy and compliance requirements."
+---
+
+## Overview
+
+Accenture, in collaboration with AWS, developed a generative AI solution called "Knowledge Assist" designed to help enterprises and public sector organizations transform how they manage and deliver knowledge to both employees and external users. The flagship implementation described in this case study serves a large public health sector client that interacts with millions of citizens daily. The solution integrates generative AI capabilities into an existing FAQ bot, expanding the chatbot's ability to answer a broader range of user questions through natural language interactions rather than traditional keyword-based search.
+
+The core problem being addressed is the challenge enterprises face when their knowledge bases become large, complex, and constantly evolving. Traditional search methods struggle with unstructured content, leading to employee frustration, productivity loss, and poor customer experiences. For the public health client specifically, citizens need easy access to up-to-date health information in a rapidly changing landscape, and the department wanted to reduce dependency on call center agents by enabling effective self-service.
+
+## Technical Architecture
+
+The solution employs a Retrieval-Augmented Generation (RAG) architecture, combining document retrieval with large language model generation. The architecture can be understood in two main flows: offline data loading and real-time user interaction.
+
+### Data Ingestion Pipeline
+
+For data ingestion, the system uses Amazon Kendra with web crawler connectors to index content from the client's web properties. The crawler is configured with a root URL and directory depth of two levels, allowing multiple webpages to be ingested into the Kendra index. This approach enables both bulk uploads on day zero and incremental updates thereafter, supporting the "evolution of knowledge continuously available with minimal to no effort" as the marketing materials describe. The Amazon Titan foundation model, accessed via Amazon Bedrock, generates vector embeddings for the ingested content, which are stored in Pinecone vector database for similarity search.
+
+### Model Selection Process
+
+Accenture conducted regression testing across multiple foundation models available in Amazon Bedrock, including offerings from AI21 Labs, Cohere, Anthropic, and Amazon. The evaluation criteria included supported use cases, model attributes, maximum token limits, cost, accuracy, performance, and language support. Based on this evaluation, Claude-2 from Anthropic was selected as the best-suited model for this particular use case. This represents a reasonable model selection methodology, though the specific evaluation metrics and benchmarks used are not disclosed.
+
+### Real-Time Query Processing
+
+The user-facing application is hosted in Amazon S3 and delivered through Amazon CloudFront CDN via Amazon Route 53. When a user submits a query, the flow proceeds through several orchestrated steps. Amazon Lex handles natural language understanding and intent classification, directing requests to an orchestrator Lambda function that serves as the central processing hub.
+
+The orchestrator Lambda function performs multiple operations: it interacts with DynamoDB to manage session state and conversation history (enabling multi-turn conversations), queries the Amazon Kendra index to retrieve the top five most relevant search results, and constructs a context-enriched prompt for the LLM. The relevance determination uses similarity matching between user query embeddings and content embeddings stored in Pinecone.
+
+The prompt, combining the retrieved context with the user's question, is then sent to the Claude-2 model via Amazon Bedrock. The LLM generates a response that is post-processed before being returned to the user. Notably, the system includes transparent citations, guiding users back to source documents—an important feature for maintaining trust and verifiability in health information contexts.
+
+### Multilingual Support
+
+The solution supports conversations in both English and Spanish. The Claude model is also used for translation tasks, handling both query translation (when users ask questions in Spanish) and response translation (converting English-generated responses to Spanish). This dual-use of the LLM for both generation and translation is an efficient approach, though it may introduce additional latency and token consumption.
+
+### Observability and Reporting
+
+The architecture includes a comprehensive logging and monitoring stack. Request/response metadata is logged to Amazon CloudWatch, with a subscription filter forwarding logs to Amazon OpenSearch Service. Kibana dashboards built on OpenSearch enable reporting on user needs, sentiment, and concerns. This "conversational analysis" capability is valuable for continuous improvement and understanding user behavior patterns.
+
+## Operational Considerations
+
+Several LLMOps-relevant operational patterns emerge from this implementation. The pay-as-you-use model with no upfront costs (leveraging AWS managed services) reduces initial investment risk. The serverless architecture using Lambda for orchestration provides automatic scaling to meet user demand, which is critical for a system serving "millions of citizens every day."
+
+The solution's claimed ability to "continuously learn and improve responses based on user feedback" is mentioned but not technically elaborated upon. It's unclear whether this refers to formal feedback loops that retrain or fine-tune models, or simply refers to the accumulation of conversation logs for human analysis. This is an important distinction for production LLM systems.
+
+The hybrid intent approach—combining generative responses with pre-trained intents—is a pragmatic design choice. Pre-trained intents can handle common, well-defined queries with high reliability, while generative responses address the long tail of novel questions. This pattern reduces risk and maintains predictable behavior for critical query types.
+
+## Claimed Results and Caveats
+
+The case study reports significant improvements: over 50% reduction in training time for new hires and up to 40% reduction in escalations. These are substantial claims that should be interpreted with appropriate caution, as the source is promotional content from Accenture and AWS. The methodology for measuring these improvements, baseline comparisons, and sample sizes are not disclosed. Additionally, these metrics appear to be aggregated across multiple implementations of the Knowledge Assist platform rather than specific to the public health client.
+
+The claimed advantages over traditional chatbots—including accurate responses, context retention, multilingual support, continuous improvement, easy integration, and human-like interactions—are common marketing points for RAG-based LLM systems. The actual performance would depend heavily on the quality of the knowledge base, the specificity of the domain, and the effectiveness of the retrieval and prompt engineering.
+
+## Broader Applicability
+
+Accenture positions Knowledge Assist as a platform applicable across industries including health sciences, financial services, manufacturing, and more. The architecture is indeed relatively industry-agnostic, with the domain specificity coming primarily from the knowledge base content and any domain-specific prompt engineering. The emphasis on "knowledge that is secured" suggests attention to data privacy, though specific security measures and compliance frameworks are not detailed.
+
+## Technology Stack Summary
+
+The complete technology stack includes Amazon Bedrock (Claude-2 for generation and translation, Amazon Titan for embeddings), Amazon Kendra (document indexing and retrieval with web crawler), Amazon Lex (intent classification and NLU), AWS Lambda (serverless orchestration), Amazon DynamoDB (session and conversation state), Pinecone (vector database for embeddings), Amazon S3 and CloudFront (front-end hosting and CDN), Amazon Route 53 (DNS), Amazon CloudWatch (logging), and Amazon OpenSearch with Kibana (analytics and reporting).
+
+This represents a fairly standard AWS-centric RAG architecture with appropriate choices for scalability and managed service convenience. The use of Pinecone as an external vector database alongside Amazon Kendra is notable—the system appears to use Kendra for document-level retrieval and Pinecone for more granular embedding similarity, though the exact interplay between these components could be clearer.

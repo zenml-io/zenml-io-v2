@@ -1,0 +1,150 @@
+---
+title: "Unified Property Management Search and Digital Assistant Using Amazon Bedrock"
+slug: "unified-property-management-search-and-digital-assistant-using-amazon-bedrock"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "692814aeb9dd1d29693eb37f"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:29:11.977Z"
+  createdOn: "2025-11-27T09:06:54.664Z"
+llmopsTags:
+  - "document-processing"
+  - "question-answering"
+  - "chatbot"
+  - "data-analysis"
+  - "unstructured-data"
+  - "rag"
+  - "embeddings"
+  - "prompt-engineering"
+  - "vector-search"
+  - "semantic-search"
+  - "few-shot"
+  - "token-optimization"
+  - "chunking"
+  - "system-prompts"
+  - "postgresql"
+  - "redis"
+  - "cache"
+  - "elasticsearch"
+  - "fastapi"
+  - "serverless"
+  - "orchestration"
+  - "databases"
+  - "api-gateway"
+  - "monitoring"
+  - "security"
+  - "guardrails"
+  - "amazon-aws"
+  - "anthropic"
+company: "CBRE"
+summary: "CBRE, the world's largest commercial real estate services firm, faced challenges with fragmented property data scattered across 10 distinct sources and four separate databases, forcing property management professionals to manually search through millions of documents and switch between multiple systems. To address this, CBRE partnered with AWS to build a next-generation unified search and digital assistant experience within their PULSE system using Amazon Bedrock, Amazon OpenSearch Service, and other AWS services. The solution combines retrieval augmented generation (RAG), multiple foundation models (Amazon Nova Pro for SQL generation and Claude Haiku for document interaction), and advanced prompt engineering to provide natural language query capabilities across both structured and unstructured data. The implementation achieved significant results including a 67% reduction in SQL query generation time (from 12 seconds to 4 seconds with Amazon Nova Pro), 80% improvement in database query performance, 60% reduction in token usage through optimized prompt architecture, and 95% accuracy in search results, ultimately enhancing operational efficiency and enabling property managers to make faster, more informed decisions."
+link: "https://aws.amazon.com/blogs/machine-learning/how-cbre-powers-unified-property-management-search-and-digital-assistant-using-amazon-bedrock?tag=soumet-20"
+year: 2025
+seo:
+  title: "CBRE: Unified Property Management Search and Digital Assistant Using Amazon Bedrock - ZenML LLMOps Database"
+  description: "CBRE, the world's largest commercial real estate services firm, faced challenges with fragmented property data scattered across 10 distinct sources and four separate databases, forcing property management professionals to manually search through millions of documents and switch between multiple systems. To address this, CBRE partnered with AWS to build a next-generation unified search and digital assistant experience within their PULSE system using Amazon Bedrock, Amazon OpenSearch Service, and other AWS services. The solution combines retrieval augmented generation (RAG), multiple foundation models (Amazon Nova Pro for SQL generation and Claude Haiku for document interaction), and advanced prompt engineering to provide natural language query capabilities across both structured and unstructured data. The implementation achieved significant results including a 67% reduction in SQL query generation time (from 12 seconds to 4 seconds with Amazon Nova Pro), 80% improvement in database query performance, 60% reduction in token usage through optimized prompt architecture, and 95% accuracy in search results, ultimately enhancing operational efficiency and enabling property managers to make faster, more informed decisions."
+  canonical: "https://www.zenml.io/llmops-database/unified-property-management-search-and-digital-assistant-using-amazon-bedrock"
+  ogTitle: "CBRE: Unified Property Management Search and Digital Assistant Using Amazon Bedrock - ZenML LLMOps Database"
+  ogDescription: "CBRE, the world's largest commercial real estate services firm, faced challenges with fragmented property data scattered across 10 distinct sources and four separate databases, forcing property management professionals to manually search through millions of documents and switch between multiple systems. To address this, CBRE partnered with AWS to build a next-generation unified search and digital assistant experience within their PULSE system using Amazon Bedrock, Amazon OpenSearch Service, and other AWS services. The solution combines retrieval augmented generation (RAG), multiple foundation models (Amazon Nova Pro for SQL generation and Claude Haiku for document interaction), and advanced prompt engineering to provide natural language query capabilities across both structured and unstructured data. The implementation achieved significant results including a 67% reduction in SQL query generation time (from 12 seconds to 4 seconds with Amazon Nova Pro), 80% improvement in database query performance, 60% reduction in token usage through optimized prompt architecture, and 95% accuracy in search results, ultimately enhancing operational efficiency and enabling property managers to make faster, more informed decisions."
+---
+
+## Overview
+
+CBRE implemented a sophisticated LLMOps solution to transform how property management professionals access and interact with property data. The case study presents a comprehensive production deployment of large language models integrated into CBRE's proprietary PULSE property management system, serving clients across more than 100 countries. The solution represents a mature LLMOps implementation that addresses the complexities of deploying generative AI at enterprise scale in the commercial real estate domain.
+
+The core problem CBRE faced was data fragmentation—property management professionals had to navigate 10 distinct data sources and four separate databases containing both structured transactional data and unstructured documents (lease agreements, property inspections, maintenance records, etc.). This fragmentation created significant productivity losses and made it difficult to derive comprehensive insights about property operations. The company needed a solution that would allow property management experts to ask complex questions in natural language without needing to understand database syntax or know which system contained the relevant information.
+
+## Architecture and Model Selection
+
+CBRE's production architecture leverages Amazon Bedrock as the central AI orchestration layer, providing access to multiple foundation models through a single API. The multi-model approach is a key architectural decision—the solution uses Amazon Nova Pro specifically for SQL query generation and Claude Haiku for document interactions. This represents a thoughtful model selection strategy where different models are deployed for different tasks based on their respective strengths.
+
+The architecture is organized around two primary interaction pathways: SQL Interact for structured data and DocInteract for unstructured documents. An orchestration layer serves as the central control hub, receiving user requests from the PULSE UI and intelligently routing them to appropriate backend services. This orchestration layer manages critical LLMOps functions including query routing, parallel search execution across different data systems, result merging and deduplication, ranking, and conversation history management through Amazon DynamoDB integration.
+
+The infrastructure leverages Amazon ElastiCache for Redis for storing user-specific permissions, chosen specifically for its low latency and high throughput characteristics—a critical LLMOps consideration for production systems where security checks must not create bottlenecks. All search operations are constrained by user-specific permissions retrieved from Redis, ensuring real-time granular access control without sacrificing performance.
+
+## Structured Data Search: SQL Generation Pipeline
+
+The SQL Interact component represents one of the more sophisticated aspects of the LLMOps implementation. When users submit natural language queries about structured data, the system follows a multi-stage pipeline that demonstrates several production LLMOps best practices.
+
+The pipeline begins with dynamic database metadata retrieval from an Amazon OpenSearch index, fetching schema details including table names, column names, data types, relationships, and constraints for entities like properties, contacts, and tenants. This metadata is then passed to Amazon Nova Pro along with the user's natural language query. The choice of Amazon Nova Pro proved significant—CBRE achieved a 67% reduction in SQL query generation time, from an average of 12 seconds with previous models to just 4 seconds with Nova Pro. This improvement in inference latency is a critical LLMOps metric, directly impacting user experience and system throughput.
+
+The system implements parallel LLM inference for SQL generation, a sophisticated production optimization. Rather than processing schemas sequentially, the architecture identifies the most relevant schemas (based on the user query and permissions) and initiates concurrent processing through parallel LLM inference calls. This parallel processing approach addresses both performance and security—the system authenticates and validates user entitlements first, performs context-aware schema identification using similarity search, and only processes schemas for which the user has explicit authorization.
+
+Before SQL execution, the system enhances generated queries with mandatory security joins that enforce building-level access controls, restricting users to their authorized buildings only. This represents a critical security layer in the LLMOps pipeline, ensuring that even correctly generated SQL queries cannot access unauthorized data. The finalized SQL queries are executed on PostgreSQL or SQL Server databases, with results processed and returned through the API.
+
+## Prompt Engineering as a Core LLMOps Practice
+
+CBRE's implementation demonstrates sophisticated prompt engineering practices that go well beyond basic prompt construction. The solution implements a modular prompt architecture where prompts are stored in external configuration files and dynamically loaded based on context. This approach provides several LLMOps benefits: prompts can be version controlled, updated without code deployments (reducing update cycles from hours to minutes), A/B tested, and quickly rolled back if issues arise.
+
+The prompt engineering strategy includes several advanced techniques. Dynamic field selection uses KNN-based similarity search to filter and select only the most relevant schema fields aligned with user intent, reducing context window size and optimizing prompt effectiveness. This addresses the practical LLMOps challenge of managing token limits while maintaining comprehensive context.
+
+The system implements dynamic few-shot example selection, where the most relevant example is intelligently selected from a configuration file using KNN-based similarity search for SQL generation. Rather than including all possible examples (which would inflate token usage) or using static examples (which might not be relevant), the system selects the single most pertinent example based on the specific query context. This context-aware approach ensures consistency and accuracy in SQL generation while minimizing token overhead.
+
+Business rule integration is managed through a centralized repository in schema-wise configuration files. During prompt generation, relevant business rules are dynamically integrated into prompts, providing consistency in rule application while maintaining flexibility for updates. This modular approach to business logic in prompts is a production best practice that separates concerns and makes the system more maintainable.
+
+An innovative addition to the prompt engineering pipeline is LLM-based relevancy scoring. CBRE discovered that vector search (KNN) for schema retrieval sometimes returned irrelevant schemas or poorly ordered results. To address this, they introduced a fourth parallel LLM call that evaluates the relevance of each schema returned by vector search, assigns relevancy scores, and reorders schemas based on actual relevance to the query. This "LLM scoring mechanism" layer demonstrates the value of combining multiple AI techniques—using embeddings for initial retrieval but then applying LLM intelligence for refinement and reordering.
+
+## Unstructured Document Search and RAG Implementation
+
+The DocInteract component handles unstructured document search across more than eight million documents. This represents a production-scale RAG (Retrieval Augmented Generation) implementation with several noteworthy LLMOps characteristics.
+
+The system supports comprehensive file formats including PDFs, Microsoft Office documents, emails, images, text files, and HTML files. Document processing begins with asynchronous Amazon Textract for scalable parallel text extraction. When documents are uploaded to Amazon S3, an SQS message triggers a Lambda function that initiates an asynchronous Textract job. This asynchronous architecture is a critical LLMOps pattern for handling high-throughput document processing without blocking execution—particularly important for large documents with hundreds of pages or high-resolution images.
+
+For text-based documents, extracted text is chunked intelligently based on token count or semantic boundaries, then passed through Amazon Titan Text Embeddings v2 to generate vector representations. Each chunk is enriched with metadata and indexed into Amazon OpenSearch for fast semantic search. Image files follow a similar flow but use Amazon Bedrock Claude 3 Haiku for OCR after base64 conversion.
+
+The document search implements two primary search methods. Keyword search uses a dual strategy combining metadata and content searches with phrase matching. The system uses fixed query template structures for efficiency and consistency while dynamically integrating user-specific terms and roles. Queries are parsed into component words, each requiring a match in document content for relevancy through phrase matching in OpenSearch.
+
+Natural language query search combines LLM-generated queries with vector-based semantic search. The system uses Claude Haiku to interpret natural language input and generate structured OpenSearch queries that search across document types, dates, property names, and other metadata fields. For content searches, the system employs KNN vector search with a K-factor of 5 to identify semantically similar content. The system converts queries into vector embeddings and executes both metadata and content searches simultaneously, combining results while minimizing duplicates.
+
+## Chat With Document: Conversational RAG
+
+The Chat with Document feature represents a conversational RAG implementation that allows users to engage in natural dialogue with specific documents after initial search. This digital assistant capability enables property managers to ask questions, request summaries, or seek specific information from selected documents without manual scanning.
+
+When engaged, the system retrieves complete document content using node identifiers and processes user queries through a streamlined pipeline. Each query is handled by an LLM using carefully constructed prompts that combine the user's question with relevant document context. This feature demonstrates the value of conversational AI in document-intensive workflows—property managers can quickly understand lease terms, payment schedules, or maintenance requirements through natural dialogue rather than manual document review.
+
+The implementation maintains conversation history through DynamoDB integration, allowing for contextual follow-up questions and multi-turn interactions. This stateful conversation management is an important LLMOps consideration for production chat interfaces, enabling more natural and effective user interactions.
+
+## Two-Stage Tool Selection Architecture
+
+CBRE implements a sophisticated two-stage prompt architecture that separates tool selection from task execution. The first stage is a lightweight tool detection phase that quickly routes queries to appropriate tools (Get_Document_data, keyword_search, Get_Favdocs_collections, upload_documents) based on concise tool descriptions. The second stage loads specialized prompts for the selected tool and executes the actual task with focused context.
+
+This architecture delivered a 60% reduction in token usage by loading only necessary prompts per query processing stage. The approach demonstrates a production LLMOps optimization pattern—rather than loading all possible prompts and context for every query, the system uses a fast initial routing stage to determine intent, then loads only the relevant specialized context for execution. This reduces costs, improves performance, and maintains accuracy.
+
+## Search Performance Optimizations
+
+CBRE implemented several database-level optimizations that improved query performance by 80%. The challenge involved implementing application-wide keyword searches that needed to scan across all columns in database tables—a non-conventional requirement compared to traditional indexed column-specific searches. The solution leveraged native full-text search capabilities in both PostgreSQL (using tsvector and tsquery) and Microsoft SQL Server (using CONTAINS).
+
+The implementation creates specialized text search columns that concatenate searchable fields from views, while leveraging specialized indexing algorithms. This optimization represents an important LLMOps consideration—the AI/ML layer must work efficiently with the underlying data infrastructure, and sometimes the best optimizations involve enhancing the data layer rather than only focusing on the AI components.
+
+At the API level, CBRE implemented optimizations targeting three key performance indicators they call ACR metrics: Accuracy (precision of results), Consistency (reproducible outcomes), and Relevancy (ensuring results align with user intent). These metrics represent a thoughtful framework for evaluating LLMOps system quality beyond just latency or throughput.
+
+## Security and Access Control
+
+The solution implements multi-layered security that integrates throughout the LLMOps pipeline. User authentication occurs through Microsoft B2C with access token validation. The system simultaneously checks user permissions in Redis to verify they have appropriate access rights to specific modules and database schemas. Additionally, the system retrieves authorized building lists from Redis, ensuring users can only access data related to properties within their business portfolio.
+
+This parallel validation process represents a production security pattern for LLMOps systems—security checks are performed at multiple layers (authentication, application-level entitlements, data-level access controls) and optimized for performance through Redis caching. The security joins added to generated SQL queries provide defense-in-depth, ensuring that even if other security layers were somehow bypassed, the database queries themselves enforce access restrictions.
+
+## Production Results and Business Impact
+
+The solution delivered measurable business results across multiple dimensions. The 67% reduction in SQL query generation time (from 12 seconds to 4 seconds with Amazon Nova Pro) directly improved user experience and system responsiveness. The 80% improvement in database query performance through full-text search optimizations further enhanced throughput. The 60% reduction in token usage through two-stage prompt architecture reduced costs while maintaining quality. The system achieves 95% accuracy in search results, providing high reliability for business decisions.
+
+CBRE reports substantial cost savings through reduced manual effort, with hours saved annually per user translating to labor cost reductions and freed capacity for strategic work. The improved decision-making enabled by 95% accuracy minimizes risks and costly mistakes. Increased productivity and throughput enhance service delivery across the property management organization.
+
+## LLMOps Lessons and Best Practices
+
+CBRE's documented lessons learned provide valuable insights for LLMOps practitioners. The emphasis on prompt modularization reflects the importance of treating prompts as manageable, versionable artifacts rather than hard-coded strings. The recommendation to use dynamic few-shot examples with KNN-based selection demonstrates the value of context-aware prompt construction. The guidance to reduce context window size through intelligent field selection addresses the practical challenge of working within token limits while maintaining comprehensive context.
+
+The emphasis on LLM scoring for relevancy—using LLM intelligence to evaluate and reorder KNN retrieval results—represents an important pattern: combining multiple AI techniques (embeddings for retrieval, LLMs for reasoning and reordering) often produces better results than relying on a single approach.
+
+## Critical Assessment
+
+While CBRE's implementation demonstrates sophisticated LLMOps practices, the case study is presented from a vendor (AWS) perspective with clear promotional intent. The reported metrics (67% reduction in processing time, 80% improvement in query performance, 95% accuracy) should be evaluated with appropriate skepticism—the baseline comparisons, testing methodologies, and measurement conditions are not fully detailed.
+
+The case study does not discuss failure modes, edge cases, or challenges encountered during deployment. There is no mention of hallucination mitigation strategies, error handling for malformed SQL queries, or approaches to handling queries that span the boundary between structured and unstructured data. The evaluation methodology for the 95% accuracy claim is not specified—it's unclear whether this represents human evaluation, automated testing against ground truth, or some other assessment method.
+
+The solution's reliance on Amazon-specific services (Bedrock, Nova, Titan embeddings) creates vendor lock-in, though this may be an acceptable tradeoff for the integration benefits and managed service advantages AWS provides. The case study does not discuss model fallback strategies, multi-cloud considerations, or migration paths.
+
+Despite these limitations, the case study provides valuable insights into production LLMOps practices including multi-model orchestration, parallel processing, sophisticated prompt engineering, RAG at scale, and security integration. The emphasis on measurable performance improvements, modular architecture, and systematic optimization represents mature LLMOps thinking suitable for enterprise production deployments.

@@ -1,0 +1,98 @@
+---
+title: "Embracing Open Source at ZenML"
+slug: "oss-dashboard-release"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "6630e9d67b229b0f699ab637"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2024-08-21T15:21:50.037Z"
+  lastUpdated: "2024-08-21T15:21:45.292Z"
+  createdOn: "2024-04-30T12:53:42.705Z"
+author: "zenml-team"
+category: "zenml"
+tags:
+  - "zenml"
+  - "news"
+  - "open-source"
+date: "2024-05-02T00:00:00.000Z"
+readingTime: 4 mins
+mainImage:
+  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/6919b3f8/6630eab71c438233644ca654_old-new-v1-small.jpg"
+seo:
+  title: "Embracing Open Source at ZenML - ZenML Blog"
+  description: "We've open-sourced our new dashboard to unify the experience for OSS and cloud users, although some features are initially CLI-only. This launch enhances onboarding and simplifies maintenance. Cloud users will see no change, while OSS users can enjoy a new interface and DAG visualizer. We encourage community contributions to help us expand and refine this dashboard further, looking forward to integrating more features soon."
+  canonical: "https://www.zenml.io/blog/oss-dashboard-release"
+  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e2c2b074/6630eab71c438233644ca654_old-new-v1-small.jpg"
+  ogTitle: "Embracing Open Source at ZenML - ZenML Blog"
+  ogDescription: "We've open-sourced our new dashboard to unify the experience for OSS and cloud users, although some features are initially CLI-only. This launch enhances onboarding and simplifies maintenance. Cloud users will see no change, while OSS users can enjoy a new interface and DAG visualizer. We encourage community contributions to help us expand and refine this dashboard further, looking forward to integrating more features soon."
+---
+
+At ZenML, we believe that open source software (OSS) is not just a development model, but a cornerstone of innovation and collaboration in the tech community. Open source allows us to build on the collective intelligence of a global community, ensuring our tools are robust, flexible, and ahead of the curve.
+
+By embracing OSS, we empower you, the user, to see under the hood, customize your tools, and contribute back to the ecosystem. This transparency and flexibility are crucial in adapting quickly to new challenges and integrating cutting-edge technologies. Our core product remains open-source and we're happy to have a thriving community of users and contributors.
+
+## The Big Announcement
+
+We're excited to announce that we're open-sourcing our new and improved dashboard. This unifies the experience for OSS and cloud users, though OSS users will initially see some dashboard features removed in this launch release.
+
+We're open-sourcing our dashboard for a few reasons:
+
+<ul id=""><li id="">to ensure that the dashboard experience is consistent across all users, for both the open-source and cloud versions</li><li id="">to make it easier for us to maintain and develop the dashboard, as we can share components between the two versions</li><li id="">to allow OSS contributions (and self-hosting and modifications) to the new dashboard</li><li id="">to open up possibilities for future features, particularly for our OSS users</li></ul>
+
+New users of the ZenML in the dashboard will have a better experience thanks to a much-improved onboarding sequence:
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/c4a95cab/66c604ea06feed491953b5d2_6630eb089887bb068cf30e50_CleanShot_202024-04-30_20at_2011.35.35_402x.png" alt="__wf_reserved_inherit" />
+</figure>
+
+The dashboard will guide you through connecting to your server, setting up a stack, connecting to service connectors as well as running a pipeline.
+
+We’ve also improved the ‘Settings’ section of the dashboard and this is the new home for configuration of your repositories, secrets, and connectors, along with some other options.
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/66f70c3c/66c604ea06feed491953b5d6_6630ea5e9887bb068cf26bce_CleanShot_202024-04-30_20at_2011.39.26_402x.png" alt="__wf_reserved_inherit" />
+</figure>
+
+## What it means for you
+
+If you're already a **cloud user**, not much will change for you. You're already using the new dashboard for pipelines, models and artifacts. Your experience won’t change and for the moment you’ll continue using the old dashboard for certain components (notably for stacks and components).
+
+If you're an **open-source user**, the new dashboard is now available to you as part of our latest release (0.57.0). You'll notice a completely refreshed design and a new DAG visualizer.
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/d2f7d13a/66c604ea06feed491953b5ce_6630eab71c438233644ca654_old-new-v1-small.jpeg" alt="__wf_reserved_inherit" />
+</figure>
+
+Unfortunately, some dashboard features are not yet ready so you'll see instructions on how to access them via the CLI. We hope to have these features returned into the product soon. (If you have a strong opinion as to which you'd like to see first, please let us know!) Specifically, secrets, stacks, and service connectors are not yet implemented in the new dashboard.
+
+## How to use the legacy dashboard
+
+The old dashboard is still available to you. To run with the legacy dashboard pass the *--legacy* flag when spinning it up:
+
+*zenml up --legacy*Note that you can’t use both the new and old dashboard at the same time.
+
+If you’re self-hosting ZenML instead of using ZenML Cloud, you can specify which dashboard you want to use by setting the *ZENML_SERVER_USE_LEGACY_DASHBOARD* environment variable pre-deployment. Specifying a boolean value for this variable will determine which dashboard gets served for your deployment. (There’s no dynamic switching between dashboards allowed, so if you wish to change which dashboard is used for a deployed server, you’ll need to redeploy the server after updating the environment variable.)
+
+If you’re using [ZenML Cloud](https://cloud.zenml.io/), your experience won’t change with this release and your use of the dashboard remains the same.
+
+## What's next
+
+We're excited to continue developing the dashboard and adding new features. We'll be adding missing features for open-source users, as well as triggers for Cloud users. In the open-source core base of ZenML we're also hard at work to enable Pydantic 2.x support which will unlock several package upgrades and fixes across our integrations.
+
+We're really excited that these features that were previously cloud-only have now been open-sourced and made available to our OSS users. We're looking forward to seeing how you use them and what you think! We're also glad to be able to move forward without the need to maintain a legacy codebase. This will allow us to move faster and add new features more quickly.
+
+## A modern tech stack
+
+The new dashboard brings a host of technical improvements under the hood. While we continue to rely on TypeScript and React, we've updated our bundling tool to [Vite](https://vitejs.dev/), a modern and performant alternative to Webpack that was used by "create-react-app".
+
+On the styling front, we've fully embraced Tailwind CSS, moving away from SCSS. This, combined with custom-styled [Radix](https://www.radix-ui.com/) and [Shadcn](https://ui.shadcn.com/)/UI components from the ZenML React Component Library, gives our dashboard a sleek and consistent look and feel.
+
+For efficient data fetching and caching, the dashboard now leverages [React Query](https://tanstack.com/query/v3/docs/framework/react/overview). This powerful library helps ensure a smooth and responsive user experience.
+
+## Want to Contribute?
+
+We welcome contributions to the new dashboard! If you're interested in helping out, head over to the [dashboard repository on GitHub](https://github.com/zenml-io/zenml-dashboard). There, you'll find detailed instructions in the README on setting up the dashboard locally using a Docker image for the server backend.
+
+Whether you want to tackle an existing issue, propose a new feature, or improve the documentation, your contributions can make a real difference. Let's work together to make the ZenML dashboard even better!

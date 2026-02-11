@@ -1,0 +1,115 @@
+---
+title: "Building a Low-Latency Global Code Completion Service"
+slug: "building-a-low-latency-global-code-completion-service"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "67f3939c4b195e8215053ee5"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:05:41.382Z"
+  createdOn: "2025-04-07T08:58:04.350Z"
+llmopsTags:
+  - "code-generation"
+  - "realtime-application"
+  - "latency-optimization"
+  - "cost-optimization"
+  - "error-handling"
+  - "fallback-strategies"
+  - "kubernetes"
+  - "monitoring"
+  - "api-gateway"
+  - "load-balancing"
+  - "microservices"
+  - "devops"
+  - "reliability"
+  - "scalability"
+  - "fastapi"
+  - "openai"
+  - "microsoft-azure"
+company: "Github"
+summary: "Github built Copilot, a global code completion service handling hundreds of millions of daily requests with sub-200ms latency. The system uses a proxy architecture to manage authentication, handle request cancellation, and route traffic to the nearest available LLM model. Key innovations include using HTTP/2 for efficient connection management, implementing a novel request cancellation system, and deploying models across multiple global regions for improved latency and reliability."
+link: "https://www.infoq.com/presentations/github-copilot/"
+year: 2024
+seo:
+  title: "Github: Building a Low-Latency Global Code Completion Service - ZenML LLMOps Database"
+  description: "Github built Copilot, a global code completion service handling hundreds of millions of daily requests with sub-200ms latency. The system uses a proxy architecture to manage authentication, handle request cancellation, and route traffic to the nearest available LLM model. Key innovations include using HTTP/2 for efficient connection management, implementing a novel request cancellation system, and deploying models across multiple global regions for improved latency and reliability."
+  canonical: "https://www.zenml.io/llmops-database/building-a-low-latency-global-code-completion-service"
+  ogTitle: "Github: Building a Low-Latency Global Code Completion Service - ZenML LLMOps Database"
+  ogDescription: "Github built Copilot, a global code completion service handling hundreds of millions of daily requests with sub-200ms latency. The system uses a proxy architecture to manage authentication, handle request cancellation, and route traffic to the nearest available LLM model. Key innovations include using HTTP/2 for efficient connection management, implementing a novel request cancellation system, and deploying models across multiple global regions for improved latency and reliability."
+---
+
+## Overview
+
+GitHub Copilot represents one of the largest LLM-powered production services in the world, specifically focused on real-time code completion within integrated development environments (IDEs). The service handles over 400 million completion requests daily, peaking at approximately 8,000 requests per second during peak hours between European afternoon and U.S. work day. The engineering challenge was significant: competing with locally-running IDE autocomplete systems (like IntelliSense, Code Sense, and LSP-powered completions) that don't face network latency, shared server resource constraints, or potential cloud outages.
+
+The presentation by a tech lead on the copilot-proxy team provides a detailed look at the infrastructure decisions, tradeoffs, and operational lessons learned from building and running this service at scale. The service is available across major IDEs including VS Code, Visual Studio, IntelliJ IDEs, Neovim, and Xcode.
+
+## The Core Technical Challenge
+
+The fundamental problem is that interactive code completion requires extremely low latency to feel responsive. Unlike chat interfaces where users expect some delay, code completion must appear almost instantaneously as developers pause typing. The service aims for a mean response time of under 200 milliseconds, which is remarkably ambitious given the complexity of making network requests to LLM inference endpoints.
+
+Network latency is the primary enemy. TCP connection setup requires a 3-way handshake, and TLS adds another 5-7 round trips for key negotiation. Each leg of these handshakes is highly correlated with distance—around 50 milliseconds for U.S. coast-to-coast, but exceeding 100 milliseconds for intercontinental connections. This means connection setup alone could consume 500+ milliseconds if done for every request.
+
+## Authentication Architecture Evolution
+
+The service evolved from an early alpha where users directly authenticated with OpenAI using personal API keys. This approach didn't scale and created user management burdens on both sides. The solution was to build an authenticating proxy that sits between IDE clients and the Azure-hosted LLM models.
+
+The authentication flow works as follows: users authenticate to GitHub via OAuth, which creates a credential identifying that specific installation on that machine for that user. The IDE exchanges this OAuth credential with GitHub for a short-lived code completion token (valid for 10-30 minutes). This token functions like a train ticket—it's signed and authorizes service usage for a limited time. When requests arrive at the proxy, it validates the signature without needing to call external authentication services, then swaps the token for the actual API service key before forwarding to the model.
+
+This architecture is critical for LLMOps because it decouples user management from model access, enables rapid token revocation for abuse cases, and avoids per-request authentication overhead. The token's short lifetime limits liability if compromised while background refresh cycles ensure continuous service.
+
+## The Request Cancellation Problem
+
+A particularly interesting operational challenge is "type-through" behavior—users continue typing after a completion request is issued, invalidating the request before results arrive. The data shows approximately 45-50% of requests are cancelled this way. The timing of when to trigger a completion request involves tradeoffs: waiting longer reduces wasted requests but adds latency for users who have finished typing; aggressive triggering wastes resources on requests that will be cancelled.
+
+GitHub uses a mixture of strategies including fixed timers, prediction models analyzing typing patterns, and speculative requests. However, the key insight was that request cancellation support is essential for cost efficiency in LLM inference.
+
+The problem with standard HTTP/1 cancellation is severe: cancellation means closing the TCP connection. But if users need to make another request immediately (which they do—they want a new completion for their updated code), they must pay the full TCP/TLS connection setup cost again. This would mean users are constantly closing and reestablishing connections, with latency overhead that exceeds the cost of just letting unwanted requests complete.
+
+## HTTP/2 as a Critical Enabler
+
+The solution leveraged HTTP/2's multiplexed stream architecture. Unlike HTTP/1's one-request-per-connection model, HTTP/2 allows multiple request streams over a single persistent connection. Cancellation resets only the individual stream representing the cancelled request, not the underlying TCP connection. This enables efficient cancellation without sacrificing connection persistence.
+
+The proxy maintains long-lived HTTP/2 connections in both directions: from clients and to the Azure-hosted models. Connections between the proxy and models are established when processes start and remain open for the process lifetime (minutes to days depending on deployment cycles). This also provides TCP-level benefits as connections "warm up"—TCP's congestion control algorithms allow more in-flight data on established, trusted connections.
+
+The implementation uses Go specifically because of its robust HTTP/2 library with fine-grained control. The `req.Context` mechanism propagates cancellation signals from the client IDE through the proxy to the model, enabling near-immediate cancellation when users continue typing.
+
+## Infrastructure Challenges with HTTP/2
+
+Despite HTTP/2 being nearly a decade old at the time, achieving end-to-end HTTP/2 support proved surprisingly difficult with off-the-shelf tools. Most load balancers (including major cloud provider ALBs and NLBs) speak HTTP/2 on the frontend but downgrade to HTTP/1 on the backend. CDN providers available at the time also lacked HTTP/2 backend support. Even OpenAI's nginx frontend had an arbitrary 100-request-per-connection limit that caused frequent connection resets at Copilot's request volumes.
+
+The solution utilized GitHub's internal load balancer (GLB), based on HAProxy, which offers "exquisite HTTP/2 control." GLB owns the client connection and keeps it open even during proxy pod redeployments, providing connection persistence across service updates. This is a significant operational benefit: users never experience disconnection during deployments.
+
+## Global Distribution and Traffic Routing
+
+Serving millions of users globally requires models distributed across regions. Azure offers OpenAI models in dozens of regions worldwide, enabling geographic proximity between users and inference endpoints. GitHub colocates proxy instances with model instances in the same Azure regions to minimize the latency cost of the proxy hop.
+
+Geographic routing uses octoDNS, another GitHub-developed tool, which provides a configuration language for DNS with support for weighted routing, load balancing, splitting, and health checks. Users are routed to their "closest" proxy region based on continent, country, or even U.S. state level granularity.
+
+Each proxy instance monitors its own success rate against SLO targets. When success rates drop below threshold, proxy instances set their health check status to 500, effectively voting themselves out of DNS. When they recover, they return to service. This creates a self-healing system that converts regional outages (SEV1 incidents) into capacity reductions (SEV2 alerts)—affected users are automatically routed to other regions with marginally higher latency rather than receiving errors.
+
+The team explicitly rejected a "point of presence" (PoP) model where edge locations would proxy back to centralized models. This would cause "traffic tromboning"—requests traveling to an edge location only to travel back to a distant model. Since LLM completions always require model inference (unlike CDN-cacheable content), this pattern provides no benefit while adding operational complexity.
+
+## The Value of the Intermediary Proxy
+
+The proxy's position in the request path enables numerous operational capabilities beyond authentication. For observability, the proxy provides measurement points that neither client-side metrics (averaged across wildly varying user network conditions) nor model provider metrics (focused on their own SLOs rather than end-user experience) can provide. The team defines SLOs at the proxy layer as the true measure of user experience.
+
+The proxy enables request mutation for quick fixes. When a model upgrade started emitting an undesirable token (an end-of-file marker due to training issues), the team could immediately add negative affinity weighting for that token in requests—a fix that would have taken weeks via client deployment and never reached 100% of users. Similarly, when the model provider reported that a particular parameter would crash model instances (a "poison pill" scenario), the proxy could strip that parameter from requests immediately.
+
+Traffic management capabilities include splitting traffic across multiple model capacity allocations, mirroring traffic to new model versions for testing, and running A/B experiments—all transparent to clients. For legacy client management, the proxy can detect extremely outdated client versions and return a special status code that triggers upgrade prompts rather than mysterious 404 errors.
+
+The team also discovered and addressed a "fast cancellation" pattern through proxy-level observability: many requests were being cancelled within 1 millisecond of arrival, meaning the client immediately regretted sending them. By adding a pre-flight cancellation check before forwarding to Azure, they avoided wasting model inference on requests known to be unwanted. This pattern was invisible in model provider metrics.
+
+## Operational Lessons and Tradeoffs
+
+The presentation offers several operational insights. Using shared internal platform components (GLB, octoDNS) rather than bespoke solutions simplified compliance (SOC 2, enterprise certifications) and delegated specialized work like TLS termination to teams better equipped for it. The early approach of terminating TLS directly on Kubernetes pods created security concerns and meant every deployment disconnected all users.
+
+The team emphasizes that if you care about latency, you must bring your application closer to users—cloud provider backbone networks cannot overcome physics. Having multiple model regions also provides resilience: regional failures become capacity degradation rather than service outages.
+
+The copilot-proxy codebase is described as "more or less done," which allows the small team to dedicate approximately 90% of their time to operational issues rather than feature development. This is notable for LLMOps: the infrastructure enabling LLM service delivery can stabilize and become operationally focused rather than requiring constant development.
+
+## Key Takeaways for LLMOps Practitioners
+
+The case study demonstrates several broadly applicable principles: HTTP/2 (or better) is essential for low-latency LLM services due to connection reuse and efficient cancellation. Strategic engineering investment in custom solutions (like the proxy) can provide competitive advantages when off-the-shelf tools don't meet requirements. Intermediary layers provide invaluable operational flexibility for observability, traffic management, and rapid incident response. Geographic distribution combined with automatic failover converts outages into degraded service. Finally, the position between clients and model providers creates measurement opportunities that neither endpoint can provide independently.

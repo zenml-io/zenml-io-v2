@@ -1,0 +1,147 @@
+---
+title: "Building a Privacy-Preserving LLM Usage Analytics System (Clio)"
+slug: "building-a-privacy-preserving-llm-usage-analytics-system-clio"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "675c3e805ca5ee2723f96751"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:50:31.998Z"
+  createdOn: "2024-12-13T14:02:40.059Z"
+llmopsTags:
+  - "question-answering"
+  - "chatbot"
+  - "translation"
+  - "code-generation"
+  - "regulatory-compliance"
+  - "high-stakes-application"
+  - "multi-modality"
+  - "embeddings"
+  - "prompt-engineering"
+  - "semantic-search"
+  - "error-handling"
+  - "human-in-the-loop"
+  - "system-prompts"
+  - "monitoring"
+  - "documentation"
+  - "security"
+  - "compliance"
+  - "guardrails"
+  - "reliability"
+  - "anthropic"
+company: "Anthropic"
+summary: "Anthropic developed Clio, a privacy-preserving system to understand how their LLM Claude is being used in the real world while maintaining strict user privacy. The system uses Claude itself to analyze and cluster conversations, extracting high-level insights without humans ever reading the raw data. This allowed Anthropic to improve their safety evaluations, understand usage patterns across languages and domains, and detect potential misuse - all while maintaining strong privacy guarantees through techniques like minimum cluster sizes and privacy auditing."
+link: "https://www.youtube.com/watch?v=VSmobknYl0E"
+year: 2023
+seo:
+  title: "Anthropic: Building a Privacy-Preserving LLM Usage Analytics System (Clio) - ZenML LLMOps Database"
+  description: "Anthropic developed Clio, a privacy-preserving system to understand how their LLM Claude is being used in the real world while maintaining strict user privacy. The system uses Claude itself to analyze and cluster conversations, extracting high-level insights without humans ever reading the raw data. This allowed Anthropic to improve their safety evaluations, understand usage patterns across languages and domains, and detect potential misuse - all while maintaining strong privacy guarantees through techniques like minimum cluster sizes and privacy auditing."
+  canonical: "https://www.zenml.io/llmops-database/building-a-privacy-preserving-llm-usage-analytics-system-clio"
+  ogTitle: "Anthropic: Building a Privacy-Preserving LLM Usage Analytics System (Clio) - ZenML LLMOps Database"
+  ogDescription: "Anthropic developed Clio, a privacy-preserving system to understand how their LLM Claude is being used in the real world while maintaining strict user privacy. The system uses Claude itself to analyze and cluster conversations, extracting high-level insights without humans ever reading the raw data. This allowed Anthropic to improve their safety evaluations, understand usage patterns across languages and domains, and detect potential misuse - all while maintaining strong privacy guarantees through techniques like minimum cluster sizes and privacy auditing."
+---
+
+## Overview
+
+Anthropic's Societal Impacts team has developed Clio (Claude Insights and Observations), a sophisticated system for understanding how their Claude language models are used in production while maintaining strong privacy guarantees. This represents a significant advancement in LLMOps practices, specifically in the domain of post-deployment monitoring and evaluation grounded in real-world usage patterns.
+
+The discussion features researchers Deep Ganguli, Esin Durmus, Miles Brundage, and Alex, who collectively describe both the technical implementation and the ethical considerations that shaped Clio's development. The system fundamentally addresses a core tension in LLMOps: the need to understand how models impact users and society versus the imperative to respect user privacy.
+
+## The Problem: Bridging Laboratory and Real-World Understanding
+
+Prior to Clio, Anthropic's approach to understanding model behavior was primarily top-down. The team would hypothesize potential harms (such as discrimination in high-stakes decision-making scenarios) and then construct evaluations to measure them. They also employed red teaming methodologies, paying contract workers to adversarially probe systems for vulnerabilities.
+
+While valuable, these approaches had significant limitations. As Esin Durmus explained, the evaluations were designed based on assumptions about what might be important, but there was no empirical grounding to confirm whether these hypothetical scenarios actually matched real-world usage. The team needed a way to understand "what is actually happening in the real world" to "tailor our evaluations to these specific use cases."
+
+## Technical Architecture of Clio
+
+Clio employs a multi-stage pipeline that leverages Claude itself to analyze conversations without any human needing to read the raw data:
+
+**Stage 1: Conversation Summarization**
+The system starts with a random sample of real-world Claude conversations. Claude processes each conversation and extracts a private, high-level summary describing the user's overall request. For example, a complex web development conversation might be summarized as "the user's overall request for the assistant was for help designing a web application in the Elixir programming language."
+
+**Stage 2: Embedding and Clustering**
+The summaries are converted into numerical embeddings—vector representations that capture semantic meaning. Similar conversations are then grouped together based on embedding proximity. A conversation about Elixir web development would cluster with other web development conversations, possibly including those about related programming languages.
+
+**Stage 3: Cluster Description**
+Once clusters are formed, Claude examines each group and generates a name and description. Importantly, Claude is specifically instructed to avoid including private details—for instance, it would describe a cluster as "web development" rather than including specific website names or project details.
+
+**Stage 4: Privacy Auditing**
+A dedicated auditing step uses Claude to verify that no identifying information remains that could identify fewer than approximately a thousand individuals. This threshold was chosen as a practical operationalization of privacy preservation.
+
+**Stage 5: Quantitative Aggregation**
+Final clusters must meet minimum thresholds for distinct organizations and conversations before being exposed internally. This provides an additional quantitative safeguard against inadvertent privacy breaches.
+
+## Ethical Framework and Development Process
+
+One of the most notable aspects of Clio's development was the team's approach to ethical considerations. Before writing any code, the team engaged in extensive discussions about the fundamental tension between insight and privacy. As Alex described, they went around the table asking "what are we worried about?" and alternating between high-level ethical considerations and granular technical solutions.
+
+The team specifically considered what they themselves would be comfortable with as Claude users. This led to a "defense in depth" strategy with multiple privacy layers, even though the general traffic analysis strictly doesn't require human review of raw conversations.
+
+The researchers developed a privacy evaluation specifically for Clio's auditor component, grounding it in actual Clio data (using only privacy-preserving examples) supplemented by synthetic data for non-privacy-preserving test cases. This represents an interesting meta-application of Clio improving its own development.
+
+## Validation and Accuracy
+
+To verify that Clio accurately reconstructs usage patterns, the team developed an elegant validation approach. They generated a synthetic corpus of tens of thousands of conversations with known ground-truth distributions (e.g., 10% math content, 5% coding, 2% questions about teddy bears). They then ran Clio on this data without revealing the expected distributions and measured how accurately the system reconstructed the ground truth.
+
+This validation was performed across multiple data types, including random data and synthetic concerning data. The analysis also broke down accuracy by conversation language, providing confidence in Clio's multilingual performance—important for understanding usage patterns across different linguistic communities.
+
+## Key Findings and Applications
+
+**Usage Pattern Discovery**
+The team found surprising patterns in how people use Claude. While programming assistance was expected to be prominent, they discovered substantial usage for research, ideation, and brainstorming across fields like quantum mechanics, material science, and biology. Alex described this as "inspirational"—seeing the tool help advance frontiers of human knowledge.
+
+Deep Ganguli personally discovered a use case through Clio: a cluster of parenting advice conversations led him to try using Claude with Artifacts to create algebra-teaching games in Spanish for his children. This exemplifies the "unknown unknowns" in beneficial applications.
+
+**Multilingual and Cultural Insights**
+Esin Durmus found that usage patterns differ significantly across languages. While English users heavily request software engineering help, Spanish and Arabic speakers proportionally request more professional and academic writing assistance, as well as translation tasks. Questions about cultural contexts and global issues also appear more frequently in non-English languages.
+
+**Safety and Trust Applications**
+Clio enables detection of coordinated abuse by identifying unusually dense clusters of similar activity across many accounts—a pattern that normal usage doesn't exhibit. As Miles described, "the shape of coordinated abuse" becomes visible because it creates tight clusters that stand out from the more diffuse patterns of legitimate use.
+
+The system also identified people using Claude in moments of extreme personal crisis, an important safety-relevant finding that doesn't neatly fit into binary violative/non-violative classifications. This insight helps ensure Claude responds responsibly in vulnerable moments.
+
+**Refusal Calibration**
+Clio helps identify both over-refusals (like Claude refusing to help "kill a process" on a computer) and under-refusals (such as completing translation tasks for harmful content when the same generation task would be refused). By examining refusal rates within topic clusters, the team can generate targeted training data to improve Claude's judgment without using actual user conversations.
+
+**New Capability Monitoring**
+When Anthropic deployed computer use capabilities (where Claude can point, click, and navigate computer interfaces), the team used Clio for post-deployment monitoring. This complemented pre-deployment testing by providing empirical visibility into how the new capability was actually being used in the wild.
+
+**Election Integrity**
+During the 2024 US elections, the team used Clio to understand how people were engaging with Claude about political topics. They found users seeking information about policy issues, understanding the electoral college system, and requesting political information. This validated their pre-deployment evaluation work on election integrity and allowed them to check whether Claude was appropriately acknowledging its knowledge cutoff dates and referring users to reliable sources.
+
+## Transparency and Reproducibility
+
+Unusually for a frontier AI lab, Anthropic decided to publicly share detailed information about Clio, including its findings about both beneficial use cases and misuse patterns. Alex acknowledged this might seem counterintuitive from a business perspective but framed it as aligned with Anthropic's public benefit company status.
+
+The team published a detailed appendix with all prompts, hyperparameters, and implementation details specifically to enable other organizations to build similar systems. They emphasized that their data represents only "a slice of the pie" and that the AI ecosystem would benefit from multiple providers sharing similar insights.
+
+## Future Directions
+
+The team outlined several areas for continued development:
+
+- **Pluralism and Values**: Understanding where subjectivity arises in conversations and how Claude makes value judgments, with the goal of making models more pluralistic and representative of different viewpoints rather than homogenizing perspectives.
+
+- **Emotional Impact**: Understanding the ways people connect with Claude as a coach, advisor, or emotional support, and ensuring Claude meets users' expectations in moments of vulnerability.
+
+- **Economic and Workforce Impacts**: Using Clio to understand how AI is changing work patterns—whether it augments or replaces certain tasks—to inform people about potential future changes.
+
+- **Accelerating Beneficial Use Cases**: Identifying positive applications in medicine and education where additional support could help users reap fuller benefits.
+
+## LLMOps Significance
+
+Clio represents a mature approach to several LLMOps challenges:
+
+- **Using LLMs to monitor LLMs**: The system demonstrates effective self-referential monitoring where Claude analyzes Claude usage, avoiding the need for human review of raw conversations.
+
+- **Privacy-preserving observability**: The multi-layered approach (summarization, clustering, auditing, aggregation thresholds) provides a template for other organizations seeking to understand usage while maintaining privacy.
+
+- **Grounding evaluations in reality**: Rather than relying solely on hypothetical scenarios, Clio enables evaluation design based on actual usage patterns—a significant methodological advancement.
+
+- **Post-deployment monitoring**: The system provides visibility into new capability deployments and can detect emergent usage patterns or abuse that pre-deployment testing might miss.
+
+- **Closing the feedback loop**: Insights from Clio can inform training data generation (using synthetic data derived from observed topics rather than actual conversations) to improve model behavior.
+
+The approach acknowledges inherent limitations—the team repeatedly emphasized that there's a fundamental tradeoff between insight and privacy, and their design choices represent one point on that spectrum optimized for high privacy with meaningful (if reduced) insight.

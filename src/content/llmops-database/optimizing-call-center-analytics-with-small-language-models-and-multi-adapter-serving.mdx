@@ -1,0 +1,126 @@
+---
+title: "Optimizing Call Center Analytics with Small Language Models and Multi-Adapter Serving"
+slug: "optimizing-call-center-analytics-with-small-language-models-and-multi-adapter-serving"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "6780e26212070f621a5fcc93"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:54:54.343Z"
+  createdOn: "2025-01-10T09:03:30.458Z"
+llmopsTags:
+  - "speech-recognition"
+  - "customer-support"
+  - "classification"
+  - "fine-tuning"
+  - "model-optimization"
+  - "latency-optimization"
+  - "cost-optimization"
+  - "monitoring"
+  - "scaling"
+  - "kubernetes"
+  - "databases"
+  - "amazon-aws"
+  - "microsoft-azure"
+  - "openai"
+company: "Convirza"
+summary: "Convirza transformed their call center analytics platform from using traditional large language models to implementing small language models (specifically Llama 3B) with adapter-based fine-tuning. By partnering with Predibase, they achieved a 10x cost reduction compared to OpenAI while improving accuracy by 8% and throughput by 80%. The system analyzes millions of calls monthly, extracting hundreds of custom indicators for agent performance and caller behavior, with sub-0.1 second inference times using efficient multi-adapter serving on single GPUs."
+link: "https://youtu.be/0A6crU_HRT4?si=D2iicISq-QinThbG"
+year: 2024
+seo:
+  title: "Convirza: Optimizing Call Center Analytics with Small Language Models and Multi-Adapter Serving - ZenML LLMOps Database"
+  description: "Convirza transformed their call center analytics platform from using traditional large language models to implementing small language models (specifically Llama 3B) with adapter-based fine-tuning. By partnering with Predibase, they achieved a 10x cost reduction compared to OpenAI while improving accuracy by 8% and throughput by 80%. The system analyzes millions of calls monthly, extracting hundreds of custom indicators for agent performance and caller behavior, with sub-0.1 second inference times using efficient multi-adapter serving on single GPUs."
+  canonical: "https://www.zenml.io/llmops-database/optimizing-call-center-analytics-with-small-language-models-and-multi-adapter-serving"
+  ogTitle: "Convirza: Optimizing Call Center Analytics with Small Language Models and Multi-Adapter Serving - ZenML LLMOps Database"
+  ogDescription: "Convirza transformed their call center analytics platform from using traditional large language models to implementing small language models (specifically Llama 3B) with adapter-based fine-tuning. By partnering with Predibase, they achieved a 10x cost reduction compared to OpenAI while improving accuracy by 8% and throughput by 80%. The system analyzes millions of calls monthly, extracting hundreds of custom indicators for agent performance and caller behavior, with sub-0.1 second inference times using efficient multi-adapter serving on single GPUs."
+---
+
+## Overview
+
+Convirza is a company with over two decades of experience in phone conversation analytics, having analyzed over a billion calls since its founding in 2001. Their core business involves recording and analyzing phone conversations for their clients to extract actionable insights that drive revenue and coaching opportunities. The company has evolved significantly from their origins using analog recording devices and manual human review to becoming an AI-driven digital company starting in 2014. This case study, presented by Convirza's CTO Moadi and VP of AI Jeppi at what appears to be a Predibase event, details their transition to small language models (SLMs) and their partnership with Predibase to solve significant LLMOps challenges.
+
+The company serves major brands and analyzes millions of calls monthly, measuring hundreds of different data points they call "indicators." These indicators cover agent performance metrics (proper greetings, asking for the business, scheduling appointments) and caller/customer signals (buying signals, lead quality). Each indicator essentially answers a specific question about what happened on a call and is measured numerically to drive business outcomes like conversion rates.
+
+## The Business Problem
+
+Convirza's customers demanded increasingly sophisticated insights from their phone calls. The arrival of ChatGPT and large language models raised expectations both from external clients and internal stakeholders. New capabilities like explaining why certain scores were given, extracting relevant passages, and providing detailed feedback on agent performance became expected. However, with millions of phone calls processed monthly and a continuously growing number of custom indicators needed for different industries and clients, using large commercial LLMs like OpenAI's GPT models proved unsustainable from both a cost and accuracy perspective.
+
+The company also needed to handle unpredictable traffic patterns with seasonal variations and sudden traffic bursts, requiring infrastructure that could scale up and down rapidly. Phone calls themselves vary dramatically in length—from a couple of minutes to an hour—requiring the system to handle variable-length text inputs efficiently.
+
+## Historical AI Architecture
+
+Convirza's AI evolution is instructive for understanding their current approach. They were traditionally an AWS shop using SageMaker to power over 60 different models for near real-time data extraction and classification. Their first language model was BERT in 2019, which was state-of-the-art at the time. In 2021, they transitioned to Longformer to handle extended context lengths needed for longer phone call transcripts.
+
+However, this architecture had significant limitations. Each model was deployed on its own auto-scaling infrastructure, which meant that as they scaled to more models (indicators), costs increased significantly and infrastructure management became increasingly complex. Training Longformer models was also extremely time-consuming, taking hours or even days to achieve reasonable accuracy.
+
+## The Small Language Model Pivot
+
+About seven months before this presentation (placing it in late 2023 or early 2024), Convirza began researching whether small language models could outperform larger commercial offerings when fine-tuned for their specific use cases. They fine-tuned several SLMs using LoRA (Low-Rank Adaptation) and compared results against OpenAI's models.
+
+Their findings were significant: fine-tuned small language models were considerably more accurate than OpenAI when trained with high-quality, curated data. Specifically, Llama 3.1 8B stood out for its exceptional ability to follow instructions out of the box without fine-tuning and its large context window compared to Longformer. The key insight was that SLMs have substantial world knowledge already "baked in," meaning they could be trained with fewer epochs on smaller but highly curated datasets to achieve better performance in much shorter time frames.
+
+## Partnership with Predibase and LoRaX
+
+Convirza initially experimented with the open-source LoRaX project for serving multiple LoRA adapters efficiently. After running a proof-of-concept (POC) with Predibase for about a month and a half, they determined that a commercial partnership made more commercial sense, allowing them to focus on delivering actionable insights rather than managing complex multi-cloud scalable infrastructure.
+
+The POC had ambitious goals:
+- Sub-2-second latency target
+- Hundreds of inferences per second
+- Hybrid setup with some GPU instances on Convirza's own VPC and additional scale provided by Predibase
+- Running 60 LoRA adapters on a single GPU (a stark contrast to their previous one-model-per-infrastructure approach)
+- On-demand GPU provisioning and scaling with nodes coming up within a minute
+
+## Streamlined Training Pipeline
+
+Moving to Predibase's LoRaX-based adapter serving significantly simplified Convirza's training pipeline. The new workflow runs on commodity hardware since the heavy lifting happens on Predibase's infrastructure:
+
+- **Data Preparation**: Convirza prepares and versions their training datasets, then uploads them to Predibase
+- **Fine-tuning**: They schedule fine-tuning jobs with standard LoRA hyperparameters (rank factor, learning rate, target modules)
+- **Evaluation**: After fine-tuning completes, models are evaluated against unseen datasets with key metrics reported
+- **Deployment**: Once an adapter is fine-tuned, deployment is essentially just a configuration change—the adapter is immediately ready to serve
+
+This simplified deployment model has subtle but important consequences for their operations. AB testing and canary releases become trivially easy because newly trained adapters and existing adapters can run simultaneously without incurring additional infrastructure costs. The previous architecture forced difficult decisions about when to decommission old infrastructure when running parallel models.
+
+## Production Results and Metrics
+
+The production results exceeded their POC expectations significantly:
+
+- **Latency**: The target was sub-2-second inference; they achieved 0.1-second inference time
+- **Cost**: 10x cost reduction compared to OpenAI
+- **Accuracy**: Average 8% higher F1 score compared to OpenAI
+- **Throughput**: 80% higher throughput than OpenAI
+
+Perhaps most importantly, the cost scaling characteristics are dramatically better. When comparing cost growth as the number of indicators increases, both OpenAI and Longformer costs increase rapidly. Predibase costs grow much more gently—the marginal cost of a single additional adapter is practically zero. Cost increases are primarily related to maintaining the required throughput and latency rather than the number of adapters.
+
+## Monitoring and Operations
+
+Convirza enhanced their monitoring capabilities as part of this transition. They monitor throughput, latency, and signals of data drift using a combination of Predibase's dashboard and AWS tools. The ability to easily run AB tests and canary releases has improved their operational confidence in deploying new or updated adapters.
+
+## Infrastructure Scaling
+
+The hybrid infrastructure setup allows Convirza to maintain some GPU instances in their own VPC while leveraging Predibase for additional scale during traffic bursts. The right side of their presentation showed call volume data with seasonal patterns and traffic peaks, demonstrating the need for infrastructure that can scale rapidly to maintain near real-time actionable insights.
+
+## Critical Assessment
+
+While the results presented are impressive, several aspects warrant consideration:
+
+- The comparison with OpenAI doesn't specify which OpenAI models were used or whether they were fine-tuned, which could affect the fairness of the cost and accuracy comparisons
+- The 8% F1 score improvement is notable, but the baseline comparison details are limited
+- The presentation is clearly given at a Predibase event, so there is inherent promotional context
+- The claim of "practically zero" marginal cost per adapter likely holds only up to a certain point before additional GPU resources are needed
+
+Nevertheless, the core technical approach—using LoRA adapters with small language models to serve many custom classification/extraction tasks on shared infrastructure—is a well-established pattern that genuinely offers cost and flexibility advantages over deploying separate models or using large commercial APIs for each task.
+
+## Key Takeaways for LLMOps
+
+This case study illustrates several important LLMOps patterns:
+
+- Small language models fine-tuned with high-quality domain data can outperform larger general-purpose models for specific classification and extraction tasks
+- LoRA adapters enable efficient multi-tenant serving where many custom models share the same base model infrastructure
+- The combination of on-premises/VPC resources with cloud scaling provides flexibility for variable workloads
+- Simplified deployment (adapter as configuration change) enables better CI/CD practices including AB testing and canary releases
+- Cost scales with throughput requirements rather than with the number of specialized models when using adapter-based approaches
+
+Convirza's journey from 60+ separately deployed models to 60+ adapters on minimal GPU infrastructure represents a significant operational simplification that is becoming increasingly common as organizations mature their LLM deployment strategies.

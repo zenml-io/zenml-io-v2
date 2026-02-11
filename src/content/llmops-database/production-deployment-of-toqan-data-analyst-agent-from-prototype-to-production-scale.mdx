@@ -1,0 +1,154 @@
+---
+title: "Production Deployment of Toqan Data Analyst Agent: From Prototype to Production Scale"
+slug: "production-deployment-of-toqan-data-analyst-agent-from-prototype-to-production-scale"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "6880cfa1875344488bf4958e"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:46:25.959Z"
+  createdOn: "2025-07-23T12:03:45.426Z"
+llmopsTags:
+  - "data-analysis"
+  - "question-answering"
+  - "structured-output"
+  - "agent-based"
+  - "prompt-engineering"
+  - "error-handling"
+  - "multi-agent-systems"
+  - "human-in-the-loop"
+  - "fallback-strategies"
+  - "postgresql"
+  - "sqlite"
+  - "databases"
+  - "monitoring"
+  - "api-gateway"
+  - "security"
+  - "openai"
+company: "Toqan"
+summary: "Toqan developed and deployed a data analyst agent that allows users to ask questions in natural language and receive SQL-generated answers with visualizations. The team faced significant challenges transitioning from a working prototype to a production system serving hundreds of users, including behavioral inconsistencies, infinite loops, and unreliable outputs. They solved these issues through four key approaches: implementing deterministic workflows for predictable behaviors, leveraging domain experts for setup and monitoring, building resilient systems to handle edge cases and abuse, and optimizing agent tools to reduce complexity. The result was a stable production system that successfully scaled to serve hundreds of users with improved reliability and user experience."
+link: "https://www.youtube.com/watch?v=gLuSbnMctfs"
+year: 2024
+seo:
+  title: "Toqan: Production Deployment of Toqan Data Analyst Agent: From Prototype to Production Scale - ZenML LLMOps Database"
+  description: "Toqan developed and deployed a data analyst agent that allows users to ask questions in natural language and receive SQL-generated answers with visualizations. The team faced significant challenges transitioning from a working prototype to a production system serving hundreds of users, including behavioral inconsistencies, infinite loops, and unreliable outputs. They solved these issues through four key approaches: implementing deterministic workflows for predictable behaviors, leveraging domain experts for setup and monitoring, building resilient systems to handle edge cases and abuse, and optimizing agent tools to reduce complexity. The result was a stable production system that successfully scaled to serve hundreds of users with improved reliability and user experience."
+  canonical: "https://www.zenml.io/llmops-database/production-deployment-of-toqan-data-analyst-agent-from-prototype-to-production-scale"
+  ogTitle: "Toqan: Production Deployment of Toqan Data Analyst Agent: From Prototype to Production Scale - ZenML LLMOps Database"
+  ogDescription: "Toqan developed and deployed a data analyst agent that allows users to ask questions in natural language and receive SQL-generated answers with visualizations. The team faced significant challenges transitioning from a working prototype to a production system serving hundreds of users, including behavioral inconsistencies, infinite loops, and unreliable outputs. They solved these issues through four key approaches: implementing deterministic workflows for predictable behaviors, leveraging domain experts for setup and monitoring, building resilient systems to handle edge cases and abuse, and optimizing agent tools to reduce complexity. The result was a stable production system that successfully scaled to serve hundreds of users with improved reliability and user experience."
+---
+
+## Overview
+
+This case study comes from a conference presentation by Toqan, featuring speakers Yannis and Don, a machine learning engineer who worked on developing the Toqan Data Analyst agent. The presentation focuses on the journey of taking an agentic AI system from prototype to production, serving hundreds of users across development partners including iFood, Gloovo, and OLX. The Toqan Data Analyst is a specialized agent that allows users to ask questions in natural language (English) and receive answers by automatically translating questions into SQL queries, executing them against user databases, and presenting results with optional visualizations.
+
+The team candidly acknowledges that while agents can appear "magical" in demos, getting them to work reliably in production is a fundamentally different challenge. The presentation centers on four key lessons learned over approximately six months of production deployment.
+
+## The Core Challenge: From Demo Magic to Production Reality
+
+The speakers are refreshingly honest about the gap between agent demonstrations and production reality. In an ideal scenario, the Toqan Data Analyst receives a natural language question, understands it, finds relevant data sources, generates and executes SQL, recovers from failures, and returns visualized results. However, as they note, "it never works out of the box."
+
+Common failure modes included:
+- Agents ignoring stop commands and continuing in infinite loops
+- Producing the same incorrect answer repeatedly (58-59 times in one example)
+- Generating SQL with non-existent columns based on hallucinated schema information
+- Providing inconsistent answers to the same question across different runs
+- Getting trapped in rabbit holes that didn't answer user questions
+
+The team had to bridge the gap from a frequently failing product to one with genuine user adoption, which they demonstrate through usage metrics shared in the presentation.
+
+## Lesson 1: Solve Behavioral Problems with Deterministic Workflows
+
+One of the most significant insights is that not all problems require the full flexibility of agentic reasoning. When behavior is required and predictable, it can and should be hard-coded through deterministic workflows.
+
+### Handling Vague Questions
+
+The team discovered that when users asked vague questions, the LLM would confidently produce answers—even when it didn't have enough context to do so correctly. Different runs would produce different answers due to ambiguity in how questions could be interpreted.
+
+Their solution was implementing a "pre-processing step" that evaluates the question in isolation, before the agent attempts to solve it. This step examines the question against available context and determines whether it can be answered with the information available. If not, the system can request clarification rather than proceeding with potentially incorrect assumptions. This creates a more consistent user experience and more reliable system behavior.
+
+### Schema Validation Before Execution
+
+Another predictable failure mode was the agent generating SQL that referenced non-existent columns. Don draws an apt analogy: just like a human data analyst might misremember column names or assume columns exist based on what "makes sense," the LLM would do the same. Rather than waiting for the query to fail against the actual database (which wastes cycles and puts unnecessary load on user systems), they implemented a deterministic check after query generation that validates whether referenced columns actually exist in the documented schema.
+
+This pre-validation approach allows them to immediately begin problem-solving when issues are detected, rather than burning through multiple agent cycles trying to self-correct after database errors.
+
+The key insight here is that LLM-generated content can and should be evaluated using traditional functional programming approaches before being applied to the outside world. This reduces unnecessary agent cycles and makes the overall process smoother.
+
+## Lesson 2: Leverage Experts for Setup and Monitoring
+
+Despite the impressive capabilities of LLMs, the team emphasizes that agentic systems must still be treated as data products requiring rigorous testing and expert involvement.
+
+### Moving Beyond One-Off Knowledge Transfer
+
+Initially, the team used a "one-off transfer" model where domain experts would provide documentation and schema, the ML team would ingest it, and then attempt to solve problems using provided test sets. When results were wrong, experts would provide feedback, and the team would try to fix issues.
+
+This approach proved inadequate because the ML engineers weren't domain experts. They couldn't make general solutions for highly specific problems that varied across use cases. The knowledge gap was too significant.
+
+### Expert-in-the-Loop Pipelines
+
+The solution was creating pipelines and UIs that allow data experts to directly update their documentation without ML team intervention. This has multiple benefits:
+- Experts can move quickly in their development cycles
+- Documentation gets optimized for agent consumption rather than human consumption (an important distinction)
+- Agents become highly specialized and effective for specific use cases
+- The system is genuinely ready for production use
+
+This represents a shift from treating the agent as a finished product to treating it as a system that requires ongoing expert curation and refinement.
+
+## Lesson 3: Build Resilient Systems for Unexpected Input
+
+The team learned that thorough testing with involved stakeholders doesn't prepare you for real user behavior. Once deployed to users who hadn't been involved in development but were familiar with the broader Toqan platform, entirely unexpected queries emerged—including some abuse cases.
+
+### Postel's Law Applied to Agents
+
+The team invokes Postel's Law: "Be conservative in what you do, be liberal in what you accept from others." Users pushing boundaries shouldn't crash the system or result in infinite loops; it's actually valuable because it reveals new use cases.
+
+### Balancing Hard and Soft Limits
+
+The key insight is balancing hard limits (strict rules about when the agent must stop) with soft limits (nudges that guide the agent in the right direction without removing creative problem-solving capability). Hard limits prevent infinite loops and runaway behavior. Soft limits preserve the agent's ability to self-correct and solve problems creatively—which is the core value proposition of using agents.
+
+Examples of hard limits include maximum tool call counts and execution timeouts. Soft limits include context management and guidance toward expected behavior patterns.
+
+## Lesson 4: Optimize Tools to Simplify Agent Work
+
+The tools available to an agent significantly impact its performance, and tool optimization is a powerful lever for improving overall system behavior.
+
+### Schema Tool Evolution
+
+The schema tool retrieves relevant documentation to populate the agent's context. Initially, it was relatively broad because early use cases involved only a few small tables. As the system scaled to more complex use cases, this tool needed to become smarter about determining relevance.
+
+Better schema filtering means the agent receives concentrated, relevant information. It can't get distracted by irrelevant information, and doesn't have to parse through large contexts for what it needs. This reduces complexity and effort for the main agent.
+
+### SQL Executor with Self-Correction
+
+The team is experimenting with having the SQL execution tool handle common, context-independent errors before returning to the main agent. Early SQL errors (like date function syntax when moving between SQL dialects) don't require full agent context to fix. Letting the tool handle these autonomously saves cycles and keeps the main agent's context uncluttered with error information.
+
+The principle is that as the system scales, tools should grow smarter alongside the agent, becoming more sophisticated at filtering information and handling routine problems.
+
+## Technical Architecture Details
+
+### Custom Framework
+
+The team developed their own agentic framework rather than using existing options. While they experimented with frameworks early on (and continue to explore options like Swarm for educational purposes), several factors led them to build custom:
+- They started development approximately two years ago when framework options were less mature
+- They've already invested significantly in their own solution
+- Their framework is tested and scales in terms of requests and users
+- The agentic space is exploratory enough that building custom capabilities provides flexibility for future needs
+
+### Model Selection Strategy
+
+The team uses multiple models across the pipeline, primarily OpenAI models but with different models for different components:
+- The selection is based on task complexity and cost
+- Simpler, smaller tools can use smaller models (like GPT-4-mini)
+- More complex components use more capable models (like o1 or GPT-4 Turbo)
+- The SQL execution component is particularly compute-intensive
+- They optimize for precision because users make business decisions based on the outputs, so the cost of errors is high
+
+### Access and Security Management
+
+Database access is managed on a case-by-case basis with each user's specific infrastructure. The team works with database administrators to ensure limited access credentials—so agent mistakes can't bring down broader systems. Secret management is handled on Toqan's side, with different management approaches for different deployments.
+
+## Key Takeaway: AI First Doesn't Mean AI Only
+
+The presentation concludes with an important philosophical point: building AI-first products doesn't mean using AI for everything. Deterministic workflows, functional validation, expert curation, and traditional engineering all have crucial roles in making agentic systems production-ready. The most successful approach combines LLM capabilities with traditional software engineering practices, using each where it's most appropriate.

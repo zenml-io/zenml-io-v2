@@ -1,0 +1,174 @@
+---
+title: "Optimizing RAG-based Search Results for Production: A Journey from POC to Production"
+slug: "optimizing-rag-based-search-results-for-production-a-journey-from-poc-to-production"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "682728bd7ed2b7b60da18eab"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:08:33.258Z"
+  createdOn: "2025-05-16T11:59:57.965Z"
+llmopsTags:
+  - "question-answering"
+  - "structured-output"
+  - "regulatory-compliance"
+  - "data-analysis"
+  - "rag"
+  - "embeddings"
+  - "semantic-search"
+  - "vector-search"
+  - "reranking"
+  - "prompt-engineering"
+  - "cost-optimization"
+  - "latency-optimization"
+  - "error-handling"
+  - "monitoring"
+  - "databases"
+  - "fastapi"
+  - "openai"
+  - "google-gcp"
+company: "Statista"
+summary: "Statista, a global data platform, developed and optimized a RAG-based AI search system to enhance their platform's search capabilities. Working with Urial Labs and Talent Formation, they transformed a basic prototype into a production-ready system that improved search quality by 140%, reduced costs by 65%, and decreased latency by 10%. The resulting Research AI product has seen growing adoption among paying customers and demonstrates superior performance compared to general-purpose LLMs for domain-specific queries."
+link: "https://www.youtube.com/watch?v=4uKAJng-ViY"
+year: 2023
+seo:
+  title: "Statista: Optimizing RAG-based Search Results for Production: A Journey from POC to Production - ZenML LLMOps Database"
+  description: "Statista, a global data platform, developed and optimized a RAG-based AI search system to enhance their platform's search capabilities. Working with Urial Labs and Talent Formation, they transformed a basic prototype into a production-ready system that improved search quality by 140%, reduced costs by 65%, and decreased latency by 10%. The resulting Research AI product has seen growing adoption among paying customers and demonstrates superior performance compared to general-purpose LLMs for domain-specific queries."
+  canonical: "https://www.zenml.io/llmops-database/optimizing-rag-based-search-results-for-production-a-journey-from-poc-to-production"
+  ogTitle: "Statista: Optimizing RAG-based Search Results for Production: A Journey from POC to Production - ZenML LLMOps Database"
+  ogDescription: "Statista, a global data platform, developed and optimized a RAG-based AI search system to enhance their platform's search capabilities. Working with Urial Labs and Talent Formation, they transformed a basic prototype into a production-ready system that improved search quality by 140%, reduced costs by 65%, and decreased latency by 10%. The resulting Research AI product has seen growing adoption among paying customers and demonstrates superior performance compared to general-purpose LLMs for domain-specific queries."
+---
+
+## Overview
+
+Statista is a Hamburg-based company that operates a global statistics and data platform, serving approximately 30,000 paying customers across multiple countries including the US, Japan, UK, Germany, and France. The platform hosts millions of statistics curated by 300-400 researchers and analysts, with around 23 million monthly page views and 500,000 downloads of complex data reports. The company's core challenge has always been discovery—helping users find the right statistics among millions of data points.
+
+This case study documents Statista's journey from an internal proof-of-concept to a production-ready generative AI product called "Research AI," developed in collaboration with Uriel Labs (led by CTO Mati) and facilitated by Talent Formation. The presentation was delivered as a panel discussion featuring three perspectives: the business stakeholder (Ingo, CTO of Statista), the technical optimizer (Mati from Uriel Labs), and the project facilitator (Benedict from Talent Formation).
+
+## Business Context and Initial Exploration
+
+When ChatGPT emerged in early 2023, Statista's executive team recognized both the opportunity and threat that generative AI posed to their business model. While 66-80% of their traffic comes from organic Google search, the rise of AI assistants that could directly answer user questions threatened to disintermediate their platform. However, Statista also recognized their competitive advantage: a trusted, curated data source that paying customers rely on for professional purposes.
+
+Rather than making top-down decisions about AI strategy, Statista took a pragmatic approach by dedicating a single engineer with a mathematics background to explore use cases for two months. This exploratory phase resulted in several potential applications, with one clear winner that was developed into a prototype by mid-2023. The prototype proved the principle but was not production-ready—it was slow, expensive, and lacked scalability.
+
+## Initial Architecture and Technical Challenges
+
+The proof-of-concept was built as a typical RAG (Retrieval Augmented Generation) application with the following pipeline:
+
+- **Retrieval**: User queries are processed against a vector store containing statistic embeddings to find semantically similar documents
+- **Reranking**: Retrieved documents are sorted by relevance to surface the most important statistics
+- **Generation**: An LLM synthesizes an answer based on the retrieved context
+- **Rating**: A quality check determines whether the answer is good enough to show users
+
+Upon initial analysis, the system was making 42 LLM calls per request—40 for reranking (asking whether each retrieved document was relevant) plus one for answer generation and one for quality rating. This appeared to be an obvious optimization target, but the team wisely implemented traceability before making any changes.
+
+## The Critical Role of Traceability
+
+Before attempting any optimizations, the team implemented comprehensive traceability to understand what the application was actually doing at each step. This observability layer captured what was being sent to the LLM, latency for each component, and costs per step. This investment proved crucial because the data revealed surprising insights:
+
+- The 40 reranking calls represented only 5% of latency and 13% of costs
+- Most latency came from retrieval (vector similarity search across large data volumes) and answer generation
+- The majority of costs were concentrated in the answer generation step
+
+This highlights a fundamental LLMOps principle: intuition about performance bottlenecks is often wrong, and proper instrumentation is essential before optimization.
+
+## Establishing Quality Metrics and Baselines
+
+With traceability in place, the team needed to define success metrics. They established a clear priority order: quality first, then cost, then latency. They also set specific thresholds: costs below 5 cents per request and latency below 30 seconds on average.
+
+To measure quality, they needed a reference dataset—a ground truth of expected answers for given questions. Statista's content experts created this dataset, enabling an "LLM-as-a-judge" evaluation approach where a language model compares system outputs against reference answers to score quality.
+
+The team built a test runner that could generate all three metrics (quality, cost, latency) on-demand after each change. The initial baseline measurements were sobering:
+
+- **Latency**: Nearly 30 seconds average
+- **Cost**: More than 8 cents per request
+- **Quality**: 30% (indicating significant room for improvement)
+
+## Experimentation and Optimization
+
+With metrics infrastructure in place, the team executed over 100 experiments in three weeks to optimize the system. The key insight driving their experimentation was that semantic similarity between user queries and statistic snippets is not naturally aligned—a question and its answer have different semantic structures.
+
+### Query Rewriting
+
+The simplest approach was asking an LLM to rewrite user queries for better retrieval. For example, "How tall is the Eiffel Tower? It looked so high when I was there last year" becomes "What's the height of the Eiffel Tower?" This removed noise and improved wording but showed no significant net quality improvement—some tests improved while others degraded.
+
+### Multi-Query Rewriting
+
+The breakthrough came from generating multiple query variations. Complex questions often require multiple statistics to answer. For "Which company had more revenue 2015 to 2020, Apple or Microsoft?", the system generates separate queries for Apple revenue, Microsoft revenue, and a comparison. Each query performs its own retrieval, and results are merged, capturing multiple aspects needed for comprehensive answers. This technique showed significant quality improvements with only marginal increases in latency and cost.
+
+### HyDE (Hypothetical Document Embeddings)
+
+The most innovative technique addressed the fundamental mismatch between questions and answers in embedding space. HyDE asks the LLM to generate a hypothetical answer—in this case, a fake statistic snippet that looks like real data. This fabricated answer (which may contain incorrect numbers) is then used for similarity search, because it's semantically closer to actual statistic snippets than the original question. The actual retrieved documents contain the correct data.
+
+This technique also showed significant quality improvements, though it changed which queries succeeded versus failed, indicating it was capturing different aspects than the multi-query approach.
+
+### Combined Approach
+
+The final architecture combines all techniques: query rewriting, multi-query expansion, and HyDE run in parallel, with their retrievals merged. While this appears complex, the parallel execution minimizes latency impact. The latency savings from other optimizations were "reinvested" into HyDE, which is slower but improves quality.
+
+## Final Results
+
+After three weeks of experimentation, the optimized system achieved:
+
+- **Latency**: 10% improvement (actually 65% improvement, with gains reinvested in quality-boosting techniques)
+- **Cost**: 65% reduction
+- **Quality**: 140% improvement
+
+These metrics brought the system to production readiness, meeting the defined thresholds.
+
+## Model Selection Considerations
+
+The presentation also covered model selection as a critical optimization lever. Using a comparison framework from Artificial Analysis, the team demonstrated that:
+
+- Gemini Flash costs 98% less than GPT-4 Omni for equivalent quality in many use cases
+- Llama 70B on Cerebras infrastructure runs 27x faster than GPT-4 Omni with no quality difference for certain tasks
+
+A live demo showed the speed difference between models completing the same summarization task. The challenge is that no single model is optimal for all requests—some queries need sophisticated reasoning while others just require summarization. This led to the development of an "AI Router" product that dynamically selects models per request, reportedly saving customers 82% on costs.
+
+## Production Deployment and Business Results
+
+The journey from technical production-readiness to market launch took approximately five months, requiring work on UX, go-to-market strategy, and pricing beyond the core AI system.
+
+The final product, Research AI, presents answers with key facts extracted and visualized for quick comprehension, along with source links to original statistics. The rollout followed a phased approach:
+
+- Internal testing with researchers (the most skeptical users)
+- Closed beta with long-term customers
+- Open beta requiring registration
+- General availability to all customers
+
+Post-launch metrics show:
+
+- Growing adoption among paying customers
+- Low bounce rates indicating the feature meets user expectations
+- Users who engage with Research AI interact with more content on the platform
+
+The team continues to optimize, achieving response times down to 14-15 seconds with further cost reductions while maintaining quality. Importantly, they benchmark their quality against public models (ChatGPT, Gemini, Perplexity) to ensure competitive performance.
+
+## Ongoing Experimentation
+
+Since most Statista traffic comes from Google searches landing on specific statistics pages (not the Research AI interface), the team is now A/B testing integration of AI-generated follow-up questions on these pages to drive deeper engagement. This represents a shift from search-initiated AI to context-aware AI recommendations.
+
+## Business Model Evolution
+
+The presentation noted three emerging business model patterns for data providers in the AI era:
+
+- **Direct consumer product**: The Research AI approach, where Statista builds and operates the AI interface
+- **Data API for enterprise AI**: Large companies building internal AI systems want to integrate Statista's curated data securely
+- **Data licensing to LLM providers**: Exclusive data feeds to improve foundation models
+
+Statista is exploring all three approaches, with the optimal balance to be determined by user behavior and market dynamics.
+
+## Key LLMOps Lessons
+
+The case study emphasizes several LLMOps best practices:
+
+- Implement traceability before optimizing—intuition about bottlenecks is often wrong
+- Define clear metric priorities and thresholds before experimentation
+- Create reference datasets for quality evaluation using domain experts
+- Use LLM-as-a-judge for scalable quality measurement
+- Run many experiments (100+) because technique effectiveness is highly data-dependent
+- Consider reinvesting latency savings into quality-boosting techniques
+- Benchmark against competitive alternatives (public AI models) not just internal baselines
+- Plan for the long path from technical readiness to market launch

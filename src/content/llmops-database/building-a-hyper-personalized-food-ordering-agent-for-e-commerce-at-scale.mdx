@@ -1,0 +1,153 @@
+---
+title: "Building a Hyper-Personalized Food Ordering Agent for E-commerce at Scale"
+slug: "building-a-hyper-personalized-food-ordering-agent-for-e-commerce-at-scale"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "69738ffdfdfb1335707f96f4"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2026-02-03T15:19:04.226Z"
+  lastUpdated: "2026-01-23T16:05:26.845Z"
+  createdOn: "2026-01-23T15:13:01.966Z"
+llmopsTags:
+  - "chatbot"
+  - "question-answering"
+  - "classification"
+  - "summarization"
+  - "content-moderation"
+  - "prompt-engineering"
+  - "latency-optimization"
+  - "semantic-search"
+  - "reranking"
+  - "few-shot"
+  - "agent-based"
+  - "multi-agent-systems"
+  - "token-optimization"
+  - "evals"
+  - "chunking"
+  - "system-prompts"
+  - "langchain"
+  - "llama-index"
+  - "fastapi"
+  - "postgresql"
+  - "redis"
+  - "cache"
+  - "monitoring"
+  - "documentation"
+  - "anthropic"
+  - "openai"
+  - "google-gcp"
+company: "iFood"
+summary: "iFood, Brazil's largest food delivery platform with 160 million monthly orders and 55 million users, built ISO, an AI agent designed to address the paradox of choice users face when ordering food. The agent uses hyper-personalization based on user behavior, interprets complex natural language intents, and autonomously takes actions like applying coupons, managing carts, and processing payments. Deployed on both the iFood app and WhatsApp, ISO handles millions of users while maintaining sub-10 second P95 latency through aggressive prompt optimization, context window management, and intelligent tool routing. The team achieved this by moving from a 30-second to a 10-second P95 latency through techniques including asynchronous processing, English-only prompts to avoid tokenization penalties, and deflating bloated system prompts by improving tool naming conventions."
+link: "https://www.youtube.com/watch?v=uevJBcXKLlQ"
+year: 2026
+seo:
+  title: "iFood: Building a Hyper-Personalized Food Ordering Agent for E-commerce at Scale - ZenML LLMOps Database"
+  description: "iFood, Brazil's largest food delivery platform with 160 million monthly orders and 55 million users, built ISO, an AI agent designed to address the paradox of choice users face when ordering food. The agent uses hyper-personalization based on user behavior, interprets complex natural language intents, and autonomously takes actions like applying coupons, managing carts, and processing payments. Deployed on both the iFood app and WhatsApp, ISO handles millions of users while maintaining sub-10 second P95 latency through aggressive prompt optimization, context window management, and intelligent tool routing. The team achieved this by moving from a 30-second to a 10-second P95 latency through techniques including asynchronous processing, English-only prompts to avoid tokenization penalties, and deflating bloated system prompts by improving tool naming conventions."
+  canonical: "https://www.zenml.io/llmops-database/building-a-hyper-personalized-food-ordering-agent-for-e-commerce-at-scale"
+  ogTitle: "iFood: Building a Hyper-Personalized Food Ordering Agent for E-commerce at Scale - ZenML LLMOps Database"
+  ogDescription: "iFood, Brazil's largest food delivery platform with 160 million monthly orders and 55 million users, built ISO, an AI agent designed to address the paradox of choice users face when ordering food. The agent uses hyper-personalization based on user behavior, interprets complex natural language intents, and autonomously takes actions like applying coupons, managing carts, and processing payments. Deployed on both the iFood app and WhatsApp, ISO handles millions of users while maintaining sub-10 second P95 latency through aggressive prompt optimization, context window management, and intelligent tool routing. The team achieved this by moving from a 30-second to a 10-second P95 latency through techniques including asynchronous processing, English-only prompts to avoid tokenization penalties, and deflating bloated system prompts by improving tool naming conventions."
+---
+
+## Overview
+
+iFood, Brazil's dominant food delivery platform, developed ISO, a production-scale AI agent deployed to millions of users across both mobile app and WhatsApp channels. The company, which processes 160 million monthly orders through 400,000 delivery drivers serving 55 million monthly users across 1,500 Brazilian cities, has a ten-year history of AI deployment with 150 proprietary AI models and 14 billion real-time predictions monthly. The ISO agent represents their move into agentic AI for addressing a critical user experience problem: decision paralysis when faced with overwhelming choice in food ordering.
+
+The business problem ISO solves is rooted in user anxiety and decision fatigue. Users opening the app late at night often scroll for extended periods without making a decision, experiencing various emotional states from wanting something special after a hard week to simply wanting quick delivery without knowing what to order. The challenge becomes more complex when considering that each user has distinct preferences requiring hyper-personalization at scale.
+
+## Agent Architecture and Design
+
+ISO employs a single-agent architecture with a sophisticated twist that provides multi-agent-like behavior within a unified system. The architecture handles incoming user messages by dynamically adjusting the system prompt based on the current state and flow, creating flow-dependent behaviors without the complexity of true multi-agent orchestration. This design decision appears to balance simplicity with the need for context-aware responses.
+
+The agent loads user context information at query time and has access to a collection of food-specific tools including cart management, ordering, and food search capabilities. Critically, several of these tools are themselves AI workflows that can operate independently based on the main agent's task assignments. This hierarchical intelligence allows specialized sub-workflows to handle complex operations like personalized search and ranking without requiring the main agent to micromanage every decision.
+
+A distinctive feature of the architecture is the tight integration between tools and UI elements. Tools generate not just data responses but also UI components including carousels and buttons. This reduces user typing effort significantly, addressing the insight that users in this context prefer minimal interaction rather than extended conversational exchanges. The system also provides follow-up suggestions to guide users toward successful order completion.
+
+## Hyper-Personalization Implementation
+
+The personalization system represents one of ISO's most sophisticated LLMOps challenges. When a user requests something seemingly simple like "pizza," the system must navigate a complex decision space. The team built offline processing pipelines that generate user preference representations based on app behavior patterns. These representations capture order history, preferred food categories, and temporal patterns like breakfast versus dinner preferences.
+
+The agent receives both conversation context including any explicitly stated preferences and this richer user profile information. This combined context feeds into tools that contain self-contained workflows with all necessary information for optimal retrieval. The system converts user inputs into search queries using both semantic and exact search strategies. For generic requests like "I'm hungry," the system expands into multiple queries representing user preferences comprehensively.
+
+Results undergo reranking using the user context to surface the most relevant options. The example provided shows how three different user profiles ordering "pizza" receive dramatically different recommendations based on their preferences for meat-heavy, low-carb, or sophisticated options. This isn't just a single recommendation but multiple options all tuned to user preferences.
+
+The team manages the growing context smartly, recognizing that multi-turn conversations with tool outputs and personalization data can quickly exhaust context windows. This foreshadows their aggressive latency optimization work.
+
+## Latency Optimization: A Critical Production Concern
+
+Latency emerged as a crucial production concern because hungry users lack patience for slow responses. The team's journey from 30-second P95 latency to 10-second P95 latency involved systematic analysis and multiple optimization strategies across different architectural layers.
+
+The first major optimization involved identifying flow shortcuts. The initial agent design handled all requests with maximum complexity, but analysis revealed that simple requests didn't require the full agentic workflow. The team created fast paths for straightforward operations like simple food searches, preference retrieval, and promotion queries. This bifurcation between simple and complex flows allowed the system to avoid unnecessary processing overhead.
+
+Context window management represented the second major optimization area. The team analyzed token processing across user requests and identified opportunities to move processing to asynchronous workflows. Operations like compacting previous message context and selecting relevant user behavior signals could happen outside the critical path. This didn't reduce total token consumption but removed tokens from the slowest synchronous flow, directly improving user-perceived latency. The optimization also included general prompt compression work that reduced total token counts.
+
+A particularly interesting discovery involved the tokenization tax for non-English languages. Research by team member Paul Vanderborg revealed that languages other than English suffer significant tokenization penalties in major LLM models. The same information requires up to 50% more tokens in Portuguese compared to English, with the exception of Chinese models that are more efficient in Chinese. This tokenization inefficiency leads to both higher latency and faster context window exhaustion.
+
+The team's response was to convert all prompts to English despite serving a Portuguese-speaking user base. This saved significant tokens compared to Portuguese versions. This represents a pragmatic production decision where prompt language differs from user-facing language, optimizing for model efficiency while maintaining natural language interaction in Portuguese for users.
+
+## Prompt Engineering and Deflation
+
+The team identified and addressed a common anti-pattern in production LLM systems: prompt bloat through edge case accumulation. As bugs appeared in production or user complaints emerged or evaluation failures were discovered, the natural tendency was to add specific rules and edge cases to the system prompt. This pattern creates increasingly unwieldy prompts that hurt both performance and latency.
+
+The team's remedy began with creating comprehensive evaluations for every edge case that had prompted a prompt addition. If a production incident led to adding a rule, they first created an evaluation case capturing that scenario. This ensured they could measure whether alternative approaches maintained correctness.
+
+The core insight was that many edge cases arose from poor tool naming and variable naming rather than genuinely exceptional situations. They applied a simple heuristic: show someone unfamiliar with the system the list of tools and their names, then ask if they could understand what each tool does and how to use it based solely on those instructions. If not, the tool naming was insufficiently clear.
+
+Tool names that were meaningful within the application's internal context but opaque to an external agent forced the system prompt to include extensive explanation and edge case handling. By improving tool naming to be self-explanatory from an agent's perspective, many edge cases could be removed from the prompt. The team continuously ran their evaluation suite while simplifying prompts, ensuring that performance remained stable as they reduced token counts.
+
+This approach reduced tokens and latency while improving maintainability and agent reliability. While they note this wasn't the only optimization, they highlighted it as particularly relevant to LLMOps practitioners.
+
+## Evaluation Strategy
+
+The evaluation approach combined multiple strategies to cover different aspects of agent behavior. They ran evaluations on production traces, providing real-world coverage of actual user interactions. They also maintained regular test suites for standard scenarios.
+
+A novel addition to their evaluation toolkit involved defining scenarios in natural language. These scenarios include setup instructions, required steps, and expected agent behavior. The team chose natural language specification because it's difficult to encode complex multi-turn agent behavior in a single LLM judge prompt, but it's straightforward to specify what should happen when you observe a specific failure mode.
+
+Natural language specifications also support maintenance by non-developers, democratizing the evaluation process. They built an agent that executes these scenarios by simulating user behavior, pinging the production endpoint, and evaluating both responses and UI elements. This enables testing complex behaviors like guardrail evasion across multiple turns.
+
+This scenario-based evaluation proved particularly valuable during prompt optimization work, providing reliable regression testing as they removed edge cases and simplified prompts. The approach complements rather than replaces production-based evaluations, creating a comprehensive testing strategy.
+
+## Production Deployment and Agentic Capabilities
+
+ISO operates in production serving millions of users across two distinct channels: the iFood mobile app and WhatsApp. The multi-channel deployment revealed interesting behavioral differences between platforms. WhatsApp users prove more willing to engage in longer conversations, consistent with the platform's messaging-oriented nature. App users prefer shorter interactions and expect ISO to proactively show relevant dishes without extended dialogue.
+
+WhatsApp deployment holds particular strategic importance in Brazil, where over 150 million users actively use the platform not just for social messaging but for e-commerce transactions. Users commonly send voice notes to restaurants to place orders, making WhatsApp a natural commerce channel. While the platform presents security challenges particularly around scams in certain markets, iFood implemented authentication flows requiring users to validate their identity through the main app when necessary. This creates a continuous flow between WhatsApp and the app that adds security while they experiment with making WhatsApp more standalone.
+
+The agent's capabilities extend beyond simple search to true autonomous action. ISO can apply coupons, check loyalty program eligibility and apply appropriate discounts, add items to cart, and in experimental deployments, process payments on behalf of users. This action-taking capability distinguishes ISO from chatbots that merely provide information.
+
+The system also implements contextual awareness, knowing factors like current weather and whether a user is in a new city. When detecting a user in an unfamiliar location, ISO can proactively suggest restaurants matching their usual preferences in the new area. This location-aware personalization creates a buddy-like experience.
+
+Memory represents another key agentic feature. ISO remembers user patterns and can comment on them, such as noting a user ordered a particular dish twice this week and offering recommendations from similar restaurants. This addresses an interesting hypothesis: while many users repeatedly order the same items, this behavior may stem from difficulty expressing current needs rather than genuine preference for repetition. An agent capable of understanding vague or complex needs might encourage more exploratory ordering behavior.
+
+## Proactive Engagement
+
+A critical design principle differentiating ISO from typical chatbots is proactivity. Many conversational interfaces suffer from declining engagement after initial excitement because users don't know what to ask or how to continue conversations. ISO addresses this by not waiting for user initiation but reaching out at appropriate moments.
+
+The system listens to app events and triggers proactive engagement based on user behavior patterns, such as reaching out after several minutes of browsing activity to offer relevant suggestions. This event-driven architecture allows the agent to act more like a helpful assistant than a passive tool.
+
+## Technical Tradeoffs and Context Window Management
+
+A recurring theme throughout the implementation is the discipline required around context window management despite increasing model capabilities. While models like Claude offer 200,000 token context windows and Gemini offers 1 million tokens, the team emphasizes that larger windows don't justify loose context management. More context comes at both cost and performance penalties.
+
+The needle-in-haystack problem becomes more severe with larger contexts. Even when information fits within the window, retrieval performance degrades as context size increases. The team learned that careful context curation improves output quality regardless of technical window limits.
+
+This challenge intensifies with protocols like Model Context Protocol. While MCP provides valuable tool integration capabilities, connecting something like GitHub MCP introduces 93 tools into the context, creating immediate bloat. The team didn't use MCP for this project, instead focusing on efficient custom tool design.
+
+Their approach to context management involves multiple strategies working in concert: selecting only relevant tools for each flow state, summarizing conversation history intelligently, moving preprocessing to asynchronous workflows, and compressing tool outputs to essential information. The team also strategically groups tools, noting that if one tool is always called after another, there's no value in separate tool definitions—they should be combined into a single workflow or the second tool should only become available after the first is invoked.
+
+## Production Scale and Infrastructure
+
+While the presentation focused on LLMOps challenges rather than infrastructure details, several scale indicators emerge. iFood operates 150 proprietary AI models making 14 billion real-time predictions monthly against a 16 petabyte data lake. This infrastructure supports the offline processing that generates user preference representations and other features feeding into ISO.
+
+The team composition spans Process, a company building production agents for e-commerce, and iFood itself, with teams distributed across Amsterdam and Brazil. This partnership structure appears to combine Process's agent-building expertise with iFood's domain knowledge and infrastructure.
+
+## Critical Learnings for LLMOps Practitioners
+
+Several key insights emerge from iFood's experience that have broader applicability. First, tool design quality directly impacts prompt complexity and agent performance. Self-explanatory tool names from the agent's perspective eliminate entire classes of edge cases that would otherwise bloat system prompts. Second, language choice for prompts matters significantly for non-English deployments due to tokenization inefficiencies in current models. Using English prompts while serving non-English users represents a pragmatic optimization. Third, flow differentiation allows fast paths for simple requests while reserving complex agentic workflows for genuinely complex needs, improving average latency substantially.
+
+Fourth, comprehensive evaluation strategies should combine production trace analysis, standard test suites, and natural language scenario definitions to cover different aspects of agent behavior. Fifth, tight integration between agent capabilities and UI elements reduces user effort and improves completion rates compared to pure conversational interfaces. Sixth, proactive engagement based on event-driven architecture addresses the common chatbot problem of declining engagement over time.
+
+Finally, context window discipline remains critical despite growing model capabilities, as both cost and performance degrade with unnecessary context. The team's systematic approach to identifying what belongs in synchronous versus asynchronous processing, what deserves context window space versus preprocessing, and how to compress tool outputs provides a model for production LLM deployment.
+
+The case study demonstrates mature LLMOps practices around a production agent serving millions of users with meaningful business impact in a high-stakes e-commerce environment where latency and personalization directly affect conversion and user satisfaction.

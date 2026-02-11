@@ -1,0 +1,88 @@
+---
+title: "Foundation Model for Large-Scale Personalized Recommendation"
+slug: "foundation-model-for-large-scale-personalized-recommendation"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "67ea438e5aadc7b91dcd4cab"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:05:09.669Z"
+  createdOn: "2025-03-31T07:26:06.421Z"
+llmopsTags:
+  - "structured-output"
+  - "realtime-application"
+  - "embeddings"
+  - "fine-tuning"
+  - "semantic-search"
+  - "model-optimization"
+  - "knowledge-distillation"
+  - "token-optimization"
+  - "latency-optimization"
+  - "pytorch"
+  - "tensorflow"
+  - "meta"
+company: "Netflix"
+summary: "Netflix developed a foundation model approach to centralize and scale their recommendation system, transitioning from multiple specialized models to a unified architecture. The system processes hundreds of billions of user interactions, employing sophisticated tokenization, sparse attention mechanisms, and incremental training to handle cold-start problems and new content. The model demonstrates successful scaling properties similar to LLMs, while maintaining production-level latency requirements and addressing unique challenges in recommendation systems."
+link: "https://netflixtechblog.com/foundation-model-for-personalized-recommendation-1a0bd8e02d39"
+year: 2025
+seo:
+  title: "Netflix: Foundation Model for Large-Scale Personalized Recommendation - ZenML LLMOps Database"
+  description: "Netflix developed a foundation model approach to centralize and scale their recommendation system, transitioning from multiple specialized models to a unified architecture. The system processes hundreds of billions of user interactions, employing sophisticated tokenization, sparse attention mechanisms, and incremental training to handle cold-start problems and new content. The model demonstrates successful scaling properties similar to LLMs, while maintaining production-level latency requirements and addressing unique challenges in recommendation systems."
+  canonical: "https://www.zenml.io/llmops-database/foundation-model-for-large-scale-personalized-recommendation"
+  ogTitle: "Netflix: Foundation Model for Large-Scale Personalized Recommendation - ZenML LLMOps Database"
+  ogDescription: "Netflix developed a foundation model approach to centralize and scale their recommendation system, transitioning from multiple specialized models to a unified architecture. The system processes hundreds of billions of user interactions, employing sophisticated tokenization, sparse attention mechanisms, and incremental training to handle cold-start problems and new content. The model demonstrates successful scaling properties similar to LLMs, while maintaining production-level latency requirements and addressing unique challenges in recommendation systems."
+---
+
+## Overview
+
+Netflix, serving over 300 million users as of late 2024, developed a foundation model for personalized recommendations that represents a significant shift in how they approach recommendation systems at scale. The company moved from maintaining numerous small, specialized recommendation models (such as "Continue Watching" and "Today's Top Picks for You") toward a unified foundation model architecture. This transition was driven by increasing maintenance costs and the difficulty of transferring innovations between independently trained models that all used common data sources.
+
+The approach draws heavily from the paradigm shift observed in natural language processing, where the field moved from multiple specialized models toward large language models capable of performing various tasks with minimal fine-tuning. Netflix explicitly adopted two key insights from this shift: a data-centric approach prioritizing large-scale, high-quality data over feature engineering, and leveraging semi-supervised learning through next-token prediction objectives.
+
+## Data Processing and Tokenization
+
+A critical aspect of Netflix's foundation model is how they handle user interaction data at scale. With hundreds of billions of user interactions—comparable to the token volume of large language models—the company needed sophisticated approaches to data processing.
+
+The tokenization strategy employed is analogous to Byte Pair Encoding (BPE) in NLP but requires domain-specific considerations. Rather than treating every raw user action equally, Netflix defines meaningful "tokens" by merging adjacent actions. For example, multiple interactions with the same title might be merged while preserving critical information like total watch duration or aggregated engagement types. This creates a balance between sequence compression and granularity—overly lossy tokenization risks losing valuable signals, while too granular sequences exceed practical processing limits.
+
+Each token in the Netflix system is richer than typical LLM tokens, containing heterogeneous details including action attributes (locale, time, duration, device type) and content information (item ID, metadata like genre and release country). The features are organized into request-time features (available at prediction moment, such as login time, device, or location) and post-action features (details available after interaction, such as specific show or watch duration). This structured approach allows the model to combine contextual and historical information effectively.
+
+## Model Architecture and Training Challenges
+
+Netflix faces more stringent latency constraints than typical LLM applications. While LLMs can tolerate seconds of inference time, recommendation systems require millisecond-level latency. This constraint significantly impacts architectural decisions.
+
+To handle extended context windows during training despite transformer attention limitations, Netflix implements two key solutions. First, sparse attention mechanisms using techniques like low-rank compression allow the model to process several hundred events while maintaining computational efficiency. Second, sliding window sampling during training exposes the model to overlapping windows of interactions from full sequences, allowing it to learn from entire user histories without requiring impractically large context windows.
+
+At inference time, when multi-step decoding is needed, KV caching is deployed to efficiently reuse past computations and maintain low latency—a technique borrowed directly from LLM deployment practices.
+
+## Training Objectives and Modifications
+
+While the default approach uses autoregressive next-token prediction similar to GPT, Netflix made several critical modifications to account for differences between language and recommendation tasks.
+
+Unlike typical LLM pretraining where every target token receives equal weight, Netflix recognizes that not all user interactions are equally important. A 5-minute trailer play should not carry the same weight as a 2-hour full movie watch. To address this and align with long-term user satisfaction, they adopt a multi-token prediction objective where the model predicts the next n tokens at each step rather than a single token. This encourages the model to capture longer-term dependencies and avoid myopic predictions focused solely on immediate next events.
+
+Additionally, multiple fields from input data serve as auxiliary prediction objectives beyond the primary target of predicting the next item ID. For example, genre sequences derived from items can serve as auxiliary targets, acting as regularizers to reduce overfitting on noisy item ID predictions while providing additional insights into user intentions and long-term preferences. When structured hierarchically, these auxiliary predictions can improve item ID prediction accuracy by effectively narrowing down candidate lists.
+
+## Cold Start and Entity Handling
+
+A unique challenge for recommendation foundation models that differs from LLMs is entity cold-starting. Netflix frequently adds new titles to their catalog, requiring the model to estimate member preferences for newly launched titles before anyone has engaged with them.
+
+The solution involves two capabilities: incremental training and inference with unseen entities. For incremental training, since foundation models trained on extensive datasets cannot be frequently retrained from scratch, Netflix warm-starts new models by reusing parameters from previous models. New title embeddings can be initialized by adding slight random noise to existing average embeddings or by using weighted combinations of similar titles' embeddings based on metadata.
+
+For handling unseen entities, the foundation model combines learnable item ID embeddings with learnable embeddings from metadata. Each title is associated with various metadata (genres, storylines, tones), represented by averaging respective embeddings and concatenating them to form metadata-based embeddings. The final title embedding combines this metadata-based embedding with a fully-learnable ID-based embedding using an attention mechanism based on entity "age." This allows new titles with limited interaction data to rely more heavily on metadata while established titles can depend more on ID-based embeddings.
+
+## Downstream Applications and Deployment
+
+The foundation model supports multiple deployment patterns for downstream applications. It can be used directly as a predictive model, with multiple predictor heads for different tasks such as forecasting member preferences for various genres. The model also generates embeddings for members and entities (videos, games, genres) that are calculated in batch jobs and stored for use in both offline and online applications—serving as features in other models or for candidate generation like retrieving appealing titles for a user.
+
+A notable operational challenge is that embedding spaces have arbitrary, uninterpretable dimensions and are incompatible across different model training runs. This poses challenges for downstream consumers who must adapt to each retraining and redeployment. To address this, Netflix applies an orthogonal low-rank transformation to stabilize the user/item embedding space, ensuring consistent meaning of embedding dimensions even as the base foundation model is retrained and redeployed.
+
+Fine-tuning capabilities allow users to integrate the full model or subgraphs into their own models, fine-tuning them with less data and computational power while achieving performance comparable to previous models—despite the initial foundation model requiring significant resources.
+
+## Scaling Behavior and Results
+
+Netflix's experiments confirm that scaling laws observed in LLMs also apply to their recommendation foundation model. Their data shows consistent improvements as they increase data and model size, with the relationship between model parameter size and relative performance improvement following a predictable scaling curve. Successful scaling requires robust evaluation that effectively differentiates model performance and identifies areas for improvement, efficient training algorithms, and substantial computing resources.
+
+The case study represents a mature application of LLM-inspired techniques to recommendation systems, though it should be noted that while the architectural insights from LLMs clearly transfer, recommendation systems have their own unique constraints (particularly around latency and cold-start) that require significant adaptation rather than direct application of LLM techniques.

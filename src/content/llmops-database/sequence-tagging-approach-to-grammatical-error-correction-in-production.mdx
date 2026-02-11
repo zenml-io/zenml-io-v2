@@ -1,0 +1,113 @@
+---
+title: "Sequence-Tagging Approach to Grammatical Error Correction in Production"
+slug: "sequence-tagging-approach-to-grammatical-error-correction-in-production"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "694add636cacaedd21069ba3"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2026-01-07T09:40:39.763Z"
+  lastUpdated: "2025-12-23T20:11:48.561Z"
+  createdOn: "2025-12-23T18:20:19.969Z"
+llmopsTags:
+  - "content-moderation"
+  - "classification"
+  - "structured-output"
+  - "fine-tuning"
+  - "model-optimization"
+  - "few-shot"
+  - "token-optimization"
+  - "error-handling"
+  - "pytorch"
+  - "tensorflow"
+  - "monitoring"
+  - "hugging-face"
+  - "nvidia"
+company: "Grammarly"
+summary: "Grammarly developed GECToR, a novel grammatical error correction (GEC) system that treats error correction as a sequence-tagging problem rather than the traditional neural machine translation approach. Instead of rewriting entire sentences through encoder-decoder models, GECToR tags individual tokens with custom transformations (like $DELETE, $APPEND, $REPLACE) using a BERT-like encoder with linear layers. This approach achieved state-of-the-art F0.5 scores (65.3 on CoNLL-2014, 72.4 on BEA-2019) while running up to 10 times faster than NMT-based systems, with inference speeds of 0.20-0.40 seconds compared to 0.71-4.35 seconds for transformer-NMT approaches. The system uses iterative correction over multiple passes and custom g-transformations for complex operations like verb conjugation and noun number changes, making it more suitable for real-world production deployment in Grammarly's writing assistant."
+link: "https://www.grammarly.com/blog/engineering/gec-tag-not-rewrite/"
+year: 2021
+seo:
+  title: "Grammarly: Sequence-Tagging Approach to Grammatical Error Correction in Production - ZenML LLMOps Database"
+  description: "Grammarly developed GECToR, a novel grammatical error correction (GEC) system that treats error correction as a sequence-tagging problem rather than the traditional neural machine translation approach. Instead of rewriting entire sentences through encoder-decoder models, GECToR tags individual tokens with custom transformations (like $DELETE, $APPEND, $REPLACE) using a BERT-like encoder with linear layers. This approach achieved state-of-the-art F0.5 scores (65.3 on CoNLL-2014, 72.4 on BEA-2019) while running up to 10 times faster than NMT-based systems, with inference speeds of 0.20-0.40 seconds compared to 0.71-4.35 seconds for transformer-NMT approaches. The system uses iterative correction over multiple passes and custom g-transformations for complex operations like verb conjugation and noun number changes, making it more suitable for real-world production deployment in Grammarly's writing assistant."
+  canonical: "https://www.zenml.io/llmops-database/sequence-tagging-approach-to-grammatical-error-correction-in-production"
+  ogTitle: "Grammarly: Sequence-Tagging Approach to Grammatical Error Correction in Production - ZenML LLMOps Database"
+  ogDescription: "Grammarly developed GECToR, a novel grammatical error correction (GEC) system that treats error correction as a sequence-tagging problem rather than the traditional neural machine translation approach. Instead of rewriting entire sentences through encoder-decoder models, GECToR tags individual tokens with custom transformations (like $DELETE, $APPEND, $REPLACE) using a BERT-like encoder with linear layers. This approach achieved state-of-the-art F0.5 scores (65.3 on CoNLL-2014, 72.4 on BEA-2019) while running up to 10 times faster than NMT-based systems, with inference speeds of 0.20-0.40 seconds compared to 0.71-4.35 seconds for transformer-NMT approaches. The system uses iterative correction over multiple passes and custom g-transformations for complex operations like verb conjugation and noun number changes, making it more suitable for real-world production deployment in Grammarly's writing assistant."
+---
+
+## Overview
+
+Grammarly's case study describes the development and production deployment of GECToR (Grammatical Error Correction: Tag, Not Rewrite), a system that represents a fundamental architectural departure from the prevailing neural machine translation (NMT) approaches used in grammatical error correction research. This case study is particularly valuable from an LLMOps perspective because it demonstrates how production requirements—specifically inference speed, explainability, and training efficiency—drove the team to challenge the dominant research paradigm and develop a more operationally practical solution.
+
+The case study centers on a core writing assistance feature that serves millions of users daily, requiring not just accuracy but also speed and the ability to explain corrections. Grammarly's approach treats GEC as a language understanding problem rather than a language generation problem, using sequence-tagging with custom transformation tags instead of seq2seq rewriting. This architectural choice has profound implications for production deployment, achieving 10x faster inference speeds while maintaining state-of-the-art accuracy.
+
+## The Production Problem and Architectural Rationale
+
+The technical blog post presents an interesting tension between research trends and production needs. While the NLP research community had converged on treating GEC as a translation problem using transformer-based sequence-to-sequence models (effectively treating incorrect sentences as a "source language" and correct sentences as a "target language"), Grammarly identified several production-critical limitations with this approach.
+
+NMT-based systems rely on encoder-decoder architectures where the decoder performs language generation, which is inherently more complex than language understanding. This complexity manifests in several operational challenges: these systems require large amounts of training data, generate inferences slowly due to their autoregressive nature (each token prediction depends on all previous predictions), and function as black boxes that cannot explain what types of mistakes were identified. For a product serving millions of users in real-time, these limitations are significant operational constraints.
+
+Grammarly's alternative approach reframes the problem: instead of generating corrected text directly, the system tags each token in the input sequence with transformation instructions. This reduces the task to language understanding only, allowing the use of just an encoder with basic linear layers rather than a full encoder-decoder architecture. The operational benefits are substantial—parallelizable inference, faster training, and the potential for explainable corrections through the transformation tags themselves.
+
+## Model Architecture and Design
+
+GECToR's architecture is deliberately streamlined for production efficiency. The model consists of a pre-trained BERT-like transformer encoder stacked with two linear layers and softmax layers on top. The two linear layers serve distinct functions: one handles mistake detection while the other performs token-tagging. This separation of concerns provides both architectural clarity and the potential for more targeted optimization or debugging.
+
+The transformation tag vocabulary was carefully designed through what appears to be a pragmatic balancing act. With 5,000 different transformation tags, the system covers approximately 98% of errors in standard benchmarks like CoNLL-2014. This vocabulary size represents a conscious tradeoff: more tags would make the model unwieldy and slow, while fewer would reduce error coverage. The team settled on this specific number to cover the most common mistakes including spelling, noun number, subject-verb agreement, and verb form errors.
+
+The tag vocabulary itself is hierarchically structured with four basic types: $KEEP (token is correct), $DELETE (remove token), $APPEND_{t1} (append new token), and $REPLACE_{t2} (replace with different token). Beyond these basics, the system includes "g-transformations" for more complex operations like case changes, token merging and splitting, and grammatically-aware transformations for noun number and verb forms. The verb form transformations alone include twenty different tags describing starting and ending forms, derived using conjugation dictionaries. While g-transformations are small in number, they dramatically improve coverage—the team found that using only the top 100 basic tags achieved 60% error coverage, but adding g-transformations bumped this to 80%.
+
+## Training Pipeline and Data Strategy
+
+The training approach reveals sophisticated thinking about data efficiency and model refinement. GECToR uses a three-stage pre-training process that progressively moves from synthetic to real-world data and incorporates strategic curriculum learning principles.
+
+Stage one uses a large synthetic dataset of 9 million source/target sentence pairs with artificially introduced mistakes. This provides broad coverage of error patterns without requiring expensive human-annotated data. Stages two and three fine-tune on real-world data from English language learners: approximately 500,000 sentences in stage two, then just 34,000 in stage three. Notably, the team found that having two separate fine-tuning stages was crucial, with the final stage deliberately including some sentences with no mistakes at all. This likely helps the model learn when to apply the $KEEP tag appropriately and avoid over-correction, a common pitfall in production GEC systems.
+
+The preprocessing pipeline that generates training data is itself a sophisticated piece of engineering. For each source/target sentence pair, the algorithm generates transformation tags through a multi-step process. First, it roughly aligns each source token with target tokens by minimizing overall Levenshtein distance—essentially finding the sequence of edits that requires the fewest changes. Then it converts each mapping into the corresponding transformation tag. Finally, since the system uses iterative correction and can only apply one tag per token per iteration, if multiple tags exist for a token, the algorithm selects the first non-$KEEP tag.
+
+## Inference Strategy and Optimization
+
+The inference approach demonstrates careful attention to production realities. Rather than applying corrections in a single pass, GECToR uses iterative sequence-tagging, repeatedly modifying the sentence and re-running the tagger. This acknowledges that some corrections may depend on others and that a single pass might not fully correct complex sentences.
+
+The example provided shows how corrections accumulate across iterations: in iteration one, two corrections are made; in iteration two, five total corrections have been applied; by iteration three, six corrections are complete. The team observed that most corrections occur in the first two iterations, with diminishing returns afterward. They tested configurations ranging from 1 to 5 iterations, ultimately treating the iteration count as a tunable parameter that trades correction quality against inference speed—a classic production optimization tradeoff.
+
+Beyond iteration count, the team introduced two inference hyperparameters for fine-tuning production behavior. First, they added a permanent positive confidence bias to the $KEEP tag probability, effectively making the model more conservative about suggesting changes. Second, they implemented a sentence-level minimum error probability threshold for the error detection layer, increasing precision at the cost of recall. These hyperparameters were discovered through random search on the BEA-2019 development set, representing practical hyperparameter optimization for production deployment rather than exhaustive grid search.
+
+## Production Performance and Evaluation
+
+The results validate the production-focused design choices. On canonical GEC evaluation datasets, GECToR achieved state-of-the-art F0.5 scores: 65.3 on CoNLL-2014 (test) and 72.4 on BEA-2019 (test) with a single model. Using an ensemble approach—simply averaging output probabilities from three single models—performance improved further to 66.5 and 73.6 respectively. This ensemble strategy is straightforward to implement in production and provides meaningful gains.
+
+The inference speed comparisons are particularly striking from an operational perspective. On CoNLL-2014 using an NVIDIA Tesla V100 with batch size 128, GECToR with 5 iterations completed inference in 0.40 seconds, compared to 0.71 seconds for Transformer-NMT with beam size 1 (the fastest NMT configuration) and 4.35 seconds for Transformer-NMT with beam size 12 (higher quality but much slower). GECToR with just 1 iteration ran in 0.20 seconds—up to 10x faster than comparable NMT systems.
+
+This speed advantage stems from fundamental architectural differences. NMT-based approaches are autoregressive, meaning each predicted token depends on all previous tokens, forcing sequential prediction. GECToR's approach is non-autoregressive with no dependencies between predictions, making it naturally parallelizable. This architectural choice has cascading benefits throughout the production system: faster response times for users, lower computational costs, higher throughput, and better resource utilization.
+
+## LLMOps Considerations and Critical Assessment
+
+From an LLMOps perspective, this case study exemplifies several important principles for deploying language models in production. The team prioritized production requirements—inference speed, explainability, training efficiency—over following research trends, demonstrating the importance of letting operational needs drive architectural decisions rather than blindly adopting state-of-the-art research approaches.
+
+The iterative correction strategy represents a pragmatic approach to handling complex corrections without requiring the model to solve everything in a single pass. This design pattern—breaking complex tasks into multiple simpler passes—appears frequently in production NLP systems and offers several operational advantages: easier debugging (you can inspect intermediate states), more predictable behavior, and tunable quality-speed tradeoffs.
+
+The preprocessing pipeline that generates transformation tags from source/target pairs is a critical but often underappreciated component. This data engineering work enables the entire approach, translating between the format of available training data (sentence pairs) and the format the model needs (sequences of transformation tags). The quality of this preprocessing directly impacts model performance, yet it receives relatively little attention compared to model architecture.
+
+However, the case study also reveals some limitations that warrant balanced assessment. The 5,000-tag vocabulary covers 98% of errors in standard benchmarks, but that means 2% of errors cannot be addressed by this approach—in production serving millions of users, that 2% still represents significant absolute numbers. The tag vocabulary also appears to be somewhat English-specific (particularly the verb form transformations using conjugation dictionaries), which may limit portability to other languages without substantial re-engineering.
+
+The explainability benefits, while mentioned, are described as "not trivial" to implement. The transformation tags provide the raw material for explanations (knowing that $VERB_FORM_VBD_VBN was applied is more informative than a black-box rewrite), but translating these technical tags into user-friendly explanations requires additional engineering not detailed in the case study.
+
+The evaluation focuses exclusively on standard academic benchmarks (CoNLL-2014, BEA-2019), which are valuable for comparing to prior research but may not fully capture production performance. These benchmarks primarily contain errors from language learners, which may differ from the error distributions Grammarly encounters from native speakers or professional writers. Production metrics like user acceptance rates, false positive rates in real usage, or performance across different user segments would provide additional confidence in the system's real-world effectiveness.
+
+The training data strategy, while sophisticated, still relies heavily on synthetic data (9 million synthetic pairs versus 534,000 real examples). The quality and realism of synthetic training data for GEC systems remains an open question, and the gap between synthetic and real error distributions could impact production performance in ways not fully captured by benchmark evaluations.
+
+## Broader Implications for LLM Production Systems
+
+This case study, while predating some of the recent developments in large language models, offers several lessons that remain highly relevant for modern LLMOps. The central insight—that production requirements may call for different architectural choices than research benchmarks—has only become more important as organizations rush to deploy increasingly large language models.
+
+The speed-quality tradeoff analysis is particularly instructive. GECToR achieves comparable or better quality than NMT approaches while running 10x faster, suggesting that task-specific architectures optimized for production can outperform general-purpose architectures on operational metrics while maintaining competitive accuracy. This challenges the assumption that bigger, more general models are always preferable for production deployment.
+
+The iterative correction approach bears some conceptual similarity to modern techniques like chain-of-thought prompting or iterative refinement in LLM systems, where complex tasks are broken into multiple steps rather than solved in a single forward pass. The GECToR team's finding that most corrections occur in the first two iterations, with diminishing returns afterward, suggests that even a small number of iterations can capture most of the benefit—a useful heuristic for similar production systems.
+
+The emphasis on parallelizable inference and avoiding autoregressive generation prefigures ongoing research into non-autoregressive and parallel decoding methods for language models. As organizations deploy LLMs at scale, inference costs and latencies become critical constraints, making architectural choices that enable parallelization increasingly valuable.
+
+Finally, the case study demonstrates the value of custom architectures and task-specific design for production NLP systems. While the current trend favors few-shot learning with general-purpose LLMs, GECToR shows that purpose-built systems designed around specific task requirements can achieve superior production characteristics. This suggests a continued role for specialized models alongside general-purpose LLMs in production architectures, particularly for high-volume, latency-sensitive applications.
+
+The paper was presented at the BEA workshop co-located with ACL 2020, and the updated blog post from August 2021 indicates this work informed Grammarly's production systems during that period, representing a real-world deployment of advanced NLP technology at significant scale.

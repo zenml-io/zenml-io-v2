@@ -1,0 +1,119 @@
+---
+title: "Building a RAG-Based Premium Audit Assistant for Insurance Workflows"
+slug: "building-a-rag-based-premium-audit-assistant-for-insurance-workflows"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "67bc2a22b6b037d681b48585"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:01:16.205Z"
+  createdOn: "2025-02-24T08:13:22.413Z"
+llmopsTags:
+  - "customer-support"
+  - "question-answering"
+  - "structured-output"
+  - "regulatory-compliance"
+  - "rag"
+  - "prompt-engineering"
+  - "embeddings"
+  - "semantic-search"
+  - "error-handling"
+  - "chunking"
+  - "system-prompts"
+  - "human-in-the-loop"
+  - "fallback-strategies"
+  - "redis"
+  - "elasticsearch"
+  - "fastapi"
+  - "monitoring"
+  - "guardrails"
+  - "documentation"
+  - "amazon-aws"
+  - "anthropic"
+company: "Verisk"
+summary: "Verisk developed PAAS AI, a generative AI-powered conversational assistant to help premium auditors efficiently search and retrieve information from their vast repository of insurance documentation. Using a RAG architecture built on Amazon Bedrock with Claude, along with ElastiCache, OpenSearch, and custom evaluation frameworks, the system reduced document processing time by 96-98% while maintaining high accuracy. The solution demonstrates effective use of hybrid search, careful data chunking, and comprehensive evaluation metrics to ensure reliable AI-powered customer support."
+link: "https://aws.amazon.com/blogs/machine-learning/turbocharging-premium-audit-capabilities-with-the-power-of-generative-ai-verisks-journey-toward-a-sophisticated-conversational-chat-platform-to-enhance-customer-support?tag=soumet-20"
+year: 2025
+seo:
+  title: "Verisk: Building a RAG-Based Premium Audit Assistant for Insurance Workflows - ZenML LLMOps Database"
+  description: "Verisk developed PAAS AI, a generative AI-powered conversational assistant to help premium auditors efficiently search and retrieve information from their vast repository of insurance documentation. Using a RAG architecture built on Amazon Bedrock with Claude, along with ElastiCache, OpenSearch, and custom evaluation frameworks, the system reduced document processing time by 96-98% while maintaining high accuracy. The solution demonstrates effective use of hybrid search, careful data chunking, and comprehensive evaluation metrics to ensure reliable AI-powered customer support."
+  canonical: "https://www.zenml.io/llmops-database/building-a-rag-based-premium-audit-assistant-for-insurance-workflows"
+  ogTitle: "Verisk: Building a RAG-Based Premium Audit Assistant for Insurance Workflows - ZenML LLMOps Database"
+  ogDescription: "Verisk developed PAAS AI, a generative AI-powered conversational assistant to help premium auditors efficiently search and retrieve information from their vast repository of insurance documentation. Using a RAG architecture built on Amazon Bedrock with Claude, along with ElastiCache, OpenSearch, and custom evaluation frameworks, the system reduced document processing time by 96-98% while maintaining high accuracy. The solution demonstrates effective use of hybrid search, careful data chunking, and comprehensive evaluation metrics to ensure reliable AI-powered customer support."
+---
+
+## Overview
+
+Verisk is a leading data analytics and technology partner for the global insurance industry, operating across more than 20 countries. Their Premium Audit Advisory Service (PAAS) platform serves as a critical resource for premium auditors and underwriters, providing technical information and training for classifying exposure in commercial casualty insurance. The platform contains a vast repository of over 40,000 classification guides and more than 500 bulletins covering workers' compensation, general liability, and commercial auto business.
+
+The core problem Verisk faced was that premium auditors struggled with the overwhelming volume of documentation when trying to find accurate answers. Manual searching was time-consuming and inefficient, response times were slow (hindering timely decision-making), and the quality of responses was inconsistent, potentially leading to errors. To address these challenges, Verisk developed PAAS AI, described as the first commercially available interactive generative AI chat specifically developed for premium audit.
+
+## Architecture and Technical Implementation
+
+### RAG Architecture Selection
+
+Verisk made a deliberate choice to implement a Retrieval Augmented Generation (RAG) architecture rather than fine-tuning an LLM. This decision was driven by several practical considerations for production deployment:
+
+The PAAS platform is constantly evolving with new business functions and technical capabilities, making dynamic data access essential. A RAG approach allows access to continuously updated data without the need to frequently retrain the model, which would be costly and time-consuming. The ability to draw from multiple PAAS resources and easily expand the knowledge base without fine-tuning new data sources provides adaptability for future growth.
+
+Importantly, RAG helps reduce hallucinations compared to free-form text generation because responses come directly from retrieved excerpts. The transparency offered by RAG architecture was also valuable for identifying areas where document restructuring was needed. Additionally, with diverse users accessing the platform with differing data access permissions, data governance and isolation were critical—Verisk implemented controls within the RAG pipeline to restrict data access based on user permissions.
+
+### AWS Services Stack
+
+The solution leverages multiple AWS services working together:
+
+**Amazon Bedrock** serves as the foundation for LLM capabilities, providing access to Anthropic Claude models. Verisk conducted comprehensive evaluation of leading LLMs using their extensive dataset and found Claude consistently outperformed across key criteria, demonstrating superior language understanding in Verisk's complex business domain. Different Claude models are used for different tasks: Claude Haiku for scenarios where latency is more important and less reasoning is required, and Claude Sonnet for question answering where understanding every detail in the prompt is critical, balancing latency, performance, and cost.
+
+**Amazon OpenSearch Service** is used primarily for storing text embeddings, enabling semantic search that goes beyond simple keyword matching. These embeddings serve as semantic representations of documents, allowing for advanced search capabilities. OpenSearch also functions as a semantic cache for similarity searches, optimizing performance by reducing computational load and improving response times.
+
+**Amazon ElastiCache** stores all chat history, enabling seamless integration in conversational chats and allowing display of recent conversations on the website. This is essential for maintaining conversational context across multiple user interactions.
+
+**Snowflake in Amazon** provides scalable and real-time access to data for performing advanced analytics including sentiment analysis and predictive modeling to better understand customer needs.
+
+### Data Processing and Retrieval Strategies
+
+Verisk implemented several key techniques for structuring and retrieving data effectively:
+
+**Chunking Strategy**: Rather than uploading large files containing multiple pages of content, Verisk chunked data into smaller segments by document section and character lengths. This modular approach focused on single sections of documents made indexing easier and improved context retrieval accuracy. It also enabled straightforward updating and reindexing of the knowledge base over time.
+
+**Hybrid Query Approach**: Standard vector search alone wasn't sufficient to retrieve all relevant contexts. Verisk implemented a solution combining sparse BM25 search with dense vector search to create a hybrid search approach, which yielded significantly better context retrieval results.
+
+**Data Separation and Filters**: Due to the vast amount of documents and overlapping content within certain topics, incorrect documents were sometimes retrieved. Data separation was implemented to split documents based on document type and filter by line of business, improving context retrieval accuracy.
+
+### LLM Configuration and Prompt Engineering
+
+Experimentation with prompt structure, length, temperature, role-playing, and context was key to improving quality and accuracy. Verisk crafted prompts providing Claude with clear context and set roles for answering user questions. Setting temperature to 0 helped reduce randomness and the indeterministic nature of LLM-generated responses.
+
+The LLM is used for multiple purposes in the pipeline: response generation based on retrieved context, conversation summarization to update context from ElastiCache when users ask follow-up questions, and keyword extraction from user questions and previous conversations for creating summarized prompts and input to knowledge base retrievers.
+
+### Safety and Guardrails
+
+LLM guardrails were implemented using both Amazon Bedrock Guardrails and specialized sections within prompts to detect unrelated questions and prompt attack attempts. Amazon Bedrock Guardrails attach to model invocation calls and automatically detect if model input and output violate language filters (violence, misconduct, sexual content, etc.). Specialized prompts create a second layer of security using the LLM itself to catch inappropriate inputs, ensuring the model only answers questions related to premium auditing services and cannot be misused.
+
+## Evaluation Framework
+
+After validating several evaluation tools including Deepeval, Ragas, and Trulens, Verisk found limitations for their specific use case and developed their own custom evaluation API. This API evaluates answers based on three major metrics:
+
+**Answer Relevancy Score**: Uses LLMs to assess whether answers provided are relevant to the customer's prompt, ensuring responses directly address questions posed.
+
+**Context Relevancy Score**: Uses LLMs to evaluate whether retrieved context is appropriate and aligns well with the question, ensuring the LLM has appropriate and accurate contexts for response generation.
+
+**Faithfulness Score**: Uses LLMs to check if responses are generated based on retrieved context or if they are hallucinated, crucial for maintaining integrity and reliability of information.
+
+## Feedback Loop and Continuous Improvement
+
+Verisk implemented a comprehensive feedback loop mechanism for continuous improvement:
+
+Customer feedback is actively collected and analyzed to identify potential data issues or problems with generative AI responses. Issues are categorized based on their nature—data-related issues go to the internal business team, while application issues trigger automatic Jira ticket creation for the IT team. QA test cases are updated based on feedback received, and ground truth agreements (benchmarks for evaluating LLM response quality) are periodically reviewed and updated. Regular evaluations of LLM responses are conducted using updated test cases and ground truth agreements.
+
+## Business Results and Impact
+
+Verisk initially rolled out PAAS AI to one beta customer to demonstrate real-world performance. The results claimed are significant: what previously took hours of manual review can now be accomplished in minutes, representing a 96-98% reduction in processing time per specialist. This represents a dramatic shift from traditional customer engagement where Verisk would typically allocate teams to interact directly with customers.
+
+It's worth noting that these are early results from beta testing with a single customer, and wider deployment to approximately 15,000 users is still planned. The long-term impact at scale remains to be validated. The case study also acknowledges that ongoing development will focus on expanding capabilities, with future plans to have the AI proactively make suggestions and configure functionality directly in the system.
+
+## Key LLMOps Considerations
+
+This case study illustrates several important LLMOps practices: the importance of choosing the right architecture (RAG vs. fine-tuning) based on specific requirements like data freshness and explainability; the value of hybrid search approaches combining different retrieval methods; the need for custom evaluation frameworks when off-the-shelf tools don't meet specific use cases; implementing multiple layers of safety guardrails; and establishing feedback loops for continuous improvement in production systems.

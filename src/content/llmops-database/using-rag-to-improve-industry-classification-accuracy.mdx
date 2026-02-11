@@ -1,0 +1,100 @@
+---
+title: "Using RAG to Improve Industry Classification Accuracy"
+slug: "using-rag-to-improve-industry-classification-accuracy"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "6790ab6f875cdbf558a70c13"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:56:32.691Z"
+  createdOn: "2025-01-22T08:25:19.367Z"
+llmopsTags:
+  - "classification"
+  - "structured-output"
+  - "regulatory-compliance"
+  - "rag"
+  - "embeddings"
+  - "prompt-engineering"
+  - "semantic-search"
+  - "error-handling"
+  - "system-prompts"
+  - "elasticsearch"
+  - "redis"
+  - "monitoring"
+  - "databases"
+  - "openai"
+company: "Ramp"
+summary: "Ramp tackled the challenge of inconsistent industry classification by developing an in-house Retrieval-Augmented Generation (RAG) system to migrate from a homegrown taxonomy to standardized NAICS codes. The solution combines embedding-based retrieval with a two-stage LLM classification process, resulting in improved accuracy, better data quality, and more precise customer understanding across teams. The system includes comprehensive logging and monitoring capabilities, allowing for quick iterations and performance improvements."
+link: "https://engineering.ramp.com/industry_classification"
+year: 2025
+seo:
+  title: "Ramp: Using RAG to Improve Industry Classification Accuracy - ZenML LLMOps Database"
+  description: "Ramp tackled the challenge of inconsistent industry classification by developing an in-house Retrieval-Augmented Generation (RAG) system to migrate from a homegrown taxonomy to standardized NAICS codes. The solution combines embedding-based retrieval with a two-stage LLM classification process, resulting in improved accuracy, better data quality, and more precise customer understanding across teams. The system includes comprehensive logging and monitoring capabilities, allowing for quick iterations and performance improvements."
+  canonical: "https://www.zenml.io/llmops-database/using-rag-to-improve-industry-classification-accuracy"
+  ogTitle: "Ramp: Using RAG to Improve Industry Classification Accuracy - ZenML LLMOps Database"
+  ogDescription: "Ramp tackled the challenge of inconsistent industry classification by developing an in-house Retrieval-Augmented Generation (RAG) system to migrate from a homegrown taxonomy to standardized NAICS codes. The solution combines embedding-based retrieval with a two-stage LLM classification process, resulting in improved accuracy, better data quality, and more precise customer understanding across teams. The system includes comprehensive logging and monitoring capabilities, allowing for quick iterations and performance improvements."
+---
+
+## Overview
+
+Ramp is a corporate finance platform that provides expense management, corporate cards, and bill pay services. The company has been at the forefront of applying AI and machine learning to financial operations, with a particular focus on deploying LLM-based solutions in production to automate and enhance various aspects of their platform. This case study aggregates insights from Ramp's engineering blog, which documents multiple LLMOps initiatives spanning from 2024 to 2025.
+
+The source material is a collection of blog post titles and brief descriptions from Ramp's Builders Blog. While the full technical details of each implementation are not provided in the excerpts, the titles and summaries reveal a comprehensive approach to LLMOps across multiple use cases. It's important to note that these are company-published materials, so claims should be considered in that context, though the technical nature of the posts suggests substantive engineering work behind them.
+
+## Agentic Data Analyst: Ramp Research
+
+One of Ramp's most notable LLMOps initiatives is their "Ramp Research" project, described as an agentic data analyst. According to their blog post from September 2025, this AI agent handles over 1,000 data questions per month. The use of the term "agentic" suggests they have built a system that goes beyond simple query-response patterns and likely incorporates autonomous reasoning, tool use, and multi-step problem solving capabilities.
+
+Building an agent that can reliably answer data questions at this scale presents significant LLMOps challenges including ensuring accuracy and preventing hallucinations, managing latency expectations for interactive data analysis, handling the variety of questions that internal or external users might pose, and maintaining the agent's performance as underlying data schemas evolve. The fact that they report handling 1,000+ questions monthly suggests they have achieved a level of reliability that allows for production deployment at scale.
+
+## Merchant Matching with Smart RAG
+
+In June 2025, Ramp published details on their approach to fixing merchant matches using AI. The system uses what they describe as "smart RAG" (Retrieval-Augmented Generation) combined with LLMs to resolve merchant matching problems in under 10 seconds. This is a critical capability for a financial platform where accurate merchant identification affects expense categorization, reporting, and compliance.
+
+The 10-second resolution time indicates attention to production performance requirements. Merchant matching is inherently a retrieval-heavy problem—the system must search through potentially millions of merchant records to find the correct match. The combination of RAG with LLMs suggests a pipeline where relevant merchant candidates are first retrieved (likely using embedding-based similarity search) and then an LLM performs the final matching decision or disambiguation.
+
+This approach addresses a key limitation of pure LLM solutions (lack of access to current merchant databases) while leveraging LLM capabilities for understanding context, handling variations in merchant names, and making nuanced matching decisions that rule-based systems would struggle with.
+
+## Trustworthy Agents for Expense Approvals
+
+The July 2025 blog post "How To Build Agents Users Can Trust" discusses an agent designed to automate expense approvals. This is a particularly sensitive application of LLMs in production because it involves financial decisions with real monetary implications.
+
+Building trust in AI agents for financial automation requires addressing concerns about transparency in decision-making, handling edge cases appropriately (escalating to humans when uncertain), maintaining audit trails for compliance, and managing the consequences of errors. The fact that Ramp specifically framed this post around trust suggests they have grappled with these challenges and developed approaches to mitigate risks while still achieving automation benefits.
+
+## MCP Server for LLM Resource Integration
+
+In March 2025, Ramp documented their work building an MCP (Model Context Protocol) server that allows LLMs to interact with their resources. MCP is an emerging standard for enabling LLMs to access external tools and data sources in a structured way.
+
+Building an MCP server represents significant infrastructure investment in LLMOps. It suggests Ramp is not just deploying individual LLM features but building foundational infrastructure that can support multiple LLM-powered applications. This approach enables consistent access patterns for LLMs across different use cases, centralized management of permissions and security, and the ability to evolve LLM capabilities without modifying individual applications.
+
+## RAG-Based Industry Classification
+
+The January 2025 post "From RAG to Richness: How Ramp Revamped Industry Classification" describes using Retrieval-Augmented Generation to build what they call a "state-of-the-art in-house industry classification model." Industry classification is important for expense categorization, analytics, and potentially for compliance purposes.
+
+Using RAG for classification tasks is an interesting architectural choice. It suggests they may be retrieving relevant examples or industry definitions to augment the classification decision, rather than relying solely on a fine-tuned model or pure prompt engineering. This approach can offer better adaptability to new industries or changing definitions without full model retraining.
+
+## Transaction Embeddings for Improved Retrieval
+
+The August 2024 post on "Improving Retrieval on Ramp with Transaction Embeddings" documents their use of triplet loss and embeddings to enhance accounting functionality. While this may not directly involve LLMs, embeddings are foundational to many LLMOps workflows, particularly for RAG systems.
+
+The use of triplet loss indicates a sophisticated approach to learning embeddings that capture semantic similarity between transactions. These embeddings likely power the retrieval components of their RAG systems, enabling more accurate matching of transactions to categories, merchants, or historical patterns.
+
+## ML Infrastructure and Configuration
+
+Ramp has invested significantly in ML infrastructure, as evidenced by their February 2025 post on a YAML-based configuration system for speeding up ML development and deployment. The September 2023 post on using Metaflow for machine learning engineering and the February 2024 post on modernizing their Python codebase all point to a mature approach to MLOps that underlies their LLMOps capabilities.
+
+Good LLMOps requires solid MLOps foundations. The ability to rapidly iterate on models, manage configurations, and deploy changes with confidence are essential for maintaining LLM-powered features in production. Their investment in tools like Metaflow suggests they have the infrastructure to support experimentation, reproducibility, and deployment workflows.
+
+## Considerations and Context
+
+It's worth noting that all of this information comes from Ramp's own engineering blog, which naturally presents their work in a positive light. While the technical depth implied by the blog post titles suggests real engineering work, we should be cautious about specific claims like "state-of-the-art" industry classification or the exact performance metrics mentioned.
+
+That said, Ramp's approach demonstrates several LLMOps best practices including building reusable infrastructure (MCP server) rather than one-off solutions, combining retrieval systems with LLMs (RAG) rather than relying on LLMs alone, addressing trust and reliability concerns explicitly for high-stakes applications, and investing in foundational ML infrastructure to support LLM deployments.
+
+The breadth of their LLM applications—from data analysis to merchant matching to expense approval automation—also suggests a systematic approach to identifying and pursuing LLM use cases across their product, rather than isolated experiments. This portfolio approach to LLMOps can accelerate learning and allow infrastructure investments to pay off across multiple applications.
+
+## Conclusion
+
+Ramp represents an example of a fintech company deeply integrating LLM capabilities throughout their product. Their work spans multiple aspects of LLMOps including agentic systems, RAG implementations, embedding-based retrieval, infrastructure for LLM integration, and production ML systems. The focus on financial applications means they must grapple with trust, accuracy, and compliance concerns that make their LLMOps challenges particularly demanding. Their public documentation of these efforts through their engineering blog provides useful insights for others building similar systems, though as with any company-published content, claims should be evaluated critically.

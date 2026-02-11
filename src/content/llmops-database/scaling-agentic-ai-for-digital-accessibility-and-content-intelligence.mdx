@@ -1,0 +1,261 @@
+---
+title: "Scaling Agentic AI for Digital Accessibility and Content Intelligence"
+slug: "scaling-agentic-ai-for-digital-accessibility-and-content-intelligence"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "693061cf9d2d5cf160e109b3"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:31:44.458Z"
+  createdOn: "2025-12-03T16:14:07.981Z"
+llmopsTags:
+  - "content-moderation"
+  - "summarization"
+  - "classification"
+  - "document-processing"
+  - "high-stakes-application"
+  - "regulatory-compliance"
+  - "customer-support"
+  - "question-answering"
+  - "chatbot"
+  - "structured-output"
+  - "multi-modality"
+  - "caption-generation"
+  - "prompt-engineering"
+  - "multi-agent-systems"
+  - "agent-based"
+  - "human-in-the-loop"
+  - "latency-optimization"
+  - "cost-optimization"
+  - "error-handling"
+  - "embeddings"
+  - "semantic-search"
+  - "evals"
+  - "monitoring"
+  - "api-gateway"
+  - "serverless"
+  - "cicd"
+  - "scaling"
+  - "devops"
+  - "orchestration"
+  - "guardrails"
+  - "reliability"
+  - "scalability"
+  - "databases"
+  - "cache"
+  - "fastapi"
+  - "langchain"
+  - "security"
+  - "compliance"
+  - "amazon-aws"
+  - "anthropic"
+  - "meta"
+  - "microsoft-azure"
+company: "Siteimprove"
+summary: "Siteimprove, a SaaS platform provider for digital accessibility, analytics, SEO, and content strategy, embarked on a journey from generative AI to production-scale agentic AI systems. The company faced the challenge of processing up to 100 million pages per month for accessibility compliance while maintaining trust, speed, and adoption. By leveraging AWS Bedrock, Amazon Nova models, and developing a custom AI accelerator architecture, Siteimprove built a multi-agent system supporting batch processing, conversational remediation, and contextual image analysis. The solution achieved 75% cost reduction on certain workloads, enabled autonomous multi-agent orchestration across accessibility, analytics, SEO, and content domains, and was recognized as a leader in Forrester's digital accessibility platforms assessment. The implementation demonstrated how systematic progression through human-in-the-loop, human-on-the-loop, and autonomous stages can bridge the prototype-to-production chasm while delivering measurable business value."
+link: "https://www.youtube.com/watch?v=_gnj3ornavE"
+year: 2025
+seo:
+  title: "Siteimprove: Scaling Agentic AI for Digital Accessibility and Content Intelligence - ZenML LLMOps Database"
+  description: "Siteimprove, a SaaS platform provider for digital accessibility, analytics, SEO, and content strategy, embarked on a journey from generative AI to production-scale agentic AI systems. The company faced the challenge of processing up to 100 million pages per month for accessibility compliance while maintaining trust, speed, and adoption. By leveraging AWS Bedrock, Amazon Nova models, and developing a custom AI accelerator architecture, Siteimprove built a multi-agent system supporting batch processing, conversational remediation, and contextual image analysis. The solution achieved 75% cost reduction on certain workloads, enabled autonomous multi-agent orchestration across accessibility, analytics, SEO, and content domains, and was recognized as a leader in Forrester's digital accessibility platforms assessment. The implementation demonstrated how systematic progression through human-in-the-loop, human-on-the-loop, and autonomous stages can bridge the prototype-to-production chasm while delivering measurable business value."
+  canonical: "https://www.zenml.io/llmops-database/scaling-agentic-ai-for-digital-accessibility-and-content-intelligence"
+  ogTitle: "Siteimprove: Scaling Agentic AI for Digital Accessibility and Content Intelligence - ZenML LLMOps Database"
+  ogDescription: "Siteimprove, a SaaS platform provider for digital accessibility, analytics, SEO, and content strategy, embarked on a journey from generative AI to production-scale agentic AI systems. The company faced the challenge of processing up to 100 million pages per month for accessibility compliance while maintaining trust, speed, and adoption. By leveraging AWS Bedrock, Amazon Nova models, and developing a custom AI accelerator architecture, Siteimprove built a multi-agent system supporting batch processing, conversational remediation, and contextual image analysis. The solution achieved 75% cost reduction on certain workloads, enabled autonomous multi-agent orchestration across accessibility, analytics, SEO, and content domains, and was recognized as a leader in Forrester's digital accessibility platforms assessment. The implementation demonstrated how systematic progression through human-in-the-loop, human-on-the-loop, and autonomous stages can bridge the prototype-to-production chasm while delivering measurable business value."
+---
+
+## Overview
+
+Siteimprove is a software-as-a-service platform that helps organizations ensure their digital presence is accessible, compliant, and high-performing. The company serves medium to large enterprises, government agencies, educational institutions, financial services, healthcare organizations, and any entity with a substantial digital footprint. Their unified platform addresses digital accessibility, analytics, SEO, and content strategy in an integrated manner. This case study presents their evolution from implementing generative AI capabilities to deploying production-scale agentic AI systems capable of processing tens of millions of requests monthly while maintaining enterprise-grade security, compliance, and cost efficiency.
+
+The presentation, delivered at AWS re:Invent by Siteimprove's Director of AI and Data Science Hamid Shahid alongside AWS solutions architects, provides a comprehensive view of the technical architecture, business considerations, and operational lessons learned from scaling LLM-based agents in production. The case demonstrates how organizations can move beyond proof-of-concept AI implementations to deliver autonomous, multi-agent systems that generate measurable business value.
+
+## Business Context and Strategic Framework
+
+The presenters emphasize that fundamental business principles—customer focus, operational efficiency, product innovation, strategic differentiation, and personalized experience—remain constant, but generative AI and agentic AI are fundamentally transforming how value is created and delivered. The shift is from reactive workflows to proactive, outcome-driven systems that enable businesses to innovate faster, respond in real-time, and stay ahead of market dynamics.
+
+Siteimprove approaches AI investment through two complementary lenses: operational improvement (streamlining how products are built, marketed, sold, and scaled) and product innovation (transforming what the company offers to enhance differentiation and customer experience). The company explicitly acknowledges that while early adopters focus on operational improvement, real transformative power comes from product innovation, and organizations must balance both to create a sustainable growth dynamic where cost savings from efficiency combine with new revenue streams from innovation.
+
+The strategic framework presented emphasizes "working backwards" from customer outcomes—Amazon's mechanism for prioritizing investments by starting with desired results rather than available technologies. The framework evaluates opportunities across four dimensions: quick wins (high impact, low effort to build momentum), strategic bets (highest potential value), avoiding resource-heavy moderate-return projects, and selectively pursuing emerging opportunities as AI and data maturity grows. All initiatives are measured against three critical metrics: trust (does this build and sustain customer trust?), speed (can this scale beyond solving today's status quo?), and adoption (are customers using it, deriving value, and is there a path to monetization?).
+
+The presenters acknowledge that agentic AI requires upfront investment and short-term trade-offs but position it as a "force multiplier" that, with the right foundation (infrastructure and talent) and clear growth vision (new revenue streams, differentiated products, competitive edge), can unlock transformative growth beyond incremental gains. The key is investing in the right foundation, setting a clear transformative vision, and prioritizing quick wins to build momentum.
+
+## Evolution from Generative AI to Agentic AI
+
+Siteimprove's journey progressed through three distinct phases. First, generative AI functioned like "a brilliant assistant who can create things for you, but only when you ask"—exemplified by their brand consistency product where users request content matching to brand tone of voice through fixed prompts. Second, AI agents gained the ability to make suggestions and take actions, capable of taking initiative, using tools, integrating with other system parts, and getting work done—implemented in conversational accessibility remediation and conversational analytics. Third, agentic AI evolved into "a collaborative team that can plan, coordinate, and adopt autonomously," where multiple agents communicate and work together to solve problems dynamically without micromanagement.
+
+The company emphasizes that agentic AI truly begins when a system orchestrates multiple agents and technologies toward the same unified goal, working together in autonomous loops of plan-act-observe-adjust with constant inter-agent communication. Their mission is to enable agents across all platform areas to communicate and collaborate autonomously.
+
+## Trust Curve and Production Adoption Strategy
+
+A critical insight from Siteimprove's implementation is their "trust curve" approach to agentic AI adoption, which explicitly rejects "big bang" deployment in favor of systematic progression through three stages:
+
+**Human-in-the-loop**: AI and humans work side-by-side, with AI suggesting, explaining, and validating, but humans making final decisions and approving actions. This stage proves value through higher quality, faster delivery, fewer errors, and measurable impact.
+
+**Human-on-the-loop**: Humans transition from operator to governor roles, overseeing the overall process while AI performs most tasks. Humans govern rather than execute.
+
+**Human-out-of-the-loop**: Fully automated processes where the system operates autonomously once trust is established.
+
+Crucially, Siteimprove emphasizes that organizations should not advance to the next stage without answering two fundamental questions: "Do users trust the system?" and "Has the system proven its value?" If trust is skipped, adoption stalls; if value is skipped, trust never forms. This represents a pragmatic, risk-managed approach to scaling AI in production that acknowledges the non-deterministic nature of LLM outputs and the significant challenges of error rates at scale—where even 99% accuracy translates to one million failed requests when processing 100 million monthly requests.
+
+## Technical Architecture: The Siteimprove AI Accelerator
+
+Siteimprove designed a comprehensive AI accelerator architecture to satisfy business requirements including multi-region operation (US and EU), enterprise-grade security and governance, multi-modal support, access to variety of leading models, support for both batch and interactive workloads, deep integration capabilities, and critically, flexible pricing for cost optimization at scale.
+
+The architecture comprises three main components:
+
+**Batch Manager**: Handles asynchronous batch processing for workloads requiring processing of millions of pages. The system supports up to 100 batches of 100,000 requests each, achieving 10 million requests per day with 24-hour turnaround times.
+
+**Business Logic Manager**: Contains all prompts, parameters, and problem-specific details, serving as the intelligence layer that defines how agents interact with various use cases.
+
+**AI Service Adapters**: A shared layer providing interfaces to different AI services, including Amazon SageMaker, Amazon Bedrock, foundation models, Bedrock agents, and third-party models. Adapters abstract the complexity of communicating with different services, including the Bedrock Converse API.
+
+The architecture is designed to support multiple usage patterns simultaneously, with three primary patterns established for different use case types: batch processing patterns for high-volume, non-time-sensitive workloads; conversational patterns for interactive user engagement; and high-priority asynchronous patterns for context-dependent analysis requiring faster response times.
+
+## Three Production Use Cases and Implementation Patterns
+
+### Use Case 1: Asynchronous Batch Processing for Accessibility Rules
+
+This use case addresses the challenge of processing up to 100 million pages per month for accessibility rule checking—determining whether HTML page titles are descriptive, headings are appropriate, and other accessibility standards are met. The architecture implements a queue-based system with multiple Lambda functions orchestrating the workflow:
+
+- An Application Load Balancer receives requests, which a Lambda immediately places in an input queue without further processing
+- Another Lambda aggregates requests from the queue and groups them in S3 buckets, preparing them for batch submission to Bedrock
+- A scheduling Lambda submits batches to Bedrock every few hours or minutes depending on load, leveraging Bedrock's batch API with 24-hour turnaround
+- Event-driven Lambdas monitor for batch completion, with one Lambda retrieving complete batch responses and another processing individual results, performing post-processing and cleaning, then submitting to an output queue
+
+This pattern achieves the scale required for millions of daily requests while maintaining cost efficiency. The presenters note that this is "not necessarily an AI challenge per se, it's more about an orchestration and infrastructure challenge," highlighting how production LLMOps often involves solving complex systems integration problems beyond model inference.
+
+### Use Case 2: Conversational AI Remediation
+
+This synchronous, interactive use case enables users to fix specific accessibility issues through natural conversation with an AI agent. The workflow demonstrates multimodal capabilities:
+
+- Users navigate to a portal displaying potential issues and select specific problems to investigate
+- The agent analyzes context, reading the page and generating suggestions with explanations and best practices
+- Users can engage in follow-up conversation, asking clarifying questions or requesting alternative solutions
+- The agent maintains conversation history and context, accessing both the current state and previous interactions to provide coherent, contextually appropriate responses
+
+A demonstration video shown during the presentation illustrated this interaction pattern, showing how users can receive initial AI-generated suggestions for missing page titles, then drill deeper with questions like "Can you tell me a bit more about this situation?" with the agent drawing on session history to provide detailed explanations.
+
+### Use Case 3: High-Priority Async Contextual Image Analysis
+
+This use case focuses on understanding image context in relation to surrounding content—determining whether alt text, headings, captions, and other contextual elements appropriately describe images. Unlike batch processing, these requests have higher priority and require faster turnaround:
+
+- Image URLs are pushed to a priority queue when requests arrive
+- When sufficient requests accumulate, a Bedrock requester submits them to Bedrock as asynchronous (but not batch) requests
+- Results return to an output queue for user consumption, with significantly faster turnaround than 24-hour batch processing
+
+This pattern demonstrates how production LLM systems must accommodate different service level agreements for various use cases, with architecture flexible enough to prioritize certain workloads while maintaining efficiency for others.
+
+## Technology Stack and Model Selection
+
+Siteimprove selected Amazon Bedrock as their primary AI platform after evaluating business requirements. Bedrock provides several critical capabilities:
+
+- Runs in the same VPC as the rest of the architecture, simplifying security and networking
+- Automatic multi-region support for compliance, scalability, and resilience
+- Support for both agentic and generative AI workloads within a unified platform
+- Access to a variety of leading models including Claude, Llama, and Amazon Nova
+- Support for both batch and interactive workloads with appropriate APIs for each
+- Deep integration capabilities with AWS services and existing infrastructure
+- Flexible pricing models enabling cost optimization at scale
+
+The presenters specifically highlighted Amazon Nova models for their cost efficiency, noting that Nova Micro provided approximately 75% cost reduction compared to leading models for certain use cases. This emphasis on "selecting the right model for the right problem" rather than defaulting to the most capable (and expensive) model for every task represents a mature approach to production LLMOps where total cost of ownership significantly impacts business viability.
+
+The architecture supports dynamic model selection and escalation strategies. Siteimprove can configure systems to automatically escalate within model families (e.g., Nova Micro to Nova Lite to Nova Pro) if initial attempts fail or quality thresholds aren't met. This can occur in real-time during inference or during prompt engineering and analysis phases, with multiple models running simultaneously for different use cases.
+
+## Multi-Agent Orchestration with Agent Core
+
+Siteimprove is extending their architecture to incorporate AWS Agent Core for conversational analytics, representing a move toward true cross-domain agentic AI. The use case illustrates the power of multi-agent collaboration: a user asks "What are the issues with my top visited pages?" This requires the system to:
+
+- Consult analytics agents to identify top visited pages
+- Call accessibility agents to identify accessibility issues on those pages
+- Call SEO agents to identify search optimization problems
+- Call content agents to assess content quality issues
+- Synthesize results across all domains into coherent, actionable insights
+
+The Agent Core architecture supports this through several components:
+
+**RT Agent (Running on Strand Agents)**: The orchestrating agent with internal local tools for query interpretation, formatting (including JSON formatting for UX), and coordination logic. This agent can call other agents through the Agent Core Gateway.
+
+**Agent Core Gateway**: Converts existing APIs, Lambda functions, and Model Context Protocol (MCP) servers into tools that agents can use, providing unified interfaces with pre-built IAM authentication.
+
+**Memory Systems**: Both short-term memory for session management (maintaining conversation context within a single interaction) and long-term memory for actor management (storing user preferences, historical patterns, and personalization data across sessions).
+
+**Security and Identity**: Agent Core Identity provides secure delegated access control for agents accessing third-party applications (GitHub, Salesforce, etc.), using secure vault storage to reduce authentication fatigue while maintaining enterprise security standards.
+
+**Observability**: Comprehensive end-to-end observability with OpenTelemetry compatibility, enabling integration with application monitoring tools and providing visibility into agent actions, reasoning processes, and input/output logs through pre-built dashboards.
+
+This architecture enables Siteimprove to build toward "orchestrated intelligence" where agents, data, and workflows coordinate across their entire platform, rather than operating in isolated domains.
+
+## Critical LLMOps Lessons Learned
+
+The presenters shared several operationally critical lessons from their production implementation, acknowledging these came from collaboration with AWS teams:
+
+**Cross-Region Inference**: Utilizing cross-region inference capabilities reduces latency, improves resiliency, scales throughput, and optimizes costs by serving workloads from multiple regions. This proved essential for meeting compliance requirements while maintaining performance.
+
+**Effective Prompt Engineering and Optimization**: Bedrock's prompt optimization tools proved valuable, taking prompts and target models as input and optimizing prompt structure for that specific model. The presenters emphasized not underestimating this, noting that different models prefer different prompt structuring approaches—one model might work best with XML tags while Amazon Nova prefers markdown language. Failing to optimize prompts for specific models causes significant problems at scale.
+
+**Understanding Regional Throughput and Quota Variations**: Organizations must understand quotas well ahead of production launch—model inference requests per minute, quotas per region, number of jobs that can be submitted. The presenters emphasized "don't assume if you submit 200 million requests in a month, it gets processed" and recommended working with AWS teams to secure necessary quotas before production, not during launch.
+
+**Mitigating Failed Responses Through Dynamic Model Selection**: Architectures can dynamically select models, particularly within model families, escalating from smaller to larger models when responses fail. This can happen in real-time (Micro to Lite to Pro) or during analysis phases, with multiple models running simultaneously for different use cases.
+
+**Mitigating Model Hallucinations and Enforcing Structured Output**: For production systems displaying AI outputs to users, enforcing JSON or other structured formats is critical. Multiple techniques exist, including prefilling (starting the assistant's response with the expected output structure to force continuation in that format). The presenters acknowledged this as "an ongoing challenge for everyone" based on conversations with other leaders.
+
+**Handling Contextual Information in Batch Processing**: When processing millions of requests, passing metadata (like digest IDs) through agents and receiving it back intact presents challenges. If architectures don't support metadata passthrough (which is typically the case), systems must remain stateless by embedding contextual information in requests and responses. The presenters shared a concrete example where their encoding algorithm used semicolons, which the agent interpreted as line endings, truncating digest IDs and causing hash mismatches. This illustrates how production LLMOps requires understanding subtle model behaviors that only manifest at scale.
+
+## Production Challenges and the Prototype-to-Production Chasm
+
+The AWS architect, Pradeep Shriran, explicitly addressed what he termed the "prototype-to-production chasm"—the gap between POCs demonstrating excitement and potential versus production systems delivering actual business value. Even with modern frameworks like LangChain, LangGraph, CrewAI, and Amazon's Transtrand Agent providing developer abstractions and pre-built code, organizations struggle with:
+
+- Managing memory systems for stateless LLMs
+- Implementing security and governance at scale
+- Handling orchestration complexity as systems grow
+- Ensuring tool execution reliability
+- Managing state across distributed systems
+- Providing comprehensive observability
+
+The presenter cited a Gartner prediction that 40% of enterprise agentic AI projects will be canceled by 2027 due to soaring costs, unclear business value, and security concerns. This sobering statistic underscores the operational challenges that production LLMOps must address beyond model selection and prompt engineering.
+
+Agent Core was positioned as AWS's answer to this chasm, providing fully managed services for production agent operations including secure runtime management, memory systems, secure authentication and token storage, secure tool communication, and out-of-the-box observability. The emphasis was on running production-grade agents that "scale to millions of users, recover gracefully from failures, and adapt to your needs as you grow."
+
+## Business Outcomes and Recognition
+
+Siteimprove's systematic approach to agentic AI yielded measurable results. The company was recognized as a leader in the Forrester Wave for Digital Accessibility Platforms, advancing to the leader category in both product offering strength and strategy strength. Forrester awarded Siteimprove the highest possible scores in 13 criteria, including innovation and vision, noting that "Siteimprove is unique from other leaders in this market because it provides accessibility as part of a broader unified platform that includes SEO analytics, content strategy."
+
+The presenters emphasized that this recognition came from delivering actual customer value through their agentic AI implementations rather than from technology demonstration alone. The journey from "content intelligence platform" to "agentic unified platform" represented a fundamental transformation in how the company delivers value.
+
+Cost optimization proved significant, with the 75% cost reduction on certain workloads using Nova Micro compared to leading alternatives directly impacting the business case for scaling to 100 million+ monthly requests. This demonstrates how model selection and optimization strategies directly influence the economic viability of production LLM systems.
+
+## Strategic Roadmap and Maturity Model
+
+Siteimprove shared their strategic milestone framework, which they believe applies broadly to other companies undertaking similar journeys:
+
+**Prove Value**: Lay the foundation with core use cases in each pillar (accessibility, analytics, SEO, content). Focus on reactive agents—simpler agents that respond to user requests but demonstrate clear value and build trust.
+
+**Automate and Amplify**: Expand agents to handle more repetitive, complex, and high-volume tasks. This phase involves moving to proactive agents and enabling multi-agent collaboration where agents begin working together without constant human intervention.
+
+**Orchestrated Intelligence**: The long-term goal for many organizations—creating autonomous orchestrated intelligence that connects agents, data, and workflows across the entire platform. Agents make decisions, coordinate activities, and adapt strategies dynamically to achieve business objectives.
+
+This maturity model acknowledges that agentic AI adoption is iterative, with learning and acceleration occurring at each stage. Organizations must resist the temptation to jump to autonomous operation before establishing trust and demonstrating value at earlier stages.
+
+## Broader Ecosystem and Engagement Model
+
+The presentation contextualized Siteimprove's specific implementation within AWS's broader agentic AI ecosystem. AWS provides a comprehensive stack including pre-built applications (Amazon Q, QuickSight, AWS Transform for legacy modernization, Amazon Connect for customer support), development platforms (Bedrock with access to leading models, Agent Core for production operations, Transtrand Agent SDK), and infrastructure (SageMaker AI, custom Trainium and Inferentia chips).
+
+The "one team model" AWS employs for customer support proved valuable to Siteimprove's success. This includes account teams working daily to understand business goals, the Gen AI Innovation Center providing deep ML and AI expertise (which helped Siteimprove with batch processing and prompt optimization), product teams offering early access to features and roadmap influence, and build/support teams providing technical account management. Engagement modes included regular office hours for quick technical discussions, deep engagements like the Gen AI Innovation Center's work with Siteimprove, experience-based acceleration with over-the-shoulder support for new initiatives, and technical enablement through training and certification.
+
+## Balanced Assessment
+
+This case study represents a mature, production-focused approach to implementing agentic AI at enterprise scale. Several factors contribute to its credibility despite the presentation context (an AWS re:Invent session promoting AWS services):
+
+The presenters explicitly acknowledged challenges and failures rather than presenting an idealized success story. Discussions of hallucination issues, metadata handling problems, quota management complexities, and the 40% project cancellation prediction demonstrate realistic expectations about production LLMOps difficulties.
+
+The emphasis on trust-building through staged adoption, measurement of business value beyond technical metrics, and the acknowledgment that "AI is super easy when it comes to POC... but it's very hard when it comes to production and at scale" reflects genuine operational experience rather than marketing messaging.
+
+The technical architecture details, including specific Lambda configurations, queue management strategies, and model escalation approaches, provide concrete implementation guidance that practitioners can evaluate and adapt. The specificity around handling 100 million monthly requests with concrete patterns for batch, conversational, and high-priority async workloads demonstrates actual production deployment rather than conceptual design.
+
+However, balanced assessment requires acknowledging potential limitations. The case study focuses exclusively on AWS services, which is expected given the presentation venue but means cross-cloud or cloud-agnostic approaches aren't explored. The 75% cost reduction claim for Nova Micro, while potentially accurate, lacks competitive context about which "leading models" served as comparison and whether the comparison accounts for differences in capability or quality. The presentation doesn't deeply explore failure modes, rollback strategies, or how the system handles extended outages or cascading failures across multi-agent workflows.
+
+The Forrester Wave recognition validates Siteimprove's market position but doesn't necessarily validate the specific technical approaches described. The causal relationship between agentic AI implementation and market leadership recognition remains somewhat implicit rather than explicitly demonstrated through metrics.
+
+Nevertheless, this case study offers valuable insights for organizations implementing production LLM systems. The staged trust-building approach, emphasis on matching models to use cases rather than defaulting to most capable options, focus on orchestration and infrastructure challenges alongside AI challenges, and systematic framework for evaluating AI investment opportunities represent mature operational thinking applicable beyond AWS-specific implementations. The honest discussion of production challenges—particularly around error rates at scale, prompt optimization for specific models, and contextual information handling—provides practical guidance often absent from vendor case studies.

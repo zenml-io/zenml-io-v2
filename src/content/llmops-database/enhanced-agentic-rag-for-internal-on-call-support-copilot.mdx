@@ -1,0 +1,149 @@
+---
+title: "Enhanced Agentic-RAG for Internal On-Call Support Copilot"
+slug: "enhanced-agentic-rag-for-internal-on-call-support-copilot"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "690a1082f1eb108361b29077"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:25:44.996Z"
+  createdOn: "2025-11-04T14:41:06.018Z"
+llmopsTags:
+  - "customer-support"
+  - "question-answering"
+  - "document-processing"
+  - "chatbot"
+  - "rag"
+  - "embeddings"
+  - "prompt-engineering"
+  - "semantic-search"
+  - "vector-search"
+  - "chunking"
+  - "few-shot"
+  - "multi-agent-systems"
+  - "agent-based"
+  - "evals"
+  - "langchain"
+  - "databases"
+  - "monitoring"
+  - "documentation"
+  - "open-source"
+  - "google-gcp"
+  - "meta"
+company: "Uber"
+summary: "Uber developed Genie, an internal on-call copilot powered by LLMs, to provide real-time support for engineering queries in Slack. When initial testing revealed significant accuracy issues with responses in the engineering security and privacy domain, the team transitioned from traditional RAG to an Enhanced Agentic RAG (EAg-RAG) architecture. This involved enriched document processing with custom Google Docs loaders and LLM-powered content formatting, plus pre- and post-processing agents for query optimization, source identification, and context refinement. The improvements resulted in a 27% relative increase in acceptable answers and a 60% relative reduction in incorrect advice, enabling deployment across critical security and privacy channels while reducing the support load on subject matter experts."
+link: "https://www.uber.com/en-GB/blog/enhanced-agentic-rag/"
+year: 2025
+seo:
+  title: "Uber: Enhanced Agentic-RAG for Internal On-Call Support Copilot - ZenML LLMOps Database"
+  description: "Uber developed Genie, an internal on-call copilot powered by LLMs, to provide real-time support for engineering queries in Slack. When initial testing revealed significant accuracy issues with responses in the engineering security and privacy domain, the team transitioned from traditional RAG to an Enhanced Agentic RAG (EAg-RAG) architecture. This involved enriched document processing with custom Google Docs loaders and LLM-powered content formatting, plus pre- and post-processing agents for query optimization, source identification, and context refinement. The improvements resulted in a 27% relative increase in acceptable answers and a 60% relative reduction in incorrect advice, enabling deployment across critical security and privacy channels while reducing the support load on subject matter experts."
+  canonical: "https://www.zenml.io/llmops-database/enhanced-agentic-rag-for-internal-on-call-support-copilot"
+  ogTitle: "Uber: Enhanced Agentic-RAG for Internal On-Call Support Copilot - ZenML LLMOps Database"
+  ogDescription: "Uber developed Genie, an internal on-call copilot powered by LLMs, to provide real-time support for engineering queries in Slack. When initial testing revealed significant accuracy issues with responses in the engineering security and privacy domain, the team transitioned from traditional RAG to an Enhanced Agentic RAG (EAg-RAG) architecture. This involved enriched document processing with custom Google Docs loaders and LLM-powered content formatting, plus pre- and post-processing agents for query optimization, source identification, and context refinement. The improvements resulted in a 27% relative increase in acceptable answers and a 60% relative reduction in incorrect advice, enabling deployment across critical security and privacy channels while reducing the support load on subject matter experts."
+---
+
+## Overview
+
+Uber's case study centers on Genie, an internal LLM-powered on-call copilot deployed within Slack to support thousands of engineering queries across multiple help channels. The system provides real-time responses with proper citations from Uber's internal documentation, aiming to improve productivity for on-call engineers and subject matter experts (SMEs) by handling common, repetitive queries. While Genie offers a configurable framework that enables domain teams to deploy an LLM-powered Slack bot rapidly, the case study focuses specifically on the challenge of ensuring response accuracy and relevance for the engineering security and privacy domain.
+
+The motivation for this work stemmed from a critical assessment where SMEs curated a golden test set of 100+ queries based on their extensive experience. When Genie was integrated with Uber's repository of 40+ engineering security and privacy policy documents stored as PDFs, the initial test results revealed significant gaps. Response quality didn't meet deployment standards—many answers were incomplete, inaccurate, or failed to retrieve relevant information correctly. This necessitated substantial improvements before broader deployment across critical security and privacy channels could proceed.
+
+The team's solution involved transitioning from traditional RAG architecture to an Enhanced Agentic RAG (EAg-RAG) approach, incorporating LLM-powered agents for pre- and post-processing steps alongside enriched document processing. The improvements yielded a 27% relative increase in the percentage of acceptable answers and a 60% relative reduction in incorrect advice, representing significant gains in production system quality.
+
+## Technical Architecture and LLMOps Considerations
+
+The EAg-RAG architecture consists of two primary components that reflect standard LLMOps practices: offline document processing and near-real-time answer generation. Each component incorporates specific enhancements designed to address production quality concerns.
+
+### Enriched Document Processing Pipeline
+
+The document processing pipeline represents a critical LLMOps consideration, as the quality of processed documents directly impacts downstream retrieval and generation quality. The team discovered that existing PDF loaders often failed to correctly capture structured text and formatting, particularly for complex tables and bullet points. Many policy documents contained tables spanning more than five pages with nested cells, and traditional PDF loaders like SimpleDirectoryLoader from LlamaIndex and PyPDFLoader from LangChain lost original formatting during extraction. This fragmentation caused table cells to become isolated text, disconnecting them from row and column contexts, which posed challenges for chunking and retrieval.
+
+After experimenting with state-of-the-art PDF loaders including PdfPlumber, PyMuPDF, and LlamaIndex LlamaParse without finding a universal solution, the team transitioned from PDFs to Google Docs using HTML formatting for more accurate text extraction. Google Docs also provided built-in access control, crucial for security-sensitive applications. However, even with HTML formatting, traditional document loaders like html2text and Markdownify from LangChain showed room for improvement, especially with table formatting.
+
+To address this, the team built a custom Google document loader using the Google Python API, extracting paragraphs, tables, and table of contents recursively. For tables and structured text like bullet points, they integrated an LLM-powered enrichment process that prompted the LLM to convert extracted table contents into markdown-formatted tables. They enriched metadata with identifiers to distinguish table-containing text chunks, ensuring they remain intact during chunking. Additionally, they added two-line summaries and keywords for each table to improve semantic search relevancy.
+
+Beyond formatting, the team focused on metadata enrichment as a production quality mechanism. In addition to standard metadata attributes like title, URL, and IDs, they introduced custom attributes including document summaries, FAQs, and relevant keywords. Leveraging LLMs' summarization capabilities, they generated these enriched metadata elements dynamically. FAQs and keywords were added after chunking to align with specific chunks, while document summaries remained consistent across all chunks from the same document.
+
+These enriched metadata serve dual purposes in the production system: certain attributes are used in precursor or post-processing steps to refine extracted context, while others like FAQs and keywords are directly employed in the retrieval process itself to enhance accuracy. After enrichment and chunking, documents are indexed and embeddings generated for each chunk, stored in a vector store using Uber's Michelangelo platform pipeline configurations. Artifacts like document lists (titles and summaries) and FAQs are saved in an offline feature store for later use in answer generation, demonstrating integration with Uber's existing ML infrastructure.
+
+### Agentic RAG Answer Generation
+
+The answer generation component represents a significant evolution from traditional RAG approaches and highlights advanced LLMOps practices for production systems. Traditional RAG involves two steps: retrieving semantically relevant document chunks via vector search and passing them with the user's query to an LLM. However, in domain-specific cases like Uber's internal security and privacy channels, document chunks often have subtle distinctions within the same policy document and across multiple documents. These distinctions include variations in data retention policies, data classification, and sharing protocols across different personas and geographies. Simple semantic similarity can lead to retrieving irrelevant context, reducing answer accuracy.
+
+To address this production challenge, the team introduced LLM-powered agents in pre-retrieval and post-processing steps. In the pre-processing step, they employ two agents: Query Optimizer and Source Identifier. The Query Optimizer refines queries when they lack context or are ambiguous, and breaks down complex queries into multiple simpler queries for better retrieval. The Source Identifier processes the optimized query to narrow down the subset of policy documents most likely to contain relevant answers.
+
+Both agents use the document list artifact (titles, summaries, and FAQs) fetched from the offline store as context. The team also provides few-shot examples to improve in-context learning for the Source Identifier. The output—an optimized query and subset of document titles—is used to restrict retrieval search within the identified document set, representing a targeted approach to improving precision in production.
+
+To further refine retrieval, the team introduced an additional BM25-based retriever alongside traditional vector search. This retriever fetches relevant document chunks using enriched metadata including summaries, FAQs, and keywords for each chunk. The final retrieval output is the union of results from vector search and the BM25 retriever, demonstrating a hybrid retrieval strategy common in production RAG systems.
+
+The Post-Processor Agent performs two key tasks: de-duplication of retrieved document chunks and structuring the context based on the positional order of chunks within original documents. This structured approach helps maintain coherence when passing context to the answer-generating LLM.
+
+Finally, the original user query, optimized auxiliary queries, and post-processed retrieved context are passed to the answer-generating LLM along with specific instructions for answer construction. The generated answer is shared with users through the Slack interface, completing the end-to-end production pipeline.
+
+### Implementation Using LangChain and LangGraph
+
+The team built most components of the agentic RAG framework using Langfx, Uber's internal LangChain-based service within Michelangelo, their machine learning platform. For agent development and workflow orchestration, they used LangChain's LangGraph, described as a scalable yet developer-friendly framework for agentic AI workflows. While the current implementation follows a sequential flow, integrating with LangGraph allows for future expansion into more complex agentic frameworks, demonstrating forward-thinking production architecture design.
+
+## Production Challenges and LLMOps Solutions
+
+The case study explicitly identifies two key production challenges that drove the architectural evolution, offering valuable insights into real-world LLMOps considerations:
+
+### High SME Involvement and Slow Evaluation
+
+While Genie's modular framework allowed easy experimentation, assessing improvements required significant SME bandwidth, often taking weeks. This evaluation bottleneck is a common LLMOps challenge when deploying domain-specific systems that require expert validation. The slow feedback loop inhibits rapid iteration and experimentation, which are critical for improving production system quality.
+
+### Marginal Gains and Plateauing Accuracy
+
+Many experiments yielded only slight accuracy improvements before plateauing, with no clear path for further enhancement. This plateau effect is characteristic of traditional RAG approaches where simple prompt tuning and retrieval configuration adjustments offer diminishing returns.
+
+## LLM-as-Judge for Automated Evaluation
+
+To address the evaluation bottleneck, the team implemented an LLM-as-Judge framework for automated batch evaluation, representing a sophisticated LLMOps practice for accelerating development cycles. This framework uses an LLM to assess chatbot responses within given context, producing structured scores, correctness labels, and AI-generated reasoning and feedback.
+
+The automated evaluation process consists of three stages. First, a one-time manual SME review where SMEs provide high-quality responses or feedback on chatbot-generated answers. Second, batch execution where the chatbot generates responses based on its current version. Third, LLM evaluation where the LLM-as-Judge module evaluates chatbot responses using the user query, SME response, and evaluation instructions as context, along with additional content retrieved from source documents via the latest RAG pipeline.
+
+The team made an important design decision to integrate additional documents from the RAG pipeline into the evaluation context. This enhances the LLM's domain awareness and improves evaluation reliability, particularly for complex domain-specific topics like engineering security and privacy policies. The LLM-as-Judge module scores responses on a 0-5 scale and provides reasoning for evaluations, enabling feedback incorporation into future experiments.
+
+This automated evaluation approach reduced experiment evaluation time from weeks to minutes, enabling faster iterations and more effective directional experimentation. This represents a critical LLMOps capability for production systems where rapid iteration is necessary but expert evaluation is expensive and time-consuming.
+
+## Production Deployment and Impact
+
+The EAg-RAG framework was tested for the on-call copilot Genie within the engineering security and privacy domain, showing significant improvement in accuracy and relevancy of golden test-set answers. With these improvements, the copilot bot can now scale across multiple security and privacy help channels to provide real-time responses to common user queries.
+
+The production deployment has led to measurable reduction in support load for on-call engineers and SMEs, allowing them to focus on more complex and high-value tasks, ultimately increasing overall productivity for Uber Engineering. An interesting secondary benefit mentioned is that by demonstrating that better-quality source documentation enables improved bot performance, this development encourages teams to maintain more accurate and useful internal docs.
+
+The enhancements were designed as configurable components within the Michelangelo Genie framework, making them easily adoptable by other domain teams across Uber. This design for reusability represents mature LLMOps practice, where improvements in one domain can be leveraged across the organization through platform-level abstractions.
+
+## Critical Assessment and Balanced Perspective
+
+While the case study presents impressive improvements (27% relative increase in acceptable answers and 60% relative reduction in incorrect advice), several considerations warrant balanced assessment:
+
+The improvements are measured against a baseline that was acknowledged to be inadequate for production deployment, so the absolute quality level after improvements, while better, may still require ongoing refinement. The case study doesn't provide absolute accuracy metrics (e.g., "acceptable answer rate increased from X% to Y%"), making it difficult to assess the final production-ready quality level.
+
+The reliance on LLM-as-Judge for automated evaluation, while practical and efficient, introduces potential biases and limitations. The evaluation LLM may have systematic blind spots or biases that don't fully align with SME judgment, and the case study doesn't discuss validation of the LLM-as-Judge scores against ongoing SME evaluations to ensure calibration remains accurate over time.
+
+The transition from PDFs to Google Docs, while solving technical extraction challenges, represents a significant operational constraint. Organizations without standardized Google Docs usage or with legacy documentation in other formats would face substantial migration overhead to adopt this approach. The custom Google Docs loader, while powerful, creates a dependency on a specific documentation platform and may require maintenance as Google's APIs evolve.
+
+The agentic RAG approach adds significant complexity to the system architecture, introducing multiple LLM calls (Query Optimizer, Source Identifier, Post-Processor, Answer Generator, and potentially Document Enrichment). This complexity has implications for latency, cost, and system reliability in production. The case study doesn't discuss latency benchmarks, cost analysis of multiple LLM calls per query, or failure handling when intermediate agents produce poor outputs.
+
+## Future Directions and LLMOps Evolution
+
+The case study acknowledges several areas for future development, demonstrating realistic assessment of current limitations. The team plans to extend their custom Google Docs plugin to extract and enrich multi-modal content including images, addressing a current limitation in handling visual information.
+
+For answer generation, they're considering an iterative Chain-of-RAG approach instead of single-step query optimization to enhance performance for multi-hop reasoning queries. They also plan to introduce a self-critique agent after answer generation to dynamically refine responses and further reduce hallucinations, representing additional agentic capabilities.
+
+An interesting architectural evolution they're considering is introducing many features as tools that LLM-powered agents can choose based on query type and complexity. This would enable flexibility with both complex and simple queries, allowing the system to adapt its processing pipeline dynamically based on need rather than applying uniform processing to all queries.
+
+## LLMOps Platform Integration
+
+The case study demonstrates mature integration with Uber's existing ML infrastructure, specifically the Michelangelo platform. The use of Langfx (Uber's internal LangChain-based service), offline feature stores for artifact storage, and configurable framework design all indicate platform-level thinking rather than point solution development.
+
+This platform integration enables rapid deployment ("deploy an LLM-powered Slack bot overnight") and reusability across domain teams, representing sophisticated LLMOps practices for organizational scale. The modular design allows different teams to leverage improved document processing and agentic RAG components without rebuilding from scratch, accelerating time-to-production for new use cases.
+
+## Conclusion on LLMOps Maturity
+
+This case study demonstrates several hallmarks of mature LLMOps practice: systematic evaluation frameworks with automated batch testing, platform-level abstractions for reusability, integration with existing ML infrastructure, iterative improvement based on production performance metrics, and realistic acknowledgment of limitations and future work. The transition from traditional RAG to agentic RAG represents thoughtful architectural evolution driven by production requirements rather than technology trends.
+
+However, the case study would benefit from more transparency around absolute quality metrics, latency and cost implications, failure modes and mitigation strategies, and long-term maintenance considerations for custom components. These are common gaps in vendor or company-published case studies that tend to emphasize successes while downplaying operational challenges and ongoing investment required to maintain production systems.

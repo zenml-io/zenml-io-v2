@@ -1,0 +1,113 @@
+---
+title: "Scaling Product Categorization with Batch Inference and Prompt Engineering"
+slug: "scaling-product-categorization-with-batch-inference-and-prompt-engineering"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "67d7f88a69cbad15f48c0053"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:04:20.544Z"
+  createdOn: "2025-03-17T10:25:14.823Z"
+llmopsTags:
+  - "classification"
+  - "structured-output"
+  - "prompt-engineering"
+  - "few-shot"
+  - "token-optimization"
+  - "error-handling"
+  - "chunking"
+  - "latency-optimization"
+  - "cost-optimization"
+  - "fastapi"
+  - "langchain"
+  - "serverless"
+  - "amazon-aws"
+  - "anthropic"
+  - "meta"
+company: "GoDaddy"
+summary: "GoDaddy sought to improve their product categorization system that was using Meta Llama 2 for generating categories for 6 million products but faced issues with incomplete/mislabeled categories and high costs. They implemented a new solution using Amazon Bedrock's batch inference capabilities with Claude and Llama 2 models, achieving 97% category coverage (exceeding their 90% target), 80% faster processing time, and 8% cost reduction while maintaining high quality categorization as verified by subject matter experts."
+link: "https://aws.amazon.com/blogs/machine-learning/how-godaddy-built-a-category-generation-system-at-scale-with-batch-inference-for-amazon-bedrock?tag=soumet-20"
+year: 2025
+seo:
+  title: "GoDaddy: Scaling Product Categorization with Batch Inference and Prompt Engineering - ZenML LLMOps Database"
+  description: "GoDaddy sought to improve their product categorization system that was using Meta Llama 2 for generating categories for 6 million products but faced issues with incomplete/mislabeled categories and high costs. They implemented a new solution using Amazon Bedrock's batch inference capabilities with Claude and Llama 2 models, achieving 97% category coverage (exceeding their 90% target), 80% faster processing time, and 8% cost reduction while maintaining high quality categorization as verified by subject matter experts."
+  canonical: "https://www.zenml.io/llmops-database/scaling-product-categorization-with-batch-inference-and-prompt-engineering"
+  ogTitle: "GoDaddy: Scaling Product Categorization with Batch Inference and Prompt Engineering - ZenML LLMOps Database"
+  ogDescription: "GoDaddy sought to improve their product categorization system that was using Meta Llama 2 for generating categories for 6 million products but faced issues with incomplete/mislabeled categories and high costs. They implemented a new solution using Amazon Bedrock's batch inference capabilities with Claude and Llama 2 models, achieving 97% category coverage (exceeding their 90% target), 80% faster processing time, and 8% cost reduction while maintaining high quality categorization as verified by subject matter experts."
+---
+
+## Overview
+
+GoDaddy, a major domain registrar and web hosting company serving over 21 million customers, sought to improve their product categorization system that generates metadata categories (such as color, material, category, subcategory, season, price range, product line, gender, and year of first sale) based solely on product names. Their existing solution using an out-of-the-box Meta Llama 2 model was producing incomplete or mislabeled categories for their 6 million product catalog, and the per-product LLM invocation approach was proving cost-prohibitive at scale.
+
+The collaboration with AWS's Generative AI Innovation Center resulted in a batch inference solution using Amazon Bedrock that significantly improved accuracy, latency, and cost-effectiveness. This case study provides valuable insights into production LLM deployment patterns for high-volume categorization tasks.
+
+## Architecture and Infrastructure
+
+The solution architecture leverages several AWS services working together in a streamlined pipeline. Product data is stored in JSONL format in Amazon S3, which triggers an AWS Lambda function when files are uploaded. This Lambda function initiates an Amazon Bedrock batch processing job, passing the S3 file location. The Amazon Bedrock endpoint reads the product name data, generates categorized output, and writes results to another S3 location. A second Lambda function monitors the batch processing job status and handles cleanup when processing completes.
+
+The batch inference approach uses Amazon Bedrock's `CreateModelInvocationJob` API, which accepts a JSONL input file and returns a job ARN for monitoring. The job progresses through states including Submitted, InProgress, Failed, Completed, or Stopped. Output files include both summary statistics (processed record count, success/error counts, token counts) and the actual model outputs with categorization results.
+
+## Model Selection and Comparison
+
+The team evaluated multiple models including Meta Llama 2 (13B and 70B variants) and Anthropic's Claude (Instant and v2). This comparative analysis is particularly valuable for practitioners making model selection decisions.
+
+For Llama 2 models, they used temperature 0.1, top_p 0.9, and max_gen_len of 2,048 tokens. For Anthropic's Claude models, they used temperature 0.1, top_k 250, top_p 1, and max_tokens_to_sample of 4,096.
+
+The results clearly favored Anthropic's Claude-Instant with zero-shot prompting as the best performer across latency, cost, and accuracy metrics. Claude-Instant achieved 98.5% parsing recall and 96.8% final content coverage on the 5,000-sample test set. This model processed 5,000 products in approximately 12 minutes (723 seconds), significantly exceeding GoDaddy's requirement of processing 5,000 products in one hour.
+
+Llama 2 models showed several limitations: they required full format instructions in zero-shot prompts, the 13B variant had worse content coverage and formatting issues (particularly with character escaping), and both variants showed performance instability when varying packing numbers. Claude models demonstrated better generalizability, requiring only partial format instructions and maintaining stable performance across different packing configurations.
+
+## N-Packing Technique
+
+A key optimization technique employed was "n-packing" - combining multiple SKU product names into a single LLM query so that prompt instructions are shared across different SKUs. This approach significantly reduced both cost and latency.
+
+The team tested packing values of 1, 5, and 10 products per query. Llama 2 models have an output length limit of 2,048 tokens, fitting approximately 20 products maximum, while Claude models have higher limits allowing for even more aggressive packing.
+
+The results showed that increasing from 1-packing to 10-packing reduced latency significantly for Claude models (from 45s to 27s for Claude-Instant with zero-shot on 20 test samples) while maintaining stable accuracy. Llama 2 showed clear performance drops and instability when packing numbers changed, indicating poorer generalizability.
+
+When scaling from 5,000 to 100,000 samples, only 8x more computation time was needed, whereas performing individual LLM calls for each product would have increased inference time approximately 40x compared to batch processing.
+
+## Prompt Engineering Practices
+
+The prompt engineering work was divided into two phases: output generation and format parsing.
+
+For output generation, best practices included providing simple, clear, and complete instructions, using separator characters consistently (newline character), explicitly handling default output values to avoid N/A or missing values, and testing for good generalization on hold-out test sets.
+
+Few-shot prompting (in-context learning) was tested with 0, 2, 5, and 10 examples. For Claude models, techniques included enclosing examples in XML tags, using Human and Assistant annotations, and guiding the assistant prompt. For Llama 2, examples were enclosed in [INST] tags.
+
+For format parsing, the team used refinement techniques including role assumption (having the model act as a "Product Information Manager, Taxonomist, and Categorization Expert"), prompt specificity with detailed instructions, and explicit output format descriptions with JSON schema examples.
+
+The team discovered that few-shot example formatting was critical - LLMs were sensitive to subtle formatting differences, and parsing time was significantly improved through several iterations on formatting. For Claude, a shorter pseudo-example JSON format was sufficient, while Llama 2 required the full JSON schema instruction.
+
+## Output Parsing and Data Handling
+
+Output parsing used LangChain's `PydanticOutputParser` with a defined schema for the categorization fields. The team created a CCData class containing optional string fields for product_name, brand, color, material, price, category, sub_category, product_line, gender, year_of_first_sale, and season. Since n-packing was used, they wrapped the schema with a List type (List_of_CCData).
+
+An `OutputFixingParser` was employed to handle situations where initial parsing attempts failed, providing resilience against formatting inconsistencies in model outputs.
+
+## Evaluation Framework
+
+The evaluation framework included five metrics: content coverage (measuring portions of missing values in output generation), parsing coverage (measuring portions of missing samples in format parsing), parsing recall on product name (exact match as lower bound for parsing completeness), parsing precision on product name, and final coverage (combining output generation and parsing steps).
+
+Human evaluation was also conducted by GoDaddy subject matter experts, focusing on holistic quality assessment including accuracy, relevance, and comprehensiveness of the generated categories.
+
+The ground truth dataset consisted of 30 labeled data points (generated by llama2-7b and verified by human SMEs) and 100,000 unlabeled test data points. The team noted that some ground truth fields had N/A or missing values, which was suboptimal for GoDaddy's downstream predictive modeling needs where higher coverage provides more business insights.
+
+## Production Results and Scaling
+
+The final recommended solution (Claude-Instant with zero-shot) achieved 97% category coverage on both 5,000 and 100,000 test sets, exceeding GoDaddy's 90% requirement. Processing 5,000 products took approximately 12 minutes (723 seconds), 80% faster than the 1-hour requirement. The solution was 8% more affordable than the existing Llama 2-13B proposal while providing 79% more coverage.
+
+Scaling from 5,000 to 100,000 samples showed that accuracy in coverage remained stable, and cost scaled approximately linearly. The near-real-time inference capability achieved approximately 2 seconds per product.
+
+## Key Technical Learnings
+
+The team observed that using separate LLMs for different steps could be advantageous - Llama 2 didn't perform well in format parsing but was relatively capable in output generation. For fair comparison, they required the same LLM in both calls, but noted that mixing models (Llama 2 for generation, Claude for parsing) could be suitable for certain use cases.
+
+Format parsing was significantly improved through prompt engineering, particularly JSON format instructions. For Claude-Instant, latency was reduced by approximately 77% (from 90 seconds to 20 seconds) through prompt optimization, eliminating the need for a JSON fine-tuned model variant.
+
+## Future Recommendations
+
+The case study concludes with recommendations for future work including: dataset enhancement with more ground truth examples and normalized product names, increased human evaluations, fine-tuning exploration when more training data becomes available, automatic prompt engineering techniques, dynamic few-shot selection, and knowledge integration through connecting LLMs to internal or external databases to reduce hallucinations.

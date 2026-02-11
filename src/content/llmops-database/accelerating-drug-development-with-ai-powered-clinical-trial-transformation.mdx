@@ -1,0 +1,234 @@
+---
+title: "Accelerating Drug Development with AI-Powered Clinical Trial Transformation"
+slug: "accelerating-drug-development-with-ai-powered-clinical-trial-transformation"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "6942b8767b50a0fc20454a43"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:36:53.529Z"
+  createdOn: "2025-12-17T14:04:38.326Z"
+llmopsTags:
+  - "healthcare"
+  - "regulatory-compliance"
+  - "high-stakes-application"
+  - "document-processing"
+  - "data-analysis"
+  - "data-cleaning"
+  - "data-integration"
+  - "summarization"
+  - "structured-output"
+  - "rag"
+  - "embeddings"
+  - "prompt-engineering"
+  - "agent-based"
+  - "human-in-the-loop"
+  - "cost-optimization"
+  - "latency-optimization"
+  - "error-handling"
+  - "chunking"
+  - "evals"
+  - "kubernetes"
+  - "docker"
+  - "monitoring"
+  - "databases"
+  - "cicd"
+  - "scaling"
+  - "serverless"
+  - "devops"
+  - "orchestration"
+  - "continuous-deployment"
+  - "continuous-integration"
+  - "open-source"
+  - "documentation"
+  - "security"
+  - "compliance"
+  - "guardrails"
+  - "reliability"
+  - "scalability"
+  - "postgresql"
+  - "redis"
+  - "cache"
+  - "amazon-aws"
+  - "databricks"
+company: "Novartis"
+summary: "Novartis partnered with AWS Professional Services and Accenture to modernize their drug development infrastructure and integrate AI across clinical trials with the ambitious goal of reducing trial development cycles by at least six months. The initiative involved building a next-generation GXP-compliant data platform on AWS that consolidates fragmented data from multiple domains, implements data mesh architecture with self-service capabilities, and enables AI use cases including protocol generation and an intelligent decision system (digital twin). Early results from the patient safety domain showed 72% query speed improvements, 60% storage cost reduction, and 160+ hours of manual work eliminated. The protocol generation use case achieved 83-87% acceleration in producing compliant protocols, demonstrating significant progress toward their goal of bringing life-saving medicines to patients faster."
+link: "https://www.youtube.com/watch?v=1-M89FpB7yI"
+year: 2025
+seo:
+  title: "Novartis: Accelerating Drug Development with AI-Powered Clinical Trial Transformation - ZenML LLMOps Database"
+  description: "Novartis partnered with AWS Professional Services and Accenture to modernize their drug development infrastructure and integrate AI across clinical trials with the ambitious goal of reducing trial development cycles by at least six months. The initiative involved building a next-generation GXP-compliant data platform on AWS that consolidates fragmented data from multiple domains, implements data mesh architecture with self-service capabilities, and enables AI use cases including protocol generation and an intelligent decision system (digital twin). Early results from the patient safety domain showed 72% query speed improvements, 60% storage cost reduction, and 160+ hours of manual work eliminated. The protocol generation use case achieved 83-87% acceleration in producing compliant protocols, demonstrating significant progress toward their goal of bringing life-saving medicines to patients faster."
+  canonical: "https://www.zenml.io/llmops-database/accelerating-drug-development-with-ai-powered-clinical-trial-transformation"
+  ogTitle: "Novartis: Accelerating Drug Development with AI-Powered Clinical Trial Transformation - ZenML LLMOps Database"
+  ogDescription: "Novartis partnered with AWS Professional Services and Accenture to modernize their drug development infrastructure and integrate AI across clinical trials with the ambitious goal of reducing trial development cycles by at least six months. The initiative involved building a next-generation GXP-compliant data platform on AWS that consolidates fragmented data from multiple domains, implements data mesh architecture with self-service capabilities, and enables AI use cases including protocol generation and an intelligent decision system (digital twin). Early results from the patient safety domain showed 72% query speed improvements, 60% storage cost reduction, and 160+ hours of manual work eliminated. The protocol generation use case achieved 83-87% acceleration in producing compliant protocols, demonstrating significant progress toward their goal of bringing life-saving medicines to patients faster."
+---
+
+## Overview
+
+Novartis, a global pharmaceutical company, embarked on an extensive data and AI modernization journey to fundamentally transform drug development and clinical trials. Led by Anna Klebus, who heads data, digital and IT for drug development at Novartis, the initiative represents a comprehensive effort to reduce clinical trial development cycles by at least six months—a timeframe that can be life-changing for patients awaiting treatment. The company partnered with AWS Professional Services and Accenture to build foundational infrastructure capable of supporting AI use cases across the entire research and development continuum.
+
+The presentation, delivered jointly by Novartis and AWS representatives, reveals both the strategic vision and technical implementation details of building production-ready AI systems in a highly regulated pharmaceutical environment. The case study is particularly noteworthy for addressing the challenges of deploying LLMs and AI in GXP-compliant (Good Clinical Practice) environments where data integrity, security, and traceability requirements are extremely stringent.
+
+## Business Context and Strategic Goals
+
+Novartis framed their AI strategy around the concept of "augmentation" rather than replacement—treating machine learning and artificial intelligence as enhancements to the natural human intelligence of their workforce. Their overarching mission is to "develop better medicine faster" so treatments can reach patients sooner. To achieve this, they recognized that AI needed to become foundational across all therapeutic areas and integrated throughout their organization.
+
+The company analyzed each step of the R&D continuum to identify problem areas that could be addressed by AI either today or in the near future. They established a strong conviction that given the current pace of AI advancement, unlocking transformative capabilities is a question of when, not if. The six-month reduction target for clinical trial development represents a significant acceleration in an industry where developing new medicines typically takes 15 years.
+
+## Architectural Principles and Approach
+
+Novartis adopted three key principles to guide their AI implementation, which proved critical for navigating the rapid pace of technological change in the AI landscape:
+
+**Modularity** was the first principle. The team designed their system architecture to be plug-and-play, allowing individual use cases to be valuable independently while being collectively transformative. Using a house-building analogy, they architected the platform so that if better components became available on the market (like superior windows in the house analogy), they could swap them in without rebuilding the entire system. This modularity extended to both data pipelines and AI capabilities.
+
+**Balanced Portfolio** was the second principle. Rather than pursuing only ambitious moonshot projects or only low-hanging fruit, Novartis maintained a carefully curated portfolio balancing both. Document generation use cases, while not transformative on their own, built organizational confidence in AI and delivered fast value. These were counterbalanced with more ambitious initiatives like their intelligent decision system (digital twin).
+
+**Ruthless Prioritization** was the third principle. The team recognized they couldn't execute everything simultaneously and needed to make tough decisions about what to cut. They focused resources on initiatives that would bring significant value, ensuring those selected use cases were fully resourced and funded.
+
+## Key AI Use Cases
+
+### Protocol Generation
+
+One of the more mature use cases mentioned is protocol generation for clinical trials. The system demonstrates impressive results, with 83-87% acceleration in generating protocols that meet compliance standards—not just completed protocols, but ones that are actually acceptable by regulatory requirements. Currently, these systems run on demo data or legacy on-premises systems, but the vision is to connect them to the clean, high-quality data flowing through the new platform.
+
+### Intelligent Decision System (Digital Twin)
+
+The most ambitious "moonshot" initiative is the Intelligent Decision System (IDS), envisioned as a computational digital twin for clinical trials. This system would enable software-based simulation of entire end-to-end clinical trial operational plans, pulling inputs and outputs from relevant areas to support what-if analysis, scenario planning, and optimization. Given that clinical trials can span seven to nine years with countless data points and potential interventions, having the ability to conduct database analysis and simulation before implementing changes in real life represents a potentially transformative capability.
+
+### Document Generation
+
+Multiple document generation use cases were implemented across clinical study reports and medical affairs documents. While these represent more incremental improvements, they demonstrate the practical application of generative AI capabilities and help build organizational confidence in AI technologies.
+
+## Technical Infrastructure: Next-Generation Data Platform
+
+The heart of the technical implementation is a comprehensive next-generation data platform built jointly with AWS, designed to serve as the foundation for all AI initiatives. Aproorva Joshi from AWS Professional Services detailed the technical architecture and implementation approach.
+
+### Platform Architecture
+
+The platform follows a data mesh architecture with five core components:
+
+**Ingestion Framework**: The system needed to handle highly heterogeneous data sources including file shares (SharePoint and other file servers), relational databases, life sciences platforms like Veeva Vault, and master data management systems like Reltio. Rather than building one-size-fits-all or completely bespoke solutions for each source, the team grouped similar ingestion patterns together. For example, all file-based sources could use similar ingestion methods. A key differentiator in this project was the use of Architectural Decision Records (ADRs)—documented pros and cons analyses for all technology choices that considered not just technical capabilities but also organizational culture, existing enterprise licenses, cost constraints, and workforce skill sets. This ADR approach enabled the team to make informed, defensible decisions and maintain modularity for future changes.
+
+**Storage and Processing**: The platform implements a three-tier data product architecture. The first tier is a one-to-one copy of ingested data, potentially anonymized. The second tier creates reusable intermediate data products that can serve multiple downstream consumers. The third tier provides consumer-specific processing so end users receive exactly the data they need without additional transformation work. All infrastructure was built on AWS with Databricks on top for data processing. The system maintains separate AWS accounts for each domain (safety, medical imaging, auditing, etc.) across dev, QA, test, and production environments. All code is written as infrastructure-as-code and deployed through CI/CD pipelines. In addition to analytical data products, the platform includes operational/relational data capabilities using Amazon RDS to support transactional use cases.
+
+**Data Management and Governance**: This often-underrated component ensures data is managed efficiently with proper governance. The platform includes an enterprise data catalog (similar to an Amazon.com experience but for data products), data lineage tracking to secure traceability of where data comes from and where it goes, and both technical and business data quality enforcement. Technical quality ensures columns have correct data types, while business quality validates that data meets domain-specific constraints (like ensuring clinical trial age ranges are appropriate). Access management controls who can use which data products through an approval workflow.
+
+**Data Consumption**: Once users find and request data products through the catalog and receive approval from data owners, they can consume the data through various channels including visualization tools (QuickSight, Power BI, Tableau), AI/ML platforms (SageMaker, Bedrock), or direct SQL queries via JDBC clients to RDS for operational use cases.
+
+**Central Observability Platform**: All logs, audit traces, and financial information from across the platform flow into a central observability account where comprehensive dashboards provide visibility into ingestion activities, processing jobs, access requests, data quality results, and costs. While logs could theoretically remain distributed, centralizing them simplifies dashboard creation and cross-domain analysis.
+
+### Compliance Implementation
+
+Implementing GXP compliance was treated not as an afterthought but as an integral lifestyle throughout the development process. Kaustubh from AWS described how compliance was integrated at every stage:
+
+**Design Phase**: The team incorporated compliance considerations from the very beginning, including structured user requirements capture (using tools like Jira), threat modeling at the design phase before implementation, and Architectural Decision Records that document why specific approaches were chosen—critical for proving compliance.
+
+**Implementation Phase**: Security and audit controls were identified and implemented in every single component. Infrastructure Qualification (IQ) and Performance Qualification (PQ) tests were conducted simultaneously with platform implementation rather than as a separate phase.
+
+**Documentation Phase**: Comprehensive documentation was produced including architectural handbooks, operational handbooks, validation plans, and test result documentation proving that implementations matched their intended design. Importantly, when tests didn't match intent, the architecture was corrected rather than changing the tests.
+
+The team is exploring using Amazon Bedrock with Lambda to auto-generate some compliance documentation and test cases, potentially helping identify edge cases that humans might miss while maintaining the high quality standards their skilled team already achieves.
+
+## Early Results and Validation
+
+The patient safety domain volunteered as an early adopter—an ideal choice given its extreme sensitivity (handling patient health data and adverse effects) and stringent compliance requirements. Within months, the team built 16 data pipelines processing approximately 17 terabytes of data. Results from this single domain alone demonstrated the platform's value:
+
+- 72% reduction in query speeds
+- 60% reduction in storage costs  
+- 160+ hours of manual work eliminated through automation
+
+These metrics represent just the first step with one domain, validating the technical approach before scaling to additional domains and use cases.
+
+## Technology Stack and Tools
+
+The implementation leveraged a comprehensive AWS ecosystem:
+
+- **Core Infrastructure**: AWS accounts with environment separation (dev, QA, test, prod)
+- **Data Processing**: Databricks on AWS for analytical workloads
+- **Data Storage**: Amazon S3 for data lakes, Amazon RDS for operational/relational data
+- **AI/ML**: Amazon SageMaker for machine learning, Amazon Bedrock for generative AI capabilities
+- **Governance**: AWS Glue for data cataloging and quality, AWS Data Zone for data mesh capabilities
+- **Visualization**: Amazon QuickSight among other BI tools
+- **Observability**: Centralized logging and monitoring infrastructure
+- **Security**: AWS Key Management Service, Certificate Manager, VPC for network isolation, AWS Config for compliance visibility
+- **MLOps**: Infrastructure-as-code deployment, CI/CD pipelines for automated deployment
+
+The choice to use open standards and interoperable tools was deliberate, avoiding vendor lock-in and enabling the modularity principle that was core to their architecture.
+
+## Scaling Plans and Future Roadmap
+
+The platform evolution follows a phased approach:
+
+**Short-term (current focus)**: Mature the platform to 51 capabilities (from the current 38), onboard four additional domains beyond safety, and test interoperability across more focused areas.
+
+**Intermediate milestone**: Connect all generative AI and operations AI use cases to the platform so they consume clean, efficient, fast data rather than demo data or legacy system data. This includes the protocol generation system that's already showing 83-87% acceleration.
+
+**Long-term goal**: Enable the Intelligent Decision System (digital twin) that represents the ultimate vision of comprehensive clinical trial simulation and optimization.
+
+## Organizational and Cultural Transformation
+
+The presenters emphasized repeatedly that technology alone isn't sufficient—70% of success lies in culture and organization, with only 30% in technology, tools, and processes. Key organizational elements included:
+
+**Value Framework and ROI**: Novartis created a robust value framework establishing clear ROI for each use case, which helped with prioritization and created accountability among leaders claiming specific value delivery.
+
+**Ways of Working**: The team recognized that adding an AI agent to existing processes requires rethinking those processes entirely, providing an opportunity to eliminate legacy inefficiencies.
+
+**Workforce Upskilling**: Significant effort went into training to build confidence with AI tools, generating excitement about the journey and leading to natural adoption of new capabilities.
+
+**Stakeholder Education**: Education at all organizational levels—from C-level executives to technical teams to business teams and ground-level workers—proved critical. When stakeholders understood how their work could help patients get drugs faster, adoption accelerated dramatically.
+
+**Data-Driven Culture**: The demonstrated outcomes (query speed increases, cost optimizations, time savings) weren't just technical wins but proof points that trusted data, fast access, democratization, and self-service experiences drive transformational culture. As users experienced the benefits, they provided more input for platform improvements.
+
+**Partnership Strategy**: The choice of implementation partners (AWS Professional Services and Accenture) was treated as strategic, recognizing that the right partners bring expertise, accelerators, and strategic collaboration rather than just execution capability.
+
+## Lessons Learned and Critical Success Factors
+
+The team identified several critical success factors applicable to similar initiatives:
+
+**Vision**: Having a clear business vision and outcomes is essential—not technology for technology's sake. The clarity around the six-month trial acceleration goal aligned all stakeholders.
+
+**Sponsorship**: Multi-level sponsorship from C-level executives through VPs to technical teams is critical for enablement.
+
+**Well-Informed Technical Stakeholders**: Technology teams must understand business outcomes to effectively transform from current to future state.
+
+**Change Management**: Adapting to new ways of working requires decisions about team structure, reporting, and prioritization that drive data culture and governance evolution.
+
+**Reduced Complexity**: Eliminating data fragmentation, duplicate pipelines, and unnecessary provisioning delivered the cost and performance improvements observed.
+
+**Open Standards**: In GXP-compliant environments requiring interoperability across tools and integration of diverse sources, open standards prevent lock-in and enable flexibility.
+
+**User Experience Focus**: Self-service capabilities with simple, intuitive workflows (analogous to Amazon.com shopping experiences) dramatically accelerate adoption.
+
+## Unlocking Trapped Business Value
+
+An interesting concept presented was "trapped business value"—the gap between realized and potential business value. While having the right data foundation is table stakes, the key to capturing trapped value is combining that foundation with laser-focused, industry-specific use cases like trial design and predictive safety for Novartis.
+
+The AWS team emphasized that organizations don't need to spend a year building a data platform before deriving value. A hybrid approach lets organizations start with data wherever it currently sits (on-premises, in applications, in S3) and gradually evolve. Generative AI can be viewed as a plugin to existing applications, allowing gradual ramp-up and quicker initial wins that demonstrate ROI. Over time, strategic decisions about which capabilities to migrate or enhance enable the platform to mature while continuously delivering business value.
+
+## Responsible AI and Security
+
+Security was treated as "job zero" throughout the implementation, with five key pillars:
+
+- **Data Quality and Veracity**: Using AWS Glue data quality and Data Zone capabilities to ensure trustworthy foundations
+- **Automated Safeguards**: Implementing Amazon Bedrock Guardrails to prevent harmful content, reduce hallucinations, and combat disinformation through watermarking
+- **ML and AI Governance**: Leveraging SageMaker governance capabilities, model monitoring, and AI service cards for end-to-end observability
+- **Infrastructure Security**: Encryption through AWS KMS and Certificate Manager, network isolation via VPCs and PrivateLink, observability through centralized logging
+- **Governance and Compliance**: Using AWS Config and other tools to maintain visibility across environments and meet standards like HIPAA, ISO, SOC, and GXP
+
+The presentation emphasized that security shouldn't be treated as separate but ingrained at every layer—ingestion, transformation, analytics, governance, and consumption—spanning infrastructure, data, and AI model layers.
+
+## Broader Implications for LLMOps
+
+This case study illustrates several important LLMOps principles for production AI systems in regulated industries:
+
+The modular, evolutionary architecture enables continuous improvement as AI technologies advance rapidly, avoiding the trap of rigid systems that become obsolete. The data mesh approach with self-service consumption and clear ownership distributes responsibility while maintaining governance—critical for scaling AI across large organizations.
+
+The emphasis on compliance-by-design rather than compliance-as-afterthought shows how to successfully deploy AI in highly regulated environments. The comprehensive observability provides the accountability and transparency needed for production systems handling sensitive data and critical business processes.
+
+The balanced portfolio approach—mixing quick wins with moonshot projects—maintains momentum and organizational confidence while pursuing transformative outcomes. The focus on measuring and demonstrating ROI creates the business case for continued investment and expansion.
+
+Perhaps most importantly, the case study demonstrates that successful LLMOps requires organizational transformation alongside technical implementation. The attention to change management, stakeholder education, workforce upskilling, and cultural evolution recognizes that technology adoption is fundamentally a human challenge as much as a technical one.
+
+While the presentation includes aspirational claims about capabilities and timelines that should be viewed with appropriate skepticism, the concrete results from the safety domain and protocol generation use case provide tangible validation of the approach. The six-month trial reduction goal remains to be fully proven, but the foundational work and early wins suggest Novartis and AWS are making substantive progress toward that ambitious target.

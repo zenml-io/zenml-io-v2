@@ -1,0 +1,158 @@
+---
+title: "Automating AWS Well-Architected Reviews at Scale with GenAI"
+slug: "automating-aws-well-architected-reviews-at-scale-with-genai"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "6915ce27949a5958dc019158"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:27:30.715Z"
+  createdOn: "2025-11-13T12:25:11.540Z"
+llmopsTags:
+  - "document-processing"
+  - "code-interpretation"
+  - "data-analysis"
+  - "prompt-engineering"
+  - "multi-agent-systems"
+  - "cost-optimization"
+  - "cicd"
+  - "devops"
+  - "orchestration"
+  - "continuous-deployment"
+  - "continuous-integration"
+  - "monitoring"
+  - "scaling"
+  - "microservices"
+  - "databases"
+  - "security"
+  - "compliance"
+  - "documentation"
+  - "guardrails"
+  - "reliability"
+  - "scalability"
+  - "amazon-aws"
+company: "CommBank"
+summary: "Commonwealth Bank of Australia (CommBank) faced challenges conducting AWS Well-Architected Reviews across their workloads at scale due to the time-intensive nature of traditional reviews, which typically required 3-4 hours and 10-15 subject matter experts. To address this, CommBank partnered with AWS to develop a GenAI-powered solution called the \"Well-Architected Infrastructure Analyzer\" that automates the review process. The solution leverages AWS Bedrock to analyze CloudFormation templates, Terraform files, and architecture diagrams alongside organizational documentation to automatically map resources against Well-Architected best practices and generate comprehensive reports with recommendations. This automation enables CommBank to conduct reviews across all workloads rather than just the most critical ones, significantly reducing the time and expertise required while maintaining quality and enabling continuous architecture improvement throughout the workload lifecycle."
+link: "https://www.youtube.com/watch?v=s_CPU4uEqFo"
+year: 2025
+seo:
+  title: "CommBank: Automating AWS Well-Architected Reviews at Scale with GenAI - ZenML LLMOps Database"
+  description: "Commonwealth Bank of Australia (CommBank) faced challenges conducting AWS Well-Architected Reviews across their workloads at scale due to the time-intensive nature of traditional reviews, which typically required 3-4 hours and 10-15 subject matter experts. To address this, CommBank partnered with AWS to develop a GenAI-powered solution called the \"Well-Architected Infrastructure Analyzer\" that automates the review process. The solution leverages AWS Bedrock to analyze CloudFormation templates, Terraform files, and architecture diagrams alongside organizational documentation to automatically map resources against Well-Architected best practices and generate comprehensive reports with recommendations. This automation enables CommBank to conduct reviews across all workloads rather than just the most critical ones, significantly reducing the time and expertise required while maintaining quality and enabling continuous architecture improvement throughout the workload lifecycle."
+  canonical: "https://www.zenml.io/llmops-database/automating-aws-well-architected-reviews-at-scale-with-genai"
+  ogTitle: "CommBank: Automating AWS Well-Architected Reviews at Scale with GenAI - ZenML LLMOps Database"
+  ogDescription: "Commonwealth Bank of Australia (CommBank) faced challenges conducting AWS Well-Architected Reviews across their workloads at scale due to the time-intensive nature of traditional reviews, which typically required 3-4 hours and 10-15 subject matter experts. To address this, CommBank partnered with AWS to develop a GenAI-powered solution called the \"Well-Architected Infrastructure Analyzer\" that automates the review process. The solution leverages AWS Bedrock to analyze CloudFormation templates, Terraform files, and architecture diagrams alongside organizational documentation to automatically map resources against Well-Architected best practices and generate comprehensive reports with recommendations. This automation enables CommBank to conduct reviews across all workloads rather than just the most critical ones, significantly reducing the time and expertise required while maintaining quality and enabling continuous architecture improvement throughout the workload lifecycle."
+---
+
+## Overview
+
+Commonwealth Bank of Australia (CommBank or CBA) embarked on a journey to integrate AWS Well-Architected Framework reviews throughout their cloud workload lifecycle, ultimately leading to the development of a GenAI-powered automation solution in partnership with AWS. The case study was presented by Rovin (Principal Technologist at AWS) and Yuri Belinski (General Manager of Cloud Services at CommBank) at what appears to be an AWS conference session.
+
+CommBank's technology strategy consists of four pillars: organization primed for delivery (including DevSecOps), modernizing the technology stack (cloud migration and modernization), becoming a leading bank in AI and GenAI areas, and security, resilience, and reliability. This GenAI-driven Well-Architected automation aligns with multiple pillars of their strategy, particularly the modernization and AI leadership objectives.
+
+## The Problem Context
+
+Traditional AWS Well-Architected Reviews presented significant operational challenges at scale. Each review typically required 3-4 hours and involved 10-15 subject matter experts from both AWS and the customer organization. The logistics of coordinating such meetings with busy stakeholders became a significant bottleneck. More importantly, this resource-intensive process meant that organizations could only realistically conduct thorough Well-Architected Reviews on their most critical workloads, leaving many other applications without systematic architectural assessment.
+
+CommBank had established a sophisticated cloud platform approach that balanced control and flexibility for their application development teams. This platform implemented common components including controls, guardrails, and accelerators. They had already integrated several Well-Architected features into their platform, including consolidated reporting for identifying common themes across multiple reviews, review templates for prefilling answers to platform-level questions, and profiles for associating review focus with different migration classes (deep modernization versus light-touch migration).
+
+Despite these enhancements, the fundamental challenge remained: how to scale Well-Architected Reviews across all workloads without exponentially increasing the time burden on scarce subject matter expertise.
+
+## The GenAI Solution Architecture
+
+AWS and CommBank collaborated to develop the "Well-Architected Infrastructure Analyzer," a GenAI-powered application that automates much of the Well-Architected Review process. The solution represents a practical implementation of LLMs in a production-critical operational context within a major financial institution.
+
+The workflow operates as follows. Users upload infrastructure-as-code artifacts such as CloudFormation templates or Terraform files, or alternatively architectural diagrams representing their workload. These artifacts contain the technical resources, services, and configurations that comprise the workload infrastructure. Recognizing that infrastructure code alone doesn't capture operational procedures and organizational practices, the application also accepts additional documentation uploads covering aspects like cloud financial management practices, operational procedures, security checklists from cyber teams, and other organizational standards that wouldn't be reflected in infrastructure code.
+
+Once the inputs are provided, users can select the scope of their review: full Well-Architected Framework coverage across all six pillars (security, reliability, cost optimization, operational excellence, performance efficiency, and sustainability), specific pillar subsets, or specialized lenses such as the Financial Services Industry lens. The application then leverages AWS Bedrock, AWS's managed service for foundation models, to perform the analysis.
+
+The GenAI component maps all uploaded resources and documentation against AWS Well-Architected best practices. The LLM analyzes the infrastructure configuration, identifies which best practices are being followed and which are not, and generates a comprehensive report. The report details adherence status for each relevant best practice and provides specific recommendations for addressing gaps, including links to public AWS documentation for further guidance.
+
+The output can be downloaded in multiple formats including CSV for detailed findings and PDF reports similar to those generated by the native AWS Well-Architected Tool in the console. Users can choose to complete the Well-Architected assessment immediately or defer it for later completion. The interface shows which pillars have been reviewed and allows for incremental assessment completion.
+
+## Technical Implementation Details
+
+While the presentation doesn't provide deep technical implementation specifics, several important architectural decisions can be inferred. The solution uses AWS Bedrock as the foundation model service, which suggests the team evaluated various available models through Bedrock's model marketplace. The choice of Bedrock indicates a preference for managed services that provide enterprise-grade security, compliance, and operational simplicity over self-hosting open-source models.
+
+The application must perform sophisticated document parsing and understanding across multiple formats: infrastructure-as-code files (CloudFormation JSON/YAML, Terraform HCL), architecture diagrams (likely in various image or diagramming formats), and organizational documentation (presumably PDFs, Word documents, or other standard formats). This multi-modal input handling represents a significant engineering challenge requiring robust preprocessing pipelines.
+
+The mapping function that aligns infrastructure resources with Well-Architected best practices demonstrates practical prompt engineering and possibly retrieval-augmented generation (RAG) patterns. The AWS Well-Architected Framework consists of six pillars with numerous design principles, best practices, and evaluation questions. For the security pillar alone, the demo identified 60 security-related items requiring assessment. The LLM must understand both the technical infrastructure configuration and the nuanced context of each best practice to make accurate assessments.
+
+Context management presents a key technical challenge. Well-Architected Reviews are inherently workload-specific and require understanding not just what resources exist but how they're configured, how they interact, and how they align with organizational policies. The ability to incorporate custom documentation about operational procedures demonstrates that the system can augment the technical infrastructure analysis with organizational context, likely through RAG techniques that combine the infrastructure analysis with relevant excerpts from uploaded documentation.
+
+## Integration with Existing Platform and Processes
+
+CommBank's integration strategy reflects mature operational thinking about how GenAI capabilities fit within existing cloud governance and platform engineering practices. The bank had already implemented several Well-Architected Tool features that complement the GenAI automation:
+
+Consolidated reporting allows CommBank to identify common themes across multiple workload reviews. This feature becomes even more valuable when combined with GenAI automation, as the ability to conduct more reviews generates richer data for identifying platform-level improvements. When many workloads exhibit the same architectural risks, this signals an opportunity to address those risks through common platform controls rather than workload-by-workload remediation.
+
+Review templates enable prefilling answers to questions that are answered by the platform rather than individual workloads. For example, CommBank's DevSecOps Hosting Platform (SDHP) provides over 200 integrated services implementing capabilities like certificate management, observability integration, blue-green deployment, and automated patching. Questions about these capabilities can be pre-answered for any workload using the platform. This integration reduces redundancy and allows teams to focus review attention on workload-specific architectural decisions.
+
+Profiles enable associating review focus with different migration classes. Not all cloud migrations are equal: some applications undergo deep modernization and refactoring, while others receive light-touch lift-and-shift treatment. Different migration classes warrant different review emphasis. The ability to customize review scope based on migration class ensures that review effort is appropriately calibrated to application criticality and transformation ambition.
+
+## Workload Lifecycle Integration
+
+A critical insight emphasized throughout the presentation is that Well-Architected Reviews should occur throughout the entire workload lifecycle, not as one-time exercises. CommBank demonstrated this principle through two specific examples:
+
+The Murex trading platform case illustrated pre-migration and post-migration review focus. Murex is a business-critical trading system with two distinct operational phases: daytime trading characterized by high database IOPS, and end-of-day processing requiring massive parallel computation for complex calculations. Pre-migration reviews focused on deployment automation to address development environment contention and enable consistent, low-risk release processes. Post-migration reviews shifted focus to cost optimization through right-sizing: scaling down non-production environments appropriately, optimizing IOPS allocation per environment, and educating teams on environment sharing practices.
+
+The SDHP platform example demonstrated ongoing operational focus. As an opinionated hosting platform providing cloud blueprints for common architectural archetypes, SDHP directly implements Well-Architected best practices at the platform level. Features like automated patching management, enforced autoscaling for resilience, and certificate lifecycle management map directly to Well-Architected best practices. Review template functionality becomes particularly valuable here, as workloads built on SDHP automatically inherit platform-level controls that satisfy numerous Well-Architected questions.
+
+The GenAI automation enables more frequent reviews throughout the workload lifecycle. The traditional 3-4 hour, 10-15 person review format practically limits reviews to major milestones. With GenAI automation reducing time requirements dramatically, teams can conduct reviews during design (analyzing architecture diagrams and initial IaC), during build (analyzing evolving CloudFormation templates), during initial deployment, and periodically during operation as the workload evolves. This continuous assessment approach aligns with modern DevOps practices and enables earlier detection of architectural drift or emerging issues.
+
+## Production Considerations and Operational Maturity
+
+The case study reveals several indicators of operational maturity in deploying GenAI capabilities in a production context within a regulated financial institution:
+
+The solution accepts infrastructure-as-code as primary input, which aligns with modern cloud operating models emphasizing automation and configuration-as-code. This approach ensures the review analyzes the actual deployed or deployable infrastructure rather than potentially outdated documentation.
+
+The ability to incorporate organizational documentation addresses a common limitation of purely technical analysis. Infrastructure configuration alone doesn't reveal operational practices, security procedures, or financial management approaches. The solution's design acknowledges that comprehensive architectural assessment requires both technical and organizational context.
+
+Output format flexibility (CSV for detailed analysis, PDF for formal reporting, integration with Well-Architected Tool for ongoing assessment) demonstrates consideration of diverse stakeholder needs. Engineering teams may prefer CSV for programmatic analysis, while executive stakeholders may prefer formatted PDF reports.
+
+The decision to open-source the solution on AWS GitHub indicates confidence in the approach and recognition that the challenge of scaling Well-Architected Reviews extends beyond CommBank. Making the solution publicly available accelerates adoption and potentially contributes to community-driven improvements.
+
+## Critical Assessment and Limitations
+
+While the case study presents an impressive application of GenAI to operational challenges, several important considerations warrant balanced assessment:
+
+The accuracy and reliability of LLM-generated assessments are not discussed in detail. Well-Architected Reviews require nuanced architectural judgment that considers organizational context, risk tolerance, compliance requirements, and business objectives. While LLMs can identify obvious misalignments between infrastructure configuration and documented best practices, the more subtle aspects of architectural assessment may still require human expertise. The presentation doesn't address false positive rates, false negative rates, or validation processes for LLM-generated recommendations.
+
+The solution appears to automate assessment and recommendation generation but doesn't address remediation implementation or architectural decision support. Identifying that a workload lacks multi-AZ deployment is valuable, but determining whether multi-AZ deployment is appropriate given business requirements, cost constraints, and technical feasibility still requires human judgment. The role of human experts shifts from conducting reviews to validating automated assessments and making architectural decisions based on recommendations.
+
+The handling of proprietary or sensitive architectural information isn't discussed. Financial institutions operate under strict regulatory requirements regarding data handling and third-party service usage. While AWS Bedrock provides enterprise security and data isolation, organizations must still evaluate whether sending infrastructure configurations and operational documentation to managed LLM services aligns with security and compliance policies. The presentation doesn't address data classification, sanitization processes, or governance frameworks for LLM usage.
+
+The solution's effectiveness likely varies depending on infrastructure complexity and architectural maturity. Well-structured CloudFormation templates following AWS best practices and incorporating comprehensive metadata probably yield better results than organically evolved infrastructure or complex multi-account architectures. The presentation doesn't discuss performance across different workload types or complexity levels.
+
+Integration with broader platform governance remains somewhat unclear. While the solution generates reports and recommendations, the processes for tracking remediation, managing architectural debt, and incorporating findings into platform evolution aren't detailed. Automated assessment is most valuable when integrated with remediation workflows, ticketing systems, and platform roadmap planning.
+
+## Business Impact and Scaling Considerations
+
+The business impact of this GenAI automation extends beyond time savings for subject matter experts. By enabling Well-Architected Reviews across all workloads rather than just the most critical ones, CommBank can:
+
+Identify platform-level improvements more comprehensively by analyzing architectural patterns across their entire workload portfolio. Common risks appearing across many workloads signal opportunities for platform enhancements that address root causes rather than treating symptoms workload-by-workload.
+
+Support cloud migration at scale by conducting pre-migration and post-migration assessments without linear scaling of subject matter expert time. This enables higher migration velocity while maintaining architectural quality.
+
+Enable development teams to conduct self-service architectural assessments early in the development lifecycle, shifting architectural review left in the development process. Early identification of architectural issues reduces rework and enables more informed design decisions.
+
+Build organizational knowledge through documented assessments and recommendations. Even when human experts validate automated assessments, the standardized documentation and recommendation format creates a corpus of architectural knowledge valuable for training and capability building.
+
+The scaling characteristics of GenAI automation differ fundamentally from traditional expert-driven reviews. Traditional reviews scale linearly with workload count: doubling workloads requires doubling expert time. GenAI automation demonstrates sub-linear scaling: the marginal cost of each additional review decreases as the solution matures. However, validation and remediation still require human involvement, so total scaling isn't entirely automated.
+
+## Broader Implications for LLMOps
+
+This case study illustrates several important principles for successful LLMOps implementations:
+
+**Domain-specific applications deliver clearer value than general-purpose assistants.** The Well-Architected Infrastructure Analyzer addresses a specific, well-defined operational challenge with measurable impact. The bounded problem domain (mapping infrastructure against documented best practices) plays to LLM strengths while limiting the surface area for problematic outputs.
+
+**Augmentation rather than replacement proves more practical than full automation.** The solution augments human expertise by automating time-consuming analysis work while leaving judgment and decision-making to human experts. This approach acknowledges LLM limitations while capturing significant efficiency gains.
+
+**Multi-modal input handling extends solution applicability.** Supporting CloudFormation templates, Terraform files, architecture diagrams, and organizational documentation makes the solution valuable across different development stages and organizational contexts. Organizations with varying levels of infrastructure-as-code maturity can still benefit.
+
+**Integration with existing tools and workflows determines adoption.** The solution integrates with the native AWS Well-Architected Tool, outputs familiar report formats, and works with existing infrastructure-as-code artifacts rather than requiring new inputs or workflows. This reduces adoption friction.
+
+**Open-sourcing specialized solutions accelerates ecosystem development.** By publishing the solution to AWS GitHub, AWS and CommBank enable other organizations to benefit, contribute improvements, and adapt the approach to their specific contexts. This accelerates learning and maturation of GenAI applications in cloud operations.
+
+The case study represents a mature, production-grade application of LLMs to solve real operational challenges in a regulated industry. While questions remain about accuracy validation, remediation integration, and governance frameworks, the solution demonstrates practical value and thoughtful design appropriate for enterprise deployment. The focus on augmenting rather than replacing expertise, integrating with existing workflows, and addressing genuine scaling bottlenecks positions this as a valuable reference implementation for LLMOps practitioners in cloud platform engineering contexts.

@@ -1,0 +1,118 @@
+---
+title: "Building an Agentic AI System for Healthcare Support Using LangGraph"
+slug: "building-an-agentic-ai-system-for-healthcare-support-using-langgraph"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "6777fcce0017fb946d456634"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:53:09.945Z"
+  createdOn: "2025-01-03T15:05:50.355Z"
+llmopsTags:
+  - "healthcare"
+  - "customer-support"
+  - "high-stakes-application"
+  - "rag"
+  - "prompt-engineering"
+  - "multi-agent-systems"
+  - "agent-based"
+  - "human-in-the-loop"
+  - "error-handling"
+  - "security"
+  - "fastapi"
+  - "documentation"
+  - "api-gateway"
+  - "openai"
+company: "Doctolib"
+summary: "Doctolib developed an agentic AI system called Alfred to handle customer support requests for their healthcare platform. The system uses multiple specialized AI agents powered by LLMs, working together in a directed graph structure using LangGraph. The initial implementation focused on managing calendar access rights, combining RAG for knowledge base integration with careful security measures and human-in-the-loop confirmation for sensitive actions. The system was designed to maintain high customer satisfaction while managing support costs efficiently."
+link: "https://medium.com/doctolib/building-an-agentic-ai-system-for-healthcare-support-a-journey-into-practical-ai-implementation-0afd28d716e6"
+year: 2024
+seo:
+  title: "Doctolib: Building an Agentic AI System for Healthcare Support Using LangGraph - ZenML LLMOps Database"
+  description: "Doctolib developed an agentic AI system called Alfred to handle customer support requests for their healthcare platform. The system uses multiple specialized AI agents powered by LLMs, working together in a directed graph structure using LangGraph. The initial implementation focused on managing calendar access rights, combining RAG for knowledge base integration with careful security measures and human-in-the-loop confirmation for sensitive actions. The system was designed to maintain high customer satisfaction while managing support costs efficiently."
+  canonical: "https://www.zenml.io/llmops-database/building-an-agentic-ai-system-for-healthcare-support-using-langgraph"
+  ogTitle: "Doctolib: Building an Agentic AI System for Healthcare Support Using LangGraph - ZenML LLMOps Database"
+  ogDescription: "Doctolib developed an agentic AI system called Alfred to handle customer support requests for their healthcare platform. The system uses multiple specialized AI agents powered by LLMs, working together in a directed graph structure using LangGraph. The initial implementation focused on managing calendar access rights, combining RAG for knowledge base integration with careful security measures and human-in-the-loop confirmation for sensitive actions. The system was designed to maintain high customer satisfaction while managing support costs efficiently."
+---
+
+## Overview
+
+Doctolib, a European healthcare technology platform connecting patients with health professionals, embarked on developing an agentic AI system called "Alfred" to transform their customer support operations. The core business problem was straightforward: as the platform scaled, support request volume grew proportionally, and the traditional approach of linearly scaling human support teams was neither sustainable nor cost-effective. The company sought to automate routine support queries while preserving human intervention for complex cases requiring empathy and nuanced expertise.
+
+The case study, published in early 2025 with development occurring through Q4 2024, provides a detailed technical walkthrough of how Doctolib implemented an agentic AI architecture for production use. It's important to note that this system appears to still be in its early stages, with calendar access management serving as the initial proof of concept rather than a fully deployed, battle-tested solution.
+
+## Agentic Architecture Design
+
+The fundamental design decision was to build an agentic system rather than a traditional chatbot or simple RAG-based assistant. The agentic approach involves multiple specialized AI agents, each powered by an LLM but constrained through specialized prompts defining their role, context, and expertise, as well as a specific set of tools they can access. This follows the principle of least privilege—each agent only has access to the APIs and data sources necessary for its specific function.
+
+The agents are orchestrated using LangGraph, a framework from the LangChain ecosystem designed for building complex agent workflows. The interaction between agents follows a directed graph structure where each node represents either an LLM-based agent or a deterministic function, and edges define communication paths. The flow of information depends on the output of previous nodes, allowing for dynamic conversation routing.
+
+One notable architectural decision was the integration of their existing RAG (Retrieval Augmented Generation) engine as a specialized agent within the agentic system. This demonstrates a practical approach to building on existing infrastructure rather than replacing it entirely.
+
+## Human-in-the-Loop Safety Design
+
+A critical LLMOps consideration in this implementation is the handling of AI hallucinations and sensitive operations. Doctolib made an explicit policy decision, reached through discussions with engineers, legal, and leadership: the LLM will never directly execute sensitive actions. The final step of performing any action that modifies data (such as changing agenda access permissions) always remains in the user's hands.
+
+This human-in-the-loop approach addresses a fundamental challenge in production LLM systems—the non-deterministic nature of LLMs means they can and do hallucinate. By requiring explicit user confirmation before any sensitive action is executed, the system maintains safety while still providing efficiency gains through automated information gathering and solution preparation.
+
+However, this design introduces its own complexity: how do you ensure that what is displayed to users accurately represents what will happen when they confirm? The article describes a sophisticated verification mechanism where a deterministic node fact-checks the LLM's crafted request by fetching fresh data for all referenced resources and returning both technical and human-readable forms. For example, if the LLM references user_id 42, the system verifies this corresponds to "John Doe" and displays that name, preventing hallucinated IDs from being executed.
+
+## Security and Authentication Architecture
+
+The security architecture demonstrates thoughtful production engineering. The system implements service-to-service authentication using JSON Web Tokens (JWTs), with each token containing audience (target service) and issuer (calling service) claims. Beyond valid signatures, each service maintains an explicit allowlist of permitted callers, implementing defense in depth.
+
+For user context propagation—ensuring Alfred operates with the same permissions as the user being assisted—the system carries two tokens with each request: the service-to-service JWT proving Alfred's identity, and the user's Keycloak token carrying user identity and permissions. This allows target services to both verify Alfred is authorized to make calls and apply the same permission checks as for direct user requests, maintaining consistent security boundaries.
+
+This approach is notable because it avoids the common anti-pattern of giving AI agents elevated admin access. Instead, the AI can only do what the user themselves could do, which significantly reduces the risk surface of the AI system.
+
+## Scaling Considerations
+
+The article provides useful scale metrics for production planning: approximately 1,700 support cases per business day, with an estimated 10 interactions per conversation, resulting in roughly 17,000 messages daily. While the author notes this is manageable from a throughput perspective, several production challenges are identified:
+
+- Maintaining conversation context across multiple interactions (state management)
+- Ensuring consistent response times (latency management)
+- Monitoring and logging for quality assurance (observability)
+
+The architecture diagram shows Alfred connecting to multiple backend services including a Knowledge Base (for RAG), Agenda service, and Organization service, each authenticated through the JWT mechanism described above.
+
+## Evaluation and Monitoring
+
+For evaluation, Doctolib uses Literal.ai, a specialized platform for AI evaluation. Their core metrics include:
+
+- **Level of achievement**: A 1-to-3 scale comparing Alfred's output against established ground truth
+- **Efficiency metrics**: Latency of graph execution and number of nodes visited during execution compared to optimal
+
+This evaluation approach addresses the fundamental LLMOps challenge of measuring AI system quality in a structured, repeatable way. The use of ground truth comparisons suggests they've invested in creating evaluation datasets, though the article doesn't detail the size or composition of these datasets.
+
+## User Experience Design Philosophy
+
+The article emphasizes avoiding the "terrible dummy chatbot experience" of rigid decision trees or free-text fields that go nowhere. Instead, Alfred is designed as a "digital butler" that understands user needs even when imperfectly articulated, knows which clarifying questions to ask, discreetly gathers available information from backend systems, and presents clear, actionable solutions through a dynamic user interface.
+
+The practical example of managing calendar access rights demonstrates this philosophy: rather than requiring a perfectly formulated request like "give Maria Smith read-only access to my home consultations calendar," the system engages in a multi-turn conversation to progressively gather the needed information through dynamically generated UI elements.
+
+## Critical Assessment
+
+While the case study provides valuable technical details, several caveats should be noted:
+
+- The system is described as being in "early chapters" with calendar access management serving as a proof of concept. Production results at scale are not yet available.
+- No quantitative metrics are provided for actual support cost reduction, user satisfaction, or accuracy rates in production.
+- The hallucination mitigation strategy depends on being able to verify all referenced entities against backend systems—this may not work for all types of support queries.
+- The evaluation metrics described (1-3 achievement scale, latency, steps) are relatively basic and may need expansion as the system matures.
+
+The technical architecture appears well-thought-out, particularly the security model and human-in-the-loop design. However, the real test will be whether this approach scales across multiple support scenarios and whether the efficiency gains materialize in practice. The article is transparent about this being early-stage work, which is commendable.
+
+## Technology Stack Summary
+
+The implementation uses several notable technologies and frameworks:
+
+- **LangGraph**: For orchestrating the agentic workflow as a directed graph
+- **LangChain ecosystem**: As the broader framework context
+- **Keycloak**: For user identity and authentication
+- **JWT**: For service-to-service authentication
+- **Literal.ai**: For AI evaluation and monitoring
+- **DALL-E 3**: For generating article illustrations (minor detail but shows GenAI usage beyond core product)
+- **RAG engine**: Previously developed, now integrated as a specialized agent
+
+This case study provides a useful template for organizations considering agentic AI for customer support, particularly in regulated industries like healthcare where security and accuracy requirements are stringent.

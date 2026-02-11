@@ -1,0 +1,126 @@
+---
+title: "Scaling LLM Training and Inference with FP8 Precision"
+slug: "scaling-llm-training-and-inference-with-fp8-precision"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "694ad9b83dfc30a1e78738c8"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2026-01-07T09:40:39.763Z"
+  lastUpdated: "2025-12-23T20:12:19.166Z"
+  createdOn: "2025-12-23T18:04:40.790Z"
+llmopsTags:
+  - "translation"
+  - "fine-tuning"
+  - "model-optimization"
+  - "knowledge-distillation"
+  - "latency-optimization"
+  - "cost-optimization"
+  - "pytorch"
+  - "scaling"
+  - "triton"
+  - "nvidia"
+company: "DeepL"
+summary: "DeepL needed to scale their Language AI capabilities while maintaining low latency for production inference and handling increasing request volumes. The company transitioned from BFloat16 (BF16) to 8-bit floating point (FP8) precision for both training and inference of their large language models, leveraging NVIDIA H100 GPUs' native FP8 support through Transformer Engine for training and TensorRT-LLM for inference. This approach accelerated model training by 50% (achieving 67% Model FLOPS utilization), enabled training of larger models with more parameters, doubled inference throughput at equivalent latency levels, and delivered translation quality improvements of 1.4x for European languages and 1.7x for complex language pairs like English-Japanese, all while maintaining comparable training quality to BF16 precision."
+link: "https://www.deepl.com/en/blog/tech/next-generation-llm-fp8-training"
+year: 2025
+seo:
+  title: "DeepL: Scaling LLM Training and Inference with FP8 Precision - ZenML LLMOps Database"
+  description: "DeepL needed to scale their Language AI capabilities while maintaining low latency for production inference and handling increasing request volumes. The company transitioned from BFloat16 (BF16) to 8-bit floating point (FP8) precision for both training and inference of their large language models, leveraging NVIDIA H100 GPUs' native FP8 support through Transformer Engine for training and TensorRT-LLM for inference. This approach accelerated model training by 50% (achieving 67% Model FLOPS utilization), enabled training of larger models with more parameters, doubled inference throughput at equivalent latency levels, and delivered translation quality improvements of 1.4x for European languages and 1.7x for complex language pairs like English-Japanese, all while maintaining comparable training quality to BF16 precision."
+  canonical: "https://www.zenml.io/llmops-database/scaling-llm-training-and-inference-with-fp8-precision"
+  ogTitle: "DeepL: Scaling LLM Training and Inference with FP8 Precision - ZenML LLMOps Database"
+  ogDescription: "DeepL needed to scale their Language AI capabilities while maintaining low latency for production inference and handling increasing request volumes. The company transitioned from BFloat16 (BF16) to 8-bit floating point (FP8) precision for both training and inference of their large language models, leveraging NVIDIA H100 GPUs' native FP8 support through Transformer Engine for training and TensorRT-LLM for inference. This approach accelerated model training by 50% (achieving 67% Model FLOPS utilization), enabled training of larger models with more parameters, doubled inference throughput at equivalent latency levels, and delivered translation quality improvements of 1.4x for European languages and 1.7x for complex language pairs like English-Japanese, all while maintaining comparable training quality to BF16 precision."
+---
+
+## Overview
+
+DeepL, a company specializing in language translation AI, undertook a comprehensive technical initiative to scale their large language model (LLM) operations by transitioning from 16-bit to 8-bit floating point precision. This case study provides detailed insights into both the training and production inference aspects of running LLMs at scale, making it a valuable resource for understanding practical LLMOps challenges and solutions.
+
+The company deployed an NVIDIA DGX SuperPOD with 544 NVIDIA H100 Tensor Core GPUs, which introduced native support for FP8 (8-bit floating point) data types through a new generation of Tensor Cores. The strategic motivation behind this transition was multifaceted: to build larger models with more parameters, maintain production latency requirements, handle greater request volumes, and ultimately deliver significant quality improvements in their translation services.
+
+## Technical Context: Understanding FP8 vs BF16
+
+The case study provides a thorough explanation of the technical trade-offs between BFloat16 (BF16) and FP8 formats. BF16 uses 16 bits with 1 sign bit, 8 bits for the exponent, and 7 bits for the mantissa. FP8, using only 8 bits total, comes in two variants: E4M3 (4 bits for exponent, 3 for mantissa) and E5M2 (5 bits for exponent, 2 for mantissa). The distribution of bits between exponent and mantissa affects the range and precision of representable numbers—more exponent bits allow a larger range, while more mantissa bits provide greater precision within that range.
+
+The fundamental trade-off is clear: FP8 offers reduced range and precision compared to BF16, but enables faster computation and significantly reduced memory requirements. DeepL's work demonstrates that for LLM training and inference, the reduced precision is sufficient while the performance gains are substantial. The company uses an illustrative example: representing the age of Earth (4.543 billion years) is precise in BF16, achievable as 4.5 in E4M3 format, but only as 5 in E5M2 format. The key insight is determining whether such approximations are acceptable for the computational task at hand.
+
+## Training Pipeline and FP8 Implementation
+
+DeepL's LLM development pipeline includes pre-training, fine-tuning on specific tasks, model distillation (compressing large models into smaller ones), reinforcement learning, and parallelization strategies to utilize their extensive GPU infrastructure. The transition to FP8 began at the pre-training stage.
+
+The implementation leveraged NVIDIA Transformer Engine, a training library that accelerates transformer models with native FP8 support. Transformer Engine provides critical components for mixed-precision training, managing conversions between FP8 and BF16 formats and handling scaling factors automatically. DeepL adopted NVIDIA's recommended default configuration, which strategically uses different FP8 formats for different phases of training: E4M3 (higher precision) for the forward pass when predicting token probability distributions, and E5M2 (higher range, lower precision) for the backward pass when computing gradients for model updates. This design choice reflects a nuanced understanding that different computational phases have different precision requirements.
+
+A critical technical challenge with FP8 is managing the limited range of representable values—the maximum value in E4M3 format is less than 500, and all representable values can be printed in a short table. To work within these constraints, the implementation stores additional scaling factors alongside FP8 weight tensors to prevent overflow and underflow. When performing tensor operations, calculations must account for these scaling factors. For example, multiplying two tensors requires the formula: (A_fp8 * A_scale) × (B_fp8 * B_scale), where the FP8 tensors are 8-bit and the scales are 32-bit scalars. The H100 hardware provides specific support for these scaled operations.
+
+## Training Performance Results
+
+DeepL measured training performance using Model FLOPS Utilization (MFU), which represents the actual floating-point operations per second achieved as a percentage of the theoretical maximum hardware capability. For fair comparison, they used BF16 FLOPS as the denominator even when measuring FP8 performance, despite FP8 technically enabling higher theoretical FLOPS counts. This methodology allows for clear assessment of the incremental gains from the format transition.
+
+The results were significant: MFU increased from 44.6% with BF16 to 67% with FP8, representing a 50% acceleration in model training speed. This is a substantial improvement, though the company notes it required optimization work in collaboration with NVIDIA. Through iterative refinement of their Transformer Engine usage over 15 months on another training setup, they achieved even more impressive results, reaching 80% MFU—a 25% additional increase. These figures demonstrate both the immediate benefits of FP8 and the importance of continued optimization work in production LLM environments.
+
+## Training Quality Validation
+
+A critical question for any precision reduction approach is whether quality suffers. DeepL conducted rigorous validation by training a 1.5 billion parameter model on three trillion tokens in both FP8 and BF16 formats, enabling direct comparison of training losses and downstream quality metrics.
+
+The primary metric was training loss, which measures the model's ability to predict the next token. The comparison revealed a small superiority for BF16 over FP8, with the FP8 training loss curve hovering slightly above the BF16 curve. However, this difference was minor compared to the natural fluctuations in training loss that occur step-to-step in both formats. Both approaches showed the same overall trend of improving (decreasing) training loss over time.
+
+For downstream quality evaluation, DeepL tested English-German translation performance using validation perplexity, which quantifies the uncertainty in next-token prediction. In this practical application scenario, they found no degradation in quality between FP8 and BF16 training. This finding is particularly important from an LLMOps perspective: it demonstrates that the precision reduction doesn't compromise the production quality of the models for their intended use case.
+
+The overall conclusion from the training phase is that FP8 delivers faster training with reduced memory requirements while maintaining comparable quality to BF16. The minimal degradation in raw training loss metrics doesn't translate to measurable differences in downstream task performance. This enables DeepL to build more sophisticated models tackling more complex tasks by maximizing utilization of available processing power.
+
+## Production Inference Optimization
+
+The transition from training to production inference involved different tooling and considerations. For inference deployment, DeepL utilized NVIDIA TensorRT-LLM, NVIDIA's solution for scalable LLM inference with FP8 support. TensorRT-LLM takes trained model weights and builds an optimized inference engine using techniques including kernel fusion, optimized C++/CUDA code, key-value (KV) caching, and continuous in-flight batching.
+
+The inference performance characteristics differ from training. In production LLM inference, there's an inherent trade-off between throughput (tokens processed per time unit) and latency (response time). Maintaining low latency is essential for user experience, but throughput determines how many simultaneous requests the system can handle, directly impacting the scalability and cost-effectiveness of the service.
+
+Batching multiple requests together increases throughput but tends to increase latency for individual requests. The batching strategy must therefore balance these competing objectives within the constraints of the hardware and the requirements of the use case.
+
+## Inference Performance Results
+
+DeepL's results demonstrate that FP8 fundamentally improves this trade-off. At most batch sizes, FP8 inference achieved double the throughput of BF16 at equivalent latency levels. This means that for a fixed latency budget—the maximum response time that provides optimal user experience—FP8 enables processing twice as many requests.
+
+This doubling of effective capacity has profound implications for production LLMOps. It means DeepL can serve more users, support more features and functions, and scale their Language AI capabilities without requiring proportional increases in infrastructure. The company reports that this enabled them to deploy next-generation models with significantly more parameters (delivering 1.4x quality improvements for European languages and 1.7x for complex pairs like English-Japanese) while maintaining the same production latency characteristics as their previous generation models.
+
+## LLMOps Considerations and Balanced Assessment
+
+This case study provides valuable insights into production LLM operations, but several considerations warrant a balanced assessment:
+
+**Hardware Dependency**: The entire approach is predicated on having access to NVIDIA H100 GPUs with their specific Tensor Core capabilities. This represents a significant infrastructure investment and creates vendor lock-in. Organizations without access to this hardware cannot directly replicate these results. The case study essentially documents what's possible at the cutting edge of hardware capability rather than providing a broadly applicable approach.
+
+**NVIDIA Tooling Integration**: The success relies heavily on NVIDIA's proprietary software stack (Transformer Engine for training, TensorRT-LLM for inference). While these tools are provided by NVIDIA, organizations adopting this approach become dependent on NVIDIA's continued support, update cycles, and roadmap decisions. The case study doesn't discuss fallback strategies or alternatives if these tools prove insufficient.
+
+**Optimization Effort**: The 15-month optimization journey to reach 80% MFU suggests that achieving the best results requires sustained engineering effort and potentially close collaboration with hardware vendors. The initial 50% speedup is impressive, but the path to maximum performance isn't automatic—it requires expertise and iterative refinement.
+
+**Model-Specific Results**: The validation was conducted on translation models for specific language pairs. While the technical principles should generalize, the specific quality maintenance observed might vary for other model architectures, training objectives, or domains. Translation tasks may have different precision sensitivity than other applications.
+
+**Quality Metrics**: The quality validation focused on training loss and validation perplexity for translation tasks. These are appropriate metrics for DeepL's use case, but don't necessarily capture all aspects of model quality. Other applications might require different validation approaches, and subtle quality differences might emerge in edge cases not covered by these aggregate metrics.
+
+**Missing Cost Analysis**: While the case study discusses performance improvements, it doesn't provide detailed cost analysis. Training and inference are faster, but the H100 infrastructure itself represents substantial capital and operational expense. The business case depends on whether the performance improvements justify the hardware costs compared to using more GPUs with older architectures or higher precision.
+
+**Scalability Beyond Single Setup**: The case study describes DeepL's specific infrastructure configuration but doesn't deeply explore how the approach scales across different cluster sizes, network topologies, or multi-datacenter deployments. Production LLMOps often involves these additional complexity layers.
+
+## Future Directions and Industry Context
+
+DeepL mentions they've recently deployed NVIDIA DGX SuperPOD with DGX GB200 systems, which will introduce Tensor Cores supporting FP4 (4-bit) operations. This indicates an ongoing trend toward lower precision computation in LLM operations, continuing the trajectory from FP32 to FP16/BF16 to FP8 and now toward FP4.
+
+This progression reflects a broader industry understanding that LLMs can maintain quality with reduced numerical precision, and that hardware-software co-design can unlock substantial performance improvements. However, it also raises questions about where the precision reduction ends—at what point does further reduction compromise model capability, and how do we validate that threshold across different use cases?
+
+## Practical LLMOps Takeaways
+
+Despite the caveats, this case study offers several valuable lessons for LLMOps practitioners:
+
+**Hardware-Software Co-Design Matters**: Fully utilizing modern AI accelerators requires software stack updates. Simply deploying new hardware doesn't automatically deliver performance improvements—the training and inference pipelines must be adapted to leverage new capabilities like FP8 support.
+
+**Different Phases Need Different Precision**: The strategic use of E4M3 for forward passes and E5M2 for backward passes demonstrates that mixed-precision approaches can be nuanced. Not all computational phases have identical precision requirements.
+
+**Validation is Essential**: The rigorous comparison of training loss and downstream task performance between FP8 and BF16 exemplifies good practice in validating precision reduction approaches. Organizations shouldn't assume that faster training automatically preserves quality.
+
+**Training-Inference Optimization are Connected**: The case study shows how training optimization (faster training, larger models) and inference optimization (doubled throughput at same latency) work together to enable new capabilities. LLMOps requires considering the full lifecycle.
+
+**Scaling Factors are Critical**: The technical detail about storing scaling factors alongside FP8 tensors and incorporating them into computations highlights the complexity of low-precision implementations. These aren't simply drop-in replacements for higher precision operations.
+
+**Performance Metrics Need Careful Definition**: Using MFU with BF16 FLOPS as the denominator for comparison purposes demonstrates thoughtful metric selection. Choosing the wrong baseline or metric can make performance improvements difficult to interpret or compare.
+
+The case study ultimately documents DeepL's successful deployment of reduced-precision training and inference in production, achieving substantial performance improvements while maintaining quality for their specific use case. It provides a detailed technical roadmap that, while hardware-specific, offers valuable insights for organizations working at the intersection of LLM training, production deployment, and infrastructure optimization.

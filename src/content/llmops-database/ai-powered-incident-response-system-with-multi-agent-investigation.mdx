@@ -1,0 +1,180 @@
+---
+title: "AI-Powered Incident Response System with Multi-Agent Investigation"
+slug: "ai-powered-incident-response-system-with-multi-agent-investigation"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "690c94df0436650a6c2b70d3"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:26:13.190Z"
+  createdOn: "2025-11-06T12:30:23.933Z"
+llmopsTags:
+  - "realtime-application"
+  - "high-stakes-application"
+  - "chatbot"
+  - "code-generation"
+  - "summarization"
+  - "structured-output"
+  - "rag"
+  - "embeddings"
+  - "prompt-engineering"
+  - "reranking"
+  - "multi-agent-systems"
+  - "agent-based"
+  - "human-in-the-loop"
+  - "semantic-search"
+  - "vector-search"
+  - "chunking"
+  - "error-handling"
+  - "latency-optimization"
+  - "cost-optimization"
+  - "evals"
+  - "kubernetes"
+  - "monitoring"
+  - "databases"
+  - "orchestration"
+  - "postgresql"
+  - "guardrails"
+  - "openai"
+  - "anthropic"
+company: "Incident.io"
+summary: "Incident.io developed an AI SRE product to automate incident investigation and response for tech companies. The product uses a multi-agent system to analyze incidents by searching through GitHub pull requests, Slack messages, historical incidents, logs, metrics, and traces to build hypotheses about root causes. When incidents occur, the system automatically creates investigations that run parallel searches, generate findings, formulate hypotheses, ask clarifying questions through sub-agents, and present actionable reports in Slack within 1-2 minutes. The system demonstrates significant value by reducing mean time to detection and resolution while providing continuous ambient monitoring throughout the incident lifecycle, working collaboratively with human responders."
+link: "https://www.youtube.com/watch?v=NeOpqXwh9mk"
+year: 2025
+seo:
+  title: "Incident.io: AI-Powered Incident Response System with Multi-Agent Investigation - ZenML LLMOps Database"
+  description: "Incident.io developed an AI SRE product to automate incident investigation and response for tech companies. The product uses a multi-agent system to analyze incidents by searching through GitHub pull requests, Slack messages, historical incidents, logs, metrics, and traces to build hypotheses about root causes. When incidents occur, the system automatically creates investigations that run parallel searches, generate findings, formulate hypotheses, ask clarifying questions through sub-agents, and present actionable reports in Slack within 1-2 minutes. The system demonstrates significant value by reducing mean time to detection and resolution while providing continuous ambient monitoring throughout the incident lifecycle, working collaboratively with human responders."
+  canonical: "https://www.zenml.io/llmops-database/ai-powered-incident-response-system-with-multi-agent-investigation"
+  ogTitle: "Incident.io: AI-Powered Incident Response System with Multi-Agent Investigation - ZenML LLMOps Database"
+  ogDescription: "Incident.io developed an AI SRE product to automate incident investigation and response for tech companies. The product uses a multi-agent system to analyze incidents by searching through GitHub pull requests, Slack messages, historical incidents, logs, metrics, and traces to build hypotheses about root causes. When incidents occur, the system automatically creates investigations that run parallel searches, generate findings, formulate hypotheses, ask clarifying questions through sub-agents, and present actionable reports in Slack within 1-2 minutes. The system demonstrates significant value by reducing mean time to detection and resolution while providing continuous ambient monitoring throughout the incident lifecycle, working collaboratively with human responders."
+---
+
+## Overview
+
+Incident.io, a company focused on incident management and coordination, has developed an AI SRE (Site Reliability Engineer) product that represents a sophisticated application of LLMs in production for automated incident investigation and response. Founded approximately four years ago, the company initially offered products for incident communication and coordination (Response) and on-call scheduling, before moving into AI-powered incident investigation about 1.5 years ago. The AI SRE product aims to compress the stressful period when incidents occur by automatically investigating multiple data sources and presenting actionable hypotheses to responders, often within 1-2 minutes of incident detection.
+
+The system works across companies of all sizes, from smaller startups to Netflix, and integrates into their existing workflows through Slack, where it surfaces findings, hypotheses, and recommendations while also enabling conversational interaction with human responders. The fundamental value proposition is moving from simply coordinating human response to actually doing investigative work on behalf of SREs, dramatically reducing the cognitive load and time pressure during critical incidents.
+
+## Technical Architecture and Multi-Agent System
+
+The core of Incident.io's AI SRE product is a sophisticated multi-agent orchestration system built around what they call "investigations." When an incident is created, the system automatically spawns an investigation that lives alongside the incident. The orchestration layer manages different types of jobs called "checks" that execute in parallel and sequentially as the investigation progresses.
+
+The investigation workflow follows a deliberate structure that mirrors human investigative reasoning. First, the system gates the investigation process until it has enough information to proceed meaningfully, avoiding the LLM's positivity bias where it might generate unhelpful results from insufficient context. Once sufficient context exists, the system enters a search phase where multiple "searcher checks" execute in parallel across different data sources including GitHub or GitLab code changes, historical incidents on the platform, Slack workspace messages, and connections to observability platforms like Datadog and Grafana for logs, metrics, and traces.
+
+The architectural design explicitly treats the investigation as implementing an inductive-deductive reasoning cycle. Search results feed into an assessment stage where the system generates "findings" - concrete observations backed by evidence. These findings then inform the construction of hypotheses, which are potential explanations for the incident with associated narrative chains. The system then enters a critical phase where it critiques its own hypotheses, generating questions designed to test, refine, or rule out each hypothesis.
+
+These questions spawn additional specialized sub-agents, each tasked with answering a specific question. These agents have access to the full investigation context and can take whatever actions necessary to answer their assigned question, including drilling into metrics and traces, searching documentation, or even looking up external sources like Kubernetes documentation. When sub-agents complete their work, they report back to the main reasoning loop, which updates its findings and notifies other active agents about relevant discoveries.
+
+This multi-agent coordination approach explicitly models how a human incident response team would operate, with different team members possessing different specializations - some focused on communications, others on technical deep dives - all reporting back to an incident lead who coordinates the overall response. The system continues iterating through this cycle, refining hypotheses and generating new questions until it reaches a point where it has exhausted immediate avenues of investigation. Critically, the system remains active as an "ambient agent," monitoring ongoing Slack conversations and system changes, ready to resume investigation when new information becomes available.
+
+## Retrieval Architecture and RAG Implementation
+
+The retrieval system at the heart of Incident.io's AI SRE product has evolved significantly through experimentation and production learning. Initially, like many teams, they jumped to embeddings-based vector search as the primary retrieval mechanism. However, they encountered several challenges with pure vector approaches that led them to a hybrid architecture emphasizing deterministic components with LLM-powered reranking.
+
+The team found that vector embeddings presented significant debugging challenges - vectors are inscrutable when stored in the database, making it difficult to understand why certain results were or weren't returned. Additionally, vector similarity often triggered on fuzzy or irrelevant matches rather than the precise information needed during high-pressure incident response. Versioning of vectors also proved problematic when the document format used for generating vectors needed to change.
+
+Their current approach uses a combination of text similarity, LLM summarization, and selective use of embeddings. For code changes and other documents, they generate either freeform text summaries or extract tagged keywords using frontier LLMs with larger context windows. These summaries and tags are stored in Postgres with conventional database indexing, enabling deterministic text similarity searches. They use PG vector for the embedding components but have significantly reduced reliance on pure vector search.
+
+The retrieval pipeline follows what they initially called "shortlisting" (now more commonly known as reranking). They build long lists of potentially relevant results from text similarity searches across different data sources, then use frontier models to rerank these results in batches. For example, they might pass 25 results to an LLM with a prompt asking for the top 3, then collate those top results from multiple batches and perform a final reranking to get the top 5 overall.
+
+For complex retrieval cases like historical incidents, simple similarity isn't sufficient. The system pre-processes the current incident along multiple dimensions - alert type, impacted systems, observed symptoms - then performs similarity searches against each dimension independently, combines the results, and reranks based on the aggregated signals. The key insight is that effective RAG pipelines depend on asking the right questions, and for Incident.io that means generating appropriate search queries for different types of information.
+
+The emphasis on deterministic components serves multiple purposes beyond just retrieval quality. When the system fails to find relevant information, debugging becomes straightforward - engineers can look at tags and ask why a document wasn't tagged with expected keywords, rather than puzzling over why cosine similarity scores didn't match. This aligns with the team's philosophy drawn from infrastructure engineering: simpler technology often performs better and causes less pain in the long term than racing toward the newest, most sophisticated approaches.
+
+## Context Window Management and Data Integration
+
+Given the massive volume of data that might be relevant to any given incident - potentially tens of thousands of lines of code in a single pull request, hundreds of past incidents, countless Slack messages, and extensive logs and metrics - context window management has been critical since the early prototypes. When they began with GPT-4 and its 25,000 token context window, fitting all relevant information was simply impossible.
+
+Even with modern larger context windows (200k+ tokens), the team recognizes that context rot remains a challenge, and better context management leads to better results. Their approach combines pre-processing to extract the most relevant portions of large documents with strategic use of summarization. For code changes, they might vectorize specific portions or use text similarity to pull out relevant sections before passing them to the reasoning system.
+
+The integration strategy benefits significantly from Incident.io's existing position in the incident management ecosystem. As an established incident response product, they had already built extensive integrations with various tools before embarking on the AI SRE product. By the time customers install Incident.io for incident response, there's a natural incentive to connect nearly all relevant tooling. This gives the AI system access to issue trackers, HR tools for identifying who's on holiday when paging, observability platforms, deployment systems, feature flag services, and communication channels.
+
+Rather than building every integration from scratch for the AI product, the team structured existing data sources to be consumable by the AI system. Integration priorities are driven by customer demand and close collaboration with early adopters who provide feedback on what organizational context is missing. The team even uses their post-incident evaluation system to identify cases where having access to a particular tool or data source would have significantly improved investigation quality, then surfaces these insights to customers to encourage connecting additional integrations.
+
+## Evaluation Strategy and Quality Assurance
+
+Incident.io has developed a sophisticated, multi-layered evaluation strategy that addresses different aspects of their system's performance. The team explicitly draws parallels between their evaluation architecture and traditional software testing hierarchies - unit tests, integration tests, and end-to-end tests - but adapted for LLM systems.
+
+The cornerstone of their evaluation approach is what they call "time travel" evaluation. Unlike many AI systems where ground truth is difficult or expensive to establish, incidents naturally provide ground truth data after they're resolved. When an incident occurs, the cause may not be immediately known, but after resolution - especially after a postmortem is written - the actual cause, impacted systems, and effective remediation steps are documented.
+
+The system waits until an incident closes, then after a couple of hours, pre-processes all information from the incident including responder actions, communications, and eventual resolution. With this complete picture, they run automated graders that produce a scorecard for the investigation. These graders evaluate everything the AI system claimed, thought was happening, and recommended, comparing it against how the incident actually unfolded and how human responders used the provided information.
+
+This approach enables evaluation at scale without requiring humans to manually generate ground truth data. The team explicitly acknowledges that evaluation must be nuanced - there isn't simply a straight line to the correct incident cause. Smart "wandering" during investigation can provide value even if it doesn't directly lead to the root cause. For instance, checking a dashboard and confirming something isn't the problem genuinely helps responders, even though that information could be considered a "negative" result.
+
+To capture this nuance, they're developing what they humorously call a "confusion matrix" (referencing the statistical term) that tracks false positives, true positives, false negatives, and true negatives. Value exists across multiple dimensions: extremely accurate root cause identification is ideal, but providing any relevant context, ruling out possibilities, or surfacing related information also delivers value. The team considers factors like who clicked on specific findings, what responders looked at, and direct user feedback about what proved most useful.
+
+At a lower level, the evaluation architecture breaks down the investigation system into component units, with dedicated graders for each subsystem. For example, if a GitHub pull request that caused an incident wasn't found, there's a specific grader for the code change search RAG pipeline that evaluates precision and recall, helping debug whether tags were incorrect or if the PR was too old to be considered. This multi-level evaluation mirrors the architectural decomposition of the system itself.
+
+User feedback collection presents unique challenges in the incident response context. During an active incident, responders are under extreme pressure and can't be distracted with feedback requests - doing so would likely annoy them and go unanswered anyway. Instead, the system waits until after incident resolution, identifies the most active responders, and sends them a Slack message with a snippet of what was provided during the incident, asking for a simple yes/no on usefulness plus optional additional comments.
+
+The system also supports in-the-moment feedback during incidents. Responders can directly tell the AI system "that kind of sucks" through Slack, which gets recorded as feedback that goes straight to the development team. Over time, the team aims to correlate automated scoring mechanisms with user feedback to ensure their automated evaluations align with what users actually find valuable.
+
+One particularly interesting evaluation consideration is assessing the agent's evolving understanding throughout an incident. An incident's perceived root cause might change dramatically even five minutes after it starts. The team is working on evaluating how quickly the system detects these shifts in understanding, how confident it was in previous claims, and whether its understanding lags behind or leads ahead of human responders. This temporal dimension of evaluation becomes increasingly important as they lean into the "ambient agent" concept where the system continuously monitors and updates its hypotheses.
+
+## Prompt Engineering and Guardrails
+
+The Incident.io team has developed significant expertise around prompt engineering and implementing guardrails to manage LLM behavior in their production system. A critical insight they emphasize is avoiding the LLM's positivity bias - the tendency to generate output even when it shouldn't, particularly when prompts contain explicit requirements like "give me between three and five points about this thing."
+
+When onboarding new team members, a common "aha moment" occurs when they realize their prompt is forcing the LLM to produce output even with insufficient or irrelevant information. The system prompt might demand specific outputs, putting the LLM in a position where it must generate something regardless of quality. Learning to recognize and avoid these forcing functions is crucial for reliable production behavior.
+
+The team builds in explicit checkpoints that gate progression through the investigation workflow. Before launching into full investigation mode, the system evaluates whether it has sufficient information to proceed meaningfully. If someone creates an incident with minimal detail like "it's broken," the system recognizes this and waits for more context rather than attempting investigation that would inevitably produce low-quality results due to positivity bias.
+
+When the system does generate hypotheses and findings, it includes explicit markers of confidence and uncertainty in its language. The assertiveness of the language varies based on how much supporting evidence exists. Saying "here's a potential avenue you can investigate" creates a very different expectation than confidently stating a conclusion. This calibrated language helps manage human trust and sets appropriate expectations for the reliability of different findings.
+
+The system also implements self-critique as a core architectural pattern. After generating initial hypotheses, an explicit step involves the system critiquing its own understanding, identifying areas of uncertainty, and generating questions to test its hypotheses. This built-in skepticism helps avoid overconfident conclusions and drives the system toward gathering additional evidence.
+
+Interestingly, the team reports that pure hallucinations - the LLM fabricating incidents or resources that don't exist - have become rare with modern frontier models. Early in their development, they implemented checks that would filter out anything that couldn't be cross-referenced against actual resources, and those checks used to trigger regularly but now rarely fire. The quality of frontier models has improved to the point where outright fabrication is uncommon.
+
+Instead, the bigger challenge is relevancy and managing false positives - the system surfacing information that's technically real but not actually relevant to the current incident. Much of their evaluation effort focuses on ensuring that what gets surfaced to responders during high-stress incidents is genuinely useful rather than distracting.
+
+The team also highlights a subtle but important challenge in prompt engineering: avoiding leaking their own organizational context and mental models into prompts. When debugging evaluations, they've discovered instances where prompts contained assumptions specific to how Incident.io itself operates. For example, a prompt might discount feature flagging as a potential cause because at Incident.io, that wouldn't make sense given their specific practices - but for customers, it might be entirely reasonable. This overfitting to internal context would make the system perform worse for the broader customer base. Maintaining awareness of this bias and actively working against it requires constant vigilance.
+
+## User Experience and Integration Patterns
+
+The user experience design reflects deep consideration of the incident response context and cognitive load management. The system integrates primarily through Slack, leveraging the fact that incident response increasingly happens in chat channels where teams coordinate, share information, and drive actions. Rather than requiring responders to switch between tools, Incident.io brings investigation results directly into the conversation space.
+
+The information presentation follows a progressive disclosure pattern. In the Slack channel itself, the system posts a compact report containing only the key information responders need immediately. For responders who want to validate findings or explore further, the thread underneath contains additional reasoning. For those who want to deeply investigate, there's a link out to a richer dashboard interface showing the complete reasoning trace, all findings, hypotheses, confidence levels, and raw citations to source materials.
+
+This layered approach prevents overwhelming responders while still making depth available when needed. The team explicitly prioritizes signal over noise, choosing to show only information they're confident in rather than surfacing everything they found. During high-stress incidents, distraction can be as harmful as missing information, so conservative filtering is warranted.
+
+The Slack integration provides additional benefits beyond just displaying information. Because Slack is naturally "chatty" with people typing what they're working on and thinking about, the system can function as an ambient agent that monitors the channel. When humans discover new information and mention it in conversation, the AI system picks up on it and can incorporate it into ongoing investigation. This creates a genuinely collaborative environment where human and AI agents work together fluidly.
+
+Responders can also directly chat with the system using natural language, asking questions like "can you check this dashboard and tell me what's going on?" or "update the incident and do that thing." This conversational interface removes friction and lets responders stay focused on the problem rather than navigating UI. The system even supports in-the-moment negative feedback with phrases like "hey, that kind of sucks," which gets logged for the development team.
+
+The product design also considers the full incident lifecycle beyond just initial response. The system can generate status page updates using templates from past incidents, manage task assignments (potentially to other AI agents), and monitor external status pages to notify responders when situations change. The vision includes having the AI conduct post-incident debriefs by reaching out to involved responders, asking targeted questions about specific moments in the response, and synthesizing that feedback - leveraging the AI's complete context about what actually happened during the incident.
+
+## Production Challenges and Technical Tradeoffs
+
+Operating LLM systems in production at Incident.io has surfaced numerous challenges and required careful tradeoffs. One recurring theme is the difference between prototype velocity and production reliability. The team emphasizes that building an impressive prototype can happen in days - they had their initial code change analysis prototype running within a couple of days - but getting to production-grade reliability takes vastly more effort.
+
+The challenge lies in handling the full diversity of customer scenarios, edge cases, and failure modes. A prompt that works perfectly for Incident.io's own use case might perform poorly for customers with different organizational structures, toolchains, or incident response patterns. The system must work reliably whether investigating a database performance issue, a network outage, a bad deployment, or a third-party service failure.
+
+Cost management is an ongoing consideration given the system's architecture. Running multiple parallel agents, performing multiple reranking passes, critiquing hypotheses, and generating questions all consume inference calls. The team must balance investigation thoroughness with cost efficiency, particularly for less critical incidents. Time constraints are equally important - while the system can theoretically investigate indefinitely, providing actionable information within 1-2 minutes requires careful orchestration and knowing when to present preliminary findings versus continuing to gather evidence.
+
+Debugging LLM systems in production presents unique challenges compared to traditional software. When a traditional system fails, you can trace through deterministic code paths. When an LLM system produces unexpected results, debugging requires understanding prompt interactions, model behavior variations, context window effects, and the emergent behavior of multi-agent coordination. The team's emphasis on making components as deterministic and inspectable as possible reflects this reality.
+
+The rapid pace of AI research and new techniques creates its own challenge. As one team member noted, avoiding "FOMO" and not getting overwhelmed by the constant stream of new papers, techniques, and models requires discipline. They draw parallels to infrastructure engineering, where new "hot" technologies often prove less reliable and more complex than simpler, proven approaches. Trends like fine-tuning and heavy reliance on embeddings saw lots of hype but often delivered disappointing results compared to simpler architectures mixing traditional techniques with frontier models.
+
+Model selection and updates also require careful management. The system currently relies on frontier models for core reasoning, but those models evolve rapidly. Each new model version might have different behaviors, strengths, and weaknesses. The team must continuously evaluate whether to adopt new models and how to adapt prompts and expectations accordingly.
+
+Integration maintenance across a diverse customer base presents an ongoing operational challenge. Even when integrations exist, ensuring the AI system has appropriate permissions, can handle different versions or configurations of tools, and gracefully degrades when expected data isn't available requires robust engineering. The team actively works to identify when missing integrations or permissions limited investigation quality, feeding this information back to customers to improve coverage.
+
+## Emerging Patterns and Future Directions
+
+Several interesting patterns emerge from Incident.io's experience that may have broader applicability to LLMOps. The concept of "time travel evaluation" - where ground truth becomes available after the fact in predictable ways - could apply to other domains where events naturally resolve and provide retrospective context. Customer support tickets, sales cycles, project completion, and many business processes share this characteristic.
+
+The balance between deterministic and LLM-powered components represents a design pattern worth considering broadly. Incident.io uses conventional database indexing and text similarity for the "wide net" initial retrieval, then applies LLMs for the nuanced reranking that requires understanding context and relevance. This hybrid approach combines the debuggability and reliability of traditional systems with the semantic understanding of LLMs.
+
+The architectural pattern of breaking down complex problems to match human cognitive approaches - rather than expecting LLMs to handle everything end-to-end - seems broadly applicable. Incident.io explicitly models their system after how a human team would distribute work, with specialists handling different aspects and an coordinator synthesizing results. This "AI intern" framing helps set appropriate expectations and design more reliable systems.
+
+The ambient agent concept - where the AI continuously monitors conversations and system state, ready to contribute when it has something useful to say - represents an interesting middle ground between fully autonomous agents and pure chatbot interactions. The system isn't passive waiting for explicit commands, nor is it aggressively interjecting. It monitors, learns, and contributes when appropriate, much like a human team member.
+
+Looking forward, the team is expanding their data source coverage, adding more observability platform integrations, and supporting additional types of changes like deployments and feature flags. They're also pushing toward more automated remediation - not just identifying root causes but actively proposing and potentially executing fixes like generating code changes, rebooting services, or rolling back deployments.
+
+The vision includes more sophisticated task assignment where humans can delegate monitoring and investigation tasks to AI agents just as they would to human colleagues. An agent might be assigned to check a status page every minute and report back only when something changes, or to monitor a specific metric and alert when it crosses a threshold. This treats AI agents as genuinely collaborative team members rather than just tools.
+
+The post-incident debrief automation represents another promising direction. Having an AI agent conduct structured interviews with responders, armed with complete context about what actually happened during the incident, could surface insights that might otherwise be lost while dramatically reducing the overhead of thorough post-incident analysis.
+
+Overall, Incident.io's AI SRE product demonstrates sophisticated LLMOps practices across architecture, evaluation, production reliability, user experience, and integration management. Their emphasis on simplicity where possible, robust evaluation at multiple levels, human-AI collaboration, and careful attention to the specific context of incident response offers valuable lessons for deploying LLM systems in high-stakes production environments.

@@ -1,0 +1,145 @@
+---
+title: "Scaling Contact Center Operations with AI Agents in Fintech and Travel Industries"
+slug: "scaling-contact-center-operations-with-ai-agents-in-fintech-and-travel-industries"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "693bddcd4a90bf2f0ecb8db5"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:35:16.169Z"
+  createdOn: "2025-12-12T09:18:05.605Z"
+llmopsTags:
+  - "customer-support"
+  - "chatbot"
+  - "summarization"
+  - "question-answering"
+  - "prompt-engineering"
+  - "agent-based"
+  - "human-in-the-loop"
+  - "few-shot"
+  - "error-handling"
+  - "model-optimization"
+  - "api-gateway"
+  - "monitoring"
+  - "documentation"
+company: "Propel Holdings / Xanterra Travel Collection"
+summary: "Propel Holdings (fintech) and Xanterra Travel Collection (travel/hospitality) implemented Cresta's AI agent solutions to address scaling challenges and operational efficiency in their contact centers. Both organizations started with agent assist capabilities before deploying conversational AI agents for chat and voice channels. Propel Holdings needed to support 40% year-over-year growth without proportionally scaling human agents, while Xanterra sought to reduce call volume for routine inquiries and provide 24/7 coverage. Starting with FAQ-based use cases and later integrating APIs for transactional capabilities, both companies achieved significant results: Propel Holdings reached 58% chat containment after API integration, while Xanterra achieved 60-90% containment on chat and 20-30% on voice channels. Within five months, Xanterra deployed 12 AI agents across different properties and channels, demonstrating rapid scaling capability while maintaining customer satisfaction and redeploying human agents to higher-value interactions."
+link: "https://www.youtube.com/watch?v=5df_mnrfBVc"
+year: 2025
+seo:
+  title: "Propel Holdings / Xanterra Travel Collection: Scaling Contact Center Operations with AI Agents in Fintech and Travel Industries - ZenML LLMOps Database"
+  description: "Propel Holdings (fintech) and Xanterra Travel Collection (travel/hospitality) implemented Cresta's AI agent solutions to address scaling challenges and operational efficiency in their contact centers. Both organizations started with agent assist capabilities before deploying conversational AI agents for chat and voice channels. Propel Holdings needed to support 40% year-over-year growth without proportionally scaling human agents, while Xanterra sought to reduce call volume for routine inquiries and provide 24/7 coverage. Starting with FAQ-based use cases and later integrating APIs for transactional capabilities, both companies achieved significant results: Propel Holdings reached 58% chat containment after API integration, while Xanterra achieved 60-90% containment on chat and 20-30% on voice channels. Within five months, Xanterra deployed 12 AI agents across different properties and channels, demonstrating rapid scaling capability while maintaining customer satisfaction and redeploying human agents to higher-value interactions."
+  canonical: "https://www.zenml.io/llmops-database/scaling-contact-center-operations-with-ai-agents-in-fintech-and-travel-industries"
+  ogTitle: "Propel Holdings / Xanterra Travel Collection: Scaling Contact Center Operations with AI Agents in Fintech and Travel Industries - ZenML LLMOps Database"
+  ogDescription: "Propel Holdings (fintech) and Xanterra Travel Collection (travel/hospitality) implemented Cresta's AI agent solutions to address scaling challenges and operational efficiency in their contact centers. Both organizations started with agent assist capabilities before deploying conversational AI agents for chat and voice channels. Propel Holdings needed to support 40% year-over-year growth without proportionally scaling human agents, while Xanterra sought to reduce call volume for routine inquiries and provide 24/7 coverage. Starting with FAQ-based use cases and later integrating APIs for transactional capabilities, both companies achieved significant results: Propel Holdings reached 58% chat containment after API integration, while Xanterra achieved 60-90% containment on chat and 20-30% on voice channels. Within five months, Xanterra deployed 12 AI agents across different properties and channels, demonstrating rapid scaling capability while maintaining customer satisfaction and redeploying human agents to higher-value interactions."
+---
+
+## Overview and Business Context
+
+This case study presents two distinct but parallel implementations of LLM-powered AI agents in production contact center environments. Propel Holdings, a fintech company providing financial products across the US, Canada, and UK, and Xanterra Travel Collection, which operates multiple travel brands including adventure tours, cruise lines, and national park lodging concessions, both partnered with Cresta to deploy conversational AI agents at scale.
+
+The business drivers for both organizations were remarkably similar despite operating in different industries. Propel Holdings was experiencing explosive 40% year-over-year growth and faced a critical constraint: traditional human agent ramp-up takes three to six months, making it impossible to scale customer service operations fast enough to match business growth. Xanterra, meanwhile, was dealing with high volumes of routine inquiries—questions about directions, weather, national park information, and other FAQs—that were tying up human agents who could be better utilized for complex problem-solving and sales activities. The pandemic had exacerbated these volume challenges, creating additional pressure on operations.
+
+Both organizations invested significant time in vendor selection, with Propel Holdings conducting nearly four years of evaluation before signing with Cresta in January (presumably 2025 or late 2024). This lengthy courtship period reflected the market confusion both organizations experienced, with numerous vendors offering seemingly similar capabilities. Their key selection criteria centered on finding a partner "laser focused on contact center solutions specifically" rather than spreading resources across multiple business areas, and one that could serve as a long-term partner likely to remain in the market. Xanterra similarly prioritized finding a "one-stop shop" that could handle both agent assist and virtual agents through a single vendor, avoiding the complexity of managing multiple partnerships.
+
+## Initial Implementation Approach and Use Case Selection
+
+Both organizations adopted a phased approach to deployment, beginning with agent assist capabilities before moving to fully autonomous AI agents. This strategic sequencing served multiple purposes: it allowed human agents to become comfortable with AI augmentation before encountering full automation, it provided quick wins that built momentum for broader deployment, and it gave the organizations time to develop internal capabilities like API integrations.
+
+The use case selection process proved particularly interesting from an LLMOps perspective. While both organizations initially believed they understood which use cases to prioritize, Cresta's ability to ingest and analyze historical conversation data revealed different insights. Propel Holdings noted that after Cresta ingested their historical conversations, the vendor was able to identify whether their initial assumptions were "off base or not or where to start." This data-driven use case discovery represents a mature LLMOps practice—using actual conversation patterns and analytics rather than intuition to guide implementation priorities.
+
+Both organizations started with FAQ-based use cases, deliberately avoiding the complexity of system integrations in initial deployments. This decision reflected both technical readiness constraints (development teams needed time to prepare APIs) and risk management strategy (starting with lower-risk, contained interactions). The FAQ approach also leveraged existing knowledge assets—both organizations had "pretty robust FAQs" on their websites that could be rapidly ingested as knowledge bases for the AI agents.
+
+Importantly, even these FAQ-only initial deployments delivered surprising value. Propel Holdings achieved 38-40% containment in their chat channel with FAQs alone, before any API integration. The team explicitly noted being "all surprised" by how much this moved the needle. When they subsequently added API integrations to enable transactional capabilities, containment increased to approximately 58%. Xanterra saw even more dramatic results on the chat side, achieving 60-90% containment depending on the specific product or property, with voice channels initially delivering 20-30% containment with FAQ-only capabilities.
+
+## Production Deployment and Operational Model
+
+The operational model for managing these LLM-powered agents in production represents sophisticated LLMOps practices. Both organizations established intensive partnership rhythms with Cresta during initial deployment phases. Propel Holdings met with their customer success manager three to four times per week initially, with Cresta proactively bringing insights from the data about where model tuning opportunities existed. This represents a collaborative human-in-the-loop approach to model optimization where the vendor's ML expertise combines with the customer's domain knowledge and agent feedback.
+
+The feedback collection and incorporation process proved critical. Propel Holdings tracked feedback from their human agents about issues like "transcription inconsistencies" and other performance problems, creating a continuous improvement loop. The tuning frequency was "a little more frequent in the first couple of weeks" and then naturally decreased as issues were identified and resolved—a typical maturation curve for production ML systems. This iterative refinement process reflects mature MLOps practices where model performance is continuously monitored and improved based on real-world operational data.
+
+Xanterra demonstrated remarkable deployment velocity, launching 12 distinct AI agents in just five months across their portfolio—seven chat agents for different lodging properties, one for their WinStar Cruises brand, and four live voice agents with three more in testing. This rapid scaling would be nearly impossible with traditional automation technologies and reflects the relative ease of deploying LLM-based conversational AI compared to earlier rule-based or intent-classification approaches. The deployment model appears to involve creating purpose-built agents for specific properties or brands rather than a single monolithic agent, allowing for customization while presumably sharing underlying model infrastructure.
+
+The knowledge base management process emerged as a critical LLMOps practice. As Xanterra began testing their agents, they had team members—including human agents—ask questions that guests typically pose. This testing process revealed gaps and ambiguities in their existing FAQ content. Kevin noted: "we thought, okay, well, there's all this information out on our website, but going through this process, we're like, okay, well, maybe it wasn't there, or maybe we should be wording it better because it made sense to us, but it may not make sense to everybody else when we're too close to it." This led to "a bunch of changes" improving their FAQs on their website, which in turn improved the virtual agents' ability to serve guests. This represents a valuable feedback loop where LLM deployment quality depends on knowledge base quality, and deployment testing reveals knowledge base deficiencies that can then be addressed.
+
+## Agent Assist Capabilities and Quick Wins
+
+Beyond fully autonomous AI agents, both organizations deployed agent assist capabilities that augment human agents rather than replacing them. Auto-summarization of conversations emerged as a particularly impactful quick win. Colin from Propel Holdings described this as addressing "the bane of our existence"—the inconsistency of notes and variability in after-call work. The auto-summarization feature reduced after-call work for agents and ensured more consistent documentation. This represents a practical application of LLM summarization capabilities in a production operational context where documentation quality and agent productivity both matter.
+
+The agent assist capabilities also proved important for change management. By first introducing AI as a tool that helps agents rather than replacing them, both organizations reduced anxiety about job displacement and allowed agents to experience the benefits of AI augmentation firsthand. Human agents working from home (both organizations had transitioned to remote work during the pandemic in 2020) particularly benefited from having AI-powered tools providing real-time support and guidance.
+
+## Voice Channel Deployment and Customer Experience
+
+The voice channel deployment at Xanterra provides particularly rich insights into LLM performance in production scenarios. Kevin shared a detailed anecdote about an elderly customer calling to reset his password for the online reservation system. The 15-minute conversation involved the AI agent patiently repeating website addresses multiple times, providing step-by-step instructions, and maintaining a helpful demeanor despite the customer joking about being "old and slow." The customer's wife participated in background conversation, and the customer explicitly acknowledged at the end that he knew he wasn't speaking with a real person but appreciated the help: "Well, you know, for not being a real person, you did a really good job."
+
+This interaction reveals several important aspects of production LLM deployment. First, the system successfully handled a complex multi-turn conversation with interruptions, repetitions, and off-script moments—demonstrating robustness beyond simple FAQ retrieval. Second, the patience and consistency of the AI agent may have exceeded what a human agent would provide in a similar scenario, as Kevin noted that "a human agent might have not had the same level of patience going through that." Third, the customer's awareness of interacting with AI didn't diminish satisfaction or completion—transparency about AI usage didn't create negative outcomes.
+
+The Cresta AI product leader noted that this type of interaction has been "the biggest surprise" across voice deployments, particularly regarding adoption by older populations. Contrary to assumptions that older customers would resist AI interactions, they often "appreciate the patience" and benefit from AI agents speaking slowly and methodically. This suggests that LLM-powered voice agents may actually provide superior experiences for certain customer segments compared to human agents.
+
+## Monitoring, Safety, and Quality Assurance
+
+Both organizations implemented monitoring practices to ensure quality and safety in production. Xanterra's approach of having team members review conversation transcripts represents human oversight of AI agent performance. The ability to review full transcripts of AI-agent customer interactions provides transparency and enables quality assurance—a critical governance practice for production LLM systems handling customer-facing conversations.
+
+The organizations also maintained the ability to hand off conversations from AI agents to human agents when needed, with summaries provided to the human agent about what transpired in the AI portion of the conversation. This hybrid approach ensures customers aren't trapped in unsuccessful AI interactions while providing human agents with context to continue conversations smoothly. The handoff mechanism represents an important production design pattern for LLM-powered customer service.
+
+Colin addressed quality concerns directly by noting that human agents already provide inconsistent information, so implementing AI agents starts from "at least a level playing field." The consistency of AI-generated responses—when properly configured—can actually improve information quality compared to variable human performance. This pragmatic perspective acknowledges that perfection isn't the standard; rather, AI systems need to meet or exceed existing human performance benchmarks.
+
+## Change Management and Workforce Transformation
+
+Both organizations invested significantly in change management to address agent concerns about displacement. Xanterra's approach of having all human agents actually interact with the virtual agents—either through chat or voice calls—proved particularly effective. By experiencing the customer perspective and understanding how handoffs work, agents developed comfort with the technology and understood its limitations and capabilities. They could see firsthand how summaries would be provided during handoffs, giving them context for conversations that started with AI agents.
+
+Additionally, Xanterra engaged some team members in testing new agent deployments, leveraging their knowledge of typical guest questions to help validate and optimize agent performance. This participatory approach transformed potential skeptics into active contributors to the AI deployment process.
+
+Both organizations emphasized redeploying human agents to higher-value activities rather than simply reducing headcount. Colin noted that agents are now "handling higher value conversations" and finding themselves "a little more challenged" rather than handling tedious questions day in and day out. For agents interested in career advancement, this represents an opportunity to develop more sophisticated skills. Propel Holdings also redeployed some chat agents to voice channels to sharpen their skills across modalities.
+
+The organizations also invested in professional development and retraining, recognizing that as agents stop handling routine inquiries, they need different skills and knowledge to handle the more complex conversations that come their way. This proactive approach to workforce transformation—viewing AI as a tool that changes work rather than eliminates it—represents mature thinking about AI implementation in operational contexts.
+
+## 24/7 Coverage and Scaling Benefits
+
+A significant operational benefit highlighted by both organizations was achieving 24/7 coverage without staffing human agents around the clock. Kevin emphasized this as a "big piece" of value—having virtual agents provide coverage outside business hours without the cost and complexity of night shifts. This represents a practical scaling benefit of LLM-powered agents: they provide consistent service regardless of time of day, don't require breaks or shift changes, and maintain quality across all hours.
+
+For Propel Holdings, the scaling benefit directly addressed their core business challenge of supporting 40% year-over-year growth. Colin emphasized that the technology allows them to avoid "huge onboarding classes" of net new agents, instead focusing on upskilling existing agents and redeploying them strategically. This fundamentally changes the economics and operational model of scaling customer service operations.
+
+## Implementation Advice and Lessons Learned
+
+Both leaders offered pragmatic advice for organizations considering similar deployments. Colin's recommendation to "just get on with it" reflects his experience of spending nearly four years evaluating options before committing. He acknowledged being "overwhelmed with the technology" but emphasized that organizations won't have "a perfect plan for your deployment" and need to start with use case-level implementations and iterate from there. He used the metaphor of writing the great American novel: "at some point you have to get it to the publisher."
+
+Kevin similarly urged organizations to start somewhere rather than waiting for the "next great feature," comparing it to perpetually waiting for the next iPhone release. He acknowledged the anxiety of launching the first agent—"we're all panicked and watching and waiting for the conversations to come through"—but noted that it "worked out great" without major incidents. The monitoring capabilities provided confidence, and the learning from initial deployments informed subsequent rollouts.
+
+Both emphasized the addictive nature of success with AI agents—once initial deployments prove valuable, organizations naturally want to "layer on some use cases" and expand capabilities. Colin warned that organizations not getting "into the game" risk "getting left behind" in terms of scaling and growth capabilities.
+
+## Technical Architecture and Integration Patterns
+
+While the discussion doesn't dive deeply into technical architecture details, several patterns emerge. The system involved ingesting historical conversation data for use case discovery and training, ingesting knowledge base content from websites and FAQs, integrating with APIs to enable transactional capabilities (like checking account information in Propel's case), and providing real-time transcription and auto-summarization for both agent assist and conversation handoffs.
+
+The phased approach of starting with FAQ-only capabilities before adding API integrations represents a practical de-risking strategy, allowing teams to validate basic conversational capabilities before introducing the complexity of backend system integration. This layered approach to capability development reflects mature deployment practices.
+
+The multi-agent architecture used by Xanterra—deploying distinct agents for different properties and brands rather than a single unified agent—suggests a strategy of specialization over generalization, potentially providing better performance for property-specific inquiries at the cost of some duplicated effort in deployment and maintenance.
+
+## Vendor Partnership and Customer Success Model
+
+Both organizations emphasized the importance of their partnership with Cresta beyond just technology selection. The intensive engagement with customer success managers—multiple meetings per week during initial deployment—represents a high-touch support model critical for successful production deployment of complex AI systems. Colin specifically called out Cresta CSMs as "second to none" and joked about spending so much time with them that he "kind of feels like" he works for Cresta.
+
+This partnership model appears to combine Cresta's ML expertise (identifying tuning opportunities from data, making model adjustments) with the customer organizations' domain expertise (understanding business context, providing agent feedback, validating outputs). The collaborative nature of optimization represents a mature approach to enterprise AI deployment where vendors and customers work together rather than simply delivering a finished product.
+
+## Results and Business Impact
+
+The quantitative results demonstrate significant business impact. Propel Holdings achieved 58% containment in chat after API integration, up from 38-40% with FAQ-only capabilities. Xanterra achieved 60-90% containment on chat depending on product/property and 20-30% on voice channels even with FAQ-only initial deployment. These containment rates translate directly to reduced human agent workload and the ability to scale operations without proportional increases in staffing.
+
+Beyond containment metrics, both organizations reported qualitative improvements including more consistent customer messaging, reduced after-call work through auto-summarization, improved agent morale and engagement as they handle more challenging work, ability to provide 24/7 coverage, and successful redeployment of human agents to higher-value activities.
+
+The rapid deployment velocity—12 agents in five months for Xanterra—demonstrates that once initial processes and partnerships are established, scaling across use cases and properties becomes relatively straightforward. This represents a significant advantage of LLM-based approaches compared to traditional automation that requires extensive configuration for each new use case.
+
+## Critical Assessment and Limitations
+
+While the case study presents a positive view of AI agent deployment, several considerations warrant attention. The text represents a Cresta-sponsored presentation with customers essentially serving as references, so the natural incentive is to emphasize successes over challenges. The "four-year courtship" that Propel Holdings describes suggests significant organizational hesitation and complexity in making these decisions that may not be fully explored in the presentation.
+
+The initial containment rates on voice (20-30% for Xanterra) are notably lower than chat, suggesting that voice remains a more challenging modality for AI agents even with modern LLM technology. The need for extensive testing, monitoring, and iterative tuning indicates these aren't "deploy and forget" systems but require ongoing operational investment.
+
+The focus on FAQ-based use cases, while successful, represents relatively low-complexity interactions. The text doesn't deeply explore how the agents handle truly complex, emotionally charged, or ambiguous situations beyond the single anecdote. The organizations' emphasis on redeploying rather than reducing headcount may partly reflect labor market realities and the need to manage change, but doesn't fully address longer-term implications for workforce size and composition.
+
+The reliance on a single vendor (Cresta) for both agent assist and autonomous agents creates some partnership lock-in, though both organizations viewed this as preferable to managing multiple vendors. The extensive engagement required from customer success teams raises questions about the true cost and operational burden of maintaining these systems at scale.
+
+Overall, however, the case study demonstrates sophisticated LLMOps practices including data-driven use case selection, iterative deployment with continuous monitoring and tuning, careful change management and workforce transformation, phased capability rollout from agent assist to autonomous agents, hybrid human-AI operational models with handoffs and escalation, and rapid scaling once initial patterns are established. The practical, operational focus of both organizations—emphasizing containment rates, agent productivity, and business scaling rather than just technology capabilities—reflects mature thinking about production AI deployment.

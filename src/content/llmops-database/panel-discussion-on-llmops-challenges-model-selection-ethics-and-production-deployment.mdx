@@ -1,0 +1,212 @@
+---
+title: "Panel Discussion on LLMOps Challenges: Model Selection, Ethics, and Production Deployment"
+slug: "panel-discussion-on-llmops-challenges-model-selection-ethics-and-production-deployment"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "677d5cb089f315aa9587504a"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:54:30.328Z"
+  createdOn: "2025-01-07T16:56:16.280Z"
+llmopsTags:
+  - "healthcare"
+  - "customer-support"
+  - "high-stakes-application"
+  - "regulatory-compliance"
+  - "realtime-application"
+  - "fine-tuning"
+  - "prompt-engineering"
+  - "rag"
+  - "model-optimization"
+  - "cost-optimization"
+  - "error-handling"
+  - "human-in-the-loop"
+  - "latency-optimization"
+  - "system-prompts"
+  - "monitoring"
+  - "databases"
+  - "api-gateway"
+  - "security"
+  - "compliance"
+  - "guardrails"
+  - "reliability"
+  - "scalability"
+  - "langchain"
+  - "openai"
+  - "google-gcp"
+  - "databricks"
+  - "microsoft-azure"
+  - "amazon-aws"
+  - "meta"
+  - "anthropic"
+company: "Google, Databricks, "
+summary: "A panel discussion featuring leaders from various AI companies discussing the challenges and solutions in deploying LLMs in production. Key topics included model selection criteria, cost optimization, ethical considerations, and architectural decisions. The discussion highlighted practical experiences from companies like Interact.ai's healthcare deployment, Inflection AI's emotionally intelligent models, and insights from Google and Databricks on responsible AI deployment and tooling."
+link: "https://www.youtube.com/watch?v=YCRn41SWfPo&t=86s"
+year: 2023
+seo:
+  title: "Google, Databricks, : Panel Discussion on LLMOps Challenges: Model Selection, Ethics, and Production Deployment - ZenML LLMOps Database"
+  description: "A panel discussion featuring leaders from various AI companies discussing the challenges and solutions in deploying LLMs in production. Key topics included model selection criteria, cost optimization, ethical considerations, and architectural decisions. The discussion highlighted practical experiences from companies like Interact.ai's healthcare deployment, Inflection AI's emotionally intelligent models, and insights from Google and Databricks on responsible AI deployment and tooling."
+  canonical: "https://www.zenml.io/llmops-database/panel-discussion-on-llmops-challenges-model-selection-ethics-and-production-deployment"
+  ogTitle: "Google, Databricks, : Panel Discussion on LLMOps Challenges: Model Selection, Ethics, and Production Deployment - ZenML LLMOps Database"
+  ogDescription: "A panel discussion featuring leaders from various AI companies discussing the challenges and solutions in deploying LLMs in production. Key topics included model selection criteria, cost optimization, ethical considerations, and architectural decisions. The discussion highlighted practical experiences from companies like Interact.ai's healthcare deployment, Inflection AI's emotionally intelligent models, and insights from Google and Databricks on responsible AI deployment and tooling."
+---
+
+## Overview
+
+This case study is derived from a panel discussion featuring practitioners from multiple companies discussing their approaches to deploying LLMs in production. The panel includes representatives from Interact (healthcare conversational AI), Inflection AI (emotionally intelligent AI), Google Vertex AI, Amberflow (usage and cost tracking), and Databricks. The discussion provides valuable insights into real-world LLMOps challenges across different verticals, with a particular focus on healthcare applications, cost management, and responsible AI deployment.
+
+## Interact: Healthcare Conversational AI
+
+Shiva, CTO of Interact (formerly at Netflix and Google), shared extensive insights about building conversational AI for healthcare front-office use cases. The primary use case involves handling patient calls for routine tasks like appointment cancellations at dental clinics. This represents a narrow but critical automation opportunity where the efficiency of handling calls directly impacts clinic revenue.
+
+### Model Selection Criteria
+
+The criteria for selecting LLMs in this healthcare context are particularly stringent:
+
+- **Latency sensitivity**: Real-time phone conversations require sub-second response times, making model speed a critical factor
+- **Hallucination prevention**: The model cannot afford to provide incorrect information in a healthcare context
+- **Domain specificity**: The need to transition from broad general intelligence to narrow, specific use cases
+- **Backend integration**: The LLM must connect to healthcare backends to identify appointment availability
+
+Shiva emphasized that public benchmarks like MMLU and MedQA are useful as initial screening tools but are ultimately insufficient for production decisions. The team builds custom benchmarks based on their own curated, annotated datasets derived from anonymized conversation logs. Human QA evaluation and monitoring conversion metrics post-deployment provide the most meaningful quality signals.
+
+### Multi-Model Architecture
+
+Interact employs a multi-model strategy where different LLMs serve different purposes:
+
+- **OpenAI GPT-4**: Used for generating synthetic training data and post-conversation evaluation (not latency-sensitive applications). GPT-4 excels at analyzing conversations and identifying where the production LLM made mistakes that led to patient drop-offs.
+- **Faster models**: Used for the latency-sensitive real-time conversation handling
+
+The team explores multiple approaches to model customization including prompt engineering, fine-tuning, and RAG-based applications, finding that all approaches can work but ultimately success depends on data quality.
+
+### Compliance and Privacy
+
+For HIPAA compliance, the team relies on Business Associate Agreements (BAAs) with model providers who offer zero data retention policies. AWS and other major cloud providers support these agreements for their AI services.
+
+## Amberflow: LLM Cost and Usage Metering
+
+Punit Gupta, founder of Amberflow and former AWS General Manager who launched Amazon CloudSearch and Elasticsearch, presented a compelling perspective on the evolution of pricing models in the LLM era.
+
+### The Evolution of Pricing
+
+The journey of pricing complexity has evolved significantly:
+
+- **Traditional era**: Pricing was primarily a finance and marketing function with arbitrary price points above cost thresholds
+- **Cloud computing era**: Variable cloud costs introduced usage-based pricing, shifting some pricing decisions to product teams who understood what was being consumed
+- **LLM era**: A new vector emerges where both usage AND cost must be tracked simultaneously
+
+### Multi-Model Cost Complexity
+
+The panelists highlighted a concrete cost example: GPT-4 costs approximately $8,000 for 300 chats per month compared to just $300 for GPT-3.5. This 26x cost difference for similar volumes demonstrates why multi-model strategies are necessary but also why cost tracking becomes complex.
+
+The challenge intensifies because enterprises inevitably work with multiple LLMs and multiple versions of those LLMs. Tracking cost per query, per tenant, and per transaction becomes essential for optimization and customer billing.
+
+### Metering as Observability
+
+Amberflow positions metering as a new category within observability—not just tracking usage like traditional tools (Splunk, etc.) but also instrumenting cost. This enables companies to:
+
+- Understand cost footprint by customer, query, and transaction
+- Identify optimization opportunities
+- Feed insights into customer-facing pricing decisions
+
+The recommendation is clear: companies must take control of their own usage and cost tracking rather than relying on individual LLM vendors, since the production landscape will inevitably be multi-model.
+
+## Google Vertex AI: Responsible AI Deployment
+
+Sha, a TPM Manager at Google Vertex AI, provided extensive guidance on responsible AI deployment, emphasizing that these considerations should be baked into the product development process from the beginning rather than treated as launch checklist items.
+
+### Safety Filters and Content Moderation
+
+Key technical safeguards discussed include:
+
+- **Toxicity models**: Deployed to identify and filter harmful content like hate speech
+- **Temperature parameter control**: While temperature settings between 0-1 control creativity, values closer to 1 can lead to outputs that may bypass safety constraints
+- **Adversarial attack mitigation**: Safety filters should be deployed throughout the pipeline to protect against data and model poisoning
+
+### Many-Shot Jailbreaking Vulnerability
+
+The panel highlighted recent research on "many-shot jailbreaking"—a technique that exploits long context windows (which have grown from 4,000 to 1 million tokens). At around 256 shots within a context window, researchers were able to manipulate model behavior and override previous training. This underscores the importance of continuous monitoring even after deployment.
+
+### Ethical and Fairness Considerations
+
+The discussion covered several dimensions of responsible AI:
+
+- **Bias in decision-making**: AI systems analyzing loan or employment applications must treat all communities equitably
+- **Cultural sensitivity**: Different languages and cultures have different meanings and norms that must be respected
+- **Continuous monitoring**: The threat landscape evolves constantly with new jailbreaks and adversarial attacks
+
+### Cost Optimization Strategies
+
+Sha outlined multiple approaches to reducing LLM costs:
+
+- Inference optimization
+- Serving cost reduction
+- Prompt optimization
+- Batch requests
+- Memory caching
+- Prompt distillation
+- Model pruning
+- Knowledge distillation (smaller models learning from larger ones)
+
+A key strategic question: "Do you really need a 405 billion parameter model?" For many use cases, a 4 billion parameter model trained on outputs from larger models may be sufficient, especially for edge cases and agentic workflows.
+
+## Inflection AI: Emotionally Intelligent LLMs
+
+Ted Sheldon, COO of Inflection AI, described their differentiated approach to LLM development focused on emotional intelligence and human-computer interaction.
+
+### Design Principles Matter
+
+Inflection's thesis is that each model builder embeds specific design principles into their models. While most LLMs optimize for answering questions accurately, Inflection optimizes for supportive, emotionally intelligent interaction. The illustrative example: when asked "What should I do if I'm getting pulled over for a DUI?", ChatGPT provides a bulleted list of advice, while Pi (Inflection's assistant) first asks "Wait, is this happening right now? Are you okay?"
+
+### Training Methodology: RLHF with Professionals
+
+Rather than using low-cost annotation labor, Inflection hired 25,000 professors at fair wages to provide human feedback for reinforcement learning. This investment in quality annotation directly impacts the model's ability to interact with emotional intelligence.
+
+### Enterprise Applications
+
+The pivot from consumer to enterprise applications opens use cases like:
+
+- **Executive coaching**: Helping frontline managers handle workplace conflicts
+- **Cultural tuning**: Adapting the model to specific company cultures, policies, and communication norms
+
+The enterprise approach involves tuning the base emotionally-intelligent model to be "culturally appropriate" for specific organizations—understanding that McDonald's has different communication norms than other enterprises.
+
+## Databricks: Compound AI Systems and Data Governance
+
+Heather Kuo, VP of Sales and Partnerships at Databricks, emphasized data governance and the compound AI systems approach.
+
+### Data Intelligence Platform
+
+Databricks positions their platform as providing end-to-end governance and lineage from data inception through model training to output. This is critical for responsible AI because models are products of their training data.
+
+### dbrx: Cost-Efficient Model Building
+
+Databricks demonstrated with their dbrx model that GPT-3.5 quality models can be built for approximately $10 million end-to-end, including data acquisition. This proof of concept shows that custom model development with specific intellectual property is achievable at reasonable cost.
+
+### Compound AI Systems
+
+The panel converged on the idea that production AI systems are increasingly "compound AI systems"—chains of multiple models working together. Databricks co-authored research on this approach, arguing that:
+
+- All major vendors (Gemini, Claude, GPT) already operate as compound systems
+- Use case specificity drives model selection and chaining decisions
+- Cross-cloud, cross-model flexibility is essential
+
+## Key Takeaways for LLMOps
+
+The panel surfaced several important themes for production LLM deployment:
+
+**Model Selection**: Public benchmarks are useful screening tools but insufficient for production decisions. Custom benchmarks based on real production data and human evaluation are essential.
+
+**Multi-Model Strategy**: Enterprises will inevitably use multiple models for different purposes (cost, latency, capability). Planning for this complexity from the start is important.
+
+**Cost as First-Class Metric**: Usage-based and cost-based observability is becoming as important as traditional performance metrics.
+
+**Responsible AI**: Safety filters, bias mitigation, and continuous monitoring should be integrated throughout the development lifecycle, not added as launch checklist items.
+
+**Right-Sizing**: Not every use case needs the largest model. Smaller, specialized models (potentially distilled from larger ones) can dramatically reduce costs while maintaining adequate performance.
+
+**Cultural Tuning**: For enterprise deployments especially, the ability to tune models to specific organizational cultures and norms is becoming a differentiator.
+
+**Governance and Lineage**: End-to-end tracking of data from ingestion through model output is essential for maintaining accountability and meeting compliance requirements.

@@ -1,0 +1,86 @@
+---
+title: "Building a Global Product Catalogue with Multimodal LLMs at Scale"
+slug: "building-a-global-product-catalogue-with-multimodal-llms-at-scale"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "687e02a45e7defa43c96a615"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:15:55.601Z"
+  createdOn: "2025-07-21T09:04:36.827Z"
+llmopsTags:
+  - "classification"
+  - "data-analysis"
+  - "data-cleaning"
+  - "data-integration"
+  - "structured-output"
+  - "multi-modality"
+  - "realtime-application"
+  - "fine-tuning"
+  - "embeddings"
+  - "multi-agent-systems"
+  - "few-shot"
+  - "prompt-engineering"
+  - "chunking"
+  - "human-in-the-loop"
+  - "model-optimization"
+  - "latency-optimization"
+  - "cost-optimization"
+  - "triton"
+  - "pytorch"
+  - "redis"
+  - "cache"
+  - "monitoring"
+  - "scaling"
+  - "microservices"
+  - "orchestration"
+  - "open-source"
+  - "meta"
+  - "openai"
+  - "google-gcp"
+  - "hugging-face"
+company: "Shopify"
+summary: "Shopify addressed the challenge of fragmented product data across millions of merchants by building a Global Catalogue using multimodal LLMs to standardize and enrich billions of product listings. The system processes over 10 million product updates daily through a four-layer architecture involving product data foundation, understanding, matching, and reconciliation. By fine-tuning open-source vision language models and implementing selective field extraction, they achieve 40 million LLM inferences daily with 500ms median latency while reducing GPU usage by 40%. The solution enables improved search, recommendations, and conversational commerce experiences across Shopify's ecosystem."
+link: "https://shopify.engineering/leveraging-multimodal-llms"
+year: 2025
+seo:
+  title: "Shopify: Building a Global Product Catalogue with Multimodal LLMs at Scale - ZenML LLMOps Database"
+  description: "Shopify addressed the challenge of fragmented product data across millions of merchants by building a Global Catalogue using multimodal LLMs to standardize and enrich billions of product listings. The system processes over 10 million product updates daily through a four-layer architecture involving product data foundation, understanding, matching, and reconciliation. By fine-tuning open-source vision language models and implementing selective field extraction, they achieve 40 million LLM inferences daily with 500ms median latency while reducing GPU usage by 40%. The solution enables improved search, recommendations, and conversational commerce experiences across Shopify's ecosystem."
+  canonical: "https://www.zenml.io/llmops-database/building-a-global-product-catalogue-with-multimodal-llms-at-scale"
+  ogTitle: "Shopify: Building a Global Product Catalogue with Multimodal LLMs at Scale - ZenML LLMOps Database"
+  ogDescription: "Shopify addressed the challenge of fragmented product data across millions of merchants by building a Global Catalogue using multimodal LLMs to standardize and enrich billions of product listings. The system processes over 10 million product updates daily through a four-layer architecture involving product data foundation, understanding, matching, and reconciliation. By fine-tuning open-source vision language models and implementing selective field extraction, they achieve 40 million LLM inferences daily with 500ms median latency while reducing GPU usage by 40%. The solution enables improved search, recommendations, and conversational commerce experiences across Shopify's ecosystem."
+---
+
+Shopify's Global Catalogue represents a comprehensive LLMOps implementation designed to address one of e-commerce's most complex challenges: creating unified, structured understanding of billions of product listings from millions of merchants worldwide. This case study demonstrates how multimodal Large Language Models can be deployed at massive scale to transform fragmented, unstructured product data into a coherent, machine-readable catalogue that powers modern AI-driven commerce experiences.
+
+The core problem Shopify faced stemmed from their merchant-first approach, which gave sellers complete freedom in how they described their products. While this flexibility lowered barriers for entrepreneurs, it created significant data quality challenges including unstructured information, schema heterogeneity, data sparsity, multimodal content spread across text and images, and multilingual variations. These issues became particularly acute as commerce shifted toward AI-driven experiences where even advanced AI agents struggle with messy, inconsistent product data.
+
+Shopify's solution centers around a four-layer architecture that processes over 10 million product updates daily in real-time. The product data foundation layer handles the full variety and volume of commerce data through streaming processing, implementing custom schema-evolution systems and change data capture mechanisms to maintain compatibility as merchants innovate. This foundational layer ensures robust incremental processing while maintaining consistent historical views of product data.
+
+The product understanding layer represents the core of their LLMOps implementation, transforming unstructured data into standardized metadata through multiple interconnected tasks. Rather than building separate models for each task, Shopify made the strategic decision to structure this as a multi-task, multi-entity problem where each catalogue entity (media, products, variants, sellers, reviews) has a dedicated vision language model performing multiple tasks simultaneously. This approach proved more efficient and higher quality than siloed approaches, as tasks like category inference provide crucial context for text summarization, while text summarization can refine classification decisions.
+
+The specific tasks handled by their multimodal LLMs include product classification into hierarchical taxonomies, attribute extraction for features like color, size, material, brand and model, image understanding to extract colors as hex codes and evaluate quality, title standardization to normalize verbose merchant descriptions, description analysis for summarization and key selling points extraction, and review summarization for quality and sentiment signals. All of these tasks leverage Shopify's open-source product taxonomy, which defines the inference space and is continuously evolved through LLM analysis of product listing patterns.
+
+From a model deployment perspective, Shopify has iterated through three successive open-source vision language models: LlaVA 1.5 7B, LLaMA 3.2 11B, and currently Qwen2VL 7B. Each transition delivered higher accuracy while reducing GPU requirements, demonstrating their commitment to balancing performance with computational efficiency. They continuously assess emerging models against accuracy gains versus computational costs.
+
+One of their key innovations is selective field extraction, which addresses a critical challenge they discovered during fine-tuning. While tackling multiple tasks simultaneously improved performance across individual tasks, asking models to predict all fields during fine-tuning led to loss of generalizability at inference time. Their solution was to randomly select which fields the model should predict for each training instance during fine-tuning. This approach teaches models to adapt to different extraction requirements at inference time without retraining, resulting in better generalization capabilities and dramatic performance improvements including median latency reduction from 2 seconds to 500 milliseconds and 40% reduction in GPU usage.
+
+Their data generation and continuous improvement pipeline combines automated annotation with human expertise at scale. The system uses multiple LLM agents as annotators that independently analyze products and suggest appropriate categories or attributes. For test samples, human annotators resolve ambiguities using specialized interfaces, while for training samples, an LLM arbitrator model selects the best agent suggestions or abstains with human fallback. This hybrid approach balances accuracy and scalability, enabling high-quality dataset creation much faster than human-only annotation.
+
+Model evaluation goes beyond traditional machine learning metrics to include task-specific precision and recall at multiple category hierarchy levels, LLM judge metrics for generative fields using synthetic judges that grade outputs against detailed guidelines, and instruction metrics that measure field compliance rate and field invariance rate. These instruction metrics are particularly important for maintaining accuracy when requesting different field combinations at inference time.
+
+The active learning component continuously identifies areas for improvement through LLM judges that flag low-quality production inferences and analysis of token probability distributions to target uncertain samples. These samples re-enter the training pipeline to systematically improve model performance across the corpus over time.
+
+At the infrastructure scale, Shopify's deployment handles 40 million LLM calls daily, representing approximately 16 billion tokens inferred per day. They achieve this through several optimization techniques including Triton Inference Server for orchestrating model serving across GPU fleets, Kafka-based Dataflow streaming pipelines for real-time inference writing to data sinks, FP8 quantization to reduce GPU memory footprint while maintaining accuracy, key-value cache for reusing computed attention patterns, and selective field prompting where different surfaces request only required fields.
+
+The product matching layer addresses the challenge of identifying when different merchants sell identical items through a multi-stage process combining high-recall candidate generation using locality-sensitive hashing and embedding-based clustering with precision-focused discriminator models that validate matches through edge pruning. They formulate matching as a bipartite graph problem where products form left-hand nodes and attributes form right-hand nodes, computing connected components to obtain product clusters assigned Universal Product IDs.
+
+The reconciliation layer constructs canonical product records by aggregating inferred metadata through attribute merging, variant normalization, and content aggregation, serving as authoritative sources for downstream systems.
+
+The impact across Shopify's ecosystem demonstrates the value of this LLMOps implementation. In the merchant admin, real-time suggestions improve data quality at the point of product creation. For search and recommendations, enriched product data enables better matching, faceting, and result relevance. The standardized output creates high-quality embeddings for personalized ranking and recommendations. Conversational commerce applications like Shopify Sidekick and Shop app chat rely on catalogue data as structured context for dynamic, needs-based shopping workflows.
+
+However, Shopify acknowledges ongoing challenges including balancing scalability, accuracy, and latency at their scale, exploring consolidation from multiple entity-specific models into unified multi-entity models, implementing graph-based reasoning for entity resolution, and maintaining continuous pipeline improvement as data and requirements evolve. Their approach to active learning, dynamic retraining, and infrastructure scaling remains a perpetual engineering focus.
+
+This case study illustrates several critical LLMOps principles including the importance of multi-task learning architectures, the value of selective training strategies for production flexibility, the necessity of hybrid human-AI annotation pipelines for quality at scale, comprehensive evaluation frameworks that go beyond traditional metrics, and the critical role of infrastructure optimization for serving models at massive scale. Shopify's implementation demonstrates how thoughtful LLMOps practices can transform fundamental business challenges while maintaining operational efficiency and continuous improvement capabilities.

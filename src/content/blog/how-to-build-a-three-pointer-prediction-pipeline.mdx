@@ -1,0 +1,215 @@
+---
+title: "How to build a three-pointer prediction pipeline"
+slug: "how-to-build-a-three-pointer-prediction-pipeline"
+draft: true
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "652fdc28b2bedd2a015c1ca0"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "staged-only"
+  lastUpdated: "2024-01-26T14:49:20.142Z"
+  createdOn: "2023-10-18T13:22:48.522Z"
+author: "alexej-penner"
+category: "zenml"
+tags:
+  - "applied-zenml"
+  - "evergreen"
+  - "pipelines"
+  - "tooling"
+  - "zenml"
+date: "2022-02-02T00:00:00.000Z"
+readingTime: 10 Mins Read
+mainImage:
+  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/ab6db543/652fdbb1b36e74e7cab4a037_hoop.jpg"
+---
+
+**Last updated:** November 14, 2022.
+
+# The Gameplan
+
+‍
+
+Before diving headfirst into this challenge lets start off with some background information.
+
+This challenge is what we call a ZenHack. A ZenHack is a small internal hackathon with the intention of taking an idea into production using ZenML. This serves a few purposes. For one, it gives us as the ZenML team a direct insight into user experience. As such, one of the happy side effects is a bouquet of fresh new user-stories, tasks and sometimes bugs to fix. Another benefit of our ZenHack is to show off our newest features and how they can be assembled into a killer machine learning stack.
+
+For this ZenHack specifically we had quite a few new features to showcase. We wanted to show off how to use [Evidently](https://evidentlyai.com/) for drift detection, [MLFlow](https://mlflow.org/) for tracking our runs and [Kubeflow Pipelines](https://www.kubeflow.org/) for the orchestration of scheduled repeating pipeline runs.
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/3ce46098/652fdbf03ca8fee9721dc1db_evidently_mlflow_discord_kubeflow.png" alt="" />
+</figure>
+
+As we have some hardcore NBA fans on the team, the idea of creating a prediction bot for NBA matches came up. This idea caught on quickly and our minds started to put together the story that we wanted to explore.
+
+## Step 1 - Analyze our Data
+
+Without data there is no pipeline. Luckily for us the [NBA](https://www.nba.com/) offers an API with a lot of current and historical datapoints. Additionally, there is an easy-to-use Python wrapper out there, that made our lives even easier ([nba_api](https://readthedocs.org/projects/nba-api/)).
+
+After some rummaging through the many endpoints, we found data for every regular season match going back to 2000. This raw data contains the two teams, the date, time and season of the match as well as a bunch of game stats. Exactly what we were looking for!
+
+### Did Steph Curry change how the game is played?
+
+With these stats in hand, it was time to explore the data. As we were looking to predict three-pointers thrown in a match, it only seemed fitting to analyze how the king of three-pointers, Stephen Curry, impacted the role that three-pointers play in NBA matches. This sounds very much like a drift detection problem. [Here](https://medium.com/data-from-the-trenches/a-primer-on-data-drift-18789ef252a6) is a nice article explaining what data drift is.
+
+To detect data drift you generally need a reference dataset. When new data comes in, its distribution is compared to the reference data in order to determine if data has drifted. This is exactly the question we want to answer here. Has Steph Curry impacted the distribution of the amount of three-pointers in NBA matches? To calculate this, we need to choose a point in time to delineate a ‘before’ from an ‘after’ Curry. We chose the date of [this legendary game](https://www.youtube.com/watch?v=GEMVGHoenXM) of the Golden State Warriors, Curry’s team, against Oklahoma City.
+
+### Evidently
+
+For drift detection we have an integration with [Evidently](https://evidentlyai.com/) that we can leverage. Evidently helps evaluate and monitor machine learning data and models in production. Check out [our blogpost](https://blog.zenml.io/zenml-loves-evidently/) on the Evidently integration to learn more.
+
+Regarding our question about Curry’s impact, there are only a few steps needed to perform the necessary data exploration.
+
+<ol id=""><li id="">We need to import the data from the nba -&gt; Importer Step</li><li id="">We need to split our data around our chosen delineation date <strong id="">2016-02-27</strong> -&gt; Splitter Step</li><li id="">We need to let Evidently do what it does best: analyze data -&gt; Drift Detector Step</li></ol>
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/b8b8cc84/652fdbf0837ddd529e08b2e6_DriftDetectionPipeline.png" alt="" />
+</figure>
+
+With these steps implemented and easily connected within a ZenML pipeline, all that is left to do is to run the pipeline and look at the beautiful visualization that Evidently offers:
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/efc7b72e/652fdbf136749b40cb86553a_currys_drift.png" alt="" />
+</figure>
+
+As you can see here, we were quickly able to go from data and initial question to a full-blown pipeline and an answer to our question. It appears that the data has drifted ever since 2016-02-27. This might not be undeniable proof for the claim made about Stephen Curry’s impact on the game. But it is a compelling correlation.
+
+## Step 2 - Building our Continuous Pipelines
+
+With the data exploration behind us, let’s advance onto the continuous pipelines. Within our brainstorming session we came up with a diagram very similar to the one below, albeit a bit less organized.
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/517a949a/652fdbef49bdf56ce764a879_Training_and_Inference_Pipeline.png" alt="" />
+</figure>
+
+Let us unpack this diagram together. The objective of this ZenHack was for us to periodically receive predictions for upcoming NBA matches in our discord channel. So what do we need to get there? Well, on the highest level of abstraction we need two separate entities. One **continuous training pipeline** and a **prediction pipeline**.
+
+### Training pipeline
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e2252ea0/652fdbf0a7529511effd8be4_Training_pipeline.png" alt="" />
+</figure>
+
+The training pipeline needs to take in historical data for a given timeframe and spit out a trained model at the other end. Here is a short description for all the steps we deemed necessary to get from input to output.
+
+<ol id=""><li id="">Importer - Imports data from nba.com for a given set of seasons</li><li id="">Feature Engineer - Additionally filter data by time and add Opponent column to each row</li><li id="">Encode - Encode Season ID and Team Abbreviations for the benefit of the model</li><li id="">ML Splitter - Split the dataset into train, eval and test set</li><li id="">Trainer - Train a model to predict on the data</li><li id="">Tester - Test the performance of the model</li></ol>
+
+On the other branch:
+
+<ol id=""><li id="">Drift Splitter - Split data at seven days ago</li><li id="">Drift Detector - Check if the last seven days of games have drifted away from the past years of data</li><li id="">Drift Alert - Send a message to Discord so that we can intervene</li></ol>
+
+### Prediction Pipeline
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/a0060b9a/652fdbf1e2007bafb9a18ddc_Prediction_pipeline.png" alt="" />
+</figure>
+
+The prediction pipeline on the other hand needs a schedule for upcoming matches as the input and should post our prediction to our Discord chat. To achieve this we have also split the problem into a few distinct steps.
+
+<ol id=""><li id="">Importer - Import game schedule from a different data source</li><li id="">Preprocessor - Massage data into the same table format that the model was trained and apply the same encoding</li><li id="">Note that this is another point where <strong id="">ZenML</strong> makes it super easy to take outputs from steps in different pipelines</li><li id="">Extract Next Week Data - Here we filter to only use the next week’s schedule</li><li id="">Model Picker - Decide which model to pick based on scores of the test set in the training pipeline</li><li id="">Predictor - Run an inference on the matches for the upcoming week</li><li id="">Post Prediction - This step has actually turned into two</li><li id="">Data Postprocessor - To turn one hot encodings back into a human-readable form</li><li id="">Discord Poster - To post our predictions to Discord</li></ol>
+
+### MLFlow tracking
+
+The [MLFlow Tracking](https://mlflow.org/docs/latest/tracking.html) component is an API and UI for logging parameters, code versions, metrics, and output files when running your machine learning code and for later visualizing the results.
+
+*We are currently actively working on deeply integrating with MLflow and making it as easy as possible to utilize MLFlow within your ZenML pipelines. For this ZenHack we used MLflow tracking for its visualization. Keep your eyes peeled, though; we have some more MLFlow-related features coming up in our next releases. *(UPDATE: As of November 2022 we have a full-fledged MLFlow integration part of the ZenML Expirement Tracking stack component. You can read more about it [here](https://docs.zenml.io/stacks-and-components/component-guide/experiment-trackers/mlflow))
+
+Within our ZenHack only two lines of code were really necessary to liftoff with MLFlow.
+
+<ol id=""><li id="">Enable MLFlow for a step</li></ol>
+
+<div data-rt-embed-type="true"><pre><code class="language-bash" fs-codehighlight-element="code">
+@step(experiment_tracker=experiment_tracker.name)
+def tf_trainer(....):
+ &nbsp; &nbsp;...
+</code></pre></div>
+
+‍
+
+This configures the MLFlow backend and the experiment name and establishes a connection between a ZenML pipeline run and a MLFlow run.
+
+2.Select what to log in code
+
+<div data-rt-embed-type="true"><pre><code class="language-bash" fs-codehighlight-element="code">
+...
+mlflow.sklearn.autolog()
+clf = RandomForestRegressor(max_depth=config.max_depth)
+...
+</code></pre></div>
+
+‍
+
+And with just that, we have MLFlow tracking in our pipeline. The MLFLow ui can now be started from within our Jupyter notebook:
+
+<div data-rt-embed-type="true"><pre><code class="language-bash" fs-codehighlight-element="code">
+!mlflow ui --backend-store-uri '{local_mlflow_backend()}' --port 4999
+</code></pre></div>
+
+‍
+
+And like that we can use the MLFlow ui to quickly compare runs and analyze the different runs.
+
+### Kubeflow Pipelines and Scheduled Runs
+
+[Kubeflow Pipelines](https://www.kubeflow.org/docs/components/pipelines/introduction/) is a platform for building and deploying portable, scalable machine learning workflows based on Docker containers.
+
+Check out our [docs](https://docs.zenml.io/stacks-and-components/component-guide/orchestrators/kubeflow) to find out how to quickly go from standard pipeline orchestration to using Kubeflow Pipelines for your own applications.
+
+Within our ZenHack we used Kubeflow as the orchestration backend for our scheduled training. After some configuration steps (see screenshot below) Kubeflow Pipelines runs locally.
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/dfd71f77/652fdbef8a2ad302388f4571_kubeflowstack.png" alt="" />
+</figure>
+
+The Python script that is called in the last line of the screenshot instantiates the pipeline and starts a scheduled run. For demonstration purposes we have chosen to repeat every 10 minutes here.
+
+<div data-rt-embed-type="true"><pre><code class="language-bash" fs-codehighlight-element="code">
+train_pipe = training_pipeline(
+ &nbsp; &nbsp;importer=game_data_importer(),
+ &nbsp; &nbsp;...
+ &nbsp; &nbsp;drift_alert=discord_alert(),
+)
+
+train_pipe.run(
+ &nbsp; &nbsp;schedule=Schedule(start_time=datetime.now(), interval_second=600)
+ &nbsp; &nbsp;)
+</code></pre></div>
+
+‍
+
+### Discord Step
+
+“If a tree falls in a forest and no one is around to hear it, does it make a sound?”. Well, we won’t tackle that philosophical question here. But what is the point of training and prediction on models if those predictions are never heard or seen?
+
+This is why we implemented a small Discord-posting step that takes our ZenHack a step further — pun intended!. Once we deploy the training and prediction pipelines on a schedule we can see the prediction for the upcoming game on Discord.
+
+Here is the very first prediction posted at 10:39 CET on 30.01.2022:
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/1cccf1d5/652fdbeecb0e3c4284d55a40_Prediction.png" alt="&quot;Prediction posted to discord&quot;" />
+</figure>
+
+And somehow our very first prediction came true. Approximately four and a half hours later Orlando Magic concluded their [match](https://statsdmz.nba.com/pdfs/20220130/20220130_DALORL_book.pdf) against the Dallas Mavericks with 11 three-pointers.
+
+## The Endgame
+
+This ZenHack was a special one for us as there was an additional motive behind it. We had the privilege of presenting ZenML at a Meetup organized by [MLOps.community](https://mlops.community/) on January 26, 2022. Just in time for this meetup we pulled off a clutch play of our own: with just a few minutes to spare we put together all the pipelines within the ZenHack and released ZenML 0.6.0 so that participants could code along while we walked through the ZenHack.
+
+<figure id="" class="w-richtext-figure-type-video w-richtext-align-fullwidth" style="padding-bottom:56.25%" data-rt-type="video" data-rt-align="fullwidth" data-rt-max-width="" data-rt-max-height="56.25%" data-rt-dimensions="0:0" data-page-url=""><div id=""><iframe src="https://www.youtube.com/embed/Ne-dt9tu11g" frameborder="0" allowfullscreen=""></iframe></div></figure>
+
+In this video of the meetup you’ll see our co-founder and CTO [Hamza Tahir](https://www.linkedin.com/in/hamzatahirofficial/) lead an interactive live-coding session together with [Ben Epstein](https://www.linkedin.com/in/ben-epstein/), using the substance of this ZenHack as a basis.
+
+## Conclusion
+
+This ZenHack truly was a fun adventure for us to embark upon. I learned a ton and would like to just sum it all up with these conclusions:
+
+### What you should take away from this
+
+<ol id=""><li id="">If you too want a Discord bot that predicts NBA games for you, checkout the code <a href="https://github.com/zenml-io/zenml-projects/tree/main/nba-pipeline" id="">here</a>. Feel free to improve the underlying models or steps and open a pull request! We are eager for your feedback, so if you run into any issues or if you like what you see, come join us on <a href="https://zenml.io/slack-invite/" id="">Slack</a> and let us know!</li><li id="">If you have an idea similar to ours and quickly want to go from <strong id="">idea</strong> to <strong id="">continuous training/inference</strong>, then <strong id="">ZenML</strong> is the way to get there.</li></ol>
+
+### What I took away from it
+
+<ol id=""><li id="">Personally, I got to know ZenML from a very different angle which is an awesome way to inform our vision going forward.</li><li id="">These ZenHacks are an amazing way to really test out our code from the perspective of a user. The few smaller issues we found during this ZenHack were directly put into tickets and many have been solved already. It is a real testament to how fast we can move as a <a href="https://zenml.io/team/#team" id="">team</a> 💪. It is a real privilege working together with everyone here.</li></ol>
+
+[*Image credit: Photo by *[Markus Spiske](https://unsplash.com/@markusspiske)* on *[unsplash](https://unsplash.com/)]
+
+‍

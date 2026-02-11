@@ -1,0 +1,125 @@
+---
+title: "Scaling Document Processing with LLMs and Human Review"
+slug: "scaling-document-processing-with-llms-and-human-review"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "677805a2a2f3b50f7a93a1c9"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:52:06.239Z"
+  createdOn: "2025-01-03T15:43:30.098Z"
+llmopsTags:
+  - "document-processing"
+  - "data-cleaning"
+  - "data-integration"
+  - "structured-output"
+  - "regulatory-compliance"
+  - "embeddings"
+  - "fine-tuning"
+  - "prompt-engineering"
+  - "human-in-the-loop"
+  - "semantic-search"
+  - "chunking"
+  - "error-handling"
+  - "few-shot"
+  - "monitoring"
+  - "documentation"
+  - "guardrails"
+  - "reliability"
+  - "openai"
+  - "anthropic"
+  - "microsoft-azure"
+  - "amazon-aws"
+  - "google-gcp"
+company: "Vendr / Extend"
+summary: "Vendr partnered with Extend to extract structured data from SaaS order forms and contracts using LLMs. They implemented a hybrid approach combining LLM processing with human review to achieve high accuracy in entity recognition and data extraction. The system successfully processed over 100,000 documents, using techniques such as document embeddings for similarity clustering, targeted human review, and robust entity mapping. This allowed Vendr to unlock valuable pricing insights for their customers while maintaining high data quality standards."
+link: "https://www.youtube.com/watch?v=yTg-YOphJQM"
+seo:
+  title: "Vendr / Extend: Scaling Document Processing with LLMs and Human Review - ZenML LLMOps Database"
+  description: "Vendr partnered with Extend to extract structured data from SaaS order forms and contracts using LLMs. They implemented a hybrid approach combining LLM processing with human review to achieve high accuracy in entity recognition and data extraction. The system successfully processed over 100,000 documents, using techniques such as document embeddings for similarity clustering, targeted human review, and robust entity mapping. This allowed Vendr to unlock valuable pricing insights for their customers while maintaining high data quality standards."
+  canonical: "https://www.zenml.io/llmops-database/scaling-document-processing-with-llms-and-human-review"
+  ogTitle: "Vendr / Extend: Scaling Document Processing with LLMs and Human Review - ZenML LLMOps Database"
+  ogDescription: "Vendr partnered with Extend to extract structured data from SaaS order forms and contracts using LLMs. They implemented a hybrid approach combining LLM processing with human review to achieve high accuracy in entity recognition and data extraction. The system successfully processed over 100,000 documents, using techniques such as document embeddings for similarity clustering, targeted human review, and robust entity mapping. This allowed Vendr to unlock valuable pricing insights for their customers while maintaining high data quality standards."
+---
+
+## Overview
+
+This case study presents a joint presentation from Vendr and Extend at the NLP Summit, detailing how they built a production LLM system for processing SaaS order forms and contracts at scale. Vendr collects transaction data to help customers compare pricing and make better purchasing decisions for SaaS tools like Slack, Salesforce, and Zoom. The core challenge was that valuable pricing and contract information was locked in unstructured PDF documents, and they needed to extract this data to provide insights to customers.
+
+Rather than building the extraction capability in-house, Vendr partnered with Extend, a document processing platform that uses LLMs to convert unstructured documents into structured data. This partnership allowed Vendr's data science team to focus on prompt engineering, data corrections, and building on the extracted dataset rather than infrastructure.
+
+## When to Use LLMs vs Traditional OCR
+
+The presentation begins with an important strategic discussion about when LLMs are appropriate for document processing. Extend's CEO explicitly cautions that LLMs are not a silver bullet and can introduce significant complexity. They recommend first evaluating whether generic OCR tools (like AWS Textract, Google OCR, or Azure Document AI) or domain-specific point solutions (for W2 forms, receipts, invoices) can solve the problem.
+
+LLMs become valuable when legacy solutions fall short due to inability to handle complex data requirements, lack of customization for unique experiences, or when full control over the processing pipeline is needed. This nuanced view is refreshing compared to approaches that position LLMs as the default solution for all problems.
+
+## Key Production Challenges Identified
+
+The presentation identifies three major landmines when deploying LLMs for mission-critical document processing use cases:
+
+The first challenge is extremely long go-live periods. Teaching LLMs to handle the ambiguity, complexity, and variety in documents without spending months iterating on edge cases requires careful system design. The second challenge relates to the non-deterministic nature of AI systems, which can fail in unexpected ways. Teams need confidence that hallucinations won't have adverse downstream impacts. The third challenge is that data complexity and business requirements continuously change, requiring systems that can adapt without extensive maintenance.
+
+## Data Preprocessing Pipeline
+
+A robust preprocessing pipeline is essential before documents reach the LLM. Documents arrive in many shapes, sizes, and formats with various issues: skewed orientation, upside-down pages, blurry images, and documents spanning hundreds of pages. The system must handle table structures that span multiple pages, determine when to use multimodal models versus text extraction, and manage image resolution issues.
+
+Extend uses traditional OCR techniques to rotate, de-skew, remove noise, and crop documents before feeding them to LLMs. This ensures the models receive clean, well-formatted data. The presentation notes that multimodal models tend to hallucinate more but are better at recognizing certain features like signatures and strikethroughs, so the system combines both approaches strategically.
+
+## Context Engineering and Workflow Design
+
+A significant insight from the presentation is that the paradigm has shifted from technical data engineering challenges to context and domain expertise challenges. As models improve, the bottleneck is no longer extracting text from pages but teaching LLMs about ambiguity and requirements.
+
+For example, when extracting "total price" from a financial document, the system must understand whether this means list price, price after discounts, whether taxes are included, and how to handle strikethroughs. The presentation emphasizes breaking down complex problems into discrete steps: first validate the file (is it legible? is it the right document type?), then identify which pages contain relevant information, then locate specific sections, and finally normalize values for downstream use.
+
+Extend provides no-code and low-code tools that enable both technical and non-technical domain experts to collaborate. Domain experts understand the business logic better than anyone, so giving them tools to teach that ambiguity to models is extremely powerful. This approach of operationalizing "runbooks" through workflow steps significantly reduces reliance on models making logical leaps that can introduce errors.
+
+## Model Selection and Evaluation Strategy
+
+The system supports model optionality because performance means different things depending on context—high accuracy, low latency, or low cost. The recommended approach is to start with models like OpenAI or Anthropic as defaults, then customize and test between different options. Claude was noted as better for certain visual tasks, open-source models optimize for cost, and smaller models optimize for latency.
+
+Critical to this model selection process is maintaining robust evaluation sets. Without eval sets, teams cannot know if they're introducing regressions when switching models or if performance is degrading on certain fields. The presentation warns against brittle trial-and-error methods that waste significant time.
+
+## Confidence Estimation and Quality Control
+
+For mission-critical use cases, the presentation acknowledges that LLMs are not 100% accurate. Day one performance might reach 90%, but deploying without guardrails is risky. Several techniques are used to catch the remaining 5-10% of problematic extractions:
+
+Confidence estimation cannot rely on asking the LLM directly for its confidence—this doesn't work well. Instead, the system uses log probabilities of output tokens, asks models for citations and chain-of-thought reasoning, and interprets uncertainty signals within responses. They also experiment with LLM-as-judge patterns where teacher-student models check each other's work.
+
+Data validations provide additional guardrails. For invoice line items, the system checks whether individual items sum to the stated total. Discrepancies trigger human review. This is augmented with robust human-in-the-loop tooling where humans have oversight over the entire process, can review results, make corrections, and add notes. These corrections become valuable signals that are monitored over time to identify which fields are struggling.
+
+## Continuous Improvement Without Over-Reliance on Fine-Tuning
+
+The presentation offers a nuanced view on fine-tuning, noting it is not a silver bullet and teams often jump to it prematurely, potentially experiencing degraded performance. The recommended approach is to first monitor production data, add edge cases to evaluation sets, and optimize prompts iteratively. Few-shot examples can typically improve accuracy from 80-90% up to 95%.
+
+Fine-tuning should only be explored for that last bit of performance that edge case prompting cannot fix. The presentation notes that data classification is a good fit for fine-tuning, but data extraction is more challenging due to chunking and overfitting issues.
+
+## Vendr's Entity Mapping Approach
+
+Vendr's portion of the presentation focuses on their specific implementation for processing SaaS order forms. They need to identify and map several entity types: customers (who purchase SaaS), sellers (who sell SaaS—which could be the software company itself, a parent company, or a reseller), and suppliers (the software brand).
+
+Entity mapping is critical because misclassification leads to lost user trust, inability to find relevant documents, and incorrect data aggregations. While one might consider using LLMs for real-time entity resolution during search, the team determined this would result in error rates above 5% with unknown unknowns. Complex seller-supplier-customer relationships require advance resolution.
+
+The entity recognition workflow involves writing and iterating on prompts to extract entity names, but mapping names to catalog entries presents challenges: LLMs may return incorrect entity names, string overlaps cause false matches, entities may not exist in the catalog, and entity names change due to corporate actions like mergers and acquisitions. With these issues occurring more than 5% of the time, human review remains necessary.
+
+## Document Embeddings for Targeted Review
+
+A clever innovation in Vendr's approach is using document embeddings to target human review efforts rather than reviewing every document manually. They use OpenAI to calculate embeddings from document text, then calculate cosine similarity among documents to identify outliers that fall outside their expected clusters.
+
+This approach revealed several patterns: documents with incorrect seller identification (requiring targeted corrections), documents that weren't order forms at all, sellers changing their document format over time, and varying document lengths indicating appendices or attachments. They added a short embedding limited to the first 450 words and now use different embedding lengths for different purposes.
+
+## Affirmation System for Data Quality
+
+Vendr implemented an affirmation system where human review not only corrects data but explicitly confirms it. An affirmation means a human has verified the data is correct, recorded in the UI with a small green check mark. This creates a trust hierarchy in the data, identifies highly trusted information, and prevents subsequent LLM extractions from overwriting previously reviewed and approved data.
+
+## Rubrics for Field Extraction
+
+For other fields beyond entity mapping, Vendr emphasizes creating clear rubrics that describe the rules for deriving structured data, the semantics of each field, and processes for handling ambiguity. Rubrics must handle real-world challenges like human errors in source documents (e.g., "224" instead of "2024"), inferences (calculating end date from start date and term length), changed relationships (assigning documents to entities that didn't exist when forms were created), and augmentation (inferring whether contracts auto-renew when not explicitly stated).
+
+## Results and Assessment
+
+The joint presentation claims that this hybrid LLM and human review approach has enabled processing of more than 100,000 documents substantially faster and more successfully than prior manual coding methods. While specific metrics on accuracy improvements, cost savings, or time reductions aren't provided, the detailed discussion of challenges and solutions suggests a mature production system.
+
+The overall approach represents a balanced, production-tested methodology that acknowledges LLM limitations while leveraging their capabilities appropriately. The emphasis on preprocessing, evaluation sets, human-in-the-loop workflows, and targeted review through embeddings demonstrates sophisticated thinking about building reliable AI systems at scale.

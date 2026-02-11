@@ -1,0 +1,151 @@
+---
+title: "Scaling AI-Assisted Coding Infrastructure: From Auto-Complete to Global Deployment"
+slug: "scaling-ai-assisted-coding-infrastructure-from-auto-complete-to-global-deployment"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "67d82846f8fa1da9d0ac194a"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:03:54.623Z"
+  createdOn: "2025-03-17T13:48:54.225Z"
+llmopsTags:
+  - "code-generation"
+  - "code-interpretation"
+  - "embeddings"
+  - "semantic-search"
+  - "vector-search"
+  - "error-handling"
+  - "latency-optimization"
+  - "cost-optimization"
+  - "fallback-strategies"
+  - "chunking"
+  - "databases"
+  - "monitoring"
+  - "load-balancing"
+  - "scaling"
+  - "reliability"
+  - "postgresql"
+  - "redis"
+  - "cache"
+  - "elasticsearch"
+  - "kubernetes"
+  - "docker"
+  - "microsoft-azure"
+  - "amazon-aws"
+  - "google-gcp"
+  - "openai"
+  - "anthropic"
+company: "Cursor"
+summary: "Cursor, an AI-assisted coding platform, scaled their infrastructure from handling basic code completion to processing 100 million model calls per day across a global deployment. They faced and overcame significant challenges in database management, model inference scaling, and indexing systems. The case study details their journey through major incidents, including a database crisis that led to a complete infrastructure refactor, and their innovative solutions for handling high-scale AI model inference across multiple providers while maintaining service reliability."
+link: "https://www.youtube.com/watch?v=4jDQi9P9UIw"
+year: 2023
+seo:
+  title: "Cursor: Scaling AI-Assisted Coding Infrastructure: From Auto-Complete to Global Deployment - ZenML LLMOps Database"
+  description: "Cursor, an AI-assisted coding platform, scaled their infrastructure from handling basic code completion to processing 100 million model calls per day across a global deployment. They faced and overcame significant challenges in database management, model inference scaling, and indexing systems. The case study details their journey through major incidents, including a database crisis that led to a complete infrastructure refactor, and their innovative solutions for handling high-scale AI model inference across multiple providers while maintaining service reliability."
+  canonical: "https://www.zenml.io/llmops-database/scaling-ai-assisted-coding-infrastructure-from-auto-complete-to-global-deployment"
+  ogTitle: "Cursor: Scaling AI-Assisted Coding Infrastructure: From Auto-Complete to Global Deployment - ZenML LLMOps Database"
+  ogDescription: "Cursor, an AI-assisted coding platform, scaled their infrastructure from handling basic code completion to processing 100 million model calls per day across a global deployment. They faced and overcame significant challenges in database management, model inference scaling, and indexing systems. The case study details their journey through major incidents, including a database crisis that led to a complete infrastructure refactor, and their innovative solutions for handling high-scale AI model inference across multiple providers while maintaining service reliability."
+---
+
+## Overview
+
+This case study comes from a Stanford CS153 lecture featuring Sualeh Asif (referred to as "Swal" or "Swali"), the CTO and co-founder of Cursor, an AI-powered code editor that has become one of the most popular tools for AI-assisted coding. The discussion provides an unusually candid and technically detailed look at the infrastructure challenges of running LLM-based services at massive scale. Cursor has scaled by a factor of 100 or more in the past year, processing approximately 100 million custom model calls per day on their self-hosted models alone, in addition to being a substantial portion of frontier model (Anthropic, OpenAI) API traffic globally.
+
+## Three Pillars of Cursor's Infrastructure
+
+Cursor's production infrastructure is built around three core pillars:
+
+### Indexing Systems
+The indexing infrastructure is responsible for understanding users' codebases, which can range from small personal projects to enterprise-scale repositories comparable to companies like Instacart. The indexing system includes:
+
+- **Retrieval systems**: The most user-visible component that powers contextual code retrieval when users ask questions or request code generation
+- **Git indexing**: Deep integration with version control to understand repository history
+- **Document processing**: The system processes approximately a billion documents per day, with hundreds of billions processed over the company's lifetime
+
+The indexing system uses a Merkle Tree structure for efficient synchronization between client and server. Each file gets hashed, and folder hashes are computed from their children up to a root hash. This allows efficient detection of changes when users return to their editor - instead of re-scanning everything, the system descends the tree to find only what has changed, enabling automatic re-indexing without user intervention.
+
+### Model Inference
+Cursor runs both self-hosted custom models and relies on frontier model providers. For autocomplete alone - which runs on every keystroke - they handle approximately 20,000 model calls per second at any given time. This runs on a fleet of around 1,000-2,000 H100 GPUs distributed globally across:
+- East Coast US (Virginia)
+- West Coast US (Phoenix)
+- London
+- Tokyo
+
+They attempted a Frankfurt deployment but encountered stability issues. The geographic distribution is critical for latency-sensitive features like autocomplete, where users in Japan still need a responsive experience.
+
+Beyond autocomplete, they have an "apply model" that handles applying generated code changes to codebases - a particularly challenging inference problem that may involve 100,000 to 200,000 tokens while still needing to feel instantaneous to users.
+
+### Streaming Infrastructure
+The third pillar encompasses data pipelines for storing incoming data, running continuous training/improvement processes, and background analytics. This isn't user-facing in real-time but powers the continuous improvement of Cursor's models and product.
+
+## Architectural Philosophy
+
+Cursor operates on a monolithic architecture - "everything is one big monolith that we deploy." However, they've learned hard lessons about compartmentalization. Early on, an infinite loop in experimental code could take down critical services like chat or even login. The solution has been to create strict isolation between blast radii - experimental code paths are segregated from core services that must remain available.
+
+They've also adopted a philosophy of simplicity: "there's a strict rule on the server because if it's too complicated you don't understand it, you can't run it." This pragmatic approach to managing complexity has become essential as the system has grown.
+
+## Database Lessons and Incident Response
+
+### The YugaByte to PostgreSQL Migration
+
+The talk includes a detailed incident story from around September 2023 involving their indexing system. Initially, they chose YugaByte, a distributed database descended from Google's Spanner, expecting infinite scalability. The reality was that they couldn't get YugaByte to run reliably despite significant investment.
+
+The lesson was stark: "Don't choose a complicated database. Go with hyperscalers - they know what they're doing, their tooling is really good. Use Postgres, don't do anything complicated."
+
+### The 22TB PostgreSQL Crisis
+
+After moving to RDS PostgreSQL, the system ran beautifully for about eight months. Then disaster struck. The database had grown to 22TB of data (RDS has a 64TB limit), but the problem wasn't storage space - it was PostgreSQL's internal mechanisms.
+
+The issue stemmed from their workload pattern: constant file updates. In PostgreSQL, an UPDATE is actually a DELETE plus an INSERT - it doesn't modify records in place. With users constantly typing and updating files, the database accumulated massive amounts of dead tuples (tombstoned records). The VACUUM process responsible for cleaning up this dead data couldn't keep pace, and the database began grinding to a halt.
+
+AWS support couldn't help. Even the RDS architects who built the database said they were "in big trouble." The database eventually stopped booting entirely.
+
+### Real-Time Migration Under Pressure
+
+The incident response involved parallel workstreams:
+- One person deleted all foreign keys to reduce database load
+- Another attempted to delete a 20TB table as fast as possible
+- Others manually intervened in the PostgreSQL console to clean up transactions
+- One co-founder (Arvid) was tasked with rewriting the entire workload to use object storage
+
+Remarkably, the object storage rewrite succeeded faster than any of the repair attempts. This led to a live migration to a completely new architecture during an active outage. The new system was deployed with essentially zero testing - "no tests needed, no nothing, I just wrote it two hours ago" - because the alternative was indefinite downtime.
+
+The winning solution leveraged object storage (S3, R2, etc.), which the speaker describes as the most reliable infrastructure available. They use Turbopuffer for vector database capabilities on top of object storage. The lesson: "the best way to scale a database is to just not have a database."
+
+## Working with Frontier Model Providers
+
+Cursor is one of the largest consumers of frontier model APIs globally. The speaker describes the relationship with providers as ongoing "live negotiations" reminiscent of early cloud computing.
+
+Key challenges include:
+- **Rate limits**: Constant negotiation for higher token quotas
+- **Provider reliability**: "Model providers have terrible reliability. No one has good reliability."
+- **Caching issues**: One unnamed provider crashed at 30-40 million tokens per minute because they hadn't figured out caching
+- **Multi-provider routing**: They run workloads across multiple providers (AWS, Google Cloud, direct API) and dynamically balance users across them based on availability
+
+The cold-start problem is particularly challenging during incident recovery. If all nodes go down and you bring up 10 of your 1,000 nodes, every user's requests will immediately overwhelm those 10 nodes before they can become healthy. Various mitigation strategies include prioritizing certain users, killing traffic entirely, or (like WhatsApp) bringing up specific prefixes first.
+
+## Security Considerations
+
+Given that Cursor processes proprietary code for many users, security is a significant concern. They implement encryption at the vector database level - embeddings are encrypted with keys that live on user devices. Even if someone compromised the vector database (which would require breaching Google Cloud security), they couldn't decode the vectors without the encryption keys.
+
+The speaker notes this is belt-and-suspenders security: "I'm 99.99% sure there's no way to go from a vector to code, but because it's not some provable fact about the world, it's better to just have this encryption key."
+
+## Abuse Prevention
+
+Free tier abuse is an ongoing challenge. Recent attempts include someone creating hundreds of thousands of Hotmail accounts, distributing requests across 10,000 IP addresses to evade rate limiting. Significant engineering effort goes into analyzing traffic patterns to block such abuse while maintaining service for legitimate users.
+
+## Lessons for LLMOps at Scale
+
+Several key takeaways emerge from Cursor's experience:
+
+- **Start simple with databases**: Distributed databases sound appealing but proven solutions like PostgreSQL often work better in practice
+- **Object storage is remarkably reliable**: Moving workloads to S3/R2-based systems can eliminate entire categories of database problems
+- **Cold-start planning is essential**: Recovery procedures must account for the thundering herd problem
+- **Compartmentalize blast radii**: Experimental code should not be able to take down core services
+- **Multi-provider redundancy**: Don't depend on a single inference provider
+- **Invest in monitoring**: The Merkle tree incident was harder to debug because certain error rates weren't being monitored
+- **Sometimes models can catch bugs**: They note that their "bugbot" would have caught the bug that caused a recent severe outage, suggesting AI code review as part of incident prevention
+
+The speaker also notes that LLM-assisted development has actually enabled them to cover more infrastructure surface area with a small team - rather than eliminating engineering jobs, the tools enable more ambitious system designs by handling routine aspects of implementation.

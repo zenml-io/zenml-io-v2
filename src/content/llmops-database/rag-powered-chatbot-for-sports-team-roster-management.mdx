@@ -1,0 +1,110 @@
+---
+title: "RAG-Powered Chatbot for Sports Team Roster Management"
+slug: "rag-powered-chatbot-for-sports-team-roster-management"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "67725e2b1900793be5e66556"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:51:09.030Z"
+  createdOn: "2024-12-30T08:47:39.070Z"
+llmopsTags:
+  - "question-answering"
+  - "chatbot"
+  - "structured-output"
+  - "regulatory-compliance"
+  - "rag"
+  - "embeddings"
+  - "semantic-search"
+  - "vector-search"
+  - "prompt-engineering"
+  - "fastapi"
+  - "langchain"
+  - "wandb"
+  - "databricks"
+  - "openai"
+company: "Philadelphia Union"
+summary: "Philadelphia Union implemented a GenAI chatbot using Databricks Data Intelligence Platform to simplify complex MLS roster management. The solution uses RAG architecture with Databricks Vector Search and DBRX Instruct model to provide instant interpretations of roster regulations. The chatbot, deployed through Databricks Apps, enables quick decision-making and helps the front office maintain compliance with MLS guidelines while focusing on strategic tasks."
+link: "https://www.databricks.com/blog/philadelphia-union-genai"
+year: 2024
+seo:
+  title: "Philadelphia Union: RAG-Powered Chatbot for Sports Team Roster Management - ZenML LLMOps Database"
+  description: "Philadelphia Union implemented a GenAI chatbot using Databricks Data Intelligence Platform to simplify complex MLS roster management. The solution uses RAG architecture with Databricks Vector Search and DBRX Instruct model to provide instant interpretations of roster regulations. The chatbot, deployed through Databricks Apps, enables quick decision-making and helps the front office maintain compliance with MLS guidelines while focusing on strategic tasks."
+  canonical: "https://www.zenml.io/llmops-database/rag-powered-chatbot-for-sports-team-roster-management"
+  ogTitle: "Philadelphia Union: RAG-Powered Chatbot for Sports Team Roster Management - ZenML LLMOps Database"
+  ogDescription: "Philadelphia Union implemented a GenAI chatbot using Databricks Data Intelligence Platform to simplify complex MLS roster management. The solution uses RAG architecture with Databricks Vector Search and DBRX Instruct model to provide instant interpretations of roster regulations. The chatbot, deployed through Databricks Apps, enables quick decision-making and helps the front office maintain compliance with MLS guidelines while focusing on strategic tasks."
+---
+
+## Overview
+
+Philadelphia Union, a Major League Soccer (MLS) team and 2020 Supporters' Shield winners, sought to streamline their roster management and decision-making processes. In MLS, teams must navigate extensive Roster Composition Rules and Regulations that govern player acquisitions, salary budgets, and team composition. These rules are often complex and filled with legalistic language, creating bottlenecks when the front office needs quick answers during time-sensitive transfer decisions or roster planning sessions.
+
+To address this challenge, the Philadelphia Union data team built a GenAI chatbot using a Retrieval-Augmented Generation (RAG) architecture, fully powered by the Databricks Data Intelligence Platform. The chatbot provides a conversational interface for querying roster rules, salary budget guidelines, and other regulatory information, enabling rapid decision-making and operational efficiency.
+
+## Technical Architecture
+
+The solution employs a classic RAG architecture, which works by retrieving relevant context from an external knowledge base, augmenting the user's query with this context, and generating responses using a large language model. This approach is well-suited for domain-specific question-answering tasks where accuracy and grounding in source documents are critical.
+
+### Document Ingestion Pipeline
+
+The system includes a continuous ingestion mechanism designed to automatically incorporate new roster rule PDFs as they become available. Documents are loaded into Databricks Volumes, which serves as a fully governed store for semi-structured and unstructured data. The text extraction process then converts PDF content into a format suitable for embedding generation.
+
+### Vector Storage and Retrieval
+
+Numerical representations (embeddings) are generated from the extracted text using Embedding Models available through the Databricks Foundation Model API. These embeddings are then indexed and served by Vector Search, Databricks' vector database solution. This enables fast and efficient similarity search, allowing the system to quickly retrieve the most relevant passages when a user submits a query about roster regulations.
+
+### Large Language Model
+
+Philadelphia Union utilized DBRX Instruct, Databricks' own open-source LLM based on a Mixture of Experts (MoE) architecture. The case study notes that DBRX Instruct delivers excellent performance on benchmarks such as MMLU. An important LLMOps consideration here is that the model is available through the Databricks Foundation Model API, eliminating the need for the team to host or manage their own model infrastructure. This serverless approach significantly reduces operational overhead and allows the team to focus on application development rather than infrastructure management.
+
+### Agent Orchestration and Deployment
+
+The RAG chatbot is deployed using the Mosaic AI Agent Framework, which provides seamless orchestration of the various RAG components into a unified chain. This chain is hosted on a Databricks Model Serving endpoint as an API, making it accessible to downstream applications. The framework abstracts away much of the complexity involved in connecting retrieval, augmentation, and generation components into a cohesive system.
+
+### User Interface
+
+The chatbot is accessed through a no-code, ChatGPT-like interface deployed via Databricks Apps. This approach enables quick deployment of secure data and AI applications without requiring extensive front-end development work. The conversational style interface provides easy access for front office staff who may not have technical backgrounds, enabling them to perform zero-shot interpretation of roster regulations in seconds.
+
+## LLMOps Practices and Considerations
+
+### Rapid Development and Iteration
+
+The case study highlights that the Union's data team developed and deployed their RAG model in just days. This rapid time-to-model was enabled by the end-to-end LLMOps workflow provided by the Mosaic AI Agent Framework. The framework supports fast iteration, seamless testing, and deployment cycles, significantly reducing the time typically required for complex AI systems.
+
+### Evaluation and Quality Assurance
+
+Before deployment, the team utilized built-in Evaluations provided by the Mosaic AI Agent Framework. This included a review app for collecting human feedback and validating the effectiveness of the RAG solution. The ability to systematically evaluate model outputs against human expectations is a critical LLMOps practice that helps ensure reliability and accuracy before production deployment.
+
+### Trace Logging and Feedback Capture
+
+The framework provides features like trace logging and feedback capture, which enable continuous quality improvement and fine-tuning. These observability capabilities are essential for understanding how the system performs in production and identifying areas for improvement. The ability to trace requests through the RAG pipeline helps with debugging and performance optimization.
+
+### Experimentation with MLflow
+
+MLflow integration simplified experimentation with various RAG configurations, allowing the team to test different approaches and ensure optimal performance. This experimentation capability is fundamental to iterative model development and helps teams make data-driven decisions about system configuration.
+
+### Governance and Security
+
+The Mosaic AI Agent Framework's integration with the Databricks Data Intelligence Platform ensures that all deployments adhere to governance and security standards. Databricks Unity Catalog provides robust data management and governance, ensuring secure and compliant handling of sensitive player and roster information while maintaining enterprise governance standards. This is particularly important in professional sports contexts where roster information and player data can be commercially sensitive.
+
+## Benefits and Results
+
+The case study presents several claimed benefits of the implementation:
+
+- **Immediate Value Realization**: The RAG system automated the extraction and analysis of roster rules, tasks that were previously time-consuming and manual. Front office staff can now get instant answers to regulatory questions.
+
+- **Scalability**: The platform's ability to efficiently process large volumes of data allows analysis of not only current roster rules but also historical trends and future scenarios at scale.
+
+- **Operational Efficiency**: By providing instant access to regulatory interpretations, the chatbot frees up the front office to focus on more strategic, value-adding tasks rather than manually searching through documentation.
+
+## Critical Assessment
+
+It's worth noting that this case study is published on the Databricks blog and co-authored by Databricks employees alongside the Philadelphia Union representative. As such, readers should consider that the presentation is naturally oriented toward highlighting the positive aspects of the Databricks platform.
+
+The case study provides relatively limited quantitative metrics about the system's performance, accuracy, or specific time savings achieved. While claims of "rapid development" and "immediate value" are made, concrete measurements of these benefits are not provided. Additionally, the long-term maintenance requirements, costs, and any challenges encountered during implementation are not discussed.
+
+The use case itself—interpreting regulatory documents—is a well-suited application for RAG architectures, as it involves retrieving specific information from a defined corpus of documents. The success of such a system would depend heavily on the quality of document parsing, chunk sizing strategies, and retrieval accuracy, none of which are detailed in the case study.
+
+Despite these caveats, the technical architecture described follows established best practices for RAG implementations, and the integration of evaluation and feedback mechanisms demonstrates awareness of important LLMOps principles for maintaining quality in production AI systems.

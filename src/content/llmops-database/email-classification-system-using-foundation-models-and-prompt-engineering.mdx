@@ -1,0 +1,98 @@
+---
+title: "Email Classification System Using Foundation Models and Prompt Engineering"
+slug: "email-classification-system-using-foundation-models-and-prompt-engineering"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "67a0e74967c1abdc70361b4a"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:59:22.781Z"
+  createdOn: "2025-02-03T15:56:57.233Z"
+llmopsTags:
+  - "classification"
+  - "document-processing"
+  - "unstructured-data"
+  - "prompt-engineering"
+  - "few-shot"
+  - "error-handling"
+  - "serverless"
+  - "fastapi"
+  - "amazon-aws"
+  - "anthropic"
+company: "Travelers Insurance"
+summary: "Travelers Insurance developed an automated email classification system using Amazon Bedrock and Anthropic's Claude models to categorize millions of service request emails into 13 different categories. Through advanced prompt engineering techniques and without model fine-tuning, they achieved 91% classification accuracy, potentially saving tens of thousands of manual processing hours. The system combines email text analysis, PDF processing using Amazon Textract, and foundation model-based classification in a serverless architecture."
+link: "https://aws.amazon.com/blogs/machine-learning/how-travelers-insurance-classified-emails-with-amazon-bedrock-and-prompt-engineering?tag=soumet-20"
+year: 2025
+seo:
+  title: "Travelers Insurance: Email Classification System Using Foundation Models and Prompt Engineering - ZenML LLMOps Database"
+  description: "Travelers Insurance developed an automated email classification system using Amazon Bedrock and Anthropic's Claude models to categorize millions of service request emails into 13 different categories. Through advanced prompt engineering techniques and without model fine-tuning, they achieved 91% classification accuracy, potentially saving tens of thousands of manual processing hours. The system combines email text analysis, PDF processing using Amazon Textract, and foundation model-based classification in a serverless architecture."
+  canonical: "https://www.zenml.io/llmops-database/email-classification-system-using-foundation-models-and-prompt-engineering"
+  ogTitle: "Travelers Insurance: Email Classification System Using Foundation Models and Prompt Engineering - ZenML LLMOps Database"
+  ogDescription: "Travelers Insurance developed an automated email classification system using Amazon Bedrock and Anthropic's Claude models to categorize millions of service request emails into 13 different categories. Through advanced prompt engineering techniques and without model fine-tuning, they achieved 91% classification accuracy, potentially saving tens of thousands of manual processing hours. The system combines email text analysis, PDF processing using Amazon Textract, and foundation model-based classification in a serverless architecture."
+---
+
+## Summary
+
+Travelers Insurance, one of the leading property and casualty insurance carriers, partnered with AWS's Generative AI Innovation Center (GenAIIC) to develop a production-ready email classification system powered by foundation models. The company receives millions of emails annually containing service requests from agents and customers, which previously required significant manual processing to categorize and route appropriately. The solution leverages Anthropic's Claude models on Amazon Bedrock to classify these emails into one of 13 predefined service categories, achieving 91% accuracy through careful prompt engineering rather than expensive model fine-tuning.
+
+## Business Context and Problem Statement
+
+The core business challenge centered on processing the high volume of incoming service request emails efficiently. These emails cover a range of insurance-related requests including address changes, coverage adjustments, payroll updates, and exposure changes. Prior to this implementation, classifying these emails required manual review, consuming significant operational time and resources. The goal was to automate this classification to redirect human effort toward more complex tasks, with the case study claiming potential savings of tens of thousands of processing hours.
+
+The team formulated this as a text classification problem, but rather than pursuing traditional supervised machine learning approaches that would require labeled training data and ongoing model maintenance, they opted to leverage the inherent capabilities of pre-trained foundation models through prompt engineering. This approach offered several advantages that are worth noting from an LLMOps perspective: faster development cycles, the ability to switch between models without retraining, rapid iteration on prompts, and the extensibility to related classification tasks without building separate models.
+
+## Technical Architecture and Pipeline
+
+The solution implements a serverless architecture on AWS, which the case study notes provides benefits in terms of lower cost of ownership and reduced maintenance complexity. The processing pipeline follows a clear sequence of steps designed to handle both email text and PDF attachments.
+
+When a raw email enters the pipeline, the system first extracts the body text from the email files (supporting both Outlook .msg and raw .eml formats). If the email contains PDF attachments, the pipeline processes these using Amazon Textract. The PDF processing involves splitting documents into individual pages, saving each as an image, and then applying Optical Character Recognition (OCR) to extract text, specific entities, and table data. This is particularly relevant for insurance workflows since approximately 25% of the emails contained PDF attachments, many of which were ACORD insurance forms that included additional classification-relevant details.
+
+The email body text undergoes cleaning to remove HTML tags when necessary, and then the extracted content from both the email body and any PDF attachments is combined into a single prompt for the LLM. Anthropic's Claude on Amazon Bedrock then processes this combined input and returns one of 13 defined categories along with the classification rationale. The predictions are captured for subsequent performance analysis.
+
+## Data and Ground Truth
+
+The engagement utilized a ground truth dataset containing over 4,000 labeled email examples. This dataset was used for evaluation purposes rather than training, given the prompt engineering approach. The team noted that for most examples, the email body text contained the majority of the predictive signal, though PDF attachments provided valuable supplementary information. The scope was explicitly limited to PDF attachments only, with other attachment types being ignored.
+
+## Prompt Engineering Methodology
+
+The prompt engineering process represents the core technical contribution of this case study and demonstrates a methodical approach to achieving production-quality results without model fine-tuning. The team conducted manual analysis of email texts and worked closely with business subject matter experts to understand the nuanced differences between the 13 classification categories.
+
+The final prompt structure included several key components:
+
+- A persona definition that established the model's role and context
+- An overall instruction providing high-level guidance on the classification task
+- Few-shot examples demonstrating how to perform classifications correctly
+- Detailed definitions for each class with explicit instructions on distinguishing characteristics
+- Key phrases and signals that help differentiate between similar categories
+- The actual email data input
+- Final output instructions specifying the expected response format
+
+This structured approach to prompt design helped reduce variance in the model's output structure and content, leading to what the team describes as "explainable, predictable, and repeatable results." The ability to provide rationale for classifications is highlighted as a differentiator compared to traditional supervised learning classifiers.
+
+## Results and Performance
+
+The performance journey illustrates the impact of systematic prompt engineering. Initial testing without prompt engineering yielded only 68% accuracy. After applying various techniques including prompt optimization, category consolidation, document processing adjustments, and improved instructions, accuracy increased to 91% using Anthropic's Claude v2. Notably, Anthropic's Claude Instant also achieved 90% accuracy, suggesting that lighter-weight models might be viable for production deployment with potential latency and cost benefits.
+
+The case study explicitly notes that for an FM-based classifier to be used in production, it must demonstrate a high level of accuracy. The 91% figure was apparently sufficient for production deployment, though the text does not specify what accuracy threshold was required or how errors are handled in the production system.
+
+## Model Selection and Fine-Tuning Considerations
+
+An interesting LLMOps consideration raised in the case study is the trade-off between prompt engineering and fine-tuning. The team chose not to pursue fine-tuning for several reasons: the 91% accuracy achieved through prompt engineering was already high, fine-tuning would incur additional costs, and at the time of the engagement, Anthropic's Claude models weren't available for fine-tuning on Amazon Bedrock. The case study notes that Claude Haiku fine-tuning has since become available in beta, suggesting this could be a future optimization path if higher accuracy is needed.
+
+This decision represents a pragmatic approach to LLMOps where the team evaluated whether the marginal accuracy gains from fine-tuning would justify the additional costs and complexity. For many production use cases, achieving acceptable accuracy through prompt engineering alone can significantly accelerate time-to-value.
+
+## Production Deployment Considerations
+
+The serverless architecture choice aligns with modern LLMOps best practices for reducing operational overhead. By leveraging managed services like Amazon Bedrock and Amazon Textract, Travelers can avoid the infrastructure management burden of hosting models themselves. The API-based approach to model access also enables flexibility to switch between models or leverage newer versions as they become available.
+
+The case study mentions that modern FMs are "powerful enough to meet accuracy and latency requirements to replace supervised learning models," though specific latency measurements or requirements are not provided. This would be an important consideration for production systems processing high email volumes.
+
+## Critical Assessment
+
+While the case study presents impressive results, it's worth noting several limitations and areas where more detail would be valuable. The specific breakdown of accuracy across the 13 categories is not provided, which would help understand where the model performs well versus where it struggles. Error handling and human-in-the-loop processes for the 9% of misclassifications are not discussed. Additionally, the case study comes from AWS's official blog and was co-authored by AWS employees, so the presentation naturally emphasizes the success of AWS services without discussing challenges or limitations in detail.
+
+The claim that this system "can save tens of thousands of hours of manual processing" is presented without detailed methodology or validation, making it difficult to assess the actual ROI. The extensibility benefits mentioned (ability to adapt to related classification tasks) are theoretical rather than demonstrated in this case study.
+
+Despite these caveats, the case study provides a practical example of deploying foundation models for enterprise classification tasks, with a methodical approach to prompt engineering that achieved meaningful accuracy improvements without requiring model fine-tuning.

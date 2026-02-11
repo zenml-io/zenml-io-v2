@@ -1,0 +1,132 @@
+---
+title: "Building Internal LLM Tools with Security and Privacy Focus"
+slug: "building-internal-llm-tools-with-security-and-privacy-focus"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "67c9b1087320550735336726"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:02:16.370Z"
+  createdOn: "2025-03-06T14:28:24.024Z"
+llmopsTags:
+  - "code-generation"
+  - "document-processing"
+  - "regulatory-compliance"
+  - "question-answering"
+  - "multi-modality"
+  - "speech-recognition"
+  - "high-stakes-application"
+  - "rag"
+  - "fine-tuning"
+  - "prompt-engineering"
+  - "error-handling"
+  - "human-in-the-loop"
+  - "system-prompts"
+  - "semantic-search"
+  - "fastapi"
+  - "redis"
+  - "api-gateway"
+  - "monitoring"
+  - "security"
+  - "compliance"
+  - "guardrails"
+  - "reliability"
+  - "scalability"
+  - "microservices"
+  - "openai"
+  - "google-gcp"
+  - "amazon-aws"
+  - "cohere"
+company: "Wealthsimple"
+summary: "Wealthsimple developed an internal LLM Gateway and suite of generative AI tools to enable secure and privacy-preserving use of LLMs across their organization. The gateway includes features like PII redaction, multi-model support, and conversation checkpointing. They achieved significant adoption with over 50% of employees using the tools, primarily for programming support, content generation, and information retrieval. The platform also enabled operational improvements like automated customer support ticket triaging using self-hosted models."
+link: "https://www.youtube.com/watch?v=h_Q1g_dZKeE"
+year: 2024
+seo:
+  title: "Wealthsimple: Building Internal LLM Tools with Security and Privacy Focus - ZenML LLMOps Database"
+  description: "Wealthsimple developed an internal LLM Gateway and suite of generative AI tools to enable secure and privacy-preserving use of LLMs across their organization. The gateway includes features like PII redaction, multi-model support, and conversation checkpointing. They achieved significant adoption with over 50% of employees using the tools, primarily for programming support, content generation, and information retrieval. The platform also enabled operational improvements like automated customer support ticket triaging using self-hosted models."
+  canonical: "https://www.zenml.io/llmops-database/building-internal-llm-tools-with-security-and-privacy-focus"
+  ogTitle: "Wealthsimple: Building Internal LLM Tools with Security and Privacy Focus - ZenML LLMOps Database"
+  ogDescription: "Wealthsimple developed an internal LLM Gateway and suite of generative AI tools to enable secure and privacy-preserving use of LLMs across their organization. The gateway includes features like PII redaction, multi-model support, and conversation checkpointing. They achieved significant adoption with over 50% of employees using the tools, primarily for programming support, content generation, and information retrieval. The platform also enabled operational improvements like automated customer support ticket triaging using self-hosted models."
+---
+
+## Overview
+
+Wealthsimple is a Canadian fintech company focused on helping Canadians achieve financial independence through a unified app for investing, spending, and saving. This case study, presented by a member of their team, describes how the company built internal LLM infrastructure and tools to boost employee productivity while maintaining strong security and privacy standards. The presentation covers their LLM Gateway, internal tools ecosystem, build vs. buy philosophy, and lessons learned from adoption.
+
+## LLM Strategy and Philosophy
+
+Wealthsimple organizes their LLM efforts into three streams: employee productivity (the original thesis for LLM value), operations optimization (using LLMs to improve client experience), and an LLM platform that acts as an enablement function supporting the first two pillars. Their philosophy centers on three themes: accessibility, security, and optionality. The team wanted to make the secure path the path of least resistance, enabling freedom to explore while protecting company and customer data. They also recognized that no single model or technique would be best for all tasks, so they aimed to provide optionality across different foundation models and techniques.
+
+## The LLM Gateway
+
+The LLM Gateway is Wealthsimple's central internal tool for interacting with LLMs. It was developed in response to concerns about fourth-party data sharing when ChatGPT first became popular, as many companies inadvertently overshared sensitive information with OpenAI. The Gateway sits between all LLMs (both external providers like OpenAI, Cohere, and Google Gemini, as well as self-hosted models) and Wealthsimple employees.
+
+The Gateway was initially built in just five days, though significant iteration followed. Key features include:
+
+- **Model Selection**: Users can choose from multiple models including external providers (GPT-4, GPT-3.5, Gemini, Cohere models) and self-hosted open-source models like Llama 3.
+- **PII Redaction**: An in-house PII redaction model processes all inputs before they're sent to external providers. This includes standard PII types (names, email addresses, phone numbers) plus Wealthsimple-specific PII types. For self-hosted models where data never leaves their cloud environment, PII redaction is not applied.
+- **Checkpoint Functionality**: Users can download conversations as CSV files and upload them to continue conversations with different models, enabling a blended experience across models and allowing manual editing of conversation history.
+- **Multimodal Inputs**: Integration with Gemini 1.5 models (which have 1-2 million token context windows) allows users to upload files, images, and audio. The team uses this to extract information from multimodal inputs and incorporate it into prompts.
+
+The engagement metrics show strong adoption: daily, weekly, and monthly active users have all been trending upward since tracking began. Over half the company uses the Gateway. The team noted interesting patterns such as lower usage during December holidays followed by increased adoption after New Year evangelism efforts.
+
+## Self-Hosted Models and Platform Infrastructure
+
+The team has deployed four open-source LLMs within their own cloud environment (primarily AWS). They've built platform support for fine-tuning and model training with hardware acceleration, though at the time of the presentation they hadn't yet shipped fine-tuned models. The ability to self-host models addresses concerns about PII masking—employees who need to work with PII can use self-hosted models without redaction since data never leaves the company's VPC.
+
+For code-related use cases, they leverage both GitHub Copilot (with special licensing agreements) and self-hosted code-specialized models. They also use Whisper, OpenAI's voice transcription model, self-hosted within their cloud environment for converting audio to text.
+
+## Booster Pack: RAG-Based Knowledge Retrieval
+
+Beyond the Gateway, Wealthsimple developed "Booster Pack," a popular internal tool built on their data applications platform. Booster Pack uses Retrieval Augmented Generation (RAG) to ground conversations against uploaded context. Users can create three types of knowledge bases:
+
+- **Public**: Accessible to all employees, including pre-created knowledge bases of source code, help articles, and financial newsletters that are refreshed nightly
+- **Private**: Only accessible to the individual user for personal documents
+- **Limited**: Shared with specific co-workers based on roles and working groups
+
+This differs from the multimodal approach in that rather than enriching conversations with various input types, it grounds conversations against specific uploaded context for more reliable and relevant responses.
+
+## Production Use Case: Client Experience Triaging
+
+The presentation highlighted a concrete example of LLMs in production for operations optimization. Wealthsimple previously had a Transformer-based ML model that automated routing of customer support tickets to appropriate teams based on topic and subtopic classification. This was a significant improvement over the previous manual process handled by dedicated agents.
+
+They extended this system with LLM capabilities in two ways:
+
+- **Whisper Integration**: Using the self-hosted voice transcription model, they extended automated triaging to voice-based tickets, significantly improving coverage of the system.
+- **LLM-Generated Metadata**: Using generations from self-hosted LLMs to enrich classifications with additional metadata helpful to customer experience agents, and to assist annotators in labeling workflows for model iteration.
+
+The team emphasized that they approach LLM integration organically rather than forcing it into every workflow—looking for natural extensions where the technology adds clear value.
+
+## Build vs. Buy Philosophy
+
+Wealthsimple's decision framework for building vs. buying LLM tools considers three factors:
+
+- **Security and Privacy**: Ensuring vendors meet their security requirements and data remains protected
+- **Time to Market and Cost**: The team used an analogy comparing the LLM vendor landscape to the streaming vs. cable dilemma—with many vendors offering AI integrations (Slack AI, Notion AI, etc.), it's not economical to buy every one
+- **Unique Points of Leverage**: Time spent building tools that could be purchased takes away from doing things only they can do with proprietary data
+
+They observed two industry trends influencing their decisions: more vendors are offering GenAI integrations (requiring more strategic purchasing decisions), and general security/privacy awareness among vendors is improving (making buying more attractive). While they might not choose to build the same tools again today given these trends, the internal learnings, expertise, and guardrails developed have been valuable.
+
+## User Adoption and Lessons Learned
+
+From surveys and user interviews, the team gathered several insights:
+
+- Almost everyone who used LLMs reported significant productivity increases
+- Close to 50% of adoption came from R&D teams (technical users), but adoption was uniform across tenure and seniority levels
+- Top use cases were programming support, content generation, and information retrieval
+- Non-users cited concerns about PII redaction interfering with legitimate work needs, general reliability concerns (bias, hallucination, outdated training data), and lack of awareness about LLM capabilities
+
+Two key behavioral lessons emerged:
+
+- **LLM tools are most valuable when integrated into places where work happens**. The movement of information between platforms is a significant detractor. The success of GitHub Copilot was attributed to its direct IDE integration rather than requiring a separate UI.
+- **Multiple tools create a confusing experience**. As the number of tools grew, most people stuck to using a single tool. This drove the team to prioritize consolidating tools (like merging multimodal Gateway capabilities with Booster Pack) and abstracting the cognitive complexity of choosing the right tool from end users.
+
+## Addressing Reliability and Hallucination
+
+When asked about guardrails against hallucination, the team acknowledged they haven't integrated specific technical checks within their retrieval systems yet. Their approach focuses on education about appropriate use cases, best practices for structuring problems to get reliable answers, grounding through RAG, and the future potential of fine-tuning for more control. They also incorporated prompt engineering to inform the model about PII masking behavior.
+
+## Team Structure and Prioritization
+
+Notably, the ML engineering team responsible for all GenAI tools and production use cases, as well as the broader ML platform, consists of only three people. This small team size necessitates careful prioritization and extensive automation. For example, while the first self-hosted model deployment took two weeks, process optimization reduced subsequent deployments to 20 minutes. Roadmap decisions are driven by stakeholder conversations, end-user interviews, team interests, and alignment with higher business priorities.

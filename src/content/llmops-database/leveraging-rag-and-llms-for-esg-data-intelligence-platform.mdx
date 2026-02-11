@@ -1,0 +1,118 @@
+---
+title: "Leveraging RAG and LLMs for ESG Data Intelligence Platform"
+slug: "leveraging-rag-and-llms-for-esg-data-intelligence-platform"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "675b20a7d43df3516c63de27"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:48:10.449Z"
+  createdOn: "2024-12-12T17:43:03.821Z"
+llmopsTags:
+  - "data-analysis"
+  - "data-cleaning"
+  - "data-integration"
+  - "regulatory-compliance"
+  - "rag"
+  - "prompt-engineering"
+  - "few-shot"
+  - "semantic-search"
+  - "langchain"
+  - "databases"
+  - "databricks"
+  - "amazon-aws"
+company: "ESGPedia"
+summary: "ESGpedia faced challenges in managing complex ESG data across multiple platforms and pipelines. They implemented Databricks' Data Intelligence Platform to create a unified lakehouse architecture and leveraged Mosaic AI with RAG techniques to process sustainability data more effectively. The solution resulted in 4x cost savings in data pipeline management, improved time to insights, and enhanced ability to provide context-aware ESG insights to clients across APAC."
+link: "https://www.databricks.com/customers/esgpedia"
+year: 2024
+seo:
+  title: "ESGPedia: Leveraging RAG and LLMs for ESG Data Intelligence Platform - ZenML LLMOps Database"
+  description: "ESGpedia faced challenges in managing complex ESG data across multiple platforms and pipelines. They implemented Databricks' Data Intelligence Platform to create a unified lakehouse architecture and leveraged Mosaic AI with RAG techniques to process sustainability data more effectively. The solution resulted in 4x cost savings in data pipeline management, improved time to insights, and enhanced ability to provide context-aware ESG insights to clients across APAC."
+  canonical: "https://www.zenml.io/llmops-database/leveraging-rag-and-llms-for-esg-data-intelligence-platform"
+  ogTitle: "ESGPedia: Leveraging RAG and LLMs for ESG Data Intelligence Platform - ZenML LLMOps Database"
+  ogDescription: "ESGpedia faced challenges in managing complex ESG data across multiple platforms and pipelines. They implemented Databricks' Data Intelligence Platform to create a unified lakehouse architecture and leveraged Mosaic AI with RAG techniques to process sustainability data more effectively. The solution resulted in 4x cost savings in data pipeline management, improved time to insights, and enhanced ability to provide context-aware ESG insights to clients across APAC."
+---
+
+## Overview
+
+ESGPedia is an environmental, social, and governance (ESG) data and technology platform that supports companies across the Asia-Pacific region in their sustainability journey toward net zero goals and ESG compliance. The company provides sustainability data and analytics to corporations and financial institutions, helping them make informed decisions around sustainable finance and green procurement. This case study demonstrates how ESGPedia leveraged Databricks' platform capabilities, particularly around LLM-powered RAG solutions, to transform their data operations and deliver enhanced ESG insights to clients.
+
+## The Business Problem
+
+Before their partnership with Databricks, ESGPedia faced substantial challenges in managing their complex data landscape. The company was dealing with approximately 300 different data pipelines, each requiring extensive pre-cleaning, processing, and relationship mapping. The fragmentation of data across multiple platforms created several operational bottlenecks.
+
+According to Jin Ser, Director of Engineering at ESGPedia, the fragmented data hampered the organization's efficiency and ability to provide timely, personalized insights. Internal teams struggled to quickly access necessary information, which led to slower response times and reduced ability to assist clients effectively. The complexity of managing and coordinating multiple models across various systems was identified as a significant obstacle that not only affected operational efficiency but also hindered the development of AI-driven initiatives.
+
+The challenge was particularly acute given the nature of ESG data, which comes from diverse sources and requires careful curation, classification, and contextualization before it can be useful for sustainability assessments and decision-making.
+
+## Technical Architecture and Solution
+
+ESGPedia's solution centered on implementing the Databricks Data Intelligence Platform, with several key components working together to address their data management and AI challenges.
+
+### Lakehouse Architecture Foundation
+
+The core of ESGPedia's implementation was a lakehouse architecture that unified data storage and management, facilitating easier access and analysis. This approach allowed the company to consolidate their fragmented data estate into a single, coherent platform. The lakehouse architecture served as the foundational layer upon which AI capabilities could be built, addressing the prerequisite of having well-organized, accessible data before attempting to layer on LLM-powered features.
+
+### Streaming Data Capabilities
+
+The Databricks Platform enabled continuous data ingestion from various ESG data sources through streaming capabilities. This is particularly relevant for ESG data, which can come from diverse sources including corporate disclosures, regulatory filings, news feeds, and third-party data providers. The ability to process streaming data ensures that ESGPedia's platform can provide near-real-time updates on sustainability metrics and developments.
+
+### Data Governance with Unity Catalog
+
+Unity Catalog played a critical role in data management and governance, supporting compliance requirements with stringent access controls and detailed data lineage. This unified approach to governance was essential for accelerating data and AI initiatives while maintaining regulatory compliance. Given that ESGPedia operates across distributed teams in Singapore, the Philippines, Indonesia, Vietnam, and Taiwan, Unity Catalog enabled secure cross-team collaboration while maintaining appropriate data access controls.
+
+The data lineage capabilities are particularly important for ESG applications, where understanding the provenance and transformation history of data points is crucial for credibility and auditability of sustainability assessments.
+
+## LLM and RAG Implementation
+
+The most directly relevant aspect for LLMOps is ESGPedia's implementation of retrieval augmented generation (RAG) using Databricks Mosaic AI and the Mosaic AI Agent Framework.
+
+### RAG Architecture
+
+ESGPedia developed a RAG solution specifically tailored to improve the efficiency and effectiveness of their internal teams. The RAG framework runs on Databricks and allows the company to leverage LLMs enhanced with their proprietary ESG data and documents. This approach enables the generation of context-aware responses that are grounded in ESGPedia's curated sustainability data rather than relying solely on the general knowledge embedded in foundation models.
+
+The use of RAG is particularly well-suited for ESG applications because sustainability assessments require highly specific, current, and verifiable information that may not be present in general-purpose LLM training data. By combining LLM capabilities with ESGPedia's structured ESG data, the company can provide nuanced insights that would not be possible with either component alone.
+
+### Prompt Engineering with Few-Shot Prompting
+
+ESGPedia employs few-shot prompting techniques to help with the classification of their datasets. This approach involves providing the LLM with a small number of examples demonstrating the desired classification behavior before asking it to classify new data points. Few-shot prompting is a pragmatic choice for data classification tasks, as it can achieve reasonable accuracy without the need for extensive fine-tuning of models.
+
+The classification use case is particularly important for ESG data, which often arrives in unstructured or semi-structured formats and needs to be categorized according to various sustainability frameworks, industry sectors, and geographic regions. Using LLMs with few-shot prompting for this task can significantly reduce the manual effort required for data processing.
+
+### Customization for Industry, Country, and Sector
+
+According to Jin Ser, ESGPedia aims to provide "highly customized and tailored sustainability data and analytics for our customers based on their industry, country and sector." The RAG framework enables this level of customization by allowing the retrieval component to pull relevant context based on these dimensions, which then informs the LLM's responses.
+
+## Results and Outcomes
+
+The implementation delivered several quantifiable benefits:
+
+- **4x cost savings in data pipeline management**: This substantial reduction in operational expenses demonstrates the efficiency gains from consolidating to a unified platform.
+- **Six-month migration timeline**: ESGPedia successfully transitioned approximately 300 pipelines to Databricks in just six months, indicating both the dedication of the team and the relative ease of adoption of the platform.
+- **Improved time to insight**: The ability to integrate complex data sources using Mosaic AI has accelerated how quickly ESGPedia can derive actionable insights from sustainability data.
+
+The RAG implementation has enhanced ESGPedia's ability to provide nuanced, context-aware insights to corporate and bank clients. Rather than relying on opaque scoring systems, the company can now offer granular data points about the sustainability efforts of companies and their value chains, including SMEs, suppliers, and contractors.
+
+## Critical Assessment
+
+While this case study presents compelling benefits, it's important to note some limitations in the information provided:
+
+- **Quantitative metrics for LLM performance are not specified**: The case study mentions improved "time to insight" but doesn't provide specific metrics on response quality, accuracy of classifications, or user satisfaction with RAG-generated outputs.
+- **Model selection details are absent**: The case study doesn't specify which LLMs are being used or how model selection decisions were made.
+- **Evaluation and monitoring approaches are not detailed**: There's no mention of how ESGPedia evaluates the quality of their RAG outputs or monitors for hallucinations, bias, or other LLM-specific concerns.
+- **Vendor-produced content**: As a Databricks customer story, the case study naturally emphasizes positive outcomes and platform capabilities.
+
+## Architectural Considerations for LLMOps
+
+The case study illustrates several important principles for LLMOps in enterprise contexts:
+
+- **Data foundation first**: ESGPedia's approach of establishing a solid data architecture before layering on AI capabilities reflects best practices for enterprise LLM deployments. The lakehouse architecture provides the structured data foundation that enables effective RAG implementations.
+- **Governance integration**: The emphasis on Unity Catalog for data governance highlights the importance of maintaining access controls, lineage tracking, and compliance capabilities when deploying LLMs in regulated industries like finance.
+- **Practical prompting techniques**: The use of few-shot prompting for classification tasks represents a pragmatic approach that balances capability with implementation complexity.
+- **Platform consolidation**: Moving from fragmented systems to a unified platform simplifies the operational aspects of LLMOps, including deployment, monitoring, and maintenance.
+
+## Future Directions
+
+The case study indicates that ESGPedia continues to explore AI and machine learning to further enhance their operations. The company aims to democratize access to high-quality insights through their integrated data and AI architecture, which suggests ongoing investment in LLM-powered features and capabilities as part of their growth strategy across the Asia-Pacific region.

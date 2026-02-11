@@ -1,0 +1,180 @@
+---
+title: "Building Production Agentic AI Systems for IT Operations and Support Automation"
+slug: "building-production-agentic-ai-systems-for-it-operations-and-support-automation"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "6932b1b56ec69767684e78b0"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:33:29.684Z"
+  createdOn: "2025-12-05T10:19:33.329Z"
+llmopsTags:
+  - "customer-support"
+  - "poc"
+  - "realtime-application"
+  - "legacy-system-integration"
+  - "agent-based"
+  - "multi-agent-systems"
+  - "rag"
+  - "prompt-engineering"
+  - "human-in-the-loop"
+  - "mcp"
+  - "a2a"
+  - "evals"
+  - "error-handling"
+  - "latency-optimization"
+  - "semantic-search"
+  - "docker"
+  - "kubernetes"
+  - "monitoring"
+  - "databases"
+  - "api-gateway"
+  - "microservices"
+  - "cicd"
+  - "serverless"
+  - "devops"
+  - "orchestration"
+  - "continuous-deployment"
+  - "continuous-integration"
+  - "documentation"
+  - "security"
+  - "guardrails"
+  - "reliability"
+  - "scalability"
+  - "fastapi"
+  - "postgresql"
+  - "redis"
+  - "cache"
+  - "elasticsearch"
+  - "langchain"
+  - "amazon-aws"
+  - "anthropic"
+company: "WEX"
+summary: "WEX, a global commerce platform processing over $230 billion in transactions annually, built a production agentic AI system called \"Chat GTS\" to address their 40,000+ annual IT support requests. The company's Global Technology Services team developed specialized agents using AWS Bedrock and Agent Core Runtime to automate repetitive operational tasks, including network troubleshooting and autonomous EBS volume management. Starting with Q&A capabilities, they evolved into event-driven agents that can autonomously respond to CloudWatch alerts, execute remediation playbooks via SSM documents exposed as MCP tools, and maintain infrastructure drift through automated pull requests. The system went from pilot to production in under 3 months, now serving over 2,000 internal users, with multi-agent architectures handling both user-initiated chat interactions and autonomous incident response workflows."
+link: "https://www.youtube.com/watch?v=DYbJG8T_Kk8"
+year: 2025
+seo:
+  title: "WEX: Building Production Agentic AI Systems for IT Operations and Support Automation - ZenML LLMOps Database"
+  description: "WEX, a global commerce platform processing over $230 billion in transactions annually, built a production agentic AI system called \"Chat GTS\" to address their 40,000+ annual IT support requests. The company's Global Technology Services team developed specialized agents using AWS Bedrock and Agent Core Runtime to automate repetitive operational tasks, including network troubleshooting and autonomous EBS volume management. Starting with Q&A capabilities, they evolved into event-driven agents that can autonomously respond to CloudWatch alerts, execute remediation playbooks via SSM documents exposed as MCP tools, and maintain infrastructure drift through automated pull requests. The system went from pilot to production in under 3 months, now serving over 2,000 internal users, with multi-agent architectures handling both user-initiated chat interactions and autonomous incident response workflows."
+  canonical: "https://www.zenml.io/llmops-database/building-production-agentic-ai-systems-for-it-operations-and-support-automation"
+  ogTitle: "WEX: Building Production Agentic AI Systems for IT Operations and Support Automation - ZenML LLMOps Database"
+  ogDescription: "WEX, a global commerce platform processing over $230 billion in transactions annually, built a production agentic AI system called \"Chat GTS\" to address their 40,000+ annual IT support requests. The company's Global Technology Services team developed specialized agents using AWS Bedrock and Agent Core Runtime to automate repetitive operational tasks, including network troubleshooting and autonomous EBS volume management. Starting with Q&A capabilities, they evolved into event-driven agents that can autonomously respond to CloudWatch alerts, execute remediation playbooks via SSM documents exposed as MCP tools, and maintain infrastructure drift through automated pull requests. The system went from pilot to production in under 3 months, now serving over 2,000 internal users, with multi-agent architectures handling both user-initiated chat interactions and autonomous incident response workflows."
+---
+
+## Overview
+
+This case study presents WEX's journey building production agentic AI systems for operational support automation. WEX is a global commerce platform operating in over 200 countries, processing $230 billion in transactions across 20+ currencies annually, managing one of the world's largest proprietary fleet networks and consumer benefits accounts. Their Global Technology Services (GTS) team, which handles shared services for platform engineering, reliability, governance, and cost optimization, faced over 40,000 support requests annually. The presentation features two speakers: Andrew Baird, a Senior Principal Solutions Architect at AWS with 13.5 years of experience, who provides the conceptual framework for building agents as service-oriented architectures, and Dan DeLauro, a Solutions Architect on WEX's cloud engineering team, who shares the practical implementation details of their production system.
+
+The fundamental premise of the presentation is that traditional software engineering skills and service-oriented architecture principles directly translate to building agentic AI systems. Andrew emphasizes that despite the seemingly anthropomorphic language often used to describe agents (observing, learning, taking actions), these are fundamentally technical systems that can be understood and built using familiar distributed systems patterns. The case study demonstrates how WEX leveraged this insight to move from concept to production in under 3 months, deploying agents that now serve over 2,000 internal users.
+
+## Architectural Philosophy and Design Principles
+
+Andrew establishes that agents should be understood within the context of service-oriented architectures rather than as something fundamentally new that obsoletes existing knowledge. At their core, agentic systems consist of Docker containers running agent applications that integrate with LLMs through SDKs (particularly highlighting Strands), with Model Context Protocol (MCP) providing standardized integration with dependencies including software applications, databases, document repositories, and other agents. The agent application manages prompt structuring, conversation turns, memory integration, and tool interaction in abstracted ways that make them accessible to developers without deep AI expertise.
+
+The presentation outlines how traditional SOA design principles map directly to agentic systems. Loose coupling remains critical—agents should be deployable as independent containers with asynchronous processing capabilities, no shared concerns, and independent scalability. Modularity translates to agent granularity, where breaking down use cases along logical business, ownership, or security boundaries provides the same benefits as microservices decomposition. However, an anti-pattern has emerged where teams build monolithic agents expected to handle too many varied tasks within single prompt contexts. Conversely, reusability becomes crucial for tools and MCP servers—rather than each agent building its own integrations to backend systems, MCP servers should be built by the domain teams that own those systems and be reusable across multiple agent contexts, similar to how REST services serve multiple clients.
+
+Discoverability applies to agents just as it does to APIs—there must be clear documentation and catalogs of agent capabilities, intended boundaries, integration methods, and observability points at team, department, and company-wide levels. While natural language descriptions make some aspects more self-evident to humans, maintaining structured catalogs remains essential as agent ecosystems scale.
+
+## Evolved Design Principles for Agentic Systems
+
+Several traditional principles require nuanced adaptation. Statelessness, long valued for resilience and scalability in distributed systems, conflicts with the need for contextual memory in multi-turn agent conversations. Agent runtimes maintain session state and conversation history as part of their context windows, which introduces new considerations around scalability and deployment safety when users are mid-conversation or when work is in progress. This requires careful thinking about what happens when conversations are disrupted and how that affects user experience.
+
+Orchestration versus autonomous coordination represents another evolution. Traditional systems used deterministic workflow graphs defined at design time, often implemented with tools like AWS Step Functions. Agentic systems can allow coordination to emerge at runtime through non-deterministic reasoning, where specialized agents downstream handle different components based on the nature of incoming requests. WEX's implementation demonstrates that these approaches can be combined—using Step Functions to provide disciplined structure around autonomous agent behavior, leveraging retries, fallbacks, and state transitions to keep intelligent but potentially unpredictable agents "in check" while still allowing them appropriate autonomy.
+
+Service contracts and capability emergence present another shift. Traditional API design emphasized backward compatibility and strictly defined data contracts. With agents, capability can emerge at runtime as tools change and new capabilities are deployed without requiring updates to agent code—agents discover tool descriptions dynamically and can evolve their behavior accordingly. This provides flexibility but requires different thinking about versioning and compatibility.
+
+## Fundamentally New Design Considerations
+
+The presentation identifies several entirely new design principles. Goals replace CRUD as the fundamental unit of technical work—rather than designing around create, read, update, delete operations, agent systems are designed around succinctly describable goals that models can understand and pursue. This represents a fundamental shift in how developers conceptualize system behavior and requirements.
+
+Reasoning transparency emerges as a critical observability concern. Unlike traditional logs capturing metadata about actions and events, agent systems require capturing the "train of thought"—the non-deterministic reasoning process itself. WEX treats this as distributed tracing but for cognitive processes rather than request flows, storing reasoning traces in S3 as a "black box" or "flight recorder" that captures every decision made across the platform. This becomes essential for debugging, compliance, and system improvement.
+
+Self-correction introduces new dynamics around error handling. Agents have an inherent tendency to try alternative paths when encountering obstacles, attempting to achieve their goals through multiple routes. This can be beneficial but also requires explicit design thinking about when self-correction is appropriate versus when agents should escalate to humans. WEX's implementation includes policies to cap certain types of corrective actions (like volume expansions) and explicit decision points where agents "step out of the way" and escalate when conditions don't match expected patterns.
+
+Non-determinism fundamentally changes testing and evaluation approaches. The presentation mentions AWS's newly announced Agent Core Evaluations as addressing this need. Traditional testing assumes deterministic behavior, but agentic systems require evaluating whether goals were achieved across multiple runs with potentially different execution paths, making evaluation frameworks a critical component of LLMOps.
+
+Andrew emphasizes that non-functional requirements like operational excellence, security, resilience, scalability, and deployment safety don't come for free in agentic systems and must be intentionally designed in—skills that experienced distributed systems builders already possess and that make them valuable in this new context.
+
+## WEX Implementation: Chat GTS
+
+Dan describes how WEX started by identifying high-volume, high-friction, well-understood work where existing automation, runbooks, or established processes already existed. This proved to be the "sweet spot" for agent application. They began with Q&A capabilities to build up their knowledge base, allowing people to find information self-service rather than opening tickets, while simultaneously creating the knowledge foundation that agents would leverage for autonomous decision-making.
+
+The Chat GTS system evolved into what Dan describes as a "virtual engineer" understanding cloud, network, security, and operations—not replacing people but automating repetitive work and expanding self-service capabilities to free engineers for higher-value problems. The presentation details two primary use cases: network troubleshooting and autonomous EBS volume management, though the system has expanded beyond these initial implementations.
+
+## Network Troubleshooting Use Case
+
+The network troubleshooting agent addresses a particularly painful support pattern in WEX's complex multi-cloud, multi-region environment spanning hundreds of AWS accounts plus Azure, Google Cloud, and multiple on-premises data centers. The typical scenario involves an engineer (exemplified as "Jared" from the PaaS engineering team) blocked during deployment because a new VPC can't reach expected resources. The engineer lacks access to transit gateways, firewalls, or VPNs, and even with access, deep networking may be outside their expertise.
+
+The agent can respond autonomously in minutes with analysis that previously required tribal knowledge across multiple domains. For an EKS cluster example, the agent knows it's in AWS, accesses the core network account, and provisions a Reachability Analyzer network analysis path. While that runs, the agent fans out to check flow logs and recent network changes, and looks for known existing issues. It collects information from all these sources and presents findings in natural language, showing exactly where traffic dropped and why. When escalation is needed, it happens with the right team and complete context. Since all investigations are logged, recurring issues can be spotted and opportunities for tighter network guardrails identified. This exemplifies how agentic systems can scale where humans can't given the complexity and breadth of knowledge required.
+
+## Event-Driven EBS Volume Management
+
+The second use case represents WEX's evolution beyond chat-initiated interactions to event-driven agents responding to system alerts. For critical workloads still running on EC2, EBS volume spikes trigger CloudWatch alerts. Traditionally, this meant paging an engineer at 2 a.m. to log in, assess the situation, check logs, and execute playbooks to expand volumes or clear space—a time-consuming process nobody wants to handle at night.
+
+WEX's implementation sends alerts to an agent with full metric context, making the agent the first line of defense rather than an on-call engineer. The first agent performs triage discovery, examining the operating system, version, platform ownership, criticality level, and history including previous volume expansions. WEX maintains policies capping expansion to prevent indefinitely "kicking the can down the road." If anything looks problematic based on this analysis, the agent steps aside and escalates to humans, reverting to traditional workflows. When conditions are normal, the agent connects to Jira through Agent Core Gateway to open a ticket and begin logging the incident, collecting all inputs needed for potential future RCA documentation.
+
+The analysis then passes to a maintenance agent that chooses from a library of pre-existing SSM documents—the same playbooks ops engineers use manually. These include diagnostics, backup, cleanup, and expansion runbooks, all exposed as tools to the agent via an MCP server. Whatever the agent decides to do uses the same trusted automations already in production, but without requiring someone to wake up and push the run button. This eliminates chats, texts, pages, and cross-team escalations, allowing systems to "take care of each other" while building memory and recognizing patterns over time.
+
+Once issues are resolved, the agent updates Jira through Agent Core Gateway, publishes status to SNS through an MCP server (notifying on-call systems, dashboards, and downstream consumers), and follows the resource upstream to its infrastructure-as-code origin (Terraform or CloudFormation), opening pull requests or creating issues to close the loop between operations and infrastructure and remediate drift introduced during incident response.
+
+Dan acknowledges this is a "basic example" of volume expansion but emphasizes they're "just getting started" and learning to apply what they already know, reusing what already works—"not magic, just engineering and architecture."
+
+## Technical Architecture
+
+WEX's architecture addresses several unique constraints. They don't use Slack or Teams but Google Chat, which has no native AWS integration. User requests come over the internet from their Google Workspace domain, pass through a WAF with Imperva for security, and enter their AWS environment via API Gateway. A Lambda router acknowledges messages and Step Functions orchestrates all agents. State and conversations store in DynamoDB, reasoning traces land in S3, and Bedrock hosts agents and knowledge.
+
+The chat application is assigned only to authorized users, with messages carrying signed tokens for validation. The router filters out noise and oversized prompts, sending quick acknowledgments to absorb model latency while agents work. This creates a clean, well-defined contract for downstream components, keeping the front door predictable.
+
+WEX extensively uses Step Functions, which Dan admits he previously thought were "just for people who've built too many lambdas" but now recognizes as "perfect for AI." While Bedrock provides intelligence for thinking, creating, and decision-making, Step Functions provides discipline through retries, fallbacks, and state transitions. This combination allows agents to be autonomous without being uncontrolled—they can have as much freedom or control as needed, making them fit well in operational workflows.
+
+For identity and authorization, Google provides trusted identity but no permissions concept—tokens only confirm users are allowed to talk to the system. WEX reaches out to Active Directory to fetch entitlements based on group memberships and OUs, caching them in DynamoDB to avoid overwhelming systems not designed for real-time traffic. When invoking agents, entire prompts are wrapped in context tags including identity and entitlements, making this context immutable—agents only trust this injected context rather than user claims.
+
+Error handling includes fallbacks where if agents fail, time out, or can't produce responses, errors are logged and safe responses sent to users without blowing up the entire workflow. After agent responses, everything is captured—messages in DynamoDB, traces in S3—before formatting responses in Google's markdown language with citations, reference links, and attachments, then updating the temporary message from the router to create a conversational transaction feel.
+
+## Agent Architecture and Specialization
+
+WEX built specialized agents following service-oriented architecture principles—breaking up monoliths into smaller pieces with clear purposes. Each specialized agent does one job really well, keeping focus clean and reasoning sharp while making handoffs between agents cleaner. Rather than a giant orchestrator pulling all strings, theirs acts as a "conductor" sitting in the middle, interpreting intent, figuring out what's happening and where, then connecting problems to the right expert or team of experts.
+
+Guardrails provide boundaries for autonomous agents, enforcing policy and compliance. WEX applies guardrails at the edge with the orchestrator, providing defense in depth for every platform decision. They sanitize text, block topics, and redact PII both inbound and outbound, protecting data and protecting agents from themselves—agents can wander but can't "color outside the lines."
+
+All agents tap into the same knowledge base, ensuring consistency—Q&A agents answering connectivity questions pull from the same material ops agents use when troubleshooting. They're separate services but share unified understanding, analogous to giving every application in a service layer a unified data plane, except composed of runbooks, reference architectures, and living documentation.
+
+For actions, agents operate as services on the network, calling APIs and MCP servers, executing tools they've been given. With Bedrock Action Groups, lambdas run inside VPCs with tightly scoped permissions, controlling what agents can and cannot reach. Dan emphasizes this is "just services talking to services just like any other application layer on the network."
+
+## Knowledge Management
+
+Documentation proved the hardest part, as enterprise documentation can live anywhere and even when findable, people don't like reading it—but they will chat with it. WEX chose Amazon Kendra with the Gen AI index for hybrid keyword and vector search with multimodal embeddings. Built-in connectors for Confluence, GitHub, and Google Drive keep information automatically synced via cron schedules, including source code, diagrams, policies, and runbooks. This creates a searchable layer where domain expertise "comes to us" rather than requiring chasing down documentation.
+
+The breakthrough was managing the knowledge base, not just building it. Data sources for Kendra are configured in Terraform living in GitHub and deployed via CI/CD. Through self-service, subject matter experts who own content can maintain it themselves by opening pull requests deployed through GitHub pipelines. It remains enterprise knowledge but is "treated like infrastructure now."
+
+## Observability and Compliance
+
+Observability presented challenges given the third-party chat frontend, hybrid identity between Google and Active Directory, and multiple AWS services. WEX built a persistence layer in DynamoDB storing long-term concerns: users, chat spaces, sessions, and messages. This isn't a transcript but a relational structure where every item keys back to a session and trace ID.
+
+Reasoning traces landing in S3 became their "black box" or "flight recorder" capturing every decision across the platform—essentially distributed tracing but following trains of thought rather than requests. All logs push to Splunk through Kinesis, giving InfoSec, compliance, risk, and legal real-time visibility into platform activity including user and agent communications, redactions, and policy enforcement.
+
+Before Agent Core's built-in observability, WEX built a custom dashboard (with help from "me and my team and cursor and Claude and co-pilot") producing practical insights. The dashboard replays conversations step-by-step, showing where agents struggle and where knowledge bases need work. This visibility doesn't just measure quality but shapes it, driving the roadmap and determining what to build next.
+
+## Technology Stack and Tools
+
+The implementation leverages AWS Bedrock for hosting agents and knowledge, Agent Core Runtime for deploying Docker containers and MCP servers, Step Functions for orchestration, Lambda for routing and tool execution, DynamoDB for state and conversations, S3 for reasoning traces, Amazon Kendra for knowledge management, API Gateway as the entry point, CloudWatch for monitoring and alerts, SSM for execution of operational playbooks, and SNS for event distribution. External integrations include Google Chat for user interface, Active Directory for entitlements, Jira for ticketing through Agent Core Gateway, and Splunk for log aggregation via Kinesis. Infrastructure is managed with Terraform and deployed via CI/CD pipelines in GitHub.
+
+The presentation particularly highlights the Strands SDK for agent development, MCP (Model Context Protocol) as the standardization layer for tool integration that matured to enterprise-ready status about 6-7 months before the presentation (after authentication capabilities improved), and Agent Core Gateway for integrating with external systems like Jira. Andrew mentions the Quiro CLI, Quiro IDE, and AWS Cloud Code as development tools, with Cloud Code able to use Bedrock-hosted models for governance.
+
+## Production Deployment and Scale
+
+WEX moved from pilot to production in under 3 months, now serving over 2,000 internal users. The presentation occurred at AWS re:Invent, with references to announcements "this morning" and Agent Core Evaluations being newly announced. Dan mentions this was his first speaking engagement despite being a builder, and refers to work from "last year" feeling like "10 years ago" but actually being "only 4 or 5 weeks" before Agent Core's release, suggesting the presentation occurred in late 2024 or early 2025 given the rapid pace of AWS service releases in this space.
+
+The system handles both synchronous chat-based interactions and asynchronous event-driven responses to infrastructure alerts. By logging all investigations and maintaining memory, the system learns over time, spotting patterns in where cleanup is needed, where escalations occur, and potentially identifying application-layer issues. Dan describes this as making it "feel less like automation and more like a team that gets smarter over time."
+
+## Key Lessons and Recommendations
+
+Dan shares three key lessons from the year. First, architecture still matters—it's the same diagrams with new services and icons, and you don't need to be a data scientist to piece it together. Second, you don't have to build a platform immediately—start small but think big, building something simple that teaches you what to build next. Third, maintain perspective and don't let the technology overtake you, as the pace of change is relentless.
+
+The presentation emphasizes that WEX built a sustainable, extensible platform that would inspire other teams to collaborate and expand capabilities, recognizing that "operations takes a village." They didn't change how they built things, just "let these old patterns breathe a little bit"—building agents with boundaries and clear responsibilities, letting them work independently, seeing guardrails as contracts for agent behavior, treating events as rich contextual information rather than just notifications, and maintaining observability while looking beyond HTTP status codes to behavior and reasoning.
+
+Andrew emphasizes that builders should take confidence that their existing skills set them up to take advantage of AI technologies rather than be disrupted by them. The speed of innovation with new libraries going viral and new capabilities launching weekly can feel overwhelming, but software engineers have been building muscles at adaptation and flexibility for years. These muscles, combined with the direct translation of SOA principles to agentic systems, position experienced builders as valuable contributors to agentic AI development rather than being at risk of obsolescence.
+
+The case study demonstrates a pragmatic approach to production LLMOps, combining proven distributed systems patterns with new AI capabilities, maintaining rigorous operational discipline while embracing autonomous agent behavior, and scaling thoughtfully from initial use cases to a platform serving thousands of users across an enterprise with demanding reliability, security, and compliance requirements.

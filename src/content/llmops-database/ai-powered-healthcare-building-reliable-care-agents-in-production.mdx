@@ -1,0 +1,151 @@
+---
+title: "AI-Powered Healthcare: Building Reliable Care Agents in Production"
+slug: "ai-powered-healthcare-building-reliable-care-agents-in-production"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "694af664d7212f3013b883c4"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2026-01-07T09:40:39.763Z"
+  lastUpdated: "2025-12-23T20:11:48.733Z"
+  createdOn: "2025-12-23T20:07:00.619Z"
+llmopsTags:
+  - "healthcare"
+  - "chatbot"
+  - "question-answering"
+  - "high-stakes-application"
+  - "regulatory-compliance"
+  - "prompt-engineering"
+  - "rag"
+  - "few-shot"
+  - "human-in-the-loop"
+  - "embeddings"
+  - "semantic-search"
+  - "vector-search"
+  - "error-handling"
+  - "agent-based"
+  - "evals"
+  - "a2a"
+  - "guardrails"
+  - "monitoring"
+  - "databases"
+  - "open-source"
+  - "langchain"
+  - "compliance"
+  - "security"
+  - "reliability"
+  - "openai"
+  - "anthropic"
+  - "microsoft-azure"
+company: "Sword Health"
+summary: "Sword Health, a digital health company specializing in remote physical therapy, developed Phoenix, an AI care agent that provides personalized support to patients during and after rehabilitation sessions while acting as a co-pilot for physical therapists. The company faced challenges deploying LLMs in a highly regulated healthcare environment, requiring robust guardrails, evaluation frameworks, and human oversight. Through iterative development focusing on prompt engineering, RAG for domain knowledge, comprehensive evaluation systems combining human and LLM-based ratings, and continuous data monitoring, Sword Health successfully shipped AI-powered features that improve care accessibility and efficiency while maintaining clinical safety through human-in-the-loop validation for all clinical decisions."
+link: "https://www.infoq.com/presentations/ai-healthcare-learnings/"
+year: 2025
+seo:
+  title: "Sword Health: AI-Powered Healthcare: Building Reliable Care Agents in Production - ZenML LLMOps Database"
+  description: "Sword Health, a digital health company specializing in remote physical therapy, developed Phoenix, an AI care agent that provides personalized support to patients during and after rehabilitation sessions while acting as a co-pilot for physical therapists. The company faced challenges deploying LLMs in a highly regulated healthcare environment, requiring robust guardrails, evaluation frameworks, and human oversight. Through iterative development focusing on prompt engineering, RAG for domain knowledge, comprehensive evaluation systems combining human and LLM-based ratings, and continuous data monitoring, Sword Health successfully shipped AI-powered features that improve care accessibility and efficiency while maintaining clinical safety through human-in-the-loop validation for all clinical decisions."
+  canonical: "https://www.zenml.io/llmops-database/ai-powered-healthcare-building-reliable-care-agents-in-production"
+  ogTitle: "Sword Health: AI-Powered Healthcare: Building Reliable Care Agents in Production - ZenML LLMOps Database"
+  ogDescription: "Sword Health, a digital health company specializing in remote physical therapy, developed Phoenix, an AI care agent that provides personalized support to patients during and after rehabilitation sessions while acting as a co-pilot for physical therapists. The company faced challenges deploying LLMs in a highly regulated healthcare environment, requiring robust guardrails, evaluation frameworks, and human oversight. Through iterative development focusing on prompt engineering, RAG for domain knowledge, comprehensive evaluation systems combining human and LLM-based ratings, and continuous data monitoring, Sword Health successfully shipped AI-powered features that improve care accessibility and efficiency while maintaining clinical safety through human-in-the-loop validation for all clinical decisions."
+---
+
+## Overview and Context
+
+Sword Health is a digital health company that specializes in remote physical therapy through three main product lines: Thrive (chronic pain), Move (pain prevention), and Bloom (pelvic healthcare). The company developed Phoenix, an AI care agent designed to disrupt the traditional healthcare quality-affordability dichotomy by providing scalable, personalized care support. Phoenix serves dual roles: providing real-time feedback and support to patients during rehabilitation sessions and answering questions outside of sessions, while simultaneously acting as a co-pilot for physical therapists to allow them to focus on relationship-building rather than routine tasks.
+
+The company's journey represents a comprehensive case study in deploying LLMs in a highly regulated environment where safety, consistency, and reliability are paramount. Clara Matos, Head of AI Engineering at Sword Health, shared the lessons learned from shipping multiple LLM-powered features across their product suite. The presentation emphasizes that while AI-powered products are transforming healthcare by enabling more personalized and efficient care delivery, the regulatory constraints and safety requirements demand a disciplined, systematic approach to LLMOps.
+
+## Building Guardrails for Safety and Compliance
+
+One of the foundational challenges Sword Health addressed was managing the inherent inconsistency of large language models in production. As features were released and began encountering diverse real-world inputs, consistency issues emerged. The company recognized that guardrails are not optional in healthcare—they serve as critical safety controls between users and models, preventing unwanted content from reaching either the model or the end user.
+
+Sword Health implemented two categories of guardrails. Input guardrails prevent unwanted content from reaching the model, protecting against prompt injection, jailbreaking attempts, and content safety violations. Output guardrails prevent inappropriate content from reaching users, enforcing constraints around content safety, structural requirements, and critically, medical advice boundaries. The medical advice guardrails are particularly important in their context—they ensure that when Phoenix provides tips to patients (for example, about managing shoulder pain after an exercise session), these recommendations stay within very constrained clinical guidelines developed in collaboration with their clinical team.
+
+The implementation of guardrails required careful consideration of three key factors. First, task specificity: guardrails must be tailored to the specific use case. For example, when building guardrails for Bloom (their pelvic health product), the team had to adjust content safety thresholds because sexual terminology is appropriate and necessary in that clinical context. Second, latency: adding online guardrails to Phoenix resulted in approximately 30% increased latency, which is particularly problematic for real-time applications requiring immediate feedback. This forced optimization efforts focused on reducing guardrail latency. Third, accuracy: guardrails can trigger false positives, incorrectly blocking appropriate content from reaching users, requiring careful tuning to balance safety with functionality.
+
+## Comprehensive Evaluation Framework
+
+Sword Health identified the lack of robust evaluation practices as a key challenge in deploying LLMs to production. The non-deterministic nature of LLMs makes it difficult to ensure consistent delivery without regressions. The company treats model evaluations as analogous to unit tests for traditional software, enabling iterative prompt development, quality assurance before and after deployment, objective model comparison, and potential cost savings through model optimization.
+
+The team developed a multi-faceted evaluation approach using three distinct rating methodologies, each suited to different evaluation needs. Human-based evaluation involves subject matter experts (in their case, physical therapists) reviewing model outputs and assigning scores. This approach excels at evaluating nuanced aspects like tone, factuality, and reasoning, but is time-consuming and costly at scale. Additionally, inter-rater reliability can be an issue, with different evaluators sometimes disagreeing on the same output. To facilitate this evaluation, Sword Health built an internal tool called Gondola using Streamlit, which allows physical therapists to provide feedback on outputs before new model versions are released to production.
+
+Non-LLM based evaluation uses classification metrics, NLP metrics (BLEU, ROUGE, Sequence Matcher), or programmatic methods to evaluate model outputs. This approach provides speed and scalability but only works when outputs are clear and objective. Sword Health uses this approach when comparing model-generated outputs to human-generated outputs, employing algorithms like Sequence Matcher that calculate similarity scores between sentences (0 to 1, where 1 indicates exact matching).
+
+LLM-based evaluation, also known as LLM-as-a-Judge, represents a middle ground between human and non-LLM approaches. This technique uses the same model or a different one to evaluate outputs. Sword Health uses this for customer support agent evaluation, where the same questions posed to the model for evaluation can also be posed to humans, enabling measurement of alignment between model and human judgment. The company learned that binary decisions (ok/not ok, pass/fail, good/bad) work best for LLM-based evaluation, and these can be enhanced with detailed critiques from both models and humans explaining their reasoning. Measuring agreement between human and model evaluations helps identify when evaluation prompts need refinement.
+
+The evaluation workflow follows a systematic cycle: create a test set using either subject matter expert-provided ideal outputs or real production data; create the first system version; evaluate with offline evaluations and live checking; iterate and refine until the system meets evaluation criteria; obtain human expert evaluation; refine based on human feedback; A/B test the new version in production; promote successful versions; continue monitoring with product metrics, manual audits, and offline evaluations; then repeat for the next iteration.
+
+## Prompt Engineering as Foundation
+
+Sword Health found that prompt engineering can achieve substantial results and should be the starting point for any optimization effort. The company challenges the commonly depicted linear progression from prompt engineering to few-shot learning to RAG to fine-tuning, noting that each approach solves different problems and the right choice depends on the specific challenge.
+
+Prompt engineering helps establish a baseline and understand what good performance looks like. From that baseline, optimization can proceed in two directions: context optimization (what the model needs to know) or LLM optimization (how the model needs to act). Context optimization is addressed through retrieval-augmented generation and is appropriate when domain knowledge unavailable at training time or proprietary information needs to be incorporated. LLM optimization is pursued when the model struggles with following instructions or achieving the desired tone and style.
+
+The company employs several prompt engineering strategies to improve results: writing clear instructions, giving models time to think using techniques like chain-of-thought prompting, and using few-shot examples instead of lengthy descriptive instructions. However, they recognized that building and maintaining few-shot examples is challenging—examples are time-consuming to create and can become outdated. To address this, they implemented dynamic in-context learning, an inference-time optimization technique where production example inputs are embedded into a vector database. At prediction time, based on the current input, the system retrieves examples that most closely resemble the current situation and includes them as few-shot examples in the prompt, improving response quality.
+
+Additional strategies include splitting complex tasks into simpler subtasks using state machine-based agentic approaches, and simply trying different models. Sword Health demonstrated dramatic improvements by switching models—moving from GPT-4.0 to Claude 3.5 Sonnet with minimal prompt adjustments resulted in approximately 10 percentage point performance improvements. The company provided evidence showing how successive prompt iterations can substantially improve performance, specifically in reducing "heavy hitters" (presumably problematic outputs) and increasing acceptance rates.
+
+## Retrieval-Augmented Generation for Domain Knowledge
+
+When improving domain knowledge proves necessary, Sword Health found that RAG is typically the best next step. While models' increasingly large context windows might seem sufficient, the company's internal experiments revealed the "lost in the middle" problem—models struggle to maintain equal attention across all input context, paying more attention to information at the beginning or end of prompts rather than the middle. This aligns with published research on this phenomenon and informed their decision to implement proper RAG architecture rather than simply stuffing information into large context windows.
+
+For customer support, Sword Health built a RAG system that embeds the same knowledge base articles used by human support agents into a vector database. When patients ask questions, the system retrieves the most similar articles from the knowledge base, includes them in the prompt, and generates an answer. This approach ensures consistency between AI and human support responses while maintaining access to current, accurate information.
+
+Evaluating RAG systems requires considering metrics across three dimensions: generation quality (how well the LLM answers questions), retrieval quality (how relevant is retrieved content), and knowledge base completeness (whether required information exists in the knowledge base). Sword Health employs the RAGAS framework, which comprises four metrics: two for generation (faithfulness and relevance) and two for retrieval (context precision and context recall). Faithfulness measures factual accuracy of generated answers, relevance measures how well answers address questions (calculated by generating multiple answers and measuring cosine similarity), context precision measures whether retrieved information is relevant to the question (detecting when too much irrelevant context is pulled), and context recall measures whether the system successfully retrieves articles containing relevant information.
+
+When they identified retrieval underperformance through low context precision and context recall scores, Sword Health implemented query rewriting—using world knowledge to rewrite queries for better retrieval. When extracted articles show low similarity scores, the system prompts users to provide more clarification about their questions, improving subsequent retrieval attempts.
+
+## User Feedback Collection and Integration
+
+Sword Health systematically collects user feedback to drive continuous improvement, recognizing that learning what users like and dislike enables product and system enhancement. They collect both implicit and explicit feedback. Implicit feedback is gathered indirectly through techniques like sentiment analysis performed after each conversation between Phoenix and patients. This analysis revealed that when patients engage with Phoenix, conversation sentiment is mostly neutral or positive, but approximately 50% of the time patients don't engage in conversation at all—a strong signal that the team needs to investigate the causes of non-engagement.
+
+Explicit feedback is collected directly from users through mechanisms like thumbs down buttons. This feedback collection enables the creation of high-quality datasets that serve multiple purposes: building guardrails, developing evaluations, creating few-shot learning examples, and potentially fine-tuning models. The systematic collection and utilization of feedback creates a continuous improvement loop that keeps models aligned with user needs and expectations.
+
+## Data Inspection and Error Analysis
+
+Despite strong zero-shot capabilities, LLMs can fail in unpredictable ways. Sword Health emphasizes that manual inspection represents one of the highest return-on-investment tasks in machine learning operations. This practice, analogous to error analysis in traditional machine learning, involves examining samples of inputs and outputs to gain understanding of failure modes. Regular review of outputs and inputs helps identify new patterns and failure modes that can be quickly mitigated.
+
+The company promotes data inspection as a fundamental mindset across all team members—not just machine learning engineers but product managers, subject matter experts, and stakeholders. Making data inspection easy is prioritized over the specific platform used. They employ various tools including Google Forms, Google Sheets, dashboards, Streamlit-based data viewing apps, and observability platforms like Langfuse and LangSmith. The key principle is that active, consistent data review—particularly upon every release—matters more than the specific tooling.
+
+Building a culture of data inspection required advocacy and leading by example. The team found that showcasing insights gained from production data analysis—particularly identifying bugs in deployed systems—effectively demonstrates value and motivates developers to adopt the practice.
+
+## Production Architecture and Memory Systems
+
+Phoenix maintains comprehensive memory and context spanning multiple dimensions. The system has access to all interaction history for each user within Sword Health's products, past healthcare data from patients, and decisions that physical therapists made for patients in similar conditions (learning from the crowd). This enables contextually aware conversations where Phoenix can reference specific events like "that move you did during the session which caused pain," demonstrating full awareness across the patient's journey.
+
+The memory system architecture combines MySQL databases for structured persistence with vector databases for semantic retrieval, with the specific choice depending on the use case and type of information being stored. This hybrid approach balances the need for reliable transactional data storage with the semantic search capabilities required for contextual retrieval.
+
+## Human-in-the-Loop and Clinical Safety
+
+A critical aspect of Sword Health's LLMOps approach is the absolute requirement for human oversight of clinical decisions. Phoenix never provides clinical decisions or clinical feedback to patients without a physical therapist reviewing and approving recommendations. For everything clinically related, a licensed healthcare provider must review, accept, modify, or reject AI-generated recommendations. This human-in-the-loop approach serves as the ultimate guardrail for patient safety.
+
+The physical therapist interface functions analogously to an IDE with code completion—therapists see AI-generated recommendations and suggestions within a comprehensive back office interface where they control everything related to their patients. They can accept, reject, or modify recommendations, and the system learns from these decisions, creating a feedback loop that continuously improves AI suggestions while maintaining clinical accountability.
+
+This approach addresses regulatory requirements while enabling the efficiency gains of AI assistance. From a legal standpoint, the ground truth answer is always the decision of the physical therapist or doctor legally responsible for that patient, ensuring compliance while leveraging AI to enhance rather than replace clinical judgment.
+
+## Regulatory Compliance and FDA Considerations
+
+Operating in the U.S. healthcare market, Sword Health must comply with HIPAA regulations governing healthcare data. The legal framework allows anyone within the company to access patient information if the purpose is to provide or improve care, which covers their development and improvement activities. They also implement anonymization to protect patient identity where appropriate.
+
+The company's development cycle is designed to be compliant with FDA regulations. Sword Health has received FDA approval and operates as a Class I device (the least invasive classification). As a clinical decision support system where humans maintain responsibility for all clinical decisions, the AI doesn't autonomously take actions, which keeps regulatory requirements more manageable while still delivering value.
+
+## Performance Optimization and Model Selection
+
+Sword Health demonstrated pragmatic approaches to performance optimization that prioritize simplicity and effectiveness. Before considering complex optimization techniques, they exhaustively explore prompt engineering possibilities. The successive improvement through prompt iteration, combined with strategic model selection, often delivers required performance improvements without more sophisticated techniques.
+
+The switch from GPT-4.0 to Claude 3.5 Sonnet exemplifies this approach—achieving 10 percentage point performance improvements through model selection and minor prompt adjustments represents a high-value, low-complexity optimization. This pragmatic approach aligns with the principle of choosing the simplest solution that meets requirements before investing in more complex alternatives.
+
+## Challenges and Limitations
+
+The presentation acknowledges several ongoing challenges. Latency remains a concern for real-time applications, particularly when implementing comprehensive online guardrails. The 30% latency increase from adding online guardrails forced tradeoffs, with some guardrails moved to offline/post-conversation analysis and others implemented through prompt engineering rather than separate guardrail systems.
+
+Inter-human variability in clinical decision-making presents both a challenge and an interesting measurement opportunity. When multiple physical therapists evaluate the same clinical scenario, they don't always agree, raising questions about what constitutes ground truth. The company measures inter-rater agreement but ultimately defers to legally responsible clinicians for production decisions.
+
+The timeline for fully autonomous clinical AI remains uncertain. When asked about when auto-generated advice might become comparable and insurable without human oversight, the response suggested dramatic uncertainty—estimates that might have been 10 years out 2 years ago could now be much shorter given rapid capability improvements, placing the timeline somewhere between "tomorrow and 10 years."
+
+## Key Insights and Lessons
+
+Sword Health's experience demonstrates that successful LLMOps in regulated industries requires balancing innovation with safety, automation with oversight, and efficiency with reliability. Their systematic approach—starting with guardrails, establishing comprehensive evaluation frameworks, exhausting prompt engineering possibilities before more complex optimizations, implementing RAG for knowledge enhancement, collecting and acting on user feedback, and maintaining rigorous data inspection practices—provides a practical roadmap for deploying LLMs in high-stakes production environments.
+
+The emphasis on human-in-the-loop for clinical decisions, combined with AI assistance for efficiency, represents a pragmatic middle ground that delivers value while maintaining safety and regulatory compliance. The continuous improvement cycle driven by evaluation, feedback, and data inspection enables iterative refinement that improves performance while catching and addressing issues before they impact patients.

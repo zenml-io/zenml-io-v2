@@ -1,0 +1,115 @@
+---
+title: "LLM-Powered Search Evaluation System for Automated Result Quality Assessment"
+slug: "llm-powered-search-evaluation-system-for-automated-result-quality-assessment"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "6817689f597f7791e4aeadbd"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:07:23.474Z"
+  createdOn: "2025-05-04T13:16:15.353Z"
+llmopsTags:
+  - "structured-output"
+  - "realtime-application"
+  - "classification"
+  - "fine-tuning"
+  - "prompt-engineering"
+  - "human-in-the-loop"
+  - "semantic-search"
+  - "few-shot"
+  - "monitoring"
+  - "fastapi"
+  - "openai"
+company: "DoorDash"
+summary: "DoorDash developed AutoEval, a human-in-the-loop LLM-powered system for evaluating search result quality at scale. The system replaced traditional manual human annotations which were slow, inconsistent, and didn't scale. AutoEval combines LLMs, prompt engineering, and expert oversight to deliver automated relevance judgments, achieving a 98% reduction in evaluation turnaround time while matching or exceeding human rater accuracy. The system uses a custom Whole-Page Relevance (WPR) metric to evaluate entire search result pages holistically."
+link: "https://careersatdoordash.com/blog/doordash-llms-to-evaluate-search-result-pages/"
+year: 2025
+seo:
+  title: "DoorDash: LLM-Powered Search Evaluation System for Automated Result Quality Assessment - ZenML LLMOps Database"
+  description: "DoorDash developed AutoEval, a human-in-the-loop LLM-powered system for evaluating search result quality at scale. The system replaced traditional manual human annotations which were slow, inconsistent, and didn't scale. AutoEval combines LLMs, prompt engineering, and expert oversight to deliver automated relevance judgments, achieving a 98% reduction in evaluation turnaround time while matching or exceeding human rater accuracy. The system uses a custom Whole-Page Relevance (WPR) metric to evaluate entire search result pages holistically."
+  canonical: "https://www.zenml.io/llmops-database/llm-powered-search-evaluation-system-for-automated-result-quality-assessment"
+  ogTitle: "DoorDash: LLM-Powered Search Evaluation System for Automated Result Quality Assessment - ZenML LLMOps Database"
+  ogDescription: "DoorDash developed AutoEval, a human-in-the-loop LLM-powered system for evaluating search result quality at scale. The system replaced traditional manual human annotations which were slow, inconsistent, and didn't scale. AutoEval combines LLMs, prompt engineering, and expert oversight to deliver automated relevance judgments, achieving a 98% reduction in evaluation turnaround time while matching or exceeding human rater accuracy. The system uses a custom Whole-Page Relevance (WPR) metric to evaluate entire search result pages holistically."
+---
+
+## Overview
+
+DoorDash, the food delivery and logistics platform, developed AutoEval—a human-in-the-loop LLM-powered evaluation system—to assess the quality of search results across their consumer application. The system addresses fundamental challenges in evaluating search relevance at scale, moving from traditional manual annotation approaches to automated LLM-based judgments while maintaining quality through expert oversight and continuous refinement loops.
+
+The core innovation lies in combining LLM capabilities with a custom evaluation metric called whole-page relevance (WPR), which measures the usefulness of entire search result pages rather than individual results. This approach acknowledges that users interact with spatially arranged content blocks (stores, dishes, items) rather than simple vertical lists, making traditional metrics like NDCG insufficient for DoorDash's 2D user interface.
+
+## The Problem with Traditional Evaluation
+
+Before diving into AutoEval's architecture, it's important to understand why traditional human-driven evaluation became untenable as DoorDash scaled. The company supports diverse verticals including restaurants, retail, grocery, and pharmacy, each with distinct relevance criteria. Manual annotation suffered from several limitations: scalability constraints made it infeasible to assess millions of query-document pairs; feedback loops took days or weeks, slowing iteration speed; inconsistent ratings arose from different raters interpreting guidelines differently; and annotated datasets overrepresented high-frequency "head" queries while underrepresenting "tail" queries where relevance problems often hide.
+
+These limitations became increasingly costly as DoorDash's search complexity grew. The company needed a solution that could deliver automated assessments of millions of relevance judgments per day, enable faster iteration on ranking models and UI changes, provide broader coverage across query distributions, and maintain consistent reasoning grounded in well-structured prompts.
+
+## The AutoEval Architecture
+
+AutoEval's architecture transforms query-result pairs into structured evaluation tasks processed by LLMs. The pipeline consists of several key stages:
+
+**Query Sampling** involves selecting real user queries from live traffic across multiple dimensions including intent, frequency, geography, and time of day (daypart). This sampling strategy ensures comprehensive coverage across different query types and user contexts.
+
+**Prompt Construction** converts each query-result pair into a structured prompt tailored to the specific evaluation task. Different tasks—such as dish-to-store matching, cuisine-to-store relevance, or store name search—require different prompt structures and context.
+
+**LLM Inference** passes the constructed prompt to an LLM (either base or fine-tuned) which returns a structured relevance judgment. DoorDash uses GPT-4o as their primary model, though they plan to explore alternatives through an internal gateway.
+
+**WPR Aggregation** rolls up individual judgments into a page-level WPR score that reflects the overall usefulness of the search result page. This aggregation accounts for the visual prominence and expected user impact of different content blocks.
+
+**Auditing and Monitoring** ensures quality through regular human review of sampled judgments, checking for stability and alignment with expert standards.
+
+## Prompt Engineering Strategies
+
+Prompt engineering forms the core of AutoEval's effectiveness. Each prompt mirrors DoorDash's internal human rating guidelines and includes structured context such as store name, menu items, dish titles, and metadata tags. This approach helps the LLM replicate the reasoning a trained human evaluator would perform.
+
+DoorDash experimented with various prompting strategies including zero-shot, few-shot, and structured templates. They found that task-specific structured prompts paired with rule-based logic and domain-specific examples offered the most consistent, interpretable, and human-aligned results.
+
+Several specific techniques enhance judgment quality. **Chain-of-thought reasoning** explicitly breaks down rating tasks into multi-step logic (exact match → substitute → off-target), allowing the model to reason in stages and simulate the evaluator's decision-making process. **Contextual grounding** includes rich, structured metadata such as geolocation and store menu information to provide the LLM with the same context a human reviewer would have. **Embedded guidelines** incorporate fragments of evaluation criteria directly into prompts as in-context instruction for complex domains like food or retail stores. Finally, **alignment with internal rubrics** ensures prompts reflect the same conditional logic and categories used by internal and crowd raters, maintaining interpretability and calibration across judgment sources.
+
+## Fine-Tuning with Expert-Labeled Data
+
+Beyond prompt engineering, DoorDash fine-tunes their LLMs on high-quality, human-labeled data for key evaluation categories. The process starts with internal DoorDash experts who generate relevance annotations following well-defined guidelines. These labels form a "golden dataset" split into training and evaluation sets for fine-tuning models and benchmarking performance.
+
+Critically, experts must justify their annotations—not just provide labels. These justifications ensure the model learns both the correct label and the reasoning behind it, guide prompt refinement, reveal ambiguous cases, and help align model behavior with human expectations.
+
+Fine-tuned models show improved alignment in high-impact categories including store name search (analyzing store category and menu overlap), cuisine search (identifying relevant menu items for cuisine-based queries), and dish/item search (finding close or exact menu matches).
+
+## Human-in-the-Loop Quality Assurance
+
+While fine-tuned models drive scale, DoorDash maintains human expertise through structured auditing. External raters review a sample of LLM-generated judgments and flag low-quality outputs. Internal experts then investigate flagged items, leading to prompt improvements, creation of new golden data, and ongoing fine-tuning. This creates a tight feedback loop: internal experts generate golden data, models are fine-tuned and evaluated, external raters audit outputs, experts analyze flagged outputs and refine prompts or labels, and the cycle continues with improved models and better-aligned prompts.
+
+This human-in-the-loop approach is crucial for maintaining quality at scale. It acknowledges that LLMs, while powerful, require ongoing calibration and oversight to remain aligned with evolving quality standards.
+
+## The Whole-Page Relevance Metric
+
+The WPR metric represents a significant innovation in search evaluation methodology. Unlike NDCG which evaluates a vertical list, WPR measures multiple content blocks arranged spatially on the screen. Each content type is weighted by its visual prominence and expected user impact, similar to how real estate value is assigned on the DoorDash app.
+
+WPR supports full-stack search evaluation across retrieval (are the right candidates being retrieved?), ranking (are results presented in the most useful order?), post-processing (are filters and blends improving relevance?), and user experience composition (does the layout guide the user effectively?).
+
+Two key applications of WPR include offline feature evaluation (assessing impact of new ranking models, processing logic changes, or UI updates before rollout to A/B testing) and continuous production monitoring (measuring daily search relevance and capturing quality signals beyond user engagement and system performance).
+
+## Results and Impact
+
+AutoEval has delivered substantial improvements across DoorDash's relevance evaluation lifecycle. The system reduced relevance judgment turnaround time by 98% compared to human evaluation, enabling a nine-fold increase in evaluation capacity and resolving a major bottleneck in their offline experimentation pipeline.
+
+From an efficiency standpoint, AutoEval freed expert raters from repetitive labeling tasks, allowing them to focus on guideline development, auditing, and edge case resolution—activities that raise overall quality and consistency of evaluation standards.
+
+On accuracy, fine-tuned LLMs consistently match or outperform external raters in key relevance tasks, including store name and dish-level search satisfaction. In offline benchmark evaluation, the fine-tuned GPT-4o model outperformed external raters in overall accuracy after several quality improvement loops.
+
+## Future Directions and Considerations
+
+DoorDash outlines several future improvements. They plan to decouple from a single LLM provider (currently OpenAI) by routing traffic through an internal GenAI gateway, enabling experimentation with cost, latency, and accuracy trade-offs across multiple vendors. They're also exploring in-house LLMs for greater control and cost efficiency, potentially allowing tighter alignment with DoorDash-specific language patterns and domain expertise.
+
+Additionally, they plan to enhance prompt context with external knowledge sources to better handle tail queries and unfamiliar entities—for instance, fetching external data about stores that haven't yet onboarded with DoorDash.
+
+## Critical Assessment
+
+While the case study presents impressive results, some aspects warrant consideration. The 98% reduction in turnaround time and accuracy improvements are notable, but the comparison baseline (external crowd raters) may not represent the highest standard of human evaluation. The claim that fine-tuned models "outperform" external raters should be understood in context—these are crowd annotators, not domain experts.
+
+The human-in-the-loop approach is commendable and addresses concerns about fully automated evaluation. However, the case study doesn't extensively discuss failure modes, edge cases where the LLM struggles, or potential biases in the evaluation system.
+
+The dependency on OpenAI's GPT-4o represents both a technical and business risk, which DoorDash acknowledges by planning to develop an internal gateway for vendor flexibility. The exploration of in-house LLMs suggests awareness of cost and control trade-offs inherent in relying on external API providers.
+
+Overall, AutoEval represents a well-designed production LLM system that balances automation with human oversight, addresses practical scalability challenges, and demonstrates thoughtful engineering practices including prompt engineering, fine-tuning, and continuous quality monitoring.

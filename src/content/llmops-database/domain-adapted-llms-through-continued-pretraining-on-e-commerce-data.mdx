@@ -1,0 +1,121 @@
+---
+title: "Domain-Adapted LLMs Through Continued Pretraining on E-commerce Data"
+slug: "domain-adapted-llms-through-continued-pretraining-on-e-commerce-data"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "694adabb64d67fc640f6a048"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2026-01-07T09:40:39.763Z"
+  lastUpdated: "2025-12-23T20:11:46.940Z"
+  createdOn: "2025-12-23T18:08:59.668Z"
+llmopsTags:
+  - "customer-support"
+  - "content-moderation"
+  - "classification"
+  - "summarization"
+  - "chatbot"
+  - "fine-tuning"
+  - "instruction-tuning"
+  - "human-in-the-loop"
+  - "cost-optimization"
+  - "token-optimization"
+  - "model-optimization"
+  - "pytorch"
+  - "monitoring"
+  - "open-source"
+  - "guardrails"
+  - "scalability"
+  - "meta"
+  - "openai"
+  - "nvidia"
+company: "Ebay"
+summary: "eBay developed customized large language models by adapting Meta's Llama 3.1 models (8B and 70B parameters) to the e-commerce domain through continued pretraining on a mixture of proprietary eBay data and general domain data. This hybrid approach allowed them to infuse domain-specific knowledge while avoiding the resource intensity of training from scratch. Using 480 NVIDIA H100 GPUs and advanced distributed training techniques, they trained the models on 1 trillion tokens, achieving approximately 25% improvement on e-commerce benchmarks for English (30% for non-English) with only 1% degradation on general domain tasks. The resulting \"e-Llama\" models were further instruction-tuned and aligned with human feedback to power various AI initiatives across the company in a cost-effective, scalable manner."
+link: "https://innovation.ebayinc.com/stories/scaling-large-language-models-for-e-commerce-the-development-of-a-llama-based-customized-llm-for-e-commerce/"
+year: 2025
+seo:
+  title: "Ebay: Domain-Adapted LLMs Through Continued Pretraining on E-commerce Data - ZenML LLMOps Database"
+  description: "eBay developed customized large language models by adapting Meta's Llama 3.1 models (8B and 70B parameters) to the e-commerce domain through continued pretraining on a mixture of proprietary eBay data and general domain data. This hybrid approach allowed them to infuse domain-specific knowledge while avoiding the resource intensity of training from scratch. Using 480 NVIDIA H100 GPUs and advanced distributed training techniques, they trained the models on 1 trillion tokens, achieving approximately 25% improvement on e-commerce benchmarks for English (30% for non-English) with only 1% degradation on general domain tasks. The resulting \"e-Llama\" models were further instruction-tuned and aligned with human feedback to power various AI initiatives across the company in a cost-effective, scalable manner."
+  canonical: "https://www.zenml.io/llmops-database/domain-adapted-llms-through-continued-pretraining-on-e-commerce-data"
+  ogTitle: "Ebay: Domain-Adapted LLMs Through Continued Pretraining on E-commerce Data - ZenML LLMOps Database"
+  ogDescription: "eBay developed customized large language models by adapting Meta's Llama 3.1 models (8B and 70B parameters) to the e-commerce domain through continued pretraining on a mixture of proprietary eBay data and general domain data. This hybrid approach allowed them to infuse domain-specific knowledge while avoiding the resource intensity of training from scratch. Using 480 NVIDIA H100 GPUs and advanced distributed training techniques, they trained the models on 1 trillion tokens, achieving approximately 25% improvement on e-commerce benchmarks for English (30% for non-English) with only 1% degradation on general domain tasks. The resulting \"e-Llama\" models were further instruction-tuned and aligned with human feedback to power various AI initiatives across the company in a cost-effective, scalable manner."
+---
+
+## Overview
+
+eBay's case study describes a production-scale effort to develop domain-adapted large language models specifically optimized for e-commerce applications. The company operates at massive scale with billions of active listings and millions of sellers across 190 global markets, creating both opportunities and challenges for deploying LLMs in production. Rather than relying solely on expensive third-party APIs like GPT-4 or Claude, or building everything from scratch, eBay adopted a hybrid strategy that balances speed-to-market with customization. This involved taking Meta's open-source Llama 3.1 models and performing continued pretraining on a carefully curated mixture of e-commerce and general domain data to create what they call "e-Llama" models.
+
+The business motivation is clear: third-party LLM services come with considerable costs that become impractical at eBay's scale, introduce data security risks when handling proprietary information, and limit the ability to fine-tune models based on internal data. By developing in-house capabilities, eBay aims to create fine-tuned, scalable, and cost-effective solutions specifically optimized for e-commerce use cases. The company mentions they also build models completely from scratch (their LiLiuM family), but the e-Llama approach represents a faster path to production by leveraging existing pretrained models.
+
+## Technical Architecture and Infrastructure
+
+The production training infrastructure for e-Llama is substantial and represents a serious commitment to LLMOps at scale. Training was conducted using 60 nodes, each equipped with 8 NVIDIA H100 80GB GPUs, totaling 480 GPUs. The GPUs are connected via NVIDIA NVLink for intra-node communication and InfiniBand for inter-node communication, all part of eBay's internal compute platform. This represents significant capital investment in ML infrastructure that can support large-scale model training.
+
+The choice of distributed training framework is critical at this scale. eBay selected Megatron-LM, a highly-optimized training framework from NVIDIA that supports 3D parallelism. This encompasses data parallelism (distributing data batches across GPUs), tensor parallelism (splitting individual tensors across GPUs), and pipeline parallelism (distributing model layers across GPUs). The framework also enables distributed optimizer states, which is crucial for memory efficiency when training models with billions of parameters. They also leverage flash-attention-2, an optimization technique that reduces memory consumption and improves throughput for attention mechanisms.
+
+The training efficiency metrics provide important context for LLMOps practitioners. Training the 70 billion parameter model on 1 trillion tokens took approximately one month, consuming around 340,000 GPU-hours. eBay notes that when compared to reported numbers for Llama 2 base model training, their setup is even more efficient, suggesting they've achieved meaningful optimization in their training pipeline. This efficiency is crucial for making continued pretraining economically viable in production settings.
+
+## Data Strategy and Domain Adaptation
+
+A central challenge in this LLMOps implementation is balancing domain adaptation with the preservation of general capabilities, often called avoiding "catastrophic forgetting." When models are further trained on domain-specific data, they risk degrading on tasks they previously performed well on. eBay's solution involves carefully constructing a training data mixture that includes both e-commerce content and general domain examples that resemble the original Llama pretraining data. This "replay" technique has been shown in research to help models retain previously learned information.
+
+The data mixture is thoughtfully designed across multiple dimensions. For general domain content, they use curated, publicly available open-source datasets, supplemented with smaller but higher quality datasets. They also include 10% non-English general domain data to enhance multilingual capabilities, which is important for eBay's global marketplace presence across 190 markets.
+
+For e-commerce-specific content, eBay leverages multiple proprietary and public sources. They gather data from public listings and product reviews from the eBay website, which they thoroughly filter and serialize to fit the autoregressive language modeling objective. Additionally, they trained a custom e-commerce classifier and used it to extract e-commerce-specific examples from larger open-source datasets. This classifier-based filtering approach is a practical technique for curating domain-specific data at scale.
+
+The text notes that data is "thoroughly filtered and serialized," suggesting attention to data quality and formatting, though specific details about filtering criteria, data cleaning pipelines, or quality assurance processes are not provided. This represents a common challenge in LLMOps case studies where proprietary data handling details remain confidential.
+
+## Training Methodology and Hyperparameter Optimization
+
+eBay's approach to determining optimal training configurations demonstrates methodical LLMOps practice. Rather than training at full scale immediately, they conducted a series of experiments at smaller scale to identify the best hyperparameters and training setup. This is a critical cost-saving measure when working with expensive compute resources.
+
+Through these experiments, they determined that a maximum learning rate of 10% of the original Llama pretraining learning rate works best for their use case. This reduced learning rate makes sense for continued pretraining scenarios where you want to adapt the model without drastically shifting its existing representations. They found that a general-to-e-commerce data sampling ratio of 1:1 gives optimal results, meaning half the training batches contain general domain data and half contain e-commerce data. This balanced approach helps maintain general capabilities while infusing domain knowledge.
+
+The learning rate schedule uses cosine annealing with warmup, a standard practice in large language model training that gradually increases the learning rate at the start and then decreases it following a cosine curve. The batch size is approximately 11.8 million tokens, which is substantial and requires careful distribution across the 480 GPUs. Training proceeds for 85,000 update steps, meaning the models see 1 trillion tokens in total during continued pretraining.
+
+It's worth noting that while these hyperparameters worked well for eBay's specific use case and data mixture, they may not generalize to other domain adaptation scenarios. The optimal configuration depends heavily on factors like the similarity between source and target domains, the amount and quality of domain-specific data available, and the specific evaluation metrics that matter for production use cases.
+
+## Evaluation and Performance Results
+
+eBay reports quantitative improvements on domain-specific benchmarks while maintaining general capabilities, which is the goal of continued pretraining. The e-Llama models demonstrate approximately 25% improvement on e-commerce-specific benchmarks for English and about 30% improvement for non-English languages when compared to the base Llama 3.1 models. The stronger improvement for non-English is notable and may reflect that the base Llama models had less e-commerce knowledge in those languages to begin with.
+
+Critically, they observe only 1% degradation on general domain natural language understanding (NLU) benchmarks for the large e-Llama 70B model. This minimal degradation suggests their data mixture and training approach successfully avoided catastrophic forgetting. However, the text doesn't specify which specific benchmarks were used for evaluation, making it difficult to assess the breadth of testing or compare directly to other published results. For production LLMOps, having a comprehensive evaluation suite covering multiple task types is essential.
+
+The case study mentions performance differences between model sizes (8B and 70B parameters) but doesn't provide detailed comparative metrics. In production settings, model size selection involves tradeoffs between capability, inference cost, latency, and deployment complexity. The 8B model would be much cheaper and faster to serve but likely less capable on complex tasks.
+
+## Post-Training and Alignment
+
+After continued pretraining on domain-specific data, eBay performs instruction tuning and alignment with human feedback. This is a crucial step for making base models useful in production applications. Instruction tuning teaches models to follow explicit instructions and respond in desired formats, while human feedback alignment (likely referring to techniques like RLHF or similar approaches) ensures models generate safe and contextually appropriate content.
+
+The text mentions that tuning helped models "learn guardrails," which is important for production deployments where models might be user-facing. E-commerce applications have particular risks around generating inappropriate product descriptions, pricing information, or other content that could harm the business or users. However, the case study doesn't detail the specific instruction tuning datasets used, the human feedback collection process, alignment techniques employed, or what specific safety issues they needed to address.
+
+This represents a common limitation in published case studies where companies understandably don't want to share all details about their safety and alignment procedures. For LLMOps practitioners, it's important to recognize that the post-training phase often requires significant additional engineering and can be as complex as the pretraining itself.
+
+## Production Deployment and Operational Considerations
+
+The case study states that the e-Llama models are "enabling eBay to leverage proprietary and open LLMs to drive new AI initiatives across the company," but doesn't provide specific details about production deployment architecture, serving infrastructure, monitoring approaches, or which specific applications are using these models. References to other eBay announcements suggest applications might include listing creation, product descriptions, and social selling features, but these aren't detailed in this technical case study.
+
+From an LLMOps perspective, several important questions remain unanswered: How are models versioned and updated as eBay continues to collect new e-commerce data? What's the inference infrastructure (likely separate from the H100 training cluster)? How do they handle model serving at eBay's scale with millions of sellers? What monitoring and evaluation processes exist for production models? How do they detect and handle model failures or inappropriate outputs?
+
+The emphasis on cost-effectiveness suggests that replacing expensive API calls to third-party services with in-house models was a key driver, but no quantitative cost comparison is provided. Similarly, while data security is mentioned as a benefit of in-house models, there's no discussion of the MLOps security practices around model training, data handling, or deployment.
+
+## Critical Assessment and Balanced Perspective
+
+This case study presents eBay's technical approach in a positive light, emphasizing improvements and efficiency gains. Several claims warrant careful consideration. The "approximately 25% improvement" on e-commerce benchmarks sounds impressive, but without knowing the baseline performance, the absolute capability level, or which specific benchmarks were used, it's difficult to assess practical impact. A 25% improvement from 60% to 75% accuracy is very different from 90% to 93.75%.
+
+The "only 1% degradation on general domain NLU benchmarks" for the 70B model is encouraging, but again, we don't know which benchmarks, whether this includes all important general tasks, or if certain capabilities degraded more than others. The text doesn't report metrics for the 8B model's general domain performance, which might show different tradeoffs.
+
+The claim that their training setup is "even more efficient" than reported Llama 2 training is interesting but requires context. Llama 3.1 models benefit from more recent optimization techniques than Llama 2, so some efficiency gain might come from the better starting point rather than eBay's specific optimizations. Additionally, continued pretraining on 1 trillion tokens is far less compute than training from scratch (Llama models typically train on trillions of tokens initially), so direct efficiency comparisons may not be appropriate.
+
+The case study doesn't discuss potential limitations or challenges encountered. Did any experiments fail? Were there difficulties with training stability at scale? How many iterations were needed to get the data mixture right? What problems arose during deployment? Most production ML projects encounter significant challenges, and their absence from this narrative suggests this is primarily a success story designed for public relations purposes.
+
+## Broader LLMOps Implications
+
+Despite these limitations, the case study offers valuable insights for LLMOps practitioners. The hybrid approach of using both fully custom models (LiLiuM) and adapted open-source models (e-Llama) is pragmatic and allows for flexibility based on specific use cases and time constraints. Continued pretraining represents a middle ground between using foundation models as-is and training from scratch, which can be a practical choice for organizations with domain-specific needs and sufficient compute resources.
+
+The emphasis on efficiency and cost-effectiveness reflects real production constraints. Not every organization can or should train 100+ billion parameter models from scratch. Leveraging open-source models like Llama while adding proprietary domain knowledge represents a viable path for many enterprises. However, this still requires substantial infrastructure investment (480 H100 GPUs isn't trivial) and deep ML engineering expertise to implement efficiently.
+
+The attention to multilingual capabilities and the 190-market global scale demonstrates how LLMOps considerations differ for international e-commerce platforms versus more localized applications. The data mixture strategy and evaluation across both English and non-English languages reflects this reality.
+
+Finally, the integration of continued pretraining, instruction tuning, and human feedback alignment into a comprehensive pipeline represents modern LLMOps practice. Production LLMs rarely succeed with just pretraining alone; they require careful post-training to become useful, safe, and aligned with business objectives. eBay's approach recognizes this multi-stage process, even if all details aren't shared publicly.

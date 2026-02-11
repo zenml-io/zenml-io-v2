@@ -1,0 +1,94 @@
+---
+title: "Automating Post Incident Review Summaries with GPT-4"
+slug: "automating-post-incident-review-summaries-with-gpt-4"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f3aa1aa32ecff24efdef8"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:34:27.190Z"
+  createdOn: "2024-11-21T13:50:25.286Z"
+llmopsTags:
+  - "compliance"
+  - "databases"
+  - "devops"
+  - "document-processing"
+  - "documentation"
+  - "error-handling"
+  - "monitoring"
+  - "openai"
+  - "prompt-engineering"
+  - "reliability"
+  - "scalability"
+  - "security"
+  - "structured-output"
+  - "system-prompts"
+company: "Canva"
+summary: "Canva implemented GPT-4 chat to automate the summarization of Post Incident Reports (PIRs), addressing inconsistency and workload challenges in their incident review process. The solution involves extracting PIR content from Confluence, preprocessing to remove sensitive data, using carefully crafted prompts with GPT-4 chat for summary generation, and integrating the results with their data warehouse and Jira tickets. The implementation proved successful with most AI-generated summaries requiring no human modification while maintaining high quality and consistency."
+link: "https://www.canva.dev/blog/engineering/summarise-post-incident-reviews-with-gpt4/"
+year: 2023
+seo:
+  title: "Canva: Automating Post Incident Review Summaries with GPT-4 - ZenML LLMOps Database"
+  description: "Canva implemented GPT-4 chat to automate the summarization of Post Incident Reports (PIRs), addressing inconsistency and workload challenges in their incident review process. The solution involves extracting PIR content from Confluence, preprocessing to remove sensitive data, using carefully crafted prompts with GPT-4 chat for summary generation, and integrating the results with their data warehouse and Jira tickets. The implementation proved successful with most AI-generated summaries requiring no human modification while maintaining high quality and consistency."
+  canonical: "https://www.zenml.io/llmops-database/automating-post-incident-review-summaries-with-gpt-4"
+  ogTitle: "Canva: Automating Post Incident Review Summaries with GPT-4 - ZenML LLMOps Database"
+  ogDescription: "Canva implemented GPT-4 chat to automate the summarization of Post Incident Reports (PIRs), addressing inconsistency and workload challenges in their incident review process. The solution involves extracting PIR content from Confluence, preprocessing to remove sensitive data, using carefully crafted prompts with GPT-4 chat for summary generation, and integrating the results with their data warehouse and Jira tickets. The implementation proved successful with most AI-generated summaries requiring no human modification while maintaining high quality and consistency."
+---
+
+## Overview
+
+Canva, an online graphic design platform serving over 150 million monthly active users with more than 17 billion designs across 100+ languages, implemented GPT-4-chat to automate the summarization of Post Incident Reviews (PIRs). This case study provides a practical example of using LLMs for internal operational efficiency in a large-scale tech company, specifically targeting the reduction of manual toil for Site Reliability Engineers (SREs) while improving consistency and quality of incident documentation.
+
+The problem they faced was twofold: reliability engineers were spending significant time writing incident summaries at the end of incidents, and the resulting summaries were becoming inconsistent over time. Reviewers often needed more context to quickly and effectively review summaries, indicating a quality problem in addition to the efficiency concern.
+
+## Technical Architecture and Workflow
+
+The production workflow follows a clear pipeline architecture. Raw PIRs are stored in Confluence, and the system fetches these reports and parses the HTML to extract content as raw text. A critical preprocessing step involves sanitizing sensitive data by removing links, emails, and Slack channel names. This serves dual purposes: avoiding exposure of internal information to external APIs (a common security concern when using third-party LLM services) and ensuring blameless summaries that don't inadvertently identify individuals.
+
+The sanitized text is then sent to OpenAI's GPT-4 chat completion endpoint for summary generation. Post-generation, summaries are archived in a data warehouse where they can be integrated with additional incident metadata for comprehensive reporting. The summaries are also attached to corresponding Jira tickets, enabling tracking of any manual modifications through Jira webhooks. This creates a feedback loop where human-modified summaries can be compared against AI-generated originals—a smart approach for ongoing quality monitoring.
+
+## Model Selection Process
+
+The team conducted a thorough evaluation of three OpenAI model options: GPT fine-tuning with davinci-002, GPT completion with gpt-4-32k, and GPT chat with gpt-4-32k. Their evaluation methodology involved manual comparison of approximately 40 summaries generated by each approach.
+
+The fine-tuning approach was ultimately discarded due to insufficient training data. With only about 1,500 examples of varying quality from existing PIRs and summaries, the team determined this was not enough to train a model capable of discerning the specific details needed for extraction. This represents an honest assessment of fine-tuning limitations that many organizations discover—it requires substantial, high-quality training data to outperform well-prompted base models.
+
+Both GPT completion and GPT chat significantly outperformed the fine-tuned model in several key areas. They were more accurate at determining impact duration from start and end times, better at correlating various incident phases (such as relating resolution methods to causes), and generally captured critical details that the fine-tuned model missed.
+
+The team selected GPT-4-chat specifically over the completion API for structural reasons. The chat API allows system messages to guide the structure of expected summary elements, while the completion API requires details in a single paragraph, leading to more flexible but potentially inconsistent response formats. The ability to divide content into user and assistant messages in the chat format improved the model's comprehension of the intended output format, securing more consistent summary quality.
+
+## Prompt Engineering Approach
+
+The prompt structure uses a few-shot learning pattern with the chat completion endpoint. The message array includes a system message containing the summary prompt, followed by two PIR-summary example pairs (user messages containing PIRs, assistant messages containing corresponding summaries), and finally the new PIR to summarize as a user message.
+
+The system prompt is carefully crafted with several key elements. It establishes the role as an experienced Site Reliability Engineer who understands CS terminology. The goal is explicitly stated as summarizing reliability reports in a blameless manner with coherent sentences. The constraints section specifies that summaries should be in flexible format with key components connected, lists the desired components (Detection Methods, Impacted Groups, Affected Service, Duration, Root Cause, Trigger, Mitigation Method), emphasizes focusing on systemic issues and facts without attributing errors to individuals, prohibits introducing new information, and prevents the model from offering suggestions.
+
+The team reports that testing with fabricated PIRs that explicitly blame individuals demonstrated the model's blameless stance, though they acknowledge this is only proven "to a certain extent"—an honest assessment of the limitations of prompt-based safety measures.
+
+## Production Configuration Decisions
+
+Several important operational decisions were made for the production deployment. The temperature parameter was set to 0 when interfacing with the chat API to ensure deterministic outputs devoid of artificially generated content. This is a common practice for factual summarization tasks where creativity is undesirable.
+
+For output length control, rather than using the API's max_tokens parameter (which can lead to truncated or unfinished outputs), the team instructs the model in the prompt to target a 600-character limit. They acknowledge this doesn't guarantee responses under 600 characters, but it helps avoid overly lengthy outputs. When summaries exceed the desired length, they implement a secondary pass by resubmitting to GPT-4 chat for further condensing—an interesting pattern for handling output length in production.
+
+The use of two few-shot examples rather than one was a deliberate choice to prevent GPT from rigidly mirroring the structure of a single given summary, while still providing enough guidance for format understanding.
+
+## Cost Analysis
+
+The team provides transparent cost analysis. At the time of writing, GPT-4 was the most expensive option at $0.06 per 1K tokens. Given that a single PIR, along with sample PIRs and corresponding summaries, can contain up to 10,000 tokens, the maximum estimated cost per summary is approximately $0.60. The team deemed this manageable, which allowed them to select the most powerful model available rather than optimizing for cost.
+
+## Results and Evaluation
+
+After approximately two months of running the system in production, the team reports that most AI-generated PIR summaries remained unaltered by engineers. This serves as both a quality indicator (engineers approved of the output) and evidence of reduced operational toil. The process also yields a substantial collection of summaries suitable for archiving and reporting purposes.
+
+The comparison between original AI-generated summaries and engineer-revised versions stored in the data warehouse enables ongoing quality monitoring—a good practice for production LLM systems. However, specific metrics on accuracy, consistency improvement, or time savings are not provided in the case study.
+
+## Critical Assessment
+
+While the case study presents a compelling use case, several aspects warrant balanced consideration. The claim that "most" summaries remained unaltered is not quantified, and it would be valuable to know exact percentages. The evaluation methodology of manually comparing 40 summaries is relatively small-scale for production validation. Additionally, the blameless approach is validated only with fabricated test cases, and real-world edge cases may not be fully covered.
+
+The architecture demonstrates good practices around data sanitization and feedback loops for quality monitoring. The cost analysis is refreshingly transparent for a case study of this nature. The decision to use few-shot prompting rather than fine-tuning is well-justified given the data constraints, though it means the solution may be more susceptible to prompt engineering challenges as use cases evolve.
+
+Overall, this represents a pragmatic application of LLMs for internal operational efficiency, with thoughtful consideration of model selection, prompt engineering, and production concerns like data sensitivity and output quality monitoring.

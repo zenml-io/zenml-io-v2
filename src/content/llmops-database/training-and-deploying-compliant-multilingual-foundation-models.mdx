@@ -1,0 +1,113 @@
+---
+title: "Training and Deploying Compliant Multilingual Foundation Models"
+slug: "training-and-deploying-compliant-multilingual-foundation-models"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "675b1fdba730a7ca95520cf0"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:48:36.606Z"
+  createdOn: "2024-12-12T17:39:39.775Z"
+llmopsTags:
+  - "fraud-detection"
+  - "customer-support"
+  - "regulatory-compliance"
+  - "high-stakes-application"
+  - "multi-modality"
+  - "fine-tuning"
+  - "model-optimization"
+  - "latency-optimization"
+  - "error-handling"
+  - "monitoring"
+  - "security"
+  - "compliance"
+  - "guardrails"
+  - "reliability"
+  - "scalability"
+  - "databricks"
+company: "Dynamo"
+summary: "Dynamo, an AI company focused on secure and compliant AI solutions, developed an 8-billion parameter multilingual LLM using Databricks Mosaic AI Training platform. They successfully trained the model in just 10 days, achieving a 20% speedup in training compared to competitors. The model was designed to support enterprise-grade AI systems with built-in security guardrails, compliance checks, and multilingual capabilities for various industry applications."
+link: "https://www.databricks.com/customers/dynamo-ai"
+year: 2024
+seo:
+  title: "Dynamo: Training and Deploying Compliant Multilingual Foundation Models - ZenML LLMOps Database"
+  description: "Dynamo, an AI company focused on secure and compliant AI solutions, developed an 8-billion parameter multilingual LLM using Databricks Mosaic AI Training platform. They successfully trained the model in just 10 days, achieving a 20% speedup in training compared to competitors. The model was designed to support enterprise-grade AI systems with built-in security guardrails, compliance checks, and multilingual capabilities for various industry applications."
+  canonical: "https://www.zenml.io/llmops-database/training-and-deploying-compliant-multilingual-foundation-models"
+  ogTitle: "Dynamo: Training and Deploying Compliant Multilingual Foundation Models - ZenML LLMOps Database"
+  ogDescription: "Dynamo, an AI company focused on secure and compliant AI solutions, developed an 8-billion parameter multilingual LLM using Databricks Mosaic AI Training platform. They successfully trained the model in just 10 days, achieving a 20% speedup in training compared to competitors. The model was designed to support enterprise-grade AI systems with built-in security guardrails, compliance checks, and multilingual capabilities for various industry applications."
+---
+
+## Overview
+
+Dynamo AI is a technology company founded in 2022 that focuses on enabling enterprises to safely adopt AI solutions amid rapidly evolving regulatory and compliance requirements. Their mission is to help organizations train, develop, and deploy AI models in ways that are compliant with safety regulations. The company positions itself at the intersection of cutting-edge research (with roots at MIT and Harvard) and enterprise-scale deployment, aiming to serve millions of customers with secure and responsible AI systems.
+
+This case study documents their journey to train their own multilingual foundation model, Dynamo 8B, using Databricks Mosaic AI Training infrastructure. It represents a notable example of how an AI security and compliance company approached the challenge of building custom foundation models for specific enterprise use cases rather than relying on existing open source alternatives.
+
+## The Problem Space
+
+The central challenge Dynamo AI sought to address relates to the security and compliance risks inherent in generative AI adoption. Their customers—enterprises looking to leverage GenAI—face significant challenges ensuring that deployed models provide accurate information without causing harm to their business or consumers. The need for guardrails, evaluation suites, and trust-building mechanisms around GenAI models is acute, particularly in regulated industries.
+
+Dynamo AI's product strategy covers three phases of the generative AI model lifecycle:
+
+- **Evaluation**: Assessing models for compliance, security, and safety
+- **Remediation**: Addressing identified issues and vulnerabilities
+- **Deployment**: Ensuring safe production deployment with appropriate guardrails
+
+A critical requirement was the ability to implement pre-built policies based on specific industries or geographic regions, along with robust multilingual support. After surveying the landscape, Dynamo AI concluded that no existing open source model could adequately support their specific enterprise-compliant guardrailing requirements. This led to the decision to train their own foundation model.
+
+## Technical Approach and Training Infrastructure
+
+Dynamo AI selected Databricks Mosaic AI Training as their platform for building the Dynamo 8B foundation model. This decision was driven by several factors that emerged during their evaluation and experimentation phase.
+
+### Data Preparation and Collection
+
+Before training could begin, Dynamo AI needed to gather and prepare substantial amounts of data. Given their focus on serving customers across multiple countries and regions, multilingual data was prioritized heavily. The approach involved significant public dataset aggregation to ensure the model would have robust multilingual capabilities.
+
+An interesting aspect of their data preparation strategy was leveraging published research from Databricks' own foundation model training efforts. Dynamo AI was able to estimate their data requirements for reaching performance benchmarks based on prior work done by Databricks researchers in training their MPT and DBRX open source models. This highlights the value of open research and transparency in the AI community—companies building their own models can benefit from lessons learned and documented by platform providers.
+
+### Training Efficiency and Optimization
+
+The case study highlights several LLMOps-relevant aspects of the training process:
+
+**Out-of-the-box training scripts**: Databricks provided pre-built training scripts that Dynamo AI found immediately useful. According to the company, these saved weeks of development time that would otherwise have been spent setting up training runs from scratch. This is a significant consideration for LLMOps—the availability of robust, tested infrastructure components can dramatically accelerate time-to-production.
+
+**Architecture experimentation**: Dynamo AI experimented with different model architectures during development. Initially, their foundation model did not achieve the efficiency gains they expected. This is a common challenge in LLM development—theoretical architectures don't always translate to practical efficiency improvements without careful optimization.
+
+**Performance optimization with expert support**: Working with the Databricks Mosaic Research team, Dynamo AI was able to address efficiency issues and ultimately achieved approximately 20% faster training compared to competitor platforms. The case study mentions a specific debugging scenario where unexpected memory usage was slowing training by forcing reduced batch sizes. The Databricks team analyzed model weights to identify memory leakage issues, and resolving these problems significantly accelerated training.
+
+**GPU availability on demand**: The combination of built-in training speedups and on-demand GPU availability enabled Dynamo AI to complete pretraining of their 8-billion parameter multilingual LLM in just 10 days. While impressive, it's worth noting that this timeline likely reflects optimal conditions and substantial computational resources—the exact GPU configuration and costs are not disclosed in the case study.
+
+## Production Deployment and Use Cases
+
+Following successful model training, Dynamo AI transitioned from experimentation to revenue generation in a matter of months. Their products now leverage the Dynamo 8B multilingual foundation model to power a range of enterprise compliance, privacy, and security solutions.
+
+The case study mentions several production use cases their customers are implementing:
+
+- **Multilingual customer support**: Leveraging the multilingual capabilities of Dynamo 8B to provide guardrailed customer service interactions across different languages and regions
+- **Customer onboarding**: Ensuring compliant AI-assisted onboarding processes
+- **Claims processing**: Supporting insurance and financial services workflows with appropriate safety guardrails
+- **Fraud detection**: Applying AI with security controls for detecting fraudulent activities
+
+An important integration point mentioned is that many Dynamo AI customers also use the Databricks Data Intelligence Platform. This creates a natural fit for deploying Dynamo AI's GenAI applications within customers' existing secure Databricks environments, potentially simplifying data governance and security considerations.
+
+## Ongoing Model Maintenance and Evolution
+
+The case study emphasizes that model training is not a one-time activity for Dynamo AI. They describe continuously integrating research into their LLM to defend against new vulnerabilities. This represents a crucial LLMOps consideration—production LLMs require ongoing maintenance, updates, and retraining as the threat landscape evolves and new attack vectors emerge.
+
+The goal, as stated by the company, is to build an application layer for security and compliance that provides safeguards organizations need in the age of AI. This positions their foundation model as a continuously evolving asset rather than a static artifact.
+
+## Critical Assessment
+
+While the case study presents compelling results, there are several aspects worth considering with appropriate skepticism:
+
+**Quantified claims**: The 10-day training timeline and 20% speedup are notable, but context is limited. The comparison baseline ("competitors") is not specified, and factors like cost, GPU configuration, and total compute hours are not disclosed.
+
+**Vendor relationship**: This case study is published by Databricks, Mosaic AI Training's provider, which means it serves as marketing material. The perspective is naturally favorable to the platform being promoted.
+
+**Generalizability**: The specific challenges and solutions described may not apply uniformly to all organizations attempting similar work. Dynamo AI appears to have benefited from direct access to Databricks Mosaic Research team expertise—a level of support that may not be available to all customers.
+
+**Model performance benchmarks**: While the case study mentions achieving "performance benchmarks," specific evaluation metrics, benchmark scores, or comparisons to other multilingual models are not provided.
+
+Despite these caveats, the case study does illustrate several genuine LLMOps considerations: the importance of efficient training infrastructure, the value of expert support during optimization, the complexity of multilingual data preparation, and the need for ongoing model evolution post-deployment. For organizations considering building custom foundation models for specialized compliance and security use cases, this provides a useful reference point for what's possible with appropriate tooling and support.

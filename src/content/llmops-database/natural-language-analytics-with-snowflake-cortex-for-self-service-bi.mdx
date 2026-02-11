@@ -1,0 +1,162 @@
+---
+title: "Natural Language Analytics with Snowflake Cortex for Self-Service BI"
+slug: "natural-language-analytics-with-snowflake-cortex-for-self-service-bi"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "69739d16c15bf704dbff47b0"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2026-02-03T15:19:04.226Z"
+  lastUpdated: "2026-01-23T16:11:23.878Z"
+  createdOn: "2026-01-23T16:08:54.885Z"
+llmopsTags:
+  - "data-analysis"
+  - "question-answering"
+  - "chatbot"
+  - "structured-output"
+  - "prompt-engineering"
+  - "few-shot"
+  - "semantic-search"
+  - "human-in-the-loop"
+  - "error-handling"
+  - "embeddings"
+  - "monitoring"
+  - "databases"
+  - "api-gateway"
+  - "security"
+  - "compliance"
+  - "guardrails"
+  - "reliability"
+  - "scalability"
+  - "fastapi"
+  - "documentation"
+  - "google-gcp"
+  - "microsoft-azure"
+company: "Gitlab"
+summary: "GitLab implemented conversational analytics using Snowflake Cortex to enable non-technical business users to query structured data using natural language, eliminating the traditional dependency on data analysts and reducing analytics backlog. The solution evolved from a basic proof-of-concept with 60% accuracy to a production system achieving 85-95% accuracy for simple queries and 75% for complex queries, utilizing semantic models, prompt engineering, verified query feedback loops, and role-based access controls. The implementation reduced analytics requests by approximately 50% for some teams, decreased time-to-insight from weeks to seconds, and democratized data access while maintaining enterprise-grade security through Snowflake's native governance features."
+link: "https://www.youtube.com/watch?v=ChGhiCI06mo"
+year: 2026
+seo:
+  title: "Gitlab: Natural Language Analytics with Snowflake Cortex for Self-Service BI - ZenML LLMOps Database"
+  description: "GitLab implemented conversational analytics using Snowflake Cortex to enable non-technical business users to query structured data using natural language, eliminating the traditional dependency on data analysts and reducing analytics backlog. The solution evolved from a basic proof-of-concept with 60% accuracy to a production system achieving 85-95% accuracy for simple queries and 75% for complex queries, utilizing semantic models, prompt engineering, verified query feedback loops, and role-based access controls. The implementation reduced analytics requests by approximately 50% for some teams, decreased time-to-insight from weeks to seconds, and democratized data access while maintaining enterprise-grade security through Snowflake's native governance features."
+  canonical: "https://www.zenml.io/llmops-database/natural-language-analytics-with-snowflake-cortex-for-self-service-bi"
+  ogTitle: "Gitlab: Natural Language Analytics with Snowflake Cortex for Self-Service BI - ZenML LLMOps Database"
+  ogDescription: "GitLab implemented conversational analytics using Snowflake Cortex to enable non-technical business users to query structured data using natural language, eliminating the traditional dependency on data analysts and reducing analytics backlog. The solution evolved from a basic proof-of-concept with 60% accuracy to a production system achieving 85-95% accuracy for simple queries and 75% for complex queries, utilizing semantic models, prompt engineering, verified query feedback loops, and role-based access controls. The implementation reduced analytics requests by approximately 50% for some teams, decreased time-to-insight from weeks to seconds, and democratized data access while maintaining enterprise-grade security through Snowflake's native governance features."
+---
+
+## Overview
+
+GitLab's data platform team implemented a conversational analytics solution using Snowflake Cortex to transform how business users interact with structured data. The company operates on a hub-and-spoke model where a central data team serves various business domains including people operations, sales, and marketing. The traditional business intelligence approach required analysts to build dashboards based on predefined requirements, often taking weeks to months to deliver, creating significant bottlenecks and limiting flexibility for end users who couldn't explore data beyond predetermined views.
+
+The implementation represents a comprehensive LLMOps case study that progressed through multiple phases, with careful attention to accuracy, governance, security, and user adoption. The solution enables business users without SQL knowledge to query data using natural language prompts while maintaining enterprise security controls and data governance standards.
+
+## Technical Architecture and Components
+
+The core technology stack centers on Snowflake Cortex Analyst, which provides built-in AI and machine learning capabilities that run natively within Snowflake's secure compute plane. This architecture ensures that data never leaves the Snowflake environment, addressing a critical security concern where connecting external LLM providers like Anthropic or OpenAI would expose sensitive data outside the organization's control perimeter.
+
+The data ingestion layer leverages multiple connectors including Fivetran, Stitch, and custom-built connectors, along with Snowflake Marketplace data sharing capabilities. This brings data from various sources into Snowflake where it's processed and made available for analytics. The presentation layer consists of a Streamlit application built on top of semantic models, which serves as the primary interface exposed to end users.
+
+Snowflake Cortex Analyst specifically focuses on structured data retrieval and uses semantic models defined in YAML format for trusted text-to-SQL generation. The system integrates with Snowflake's role-based access control mechanisms to ensure users can only access data appropriate to their permissions, even when querying through the AI interface. The REST API layer provides the integration point between user prompts and the underlying query generation and execution engine.
+
+## Query Processing and Generation Pipeline
+
+When a user submits a natural language question, the request flows through a sophisticated multi-stage pipeline. The question is first passed to a REST API endpoint that determines whether the question can be answered based on the semantic model definitions. If answerable, multiple parallel models run simultaneously to classify the intent, enrich the context, and extract relevant entities from the question.
+
+The SQL generation process involves multiple models working in parallel, continuously refining and checking the generated queries for syntax errors and logical consistency. This iterative refinement continues until a properly formed query is synthesized. The system includes self-correction capabilities where generated queries are validated and improved before execution. Once a valid query is generated, it's executed against the database through the REST API layer, and results are returned to the user along with the actual SQL query for transparency and validation purposes.
+
+The architecture supports querying from external applications through the REST API using authentication tokens, enabling integration with tools like Slack while maintaining security boundaries and preventing data exfiltration.
+
+## Semantic Modeling as Foundation
+
+The semantic layer emerged as the most critical component for achieving reliable results. GitLab uses what Snowflake calls semantic views, which map business terminology to underlying data models. These semantic models define logical tables representing business entities such as customers, products, time dimensions, and locations. They contain definitions for dimensions, facts, metrics, and filters that translate business concepts into database operations.
+
+For example, when users ask about revenue, the semantic model specifies which calculation to use, such as defining total sales as the product of quantity sold and price per unit, even though these values reside in separate columns. The semantic model also handles synonyms and business terminology variations, mapping terms like customer ID, member ID, and user ID to the appropriate database columns. Custom instructions provide business-specific guidance, such as using net revenue when users simply ask for revenue, disambiguating between different revenue definitions used by sales versus finance teams.
+
+The semantic models define table relationships and join conditions, particularly important for star schema designs where fact tables connect to dimension tables through key columns. Filters and constraints can be embedded in the semantic model to control query scope, such as limiting queries to the most recent six months of data to manage computational costs and result set sizes.
+
+GitLab generates semantic models using Snowflake's provided semantic model generator available through the UI, which simplified the process compared to earlier manual approaches. The team continually refines these models based on actual usage patterns and user feedback.
+
+## Phased Implementation Approach
+
+GitLab adopted a phased rollout strategy starting with a proof-of-concept built using basic text-to-SQL cortex LLM functions with schema context injection. This initial prototype worked with just three to five tables and was shared with a limited set of internal users through a simple Streamlit interface. The proof-of-concept achieved approximately 60% accuracy on simple questions, which was sufficient to validate the concept and generate stakeholder excitement about the potential of natural language data access.
+
+Phase one revealed significant technical challenges including ambiguous questions producing incorrect queries, struggles with complex joins when semantic relationships weren't well-defined, inability to handle follow-up questions to maintain conversational context, and performance issues with large result sets. Business challenges included unrealistic user expectations for immediate perfection, lack of trust when results appeared incorrect, and demands for detailed explanations of how results were calculated.
+
+The second phase focused on addressing these limitations through several technical enhancements. The team invested heavily in prompt engineering, providing sample questions and examples in the semantic model to guide query generation. They implemented few-shot learning approaches where the system learns from example question-query pairs. The verified query feedback loop became a critical improvement, where queries that were validated as correct could be fed back into the semantic model to improve future accuracy.
+
+This iterative approach resulted in substantial accuracy improvements, with simple queries reaching 85-95% accuracy and complex queries improving from 40% to 75%. While not achieving perfect accuracy, these metrics represented a practical threshold for broader deployment, though the team continues to iterate and refine.
+
+## Verified Query Feedback Loop
+
+One of the most important LLMOps practices implemented was the verified query feedback mechanism. When users repeatedly ask similar questions and data analysts validate that the generated queries are correct and producing accurate results, these queries can be marked as verified in the system. This verification information feeds back into the semantic model, creating a positive feedback loop where the system learns from confirmed correct outputs.
+
+The verification process involves human oversight where analysts or administrators review frequently executed queries in the monitoring dashboard, examining both the natural language question and the generated SQL. Once verified, these become reference examples that improve the model's ability to handle similar questions in the future. This addresses one of the fundamental challenges in AI systems: the difficulty of implementing effective feedback mechanisms to drive continuous improvement.
+
+The feedback loop operates within Snowflake's environment without requiring direct model retraining, as GitLab doesn't own or train the underlying models. Instead, the enhanced semantic model with verified queries provides richer context that guides the query generation process toward proven patterns.
+
+## Governance, Security, and Access Control
+
+Security and governance were foundational requirements throughout the implementation. Snowflake Cortex's native execution within the secure compute plane ensures data never leaves the organizational boundary, even when using AI capabilities. This contrasts sharply with architectures that connect external LLM APIs to databases, which create potential data leakage vectors and compliance risks.
+
+Role-based access control integration means that users querying through the conversational interface are subject to the same permissions as traditional database access. If a user's role doesn't grant access to HR salary data, they cannot access that information through natural language queries either. The system returns graceful error messages informing users they lack appropriate permissions rather than exposing unauthorized data.
+
+GitLab leverages Snowflake Horizon features extensively, including data tagging and cataloging capabilities that enable fine-grained access control. Tags applied to datasets automatically enforce access policies based on user roles, making it straightforward to identify when a query attempts to access restricted data.
+
+The team also integrated with Atlan, a data catalog and governance tool, to establish bidirectional feedback between business glossaries and technical implementations. Source teams that generate data define column meanings and context in Atlan, which flows through to Snowflake and enriches the semantic models. This creates a comprehensive metadata management strategy that bridges business and technical perspectives.
+
+## Monitoring and Observability
+
+Comprehensive monitoring capabilities provide visibility into system usage and performance. Snowflake provides out-of-the-box logging that captures every user interaction with minimal latency, typically one to two minutes. The event logs record which users asked questions, the exact questions posed, generated SQL queries, any errors or warnings encountered, and the responses provided along with metadata.
+
+Administrators can query these logs through both the Snowsight UI and programmatically through SQL queries against event tables. This monitoring data serves multiple purposes beyond operational oversight. It identifies frequently asked questions that may benefit from query verification, reveals patterns in user behavior that inform semantic model improvements, and helps identify edge cases and failure modes that require attention.
+
+The monitoring infrastructure also supports the identification of impossible or problematic requests, such as users asking for data not present in the warehouse, vague questions lacking necessary context, or queries attempting to access restricted data. Understanding these patterns enables the team to improve error handling, provide better guidance to users, and refine the semantic models to handle ambiguous cases more gracefully.
+
+## Edge Cases and Error Handling
+
+Real-world usage revealed numerous edge cases that required thoughtful handling. Vague questions such as "show me sales" without specifying time period, geography, or product category could lead to incorrect assumptions or excessive result sets. The system was enhanced to ask clarifying questions back to users before executing queries, ensuring sufficient context exists to produce meaningful results.
+
+Impossible requests occur when users ask for data not available in the data warehouse, requiring clear communication about data availability. Security-related requests where users attempt to access data beyond their authorization level need graceful rejection with appropriate messaging. Ambiguous metrics present particular challenges, as different business functions may define the same term differently—revenue means different things to sales teams focused on bookings versus finance teams tracking recognized revenue.
+
+The team developed strategies for each category of edge case. Clarifying questions gather additional context before query generation. Graceful error messages explain why requests cannot be fulfilled without exposing system internals. Role-level security enforcement prevents unauthorized access attempts. Business glossary integration helps disambiguate metric definitions by establishing canonical meanings for business terms.
+
+## Business Process Integration
+
+Beyond technical implementation, GitLab focused significantly on business process integration and user adoption. The team started with internal data from the people operations domain, choosing this relatively contained scope to validate the approach before expanding to finance and sales data with higher stakes and sensitivity.
+
+User training emerged as equally important as technical excellence. The team hosts regular office hours when releasing new capabilities, providing forums for users to ask questions, learn effective prompting techniques, and provide feedback. This direct engagement helps set realistic expectations, builds trust through transparency, and creates feedback channels for continuous improvement.
+
+The strategy of celebrating both wins and failures publicly proved valuable for building organizational buy-in. Acknowledging limitations openly while demonstrating measurable improvements helped manage expectations and maintain credibility. The willingness to iterate publicly rather than waiting for perfection accelerated learning and adoption.
+
+## Prompt Engineering Practices
+
+Significant investment in prompt engineering was required to achieve reliable results. This involved providing example questions in the semantic model that demonstrate the types of queries the system should handle effectively. Few-shot learning techniques expose the system to question-query pairs that serve as templates for similar questions.
+
+Business-specific guidelines embedded in semantic models provide domain context that generic LLMs lack. For instance, specifying that "stores" refers to location dimensions rather than a literal stores table helps the system correctly interpret business terminology. Defining that certain queries should default to recent time periods unless otherwise specified prevents overly broad queries.
+
+The prompt engineering extended to instructing the system on how to handle uncertainty. Rather than guessing at user intent when questions are ambiguous, the system is prompted to request clarification. When multiple valid interpretations exist, the system can present options for users to choose from rather than arbitrarily selecting one.
+
+## Integration with Cortex Search Service
+
+While GitLab's implementation focuses primarily on Cortex Analyst for structured data, they leverage Cortex Search Service for specific use cases involving mapping user input to correct data values. For example, when users refer to "iPhone 13," the search service maps this to the proper product name format stored in the database, such as "Apple iPhone 13." This bridges the gap between natural user language and formal database values, improving the system's ability to understand user intent.
+
+This demonstrates the complementary nature of different Cortex capabilities, where Cortex Analyst handles structured query generation and execution while Cortex Search assists with entity resolution and mapping between informal and formal representations.
+
+## Results and Impact
+
+The implementation delivered measurable business value across multiple dimensions. Analytics request backlog decreased substantially, with approximately 50% reduction in ticket volume from the people operations team as users self-served answers that previously required analyst intervention. Time-to-insight improved dramatically from weeks or months down to seconds for questions within the system's scope.
+
+User collaboration patterns shifted as business users could explore data iteratively through conversation rather than waiting for analysts to build new dashboard views. The phrase "talk to data, not through tickets" captured this transformation in how users interact with data resources. Data accessibility democratized across roles, enabling contributors without SQL expertise to perform meaningful analysis.
+
+The system maintained consistent governed metrics by encoding business logic in semantic models rather than having different analysts implement calculations differently across various dashboards. This consistency improved trust in analytics and reduced confusion from conflicting numbers.
+
+## Ongoing Challenges and Future Directions
+
+GitLab acknowledges that the solution remains imperfect, with accuracy for complex queries at 75% rather than the desired 100%. This represents the realistic state of LLM applications in production, where probabilistic systems cannot guarantee perfect results. The team continues iterating on semantic model refinement, expanding to additional business domains, and improving handling of complex multi-table joins.
+
+The cost management aspect remains important, with query scope limitations and monitoring helping control computational expenses as usage scales. The team balances expanding capabilities with managing infrastructure costs associated with AI-powered analytics.
+
+User education continues as an ongoing effort, helping users understand effective prompting techniques, system limitations, and when to escalate to analysts for validation. Building appropriate trust—neither blind acceptance nor complete skepticism—requires continuous communication about capabilities and constraints.
+
+The case study illustrates mature LLMOps practices including phased rollout starting with limited scope, comprehensive monitoring and observability, feedback loops for continuous improvement, strong governance and security controls, investment in semantic modeling as the foundation for reliable results, realistic expectation setting with stakeholders, and iteration based on real usage patterns rather than theoretical perfection. These practices enabled GitLab to deploy LLM-powered conversational analytics in production despite the inherent uncertainties and limitations of generative AI systems.

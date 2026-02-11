@@ -1,0 +1,176 @@
+---
+title: "Improving LLM Accuracy and Evaluation in Enterprise Customer Analytics"
+slug: "improving-llm-accuracy-and-evaluation-in-enterprise-customer-analytics"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f405c90aed4e782456af2"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:38:48.735Z"
+  createdOn: "2024-11-21T14:14:52.872Z"
+llmopsTags:
+  - "cost-optimization"
+  - "customer-support"
+  - "data-analysis"
+  - "devops"
+  - "error-handling"
+  - "fine-tuning"
+  - "human-in-the-loop"
+  - "latency-optimization"
+  - "monitoring"
+  - "openai"
+  - "prompt-engineering"
+  - "reliability"
+  - "scalability"
+  - "scaling"
+  - "wandb"
+company: "Various"
+summary: "Echo.ai and Log10 partnered to solve accuracy and evaluation challenges in deploying LLMs for enterprise customer conversation analysis. Echo.ai's platform analyzes millions of customer conversations using multiple LLMs, while Log10 provides infrastructure for improving LLM accuracy through automated feedback and evaluation. The partnership resulted in a 20-point F1 score increase in accuracy and enabled Echo.ai to successfully deploy large enterprise contracts with improved prompt optimization and model fine-tuning."
+link: "https://www.youtube.com/watch?v=BjR9H1IqU3w"
+year: 2023
+seo:
+  title: "Various: Improving LLM Accuracy and Evaluation in Enterprise Customer Analytics - ZenML LLMOps Database"
+  description: "Echo.ai and Log10 partnered to solve accuracy and evaluation challenges in deploying LLMs for enterprise customer conversation analysis. Echo.ai's platform analyzes millions of customer conversations using multiple LLMs, while Log10 provides infrastructure for improving LLM accuracy through automated feedback and evaluation. The partnership resulted in a 20-point F1 score increase in accuracy and enabled Echo.ai to successfully deploy large enterprise contracts with improved prompt optimization and model fine-tuning."
+  canonical: "https://www.zenml.io/llmops-database/improving-llm-accuracy-and-evaluation-in-enterprise-customer-analytics"
+  ogTitle: "Various: Improving LLM Accuracy and Evaluation in Enterprise Customer Analytics - ZenML LLMOps Database"
+  ogDescription: "Echo.ai and Log10 partnered to solve accuracy and evaluation challenges in deploying LLMs for enterprise customer conversation analysis. Echo.ai's platform analyzes millions of customer conversations using multiple LLMs, while Log10 provides infrastructure for improving LLM accuracy through automated feedback and evaluation. The partnership resulted in a 20-point F1 score increase in accuracy and enabled Echo.ai to successfully deploy large enterprise contracts with improved prompt optimization and model fine-tuning."
+---
+
+## Overview
+
+This case study presents a partnership between Echo AI and Log10, demonstrating how LLM-native SaaS applications can be deployed reliably at enterprise scale. Echo AI is a customer analytics platform that processes millions of customer conversations to extract structured insights, while Log10 provides the LLMOps infrastructure layer to ensure accuracy, performance, and cost optimization. The presentation was given jointly by Alexander Quame (Echo AI co-founder) and Arjun Bunel (Log10 CEO and co-founder).
+
+## Echo AI: The Application Layer
+
+Echo AI positions itself as one of the first generation of "LLM-native SaaS" companies, building their entire platform around the capabilities of large language models. Their core value proposition is transforming unstructured customer conversation data—which they describe as "the most valuable piece of data in the enterprise"—into actionable structured insights.
+
+### The Problem Space
+
+Enterprise customers have vast amounts of customer conversation data across multiple channels, potentially millions of conversations containing billions of tokens. Traditionally, companies have addressed this through several approaches, each with significant limitations:
+
+- **Manual review programs**: Hiring teams of 15-20 people to randomly sample perhaps 1% of conversations once a quarter, which is expensive, slow, and misses 99% of the data
+- **Speech analytics with regex**: Transcribing conversations and writing complex regular expression queries, which requires knowing what to look for in advance
+- **First-generation AI insights**: Sentiment models and topic extraction that require extensive pre-training and calibration
+
+LLMs present an opportunity to process this unstructured data at scale, extracting insights generatively without needing to pre-configure what to look for.
+
+### The Technical Architecture
+
+Echo AI's platform operates as a multi-step analysis pipeline where each customer conversation can be analyzed in up to 50 different ways by 20 different LLMs. The company describes their ethos as "LLMs in the loop for everything" because they deliver superior results across various analysis points.
+
+For a single conversation, the system extracts multiple structured data points including:
+- Intent and contact driver identification
+- Detection of repeat issues
+- Product mentions and potential supply chain issues
+- Customer segmentation signals (e.g., identifying renters vs. homeowners)
+- Sentiment analysis
+- Churn risk prediction
+- Cross-sell and bundling opportunities
+- Agent performance scoring
+
+At the macro level, Echo AI implements what they describe as an "agentic hierarchy" for generative insight extraction. When a customer wants to understand something like "why are my customers cancelling," the system spins up a hierarchical team of agents to review every single conversation with that question in mind. These agents then perform a map-reduce operation to aggregate findings into a tree of themes and sub-themes, providing completely bottoms-up generated insights.
+
+### The Enterprise Challenge
+
+Echo AI is signing contracts in the $50,000 to over $1 million range with enterprise customers. In this context, accuracy becomes paramount for several reasons:
+
+- If the system isn't accurate during proof-of-concept, deals won't convert
+- Poor accuracy leads to churn and low net revenue retention
+- Without accuracy, you cannot safely migrate to smaller, more cost-effective models or fine-tuned in-house models
+
+The company explicitly acknowledges that LLM technology, while powerful, is "immature" and that accuracy, performance, and cost are critical concerns that must be actively managed.
+
+## Log10: The Infrastructure Layer
+
+Log10 provides the LLMOps infrastructure to address the accuracy and reliability challenges inherent in deploying LLMs at enterprise scale. The company was founded about a year before the presentation, raised over $7 million in funding, and has a team of eight engineers and data scientists. The founders bring backgrounds from AI hardware (Nirvana Systems, acquired by Intel) and distributed systems for training LLMs (Mosaic ML).
+
+### The Problem with LLM Reliability
+
+The presentation highlighted several public failures of LLM deployments:
+- Air Canada chatbot making up refund policies that a judge ruled had to be honored
+- Chevy Tahoe chatbot being prompt-injected to sell a truck for $1
+- Support chatbots recommending games while users wait for critical help
+- Perplexity search engine failing on common-sense questions
+
+These examples underscore why evaluation before production deployment is essential.
+
+### Challenges with LLM-as-Judge Approaches
+
+Using LLMs to evaluate other LLMs has known issues:
+- **Self-preference bias**: Models tend to prefer their own output over other models' output, even when objectively worse
+- **Human preference bias**: Models often prefer their own output over domain expert human output
+- **Positional bias**: The order in which options are presented affects which is preferred (first position tends to win)
+- **Verbosity bias**: Longer answers with more diverse tokens get rated higher regardless of quality
+
+### Log10's Solution Architecture
+
+Log10's platform sits between the LLM application and the LLM providers, capturing all calls and their inputs/outputs through a seamless one-line integration. The architecture comprises three main components:
+
+**LLM Ops Layer**: Foundational observability including:
+- Logging and debugging capabilities
+- Prompt engineering co-pilot for optimizing initial prompts
+- Integrated playgrounds for experimenting with parameters and models
+- Quantitative evaluation tooling for parameter sweeps and regression testing
+- GitHub app integration for pre-commit checks
+- Extensive search and tagging for drilling into problematic logs
+
+**Auto-Feedback System**: This is a key differentiator that addresses the challenge of scaling human review. The system:
+- Bootstraps with as few as 25-50 labeled examples
+- Generates synthetic data to fine-tune custom evaluation models trained on the customer's specific data
+- Enables triaging and prioritizing which outputs need human review
+- Provides monitoring and alerting based on quality scores
+- Can overlay corrections to give human reviewers better drafts to start from
+
+The auto-feedback model is trained on the input-output-feedback triplets collected through the platform. Once trained, it can run inference on new AI calls, providing automatic quality scores that correlate with human judgment while avoiding the biases of using base LLMs as judges.
+
+**Auto-Tuning System**: Uses the quality signal from auto-feedback to:
+- Curate high-quality datasets for improvement (e.g., everything above 70% threshold)
+- Evaluate different models and prompt changes automatically
+- Surface the best prompt or model configurations to improve accuracy
+- Support fine-tuning techniques including RLHF, RLAIF, and DPO
+
+### Integration Simplicity
+
+Log10 emphasizes developer experience with a one-line integration:
+```python
+# Instead of: from openai import OpenAI
+from log10.openai import OpenAI
+```
+
+This seamless integration supports OpenAI, Claude, Gemini, Mistral, Together, Mosaic, and self-hosted models.
+
+## Results and Outcomes
+
+The partnership delivered measurable improvements:
+
+- **20-point F1 score increase** in Echo AI's LLM applications
+- **Prompt optimization time reduced from weeks to hours**: Solutions Engineers can now optimize prompts and deploy to customers with high accuracy in hours rather than days or weeks
+- **Better accuracy through prompt optimization alone** than through fine-tuning or other approaches like DSPy
+- **44% reduction in feedback prediction error** versus naive few-shot learning approaches
+- **Sample efficiency**: Starting from 25-50 examples, the system achieves accuracy equivalent to having 600 examples
+- **Exponential scaling**: Each new example is used in a sample-efficient way to drive ongoing accuracy improvements
+
+### Operational Benefits for Echo AI
+
+- Solutions engineering team stays small and high-powered, with 10x improvement in ability to onboard new customers
+- Anyone on the team (solutions, engineering, support) can solve prompt issues in a single environment
+- Macro-level metrics provide visibility across the deployment
+- Successfully deployed to "some of the largest LLM-native contracts" in the market
+
+## Key LLMOps Insights
+
+The case study highlights several important LLMOps principles:
+
+**Accuracy is foundational**: Without accuracy, you cannot optimize for cost or performance, you cannot migrate to smaller models, and you cannot build customer trust for enterprise deals.
+
+**LLM technology is deterministically non-deterministic**: Traditional software gives predictable outputs (1+1 always equals 2), but LLMs require new infrastructure and processes to manage their inherent variability.
+
+**Human-in-the-loop is still the gold standard**: But it's expensive and slow. The goal is to marry human-level accuracy with AI-based automation to scale feedback efficiently.
+
+**Custom evaluation models outperform generic LLM judges**: By fine-tuning evaluation models on domain-specific data, you can avoid the biases inherent in using base LLMs for evaluation.
+
+**Continuous improvement loops are essential**: The architecture is designed so that as data flows through the system, more gets automatically labeled, feeding back into model improvement with minimal manual intervention—eventually approaching zero manual work required.
+
+This case study demonstrates a mature approach to LLMOps where the infrastructure layer (Log10) and the application layer (Echo AI) work in concert to deploy reliable, accurate LLM systems at enterprise scale.

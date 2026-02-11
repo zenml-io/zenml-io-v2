@@ -1,0 +1,142 @@
+---
+title: "Evolving Agent Architecture Through Model Capability Improvements"
+slug: "evolving-agent-architecture-through-model-capability-improvements"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "67f395706e3969d067ba22ec"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:05:22.237Z"
+  createdOn: "2025-04-07T09:05:52.484Z"
+llmopsTags:
+  - "customer-support"
+  - "structured-output"
+  - "realtime-application"
+  - "prompt-engineering"
+  - "agent-based"
+  - "multi-agent-systems"
+  - "error-handling"
+  - "human-in-the-loop"
+  - "system-prompts"
+  - "langchain"
+  - "monitoring"
+  - "reliability"
+  - "fastapi"
+  - "databases"
+  - "api-gateway"
+  - "openai"
+  - "anthropic"
+company: "Aomni"
+summary: "David from Aomni discusses how their company evolved from building complex agent architectures with multiple guardrails to simpler, more model-centric approaches as LLM capabilities improved. The company provides AI agents for revenue teams, helping automate research and sales workflows while keeping humans in the loop for customer relationships. Their journey demonstrates how LLMOps practices need to continuously adapt as model capabilities expand, leading to removal of scaffolding and simplified architectures."
+link: "https://www.youtube.com/watch?v=-aBD8i2_mGM&list=PLeVLmyUq90f_ilFVfqnONalzdzUfAf-xr&index=7"
+year: 2023
+seo:
+  title: "Aomni: Evolving Agent Architecture Through Model Capability Improvements - ZenML LLMOps Database"
+  description: "David from Aomni discusses how their company evolved from building complex agent architectures with multiple guardrails to simpler, more model-centric approaches as LLM capabilities improved. The company provides AI agents for revenue teams, helping automate research and sales workflows while keeping humans in the loop for customer relationships. Their journey demonstrates how LLMOps practices need to continuously adapt as model capabilities expand, leading to removal of scaffolding and simplified architectures."
+  canonical: "https://www.zenml.io/llmops-database/evolving-agent-architecture-through-model-capability-improvements"
+  ogTitle: "Aomni: Evolving Agent Architecture Through Model Capability Improvements - ZenML LLMOps Database"
+  ogDescription: "David from Aomni discusses how their company evolved from building complex agent architectures with multiple guardrails to simpler, more model-centric approaches as LLM capabilities improved. The company provides AI agents for revenue teams, helping automate research and sales workflows while keeping humans in the loop for customer relationships. Their journey demonstrates how LLMOps practices need to continuously adapt as model capabilities expand, leading to removal of scaffolding and simplified architectures."
+---
+
+## Overview
+
+This case study is derived from a podcast interview with David from Aomni, a company building autonomous AI agents for revenue teams. The discussion provides valuable insights into the evolution of agent architectures, reliability engineering for production LLM systems, and the philosophical approach of building AI products that improve as model capabilities advance rather than becoming obsolete.
+
+Aomni's core product enables sales representatives to orchestrate revenue playbooks through natural language prompts instead of manually navigating the typical 5-20 pieces of software that enterprise sales teams use today. The company positions itself as an "AI support function" rather than an "AI SDR"—empowering human salespeople with better data and research rather than attempting to replace customer-facing interactions entirely.
+
+## Technical Architecture and Evolution
+
+### Early Agent Architecture (2023)
+
+David's journey with production agents began in mid-2023, shortly after Baby AGI and Auto-GPT emerged. His initial insight was recognizing that AI agents are fundamentally workflow orchestration systems facing the same reliability challenges as long-running microservice workflows. Key architectural decisions from this period included:
+
+- Hosting agents on cloud providers with message queue integration for improved reliability
+- Building user-friendly interfaces rather than requiring terminal access
+- Adding production-grade guardrails, retries, and error handling that made his agents notably more reliable than contemporaries
+
+The original research agent architecture working with GPT-3.5 and GPT-4 required extensive scaffolding:
+- 20-30 different prompts and LLM calls in the research process
+- Reflection patterns where one model reviews another model's output
+- Editor personas providing critique and feedback
+- Multi-agent "swarm" architectures with different specialized personas contributing unique skills
+- Heavy guardrails to prevent the model from going off-track
+
+### Current Architecture Philosophy
+
+The company's core philosophy is "never bet against the model" and the observation that model capabilities roughly double at regular intervals. This leads to a key operational principle: completely rewrite the product every time model capability doubles. David describes this as building "scaffolding" rather than "wrappers"—temporary support structures that should be progressively removed as the underlying AI becomes more capable.
+
+The evolution is quantifiable in their research agent:
+- Original version (2023): Complex multi-agent architecture with 20-30 LLM calls, extensive reflection and validation
+- Current version (2025): Just two LLM calls running in a recursive loop, approximately 200 lines of core logic
+
+The current deep research agent architecture is remarkably simple:
+- A single LLM call that performs web research and produces learnings
+- Those learnings feed back recursively to the same LLM call
+- Parallel execution where multiple research threads can be spawned simultaneously
+- Configuration limited to just depth (how deep to research a specific topic) and breadth (how many parallel threads to follow)
+
+This simplification was enabled by improvements in model reasoning capabilities, particularly the advent of test-time compute and reasoning models where effort can be tuned from low to high.
+
+### Production Reliability Considerations
+
+For enterprise deployment, Aomni focuses heavily on reliability since enterprise customers expect 99% reliability, not hackathon-quality demos. Key approaches include:
+
+- Integration with workflow orchestration infrastructure (message queues, retry mechanisms)
+- Careful tool calling architecture using primarily Anthropic's Claude Sonnet for tool calling, which David notes "holds up really well" compared to alternatives like O3-mini which he describes as "pretty horrible" for tool calling
+- Progressive delegation to the model as capabilities improve—moving from 100% hardcoded workflows to approximately 70% AI-driven with 30% hardcoded guardrails
+
+## Context and Memory Management
+
+A significant operational challenge discussed is providing appropriate context to models. Aomni addresses this through:
+
+- Explicit user onboarding questions about what they're trying to sell
+- Follow-up clarification questions before research begins (similar to OpenAI's deep research approach)
+- Recognition that context disambiguation is critical—"O3 mini" could refer to an AI model, a car model, or a vacuum cleaner
+
+The interview touches on Model Context Protocol (MCP) as a potential solution for tool integration and memory, though David notes limited community adoption and competitive dynamics where companies resist becoming "just tool makers on top of an AI platform."
+
+## Evaluation and Testing
+
+David provides candid insights into the challenges of evaluating agentic systems:
+
+- They maintain evaluation datasets that are "probably more lines of code than the actual product"
+- They use LangFuse for monitoring
+- Custom evaluation scripts for specific scenarios
+
+However, he acknowledges significant limitations:
+- Hardcoded tool sequences in evals can fail even when the model finds a better approach
+- Models improving may actually invalidate evaluation datasets that encoded suboptimal approaches
+- "At end of the day it's Vibes"—personal review of outputs remains essential
+
+A concrete example: an eval expected a specific sequence of tool calls (web search → web browse → contact enrichment), but a newer model achieved the same goal by calling tools in a completely different order and skipping some entirely. This represents a philosophical challenge where better models may "prove your eval dataset wrong."
+
+The recommendation is to redo evaluation datasets every time model performance doubles, treating eval maintenance as an ongoing operational responsibility rather than a one-time setup.
+
+## Tool Calling vs. Code Generation
+
+The interview explores an interesting architectural tension between tool calling (the current mainstream approach) and code generation for task execution. David notes:
+
+- Tool calling is "stupidly simple" and "stupidly unoptimized" but handles long-tail use cases well
+- Code generation allows for better chaining and variable management
+- For vertical-specific, high-confidence workflows, generating and executing Python scripts could be more efficient
+- However, mainstream support from AI labs favors tool calling, making it the pragmatic choice
+
+David experimented with service discovery patterns (a tool that loads other tools based on needs) but found models don't reliably call the discovery tool before giving up—they lack the "instinct" for this pattern, suggesting it needs to be tuned into models by frontier labs.
+
+## Strategic Positioning
+
+The company's approach differs from the "AI SDR" trend of replacing customer-facing salespeople. David argues that for enterprise B2B sales with 5-7 figure deal sizes, human relationships remain essential—"nobody's going to feel good talking to a robot." Enterprise deals typically represent 60-80% of revenue for enterprise companies, making this the economically important segment.
+
+The long-term vision is that as models continue improving, Aomni's value proposition shifts from scaffolding and guardrails to primarily providing tools and data that feed into increasingly capable models. This positions the product to improve with each model generation rather than competing against it.
+
+## Key Takeaways for LLMOps Practitioners
+
+- Treat agents as workflow orchestration systems requiring production-grade infrastructure
+- Build scaffolding that can be progressively removed, not permanent architecture
+- Plan for complete rewrites as model capabilities double
+- Context management is application-specific and won't be solved by frontier labs
+- Evaluation remains challenging; vibes-based review complements automated testing
+- Tool calling is pragmatic despite inefficiency; wait for lab support before adopting alternatives
+- Model selection matters for specific tasks—Claude Sonnet for tool calling currently outperforms reasoning-focused models

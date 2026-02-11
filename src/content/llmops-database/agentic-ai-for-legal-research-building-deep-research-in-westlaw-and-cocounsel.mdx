@@ -1,0 +1,114 @@
+---
+title: "Agentic AI for Legal Research: Building Deep Research in Westlaw and CoCounsel"
+slug: "agentic-ai-for-legal-research-building-deep-research-in-westlaw-and-cocounsel"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "694adbbb64d67fc640f75908"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2026-01-07T09:40:39.763Z"
+  lastUpdated: "2025-12-23T20:11:49.323Z"
+  createdOn: "2025-12-23T18:13:15.278Z"
+llmopsTags:
+  - "high-stakes-application"
+  - "document-processing"
+  - "question-answering"
+  - "regulatory-compliance"
+  - "multi-agent-systems"
+  - "agent-based"
+  - "prompt-engineering"
+  - "rag"
+  - "human-in-the-loop"
+  - "error-handling"
+  - "evals"
+  - "open-source"
+  - "documentation"
+  - "anthropic"
+company: "Thomson Reuters"
+summary: "Thomson Reuters Labs developed Deep Research, an agentic AI system integrated into Westlaw Advantage and CoCounsel that conducts legal research with the sophistication of a practicing attorney. The system addresses the limitation of traditional RAG-based tools by autonomously planning multi-step research strategies, executing searches in parallel, selecting appropriate tools, adapting based on findings, and applying stopping criteria. Deep Research leverages specialized document-type agents, maintains memory across sessions, integrates Westlaw features as modular building blocks, and employs rigorous evaluation frameworks. The system reportedly takes about 10 minutes for comprehensive analyses and includes verification tools with inline citations, KeyCite flags, and highlighted excerpts to enable lawyers to quickly validate AI-generated insights."
+link: "https://medium.com/tr-labs-ml-engineering-blog/deep-research-in-westlaw-and-cocounsel-building-agents-that-research-like-lawyers-508ad5c70e45"
+year: 2025
+seo:
+  title: "Thomson Reuters: Agentic AI for Legal Research: Building Deep Research in Westlaw and CoCounsel - ZenML LLMOps Database"
+  description: "Thomson Reuters Labs developed Deep Research, an agentic AI system integrated into Westlaw Advantage and CoCounsel that conducts legal research with the sophistication of a practicing attorney. The system addresses the limitation of traditional RAG-based tools by autonomously planning multi-step research strategies, executing searches in parallel, selecting appropriate tools, adapting based on findings, and applying stopping criteria. Deep Research leverages specialized document-type agents, maintains memory across sessions, integrates Westlaw features as modular building blocks, and employs rigorous evaluation frameworks. The system reportedly takes about 10 minutes for comprehensive analyses and includes verification tools with inline citations, KeyCite flags, and highlighted excerpts to enable lawyers to quickly validate AI-generated insights."
+  canonical: "https://www.zenml.io/llmops-database/agentic-ai-for-legal-research-building-deep-research-in-westlaw-and-cocounsel"
+  ogTitle: "Thomson Reuters: Agentic AI for Legal Research: Building Deep Research in Westlaw and CoCounsel - ZenML LLMOps Database"
+  ogDescription: "Thomson Reuters Labs developed Deep Research, an agentic AI system integrated into Westlaw Advantage and CoCounsel that conducts legal research with the sophistication of a practicing attorney. The system addresses the limitation of traditional RAG-based tools by autonomously planning multi-step research strategies, executing searches in parallel, selecting appropriate tools, adapting based on findings, and applying stopping criteria. Deep Research leverages specialized document-type agents, maintains memory across sessions, integrates Westlaw features as modular building blocks, and employs rigorous evaluation frameworks. The system reportedly takes about 10 minutes for comprehensive analyses and includes verification tools with inline citations, KeyCite flags, and highlighted excerpts to enable lawyers to quickly validate AI-generated insights."
+---
+
+## Overview
+
+Thomson Reuters Labs has developed and deployed Deep Research, a sophisticated agentic AI system that performs legal research at a professional level within their Westlaw Advantage and CoCounsel products. This case study represents a significant advancement beyond traditional retrieval-augmented generation (RAG) systems, demonstrating how agentic architectures can handle complex, high-stakes professional workflows. The system went live in August 2025 and exemplifies the challenges of moving from prototype AI demonstrations to production-grade systems that professionals trust with critical work.
+
+The core problem Deep Research addresses is the inherently iterative and nuanced nature of legal research. While Thomson Reuters' existing AI-Assisted Research uses LLMs to review cases, statutes, regulations, and secondary sources to produce narrative summaries, attorneys consistently reported these were merely starting points. Real legal research requires diving deeper to gather more authority, surface edge cases, and resolve nuanced questions that require sophisticated reasoning and judgment. For example, in a discrimination claim where a company hired someone of the same race and gender as the rejected applicant, a simple RAG system might suggest the claim can proceed, but attorneys need to understand the strength of the inference, jurisdictional variations, arguments on both sides, and how recent statutory changes affect the analysis.
+
+## Architectural Framework: The Three Dials of Agentic Systems
+
+Thomson Reuters structured their approach around three fundamental "dials" that control the behavior of the agentic system, providing a useful conceptual framework for understanding production-grade agentic AI:
+
+**The Autonomy Dial** governs how the system plans, executes, and adapts its research. Deep Research significantly increases autonomy compared to simpler systems. The system generates multi-step research plans autonomously and can explore alternative legal theories when initial approaches fail. This wasn't achieved through unconstrained exploration but through careful collaboration between Thomson Reuters attorneys and their research and engineering teams. The system's behavior is grounded in legal research best practices, reflecting how skilled human researchers actually work. This represents a critical distinction in production LLMOps: autonomy must be purposeful and domain-aligned rather than simply maximized.
+
+**The Tools and Context Dial** controls how agents interact with their environment. Thomson Reuters didn't merely give the system access to Westlaw content; they reimagined existing Westlaw features as modular building blocks specifically designed for agent-driven research. This represents sophisticated systems engineering where the same design empathy applied to human-facing interfaces extends to agent-facing tools. The tools handle information presentation, error management, and exploration guidance in ways optimized for AI agents. The system can search, open documents, analyze content, and react in real-time, using features like KeyCite warnings to flag questioned or overruled cases and following case references like breadcrumbs, adapting its strategy dynamically.
+
+**The Memory and Coordination Dial** enables persistence and orchestration across long-running workflows. Rather than implementing one monolithic agent, Thomson Reuters orchestrates specialized components, each tuned for particular document types including case law, statutes, and secondary sources. The system maintains memory across research sessions, tracks explored arguments, relates findings across different threads, and integrates parallel research into coherent reports. The most comprehensive analyses take approximately 10 minutes to complete and verify, indicating substantial depth of exploration.
+
+## Production LLMOps Considerations
+
+Deep Research demonstrates several critical LLMOps practices for production systems. The system is explicitly model-agnostic, working with multiple frontier model providers and open-source options. This architectural decision allows Thomson Reuters to select the optimal model for each specific workflow component. At launch, the system uses Claude 4 (presumably Claude 3.5 Sonnet or a similar model from Anthropic's Claude family, given the August 2025 timeframe) for core tool orchestration capabilities, with Thomson Reuters collaborating closely with Anthropic to optimize this component. The team performs rigorous model selection and evaluation for each system component independently.
+
+The evaluation strategy reflects the complexity of assessing long-running research tasks. Auto-evaluations are employed where sound rubrics exist, but Thomson Reuters acknowledges these are difficult to design for open-ended legal research. Their editorial staff defines objectives across categories like completeness and correctness, with dozens of more granular rubrics underneath. They build specialized evaluator models to apply these rubrics at scale, calibrating them to mirror human judgment as closely as possible. Critically, while automated evaluations guide intermediate steps and enable rapid iteration, Thomson Reuters continues to invest heavily in manual review. They explicitly acknowledge this is costly but believe it builds the trust necessary for professional adoption. This represents a mature understanding that while automated metrics are valuable for development velocity, human evaluation remains essential for high-stakes applications.
+
+The evaluation process directly drives model selection decisions. Thomson Reuters tests new models early within each task and adopts them only when results demonstrably improve their metrics. This continuous evaluation and model selection process allows them to leverage advances in foundation models while maintaining quality standards.
+
+## The Generation-Verification Loop
+
+Despite advances in LLM capabilities, the system acknowledges that models can still make mistakes, making verification essential in legal research. Thomson Reuters frames this as a generation-verification loop, citing Andrej Karpathy's observation that "the key to AI products is better cooperation between humans and AI." In Deep Research, the system generates and the lawyer verifies, with tools designed to accelerate this loop rather than eliminate human oversight.
+
+All citations in Deep Research come from authoritative Westlaw sources, providing a foundation of trust. The Sources tab presents citations visually with direct links and highlighted excerpts, mirroring how lawyers already work in Westlaw to reduce friction in verification workflows. The main report includes inline citations, KeyCite flags (indicating the status and treatment of cited cases), and relevant excerpts to support rapid verification. Both outputs integrate tightly with Westlaw's full research toolkit, enabling seamless transitions from AI-generated insights to human review and deeper exploration.
+
+This approach reflects a sophisticated understanding of AI augmentation rather than replacement. The system handles the time-consuming work of exploring multiple legal theories, following citations, and synthesizing findings across numerous documents, while preserving the attorney's critical judgment in verifying and applying the research.
+
+## Agentic Capabilities in Detail
+
+The system implements five key capabilities that distinguish true agentic behavior from simpler AI systems:
+
+First, it plans multi-step strategies from the initial question, decomposing complex research queries into coherent investigation pathways. Second, it executes research steps in parallel, allowing simultaneous exploration of multiple legal theories or jurisdictions. Third, it selects the right tool at the right time based on the current research context and findings. Fourth, it updates its approach based on new findings, demonstrating adaptive behavior as research unfolds. Finally, it applies clear stopping criteria, which the authors note is harder than it sounds, representing a significant challenge in open-ended research tasks where knowing when sufficient investigation has occurred requires nuanced judgment.
+
+The system's ability to follow citations and references demonstrates sophisticated contextual reasoning. When a case references other cases, the system autonomously follows those connections and adjusts its research strategy, exhibiting behavior analogous to how experienced legal researchers trace doctrinal threads through case law.
+
+## Technical Infrastructure and Enterprise Requirements
+
+While the article focuses primarily on the AI capabilities, it emphasizes that Thomson Reuters ensures all model integrations meet enterprise privacy and security requirements that have made them a trusted partner. This acknowledgment highlights that production LLMOps in regulated industries extends far beyond model performance to encompass data governance, security, compliance, and risk management.
+
+The system's 10-minute analysis time for comprehensive research suggests significant computational resources and careful optimization. This duration represents a balance between thoroughness and user experience, likely involving numerous LLM calls across the multi-agent architecture.
+
+## Challenges and Future Roadmap
+
+Thomson Reuters candidly discusses ongoing challenges. The core difficulty in legal research remains balancing comprehensive discovery with minimizing noise. Every additional search may uncover a critical precedent or introduce irrelevant results, requiring sophisticated judgment about when to continue exploring versus when to synthesize findings. Legal language nuances compound this challenge, and current context window limitations in LLMs make it difficult to process extensive legal documents in their entirety.
+
+The stated roadmap includes smarter tool design and context navigation, multi-agent collaboration with lawyers in the loop (suggesting more interactive workflows beyond the current generation-verification pattern), and integration of firm-specific knowledge and precedent (indicating plans for customization and private knowledge incorporation).
+
+## Critical Assessment
+
+This case study provides valuable insights into production-grade agentic AI, though several claims warrant balanced consideration. The emphasis on the distinction between "flashy demos" and "professional-grade AI" suggests Thomson Reuters is positioning against competitors, but the article provides limited quantitative evidence of performance beyond the stated 10-minute runtime and user feedback that summaries are "helpful."
+
+The evaluation framework described is sophisticated, particularly the use of calibrated evaluator models and continued investment in manual review. However, the article doesn't provide specific metrics, error rates, or comparative performance against human researchers or alternative approaches. Claims about the system's sophistication would be strengthened by concrete evaluation results.
+
+The three-dials framework (Autonomy, Tools and Context, Memory and Coordination) provides a useful mental model for agentic system design, though it's unclear whether this represents a novel contribution or a reframing of existing multi-agent and tool-use paradigms. The framework does effectively communicate design decisions to a technical audience.
+
+The model-agnostic architecture is a sound engineering decision that protects against vendor lock-in and enables leveraging ongoing foundation model improvements. The collaboration with Anthropic on Claude optimization suggests the system may be optimized for specific model capabilities, though the claimed model-agnosticism should enable swapping components as better alternatives emerge.
+
+The generation-verification loop represents a mature approach to AI augmentation in high-stakes domains. Rather than claiming full automation or attempting to hide AI involvement, Thomson Reuters explicitly designs for human oversight and makes verification efficient. This approach acknowledges AI limitations while capturing value from automation.
+
+The 10-minute analysis time is interesting from a user experience perspective. This duration suggests substantial work is occurring but may test user patience depending on the complexity of the query and urgency of the research need. The tradeoff between thoroughness and speed likely varies across use cases.
+
+## Production Deployment Insights
+
+This case study illuminates several aspects of production LLMOps that are often underemphasized in academic or prototype-focused discussions. The tight integration with existing Westlaw features and workflows demonstrates that successful AI products in professional domains must work within established practices rather than requiring users to adapt to entirely new paradigms. The reimagining of Westlaw features as agent-accessible tools required substantial systems engineering beyond the core AI capabilities.
+
+The emphasis on trust-building through costly manual review and rigorous evaluation represents a realistic assessment of requirements in regulated, high-stakes domains. The willingness to invest in these activities distinguishes production systems from research prototypes.
+
+The orchestration of specialized agents for different document types (case law, statutes, secondary sources) rather than a single general-purpose agent reflects domain expertise and suggests performance or accuracy benefits from specialization. This architectural choice increases system complexity but likely improves results by encoding document-specific knowledge and strategies.
+
+Overall, Deep Research represents a substantial achievement in production agentic AI for professional applications, demonstrating sophisticated system design, rigorous evaluation practices, and appropriate attention to verification and trust in high-stakes workflows. While the article makes strong claims that could benefit from more quantitative support, the described system architecture and deployment considerations provide valuable insights for others building production LLM systems in complex domains.

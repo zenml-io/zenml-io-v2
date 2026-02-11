@@ -1,0 +1,126 @@
+---
+title: "Training a 70B Japanese Large Language Model with Amazon SageMaker HyperPod"
+slug: "training-a-70b-japanese-large-language-model-with-amazon-sagemaker-hyperpod"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "68512f20897919d9eee8e68d"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:11:35.096Z"
+  createdOn: "2025-06-17T09:02:24.732Z"
+llmopsTags:
+  - "translation"
+  - "question-answering"
+  - "chatbot"
+  - "code-generation"
+  - "poc"
+  - "fine-tuning"
+  - "model-optimization"
+  - "instruction-tuning"
+  - "few-shot"
+  - "cost-optimization"
+  - "latency-optimization"
+  - "error-handling"
+  - "fallback-strategies"
+  - "kubernetes"
+  - "docker"
+  - "monitoring"
+  - "databases"
+  - "scaling"
+  - "serverless"
+  - "devops"
+  - "orchestration"
+  - "continuous-deployment"
+  - "continuous-integration"
+  - "open-source"
+  - "documentation"
+  - "security"
+  - "compliance"
+  - "reliability"
+  - "scalability"
+  - "vllm"
+  - "pytorch"
+  - "fastapi"
+  - "postgresql"
+  - "redis"
+  - "cache"
+  - "wandb"
+  - "amazon-aws"
+  - "meta"
+  - "hugging-face"
+  - "nvidia"
+company: "Institute of Science Tokyo"
+summary: "The Institute of Science Tokyo successfully developed Llama 3.3 Swallow, a 70-billion-parameter large language model with enhanced Japanese capabilities, using Amazon SageMaker HyperPod infrastructure. The project involved continual pre-training from Meta's Llama 3.3 70B model using 314 billion tokens of primarily Japanese training data over 16 days across 256 H100 GPUs. The resulting model demonstrates superior performance compared to GPT-4o-mini and other leading models on Japanese language benchmarks, showcasing effective distributed training techniques including 4D parallelism, asynchronous checkpointing, and comprehensive monitoring systems that enabled efficient large-scale model training in production."
+link: "https://aws.amazon.com/blogs/machine-learning/training-llama-3-3-swallow-a-japanese-sovereign-llm-on-amazon-sagemaker-hyperpod?tag=soumet-20"
+year: 2025
+seo:
+  title: "Institute of Science Tokyo: Training a 70B Japanese Large Language Model with Amazon SageMaker HyperPod - ZenML LLMOps Database"
+  description: "The Institute of Science Tokyo successfully developed Llama 3.3 Swallow, a 70-billion-parameter large language model with enhanced Japanese capabilities, using Amazon SageMaker HyperPod infrastructure. The project involved continual pre-training from Meta's Llama 3.3 70B model using 314 billion tokens of primarily Japanese training data over 16 days across 256 H100 GPUs. The resulting model demonstrates superior performance compared to GPT-4o-mini and other leading models on Japanese language benchmarks, showcasing effective distributed training techniques including 4D parallelism, asynchronous checkpointing, and comprehensive monitoring systems that enabled efficient large-scale model training in production."
+  canonical: "https://www.zenml.io/llmops-database/training-a-70b-japanese-large-language-model-with-amazon-sagemaker-hyperpod"
+  ogTitle: "Institute of Science Tokyo: Training a 70B Japanese Large Language Model with Amazon SageMaker HyperPod - ZenML LLMOps Database"
+  ogDescription: "The Institute of Science Tokyo successfully developed Llama 3.3 Swallow, a 70-billion-parameter large language model with enhanced Japanese capabilities, using Amazon SageMaker HyperPod infrastructure. The project involved continual pre-training from Meta's Llama 3.3 70B model using 314 billion tokens of primarily Japanese training data over 16 days across 256 H100 GPUs. The resulting model demonstrates superior performance compared to GPT-4o-mini and other leading models on Japanese language benchmarks, showcasing effective distributed training techniques including 4D parallelism, asynchronous checkpointing, and comprehensive monitoring systems that enabled efficient large-scale model training in production."
+---
+
+The Institute of Science Tokyo's development of Llama 3.3 Swallow represents a comprehensive case study in large-scale LLM operations, demonstrating sophisticated infrastructure management and optimization techniques for training a 70-billion-parameter model specialized for Japanese language tasks. This project showcases a complete LLMOps pipeline from data preparation through model deployment, with particular emphasis on distributed training optimization and production-ready infrastructure.
+
+## Project Overview and Problem Context
+
+The Institute of Science Tokyo, through collaboration between the Okazaki Laboratory and Yokota Laboratory at the School of Computing along with the National Institute of Advanced Industrial Science and Technology (AIST), undertook the ambitious task of creating a Japanese-specialized large language model. The primary challenge was adapting Meta's Llama 3.3 architecture to excel at Japanese language tasks while maintaining computational efficiency at the 70-billion-parameter scale. This required not only sophisticated training methodologies but also robust infrastructure capable of handling the computational demands of such a massive model.
+
+The project addressed a significant gap in available Japanese language models by building upon Meta's foundation model through continual pre-training rather than training from scratch. This approach required careful orchestration of training data, infrastructure resources, and optimization techniques to achieve superior performance compared to existing models including GPT-4o-mini and other leading commercial offerings.
+
+## Infrastructure Architecture and LLMOps Implementation
+
+The training infrastructure demonstrates advanced LLMOps practices through its use of Amazon SageMaker HyperPod as the primary orchestration platform. The team deployed 32 EC2 P5 instances, each equipped with 8 NVIDIA H100 GPUs, creating a 256-GPU cluster configured in a single spine topology to minimize inter-node latency. This configuration represents a production-scale distributed training environment that requires sophisticated resource management and monitoring.
+
+The storage architecture implements a hierarchical approach that balances performance with cost-effectiveness, a critical consideration in production LLMOps. Amazon S3 serves as the foundation for long-term storage of training data and model checkpoints, while Amazon FSx for Lustre provides high-performance parallel file system capabilities during active training. This dual-layer approach prevents storage bottlenecks that commonly plague large-scale training operations, with the FSx for Lustre system enabling efficient data access patterns across all training nodes.
+
+The integration between these storage layers demonstrates production-ready data management practices. The team configured automatic synchronization between S3 and FSx for Lustre through data repository associations, enabling seamless data flow while maintaining data integrity and availability. This setup supports both training efficiency and disaster recovery requirements essential for production LLMOps environments.
+
+## Advanced Distributed Training Techniques
+
+The project showcases sophisticated model parallelism implementation through Megatron-LM's 4D parallelism strategy, combining data parallelism, tensor parallelism, pipeline parallelism, and sequence parallelism. This multi-dimensional approach represents current best practices in large-scale model training and demonstrates how production LLMOps systems must balance computational efficiency with resource utilization.
+
+The communication optimization strategies employed reveal deep understanding of distributed training challenges. The team implemented overlapping communication across all parallelism domains, significantly reducing blocking time during computation. This includes gradient reduction overlap for data-parallel operations, tensor parallel communication overlap, and built-in pipeline parallel communication overlap. These optimizations are crucial for maintaining high GPU utilization rates across the entire cluster, directly impacting training cost and time-to-completion.
+
+The asynchronous checkpointing implementation using Distributed Checkpoint (DCP) represents a significant advancement in production training reliability. Traditional checkpointing approaches often create bottlenecks that interrupt training, but the team's implementation parallelizes checkpoint operations across all available GPUs while using asynchronous I/O operations. This approach achieves up to 10x faster checkpoint saves compared to synchronous methods while maintaining data consistency, demonstrating how production LLMOps systems must balance reliability with performance.
+
+## Training Data Management and Quality Control
+
+The project demonstrates sophisticated data curation practices essential for production LLM training. The team utilized approximately 314 billion tokens of training data, with careful composition across multiple sources including Japanese Swallow Corpus v2 (210 billion tokens), various Wikipedia sources, code repositories, and mathematical content. This diverse dataset composition reflects production considerations around data quality, licensing, and model capability requirements.
+
+The use of the Swallow Education Classifier to extract high-quality content from web corpora showcases automated quality control measures necessary for large-scale training operations. This approach addresses the common challenge of maintaining data quality while scaling to the massive datasets required for modern LLM training, representing a practical solution to production data pipeline management.
+
+For the instruction-tuned variant, the team made strategic decisions about data composition, deliberately excluding English dialogue data to maintain focus on Japanese capabilities. This demonstrates the careful consideration required in production settings where model performance targets must be balanced against training resource constraints and specific use case requirements.
+
+## Monitoring and Observability Infrastructure
+
+The comprehensive monitoring system implemented for this project exemplifies production-ready observability practices for large-scale ML training. The team integrated Amazon Managed Service for Prometheus and Amazon Managed Grafana with specialized exporters including DCGM Exporter for GPU metrics and EFA Exporter for network performance monitoring. This setup enables real-time tracking of system health across all training components.
+
+The integration with Weights & Biases for experiment tracking and automated alerting demonstrates how production LLMOps systems must provide both technical monitoring and business-level insights. The automated Slack notifications for training events, performance anomalies, and job completion status show how operational teams can maintain awareness of training progress without constant manual monitoring.
+
+The monitoring system's ability to detect both job failures and performance degradation, including straggler detection, represents critical production capabilities. The ability to identify nodes with degraded performance before they impact overall training efficiency demonstrates proactive monitoring approaches essential for cost-effective large-scale training operations.
+
+## Experiment Management and Resource Optimization
+
+The development of sophisticated memory prediction tools represents a significant contribution to production LLMOps practices. This tool analyzes all possible 4D parallelism configurations to determine optimal training settings while accurately predicting per-GPU memory usage. Such tooling is essential for maximizing resource utilization in production environments where compute costs are significant factors in project feasibility.
+
+The systematic approach to experiment planning, including version control for all training libraries and short-duration validation runs, demonstrates mature MLOps practices adapted for large-scale model training. The team's process of conducting throughput measurements across different GPU node configurations and establishing accurate training time estimates enables precise resource planning and cost management.
+
+The preloading strategy for training data from S3 to the Lustre filesystem using parallel transfers shows attention to I/O optimization details that significantly impact training efficiency. The specific command implementation using parallel transfers demonstrates practical knowledge of high-performance computing techniques applied to ML training pipelines.
+
+## Performance Results and Production Validation
+
+The model's performance results provide concrete validation of the LLMOps approach. Llama 3.3 Swallow demonstrates superior performance compared to several commercial models including GPT-4o, GPT-4o-mini, and GPT-3.5 across Japanese language benchmarks. These results validate not only the model architecture choices but also the effectiveness of the training infrastructure and optimization techniques employed.
+
+The availability of both base and instruction-tuned variants on Hugging Face demonstrates production deployment considerations, providing researchers and developers with flexible options for different application needs. The compliance with both Meta Llama 3.3 license and Gemma Terms of Use shows attention to legal and licensing requirements essential for production model deployment.
+
+## Scalability and Future Considerations
+
+The project's success in training a 70-billion-parameter model establishes a foundation for even larger-scale training efforts. The infrastructure and optimization techniques demonstrated scale beyond the specific requirements of this project, with the team planning to open-source their memory prediction tools to benefit the broader AI research community.
+
+The comprehensive documentation and reproducible infrastructure through AWS CloudFormation templates demonstrates commitment to knowledge sharing and reproducibility, essential aspects of mature LLMOps practices. The systematic approach to resource quotas, deployment procedures, and monitoring setup provides a blueprint for similar large-scale training projects.
+
+This case study represents a comprehensive example of production-ready LLMOps implementation, from infrastructure architecture through model deployment, demonstrating how academic research institutions can leverage cloud infrastructure to compete with commercial model development efforts while maintaining open science principles.

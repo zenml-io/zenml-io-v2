@@ -1,0 +1,161 @@
+---
+title: "Production Agents: Routing, Testing and Browser Automation Case Studies"
+slug: "production-agents-routing-testing-and-browser-automation-case-studies"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f405f0726c5f624a29305"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:38:15.258Z"
+  createdOn: "2024-11-21T14:14:55.398Z"
+llmopsTags:
+  - "cache"
+  - "chatbot"
+  - "code-interpretation"
+  - "cost-optimization"
+  - "customer-support"
+  - "document-processing"
+  - "documentation"
+  - "latency-optimization"
+  - "microservices"
+  - "monitoring"
+  - "multi-agent-systems"
+  - "openai"
+  - "prompt-engineering"
+  - "redis"
+  - "reliability"
+  - "scalability"
+  - "serverless"
+  - "system-prompts"
+company: "Various"
+summary: "Three practitioners share their experiences deploying LLM agents in production: Sam discusses building a personal assistant with real-time user feedback and router agents, Div presents a browser automation assistant called Milton that can control web applications, and Devin explores using LLMs to help engineers with non-coding tasks by navigating codebases. Each case study highlights different approaches to routing between agents, handling latency, testing strategies, and model selection for production deployment."
+link: "https://www.youtube.com/watch?v=k8GNCCs16F4&t=4s"
+year: 2023
+seo:
+  title: "Various: Production Agents: Routing, Testing and Browser Automation Case Studies - ZenML LLMOps Database"
+  description: "Three practitioners share their experiences deploying LLM agents in production: Sam discusses building a personal assistant with real-time user feedback and router agents, Div presents a browser automation assistant called Milton that can control web applications, and Devin explores using LLMs to help engineers with non-coding tasks by navigating codebases. Each case study highlights different approaches to routing between agents, handling latency, testing strategies, and model selection for production deployment."
+  canonical: "https://www.zenml.io/llmops-database/production-agents-routing-testing-and-browser-automation-case-studies"
+  ogTitle: "Various: Production Agents: Routing, Testing and Browser Automation Case Studies - ZenML LLMOps Database"
+  ogDescription: "Three practitioners share their experiences deploying LLM agents in production: Sam discusses building a personal assistant with real-time user feedback and router agents, Div presents a browser automation assistant called Milton that can control web applications, and Devin explores using LLMs to help engineers with non-coding tasks by navigating codebases. Each case study highlights different approaches to routing between agents, handling latency, testing strategies, and model selection for production deployment."
+---
+
+## Overview
+
+This case study captures insights from a LangChain-hosted webinar featuring three practitioners sharing their real-world experiences building LLM-powered agents for production environments. The discussion covers three distinct but related use cases: Sam's personal assistant agent, Div's MultiOn browser automation platform, and Devin's GitHub-integrated code repository assistant. Each presenter shares specific architectural decisions, technical challenges, and practical solutions for running agents reliably in production.
+
+The overarching theme across all three presentations is that successful production agents require thoughtful system design beyond just the language model—they demand careful consideration of routing, tool management, user feedback mechanisms, reliability monitoring, and graceful failure handling.
+
+## Sam's Personal Assistant Agent
+
+Sam presents work on a conversational personal assistant that has been under development for approximately six months. The agent uses a ReAct-style (thought-action-action input-observation) format and primarily integrates with various APIs rather than focusing on code generation.
+
+### Real-Time User Feedback Mechanism
+
+One of the most innovative contributions Sam describes is a real-time feedback system that allows users to guide agents while they are actively processing. The problem this solves is familiar to anyone who has watched an agent "go down a rabbit hole" pursuing an incorrect approach. Rather than waiting for the agent to complete (and potentially waste tokens and time on a wrong path), users can intervene mid-execution.
+
+The implementation uses a secondary WebSocket connection that allows users to send messages while the agent runs. These messages are written to a Redis store. The agent executor loop, before proceeding to the next planning stage, reads from this Redis store to check for new user feedback. If feedback exists, it is appended to the intermediate steps before the next planning iteration.
+
+Critically, this required prompt modifications to introduce the concept of user feedback as a special tool. The prompt instructs the model that if user feedback appears, it should take precedence over past observations. This creates an organic conversational experience where users can say things like "no, check my texts instead of my calendar" and have the agent adjust its approach accordingly.
+
+Sam contrasts this with AutoGPT's approach of asking "do you want to continue?" at each step, noting that constant confirmation requests create friction. The real-time feedback approach is user opt-in—they intervene only when needed, making the experience more seamless.
+
+### Router Agent Architecture
+
+The second major technique Sam describes addresses the challenge of tool proliferation. When working with many APIs (CRUD operations for multiple services), agents quickly run out of context space. Simply asking the model to guess which tools to use at each step proved unreliable, especially with large tool sets.
+
+The solution was implementing a router agent architecture that constrains agents into product-specific templates. Rather than giving one agent access to all tools, Sam's team identified common product flows (scheduling, person lookup, etc.) and created specialized agents for each.
+
+For example, a "context on person" template combines recent email search, contact search, and web page search tools—everything needed for building a bio on someone using personal data and internet access. A "schedule meeting or event" template includes calendar operations and scheduling preference tools with specific instructions for handling different scheduling scenarios.
+
+The top-level conversational agent treats these template agents as tools themselves. When a template doesn't match a user request, a fallback dynamic agent uses an LLM to predict which tools are relevant. This architecture allows specialized agents to be finely tuned for specific tasks rather than expecting one agent to handle everything.
+
+A key insight is that providing agents with task-specific instructions (not just tool access) significantly improves performance. Rather than having the agent "reinvent the wheel" figuring out how to schedule events from first principles, the template includes guidance on handling common scheduling scenarios.
+
+## Div's MultiOn Browser Automation
+
+Div presents MultiOn, a browser automation agent that can control web interfaces to complete tasks like ordering food on DoorDash, posting on Twitter, or even managing AWS infrastructure. The system demonstrates impressive horizontal capability, working across many different websites without site-specific customization.
+
+### DOM Parsing and Representation
+
+MultiOn uses a compressed DOM representation to stay within token limits. A custom parser takes full HTML and simplifies it dramatically, achieving less than 2,000 tokens for approximately 90% of websites. This parser is largely universal, though occasionally requires minor adjustments for websites with unusual DOM structures.
+
+The system also incorporates OCR for icons and images, which is particularly useful for applications like food ordering where visual elements carry semantic meaning (what burger looks appetizing). Div notes that they started text-based and are progressively adding multimodal capabilities.
+
+One candid admission: the current parser works for roughly 95% of websites, but the remaining 5% may require customization. The team is exploring whether future vision models might replace DOM parsing entirely, though context length and latency remain barriers.
+
+### Reliability and Monitoring Challenges
+
+Div directly addresses the reliability gap between demos and production. AutoGPT, despite its popularity, fails more than 90% of the time and lacks real-world use cases. MultiOn aims to solve this through several mechanisms.
+
+User interpretability is achieved through a text box showing current commands and responses, allowing users to pause execution and provide custom commands. The team is experimenting with adding a critic agent to the loop (similar to AutoGPT's approach) where after each action, a critic evaluates what might have gone wrong and suggests improvements. This improves accuracy but increases latency and cost—a trade-off that must be balanced based on use case requirements.
+
+Authorization controls are being developed to let users specify which websites the agent can read from, write to, or ignore entirely, preventing unintended actions on sensitive sites.
+
+Div shares a cautionary anecdote: while experimenting late at night, he accidentally crashed MultiOn's own AWS backend using the agent. This illustrates why monitoring and observation are critical when agents operate autonomously.
+
+### Architectural Vision
+
+Div outlines what he calls a "neural computer" architecture: a planner/task engine that receives user tasks through a chat interface, breaks them down into plan steps, passes them to a router, which then dispatches to various execution mechanisms (web via MultiOn, APIs, personality/preference systems). Results flow back to the planner for iterative refinement.
+
+This architecture resembles an operating system, with the core challenges being reliability, monitoring, observability, and task-specific optimization.
+
+## Devin's GitHub Repository Assistant
+
+Devin approaches the agent problem from the perspective of reducing engineering overhead on non-coding tasks. His insight is that engineers are often bottlenecked not by coding ability but by domain expertise—navigating codebases, understanding changes, responding to issues, and communicating technical changes to stakeholders.
+
+### Closed-End Feature Request Agent
+
+The current system focuses on "closed-end feature requests"—issues that can be addressed by adapting the existing repository without extensive external information. When an issue is created, the system indexes the repository, kicks off a background job via webhooks, and attempts to identify relevant files and suggest implementation approaches.
+
+The system demonstrates on LangChain's actual repository, showing how it can analyze a feature request for regex support in character text splitter, identify the relevant file, and suggest specific code changes. Devin is careful to position this not as copy-paste ready code but as a starting point to accelerate contributors.
+
+### Checkpointing for Graceful Degradation
+
+A key architectural pattern Devin emphasizes is "checkpointing"—defining clear success states between agent stages where partial progress can be useful. If the agent can find relevant files but cannot synthesize code changes, it still provides value by sharing those files. If it identifies related issues, that's helpful too.
+
+The philosophy is that "doing nothing is the status quo"—if an agent cannot complete a task, it's better to do nothing (or share partial progress) than to do the wrong thing and create confusion. This is particularly important when the goal is reducing engineering workload; creating more work defeats the purpose.
+
+### Scaling Challenges
+
+Moving from a demo on a small test repository to production on LangChain's large codebase revealed several challenges. Data exceeds context windows, requiring strategic retrieval. Existing repositories have conventions that must be respected (where files go, what libraries are used). Changes cascade—updating one file may require documentation updates, example updates, or changes to dependent code.
+
+Devin emphasizes starting with a small toolkit and gradually expanding based on where the agent breaks down. Being "the agent"—thinking through how you would solve the task with the available tools—helps identify gaps.
+
+### Search and Retrieval Innovations
+
+For code repository navigation, traditional search assumptions don't apply. User requests aren't queries—they need transformation to be searchable. Agents are more patient than humans and can iterate on queries, so first-pass precision is less critical.
+
+Devin describes generating synthetic data for improved retrieval: creating variations of issues (formatted as Jira tickets, customer support tickets, various question phrasings) and embedding those. Similarly, during repository indexing, generating "what questions might lead someone to this file" and embedding those questions helps bridge terminology gaps between users unfamiliar with repository internals and the actual code.
+
+The system builds knowledge graphs relating files to PRs, PRs to authors, commits to code through AST analysis, enabling multi-hop navigation.
+
+## Cross-Cutting Production Themes
+
+### Model Selection
+
+All three practitioners use GPT-3.5 and GPT-4 in combination. GPT-4 excels at planning and complex reasoning, while GPT-3.5 handles simpler tasks more cost-effectively. Sam notes that GPT-3.5 can approach GPT-4 performance when given very specific, well-structured instructions. The presenters express interest in fine-tuned smaller models (LoRA techniques mentioned) for latency-critical paths.
+
+### Speed Optimization
+
+Agent latency is acknowledged as a major production obstacle. Solutions discussed include:
+- Streaming intermediate results to improve perceived responsiveness
+- Caching LLM calls for similar requests
+- Parallel execution of independent actions (Sam's multi-action outputs)
+- Using smaller/faster models where GPT-4 is overkill
+- Choosing product domains where longer processing times are acceptable (Devin's repository assistant can take minutes because manual response would take hours)
+
+### Testing Non-Deterministic Systems
+
+Traditional unit testing doesn't apply to probabilistic agent outputs. Approaches discussed include:
+- Integration test suites with mocked API responses, checking side effects rather than exact outputs (Sam)
+- Leveraging publicly available test data—comparing files identified by the agent versus files actually modified in closed GitHub issues (Devin)
+- Building evaluation benchmarks and simulators, though this is expensive with GPT-4 pricing (Div)
+- Accepting that significant manual testing remains necessary
+
+### Human-in-the-Loop Design
+
+All three emphasize that agents in production benefit from human oversight mechanisms—whether real-time feedback (Sam), pause-and-redirect capabilities (Div), or checkpointed partial results that loop maintainers in when needed (Devin).
+
+The consensus is that agents work best as systems with the language model as one component, surrounded by routing logic, monitoring, caching, user feedback mechanisms, and graceful degradation strategies.

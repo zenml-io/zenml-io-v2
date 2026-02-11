@@ -1,0 +1,95 @@
+---
+title: "Building Production Evaluation Systems for GitHub Copilot at Scale"
+slug: "building-production-evaluation-systems-for-github-copilot-at-scale"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "68c7bf0478e139d3bcb9c350"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:21:22.346Z"
+  createdOn: "2025-09-15T07:23:48.849Z"
+llmopsTags:
+  - "code-generation"
+  - "code-interpretation"
+  - "evals"
+  - "a2a"
+  - "prompt-engineering"
+  - "human-in-the-loop"
+  - "error-handling"
+  - "latency-optimization"
+  - "monitoring"
+  - "cicd"
+  - "continuous-integration"
+  - "continuous-deployment"
+  - "open-source"
+  - "microsoft-azure"
+  - "openai"
+company: "Github"
+summary: "This case study examines the challenges of building evaluation systems for AI products in production, drawing from the author's experience leading the evaluation team at GitHub Copilot serving 100M developers. The problem addressed was the gap between evaluation tooling and developer workflows, as most AI teams consist of engineers rather than data scientists, yet evaluation tools are designed for data science workflows. The solution involved building a comprehensive evaluation stack including automated harnesses for code completion testing, A/B testing infrastructure, and implicit user behavior metrics like acceptance rates. The results showed that while sophisticated evaluation systems are valuable, successful AI products in practice rely heavily on rapid iteration, monitoring in production, and \"vibes-based\" testing, with the dominant strategy being to ship fast and iterate based on real user feedback rather than extensive offline evaluation."
+link: "https://x.com/JuliaANeagu/status/1964704824299253888"
+year: 2023
+seo:
+  title: "Github: Building Production Evaluation Systems for GitHub Copilot at Scale - ZenML LLMOps Database"
+  description: "This case study examines the challenges of building evaluation systems for AI products in production, drawing from the author's experience leading the evaluation team at GitHub Copilot serving 100M developers. The problem addressed was the gap between evaluation tooling and developer workflows, as most AI teams consist of engineers rather than data scientists, yet evaluation tools are designed for data science workflows. The solution involved building a comprehensive evaluation stack including automated harnesses for code completion testing, A/B testing infrastructure, and implicit user behavior metrics like acceptance rates. The results showed that while sophisticated evaluation systems are valuable, successful AI products in practice rely heavily on rapid iteration, monitoring in production, and \"vibes-based\" testing, with the dominant strategy being to ship fast and iterate based on real user feedback rather than extensive offline evaluation."
+  canonical: "https://www.zenml.io/llmops-database/building-production-evaluation-systems-for-github-copilot-at-scale"
+  ogTitle: "Github: Building Production Evaluation Systems for GitHub Copilot at Scale - ZenML LLMOps Database"
+  ogDescription: "This case study examines the challenges of building evaluation systems for AI products in production, drawing from the author's experience leading the evaluation team at GitHub Copilot serving 100M developers. The problem addressed was the gap between evaluation tooling and developer workflows, as most AI teams consist of engineers rather than data scientists, yet evaluation tools are designed for data science workflows. The solution involved building a comprehensive evaluation stack including automated harnesses for code completion testing, A/B testing infrastructure, and implicit user behavior metrics like acceptance rates. The results showed that while sophisticated evaluation systems are valuable, successful AI products in practice rely heavily on rapid iteration, monitoring in production, and \"vibes-based\" testing, with the dominant strategy being to ship fast and iterate based on real user feedback rather than extensive offline evaluation."
+---
+
+This case study provides a comprehensive examination of the challenges and realities of building evaluation systems for large-scale AI products in production, specifically drawing from the author's experience leading the evaluation team at GitHub Copilot during 2022-2023. The case centers around GitHub's experience serving 100 million developers with one of the first major AI-powered developer tools at scale, making it a significant early example of LLMOps challenges in production environments.
+
+**Company Context and Scale Challenges**
+
+GitHub Copilot represented one of the first AI products to achieve massive scale, essentially functioning as an OpenAI wrapper that became one of GitHub's primary revenue sources. The author led a team primarily composed of data scientists and some engineers, tasked with building evaluation systems for a product that had unprecedented reach and impact. The pressure to maintain quality while moving fast created unique challenges that many subsequent AI products would face, making this an important early case study in production LLMOps.
+
+**Technical Architecture and Evaluation Stack**
+
+The evaluation infrastructure at GitHub consisted of several key components that demonstrate sophisticated LLMOps practices. The team built a comprehensive evaluation harness specifically designed for benchmarking changes on coding data, focusing primarily on regression testing to ensure that model updates didn't break existing functionality. This harness leveraged publicly available code repositories and generated completions that could be objectively tested by checking whether the generated code would pass existing tests - a key advantage of working in the code domain where objective evaluation is more feasible than in many other AI applications.
+
+The production monitoring system was built on top of Microsoft's Experimentation Platform (known internally as ExP), providing A/B testing capabilities that became the primary decision-making mechanism for shipping changes. This integration with enterprise-grade experimentation infrastructure highlights the importance of leveraging existing organizational capabilities rather than building evaluation systems in isolation.
+
+**Metrics and Measurement Philosophy**
+
+The team developed a sophisticated metrics framework that prioritized implicit user feedback over explicit signals. Rather than relying on thumbs up/down ratings, they focused on behavioral metrics that reflected actual product usage patterns. The core metrics included average edit distance between prompts (measuring reprompting behavior), average edit distance between LLM responses and retained content (measuring suggestion acceptance and retention), and most importantly, the acceptance rate of Copilot suggestions, which hovered around 30% at the time.
+
+This approach to metrics represents a mature understanding of LLMOps evaluation, recognizing that explicit feedback mechanisms introduce bias, self-selection issues, and inconsistency problems. By focusing on implicit signals, the team could obtain more reliable indicators of product performance that reflected genuine user satisfaction and utility rather than survey responses that might not correlate with actual usage patterns.
+
+**Organizational Dynamics and Decision Making**
+
+The case study reveals important insights about how evaluation systems interact with organizational pressures and decision-making processes. Despite having sophisticated evaluation infrastructure, the reality was that "if something passed A/B testing, we shipped it." This highlights a common tension in LLMOps between comprehensive evaluation and the pressure to ship quickly in competitive markets.
+
+The weekly "Shiproom" meetings, involving executives from both GitHub and Microsoft, demonstrate how evaluation results interface with business decision-making. These two-hour sessions where researchers presented A/B test results for model and prompt changes show both the rigor and the bottlenecks that can emerge in large-organization LLMOps workflows. While this process ensured careful review of changes, it also created friction that pushed the organization toward incremental improvements rather than bold innovations.
+
+**Scaling Challenges and Team Composition**
+
+As Copilot expanded to additional teams in mid-2023, particularly with Copilot Chat, the evaluation approach became more "vibes-based." This transition reflects a common challenge in LLMOps: maintaining evaluation rigor as products scale across different teams with varying skill sets and domain expertise. The shift was driven both by shipping pressure and by the fact that new teams consisted primarily of engineers rather than data scientists.
+
+This observation touches on a fundamental challenge in the LLMOps ecosystem: most evaluation tools and methodologies are designed by and for data scientists, but most AI product development is done by software engineers who have different workflows, comfort zones, and priorities. Engineers are accustomed to unit tests, CI/CD pipelines, and monitoring/alerting systems rather than notebooks, spreadsheets, and statistical analysis workflows.
+
+**Lessons from Quotient and Industry Patterns**
+
+The author's subsequent experience building Quotient provides additional insights into LLMOps evaluation challenges across the broader industry. When they attempted to build an evaluation platform focused on "offline evals" - throwing prompt/model combinations at datasets to generate metrics like similarity or faithfulness - they encountered consistent resistance from engineering teams. The pattern they observed was teams either shipping based on intuition ("vibe-shipping"), running minimal manual evaluations, or investing heavily in custom in-house tooling.
+
+This experience reveals a critical gap in the LLMOps tooling ecosystem: the mismatch between what evaluation experts believe teams should do and what engineering teams are actually willing and able to adopt. The failure of their initial dataset-focused approach highlights how important it is for LLMOps tools to align with existing engineering workflows rather than expecting engineers to adopt data science practices.
+
+**Production-First Evaluation Strategy**
+
+The lessons learned led to a production-first evaluation philosophy that prioritizes online evaluation over offline testing. This approach recognizes that most teams are "testing in prod" whether they admit it or not, so evaluation tools should meet teams where they are rather than where evaluation experts think they should be. Key elements of this approach include providing few-lines-of-code tracing and logging, automating analysis of complex agent traces, providing out-of-the-box metrics for critical issues like hallucinations and tool use accuracy, and focusing on visibility into user-facing issues.
+
+This production-first philosophy represents a mature understanding of LLMOps realities. Rather than trying to convince teams to adopt comprehensive offline evaluation practices, successful evaluation systems need to integrate seamlessly into existing deployment and monitoring workflows. The emphasis on automation acknowledges that manual trace review doesn't scale as AI systems become more complex, requiring sophisticated tooling to parse and analyze the increasingly complex data structures that emerge from multi-step AI agent interactions.
+
+**Industry Reality vs. Best Practices**
+
+Perhaps the most significant insight from this case study is the gap between evaluation best practices advocated online and the reality of how successful AI products are actually built and shipped. The author notes that despite two years of "evals matter" discourse, most AI products are still shipped based on intuition and rapid iteration rather than comprehensive evaluation frameworks. This observation challenges the conventional wisdom in the LLMOps community and suggests that the current focus on sophisticated evaluation methodologies may be misaligned with what actually drives product success.
+
+The case study documents what the author calls "evals gaslighting" - a disconnect between public discourse about the importance of rigorous evaluation and the actual practices of successful AI companies. This doesn't necessarily mean evaluation is unimportant, but rather suggests that the current approaches to evaluation may not be addressing the real bottlenecks and challenges faced by teams building AI products in competitive environments.
+
+**Practical Recommendations and Future Directions**
+
+The recommended approach for building AI products reflects lessons learned from both successful and unsuccessful evaluation implementations. The strategy begins with "vibes-based" validation - shipping quickly to see what works and whether users care - before gradually adding more systematic monitoring and evaluation capabilities. This progressive approach acknowledges that evaluation systems need to evolve alongside product development rather than being implemented comprehensively from the start.
+
+The emphasis on monitoring and data collection from the beginning enables teams to build understanding of their systems over time without slowing initial development velocity. The recommendation to "chase users but save the data" reflects the reality that user feedback often provides more valuable signals than sophisticated offline metrics, while data collection ensures that more systematic analysis becomes possible as products mature.
+
+This case study ultimately presents a nuanced view of LLMOps evaluation that balances the theoretical importance of rigorous testing with the practical realities of building and shipping AI products in competitive markets. It suggests that the future of LLMOps evaluation lies not in convincing teams to adopt more sophisticated practices, but in building evaluation systems that seamlessly integrate with existing engineering workflows and provide value without slowing development velocity.

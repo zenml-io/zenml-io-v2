@@ -1,0 +1,75 @@
+---
+title: "Fine-Tuned LLM Deployment for Insurance Document Processing"
+slug: "fine-tuned-llm-deployment-for-insurance-document-processing"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "68762c09a727c262f7e8669c"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:14:30.889Z"
+  createdOn: "2025-07-15T10:23:05.451Z"
+llmopsTags:
+  - "document-processing"
+  - "healthcare"
+  - "fine-tuning"
+  - "model-optimization"
+  - "token-optimization"
+  - "latency-optimization"
+  - "cost-optimization"
+  - "vllm"
+  - "mistral"
+  - "pytorch"
+  - "triton"
+  - "kubernetes"
+  - "docker"
+  - "monitoring"
+  - "scaling"
+  - "api-gateway"
+  - "nvidia"
+  - "hugging-face"
+  - "meta"
+company: "Roots"
+summary: "Roots, an insurance AI company, developed and deployed fine-tuned 7B Mistral models in production using the vLLM framework to process insurance documents for entity extraction, classification, and summarization. The company evaluated multiple inference frameworks and selected vLLM for its performance advantages, achieving up to 130 tokens per second throughput on A100 GPUs with the ability to handle 32 concurrent requests. Their fine-tuned models outperformed GPT-4 on specialized insurance tasks while providing cost-effective processing at $30,000 annually for handling 20-30 million documents, demonstrating the practical benefits of self-hosting specialized models over relying on third-party APIs."
+link: "https://www.roots.ai/blog/what-we-learned-from-deploying-fine-tuned-llms-in-production"
+year: 2025
+seo:
+  title: "Roots: Fine-Tuned LLM Deployment for Insurance Document Processing - ZenML LLMOps Database"
+  description: "Roots, an insurance AI company, developed and deployed fine-tuned 7B Mistral models in production using the vLLM framework to process insurance documents for entity extraction, classification, and summarization. The company evaluated multiple inference frameworks and selected vLLM for its performance advantages, achieving up to 130 tokens per second throughput on A100 GPUs with the ability to handle 32 concurrent requests. Their fine-tuned models outperformed GPT-4 on specialized insurance tasks while providing cost-effective processing at $30,000 annually for handling 20-30 million documents, demonstrating the practical benefits of self-hosting specialized models over relying on third-party APIs."
+  canonical: "https://www.zenml.io/llmops-database/fine-tuned-llm-deployment-for-insurance-document-processing"
+  ogTitle: "Roots: Fine-Tuned LLM Deployment for Insurance Document Processing - ZenML LLMOps Database"
+  ogDescription: "Roots, an insurance AI company, developed and deployed fine-tuned 7B Mistral models in production using the vLLM framework to process insurance documents for entity extraction, classification, and summarization. The company evaluated multiple inference frameworks and selected vLLM for its performance advantages, achieving up to 130 tokens per second throughput on A100 GPUs with the ability to handle 32 concurrent requests. Their fine-tuned models outperformed GPT-4 on specialized insurance tasks while providing cost-effective processing at $30,000 annually for handling 20-30 million documents, demonstrating the practical benefits of self-hosting specialized models over relying on third-party APIs."
+---
+
+Roots, formerly Roots Automation, is an insurance technology company that provides AI-powered solutions for insurance operations including underwriting, policy servicing, and claims processing. The company developed a comprehensive AI platform featuring AI agents, InsurGPT (their insurance-specific language model), and workflow orchestration capabilities. This case study focuses on their technical journey of deploying fine-tuned large language models in production environments, specifically for insurance document processing tasks.
+
+The company's motivation for fine-tuning stems from the need to achieve high accuracy on specialized insurance tasks that generic models struggle with. While approaches like prompt engineering and retrieval-augmented generation (RAG) have their place, Roots found that fine-tuning was essential for teaching models "new skills" and capturing domain-specific nuances. For instance, in insurance document processing, fine-tuned models can accurately identify business-specific claim numbers, claimant names, and other critical entities that are crucial for business operations. The company claims their fine-tuned models consistently outperform GPT-4 on these specialized tasks, though specific accuracy metrics are not provided in the case study.
+
+The technical implementation centered around deploying a fine-tuned 7B Mistral Instruct v2 model using the vLLM framework. The company evaluated several inference frameworks including Hugging Face, NVIDIA Triton, and vLLM before settling on vLLM due to what they describe as "a more favorable experience during initial testing." The vLLM framework, developed at UC Berkeley and introduced in June 2023, implements several key optimizations that made it attractive for production deployment.
+
+The core technical advantages of vLLM include its implementation of PagedAttention, which draws inspiration from operating system virtual paging to manage key-value caching more efficiently. Instead of requiring contiguous memory allocation, PagedAttention segments the KV cache into blocks that can store keys and values for specific numbers of tokens. This approach prevents memory fragmentation and significantly improves cache efficiency. The framework also implements continuous batching, which dynamically manages incoming requests by grouping them for next token prediction either by assembling requests as they arrive or by setting time limits for batch formation.
+
+Additionally, vLLM supports speculative decoding, which uses a smaller model to predict multiple potential token sequences in parallel, allowing the larger model to skip generating tokens that the smaller model correctly predicts. The framework also offers practical advantages including easy installation with minimal dependencies, OpenAI-compatible API endpoints, support for various quantization methods (GPTQ, AWQ, Bitsandbytes), and RoPE scaling for extended context lengths.
+
+The company conducted extensive performance testing using an internal dataset of approximately 200 diverse samples with input tokens ranging from 1,000 to over 30,000 tokens. Most documents were under 20 pages with less than 20,000 input tokens, and expected output lengths typically ranged from 100 to 200 tokens. The testing revealed that vLLM achieved approximately 25x improvement in generation speed compared to native Hugging Face models, even when KV caching was enabled on the Hugging Face implementation.
+
+Performance characteristics showed interesting patterns across different configurations. The quantized version of vLLM using AWQ consistently demonstrated higher generation speeds compared to the unquantized version, while surprisingly, quantized Hugging Face models showed much lower performance than their unquantized counterparts. As input token counts increased, there was a noticeable decline in throughput, with a significant drop occurring around 8,000 input tokens. Conversely, throughput gradually increased with longer output sequences, suggesting efficiency gains from amortizing fixed overheads over larger token generations.
+
+Batch size optimization revealed complex relationships between processing efficiency and computational load. The company found that average generation speed increased up to batch sizes of 8 or 16 before plateauing. For shorter inputs (1,024 tokens), larger batch sizes like 32 significantly improved efficiency, but these gains became less pronounced with longer inputs. Out-of-memory errors occurred when batch sizes exceeded 64, highlighting the importance of careful resource management.
+
+The company tested performance across different GPU configurations, focusing on practical deployment scenarios. Using an AWQ-quantized model variant (since non-quantized versions wouldn't fit on lower-end GPUs), they compared performance across A100 (80GB), T4 (16GB), and RTX 3090 (24GB) GPUs. The A100 achieved 83 tokens per second throughput at approximately $30,000 annual cost, the T4 managed 21.96 tokens per second at around $10,000 annually, and the RTX 3090 surprisingly achieved 72.14 tokens per second at approximately $5,000 annual cost.
+
+Key technical limitations emerged during testing. FlashAttention-2 backend wasn't supported for Volta and Turing GPUs, and V100 GPUs lacked AWQ support, preventing quantized inference. The T4 GPUs, while supporting AWQ, showed markedly lower performance due to the absence of flash attention support. Despite the RTX 3090's impressive performance relative to its cost, the authors note that consumer-grade hardware may not be suitable for most business deployments.
+
+The most relevant production testing involved concurrent request handling, which better simulates real-world deployment scenarios compared to batch processing. The company tested the system's ability to handle multiple simultaneous requests, each with a batch size of one, using up to 64 parallel requests across 256 total requests. Results showed excellent scalability on the A100, which could handle up to 32 concurrent requests with throughput jumping from 55 tokens per second for single requests to 130 tokens per second for 32 parallel requests.
+
+The T4 GPU showed limited scalability, handling only up to 4 parallel requests before encountering server errors, with throughput ranging from 10 tokens per second for single requests to 12 tokens per second for four parallel requests. This performance differential highlights the importance of GPU selection for production deployments requiring high concurrency.
+
+From a cost-benefit perspective, the company presents their self-hosted solution as capable of processing 20-30 million documents annually at an on-demand cost of $30,000 using A100 GPUs. They position this as more cost-effective than third-party API alternatives while reducing dependency on external services and their quota limitations. The T4 option at $5,000 annually provides a more budget-friendly alternative for organizations with lower throughput requirements.
+
+The case study acknowledges several limitations and areas for future exploration. There's limited discussion of GPU memory usage patterns, which the authors identify as a gap for future research. The performance comparisons focus primarily on throughput and latency but don't extensively cover memory efficiency or energy consumption considerations. Additionally, while the company claims superior accuracy for their fine-tuned models compared to GPT-4, detailed accuracy metrics and training methodologies are reserved for future publication.
+
+The deployment architecture appears to leverage vLLM's OpenAI-compatible API endpoints, making it easier to integrate with existing systems. However, the case study doesn't provide extensive details about production monitoring, error handling, or model versioning strategies. The company mentions their broader AI platform includes human-in-the-loop capabilities and workflow orchestration, suggesting that the LLM deployment is part of a more comprehensive system architecture.
+
+This case study represents a practical example of how specialized companies can successfully deploy fine-tuned LLMs in production environments by carefully selecting inference frameworks, optimizing for specific hardware configurations, and balancing performance requirements with cost considerations. The emphasis on concurrent request handling and real-world throughput testing provides valuable insights for organizations considering similar deployments, while the detailed performance analysis across different GPU configurations offers practical guidance for infrastructure planning.

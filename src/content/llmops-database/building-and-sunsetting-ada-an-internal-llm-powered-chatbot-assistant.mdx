@@ -1,0 +1,199 @@
+---
+title: "Building and Sunsetting Ada: An Internal LLM-Powered Chatbot Assistant"
+slug: "building-and-sunsetting-ada-an-internal-llm-powered-chatbot-assistant"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "694af628511e4557e8891bc5"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2026-01-07T09:40:39.763Z"
+  lastUpdated: "2025-12-23T20:11:48.564Z"
+  createdOn: "2025-12-23T20:06:00.366Z"
+llmopsTags:
+  - "chatbot"
+  - "question-answering"
+  - "summarization"
+  - "document-processing"
+  - "content-moderation"
+  - "data-analysis"
+  - "rag"
+  - "prompt-engineering"
+  - "embeddings"
+  - "reranking"
+  - "semantic-search"
+  - "error-handling"
+  - "human-in-the-loop"
+  - "latency-optimization"
+  - "cost-optimization"
+  - "chunking"
+  - "system-prompts"
+  - "mcp"
+  - "evals"
+  - "postgresql"
+  - "elasticsearch"
+  - "langchain"
+  - "wandb"
+  - "fastapi"
+  - "docker"
+  - "kubernetes"
+  - "monitoring"
+  - "databases"
+  - "api-gateway"
+  - "microservices"
+  - "orchestration"
+  - "open-source"
+  - "documentation"
+  - "security"
+  - "compliance"
+  - "guardrails"
+  - "anthropic"
+  - "openai"
+  - "cohere"
+  - "meta"
+  - "amazon-aws"
+company: "Leboncoin"
+summary: "Leboncoin, a French e-commerce platform, built Ada—an internal LLM-powered chatbot assistant—to provide employees with secure access to GenAI capabilities while protecting sensitive data from public LLM services. Starting in late 2023, the project evolved from a general-purpose Claude-based chatbot to a suite of specialized RAG-powered assistants integrated with internal knowledge sources like Confluence, Backstage, and organizational data. Despite achieving strong technical results and valuable learning outcomes around evaluation frameworks, retrieval optimization, and enterprise LLM deployment, the project was phased out in early 2025 in favor of ChatGPT Enterprise with EU data residency, allowing the team to redirect their expertise toward more user-facing use cases while reducing operational overhead."
+link: "https://medium.com/leboncoin-tech-blog/once-upon-a-chat-bot-the-ada-story-at-leboncoin-1a4c52000d82"
+year: 2025
+seo:
+  title: "Leboncoin: Building and Sunsetting Ada: An Internal LLM-Powered Chatbot Assistant - ZenML LLMOps Database"
+  description: "Leboncoin, a French e-commerce platform, built Ada—an internal LLM-powered chatbot assistant—to provide employees with secure access to GenAI capabilities while protecting sensitive data from public LLM services. Starting in late 2023, the project evolved from a general-purpose Claude-based chatbot to a suite of specialized RAG-powered assistants integrated with internal knowledge sources like Confluence, Backstage, and organizational data. Despite achieving strong technical results and valuable learning outcomes around evaluation frameworks, retrieval optimization, and enterprise LLM deployment, the project was phased out in early 2025 in favor of ChatGPT Enterprise with EU data residency, allowing the team to redirect their expertise toward more user-facing use cases while reducing operational overhead."
+  canonical: "https://www.zenml.io/llmops-database/building-and-sunsetting-ada-an-internal-llm-powered-chatbot-assistant"
+  ogTitle: "Leboncoin: Building and Sunsetting Ada: An Internal LLM-Powered Chatbot Assistant - ZenML LLMOps Database"
+  ogDescription: "Leboncoin, a French e-commerce platform, built Ada—an internal LLM-powered chatbot assistant—to provide employees with secure access to GenAI capabilities while protecting sensitive data from public LLM services. Starting in late 2023, the project evolved from a general-purpose Claude-based chatbot to a suite of specialized RAG-powered assistants integrated with internal knowledge sources like Confluence, Backstage, and organizational data. Despite achieving strong technical results and valuable learning outcomes around evaluation frameworks, retrieval optimization, and enterprise LLM deployment, the project was phased out in early 2025 in favor of ChatGPT Enterprise with EU data residency, allowing the team to redirect their expertise toward more user-facing use cases while reducing operational overhead."
+---
+
+## Overview and Business Context
+
+Leboncoin, a major French e-commerce platform, embarked on building Ada, an internal LLM-powered chatbot assistant, at the end of 2023. The project emerged during the GenAI boom when concerns about data security with public LLM services were at their peak. High-profile incidents, such as Samsung engineers accidentally leaking source code into ChatGPT, highlighted the risks of using public GenAI platforms with sensitive corporate data. For Leboncoin's data science and machine learning teams, this created both a challenge and an opportunity: how to explore LLM capabilities safely while maintaining strict data controls.
+
+The Ada project served multiple strategic purposes beyond just providing an internal assistant. It functioned as a safe learning environment for teams new to LLMs, a controlled testing ground for understanding GenAI strengths and limitations, and a way to upskill ML engineers and data scientists in production LLM deployment. The project was explicitly positioned as a "safe launchpad into GenAI" that would enable fast learning without compromising security or trust. This case study is particularly valuable because it documents both the technical evolution and the ultimate decision to sunset the project in favor of a commercial solution, providing honest insights into the real-world tradeoffs of building versus buying in the enterprise LLM space.
+
+## Initial Architecture and Model Selection
+
+One of the first critical decisions the team faced was whether to self-host an LLM or use a managed service. This wasn't merely a technical choice but was fundamentally tied to their security requirements and the project's original purpose of maintaining data control. The team initially experimented with self-hosting Meta's Llama 2 on AWS, which offered theoretical advantages of complete data control, potentially lower long-term costs, and full infrastructure ownership.
+
+However, the self-hosting approach quickly revealed significant challenges. The deployment complexity was substantial, conversational performance lagged behind expectations, and scaling proved difficult to manage. The team ran comparative evaluations between their self-hosted Llama 2 deployment and Anthropic's Claude 2 accessed through AWS Bedrock. Claude 2 consistently outperformed on conversational quality, nuance, and reliability. Critically, despite initial assumptions, the hosted Llama 2 approach was actually more expensive than using Bedrock, even with optimizations like shutting down compute during off-hours. The combination of superior performance and more sustainable cost structure led to the decision to use Claude via AWS Bedrock.
+
+For a French company, data residency wasn't negotiable—it was essential for legal compliance. The team needed assurance that data processed through Ada, which could contain sensitive client information and confidential projects, would remain within appropriate jurisdictions. The legal and security teams conducted thorough reviews of AWS Bedrock and its available models. Claude was ultimately selected not only for its performance but because AWS provided specific guarantees that data would remain within the AWS ecosystem and would not be used for model retraining. These assurances were critical for meeting European legal and privacy requirements during the pilot phase.
+
+The initial Ada deployment provided a ChatGPT-like experience with a crucial difference: complete privacy. No conversations were stored, not even by the development team, which ensured strong privacy but also introduced operational complexity, particularly when investigating user-reported issues. This architectural decision reflects a common tradeoff in production LLM systems between privacy guarantees and operational observability.
+
+## Evolution to Specialized RAG-Based Assistants
+
+By mid-2024, Ada's role expanded significantly beyond being a general-purpose assistant. Leadership recognized Ada as a safe internal playground for exploring real-world GenAI capabilities, while employee adoption drove demand for more specialized functionality. The logical evolution was to connect Ada to internal knowledge bases through Retrieval-Augmented Generation (RAG) architectures, creating domain-specific assistants rather than maintaining a single generic chatbot.
+
+To support this expansion, a dedicated team was formed consisting of three machine learning engineers, two software engineers, plus a product owner and manager. This relatively lean team managed to achieve substantial technical progress, demonstrating that well-structured LLM projects don't necessarily require massive teams. The shift marked a fundamental change in Ada's value proposition: from generic assistant to gateway into organizational knowledge.
+
+The team created multiple specialized assistants, each tailored to specific internal data sources with architectures designed to match the structure and usage patterns of their domains. This is a critical insight for LLMOps practitioners: there is no one-size-fits-all RAG architecture. The team implemented several distinct approaches depending on the use case.
+
+For the Confluence assistant (product and technical documentation) and Customer Relations assistant (moderation content from Lumapps), they implemented a classic RAG pipeline. Documents were chunked, embedded, and stored in a Postgres vector database, enabling semantic retrieval based on similarity search. They added a reranker to enhance retrieval quality and, in the Lumapps case, a query rephraser proved valuable for handling diverse query formulations.
+
+For the Backstage assistant (technical documentation), they took a completely different approach by leveraging the existing OpenSearch engine and index. Since Backstage documents were already indexed with OpenSearch, they bypassed embeddings entirely and used lexical retrieval through OpenSearch's search API. They still employed a reranker and added a keyword rephraser to improve lexical retrieval performance, particularly for handling queries in multiple languages.
+
+For the Policy assistant and Organizational Chart assistant, they implemented yet another approach: loading the entire document base directly into the model's context without any retrieval step. This was feasible because these corpora were small enough to fit within modern LLMs' large context windows. This approach eliminated retrieval complexity entirely while ensuring complete coverage of the knowledge base.
+
+All assistants were built on Anthropic Claude models accessed via AWS Bedrock, but the diversity of architectural approaches demonstrates sophisticated thinking about matching technical solutions to specific use cases rather than applying a standard template everywhere.
+
+## Slack Integration and Workflow Optimization
+
+As adoption grew, the team recognized that requiring users to leave their normal workflows to access a standalone web interface created unnecessary friction. They integrated Ada's multiple assistants directly into Slack through custom Slack Apps, meeting users where they already worked. Beyond basic question-answering, they developed custom features like thread and channel summarization, which allowed employees to select message ranges with configurable parameters (time period, summary type) and receive results as ephemeral messages. These summarization features became particularly popular, demonstrating that practical workflow integration often drives adoption more than raw capabilities.
+
+## Deep Dive: The Case Against Always Using RAG
+
+One of the most valuable technical insights from the Ada project concerns when not to use traditional RAG pipelines. The Backstage and Organizational Chart assistants provide illuminating examples of alternative approaches that achieved comparable or better results with less complexity.
+
+For the Backstage assistant, the team faced a choice between building a full RAG pipeline (with embedding generation, vector database management, and semantic search) versus leveraging the existing OpenSearch infrastructure already integrated with Backstage. They chose to use OpenSearch, which operates through inverted indices, tokenization, and keyword-based search optimized for log and document retrieval scenarios. This decision eliminated the need to build new ingestion pipelines, manage a vector database, or incur additional embedding costs, reducing the MVP deployment time to a single sprint.
+
+However, this approach introduced a significant challenge: most documentation was in English, but queries came in both French and English. OpenSearch's preprocessing (stop-word removal, stemming) is optimized for English, causing French queries to produce poor matches. Rather than abandoning the approach, the team built a lightweight English keyword rephraser that ran before hitting OpenSearch, converting user questions into forms more compatible with the search index. This preprocessing step significantly improved retrieval performance, raising context relevance from 0.63 to 0.73 and returning the correct source link in 70% of cases. With the final setup combining OpenSearch, query rephraser, and reranker, they achieved performance on par with traditional RAG pipelines on multilingual datasets.
+
+The Organizational Chart assistant presented a different challenge. Backstage doesn't just contain technical documentation—it represents Leboncoin's organizational structure as a graph (teams, squads, crews, leadership hierarchy). OpenSearch's keyword search fundamentally cannot answer relational questions like "Which teams belong to this crew?" or "Who does this MLE report to?" because it only sees individual nodes and their direct parents, not the full hierarchical structure.
+
+The team's solution was elegant: they loaded and cached the entire organizational graph into the assistant's context. Since Claude is multilingual, this approach handled both French and English queries naturally without special preprocessing. The assistant could then answer complex queries about team structure and reporting lines through the LLM's reasoning over the full graph rather than through retrieval. This demonstrates that for structured, relational data of manageable size, leveraging LLM context windows can be simpler and more effective than retrieval-based approaches.
+
+The lesson here is architecturally significant for LLMOps: thoughtfully combining traditional search tools with preprocessing (query rephrasing), postprocessing (reranking), and context-aware structuring can achieve excellent results faster and more efficiently than defaulting to standard RAG patterns.
+
+## Evaluation Framework Development
+
+The Ada team dedicated multiple sprints to developing robust evaluation frameworks, recognizing that evaluation is what separates experimental demos from reliable production systems. Their journey in evaluation methodology offers valuable guidance for LLMOps practitioners.
+
+Initially, they relied on off-the-shelf datasets—primarily synthetic question-answer pairs generated from source documents—and standard metrics like cosine similarity, answer relevance, and context relevance. However, these proved insufficient for capturing real-world performance issues. The team evolved their approach in several important ways.
+
+They created use-case-specific datasets tailored to actual failure modes. For example, the Confluence assistant struggled with table-based queries because document chunking removed headers and destroyed tabular structure—something only discovered after building a dedicated dataset for these cases. For the Backstage assistant, they created separate datasets for English and French queries to properly evaluate multilingual performance. They also began incorporating user feedback into datasets, making them more realistic and reliable.
+
+Equally important, they rethought their metrics when standard measures failed to capture what mattered. Cosine similarity (between generated and expected responses) and answer relevance (LLM-as-a-judge comparing answer to question) looked good theoretically but didn't catch hallucinations or weak retrieval in practice. The team converged on two primary metrics that proved reliable:
+
+**Correctness** used an LLM-as-a-judge approach to evaluate how closely generated answers matched ground truth. This became their main metric, reflecting overall system performance and proving to be a reliable indicator of when the system was performing well or poorly. It played a central role in their experimentation process.
+
+**Correct Links Pulled** was a custom metric tracking whether the right source documents were retrieved and used, counting links present in answers versus expected links. This provided precise measurement of the retrieval step's performance. In practice, they found this custom metric more reliable for judging relevant context than LLM-as-a-judge metrics like context relevance or groundedness.
+
+The tooling infrastructure was equally critical. They used Langsmith for evaluation, which proved to be a game-changer through its asynchronous evaluation capabilities. This reduced evaluation time for a 120-example dataset from 30 minutes to 3 minutes, enabling rapid iteration despite the high latency inherent in LLM calls. They also used Airflow to schedule weekly baseline evaluations, ensuring ongoing monitoring of system performance. The combination of thoughtful metrics, tailored datasets, and efficient tooling created an evaluation process that was fast, smooth, and precise.
+
+## Rerankers and Query Rephrasers: Retrieval Optimization
+
+The team discovered that first-pass retrieval—whether through semantic similarity in vector databases or keyword matching in OpenSearch—was insufficient for production quality. They implemented a two-stage retrieval pipeline where the first stage performed broad candidate selection and the second stage used reranking to reorder candidates based on actual relevance to the user's query.
+
+For reranking, they chose Cohere's Rerank 3.5 model, which uses cross-encoding to evaluate each chunk directly in relation to the user's query, generating relevance scores reflecting semantic alignment. Implementation was straightforward, completed within a single sprint including evaluation of retrieval volumes. The latency impact was minimal, but improvements in answer quality and reliability were substantial.
+
+However, rerankers introduced important tradeoffs. They added per-query costs, and unlike Claude Sonnet's 200K token context window, Cohere Rerank 3.5 has a 4,096-token limit. This constraint restricts the size of user queries the system can accept, directly impacting the assistant's usability for complex questions. The lesson is that rerankers provide better relevance but with architectural constraints that must be carefully considered.
+
+Query rephrasers proved valuable in specific contexts but not universally beneficial. For the moderation assistant, overly generic queries like "Is an ad about selling a shotgun allowed on the website?" pulled irrelevant chunks due to noisy keywords like "ad" or "website." A simple rule-based rephraser that stripped generic terms improved correctness by 10%, significantly outperforming a more complex LLM-based rephraser that only achieved 3-4% improvement. This demonstrates that simple heuristic approaches can outperform complex learned models for specific problems.
+
+For the Backstage assistant, adding a rephraser that auto-translated queries before running searches significantly improved retrieval quality for multilingual queries. However, when they added a prompt-based rephraser to the Confluence assistant where retrieval already performed well, they observed a performance drop. The critical insight is that rephrasers are precision tools for addressing specific retrieval issues, not blanket solutions to be applied everywhere.
+
+## The Decision to Sunset Ada
+
+By mid-2025, the enterprise AI market was estimated at €97 billion with expected growth exceeding 18% annually to reach €229 billion by 2030. The rapid evolution of commercial LLM platforms and increasing internal demand created strategic pressures. Leadership's message was clear: every team should be able to have its own assistant or chatbot, but a small MLE team couldn't scale to meet this demand while also maintaining core infrastructure.
+
+The team tested alternative platforms that could accelerate delivery. Early in 2025, they evaluated Onyx, an open-source enterprise AI assistant and search platform designed to connect with tools like Slack, GitHub, and Confluence. They deployed Onyx for pilot testing with select users to evaluate real-world capabilities. However, their decision to self-host for data privacy introduced significant infrastructure demands, particularly around the Vespa database, which added complexity and affected production stability. Customization limitations also made Onyx unsuitable for Leboncoin's needs at that stage.
+
+Meanwhile, OpenAI launched data residency in Europe for ChatGPT Enterprise and the API, ensuring data remained within EU boundaries while meeting GDPR, SOC 2, and CSA-STAR requirements. This fundamentally changed the calculus: ChatGPT Enterprise now satisfied Leboncoin's data privacy requirements that originally motivated building Ada.
+
+The team had developed strong GenAI expertise through Ada's development, reaching a point where maintaining an in-house assistant represented significant technical and operational overhead relative to focusing on more user-facing use cases. At the end of Q1 2025, leadership decided to phase out Ada and transition to OpenAI's platform as the internal assistant foundation.
+
+The migration strategy demonstrates thoughtful technical planning. Several Ada features are being ported via Model Context Protocol (MCP) connectors, enabling integration between ChatGPT and internal APIs. Other capabilities are being reimagined as Custom GPTs using ChatGPT's action-enabled frameworks. For workflows and automation, they're exploring n8n, an open-source automation engine, to orchestrate triggers across internal systems without requiring engineer-heavy infrastructure.
+
+## Critical Assessment and Balanced Perspective
+
+The Ada story warrants balanced evaluation rather than uncritical acceptance of the narrative presented. While the team frames this as a successful learning journey, several aspects deserve critical examination.
+
+**The Build-vs-Buy Decision Timing**: The team invested approximately 18 months building custom infrastructure that was ultimately replaced by a commercial solution. While the learning value is emphasized, one must question whether earlier evaluation of commercial options with adequate data residency guarantees might have been more efficient. The fact that ChatGPT Enterprise's EU data residency—a feature that addressed the original security concerns—became available during Ada's lifetime suggests the market was already moving to solve this problem.
+
+**Cost Transparency**: The case study lacks detailed cost analysis comparing the total cost of ownership for Ada (including team time, infrastructure, and opportunity cost) versus commercial alternatives. The brief mention that self-hosted Llama 2 was more expensive than Bedrock even with optimizations hints at cost considerations, but comprehensive financial analysis is absent. This makes it difficult to assess whether the economic calculus genuinely favored building initially or if organizational factors drove the decision.
+
+**Evaluation Claims**: While the evaluation framework development is presented as sophisticated and thorough, the metrics ultimately chosen (correctness and correct links pulled) are relatively standard in RAG systems. The claim that standard metrics like cosine similarity and context relevance "didn't work" may reflect implementation issues rather than fundamental metric limitations. The shift from synthetic to user-feedback-enhanced datasets is positive but not particularly novel—this is standard practice in mature ML systems.
+
+**Architectural Complexity**: The proliferation of multiple architectures (classic RAG with Postgres, OpenSearch-based lexical retrieval, full-context loading) across different assistants suggests either thoughtful optimization or potential over-engineering. While the case study presents this as sophisticated architectural matching, it also represents significant maintenance burden and complexity. A more standardized approach might have been more sustainable, particularly for a small team.
+
+**The Privacy-Observability Tradeoff**: The decision to store no conversations, not even for the development team, is presented as a privacy win. However, this severely hampered their ability to debug issues, understand usage patterns, and improve the system based on real interactions. More mature approaches to privacy-preserving observability (like differential privacy, secure aggregation, or role-based access with strict auditing) might have provided better balance.
+
+**Scaling Limitations**: The ultimate reason for sunsetting—inability to scale to meet organizational demand with a small team—suggests the architecture may not have been designed with appropriate automation and self-service capabilities from the start. Enterprise LLM platforms succeed partly through empowering teams to self-serve, which appears not to have been a first-order design consideration for Ada.
+
+**Commercial Platform Lock-in**: The transition to ChatGPT Enterprise, while pragmatic, represents a strategic dependency on OpenAI. The migration plan through MCP connectors and Custom GPTs is vendor-specific. If the original concern was data control and avoiding dependency on external platforms, the outcome seems to contradict that goal, though with better contractual protections.
+
+**Generalizable Lessons vs. Specific Context**: Many of the "lessons learned" presented are context-specific to Leboncoin's particular data sources and use cases. The OpenSearch approach worked because that infrastructure already existed; the organizational graph approach worked because the graph was small. These may not generalize well to other enterprises with different existing infrastructure and data characteristics.
+
+That said, the case study has genuine strengths. The honesty about sunsetting the project is refreshing—many case studies only present successes. The technical detail about specific architectural choices and tradeoffs (reranker token limits, rephraser performance differences across use cases) is valuable and actionable. The emphasis on evaluation as non-optional is correct and important. The recognition that different use cases require different architectures rather than one-size-fits-all RAG is sophisticated thinking that many teams miss.
+
+## Operational and Production Insights
+
+From an LLMOps perspective, several operational aspects emerge as particularly relevant. The team's evolution from self-hosting to managed services reflects a common enterprise trajectory as the market matures. The decision to use AWS Bedrock rather than self-hosting proved correct not just for performance but for total cost of ownership, challenging assumptions that self-hosting is always more economical at scale.
+
+The integration strategy—starting with a standalone web interface, then adding Slack integration, then building specialized features like summarization—demonstrates iterative product thinking. Meeting users in their existing workflows (Slack) rather than requiring workflow changes proved critical for adoption. This is a common pattern in successful enterprise LLM deployments: distribution and integration matter as much as capabilities.
+
+The small team size (3 MLEs, 2 SWEs, plus PO and manager) achieving substantial technical progress demonstrates that LLM projects don't inherently require massive teams, though it also proved insufficient for scaling to organization-wide demand. This tension between doing sophisticated work with lean teams and meeting broader organizational demand is a common challenge in enterprise ML.
+
+The migration strategy away from Ada shows maturity in recognizing when to transition from custom-built to commercial solutions. Using MCP connectors and Custom GPTs to preserve specialized functionality while moving to ChatGPT Enterprise as the base platform represents pragmatic architectural evolution rather than complete abandonment of previous work.
+
+## Conclusion and Key Takeaways
+
+The Ada project at Leboncoin represents a microcosm of early enterprise experimentation with production LLM systems. It demonstrates both the excitement and challenges of building custom LLM infrastructure in a rapidly evolving market. The approximately 18-month journey from inception to sunset provided the team with valuable hands-on experience in LLM infrastructure, RAG architectures, evaluation frameworks, security governance, and European legal compliance.
+
+The key technical contributions include practical demonstrations that RAG is not always necessary (OpenSearch and full-context approaches), that evaluation frameworks must be tailored to specific use cases with meaningful custom metrics, that rerankers and rephrasers are precision tools with specific tradeoffs rather than universal improvements, and that different data sources and use cases require different architectural approaches.
+
+The strategic outcome—transitioning to ChatGPT Enterprise after building custom infrastructure—reflects the rapid commoditization of basic LLM capabilities and the increasing viability of commercial platforms that meet enterprise security requirements. Whether this represents efficient learning through building or a costly detour depends on perspective and full cost accounting that the case study doesn't provide.
+
+For other enterprises considering similar projects, the Ada story suggests careful evaluation of commercial options with appropriate data residency guarantees before committing to custom builds, planning for self-service and automation from the start if organizational scaling is a goal, investing heavily in evaluation infrastructure as core capability rather than afterthought, recognizing that different use cases may genuinely require different architectures rather than forcing uniformity, and maintaining flexibility to transition to commercial platforms as the market matures and offerings improve.
+
+The honest documentation of both successes and the ultimate decision to sunset provides valuable learning for the broader community, even if the narrative warrants critical examination of assumptions and claims.

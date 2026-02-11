@@ -1,0 +1,149 @@
+---
+title: "Scaling LLM Inference Infrastructure at Meta: From Model Runner to Production Platform"
+slug: "scaling-llm-inference-infrastructure-at-meta-from-model-runner-to-production-platform"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "683d7a00686588c8bd2ce48d"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:10:18.679Z"
+  createdOn: "2025-06-02T10:16:32.852Z"
+llmopsTags:
+  - "chatbot"
+  - "content-moderation"
+  - "summarization"
+  - "question-answering"
+  - "realtime-application"
+  - "high-stakes-application"
+  - "model-optimization"
+  - "latency-optimization"
+  - "cost-optimization"
+  - "chunking"
+  - "system-prompts"
+  - "human-in-the-loop"
+  - "multi-agent-systems"
+  - "fallback-strategies"
+  - "kubernetes"
+  - "monitoring"
+  - "load-balancing"
+  - "scaling"
+  - "serverless"
+  - "orchestration"
+  - "continuous-deployment"
+  - "continuous-integration"
+  - "pytorch"
+  - "cache"
+  - "redis"
+  - "meta"
+  - "nvidia"
+company: "Meta"
+summary: "Meta's AI infrastructure team developed a comprehensive LLM serving platform to support Meta AI, smart glasses, and internal ML workflows including RLHF processing hundreds of millions of examples. The team addressed the fundamental challenges of LLM inference through a four-stage approach: building efficient model runners with continuous batching and KV caching, optimizing hardware utilization through distributed inference techniques like tensor and pipeline parallelism, implementing production-grade features including disaggregated prefill/decode services and hierarchical caching systems, and scaling to handle multiple deployments with sophisticated allocation and cost optimization. The solution demonstrates the complexity of productionizing LLMs, requiring deep integration across modeling, systems, and product teams to achieve acceptable latency and cost efficiency at scale."
+link: "https://www.infoq.com/presentations/llm-meta/"
+year: 2025
+seo:
+  title: "Meta: Scaling LLM Inference Infrastructure at Meta: From Model Runner to Production Platform - ZenML LLMOps Database"
+  description: "Meta's AI infrastructure team developed a comprehensive LLM serving platform to support Meta AI, smart glasses, and internal ML workflows including RLHF processing hundreds of millions of examples. The team addressed the fundamental challenges of LLM inference through a four-stage approach: building efficient model runners with continuous batching and KV caching, optimizing hardware utilization through distributed inference techniques like tensor and pipeline parallelism, implementing production-grade features including disaggregated prefill/decode services and hierarchical caching systems, and scaling to handle multiple deployments with sophisticated allocation and cost optimization. The solution demonstrates the complexity of productionizing LLMs, requiring deep integration across modeling, systems, and product teams to achieve acceptable latency and cost efficiency at scale."
+  canonical: "https://www.zenml.io/llmops-database/scaling-llm-inference-infrastructure-at-meta-from-model-runner-to-production-platform"
+  ogTitle: "Meta: Scaling LLM Inference Infrastructure at Meta: From Model Runner to Production Platform - ZenML LLMOps Database"
+  ogDescription: "Meta's AI infrastructure team developed a comprehensive LLM serving platform to support Meta AI, smart glasses, and internal ML workflows including RLHF processing hundreds of millions of examples. The team addressed the fundamental challenges of LLM inference through a four-stage approach: building efficient model runners with continuous batching and KV caching, optimizing hardware utilization through distributed inference techniques like tensor and pipeline parallelism, implementing production-grade features including disaggregated prefill/decode services and hierarchical caching systems, and scaling to handle multiple deployments with sophisticated allocation and cost optimization. The solution demonstrates the complexity of productionizing LLMs, requiring deep integration across modeling, systems, and product teams to achieve acceptable latency and cost efficiency at scale."
+---
+
+## Overview
+
+This case study presents an inside look at Meta's LLM inference infrastructure, shared by Charlotte Qi, who works on LLM inference at Meta. The presentation covers the end-to-end challenges of building production LLM serving systems at hyperscale, powering products like Meta AI and smart glasses. Charlotte has been solving model serving problems for six years, with current focus on cost-saving and developer experience. The talk was delivered at an AI Infra @Scale conference and provides a remarkably candid view of the real-world complexities involved in LLMOps at Meta's scale.
+
+The key insight throughout is that LLM serving is fundamentally different from traditional model serving because "a model is a system" - the best solutions require comprehensive thinking across model, product, and system to achieve joint optimization. Meta's team handles not just public-facing traffic but also massive internal workloads including RLHF, data curation, and distillation for the Llama family of models. During busy RLHF weeks, the team processes hundreds of millions of examples.
+
+## Stage 1: Model Running Fundamentals
+
+The foundation of LLM serving starts with understanding the unique execution pattern of LLMs. Since models are trained with next-token prediction, inference is inherently iterative and token-by-token. This creates two distinct phases: prefill (generating the first token) and decode (generating subsequent tokens). End-to-end latency typically reaches several seconds, which is why virtually all LLM applications use streaming interfaces.
+
+Charlotte emphasizes two critical capabilities for any LLM runtime: continuous batching and KV cache support. Continuous batching addresses the variable-length response problem - without it, shorter responses would exit early and leave resources idle. The analogy used is a bus that picks up new passengers at every stop (end of each decoding step) if there's room. New passengers (prefill requests) carry lots of luggage and are slow to board, but most stops are empty so the bus keeps moving efficiently.
+
+KV caching is equally essential because every decoding step is conditioned on all previously generated tokens. The K and V tensors for the same token at the same position remain constant across a single generation request. Without caching, attention computation becomes cubic instead of quadratic, which is unsustainable. Fortunately, mainstream LLM frameworks support both features.
+
+## Stage 2: Hardware Fitting and Distributed Inference
+
+Modern data center GPUs typically come in 8-GPU configurations with varying HBM sizes (40, 80, 96, 192 GB for A100, H100, MI300, etc.). The fitting challenge varies dramatically by model size. An 8B model fits on a single GPU easily. A 70B model requires tensor parallelism across at least 2 GPUs (typically 4-8 to allow larger batch sizes for better throughput). The 405B model exceeds 800GB in bf16 weights alone, requiring two nodes with pipeline parallelism recommended to avoid the overhead of multi-node tensor parallelism. Alternatively, MI300's 192GB HBM can serve it on a single host.
+
+The core message is to not simply reuse training or eval code - production inference requires specialized runtimes and understanding of how AI hardware maps to model requirements.
+
+## Stage 3: Performance Optimization
+
+When addressing latency, Charlotte distinguishes between three key metrics: Time to First Token (TTFT) for reducing initial silence, Time to Inter-Token/Output Token (TTIT/TTOT) for generation speed in streaming applications, and end-to-end latency for non-streaming use cases with client timeouts. Each can be optimized differently.
+
+The fundamental constraint is that prefill is GPU compute-heavy while decode is memory bandwidth-heavy. The ratio of system resources on hardware is fixed at manufacture, creating an inherent mismatch that requires optimization effort to bridge.
+
+### Disaggregated Inference
+
+A major optimization is separating prefill and decode into different services. In continuous batching, prefill requests running alongside decode can slow down all decoding steps in the same batch. A 32K input prefill can block decoding for seconds, which users will notice. By replicating weights and running prefill and decode as separate services, Meta can scale resources independently and eliminate the 10x P99 latency spike for decode (which would otherwise equal average prefill latency). This approach maintains the same latency SLOs with significantly fewer machines.
+
+For extremely long inputs (128K+), even 8-way tensor parallelism with disaggregation results in minute-long processing. Context parallelism can further partition workloads at the context dimension, though it's expensive.
+
+### Making the Problem Smaller
+
+Several techniques reduce hardware burden while maintaining acceptable quality: using more concise prompts, obtaining smaller models through specialized fine-tuning/distillation/pruning, and applying quantization to unlock 2x or more compute. Quantization is not a single technique - post-training allows mixing different components, data types, and policies. The open LLM community provides implementations for experimentation.
+
+### Hierarchical Caching
+
+KV cache memory management follows traditional system performance principles. For roleplay, integrity chat, or multi-turn chatbots, significant recomputation occurs from system prompts and chat history. Meta builds hierarchical caching across HBM (common system prompts), DRAM (active user chat history loaded every minute), and flash (less engaging users). When done correctly, this achieves over 50% reduction in both latency and capacity - it's lossless optimization.
+
+### Advanced Optimizations
+
+Additional techniques include speculative decoding, chunked prefill, attention kernel optimizations, and token-level sparsity. These involve conflicting tradeoffs between TTFT, TTIT, quality, and cost - teams must decide what matters for their product.
+
+## Stage 4: Production Deployment Challenges
+
+Moving to production introduces numerous challenges. Request distributions change constantly with varying user engagement patterns, input/output ratios show greater variance, and effective batch sizes become smaller and more variable. Temporal patterns include daily peaks/off-peaks, random evaluation spikes, human-in-the-loop annotation schedules, and batch processing that can be time-shifted.
+
+A sobering reality check: it's common to lose 50% of effective FLOPS at the earliest kernel benchmarking stage, especially for shorter inputs. Combining latency bounds and operating buffers, 10x loss is common. The peak FLOPS advertised by vendors becomes largely meaningless in production.
+
+### End-to-End Latency Reality
+
+Charlotte presents a striking breakdown for a 70B model at 200ms inference latency: 75ms for network roundtrip (service in California, user in New York), 75ms for load balancing/health checks, 150ms for downloading images in multimodal requests, and 400ms+ for business logic (safety checks, search, function calling). Inference is often just a small portion of end-to-end latency.
+
+### Disaggregation Complexity
+
+While disaggregation sounds simple, the prefill-decode link is thin - hundreds of megabytes of KV cache must transfer between services. TCP/IP bandwidth limits commonly add 50-100ms to TTFT. Teams must implement request scheduling, overlap data transfer with compute at every layer, and tune for their network environment. Deployment complexity (binary updates, weight updates) alone could fill a full session.
+
+### Caching Complexity
+
+Positional encoding complicates caching - same tokens at different positions have different embeddings. If requests include the last 10 messages from a user, nothing gets cached. Meta co-designed chat history management with product teams and customized request data flow to maximize cache hit rate while preserving latency budget. Consistent hashing provides sticky routing to cached hosts, with failure retries also sticky.
+
+### Quantization Caution
+
+Quantization requires paranoia. Common benchmarks like MMLU may show equivalent or better scores, but customers report issues in production. Benchmarks are saturated and may not represent product objectives. Teams should build product-specific evaluations and use slow-roll processes.
+
+### Continuous Evaluation
+
+Inference bugs can manifest as subtle performance degradation since LLMs are probabilistic - results may appear correct even when something is wrong. Meta's approach mirrors traditional CI/CD: small benchmark runs on every diff, comprehensive runs on every inference engine release.
+
+## Stage 5: Scaling Challenges
+
+At scale, everything multiplies: more deployments, more GPUs, more developers, more models. A mature product typically involves multiple LLMs - a main chat model plus ancillary models for safety, planning, rewarding, and function calling.
+
+### Deployment Allocation
+
+Disaggregation with hardware preferences (P for prefill compute, D for decode bandwidth) creates placement constraints since prefill and decode must be co-located (no cross-region data transfer). This results in managing and optimizing at least three deployment types. Context parallelism for long inputs creates blast radius problems - 40 GPUs in one partition means any failure takes down the entire process group. With 3% random GPU failures at any time, larger inference units exponentially increase risk. Maintenance events (network upgrades, datacenter work) can take down entire groups of physically co-located hosts.
+
+Meta created a dedicated job scheduler aware of network topologies and maintenance events to allocate hosts for distributed inference.
+
+### Autoscaling Complexity
+
+Traditional CPU autoscaling on QPS doesn't work for LLMs because bottlenecks depend on workload. Tokens per second works under many caveats. Free upsizing is constrained by GPU limits. Meta treats autoscaling as a shard placement problem, with a deployment solver understanding supply and demand to make decisions even when demand exceeds supply.
+
+### Cost Optimization at Scale
+
+Manually applying and tuning dozens of optimization options for each job becomes tedious. The optimal cost-effective option depends on latency requirements - different techniques' performance curves cross at various points. Meta created an "inference manual" requiring extensive performance benchmarking automation and data science.
+
+A key insight: while 90% of people focus on the 1-2 head models consuming most GPUs, collective tail deployments often consume even more. Observability and automation directly help claim these low-hanging fruits.
+
+### The Complete Picture
+
+Charlotte presents LLM serving as an iceberg where model and hardware are just the visible tip. Below the surface: Model Runner, execution engine with inference acceleration, monitoring, routing, product integration, scheduling optimization, continuous evaluation, allocation, deployment management, model management, and experimentation. Vertical optimizations across the entire stack are often necessary for best results.
+
+## Key Takeaways
+
+The presentation provides realistic expectations: getting basics right (proper runtime, continuous batching, KV cache) yields 10x foundation. Distributed inference, smaller inputs/models, and caching add 2-4x. Advanced techniques may yield another 10-100x improvement. However, production deployments commonly lose theoretical FLOPS significantly. End-to-end latency optimization often matters more than pure inference speed. KV cache effectiveness frequently requires product and infrastructure co-optimization. Continuous evaluation and testing of acceleration techniques using product signals is essential.

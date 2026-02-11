@@ -1,0 +1,189 @@
+---
+title: "Building an AI Agent Platform with Cloud-Based Virtual Machines and Extended Context"
+slug: "building-an-ai-agent-platform-with-cloud-based-virtual-machines-and-extended-context"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "695108d62b58c640b340a104"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2026-01-07T09:40:39.763Z"
+  lastUpdated: "2025-12-28T10:51:50.691Z"
+  createdOn: "2025-12-28T10:39:18.134Z"
+llmopsTags:
+  - "chatbot"
+  - "data-analysis"
+  - "data-cleaning"
+  - "document-processing"
+  - "code-generation"
+  - "unstructured-data"
+  - "prompt-engineering"
+  - "agent-based"
+  - "few-shot"
+  - "human-in-the-loop"
+  - "latency-optimization"
+  - "multi-agent-systems"
+  - "docker"
+  - "kubernetes"
+  - "monitoring"
+  - "databases"
+  - "api-gateway"
+  - "microservices"
+  - "serverless"
+  - "orchestration"
+  - "open-source"
+  - "anthropic"
+company: "Manus"
+summary: "Manus AI, founded in late 2024, developed a consumer-focused AI agent platform that addresses the limitation of frontier LLMs having intelligence but lacking the ability to take action in digital environments. The company built a system where each user task is assigned a fully functional cloud-based virtual machine (Linux, with plans for Windows and Android) running real applications including file systems, terminals, VS Code, and Chromium browsers. By adopting a \"less structure, more intelligence\" philosophy that avoids predefined workflows and multi-role agent systems, and instead provides rich context to foundation models (primarily Anthropic's Claude), Manus created an agent capable of handling diverse long-horizon tasks from office location research to furniture shopping to data extraction, with users reporting up to 2 hours of daily GPU consumption. The platform launched publicly in March 2024 after five months of development and reportedly spent $1 million on Claude API usage in its first 14 days."
+link: "https://www.youtube.com/watch?v=UjboGsztHd8"
+year: 2025
+seo:
+  title: "Manus: Building an AI Agent Platform with Cloud-Based Virtual Machines and Extended Context - ZenML LLMOps Database"
+  description: "Manus AI, founded in late 2024, developed a consumer-focused AI agent platform that addresses the limitation of frontier LLMs having intelligence but lacking the ability to take action in digital environments. The company built a system where each user task is assigned a fully functional cloud-based virtual machine (Linux, with plans for Windows and Android) running real applications including file systems, terminals, VS Code, and Chromium browsers. By adopting a \"less structure, more intelligence\" philosophy that avoids predefined workflows and multi-role agent systems, and instead provides rich context to foundation models (primarily Anthropic's Claude), Manus created an agent capable of handling diverse long-horizon tasks from office location research to furniture shopping to data extraction, with users reporting up to 2 hours of daily GPU consumption. The platform launched publicly in March 2024 after five months of development and reportedly spent $1 million on Claude API usage in its first 14 days."
+  canonical: "https://www.zenml.io/llmops-database/building-an-ai-agent-platform-with-cloud-based-virtual-machines-and-extended-context"
+  ogTitle: "Manus: Building an AI Agent Platform with Cloud-Based Virtual Machines and Extended Context - ZenML LLMOps Database"
+  ogDescription: "Manus AI, founded in late 2024, developed a consumer-focused AI agent platform that addresses the limitation of frontier LLMs having intelligence but lacking the ability to take action in digital environments. The company built a system where each user task is assigned a fully functional cloud-based virtual machine (Linux, with plans for Windows and Android) running real applications including file systems, terminals, VS Code, and Chromium browsers. By adopting a \"less structure, more intelligence\" philosophy that avoids predefined workflows and multi-role agent systems, and instead provides rich context to foundation models (primarily Anthropic's Claude), Manus created an agent capable of handling diverse long-horizon tasks from office location research to furniture shopping to data extraction, with users reporting up to 2 hours of daily GPU consumption. The platform launched publicly in March 2024 after five months of development and reportedly spent $1 million on Claude API usage in its first 14 days."
+---
+
+## Overview and Company Background
+
+Manus AI represents a distinctive approach to productionizing large language models through an agent platform that emphasizes giving LLMs "hands" rather than just "brains." Founded by three experienced developers (Tao/HIK as CPO, along with co-founders Pig and Red) who collectively have decades of coding experience but only entered AI two years prior to the talk, the company developed its concept between October 2024 and launched publicly in March 2024. The company name derives from MIT's Latin motto "mens et manus" (mind and hand), reflecting their core philosophy that frontier models possess intelligence but lack mechanisms to act upon the physical and digital world.
+
+The inspiration for Manus came from observing non-programmers using Cursor (the AI-powered code editor). The founders noticed that non-technical users would simply keep hitting "accept" on code suggestions without reading or evaluating the code itself—they only cared about the right panel showing results, not the left panel showing code. This observation led to the insight that code might be merely an intermediate artifact rather than the ultimate goal for many use cases. Users would ask Cursor to regenerate code for the same task rather than reusing previously generated code, suggesting that what users truly wanted was task completion, not code artifacts. This prompted Manus to "build the opposite"—focusing on the results panel and outcomes rather than the code generation interface.
+
+## Core Technical Architecture: The Virtual Machine Approach
+
+The foundational architectural decision of Manus centers on providing each task with a fully functional virtual machine in the cloud. This is described as the "first key component" that differentiates Manus from traditional chatbots or other agent systems. Each Manus task receives a dedicated VM with a complete Linux environment including:
+
+- Full file system access
+- Terminal capabilities  
+- VS Code integration
+- A real Chromium browser (explicitly noted as not headless)
+
+This architecture creates numerous opportunities for handling diverse task types. For example, users can upload compressed files containing hundreds of PDFs, and Manus can unzip the archive, extract unstructured data from all PDFs, and compile results into a structured spreadsheet—all operations performed within the sandboxed VM environment. The company has plans to extend beyond Linux VMs to support virtual Windows and Android environments as well, all running in the cloud.
+
+The cloud-based execution model provides critical advantages over local execution. The speaker contrasts Manus with Cursor, noting that Cursor must request user permission before each action because operations on a local machine could potentially break the user's computer or install unwanted dependencies. Cloud-based VMs eliminate this concern, providing better safety isolation. Additionally, cloud execution enables "fire and forget" workflows where users can assign tasks, close their laptops or pocket their phones, and receive notifications when tasks complete—a significant departure from the attention-demanding interaction pattern of local agent systems.
+
+## Model Selection: Why Anthropic Claude
+
+The platform's choice of Anthropic's Claude models as the primary inference engine stems from three specific technical requirements that Claude satisfied better than alternatives during their evaluation period:
+
+**Long Horizon Planning**: The speaker identifies this as perhaps the most critical differentiator. In agentic scenarios, an average Manus task requires 30-50 steps before producing final results, contrasting sharply with chatbot scenarios where models are trained to provide answers in a single turn. During the five-month development period leading to launch, the team tested every available model and found that only Claude Sonnet 3.5 could properly recognize it was operating within an extended agentic loop (action → observation → action → observation). Other models would prematurely terminate after only 1-3 iterations, deciding they had gathered sufficient information to provide final answers. The speaker explicitly states that Claude Sonnet models remain "the best model to run a very long horizon planning" even at the time of the talk, suggesting this capability gap persisted across model generations.
+
+**Tool Use and Function Calling**: With 27 tools abstracted within the virtual machine environment, accurate tool selection and parameter specification became critical. Prior to Claude's built-in extended thinking capabilities, Manus implemented a custom mechanism called "thought injection." Before each function call, a separate "planner agent" would perform reasoning about which tool to use and with what parameters. This reasoning output (the "thought") would then be injected into the main agent's context before executing the function call. This approach significantly improved function calling performance. The speaker notes that Anthropic's own research, published in late March 2024 with their extended thinking tool feature, independently discovered similar benefits. Claude 4 subsequently introduced native support for this thinking-before-tool-use pattern, which aligns well with Manus's architecture.
+
+**Alignment with Agentic Use Cases**: The speaker credits Anthropic with investing heavily in alignment specifically for computer use and browser interaction scenarios. This specialized alignment makes Claude models particularly well-suited for agent applications that must interact with browsers and computer environments, which represents the core of Manus's functionality.
+
+The scale of Claude usage is substantial—the platform spent $1 million on Claude API calls in the first 14 days after launch, which the speaker jokingly suggests explains why Anthropic invited them to speak. The speaker wore a t-shirt to an NVIDIA GTC event advertising this spending figure, noting "we spend like $1 million on cloud model in the first 14 days... it cost us a lot to be on the stage."
+
+## Browser Interaction Architecture
+
+For web browsing capabilities, Manus adapted components from an open-source project called "browser use." However, the adoption was selective—Manus only implemented the browser communication protocol layer, not the agent framework that browser use provided. When the agent needs to browse the internet, Manus sends three distinct inputs to the foundation model:
+
+- The text content visible in the current viewport
+- A screenshot of the viewport
+- A second screenshot with bounding boxes overlaid to indicate clickable elements
+
+This multi-modal approach combining text extraction, visual context, and spatial interaction affordances enables the model to make informed decisions about navigation and interaction. The browser is a real Chromium instance running within the VM, not a headless browser, providing full rendering and JavaScript execution capabilities.
+
+## The "Less Structure, More Intelligence" Philosophy
+
+The most distinctive aspect of Manus's LLMOps approach is their fundamental design philosophy, captured in the tagline "less structure, more intelligence" displayed at the bottom of their website. This philosophy represents a deliberate rejection of common agent architectures in favor of trusting foundation model capabilities.
+
+When Manus launched with 42 use cases on their website, critics suggested the platform must have 42 predefined workflows. However, the speaker emphatically states that Manus has "zero predefined workflows" in its core. Instead, the architecture consists of a "very simple but very robust structure" that delegates all intelligence to the foundation model—at launch this was Claude Sonnet 3.5, later upgraded to Claude 4.
+
+The speaker defines "more structure" as approaches including multi-role agent systems where developers explicitly define specialized agents (coding agent, search agent, etc.). Manus views these constraints as artificially limiting the full potential of LLMs. Their alternative approach focuses on composing rich context and providing extensive information to the model while maintaining minimal control over how the model decomposes and solves problems. The model is allowed to "improvise by itself" rather than being constrained to predefined roles or workflows.
+
+This philosophy requires significant trust in foundation model capabilities, which the speaker acknowledges has only become viable recently. The emergence of capabilities like deep research—which accounts for 20% of Manus usage—happened without any specific engineering effort toward that use case. The capability simply "emerged from this framework" organically as models improved, contrasting with OpenAI's approach of dedicating "maybe half a year to do the end to end training just for this specific use case."
+
+## Personal Knowledge System and Teachability
+
+Manus implements a "personal logic system" that allows users to teach the agent preferred behaviors. This addresses a specific UX debate: when ChatGPT's Deep Research feature launched, it would return 5-6 clarifying questions before beginning work. Some Manus team members disliked this pattern (preferring agents to solve tasks autonomously), while others appreciated the confirmation step.
+
+Rather than hard-coding a workflow or providing a configuration toggle, Manus allows users to express preferences in natural language: "next time when you go out to do some research, before you start, just confirm all the details with me and then execute it." Once a user accepts this instruction into their personal knowledge system, Manus remembers and applies this preference in future interactions. This approach maintains the "less structure" philosophy by encoding even behavioral preferences as context rather than code.
+
+## Private Data Access and API Integrations
+
+Recognizing that not all valuable information resides on the public internet, Manus pre-integrates access to private databases and paid APIs on behalf of users. The platform targets consumer users rather than enterprise customers, and the typical consumer "is not very familiar with like how to call an API... how to write code to access databases." By pre-paying for and configuring access to private databases and real-time data sources (the speaker mentions real-time financial data as an example), Manus lowers the barrier for users to leverage these resources without requiring technical knowledge of API authentication or data access patterns.
+
+## Real-World Use Cases and Performance
+
+The presentation includes two detailed use cases that illustrate the system's capabilities and performance characteristics:
+
+**Tokyo Office Search (24 minutes)**: As Manus expanded globally (opening Singapore office three weeks before the talk, Tokyo two weeks before, and San Francisco the day after the talk), they needed to find office space and accommodation for 40 employees relocating to Tokyo. They provided this requirement as a prompt to Manus, which autonomously planned and executed extensive web research, browsing numerous websites. After 24 minutes, Manus delivered a custom website featuring an interactive map with 10 office-accommodation pairs. Blue markers indicated office locations, green markers showed nearby accommodations. Each option included detailed information: the specific building (including Shibuya Scramble Square, which they visited but found too expensive), pricing, rationale for selection, accommodation options, and distances. An overview table summarized all options. The company ultimately selected an office about 200 meters from one of Manus's recommendations. The speaker notes the improbability of an intern or assistant delivering this level of detailed, high-quality research in under 24 minutes.
+
+**IKEA Furniture Planning (unspecified duration)**: A user can send an image of an empty room and ask Manus to analyze the room's style and find matching furniture from IKEA's website. Manus first analyzes the image to determine style, layout, and appropriate furniture categories. It then browses IKEA's website, searches for suitable items, and saves product images. The final deliverable is a rendered image showing the room furnished with actual IKEA products, accompanied by a document listing each piece of furniture with purchase links. The speaker notes that while Manus cannot yet complete purchases autonomously, "who knows after three months... maybe we can do payment."
+
+The speaker mentions that maximum usage has reached 2 hours of GPU consumption per day for single users, approaching the founder's original goal of influencing users' lives for 24 hours daily, which they expect to achieve by year-end.
+
+## Competitive Positioning and Moat Considerations
+
+When questioned about how a "wrapper company" maintains competitive advantage as foundation models improve, the speaker acknowledges this question comes frequently from investors. Their response emphasizes two factors:
+
+**Pace of Innovation**: Rather than relying on specific proprietary technology or frameworks that will quickly become outdated, Manus competes on innovation velocity. Their simple, flexible architecture allows capabilities like deep research to emerge naturally as models improve, without requiring months of dedicated engineering effort per use case. This contrasts with foundation model providers who must invest significant time in end-to-end training for specific applications.
+
+**Model Flexibility**: As an infrastructure layer rather than a model provider, Manus can "leverage the best model in the world" as the landscape evolves. They're not locked into proprietary model investments and can switch or incorporate new models as they prove superior for different tasks.
+
+This positioning suggests Manus views their value proposition as an opinionated orchestration and execution layer for agent workloads rather than as defenders of proprietary AI capabilities.
+
+## LLMOps Challenges and Considerations
+
+Several LLMOps challenges emerge from the presentation, though the speaker generally emphasizes solutions rather than dwelling on difficulties:
+
+**Cost Management**: The $1 million spend in 14 days indicates significant cost challenges at scale. With extended multi-step reasoning and tool use across 30-50 step sequences, token consumption per task is substantial. The business model must support these costs, particularly given the consumer (rather than enterprise) focus.
+
+**Latency and User Expectations**: With tasks ranging from 24 minutes to potentially much longer, managing user expectations around completion time becomes critical. The cloud-based "fire and forget" model helps address this by design, but notification systems and status updates become essential infrastructure.
+
+**Safety and Sandboxing**: While cloud VMs provide better isolation than local execution, giving autonomous agents access to full operating systems, browsers, and file systems creates potential for unintended actions. The presentation doesn't detail safety mechanisms beyond the basic VM sandboxing.
+
+**Context Management**: Maintaining relevant context across 30-50 step sequences while managing token limits requires careful engineering. The "thought injection" mechanism for tool use hints at sophisticated context orchestration, though details are limited.
+
+**Model Evaluation**: With zero predefined workflows and emergent capabilities, evaluating whether the system will successfully complete novel tasks becomes challenging. Traditional unit testing paradigms don't apply when the system's behavior emerges from model improvisation rather than deterministic code paths.
+
+**Browser State Management**: Managing cookies, sessions, and authentication across browser-based tasks involves complexity not addressed in the presentation. The Q&A reveals they intentionally keep browsers in the cloud rather than syncing with local environments, suggesting they're developing their own solutions for persistent browser state.
+
+## Development Timeline and Team
+
+The core platform was developed in five months from October 2024 to March 2024, representing rapid iteration from concept to public launch. The founding team of three experienced developers (with Tao noting 28 years of coding experience since age nine, starting in 1996 China where computer access was limited to twice weekly in school computer rooms) brought deep technical backgrounds but were "very newbie" to AI, having entered the field only two years before the presentation.
+
+This timeline is remarkably compressed for a system handling the complexity of multi-step agentic workflows, VM orchestration, browser automation, and production-scale deployment. The success in such a short timeframe supports the speaker's thesis that simple architectures leveraging foundation model capabilities can outpace more heavily engineered approaches.
+
+## Critical Assessment and Limitations
+
+While the presentation is understandably promotional, several claims warrant balanced consideration:
+
+The assertion that other models "failed" at long-horizon planning after 1-3 iterations during their evaluation period (October 2024 - March 2024) may not reflect current model capabilities. The rapid pace of model improvements means evaluations from even a few months prior may be outdated.
+
+The "less structure, more intelligence" philosophy, while elegant, may face scalability limits. As task complexity increases or domain-specific requirements emerge, some structured decomposition might prove necessary. The tension between flexibility and reliability in production systems often requires guardrails that pure improvisation cannot provide.
+
+The $1 million in 14-day spending, while demonstrating scale, raises questions about unit economics and sustainability at consumer price points. The presentation doesn't address pricing models or path to profitability.
+
+The comparison to Cursor is somewhat limited—Cursor targets developers with specific workflows, while Manus targets general consumers with diverse needs. The analogy of "building the right panel" oversimplifies the different requirements and use cases.
+
+The claim of "zero predefined workflows" is technically true but potentially misleading. The 27 tools, the VM environment configuration, the three-part browser context, and the thought injection mechanism collectively represent significant structural decisions that shape what the agent can accomplish. While not workflows in the traditional sense, these architectural choices constrain and enable certain solution patterns.
+
+## Future Directions
+
+The presentation hints at several expansion areas:
+
+- Virtual Windows and Android environments beyond Linux
+- Autonomous payment capabilities within 3 months of the talk
+- Global expansion with offices in Singapore, Tokyo, and San Francisco
+- Continued focus on consumer rather than enterprise market
+- Potential for reaching 24-hour daily user engagement goals
+
+The commitment to cloud-only execution (explicitly rejecting local deployment suggestions in the Q&A) indicates a firm architectural stance that prioritizes user experience and safety over flexibility of deployment topology.
+
+## Significance for LLMOps Practice
+
+Manus represents an important data point in the evolution of production LLM systems, particularly for several reasons:
+
+The successful deployment of a minimally-structured agent architecture challenges assumptions that production AI systems require extensive orchestration frameworks and predefined workflows. Their approach suggests that in some domains, the frontier of LLMOps may involve getting out of the model's way rather than building elaborate scaffolding around it.
+
+The VM-per-task isolation model offers a compelling alternative to function calling or API-based tool use, providing richer interaction possibilities at the cost of increased infrastructure complexity.
+
+The focus on long-horizon planning as a key model selection criterion highlights an important but underappreciated capability dimension. Most model benchmarks emphasize single-turn performance, but agentic applications require sustained reasoning across extended interactions.
+
+The rapid development timeline from concept to scaled production deployment demonstrates that small teams with strong model access can build substantial agent systems quickly when architectural choices align with model capabilities rather than fighting against them.
+
+The explicit rejection of multi-agent systems and role specialization in favor of context-rich single-agent approaches provides a counterpoint to prevailing agent architecture patterns, suggesting the field has not yet converged on optimal designs for production agentic systems.

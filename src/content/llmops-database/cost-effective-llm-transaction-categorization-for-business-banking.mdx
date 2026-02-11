@@ -1,0 +1,147 @@
+---
+title: "Cost-Effective LLM Transaction Categorization for Business Banking"
+slug: "cost-effective-llm-transaction-categorization-for-business-banking"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "68270e995df32d96ef7b3cb1"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:08:19.405Z"
+  createdOn: "2025-05-16T10:08:25.667Z"
+llmopsTags:
+  - "customer-support"
+  - "regulatory-compliance"
+  - "high-stakes-application"
+  - "document-processing"
+  - "classification"
+  - "prompt-engineering"
+  - "cost-optimization"
+  - "latency-optimization"
+  - "chunking"
+  - "error-handling"
+  - "monitoring"
+  - "cache"
+  - "databases"
+  - "anthropic"
+  - "openai"
+  - "google-gcp"
+  - "microsoft-azure"
+company: "ANNA"
+summary: "ANNA, a UK business banking provider, implemented LLMs to automate transaction categorization for tax and accounting purposes across diverse business types. They achieved this by combining traditional ML with LLMs, particularly focusing on context-aware categorization that understands business-specific nuances. Through strategic optimizations including offline predictions, improved context utilization, and prompt caching, they reduced their LLM costs by 75% while maintaining high accuracy in their AI accountant system."
+link: "https://www.youtube.com/watch?v=wFd_5KuIRm8"
+year: 2025
+seo:
+  title: "ANNA: Cost-Effective LLM Transaction Categorization for Business Banking - ZenML LLMOps Database"
+  description: "ANNA, a UK business banking provider, implemented LLMs to automate transaction categorization for tax and accounting purposes across diverse business types. They achieved this by combining traditional ML with LLMs, particularly focusing on context-aware categorization that understands business-specific nuances. Through strategic optimizations including offline predictions, improved context utilization, and prompt caching, they reduced their LLM costs by 75% while maintaining high accuracy in their AI accountant system."
+  canonical: "https://www.zenml.io/llmops-database/cost-effective-llm-transaction-categorization-for-business-banking"
+  ogTitle: "ANNA: Cost-Effective LLM Transaction Categorization for Business Banking - ZenML LLMOps Database"
+  ogDescription: "ANNA, a UK business banking provider, implemented LLMs to automate transaction categorization for tax and accounting purposes across diverse business types. They achieved this by combining traditional ML with LLMs, particularly focusing on context-aware categorization that understands business-specific nuances. Through strategic optimizations including offline predictions, improved context utilization, and prompt caching, they reduced their LLM costs by 75% while maintaining high accuracy in their AI accountant system."
+---
+
+## Overview
+
+ANNA is a UK-based business banking application designed for sole traders, small businesses, freelancers, and startups. What distinguishes ANNA from competitors is its chat-based interface and integrated AI accountant that can file corporation tax, VAT, and self-assessment on behalf of customers. The presentation, delivered by Nick Teriffen (Lead Data Scientist at ANNA), focuses primarily on their transaction categorization system and the cost optimization strategies they developed to make LLM-powered categorization economically viable at scale.
+
+The company has multiple LLM applications in production: a customer-facing chatbot that automates approximately 80% of customer requests (payments, invoicing, payroll), an AI accountant for transaction categorization and tax assistance, and LLM-generated account summaries for financial crime prevention. Transaction categorization represented roughly two-thirds of their LLM costs, making it the primary target for optimization efforts.
+
+## The Business Problem
+
+Transaction categorization for tax purposes requires understanding nuanced business contexts that traditional ML approaches struggle to handle. ANNA illustrates this with a concrete example: a builder and an IT freelancer both purchasing from the same hardware store (B&Q) should have those transactions categorized differently. For the builder, it represents direct costs needed to operate their business, while for the IT freelancer purchasing home office supplies, it's a home office expense with different tax implications. With customers operating across hundreds of industries, each with their own accounting rules, building comprehensive rule-based systems or traditional ML models for every scenario would be impractical.
+
+ANNA had existing XGBoost and rule-based systems that handled transactions with high confidence, but LLMs were needed for the complex, context-dependent cases. The LLM approach offered several advantages: understanding complex business context, following internal accounting rules, providing clear explanations to customers, handling multimodal inputs (documents attached to transactions), and leveraging real-world knowledge about merchants.
+
+## Technical Architecture
+
+The categorization pipeline works as follows: after a customer's financial year ends, transactions initially categorized by simpler models (XGBoost) enter the LLM pipeline. Transactions with high-confidence predictions are filtered out, leaving only those requiring LLM processing. Customers typically have nine months to review corrections for tax purposes, which is critical because it means real-time processing is not required—enabling batch optimization strategies.
+
+Each LLM request consists of three components:
+- **System prompt**: A comprehensive accounting rulebook written by ANNA's accountants, approximately 50,000 tokens (over 100 pages)
+- **Company context**: Customer profile data including directors, employees, nature of business from KYB, and data from Companies House (500-1000 tokens)
+- **Transaction batch**: The transactions requiring categorization (approximately 500 tokens per batch)
+
+The output structure includes the predicted category, explanation/reasoning for internal review, citations to the accounting rulebook, and customer-friendly explanations that appear in the app.
+
+## Model Selection and Evolution
+
+ANNA chose Anthropic's Claude 3.5 via Vertex AI in mid-2024 based on evaluation against test sets annotated by accountants. While metrics were similar across models (including OpenAI's offerings), the team found Claude produced more transparent and customer-friendly explanations, which was a decisive factor.
+
+A critical constraint with Claude 3.5 was the 8,000 token output limit against a 200,000 token context window. This meant that despite having ample input capacity, they could only process approximately 15 transactions per request due to output constraints. For a client with 45 transactions, this required three separate API calls, each consuming the full 50,000+ token system prompt—highly inefficient.
+
+When Anthropic released Claude 3.7 in February 2025, maintaining the same pricing but increasing the output limit to 128,000 tokens (16x increase), ANNA could process up to 145 transactions per request. This dramatically reduced API calls and costs without changing prices.
+
+## Cost Optimization Strategies
+
+### Strategy 1: Offline/Batch Predictions
+
+Since transaction categorization didn't require real-time processing, ANNA leveraged batch prediction APIs. The agreement with LLM providers is straightforward: accept up to 24-hour wait times for predictions in exchange for a 50% discount. All top three providers (OpenAI, Anthropic, Google) offer this same discount rate.
+
+Implementation involves creating a JSON file with requests, uploading to cloud storage (Google Cloud Storage for Vertex AI), submitting a batch job request, and polling for results. Important considerations include TTL (time-to-live)—Anthropic gives 29 days to fetch predictions before they're deleted.
+
+An interesting note from Google's documentation suggested batch predictions may improve consistency by processing descriptions simultaneously, maintaining uniform tone and style. While unexpected, this suggests batch processing might affect quality in ways beyond just cost.
+
+### Strategy 2: Better Context Utilization
+
+By upgrading to Claude 3.7 with its expanded output window, ANNA reduced the number of API calls significantly. Instead of consuming 180,000 input tokens to get 45 predictions (three calls), they could now get all 45 predictions in a single call. This alone provided approximately 22 percentage points of additional savings on top of the 50% from offline predictions.
+
+### Strategy 3: Prompt Caching
+
+Prompt caching allows providers to reuse computed key-value caches for static portions of prompts. For ANNA, the 50,000 token accounting rulebook is static across all requests, making it an ideal caching candidate.
+
+Pricing varies by provider:
+- **OpenAI**: Free cache writing, automatic caching for prompts over 1,000 tokens
+- **Anthropic**: 25% premium to write cache, savings on subsequent reads
+- **Google/Gemini**: Free cache writing, but has storage costs
+
+TTL considerations are important—cached prompts expire, affecting implementation strategy. OpenAI's approach of automatically caching all sufficiently long prompts simplifies implementation.
+
+Beyond cost savings, prompt caching reduces latency by up to 80%. ANNA noted this is particularly valuable for their upcoming phone-based tax consultation feature, where conversational latency is critical.
+
+### Strategy 4: Application-Level Caching
+
+ANNA implemented application-level caching by categorizing unique transaction patterns per client once and storing results for reuse, avoiding redundant LLM calls entirely.
+
+## Results and Quantified Savings
+
+Applying these strategies to transaction categorization yielded cumulative savings:
+- Offline predictions: 50% reduction (fixed, predictable)
+- Better context utilization (Claude 3.7): Additional 22 percentage points
+- Prompt caching: Additional 3 percentage points
+- **Total savings: 75%**
+
+The order of implementation matters and depends on use case specifics. ANNA's sequence was offline predictions first, then context utilization improvements, then caching.
+
+## Lessons Learned and Quality Considerations
+
+### Hallucinations with Longer Context
+
+When processing more than 100 transactions per request, ANNA observed increased hallucinations—specifically, transaction IDs that were either fabricated or contained errors, making predictions impossible to attribute. This increased from 0% to 2-3% of outputs. Their mitigation was to reduce batch size from the theoretical maximum of 145 transactions to approximately 120, finding a balance between efficiency and quality.
+
+### Unpredictable Prompt Caching Benefits
+
+Anthropic explicitly states prompt caching works on a "best effort basis" with no guarantees. Combined with offline predictions, cache hits become less predictable since request scheduling is less deterministic. ANNA's actual benefit was only 3 percentage points, suggesting real-world gains may be modest.
+
+### Input Validation
+
+ANNA discovered an error in their input preparation script that performed double JSON serialization, adding unnecessary characters that increased token consumption. Manual inspection of inputs after changes is recommended.
+
+### Continuous Evaluation
+
+Every optimization potentially affects output quality. Google's claim about batch predictions improving consistency, combined with ANNA's experience with hallucinations in longer contexts, reinforces the need to re-evaluate metrics after any optimization—even those seemingly unrelated to quality.
+
+### RAG Considerations
+
+ANNA considered RAG for the accounting rulebook but found multi-hop query requirements problematic. Tax questions often require multiple pieces of information (tax rates, dividend allowances, etc.), and LLM-generated search queries for RAG performed poorly. They opted to include the entire rulebook in context, accepting higher token costs for better quality, with plans to potentially revisit RAG as capabilities improve.
+
+### Self-Hosting Considerations
+
+ANNA evaluated self-hosted LLM solutions but determined they weren't large enough to justify the infrastructure investment and expertise required. They noted this might change with scale, particularly for real-time categorization in new markets (they launched in Australia), where latency constraints make self-hosting more attractive.
+
+## Broader LLMOps Observations
+
+The presenter noted the dramatic decrease in LLM costs—approximately 10x per year at equivalent capability levels. However, this doesn't necessarily translate to lower absolute spending, as improved capabilities unlock new business opportunities that may increase overall consumption.
+
+For error handling, ANNA uses simple retry logic for failed predictions rather than sophisticated fallback mechanisms. Combined with the non-real-time nature of their use case, this proves sufficient.
+
+The hybrid approach—using traditional ML (XGBoost, rules) for high-confidence cases and reserving LLMs for complex, context-dependent scenarios—represents a pragmatic production architecture that balances cost, quality, and latency requirements.

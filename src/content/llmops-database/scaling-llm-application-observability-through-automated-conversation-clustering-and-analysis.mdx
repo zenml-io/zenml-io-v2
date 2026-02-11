@@ -1,0 +1,261 @@
+---
+title: "Scaling LLM Application Observability Through Automated Conversation Clustering and Analysis"
+slug: "scaling-llm-application-observability-through-automated-conversation-clustering-and-analysis"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "690883b1f496ab9e7000241e"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:22:21.255Z"
+  createdOn: "2025-11-03T10:28:01.449Z"
+llmopsTags:
+  - "customer-support"
+  - "chatbot"
+  - "data-analysis"
+  - "classification"
+  - "rag"
+  - "embeddings"
+  - "prompt-engineering"
+  - "agent-based"
+  - "few-shot"
+  - "semantic-search"
+  - "vector-search"
+  - "evals"
+  - "human-in-the-loop"
+  - "langchain"
+  - "wandb"
+  - "elasticsearch"
+  - "chromadb"
+  - "pinecone"
+  - "qdrant"
+  - "fastapi"
+  - "open-source"
+  - "documentation"
+  - "anthropic"
+  - "openai"
+company: "Manus"
+summary: "This case study presents a methodology for understanding and improving LLM applications at scale when manual review of conversations becomes infeasible. The core problem addressed is that traditional logging misses critical issues in AI applications, and teams face data paralysis when dealing with millions of complex, multi-turn agent conversations across multiple languages. The solution involves using LLMs themselves to automatically summarize, cluster, and analyze user conversations at scale, following a framework inspired by Anthropic's CLEO (Claude Language Insights and Observations) system. The presenter demonstrates this through Kura, an open-source library that summarizes conversations, generates embeddings, performs hierarchical clustering, and creates classifiers for ongoing monitoring. The approach enabled identification of high-leverage fixes (like adding two-line prompt changes for upselling that yielded 20-30% revenue increases) and helped Anthropic launch their educational product by analyzing patterns in one million student conversations. Results show that this systematic approach allows teams to prioritize fixes based on volume and impact, track improvements quantitatively, and scale their analysis capabilities beyond manual review limitations."
+link: "https://www.youtube.com/watch?v=TGwish9wbJY"
+year: 2025
+seo:
+  title: "Manus: Scaling LLM Application Observability Through Automated Conversation Clustering and Analysis - ZenML LLMOps Database"
+  description: "This case study presents a methodology for understanding and improving LLM applications at scale when manual review of conversations becomes infeasible. The core problem addressed is that traditional logging misses critical issues in AI applications, and teams face data paralysis when dealing with millions of complex, multi-turn agent conversations across multiple languages. The solution involves using LLMs themselves to automatically summarize, cluster, and analyze user conversations at scale, following a framework inspired by Anthropic's CLEO (Claude Language Insights and Observations) system. The presenter demonstrates this through Kura, an open-source library that summarizes conversations, generates embeddings, performs hierarchical clustering, and creates classifiers for ongoing monitoring. The approach enabled identification of high-leverage fixes (like adding two-line prompt changes for upselling that yielded 20-30% revenue increases) and helped Anthropic launch their educational product by analyzing patterns in one million student conversations. Results show that this systematic approach allows teams to prioritize fixes based on volume and impact, track improvements quantitatively, and scale their analysis capabilities beyond manual review limitations."
+  canonical: "https://www.zenml.io/llmops-database/scaling-llm-application-observability-through-automated-conversation-clustering-and-analysis"
+  ogTitle: "Manus: Scaling LLM Application Observability Through Automated Conversation Clustering and Analysis - ZenML LLMOps Database"
+  ogDescription: "This case study presents a methodology for understanding and improving LLM applications at scale when manual review of conversations becomes infeasible. The core problem addressed is that traditional logging misses critical issues in AI applications, and teams face data paralysis when dealing with millions of complex, multi-turn agent conversations across multiple languages. The solution involves using LLMs themselves to automatically summarize, cluster, and analyze user conversations at scale, following a framework inspired by Anthropic's CLEO (Claude Language Insights and Observations) system. The presenter demonstrates this through Kura, an open-source library that summarizes conversations, generates embeddings, performs hierarchical clustering, and creates classifiers for ongoing monitoring. The approach enabled identification of high-leverage fixes (like adding two-line prompt changes for upselling that yielded 20-30% revenue increases) and helped Anthropic launch their educational product by analyzing patterns in one million student conversations. Results show that this systematic approach allows teams to prioritize fixes based on volume and impact, track improvements quantitatively, and scale their analysis capabilities beyond manual review limitations."
+---
+
+## Overview
+
+This case study presents a comprehensive methodology for operating LLM applications at production scale, with a particular focus on observability, conversation analysis, and systematic improvement. The presenter works at Manus and discusses the challenges that emerge when operating LLM applications with millions of users, where individual conversation review becomes impossible. The presentation centers on how to use LLMs themselves as analytical tools to understand user behavior patterns, identify issues, and prioritize fixes systematically.
+
+The core thesis is that traditional software logging (tools like Sentry, Elasticsearch) remains important for infrastructure concerns like authentication, pagination, and security, but fundamentally misses what matters for AI applications. The actual user experience—the quality of LLM responses, the effectiveness of agent actions, the relevance of retrieved information—requires a different approach to observability and improvement.
+
+## The Scale Problem and Data Paralysis
+
+The presenter articulates a critical challenge in production LLM systems: the explosion of complexity that makes manual review intractable. With simple RAG applications, the pattern was straightforward—user sends message, system performs retrieval, system sends response. Modern agentic applications involve dramatically more complexity: a single user message might trigger 40 different tool calls before generating a response, and conversations might involve 10-20 such exchanges, creating extremely long traces that are difficult to parse manually.
+
+This complexity is compounded by several factors. First, the sheer volume of users—moving from 10 or 100 users to millions means manual review is simply impossible. Second, multi-language support means traces may be in languages the development team doesn't speak fluently. Third, agentic applications introduce non-deterministic behavior and state management challenges where the same request at different times may produce different results. Fourth, the various moving parts—backends, durable execution layers, sandboxes—create numerous potential failure points.
+
+The result is what the presenter calls "data paralysis"—teams are overwhelmed by data but unable to extract actionable insights. They see angry user messages but lack systematic ways to prioritize which issues to address first, making all fixes seem equally important when they're demonstrably not.
+
+## Framework: Capabilities vs Inventory
+
+The presentation introduces a framework borrowed from Jason Liu (who teaches a course on systematically improving RAG) that categorizes user issues into two fundamental types: missing capabilities and missing inventory.
+
+**Missing capabilities** refer to actions the system cannot perform regardless of how well it's prompted. If users ask "Why can't I send emails?" but the agent lacks Gmail integration, or "Why can't I book meetings?" when there's no Google Calendar integration, no amount of prompt engineering will solve the problem. These require new integrations, tools, or features.
+
+**Missing inventory** refers to data gaps. If users ask "How many contracts are signed?" but the system doesn't track contract status, or "When was this contract last modified?" without maintaining modification timestamps, retrieval systems cannot surface information that doesn't exist. These require data pipeline changes, new indices, or metadata enrichment.
+
+The presenter acknowledges these categories aren't always cleanly separable—real issues may span both—but having this systematic framework helps teams diagnose root causes rather than assuming every problem requires a "grand overhaul" like migrating to new agent frameworks or upgrading to more expensive models.
+
+## High-Leverage Fixes vs Grand Overhauls
+
+A critical insight throughout the presentation is that teams often assume they need massive changes when targeted, small interventions would be more effective. The presenter provides several illustrative examples:
+
+**DoorDash's merchant selection problem**: DoorDash faced high search volumes but low conversion rates—every search without conversion is lost revenue. Teams might assume the solution is better recommendation algorithms or upgraded embeddings. However, the actual fix was improving merchant selection—identifying which merchants to have available in which markets at which times. The problem wasn't the algorithm recommending from available options; it was ensuring the right options were available to recommend.
+
+**Uber's early morning cancellations**: High cancellation rates between 5-7am represented lost revenue and customer dissatisfaction. The solution wasn't algorithmic—it was providing incentives for drivers to work early shifts, ensuring supply met demand.
+
+**Voice agent upselling**: A customer service voice bot had issues with answering questions about reservations, parking, and holiday hours. The client initially wanted better RAG capabilities. However, analysis revealed a bigger problem: the agent never attempted to upsell customers with standard questions like "Would you like fries with that?" or "Would you like to upsize?" Adding just two lines to the prompt to encourage upselling generated an estimated 20-30% revenue increase—a massive impact from minimal engineering effort.
+
+These examples illustrate the value of systematic analysis over assumptions. Without understanding the actual patterns in user conversations, teams risk spending months on low-impact changes while missing high-leverage opportunities.
+
+## The Three-Pillar Approach to Observability
+
+The presenter recommends three complementary approaches to understanding production LLM systems:
+
+**Traditional error logging and monitoring**: This remains the baseline—tools like Sentry for tracking errors, monitoring tool call failures, checking for consistently low cosine similarity in retrieval queries. This catches technical failures and infrastructure issues.
+
+**User feedback mechanisms**: Simple UI elements allowing users to provide feedback create direct channels for identifying issues. When customers say "this isn't working, help me please," this is a shortcut to discovering problems. Having a dedicated channel where these issues are aggregated creates a queue of potential improvements.
+
+**LLM-powered clustering and pattern analysis**: This is the focus of the presentation—using language models themselves to analyze conversation patterns at scale, identify clusters of similar issues, and prioritize fixes based on frequency and impact.
+
+## Anthropic's CLEO System and Educational Product Launch
+
+The presentation uses Anthropic's CLEO (Claude Language Insights and Observations) system as a case study in production-scale conversation analysis. When Anthropic wanted to launch an educational product, they needed to understand how students were actually using Claude.
+
+They collected one million user conversations from accounts registered with .edu email domains over 18 days. The analysis revealed distinct usage patterns across disciplines:
+
+- Computer science students used Claude to create and debug C++ programs
+- Natural sciences and mathematics students wanted help with calculus problems
+- Different disciplines showed characteristic interaction patterns
+
+More importantly, the analysis revealed four distinct usage styles:
+
+- **Direct problem-solving**: Students wanting immediate solutions
+- **Complete material creation**: Students asking Claude to generate full artifacts
+- **Collaborative learning**: Students using Claude to teach programming fundamentals or explain code chunks
+- **Feedback and iteration**: Students writing essays and requesting feedback
+
+Anthropic then mapped these patterns against Bloom's taxonomy of learning, discovering significant usage around higher-order cognitive functions like analyzing and evaluating, not just lower-order creation and problem-solving.
+
+These insights directly informed product development. Anthropic launched "Socratic questioning mode" for Claude in education, where instead of directly answering "How do I write hello world in Python?", Claude guides students through the learning process: "Let's start by setting up your IDE. Do you understand what the print statement does?" This product decision was shaped by understanding actual user behavior patterns at scale.
+
+## Technical Implementation: How CLEO Works
+
+The CLEO system (and its open-source analog Kura, demonstrated in the presentation) follows a multi-stage pipeline:
+
+**Stage 1: Conversation summarization**: Each conversation is processed by an LLM to generate a summary. This is crucial because raw conversations may be extremely long, multi-turn, and include extensive tool calls. The summarization step extracts the essential elements—what the user was trying to accomplish, what challenges they faced, what the system did or didn't do.
+
+**Stage 2: Facet extraction**: Along with summarization, the system extracts metadata facets including language used, number of turns, and other LLM-generated metadata. This can be enriched with traditional metrics—customer satisfaction ratings, actions taken (document downloaded, shared), session duration, conversion events, etc.
+
+**Stage 3: Initial clustering**: Conversations are embedded (converted to vector representations) and clustered using techniques like HDBSCAN. This creates initial, fine-grained clusters. For example, "how to tie shoes" and "public tie bows in my daughter's hair" might cluster together as "tying various knots."
+
+**Stage 4: Meta-clustering**: The system iteratively merges clusters in a bottom-up approach. "Tying various knots" might merge with other clusters to become "daily life skills." Very sparse clusters (like "information about rare genetic conditions") may be discarded as too infrequent to inform product decisions.
+
+**Stage 5: Dimensionality reduction and visualization**: High-dimensional embeddings (typically 1536 dimensions for OpenAI embeddings) are reduced to 2D using techniques like UMAP, enabling visual exploration of the conversation space.
+
+**Stage 6: Classifier development**: Once stable clusters are identified through multiple runs, teams develop explicit classifiers—typically prompt-based LLM judges—that can categorize new conversations into these discovered categories in real-time or batch processes.
+
+## Handling Clustering Instability
+
+An important technical detail the presenter emphasizes is that topic modeling and clustering are fundamentally non-deterministic. Running the same pipeline multiple times on the same data produces different clusters because of randomness in the dimensionality reduction (going from 1536 dimensions to 2D for visualization) and the clustering algorithms themselves.
+
+The approach to handling this instability is to run clustering multiple times and look for consistent patterns—clusters that appear across multiple runs are more likely to represent real, stable user behavior patterns rather than artifacts of the algorithm. Once these stable clusters are identified, the team develops explicit classifiers (LLM-as-judge prompts) that provide consistent, repeatable categorization going forward.
+
+## The Kura Implementation
+
+The presenter demonstrates Kura, an open-source library implementing these concepts. The workflow involves:
+
+**Data preparation**: Starting with conversation data (in the demo, around 500 user queries from Weights & Biases documentation, though production use cases would involve tens of thousands to millions of conversations).
+
+**Summarization pipeline**: Using an LLM to generate concise summaries of each conversation. The presenter emphasizes that generic summarization often isn't sufficient—teams need to iterate on the summarization prompt to extract information relevant to their specific use case. For example, a generic summary might say "Bayesian optimization is a hyperparameter tuning technique that uses surrogate functions," but a feature-focused summary would identify "User needs help with experiment tracking, specifically logging hyperparameters and metrics using the weights and biases logging function."
+
+**Clustering execution**: Running the clustering algorithm to group similar conversations. The demo shows clusters around topics like "analyzing weights and biases sweep results," "optimizing hyperparameters," and "API key management."
+
+**Visualization**: Generating an interactive web interface where teams can explore the 2D projection of conversation space, click on clusters to see representative examples, and drill down into individual conversations.
+
+**Classifier development**: Once clusters are identified, developing prompt-based classifiers that can categorize new conversations. The presenter walks through an example where an initial classifier for Weights & Biases queries achieved only 66% accuracy, but through systematic prompt engineering—adding clear system prompts and few-shot examples—accuracy increased to 89%.
+
+## LLM-as-Judge and Iterative Improvement
+
+The classifier development process demonstrates practical LLMOps principles for using language models as judges:
+
+**Initial baseline**: A simple classifier with categories (artifacts, integrations, visualizations, other) achieves 66% accuracy on a labeled test set—clearly insufficient for production use.
+
+**System prompt engineering**: Adding a clear system prompt ("You are provided a query and corpus. Look carefully and understand what the query and document are about") improves accuracy to 81%—a 43.1% improvement over baseline.
+
+**Few-shot examples**: Adding positive and negative examples for each category (e.g., "How do I run hyperparameter sweeps?" for visualizations, "How do I use weights and biases with langchain?" for integrations) brings accuracy to 89%—a 64.4% improvement over baseline.
+
+The presenter emphasizes the importance of maintaining clean train/validation/test splits even with LLM-based classifiers. A critical workflow is:
+
+- Generate initial labels using an LLM on a larger dataset
+- Human annotators review these labels in a streamlined UI (just tab through saying agree/disagree)
+- This creates a labeled dataset for evaluating classifier performance
+- Iterate on the prompt using a small train set (for few-shot examples)
+- Ensure few-shot examples don't leak into validation or test sets
+- Use confusion matrices and other traditional ML evaluation approaches to understand where the classifier fails
+
+## Integration with Business Intelligence Tools
+
+Once classifiers are developed and validated, they can be integrated into production pipelines and business intelligence tools. The presenter describes connecting these classifiers to tools like Metabase or other BI platforms to create dashboards tracking:
+
+- What percentage of conversations fall into each category
+- Average satisfaction ratings by category
+- Volume trends over time by category
+- Impact of product changes on category distributions
+
+This transforms the one-time clustering analysis into an ongoing monitoring system that provides continuous insight into user behavior and product performance.
+
+## Production Deployment Considerations
+
+The presentation emphasizes several practical considerations for deploying these systems in production:
+
+**Data privacy**: Always respect user privacy when analyzing conversations. The presenter notes that while they discuss reading traces for analysis, this should always be done with appropriate user consent and privacy safeguards.
+
+**Scale considerations**: The demo works with 500 conversations, but production systems should expect to analyze tens of thousands to millions. The presenter notes that Anthropic's CLEO analyzed one million conversations—a scale where patterns become much more reliable and rare edge cases can still appear frequently enough to matter.
+
+**Cost and efficiency**: The presenter emphasizes that LLM-based analysis is "cheap and efficient"—the cost of running summarization and clustering on even large conversation datasets is manageable compared to the value of the insights gained. This is particularly true when compared to the alternative of hiring large teams of human annotators or analysts.
+
+**Your own time as the limiting factor**: A recurring theme is that developer and analyst time is the true constraint. You can't scale yourself beyond 10-14 hours of work per day, but LLM rate limits are easily increased. Therefore, using LLMs to augment human analysis is about scaling the most precious resource—human attention and decision-making capability.
+
+## Multi-label and Hierarchical Classification
+
+While the demo focuses on single-label classification, the presenter notes that production systems often need multi-label classifiers—a single conversation might involve both "API authentication issues" and "integration with external tools." The framework supports this through:
+
+- Extracting multiple facets during summarization
+- Running multiple classifiers on the same conversation
+- Maintaining hierarchical relationships (e.g., "email issues" as a subcategory of "tool integration issues")
+
+## Quantifying Impact and Prioritization
+
+A key outcome of this systematic approach is the ability to quantify problems and prioritize fixes based on data rather than intuition:
+
+**Volume quantification**: "42% of users can't trigger the web development tool" vs "1% complain about lack of Outlook integration"—the choice is clear.
+
+**Impact measurement**: "60% of low satisfaction queries are about our new responses documentation" identifies both the problem and its severity.
+
+**Before/after metrics**: "With our new changes we're seeing a 40% increase in average satisfaction ratings and increased user retention" provides clear evidence of impact.
+
+This data-driven approach transforms product development from guessing which features to build to systematically addressing the highest-impact issues.
+
+## Critical Assessment and Tradeoffs
+
+While the presentation is enthusiastic about this approach, several important caveats and limitations should be noted:
+
+**Clustering instability**: The presenter acknowledges that topic modeling is "fundamentally a bit random" and requires multiple runs to identify stable patterns. This means teams can't rely on a single clustering run for critical decisions.
+
+**Classifier accuracy limitations**: Even after optimization, the demo classifier achieved 89% accuracy—good but not perfect. Teams must accept some level of misclassification and design systems that are robust to classification errors.
+
+**Prompt engineering overhead**: Achieving good summarization and classification results requires significant iteration on prompts. The presenter shows how generic summaries aren't useful and task-specific prompts are essential, which represents non-trivial engineering work.
+
+**Labeled data requirements**: Despite using LLMs to reduce annotation burden, the system still requires human-labeled validation and test sets to evaluate classifier performance. This creates a chicken-and-egg problem when first deploying the system.
+
+**Scale requirements**: The methodology works best with large conversation volumes where patterns become statistically significant. Smaller applications with fewer users may not benefit as much from automated clustering versus manual review.
+
+**Cold start problem**: The presentation doesn't deeply address how to get started when you have relatively little data—the examples involve hundreds of thousands or millions of conversations.
+
+## Relationship to Traditional LLMOps Practices
+
+This case study demonstrates several core LLMOps principles in action:
+
+**Observability as foundational**: Just as DevOps requires comprehensive logging and monitoring, LLMOps requires visibility into model behavior, but adapted to the unique characteristics of language model applications.
+
+**Evaluation as continuous**: Rather than one-time evaluation before deployment, the system enables continuous evaluation of production conversations, identifying degradation or new issues as they emerge.
+
+**Human-in-the-loop at scale**: The approach doesn't eliminate human judgment but scales it—instead of reading every conversation, humans review cluster summaries and validate classifier decisions on samples.
+
+**Prompt engineering as iterative**: Both the summarization and classification stages require multiple iterations to achieve good performance, exemplifying prompt engineering as an empirical discipline.
+
+**Model-assisted workflows**: Using LLMs to analyze LLM applications creates a meta-layer where the technology helps improve itself—a hallmark of mature MLOps and LLMOps practices.
+
+## Open Source and Reproducibility
+
+The presenter emphasizes that Kura is open source and encourages teams to either use it directly or "take the source code, pass it to something like Claude or Code Copilot and reimplement it on your own infrastructure." The documentation includes Colab notebooks that can be run immediately, lowering the barrier to experimentation.
+
+This open approach addresses a common LLMOps challenge: teams need solutions tailored to their specific data sources, infrastructure, and business logic. By providing both a working implementation and clear documentation of the approach, the presenter enables teams to adapt the methodology to their needs rather than forcing a one-size-fits-all solution.
+
+## Conclusion and Key Takeaways
+
+The presentation concludes with several high-level takeaways for production LLM systems:
+
+- **Logs reveal pain points**: Conversation data contains the signals needed to improve products, but only if analyzed systematically
+- **Systematic breakdown enables prioritization**: Using frameworks like capabilities vs inventory and quantifying issue frequency enables data-driven prioritization
+- **Classifiers enable continuous monitoring**: One-time clustering analysis is valuable, but developing classifiers based on discovered clusters enables ongoing tracking
+- **Small changes can have outsized impact**: The examples of 20-30% revenue increase from two-line prompt changes illustrate that systematic analysis reveals high-leverage opportunities that assumptions would miss
+- **Scale yourself first**: The most important optimization is scaling human analytical capabilities, not just scaling infrastructure
+
+This represents a mature approach to LLMOps that goes beyond initial deployment concerns (model selection, API integration, basic monitoring) to address the challenges of operating LLM applications at scale with millions of users and complex, multi-turn interactions.

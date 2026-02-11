@@ -1,0 +1,159 @@
+---
+title: "Long-Running Agent Harness for Multi-Context Software Development"
+slug: "long-running-agent-harness-for-multi-context-software-development"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "69286b7635317d479e536ae5"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:30:12.161Z"
+  createdOn: "2025-11-27T15:17:10.589Z"
+llmopsTags:
+  - "code-generation"
+  - "prompt-engineering"
+  - "agent-based"
+  - "multi-agent-systems"
+  - "error-handling"
+  - "system-prompts"
+  - "evals"
+  - "documentation"
+  - "fastapi"
+  - "cicd"
+  - "devops"
+  - "anthropic"
+company: "Anthropic"
+summary: "Anthropic addressed the challenge of enabling AI coding agents to work effectively across multiple context windows when building complex software projects that span hours or days. The core problem was that agents would lose memory between sessions, leading to incomplete features, duplicated work, or premature project completion. Their solution involved a two-fold agent harness: an initializer agent that sets up structured environments (feature lists, git repositories, progress tracking files) on first run, and a coding agent that makes incremental progress session-by-session while maintaining clean code states. Combined with browser automation testing tools like Puppeteer, this approach enabled Claude to successfully build production-quality web applications through sustained, multi-session work."
+link: "https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents"
+year: 2025
+seo:
+  title: "Anthropic: Long-Running Agent Harness for Multi-Context Software Development - ZenML LLMOps Database"
+  description: "Anthropic addressed the challenge of enabling AI coding agents to work effectively across multiple context windows when building complex software projects that span hours or days. The core problem was that agents would lose memory between sessions, leading to incomplete features, duplicated work, or premature project completion. Their solution involved a two-fold agent harness: an initializer agent that sets up structured environments (feature lists, git repositories, progress tracking files) on first run, and a coding agent that makes incremental progress session-by-session while maintaining clean code states. Combined with browser automation testing tools like Puppeteer, this approach enabled Claude to successfully build production-quality web applications through sustained, multi-session work."
+  canonical: "https://www.zenml.io/llmops-database/long-running-agent-harness-for-multi-context-software-development"
+  ogTitle: "Anthropic: Long-Running Agent Harness for Multi-Context Software Development - ZenML LLMOps Database"
+  ogDescription: "Anthropic addressed the challenge of enabling AI coding agents to work effectively across multiple context windows when building complex software projects that span hours or days. The core problem was that agents would lose memory between sessions, leading to incomplete features, duplicated work, or premature project completion. Their solution involved a two-fold agent harness: an initializer agent that sets up structured environments (feature lists, git repositories, progress tracking files) on first run, and a coding agent that makes incremental progress session-by-session while maintaining clean code states. Combined with browser automation testing tools like Puppeteer, this approach enabled Claude to successfully build production-quality web applications through sustained, multi-session work."
+---
+
+## Overview
+
+This case study from Anthropic describes their engineering work on the Claude Agent SDK to enable long-running AI agents capable of building complex software projects that span multiple context windows. The work was published in November 2025 and represents a significant contribution to understanding how to operationalize LLMs for sustained, autonomous software development tasks. While the text comes from Anthropic promoting their own technology, it offers valuable technical insights into the operational challenges of deploying agent-based LLM systems in production scenarios.
+
+The fundamental problem addressed is that AI agents working on complex tasks inevitably exhaust their context windows, requiring them to start fresh sessions with no memory of previous work. Anthropic frames this as analogous to having software engineers work in shifts where each new engineer has no recollection of what happened before. Despite having context management features like compaction, even frontier models like Opus 4.5 would fail to complete production-quality applications when given only high-level prompts across multiple sessions.
+
+## Core LLMOps Challenges
+
+The case study identifies two primary failure modes that emerge in production agent deployments. First, agents demonstrated a tendency to attempt "one-shotting" entire applications—trying to do too much at once rather than working incrementally. This resulted in the model running out of context mid-implementation, leaving subsequent sessions to encounter half-finished, undocumented features. Even with compaction techniques that theoretically should preserve relevant context, the next agent instance would have to guess at prior work and spend significant time attempting to restore basic functionality rather than making forward progress.
+
+The second failure mode manifested later in projects: after some features were completed, new agent instances would prematurely declare the entire project finished. This represented a critical evaluation problem where the agent couldn't accurately assess project completion status without better context management and structured guidance.
+
+These challenges decompose the problem into two operational requirements: establishing an initial environment that scaffolds all required features to encourage incremental, feature-by-feature work, and prompting each agent session to make measurable progress while leaving the codebase in a "clean state"—meaning code suitable for merging to a main branch with no major bugs, good documentation, and easy handoff to subsequent work.
+
+## Technical Solution Architecture
+
+Anthropic's solution employs a dual-agent architecture, though it's important to note that these aren't truly separate agents but rather the same underlying system with different initial prompts. This is a key operational detail that demonstrates how prompt engineering can be used to create specialized behavior within a single agent harness.
+
+### Initializer Agent
+
+The initializer agent runs only in the very first session and uses specialized prompting to establish foundational infrastructure. Key artifacts created include:
+
+- An `init.sh` script that defines how to start the development server and run the application
+- A `claude-progress.txt` file that serves as a session-to-session log of completed work
+- An initial git commit establishing a baseline for version control
+- A comprehensive feature list file (in JSON format) that expands the user's high-level prompt into hundreds of specific, testable requirements
+
+The feature list represents particularly clever prompt engineering. For a "clone of claude.ai" project, the initializer created over 200 features with detailed test steps, all initially marked with a `passes: false` status. This JSON structure proved more robust than markdown alternatives, as the model was less likely to inappropriately modify or delete JSON entries. Features are specified with categories, descriptions, test steps, and pass/fail status, creating a structured backlog that prevents premature completion declarations.
+
+### Coding Agent
+
+Every subsequent session uses the coding agent prompt, which emphasizes incremental progress and clean handoffs. The coding agent is explicitly instructed to:
+
+- Work on only one feature at a time from the feature list
+- Make git commits with descriptive messages after completing work
+- Update the progress file with summaries of changes
+- Leave the codebase in a mergeable, well-documented state
+- Use git to revert bad changes and recover working states when needed
+
+The strongly-worded instructions include statements like "It is unacceptable to remove or edit tests because this could lead to missing or buggy functionality," demonstrating how operational constraints must be encoded explicitly in prompts to prevent undesirable agent behaviors in production.
+
+## Context Management and Session Initialization
+
+A critical operational innovation is the structured onboarding process that each coding agent follows at the start of every session. The agent is prompted to execute a specific sequence:
+
+- Run `pwd` to establish the working directory (a basic but necessary grounding step)
+- Read git logs and progress files to understand recent work
+- Review the feature list and select the highest-priority incomplete feature
+- Execute the `init.sh` script to start the development server
+- Perform a basic end-to-end test before beginning new feature work
+
+This final step—testing basic functionality before starting new work—proved essential for catching bugs left from previous sessions. In the claude.ai clone example, the agent would always start a chat, send a message, and verify a response before implementing new features. This prevents cascading failures where a broken foundation gets worse as new features are added on top.
+
+The typical session initialization demonstrates effective context grounding, with the agent making explicit tool calls to orient itself: checking directories, reading progress files, reviewing feature lists, examining git history, and running verification tests. This structured approach saves tokens by eliminating the need for the agent to figure out environmental details from scratch while ensuring consistency across sessions.
+
+## Testing and Validation Infrastructure
+
+A major operational challenge identified was Claude's tendency to mark features complete without proper end-to-end validation. The model would make code changes and even perform some testing with unit tests or curl commands, but would fail to recognize when features didn't work from a user perspective.
+
+The solution involved integrating browser automation tools, specifically the Puppeteer MCP (Model Context Protocol) server. By explicitly prompting Claude to test all web features as a human user would—through browser automation that captures screenshots and validates user interactions—testing fidelity improved dramatically. The agent could identify and fix bugs that weren't apparent from code inspection alone.
+
+However, the case study acknowledges important limitations in this approach. Claude's vision capabilities and browser automation tool constraints meant certain bugs remained difficult to catch. For example, browser-native alert modals aren't visible through the Puppeteer MCP, resulting in features relying on these modals being consistently buggier. This represents an honest acknowledgment of production limitations—not all testing gaps can be closed with current tooling.
+
+## Production Considerations and Tradeoffs
+
+The case study offers a balanced view of operational tradeoffs. The incremental, highly structured approach clearly improves reliability for multi-session agent work, but several considerations emerge:
+
+**Prompt Engineering Complexity**: The solution requires sophisticated, carefully crafted prompts for both initializer and coding agents. The text mentions "strongly-worded instructions" and specific behavioral constraints, suggesting significant engineering effort went into finding prompt formulations that elicit desired behaviors while preventing failure modes. This represents operational overhead in developing and maintaining these prompts as model capabilities evolve.
+
+**Tool Integration Requirements**: The solution depends heavily on tool availability—git, bash commands, file operations, browser automation via Puppeteer MCP. Production deployments must ensure these tools are reliably available, properly configured, and securely sandboxed. The case study doesn't detail security considerations around giving agents broad file system and bash access, which would be critical for real-world deployments.
+
+**Generalization Questions**: Anthropic explicitly notes that this approach is "optimized for full-stack web app development" and questions remain about generalization to other domains like scientific research or financial modeling. This is an important operational caveat—solutions that work well for one task type may require significant re-engineering for others.
+
+**Efficiency Tradeoffs**: The structured approach with comprehensive testing and verification adds overhead to each session. Every coding session begins with environment setup, progress review, and basic testing before new work begins. While this prevents cascading failures, it consumes tokens and time that could theoretically go toward feature development. The case study doesn't provide quantitative metrics on how much session time is spent on setup versus productive work.
+
+## Multi-Agent Architecture Considerations
+
+The case study concludes with an important open question: whether a single general-purpose coding agent or a multi-agent architecture performs better across contexts. The suggestion is that specialized agents—a testing agent, quality assurance agent, code cleanup agent—might handle sub-tasks more effectively than a single agent juggling all responsibilities.
+
+This reflects a broader LLMOps question about system design: should production systems use single, versatile agents with different prompts for different phases, or truly separate specialized agents with distinct capabilities? The current solution uses the former (same agent harness, different prompts), but doesn't claim this is definitively optimal. From an operational perspective, multi-agent systems introduce complexity around coordination, handoffs, and conflict resolution that would need careful engineering.
+
+## Evaluation and Metrics
+
+Notably absent from the case study are quantitative success metrics. While the text describes qualitative improvements ("dramatic improvements in performance," "enabled Claude to successfully build production-quality web applications"), there are no specific measurements of:
+
+- Feature completion rates across sessions
+- Bug rates or code quality metrics
+- Token efficiency or cost per feature
+- Success rates for different types of projects
+- Comparison metrics against baseline approaches
+
+This lack of quantitative evaluation is a limitation for assessing real-world production viability. Organizations considering similar approaches would need to establish their own metrics and benchmarking processes.
+
+## Insights for LLMOps Practitioners
+
+Several valuable lessons emerge for practitioners deploying LLM agents in production:
+
+**Inspiration from Human Practices**: The solution draws explicitly from how human software engineers work—using git for version control, writing progress notes, performing smoke tests before starting work, and leaving code in clean states. This suggests that effective agent harnesses should encode established software engineering practices rather than allowing models to develop ad-hoc workflows.
+
+**Structured Artifacts Over Context**: Rather than relying solely on context management techniques like compaction, the solution uses structured artifacts (JSON feature lists, git history, progress files) that persist between sessions. This represents a shift from trying to preserve context to creating durable, queryable records that new sessions can efficiently parse.
+
+**Explicit Behavioral Constraints**: The "strongly-worded instructions" and specific process requirements (e.g., "It is unacceptable to remove or edit tests") indicate that production agent systems need explicit guardrails. Models don't naturally exhibit desired behaviors like incremental development or comprehensive testing without careful prompt engineering.
+
+**Testing as First-Class Concern**: Integrating proper testing tools (browser automation) and making testing mandatory before marking features complete proved essential. Production agent systems can't rely on models to self-verify without appropriate tooling and prompting.
+
+**Clean Handoffs Matter**: The emphasis on leaving code in mergeable states with good documentation reflects that agent sessions must be treated like human shift handoffs. Each session should complete discrete units of work rather than leaving partially implemented features.
+
+## Critical Assessment
+
+While this case study provides valuable technical insights, several considerations warrant attention:
+
+**Self-Promotion Context**: This is Anthropic describing their own technology and promoting Claude's capabilities. Claims about "dramatic improvements" and "production-quality" results should be viewed with appropriate skepticism absent independent validation or quantitative metrics.
+
+**Scope Limitations**: The solution is explicitly optimized for web application development. The text acknowledges uncertainty about generalization to other domains, limiting the immediate applicability of these findings to other production use cases.
+
+**Unaddressed Challenges**: The case study doesn't discuss important production concerns like cost management, security implications of giving agents broad file system and bash access, error recovery strategies beyond git reversion, or how to handle truly unexpected failures that break the structured workflow.
+
+**Model Dependency**: The approach is demonstrated with Opus 4.5, a frontier model. It's unclear how well these techniques work with smaller, more cost-effective models that organizations might prefer for production deployment at scale.
+
+**Open Questions**: The text explicitly acknowledges multiple open questions—single versus multi-agent architectures, generalization to other fields, optimal testing strategies—indicating this is ongoing research rather than mature, proven operational practice.
+
+Despite these caveats, the case study makes genuine contributions to understanding how to operationalize long-running LLM agents, particularly around the importance of structured environments, incremental progress tracking, and proper testing infrastructure for sustained autonomous work.

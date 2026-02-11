@@ -1,0 +1,137 @@
+---
+title: "Building a Generic Recommender System API with Privacy-First Design"
+slug: "building-a-generic-recommender-system-api-with-privacy-first-design"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f405c8cb5a9ec93e6c262"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:39:39.576Z"
+  createdOn: "2024-11-21T14:14:52.445Z"
+llmopsTags:
+  - "api-gateway"
+  - "cache"
+  - "compliance"
+  - "devops"
+  - "embeddings"
+  - "guardrails"
+  - "latency-optimization"
+  - "microsoft-azure"
+  - "model-optimization"
+  - "realtime-application"
+  - "reliability"
+  - "scalability"
+  - "scaling"
+  - "security"
+  - "semantic-search"
+  - "structured-output"
+  - "vector-search"
+company: "Slack"
+summary: "Slack developed a generic recommendation API to serve multiple internal use cases for recommending channels and users. They started with a simple API interface hiding complexity, used hand-tuned models for cold starts, and implemented strict privacy controls to protect customer data. The system achieved over 10% improvement when switching from hand-tuned to ML models while maintaining data privacy and gaining internal customer trust through rapid iteration cycles."
+link: "https://www.youtube.com/watch?v=IC2uilYf1sc"
+year: 2023
+seo:
+  title: "Slack: Building a Generic Recommender System API with Privacy-First Design - ZenML LLMOps Database"
+  description: "Slack developed a generic recommendation API to serve multiple internal use cases for recommending channels and users. They started with a simple API interface hiding complexity, used hand-tuned models for cold starts, and implemented strict privacy controls to protect customer data. The system achieved over 10% improvement when switching from hand-tuned to ML models while maintaining data privacy and gaining internal customer trust through rapid iteration cycles."
+  canonical: "https://www.zenml.io/llmops-database/building-a-generic-recommender-system-api-with-privacy-first-design"
+  ogTitle: "Slack: Building a Generic Recommender System API with Privacy-First Design - ZenML LLMOps Database"
+  ogDescription: "Slack developed a generic recommendation API to serve multiple internal use cases for recommending channels and users. They started with a simple API interface hiding complexity, used hand-tuned models for cold starts, and implemented strict privacy controls to protect customer data. The system achieved over 10% improvement when switching from hand-tuned to ML models while maintaining data privacy and gaining internal customer trust through rapid iteration cycles."
+---
+
+## Overview
+
+This case study comes from a podcast conversation featuring Aaron Maurer, a senior engineering manager at Slack, and Katrina, a machine learning engineer at Slack, discussing how they built and operate a generic recommender system API. The conversation is moderated by Demetrios from the MLOps Community and includes Jake, a former YouTube recommendations engineer who now works at Tecton, providing additional industry context and asking technical questions.
+
+Slack's ML team faced a common enterprise challenge: they had numerous internal use cases requiring recommendations of users and channels, but each was being solved as a one-off project. Rather than building bespoke solutions repeatedly, they created a generic recommender API that abstracts away ML complexity and allows any team at Slack to easily integrate recommendation capabilities into their products.
+
+## The Problem Space
+
+The fundamental issue was that Slack had potentially "a hundred different products" that followed the same basic recommendation framework—given some context, recommend relevant users or channels. Examples include suggesting who to message, which channels to join, or which colleagues might be relevant for a particular task. Before the generic API, engineers would build custom solutions for each use case, leading to duplicated effort and inconsistent approaches.
+
+An additional challenge specific to Slack as a B2B platform is the extreme sensitivity around data privacy. As Aaron articulated, "it's hard to imagine how the value we can create with ML would outweigh the value we could destroy if we leak customers data." This constraint fundamentally shaped their architectural decisions and feature engineering approach.
+
+## The Solution: A Generic Recommender API
+
+The team built an API with an intentionally simple interface: you provide a query containing context about users and channels, and the system returns recommended users and channels. This simplicity was crucial for adoption. Aaron noted that when they tried to explain concepts like embeddings or cosine similarity to backend and frontend engineers, they would often say "I don't know what the hell this is" and abandon the integration. By distilling the interface to something business-focused rather than ML-focused, they dramatically improved adoption.
+
+The API serves as both a technical solution and a form of "branding"—it signals to internal customers that the integration will be straightforward. As the team iterated, they moved toward making the API increasingly self-serve, though it's described as "not quite self-serve but pretty damn close."
+
+## Technical Architecture
+
+### Retrieval and Ranking
+
+The system follows the standard two-stage recommender pattern with a retrieval phase followed by a re-ranking phase. For retrieval, they support multiple sources:
+
+- Simple operational database queries (e.g., "all channels I'm a member of")
+- Embedding-based nearest neighbor lookup for discovery use cases using a service called "Parsec"
+- Various other pluggable data sources
+
+For re-ranking, they developed a unified approach where features are computed, weighted, and combined to produce final recommendations.
+
+### Feature Engineering and the Signal Service
+
+A key architectural component is their "signal service" that provides features about users and channels. The team has built "hundreds" of features, though Katrina and Aaron note that most models only need "a couple dozen" and many features end up being redundant. Importantly, these features are shared across use cases—if a feature about user-channel interactions is useful for one recommender, it's likely useful for others.
+
+The feature engineering approach uses a "log and weight" pattern where features are computed online during serving and logged for later model training. This sidesteps the classic feature training/serving skew problem and eliminates the need for complex backfill queries. Jake from the YouTube recommendations team validated this approach, noting that YouTube used the same pattern.
+
+### Privacy-First Feature Design
+
+The most distinctive aspect of Slack's ML system is their approach to data privacy. They explicitly avoid building features from customer text data (the actual messages people write). Instead, they focus on interaction patterns—"the web of channels and users who work together"—rather than semantic content.
+
+Aaron provided a concrete example: for autocomplete suggestions, rather than training a generative model on customer text (which could potentially memorize and regurgitate sensitive information), they parse out likely phrases from a team's text and use high-level aggregate features like "how many times did this phrase appear" or "how often have you sent it."
+
+The team is so careful about privacy that they scrapped an internal test feature when they realized it could indirectly indicate that two people were messaging each other, even without revealing content. They design features to "not even hint at the existence of a DM between you and another person through a model."
+
+This constraint has significant implications for emerging approaches like fine-tuning large language models. Katrina mentioned that while they've discussed using Slack data to fine-tune LLMs, "at the moment it's not like a No-No it's like a weekend" and remains something they're cautious about.
+
+## Solving the Cold Start Problem with Hand-Tuned Models
+
+One of the most interesting operational patterns discussed is their approach to cold-starting new recommenders. Since they use logged online features for training data, they need an initial model that generates reasonable recommendations before they have any training data. Their solution is to start with hand-tuned models—essentially manually weighted feature combinations.
+
+This approach provides several benefits:
+
+- It generates training data from day one
+- It's explainable to product managers (e.g., "we assign a larger weight to this feature because users who interact frequently should be recommended together")
+- It provides a strong baseline for measuring ML model improvements
+- It serves as a fallback if ML serving fails
+
+Katrina expressed that seeing hand-tuned models get beaten by ML models by "more than 10% improvement" gave her confidence that ML was actually working and not just a black box producing arbitrary results.
+
+Jake validated this as an underrated approach, noting that having a clearly understandable baseline that ML consistently beats "gives you a lot of confidence that it's not some... you don't know what this model is doing, you know it's better than the hand-tuned thing that is very understandable."
+
+## Iteration Speed and PM Collaboration
+
+The team emphasized rapid iteration as a key success factor. Katrina mentioned they can "add a new recommender within a week" and have a test page where even non-technical product managers can evaluate results. When PMs see that the recommendations are "much better than heuristics they may have in their minds," they develop trust in the ML team.
+
+If PMs aren't satisfied with results, the team can iterate quickly by adjusting feature weights. This tight feedback loop is crucial for internal adoption.
+
+## Team Structure and Engineering Philosophy
+
+Slack structures their ML team with "ML Engineers" who work vertically across the entire stack—from data engineering and feature pipelines, to model training, to production deployment and integration. Katrina came from a data science background but has learned infrastructure skills from teammates. Aaron, as the engineering manager, noted this structure makes hiring easier because they can bring in both software engineers wanting to learn ML and data scientists wanting to learn software engineering.
+
+This stands in contrast to teams that separate data scientists, ML engineers, and platform engineers into distinct roles. The slack approach means everyone has "a direction to grow" and can pair with teammates who have complementary strengths.
+
+## Build vs. Buy Decisions
+
+A significant portion of the conversation addressed the perennial build-vs-buy question in ML infrastructure. Slack initially used a third-party service for model serving but eventually replaced it with internal infrastructure. The integration challenges were substantial, particularly after the Salesforce acquisition introduced additional policies and requirements.
+
+Aaron framed his philosophy as wanting engineers to work on "differentiated engineering effort"—things unique to Slack's context rather than generic ML infrastructure. However, he acknowledged that even infrastructure work is currently "still special to Slack to the point where that's worth us doing."
+
+The team expressed skepticism that external ML services could fully address B2B enterprise needs in the near term, though they acknowledged this may change as the industry matures. Katrina said she "cannot imagine" a day when large B2B companies can use external ML services "without any concern" in the next five years.
+
+Jake offered the analogy of AWS in its early days—when cloud was immature, on-prem made more sense for sophisticated companies. As ML infrastructure matures, the trade-offs will shift. The key insight is that successful ML tools will need strong, simple APIs that layer cleanly on top of existing engineering infrastructure rather than requiring wholesale replacement.
+
+## Lessons for ML Teams
+
+Several key lessons emerge from this case study:
+
+- Simple, well-designed APIs dramatically improve internal adoption of ML capabilities
+- Hand-tuned models are an underrated technique for cold-starting recommendation systems and building PM trust
+- Log-and-weight feature engineering eliminates training/serving skew
+- B2B companies face unique privacy constraints that fundamentally shape ML architecture
+- Vertical integration of ML engineering roles can improve team velocity and career development
+- Rapid iteration and PM-accessible testing tools build organizational trust in ML
+
+The conversation also touched on the broader industry direction with generative AI, with Aaron noting that OpenAI's success may be as much about their simple "send text, get text" API design as about model quality—a lesson applicable to any ML platform team.

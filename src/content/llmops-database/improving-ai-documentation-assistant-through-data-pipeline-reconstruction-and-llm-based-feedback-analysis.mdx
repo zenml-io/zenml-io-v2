@@ -1,0 +1,119 @@
+---
+title: "Improving AI Documentation Assistant Through Data Pipeline Reconstruction and LLM-Based Feedback Analysis"
+slug: "improving-ai-documentation-assistant-through-data-pipeline-reconstruction-and-llm-based-feedback-analysis"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "693fb741a23c606af28d9c98"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:36:48.885Z"
+  createdOn: "2025-12-15T07:22:41.660Z"
+llmopsTags:
+  - "customer-support"
+  - "question-answering"
+  - "classification"
+  - "chatbot"
+  - "document-processing"
+  - "rag"
+  - "prompt-engineering"
+  - "semantic-search"
+  - "vector-search"
+  - "chunking"
+  - "evals"
+  - "postgresql"
+  - "fastapi"
+  - "monitoring"
+  - "databases"
+  - "documentation"
+  - "cache"
+  - "anthropic"
+  - "cloudflare"
+company: "Mintlify"
+summary: "Mintlify's AI-powered documentation assistant was underperforming, prompting a week-long investigation to identify and address its weaknesses. The team rebuilt their feedback pipeline by migrating conversation data from PSQL to ClickHouse, enabling them to analyze thumbs-down events mapped to full conversation threads. Using an LLM to categorize 1,000 negative feedback conversations into eight buckets, they discovered that search quality across documentation was the assistant's primary weakness, while other response types were generally strong. Based on these findings, they enhanced their dashboard with LLM-categorized conversation insights for documentation owners, shipped UI improvements including conversation history and better mobile interactions, and identified areas for continued improvement despite a previous model upgrade to Claude Sonnet 3.5 showing limited impact on feedback patterns."
+link: "https://www.mintlify.com/blog/assistant-improvements"
+year: 2025
+seo:
+  title: "Mintlify: Improving AI Documentation Assistant Through Data Pipeline Reconstruction and LLM-Based Feedback Analysis - ZenML LLMOps Database"
+  description: "Mintlify's AI-powered documentation assistant was underperforming, prompting a week-long investigation to identify and address its weaknesses. The team rebuilt their feedback pipeline by migrating conversation data from PSQL to ClickHouse, enabling them to analyze thumbs-down events mapped to full conversation threads. Using an LLM to categorize 1,000 negative feedback conversations into eight buckets, they discovered that search quality across documentation was the assistant's primary weakness, while other response types were generally strong. Based on these findings, they enhanced their dashboard with LLM-categorized conversation insights for documentation owners, shipped UI improvements including conversation history and better mobile interactions, and identified areas for continued improvement despite a previous model upgrade to Claude Sonnet 3.5 showing limited impact on feedback patterns."
+  canonical: "https://www.zenml.io/llmops-database/improving-ai-documentation-assistant-through-data-pipeline-reconstruction-and-llm-based-feedback-analysis"
+  ogTitle: "Mintlify: Improving AI Documentation Assistant Through Data Pipeline Reconstruction and LLM-Based Feedback Analysis - ZenML LLMOps Database"
+  ogDescription: "Mintlify's AI-powered documentation assistant was underperforming, prompting a week-long investigation to identify and address its weaknesses. The team rebuilt their feedback pipeline by migrating conversation data from PSQL to ClickHouse, enabling them to analyze thumbs-down events mapped to full conversation threads. Using an LLM to categorize 1,000 negative feedback conversations into eight buckets, they discovered that search quality across documentation was the assistant's primary weakness, while other response types were generally strong. Based on these findings, they enhanced their dashboard with LLM-categorized conversation insights for documentation owners, shipped UI improvements including conversation history and better mobile interactions, and identified areas for continued improvement despite a previous model upgrade to Claude Sonnet 3.5 showing limited impact on feedback patterns."
+---
+
+## Case Study Overview
+
+Mintlify, a documentation platform company, operates an AI-powered assistant that helps end users find answers from documentation with citations and code examples. Despite the feature's potential to enhance customer experience, the team recognized it wasn't performing at the desired level. This case study documents their systematic approach to analyzing production performance, rebuilding data infrastructure to enable proper evaluation, and using LLMs themselves to categorize and understand failure modes at scale. The initiative spanned approximately one week and represents a practical example of LLMOps in action, where a production AI system requires continuous monitoring, evaluation, and improvement based on real user feedback.
+
+## The Production System and Initial Problem
+
+Mintlify's assistant represents a typical documentation question-answering system, likely implementing some form of retrieval-augmented generation (RAG) where user queries are answered by retrieving relevant documentation sections and generating responses with citations. The system was already in production serving real customers across multiple documentation sites (referred to as "subdomains" in the analysis). Users could provide explicit feedback through thumbs up/down reactions to assistant messages, creating a natural evaluation signal that many production LLM systems rely upon.
+
+However, the team lacked clear visibility into why the assistant was falling short. They had feedback events being collected, but the data infrastructure wasn't set up to enable meaningful analysis. This is a common challenge in LLMOps: instrumentation and logging are often implemented incrementally, and the connections between different data sources may not support the analytical queries needed for evaluation and improvement.
+
+## Data Infrastructure Challenges and Solutions
+
+The initial technical obstacle was that feedback events were stored in ClickHouse (a columnar database optimized for analytics), but there was no way to map these events back to the original conversation threads. Additionally, conversation threads were stored in PostgreSQL (PSQL) in a structure that made direct querying impossible. This architectural separation meant that while the team knew which assistant messages received negative feedback, they couldn't examine the full conversation context to understand what went wrong.
+
+To address this fundamental gap, the team made several infrastructure changes. They updated the server-side code so that when a feedback event is received, the system now pushes the complete conversation thread to ClickHouse. Previously, this was only happening on the client side, which presumably meant the data wasn't being captured in their analytics database at all or was incomplete. This represents a critical LLMOps pattern: ensuring that evaluation data includes sufficient context for analysis, not just isolated events.
+
+Additionally, they ran a backfill script to retroactively copy all messages with feedback from PostgreSQL into ClickHouse. This migration enabled them to perform the historical analysis necessary to understand existing patterns and problems. The choice to consolidate conversation data with feedback data in ClickHouse reflects a practical decision about where to centralize analytics for LLM systems—using a database optimized for the types of queries needed for understanding system behavior at scale.
+
+## Evaluation Methodology Using LLMs
+
+With the data infrastructure in place, the team could finally query conversations associated with negative feedback. Their evaluation approach involved both qualitative human analysis and quantitative LLM-based classification, representing a hybrid methodology increasingly common in LLMOps.
+
+The team began by manually reading through approximately 100 negative conversation threads. This qualitative review allowed them to develop a taxonomy of failure modes, ultimately creating eight distinct categories for different types of negative feedback. While the specific eight categories aren't all detailed in the blog post, one example given is the distinction between "couldNotFindResult" (questions the assistant should reasonably be able to answer based on available documentation) versus "assistantNeededContext" (questions that could never be answered from the documentation, such as "Can you send me a 2FA code to log in?").
+
+This categorization scheme reflects important nuances in evaluating retrieval-augmented systems. Not all failures are equal: some represent retrieval problems (relevant information exists but wasn't found), others represent generation problems (information was retrieved but poorly synthesized), and still others represent fundamental limitations (the requested information simply doesn't exist in the knowledge base). Distinguishing between these failure modes is critical for prioritizing improvements.
+
+After developing this taxonomy through manual analysis, the team scaled up their evaluation using an LLM to classify a random sample of 1,000 conversations into their eight buckets. This approach—using LLMs to evaluate LLM outputs—is increasingly common in production systems, as it allows teams to analyze volumes of data that would be impractical to manually review. The blog notes that threads can fall into multiple categories, suggesting they implemented multi-label classification rather than forcing each conversation into a single bucket.
+
+## Key Findings from Production Analysis
+
+The analysis revealed several important insights about the assistant's performance in production. Most significantly, search across documentation emerged as the assistant's biggest weakness. The team notes that this finding aligned with both anecdotal feedback and observed usage patterns, providing triangulation across multiple signals. In RAG systems, search quality (the retrieval component) is often the primary bottleneck, as even sophisticated language models cannot generate good answers when provided with irrelevant or incomplete context.
+
+Notably, outside of search quality issues, the team was actually impressed with the overall quality of the assistant's responses. This suggests that their generation pipeline—the prompt engineering, model configuration, and response formatting—was working well when provided with appropriate source material. This finding helps focus improvement efforts specifically on the retrieval component rather than requiring wholesale changes to the system.
+
+The team also examined temporal patterns, looking at feedback types over time and assistant usage by subdomain (customer). Interestingly, these analyses "did not reveal anything meaningful." They specifically note that a model upgrade to Claude Sonnet 3.5 in mid-October appeared to have no major impact on feedback patterns. This null result is actually valuable information in LLMOps: it suggests that simply upgrading to a newer, more capable model doesn't automatically solve user experience problems if the underlying issue is retrieval quality rather than generation quality. It also suggests that the assistant's performance is fairly consistent across different customers and documentation sets, indicating that issues aren't specific to particular domains or use cases.
+
+## Product and Engineering Improvements
+
+Based on their analysis, the team implemented several categories of improvements. On the product side, they expanded the assistant insights tab in the dashboard to surface conversations that were automatically categorized by their LLM classifier. This creates a feedback loop where documentation owners can review categorized conversations to understand what customers are confused about and what topics matter most to them. This represents an interesting pattern in LLMOps: using AI not just in the customer-facing product but also in internal tools that help teams understand and improve the AI system.
+
+The team also shipped multiple UI improvements and bug fixes to make the assistant more consistent and user-friendly. Users can now revisit previous conversation threads, enabling them to continue past conversations or review earlier answers. This feature addresses a common limitation in AI assistants where conversation context is lost between sessions. Links inside assistant responses no longer open in new pages, keeping users anchored in the documentation experience. On mobile devices, the chat window now slides up from the bottom, creating more natural interaction patterns for smaller screens. They also refined spacing for tool calls during streaming responses, making the loading experience cleaner and more stable.
+
+While these UI improvements may seem peripheral to core LLMOps concerns, they actually represent important aspects of production AI systems. User experience friction can cause users to abandon interactions prematurely or phrase questions poorly, which in turn affects the quality of feedback signals used for evaluation. A well-designed interface is part of the overall system that enables the AI component to succeed.
+
+## LLMOps Patterns and Considerations
+
+This case study illustrates several important patterns and challenges in LLMOps. First, it highlights the critical importance of evaluation infrastructure. The team couldn't effectively improve their assistant until they rebuilt their data pipelines to connect feedback signals with conversation context. This represents significant engineering investment that doesn't directly improve model performance but enables the analytical work necessary for improvement. Many organizations underestimate the infrastructure needed to properly evaluate and monitor production LLM systems.
+
+Second, the case demonstrates the value of hybrid evaluation approaches combining human judgment with LLM-based classification. The manual review of 100 conversations provided the nuanced understanding needed to create meaningful categories, while LLM classification enabled scaling that analysis to 1,000 conversations. Neither approach alone would have been sufficient: pure manual review wouldn't scale, while LLM classification without human-developed taxonomies might miss important distinctions or create unhelpful categories.
+
+Third, the finding that model upgrades didn't significantly impact user satisfaction highlights an important reality in production AI systems: the bottleneck is often not model capability but rather system architecture and data quality. In RAG systems specifically, retrieval quality frequently matters more than generation quality once models reach a certain capability threshold. This suggests that teams should carefully diagnose where problems actually lie before assuming that newer, larger models will solve their issues.
+
+Fourth, the case illustrates the ongoing nature of LLMOps work. Even after this week-long investigation and the resulting improvements, the team explicitly invites continued feedback and acknowledges this is an ongoing process. Production AI systems require continuous monitoring and iteration, not one-time optimization efforts.
+
+## Critical Assessment and Limitations
+
+While this case study provides valuable insights into practical LLMOps work, several limitations should be noted. The blog post doesn't provide quantitative metrics on how much the assistant improved after their changes, only that they identified problems and shipped improvements. We don't know whether search quality actually improved, whether user satisfaction increased, or whether negative feedback rates decreased. This is common in company blog posts but limits our ability to assess the actual impact of their efforts.
+
+The case also doesn't detail their search and retrieval architecture, making it difficult to understand what specifically needs improvement. Are they using semantic search with embeddings? Keyword search? Hybrid approaches? What embedding models or indexing strategies are in place? Without these details, other teams can't easily apply specific technical lessons from Mintlify's experience.
+
+Additionally, the use of LLMs to classify feedback introduces its own reliability questions that aren't addressed. How accurate is the LLM classification compared to human judgment? Did they validate the classifier against human-labeled examples? What prompt or instructions guide the classification? These are important methodological details for anyone considering similar approaches.
+
+The blog also doesn't discuss cost considerations for their LLM-based classification approach. Running classification on 1,000 conversations (and presumably planning to do so continuously) has real costs in terms of API calls or inference compute. Understanding these tradeoffs would help other teams evaluate whether similar approaches make sense for their use cases and scale.
+
+Finally, while the team identified search as the primary weakness, the blog doesn't describe their plans for addressing it or whether improvements have been implemented. The case study ends at the diagnosis phase rather than showing the complete cycle of diagnosis, treatment, and measurement of results.
+
+## Broader Context and Implications
+
+This case study sits within the broader context of RAG systems in production, which have become extremely common for documentation assistants, customer support chatbots, and knowledge management applications. The challenges Mintlify encountered—particularly around search quality being the primary bottleneck—are widely shared across these applications. The case reinforces that RAG is not a solved problem and that production systems require significant ongoing investment in evaluation and improvement.
+
+The use of LLMs to evaluate LLM outputs also reflects a growing trend in the field. As production systems generate large volumes of interactions, manual evaluation becomes impractical, and traditional metrics (like exact match or BLEU scores) don't capture what matters for user experience. LLM-as-judge approaches offer a practical middle ground, though they introduce their own challenges around reliability, bias, and cost.
+
+The case also illustrates organizational maturity in LLMOps. Mintlify dedicated focused time (a full week) to systematic analysis rather than making ad-hoc changes based on anecdotal feedback. They invested in data infrastructure before attempting optimization. They combined multiple analytical approaches and signals. These practices reflect a thoughtful, engineering-driven approach to production AI that many organizations would benefit from adopting.
+
+For teams building similar documentation assistants or RAG systems, this case study offers several practical takeaways: invest in evaluation infrastructure early, plan for continuous rather than one-time optimization, use hybrid evaluation approaches that combine human judgment with automated analysis, and carefully diagnose where problems lie before assuming model upgrades will solve them. The experience also suggests that even well-resourced teams with access to state-of-the-art models face significant challenges in production AI systems, and that user experience problems often stem from system architecture rather than model limitations.

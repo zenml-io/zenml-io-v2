@@ -1,0 +1,117 @@
+---
+title: "Scaling AI Network Infrastructure for Large Language Model Training at 100K+ GPU Scale"
+slug: "scaling-ai-network-infrastructure-for-large-language-model-training-at-100k-gpu-scale"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "68a6cf416110b4e5a41fe354"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:19:19.749Z"
+  createdOn: "2025-08-21T07:48:17.743Z"
+llmopsTags:
+  - "chatbot"
+  - "code-generation"
+  - "high-stakes-application"
+  - "model-optimization"
+  - "latency-optimization"
+  - "cost-optimization"
+  - "multi-agent-systems"
+  - "kubernetes"
+  - "docker"
+  - "monitoring"
+  - "databases"
+  - "load-balancing"
+  - "microservices"
+  - "scaling"
+  - "devops"
+  - "orchestration"
+  - "reliability"
+  - "scalability"
+  - "meta"
+company: "Meta"
+summary: "Meta's network engineers Rohit Puri and Henny present the evolution of Meta's AI network infrastructure designed to support large-scale generative AI training, specifically for LLaMA models. The case study covers the journey from a 24K GPU cluster used for LLaMA 3 training to a 100K+ GPU multi-building cluster for LLaMA 4, highlighting the architectural decisions, networking challenges, and operational solutions needed to maintain performance and reliability at unprecedented scale. The presentation details technical challenges including network congestion, priority flow control issues, buffer management, and firmware inconsistencies that emerged during production deployment, along with the engineering solutions implemented to resolve these issues while maintaining model training performance."
+link: "https://www.youtube.com/watch?v=bvUFGrnVBiQ"
+year: 2025
+seo:
+  title: "Meta: Scaling AI Network Infrastructure for Large Language Model Training at 100K+ GPU Scale - ZenML LLMOps Database"
+  description: "Meta's network engineers Rohit Puri and Henny present the evolution of Meta's AI network infrastructure designed to support large-scale generative AI training, specifically for LLaMA models. The case study covers the journey from a 24K GPU cluster used for LLaMA 3 training to a 100K+ GPU multi-building cluster for LLaMA 4, highlighting the architectural decisions, networking challenges, and operational solutions needed to maintain performance and reliability at unprecedented scale. The presentation details technical challenges including network congestion, priority flow control issues, buffer management, and firmware inconsistencies that emerged during production deployment, along with the engineering solutions implemented to resolve these issues while maintaining model training performance."
+  canonical: "https://www.zenml.io/llmops-database/scaling-ai-network-infrastructure-for-large-language-model-training-at-100k-gpu-scale"
+  ogTitle: "Meta: Scaling AI Network Infrastructure for Large Language Model Training at 100K+ GPU Scale - ZenML LLMOps Database"
+  ogDescription: "Meta's network engineers Rohit Puri and Henny present the evolution of Meta's AI network infrastructure designed to support large-scale generative AI training, specifically for LLaMA models. The case study covers the journey from a 24K GPU cluster used for LLaMA 3 training to a 100K+ GPU multi-building cluster for LLaMA 4, highlighting the architectural decisions, networking challenges, and operational solutions needed to maintain performance and reliability at unprecedented scale. The presentation details technical challenges including network congestion, priority flow control issues, buffer management, and firmware inconsistencies that emerged during production deployment, along with the engineering solutions implemented to resolve these issues while maintaining model training performance."
+---
+
+## Overview
+
+This case study presents Meta's comprehensive approach to building and operating one of the world's largest AI network infrastructures specifically designed to support large language model training at unprecedented scale. The presentation, delivered by network engineers Rohit Puri and Henny, chronicles the technical evolution from supporting 24,000 GPUs for LLaMA 3 training to deploying over 100,000 GPUs for LLaMA 4, representing a 100x scale increase since 2023. This represents a critical LLMOps case study demonstrating how infrastructure architecture decisions directly impact the ability to train and deploy large language models in production environments.
+
+The motivation behind this massive infrastructure investment stems from Meta's long-term vision of supporting artificial general intelligence and superintelligence applications, requiring network architectures that can handle exponentially growing computational demands while maintaining the performance characteristics necessary for effective model training.
+
+## Network Architecture Evolution
+
+### Basic Building Blocks: AI Zones
+
+Meta's network infrastructure is built around a fundamental unit called an "AI zone," which employs a simple two-tier Clos topology. Each AI zone consists of GPU hosts connecting to Top-of-Rack switches (RTSWs), which then connect to spine switches (CTSWs). The architecture intentionally under-subscribes the links between RTSWs and CTSWs to provide additional buffer capacity for maintenance operations and traffic drains during normal data center operations. This design decision reflects a key LLMOps principle of maintaining robust performance throughout long-running training jobs, where network interruptions can cause significant setbacks in model convergence.
+
+Each AI zone can accommodate between 2,000 to 4,000 GPUs and sits within a standard Meta data center building (DC Type 1) containing four data halls, with each hall capable of hosting up to two AI zones. This results in a maximum of eight AI zones per data center building, with network aggregation handled through Main Distribution Frames (MDF) and core Building Distribution Frames (BDF).
+
+### 24K Cluster Architecture
+
+The first major generative AI cluster built by Meta was the 24K cluster, specifically designed for LLaMA 3 training in 2023. This network occupied a single data center building using what Meta termed the "CRAM approach" - removing all non-AI servers and deploying two AI zones per data hall to maximize GPU density. The interconnection of eight AI zones was achieved through a super spine layer in the BDF called the ATSW (Aggregation Tier Switch), resulting in 24,000 interconnected GPUs within a single building.
+
+While this architecture successfully served LLaMA 3 training requirements, the evolution toward more sophisticated generative AI models demanded significantly greater GPU scale, driving the development of the 100K+ cluster architecture.
+
+### 100K+ Multi-Building Cluster
+
+The transition from single-building to multi-building architecture represents one of the most significant evolutionary steps in Meta's AI infrastructure development. The 100K+ cluster comprises a Type 1 region with five buildings, each containing four data halls, totaling 20 data halls across the entire region. Following the CRAM approach, two AI zones are deployed per data hall, with buildings 2-5 fully populated with eight AI zones each, while building 1 contains six AI zones and one data hall dedicated to supporting services including storage servers for dataset feeding.
+
+This architecture achieves 38 AI zones totaling over 100,000 GPUs, making it one of the largest AI clusters globally. The regional network connectivity is established through full mesh connections of ATSWs with the same index across all five buildings, creating 76 distinct orthogonal planes. Each ATSW uses 144 uplinks distributed evenly across the other four ATSWs in its plane, with 36 links to each, utilizing outside plant (OSP) fiber infrastructure spanning physical distances of up to 3 kilometers between GPU pairs.
+
+## Production Workload Implementation
+
+### LLaMA 4 Training Deployment
+
+The 100K+ cluster was successfully utilized for training and delivering LLaMA 4, demonstrating the practical application of this infrastructure for production large language model development. Training initially began with 32,000 GPUs operating simultaneously before scaling to approximately 100,000 GPUs in the same workload - representing one of the largest synchronized AI training operations ever attempted.
+
+To optimize performance for such massive workloads, Meta implemented two key strategies: optimization of communication libraries for cross-building traffic and deployment of various parallelism techniques resilient to the latency profile within the large network. This approach highlights critical LLMOps considerations around communication efficiency and distributed training strategies necessary for successful large-scale model development.
+
+## Operational Challenges and Solutions
+
+### Proactive Challenge Mitigation
+
+Recognizing the complexity of operating at this scale, Meta took proactive measures to address anticipated challenges before they impacted production workloads. The primary concerns centered around network congestion management, given the scale increase and bursty nature of AI traffic patterns, which would increase bandwidth demands across all network layers.
+
+The reliance on Priority Flow Control (PFC) for maintaining lossless network environments introduced potential head-of-line blocking scenarios. To prevent large queue buildups that could result in significant tail latencies and model performance degradation, Meta deployed deep buffer switches on CTSWs capable of absorbing congestion without triggering PFC mechanisms. Additionally, RTSW thresholds were aggressively tuned to minimize PFC propagation throughout the network.
+
+### Distance and Latency Challenges
+
+The multi-building architecture spanning 3 kilometers introduced unavoidable propagation delays that could impact model training performance. While physical distance constraints couldn't be eliminated, Meta worked with vendors to develop low-latency specialized settings on spine switches, specifically targeted toward their use case requirements.
+
+Recognizing that not everything would proceed according to plan, significant investment was made in debugging capabilities, monitoring systems, and dashboard development to provide real-time network health metrics across all layers, enabling rapid problem identification and mitigation.
+
+### Production Issue Resolution
+
+Despite proactive measures, several critical issues emerged during traffic ramp-up that required immediate resolution to maintain model training performance. The first major issue involved traffic drops at the RTSW layer as GPU scale increased. While maintaining separate lossless and lossy queues, drops occurred in the lossy queue carrying less than 1% of traffic. However, this queue contained critical control RoCE packets whose loss degraded workload performance. The solution involved moving all RoCE control traffic back into lossless queues and adjusting buffer configurations to reduce drop probability even in lossy queues.
+
+As scaling continued, intermittent drops appeared at spine layers during high-scale operations. This unprecedented scale issue resulted from concurrent high-speed traffic from multiple directions while RTSWs heavily utilized PFC against CTSWs, creating buffer contention. The solution involved implementing detection mechanisms for this situation and PFC back-pressure into the network during transient congestion periods. This fix was carefully deployed to one data center for performance monitoring before fleet-wide rollout without downtime during active job execution.
+
+### Firmware and Monitoring Issues
+
+A particularly challenging issue emerged during an 8,000 GPU job execution across multiple data centers, where one data center exhibited 30% performance degradation. The problem's complexity stemmed from its requirement for minimum 8,000 GPU scale to reproduce, lack of obvious metric indicators, and the presence of new NIC firmware for optics support. Investigation revealed that the new NIC firmware version had divergent settings from the rest of the fleet, causing regression. Correcting this recovered approximately 10% of performance, but additional investigation revealed that NIC monitoring tools were causing CPU polling contention that further reduced NIC throughput. Disabling and fixing the monitoring tools recovered the remaining performance degradation.
+
+These production issues highlight the importance of comprehensive monitoring, systematic debugging approaches, and the ability to rapidly isolate and mitigate problems in large-scale LLMOps environments.
+
+## Future Scaling: Prometheus Initiative
+
+Looking ahead, Meta's next milestone involves the Prometheus super cluster, planned to span an entire metropolitan area with multiple sub-regions connected through regional aggregation layers. This architecture expects to scale GPU counts into the hundreds of thousands, potentially exceeding one million GPUs.
+
+This future scaling introduces new challenges including training models over distances potentially exceeding 100 kilometers and managing heterogeneous environments with diverse GPU types, accelerators, NICs, and switching platforms across sub-regions. The evolution demonstrates the continuous infrastructure challenges in supporting increasingly sophisticated large language models and the engineering expertise required to maintain performance at unprecedented scales.
+
+## LLMOps Implications and Lessons
+
+This case study illustrates several critical LLMOps principles for large-scale language model deployment. The importance of infrastructure architecture in enabling model training success cannot be overstated - network design decisions directly impact training efficiency, model convergence, and operational reliability. The evolution from single-building to multi-building architectures demonstrates how infrastructure must scale proportionally with model complexity and computational requirements.
+
+The proactive approach to challenge identification and mitigation, combined with comprehensive monitoring and rapid debugging capabilities, represents best practices for operating large-scale AI infrastructure. The ability to deploy fixes during active training runs without downtime showcases the operational sophistication required for production LLMOps environments.
+
+Finally, the case study demonstrates that even with extensive planning and proactive measures, unexpected issues will emerge at scale, requiring skilled engineering teams capable of rapid problem resolution while maintaining service availability. The systematic approach to problem identification, isolation, and mitigation provides a valuable framework for other organizations operating large-scale AI infrastructure supporting language model development and deployment.

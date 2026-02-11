@@ -1,0 +1,181 @@
+---
+title: "Healthcare Patient Journey Analysis Platform with Multimodal LLMs"
+slug: "healthcare-patient-journey-analysis-platform-with-multimodal-llms"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "67780ad7b1e04150e08160ac"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:51:29.933Z"
+  createdOn: "2025-01-03T16:05:43.321Z"
+llmopsTags:
+  - "healthcare"
+  - "regulatory-compliance"
+  - "high-stakes-application"
+  - "structured-output"
+  - "multi-modality"
+  - "unstructured-data"
+  - "realtime-application"
+  - "fine-tuning"
+  - "prompt-engineering"
+  - "semantic-search"
+  - "error-handling"
+  - "chunking"
+  - "system-prompts"
+  - "rag"
+  - "embeddings"
+  - "kubernetes"
+  - "docker"
+  - "monitoring"
+  - "databases"
+  - "api-gateway"
+  - "load-balancing"
+  - "microservices"
+  - "scaling"
+  - "postgresql"
+  - "redis"
+  - "cache"
+  - "elasticsearch"
+  - "langchain"
+  - "fastapi"
+  - "databricks"
+company: "John Snow Labs"
+summary: "John Snow Labs developed a comprehensive healthcare analytics platform that uses specialized medical LLMs to process and analyze patient data across multiple modalities including unstructured text, structured EHR data, FIR resources, and images. The platform enables healthcare professionals to query patient histories and build cohorts using natural language, while handling complex medical terminology mapping and temporal reasoning. The system runs entirely within the customer's infrastructure for security, uses Kubernetes for deployment, and significantly outperforms GPT-4 on medical tasks while maintaining consistency and explainability in production."
+link: "https://www.youtube.com/watch?v=VKuW6n25VdM"
+year: 2024
+seo:
+  title: "John Snow Labs: Healthcare Patient Journey Analysis Platform with Multimodal LLMs - ZenML LLMOps Database"
+  description: "John Snow Labs developed a comprehensive healthcare analytics platform that uses specialized medical LLMs to process and analyze patient data across multiple modalities including unstructured text, structured EHR data, FIR resources, and images. The platform enables healthcare professionals to query patient histories and build cohorts using natural language, while handling complex medical terminology mapping and temporal reasoning. The system runs entirely within the customer's infrastructure for security, uses Kubernetes for deployment, and significantly outperforms GPT-4 on medical tasks while maintaining consistency and explainability in production."
+  canonical: "https://www.zenml.io/llmops-database/healthcare-patient-journey-analysis-platform-with-multimodal-llms"
+  ogTitle: "John Snow Labs: Healthcare Patient Journey Analysis Platform with Multimodal LLMs - ZenML LLMOps Database"
+  ogDescription: "John Snow Labs developed a comprehensive healthcare analytics platform that uses specialized medical LLMs to process and analyze patient data across multiple modalities including unstructured text, structured EHR data, FIR resources, and images. The platform enables healthcare professionals to query patient histories and build cohorts using natural language, while handling complex medical terminology mapping and temporal reasoning. The system runs entirely within the customer's infrastructure for security, uses Kubernetes for deployment, and significantly outperforms GPT-4 on medical tasks while maintaining consistency and explainability in production."
+---
+
+## Overview
+
+John Snow Labs, a nine-year-old company specializing in healthcare NLP, has developed an enterprise platform for integrating multimodal medical data into unified patient journeys. The presentation, delivered by David Alby (CTO), details how the company has evolved from building specific NLP models for specific use cases through deep learning and zero-shot learning to now leveraging medical LLMs for comprehensive patient data analysis at scale. The core innovation is moving from analyzing single documents (pathology reports, radiology reports) to analyzing entire patient histories spanning years of data across multiple modalities.
+
+## Problem Statement
+
+Real-world patient data presents significant challenges for healthcare organizations. A typical cancer patient in the US generates over a thousand pages of text per year, including chemotherapy notes, radiology reports, psychological screenings, dietary assessments, family counseling notes, medication records, and genomic results. This data is scattered across multiple systems, providers, and formats, making it extremely difficult to get a complete picture of patient health.
+
+The fundamental issues include:
+
+- Data exists in multiple modalities: structured EHR data, unstructured clinical notes, semi-structured FHIR resources, imaging data, and external sources
+- Patients see multiple doctors across different providers, including out-of-network specialists
+- Critical information is often only available in unstructured text (medications patients took at home, social determinants, family history)
+- Terminology is inconsistent across sources, with different coding systems (ICD-10, SNOMED, NDC, RxNorm) used interchangeably
+- Data contains conflicts, uncertainties, and corrections over time
+- Studies show that 30-50% of relevant clinical codes are missing from structured data alone
+
+## Architecture and Deployment
+
+The platform is designed as an enterprise-grade system with strict requirements around PHI (Protected Health Information) handling. It is deployed entirely within the customer's infrastructure using Kubernetes, with no data ever leaving the organization's security perimeter. The system makes no calls to external LLM APIs (such as OpenAI), and all models run locally.
+
+The architecture consists of multiple containers that can be scaled independently based on workload. Components that require GPU acceleration (such as OCR for PDFs and imaging) can be scaled separately from those that run on CPU. The system is designed to handle organizations serving 10-30 million patients per year, with potentially half a billion data points per patient population over a five-year period.
+
+The deployment is available across multiple platforms including on-premise infrastructure, AWS, Azure, Databricks, Snowflake, and Oracle. The licensing model is server-based rather than per-user, per-patient, or per-model, which simplifies budgeting and encourages broad organizational adoption.
+
+## Data Processing Pipeline
+
+The data processing pipeline is a critical component of the LLMOps implementation. When data arrives (either structured or unstructured), it goes through several processing stages:
+
+**Information Extraction**: Healthcare-specific LLMs extract over 400 types of entities from free text, including medications, anatomical parts, treatment paths, social determinants, family history, suspected events, negated diagnoses, biomarkers, histological values, and radiology findings. Crucially, these models also determine assertion status (present, absent, hypothetical, family history) and temporal relationships. For example, the system must distinguish between "patient has breast cancer" (present condition) and "mother died of breast cancer" (family history) when both appear in the same text.
+
+**Terminology Resolution**: Extracted entities are mapped to standard codes, primarily SNOMED CT, with support for 12+ other terminologies. This normalization is essential for querying across data from different sources that may use different coding systems.
+
+**Temporal Normalization**: Relative date expressions (e.g., "last year," "three days ago") are normalized to absolute dates based on the document's timestamp. This enables accurate temporal queries such as "find patients diagnosed within the last 18 months."
+
+**Data Deduplication and Merging**: The system employs healthcare-specific logic to merge and deduplicate information. A patient with 30-40 progress notes over a three-day hospital stay will have extensive repetition. The system must determine which version to keep (most specific, most recent, median of multiple measurements), how to handle conflicting information, and how to propagate uncertainty.
+
+**Knowledge Graph Construction**: After deduplication, the system builds a patient knowledge graph with the most relevant, non-duplicated information, reducing from potentially hundreds of raw extractions to the core clinical facts about a patient.
+
+## Data Model and Storage
+
+After considerable deliberation, John Snow Labs chose to adopt the OMOP (Observational Medical Outcomes Partnership) Common Data Model for storing processed data. This was a deliberate choice of an open standard over a proprietary solution, with several advantages:
+
+- Relational database structure enables direct SQL queries, dashboard integration (Tableau, Power BI), and data science workflows (Python/Pandas)
+- Large existing ecosystem of open-source tools and expertise around OMOP
+- Interoperability with other healthcare systems already using OMOP
+
+The team extended OMOP where necessary to add traceability features and confidence levels that weren't part of the original standard. The philosophy was that enterprise data infrastructure must be open, allowing multiple tools, teams, and third parties to work with the data.
+
+## LLM Usage and Benchmarking
+
+John Snow Labs trains and fine-tunes their own healthcare-specific LLMs for all tasks in the platform. These models are used in three main capacities:
+
+- Information extraction from unstructured text
+- Reasoning for merging and deduplication decisions
+- Natural language query understanding and SQL generation
+
+The company conducted blind, randomized evaluations comparing their models against GPT-4o on clinical tasks (text summarization, information extraction, medical question answering). Medical doctors evaluated responses without knowing which model produced them, rating on factuality, clinical relevance, and conciseness. John Snow Labs' models outperformed GPT-4 at approximately a 2:1 ratio across all dimensions, attributed to their fine-tuning on real-world medical data and specific task optimization.
+
+## Natural Language Query System
+
+The query system allows clinical staff (doctors, nurses, administrators) to ask questions in natural language about both individual patients and entire patient populations. This represents a significant departure from traditional systems that require knowledge of SQL, BI tools, and complex database schemas.
+
+The system must handle queries like "find patients who were diagnosed with back pain and had spinal fusion," which requires understanding that:
+- "Back pain" maps to multiple ICD-10 diagnosis codes
+- "Spinal fusion" represents a set of different procedures
+- The query might involve temporal relationships ("after," "within six months")
+
+The team discovered that text-to-SQL approaches alone were insufficient. They built an AI agent that takes multiple steps:
+
+- First, it uses a RAG component to match the query to pre-built, optimized queries
+- Second, it calls a terminology service to resolve medical concepts to appropriate codes
+- Third, it adjusts the schema and SQL to match the specific query requirements
+- Finally, it executes the query and aggregates results for presentation
+
+This multi-step approach addresses three critical challenges:
+
+**Accuracy**: Healthcare queries are far more complex than typical text-to-SQL benchmarks. A simple query like "find all diabetic patients" can translate to multi-page SQL statements with complex joins across patient tables, clinical events, diagnosis tables, and terminology hierarchies.
+
+**Consistency**: LLMs can return different answers to the same question on different invocations. For clinical users to trust the system, it must return consistent results. If asked "has this patient ever been on an antidepressant," the answer must be the same every time.
+
+**Performance**: Naive SQL generation could easily produce queries that scan hundreds of millions of rows and crash the database server. The system uses indices, materialized views, and caching, with the LLM fine-tuned to generate only optimized query patterns.
+
+## Explainability and Provenance
+
+The platform emphasizes explainability as essential for clinical adoption. Every query result includes:
+
+- The business logic used (how terms were interpreted, which codes were included)
+- Traceability to source documents for each piece of information
+- Confidence levels for extracted information
+
+This is crucial because different users interpret the same terms differently. "Diabetic patient" might mean someone with an ICD-10 diagnosis code to a billing specialist, anyone taking insulin to a pharmacist, or anyone with two abnormal HbA1c tests to a researcher. The system must show users exactly what definition it applied and allow them to modify it.
+
+## Use Cases and Results
+
+The platform supports multiple use cases:
+
+- **Patient summarization**: Natural language summaries adapted to the user's role and context (GP annual screening vs. ICU shift handoff vs. cardiology referral)
+- **Cohort building**: Finding patient populations matching complex criteria for research, clinical trials, or population health management
+- **Clinical coding and HCC**: Improving revenue cycle accuracy by extracting diagnoses from unstructured text that are missing from claims and problem lists
+- **Risk score calculation**: Computing various risk scores (readmission risk, disease progression, sepsis risk) based on unified patient data, with automatic updates as new data arrives
+
+The presentation referenced case studies from Rush (oncology patient timelines using healthcare LLMs to extract from radiology, pathology, and next-generation sequencing reports) and West Virginia University (HCC coding for revenue cycle optimization).
+
+## Production Considerations
+
+John Snow Labs offers a 12-week implementation project alongside the software license, reflecting the complexity of enterprise healthcare deployments. The implementation includes:
+
+- Security and infrastructure setup within the customer's environment
+- Integration with data sources (PDFs, Epic Caboodle, DICOM images, FHIR APIs)
+- Customization of terminology mappings and extraction focus areas
+- Optimization of specific queries and system "voice" (answer length, specificity, included data)
+
+The company emphasizes that models and workflows built on the platform remain the customer's intellectual property, enabling data monetization and research use cases without sharing data with third parties.
+
+## Technical Challenges Addressed
+
+Several interesting LLMOps challenges are highlighted in this case:
+
+- Building LLMs that outperform general-purpose models on domain-specific tasks through careful fine-tuning and evaluation by domain experts
+- Handling the transition from single-document analysis to multi-year, multi-source patient histories at billion-document scale
+- Maintaining consistency in LLM outputs for production reliability
+- Balancing the flexibility of natural language queries with the performance requirements of large-scale databases
+- Providing explainability sufficient for clinical users to trust and verify AI-generated insights
+
+The platform represents a mature LLMOps deployment that goes beyond simple RAG or chatbot implementations to address the complex, regulated, high-stakes environment of healthcare data analysis.

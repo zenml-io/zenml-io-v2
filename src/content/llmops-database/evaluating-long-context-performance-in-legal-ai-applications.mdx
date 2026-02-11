@@ -1,0 +1,103 @@
+---
+title: "Evaluating Long Context Performance in Legal AI Applications"
+slug: "evaluating-long-context-performance-in-legal-ai-applications"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "68091f422fda1019cbf57151"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:06:24.298Z"
+  createdOn: "2025-04-23T17:11:30.399Z"
+llmopsTags:
+  - "document-processing"
+  - "high-stakes-application"
+  - "regulatory-compliance"
+  - "question-answering"
+  - "rag"
+  - "prompt-engineering"
+  - "semantic-search"
+  - "error-handling"
+  - "chunking"
+  - "system-prompts"
+  - "documentation"
+  - "security"
+  - "compliance"
+  - "guardrails"
+  - "reliability"
+  - "openai"
+  - "microsoft-azure"
+company: "Thomson Reuters"
+summary: "Thomson Reuters details their comprehensive approach to evaluating and deploying long-context LLMs in their legal AI assistant CoCounsel. They developed rigorous testing protocols to assess LLM performance with lengthy legal documents, implementing a multi-LLM strategy rather than relying on a single model. Through extensive benchmarking and testing, they found that using full document context generally outperformed RAG for most document-based legal tasks, leading to strategic decisions about when to use each approach in production."
+link: "https://www.thomsonreuters.com/en-us/posts/innovation/legal-ai-benchmarking-evaluating-long-context-performance-for-llms/"
+year: 2025
+seo:
+  title: "Thomson Reuters: Evaluating Long Context Performance in Legal AI Applications - ZenML LLMOps Database"
+  description: "Thomson Reuters details their comprehensive approach to evaluating and deploying long-context LLMs in their legal AI assistant CoCounsel. They developed rigorous testing protocols to assess LLM performance with lengthy legal documents, implementing a multi-LLM strategy rather than relying on a single model. Through extensive benchmarking and testing, they found that using full document context generally outperformed RAG for most document-based legal tasks, leading to strategic decisions about when to use each approach in production."
+  canonical: "https://www.zenml.io/llmops-database/evaluating-long-context-performance-in-legal-ai-applications"
+  ogTitle: "Thomson Reuters: Evaluating Long Context Performance in Legal AI Applications - ZenML LLMOps Database"
+  ogDescription: "Thomson Reuters details their comprehensive approach to evaluating and deploying long-context LLMs in their legal AI assistant CoCounsel. They developed rigorous testing protocols to assess LLM performance with lengthy legal documents, implementing a multi-LLM strategy rather than relying on a single model. Through extensive benchmarking and testing, they found that using full document context generally outperformed RAG for most document-based legal tasks, leading to strategic decisions about when to use each approach in production."
+---
+
+## Overview
+
+Thomson Reuters, a major information services company, has developed CoCounsel, described as a leading AI legal assistant designed to automate document-centric legal tasks. This case study focuses on their approach to benchmarking and evaluating LLMs specifically for long-context performance—a critical capability when dealing with extensive legal documents such as deposition transcripts, merger and acquisition agreements, and contracts that can easily exceed hundreds of pages.
+
+The article, authored by Joel Hron (Chief Technology Officer at Thomson Reuters), provides insight into how the organization approaches LLMOps challenges around model selection, evaluation, and deployment in a high-stakes professional domain. While the piece does contain promotional elements about Thomson Reuters' position as a "trusted early tester" for AI labs, it offers substantive technical details about their evaluation methodology that are valuable for understanding production LLM deployment in legal contexts.
+
+## The Long Context Challenge
+
+Legal work inherently involves processing lengthy documents. The case study highlights that when GPT-4 was first released in 2023, it featured only an 8K token context window (approximately 6,000 words or 20 pages). To handle longer documents, practitioners had to split them into chunks, process each individually, and synthesize answers. While modern LLMs now advertise context windows ranging from 128K to over 1M tokens, Thomson Reuters makes an important observation: the ability to accept 1M tokens in the input window does not guarantee effective performance with that much text.
+
+This distinction between advertised context window and effective context window is a key insight from their production experience. They found that the more complex and challenging a task, the smaller the LLM's effective context window becomes for that task. For straightforward skills involving searching for one or a few data elements, most LLMs can perform accurately up to several hundred thousand tokens. However, for complex tasks requiring tracking and returning many different data elements, recall degrades significantly. This finding has direct implications for system architecture—even with long-context models, they still split documents into smaller chunks to ensure important information isn't missed.
+
+## Multi-LLM Strategy
+
+Thomson Reuters explicitly rejects a single-model approach, stating that the idea one LLM can outperform across every task is "a myth." Instead, they have built a multi-LLM strategy into their AI infrastructure, viewing it as a competitive advantage rather than a fallback. This approach recognizes that different models excel at different capabilities: some reason better, others handle long documents more reliably, and some follow instructions more precisely.
+
+This multi-model orchestration approach is notable from an LLMOps perspective because it requires robust infrastructure for model comparison, selection, and routing. The organization must maintain the capability to rapidly test and integrate new models as they become available—the article notes that new models are launching and improving weekly. Thomson Reuters positions itself as an early tester for major AI labs, claiming that when providers want to understand how their newest models perform in high-stakes scenarios, they collaborate with Thomson Reuters. While this claim has promotional overtones, it does suggest a mature model evaluation pipeline that can quickly assess new releases.
+
+## RAG vs. Long Context Decision
+
+A significant architectural decision documented in this case study is the choice between retrieval-augmented generation (RAG) and long-context approaches. Thomson Reuters describes a common RAG pattern of splitting documents into passages, storing them in a search index, and retrieving top results to ground responses. They acknowledge RAG is effective for searching vast document collections or answering simple factoid questions.
+
+However, their internal testing revealed that inputting full document text into the LLM's context window (with chunking for extremely long documents) generally outperformed RAG for most document-based skills. They cite external research supporting this finding. The key limitation of RAG they identify is that complex queries requiring sophisticated discovery processes don't translate well to semantic retrieval. Their example of "Did the defendant contradict himself in his testimony?" illustrates how such a query requires comparing each statement against all others—a semantic search using that query would likely only return passages explicitly discussing contradictory testimony, missing the actual contradictions.
+
+As a result, CoCounsel 2.0 leverages long-context LLMs to the greatest extent possible while reserving RAG for skills that require searching through large content repositories. This is a pragmatic hybrid approach that recognizes the strengths and limitations of each technique.
+
+## Multi-Stage Testing Framework
+
+The case study outlines a rigorous multi-stage testing protocol that represents a mature LLMOps evaluation practice:
+
+**Initial Benchmarks**: The first stage uses over 20,000 test samples from open and private benchmarks covering legal reasoning, contract understanding, hallucinations, instruction following, and long context capability. These tests use easily gradable answers (such as multiple-choice questions) enabling full automation for rapid evaluation of new LLM releases. For long-context specifically, they use tests from LOFT (measuring ability to answer questions from Wikipedia passages) and NovelQA (assessing ability to answer questions from English novels), both accommodating up to 1M input tokens. These benchmarks specifically measure multihop reasoning (synthesizing information from multiple locations) and multitarget reasoning (locating and returning multiple pieces of information)—capabilities essential for interpreting contracts or regulations where definitions in one part determine interpretation of another.
+
+**Skill-Specific Benchmarks**: Top-performing LLMs from initial benchmarks advance to testing on actual skills. This stage involves developing prompt flows specific to each skill, sometimes quite complex, to ensure consistent generation of accurate and comprehensive responses for legal work. Evaluation uses an LLM-as-a-judge approach against attorney-authored criteria. Attorney subject matter experts (SMEs) have generated hundreds of tests per skill representing real use cases. Each test includes a user query, source documents, and an ideal minimum viable answer capturing key data elements necessary for legal usefulness.
+
+The LLM-as-a-judge scoring is developed iteratively: scores are manually reviewed, grading prompts are adjusted, and ideal answers are refined until LLM-as-a-judge scores align with SME scores. This calibration process between automated and human evaluation is a sophisticated practice that balances scalability with accuracy.
+
+Test samples are curated to be representative of actual user use cases, including context length considerations. They maintain specialized long context test sets where all samples use source documents totaling 100K–1M tokens specifically to stress-test performance at these lengths.
+
+**Final Manual Review**: All new LLMs undergo rigorous manual review by attorney SMEs before deployment. This human-in-the-loop stage captures nuanced details missed by automated graders, provides feedback for engineering improvements, and verifies that new LLM flows perform better than previously deployed solutions while meeting reliability and accuracy standards for legal use.
+
+## Practical Findings and Implications
+
+Several practical insights emerge from Thomson Reuters' production experience that are valuable for LLMOps practitioners:
+
+The "effective context window" concept is particularly important. Advertised context window sizes should not be taken at face value—real-world performance, especially for complex reasoning tasks, may degrade well before reaching advertised limits. This finding argues for empirical testing on actual use cases rather than relying on benchmark numbers.
+
+Their challenge to model builders to "keep stretching and stress-testing that boundary" suggests that even current long-context models have meaningful room for improvement on complex, reasoning-heavy real-world problems.
+
+The importance of domain-specific evaluation is emphasized throughout. General benchmarks may not capture the nuances required for specialized professional domains. The use of attorney SMEs to author test cases, ideal answers, and grading criteria reflects recognition that legal work has exacting standards that generic evaluations may miss.
+
+## Forward-Looking Elements
+
+The article concludes with discussion of building toward "agentic AI"—intelligent assistants that can plan, reason, adapt, and act across complex legal workflows. Thomson Reuters frames their current benchmarking work as laying the foundation for this future, noting it requires long-context capabilities, multi-model orchestration, SME-driven evaluation, and deep integration into professional workflows.
+
+While these forward-looking statements are speculative and promotional, they do indicate strategic direction and suggest that the evaluation frameworks being built today are designed with extensibility in mind for more autonomous AI systems.
+
+## Critical Assessment
+
+It's worth noting that this case study comes from Thomson Reuters' own publication and naturally presents their approach favorably. Claims about being a "trusted early tester" for AI labs and having "gold-standard input data" should be viewed as marketing positioning. The technical details about their evaluation methodology, however, appear substantive and reflect mature LLMOps practices that other organizations could learn from.
+
+The absence of specific quantitative results (accuracy percentages, performance comparisons, latency measurements) is notable. While the methodology is described in detail, concrete outcomes are not shared, making it difficult to independently assess the effectiveness of their approach. This is typical of corporate case studies where specific metrics may be considered proprietary.

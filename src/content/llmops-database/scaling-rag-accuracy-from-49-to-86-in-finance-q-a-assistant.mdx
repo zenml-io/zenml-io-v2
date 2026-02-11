@@ -1,0 +1,130 @@
+---
+title: "Scaling RAG Accuracy from 49% to 86% in Finance Q&A Assistant"
+slug: "scaling-rag-accuracy-from-49-to-86-in-finance-q-a-assistant"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "674f1e9dd06657e790ca2d7e"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:47:31.114Z"
+  createdOn: "2024-12-03T15:07:09.356Z"
+llmopsTags:
+  - "question-answering"
+  - "chatbot"
+  - "regulatory-compliance"
+  - "structured-output"
+  - "rag"
+  - "embeddings"
+  - "prompt-engineering"
+  - "semantic-search"
+  - "vector-search"
+  - "error-handling"
+  - "system-prompts"
+  - "chunking"
+  - "fastapi"
+  - "elasticsearch"
+  - "guardrails"
+  - "open-source"
+  - "amazon-aws"
+company: "Amazon Finance"
+summary: "Amazon Finance Automation developed a RAG-based Q&A chat assistant using Amazon Bedrock to help analysts quickly retrieve answers to customer queries. Through systematic improvements in document chunking, prompt engineering, and embedding model selection, they increased the accuracy of responses from 49% to 86%, significantly reducing query response times from days to minutes."
+link: "https://aws.amazon.com/blogs/machine-learning/how-amazon-finance-automation-built-a-generative-ai-qa-chat-assistant-using-amazon-bedrock?tag=soumet-20"
+year: 2024
+seo:
+  title: "Amazon Finance: Scaling RAG Accuracy from 49% to 86% in Finance Q&A Assistant - ZenML LLMOps Database"
+  description: "Amazon Finance Automation developed a RAG-based Q&A chat assistant using Amazon Bedrock to help analysts quickly retrieve answers to customer queries. Through systematic improvements in document chunking, prompt engineering, and embedding model selection, they increased the accuracy of responses from 49% to 86%, significantly reducing query response times from days to minutes."
+  canonical: "https://www.zenml.io/llmops-database/scaling-rag-accuracy-from-49-to-86-in-finance-q-a-assistant"
+  ogTitle: "Amazon Finance: Scaling RAG Accuracy from 49% to 86% in Finance Q&A Assistant - ZenML LLMOps Database"
+  ogDescription: "Amazon Finance Automation developed a RAG-based Q&A chat assistant using Amazon Bedrock to help analysts quickly retrieve answers to customer queries. Through systematic improvements in document chunking, prompt engineering, and embedding model selection, they increased the accuracy of responses from 49% to 86%, significantly reducing query response times from days to minutes."
+---
+
+## Overview
+
+Amazon Finance Automation developed a generative AI Q&A chat assistant to address a significant operational challenge within their Accounts Payable (AP) and Accounts Receivable (AR) teams. Analysts were spending excessive time—often hours to days—responding to customer queries because they needed to consult subject matter experts (SMEs) and review multiple policy documents containing standard operating procedures (SOPs). This was particularly challenging for new hires who lacked immediate access to institutional knowledge. The solution leverages a Retrieval Augmented Generation (RAG) pipeline built on Amazon Bedrock to provide rapid, accurate responses to analyst queries.
+
+This case study is notable for its transparency about the iterative improvement process, documenting how the team improved accuracy from an initial 49% to a final 86% through systematic evaluation and targeted optimizations. It provides valuable insights into production LLM system development within enterprise finance operations.
+
+## Technical Architecture
+
+The solution is built on a RAG pipeline running on Amazon Bedrock with several key components working together:
+
+**Knowledge Base and Vector Store**: The team used Amazon OpenSearch Service as the vector store for embedding and storing policy documents. They processed and indexed multiple Amazon finance policy documents into this knowledge base. The team noted plans to migrate to Amazon Bedrock Knowledge Bases in the future to eliminate cluster management overhead and add extensibility to their pipeline. This represents a common production consideration—balancing control over infrastructure versus managed service convenience.
+
+**Embedding Model**: The solution uses the Amazon Titan Multimodal Embeddings G1 model on Amazon Bedrock. The team conducted comparative analysis and found this model provided accuracy that was higher than or comparable to other embedding models on the market. The choice of embedding model proved crucial to overall system performance, as discussed in the accuracy improvement section.
+
+**Generator Model**: A foundation model from Amazon Bedrock serves as the generator, selected for its balanced ability to deliver accurate answers quickly. The specific model is not named in the case study, which is typical for internal Amazon implementations.
+
+**Ranking Components**: Two specialized rankers enhance retrieval quality:
+- A **diversity ranker** rearranges vector index results to avoid skewness or bias towards specific documents or sections
+- A **lost in the middle ranker** distributes the most relevant results towards the top and bottom of the prompt, addressing the known issue where LLMs may underweight information in the middle of long contexts
+
+**Safety and Validation**: Amazon Bedrock Guardrails detects personally identifiable information (PII) and protects against prompt injection attacks. A separate validation engine removes PII from responses and checks whether generated answers align with retrieved context. If alignment fails, the system returns a hardcoded "I don't know" response to prevent hallucinations—a practical approach to ensuring production reliability.
+
+**User Interface**: The team built the chat assistant UI using Streamlit, an open source Python library commonly used for ML application prototyping and deployment.
+
+## Evaluation Strategy
+
+The accuracy measurement and evaluation approach is one of the most valuable aspects of this case study. After the initial deployment, SMEs manually evaluated responses and found only 49% were correct—far below expectations. However, manual evaluation was not sustainable due to the time required from finance operations and engineering teams.
+
+The team developed an automated evaluation approach with several components:
+
+**Test Dataset Construction**: They created a test dataset of 100 questions with three fields: the question, the expected answer (manually labeled by SMEs), and the generated answer from the bot. Questions covered various source types including policy documents and engineering SOPs, as well as complex formats like embedded tables and images.
+
+**NLP-based Scores**: Traditional metrics like ROUGE and METEOR scores were calculated but found inadequate. These word-matching algorithms ignore semantic meaning and showed approximately 30% variance compared to human evaluations—too high for reliable automated evaluation.
+
+**LLM-based Scoring**: The team used an FM from Amazon Bedrock to score RAG performance, designing specialized prompts to evaluate by comparing generated answers with expected answers. They generated metrics including accuracy, acceptability, and factualness, along with citations representing evaluation reasoning. This "LLM as judge" approach showed only approximately 5% variance compared to human analysis, making it the preferred evaluation method. The case study notes that Amazon Bedrock Knowledge Bases now offers a built-in RAG evaluation tool with metrics for context relevance, context coverage, correctness, completeness, helpfulness, and responsible AI metrics.
+
+## Accuracy Improvement Journey
+
+The systematic improvement from 49% to 86% accuracy involved three major initiatives:
+
+### Semantic Document Chunking (49% → 64%)
+
+The team diagnosed that 14% of inaccuracies stemmed from incomplete contexts sent to the LLM. The original fixed chunk size approach (512 tokens or 384 words) didn't respect document boundaries like sections and paragraphs. Their new semantic chunking approach used:
+- QUILL Editor to convert unstructured text to structured HTML, preserving document formatting
+- HTML tag analysis to insert dividers for document segmentation based on logical structure
+- Embedding generation for semantic vector representation of chunks
+- Tag assignment based on important keywords to identify logical section boundaries
+- Insertion of embedding vectors into OpenSearch Service
+
+The processing rules included extracting section boundaries precisely, pairing section titles with content accurately, assigning keyword-based tags, preserving markdown information, and initially excluding images and tables from processing.
+
+### Prompt Engineering (64% → 76%)
+
+The team adopted task-specific prompt engineering rather than a one-size-fits-all approach:
+
+**Hallucination Prevention**: In approximately 14% of cases, the LLM generated responses when no relevant context was retrieved. Prompts were engineered to instruct the LLM not to generate responses when lacking relevant context.
+
+**Response Completeness**: User feedback indicated approximately 13% of responses were too brief. Prompts were modified to encourage more comprehensive responses, with the ability to generate both concise summaries and detailed answers.
+
+**Citation Generation**: LLM prompts were designed to generate citations properly attributing sources used in answers. The UI displays citations as hyperlinks, enabling users to validate LLM performance.
+
+**Chain-of-Thought Reasoning**: The team improved prompts to introduce better CoT reasoning, which they found:
+- Improved performance and aligned responses with humanlike coherence
+- Made the model less prone to hallucinations by considering conversation context
+- Reduced chances of inaccurate answers by building upon established context
+- Included examples of previously answered questions to establish patterns
+
+The case study includes detailed prompt examples showing structured thinking processes, format specifications for "I don't know" responses, and citation attribution prompts with scratchpad reasoning sections.
+
+### Embedding Model Optimization (76% → 86%)
+
+Despite semantic chunking improvements, retrieved context relevance scores remained at 55–65%, with incorrect contexts appearing in top ranks for over 50% of cases. The team experimented with multiple embedding models, including first-party and third-party options. They found that contextual embedding models like bge-base-en-v1.5 performed better for context retrieval compared to models like all-mpnet-base-v2. Ultimately, adopting the Amazon Titan Embeddings G1 model increased retrieved context relevance from approximately 55–65% to 75–80%, with 80% of retrieved contexts achieving higher ranks than before.
+
+## Production Considerations
+
+Several aspects of this case study reflect mature LLMOps practices:
+
+**Iterative Improvement**: The team didn't expect perfection from the initial deployment. They built systematic evaluation capabilities first, then used data-driven insights to prioritize improvement areas.
+
+**Safety Layers**: Multiple safety mechanisms were implemented—Bedrock Guardrails for PII detection and prompt injection prevention, plus a validation engine for hallucination detection with graceful fallback to "I don't know" responses.
+
+**User Experience**: The UI includes citation hyperlinks allowing users to verify sources, acknowledging that LLM outputs require human validation in production contexts.
+
+**Scalability Planning**: The mention of migrating from self-managed OpenSearch to Amazon Bedrock Knowledge Bases indicates forward-thinking about operational overhead reduction.
+
+**Realistic Metrics**: The 86% accuracy target, while significantly improved, is presented transparently rather than claiming perfect performance—a realistic expectation for enterprise RAG systems.
+
+This case study provides a valuable template for organizations building RAG-based assistants in regulated or high-stakes enterprise environments, demonstrating that systematic evaluation and targeted improvements can dramatically enhance LLM system reliability.

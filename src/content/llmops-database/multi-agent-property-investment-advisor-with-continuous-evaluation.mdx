@@ -1,0 +1,129 @@
+---
+title: "Multi-Agent Property Investment Advisor with Continuous Evaluation"
+slug: "multi-agent-property-investment-advisor-with-continuous-evaluation"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "68e3788a902977171d618437"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:21:48.478Z"
+  createdOn: "2025-10-06T08:06:34.064Z"
+llmopsTags:
+  - "customer-support"
+  - "chatbot"
+  - "question-answering"
+  - "classification"
+  - "realtime-application"
+  - "rag"
+  - "embeddings"
+  - "reranking"
+  - "semantic-search"
+  - "multi-agent-systems"
+  - "prompt-engineering"
+  - "cost-optimization"
+  - "latency-optimization"
+  - "chunking"
+  - "evals"
+  - "serverless"
+  - "monitoring"
+  - "databases"
+  - "api-gateway"
+  - "postgresql"
+  - "langchain"
+  - "orchestration"
+  - "anthropic"
+  - "amazon-aws"
+  - "cohere"
+company: "PropHero"
+summary: "PropHero, a property wealth management service, needed an AI-powered advisory system to provide personalized property investment insights for Spanish and Australian consumers. Working with AWS Generative AI Innovation Center, they built a multi-agent conversational AI system using Amazon Bedrock that delivers knowledge-grounded property investment advice through natural language conversations. The solution uses strategically selected foundation models for different agents, implements semantic search with Amazon Bedrock Knowledge Bases, and includes an integrated continuous evaluation system that monitors context relevance, response groundedness, and goal accuracy in real-time. The system achieved 90% goal accuracy, reduced customer service workload by 30%, lowered AI costs by 60% through optimal model selection, and enabled over 50% of users (70% of paid users) to actively engage with the AI advisor."
+link: "https://aws.amazon.com/blogs/machine-learning/how-prophero-built-an-intelligent-property-investment-advisor-with-continuous-evaluation-using-amazon-bedrock?tag=soumet-20"
+year: 2025
+seo:
+  title: "PropHero: Multi-Agent Property Investment Advisor with Continuous Evaluation - ZenML LLMOps Database"
+  description: "PropHero, a property wealth management service, needed an AI-powered advisory system to provide personalized property investment insights for Spanish and Australian consumers. Working with AWS Generative AI Innovation Center, they built a multi-agent conversational AI system using Amazon Bedrock that delivers knowledge-grounded property investment advice through natural language conversations. The solution uses strategically selected foundation models for different agents, implements semantic search with Amazon Bedrock Knowledge Bases, and includes an integrated continuous evaluation system that monitors context relevance, response groundedness, and goal accuracy in real-time. The system achieved 90% goal accuracy, reduced customer service workload by 30%, lowered AI costs by 60% through optimal model selection, and enabled over 50% of users (70% of paid users) to actively engage with the AI advisor."
+  canonical: "https://www.zenml.io/llmops-database/multi-agent-property-investment-advisor-with-continuous-evaluation"
+  ogTitle: "PropHero: Multi-Agent Property Investment Advisor with Continuous Evaluation - ZenML LLMOps Database"
+  ogDescription: "PropHero, a property wealth management service, needed an AI-powered advisory system to provide personalized property investment insights for Spanish and Australian consumers. Working with AWS Generative AI Innovation Center, they built a multi-agent conversational AI system using Amazon Bedrock that delivers knowledge-grounded property investment advice through natural language conversations. The solution uses strategically selected foundation models for different agents, implements semantic search with Amazon Bedrock Knowledge Bases, and includes an integrated continuous evaluation system that monitors context relevance, response groundedness, and goal accuracy in real-time. The system achieved 90% goal accuracy, reduced customer service workload by 30%, lowered AI costs by 60% through optimal model selection, and enabled over 50% of users (70% of paid users) to actively engage with the AI advisor."
+---
+
+## Overview of PropHero's Property Investment Advisor
+
+PropHero is a property wealth management platform that democratizes access to intelligent property investment advice through data and AI for Spanish and Australian consumers. The company faced the challenge of making comprehensive property investment knowledge more accessible while handling complex, multi-turn conversations about investment strategies in Spanish. They needed a system that could provide accurate, contextually relevant advice at scale while continuously learning and improving from customer interactions, supporting users across every phase of their investment journey from onboarding through final settlement.
+
+In collaboration with AWS Generative AI Innovation Center, PropHero developed a sophisticated multi-agent conversational AI system built on Amazon Bedrock. The 6-week iterative development process involved extensive testing across different model combinations and chunking strategies using real customer FAQ data, ultimately delivering a production system that demonstrates sophisticated LLMOps practices including strategic model selection, comprehensive evaluation frameworks, and real-time monitoring.
+
+## Production Architecture and Infrastructure
+
+The production system is architected around four distinct layers that work together to provide a complete end-to-end solution. The data foundation layer provides the storage backbone using Amazon DynamoDB for fast storage of conversation history, evaluation metrics, and user interaction data; Amazon RDS for PostgreSQL storing LangFuse observability data including LLM traces and latency metrics; and Amazon S3 as the central data lake storing Spanish FAQ documents, property investment guides, and conversation datasets.
+
+The multi-agent AI layer encompasses the core intelligence components powered by Amazon Bedrock foundation models and orchestrated through LangGraph running in AWS Lambda functions. Amazon Bedrock Knowledge Bases provides semantic search capabilities with semantic chunking optimized for FAQ-style content. The continuous evaluation layer operates as an integrated component rather than an afterthought, using Amazon CloudWatch for real-time monitoring, Amazon EventBridge for triggering evaluations upon conversation completion, and AWS Lambda for executing automated evaluation functions. Amazon QuickSight provides interactive dashboards for monitoring metrics. The application layer uses Amazon API Gateway to provide secure API endpoints for the conversational interface and evaluation webhooks.
+
+## Multi-Agent System Design and Orchestration
+
+The intelligent advisor uses a multi-agent system orchestrated through LangGraph within a single Lambda function, where each agent is specialized for specific tasks. This architectural decision reflects a sophisticated understanding of how to balance operational complexity with functional separation. The system includes a router agent that classifies and routes incoming queries, a general agent for common questions and conversation management, an advisor agent for specialized property investment advice, a settlement agent for customer support during the pre-settlement phase, and a response agent for final response generation and formatting.
+
+The conversation processing follows a structured workflow that ensures accurate responses while maintaining quality standards. User queries enter through API Gateway and are routed to the router agent, which determines the appropriate specialized agent based on query analysis. User information is retrieved at the start to provide richer context, and knowledge-intensive queries trigger the retriever to access the Amazon Bedrock knowledge base. Specialized agents process queries with retrieved user information and relevant context, the response agent formats the final user-facing response with appropriate tone, and parallel evaluation processes assess quality metrics. All conversation data is stored in DynamoDB for analysis and continuous improvement.
+
+## Strategic Model Selection for Cost-Performance Optimization
+
+One of the most significant LLMOps achievements in this implementation is the strategic model selection strategy that achieved a 60% reduction in AI costs while maintaining high performance. Rather than using a single premium model throughout the system, PropHero conducted extensive testing to match each component's computational requirements with the most cost-effective Amazon Bedrock model. This involved evaluating factors including response quality, latency requirements, and cost per token to determine optimal model assignments.
+
+The resulting model distribution shows sophisticated understanding of different models' strengths. The router agent uses Anthropic Claude 3.5 Haiku for fast query classification and routing. The general agent uses Amazon Nova Lite for common questions and conversation management, balancing cost with capability for simpler tasks. The advisor agent, which handles the most complex reasoning about property investment strategies, uses Amazon Nova Pro. The settlement agent uses Claude 3.5 Haiku for specialized customer support. The response agent uses Nova Lite for final response generation and formatting. For retrieval components, Cohere Embed Multilingual v3 provides embeddings optimized for Spanish understanding, while Cohere Rerank 3.5 handles context retrieval and ranking. Notably, the evaluator component also uses Claude 3.5 Haiku, implementing an LLM-as-a-judge pattern for quality assessment.
+
+This heterogeneous model approach represents mature LLMOps thinking, recognizing that different tasks within a production system have different computational and accuracy requirements, and that significant cost savings can be achieved through careful matching of models to tasks rather than defaulting to the most capable (and expensive) model throughout.
+
+## RAG Implementation with Knowledge Bases
+
+The system implements retrieval-augmented generation using Amazon Bedrock Knowledge Bases configured for optimal performance with Spanish-language FAQ content. The knowledge base uses S3 as the data source and implements semantic chunking, which proved superior to hierarchical and fixed chunking approaches during testing with real customer FAQ data. This chunking strategy is particularly well-suited for FAQ-style content where semantic coherence within chunks is more important than arbitrary size boundaries.
+
+The embedding model is Cohere Embed Multilingual v3, specifically chosen for its strong Spanish language understanding capabilities. A critical optimization involves the use of Cohere Rerank 3.5 as a reranker for retrieved Spanish content. During development, testing revealed that the reranker enabled the system to use fewer chunks (10 versus 20) while maintaining accuracy, which directly reduced both latency and cost. The vector database is Amazon OpenSearch Serverless, providing scalable semantic search capabilities.
+
+This RAG configuration demonstrates several LLMOps best practices: the use of domain-appropriate chunking strategies validated through empirical testing, selection of multilingual models appropriate for the target language, implementation of reranking to improve retrieval quality and efficiency, and the use of managed services (OpenSearch Serverless, Bedrock Knowledge Bases) to reduce operational overhead.
+
+## Integrated Continuous Evaluation System
+
+Perhaps the most sophisticated LLMOps aspect of this implementation is the integrated continuous evaluation system that operates as a core architectural component rather than a bolt-on monitoring solution. The evaluation system provides real-time quality monitoring alongside conversation processing, using metrics from the Ragas library: Context Relevance (0-1) measuring the relevance of retrieved context to user queries and evaluating RAG system effectiveness; Response Groundedness (0-1) ensuring responses are factually accurate and derived from PropHero's official information; and Agent Goal Accuracy (0-1) as a binary measure of whether responses successfully address user investment goals.
+
+The evaluation workflow is deeply integrated into the conversation architecture through several mechanisms. DynamoDB Streams triggers automatically invoke Lambda functions for evaluation when conversation data is written to DynamoDB, enabling evaluation to occur without requiring explicit triggering from the conversation flow. Lambda functions execute evaluation logic in parallel with response delivery, ensuring evaluation doesn't add latency to the user experience. Each conversation is evaluated across the three key dimensions simultaneously, providing multi-dimensional assessment of system performance.
+
+A particularly noteworthy aspect is the implementation of the LLM-as-a-judge pattern using Anthropic Claude 3.5 Haiku for intelligent scoring. This provides consistent evaluation across conversations with standardized assessment criteria, addressing one of the key challenges in production LLM systems: how to evaluate quality at scale without manual human review for every interaction. The choice of Claude 3.5 Haiku for this role balances evaluation quality with cost, as evaluation functions run for every conversation and could become a significant cost center if using more expensive models.
+
+CloudWatch captures metrics from the evaluation process, enabling real-time monitoring with automated alerting and threshold management. QuickSight provides dashboards for trend analysis, allowing the team to track quality metrics over time and identify patterns or degradation in system performance. This comprehensive observability stack ensures the team can quickly identify and respond to quality issues in production.
+
+## Multilingual Capabilities and Market Expansion
+
+The system's multilingual capabilities, particularly its strong Spanish language support, enabled PropHero's expansion into the Spanish consumer market with localized expertise. The system effectively handles both Spanish and English queries by using foundation models on Amazon Bedrock that support Spanish language. Example conversations demonstrate natural Spanish language understanding, with the system engaging in fluent Spanish discussions about PropHero's services and investment processes.
+
+This multilingual capability required careful model selection throughout the stack, from the multilingual embedding model (Cohere Embed Multilingual v3) to foundation models with strong Spanish support. The successful deployment demonstrates that with appropriate model selection and testing, LLM-based systems can provide high-quality experiences in languages beyond English, expanding the potential market for AI-powered services.
+
+## Operational Efficiency and Scaling Characteristics
+
+The serverless architecture using Lambda, API Gateway, and managed services like Bedrock and OpenSearch Serverless provides automatic scaling to handle increasing customer demand without manual intervention. This architectural choice reflects mature cloud-native thinking and is particularly well-suited for conversational AI workloads that can have unpredictable traffic patterns. The serverless approach means PropHero doesn't need to provision capacity for peak load and only pays for actual usage, providing cost efficiency alongside operational simplicity.
+
+The use of DynamoDB for conversation history and evaluation metrics provides fast access to data needed for conversation context and analysis. The integration with DynamoDB Streams for triggering evaluation workflows demonstrates sophisticated use of event-driven architectures in production LLM systems, where actions can be triggered by data changes without requiring explicit workflow orchestration.
+
+LangFuse integration provides observability into LLM operations, with trace data and latency metrics stored in RDS for PostgreSQL. This provides detailed visibility into system performance and behavior, enabling debugging and optimization of the multi-agent workflows. The combination of LangFuse for LLM-specific observability, CloudWatch for infrastructure and evaluation metrics, and QuickSight for business intelligence demonstrates a comprehensive observability strategy appropriate for production LLM systems.
+
+## Business Impact and Production Metrics
+
+The system delivered measurable business value that validates the LLMOps investments. The 90% goal accuracy rate, measured through the continuous evaluation system, ensures customers receive relevant and actionable property investment advice. Over 50% of users and over 70% of paid users actively use the AI advisor, demonstrating strong product-market fit and user acceptance. Automated responses to common questions reduced customer service workload by 30%, freeing staff to focus on complex customer needs and providing operational efficiency gains. The strategic model selection achieved cost optimization with a 60% reduction in AI costs compared to using premium models throughout, demonstrating that thoughtful LLMOps practices directly impact the bottom line.
+
+## Development Process and Iteration
+
+The 6-week iterative development process with PropHero's technical team involved conducting testing across different model combinations and evaluating chunking strategies using real customer FAQ data. This iterative, data-driven approach to system design represents best practices in LLMOps, where architectural decisions are validated through empirical testing rather than assumptions. The process revealed several architectural optimizations that enhanced system performance, achieved significant cost reductions, and improved user experience, demonstrating the value of investment in proper evaluation during development.
+
+## Limitations and Balanced Assessment
+
+While the case study presents impressive results, it's important to note that this is an AWS blog post with involvement from AWS team members, and naturally presents the solution in a favorable light. The 90% goal accuracy is strong but leaves room for improvement, and the case study doesn't discuss failure modes, edge cases, or challenges encountered in production. The 30% reduction in customer service workload suggests the system handles many but not all customer queries, and it would be valuable to understand which types of queries still require human intervention. The cost reduction claims of 60% are impressive but are relative to using premium models throughout rather than comparison to alternative approaches or platforms.
+
+The case study also doesn't discuss some important production considerations such as how the system handles out-of-domain queries, what guardrails are in place to prevent inappropriate or inaccurate advice, how frequently the knowledge base is updated, or what the user experience is like when the system fails to provide adequate responses. The reliance on managed AWS services provides operational simplicity but also creates vendor lock-in and may limit flexibility for certain customizations.
+
+## Key LLMOps Lessons and Best Practices
+
+This implementation demonstrates several valuable LLMOps practices for production systems. Strategic model selection matching task complexity to model capability can achieve significant cost reductions while maintaining quality. Integrated continuous evaluation operating as a core architectural component rather than an afterthought enables real-time quality monitoring and rapid iteration. The LLM-as-a-judge pattern using cost-effective models for evaluation enables scalable quality assessment without manual review. Empirical testing of chunking strategies and model combinations during development leads to better production performance. Comprehensive observability combining LLM-specific tools, infrastructure monitoring, and business intelligence provides visibility needed for production operations. Serverless and managed services reduce operational overhead while providing automatic scaling for unpredictable workloads.
+
+The multi-agent architecture with specialized agents for different tasks enables both functional separation and optimization of individual components. The parallel evaluation approach ensures quality monitoring doesn't add latency to user experience. Event-driven architecture using DynamoDB Streams enables evaluation workflows to trigger automatically without explicit orchestration. The careful attention to multilingual capabilities including appropriate model selection for embeddings, foundation models, and rerankers enables expansion into non-English markets.
+
+Overall, this case study presents a sophisticated production LLM system that demonstrates mature LLMOps practices across model selection, evaluation, monitoring, and operational architecture, though readers should interpret the results with awareness that this is a promotional case study from AWS.

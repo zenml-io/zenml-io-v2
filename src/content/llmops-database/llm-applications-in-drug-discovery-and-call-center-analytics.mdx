@@ -1,0 +1,106 @@
+---
+title: "LLM Applications in Drug Discovery and Call Center Analytics"
+slug: "llm-applications-in-drug-discovery-and-call-center-analytics"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f3ed79d22491de4b21394"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:42:38.958Z"
+  createdOn: "2024-11-21T14:08:23.090Z"
+llmopsTags:
+  - "compliance"
+  - "customer-support"
+  - "databases"
+  - "document-processing"
+  - "healthcare"
+  - "kubernetes"
+  - "microsoft-azure"
+  - "mistral"
+  - "model-optimization"
+  - "monitoring"
+  - "multi-modality"
+  - "openai"
+  - "prompt-engineering"
+  - "rag"
+  - "reliability"
+  - "scalability"
+  - "scaling"
+  - "security"
+  - "semantic-search"
+  - "speech-recognition"
+  - "structured-output"
+  - "vector-search"
+company: "QuantumBlack"
+summary: "QuantumBlack presented two distinct LLM applications: molecular discovery for pharmaceutical research and call center analytics for banking. The molecular discovery system used chemical language models and RAG to analyze scientific literature and predict molecular properties. The call center analytics solution processed audio files through a pipeline of diarization, transcription, and LLM analysis to extract insights from customer calls, achieving 60x performance improvement through domain-specific optimizations and efficient resource utilization."
+link: "https://www.youtube.com/watch?v=x3ZQZObeGDc"
+year: 2023
+seo:
+  title: "QuantumBlack: LLM Applications in Drug Discovery and Call Center Analytics - ZenML LLMOps Database"
+  description: "QuantumBlack presented two distinct LLM applications: molecular discovery for pharmaceutical research and call center analytics for banking. The molecular discovery system used chemical language models and RAG to analyze scientific literature and predict molecular properties. The call center analytics solution processed audio files through a pipeline of diarization, transcription, and LLM analysis to extract insights from customer calls, achieving 60x performance improvement through domain-specific optimizations and efficient resource utilization."
+  canonical: "https://www.zenml.io/llmops-database/llm-applications-in-drug-discovery-and-call-center-analytics"
+  ogTitle: "QuantumBlack: LLM Applications in Drug Discovery and Call Center Analytics - ZenML LLMOps Database"
+  ogDescription: "QuantumBlack presented two distinct LLM applications: molecular discovery for pharmaceutical research and call center analytics for banking. The molecular discovery system used chemical language models and RAG to analyze scientific literature and predict molecular properties. The call center analytics solution processed audio files through a pipeline of diarization, transcription, and LLM analysis to extract insights from customer calls, achieving 60x performance improvement through domain-specific optimizations and efficient resource utilization."
+---
+
+## Overview
+
+This case study, presented by Nick (Senior ML Engineer at QuantumBlack, formerly Agazio) details a production LLM system built for a banking client to analyze historical call center recordings. The presentation was part of an MLOps Community session that also featured Diana (Senior Principal Data Scientist) discussing molecule discovery applications, though this summary focuses primarily on the call center use case as it provides the most detailed LLMOps content.
+
+The core challenge was transforming unstructured audio data from customer service calls into structured, actionable insights that could improve customer experience. This included summarizing calls, detecting sentiment, determining issue resolution, and building customer profiles. The solution needed to work within strict regulatory constraints that required on-premises production deployment.
+
+## Technical Architecture and Constraints
+
+The banking client faced several unique constraints that shaped the technical architecture:
+
+**Hybrid Environment Requirements**: Development occurred in Azure cloud, but production deployment was strictly on-premises due to banking regulatory requirements. This meant all tooling had to work seamlessly in both environments without major refactoring. The team used MLRun as their orchestration platform specifically because it could operate identically in both cloud and on-prem Kubernetes environments.
+
+**Open-Source Model Dependency**: Because everything had to be hosted on-premises, the team could not leverage API-based models like GPT-4 or Claude. They were limited to open-source models that could be self-hosted, which meant working with less powerful models but having full control over the inference environment. The primary LLM used was Mistral 7B OpenOrca GPTQ—a Mistral 7B base model fine-tuned on the OpenOrca dataset and quantized to 4-bit for efficiency.
+
+**Limited GPU Resources**: Unlike cloud environments where you can easily provision additional compute, the team had a fixed pool of GPU resources. This constraint drove much of the optimization work described in the case study, forcing them to maximize utilization of available hardware rather than simply scaling horizontally.
+
+## Pipeline Architecture
+
+The batch processing pipeline consisted of four main stages, with each running in its own container on Kubernetes:
+
+**Diarization**: This step attributes segments of audio to specific speakers (agent vs. client). The team initially used PyAnnote Audio, a deep learning-based diarization tool, but found it could only process one audio file at a time and was GPU-intensive. They discovered that call center audio is stored with speakers on different stereo channels (left channel for one speaker, right for the other). This domain knowledge allowed them to switch to Silero VAD (Voice Activity Detection), a CPU-based model that simply detects when voice activity starts and stops on each channel. This optimization achieved a 60x speedup while freeing GPU resources for other steps.
+
+**Transcription and Translation**: Using OpenAI Whisper for speech-to-text, with an added translation step because the original audio was in Spanish but English text performed better with the available open-source LLMs. The initial Whisper implementation had poor GPU utilization (only 20% on one GPU, 0% on the second) because it processed only one audio file at a time. The team implemented two key optimizations:
+- Batching: Modified Whisper to process multiple audio files simultaneously through a task queue
+- Parallelization: Used Horovod (distributed deep learning framework built on OpenMPI) to distribute work across multiple GPUs, with each GPU running a copy of the model processing batched audio files
+
+These changes achieved near-100% GPU utilization.
+
+**PII Recognition**: Before sending transcripts to the LLM, sensitive information like names, emails, and phone numbers were detected and replaced with anonymized placeholders (e.g., "John Doe", "johndoe@email.com"). This served dual purposes: compliance for LLM processing and enabling data transfer to cloud environments for further development.
+
+**LLM Analysis**: The final stage uses Mistral 7B OpenOrca GPTQ to generate structured features from the anonymized transcripts. The team implemented a clever "quiz" system where the LLM answers specific questions about each call, producing structured output columns including: call topic, summary, whether concerns were addressed, client tone, agent tone, upsell attempts, and numerical metrics for professionalism, kindness, and active listening.
+
+## Key LLMOps Optimizations
+
+**Speaker Labels for Model Performance**: Because they were using smaller open-source models rather than state-of-the-art API models, the team found that explicitly adding speaker labels (Agent/Client) in the transcript significantly improved the LLM's ability to understand and analyze the conversation context. This compensated for the reduced reasoning capabilities of the 7B parameter model.
+
+**Polling for Numerical Outputs**: For subjective numerical metrics (professionalism, kindness, etc.), the team implemented a polling mechanism that makes three separate LLM calls and selects the most common response. This reduces variance in outputs for inherently subjective assessments.
+
+**Quantization**: The use of GPTQ 4-bit quantization allowed the Mistral 7B model to run efficiently within the constrained GPU memory available on-premises.
+
+## Infrastructure and Tooling
+
+The entire pipeline was orchestrated using MLRun, an open-source MLOps framework that provided:
+- Containerization of each pipeline step with individual resource allocation
+- Pipeline orchestration and dependency management
+- Experiment tracking for intermediate artifacts
+- Consistent operation across Azure cloud (dev) and on-prem Kubernetes (prod)
+
+The front-end prototype used Gradio to demonstrate the end-to-end capabilities, showing the original audio, translated/diarized transcripts, and all extracted features in an interactive table format. The production application populated databases that fed downstream applications and dashboards.
+
+## Lessons and Observations
+
+The case study highlights several important LLMOps principles. First, most of the pipeline work was data preprocessing rather than LLM inference—a pattern that mirrors traditional ML projects. Second, domain knowledge can be transformative—understanding how call centers store audio (stereo channel separation) enabled a 60x improvement in one pipeline step. Third, open-source models with proper optimization can achieve production-grade results even without access to frontier API models, though this requires more engineering effort. Fourth, the hybrid cloud/on-prem requirement, while challenging, was successfully addressed through careful tooling selection (MLRun) and containerized architecture.
+
+The project also demonstrates the importance of resource-aware optimization in constrained environments. Rather than defaulting to "throw more hardware at it," the team systematically improved utilization through batching, parallelization, and algorithm selection appropriate to the hardware available.
+
+## Additional Context: Molecule Discovery Use Case
+
+The presentation also included Diana's overview of using chemical language models and RAG systems for molecule discovery in pharma/biotech contexts. While less detailed on specific production implementations, this demonstrated the breadth of QuantumBlack's LLMOps work across industries. The RAG system ingested millions of scientific papers, patents, and clinical research studies, allowing users to query for chemical compounds with specific properties (e.g., refrigerants) and receive structured, hallucination-scored responses with source document references. This application highlighted the challenge of multimodal scientific data where images and diagrams in papers contain critical information that current systems struggle to extract effectively.

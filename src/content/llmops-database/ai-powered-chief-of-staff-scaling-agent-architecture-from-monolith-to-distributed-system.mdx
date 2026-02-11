@@ -1,0 +1,122 @@
+---
+title: "AI-Powered Chief of Staff: Scaling Agent Architecture from Monolith to Distributed System"
+slug: "ai-powered-chief-of-staff-scaling-agent-architecture-from-monolith-to-distributed-system"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "67d82fa04b9f57e79509861c"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:04:22.923Z"
+  createdOn: "2025-03-17T14:20:16.757Z"
+llmopsTags:
+  - "chatbot"
+  - "high-stakes-application"
+  - "realtime-application"
+  - "agent-based"
+  - "multi-agent-systems"
+  - "error-handling"
+  - "latency-optimization"
+  - "cost-optimization"
+  - "fallback-strategies"
+  - "fastapi"
+  - "postgresql"
+  - "docker"
+  - "microservices"
+  - "scaling"
+  - "cicd"
+  - "reliability"
+  - "scalability"
+  - "microsoft-azure"
+  - "openai"
+  - "amazon-aws"
+company: "Outropy"
+summary: "Outropy initially built an AI-powered Chief of Staff for engineering leaders that attracted 10,000 users within a year. The system evolved from a simple Slack bot to a sophisticated multi-agent architecture handling complex workflows across team tools. They tackled challenges in agent memory management, event processing, and scaling, ultimately transitioning from a monolithic architecture to a distributed system using Temporal for workflow management while maintaining production reliability."
+link: "https://philcalcado.com/2024/12/14/building-ai-products-part-i.html"
+year: 2024
+seo:
+  title: "Outropy: AI-Powered Chief of Staff: Scaling Agent Architecture from Monolith to Distributed System - ZenML LLMOps Database"
+  description: "Outropy initially built an AI-powered Chief of Staff for engineering leaders that attracted 10,000 users within a year. The system evolved from a simple Slack bot to a sophisticated multi-agent architecture handling complex workflows across team tools. They tackled challenges in agent memory management, event processing, and scaling, ultimately transitioning from a monolithic architecture to a distributed system using Temporal for workflow management while maintaining production reliability."
+  canonical: "https://www.zenml.io/llmops-database/ai-powered-chief-of-staff-scaling-agent-architecture-from-monolith-to-distributed-system"
+  ogTitle: "Outropy: AI-Powered Chief of Staff: Scaling Agent Architecture from Monolith to Distributed System - ZenML LLMOps Database"
+  ogDescription: "Outropy initially built an AI-powered Chief of Staff for engineering leaders that attracted 10,000 users within a year. The system evolved from a simple Slack bot to a sophisticated multi-agent architecture handling complex workflows across team tools. They tackled challenges in agent memory management, event processing, and scaling, ultimately transitioning from a monolithic architecture to a distributed system using Temporal for workflow management while maintaining production reliability."
+---
+
+## Overview
+
+Outropy, led by experienced engineer Phil Calçado (with background at ThoughtWorks, SoundCloud, DigitalOcean, and other companies), launched an AI-powered "Chief of Staff" assistant for engineering leaders in 2023. This assistant unified information across team tools like Slack, GitHub, Google Docs, and calendars, while tracking critical project developments. Within a year, they attracted 10,000 users, reportedly outperforming incumbents like Salesforce and Slack AI. The overwhelming interest in their underlying technology led to a pivot—Outropy became a developer platform enabling software engineers to build AI products.
+
+This case study is valuable because it comes from practitioners with decades of software engineering experience who candidly discuss what worked, what didn't, and how traditional patterns needed adaptation for AI systems. It represents a genuine "report from the trenches" rather than theoretical guidance.
+
+## Architectural Foundations: Inference Pipelines vs. Agents
+
+The team identified two major component types in GenAI systems. First, **inference pipelines**, which are deterministic sequences of operations that transform inputs through one or more AI models to produce specific outputs (like RAG pipelines generating answers from documents). Second, **agents**, which are autonomous software entities that maintain state while orchestrating AI models and tools to accomplish complex tasks, capable of reasoning about progress and adjusting approaches across multiple steps.
+
+The journey began with a simple Slack bot using distinct inference pipelines with results tied together manually. This approach served well initially but became increasingly complex and brittle as integrations and features expanded. The pipelines struggled to reconcile data from different sources and formats while maintaining coherent semantics, driving the adoption of a multi-agent system.
+
+## Agent Design Philosophy
+
+Rather than getting lost in theoretical debates about agent definitions, the team distilled practical traits guiding their implementation: semi-autonomy (functioning independently with minimal supervision within defined boundaries), specialization (mastering specific tasks or domains), reactivity (responding intelligently to requests and environmental changes), memory-driven operation (maintaining and leveraging both immediate context and historical information), decision-making capability (analyzing situations and evaluating options), tool usage (employing various systems and APIs), and goal-orientation (adapting behavior to achieve defined objectives).
+
+Critically, the team recognized that not everything needs to be an agent. Traditional design patterns worked well for their Slack bot, productivity tool connectors, and standard business operations like user management, billing, and permissions. This pragmatic approach meant agents were reserved for components that genuinely benefited from their unique capabilities.
+
+## Why Agents Are Not Microservices
+
+Despite Phil's extensive microservices experience, the team discovered significant impedance mismatch between stateless microservices and AI agents. They initially implemented agents as a service layer with traditional request/response cycles, expecting this would create an easier path to extracting services for horizontal scalability.
+
+However, several fundamental conflicts emerged. Agents require stateful operation, maintaining rich context across interactions including conversation history and planning states, which conflicts with microservices' stateless nature. Their non-deterministic behavior means they function like state machines with unbounded states, breaking assumptions about caching, testing, and debugging. Agents are data-intensive with poor locality, processing massive amounts of data through language models and embeddings, contradicting microservices' efficiency principles. They have unreliable external dependencies through heavy reliance on LLMs, embedding services, and tool endpoints, creating complex dependency chains with unpredictable latency, reliability, and costs. Finally, implementation complexity from combining prompt engineering, planning algorithms, and tool integrations creates debugging challenges that compound with distribution.
+
+## Agents as Objects: A Better Paradigm
+
+The team found that object-oriented programming offered a more natural abstraction. Agents naturally align with OOP principles: they maintain encapsulated state (their memory), expose methods (their tools and decision-making capabilities via inference pipelines), and communicate through message passing. This mirrors Alan Kay's original vision of OOP as messaging, local retention and protection of state-process, and late-binding.
+
+They evolved agents from stateless Services to Entities with distinct identities and lifecycles, managed through Repositories in their database. This simplified function signatures by eliminating the need to pass extensive context as arguments on every call, and enabled unit tests with stubs/mocks instead of complicated integration tests. The team leveraged SQLAlchemy and Pydantic for building agents—battle-tested tools rather than novel AI-specific frameworks.
+
+## Agent Memory Implementation with CQRS and Event Sourcing
+
+Different agents had different memory needs. Simple agents like "Today's Priorities" only needed to remember a list of high-priority items they were monitoring. Complex agents like "Org Chart Keeper" had to track all interactions between organization members to infer reporting lines and team membership.
+
+Simpler agents used dedicated tables with SQLAlchemy's ORM. For complex memory needs, the team adopted CQRS (Command Query Responsibility Segregation) with Event Sourcing. Every state change was represented as a Command—a discrete event recorded chronologically like a database transaction log. Current state could be reconstructed by replaying associated events in sequence.
+
+To address performance concerns with event replay, they maintained continuously updated, query-optimized representations of data (similar to materialized views). Events and query models were stored in Postgres initially, with plans to migrate to DynamoDB as needed.
+
+A key challenge was routing events to appropriate agents. Rather than building an all-knowing router (risking a God object), they implemented a semantic event bus inspired by the team's experience at SoundCloud. All state-change events were posted to an event bus that agents could subscribe to, with each agent filtering irrelevant events independently. Within their monolith, they implemented a straightforward Observer pattern using SQLAlchemy's native event system.
+
+Ultimately, managing both ORM and CQRS approaches grew cumbersome, so they converted all agents to CQRS style while retaining ORM for non-agentic components.
+
+## Natural Language Event Handling with Proposition-Based Retrieval
+
+CQRS works well with well-defined data structures, but AI systems deal with natural language uncertainty. Processing a Slack message like "I am feeling sick and can't come to the office tomorrow, can we reschedule the project meeting?" into appropriate events for different agents presented significant challenges.
+
+The naive approach—running every message through an inference pipeline for extraction, decisions, and tool calling—faced reliability issues with single pipelines and the God object problem since logic was spread across many agents. Sending content to every agent for processing would cause performance and cost issues due to frequent LLM calls, especially since most content wouldn't be relevant to particular agents.
+
+After exploring feature extraction with simpler ML models (which they note can work in constrained domains), they built on Tong Chen's Proposition-Based Retrieval research. Instead of directly embedding content, they used an LLM to generate natural language factoids structured according to Abstract Meaning Representation. For example, Bob's sick message on the #project-lavender channel would generate structured propositions that could be efficiently routed and processed.
+
+Message batching was critical to minimize costs and latency, which became a major driver for developing automated pipeline optimization using Reinforcement Learning (a capability that evolved into their Outropy platform).
+
+## Scaling to 10,000 Users
+
+The team maintained a single-component architecture using AWS Elastic Container Service with FastAPI and asyncio, prioritizing product learning over premature optimization. This simplicity enabled growth from 8 to 2,000 users in about two months.
+
+Then things broke. Daily briefings—their flagship feature—went from minutes to hours per user. They'd trained the assistant to learn each user's login time and generate reports an hour before, but at scale, they had to abandon this personalization for midnight batch processing.
+
+Their scaling journey involved several key optimizations. First, organization-based sharding: smaller organizations shared container pools while those with thousands of users got dedicated resources, preventing larger accounts from blocking smaller ones. Second, Python async restructuring using Chain of Responsibility to properly separate CPU-bound and IO-bound work, combined with increasing container memory and ulimit for more open sockets. Third, OpenAI rate limit management through token budgeting with backpressure, exponential backoffs, caching, fallbacks, and moving heavy processing to off-peak hours. Fourth, migration from OpenAI APIs to Azure GPT deployments, leveraging Azure's per-deployment quotas (versus OpenAI's organization-wide limits) and load-balancing across multiple deployments.
+
+## Service Extraction and Distributed Agents
+
+Following the "zero-one-infinity" rule, extracting the GPT calling code into a dedicated GPTProxy service (to manage shared Azure quota) paved the way for further decomposition. They extracted productivity tool connector logic into its own service, replacing their simple observer loop with pub/sub using Postgres as a queue.
+
+Distributing agents proved more challenging. While aware of Martin Fowler's "First Law of Distributed Objects" (don't), they recognized that coarse-grained APIs designed for remote calls and error scenarios—as used in microservices—could work for agents. They kept modeling agents as objects but used Data Transfer Objects for APIs.
+
+The model broke down with backpressure and resilience patterns: what happens when the third of five LLM calls fails during an agent's decision process? They explored various solutions: ETL tools like Apache Airflow didn't fit (optimized for stateless, scheduled tasks), and AWS Lambda/serverless options were optimized for short-lived, stateless tasks.
+
+## Temporal for Agent Orchestration
+
+Based on recommendations from previous teams at DigitalOcean, they adopted Temporal for long-running, stateful workflows. Temporal's core abstractions mapped perfectly to object-oriented agents: side-effect-free workflows for main agent logic, and flexible activities for tool and API interactions like AI model calls. This let Temporal's runtime handle retries, durability, and scalability automatically.
+
+The framework had some friction—Python SDK felt like a second-class citizen, and using standard libraries like Pydantic required building converters and exception wrappers. However, Temporal Cloud proved affordable enough that self-hosting was never considered, and it became core to both inference pipelines and Outropy's evolution into a developer platform.
+
+## Lessons and Outcomes
+
+This case study demonstrates several key LLMOps lessons from production experience. Traditional software patterns require significant adaptation for AI systems, with agents requiring fundamentally different treatment than microservices. Pragmatism in tool selection matters—the team leveraged existing tools like SQLAlchemy, Pydantic, and Temporal rather than building AI-specific infrastructure prematurely. The challenges of natural language in event-driven systems drove novel solutions like proposition-based event extraction. Rate limiting and cost management with external LLM APIs became critical scaling bottlenecks requiring dedicated infrastructure. Finally, the experience building this assistant was valuable enough that it led to a company pivot, with the underlying technology becoming a developer platform—testament to the difficulty and value of getting AI production systems right.

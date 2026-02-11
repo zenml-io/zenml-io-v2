@@ -1,0 +1,120 @@
+---
+title: "Building and Evaluating a Financial Earnings Call Summarization System"
+slug: "building-and-evaluating-a-financial-earnings-call-summarization-system"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "6778087ca2b26aa6347db894"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:52:43.161Z"
+  createdOn: "2025-01-03T15:55:40.405Z"
+llmopsTags:
+  - "summarization"
+  - "data-analysis"
+  - "structured-output"
+  - "regulatory-compliance"
+  - "prompt-engineering"
+  - "embeddings"
+  - "semantic-search"
+  - "system-prompts"
+  - "wandb"
+  - "fastapi"
+  - "anthropic"
+  - "openai"
+  - "google-gcp"
+  - "hugging-face"
+company: "Aiera"
+summary: "Aiera, an investor intelligence platform, developed a system for automated summarization of earnings call transcripts. They created a custom dataset from their extensive collection of earnings call transcriptions, using Claude 3 Opus to extract targeted insights. The project involved comparing different evaluation metrics including ROUGE and BERTScore, ultimately finding Claude 3.5 Sonnet performed best for their specific use case. Their evaluation process revealed important insights about the trade-offs between different scoring methodologies and the challenges of evaluating generative AI outputs in production."
+link: "https://www.youtube.com/watch?v=SZPwFDgOF_Y"
+year: 2023
+seo:
+  title: "Aiera: Building and Evaluating a Financial Earnings Call Summarization System - ZenML LLMOps Database"
+  description: "Aiera, an investor intelligence platform, developed a system for automated summarization of earnings call transcripts. They created a custom dataset from their extensive collection of earnings call transcriptions, using Claude 3 Opus to extract targeted insights. The project involved comparing different evaluation metrics including ROUGE and BERTScore, ultimately finding Claude 3.5 Sonnet performed best for their specific use case. Their evaluation process revealed important insights about the trade-offs between different scoring methodologies and the challenges of evaluating generative AI outputs in production."
+  canonical: "https://www.zenml.io/llmops-database/building-and-evaluating-a-financial-earnings-call-summarization-system"
+  ogTitle: "Aiera: Building and Evaluating a Financial Earnings Call Summarization System - ZenML LLMOps Database"
+  ogDescription: "Aiera, an investor intelligence platform, developed a system for automated summarization of earnings call transcripts. They created a custom dataset from their extensive collection of earnings call transcriptions, using Claude 3 Opus to extract targeted insights. The project involved comparing different evaluation metrics including ROUGE and BERTScore, ultimately finding Claude 3.5 Sonnet performed best for their specific use case. Their evaluation process revealed important insights about the trade-offs between different scoring methodologies and the challenges of evaluating generative AI outputs in production."
+---
+
+## Overview
+
+Aiera is an investor intelligence platform focused on empowering customers to cover a large number of financial events and surface timely insights. The company provides real-time event transcription, calendar data, and content aggregation with enrichment capabilities. Their product covers over 45,000 events per year including earnings presentations, conferences, and regulatory/macro events, delivered through web and mobile apps, embeddable components, and API feeds.
+
+This case study, presented by Jacqueline Gahan, a senior machine learning engineer at Aiera, details their journey in developing a high-quality summarization dataset for earnings call transcripts and the comprehensive evaluation framework they built to assess LLM performance on this task.
+
+## Business Context and AI Capabilities
+
+Aiera's AI efforts aim to enrich their data with what they call a "constellation of generative insights." Their AI functionality spans four main categories:
+
+- **Utility functions**: Text cleaning, restructuring, and title generation
+- **Transcription**: Processing of recorded financial events
+- **Extraction**: Topics, entities, and speakers from transcription text
+- **Metrics and Intelligence**: Topic relevance rankings, sentiment analysis, tonal sentiment analysis, SWOT analysis, Q&A overviews, and event summarization
+
+The summarization work is particularly important given their client base of investment professionals who need to quickly digest the key points from earnings calls.
+
+## Technical Requirements for Summarization
+
+The team identified several critical requirements for their generative summarization system:
+
+The first requirement involved **variable length transcript handling**. Earnings calls vary significantly in length, requiring models with large context windows to process entire transcripts effectively.
+
+The second requirement centered on **financial domain intelligence**. Summaries needed to reflect what is important specifically to investment professionals, not just general summary quality. This domain specificity is crucial for delivering value to their clients.
+
+The third requirement focused on **concise output**. Users need to understand the core content of calls in an easily digestible format, meaning the summaries must be both comprehensive and concise.
+
+## Dataset Creation Process
+
+Existing open-source benchmarks for financial tasks, such as Pichu (a multi-university effort available on GitHub with references to Hugging Face datasets), did not work for Aiera's specific use case "out of the box." This is a common challenge in production LLM systems where domain-specific requirements often necessitate custom datasets.
+
+Their dataset creation methodology involved several steps. First, they assembled transcripts by pulling speaker names and transcript segments from a subset of Aiera's earnings call transcripts into single text bodies for use in templated prompts. Then, using Claude 3 Opus (specifically the February release, which was the highest-ranking model on Hugging Face's Open LLM Leaderboard for text comprehension tasks at the time), they automatically extracted targeted insights to indicate what would be important for investment professionals.
+
+The guided insights covered specific focus areas including financials, operational highlights, guidance and projections, strategic initiatives, risks and challenges, and management commentary. These insights were distilled into parent categories with examples for use in the prompt template.
+
+This approach of using one high-quality model to generate reference data for evaluating other models is a pragmatic choice, though it does introduce potential bias toward the model family used for generation, which the presenter acknowledges as a limitation.
+
+## Evaluation Framework and Metrics
+
+A significant portion of the case study addresses the challenges of evaluating generative text tasks like summarization. The presenter identifies several fundamental difficulties: quality is subjective and domain-specific, language is complex with context-sensitive expressions, there is no single correct answer for a good summary, and standard evaluation metrics may not adequately capture the quality of alternative yet equally valid summaries.
+
+### ROUGE Scoring
+
+The team initially evaluated models using ROUGE scores, which measure the overlap between machine-generated and reference summaries. They examined ROUGE-N (measuring n-gram overlap, including unigrams and bigrams) and ROUGE-L (focusing on the longest common subsequence between summaries).
+
+However, ROUGE has significant limitations for abstractive summarization. Using the example of "The cat jumped onto the window sill" (target) versus "The feline leaped onto the window ledge" (prediction), all ROUGE scores were below 0.5 despite the sentences having nearly equivalent meaning. ROUGE ignores semantics and context, favors word-level similarity (handling paraphrasing poorly), and often rewards longer summaries due to recall bias.
+
+### BERT Score
+
+As a more sophisticated alternative, the team implemented BERT scoring, which leverages deep learning models to evaluate summaries based on semantic similarity rather than simple n-gram overlap. BERT scoring uses contextual embeddings to capture meaning, allowing for more nuanced comparison between candidate and reference summaries.
+
+The process works by creating embeddings for both reference and generated summaries, tokenizing sentences, calculating cosine similarity between tokens in generated and reference summaries, and aggregating these scores over entire text bodies. On the same cat/feline example, BERT scores showed much better recognition of the semantic equivalence between the two sentences.
+
+The team also explored alternative embedding models beyond the default BERT-base-uncased model, which ranked 155th on Hugging Face's MTEB leaderboard. They tested higher-ranked models with 1024, 768, and 384 dimensions respectively. Interestingly, their experiments with the NV-Instruct small (384-dimension) model suggested it might assign unreasonably high scores to unstructured prompts, indicating potential issues with dimension reduction.
+
+## Model Comparison Results
+
+Using their evaluation framework with the LM Evaluation Harness from EleutherAI, the team benchmarked multiple models across providers. The key finding was that Claude 3.5 Sonnet emerged as the top performer based on BERT F1 scores. When comparing F1 scores across ROUGE and BERT measures, they found statistically significant correlations, suggesting that even the lower ROUGE scores can serve as an adequate metric for comparison purposes.
+
+## Trade-offs and Limitations
+
+The case study provides a thoughtful analysis of evaluation trade-offs. BERT scoring offers semantic understanding, better handling of paraphrasing, and suitability for abstractive summarization. However, it is more computationally expensive, dependent on the pre-trained embedding model and its training corpus, and less interpretable than simpler metrics.
+
+The presenter raises several open questions that remain relevant for production LLMOps systems:
+
+- How do stylistic differences impact performance?
+- Does prompt favoritism or specificity impact model scoring? (Since Claude 3 Opus was used to generate initial insights, this could structurally impact how models are scored)
+- Are important nuances lost by choosing lower-dimensional embedding models?
+- What are the cost and performance trade-offs for different evaluation approaches?
+
+## Production Operations and Best Practices
+
+A notable LLMOps practice mentioned is that Aiera maintains a leaderboard of task-specific benchmarks, available on Hugging Face Spaces, which hosts scoring for major model providers (OpenAI, Anthropic, Google) as well as large-context open-source models available through Hugging Face's serverless inference API. This internal benchmarking system informs model selection decisions for production deployment.
+
+This approach of maintaining domain-specific, task-specific benchmarks rather than relying solely on general-purpose leaderboards represents a mature LLMOps practice. It acknowledges that performance on standardized benchmarks may not translate directly to performance on specific production use cases.
+
+## Key Takeaways for LLMOps Practitioners
+
+The case study demonstrates several important principles for production LLM systems in specialized domains. First, off-the-shelf datasets and benchmarks may not suffice for domain-specific applications, necessitating custom dataset development. Second, evaluation metrics must be chosen carefully—ROUGE may be simpler but BERT scoring better captures semantic quality for abstractive tasks. Third, there's an inherent tension between evaluation accuracy (BERT scoring) and computational cost/interpretability (ROUGE). Fourth, using a single model to generate reference data introduces potential bias that should be acknowledged and potentially mitigated. Finally, maintaining internal benchmarks tailored to specific use cases enables more informed model selection decisions.
+
+The work represents a methodical approach to LLM evaluation in a production context, with appropriate attention to the limitations and trade-offs inherent in any evaluation methodology.

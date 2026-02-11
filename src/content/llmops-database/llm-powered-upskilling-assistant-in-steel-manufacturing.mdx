@@ -1,0 +1,119 @@
+---
+title: "LLM-Powered Upskilling Assistant in Steel Manufacturing"
+slug: "llm-powered-upskilling-assistant-in-steel-manufacturing"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "675b217cb7163c0075bad9d1"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:48:31.731Z"
+  createdOn: "2024-12-12T17:46:36.151Z"
+llmopsTags:
+  - "data-analysis"
+  - "data-cleaning"
+  - "data-integration"
+  - "regulatory-compliance"
+  - "high-stakes-application"
+  - "realtime-application"
+  - "model-optimization"
+  - "latency-optimization"
+  - "cost-optimization"
+  - "postgresql"
+  - "databases"
+  - "security"
+  - "compliance"
+  - "databricks"
+  - "microsoft-azure"
+  - "amazon-aws"
+company: "Gerdau"
+summary: "Gerdau, a major steel manufacturer, implemented an LLM-based assistant to support employee re/upskilling as part of their broader digital transformation initiative. This development came after transitioning to the Databricks Data Intelligence Platform to solve data infrastructure challenges, which enabled them to explore advanced AI applications. The platform consolidation resulted in a 40% cost reduction in data processing and allowed them to onboard 300 new global data users while creating an environment conducive to AI innovation."
+link: "https://www.databricks.com/customers/gerdau"
+year: 2024
+seo:
+  title: "Gerdau: LLM-Powered Upskilling Assistant in Steel Manufacturing - ZenML LLMOps Database"
+  description: "Gerdau, a major steel manufacturer, implemented an LLM-based assistant to support employee re/upskilling as part of their broader digital transformation initiative. This development came after transitioning to the Databricks Data Intelligence Platform to solve data infrastructure challenges, which enabled them to explore advanced AI applications. The platform consolidation resulted in a 40% cost reduction in data processing and allowed them to onboard 300 new global data users while creating an environment conducive to AI innovation."
+  canonical: "https://www.zenml.io/llmops-database/llm-powered-upskilling-assistant-in-steel-manufacturing"
+  ogTitle: "Gerdau: LLM-Powered Upskilling Assistant in Steel Manufacturing - ZenML LLMOps Database"
+  ogDescription: "Gerdau, a major steel manufacturer, implemented an LLM-based assistant to support employee re/upskilling as part of their broader digital transformation initiative. This development came after transitioning to the Databricks Data Intelligence Platform to solve data infrastructure challenges, which enabled them to explore advanced AI applications. The platform consolidation resulted in a 40% cost reduction in data processing and allowed them to onboard 300 new global data users while creating an environment conducive to AI innovation."
+---
+
+## Overview
+
+Gerdau is Brazil's largest steel producer with a 123-year history, operating globally with over 30,000 employees. As one of the leading producers of long steel in the Americas and special steel worldwide, the company has embraced digital transformation to optimize manufacturing processes, supply chains, and environmental sustainability initiatives. This case study documents their journey from a fragmented, homegrown open source data ecosystem to a unified data intelligence platform, culminating in their first production deployments of large language model (LLM) applications.
+
+The company's environmental credentials are notable—they are Latin America's largest recycling company, with 71% of their steel produced from scrap, and they maintain carbon emissions at roughly half the global industry average. Their digital transformation initiatives directly support these sustainability goals, particularly through their digital twins use case for manufacturing optimization.
+
+## The Problem: Fragmented Data Infrastructure
+
+Before adopting their new platform, Gerdau's technical teams had built an impressive but problematic ecosystem of homegrown and open source data tools. While the decision to use open source was driven by flexibility and unlimited potential, the resulting infrastructure created significant operational challenges:
+
+- **Technical Complexity**: The solutions were disconnected and difficult to manage, requiring users to be proficient in Python and Spark before they could work with the data
+- **Limited Real-Time Capabilities**: The existing platform lacked real-time data processing capabilities, which was particularly problematic for their digital twins initiative—a critical use case for manufacturing optimization
+- **Data Governance Gaps**: The company lacked fine-grained access controls, data lineage capabilities, and unified governance standards necessary for compliance and security at scale
+- **Collaboration Barriers**: Different teams created duplicated or multiple versions of databases, leading to data inconsistencies, inaccuracies, and increased total cost of ownership
+- **Scalability Constraints**: These governance and collaboration issues impeded the company's ability to scale consistently while meeting various compliance and security standards
+
+For a steel manufacturer where chemical composition accuracy is critical, having incorrect data at the wrong time could lead to costly production failures. The business impact was clear: these technical hurdles were preventing Gerdau from achieving their strategic goals around ESG commitments, supply chain management, and AI advancement.
+
+## The Solution: Unified Data Intelligence Platform
+
+Gerdau adopted the Databricks Data Intelligence Platform to consolidate their various tools into a single, user-friendly environment. The implementation involved several key components:
+
+**Delta Lake** provided the foundational optimized storage layer for the new data infrastructure. This open-source storage format enabled reliable data lakes with ACID transactions, scalable metadata handling, and unified streaming and batch data processing.
+
+**Delta Sharing** enabled secure data sharing both internally across teams and externally with manufacturing and distribution partners. This was particularly important given Gerdau's B2B operations involving complex ecosystems of suppliers, distributors, regulators, and customers.
+
+**Photon**, the next-generation query engine on the Databricks Platform, delivered dramatic performance improvements. Data processing time was reduced from an average of 1.5 hours to just 12 minutes—a significant gain for tables that are processed daily, directly translating to both performance and cost benefits.
+
+**Unity Catalog** established data governance standards across manufacturing processes, implementing fine-grained access controls, data lineage tracking, and access segregation for different user groups. This also integrated well with Power BI, enabling business teams to create their own reports and dashboards while maintaining governance standards.
+
+## LLM and Generative AI Applications
+
+While much of the case study focuses on data infrastructure modernization, the GenAI and LLMOps aspects represent the forward-looking portion of Gerdau's transformation. The unified data platform has enabled the company to explore and deploy cutting-edge AI applications:
+
+**LLM-Powered Training Assistant**: One of Gerdau's first achievements using large language models is an AI assistant designed to help employees with re-skilling and upskilling journeys. This represents a production deployment of an LLM application within the enterprise, suggesting the company has established at least the foundational infrastructure for LLMOps workflows including model serving, inference, and user interaction management.
+
+**Advanced Analytics and ML Capabilities**: Beyond the training assistant, the platform has enabled exploration of:
+- Predictive maintenance applications for manufacturing equipment
+- Image classification for quality control and other manufacturing processes
+- Text classification for document processing and other business workflows
+- Other generative AI solutions leveraging their unified data foundation
+
+The case study suggests that having a unified data platform was a prerequisite for these advanced AI initiatives. The improved data governance, lineage tracking, and access controls provided by Unity Catalog would be essential for any production LLM deployment, ensuring that models have access to high-quality, governed data while maintaining compliance requirements.
+
+## Production Considerations and LLMOps Implications
+
+While the case study does not provide deep technical details on their LLM deployment architecture, several LLMOps-relevant themes emerge:
+
+**Data Foundation for LLMs**: The emphasis on data unification, governance, and quality directly supports LLM applications. Production LLMs require reliable, well-governed data for both training (or fine-tuning) and retrieval-augmented generation patterns. Gerdau's investment in Unity Catalog provides the lineage and access control capabilities necessary for responsible LLM deployment.
+
+**User Accessibility**: The platform reduced the barrier to entry for data work—users no longer needed to learn multiple tools or be Python/Spark proficient. This democratization likely extends to AI/ML workflows, potentially enabling broader organizational participation in LLM application development and use.
+
+**Scalability for AI Workloads**: The performance improvements (processing time reduced from 1.5 hours to 12 minutes) and cost savings (40% reduction in data processing costs, 80% in streaming development) suggest infrastructure that can handle the computational demands of LLM inference and other AI workloads.
+
+**Multi-Regional Deployment**: The rapid onboarding of 300 new global data users across operations in Peru, the United States, and Brazil indicates the platform's ability to support geographically distributed AI applications—an important consideration for enterprise LLM deployments that must serve users across multiple regions.
+
+## Results and Outcomes
+
+The quantified results from Gerdau's transformation include:
+
+- **40% cost reduction** in data processing
+- **80% reduction in new development costs** for streaming solutions
+- **300 new business users onboarded** globally across multiple countries
+- **30% reduction in ML model development effort** according to user feedback
+- **Data processing time reduced from 1.5 hours to 12 minutes** for key workflows
+
+These operational improvements have positioned Gerdau for continued AI innovation. The platform's scalability and flexibility support their growth and expansion strategies, while the governance capabilities ensure compliance with data security standards and regulations.
+
+## Critical Assessment
+
+It's worth noting that this case study comes from Databricks' customer stories section, meaning it naturally emphasizes positive outcomes. Some observations to consider:
+
+- The LLM application (training assistant) is mentioned briefly without technical depth, suggesting it may still be in early stages rather than a fully mature production deployment
+- Specific details about LLM model selection, fine-tuning, prompt engineering, evaluation, or monitoring are not provided
+- The case study focuses heavily on data infrastructure rather than AI/ML specifics, suggesting the LLM use case may be an early outcome rather than the primary focus of the transformation
+- Cost and performance metrics are provided without baseline context or methodology details
+
+Nevertheless, Gerdau's journey illustrates a common pattern in enterprise LLMOps: organizations must first establish solid data foundations, governance frameworks, and unified platforms before they can effectively deploy production LLM applications. The training assistant represents an initial foray into GenAI that builds on this foundation, with the platform positioning them for more ambitious AI applications in predictive maintenance, classification, and other manufacturing use cases.

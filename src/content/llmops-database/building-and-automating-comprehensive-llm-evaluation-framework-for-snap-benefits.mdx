@@ -1,0 +1,100 @@
+---
+title: "Building and Automating Comprehensive LLM Evaluation Framework for SNAP Benefits"
+slug: "building-and-automating-comprehensive-llm-evaluation-framework-for-snap-benefits"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "67c8428f0f14703abe8fd19c"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:02:11.270Z"
+  createdOn: "2025-03-05T12:24:47.750Z"
+llmopsTags:
+  - "regulatory-compliance"
+  - "high-stakes-application"
+  - "question-answering"
+  - "prompt-engineering"
+  - "rag"
+  - "error-handling"
+  - "model-optimization"
+  - "documentation"
+  - "open-source"
+  - "openai"
+  - "anthropic"
+  - "google-gcp"
+company: "Propel"
+summary: "Propel developed a sophisticated evaluation framework for testing and benchmarking LLM performance in handling SNAP (food stamp) benefit inquiries. The company created two distinct evaluation approaches: one for benchmarking current base models on SNAP topics, and another for product development. They implemented automated testing using Promptfoo and developed innovative ways to evaluate model responses, including using AI models as judges for assessing response quality and accessibility."
+link: "https://www.propel.app/insights/building-a-snap-llm-eval-part-2-testing-and-automation/"
+year: 2025
+seo:
+  title: "Propel: Building and Automating Comprehensive LLM Evaluation Framework for SNAP Benefits - ZenML LLMOps Database"
+  description: "Propel developed a sophisticated evaluation framework for testing and benchmarking LLM performance in handling SNAP (food stamp) benefit inquiries. The company created two distinct evaluation approaches: one for benchmarking current base models on SNAP topics, and another for product development. They implemented automated testing using Promptfoo and developed innovative ways to evaluate model responses, including using AI models as judges for assessing response quality and accessibility."
+  canonical: "https://www.zenml.io/llmops-database/building-and-automating-comprehensive-llm-evaluation-framework-for-snap-benefits"
+  ogTitle: "Propel: Building and Automating Comprehensive LLM Evaluation Framework for SNAP Benefits - ZenML LLMOps Database"
+  ogDescription: "Propel developed a sophisticated evaluation framework for testing and benchmarking LLM performance in handling SNAP (food stamp) benefit inquiries. The company created two distinct evaluation approaches: one for benchmarking current base models on SNAP topics, and another for product development. They implemented automated testing using Promptfoo and developed innovative ways to evaluate model responses, including using AI models as judges for assessing response quality and accessibility."
+---
+
+## Overview
+
+Propel is a company that provides mobile applications and services for Electronic Benefit Transfer (EBT) cardholders, specifically focused on helping recipients of SNAP (Supplemental Nutrition Assistance Program, formerly known as food stamps) manage their benefits. In this case study, Dave Guarino, the Director of Emerging Technology at Propel, details the process of building an LLM evaluation framework specifically designed for the SNAP domain. This represents a practical example of how domain experts can systematically evaluate and improve AI systems for specialized, high-stakes use cases where incorrect information could have real-world consequences for vulnerable populations.
+
+The core motivation behind this work stems from Propel's ambition to potentially build AI-powered assistants that can help SNAP clients navigate the complex benefits system. Given that incorrect information could lead to someone missing out on benefits they're entitled to, or spending hours on hold with government agencies, the stakes for accuracy are significant. This case study is particularly valuable because it provides a transparent look at how a mission-driven organization approaches LLM evaluation with both public benchmarking and product development goals in mind.
+
+## Dual Evaluation Goals
+
+One of the most instructive aspects of this case study is the explicit acknowledgment that Propel is building two distinct but related evaluations with a common foundation. This architectural decision reflects a mature understanding of how LLMOps evaluation frameworks should be structured.
+
+The first goal is **benchmarking current base models on SNAP topics**. This evaluation aims to objectively assess how well advanced models like GPT-4o, Claude, and Gemini perform on SNAP-related questions. The test cases for this goal are designed to be more objective, factual, and grounded in consensus rather than being highly opinionated. Importantly, for benchmarking purposes, Propel notes they might be more tolerant of a general-purpose model refusing to answer a question where an incorrect answer would have significant adverse consequences. The public value of this benchmarking is clear: identifying concrete problems in widely-used models like ChatGPT or Google AI Search can help those platforms improve their responses for the millions of people who use them.
+
+The second goal is **using an eval to guide product development**. This evaluation is inherently more opinionated and specific to what Propel is trying to build. For instance, in their product context, they would weight a refusal to answer much more negatively than in a general benchmark because their goal is to build the most helpful SNAP-specific assistant. They acknowledge that for many SNAP clients, a refusal from an AI means potentially waiting on hold for an hour to speak with someone at their SNAP agency. This practical user-centered perspective shapes their evaluation criteria in ways that differ from pure academic benchmarking.
+
+The case study also notes that different products would require different evaluations. An "AI SNAP Policy Helper for Agency Eligibility Staff" would have fundamentally different requirements than an "AI SNAP Client Advocate for Limited English Proficiency Applicants." This recognition that evaluations must be tailored to specific use cases and user populations is a sophisticated LLMOps insight.
+
+## Factual Knowledge Testing
+
+The evaluation process begins with testing factual knowledge, which Propel identifies as a logical starting point for several reasons. First, if a model gets important facts wrong, it is likely to perform poorly on more complex tasks that depend on those facts. For example, assessing whether an income denial is correct or should be appealed requires accurate knowledge of the program's income limits. Second, SNAP as a domain has many objective facts where an answer is unambiguously right or wrong, making it amenable to automated testing. Third, factual tests are easier to write and generally easier to automate than more nuanced evaluations.
+
+Examples of factual SNAP questions they tested include: What is the maximum SNAP benefit amount for a household of 1? Can a full-time college student be eligible for SNAP? Can you receive SNAP if you get SSI? Can you receive SNAP if you're unemployed? Can undocumented immigrants receive SNAP? What is the maximum income a single person can make and receive SNAP?
+
+A key finding from their factual testing relates to the **knowledge cutoff problem**. They discovered that many models provide outdated maximum income limits for SNAP. SNAP income limits change every October based on a cost-of-living adjustment, and models tested in February 2025 were still providing information from fiscal year 2024. While Propel acknowledges this is somewhat expected given how long models take to train, they use this insight strategically.
+
+For benchmarking purposes, identifying such gaps represents a problem that should be documented and reported. For product development purposes, it represents an opportunity to bring in external sources of knowledge. This is where techniques like **retrieval augmented generation (RAG)** or using models with large context windows become relevant. Even a model with outdated income limit information can be used as the basis for an eligibility advice tool if the most recent income limits are provided as an additional input before response generation.
+
+## Automation with Promptfoo
+
+A critical transition in the evaluation process comes with the need to automate tests. Running tests manually is time-consuming, and the benefits of starting with factual tests include that they're relatively straightforward to automate. Propel chose to use **Promptfoo**, an open-source evaluation framework.
+
+The author highlights a particularly valuable feature of Promptfoo: the ability to run evaluations directly from a Google Sheet. This is significant from an LLMOps democratization perspective because it makes creating evaluations more accessible to domain experts who may not be software engineers. A SNAP policy expert can write test cases in a familiar spreadsheet format, and then the evaluation can be run with a simple command.
+
+The basic structure of an automated factual test in their framework looks like: an objective (e.g., test whether a model can provide an accurate max monthly SNAP benefit amount), an input prompt (e.g., "What is the maximum benefit I can get as a single person from SNAP?"), and criteria to evaluate the answer (e.g., it should include "$292").
+
+Their automation approach tested three different AI models simultaneously: OpenAI's GPT-4o-mini, Anthropic's Claude 3.5 Sonnet, and Google's Gemini 2.0 Flash Experimental. This multi-model comparison is a best practice in LLMOps evaluation, as it provides relative performance data that can inform model selection decisions.
+
+To make factual SNAP test cases easily automatable, they employ several techniques: checking that responses include a specific word or phrase, constraining the model to return only YES or NO, or providing multiple-choice answer options. These approaches convert open-ended response evaluation into more deterministic pass/fail checks.
+
+In their initial testing with a non-representative test set, Claude succeeded in about 73% of cases while the other two models passed only about 45% of cases. While Propel is careful to note this is not representative of overall model performance, it demonstrates the power of systematic evaluation to surface meaningful differences between models on domain-specific tasks.
+
+## LLM-as-Judge for Complex Evaluation
+
+The case study recognizes that many criteria for determining whether a response is "good" are more nuanced than checking for the presence of specific words or numbers. To address this, they employ the increasingly common technique of using AI models themselves as judges of other AI model outputs.
+
+One example they provide relates to a common requirement from SNAP experts: any client-facing tool should emphasize plain, accessible language. This is a qualitative criterion that would be difficult to automate with simple string matching but can be evaluated by an LLM.
+
+They set up an evaluation where an AI model assesses whether responses are written in accessible language. One assessment from their tests noted: "The language and structure are too complex for a 5th grade reading level, including detailed terms like 'countable income sources', 'allowable deductions', and '130% of poverty level', which could be difficult for a younger audience to understand."
+
+The ability to use AI models to evaluate AI model output is highlighted as highly valuable because it means that instead of relying on human inspection for harder, messier criteria, much more of the evaluation can be automated. This enables much wider testing coverage than would be possible with purely manual review.
+
+## LLMOps Insights and Best Practices
+
+This case study offers several valuable LLMOps insights. First, it demonstrates the importance of domain expertise in evaluation design. The evaluation was developed through a process where someone with strong SNAP understanding extensively used the models, building concrete intuitions about what good and bad outputs looked like before formalizing test cases.
+
+Second, it shows the value of separating evaluation goals. By explicitly maintaining separate but related evaluations for benchmarking and product development, Propel can serve both public good objectives and internal product needs without compromising either.
+
+Third, it illustrates a progressive automation strategy, starting with simpler factual tests that are easier to automate before moving to more nuanced criteria that require LLM-as-judge approaches.
+
+Fourth, it demonstrates how evaluation findings directly inform system design decisions. The discovery of knowledge cutoff issues with income limits directly points toward the need for RAG or other external knowledge injection techniques in any production system.
+
+Finally, the emphasis on making evaluation accessible to non-engineers through tools like Promptfoo's Google Sheets integration represents an important consideration for organizations where domain expertise and technical expertise may reside in different people.
+
+It's worth noting that this case study describes work in progress rather than a completed production system. The evaluation framework is being built to support future product development, and the benchmarking results are explicitly described as non-representative. However, the methodological insights and practical techniques described are directly applicable to other LLMOps evaluation efforts, particularly in domains requiring specialized knowledge and high accuracy.

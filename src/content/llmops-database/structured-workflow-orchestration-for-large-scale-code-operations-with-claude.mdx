@@ -1,0 +1,148 @@
+---
+title: "Structured Workflow Orchestration for Large-Scale Code Operations with Claude"
+slug: "structured-workflow-orchestration-for-large-scale-code-operations-with-claude"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "695108b8c6230b4e79fbbcab"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2026-01-07T09:40:39.763Z"
+  lastUpdated: "2025-12-28T10:51:50.809Z"
+  createdOn: "2025-12-28T10:38:48.341Z"
+llmopsTags:
+  - "code-generation"
+  - "poc"
+  - "prompt-engineering"
+  - "agent-based"
+  - "multi-agent-systems"
+  - "human-in-the-loop"
+  - "error-handling"
+  - "chunking"
+  - "system-prompts"
+  - "evals"
+  - "open-source"
+  - "documentation"
+  - "cicd"
+  - "orchestration"
+  - "fastapi"
+  - "pytorch"
+  - "anthropic"
+  - "openai"
+company: "Shopify"
+summary: "Shopify's augmented engineering team developed ROAST, an open-source workflow orchestration tool designed to address challenges of maintaining developer productivity at massive scale (5,000+ repositories, 500,000+ PRs annually, millions of lines of code). The team recognized that while agentic AI tools like Claude Code excel at exploratory tasks, deterministic structured workflows are better suited for predictable, repeatable operations like test generation, coverage optimization, and code migrations. By interleaving Claude Code's non-deterministic agentic capabilities with ROAST's deterministic workflow orchestration, Shopify created a bidirectional system where ROAST can invoke Claude Code as a tool within workflows, and Claude Code can execute ROAST workflows for specific steps. The solution has rapidly gained adoption within Shopify, reaching 500 daily active users and 250,000 requests per second at peak, with developers praising the combination for minimizing instruction complexity at each workflow step and reducing entropy accumulation in multi-step processes."
+link: "https://www.youtube.com/watch?v=xlEQ6Y3WNNI"
+year: 2025
+seo:
+  title: "Shopify: Structured Workflow Orchestration for Large-Scale Code Operations with Claude - ZenML LLMOps Database"
+  description: "Shopify's augmented engineering team developed ROAST, an open-source workflow orchestration tool designed to address challenges of maintaining developer productivity at massive scale (5,000+ repositories, 500,000+ PRs annually, millions of lines of code). The team recognized that while agentic AI tools like Claude Code excel at exploratory tasks, deterministic structured workflows are better suited for predictable, repeatable operations like test generation, coverage optimization, and code migrations. By interleaving Claude Code's non-deterministic agentic capabilities with ROAST's deterministic workflow orchestration, Shopify created a bidirectional system where ROAST can invoke Claude Code as a tool within workflows, and Claude Code can execute ROAST workflows for specific steps. The solution has rapidly gained adoption within Shopify, reaching 500 daily active users and 250,000 requests per second at peak, with developers praising the combination for minimizing instruction complexity at each workflow step and reducing entropy accumulation in multi-step processes."
+  canonical: "https://www.zenml.io/llmops-database/structured-workflow-orchestration-for-large-scale-code-operations-with-claude"
+  ogTitle: "Shopify: Structured Workflow Orchestration for Large-Scale Code Operations with Claude - ZenML LLMOps Database"
+  ogDescription: "Shopify's augmented engineering team developed ROAST, an open-source workflow orchestration tool designed to address challenges of maintaining developer productivity at massive scale (5,000+ repositories, 500,000+ PRs annually, millions of lines of code). The team recognized that while agentic AI tools like Claude Code excel at exploratory tasks, deterministic structured workflows are better suited for predictable, repeatable operations like test generation, coverage optimization, and code migrations. By interleaving Claude Code's non-deterministic agentic capabilities with ROAST's deterministic workflow orchestration, Shopify created a bidirectional system where ROAST can invoke Claude Code as a tool within workflows, and Claude Code can execute ROAST workflows for specific steps. The solution has rapidly gained adoption within Shopify, reaching 500 daily active users and 250,000 requests per second at peak, with developers praising the combination for minimizing instruction complexity at each workflow step and reducing entropy accumulation in multi-step processes."
+---
+
+## Overview
+
+This case study presents Shopify's approach to operationalizing LLMs at enterprise scale through their augmented engineering group. Obie Fernandez, a principal engineer, describes how Shopify—one of the world's largest Ruby on Rails organizations—developed ROAST (Risk Of Affording Shopify Technology), an open-source workflow orchestration framework that complements Claude Code's agentic capabilities. The presentation articulates a sophisticated understanding of when to use deterministic versus non-deterministic AI approaches in production engineering environments.
+
+Shopify operates at significant scale with a nearly 20-year-old main application containing millions of lines of code, approximately 5,000 repositories across their organization, and generates around 500,000 pull requests annually. This scale creates unique challenges for maintaining developer productivity, which is the core mandate of Fernandez's team. The solution they developed represents a thoughtful architectural approach to LLMOps that balances the strengths of different AI paradigms.
+
+## The Fundamental Design Philosophy: Deterministic vs Non-Deterministic AI
+
+The presentation establishes a critical distinction between two approaches to leveraging AI in production environments. Agentic tools like Claude Code are positioned as ideal for scenarios requiring adaptive decision-making, iteration, and autonomy. These shine when tasks are exploratory or ambiguous, where the path to solution isn't known in advance due to domain complexity, changing factors, or the inherently exploratory nature of feature development. The model's reasoning and judgment become valuable assets in these contexts, and ongoing adaptation, debugging, and iteration are expected parts of the process.
+
+In contrast, structured workflow orchestration through tools like ROAST is better suited for tasks with predictable, well-defined steps where consistency, repeatability, and clear oversight are priorities. In these scenarios, AI is leveraged for intelligent completion of specific workflow components rather than end-to-end autonomous operation. The speaker characterizes this as the difference between non-deterministic and deterministic behavior, though acknowledges this framing is somewhat simplified.
+
+The key insight—and the core LLMOps contribution of this case study—is that these approaches complement each other like "peanut butter and chocolate." The optimal production architecture interleaves both paradigms, selecting the appropriate approach for each component of larger engineering tasks. This architectural decision reflects mature thinking about LLMOps that moves beyond the hype of fully autonomous agents to recognize the practical value of structured, repeatable workflows in production environments.
+
+## Claude Code Adoption and Usage Patterns
+
+Shopify was an early adopter of Claude Code, implementing it as soon as it launched. The adoption trajectory demonstrates genuine product-market fit within the organization, with developers expressing enthusiasm in internal Slack channels from the earliest days (March being cited as when early comments appeared). The usage metrics Fernandez presents—pulled from Shopify's AI proxy that Claude Code runs through—show impressive scale: approximately 500 daily active users at peak with numbers growing rapidly, and reaching 250,000 requests per second at peak load.
+
+These usage patterns validate the need for sophisticated LLMOps infrastructure. The scale of usage alone creates challenges around cost management (hence the self-deprecating joke that ROAST is named because "it helps you set your money on fire"), performance optimization, and ensuring consistent quality of AI-generated outputs. The mention of an AI proxy infrastructure indicates Shopify has implemented proper observability and control layers over their LLM usage, which is essential LLMOps practice at this scale.
+
+## The ROAST Framework: Architecture and Design Principles
+
+ROAST emerged from Shopify's internal needs and their organizational culture. CEO Toby Lütke has instilled a culture of tinkering throughout the company, extending beyond engineering to sales, support, and other departments. When AI tooling exploded in capability, this culture led to proliferation of homegrown solutions—hundreds of different implementations of what essentially amounts to scripts that chain prompts together. Different teams used different frameworks (LangChain being mentioned), wrote custom scripts, or assembled their own solutions.
+
+While this innovation culture is positive, the proliferation created inefficiency through constant reinvention. ROAST was developed to identify common needs across the organization and provide a standardized solution. The framework is implemented in Ruby, which Fernandez acknowledges is "a bit of an oddity" in a landscape dominated by Python and TypeScript. However, the tool is designed to be language-agnostic in practice—users don't need to write Ruby to leverage ROAST's capabilities. The framework can interleave prompt-oriented tasks with bash scripts or arbitrary command invocations.
+
+The architectural philosophy draws inspiration from Ruby on Rails' convention-over-configuration approach. As the author of "The Rails Way," Fernandez brought this design sensibility to ROAST, creating a framework that emphasizes developer ergonomics and sensible defaults. The tool supports inline prompt declarations within workflows, inline bash commands, and uses conventions like placing output templates alongside prompts using ERB (Embedded Ruby) for output transformation.
+
+## Bidirectional Integration Pattern
+
+The most sophisticated aspect of Shopify's LLMOps architecture is the bidirectional integration between ROAST and Claude Code. This pattern represents mature thinking about how to compose different AI capabilities in production systems.
+
+In one direction, ROAST workflows can be provided as tools to Claude Code. A developer using Claude Code can be instructed to invoke ROAST for specific workflow steps. For example, when optimizing tests, the developer might tell Claude: "I want to work on optimizing my tests, but I have a workflow tool that handles the grading. Go ahead and call `roast test grade` with this file or directory and then take its recommendations and work on them." This approach allows Claude Code to remain focused on the exploratory, decision-making aspects while delegating the structured, repeatable steps to ROAST.
+
+In the other direction, ROAST includes a coding agent tool in its configuration that wraps Claude Code SDK. Workflows can be kicked off in an automated fashion—for instance, a test grading workflow—and as part of the workflow steps, Claude Code can be invoked in SDK mode with a narrower scope than if given the entire task. The workflow might handle running coverage tools and analyzing reports (deterministic steps), then invoke Claude Code to address specific deficiencies found (requiring the model's judgment and code generation capabilities).
+
+This bidirectional pattern addresses a fundamental problem in agentic AI workflows: entropy accumulation. When an agent autonomously executes a multi-step workflow, errors, misdirection, judgment problems, and mistakes compound at each step. Even slight deviations early in the process make subsequent steps more difficult or force the model to expend effort recovering. By breaking large workflows into component parts and minimizing instructions given to the agent at any single step, Shopify reduces this entropy accumulation and achieves more reliable outcomes.
+
+## Practical Applications and Use Cases
+
+The case study describes several concrete applications where this architecture delivers value at Shopify's scale:
+
+**Automated Testing Generation and Optimization**: Shopify's main monolith has over half a million tests. The team wanted to address coverage gaps systematically. Rather than opening the entire project in Claude Code and asking it to handle everything, they broke the problem into structured steps: run coverage tools, generate reports of what needs coverage, analyze the reports, then invoke Claude Code to generate missing tests based on that analysis. The workflow ensures consistent execution of measurement steps while leveraging the model's code generation capabilities where appropriate.
+
+**Code Migration**: Migrating legacy codebases (examples given include Python 2 to Python 3, or JavaScript framework transitions) represents a well-understood problem where the steps are largely known in advance. These are ideal candidates for structured workflows that one-shot a code migration, then hand off to Claude Code SDK to run tests and iterate on fixes if needed. The workflow doesn't need to debate what to do—it executes a known migration pattern and uses the agent for verification and refinement.
+
+**Type System Improvements**: Shopify uses Sorbet, an add-on typing system for Ruby, which isn't well-represented in model training data. The specific tools and invocation patterns for type checking aren't intuitive to models. ROAST workflows interleave predefined invocations of Sorbet tooling (which run deterministically with specific command-line patterns) with passing type-checking results to Claude, asking it to address deficiencies. This structured approach ensures the tooling is invoked correctly while leveraging the model's code understanding for fixes.
+
+**Refactoring Large Systems**: When addressing performance issues or technical debt in well-understood areas, the team knows what steps are needed. Structured workflows capture this knowledge, ensuring consistent execution while using AI capabilities for intelligent completion of individual components.
+
+## Technical Implementation Details
+
+Several implementation details reveal sophisticated LLMOps practices:
+
+**Session Management and Replay**: ROAST saves workflow sessions after each run, enabling developers to replay from specific steps rather than re-executing entire workflows. If a five-step workflow has issues in the fifth step, developers can debug just that step without re-running steps one through four. This significantly accelerates development and debugging of complex workflows—a practical concern often overlooked in AI tooling but critical for production efficiency.
+
+**Function Call Caching**: The framework implements caching at the ROAST level for function calls. When developing workflows that operate on the same dataset, agentic tools typically require starting from the beginning and re-executing all function calls. ROAST caches these invocations, allowing subsequent runs to execute "super super fast" (Fernandez's phrasing). This addresses both cost and latency concerns at production scale.
+
+**Tool Permission Management**: When working with Claude Code SDK, determining necessary tool permissions can be complex during prototyping. Fernandez mentions that the `dangerously_skip_permissions` option doesn't get enough attention but is valuable when prototyping and figuring out how to configure the coding agent. This pragmatic guidance reflects real-world development practices where iterating quickly during development differs from production deployment requirements.
+
+**Example Prompt Pattern**: The presentation includes an example prompt showing how to invoke the coding agent within workflows: "Use your code agent tool function to raise the branch coverage level of the following test above 90%. After each modification run rake test with coverage [path to test]..." This demonstrates clear, directive prompting that specifies success criteria (90% branch coverage) and verification steps (running tests with coverage), giving the agent clear goals while the workflow handles orchestration.
+
+## Organizational Adoption and Impact
+
+The solution's adoption trajectory suggests strong product-market fit for this architectural approach. After operating internally for test grading and optimization for approximately 5-6 weeks before open-source release, and 2-3 weeks of open-source availability at presentation time, the tool was "taking off like wildfire" within Shopify. This rapid adoption occurred once developers realized a standardized solution existed that addressed their common needs.
+
+The organizational impact extends beyond direct tooling benefits. By providing a standard framework, Shopify reduced the proliferation of bespoke solutions and channeled innovative energy into extending a common platform rather than repeatedly solving the same infrastructure problems. This represents mature platform thinking in the LLMOps space—recognizing that standardization and shared infrastructure accelerate overall capability development more than complete autonomy at the team level.
+
+## Critical Assessment and Limitations
+
+While the presentation is enthusiastic about the approach, several areas warrant balanced consideration:
+
+**Complexity Trade-offs**: The bidirectional integration pattern, while powerful, introduces architectural complexity. Teams must understand when to use pure Claude Code, when to use ROAST workflows, and when to combine them. This decision framework requires sophisticated understanding and may create onboarding challenges for developers new to the system.
+
+**Framework Lock-in**: By standardizing on ROAST, Shopify creates framework dependency. While open-sourcing mitigates this somewhat, the Ruby implementation in a Python/TypeScript-dominated ecosystem may limit external contributions and community support. Fernandez's assertion that users "don't need to write Ruby" to use ROAST may be technically true but doesn't eliminate the cognitive overhead of understanding a Ruby-based tool.
+
+**Maintenance Burden**: The presentation acknowledges ROAST is "a very early version." Maintaining an internal framework, even when open-sourced, represents ongoing investment. The cost-benefit calculation depends on scale—Shopify's size justifies this investment, but smaller organizations might be better served by existing solutions.
+
+**Metrics Ambiguity**: While usage metrics (500 daily active users, 250,000 requests/second) demonstrate adoption, the presentation lacks outcome metrics. How much did test coverage improve? What percentage of migrations succeeded without manual intervention? How much developer time was saved? These quantitative impacts would strengthen the case study's persuasiveness.
+
+**Model Dependency**: The tight integration with Claude Code creates vendor dependency. While the general pattern of interleaving deterministic and non-deterministic steps is transferable, the specific implementation assumes Anthropic's API patterns and SDK behaviors.
+
+## Broader LLMOps Implications
+
+This case study offers several valuable lessons for LLMOps practitioners:
+
+**Architectural Pluralism**: The recognition that different AI architectures suit different problem types—and that optimal solutions combine multiple approaches—represents mature thinking beyond "agent solves everything" hype. Production LLM systems benefit from thoughtfully composed architectures rather than uniform approaches.
+
+**Entropy Management**: The concept of entropy accumulation in multi-step agentic workflows provides a useful mental model for reasoning about agent reliability. Breaking complex tasks into smaller, well-bounded steps with clear handoffs between deterministic and non-deterministic components reduces failure modes.
+
+**Scale-Specific Solutions**: Many LLMOps patterns only become necessary at scale. Shopify's investment in ROAST reflects their specific scale challenges (5,000 repos, 500,000 PRs annually). Smaller organizations should evaluate whether their scale justifies similar investments or whether simpler approaches suffice.
+
+**Developer Experience Focus**: The emphasis on features like session replay and function caching demonstrates attention to developer experience in AI tooling. These "quality of life" features significantly impact productivity when developers repeatedly work with workflows during development and debugging.
+
+**Cultural Context**: The solution emerged from Shopify's tinkering culture and was shaped by the proliferation of homegrown solutions. This suggests that LLMOps solutions should align with organizational culture and development practices rather than imposing external patterns.
+
+## Future Directions
+
+The presentation hints at ongoing development, including conversations with the Claude Code team about outputting coding agent activity during workflow execution (currently it "gets stuck" with limited visibility into what's happening). This suggests active iteration on the integration patterns.
+
+The roadmap mentioned includes introducing traditional workflow features: control flow, conditionals, branching, and looping. What makes this interesting from an LLMOps perspective is the AI-native design—conditionals that accept prompts as inputs and coerce LLM outputs into booleans, or iteration constructs that invoke prompts and coerce results into collections to iterate over. This represents a genuinely novel programming model that bridges traditional imperative programming with AI capabilities.
+
+The audience question about agent-generated Python code invoking sub-agents suggests interesting future directions, though Fernandez's response indicates this isn't currently pursued. The focus remains on workflow orchestration rather than recursive agent architectures, which likely reflects pragmatic choices about what delivers reliable value at production scale versus what's theoretically possible.
+
+The open-source release strategy suggests Shopify views this as infrastructure that benefits from community development rather than competitive advantage derived from proprietary tooling. This approach to LLMOps tooling—building in the open and sharing learnings—benefits the broader community and may accelerate maturation of production LLM practices across the industry.

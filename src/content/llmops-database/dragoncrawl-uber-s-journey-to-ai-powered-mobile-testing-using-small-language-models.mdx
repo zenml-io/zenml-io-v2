@@ -1,0 +1,111 @@
+---
+title: "DragonCrawl: Uber's Journey to AI-Powered Mobile Testing Using Small Language Models"
+slug: "dragoncrawl-uber-s-journey-to-ai-powered-mobile-testing-using-small-language-models"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f3fd637e20ffc32ccd449"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:38:41.515Z"
+  createdOn: "2024-11-21T14:12:38.080Z"
+llmopsTags:
+  - "embeddings"
+  - "error-handling"
+  - "fallback-strategies"
+  - "guardrails"
+  - "legacy-system-integration"
+  - "microsoft-azure"
+  - "model-optimization"
+  - "monitoring"
+  - "poc"
+  - "rag"
+  - "reliability"
+  - "scalability"
+  - "scaling"
+company: "Uber"
+summary: "Uber developed DragonCrawl, an innovative AI-powered mobile testing system that uses a small language model (110M parameters) to automate app testing across multiple languages and cities. The system addressed critical challenges in mobile testing, including high maintenance costs and scalability issues across Uber's global operations. Using an MPNet-based architecture with a retriever-ranker approach, DragonCrawl achieved 99%+ stability in production, successfully operated in 85 out of 89 tested cities, and demonstrated remarkable adaptability to UI changes without requiring manual updates. The system proved particularly valuable by blocking ten high-priority bugs from reaching customers while significantly reducing developer maintenance time. Most notably, DragonCrawl exhibited human-like problem-solving behaviors, such as retrying failed operations and implementing creative solutions like app restarts to overcome temporary issues."
+link: "https://www.uber.com/en-GB/blog/generative-ai-for-high-quality-mobile-testing/"
+year: 2024
+seo:
+  title: "Uber: DragonCrawl: Uber's Journey to AI-Powered Mobile Testing Using Small Language Models - ZenML LLMOps Database"
+  description: "Uber developed DragonCrawl, an innovative AI-powered mobile testing system that uses a small language model (110M parameters) to automate app testing across multiple languages and cities. The system addressed critical challenges in mobile testing, including high maintenance costs and scalability issues across Uber's global operations. Using an MPNet-based architecture with a retriever-ranker approach, DragonCrawl achieved 99%+ stability in production, successfully operated in 85 out of 89 tested cities, and demonstrated remarkable adaptability to UI changes without requiring manual updates. The system proved particularly valuable by blocking ten high-priority bugs from reaching customers while significantly reducing developer maintenance time. Most notably, DragonCrawl exhibited human-like problem-solving behaviors, such as retrying failed operations and implementing creative solutions like app restarts to overcome temporary issues."
+  canonical: "https://www.zenml.io/llmops-database/dragoncrawl-uber-s-journey-to-ai-powered-mobile-testing-using-small-language-models"
+  ogTitle: "Uber: DragonCrawl: Uber's Journey to AI-Powered Mobile Testing Using Small Language Models - ZenML LLMOps Database"
+  ogDescription: "Uber developed DragonCrawl, an innovative AI-powered mobile testing system that uses a small language model (110M parameters) to automate app testing across multiple languages and cities. The system addressed critical challenges in mobile testing, including high maintenance costs and scalability issues across Uber's global operations. Using an MPNet-based architecture with a retriever-ranker approach, DragonCrawl achieved 99%+ stability in production, successfully operated in 85 out of 89 tested cities, and demonstrated remarkable adaptability to UI changes without requiring manual updates. The system proved particularly valuable by blocking ten high-priority bugs from reaching customers while significantly reducing developer maintenance time. Most notably, DragonCrawl exhibited human-like problem-solving behaviors, such as retrying failed operations and implementing creative solutions like app restarts to overcome temporary issues."
+---
+
+## Overview
+
+Uber's Developer Platform team created DragonCrawl, an innovative system that uses language models to perform autonomous mobile application testing. The system was designed to address significant challenges in mobile QA at Uber's scale, which encompasses thousands of developers, over 3,000 simultaneous experiments, and operations in 50+ languages across numerous cities worldwide. The core innovation lies in framing mobile testing as a language generation problem, where the model receives text representations of app screens alongside test goals and determines appropriate UI interactions.
+
+## Problem Context
+
+Mobile testing at Uber's scale presented several critical challenges that traditional approaches could not adequately address. Manual testing, while thorough, comes with prohibitive overhead and cannot feasibly cover every code change. Script-based automated testing, though more scalable, suffered from brittleness—minor UI updates like new pop-ups or button changes would break tests, requiring constant maintenance. Engineers working on test scripts reportedly spent 30-40% of their time on maintenance alone. Perhaps most critically, the maintenance burden made it nearly impossible to scale testing across Uber's 50+ supported languages and numerous operating cities. The combination of these factors meant that ensuring consistent quality globally was, as the team described it, "humanly impossible."
+
+## Technical Approach and Model Selection
+
+The team formulated mobile testing as a retrieval and generation problem. DragonCrawl receives text representations of the current screen state along with natural language goals for the test, then determines which UI element to interact with and how. This approach leverages the pre-training of language models on multiple languages, enabling the system to work across Uber's diverse linguistic requirements without language-specific engineering.
+
+For the core model, the team evaluated several transformer-based architectures including MPNet (base and large variants), T5, and RoBERTa. They used precision@N metrics to evaluate embedding quality, treating the problem as a retrieval task where the model must identify the correct action from multiple possibilities. Their evaluation results showed:
+
+- MPNet (base): 97.23% precision@1, 110M parameters, 768-dimension embeddings
+- MPNet (large): 97.26% precision@1, 340M parameters, 768-dimension embeddings  
+- T5: 97% precision@1, 11B parameters, 3584-dimension embeddings
+- T5 (not tuned): 92.31% precision@1, 11B parameters
+
+The team selected the base MPNet model for several strategic reasons. First, latency was a critical concern given the frequency of model invocations during testing. The 110M parameter model offered the fastest inference. Second, the 768-dimension embedding size reduced costs for downstream systems that might consume these embeddings. Third, while the un-tuned T5-11B showed reasonable precision, the team recognized that given the constant evolution of the Uber app, a fine-tuned model customized to their data would provide more robust long-term performance.
+
+An important insight from their evaluation was the decision to use a "smaller" language model (110M parameters, roughly three orders of magnitude smaller than GPT-3.5/4). This choice was not just about latency—it served as a deliberate guardrail against hallucinations, as smaller models have reduced variability and complexity in their outputs.
+
+## Production Architecture and Hallucination Mitigation
+
+The DragonCrawl system implements multiple guardrails to handle model imperfections in production. The team identified three categories of problematic outputs and developed specific mitigation strategies for each:
+
+**Partially invalid actions** occur when the model returns responses with some incorrect information—for example, suggesting "touch" for a swipeable element, or confusing UI element names. The system addresses this by using the emulator as ground truth, cross-referencing model outputs against valid actions, correct UI element names, and locations available from the emulator state.
+
+**Completely invalid actions** are handled through prompt augmentation. When an invalid action is suggested, the system appends information about the invalid action to the prompt and re-queries the model. For persistent invalid actions, the system implements backtracking to retry from a previous state.
+
+**Loops and repeated actions** (such as endless scrolling or repeated waits) are detected by maintaining history of actions taken and screenshots captured during the test sequence. Since DragonCrawl outputs a ranked list of suggestions rather than a single action, the system can fall back to alternative suggestions when loops are detected.
+
+## Challenges Encountered
+
+The team documented several interesting challenges during development. Some were Uber-specific, such as GPS location tuning for rider-driver matching. Uber's sophisticated matching algorithms are optimized for scale and real-world conditions, not single rider-driver pairs in isolated test environments. The team had to carefully tune GPS coordinates to achieve reliable matching in test scenarios.
+
+**Adversarial cases** presented a more fundamental challenge. In certain cities, DragonCrawl would make suboptimal but technically valid choices—for example, requesting scheduled trips instead of immediate rides when both options were available. The model had all the information needed to make the "correct" choice but followed an alternative path. This mirrors classic adversarial sample problems in machine learning, where models can be confused by inputs that seem unambiguous to humans.
+
+**Path optimization** was another concern. DragonCrawl could always complete its goals, but sometimes took unnecessarily long routes—for example, navigating through screens to add passengers when encountering certain pop-ups. Since the goal was to run DragonCrawl on every Android code change, efficiency mattered. The team addressed this by training the model to skip certain interactions and confirm others.
+
+## Production Deployment and CI Integration
+
+DragonCrawl was productionized around October 2023 and integrated into Uber's CI pipelines. As of January 2024, it executes core trip flows in 5 different cities nightly and runs before every Rider and Driver Android app release. The reported production metrics are impressive:
+
+- **99%+ stability** in November and December 2023, with rare failures attributed to third-party system outages or genuine bugs (which the system correctly surfaced)
+- **Zero maintenance** required despite ongoing app changes—DragonCrawl adapted automatically to UI modifications
+- **85 of 89 cities** successfully tested without code changes, representing unprecedented reusability for complex mobile tests
+- **Device/OS resilience** across 3 different Android devices, 3 OS versions, and varying system parameters (disk, CPU, etc.)
+
+The team reports blocking 10 high-priority bugs from reaching customers and saving thousands of developer hours in the three months post-launch.
+
+## Emergent Behaviors
+
+The case study documents two particularly notable examples of DragonCrawl exhibiting goal-oriented, human-like problem-solving behavior that exceeded expectations:
+
+In Brisbane, Australia, the system encountered a situation where a driver profile couldn't go online for approximately 5 minutes. Rather than failing, DragonCrawl repeatedly pressed the "GO" button until it eventually succeeded—behavior that mirrored what a human tester might do when encountering a transient issue.
+
+In Paris, when payment methods failed to load (likely a temporary account issue), DragonCrawl closed the app, reopened it, and successfully completed the trip request on the second attempt. This "turn it off and on again" strategy emerged without explicit programming.
+
+These behaviors contrast sharply with traditional script-based testing, which would typically fail and generate alerts or tickets for such transient issues.
+
+## Future Directions
+
+The team outlines a RAG-based architecture for future development. They plan to use their Dragon Foundational Model (DFM) to enable developers to build tests with small datasets (tens to hundreds of datapoints) specifying verbal goals and preferences. This approach would further reduce the barrier to creating sophisticated mobile tests while maintaining the benefits of language-aware, goal-oriented testing. The team frames the DFM as functioning like a "rewards model" that takes actions to accomplish goals, suggesting a conceptual bridge between language models and reinforcement learning paradigms.
+
+## Assessment
+
+This case study presents a compelling application of language models to a practical engineering problem. The choice of a smaller, fine-tuned model over larger general-purpose LLMs reflects mature production thinking—prioritizing latency, maintainability, and reduced hallucination risk over maximum capability. The multi-layered approach to handling model failures (ground truth validation, prompt augmentation, backtracking, and ranked suggestions) demonstrates robust production engineering.
+
+The reported results are impressive, though it's worth noting this is a first-party account from Uber's engineering blog. The 99%+ stability figure and claims of zero maintenance should be understood in context—these likely represent averages across specific flows and time periods, and may not capture all edge cases or long-term maintenance needs as the system scales.
+
+The reframing of mobile testing as a language/retrieval problem is the key insight, enabling the application of pre-trained multilingual capabilities to a domain that previously required extensive per-language engineering. This architectural decision is likely more significant than the specific model choice.

@@ -1,0 +1,108 @@
+---
+title: "High-Performance LLM Deployment with SageMaker AI"
+slug: "high-performance-llm-deployment-with-sagemaker-ai"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "681356274d86e85c6040e2fc"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:07:06.098Z"
+  createdOn: "2025-05-01T11:08:23.316Z"
+llmopsTags:
+  - "high-stakes-application"
+  - "realtime-application"
+  - "regulatory-compliance"
+  - "model-optimization"
+  - "latency-optimization"
+  - "cost-optimization"
+  - "token-optimization"
+  - "kubernetes"
+  - "monitoring"
+  - "cicd"
+  - "scaling"
+  - "devops"
+  - "continuous-deployment"
+  - "continuous-integration"
+  - "security"
+  - "compliance"
+  - "reliability"
+  - "scalability"
+  - "triton"
+  - "fastapi"
+  - "amazon-aws"
+  - "microsoft-azure"
+company: "Salesforce"
+summary: "Salesforce's AI Model Serving team tackled the challenge of deploying and optimizing large language models at scale while maintaining performance and security. Using Amazon SageMaker AI and Deep Learning Containers, they developed a comprehensive hosting framework that reduced model deployment time by 50% while achieving high throughput and low latency. The solution incorporated automated testing, security measures, and continuous optimization techniques to support enterprise-grade AI applications."
+link: "https://aws.amazon.com/blogs/machine-learning/how-salesforce-achieves-high-performance-model-deployment-with-amazon-sagemaker-ai?tag=soumet-20"
+year: 2025
+seo:
+  title: "Salesforce: High-Performance LLM Deployment with SageMaker AI - ZenML LLMOps Database"
+  description: "Salesforce's AI Model Serving team tackled the challenge of deploying and optimizing large language models at scale while maintaining performance and security. Using Amazon SageMaker AI and Deep Learning Containers, they developed a comprehensive hosting framework that reduced model deployment time by 50% while achieving high throughput and low latency. The solution incorporated automated testing, security measures, and continuous optimization techniques to support enterprise-grade AI applications."
+  canonical: "https://www.zenml.io/llmops-database/high-performance-llm-deployment-with-sagemaker-ai"
+  ogTitle: "Salesforce: High-Performance LLM Deployment with SageMaker AI - ZenML LLMOps Database"
+  ogDescription: "Salesforce's AI Model Serving team tackled the challenge of deploying and optimizing large language models at scale while maintaining performance and security. Using Amazon SageMaker AI and Deep Learning Containers, they developed a comprehensive hosting framework that reduced model deployment time by 50% while achieving high throughput and low latency. The solution incorporated automated testing, security measures, and continuous optimization techniques to support enterprise-grade AI applications."
+---
+
+## Overview
+
+Salesforce's AI Model Serving team is responsible for the end-to-end process of deploying, hosting, optimizing, and scaling AI models—including large language models (LLMs), multi-modal foundation models, speech recognition, and computer vision models—built by Salesforce's internal data science and research teams. This case study, published in April 2025, describes how the team developed a hosting framework on AWS to simplify their model lifecycle, enabling quick and secure deployments at scale while optimizing for cost.
+
+The AI Model Serving team supports the Salesforce Einstein AI platform, which powers AI-driven features across Salesforce's enterprise applications. Their work touches both traditional machine learning and generative AI use cases, making this a comprehensive look at how a major enterprise software company approaches LLMOps at scale.
+
+## Key Challenges
+
+The team identified several interconnected challenges that are common in enterprise LLMOps scenarios:
+
+**Balancing latency, throughput, and cost-efficiency** is one of the primary concerns. When scaling AI models based on demand, maintaining performance while minimizing serving costs across the entire inference lifecycle is vital. Inference optimization becomes crucial because models and their hosting environments must be fine-tuned to meet price-performance requirements in real-time AI applications.
+
+**Rapid model evaluation and deployment** is another significant challenge. Salesforce's fast-paced AI innovation requires the team to constantly evaluate new models—whether proprietary, open source, or third-party—across diverse use cases. They then need to quickly deploy these models to stay in cadence with their product teams' go-to-market motions. This creates pressure on infrastructure to be flexible and automated.
+
+**Security and trust requirements** add another layer of complexity. The models must be hosted securely, and customer data must be protected to abide by Salesforce's commitment to providing a trusted and secure platform. This cannot be sacrificed for speed or convenience.
+
+## Solution Architecture and Technical Details
+
+The team developed a comprehensive hosting framework on AWS using Amazon SageMaker AI as the core platform. The solution addresses multiple aspects of the LLMOps lifecycle.
+
+### Managing Performance and Scalability
+
+SageMaker AI enables the team to support distributed inference and multi-model deployments, which helps prevent memory bottlenecks and reduce hardware costs. The platform provides access to advanced GPUs, supports multi-model deployments, and enables intelligent batching strategies to balance throughput with latency. This flexibility ensures that performance improvements don't compromise scalability, even in high-demand scenarios.
+
+### Deep Learning Containers for Accelerated Development
+
+SageMaker AI Deep Learning Containers (DLCs) play a crucial role in accelerating model development and deployment. These pre-built containers come with optimized deep learning frameworks and best-practice configurations, providing a head start for AI teams. The DLCs include optimized library versions, preconfigured CUDA settings, and other performance enhancements that improve inference speeds and efficiency. This approach significantly reduces the setup and configuration overhead, allowing engineers to focus on model optimization rather than infrastructure concerns.
+
+### Rolling-Batch Inference Optimization
+
+The team uses the DLC's rolling-batch capability, which optimizes request batching to maximize throughput while maintaining low latency. SageMaker AI DLCs expose configurations for rolling batch inference with best-practice defaults, simplifying the implementation process. By adjusting parameters such as `max_rolling_batch_size` and `job_queue_size`, the team was able to fine-tune performance without extensive custom engineering. This streamlined approach provides optimal GPU utilization while maintaining real-time response requirements.
+
+### Modular Architecture for Parallel Development
+
+Because the team supports multiple simultaneous deployments across projects, they needed to ensure enhancements in each project didn't compromise others. They adopted a modular development approach aligned with SageMaker AI DLC architecture, which includes modular components such as the engine abstraction layer, model store, and workload manager. This structure allows the team to isolate and optimize individual components on the container—like rolling batch inference for throughput—without disrupting critical functionality such as latency or multi-framework support. This enables project teams to work on individual projects such as performance tuning while others focus on enabling functionalities like streaming in parallel.
+
+### CI/CD and Configuration Management
+
+The team implemented continuous integration pipelines using a mix of internal and external tools such as Jenkins and Spinnaker to detect any unintended side effects early. Regression testing ensures that optimizations, such as deploying models with TensorRT or vLLM, don't negatively impact scalability or user experience. Regular reviews involving collaboration between the development, FMOps (foundation model operations), and security teams ensure that optimizations align with project-wide objectives.
+
+Configuration management is integrated into the CI pipeline, with configuration stored in git alongside inference code. The use of simple YAML files for configuration management enables rapid experimentation across optimizers and hyperparameters without altering the underlying code. This practice ensures that performance or security improvements are well-coordinated and don't introduce trade-offs in other areas.
+
+### Security Integration
+
+Security measures are embedded throughout the development and deployment lifecycle using secure-by-design principles. The team employs several strategies including automated CI/CD pipelines with built-in checks for vulnerabilities, compliance validation, and model integrity. They leverage DJL-Serving's encryption mechanisms for data in transit and at rest, and utilize AWS services like SageMaker AI that provide enterprise-grade security features such as role-based access control (RBAC) and network isolation. Frequent automated testing for both performance and security is employed through small incremental deployments, allowing for early issue identification while minimizing risks.
+
+## Continuous Improvement and Future Directions
+
+The team continually works to improve their deployment infrastructure as Salesforce's generative AI needs scale and the model landscape evolves. They are exploring new optimization techniques including advanced quantization methods (INT-4, AWQ, FP8), tensor parallelism for splitting tensors across multiple GPUs, and more efficient batching using caching strategies within DJL-Serving to boost throughput and reduce latency.
+
+The team is also investigating emerging technologies like AWS AI chips (AWS Trainium and AWS Inferentia) and AWS Graviton processors to further improve cost and energy efficiency. Their collaboration with open source communities and AWS ensures that the latest advancements are incorporated into deployment pipelines. Salesforce is working with AWS to include advanced features into DJL, including additional configuration parameters, environment variables, and more granular metrics for logging.
+
+Efforts are also underway to enhance FMOps practices, such as automated testing and deployment pipelines, to expedite production readiness. A key focus is refining multi-framework support and distributed inference capabilities to provide seamless model integration across various environments.
+
+## Results and Assessment
+
+The team reports substantial improvements from their strategy on SageMaker AI. They experienced faster iteration cycles, measured in days or even hours instead of weeks, and claim a reduction in model deployment time by as much as 50%.
+
+It's worth noting that this case study is a joint publication between Salesforce and AWS, which means the content has a promotional element. The specific metrics mentioned are somewhat vague ("exact metrics vary by use case"), and the 50% improvement figure should be understood in that context. However, the technical approach described—using managed services with pre-optimized containers, implementing modular architecture for parallel development, integrating security into CI/CD, and focusing on configuration-driven experimentation—represents solid LLMOps practices that are applicable beyond this specific implementation.
+
+The case study demonstrates a mature approach to LLMOps that addresses the common challenges of deploying LLMs in production: balancing performance trade-offs, enabling rapid experimentation, maintaining security standards, and building for continuous improvement. The emphasis on FMOps practices and collaboration between development, operations, and security teams reflects industry best practices for operating AI systems at enterprise scale.

@@ -1,0 +1,636 @@
+---
+title: "Here are the Top 8 Botpress Alternatives to Build Complete AI Agent Platforms"
+slug: "botpress-alternatives"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "68ba66b677c6a626e1c9ca0b"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-10-22T12:19:41.227Z"
+  lastUpdated: "2025-10-21T14:20:21.710Z"
+  createdOn: "2025-09-05T04:27:34.064Z"
+author: "hamza-tahir"
+category: "llmops"
+tags:
+  - "llmops"
+  - "agents"
+  - "framework"
+  - "python"
+  - "discovery"
+date: "2025-09-05T00:00:00.000Z"
+readingTime: 17 mins
+mainImage:
+  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/acb5377c/68ba6677950819ef6cbf61e3_botpress-alternatives.png"
+seo:
+  title: "Here are the Top 8 Botpress Alternatives to Build Complete AI Agent Platforms - ZenML Blog"
+  description: "Discover the top 8 Botpress alternatives - code and no-code that you can leverage as a complete AI agent platform."
+  canonical: "https://www.zenml.io/blog/botpress-alternatives"
+  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/acb5377c/68ba6677950819ef6cbf61e3_botpress-alternatives.png"
+  ogTitle: "Here are the Top 8 Botpress Alternatives to Build Complete AI Agent Platforms - ZenML Blog"
+  ogDescription: "Discover the top 8 Botpress alternatives - code and no-code that you can leverage as a complete AI agent platform."
+---
+
+Botpress positions itself as a conversational AI platform, with a visual flow builder and pre-built components for creating chatbots. Its drag-and-drop interface and integration capabilities are what attract developers to it.
+
+However, the tradeoff is surreal. As you scale deployments, you’ll find Botpress limiting in Python-first development, open-source control, and the ability to integrate custom tools and Large Language Models (LLMs).
+
+In this article, we discuss the top 8 Botpress alternatives. We cover both code-based frameworks for developers who want programmatic control and no-code platforms for teams prioritizing visual development.
+
+## TL;DR
+
+<ul id=""><li id=""><strong id="">Why Look for Alternatives:</strong> Gain a Python-native development experience, achieve full open-source parity without gated features, and use custom LLMs without spending on enterprise-level plans.</li><li id=""><strong id="">Who Should Care:</strong> Python developers, MLOps teams, and organizations who need full control over their agent infrastructure, deployment options, and model choices.</li><li id=""><strong id="">What to Expect:</strong> In-depth analysis of 8 Botpress alternatives, ranging from code-based frameworks like LangGraph and CrewAI to no-code platforms like Dify and Zapier Agents, each offering unique approaches to agent orchestration.</li></ul>
+
+## What is Botpress?
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/adbf227f/68ba62786e6939b8dbf7a6e1_botpress-homepage.png" alt="__wf_reserved_inherit" />
+</figure>
+
+[Botpress](https://botpress.com/) is an ‘agentic’ AI platform for building LLM-powered chatbots and AI agents that can operate across channels. It provides a visual flow builder to design multi-turn conversation logic, together with built-in NLU, knowledge base integration, and 190+ pre-built connectors for third-party tools.
+
+Botpress’s core strength is its multi-channel deployment capability. It allows a single agent to be deployed across various platforms like websites, WhatsApp, Slack, and Microsoft Teams, delivering a consistent user experience.
+
+## Why is there a Need for a Botpress Alternative?
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/2dd63be6/68ba629eaee890866666784c_why-look-for-a-botpress-alternative.webp" alt="__wf_reserved_inherit" />
+  <figcaption>Why look for a Botpress alternative</figcaption>
+</figure>
+
+Our search across developer forums, Reddit, and social media reveals three common pain points for which teams look for alternatives to Botpress:
+
+### Reason 1. You Want a Python-First Stack
+
+Botpress builds on TypeScript and JavaScript foundations. Its official SDK, custom actions, and ‘bots-as-code’ workflow are all designed around this ecosystem.
+
+However, this leaves Python-first ML teams in an awkward position.
+
+Imagine your data scientists work in Python, your ML models train in Python, but your agent orchestration requires JavaScript. Even with the best hacks, you’d need to wrap Botpress’s API or maintain a JavaScript glue layer to integrate with your Python workflows.
+
+So to avoid the complexity and maintenance burden, teams seek Python-first Botpress alternatives.
+
+### Reason 2. You Need Fully Open-Source Parity
+
+Botpress today operates as two distinct products: the open-source v12 stream and the SaaS Cloud/Studio platform.
+
+While v12 remains fully open, the Cloud version that most new users encounter is only partially open-sourced. Key components remain proprietary, creating a gap between what you can inspect and what you actually run.
+
+If you need to run the modern product fully on-prem with source control, that split is a blocker.
+
+Many teams prefer an alternative that is completely open-source or offers a self-hosted edition equal to the cloud version, so they aren’t restricted by a vendor’s closed cloud or licensing for advanced features.
+
+### Reason 3. Bring Your Own LLM Constraints
+
+Botpress restricts the ‘Bring Your Own LLM’ capability to its Enterprise plans.
+
+If you need a non-OpenAI model, a private inference endpoint, or strict model residency without going Enterprise, Botpress might feel limiting.
+
+In fact, this is a prime reason why users move toward alternatives that let you connect any model endpoint from day one, without a paywall.
+
+## Evaluation Criteria
+
+To provide a structured comparison, all alternatives in this article were evaluated against three core criteria that are critical for teams working on building agentic AI:
+
+### 1. Language and Developer Experience
+
+The programming language and development model fundamentally shape how quickly teams can build and iterate. We examined whether alternatives support Python natively, provide clean abstractions without excessive boilerplate, and offer debugging tools that make agent behavior transparent rather than opaque.
+
+### 2. Orchestration Model
+
+This criterion examines how the platform structures and manages agentic workflows. It explores the underlying architecture, whether based on cyclical graphs, role-based sequential tasks, or dynamic conversational loops, to assess its suitability for varying levels of complexity.
+
+### 3. Memory and Knowledge
+
+We evaluated each alternative’s capabilities for managing conversational state and external knowledge. It includes:
+
+<ul id=""><li id="">Analysis of built-in memory systems</li><li id="">Depth of its <a href="https://www.zenml.io/blog/rag-tools">Retrieval-Augmented Generation</a> (RAG)</li><li id="">Ability to connect agents to custom data sources</li></ul>
+
+This helped us find production-ready, strong memory systems that can retain context across agent interactions.
+
+## What are the Best Alternatives to Botpress
+
+Here’s a quick tabular summary of all Botpress alternatives:
+
+<div data-rt-embed-type="true"><div class="table-container">
+
+
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Botpress Alternatives Table</title>
+<style>
+  :root{
+    --header-bg:#2f2f2f;     /* dark header background */
+    --header-fg:#ffffff;     /* white header text */
+    --body-fg:#2b2b2b;       /* main body text color */
+    --subtle-fg:#3a3a3a;
+    --border:#d9d9d9;        /* light cell borders */
+    --row-bg:#ffffff;        /* body rows */
+  }
+
+  body{
+    margin:0;
+    padding:24px;
+    background:#fff;
+    color:var(--body-fg);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+    line-height:1.45;
+  }
+
+  .table-wrap{
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  table.alt-table{
+    border-collapse: collapse;
+    width: 100%;
+    table-layout: fixed;
+    font-size: 14px;
+    background: #fff;
+    border: 1px solid var(--border); /* ensures full outer border */
+  }
+
+  /* Column sizing */
+  colgroup col:nth-child(1){ width: 18%; }
+  colgroup col:nth-child(2){ width: 37%; }
+  colgroup col:nth-child(3){ width: 25%; }
+  colgroup col:nth-child(4){ width: 20%; }
+
+  thead th{
+    background: var(--header-bg);
+    color: var(--header-fg);
+    text-align: left;
+    padding: 14px 16px;
+    font-weight: 600;
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  tbody td{
+    background: var(--row-bg);
+    color: var(--body-fg);
+    padding: 14px 16px;
+    vertical-align: top;
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* List style */
+  ul.feature-list{
+    margin: 0;
+    padding-left: 18px;
+  }
+  ul.feature-list li{
+    margin: 4px 0;
+  }
+
+  td.alt-name{
+    font-weight: 600;
+    color: var(--subtle-fg);
+  }
+
+  @media (max-width: 820px){
+    colgroup col{ width:auto !important; }
+    table.alt-table{ table-layout:auto; }
+  }
+</style>
+
+
+  <div class="table-wrap">
+    <table class="alt-table">
+      <colgroup>
+        <col><col><col><col>
+      </colgroup>
+      <thead>
+        <tr>
+          <th>Botpress Alternative</th>
+          <th>Key Features</th>
+          <th>Best For</th>
+          <th>Pricing</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="alt-name">LangGraph</td>
+          <td>
+            <ul class="feature-list">
+              <li>Define agent behaviors as nodes with typed state transitions</li>
+              <li>Supports cyclical workflows with error handling and retries</li>
+              <li>Quality control loops and HITL steps</li>
+            </ul>
+          </td>
+          <td>Python developers who want transparency and programmatic control</td>
+          <td>Free developer tier (5K events); Plus $39/seat/month; Enterprise custom</td>
+        </tr>
+
+        <tr>
+          <td class="alt-name">CrewAI</td>
+          <td>
+            <ul class="feature-list">
+              <li>Define agents with roles/goals in YAML/Python</li>
+              <li>Task delegation and collaboration</li>
+              <li>Long-term memory and tool integration</li>
+            </ul>
+          </td>
+          <td>Multi-agent orchestration with role-based collaboration</td>
+          <td>Open-source core; Paid tiers: $99/month to $120K/year</td>
+        </tr>
+
+        <tr>
+          <td class="alt-name">LlamaIndex</td>
+          <td>
+            <ul class="feature-list">
+              <li>Rich indices and retrievers (vector + keyword)</li>
+              <li>Multi-step workflows with FunctionAgent and AgentWorkflow</li>
+              <li>Handles large-scale data efficiently</li>
+            </ul>
+          </td>
+          <td>Data-intensive, RAG-first agent systems</td>
+          <td>Free open-source core; LlamaCloud from $50/month</td>
+        </tr>
+
+        <tr>
+          <td class="alt-name">Microsoft AutoGen</td>
+          <td>
+            <ul class="feature-list">
+              <li>Agents interact in chat-like orchestration</li>
+              <li>Natural language rules for orchestration</li>
+              <li>Human feedback loops via UserProxyAgent</li>
+            </ul>
+          </td>
+          <td>Research-driven multi-agent conversations</td>
+          <td>Free and open-source (MIT)</td>
+        </tr>
+
+        <tr>
+          <td class="alt-name">Semantic Kernel</td>
+          <td>
+            <ul class="feature-list">
+              <li>Works with Python, C#, Java, .NET</li>
+              <li>Plugin architecture for APIs and functions</li>
+              <li>AI-driven task planning via Planner</li>
+            </ul>
+          </td>
+          <td>Enterprise-grade extensibility with Microsoft ecosystem</td>
+          <td>Free and open-source (MIT)</td>
+        </tr>
+
+        <tr>
+          <td class="alt-name">n8n</td>
+          <td>
+            <ul class="feature-list">
+              <li>Visual canvas for workflows</li>
+              <li>1,000+ prebuilt integrations</li>
+              <li>Custom code nodes (JS/Python)</li>
+            </ul>
+          </td>
+          <td>Low-code visual automation with AI nodes</td>
+          <td>Starter €24/month; Pro €60/month; Enterprise custom</td>
+        </tr>
+
+        <tr>
+          <td class="alt-name">Dify</td>
+          <td>
+            <ul class="feature-list">
+              <li>Visual workflow builder</li>
+              <li>Built-in RAG engine for document/data integration</li>
+              <li>Switch between LLMs without restrictions</li>
+            </ul>
+          </td>
+          <td>No-code AI agent and RAG pipelines with flexibility</td>
+          <td>Free self-hosted; Cloud: $59–$159/month</td>
+        </tr>
+
+        <tr>
+          <td class="alt-name">Langflow</td>
+          <td>
+            <ul class="feature-list">
+              <li>Drag-and-drop interface for agents, memory, and tools</li>
+              <li>Prebuilt LangChain-compatible nodes</li>
+              <li>Export flows as JSON or deploy as APIs</li>
+            </ul>
+          </td>
+          <td>Visual development on top of LangChain concepts</td>
+          <td>Free open-source; infra costs ~$15/month+</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+
+</div></div>
+
+## Code-Based Botpress Alternatives
+
+Code-based alternatives shift control from a visual interface to the developer's IDE. They treat agents as programmable software components within a larger Python application, offering full command over logic, state, and integration.
+
+### 1. LangGraph
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/d0990e02/68ba62da7bf8b6fafc781edb_langgraph-homepage.png" alt="__wf_reserved_inherit" />
+</figure>
+
+[LangGraph](https://www.langchain.com/langgraph) is a code-first agent orchestration framework. It provides a visual, graph-based approach to design LLM-powered workflows and gives developers tight control over the agent’s reasoning ability. Consider it an excellent Botpress alternative if you seek better transparency and code-level control than Botpress’s GUI.
+
+#### Features
+
+<ul id=""><li id="">Define agent behaviors as nodes with typed state transitions, replacing Botpress's flow nodes with programmable Python classes that maintain full execution context.</li><li id="">Unlike directional graphs in Botpress, LangGraph allows creating cyclical workflows. This allows agents to loop, retry tasks, and make dynamic decisions based on a persistent state object for better error handling and complex reasoning paths.</li><li id="">Create complex decision trees and iterative loops in code, achieve what Botpress handles through visual connectors, but with complete programmatic control.</li><li id="">Insert moderation checks or approval steps in the graph. LangGraph supports easy addition of quality control loops and human review stages to prevent agents from going off-course.</li></ul>
+
+#### Pricing
+
+LangGraph is included in LangChain’s products and offers a **free Developer tier** with 1 seat, up to 5K trace events per month. It also has two pricing plans:
+
+<ul id=""><li id=""><strong id="">Plus plan</strong>: $39 per seat per month, which comes with 10 seats and 10K trace events.</li><li id=""><strong id="">Enterprise plan:</strong> Custom pricing</li></ul>
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/c2dc5e77/68ba62f138468c579932e7c7_langgraph-pricing.png" alt="__wf_reserved_inherit" />
+</figure>
+
+#### Pros and Cons
+
+LangGraph is known for its transparency and control. You get full visibility into each node in a flow, which is great for debugging and compliance. Its close integration with LangChain means you have a rich set of AI building blocks, like tools, memory, and connectors. Plus, it integrates naturally with Python ML pipelines and supports custom LLMs without gated enterprise plans.
+
+On the flip side, LangGraph lacks a polished GUI for non-developers and is code-heavy compared to Botpress's visual approach. Yes, it supports LangChain’s ‘Canvas’ tool, but it’s not as mature as Botpress’s UI. So, it’s best suited for engineering teams prepared to manage code and possibly deal with version churn.
+
+**📚 Read more LangGraph articles:**
+
+<ul id=""><li id=""><a href="https://www.zenml.io/blog/langgraph-alternatives">LangGraph alternatives</a></li><li id=""><a href="https://www.zenml.io/blog/langgraph-pricing">LangGraph pricing</a></li><li id=""><a href="https://www.zenml.io/blog/langgraph-vs-crewai">LangGraph vs CrewAI</a></li></ul>
+
+### 2. CrewAI
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/a129b801/68ba630f8a1e06ba2b881ae8_crewai-homepage.png" alt="__wf_reserved_inherit" />
+</figure>
+
+[CrewAI](https://www.crewai.com/) is a Python framework inspired by human ‘crews’ or teams. It lets you define multiple agents with distinct duties, like researcher, writer, critic, and lets them work in a turn-based sequence to accomplish a task.
+
+#### Features
+
+<ul id=""><li id="">Create agents with specific roles, goals, and backstories using YAML or Python and orchestrate their collaboration toward a common goal.</li><li id="">CrewAI’s Python-first task delegation model automatically handles task delegation and communication between these agents.</li><li id="">Agents in CrewAI can be equipped with long-term memory. You can connect agents to web search, file operations, and custom tools. Any Python function can be turned into a new tool.</li><li id="">CrewAI supports human input at the task level and allows you to replay or edit an agent’s previous action and then resume execution from that point.</li><li id="">CrewAI integrates with third-party observability and ML monitoring tools, like Langfuse, Arize Phoenix, MLflow, etc., to track agent performance, quality metrics, and costs.</li></ul>
+
+#### Pricing
+
+CrewAI’s core framework is MIT-licensed and open-source. But the platform offers several paid plans to choose from:
+
+<ul id=""><li id=""><strong id="">Basic</strong>: $99 per month</li><li id=""><strong id="">Standard</strong>: $6,000 per year</li><li id=""><strong id="">Pro</strong>: $12,000 per year</li><li id=""><strong id="">Enterprise</strong>: $60,000 per year</li><li id=""><strong id="">Ultra</strong>: $120,000 per year</li></ul>
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/97c22958/68ba632352371735c4daa8f9_crewai-pricing-plans.png" alt="__wf_reserved_inherit" />
+</figure>
+
+#### Pros and Cons
+
+CrewAI’s core advantage is its structured, role-based framework for agent building. It provides flexibility for complex logic, involving loops, concurrency, and external tool integration. Being Python-based, it’s highly extensible and fits into Python ML stacks easily. It even allows non-developers to configure parts of agents via YAML, which can be friendlier for collaboration.
+
+However, CrewAI’s approach makes it less flexible for use cases that require more dynamic, free-form conversations. For example, simple chatbot-style agents that need open-ended conversation or generative chitchat. Overall, it trades a bit of Botpress’s ease-of-use for greater power in orchestrating multi-agent systems.
+
+**📚 Read more CrewAI articles:**
+
+<ul id=""><li id=""><a href="https://www.zenml.io/blog/crewai-alternatives">CrewAI alternatives</a></li><li id=""><a href="https://www.zenml.io/blog/crewai-pricing">CrewAI pricing</a></li><li id=""><a href="https://www.zenml.io/blog/crewai-vs-autogen">CrewAI vs AutoGen</a></li></ul>
+
+### 3. LlamaIndex
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/291dae0d/68ba6344f88ce99203c752d7_llamaindex-homepage.png" alt="__wf_reserved_inherit" />
+</figure>
+
+[LlamaIndex](https://www.llamaindex.ai/) is a data framework that specializes in building RAG-first agents and systems. While Botpress focuses on conversation flows, LlamaIndex specializes in connecting custom data sources to large language models. Thereby, creating agents that deeply understand and reason over your documents and data.
+
+#### Features
+
+<ul id=""><li id="">LlamaIndex offers types of indices and retrievers to provide rich context to LLMs. You can build hierarchical indexes, use auto-summarization, perform hybrid search (vector + keyword), etc., to ensure your agent has the most relevant information from your data when answering.</li><li id="">Use built-in modules like the <code id="">FunctionAgent</code> and <code id="">AgentWorkflow</code> to orchestrate multi-step tasks that involve using tools or querying data in steps.</li><li id="">Designed to handle hundreds of data sources, LlamaIndex does smart things like chunking data, caching embeddings, and incremental indexing so that even large knowledge bases are used by your agent without blowing up token limits.</li><li id="">LlamaIndex multi-modal understanding allows you to process text, tables, and images within the same pipeline, extending beyond Botpress's primarily text-based interactions.</li></ul>
+
+#### Pricing
+
+LlamaIndex is free to use (open-source) for its core Python library. LlamaCloud, its managed service, offers a free tier and three premium tiers:
+
+<ul id=""><li id=""><strong id="">LlamaIndex Starter:</strong> $50 per month - 50K API credits, 5 seats</li><li id=""><strong id="">LlamaIndex Pro:</strong> $500 per month - 500K credits, 10 seats</li><li id=""><strong id="">LlamaIndex Enterprise:</strong> Custom pricing</li></ul>
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/784b34c8/68ba635fc1f82b66de6669c5_llamaindex-pricing.png" alt="__wf_reserved_inherit" />
+</figure>
+
+#### Pros and Cons
+
+LlamaIndex is too good for knowledge-intensive applications. Its sophisticated retrieval and indexing capabilities allow agents to truly understand document context rather than just matching patterns. LlamaIndex lets you implement advanced retrieval and memory mechanisms, and is extremely good at bridging LLMs with private data.
+
+However, LlamaIndex focuses primarily on RAG rather than general agent orchestration. Building complex multi-step workflows requires additional orchestration layers that Botpress provides natively through its flow builder.
+
+**📚 Read more LlamaIndex articles:**
+
+<ul id=""><li id=""><a href="https://www.zenml.io/blog/llamaindex-alternatives">LlamaIndex alternatives</a></li><li id=""><a href="https://www.zenml.io/blog/llamaindex-pricing">LlamaIndex pricing</a></li></ul>
+
+### 4. Microsoft AutoGen
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/dc747f74/68ba637dccb1468ce5ba39b6_autogen-homepage.png" alt="__wf_reserved_inherit" />
+</figure>
+
+[Microsoft AutoGen](https://microsoft.github.io/autogen/stable//index.html) is a flexible and research-oriented framework that simplifies building multi-agent systems through conversational interactions.
+
+Unlike Botpress’s controlled flows, AutoGen has agents talk to each other and humans in a chat-like loop to solve tasks. You describe how agents should behave or when to stop, but you aren’t hand-coding the full sequence - the agents negotiate it in conversation.
+
+#### Features
+
+<ul id=""><li id="">AutoGen uses natural language for orchestration rules. You can specify agent personalities and capabilities through system prompts rather than coding.</li><li id="">Has strong multi-agent or conversation agent orchestration; unlike a single chain, agents can run hierarchical chats or dynamic group discussions and ask each other questions, verify ideas, or split tasks.</li><li id="">Instead of pre-defined flows, you configure agents like <code id="">AssistantAgent</code> and <code id="">UserProxyAgent</code> and initiate a chat between them. The conversation dynamically determines the workflow.</li><li id="">Operate fully autonomously or configure <code id="">UserProxyAgent</code> to request human feedback or iteration before executing code or proceeding with a task.</li><li id="">Built-in logging and integrations with partner tools like AgentOps help with detailed multi-agent tracking, metrics, and monitoring of costs and performance.</li></ul>
+
+#### Pricing
+
+AutoGen is completely open-source (MIT license) and free to use. There are no usage fees beyond your own compute and API costs.
+
+#### Pros and Cons
+
+A popular flex of AutoGen is that agents can adapt the ‘plan’ on the fly by discussing it, rather than following a predetermined path. This research-driven approach is best for open-ended tasks like Q&A, data analysis, software development, and any solution that is hard to script manually.
+
+However, the tradeoff is predictability. Two AI agents chatting can sometimes spiral into tangents, get stuck in loops, or produce errors if not carefully guided. Compared to Botpress’s more deterministic pipelines, AutoGen is powerful but requires a trial-and-error approach for agent building.
+
+### 5. Semantic Kernel
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/5ecdbbcb/68ba63e4c884b2f00ae1e7bc_semantic-kernel-homepage.webp" alt="__wf_reserved_inherit" />
+</figure>
+
+[Microsoft's Semantic Kernel](https://learn.microsoft.com/en-us/semantic-kernel/) is appealing to those who want an enterprise-grade, extensible framework to combine LLMs with traditional software components. Think of it as Microsoft’s answer for developers who want to embed AI abilities and agentic logic into their apps and business processes.
+
+#### Features
+
+<ul id=""><li id="">Semantic Kernel works with conventional programming languages like Python, C#, .NET, Java, and can connect to all major AI models, like OpenAI, Azure OpenAI, Hugging Face, etc.</li><li id="">SK’s plug-in architecture allows you to wrap native code functions, REST APIs, or even other AI prompts as plugins and makes it easy to extend an SK agent with your own business logic or external services.</li><li id="">Built-in ‘Planner’ helps you automatically decompose goals into executable steps, replacing manual flow design with AI-driven task planning.</li><li id="">Support for vector databases makes it easy to implement RAG capabilities and give agents access to both short-term conversational memory and long-term external knowledge.</li></ul>
+
+#### Pricing
+
+Semantic Kernel is **free and open-source** (MIT License). The only pricing considerations are the infrastructure you run it on and the API calls to LLMs or other services your agents use.
+
+#### Pros and Cons
+
+Semantic Kernel brings extensive integration capabilities together with a plug-in architecture design that effectively bridges traditional code with AI capabilities. Deep Azure integration accelerates development for Microsoft-centric organizations.
+
+On a soft note, the framework's abstraction layers are an overkill for simple use cases. Being code-first, the barrier to entry is higher for non-developers. Teams seeking quick prototypes might find Botpress's visual approach faster initially, though Semantic Kernel provides better long-term reliability.
+
+## No-Code Botpress Alternatives
+
+No-code alternatives occupy a similar space to Botpress, offering visual development experiences. However, they often differentiate themselves by focusing on broader automation, more modern LLM-native features, or deeper integration with the Python ecosystem, presenting compelling options for teams who still prefer a graphical interface.
+
+### 6. n8n
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/d06f2c7b/68ba640a825a0321beebad30_n8n-homepage.png" alt="__wf_reserved_inherit" />
+</figure>
+
+[n8n](https://n8n.io/) positions itself as the low-code alternative to Zapier. It features a visual node-based editor where you connect triggers, actions, and logic. Though not an agent framework at core, n8n allows you to embed LLM actions in a larger automation graph.
+
+#### Features
+
+<ul id=""><li id="">Create agent flow using a visual canvas, where you can drag-and-drop nodes (apps) and connect them with branches, loops, and parallel execution paths.</li><li id="">Has a vast library of pre-built nodes for <a href="https://n8n.io/integrations/">1,000+ applications</a>, databases, and APIs, which you can embed in your AI agent flow.</li><li id="">Supports custom code nodes in JavaScript or Python within workflows when needed.</li><li id="">Every run in n8n is transparent and inspected. You can see the inputs and outputs of each node, errors, and execution time for debugging.</li></ul>
+
+#### Pricing
+
+n8n offers three paid plans to choose from. Each plan comes with a 14-day free trial, no credit card required.
+
+<ul id=""><li id=""><strong id="">Starter</strong>: €24 per month with 2.5k workflow executions.</li><li id=""><strong id="">Pro</strong>: €60 per month with 10k workflow executions.</li><li id=""><strong id="">Enterprise</strong>: Custom pricing. Custom number of workflow executions and infinite active workflows.</li></ul>
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/c0a32052/68ba641f8094c8a92ad7ecf0_n8n-pricing-plans.png" alt="__wf_reserved_inherit" />
+</figure>
+
+#### Pros and Cons
+
+n8n’s drag-and-drop interface makes it appealing to both technical and non-technical audiences. In any season of the year, it’s faster to drag nodes than to write custom code. Also, n8n’s vast integration library is a huge plus.
+
+However, n8n wasn't built specifically for conversational AI. Creating sophisticated dialogue flows requires workarounds that Botpress handles natively. The platform works best for automation-focused agents rather than complex conversations.
+
+### 7. Dify
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/8d696253/68ba64517d59117cf839f856_dify-homepage.png" alt="__wf_reserved_inherit" />
+</figure>
+
+[Dify](https://cloud.dify.ai/signin) is an open-source LLM app development platform that provides visual tools for building AI agents and RAG pipelines. It serves as a middle ground between Botpress's simplicity and code-based framework flexibility.
+
+#### Features
+
+<ul id=""><li id="">Offers a visual workflow builder for orchestrating LLMs, tools, and knowledge bases using an intuitive drag-and-drop interface.</li><li id="">Built-in RAG engine lets you easily upload documents, connect to data sources, or scrape websites to create a knowledge base for your agent, with Dify handling the underlying indexing and retrieval processes.</li><li id="">Switch between LLM providers and models without code changes, avoiding Botpress's enterprise restrictions on custom models.</li><li id="">Integrated logging and monitoring features to track application usage, analyze agent performance, and view detailed logs of interactions. This helps in debugging and optimizing your AI applications directly from the UI.</li></ul>
+
+#### Pricing
+
+Dify is open source and free to self-host. It has three Cloud plans:
+
+<ul id=""><li id=""><strong id="">Sandbox:</strong> Free</li><li id=""><strong id="">Professional:</strong> $59 per month</li><li id=""><strong id="">Team:</strong> $159 per month</li></ul>
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/de89ce68/68ba64891b1e43ac43dbe0d3_dify-pricing-plans.png" alt="__wf_reserved_inherit" />
+</figure>
+
+#### Pros and Cons
+
+Dify is praised for its visual development and LLMOps sophistication. It’s great for teams that want to experiment and deploy AI agents without investing a ton in custom coding. The feature-rich interface gives it a ‘full-stack’ feel for AI agent development.
+
+Being no-code and template-based, Dify can be restrictive if you want very custom logic. You’re limited to the features they’ve exposed in the UI; anything very bespoke might require diving into the codebase.
+
+### 8. Langflow
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/8244d8a6/68ba64b29505b004e3eb3d5e_langflow-homepage.png" alt="__wf_reserved_inherit" />
+</figure>
+
+[Langflow](https://www.langflow.org/) is an open-source UI for building AI applications and agentic workflows using a drag-and-drop interface. It acts as a visual layer on top of concepts from popular Python libraries like LangChain.
+
+#### Features
+
+<ul id=""><li id="">Langflow provides a web-based IDE where you can drag LLMs, prompts, tools, memory stores, and connect them to form an agentic workflow.</li><li id="">Offers pre-built nodes corresponding to LangChain’s modules, like vector stores, popular data sources, and LLMs, and further allows building reusable nodes in Python.</li><li id="">Easily export flows as JSON for use in a Python application or deployed directly as a REST API endpoint from the Langflow server.</li></ul>
+
+#### Pricing
+
+Langflow is an open-source project and is free to use. When deploying on cloud providers like AWS or through managed services like [Elest.io](https://elest.io/), you will incur infrastructure costs. These typically start from around $0.10 per hour or $15 per month.
+
+#### Pros and Cons
+
+The biggest advantage is that Langflow democratizes LangChain's capabilities through visual development. Its user-friendly, low-code interface makes it accessible for anyone to build agents using AI components from the Python ecosystem.
+
+However, some users have noted occasional stability issues. Deploying Langflow for production-level apps requires careful infrastructure management and may not be as straightforward as more mature, enterprise-focused platforms.
+
+## How ZenML Helps In Closing the Outer Loop Around Your Agents
+
+All the alternatives above focus on the **‘inner loop’** of agent development – that is, creating agents, defining their logic, and getting them to perform tasks.
+
+But once you have agents built (whether with Botpress or any alternative), there’s a bigger picture to consider: the **‘outer loop’** of deploying, monitoring, and maintaining these agents in production. This is where [ZenML](https://www.zenml.io/) comes into play.
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/8c1eda41/68ba64d552371735c4daebc4_zenml-unified-mlops-and-llmops-platform.webp" alt="__wf_reserved_inherit" />
+</figure>
+
+ZenML is an open-source MLOps + [LLMOps framework](https://docs.zenml.io/user-guides/llmops-guide) that complements code-based agent tools by handling end-to-end lifecycle management of AI workflows. In other words, ZenML is not another agent framework; it’s the layer that helps you take whatever agent you build and embed it into a reliable, observable, and scalable pipeline.
+
+Here are a few key ways ZenML closes the outer loop around your agents:
+
+### 1. Unified Orchestration of Workflows
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/270ce903/68ba64ec4faed82c8c0be502_zenml-architecture.png" alt="__wf_reserved_inherit" />
+  <figcaption>ZenML architecture</figcaption>
+</figure>
+
+With ZenML, you can treat your AI agent as one step in a larger pipeline that might include data preparation, post-processing, notifications, etc.
+
+For example, you could have a ZenML pipeline that first fetches fresh data, then calls a LlamaIndex agent to analyze it, then uses an n8n workflow to act on the results.
+
+ZenML provides a single orchestration engine to run all these steps reliably. By doing so, it embeds your agent into a broader MLOps process – no more ad-hoc scripts; everything is a versioned, repeatable workflow.
+
+### 2. Visibility and Monitoring
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/83aa06c4/68ba650b4c60518ca7fe3027_zenml-pipeline-dag-visualization.png" alt="__wf_reserved_inherit" />
+  <figcaption>ZenML pipeline DAG visualization</figcaption>
+</figure>
+
+ZenML provides built-in tracking and logging for each pipeline run – including any AI agent steps. It will log the inputs an agent received, the outputs it produced, and any intermediate artifacts (like retrieved documents or generated images).
+
+Over time, as you run many pipeline executions, ZenML’s metadata store accumulates a history. This gives you experiment tracking and observability on top of your agents. You can answer questions like: Is my agent getting slower? Did its accuracy drop after last week? All runs are recorded.
+
+Botpress and its alternatives might have some logs, but ZenML centralizes this for all agents and additional steps.
+
+### 3. Continuous Evaluation and Feedback
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/a7fff087/68ba65256e6939b8dbf7fef4_zenml-evaluation.png" alt="__wf_reserved_inherit" />
+  <figcaption>ZenML evaluation</figcaption>
+</figure>
+
+Since ZenML pipelines can include any logic, you can insert evaluation steps after your agent’s execution.
+
+For instance, after an agent produces an answer or action, ZenML could automatically run an evaluation function or even call another model to score the result. If the quality is low or some rule is violated, our platform can flag it, alert you, or even trigger a corrective pipeline like retraining or prompt tuning.
+
+This closes the loop by not just deploying an agent and forgetting it, but continuously measuring its performance and feeding that back into improvements.
+
+### 4. Reproducibility and Versioning
+
+One of ZenML’s core strengths is ensuring reproducible pipelines. It tracks the exact code, parameters, and data that went into each run of your agent. This means if your agent suddenly behaves differently, you can pinpoint which version of the pipeline or model changed.
+
+ZenML also offers a caching mechanism: if nothing relevant has changed, it can skip re-running certain steps, saving you both time and cost. You can version your prompt templates, your model weights, and any data artifacts through ZenML’s artifact store.
+
+In regulated or enterprise environments, this is gold – you have full lineage of what your AI did and when. If an issue arises, say, an agent made an incorrect decision on a certain date, you can recreate that run exactly to debug it.
+
+Botpress and others don’t really focus on this level of lineage.
+
+**👀 Note:** At ZenML, we have built several agent workflow integrations with tools like Semantic Kernel, LangGraph, LlamaIndex, and more. We are actively shipping new integrations that you can find on this GitHub page: [ZenML Agent Workflow Integrations](https://github.com/zenml-io/zenml/tree/main/examples/agent_framework_integrations).
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/c51a5e76/68b58a4795f60f9023d117eb_zenml-agent-workflow-integrations.png" alt="__wf_reserved_inherit" />
+</figure>
+
+## The Best Botpress Alternatives to Build Automated AI Workflows
+
+For Python-native ML teams, moving beyond Botpress opens up a world of powerful, flexible, and controllable frameworks designed for building sophisticated AI agents.
+
+The choice between these alternatives depends on your team's specific needs and development philosophy.
+
+✅ Code-based tools like LangGraph and CrewAI offer ultimate control and are ideal for engineering complex, stateful systems where every logical step must be explicitly defined and managed in code.
+
+✅ Modern no-code platforms like Dify and Langflow provide a rapid, visual development experience tailored for the LLM era, making it easier to prototype and deploy RAG-native applications.
+
+However, building an agent is only the first step. To truly productionize these systems, a robust MLOps + LLMOps foundation is not just beneficial; it's essential.
+
+✅ ZenML provides this foundation. Whether you choose a code-based framework for its power or need to manage a portfolio of different AI agents, ZenML offers a unified platform to orchestrate, evaluate, and deploy them with production-grade discipline and scalability.
+
+*If you’re interested in taking your AI agent projects to the next level, consider joining the ZenML waitlist. We’re building out first-class support for agentic frameworks (like LangGraph, CrewAI, and more) inside ZenML, and we’d love early feedback from users pushing the boundaries of what AI agents can do. With ZenML, you can seamlessly integrate whichever agent framework you choose into robust, production-grade workflows. Join our waitlist to get started.👇*

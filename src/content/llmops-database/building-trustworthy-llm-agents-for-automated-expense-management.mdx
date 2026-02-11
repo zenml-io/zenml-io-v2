@@ -1,0 +1,160 @@
+---
+title: "Building Trustworthy LLM Agents for Automated Expense Management"
+slug: "building-trustworthy-llm-agents-for-automated-expense-management"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "690a0e37c2fe127a63522882"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:25:31.019Z"
+  createdOn: "2025-11-04T14:31:19.406Z"
+llmopsTags:
+  - "fraud-detection"
+  - "document-processing"
+  - "classification"
+  - "high-stakes-application"
+  - "structured-output"
+  - "prompt-engineering"
+  - "human-in-the-loop"
+  - "agent-based"
+  - "multi-agent-systems"
+  - "error-handling"
+  - "fallback-strategies"
+  - "system-prompts"
+  - "evals"
+  - "guardrails"
+  - "monitoring"
+  - "documentation"
+company: "Ramp"
+summary: "Ramp developed and deployed a suite of LLM-powered agents to automate expense management workflows, with a particular focus on their \"policy agent\" that automates expense approvals. The company faced the challenge of building AI systems that finance teams could trust in a domain where low-quality outputs could quickly erode confidence. Their solution emphasized explainable reasoning with citations, built-in uncertainty handling, collaborative context refinement, user-controlled autonomy levels, and comprehensive evaluation frameworks. Since deployment, the policy agent has handled over 65% of expense approvals autonomously, demonstrating that carefully designed LLM systems can deliver significant automation value while maintaining user trust through transparency and control."
+link: "https://engineering.ramp.com/post/how-to-build-agents-users-can-trust"
+year: 2025
+seo:
+  title: "Ramp: Building Trustworthy LLM Agents for Automated Expense Management - ZenML LLMOps Database"
+  description: "Ramp developed and deployed a suite of LLM-powered agents to automate expense management workflows, with a particular focus on their \"policy agent\" that automates expense approvals. The company faced the challenge of building AI systems that finance teams could trust in a domain where low-quality outputs could quickly erode confidence. Their solution emphasized explainable reasoning with citations, built-in uncertainty handling, collaborative context refinement, user-controlled autonomy levels, and comprehensive evaluation frameworks. Since deployment, the policy agent has handled over 65% of expense approvals autonomously, demonstrating that carefully designed LLM systems can deliver significant automation value while maintaining user trust through transparency and control."
+  canonical: "https://www.zenml.io/llmops-database/building-trustworthy-llm-agents-for-automated-expense-management"
+  ogTitle: "Ramp: Building Trustworthy LLM Agents for Automated Expense Management - ZenML LLMOps Database"
+  ogDescription: "Ramp developed and deployed a suite of LLM-powered agents to automate expense management workflows, with a particular focus on their \"policy agent\" that automates expense approvals. The company faced the challenge of building AI systems that finance teams could trust in a domain where low-quality outputs could quickly erode confidence. Their solution emphasized explainable reasoning with citations, built-in uncertainty handling, collaborative context refinement, user-controlled autonomy levels, and comprehensive evaluation frameworks. Since deployment, the policy agent has handled over 65% of expense approvals autonomously, demonstrating that carefully designed LLM systems can deliver significant automation value while maintaining user trust through transparency and control."
+---
+
+## Overview
+
+Ramp, a financial automation platform, built and deployed a comprehensive suite of LLM-backed agents to automate various aspects of expense management. This case study focuses primarily on their "policy agent" that automates expense approvals, though they also mention agents for merchant identification and receipt parsing. The company's approach is particularly noteworthy for its emphasis on building user trust in a high-stakes financial domain where errors can have significant consequences. The case study provides detailed insights into their design philosophy, technical implementation choices, and operational practices for running LLMs in production.
+
+## Problem Selection and Scoping
+
+Ramp articulates a thoughtful framework for choosing which problems to solve with LLMs. They identify three key criteria: ambiguity (where simple heuristics fail), high volume (where manual processing is prohibitively time-consuming), and asymmetric upside (where automation value significantly exceeds error costs). Finance operations naturally fit these criteria, with tasks like expense approval, merchant identification, and receipt parsing representing tedious, repetitive work with relatively low catastrophic failure risk when proper guardrails are implemented.
+
+The expense approval use case is particularly well-suited to this framework. Traditionally handled by managers reviewing expenses against company policies, this task involves interpreting often-ambiguous policy language, understanding context around specific purchases, and making judgment calls. The high volume of expenses combined with the relatively low individual stakes of most decisions makes this an ideal automation target, though the cumulative impact on company finances and employee satisfaction means trust and reliability are paramount.
+
+## Explainability and Transparency Architecture
+
+A central pillar of Ramp's approach is treating explainability as a first-class feature rather than an afterthought. They don't simply return binary approve/reject decisions; instead, every agent decision includes detailed reasoning explaining the "why" behind the outcome. This serves multiple constituencies: end users can verify decisions and understand the agent's logic, while developers gain observability into model behavior that informs prompt engineering and context improvements over time.
+
+The company goes beyond generic reasoning by implementing a citation system that grounds LLM outputs in verifiable sources. When the policy agent references specific expense policy requirements, it links directly to the relevant policy sections. This grounding mechanism serves dual purposes: it reduces hallucinations by anchoring reasoning in real documents, and it provides users with an immediate way to validate claims. The design pattern here reflects a sophisticated understanding that LLM transparency isn't just about showing reasoning—it's about making that reasoning auditable and traceable to authoritative sources.
+
+From a technical implementation perspective, this likely requires careful prompt engineering to ensure the LLM both generates reasoning and properly identifies which context documents or sections support each reasoning step. The system must track provenance throughout the inference process, maintaining links between generated text and source material. This is more complex than simple LLM invocation but provides significantly more value in production.
+
+## Uncertainty Handling and Confidence Calibration
+
+Ramp takes a notably sophisticated approach to uncertainty handling that diverges from common practices. Rather than asking LLMs to output numerical confidence scores—which they correctly identify as unreliable and prone to clustering around 70-80% regardless of actual uncertainty—they use predefined categorical outcomes: Approve, Reject, or Needs Review. This discretization forces the model into actionable states rather than providing false precision through numerical scores.
+
+The "Needs Review" category functions as a deliberate escape hatch, explicitly allowing the agent to defer to human judgment when uncertain. Critically, Ramp positions this uncertainty state as a valid and even ideal outcome rather than a failure mode. This reframing is psychologically important for user acceptance: users don't perceive the system as "broken" when it admits limitations, but rather as appropriately cautious. The case study provides an example where the agent identified a mismatch between a golf receipt and the associated transaction, correctly flagging this as requiring human attention.
+
+From an LLMOps perspective, this approach requires careful prompt design to elicit reliable uncertainty signals from the model. The system must be engineered to recognize edge cases and ambiguous scenarios that warrant deferral. Importantly, Ramp tracks the reasons for uncertainty over time, creating a feedback loop where they can identify systematic gaps in context or reasoning capability. This operational practice transforms uncertainty from a limitation into a learning signal that drives system improvement.
+
+The critique of confidence scores reflects practical experience with LLM behavior in production. While traditional statistical models produce well-calibrated probability estimates, LLMs lack this property despite readily outputting numbers when prompted. Ramp's decision to avoid this trap and instead use categorical states shows mature understanding of LLM capabilities and limitations.
+
+## Collaborative Context Management
+
+Ramp implements what they term "collaborative context," a design pattern where users actively shape and refine the context that drives AI decisions. Rather than treating expense policies as static external documents, they brought policy definition directly into their platform, built a full editor for users to maintain policies, and created a feedback loop where disagreements with agent decisions can drive policy clarification.
+
+This approach embodies several important LLMOps principles. First, it recognizes that context quality is perhaps the single most important factor in LLM performance, and that context should evolve over time rather than remaining fixed. Second, it creates a virtuous cycle where the act of using the AI system naturally improves the underlying context. When an LLM struggles with an ambiguous policy section, that ambiguity likely confuses humans as well, so clarifying the policy benefits both the AI and human decision-makers.
+
+From a technical standpoint, this requires careful integration between the policy editor, the policy storage system, and the LLM inference pipeline. The system must retrieve relevant policy sections based on expense characteristics, likely using some form of semantic search or retrieval mechanism to identify which policy clauses apply to a given expense. The prompt must then incorporate this retrieved context effectively while maintaining the connection between generated reasoning and source sections for citation purposes.
+
+The operational benefits of this approach are significant. Rather than requiring extensive prompt engineering to handle every edge case, the system pushes context improvement responsibility to users who understand their specific policies and needs. This distributes the maintenance burden and ensures the system adapts to each organization's unique requirements. It also creates a clear path for continuous improvement without requiring constant developer intervention.
+
+## User Autonomy and Control Mechanisms
+
+Ramp implements what they describe as an "autonomy slider" that allows users to configure how much agency AI agents have in their specific environment. This is operationalized through a workflow builder that already existed in their product for defining business processes. Users can specify exactly where and when agents can act autonomously, combining LLM decisions with deterministic rules like dollar limits, vendor blocklists, and category restrictions.
+
+This design reflects important lessons about AI adoption in production environments. Different organizations and teams have vastly different risk tolerances and comfort levels with automation. Rather than imposing a one-size-fits-all approach, Ramp allows each customer to configure boundaries that match their needs. Conservative users might require human review for all expenses above $50, while more trusting users might only require review when the agent itself flags an expense as problematic.
+
+The layering of deterministic rules on top of LLM decisions is particularly noteworthy from a systems architecture perspective. Not everything needs to be an AI decision—sometimes simple rule-based logic is more appropriate, transparent, and reliable. Hard spending limits or vendor restrictions represent clear organizational policies that don't benefit from LLM interpretation. By combining rule-based and AI-based components, Ramp creates a hybrid system that leverages each approach's strengths.
+
+The progressive trust model they describe—starting with suggestions before graduating to autonomous actions—mirrors patterns seen in other domains like AI-powered code editors. This staged rollout builds user confidence by first demonstrating the agent's capabilities in a low-risk copilot mode before granting full autonomy. From a deployment strategy perspective, this reduces adoption friction and allows organizations to validate agent performance in their specific context before committing to full automation.
+
+## Evaluation and Testing Practices
+
+Ramp explicitly positions evaluations as "the new unit tests," emphasizing their critical role in responsibly evolving LLM systems over time. Their evaluation approach incorporates several important practices that reflect mature LLMOps thinking.
+
+They advocate for a "crawl, walk, run" scaling strategy where evaluation sophistication grows with product maturity. Starting with quick, simple evals and gradually expanding coverage and precision is more pragmatic than attempting comprehensive evaluation from day one. This matches the reality that early in a product's lifecycle, understanding basic capabilities and failure modes is more important than exhaustive testing.
+
+The focus on edge cases rather than typical scenarios is crucial for LLM systems. Unlike traditional software where edge cases might represent rare bugs, LLM failures often cluster in ambiguous or unusual situations. Prioritizing these in evaluations ensures testing focuses on the system's weakest points rather than repeatedly validating success in straightforward cases.
+
+Turning user-reported failures into test cases creates a continuous feedback loop between production experience and evaluation coverage. This practice ensures that evals remain grounded in real-world usage patterns rather than hypothetical scenarios. However, Ramp importantly notes that user feedback requires careful interpretation—finance teams might be lenient in practice, approving expenses that technically violate policy. Simply treating user actions as ground truth could bias the system toward excessive leniency.
+
+To address this ground truth ambiguity, Ramp created "golden datasets" carefully reviewed by their own team to establish correct decisions based solely on information available within the system. This independent labeling process removes affinity bias and other human factors that might influence finance teams' real-world decisions. From a data quality perspective, this investment in curated evaluation datasets reflects understanding that eval quality directly determines how reliably they can measure and improve system performance.
+
+The evaluation infrastructure likely includes metrics tracking accuracy across different categories (approve/reject/needs review), consistency over time, reasoning quality, and perhaps user satisfaction measures. The ability to track how "unsure reasons" change over time suggests they've instrumented detailed logging and analysis of agent outputs, not just final decisions.
+
+## System Architecture and Design Patterns
+
+While the case study doesn't provide exhaustive technical details, several architectural patterns are evident or implied. The system clearly implements retrieval-augmented generation (RAG) patterns, pulling relevant policy sections based on expense characteristics and incorporating them into the LLM context. This requires a retrieval mechanism—likely embedding-based semantic search—to identify relevant policy clauses for each expense.
+
+The citation mechanism suggests careful tracking of provenance throughout the inference process. When the LLM generates reasoning, the system must maintain connections between generated statements and source documents to enable linking back to specific policy sections. This could be implemented through structured prompting that requires the model to indicate which context sections support each reasoning point, or through post-processing that matches generated text against source material.
+
+The workflow builder integration indicates a flexible orchestration layer that can route expenses through different paths based on configured rules and agent recommendations. This suggests an event-driven architecture where expenses trigger workflows that may include deterministic checks, LLM inference, and human review steps in various combinations depending on configuration.
+
+The observability infrastructure must be sophisticated to support the use cases described. Tracking unsure reasons over time, monitoring reasoning quality, and enabling continuous improvement all require comprehensive logging of inputs, outputs, reasoning chains, and user interactions. This observability data feeds both into evaluation processes and into prompt engineering iterations.
+
+## Prompt Engineering and Model Management
+
+While specific prompt engineering techniques aren't detailed, the case study implies several important practices. Prompts must elicit structured outputs including decisions, reasoning, citations, and uncertainty signals. The transition from numerical confidence scores to categorical outcomes required prompt modifications to guide the model toward these discrete states rather than continuous probability estimates.
+
+The emphasis on getting models to recognize their limitations and output "Needs Review" when uncertain suggests prompts that explicitly encourage humility and appropriate deferral. This is non-trivial with models that are often trained to be helpful and provide answers even when uncertain. Effective prompt engineering here might include examples of appropriate deferral scenarios and explicit instructions about when to escalate to humans.
+
+The case study doesn't specify which LLM models they use or whether they employ multiple models for different tasks. Modern LLMOps often involves model selection decisions based on cost, latency, and capability tradeoffs. For a production finance system, they likely prioritize reliability and reasoning quality over raw speed, possibly using frontier models like GPT-4 or Claude rather than smaller, faster alternatives.
+
+## Trust Building and User Experience Design
+
+Throughout the case study, Ramp emphasizes trust as the central challenge and success metric. Their approach to building trust is multifaceted, combining technical capabilities (explainability, citations, uncertainty handling) with user experience design (clear presentation of reasoning, non-threatening uncertainty states) and organizational control mechanisms (autonomy sliders, workflow customization).
+
+The decision to make uncertainty look like a valid outcome rather than an error state is a UX design choice with significant impact on user perception. Similarly, the presentation of reasoning with linked citations creates transparency that builds confidence even when users don't exhaustively verify every decision. These choices reflect understanding that trust in AI systems isn't purely about accuracy—it's about predictability, controllability, and alignment with user expectations.
+
+The collaborative context approach also builds trust by giving users agency over system behavior. Rather than a black box that users must accept or reject wholesale, the system invites users to shape its decision-making through policy refinement. This transforms the relationship from user-versus-AI to user-and-AI working together.
+
+## Production Results and Business Impact
+
+Ramp reports that their policy agent now handles more than 65% of expense approvals autonomously. This represents substantial automation of a traditionally manual process, though the case study doesn't provide detailed metrics on accuracy, user satisfaction, or time savings. The 65% figure implies that 35% of expenses still require human review—either because the agent defers due to uncertainty, because user-configured rules require human involvement, or because users choose to review despite agent recommendations.
+
+From a balanced assessment perspective, this 65% automation rate is impressive but also indicates significant residual manual work. The value proposition depends heavily on how time-consuming that remaining 35% is relative to the baseline of reviewing all expenses manually. If the agent handles straightforward cases and escalates genuinely complex situations, the time savings could be substantial. However, if users feel compelled to spot-check agent decisions, the actual time savings might be less than the automation percentage suggests.
+
+The case study doesn't address false positive or false negative rates, user override frequency, or accuracy metrics, which would provide more complete understanding of system performance. The emphasis on trust-building mechanisms suggests these may have been significant challenges during development, though the lack of reported problems could indicate they've successfully addressed them.
+
+## Limitations and Balanced Assessment
+
+While the case study presents Ramp's approach positively, it's important to consider limitations and questions that arise. The article is explicitly a marketing piece from Ramp's blog aimed at both showcasing their capabilities and recruiting talent. Claims about agent effectiveness and user trust should be viewed with appropriate skepticism pending independent validation.
+
+The 65% automation rate, while substantial, leaves considerable manual work remaining. The case study doesn't explore whether certain expense categories, policy types, or organizational structures are more amenable to automation than others, or whether some customers achieve significantly higher or lower automation rates.
+
+The evaluation methodology description is somewhat vague. While creating golden datasets is good practice, the case study doesn't detail dataset size, evaluation frequency, how they measure reasoning quality versus just decision accuracy, or how evaluation results translate into system improvements. The "continuous improvement" claims are difficult to assess without more concrete information about iteration cycles and measured improvements.
+
+The collaborative context approach, while theoretically sound, places significant burden on users to maintain high-quality policies in Ramp's system. Organizations with complex, frequently-changing policies might find this challenging. There's also potential for drift between the policy in Ramp's system and other organizational documentation.
+
+The case study doesn't address failure modes in detail. What happens when the agent approves something that clearly violates policy, or rejects legitimate expenses? How do users report problems, and how quickly does feedback translate into improvements? These operational realities significantly impact real-world trust but receive little attention.
+
+From a technical perspective, the architecture likely involves significant complexity that isn't fully visible in the case study. RAG pipelines can be brittle, requiring careful tuning of retrieval mechanisms, chunk sizing, and context window management. Maintaining consistent performance across diverse customers with different policy structures and expense patterns represents a substantial engineering challenge.
+
+## Broader LLMOps Lessons
+
+Despite being a promotional piece, the case study offers valuable insights into production LLM deployment. The emphasis on explainability as a first-class requirement rather than an afterthought reflects growing understanding that transparency directly impacts adoption and trust. The categorical approach to uncertainty rather than false-precision confidence scores demonstrates practical learning about LLM behavior. The collaborative context pattern offers a scalable way to handle the context quality challenge without requiring exhaustive prompt engineering for every edge case.
+
+The progression from copilot to autonomous agent mirrors successful patterns in other domains and represents sensible risk management for deploying AI in consequential environments. The integration of deterministic rules with LLM decisions shows mature systems thinking—recognizing that not everything needs to be an AI problem.
+
+The evaluation philosophy, particularly creating independent golden datasets rather than simply trusting user feedback as ground truth, reflects sophisticated understanding of data quality challenges. The practice of turning production failures into test cases creates the kind of feedback loops necessary for continuous improvement.
+
+Overall, this case study represents a thoughtful approach to production LLM deployment in a high-stakes domain, with appropriate emphasis on trust, transparency, and user control. While the self-promotional nature limits ability to fully assess claims, the architectural patterns and operational practices described align with emerging best practices in the LLMOps field.

@@ -1,0 +1,144 @@
+---
+title: "Building a Comprehensive LLM Platform for Healthcare Applications"
+slug: "building-a-comprehensive-llm-platform-for-healthcare-applications"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "674f1ec716ee4d47e2ae2cc2"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:47:33.710Z"
+  createdOn: "2024-12-03T15:07:51.680Z"
+llmopsTags:
+  - "healthcare"
+  - "document-processing"
+  - "speech-recognition"
+  - "question-answering"
+  - "chatbot"
+  - "regulatory-compliance"
+  - "rag"
+  - "prompt-engineering"
+  - "fine-tuning"
+  - "few-shot"
+  - "semantic-search"
+  - "model-optimization"
+  - "system-prompts"
+  - "multi-agent-systems"
+  - "kubernetes"
+  - "fastapi"
+  - "langchain"
+  - "llama-index"
+  - "crewai"
+  - "wandb"
+  - "triton"
+  - "documentation"
+  - "security"
+  - "compliance"
+  - "openai"
+  - "google-gcp"
+  - "amazon-aws"
+  - "microsoft-azure"
+  - "hugging-face"
+company: "IncludedHealth"
+summary: "IncludedHealth built Wordsmith, a comprehensive platform for GenAI applications in healthcare, starting in early 2023. The platform includes a proxy service for multi-provider LLM access, model serving capabilities, training and evaluation libraries, and prompt engineering tools. This enabled multiple production applications including automated documentation, coverage checking, and clinical documentation, while maintaining security and compliance in a regulated healthcare environment."
+link: "https://includedhealth.com/blog/tech/building-a-platform-for-genai-at-included-health/"
+year: 2024
+seo:
+  title: "IncludedHealth: Building a Comprehensive LLM Platform for Healthcare Applications - ZenML LLMOps Database"
+  description: "IncludedHealth built Wordsmith, a comprehensive platform for GenAI applications in healthcare, starting in early 2023. The platform includes a proxy service for multi-provider LLM access, model serving capabilities, training and evaluation libraries, and prompt engineering tools. This enabled multiple production applications including automated documentation, coverage checking, and clinical documentation, while maintaining security and compliance in a regulated healthcare environment."
+  canonical: "https://www.zenml.io/llmops-database/building-a-comprehensive-llm-platform-for-healthcare-applications"
+  ogTitle: "IncludedHealth: Building a Comprehensive LLM Platform for Healthcare Applications - ZenML LLMOps Database"
+  ogDescription: "IncludedHealth built Wordsmith, a comprehensive platform for GenAI applications in healthcare, starting in early 2023. The platform includes a proxy service for multi-provider LLM access, model serving capabilities, training and evaluation libraries, and prompt engineering tools. This enabled multiple production applications including automated documentation, coverage checking, and clinical documentation, while maintaining security and compliance in a regulated healthcare environment."
+---
+
+## Overview
+
+IncludedHealth is a healthcare technology company that provides navigation, primary care, behavioral health, and specialty care services to employers, health plans, and labor organizations. In early 2023, recognizing the potential of emerging large language models, the company's Data Science Platform team embarked on building "Wordsmith," an internal platform to enable GenAI capabilities across the organization. This case study documents their journey from initial experimentation to a production-ready platform supporting multiple applications.
+
+The timing of this initiative was fortuitous: the team began serious exploration in March 2023, coinciding with the release of GPT-4. The author notes that tasks which had failed with GPT-3.5 just a week prior were suddenly achievable with GPT-4, representing a significant inflection point in what was practically possible for production applications.
+
+## Platform Architecture
+
+The Wordsmith platform was designed with a key principle in mind: it should handle "anything you wanted with text data" while being "so easy to use that other teams could just treat it as a black box." This abstraction philosophy drove the architectural decisions throughout the project. The platform consists of five main components:
+
+### Proxy Service and Client Library
+
+The heart of the Wordsmith platform is the `wordsmith-proxy` service, which serves as a centralized gateway for all LLM requests within the organization. Rather than having each data scientist or application directly call external LLM providers, all requests are routed through this internal service, which then dispatches them to the appropriate provider.
+
+A critical architectural decision was to implement the OpenAI API specification on the server side. By following OpenAI's published OpenAPI format, the team created a service that allows users to simply use the standard OpenAI Python SDK (or Go SDK for engineering teams) pointed at the internal endpoint. This approach provides several operational benefits:
+
+- **Provider abstraction**: Users can switch between model providers (OpenAI, Google VertexAI, AWS Bedrock, or internal models) simply by changing a model name string (e.g., from "azure:gpt-4-turbo" to "google:gemini-pro")
+- **Credential management**: Instead of distributing separate API keys to each user, the proxy service holds a single set of credentials for each provider
+- **Decoupled updates**: Server-side routing logic can be updated without requiring client package upgrades
+- **Cross-language support**: Any language with an OpenAI-compatible SDK can integrate with the platform
+
+The author notes that this decision has proven valuable over time, as open-source tools like LiteLLM have emerged using the same OpenAI schema as a common interface. If starting today, they would consider using such tools rather than building from scratch.
+
+### Model Inference and Serving System
+
+For online model serving, the team deployed MLServer (an open-source project) internally, using the HuggingFace runtime to serve models. This service integrates with their internal MLFlow deployment, allowing it to download and serve model artifacts stored there.
+
+For batch inference scenarios, the team built `wordsmith-inference`, a system that integrates with their data warehouse to allow users to launch batch jobs that apply LLMs to text data stored in tables. This addresses the common enterprise need to process large volumes of historical data.
+
+### Training Infrastructure
+
+Enabling model training and fine-tuning required infrastructure work beyond just software. The team collaborated with Infrastructure and Data Infra teams to enable GPU support in their Kubernetes cluster, using Karpenter for node provisioning and deploying the nvidia-device-plugin to expose GPUs as Kubernetes resources.
+
+On the software side, the training library is built around HuggingFace Transformers, with the team adapting standard examples to their datasets and experimenting with parameter-efficient techniques like LoRA for fine-tuning.
+
+### Evaluation Library
+
+The `wordsmith-evaluation` library wraps HuggingFace's evaluate library, providing access to existing metrics while also integrating open-source metrics not in the library and custom internally-developed metrics. This addresses the critical LLMOps challenge of measuring and monitoring model performance.
+
+### Prompt Tooling
+
+A dedicated Python library abstracts boilerplate from prompting workflows, including template-based prompt generation and few-shot example selection using semantic similarity. This standardization helps ensure consistency across applications and reduces the cognitive load on developers.
+
+## Production Applications
+
+The platform has enabled multiple production applications, demonstrating concrete value:
+
+**Ghostwriter** automatically generates documentation for care coordinators after member interactions, covering both chats and phone calls. For calls, it uses transcription via a Whisper model hosted on Wordsmith Serving.
+
+**Coverage Checker** is the first GenAI feature in the customer-facing app, answering insurance plan questions by retrieving relevant documents. It has been released for internal testing and rolled out to external customers.
+
+**Clinical Scribe** automates clinical documentation, supporting real-time visit transcription and generation of medical documentation including SOAP notes. This addresses a significant pain point for healthcare providers.
+
+**Records Collection** uses LLMs to automate gathering medical information for Expert Medical Opinion services, parsing, reformatting, and filtering records based on relevance to specific cases.
+
+**ChatIH** provides an internal ChatGPT-like interface using HuggingFace's open-source ChatUI as a frontend. This has been rolled out to 400 internal users and supports custom "Assistants" for productivity tasks like meeting summarization and internal jargon translation.
+
+**Data Warehouse Documentation** uses LLMs to automatically generate and improve documentation for data warehouse tables, addressing a common data governance challenge.
+
+## Operational Lessons and Best Practices
+
+The case study provides several valuable lessons for organizations building similar platforms:
+
+**Flexibility is paramount.** The author emphasizes that long-term roadmaps are nearly impossible in the current GenAI landscape. They initially focused on fine-tuning and self-hosting expecting delays in securing HIPAA-compliant cloud LLM access, only to have Google Cloud launch VertexAI with appropriate security controls sooner than expected. Within six months, they went from uncertain access to managing LLMs from three different cloud providers.
+
+**Modularity enables adaptation.** Rather than building a monolithic system, the team created composable tools that allow users to select what they need for specific tasks. This also allowed the development team to pivot resources as priorities shifted.
+
+**Open source accelerates development.** The author describes finding open-source tools as "almost like cheating" - they heavily leveraged existing solutions and common interfaces to accelerate development and improve integration capabilities.
+
+**Regulatory compliance requires early engagement.** Working in healthcare means dealing with HIPAA and other regulations. The team emphasizes starting conversations with Legal and Security teams early, as GenAI introduces additional complexities on top of existing ML governance requirements.
+
+## Future Roadmap
+
+The platform continues to evolve with several areas of active development:
+
+**Tool Calling and Agents**: The team has built `wordsmith-tools` for exposing endpoints callable by LLMs and `wordsmith-agents` for configuring LLM agents. An agent in ChatIH can query internal Confluence documentation and is used by over 80 engineers. They're also evaluating implementing the OpenAI Assistants API in the proxy.
+
+**RAG Infrastructure**: `wordsmith-retrieval` is being developed to provide a unified API for Retrieval-Augmented Generation, handling chunking, embedding, and retrieval behind a simple interface where users upload documents. This would also enable experimentation with cloud-hosted RAG solutions like Vertex AI Search or Amazon Bedrock Knowledge Bases.
+
+**Higher-Level Frameworks**: After initially being cautious about adopting frameworks like LangChain, the team is now exploring LlamaIndex for indexing and retrieval, and evaluating CrewAI and AutoGen for multi-agent coordination.
+
+## Critical Assessment
+
+This case study provides a transparent and technically detailed account of building an enterprise LLM platform. The architectural decisions, particularly the choice to standardize on the OpenAI API format, demonstrate sound engineering judgment that has been validated by subsequent industry trends.
+
+The emphasis on modularity and flexibility appears well-suited to the rapidly evolving LLM landscape. However, a few considerations are worth noting: the platform appears to still be relatively young (approximately 18 months at the time of writing), and long-term operational challenges like model drift, cost optimization at scale, and managing technical debt across multiple providers may not yet be fully apparent.
+
+The healthcare context adds important complexity around privacy and compliance, though the case study doesn't provide deep detail on how these challenges were specifically addressed beyond emphasizing the importance of early legal and security engagement.
+
+Overall, this represents a thoughtful approach to building internal LLM infrastructure that balances the need for standardization with the reality that the underlying technology is rapidly changing.

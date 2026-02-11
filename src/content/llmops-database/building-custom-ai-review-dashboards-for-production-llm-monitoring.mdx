@@ -1,0 +1,83 @@
+---
+title: "Building Custom AI Review Dashboards for Production LLM Monitoring"
+slug: "building-custom-ai-review-dashboards-for-production-llm-monitoring"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "6899a15481b853e07c68fed8"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:18:13.661Z"
+  createdOn: "2025-08-11T07:52:52.075Z"
+llmopsTags:
+  - "healthcare"
+  - "human-in-the-loop"
+  - "prompt-engineering"
+  - "monitoring"
+  - "documentation"
+company: "Anterior"
+summary: "Anterior developed \"Scalpel,\" a custom review dashboard enabling a small team of clinicians to review over 100,000 medical decisions made by their AI system. The dashboard was built around three core principles: optimizing context surfacing for high-quality reviews, streamlining review flow sequences to minimize time per review, and designing reviews to generate actionable data for AI system improvements. This approach allowed domain experts to efficiently evaluate AI outputs while providing structured feedback that could be directly translated into system enhancements, demonstrating how custom tooling can bridge the gap between production AI performance and iterative improvement processes."
+link: "https://chrislovejoy.me/review-dashboard"
+year: 2025
+seo:
+  title: "Anterior: Building Custom AI Review Dashboards for Production LLM Monitoring - ZenML LLMOps Database"
+  description: "Anterior developed \"Scalpel,\" a custom review dashboard enabling a small team of clinicians to review over 100,000 medical decisions made by their AI system. The dashboard was built around three core principles: optimizing context surfacing for high-quality reviews, streamlining review flow sequences to minimize time per review, and designing reviews to generate actionable data for AI system improvements. This approach allowed domain experts to efficiently evaluate AI outputs while providing structured feedback that could be directly translated into system enhancements, demonstrating how custom tooling can bridge the gap between production AI performance and iterative improvement processes."
+  canonical: "https://www.zenml.io/llmops-database/building-custom-ai-review-dashboards-for-production-llm-monitoring"
+  ogTitle: "Anterior: Building Custom AI Review Dashboards for Production LLM Monitoring - ZenML LLMOps Database"
+  ogDescription: "Anterior developed \"Scalpel,\" a custom review dashboard enabling a small team of clinicians to review over 100,000 medical decisions made by their AI system. The dashboard was built around three core principles: optimizing context surfacing for high-quality reviews, streamlining review flow sequences to minimize time per review, and designing reviews to generate actionable data for AI system improvements. This approach allowed domain experts to efficiently evaluate AI outputs while providing structured feedback that could be directly translated into system enhancements, demonstrating how custom tooling can bridge the gap between production AI performance and iterative improvement processes."
+---
+
+## Overview and Context
+
+Anterior, a healthcare AI company, developed a sophisticated approach to monitoring and improving their production LLM system through a custom-built review dashboard called "Scalpel." The company operates in the complex domain of medical decision-making, specifically automating health administrative tasks that traditionally require clinical expertise. Their system performs clinical reasoning workflows that check medical guidelines against medical evidence to decide whether treatments should be approved. Given the high-stakes nature of healthcare decisions and the need for domain expertise, Anterior recognized that effective human review processes were critical for maintaining and improving their AI system's performance in production.
+
+The core challenge Anterior faced was typical of many production LLM deployments: without systematic human review of AI outputs, organizations essentially operate blind to their system's true performance. Performance degradation can occur gradually and go unnoticed until customers begin to leave, at which point recovery becomes significantly more difficult. This problem is particularly acute in vertical AI applications like healthcare, where domain experts must act as "translators" between product usage and AI performance, requiring specialized knowledge to properly evaluate system outputs.
+
+## The Scalpel Dashboard Architecture and Design Philosophy
+
+Anterior's solution centered around building a custom review dashboard optimized for three key objectives: enabling high-quality reviews, minimizing time per review, and generating actionable data for system improvements. This approach represents a mature understanding of LLMOps challenges, recognizing that effective human-AI collaboration requires purpose-built tooling rather than generic solutions.
+
+The decision to build custom tooling rather than rely on spreadsheets or existing review platforms was driven by practical limitations. Spreadsheets struggle with complex data structures like multi-step LLM traces and intermediate reasoning steps. Existing tooling providers often restrict the types of data views possible and make it difficult to translate review outputs directly into application improvements. While these generic tools might serve as starting points, production-scale LLM operations typically require custom solutions that can handle domain-specific requirements and integrate seamlessly with improvement workflows.
+
+## Context Optimization and Information Architecture
+
+The first principle underlying Scalpel's design was optimizing how contextual information is surfaced to reviewers. In healthcare AI applications, context is particularly critical because clinical decisions depend on complex interactions between medical guidelines, patient evidence, and regulatory requirements. Anterior's approach involved making all potentially relevant context available while avoiding information overload through careful information architecture.
+
+Their solution involved presenting context hierarchically, using nesting and sidebars to make information discoverable without overwhelming the primary review interface. They observed that nurses frequently needed to look up medical definitions in separate tabs, so they integrated an expandable sidebar for medical reference directly into the review flow. This attention to workflow details demonstrates how production LLM systems benefit from deep understanding of user behavior patterns.
+
+The spatial organization of information also proved important. Anterior separated context (medical guidelines and patient evidence) on the right side of the interface from AI outputs requiring review on the left side. This physical separation enabled reviewers to maintain clear mental models: reference information versus evaluation targets. Such design decisions reflect sophisticated understanding of cognitive load management in complex review tasks.
+
+## Review Flow Optimization and Workflow Design
+
+The second principle focused on optimizing the sequence and structure of the review process itself. Rather than simply digitizing existing clinical workflows, Anterior took an opinionated approach to designing what they considered an optimal review sequence. They observed that individual clinicians had developed varied personal workflows for health administrative tasks, with likely differences in effectiveness across practitioners.
+
+Their designed flow followed a logical progression: read case summary for context, understand the AI's assigned question, examine relevant medical record evidence, then review the AI output. This structured approach ensures consistent, thorough evaluation while minimizing cognitive overhead. The opinionated nature of this design reflects a key insight in LLMOps: rather than trying to accommodate all possible workflows, it's often better to design an optimized process and train users to follow it.
+
+Friction reduction received particular attention in their implementation. Through user shadowing and observation, they identified and addressed multiple sources of inefficiency: excessive scrolling was addressed by bringing information to the user's current focus, excessive clicking was reduced through keyboard shortcuts, decision complexity was managed by showing only immediate decisions and revealing subsequent choices contextually, and navigation confusion was addressed through progress indicators.
+
+## Data Collection and Actionable Insights
+
+The third principle involved designing the review process to generate data that directly supports system improvement. This represents a sophisticated understanding of the review process not just as quality control, but as a key component of the AI development lifecycle. Basic correctness tracking provides performance monitoring and can be segmented across various dimensions like query type or user characteristics.
+
+Beyond simple correctness metrics, Anterior implemented failure mode identification as a core feature. Working with domain experts, they developed a taxonomy of failure modes that could be selected during review, supplemented by free-text fields for suggesting new categories. This structured approach to failure analysis enables focused improvement efforts and quantitative impact measurement when testing fixes against historical failure cases.
+
+The system goes further by directly translating reviews into system improvements. Rather than treating review and improvement as separate phases, the dashboard enables reviewers to suggest specific changes during the review process itself. This might involve prompt modifications, knowledge base additions, or other system adjustments. This tight coupling between evaluation and improvement significantly increases the leverage of domain expert time and reduces context loss between review and development cycles.
+
+Additional data outputs include regression dataset curation, where cases can be tagged for inclusion in continuous integration testing, and automated bug reporting with pre-filled trace details. These features demonstrate how review dashboards can serve as comprehensive feedback loops rather than simple monitoring tools.
+
+## Technical Implementation and Practical Considerations
+
+The author suggests that building such dashboards doesn't require massive engineering investments, advocating for rapid prototyping and iterative development. This "vibe coding" approach involves quickly implementing initial interfaces and iterating based on user feedback. This methodology aligns well with the experimental nature of LLMOps, where requirements often become clear only through actual usage.
+
+The emphasis on iteration reflects a key insight about production LLM systems: optimal workflows and interfaces often can't be designed purely from first principles but must be discovered through experimentation with real users and data. The dashboard serves as a platform for this discovery process, enabling rapid testing of different review approaches and interface designs.
+
+## Broader LLMOps Implications and Assessment
+
+Anterior's approach represents several important principles for production LLM systems. The tight integration between human review and system improvement creates effective feedback loops that are essential for maintaining and enhancing AI system performance over time. The focus on domain expert workflows recognizes that effective LLM deployment in specialized domains requires deep understanding of practitioner needs and constraints.
+
+However, the case study also highlights some important limitations and considerations. The custom dashboard approach requires significant engineering investment and ongoing maintenance. The effectiveness of the system depends heavily on having access to qualified domain experts who can provide meaningful reviews. The approach assumes that human judgment represents ground truth, which may not always hold in complex domains where expert disagreement is common.
+
+The scalability of human review processes also presents challenges. While Anterior reports success with over 100,000 reviews, the economics of human evaluation may not work for all applications or at all scales. The system's reliance on structured failure modes may miss novel failure patterns that don't fit existing categories.
+
+Despite these limitations, the case study demonstrates sophisticated thinking about human-AI collaboration in production systems. The emphasis on actionable data generation, workflow optimization, and tight feedback loops represents best practices that are broadly applicable across different domains and applications. The approach provides a concrete example of how to move beyond simple monitoring toward active improvement processes in production LLM deployments.

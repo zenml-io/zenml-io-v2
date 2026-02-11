@@ -1,0 +1,93 @@
+---
+title: "Managing Memory and Scaling Issues in Production AI Agent Systems"
+slug: "managing-memory-and-scaling-issues-in-production-ai-agent-systems"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "68a34a1cb5172163dbd88604"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:19:07.678Z"
+  createdOn: "2025-08-18T15:43:24.876Z"
+llmopsTags:
+  - "customer-support"
+  - "multi-agent-systems"
+  - "agent-based"
+  - "latency-optimization"
+  - "cost-optimization"
+  - "fallback-strategies"
+  - "error-handling"
+  - "monitoring"
+  - "scaling"
+  - "serverless"
+  - "devops"
+  - "orchestration"
+  - "reliability"
+  - "scalability"
+  - "google-gcp"
+company: "Gradient Labs"
+summary: "Gradient Labs experienced a series of interconnected production incidents involving their AI agent deployed on Google Cloud Run, starting with memory usage alerts that initially appeared to be memory leaks. The team discovered the root cause was Temporal workflow cache sizing issues causing container crashes, which they resolved by tuning cache parameters. However, this fix inadvertently caused auto-scaling problems that throttled their system's ability to execute activities, leading to increased latency. The incidents highlight the complex interdependencies in production AI systems and the need for careful optimization across all infrastructure layers."
+link: "https://blog.gradient-labs.ai/p/anatomy-of-an-ai-agent-incident"
+year: 2025
+seo:
+  title: "Gradient Labs: Managing Memory and Scaling Issues in Production AI Agent Systems - ZenML LLMOps Database"
+  description: "Gradient Labs experienced a series of interconnected production incidents involving their AI agent deployed on Google Cloud Run, starting with memory usage alerts that initially appeared to be memory leaks. The team discovered the root cause was Temporal workflow cache sizing issues causing container crashes, which they resolved by tuning cache parameters. However, this fix inadvertently caused auto-scaling problems that throttled their system's ability to execute activities, leading to increased latency. The incidents highlight the complex interdependencies in production AI systems and the need for careful optimization across all infrastructure layers."
+  canonical: "https://www.zenml.io/llmops-database/managing-memory-and-scaling-issues-in-production-ai-agent-systems"
+  ogTitle: "Gradient Labs: Managing Memory and Scaling Issues in Production AI Agent Systems - ZenML LLMOps Database"
+  ogDescription: "Gradient Labs experienced a series of interconnected production incidents involving their AI agent deployed on Google Cloud Run, starting with memory usage alerts that initially appeared to be memory leaks. The team discovered the root cause was Temporal workflow cache sizing issues causing container crashes, which they resolved by tuning cache parameters. However, this fix inadvertently caused auto-scaling problems that throttled their system's ability to execute activities, leading to increased latency. The incidents highlight the complex interdependencies in production AI systems and the need for careful optimization across all infrastructure layers."
+---
+
+This case study from Gradient Labs provides a detailed technical account of production incidents involving their AI agent system, offering valuable insights into the operational challenges of running LLM-based applications at scale. The company operates an AI agent that participates in customer conversations, built using Go and deployed on Google Cloud Run with Temporal workflows managing conversation state and response generation.
+
+## System Architecture and Initial Problem
+
+Gradient Labs' AI agent architecture demonstrates several key LLMOps principles in practice. Their system uses long-running Temporal workflows to manage conversation state, timers, and child workflows for response generation. This design pattern is particularly relevant for conversational AI applications where maintaining context and state across extended interactions is critical. The use of Temporal as a workflow orchestration engine reflects a mature approach to handling the complex, multi-step processes typical in production LLM applications.
+
+The initial incident began with memory usage alerts from Google Cloud Platform, indicating abnormally high memory consumption across agent containers. This type of monitoring is essential in LLMOps environments where resource usage can be highly variable and unpredictable. The team's immediate priority of ensuring no customers were left without responses demonstrates the customer-first approach necessary when operating AI systems in production environments.
+
+## Investigation and Root Cause Analysis
+
+The investigation process reveals several important aspects of LLMOps troubleshooting. Initially suspecting a classic memory leak, the team systematically examined memory-intensive components of their AI agent, particularly those handling variable-sized documents and parallel processing operations. This methodical approach is crucial in LLMOps where multiple components can contribute to resource consumption issues.
+
+The breakthrough came through Google Cloud Profiler flame graphs, which identified that Temporal's top-level execution functions were experiencing the largest growth in exclusive memory usage over time. This led to the discovery that the Temporal Workflow cache, which stores workflow execution histories to avoid repeated retrievals from Temporal Cloud, was the source of the problem. The cache serves an important optimization function by reducing network calls and improving latency, but when improperly sized relative to available memory, it can cause container crashes.
+
+## Technical Resolution and Trade-offs
+
+The resolution involved a classic LLMOps trade-off between infrastructure costs and system performance. By tuning the worker cache size down by 10x, the team reduced memory usage to a sustainable level while accepting the trade-off of potentially increased network calls to Temporal Cloud and slightly higher latency. This decision exemplifies the optimization challenges common in production LLM systems where multiple competing objectives must be balanced.
+
+The validation process they employed - first increasing memory 5x to observe plateau behavior, then reducing cache size to confirm the hypothesis - demonstrates a systematic approach to production troubleshooting that's essential in LLMOps environments where changes can have complex, non-obvious effects.
+
+## Cascading Effects and Auto-scaling Challenges
+
+The case study becomes particularly instructive when describing the cascading effects of the initial fix. After resolving the memory issue, the team observed increased AI agent latency across different model providers and prompt types. This cross-cutting impact initially suggested external LLM provider issues, highlighting how production AI systems are dependent on multiple external services and the importance of comprehensive monitoring across the entire stack.
+
+The actual cause proved to be an auto-scaling problem created by their memory fix. Google Cloud Run's auto-scaling mechanism, which relies on HTTP requests, event consumption, and CPU utilization metrics, had previously been maintaining instance counts partly due to container crashes from the memory issue. Once the crashes stopped, Cloud Run scaled down the instance count, creating a bottleneck in Temporal activity execution.
+
+This reveals a critical insight for LLMOps practitioners: fixing one issue can inadvertently create others, particularly in cloud-native environments with auto-scaling. The team's AI agent, implemented as Temporal workflows that poll rather than receive HTTP requests, didn't trigger the typical auto-scaling signals, leading to under-provisioning once the "artificial" scaling driver (container crashes) was removed.
+
+## LLMOps Best Practices Demonstrated
+
+Several LLMOps best practices emerge from this case study. The team maintained comprehensive monitoring across platform and agent metrics with appropriate alerting thresholds. Their incident response process prioritized customer experience above all else, ensuring no conversations were abandoned during the investigation and resolution process.
+
+The systematic approach to troubleshooting, using profiling tools and methodical hypothesis testing, demonstrates the kind of engineering rigor necessary for production LLM systems. The team's willingness to make intentional changes with clear hypotheses and measurable outcomes reflects mature operational practices.
+
+## Multi-layered System Complexity
+
+The case study illustrates the multi-layered nature of production AI systems, where optimization is required across prompts, LLM providers, databases, containers, and orchestration layers. Each layer has its own performance characteristics and failure modes, and changes in one layer can have unexpected effects on others. This complexity is particularly pronounced in LLMOps environments where the AI components add additional variables to traditional infrastructure challenges.
+
+The team's use of multiple LLM model providers with failover capabilities demonstrates another important LLMOps pattern - building resilience through provider diversity. Their ability to quickly adjust LLM failover systems when providers experienced outages shows the operational agility required for production AI systems.
+
+## Monitoring and Observability Insights
+
+The incidents highlight the importance of comprehensive observability in LLMOps environments. The team tracked metrics for memory usage, latency, activity execution rates, and provider performance. The use of flame graphs for memory profiling and the correlation of scaling metrics with performance degradation demonstrates the kind of deep observability required for complex AI systems.
+
+The challenge of variable traffic patterns and the difficulty in isolating changes during high activity periods reflects real-world operational challenges in LLMOps environments where demand can be unpredictable and debugging must often occur while systems are under load.
+
+## Resource Management and Cost Optimization
+
+The case study touches on several cost optimization considerations relevant to LLMOps. The trade-off between cache size and infrastructure costs, the balance between memory provisioning and network calls, and the auto-scaling configuration all represent ongoing optimization challenges. These decisions become more complex in AI systems where resource usage patterns may be less predictable than traditional applications.
+
+The team's approach of buying time by redeploying with more memory during the initial incident shows pragmatic incident management - sometimes the immediate fix isn't the optimal long-term solution, but maintaining system availability while conducting thorough investigation is the right approach.
+
+While this case study is presented by Gradient Labs themselves and may emphasize their competence in handling these issues, the technical details provided appear credible and the challenges described are consistent with real-world LLMOps operational experiences. The systematic approach to problem-solving and the honest discussion of how one fix created another issue lends credibility to their account.

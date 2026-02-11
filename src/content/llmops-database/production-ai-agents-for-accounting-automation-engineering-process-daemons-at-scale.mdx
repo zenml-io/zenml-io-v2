@@ -1,0 +1,152 @@
+---
+title: "Production AI Agents for Accounting Automation: Engineering Process Daemons at Scale"
+slug: "production-ai-agents-for-accounting-automation-engineering-process-daemons-at-scale"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "694adac264d67fc640f6a4de"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2026-01-07T09:40:39.763Z"
+  lastUpdated: "2025-12-23T20:11:50.311Z"
+  createdOn: "2025-12-23T18:09:06.678Z"
+llmopsTags:
+  - "document-processing"
+  - "question-answering"
+  - "classification"
+  - "chatbot"
+  - "data-integration"
+  - "high-stakes-application"
+  - "structured-output"
+  - "agent-based"
+  - "prompt-engineering"
+  - "semantic-search"
+  - "human-in-the-loop"
+  - "latency-optimization"
+  - "error-handling"
+  - "system-prompts"
+  - "multi-agent-systems"
+  - "monitoring"
+  - "databases"
+  - "api-gateway"
+  - "guardrails"
+  - "reliability"
+  - "fastapi"
+  - "langchain"
+  - "crewai"
+  - "open-source"
+  - "documentation"
+  - "security"
+  - "openai"
+  - "anthropic"
+  - "meta"
+  - "google-gcp"
+company: "Digits"
+summary: "Digits, an AI-native accounting platform, shares their experience running AI agents in production for over 2 years, addressing real-world challenges in deploying LLM-based systems. The team reframes \"agents\" as \"process daemons\" to set appropriate expectations and details their implementation across three use cases: vendor data enrichment, client onboarding, and complex query handling. Their solution emphasizes building lightweight custom infrastructure over dependency-heavy frameworks, reusing existing APIs as agent tools, implementing comprehensive observability with OpenTelemetry, and establishing robust guardrails. The approach has enabled reliable automation while maintaining transparency, security, and performance through careful engineering rather than relying on framework abstractions."
+link: "https://digits.com/blog/mlops-world-2025-slides/"
+year: 2025
+seo:
+  title: "Digits: Production AI Agents for Accounting Automation: Engineering Process Daemons at Scale - ZenML LLMOps Database"
+  description: "Digits, an AI-native accounting platform, shares their experience running AI agents in production for over 2 years, addressing real-world challenges in deploying LLM-based systems. The team reframes \"agents\" as \"process daemons\" to set appropriate expectations and details their implementation across three use cases: vendor data enrichment, client onboarding, and complex query handling. Their solution emphasizes building lightweight custom infrastructure over dependency-heavy frameworks, reusing existing APIs as agent tools, implementing comprehensive observability with OpenTelemetry, and establishing robust guardrails. The approach has enabled reliable automation while maintaining transparency, security, and performance through careful engineering rather than relying on framework abstractions."
+  canonical: "https://www.zenml.io/llmops-database/production-ai-agents-for-accounting-automation-engineering-process-daemons-at-scale"
+  ogTitle: "Digits: Production AI Agents for Accounting Automation: Engineering Process Daemons at Scale - ZenML LLMOps Database"
+  ogDescription: "Digits, an AI-native accounting platform, shares their experience running AI agents in production for over 2 years, addressing real-world challenges in deploying LLM-based systems. The team reframes \"agents\" as \"process daemons\" to set appropriate expectations and details their implementation across three use cases: vendor data enrichment, client onboarding, and complex query handling. Their solution emphasizes building lightweight custom infrastructure over dependency-heavy frameworks, reusing existing APIs as agent tools, implementing comprehensive observability with OpenTelemetry, and establishing robust guardrails. The approach has enabled reliable automation while maintaining transparency, security, and performance through careful engineering rather than relying on framework abstractions."
+---
+
+## Overview
+
+Digits is an AI-native accounting automation platform that has been running AI agents in production for over 2 years, serving real customers with critical financial workflows. In this case study shared at MLOps World 2025, the Digits Machine Learning Team provides a pragmatic perspective on deploying LLM-based agents in production environments. The team explicitly positions their discussion as moving beyond hype toward practical engineering lessons learned from actual deployment experience. 
+
+A key conceptual contribution from the team is their reframing of "agents" as "process daemons"—a term they argue better captures the reality of these systems. They contend that "agent" sets unrealistic expectations of autonomous, martini-delivering assistants, while "process daemon" more accurately describes background processes executing tasks with appropriate oversight and observability. This terminology shift reflects their broader philosophy: production AI is about reliable engineering, not magical autonomy.
+
+## Production Use Cases
+
+Digits has deployed AI agents across three specific production scenarios in their accounting platform. First, they use agents for hydrating vendor information, automatically enriching their database with vendor details that would otherwise require manual research. This improves data quality across their platform while reducing human effort. Second, agents streamline client onboarding by simplifying what was previously a complex, multi-step process into a smoother experience for new customers. Third, agents handle complex user questions that require reasoning across multiple data sources and business logic, providing answers that would otherwise demand significant human intervention. These use cases represent a pragmatic scope—focused on specific, well-defined tasks rather than attempting to automate entire job functions.
+
+## Core Architecture
+
+The team demystifies agent architecture by reducing it to approximately 100 lines of core code combining four fundamental elements: an objective defining what needs to be accomplished, an LLM that processes and reasons, tools representing capabilities the system can invoke, and a response delivering output back to users or systems. While this core is simple, the team emphasizes that everything else—the infrastructure surrounding these components—represents the real engineering challenge in production deployment.
+
+## LLM Selection and Framework Decisions
+
+Digits evaluated the landscape of LLM providers and found that all major providers now offer models with native tool-calling capabilities, with open source alternatives becoming increasingly viable. However, their evaluation of agent frameworks like LangChain and CrewAI revealed a critical insight: these frameworks often prove too complex with too many dependencies for production environments. Rather than accepting framework abstractions and their associated complexity, the Digits team made a deliberate architectural choice to implement the core agent loop themselves. While this requires more upfront engineering work, it provides crucial benefits for production systems: complete control over behavior, reduced dependency chains that could introduce failures or security vulnerabilities, and confidence in production readiness without relying on external framework maturity.
+
+This decision reflects a broader LLMOps philosophy evident throughout their approach: when building for production, reducing dependencies and maintaining control often trumps the convenience of pre-built frameworks. The team acknowledges that open source frameworks can offer excellent starting points, but they strongly advocate for scrutinizing these frameworks for production readiness rather than assuming they're ready for prime time. In many cases, the modifications required to make frameworks production-ready approach the effort of building custom solutions with far better outcomes.
+
+## Tool Integration Strategy
+
+A particularly elegant aspect of Digits' architecture is their approach to agent tools. Production environments already contain APIs for accessing systems and data, so the challenge becomes how to expose these as agent tools without excessive manual work or security risks. The team rejected two extremes: manually defining agent tools (too time-consuming and difficult to maintain) and automatically exposing all RPCs (too noisy, creating signal-to-noise problems for the LLM). 
+
+Instead, they developed a curated automation approach leveraging Go's reflection capabilities. Their system dynamically introspects function handlers and generates JSON schemas for inputs and outputs, providing automated tool generation while maintaining curation and control. This approach delivers "the best of both worlds"—reducing engineering toil while ensuring quality. Critically, by reusing existing APIs rather than creating parallel agent-specific interfaces, they inherit existing access control mechanisms. The APIs already handle authentication and authorization, so exposing them as agent tools doesn't create new security surfaces or require duplicating access rights logic. This is a key LLMOps pattern: reuse existing, battle-tested infrastructure rather than reinventing security and business logic for AI systems.
+
+## Observability Infrastructure
+
+The Digits team emphasizes that observability is "non-negotiable" in production agent systems. Understanding what happens under the hood isn't optional when systems make autonomous decisions affecting customer financials. Their approach centers on lightweight decision traceability that enables debugging issues and understanding agent behavior without overwhelming engineering teams with data.
+
+They integrate agent observability into their broader system monitoring by leveraging OpenTelemetry, adding agent traces to existing distributed tracing infrastructure. This unified approach means agent behavior isn't siloed in separate monitoring systems but flows through the same observability stack as other system components. Additionally, they implement prompt comparison capabilities, enabling them to understand when changes to prompts or models improve or degrade performance. This supports a crucial LLMOps workflow: iterating on prompt engineering with quantifiable feedback about impacts on system behavior.
+
+The emphasis on observability reflects lessons learned from production incidents. Without comprehensive tracing and logging, debugging agent failures becomes nearly impossible—the non-deterministic nature of LLM responses means you cannot simply replay requests and expect identical outcomes. Observability provides the forensic capability to understand what happened when things go wrong, a necessity for maintaining production SLAs.
+
+## Memory Architecture
+
+The team makes an important distinction between storage and memory in agent systems. While these terms are sometimes used interchangeably, they represent fundamentally different capabilities. Storage is persistence—saving data for later retrieval. Memory, in the context of agents, combines semantic search with relational or graph databases to establish context across conversations in ways that simple data persistence cannot achieve.
+
+Digits implements memory as a tool rather than relying on provider-specific memory solutions. This architectural choice avoids vendor lock-in as the LLM landscape rapidly evolves and gives them flexibility to adapt their memory implementation as requirements change. By treating memory as just another tool that agents can invoke, they maintain consistent patterns across their agent architecture while retaining the ability to swap implementations or providers without rewriting core agent logic.
+
+## Guardrails and Safety
+
+A central tenet of the Digits approach is captured in their directive: "don't trust your LLM." They implement guardrails by using a different LLM to evaluate responses from the primary model, following the principle that you should never trust a single model to police itself. For simple guardrails, they use LLM-based assessment of outputs. For more complex scenarios, they acknowledge the value of specialized guardrail frameworks, though they don't specify which ones they employ.
+
+This multi-layered approach to safety reflects maturity in production LLM deployment. The team understands that LLMs can generate harmful, incorrect, or inappropriate responses, and that production systems require active measures to detect and prevent these issues. The use of separate models for evaluation creates independence in the assessment process, reducing the risk that the same biases or failure modes affect both generation and validation.
+
+The team also explicitly flags prompt injection attacks as a concern requiring vigilance. While they don't detail their specific mitigations in this case study, their awareness of this attack vector and emphasis on staying vigilant suggests they've incorporated defenses into their production systems.
+
+## Task Planning and Performance Optimization
+
+An important performance optimization the Digits team discovered involves using reasoning models for upfront task planning. Rather than having agents immediately begin executing with tools, they first leverage reasoning-capable models to plan the sequence of tasks required to accomplish objectives. This planning phase achieves faster overall completion times, higher accuracy, and lower latency—seemingly counterintuitive given the additional upfront work, but effective because better planning reduces wasteful or redundant tool invocations.
+
+This represents a more sophisticated agent architecture than simple react-style loops. By separating planning from execution, they can optimize each phase independently and potentially use different models specialized for each capability. The reasoning models excel at breaking down complex objectives into task sequences, while execution can proceed with more focused, efficient tool calling.
+
+## Continuous Improvement and Fine-tuning
+
+The work doesn't stop at initial deployment. Digits has established processes for continuous improvement of their agent systems. They capture user feedback about agent responses, enabling them to understand where agents succeed or fail from the user perspective. They design reward functions based on this feedback and explore reinforcement learning approaches to fine-tune agent-specific models.
+
+This creates a flywheel: production usage generates feedback, feedback informs reward functions, reward functions guide fine-tuning, and fine-tuned models improve production performance. The emphasis on "agent-specific models" suggests they may be creating specialized models tuned for particular tasks rather than relying solely on general-purpose foundation models. This would represent a sophisticated LLMOps capability, though the case study doesn't provide details on their fine-tuning infrastructure or specific RL approaches.
+
+## Infrastructure Philosophy
+
+Throughout the case study, a consistent philosophy emerges: let applications drive infrastructure rather than building infrastructure in a vacuum. The Digits team argues that real application needs should guide architectural decisions, not abstract anticipation of potential requirements. This pragmatic approach helps avoid over-engineering and ensures infrastructure investments address actual rather than imagined problems.
+
+They also advocate for building with responsibility as a foundational principle rather than an afterthought. Responsible agents require observability (as discussed above), user feedback mechanisms (enabling continuous improvement), guardrails (preventing harmful outputs), and team notifications when things go wrong. None of these are optional additions; all are foundational to production readiness.
+
+## Technology Decisions and Tradeoffs
+
+The case study reveals several specific technology choices. They use Go as their primary language, enabling the reflection-based tool generation approach they describe. They standardize on OpenTelemetry for observability integration rather than building custom tracing. They generate JSON schemas for tool inputs and outputs, providing structured interfaces between agents and the systems they access.
+
+However, the team has consciously avoided some technologies and protocols. They have not adopted the Model Context Protocol (MCP) or similar agent-to-agent communication standards. They argue that for internal data discovery—their primary use case—MCP isn't necessary because they already have the required infrastructure. They also note that security scenarios for such protocols remain unclear, and they perceive much of the current discussion around these standards as "marketing rather than practical necessity." This skepticism reflects their pragmatic engineering culture: adopt technologies that solve real problems rather than following hype.
+
+## Critical Assessment and Limitations
+
+While this case study provides valuable insights into production agent deployment, several aspects deserve critical consideration. First, the case study is published by Digits as thought leadership supporting their product marketing. While their technical claims appear grounded in real experience, we should recognize the marketing context and avoid accepting all claims uncritically.
+
+Second, the case study lacks quantitative results. We don't see metrics on agent accuracy, latency, cost, or user satisfaction. Claims about "faster completion times and higher accuracy" from task planning are not substantiated with data. For a truly comprehensive LLMOps case study, we would want to see specific performance metrics, error rates, and comparisons to baseline approaches.
+
+Third, the team's dismissal of frameworks and protocols like MCP may reflect their specific context but not universal truth. Organizations with different requirements, team capabilities, or use cases might benefit from frameworks the Digits team found unsuitable. Their "build over buy" approach requires significant engineering resources that smaller teams may not possess.
+
+Fourth, details about several critical components remain vague. What specific guardrail frameworks do they use for complex scenarios? What are their specific defenses against prompt injection? How exactly do they implement reinforcement learning for agent fine-tuning? What are the actual infrastructure costs of running agents in production? These omissions limit the actionability of the case study for teams looking to replicate their approach.
+
+Fifth, the three production use cases they describe—vendor data enrichment, client onboarding, and complex query handling—are relatively contained tasks within a single domain. It's unclear how their approaches would scale to more open-ended tasks or domains requiring broader world knowledge. The accounting context provides natural guardrails (clear rules, structured data, defined processes) that may not exist in other domains.
+
+## Broader LLMOps Implications
+
+Despite these limitations, the Digits case study offers valuable lessons for LLMOps practitioners. Their emphasis on observability, guardrails, and reusing existing infrastructure reflects mature production thinking. Their framework skepticism, while perhaps extreme, highlights real concerns about dependency management and production readiness that teams should evaluate carefully.
+
+The "process daemon" framing, while somewhat provocative, serves a useful purpose in setting realistic expectations. Production AI systems benefit from clarity about their scope and limitations rather than anthropomorphic language that suggests capabilities they don't possess. This terminology shift could help bridge the communication gap between AI research/development and operations teams responsible for production deployment.
+
+Their experience over 2 years of production deployment represents substantial learning compared to teams just beginning agent deployment. The lessons they share about task planning, tool integration via existing APIs, and multi-model guardrails reflect iteration and refinement rather than initial architectural assumptions.
+
+The case study also illustrates the gap between prototype agents and production-ready systems. While an agent core might be "100 lines of code," the infrastructure required for production deployment—observability, guardrails, feedback loops, security, performance optimization—represents far more investment. Teams underestimating this gap risk failed deployments or production incidents.
+
+## Conclusion
+
+The Digits case study represents a pragmatic, engineering-focused perspective on production AI agents from a team with substantial deployment experience. Their emphasis on custom implementation over frameworks, reuse of existing infrastructure, comprehensive observability, and robust guardrails provides a useful counterpoint to framework-heavy or research-oriented approaches. However, the lack of quantitative results, the marketing context, and the specific domain constraints limit the generalizability of their specific technical choices. The broader principles—observability is non-negotiable, don't trust a single model, let applications drive infrastructure, build for responsibility from the start—likely apply more broadly than the specific implementation details. Teams considering production agent deployment should evaluate these principles in their own context while maintaining appropriate skepticism about claims unsupported by data.

@@ -1,0 +1,123 @@
+---
+title: "Architecture Patterns for Production AI Systems: Lessons from Building and Failing with Generative AI Products"
+slug: "architecture-patterns-for-production-ai-systems-lessons-from-building-and-failing-with-generative-ai-products"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "689dcd7de7429d11312fcc99"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:18:45.373Z"
+  createdOn: "2025-08-14T11:50:21.377Z"
+llmopsTags:
+  - "customer-support"
+  - "document-processing"
+  - "chatbot"
+  - "structured-output"
+  - "data-analysis"
+  - "poc"
+  - "rag"
+  - "prompt-engineering"
+  - "multi-agent-systems"
+  - "agent-based"
+  - "semantic-search"
+  - "vector-search"
+  - "chunking"
+  - "system-prompts"
+  - "few-shot"
+  - "error-handling"
+  - "fallback-strategies"
+  - "redis"
+  - "databases"
+  - "microservices"
+  - "orchestration"
+  - "monitoring"
+  - "api-gateway"
+  - "open-source"
+  - "guardrails"
+  - "reliability"
+  - "scalability"
+  - "postgresql"
+  - "cache"
+  - "langchain"
+  - "openai"
+  - "anthropic"
+  - "meta"
+  - "google-gcp"
+  - "microsoft-azure"
+company: "Outropy"
+summary: "Phil Calçado shares a post-mortem analysis of Outropy, a failed AI productivity startup that served thousands of users, revealing why most AI products struggle in production. Despite having superior technology compared to competitors like Salesforce's Slack AI, Outropy failed commercially but provided valuable insights into building production AI systems. Calçado argues that successful AI products require treating agents as objects and workflows as data pipelines, applying traditional software engineering principles rather than falling into \"Twitter-driven development\" or purely data science approaches."
+link: "https://www.infoq.com/presentations/microservices-ai-systems/?utm_campaign=infoq_content&utm_source=infoq&utm_medium=feed&utm_term=AI%2C+ML+%26+Data+Engineering-presentations"
+year: 2025
+seo:
+  title: "Outropy: Architecture Patterns for Production AI Systems: Lessons from Building and Failing with Generative AI Products - ZenML LLMOps Database"
+  description: "Phil Calçado shares a post-mortem analysis of Outropy, a failed AI productivity startup that served thousands of users, revealing why most AI products struggle in production. Despite having superior technology compared to competitors like Salesforce's Slack AI, Outropy failed commercially but provided valuable insights into building production AI systems. Calçado argues that successful AI products require treating agents as objects and workflows as data pipelines, applying traditional software engineering principles rather than falling into \"Twitter-driven development\" or purely data science approaches."
+  canonical: "https://www.zenml.io/llmops-database/architecture-patterns-for-production-ai-systems-lessons-from-building-and-failing-with-generative-ai-products"
+  ogTitle: "Outropy: Architecture Patterns for Production AI Systems: Lessons from Building and Failing with Generative AI Products - ZenML LLMOps Database"
+  ogDescription: "Phil Calçado shares a post-mortem analysis of Outropy, a failed AI productivity startup that served thousands of users, revealing why most AI products struggle in production. Despite having superior technology compared to competitors like Salesforce's Slack AI, Outropy failed commercially but provided valuable insights into building production AI systems. Calçado argues that successful AI products require treating agents as objects and workflows as data pipelines, applying traditional software engineering principles rather than falling into \"Twitter-driven development\" or purely data science approaches."
+---
+
+## Company Overview and Context
+
+Outropy was an AI productivity startup founded by Phil Calçado in 2021, focused on creating "VS Code for managers" - automating leadership and engineering tasks that traditionally relied on spreadsheets and manual processes. The company evolved from a Slack chatbot to a Chrome extension, serving several thousand users during its operational period from 2022-2024. Despite achieving superior product quality compared to major competitors like Salesforce's Slack AI, Outropy ultimately failed as a commercial venture but provided valuable insights into production AI system architecture.
+
+The company's failure was particularly instructive because they were among the early actual production AI systems serving real users, rather than just demos. Calçado notes that while their product was "miles ahead" of Slack AI in terms of quality, users were primarily interested in reverse-engineering how such a small team (described as "two guys and a dog") could build sophisticated agentic systems while larger organizations with significant data science teams struggled to produce anything beyond basic chatbots.
+
+## Core LLMOps Architecture Philosophy
+
+Calçado's central thesis challenges the dominant approaches to building AI systems, identifying three primary patterns in the industry: "Twitter-driven development" (building for promised future capabilities rather than current limitations), traditional data science project approaches (slow, waterfall-style development), and his preferred software engineering approach (iterative, incremental development treating AI components as familiar software engineering constructs).
+
+The framework centers on two fundamental building blocks: workflows and agents. Workflows are defined as predefined sets of steps to achieve specific goals with AI, essentially functioning as inference pipelines. Agents are characterized as systems where LLMs dynamically direct their own processes and tool usage, exhibiting memory, goal orientation, dynamic behavior, and collaboration capabilities.
+
+## Workflows as Data Pipelines
+
+Rather than falling into the common trap of simple RAG implementations that attempt to solve complex problems with single LLM calls, Outropy developed sophisticated multi-step workflows that treat each transformation as a discrete pipeline stage. Their daily briefing feature, for example, evolved from a basic "summarize all Slack messages" approach to a sophisticated multi-stage process.
+
+The production workflow for daily briefings involved: extracting discrete conversations from Slack messages, identifying conversation topics and participants, building structured object models with semantic meaning, incorporating contextual data like calendar information, and finally generating personalized summaries. This approach mirrors traditional data pipeline architectures, allowing teams to leverage existing tools like Apache Airflow or similar DAG engines.
+
+Each pipeline stage maintained well-defined interfaces and semantic boundaries, enabling component swapping and reuse. For instance, the Slack message processing component could be replaced with Discord or Microsoft Teams processors while maintaining the same downstream logic. This architectural approach enabled caching optimizations and provided clear separation of concerns, addressing one of the major challenges in AI system development where pipelines often mix unrelated concerns.
+
+## Agents as Distributed Objects
+
+Calçado's most controversial architectural insight involves treating agents as objects in the object-oriented programming sense, despite the traditional warnings against distributed objects. While acknowledging Martin Fowler's "first law of distributed objects" (don't distribute your objects), he argues that AI agents represent coarse-grained, component-like objects rather than the fine-grained, chatty interfaces that made distributed objects problematic in the 2000s.
+
+This conceptual framework provides practical benefits for system architects by offering familiar patterns for encapsulation (goal orientation), polymorphism (dynamic behavior), and message passing (collaboration). However, agents differ significantly from traditional microservices due to their stateful nature, non-deterministic behavior, data-intensive operations, and poor locality characteristics.
+
+## Memory Architecture and Event Sourcing
+
+One of Outropy's most sophisticated LLMOps implementations involved agentic memory management. Rather than the common approach of storing everything in long text documents and using vector similarity search (which Calçado notes is how ChatGPT memory works and leads to context confusion), they implemented an event sourcing architecture.
+
+The system captured semantic events from user interactions across productivity tools, processing them through Abstract Meaning Representation (AMR) to structure natural language into discrete facts. These facts were stored in a probabilistic graph database (Neo4j), accounting for uncertainty in natural language interpretation. The event sourcing approach provided advantages over snapshot-based memory systems, avoiding the "person with two watches" problem where conflicting information creates unreliable memory states.
+
+This memory architecture integrated with their semantic event bus, where agents registered interest in specific event types rather than directly calling each other. Events were published to Redis (later migrating to Kafka at scale), providing loose coupling between system components and avoiding the WS-*/SOAP-style complexity that often emerges in point-to-point agent communication systems.
+
+## Production Infrastructure Challenges
+
+Outropy's final production architecture, while serving only 10,000 users, required significant complexity that would typically be considered over-engineering for such scale. The system included multiple databases for memory storage and content storage, semantic event buses, resilience mechanisms for AI model APIs, and sophisticated orchestration layers. Calçado acknowledges this complexity as symptomatic of the current immaturity of AI platforms rather than optimal design.
+
+The architecture violated many principles of the Twelve-Factor App methodology that has guided scalable application development for over a decade. AI systems inherently challenge statelessness requirements (agents need persistent memory), configuration management (agents make autonomous decisions), concurrency assumptions (AI operations often have expensive sequential bottlenecks), and other foundational assumptions of modern application architecture.
+
+## Durable Workflows for AI Orchestration
+
+To address the reliability and resilience challenges of AI systems, Outropy implemented durable workflow patterns using frameworks like Temporal. This approach separates orchestration code from side effects, providing automatic retry logic, timeout handling, and checkpointing capabilities essential for managing non-deterministic AI operations.
+
+Durable workflows proved particularly valuable for AI systems because they handle the inherent unreliability of LLM APIs, provide graceful degradation when models are unavailable, and maintain state consistency across complex multi-step AI processes. The framework automatically manages the complexity that teams typically reinvent through custom Redis-based job queues and manual checkpoint systems.
+
+## Avoiding Microservices Anti-Patterns
+
+Calçado strongly advises against treating agents as traditional microservices, citing fundamental mismatches in operational characteristics. Agents' stateful, non-deterministic, and data-intensive nature creates operational complexity that microservices architectures handle poorly. Instead, he advocates for semantic event-driven architectures that decouple agent interactions through well-defined event schemas rather than direct API calls.
+
+The semantic events approach contrasts with typical database change streams (MySQL binlog, Postgres replication, DynamoDB streams) by focusing on business events rather than CRUD operations. Events like "user created" or "project completed" provide meaningful semantic context that agents can process independently, avoiding the tight coupling that leads to reinventing complex service discovery and negotiation protocols.
+
+## Model Context Protocol Skepticism
+
+While acknowledging MCP (Model Context Protocol) as potentially valuable for fundraising and marketing purposes, Calçado expresses skepticism about its production readiness. He draws parallels to the SOAP/WS-* era, suggesting that protocol standardization efforts should emerge from empirical production experience rather than attempting to solve theoretical future problems.
+
+His recommendation for small startups is to implement MCP interfaces for investor presentations while avoiding deep architectural dependencies on evolving protocols. For internal products, he suggests focusing on proven patterns like REST APIs, protocol buffers, and gRPC that have demonstrated production viability.
+
+## Platform Maturity and Future Directions
+
+Outropy's experience highlights the current immaturity of AI development platforms. The complexity required to build production AI systems suggests that better abstractions and platforms are needed for the technology to achieve mainstream adoption. Calçado mentions emerging platforms like BAML (which introduces its own domain-specific language) and Rails-based AI frameworks from Shopify and Thoughtworks alumni as potential solutions, though he notes significant barriers to adoption in current offerings.
+
+The post-mortem analysis suggests that successful AI products will emerge from teams that apply rigorous software engineering principles while adapting to AI's unique characteristics, rather than those pursuing either pure research approaches or hype-driven development strategies. The key insight is treating AI systems as sophisticated but ultimately manageable distributed systems rather than magical technologies that transcend traditional engineering disciplines.

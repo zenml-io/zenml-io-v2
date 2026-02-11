@@ -1,0 +1,143 @@
+---
+title: "Agent Registry and Dynamic Prompt Management for AI Feature Development"
+slug: "agent-registry-and-dynamic-prompt-management-for-ai-feature-development"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "67938216ef4b566b8fd116e6"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:58:16.766Z"
+  createdOn: "2025-01-24T12:05:42.340Z"
+llmopsTags:
+  - "code-generation"
+  - "structured-output"
+  - "prompt-engineering"
+  - "agent-based"
+  - "system-prompts"
+  - "api-gateway"
+  - "microservices"
+  - "google-gcp"
+company: "Gitlab"
+summary: "Gitlab faced challenges with delivering prompt improvements for their AI-powered issue description generation feature, particularly for self-managed customers who don't update frequently. They developed an Agent Registry system within their AI Gateway that abstracts provider models, prompts, and parameters, allowing for rapid prompt updates and model switching without requiring monolith changes or new releases. This system enables faster iteration on AI features and seamless provider switching while maintaining a clean separation of concerns."
+link: "https://www.youtube.com/watch?v=fiTvBjSDZbc"
+seo:
+  title: "Gitlab: Agent Registry and Dynamic Prompt Management for AI Feature Development - ZenML LLMOps Database"
+  description: "Gitlab faced challenges with delivering prompt improvements for their AI-powered issue description generation feature, particularly for self-managed customers who don't update frequently. They developed an Agent Registry system within their AI Gateway that abstracts provider models, prompts, and parameters, allowing for rapid prompt updates and model switching without requiring monolith changes or new releases. This system enables faster iteration on AI features and seamless provider switching while maintaining a clean separation of concerns."
+  canonical: "https://www.zenml.io/llmops-database/agent-registry-and-dynamic-prompt-management-for-ai-feature-development"
+  ogTitle: "Gitlab: Agent Registry and Dynamic Prompt Management for AI Feature Development - ZenML LLMOps Database"
+  ogDescription: "Gitlab faced challenges with delivering prompt improvements for their AI-powered issue description generation feature, particularly for self-managed customers who don't update frequently. They developed an Agent Registry system within their AI Gateway that abstracts provider models, prompts, and parameters, allowing for rapid prompt updates and model switching without requiring monolith changes or new releases. This system enables faster iteration on AI features and seamless provider switching while maintaining a clean separation of concerns."
+---
+
+## Overview
+
+This case study documents GitLab's architectural evolution in managing AI-powered features, specifically focusing on their "Generate Issue Description" feature. The presentation, given by a GitLab engineer, walks through a proof-of-concept for an Agent Registry system designed to solve fundamental LLMOps challenges around prompt management, provider flexibility, and deployment velocity.
+
+The core problem GitLab faced is a common one in enterprise LLM deployments: how do you iterate on prompts and AI behavior rapidly when your AI logic is tightly coupled to your main application's release cycle? For GitLab, this is especially acute because while gitlab.com can deploy frequently, self-managed customers—enterprises running GitLab on their own infrastructure—only update to stable releases periodically. This creates a significant lag between prompt improvements and their delivery to a substantial portion of the user base.
+
+## The Legacy Architecture Problem
+
+In the original implementation, GitLab's AI features like "Generate Issue Description" were structured with tightly coupled components within the Ruby monolith. The architecture consisted of service classes with specific references to LLM providers and parameters, and prompt classes where prompt templates were literally hardcoded into Ruby code.
+
+This tight coupling created several operational challenges:
+
+- **Release Dependency**: Any change to a prompt—even a minor wording improvement—required going through the full GitLab release cycle
+- **Self-Managed Customer Lag**: While gitlab.com deploys frequently, self-managed customers often wait for stable releases, meaning prompt improvements could take months to reach them
+- **Provider Lock-in**: Switching between LLM providers (e.g., from Anthropic's Claude to Google's Vertex AI) required code changes in the main application
+- **Testing Friction**: Experimenting with prompt variations or new models required development effort in the monolith
+
+## The Agent Registry Solution
+
+The solution GitLab developed involves moving AI logic out of the Ruby monolith and into a dedicated AI Gateway, with an Agent Registry that abstracts away the implementation details. The key architectural components include:
+
+### AI Gateway with Dedicated Endpoints
+
+Rather than having AI logic scattered throughout the monolith, GitLab is creating dedicated endpoints in the AI Gateway for each AI operation. For the Generate Description feature, there's now a specific endpoint that handles the entire AI interaction. The API logic becomes simple because most complexity is abstracted into agents.
+
+### Agent Registry Pattern
+
+The Agent Registry acts as a central coordination layer. When a request comes in, the API layer simply tells the registry to "fetch a specific agent for a specific use case." The registry knows about all available agents and their configurations. This creates a clean separation of concerns:
+
+- The monolith only needs to know *what* it wants (generate a description)
+- The AI Gateway knows *how* to do it (which provider, which prompt, which parameters)
+
+### YAML-Based Configuration (Proof of Concept)
+
+For the initial proof of concept, agent configurations are stored in YAML files. Each agent definition includes:
+
+- Agent name and identifier
+- Provider specification (e.g., Claude, Vertex AI)
+- Model selection
+- Prompt templates with all necessary instructions
+
+This YAML-based approach was explicitly described as a starting point. The presenter mentioned that this will eventually be replaced with a more dynamic system, potentially using GitLab itself as a "prompt lifecycle manager" to provide a dynamic backend for retrieving agent configurations.
+
+### Provider Abstraction
+
+One of the most powerful aspects of the architecture is provider abstraction. The demo showed switching from Claude to Google's Vertex AI (using Gemini/ChatBison) by simply:
+
+- Creating a new agent definition with the Vertex provider specified
+- Updating the registry to know about this new agent type
+- Changing the API endpoint to reference the new agent
+
+Importantly, all input/output processing remains the same—the agent logic handles provider-specific nuances internally.
+
+## Live Demonstration Insights
+
+The presenter walked through a live demonstration that illustrated several key operational capabilities:
+
+### Rapid Prompt Updates
+
+The demo showed adding a new requirement to always end issue descriptions with a "/assign me" slash command. This was accomplished by simply modifying the YAML configuration and restarting the Gateway—no changes to the Ruby monolith required. The presenter emphasized that this restart would be equivalent to releasing a new version of the AI Gateway through their Runway deployment system.
+
+### Provider Switching
+
+The demonstration also showed creating a new agent that uses Vertex AI instead of Claude. The switch was transparent to the user experience, though the presenter noted that "ChatBison seems to be more succinct" in its responses—an interesting observation about behavioral differences between providers that this architecture makes easy to experiment with.
+
+### Caching Considerations
+
+The presenter mentioned that prompts are cached in the Gateway, which is why a restart was needed to pick up changes. This is a practical production consideration—caching improves performance but requires cache invalidation strategies for updates.
+
+## Future Direction: Dynamic Prompt Lifecycle Management
+
+The presentation touched on upcoming work that would replace the static YAML configuration with a dynamic system. Interestingly, this involves using GitLab's monolith as a "prompt lifecycle manager"—but in a fundamentally different way than before.
+
+Rather than hardcoding prompts in Ruby classes, the monolith would provide a dynamic interface for prompt configuration that the AI Gateway can query. This creates a more sophisticated architecture where:
+
+- The monolith provides a configuration UI/API for managing prompts
+- The AI Gateway fetches current configurations dynamically
+- Changes can be made without Gateway restarts
+
+The presenter acknowledged this might seem contradictory ("taking the prompts out of the monolith and putting them back") but clarified the crucial difference: the new interface is dynamic rather than hardcoded.
+
+## Production Implications
+
+This architecture addresses several production LLMOps concerns:
+
+### Deployment Velocity
+By decoupling AI logic from the main application release cycle, teams can iterate on prompts and AI behavior independently. This is crucial for LLM-powered features where prompt engineering is an ongoing process.
+
+### Multi-Provider Support
+The abstraction layer makes it straightforward to support multiple LLM providers, enabling:
+- A/B testing between providers
+- Fallback strategies if one provider has issues
+- Cost optimization by routing different workloads to different providers
+- Compliance requirements that may mandate specific providers
+
+### Custom Model Support
+The presenter explicitly mentioned that this architecture would enable support for custom models, which would require "specific agents using a specific provider and specific templates."
+
+### Self-Managed Customer Parity
+Perhaps most importantly for GitLab's business model, this architecture allows self-managed customers to receive AI improvements at the same pace as gitlab.com users, since the AI Gateway can be updated independently.
+
+## Technical Considerations and Caveats
+
+While the presentation was optimistic about this architecture, there are some considerations worth noting:
+
+- **Complexity Trade-offs**: Moving from a simple monolithic approach to a distributed system with an AI Gateway adds operational complexity—more services to monitor, network hops, and potential failure points
+- **Configuration Management**: Managing agent configurations (even in YAML) at scale requires governance and version control strategies
+- **Testing**: The presentation didn't address how prompt changes would be tested before deployment
+- **Rollback Strategies**: How to handle rollbacks if a prompt change causes issues wasn't discussed
+
+Overall, this case study represents a thoughtful approach to a common LLMOps challenge: how to maintain agility in prompt engineering and provider selection while operating at enterprise scale with diverse deployment models.

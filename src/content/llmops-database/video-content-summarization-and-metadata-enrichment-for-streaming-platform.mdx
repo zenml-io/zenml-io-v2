@@ -1,0 +1,148 @@
+---
+title: "Video Content Summarization and Metadata Enrichment for Streaming Platform"
+slug: "video-content-summarization-and-metadata-enrichment-for-streaming-platform"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f3ed565737b028786bbdc"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:44:16.842Z"
+  createdOn: "2024-11-21T14:08:21.021Z"
+llmopsTags:
+  - "chunking"
+  - "content-moderation"
+  - "embeddings"
+  - "fine-tuning"
+  - "google-gcp"
+  - "model-optimization"
+  - "monitoring"
+  - "multi-modality"
+  - "prompt-engineering"
+  - "reliability"
+  - "scalability"
+  - "scaling"
+  - "semantic-search"
+  - "structured-output"
+  - "system-prompts"
+  - "token-optimization"
+  - "unstructured-data"
+  - "wandb"
+company: "Paramount+"
+summary: "Paramount+ partnered with Google Cloud Consulting to develop two key AI use cases: video summarization and metadata extraction for their streaming platform containing over 50,000 videos. The project used Gen AI jumpstarts to prototype solutions, implementing prompt chaining, embedding generation, and fine-tuning approaches. The system was designed to enhance content discoverability and personalization while reducing manual labor and third-party costs. The implementation included a three-component architecture handling transcription creation, content generation, and personalization integration."
+link: "https://www.youtube.com/watch?v=lGxwqCBBXwY"
+year: 2023
+seo:
+  title: "Paramount+: Video Content Summarization and Metadata Enrichment for Streaming Platform - ZenML LLMOps Database"
+  description: "Paramount+ partnered with Google Cloud Consulting to develop two key AI use cases: video summarization and metadata extraction for their streaming platform containing over 50,000 videos. The project used Gen AI jumpstarts to prototype solutions, implementing prompt chaining, embedding generation, and fine-tuning approaches. The system was designed to enhance content discoverability and personalization while reducing manual labor and third-party costs. The implementation included a three-component architecture handling transcription creation, content generation, and personalization integration."
+  canonical: "https://www.zenml.io/llmops-database/video-content-summarization-and-metadata-enrichment-for-streaming-platform"
+  ogTitle: "Paramount+: Video Content Summarization and Metadata Enrichment for Streaming Platform - ZenML LLMOps Database"
+  ogDescription: "Paramount+ partnered with Google Cloud Consulting to develop two key AI use cases: video summarization and metadata extraction for their streaming platform containing over 50,000 videos. The project used Gen AI jumpstarts to prototype solutions, implementing prompt chaining, embedding generation, and fine-tuning approaches. The system was designed to enhance content discoverability and personalization while reducing manual labor and third-party costs. The implementation included a three-component architecture handling transcription creation, content generation, and personalization integration."
+---
+
+## Overview
+
+This case study documents a partnership between Paramount+ (Paramount Streaming) and Google Cloud Consulting to implement generative AI solutions for enhancing the user experience on the Paramount Plus streaming platform. The presentation was delivered by representatives from both organizations: James McCabe (Consulting Account Lead for Media Entertainment at Google Cloud), Sophian Saputra (Technical Account Manager for Media Entertainment at Google Cloud), Teresa (Lead Product Manager at Paramount), and Adam Ly (VP of ML Engineering and Personalization at Paramount Streaming).
+
+The core philosophy driving this collaboration centers on a "user first" approach—the Paramount AIML team begins by focusing on user experience and then works backward to technical solutions. This customer-centric methodology guided the development of two primary generative AI use cases: video summarization and video metadata extraction, both aimed at improving content personalization and discovery on the streaming platform.
+
+## Business Context and Strategic Alignment
+
+Paramount's strategic objectives are clearly defined: expand subscriber base, retain viewers, boost engagement, and drive profitability. Within the media and entertainment landscape, they position AI not as an added feature but as a critical component at the center of their strategy. The partnership with Google Cloud enables a data-driven streaming service that understands and anticipates user preferences through AI-driven insights.
+
+The practical motivation for these AI projects is substantial. Paramount+ has over 50,000 videos requiring summaries and metadata tagging, which translates into thousands of hours of manual labor. Additionally, metadata procurement from third-party providers is costly and often yields results lacking the detail required for effective personalization. By automating these tasks, Paramount aims to recover substantial time for creative and strategic pursuits while gaining greater control over the nuances of their content.
+
+Metadata serves a dual role in their architecture: powering machine learning algorithms that fuel recommendation systems, and providing viewers with the content information they need for discovery. The "video DJ" concept they describe involves creating personalized collections that feel curated like a story with a beginning, middle, and end—understanding viewer preferences for Christmas tales, Halloween frights, or Westerns even when original content did not come with this metadata.
+
+## Google Cloud Consulting Engagement Model
+
+Google Cloud Consulting employed a structured approach called "GenAI Jump Starts" to develop MVP solutions demonstrating the capabilities of Google's generative AI. Before implementation, they aligned on Paramount's GenAI objectives through briefing meetings, cadence calls, and brainstorming sessions. Training was provided through on-demand courses, hackathon jams, and virtual lunch-and-learns to build organizational knowledge around generative AI capabilities.
+
+The Jump Start engagement was highly structured to deliver MVPs quickly. Key preparation steps included ensuring data availability in digestible formats—they identified 10 sample video assets representing different durations, genres, and release dates as a good representation of Paramount Plus films. They collaboratively decided on LLM output formats before writing prompts, iterating on both outputs and metadata fields throughout the engagement.
+
+For this project, they specifically used videos from Paramount's public YouTube channel, which allowed them to focus more on the generation phase rather than dealing with complex content access issues. This pragmatic approach to source material selection is a useful lesson for organizations beginning similar projects.
+
+## Technical Implementation and Architecture
+
+The reference architecture consists of three main components: transcription creation, generation phase, and personalization integration.
+
+### Transcription Creation
+
+The transcription pipeline begins with source videos in cloud storage buckets. A demuxing process extracts audio, selecting the highest quality available (most videos are in HLS format—HTTP Live Streaming). The speech-to-text (STT) process serves as a fallback method when transcripts don't exist or are of insufficient quality. Importantly, Paramount maintains flexibility in their model choices—they can use Google managed service models or open-source alternatives. They specifically mentioned running a containerized Whisper distill version 3 as its own service, demonstrating a preference for open-source models where appropriate.
+
+### Generation Phase
+
+The generation phase is triggered by events when transcripts land in storage buckets. The generation process stores outputs in Firestore as key-value pairs (with content ID as the key), making them available for updates within the personalization system. These updates may connect to backend processes outside the immediate system, such as content management or media asset management systems.
+
+During the Jump Start, significant effort was invested in developing system prompts and input prompts, which were later templatized for full control over execution in production. The prompt engineering process involved techniques like few-shot prompting (providing specific examples) and function calling to connect to external solutions like IMDb for structured information retrieval.
+
+### Personalization Integration
+
+The personalization component joins generated data back to clickstream data (user interactions on the application), adding enhancements and making them available for future updates. Beyond display use cases, summarization directly informs personalization features—a concise overview of each asset is a critical component of the visual presentation that influences how customers select movies or shows.
+
+A particularly interesting aspect is the creation of embeddings from transcripts. They employ LoRA (Low-Rank Adaptation) fine-tuning to shrink the embedding space to their required size. The rationale is creating the most information-dense space possible while enabling smaller models to run on single GPUs. For transcripts specifically, they mentioned potentially using Gemma 2B instruct with a grammar to show the system what a transcript should look like.
+
+## LLMOps Best Practices and Lessons Learned
+
+### Prompt Engineering Strategies
+
+The team emphasized that LLM response effectiveness depends heavily on well-detailed, clear prompts with appropriate constraints. Several key techniques emerged:
+
+- **Prompt Chaining**: Breaking tasks into subtasks allows better control over the context window, improves debugging of production processes, and reduces downstream workload (especially important when using frameworks like LangChain).
+
+- **Prompt Templates**: They developed genre-specific or micro-genre classified prompts, with plans to associate different summaries with different audience affinities.
+
+- **LLM-Generated Prompts**: They used the LLM itself to generate initial prompts, then iterated from there—a meta-approach to prompt development.
+
+- **Gold Standards**: Establishing clear standards for generated output before beginning work (e.g., whether the goal is a generalized plot summary or a summary with a specific voice or point of view) keeps development on target.
+
+### Handling Production Challenges
+
+Several production-oriented challenges were addressed during development:
+
+- **Token Limits**: Movie transcripts can be quite long, potentially exceeding token limits. The solution involves chunking transcripts and aggregating results at the end. Token limits also affect cost optimization decisions regarding model size, compute requirements, and accuracy trade-offs.
+
+- **Safety Filters**: Movies and shows with mature themes required addressing safety filter settings to allow appropriate outputs—a common challenge in entertainment content that other teams should anticipate.
+
+- **Temperature and Sampling Parameters**: Determining appropriate temperature, top-p, and top-k settings for specific goals requires experimentation.
+
+### Iterative Development and Feedback
+
+The engagement required four different iterations to refine the MVP prompt to meet Paramount's expectations. Daily communication and in-depth working sessions enabled gathering feedback early and often. Getting access to videos and expected metadata output before the engagement began allowed them to "hit the ground running" with a clear north star for the solution.
+
+Experimenting with videos of different lengths, content types, and time periods helped address difficult scenarios such as long transcripts, films with mature themes, and determining when to integrate function calling for external data sources.
+
+## Fine-Tuning and Continuous Improvement
+
+The architecture supports continuous feedback loops essential for adaptive personalization systems. On Google Cloud, the reinforcement learning fine-tuning process is supported by model types like T5 and Gemma. The workflow involves:
+
+- **Human Preference Datasets**: For summaries, this might be a random selection of summaries where people have determined accuracy and interest-eliciting qualities, representing a portion of the discovery process.
+
+- **Evaluation Datasets**: Unlabeled evaluation sets to test tuned models.
+
+- **Reward Model Training**: Human preference data trains reward models, updating model weights that are stored for the fine-tuned model.
+
+- **Continuous Updates**: This process can run on scheduled updates as needed.
+
+The team noted that fine-tuning typically outperforms pure prompt engineering, making it an important roadmap item despite prompt engineering successes.
+
+## Future Directions and Production Roadmap
+
+Several improvements were discussed for post-Jump Start implementation:
+
+- **Chain Prompt Templates**: Classifying prompts by genres or micro-genres, associating summaries with different audience affinities.
+
+- **Candidate Selection Strategy**: Using encoder-only classifiers to inject estimated scores for summaries, enabling A/B testing of generated content.
+
+- **Dynamic Metadata Key Values**: Moving away from one-size-fits-all descriptions toward metadata that reflects individual audience interests and needs, improving accessibility by promoting useful metadata based on customer affinities.
+
+- **Agent-Like Architecture**: Moving toward different agents running for each component of the system, suggesting a modular, microservices-oriented approach to LLM operations.
+
+## Balanced Assessment
+
+This case study presents a well-structured approach to implementing LLMs in production for a specific media use case. The collaboration between Google Cloud Consulting and Paramount appears to have followed sound practices: starting with clear business objectives, developing MVPs before full implementation, and establishing feedback loops for continuous improvement.
+
+However, as a presentation at what appears to be a Google Cloud event, some claims should be viewed with appropriate skepticism. The specific quantitative results (cost savings, time savings, engagement improvements) are not provided, making it difficult to assess the actual impact beyond validation of technical hypotheses. The "50,000 videos requiring processing" provides context for the scale of the problem, but outcomes are described in terms of validated approaches rather than measured improvements.
+
+The technical architecture described is sound and reflects production-ready thinking, with appropriate attention to fallback mechanisms (STT when transcripts are unavailable), event-driven processing, and integration with existing systems. The emphasis on maintaining flexibility between managed services and open-source models (Whisper) suggests pragmatic decision-making rather than vendor lock-in.

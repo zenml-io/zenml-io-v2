@@ -1,0 +1,193 @@
+---
+title: "AI-Powered Code Generation for Support Team Bug Fixing"
+slug: "ai-powered-code-generation-for-support-team-bug-fixing"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "6942b990b3ab55c086efcee0"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:37:29.743Z"
+  createdOn: "2025-12-17T14:09:20.198Z"
+llmopsTags:
+  - "customer-support"
+  - "code-generation"
+  - "poc"
+  - "prompt-engineering"
+  - "agent-based"
+  - "rag"
+  - "embeddings"
+  - "human-in-the-loop"
+  - "evals"
+  - "cicd"
+  - "orchestration"
+  - "documentation"
+  - "fastapi"
+  - "langchain"
+company: "Zapier"
+summary: "Zapier faced a backlog crisis caused by \"app erosion\"—constant API changes across their 8,000+ third-party integrations creating reliability issues faster than engineers could address them. They ran two parallel experiments: empowering their support team to fix bugs directly by shipping code, and building an AI-powered system called \"Scout\" to accelerate bug fixing through automated code generation. The solution evolved from standalone APIs to MCP-integrated tools, and ultimately to Scout Agent—an orchestrated agentic system that automatically categorizes issues, assesses fixability, generates merge requests, and iterates based on feedback. Results show that 40% of support team app fixes are now AI-generated, doubling some team members' velocity from 1-2 fixes per week to 3-4, while several support team members have successfully transitioned into engineering roles."
+link: "https://www.youtube.com/watch?v=RmJ4rTLV_x4"
+year: 2025
+seo:
+  title: "Zapier: AI-Powered Code Generation for Support Team Bug Fixing - ZenML LLMOps Database"
+  description: "Zapier faced a backlog crisis caused by \"app erosion\"—constant API changes across their 8,000+ third-party integrations creating reliability issues faster than engineers could address them. They ran two parallel experiments: empowering their support team to fix bugs directly by shipping code, and building an AI-powered system called \"Scout\" to accelerate bug fixing through automated code generation. The solution evolved from standalone APIs to MCP-integrated tools, and ultimately to Scout Agent—an orchestrated agentic system that automatically categorizes issues, assesses fixability, generates merge requests, and iterates based on feedback. Results show that 40% of support team app fixes are now AI-generated, doubling some team members' velocity from 1-2 fixes per week to 3-4, while several support team members have successfully transitioned into engineering roles."
+  canonical: "https://www.zenml.io/llmops-database/ai-powered-code-generation-for-support-team-bug-fixing"
+  ogTitle: "Zapier: AI-Powered Code Generation for Support Team Bug Fixing - ZenML LLMOps Database"
+  ogDescription: "Zapier faced a backlog crisis caused by \"app erosion\"—constant API changes across their 8,000+ third-party integrations creating reliability issues faster than engineers could address them. They ran two parallel experiments: empowering their support team to fix bugs directly by shipping code, and building an AI-powered system called \"Scout\" to accelerate bug fixing through automated code generation. The solution evolved from standalone APIs to MCP-integrated tools, and ultimately to Scout Agent—an orchestrated agentic system that automatically categorizes issues, assesses fixability, generates merge requests, and iterates based on feedback. Results show that 40% of support team app fixes are now AI-generated, doubling some team members' velocity from 1-2 fixes per week to 3-4, while several support team members have successfully transitioned into engineering roles."
+---
+
+## Overview
+
+Zapier, a workflow automation platform with over 8,000 third-party API integrations spanning 14 years of operation, developed an innovative LLMOps solution to address what they call "app erosion"—the constant stream of bugs and reliability issues created by API changes and deprecations across their integration ecosystem. This case study presents a multi-year journey from initial LLM experimentation to a fully orchestrated agentic system that empowers non-engineering support staff to ship production code fixes.
+
+The fundamental business problem was a backlog crisis where integration issues were arriving faster than engineering could address them, leading to poor customer experience and potential churn. Zapier's response was to run two parallel experiments: first, empowering their support team to move from triaging bugs to actually fixing them, and second, leveraging AI code generation to accelerate the bug-fixing process. The convergence of these experiments resulted in "Scout Agent," a production LLM system that has materially impacted their development velocity and support team capabilities.
+
+## Discovery and Initial Architecture
+
+The project began approximately two years ago with a clear strategic rationale for empowering support to ship code. App erosion represented a major source of engineering bugs, support team members were eager for engineering experience, and many were already unofficially helping maintain apps. The company established guardrails including limiting initial work to four target apps, requiring engineering review of all support-generated merge requests, and maintaining focus specifically on app fixes rather than broader engineering work.
+
+The AI experimentation track, led by the presenter as product manager, began with thorough discovery work. The team conducted dogfooding exercises where product managers shipped actual app fixes, shadowed both engineers and support team members through the bug-fixing process, and carefully mapped out pain points, workflow phases, and time expenditure. A critical discovery emerged: a disproportionate amount of time was spent on context gathering—navigating to third-party API documentation, crawling the internet for information about emerging bugs, reviewing internal context and logs. This context aggregation and curation represented a significant human bottleneck and an obvious target for LLM assistance.
+
+## First Generation: Standalone APIs
+
+The initial technical approach focused on building individual APIs to address specific pain points identified during discovery. The team built what they called "autocode" APIs, some leveraging LLMs and others using traditional approaches:
+
+- **Diagnosis Tool**: An LLM-powered system that gathered all relevant context on behalf of the engineer or support person, curating information from multiple sources and building a comprehensive diagnosis of the issue
+- **Unit Test Generator**: An LLM-based tool for creating test cases
+- **Test Case Finder**: A search-based (non-LLM) tool that identified relevant existing test cases to incorporate into unit tests
+
+These tools were initially deployed through a web-based playground interface where engineers and support staff could experiment with the APIs. However, this first generation encountered significant adoption challenges. The fundamental problem was that the tools were not embedded into existing workflows. Requiring users to navigate to yet another web page contradicted the very problem they were trying to solve—reducing context switching and information gathering overhead. Additionally, with the team spread thin across multiple API projects, they couldn't provide adequate support and iteration on each tool.
+
+An external factor also impacted this phase: Cursor (the AI-powered IDE) launched during this period and gained rapid adoption at Zapier, rendering some of their standalone tools redundant or less necessary as Cursor provided similar capabilities natively within the development environment.
+
+Despite these challenges, one tool achieved breakthrough adoption: the Diagnosis API. Because it directly addressed the number-one pain point of context gathering and curation, the support team found it valuable enough to request its integration into their existing workflows. Specifically, they asked for a Zapier integration built on top of the autocode APIs so diagnosis could be automatically embedded into the Zap that creates Jira tickets from support issues. This early success validated a crucial lesson: tool adoption requires workflow embedding, not standalone interfaces.
+
+## Second Generation: MCP Integration
+
+The launch of Model Context Protocol (MCP) provided a technical solution to the embedding problem. MCP enabled the team to integrate their API tools directly into the development environment where engineers were already working, specifically within Cursor. This architectural shift transformed adoption patterns—builders using Scout MCP tools could remain in their IDE longer and reduce context switching.
+
+However, this generation also revealed new challenges. The diagnosis tool, while highly valuable for aggregating context and providing recommendations, had long runtime characteristics that created friction when used synchronously during active ticket work. The team also struggled to keep pace with customization requests. When Zapier launched their own public MCP offering, some internal engineers began using Zapier MCP for capabilities that Scout wasn't keeping up with, leading to some tools reaching "dead ends" in terms of development and adoption.
+
+Tool adoption remained scattered—engineers might use some Scout tools but not others, and not all engineers adopted the toolset at all. The team operated under the hypothesis that the true value proposition required tying the tools together rather than offering them as a disconnected suite, but with tools embedded via MCP, orchestration responsibility fell to individual users rather than the platform.
+
+## Third Generation: Scout Agent with Orchestration
+
+The current generation represents a fundamental architectural shift from providing tools to providing orchestrated agentic workflows. Rather than expecting users to manually chain together diagnosis, code generation, and testing tools, Scout Agent automatically orchestrates these capabilities into an end-to-end bug-fixing pipeline.
+
+The target user for Scout Agent is specifically the support team handling small, emergent bugs coming hot off the queue. This targeting decision reflects strategic thinking about where automated code generation provides maximum value—for issues where domain context is fresh, customer pain is clearly understood, and the fixing team has direct validation capabilities.
+
+### Scout Agent Workflow
+
+The production workflow operates as follows:
+
+1. **Issue Submission**: Support submits an issue to Scout Agent
+2. **Categorization**: The system categorizes the issue type using LLM classification
+3. **Fixability Assessment**: Scout determines whether the issue is actually fixable through code changes (not all support issues can be resolved through integration fixes)
+4. **Merge Request Generation**: If deemed fixable, Scout generates a complete merge request with proposed code changes
+5. **Human Review and Testing**: Support team members review and test the generated code—this is their first touchpoint with the ticket, which already has a complete proposed solution
+6. **Iteration Loop**: If the solution doesn't adequately address the customer need or requires adjustments, support can request changes directly in GitLab, triggering Scout to regenerate the merge request
+7. **Engineering Review**: Once support approves the fix, they submit the MR for final engineering review
+
+This workflow embodies a critical design principle: the human remains in the loop for validation and iteration, but the heavy lifting of context gathering, diagnosis, and initial code generation is automated.
+
+### Technical Implementation
+
+The implementation heavily leverages Zapier's own platform for orchestration, demonstrating serious dogfooding commitment. The entire Scout Agent process is triggered and coordinated through Zaps—the company built "many zaps" to run the complete process, embedded directly into support team workflows.
+
+The technical pipeline operates in three phases within GitLab CI/CD:
+
+- **Plan Phase**: Gathering context, running diagnosis, and determining the fix approach
+- **Execute Phase**: Generating the actual code changes
+- **Validate Phase**: Running tests and validation checks
+
+The system uses Scout MCP tools (the APIs developed in the first generation, now exposed via MCP) as the underlying capability layer, orchestrated through the GitLab pipeline. The implementation also leverages the Cursor SDK, suggesting integration with Cursor's code generation capabilities. When support requests iterations on a merge request, they can chat with Scout Agent directly in GitLab, which triggers another pipeline run incorporating the new feedback and generates an updated merge request.
+
+This architecture demonstrates sophisticated LLMOps engineering—combining LLM-powered tools, traditional CI/CD pipeline orchestration, workflow automation through Zaps, MCP for tool integration, and human-in-the-loop iteration patterns.
+
+### Evaluation Strategy
+
+Zapier has implemented evaluation frameworks to monitor Scout Agent's production performance, asking three key questions:
+
+- Is the categorization correct?
+- Was the fixability assessment accurate?
+- Was the code fix accurate?
+
+They have developed two evaluation methods achieving 75% accuracy for categorization and fixability assessment. Their evaluation approach treats processed tickets with human feedback as test cases, creating a continuously growing evaluation dataset that enables ongoing improvement of Scout Agent over time. This represents a pragmatic approach to LLM evaluation—rather than attempting to create comprehensive evaluation sets upfront, they leverage production usage and human feedback to build evaluation capabilities iteratively.
+
+The accuracy metrics, while not specified for code fix quality in the presentation, suggest the team is being realistic about LLM capabilities and the need for human oversight. A 75% accuracy rate for categorization and fixability is reasonable for a production system where humans review all outputs before merge.
+
+## Production Impact and Results
+
+Scout Agent has achieved measurable production impact across several dimensions:
+
+**Quantitative Metrics:**
+- 40% of support team app fixes are now generated by Scout Agent
+- Some support team members have doubled their velocity from 1-2 tickets per week to 3-4 tickets per week
+- The support team went from shipping essentially no fixes (or only unofficial fixes) to consistently shipping 1-2 per week per person before Scout, and now 3-4 with Scout assistance
+
+**Workflow Improvements:**
+- Scout proactively surfaces potentially fixable tickets within the triage flow rather than requiring support to hunt through backlog
+- Reduced friction in identifying work to pick up
+- Engineering teams report being able to "stay focused on the more complex stuff" rather than handling small integration fixes
+
+**Team Development:**
+- Multiple support team members who participated in the code-shipping experiment have transitioned into full engineering roles
+- Support team has developed stronger technical capabilities through hands-on code work with AI assistance
+
+**Strategic Benefits:**
+The presentation emphasized three "superpowers" that make support teams uniquely effective at bug fixing when empowered with code generation:
+
+- **Closest to Customer Pain**: Support understands the actual customer impact and context that matters for determining both problem and solution
+- **Real-Time Troubleshooting**: Issues are fresh, context is current, and logs are available—contrast with engineering backlog where tickets might be stale and logs missing by the time work begins
+- **Best at Validation**: Support can assess whether a solution actually addresses the customer's specific need, rather than making technically correct changes that might alter behavior in ways that don't serve the reporting customer
+
+## Critical Assessment and Tradeoffs
+
+While the presentation naturally emphasizes successes, several important considerations and tradeoffs emerge from the case study:
+
+**Accuracy and Human Oversight**: With 75% accuracy on categorization and fixability, 25% of issues are being misclassified or incorrectly assessed for fixability. The system requires human review at multiple stages, which is appropriate given these accuracy levels. Organizations considering similar approaches should carefully consider the cost of reviewing incorrect AI outputs versus the time saved on correct outputs.
+
+**Scope Limitations**: Scout Agent specifically targets "small bugs" and "app fixes" rather than complex engineering work. This represents good product design—targeting use cases where AI-generated code is most likely to be correct and where the cost of errors is relatively contained. However, it also means the system addresses only a subset of the engineering workload.
+
+**Velocity vs. Quality**: Doubling support team velocity is impressive, but the presentation doesn't deeply address code quality, technical debt implications, or long-term maintainability of AI-generated fixes. Engineering review provides a quality gate, but there's an inherent tension between velocity gains and ensuring fixes don't create future problems.
+
+**Tool Proliferation and Consolidation**: The journey from many standalone APIs to orchestrated agent reflects a common challenge in LLMOps—initial experimentation often produces numerous point solutions that then require consolidation and workflow integration to achieve adoption. Organizations should anticipate this pattern and potentially move more quickly to orchestration rather than spending extensive time on isolated tools.
+
+**Dependency on External Tools**: Heavy reliance on Cursor and MCP creates external dependencies. When Cursor launched, it rendered some Scout tools redundant—demonstrating both the value of leveraging best-in-class external tools and the risk of having internal tools become obsolete. The team has navigated this well by integrating rather than competing.
+
+**Evaluation Maturity**: While having evaluation methods for categorization and fixability is good, the presentation doesn't detail evaluation approaches for code quality or customer impact. More comprehensive evaluation frameworks would provide stronger confidence in the system's overall effectiveness.
+
+**Generalization Challenges**: Zapier's unique position—having their own workflow automation platform to orchestrate Scout Agent—may limit how directly other organizations can replicate this approach. The tight integration with GitLab CI/CD, Jira, and internal Zapier workflows is powerful but specific to their toolchain.
+
+## LLMOps Lessons and Best Practices
+
+This case study illustrates several important LLMOps principles:
+
+**Embed Tools in Existing Workflows**: The clearest lesson is that standalone tools, regardless of capability, fail to achieve adoption. Tools must be integrated into the places where people already work—whether through MCP in IDEs, integrations in ticketing systems, or automated triggers in CI/CD pipelines.
+
+**Start with Clear Pain Points**: The team's discovery process identifying context gathering as a primary bottleneck provided clear direction for where LLMs could add value. Organizations should invest in understanding workflow pain points before building LLM solutions.
+
+**Iterate Through Generations**: The three-generation evolution from standalone APIs to MCP tools to orchestrated agents demonstrates the importance of iterative development and learning from adoption patterns. Early "failures" with standalone tools provided crucial insights that informed later success.
+
+**Human-in-the-Loop for Validation**: Scout Agent keeps humans responsible for reviewing, testing, and validating AI-generated code before it reaches production. This is appropriate given current LLM capabilities and represents best practice for code generation systems.
+
+**Build Evaluation into Production**: Using production tickets and human feedback as evaluation test cases creates a virtuous cycle where usage improves the system. This is more practical than attempting comprehensive evaluation before deployment.
+
+**Target Specific Use Cases**: Rather than attempting general-purpose code generation, Scout Agent focuses on app fixes from support tickets—a constrained domain where success is more achievable. This targeting based on organizational structure (support vs. engineering) and problem complexity (small bugs vs. complex features) is strategically sound.
+
+**Leverage Existing Platforms**: Using Zapier's own platform for orchestration and GitLab CI/CD for execution demonstrates pragmatic engineering—building on robust existing systems rather than creating everything from scratch.
+
+**Support Career Development**: The connection between code-shipping support roles and transitions into engineering positions shows how AI augmentation can serve workforce development goals, not just productivity metrics.
+
+## Broader Context and Future Directions
+
+This case study represents an emerging pattern in software development where AI code generation enables expanded participation in engineering work. By successfully empowering support staff to fix bugs, Zapier is demonstrating that the boundaries of who can contribute code are shifting with appropriate AI tooling and workflow design.
+
+The "app erosion" framing—viewing API changes and deprecations as an ongoing, inevitable force like natural erosion—reflects mature thinking about integration maintenance as a continuous problem rather than a project with an end state. This mindset is appropriate for the LLM era where automated assistance can help organizations keep pace with these ongoing challenges.
+
+The evolution toward agentic orchestration (Scout Agent) rather than individual tools aligns with broader industry trends in 2025 toward more autonomous AI systems that chain multiple capabilities together. However, Zapier's approach maintains appropriate human oversight and validation rather than pursuing fully autonomous operation.
+
+Looking forward, the team's evaluation framework positioning tickets as test cases suggests continued iteration and improvement of Scout Agent's capabilities. As the evaluation dataset grows and the team refines prompts, tool orchestration, and context gathering approaches, accuracy should improve, potentially enabling expansion to more complex bug categories or reduced need for human oversight on routine fixes.
+
+The presentation's emphasis on hiring and the successful transitions from support to engineering roles suggests this initiative has become strategically important to Zapier's talent development and organizational structure, not just a productivity optimization project. This integration into broader organizational goals likely contributes to continued investment and refinement of the Scout system.

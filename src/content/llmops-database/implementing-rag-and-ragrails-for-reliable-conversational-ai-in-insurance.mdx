@@ -1,0 +1,120 @@
+---
+title: "Implementing RAG and RagRails for Reliable Conversational AI in Insurance"
+slug: "implementing-rag-and-ragrails-for-reliable-conversational-ai-in-insurance"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "681325469d409bc3bcf5022d"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:06:41.575Z"
+  createdOn: "2025-05-01T07:39:50.504Z"
+llmopsTags:
+  - "customer-support"
+  - "chatbot"
+  - "high-stakes-application"
+  - "regulatory-compliance"
+  - "rag"
+  - "embeddings"
+  - "prompt-engineering"
+  - "semantic-search"
+  - "vector-search"
+  - "error-handling"
+  - "system-prompts"
+  - "reranking"
+  - "documentation"
+  - "security"
+  - "compliance"
+  - "guardrails"
+  - "reliability"
+  - "openai"
+company: "GEICO"
+summary: "GEICO explored using LLMs for customer service chatbots through a hackathon initiative in 2023. After discovering issues with hallucinations and \"overpromising\" in their initial implementation, they developed a comprehensive RAG (Retrieval Augmented Generation) solution enhanced with their novel \"RagRails\" approach. This method successfully reduced incorrect responses from 12 out of 20 to zero in test cases by providing structured guidance within retrieved context, demonstrating how to safely deploy LLMs in a regulated insurance environment."
+link: "https://www.geico.com/techblog/application-of-retrieval-augmented-generation/"
+year: 2023
+seo:
+  title: "GEICO: Implementing RAG and RagRails for Reliable Conversational AI in Insurance - ZenML LLMOps Database"
+  description: "GEICO explored using LLMs for customer service chatbots through a hackathon initiative in 2023. After discovering issues with hallucinations and \"overpromising\" in their initial implementation, they developed a comprehensive RAG (Retrieval Augmented Generation) solution enhanced with their novel \"RagRails\" approach. This method successfully reduced incorrect responses from 12 out of 20 to zero in test cases by providing structured guidance within retrieved context, demonstrating how to safely deploy LLMs in a regulated insurance environment."
+  canonical: "https://www.zenml.io/llmops-database/implementing-rag-and-ragrails-for-reliable-conversational-ai-in-insurance"
+  ogTitle: "GEICO: Implementing RAG and RagRails for Reliable Conversational AI in Insurance - ZenML LLMOps Database"
+  ogDescription: "GEICO explored using LLMs for customer service chatbots through a hackathon initiative in 2023. After discovering issues with hallucinations and \"overpromising\" in their initial implementation, they developed a comprehensive RAG (Retrieval Augmented Generation) solution enhanced with their novel \"RagRails\" approach. This method successfully reduced incorrect responses from 12 out of 20 to zero in test cases by providing structured guidance within retrieved context, demonstrating how to safely deploy LLMs in a regulated insurance environment."
+---
+
+## Overview
+
+GEICO, one of the largest auto insurers in the United States, conducted an internal hackathon in 2023 to explore how Large Language Models (LLMs) could improve business experiences. One winning proposal was a conversational chat application designed to collect user information through natural dialogue rather than traditional web forms. This case study documents their experimental implementation of Retrieval Augmented Generation (RAG) to address the reliability challenges they encountered when deploying LLMs in customer-facing applications.
+
+The core challenge GEICO faced was that commercial and open-source LLMs proved to be "not infallible or reliably correct." In the insurance industry, where accuracy, compliance, and reliability are paramount, the stochastic nature of LLM outputs presented significant operational risks. The team discovered that without guardrails or constraints, LLM responses could "widely vary," which is particularly problematic for public-facing customer use cases.
+
+## The Problem: Hallucinations and Overpromising
+
+The team identified hallucinations as a critical issue stemming from stochasticity, knowledge limitations, and update lags in LLM training. They define hallucinations as "generative models' tendency to generate outputs containing fabricated or inaccurate information, despite appearing plausible."
+
+A particularly interesting subset of hallucinations they identified was "overpromising," a term coined by their product team to describe situations where the model presumed it could independently perform actions related to the answer it was generating. For example, when a user asked about credit card transaction fees, the model would sometimes respond by implying it could actually process payments—a capability it did not have. In their testing, 12 out of 20 responses were incorrect for this type of scenario, demonstrating the severity and consistency of the problem.
+
+## Why RAG Over Fine-Tuning
+
+GEICO chose RAG as their first line of defense against hallucinations rather than fine-tuning for several practical reasons:
+
+- **Cost**: RAG avoids expensive model retraining, which is particularly important for organizations that may need to iterate quickly on solutions
+- **Flexibility**: RAG incorporates diverse external knowledge sources that can be updated independently of the model itself
+- **Transparency**: RAG enables easier interpretability and attribution of responses to specific knowledge sources
+- **Efficiency**: RAG supports rapid knowledge access without the computational overhead of retraining
+
+The team positions fine-tuning as a "last resort" approach, which reflects a pragmatic operational philosophy that prioritizes maintainability and cost-effectiveness.
+
+## Technical Implementation
+
+### Vector Database and Indexing
+
+The RAG implementation required converting business data into vectorized representations. GEICO established a pipeline that converts dense knowledge sources into semantic vector representations for efficient retrieval. The ingestion process involves splitting documents, converting each segment to embeddings through an API, and extracting metadata using LLMs.
+
+A key architectural decision was designing an offline asynchronous conversion process for indexing. The team recognized that creating the multilayer data structure required for vector indexing is a resource-intensive mathematical operation. By separating the indexing process from retrieval, they aimed to maximize Queries per Second (QPS) without the computational load of indexing affecting retrieval performance. This resulted in a component architecture where one component builds collections and creates snapshots for the vector database, while another handles retrieval with minimal disruption and downtime.
+
+After evaluating various vector databases, they found Hierarchical Navigable Small World (HNSW) graphs to be superior for their use case. HNSW, based on the k-nearest neighbors algorithm, eliminates the need for extra knowledge structures and offers efficient search for high-dimensional vectors compared to simple distance-based searching. The case study notes that modern vector databases also support customizable metadata indexing, which enhances retrieval flexibility.
+
+### System Prompt Architecture
+
+The team used GPT models with system prompts to provide context and instructions. For every user interaction, the system dynamically composes the task description, constraints, and RAG context based on the quote process stage and user intention. This dynamic composition is a sophisticated approach that goes beyond static prompting, allowing the system to adapt its behavior based on the conversation state.
+
+### Retrieval and Ranking Strategy
+
+The initial RAG implementation relied on semantic closeness between the vectorized representation of user input and the knowledge base. The team encoded question-answer sets to align with user requests and preferred answers, similar to approaches used in intent classification models.
+
+The first implementation included entire records within the system prompt, but this proved ineffective and unreliable. A key insight was that clear delineation of record structure allowed them to shift to a more refined insertion approach that only included the answer portion, excluding examples. This more focused approach improved outcomes.
+
+To handle the challenge that everyday language can be "fragmented, grammatically incorrect, and varied," every user message was sent to an LLM for translation into a coherent form that could be better matched within the knowledge base. This translated input attempted to predict what question the user was likely asking, seemed to be asking, or might have wanted to ask. This approach resulted in two record sets being retrieved—one from the original input and one from the translated input—which were then combined for insertion into the system prompt.
+
+Drawing from research showing that LLMs struggle to maintain focus on retrieved passages positioned in the middle of the input sequence (citing the "Lost in the Middle" phenomenon), the team implemented ranking mechanisms. By reordering retrieved knowledge and prioritizing the most relevant content at the beginning or end of the sequence, the LLM's focus window improved. The most semantically relevant knowledge was positioned at the bottom of the RAG context window.
+
+### Relevance Checking
+
+To address concerns about response variability and costs from incorporating excessive context, the team introduced a relevance check. They used the same LLM to evaluate whether retrieved records were relevant to the conversation. The case study acknowledges that developing a concept of relevance proved challenging and remains an area for improvement. They identified several considerations: whether all retrieved contexts are relevant, whether only a portion applies, whether context is relevant without transformation or requires further inference, and whether to redo the search differently if content is not relevant.
+
+## RagRails: A Novel Approach to Hallucination Mitigation
+
+Perhaps the most innovative contribution from this case study is the "RagRails" strategy. When attempts to permanently add instructions to the system prompt were unsuccessful and disrupted other objectives, the team discovered that including guiding instructions directly within the retrieved records increased adherence to desired behaviors.
+
+RagRails involves adding specific instructions to records that guide the LLM away from misconceptions and potential negative behaviors while reinforcing desired responses. Importantly, these instructions are only applied when the record is retrieved and deemed relevant, meaning they don't bloat the system prompt in scenarios where they aren't needed.
+
+The effectiveness of this approach is demonstrated in their testing: the overpromising problem that initially produced 12 incorrect responses out of 20 was reduced to 6 after initial adjustments, and eventually to zero after implementing RagRails. This represents a significant improvement in response reliability.
+
+The team emphasizes the importance of repeatability in testing, noting that a positive result may mask future undesirable outcomes. They evaluated responses based on LLM performance and developer effort to determine the suitability of "railed" responses.
+
+## Cost Considerations
+
+The case study honestly addresses the cost implications of their approach. Maintaining their current path results in higher inference costs due to the additional information provided to the model. However, they argue that dependable and consistent application of LLMs should be prioritized for scenarios requiring high degrees of truthfulness and precision—exactly the kind of scenarios common in insurance.
+
+To lessen the financial burden, they suggest using smaller, more finely tuned models for specific tasks such as optimization, entity extraction, relevance detection, and validation. The LLM would then serve as a backup solution when these smaller models are insufficient. This tiered approach reflects a mature understanding of the cost-performance tradeoffs in production LLM systems.
+
+## Lessons Learned and Ongoing Work
+
+The case study concludes with several key takeaways that are valuable for practitioners:
+
+- Hallucinations are a persistent challenge when working with LLMs, and "overpromising" represents a particularly insidious subset where models make incorrect assumptions about their own capabilities
+- RAG is a proven, cost-effective, flexible, transparent, and efficient solution, but requires proper pipelines for converting knowledge sources into semantic vector representations
+- Minimizing hallucinations requires implementing sorting, ranking, and relevance checks for the selection and presentation of knowledge content
+- Adding more context paradoxically can increase the risk of hallucination, making techniques like RagRails valuable for constraining model behavior
+
+GEICO Tech acknowledges they continue to explore RAG and other techniques as they work toward using generative technologies safely and effectively, learning from their associates, the scientific community, and the open-source community. This ongoing exploratory stance suggests the work is still evolving and that the solutions described should be viewed as experimental rather than fully production-hardened systems.

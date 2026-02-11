@@ -1,0 +1,149 @@
+---
+title: "Background Coding Agents for Large-Scale Software Maintenance and Migrations"
+slug: "background-coding-agents-for-large-scale-software-maintenance-and-migrations"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "695244c0c2775f7e24010f57"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2026-01-07T09:40:39.763Z"
+  lastUpdated: "2025-12-29T10:36:22.406Z"
+  createdOn: "2025-12-29T09:07:12.137Z"
+llmopsTags:
+  - "code-generation"
+  - "poc"
+  - "prompt-engineering"
+  - "multi-agent-systems"
+  - "agent-based"
+  - "human-in-the-loop"
+  - "evals"
+  - "mcp"
+  - "cicd"
+  - "continuous-integration"
+  - "continuous-deployment"
+  - "orchestration"
+  - "devops"
+  - "docker"
+  - "monitoring"
+  - "guardrails"
+  - "google-gcp"
+company: "Spotify"
+summary: "Spotify faced challenges in scaling complex code transformations across thousands of repositories despite having a successful Fleet Management system that automated simple, repetitive maintenance tasks. The company integrated AI coding agents into their existing Fleet Management infrastructure, allowing engineers to define fleet-wide code changes using natural language prompts instead of writing complex transformation scripts. Since February 2025, this approach has generated over 1,500 merged pull requests handling complex tasks like language modernization, breaking-change upgrades, and UI component migrations, achieving 60-90% time savings compared to manual approaches while expanding the system's use to ad-hoc development tasks through IDE and chat integrations."
+link: "https://engineering.atspotify.com/2025/11/spotifys-background-coding-agent-part-1"
+year: 2025
+seo:
+  title: "Spotify: Background Coding Agents for Large-Scale Software Maintenance and Migrations - ZenML LLMOps Database"
+  description: "Spotify faced challenges in scaling complex code transformations across thousands of repositories despite having a successful Fleet Management system that automated simple, repetitive maintenance tasks. The company integrated AI coding agents into their existing Fleet Management infrastructure, allowing engineers to define fleet-wide code changes using natural language prompts instead of writing complex transformation scripts. Since February 2025, this approach has generated over 1,500 merged pull requests handling complex tasks like language modernization, breaking-change upgrades, and UI component migrations, achieving 60-90% time savings compared to manual approaches while expanding the system's use to ad-hoc development tasks through IDE and chat integrations."
+  canonical: "https://www.zenml.io/llmops-database/background-coding-agents-for-large-scale-software-maintenance-and-migrations"
+  ogTitle: "Spotify: Background Coding Agents for Large-Scale Software Maintenance and Migrations - ZenML LLMOps Database"
+  ogDescription: "Spotify faced challenges in scaling complex code transformations across thousands of repositories despite having a successful Fleet Management system that automated simple, repetitive maintenance tasks. The company integrated AI coding agents into their existing Fleet Management infrastructure, allowing engineers to define fleet-wide code changes using natural language prompts instead of writing complex transformation scripts. Since February 2025, this approach has generated over 1,500 merged pull requests handling complex tasks like language modernization, breaking-change upgrades, and UI component migrations, achieving 60-90% time savings compared to manual approaches while expanding the system's use to ad-hoc development tasks through IDE and chat integrations."
+---
+
+## Overview
+
+Spotify's case study describes their evolution from traditional automated code transformation tools to AI-powered background coding agents integrated into their Fleet Management platform. The company operates at significant scale, maintaining thousands of repositories, and by mid-2024, approximately half of all Spotify pull requests were already automated through their pre-existing Fleet Management system. However, this system struggled with complex code changes that required sophisticated abstract syntax tree (AST) manipulation or extensive regular expression logic—one dependency updater script alone grew to over 20,000 lines of code. Starting in February 2025, Spotify began investigating how AI coding agents could lower the barrier to entry for complex migrations and unlock capabilities previously limited to specialized teams.
+
+The implementation represents a mature LLMOps deployment, moving beyond simple experimentation to production-scale operation with over 1,500 AI-generated pull requests merged into production codebases. The article published in November 2025 reflects an active, evolving system that has fundamentally changed how Spotify approaches software maintenance at scale.
+
+## Technical Architecture and Infrastructure
+
+Spotify's approach demonstrates sophisticated LLMOps infrastructure design by integrating AI agents into existing, proven workflows rather than replacing them wholesale. The Fleet Management system's core infrastructure—repository targeting, pull request creation, code review processes, and merging to production—remained unchanged. Only the code transformation declaration mechanism was replaced, swapping deterministic migration scripts for agent-based execution driven by natural language prompts.
+
+The company built a custom internal CLI rather than adopting off-the-shelf coding agents directly. This architectural decision reflects mature LLMOps thinking around flexibility and control. The CLI handles multiple responsibilities: delegating prompt execution to agents, running custom formatting and linting tasks using the Model Context Protocol (MCP), evaluating diffs using LLMs as judges, uploading logs to Google Cloud Platform (GCP), and capturing traces in MLflow for observability.
+
+This pluggable architecture has proven particularly valuable in the rapidly evolving GenAI landscape. Spotify explicitly notes they've already swapped out components multiple times while maintaining a consistent, well-integrated interface for users. This abstraction layer shields engineers from implementation details while giving the platform team flexibility to optimize underlying agent technology as capabilities improve.
+
+The system evolved from a single-purpose migration tool to a multi-agent architecture supporting both fleet-wide migrations and ad-hoc development tasks. The current architecture includes specialized agents for planning, code generation, and reviewing pull requests, with workflow orchestration managed through the custom CLI and surrounding infrastructure.
+
+## Deployment and Integration Patterns
+
+Spotify demonstrates several deployment patterns that address real-world LLMOps challenges. First, they've integrated their background coding agent via MCP to expose functionality through multiple interfaces—Slack, GitHub Enterprise, and IDE integrations. This multi-modal access pattern recognizes that different use cases require different interaction models. Fleet-wide migrations benefit from batch processing through the Fleet Management system, while ad-hoc tasks work better through conversational interfaces.
+
+The deployment includes an interactive agent that helps gather task information before handing off to the coding agent. This represents a practical prompt engineering pattern where structured information gathering improves downstream code generation quality. The conversation results in a refined prompt that the coding agent uses to produce pull requests, demonstrating a two-stage approach to complex task execution.
+
+The system runs agents in containerized environments, maintaining isolation and reproducibility. All agent-generated work flows through the same pull request review and merging processes as human-generated code, preserving existing quality gates and team workflows. This integration pattern avoids the common pitfall of creating separate processes for AI-generated code that might bypass established governance mechanisms.
+
+## Prompt Engineering and Context Management
+
+While the article doesn't detail specific prompt engineering techniques (those are deferred to a second article in the series), it reveals that engineers configure "Fleetshifts" with prompts rather than code. The system allows natural language specification of transformations like "replace Java value types with records" or "migrate data pipelines to the newest version of Scio." This shift from programmatic AST manipulation to declarative natural language specifications represents a fundamental change in how engineers interact with code transformation systems.
+
+The mention of "context engineering" as a follow-up topic suggests Spotify has developed sophisticated approaches to providing relevant context to agents—likely including repository structure, dependency information, existing code patterns, and migration-specific context. The ability to handle complex tasks like UI component migrations and breaking-change upgrades implies robust context assembly mechanisms that give agents sufficient information to make informed decisions about code changes.
+
+## Evaluation and Quality Control
+
+Spotify implements multiple evaluation layers, reflecting mature LLMOps practices around quality assurance for non-deterministic systems. The custom CLI includes functionality to "evaluate a diff using LLMs as a judge," suggesting they use model-based evaluation to assess generated code quality before proposing changes. This LLM-as-judge pattern provides automated quality gates that can scale with the volume of agent-generated changes.
+
+The article explicitly acknowledges that "coding agents come with an interesting set of trade-offs" and that "their output can be unpredictable." This balanced assessment recognizes the fundamental challenge of deploying non-deterministic systems in production environments where consistency and reliability matter. Spotify indicates they're developing "new validation and quality control mechanisms" to address these challenges, though specific techniques aren't detailed in this first article of the series.
+
+The mention of "strong feedback loops" as a topic for a third article suggests Spotify has implemented systematic approaches to learning from agent performance and improving results over time. The fact that over 1,500 pull requests have been merged indicates these quality control mechanisms are working effectively enough for teams to trust and adopt the system.
+
+## Observability and Monitoring
+
+Spotify demonstrates strong LLMOps observability practices through their integration with MLflow for trace capture and GCP for log management. This infrastructure provides visibility into agent behavior, performance characteristics, and failure modes—critical capabilities when operating non-deterministic systems at scale.
+
+The custom CLI's role in capturing traces suggests comprehensive instrumentation of the agent execution pipeline. This observability infrastructure likely enables Spotify to debug failures, optimize performance, identify patterns in successful versus unsuccessful transformations, and track metrics like success rates, execution times, and cost per transformation.
+
+The article mentions managing "LLM quotas" as part of their standardization efforts, indicating they've implemented cost controls and resource management across the system. This reflects practical operational concerns when running LLMs at scale, where uncontrolled usage could lead to significant expenses or rate limiting issues.
+
+## Safety, Sandboxing, and Guardrails
+
+Spotify acknowledges the need for "robust guardrails and sandboxing to ensure agents operate as intended." While specific implementation details aren't provided, the containerized execution environment mentioned for Fleet Management jobs provides inherent isolation. Running code transformations in containers limits potential damage from agent errors or unexpected behavior.
+
+The fact that all agent-generated code flows through pull request reviews before merging provides a critical human-in-the-loop safety mechanism. Teams review and approve changes before they reach production, maintaining accountability and catching issues automated evaluation might miss. This hybrid approach balances automation benefits with safety requirements for production systems.
+
+The mention of safety as an ongoing area of focus indicates Spotify recognizes the evolving nature of risks in AI-driven development tools and continues to refine their approach as they gain operational experience.
+
+## Results and Impact
+
+Spotify reports quantifiable results that demonstrate real production value. The 1,500+ merged pull requests represent actual changes to production codebases, not experimental or proof-of-concept work. The 60-90% time savings compared to manual implementation provides clear ROI metrics, though these figures should be interpreted with appropriate caveats about measurement methodology and task selection.
+
+The system has expanded beyond its original migration focus to support ad-hoc development tasks, with product managers and non-engineers now able to propose simple changes without local development environment setup. This expansion suggests the technology has matured beyond narrow use cases to provide broader organizational value.
+
+The article notes that "hundreds of developers now interact with our agent," indicating successful adoption at scale. The fact that approximately half of Spotify's pull requests were already automated pre-AI, and they've added 1,500+ AI-generated PRs on top of that, demonstrates how AI agents complement rather than replace existing automation.
+
+## Challenges and Limitations
+
+Spotify provides a balanced perspective by explicitly discussing challenges. Performance is highlighted as a "key consideration," with agents taking significant time to produce results. This latency issue affects user experience and limits applicability for interactive workflows where developers expect near-instant feedback.
+
+The unpredictability of agent output represents a fundamental challenge for production systems. While traditional code has deterministic behavior that can be tested exhaustively, agents may produce different results on repeated runs with the same inputs. This non-determinism complicates testing, debugging, and building reliable systems.
+
+Cost is mentioned as "significant computational expense" when running LLMs at scale. Unlike traditional code where execution costs are relatively fixed and predictable, LLM-based systems incur per-token costs that can vary dramatically based on task complexity, context size, and model choice. Managing these costs while maintaining quality and performance requires careful engineering.
+
+The article acknowledges "we don't have all the answers yet," showing appropriate humility about operating in a rapidly evolving space. This honest assessment contrasts with vendor claims that sometimes oversell AI capabilities.
+
+## Technology Stack and Tooling
+
+The case study reveals a thoughtfully assembled technology stack. MLflow provides experiment tracking and model management capabilities adapted for LLMOps use cases. The Model Context Protocol (MCP) enables structured communication between agents and tools, supporting extensibility and integration with local development tools.
+
+Google Cloud Platform provides the underlying infrastructure for log management and likely model serving, though specific GCP services aren't detailed. The containerized execution environment suggests use of Kubernetes or similar orchestration platforms, though this isn't explicitly stated.
+
+The custom CLI represents significant internal tooling investment, suggesting Spotify concluded that existing coding agent products didn't meet their specific requirements around flexibility, observability, and integration with existing workflows. This build-versus-buy decision reflects the maturity level required for production LLMOps at scale.
+
+## Organizational and Cultural Aspects
+
+The case study reveals interesting organizational dynamics. Spotify co-developed the tooling alongside "early adopters who applied it to their in-flight migrations," demonstrating an iterative, user-centered approach to internal tool development. This pattern of close collaboration between platform teams and early adopters helps ensure tools meet real needs rather than theoretical requirements.
+
+The expansion from migration-focused tools to general-purpose background agents responding to Slack and IDE requests shows how internal tools evolve based on user demand. The "symbiosis between the migration and background agent use cases" demonstrates how infrastructure investments in one area create value across multiple use cases.
+
+The fact that product managers can now propose code changes without cloning repositories suggests cultural shifts in how non-engineers interact with codebases. This democratization of code contribution represents a broader trend in developer experience enabled by AI tools.
+
+## Future Directions and Evolution
+
+Spotify indicates this is part one of a series, with subsequent articles covering context engineering and feedback loops. This suggests they've developed substantial additional techniques and learnings beyond what's covered in this initial overview. The focus on "predictable results through strong feedback loops" indicates ongoing work to address the non-determinism challenge fundamental to LLM-based systems.
+
+The mention of "scratching the surface of what's possible" suggests Spotify sees significant additional opportunities for applying these techniques to other areas of software development and maintenance. The evolution from simple dependency updates to complex language modernization and breaking-change migrations indicates a trajectory toward increasingly sophisticated capabilities.
+
+The multi-agent architecture with specialized planning, generating, and reviewing agents suggests future evolution toward more complex agent collaboration patterns, potentially including agents that can break down complex migrations into smaller steps, coordinate across repositories, or learn from previous migration attempts.
+
+## Critical Assessment
+
+While Spotify presents impressive results, several aspects warrant critical consideration. The 60-90% time savings figures lack detailed methodology explanation—it's unclear whether this includes time spent on prompt engineering, handling edge cases, reviewing generated code, or fixing errors. Selection bias may exist if teams naturally choose tasks well-suited to AI agents rather than representative samples of all maintenance work.
+
+The 1,500+ merged pull requests is substantial but should be contextualized against Spotify's total PR volume. Given that half of their PRs were already automated pre-AI, these AI-generated PRs likely represent a small percentage of overall code changes, though they may tackle previously unautomatable tasks.
+
+The article doesn't discuss failure rates, how many generated PRs were rejected, how much human intervention was required to fix agent errors, or what percentage of attempted migrations succeeded versus failed. These metrics would provide important balance to the success narrative.
+
+The cost implications remain vague beyond acknowledging "significant computational expense." Without concrete numbers on cost per PR or comparison to human developer time costs, it's difficult to assess true ROI.
+
+That said, Spotify's balanced tone, acknowledgment of ongoing challenges, and focus on infrastructure investment over breathless AI hype suggests a mature, production-oriented approach to LLMOps that other organizations can learn from. The emphasis on observability, evaluation, safety, and integration with existing workflows demonstrates LLMOps best practices that go beyond simply calling an LLM API.

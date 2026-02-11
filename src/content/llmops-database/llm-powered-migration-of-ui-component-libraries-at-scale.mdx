@@ -1,0 +1,133 @@
+---
+title: "LLM-Powered Migration of UI Component Libraries at Scale"
+slug: "llm-powered-migration-of-ui-component-libraries-at-scale"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "6908977c72fd6a12874583a2"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:25:11.550Z"
+  createdOn: "2025-11-03T11:52:28.045Z"
+llmopsTags:
+  - "code-generation"
+  - "poc"
+  - "prompt-engineering"
+  - "few-shot"
+  - "cost-optimization"
+  - "human-in-the-loop"
+  - "system-prompts"
+  - "pytorch"
+  - "fastapi"
+  - "documentation"
+  - "openai"
+company: "Zalando"
+summary: "Zalando's Partner Tech team faced significant challenges maintaining two distinct in-house UI component libraries across 15 B2B applications, leading to inconsistent user experiences, duplicated efforts, and increased maintenance complexity. To address this technical debt, they explored using Large Language Models (LLMs) to automate the migration from one library to another. Through an iterative experimentation process involving five iterations of prompt engineering, they developed a Python-based migration tool using GPT-4o that achieved over 90% accuracy in component transformations. The solution proved highly cost-effective at under $40 per repository and significantly reduced manual migration effort, though it still required human oversight for visual verification and handling of complex edge cases."
+link: "https://engineering.zalando.com/posts/2025/02/llm-migration-ui-component-libraries.html"
+year: 2025
+seo:
+  title: "Zalando: LLM-Powered Migration of UI Component Libraries at Scale - ZenML LLMOps Database"
+  description: "Zalando's Partner Tech team faced significant challenges maintaining two distinct in-house UI component libraries across 15 B2B applications, leading to inconsistent user experiences, duplicated efforts, and increased maintenance complexity. To address this technical debt, they explored using Large Language Models (LLMs) to automate the migration from one library to another. Through an iterative experimentation process involving five iterations of prompt engineering, they developed a Python-based migration tool using GPT-4o that achieved over 90% accuracy in component transformations. The solution proved highly cost-effective at under $40 per repository and significantly reduced manual migration effort, though it still required human oversight for visual verification and handling of complex edge cases."
+  canonical: "https://www.zenml.io/llmops-database/llm-powered-migration-of-ui-component-libraries-at-scale"
+  ogTitle: "Zalando: LLM-Powered Migration of UI Component Libraries at Scale - ZenML LLMOps Database"
+  ogDescription: "Zalando's Partner Tech team faced significant challenges maintaining two distinct in-house UI component libraries across 15 B2B applications, leading to inconsistent user experiences, duplicated efforts, and increased maintenance complexity. To address this technical debt, they explored using Large Language Models (LLMs) to automate the migration from one library to another. Through an iterative experimentation process involving five iterations of prompt engineering, they developed a Python-based migration tool using GPT-4o that achieved over 90% accuracy in component transformations. The solution proved highly cost-effective at under $40 per repository and significantly reduced manual migration effort, though it still required human oversight for visual verification and handling of complex edge cases."
+---
+
+## Overview and Business Context
+
+Zalando's Partner Tech division, which provides interfaces for partners to sell products on their platform, faced a critical technical debt problem stemming from having developed two separate in-house UI component libraries over time. These libraries were used across different partner-facing applications, creating multiple operational challenges including inconsistent user experiences, duplicated design and development efforts, complexity in maintaining two design languages, increased maintenance burden for engineering teams, and higher onboarding time for new developers.
+
+The migration project encompassed 15 sophisticated B2B applications, and the substantial differences between the source and target UI component libraries meant this would require considerable resources and time using traditional approaches. Given the scale and complexity, the team explored automation approaches including traditional JavaScript codemods and, more innovatively, Large Language Models to leverage recent advances in AI capabilities for code transformation tasks.
+
+## Experimental Approach and Iterative Refinement
+
+The team's approach to validating LLM feasibility is noteworthy for its systematic, experimental methodology. They participated in an internal LLM hackathon organized by Zalando's research team and Tech Academy, which provided a structured environment for investigating whether LLMs could handle custom component migrations with sufficient accuracy. The core concern was whether subtle, hard-to-detect bugs might be introduced that could impact partner experiences.
+
+The experimental setup focused on a selected set of UI components with varying complexity levels, from simple buttons to more complex Select components. They used a simple test application to validate migration accuracy under realistic conditions and adopted an iterative approach where each experiment built upon insights from previous ones.
+
+### Iteration 1: Direct Source Code Transformation
+
+The initial attempt involved providing the LLM with source code from both the source and target component libraries and asking it to perform the migration directly. This produced inconsistent results with numerous errors. The failure was attributed to the complexity of asking the LLM to handle multiple intermediary steps simultaneously: understanding source code, defining interfaces, creating mappings between libraries, and then performing the actual migration. The LLM struggled to handle all these steps reliably in a single pass.
+
+### Iteration 2: Two-Step Process with Interface Generation
+
+The team broke the process into two stages: first generating detailed component interfaces from source code, then using those interfaces as context for migration. This approach still yielded low accuracy with the LLM failing to transform several component attributes correctly. The problem was that even detailed interfaces lacked essential information present in the original source code that was necessary for complete component transformation.
+
+### Iteration 3: Adding Explicit Transformation Instructions
+
+Building on previous iterations, they combined the generated interfaces with explicit mapping instructions on how to transform each component and its attributes from source to target library. This achieved medium accuracy but revealed a critical flaw: the automated mapping instructions were sometimes incorrect. For example, a "medium" sized button in the original library was visually equivalent to a "large" button in the new library, but the LLM created direct size mappings. The failure highlighted that source code cannot reveal all information such as design intent or visual relationships, and that the LLM couldn't visualize how components are actually rendered.
+
+### Iteration 4: Manual Verification Layer
+
+To address the issues, the team introduced manual verification of the prompts, fixing incorrect mappings (such as correcting the size mapping from medium-to-medium to medium-to-large). This improved accuracy significantly for basic components, but complex components requiring substantial code restructuring still had issues. The team recognized that while the LLM had the theoretical information needed, providing practical transformation examples with explanations would help the LLM learn from patterns.
+
+### Iteration 5: Example-Driven Learning
+
+The final successful iteration supplemented instructions with examples of increasing complexity. These examples were initially generated by the LLM but then manually verified. The examples included source code, target code, and migration notes explaining the reasoning (such as "size='medium' maps to size='large' due to visual equivalence"). This approach achieved high accuracy across all components and became the foundation for their production tool.
+
+## Production Tool Development and LLMOps Challenges
+
+After establishing the methodology, the team built a Python-based migration tool using the llm library's conversation API. They chose Python for its extensive LLM ecosystem support and selected GPT-4o based on hackathon results and testing, noting that the tool was developed and deployed in September 2024, so findings reflect that timeframe's model capabilities.
+
+The tool processed files in source directories and applied LLM-powered migrations for components present in each file. While the core implementation was straightforward, several technical LLMOps challenges emerged that required specific solutions:
+
+**Handling Token Limits**: When files exceeded the 4K token limit, outputs would get truncated mid-transformation. They resolved this by utilizing the conversation API and passing "continue" as a prompt whenever content was cut off, allowing the LLM to complete the transformation. Interestingly, a simple "continue" prompt proved more reliable than complex continuation prompts.
+
+**Output Consistency and Determinism**: Initially, they observed varying outputs for the same input, making testing and validation challenging. Setting the temperature parameter to 0 made the LLM's output more deterministic and reproducible, which is a critical requirement for production LLM applications where consistency is paramount.
+
+**Output Format Standardization**: The LLM would sometimes include explanatory text or markdown formatting along with the transformed code. They resolved this through specific output formatting instructions in the system prompt, requiring the model to return just the transformed file inside specific XML tags without additional commentary.
+
+**Context Window Management**: As input prompt size grew, transformation accuracy declined. To maintain quality, they organized components into logical groups (like 'form', 'core', etc.), keeping context tokens between 40-50K per group. This grouping strategy helped maintain the LLM's focus and improved transformation accuracy, demonstrating the importance of understanding context window limitations in production LLM systems.
+
+**Automated Testing Infrastructure**: A critical observation was that small adjustments to transformation instructions could lead to substantial changes in results. This highlighted the need for prompt validation tests and led them to implement automated testing using LLM-generated examples. These examples served dual purposes as both validation tools and regression tests, helping catch unexpected changes during the migration process. This represents a mature approach to LLMOps where testing infrastructure is built around the inherent variability of LLM outputs.
+
+**Prompt Caching Strategy**: To optimize costs and improve response times, they structured prompts to maximize cache hits with LLM API caching capabilities. The prompt was organized with static parts (transformation examples) at the top and dynamic parts (file content) at the end, ensuring caching could be leveraged across different file transformations. This demonstrates sophisticated cost optimization thinking in production LLM deployment.
+
+## System Prompts and Prompt Engineering Best Practices
+
+The team discovered that well-crafted system prompts significantly enhanced transformation accuracy. They instructed the LLM to operate as an experienced developer and clearly defined task objectives, along with detailed requirements for code style, best practices, and error handling conventions. This proved instrumental in generating accurate code transformations that adhered to the instructed output format.
+
+Throughout their experience, they identified several prompt engineering best practices. Prompts need to be clear and concise with explicit handling of edge cases. For example, "Migrate button components in the file" led to unrelated components being transformed when no button was found, whereas "Migrate button components, if it exists, in the file" worked as expected. Similarly, vague instructions like "Map the sizes appropriately" performed poorly compared to explicit mappings with explanations of the reasoning behind each mapping decision.
+
+## Results and Performance Assessment
+
+The results exceeded initial expectations and established LLMs as a viable tool for similar complex migrations. The cost-effectiveness was remarkable: based on average metrics of approximately 45K tokens per component group prompt, 2K tokens average output file size, 10 groups of components, and about 30 files transformed per group, the total cost per repository was estimated at under $40 using GPT-4o pricing. Actual costs were potentially lower due to prompt caching being applied.
+
+The team achieved an overall accuracy of more than 90% for component migration, with even higher accuracy for low to medium complexity components. This significantly reduced the manual fixes needed after LLM-powered migration. While precisely quantifying saved development effort is complex, the combination of high accuracy and large volumes of files processed implies significant time and resource savings.
+
+## What Worked Well in Production
+
+Several aspects of the LLM approach proved particularly effective. The high accuracy rate reduced manual intervention substantially. The LLMs demonstrated strong code comprehension, understanding relationships between different code elements. For example, when code imported Typography and then created an alias like `const Header = Typography.Headline`, the LLM could correctly identify that Header and Typography.Headline were the same and replace accordingly. This is a powerful capability compared to traditional alternatives like codemods where every edge case must be explicitly coded.
+
+The contextual intelligence of LLMs was impressive, demonstrating contextual awareness and the ability to fill gaps in instructions based on provided examples and context. For instance, the LLM could provide correct default values during transformation even when explicit instructions for those cases were missing. Additionally, the development velocity was notably faster than traditional alternatives, with prompt generation and tool development accelerated compared to the extensive development time typically required for codemods.
+
+## Challenges and Limitations: A Balanced Assessment
+
+Despite the strengths, the team encountered significant limitations that prevented full automation. On the LLM-specific side, reliability issues persisted even with carefully crafted prompts, with LLMs occasionally deviating from instructions or making unexpected changes. More concerning, LLMs sometimes generated plausible-looking but incorrect code, such as adding properties to components that don't exist—a classic hallucination problem.
+
+The team observed what they termed "moody" behavior, where the LLM occasionally produced inconsistent outputs for the same input at different times without clear reasons. This represents one of the most challenging aspects of production LLM deployment: the inherent non-determinism that persists even with temperature set to zero. Processing times ranged between 30 and 200 seconds per file, making large-scale migrations time-intensive and quick experimentation more challenging, though this wasn't a major blocker since transformations could run in the background.
+
+A fundamental limitation was the lack of visual understanding. LLMs cannot verify visual implications of changes when migrating between design systems with different fundamental units. In Zalando's case, the source and target libraries had differences in spacing scales and grid systems (12 vs 24 columns). This meant that while a page could be syntactically migrated correctly, the layout might appear broken upon deployment, requiring human visual verification.
+
+Project-specific challenges also emerged beyond LLM limitations. These included differences in design philosophies between the two UI component libraries, difficulties in migrating test suites due to inconsistent testing practices, gaps in feature availability between libraries, and variations in codebases and styling practices across applications. These challenges often required significant manual work and refactoring, as LLMs could not handle such complex transformations accurately. For example, converting from a 24-column to 12-column grid system presents multiple valid options (rounding up vs. rounding down) with different visual implications that require human judgment.
+
+## Lessons Learned for LLMOps Practitioners
+
+The team's experience yielded several valuable lessons for using LLMs effectively in code transformation use cases. There is no universal formula or fixed approach to increase LLM effectiveness; success requires an iterative approach of continuous experimentation and refinement through testing different prompt variations, analyzing results, and incorporating feedback.
+
+Providing code examples proved crucial for enhancing migration accuracy. When transformation instructions were supplemented with specific examples, the LLM's ability to handle similar patterns improved dramatically, particularly visible in complex component migrations where abstract instructions alone were insufficient.
+
+Human oversight remains critical at every stage when dealing with LLMs in production. Code reviews and thorough visual testing are needed for catching subtle issues that LLMs might introduce. The grid conversion example illustrates this perfectly: when converting from 24 to 12 grid columns, multiple mathematically valid options exist (rounding up vs. down) with different visual implications that require human design judgment.
+
+Tool evaluation is important before embarking on migration projects. Their initial manual approach of copying and pasting source code proved time-consuming and error-prone. Adopting continue.dev improved workflow by automating source code handling, demonstrating that the broader LLM tooling ecosystem can significantly impact productivity.
+
+Effective prompt engineering was central to success. Breaking down complex transformations into discrete steps, providing practical examples with instructions, and following established prompt engineering best practices ensured consistent and accurate results. The contrast between vague and explicit instructions repeatedly proved significant in their experiments.
+
+## Future Implications and Broader Applicability
+
+The case study represents a mature, thoughtful approach to production LLM deployment for code transformation tasks. The team explicitly positions their work not just as solving immediate migration needs, but as evaluating the feasibility of LLMs for tackling large-scale code transformation challenges more broadly. They acknowledge LLM limitations while recognizing their power as tools when used appropriately with human oversight.
+
+As they wrap up this phase of UI migration, they're already identifying other areas where this approach could provide value, armed with better understanding of how to approach such challenges. This represents the kind of organizational learning that characterizes successful LLMOps adoption: treating initial deployments as learning experiences that inform broader strategy.
+
+The case study is particularly valuable for its balanced assessment. Rather than claiming LLMs as a silver bullet, the team candidly discusses reliability issues, moody behavior, visual understanding limitations, and the need for manual intervention. This honest appraisal, combined with concrete cost figures, accuracy metrics, and technical implementation details, makes this a highly credible and useful reference for organizations considering similar applications of LLMs in production environments. The emphasis on iterative development, automated testing, human oversight, and systematic experimentation reflects mature software engineering practices adapted thoughtfully to the unique challenges of LLMOps.

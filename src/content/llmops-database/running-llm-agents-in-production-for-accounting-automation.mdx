@@ -1,0 +1,197 @@
+---
+title: "Running LLM Agents in Production for Accounting Automation"
+slug: "running-llm-agents-in-production-for-accounting-automation"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "693be137c8a41f88910e215f"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:35:48.103Z"
+  createdOn: "2025-12-12T09:32:39.616Z"
+llmopsTags:
+  - "healthcare"
+  - "fraud-detection"
+  - "customer-support"
+  - "document-processing"
+  - "question-answering"
+  - "classification"
+  - "chatbot"
+  - "data-analysis"
+  - "high-stakes-application"
+  - "structured-output"
+  - "regulatory-compliance"
+  - "rag"
+  - "prompt-engineering"
+  - "few-shot"
+  - "agent-based"
+  - "multi-agent-systems"
+  - "human-in-the-loop"
+  - "latency-optimization"
+  - "cost-optimization"
+  - "fallback-strategies"
+  - "system-prompts"
+  - "mcp"
+  - "a2a"
+  - "evals"
+  - "instruction-tuning"
+  - "error-handling"
+  - "kubernetes"
+  - "docker"
+  - "monitoring"
+  - "databases"
+  - "api-gateway"
+  - "microservices"
+  - "cicd"
+  - "devops"
+  - "orchestration"
+  - "open-source"
+  - "documentation"
+  - "security"
+  - "compliance"
+  - "guardrails"
+  - "reliability"
+  - "scalability"
+  - "postgresql"
+  - "redis"
+  - "cache"
+  - "langchain"
+  - "crewai"
+  - "chromadb"
+  - "pinecone"
+  - "openai"
+  - "anthropic"
+  - "meta"
+  - "hugging-face"
+company: "Digits"
+summary: "Digits, a company providing automated accounting services for startups and small businesses, implemented production-scale LLM agents to handle complex workflows including vendor hydration, client onboarding, and natural language queries about financial books. The company evolved from a simple 200-line agent implementation to a sophisticated production system incorporating LLM proxies, memory services, guardrails, observability tooling (Phoenix from Arize), and API-based tool integration using Kotlin and Golang backends. Their agents achieve a 96% acceptance rate on classification tasks with only 3% requiring human review, handling approximately 90% of requests asynchronously and 10% synchronously through a chat interface."
+link: "https://www.youtube.com/watch?v=Zv490D5Lvgw"
+year: 2025
+seo:
+  title: "Digits: Running LLM Agents in Production for Accounting Automation - ZenML LLMOps Database"
+  description: "Digits, a company providing automated accounting services for startups and small businesses, implemented production-scale LLM agents to handle complex workflows including vendor hydration, client onboarding, and natural language queries about financial books. The company evolved from a simple 200-line agent implementation to a sophisticated production system incorporating LLM proxies, memory services, guardrails, observability tooling (Phoenix from Arize), and API-based tool integration using Kotlin and Golang backends. Their agents achieve a 96% acceptance rate on classification tasks with only 3% requiring human review, handling approximately 90% of requests asynchronously and 10% synchronously through a chat interface."
+  canonical: "https://www.zenml.io/llmops-database/running-llm-agents-in-production-for-accounting-automation"
+  ogTitle: "Digits: Running LLM Agents in Production for Accounting Automation - ZenML LLMOps Database"
+  ogDescription: "Digits, a company providing automated accounting services for startups and small businesses, implemented production-scale LLM agents to handle complex workflows including vendor hydration, client onboarding, and natural language queries about financial books. The company evolved from a simple 200-line agent implementation to a sophisticated production system incorporating LLM proxies, memory services, guardrails, observability tooling (Phoenix from Arize), and API-based tool integration using Kotlin and Golang backends. Their agents achieve a 96% acceptance rate on classification tasks with only 3% requiring human review, handling approximately 90% of requests asynchronously and 10% synchronously through a chat interface."
+---
+
+## Overview
+
+Digits is a financial technology company that runs automated bookkeeping for startups and small businesses while helping accounting firms improve operational efficiency. In this comprehensive talk by Hanis, a principal machine learning engineer with five years at the company, he shares detailed lessons learned from deploying LLM agents in production. The presentation was delivered at a conference and represents practical, real-world experience rather than theoretical approaches. Hanis brings extensive cross-vertical ML experience from HR, retail, and healthcare systems, and recently co-authored a book on GenAI best practices covering RAG, agents, and model fine-tuning.
+
+The case study is particularly notable because Digits doesn't use Python in production but rather Kotlin and Golang, which created unique challenges for implementing agentic workflows. The company has been developing ML solutions for seven years, providing a mature infrastructure foundation for their agent implementations.
+
+## Use Cases for Agents at Digits
+
+Digits has implemented what Hanis humorously refers to as "process demons" (rather than agents, to avoid the non-deterministic and catastrophic connotations of the term) across several key workflows:
+
+**Vendor Hydration**: When a new transaction appears from a previously unseen vendor (such as a small mom-and-pop shop in a remote town), an agent automatically researches and captures comprehensive information about the vendor including website, social media profiles, phone numbers, store hours, and other relevant details. By the time customers view their transactions in the dashboard, all vendor information is fully hydrated and available.
+
+**Client Onboarding Simplification**: Traditional onboarding involves extensive questionnaires, but Digits uses agents to derive answers to many questions automatically. The system can determine whether a client is a large or small company, infer preferred database connection methods, and predict authentication preferences like single sign-on requirements, reducing friction in the onboarding process.
+
+**Complex User Questions**: Digits provides a natural language interface where users can ask questions about their books, such as "what was my marketing spend last month?" Agents process these queries, execute the necessary data retrievals and calculations, and return formatted answers.
+
+## Evolution from Simple to Production-Grade Architecture
+
+Hanis emphasizes that the conceptually simple agent implementation—an LLM in a loop with an objective, making tool calls until providing a response—can be implemented in 100-200 lines of code. However, production requirements dramatically expand this scope. The initial simple architecture evolved to incorporate multiple critical infrastructure components:
+
+**LLM Providers and Proxies**: While both open-source models and major providers (OpenAI, Anthropic) offer good tool-calling capabilities, Digits implemented an LLM proxy layer rather than direct API calls. This architectural decision enables switching between different models for different use cases and, critically, provides fallback options when a particular service experiences downtime. Given that neither OpenAI nor Anthropic maintain 100% uptime, having automatic failover is essential for maintaining high SLI (Service Level Indicator) rates in production.
+
+**Memory Services**: A key distinction Hanis emphasizes is that storage is not memory. Simply concatenating LLM outputs constitutes storage, but proper memory involves compression and abstraction of information. Memory services use combinations of graph databases, semantic search, and relational databases to provide:
+- Short-term memory: Summarizing the last five interactions into preference summaries
+- Long-term memory: Preserving preferences across sessions in persistent storage
+
+Hanis demonstrated this with a travel planning agent example where the system remembered a user's preference for vegan cuisine across different trip planning requests without being explicitly reminded. Memory providers like Mem0 and LangGraph offer microservices that agents can connect to automatically. This fundamentally changes agent behavior because patterns and preferences learned from users can be applied proactively in future interactions.
+
+**Retrieval Augmented Generation (RAG)**: Most use cases involve integrating existing document stacks and RAG infrastructure into the agentic workflow, allowing agents to access and reason over organizational knowledge bases.
+
+**Observability**: Single agent tasks can fire off numerous requests to various LLMs and make multiple tool calls, quickly creating a complex, "chaos-like" scenario. Digits prioritized observability heavily, attending specific conference tracks and panel discussions on agent observability. They evaluated multiple options including open-source solutions like Phoenix from Arize and paid vendors like Freeplay and Comet. The key selection criterion was compatibility with OpenTelemetry, which Digits uses extensively across their backend stack. This allowed them to hook into existing data flows and pipelines rather than reimplementing everything from scratch. Their observability platform enables prompt comparison across model versions (e.g., comparing GPT-4 outputs to GPT-5 with identical prompts) and tracking latency, costs, and individual tool calls with detailed trace visualization.
+
+**Guardrails and Reflection**: Before showing any output to users, Digits implements reflection—evaluating whether the response makes sense relative to the initial request. They initially used "LLM as judge" approaches where a different LLM evaluates the output (using a different model than the one generating responses is critical, as "grading your own test doesn't help"). For more complex scenarios requiring different policies for different tasks, they adopted Guardrails AI framework. For example, fraud detection tasks have strict guardrails, while social media profile lookups can tolerate more error without brand damage.
+
+## Framework Selection and Tool Integration
+
+Hanis provides thoughtful guidance on framework selection that balances prototyping speed against production requirements. While frameworks like LangChain and CrewAI excel at rapid prototyping and offer convenient Python tool decorators that can turn any function into a tool call, they present significant challenges for production:
+
+**Dependency Complexity**: These frameworks come with extensive dependency chains that create burden during security audits and operational management. Hanis strongly recommends carefully evaluating dependency complexity and suggests that frameworks shipping as single binaries (like potential Golang implementations) would be ideal because they eliminate dependency management entirely.
+
+**Production Implementation**: For production systems, Digits found implementing the core agentic loop directly (rather than using a framework) to be more maintainable given their 200-line core complexity. However, since they run Kotlin and Golang in production rather than Python, they couldn't leverage Python-specific features like tool decorators anyway.
+
+**Tool Connection Strategy**: One of Digits' most significant architectural decisions was connecting agent tools to existing REST APIs rather than reimplementing backend functionality. This approach provided a crucial benefit: existing APIs already have permissions built in. Permission management is one of the most challenging aspects of production agents—ensuring the correct agent with the correct trigger has appropriate permissions to execute various tasks. By routing through existing APIs, these permission controls are automatically enforced.
+
+The team spent considerable effort determining how to define tools for agent consumption. Manual schema definition (specifying what each tool wants and provides) doesn't scale beyond a few tools, and they needed to support potentially hundreds of tools. Their RPC-based API implementation proved too noisy for direct use as tool definitions. Their solution involved using introspection (reflection) to convert APIs into JSON schemas that agent frameworks could understand, focusing on a curated subset of APIs rather than exposing everything. This approach scaled effectively while maintaining security boundaries.
+
+## Task Planning and Model Selection
+
+A critical evolution in Digits' agent implementation was introducing explicit task planning as a separate phase. Initially, they provided agents with all available tools and let them determine execution paths. As tasks grew more complex, this approach became inefficient and unreliable.
+
+**Separation of Planning and Execution**: Digits now forces agents to plan tasks before execution begins. This planning phase uses high-complexity models like GPT-4o or o1 that excel at reasoning. In contrast, the pure execution phase—taking data and converting it to tool-compatible formats—can use any modern LLM since basic transformations are well-supported across models.
+
+**Latency Reduction**: Proper task planning actually reduces overall latency despite adding an upfront planning step. Without planning, agents frequently call tools at incorrect workflow stages, requiring data to be discarded and tasks restarted with different tools. Good planning eliminates these false starts. The latency reduction often compensates for the additional cost of using premium models for the planning phase.
+
+## Observability and Responsible Agent Practices
+
+Digits has invested heavily in making their agent operations transparent and accountable:
+
+**Real-time Monitoring**: The team established Slack channels that receive notifications whenever agents behave outside normal parameters, enabling rapid response to anomalies.
+
+**User Feedback Loops**: Every agent-generated response includes a feedback mechanism (thumbs up/down) allowing users to indicate whether outputs were appropriate. This creates continuous training signals for improvement.
+
+**Human Review Pipelines**: Predictions flagged as strange or low-confidence are routed to human reviewers who can evaluate them individually. The system measures confidence levels—high-confidence predictions ship automatically, while lower-confidence predictions bubble up for user confirmation with a prompt like "we would make this decision here, can you tell us if this is right or wrong?"
+
+**Performance Metrics**: In their classification use cases, Digits achieves a 96% acceptance rate with only 3% of questions requiring human review, demonstrating high agent reliability.
+
+**Audit Compliance**: Since accounting is a regulated industry, all agent decisions are treated like any other machine learning prediction and marked as machine-generated. Users can always override agent decisions. The system maintains reconciliation capabilities between bank streams and bank statements, ensuring auditability.
+
+## Multi-Model Strategy and Guardrails
+
+Digits implements sophisticated guardrail strategies that emphasize using different models for generation versus evaluation. They consistently route generation to one provider (e.g., GPT-4) while sending outputs to a different provider (e.g., Claude) for evaluation. Questions asked during evaluation include:
+- Does this make sense?
+- Is this reasonable?
+- Do we reveal confidential information?
+- Is it harmful to anybody?
+
+For more complex scenarios requiring task-specific policies, they leverage Guardrails AI, which allows different policy enforcement for different agent tasks based on business risk.
+
+## Practical Production Example
+
+Hanis demonstrated the production system using Digits' actual UI. The interface includes a synchronous agent where users can ask questions like "what's my ratio between sales expenses and payroll taxes?" The agent then:
+- Parses the query to understand requirements
+- Retrieves relevant category data
+- Determines expense breakdowns
+- Calculates salary and tax payments
+- Uses calculator tools for final computations
+- Returns formatted answers to the user
+
+This example was traced through their Phoenix observability setup, showing all tool calls, responses, and guardrail evaluations in real-time. The system confirmed all guardrail checks passed before displaying results to the user.
+
+Importantly, about 90% of Digits' agent requests are asynchronous (background processing like vendor hydration) while only 10% are synchronous chat interactions, indicating that most value comes from automated workflows rather than conversational interfaces.
+
+## Future Directions and Unsolved Challenges
+
+**Reinforcement Learning**: Digits is exploring reward function design and reinforcement learning to improve agent-specific use cases using feedback loops. This is particularly valuable for their specific data structures like GraphQL, which is used for frontend-backend communication. Fine-tuned models for these specific structures could significantly improve performance.
+
+**Model Context Protocol (MCP) and Agent-to-Agent (A2A)**: Hanis explicitly noted they haven't adopted MCP or A2A protocols because all their data is internal and major security questions remain unresolved. While MCP provides good marketing value for connecting to external services like PayPal and Booking.com, it represents a "hard play" to integrate into production products until security concerns are addressed.
+
+**Multi-tenant Memory**: During Q&A, a question arose about handling memory in multi-tenant, multi-user applications. The challenge involves users working across multiple organizations and verticals within the same company. Digits currently segments memory by user, but acknowledged this is an evolving area requiring more sophisticated approaches to context separation.
+
+## Key Takeaways for Production LLM Agents
+
+Hanis provided clear recommendations based on Digits' journey:
+
+**Start with Observability**: The first infrastructure component to implement should be observability, followed by guardrails and prompt injection protection. This priority order reflects the importance of understanding system behavior before optimizing it.
+
+**Let Applications Drive Infrastructure**: Don't implement the full complex architecture upfront. Build incrementally based on actual application needs rather than theoretical requirements.
+
+**Evaluate Frameworks Carefully**: Frameworks excel at prototyping but carefully consider dependency chains for production. Limited dependencies or single-binary distribution models are ideal. Consider implementing the core loop directly if dependencies become problematic.
+
+**Reuse Existing APIs**: Leveraging existing API infrastructure provides automatic permission management and security controls, which are among the hardest problems in agent systems.
+
+**Separate Planning from Execution**: Use high-complexity models for reasoning-intensive task planning and any capable model for routine execution, optimizing both quality and cost.
+
+**Use Different Models for Evaluation**: Never use the same model to evaluate its own outputs; cross-model validation provides more reliable quality checks.
+
+**Treat Storage and Memory Distinctly**: Proper memory involves compression and abstraction of information, not simple concatenation of outputs.
+
+The case study represents a mature, thoughtful approach to production LLM agents in a regulated industry where reliability, auditability, and security are paramount. Digits' five-year ML journey provided strong foundations, but the agent implementation still required significant architectural evolution to meet production standards.

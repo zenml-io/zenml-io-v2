@@ -1,0 +1,131 @@
+---
+title: "Evaluations Driven Development for Production LLM Applications"
+slug: "evaluations-driven-development-for-production-llm-applications"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "67934687083e0b00985e72f0"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:58:10.829Z"
+  createdOn: "2025-01-24T07:51:35.989Z"
+llmopsTags:
+  - "code-generation"
+  - "code-interpretation"
+  - "data-analysis"
+  - "prompt-engineering"
+  - "few-shot"
+  - "error-handling"
+  - "human-in-the-loop"
+  - "system-prompts"
+  - "monitoring"
+  - "documentation"
+  - "guardrails"
+  - "reliability"
+  - "mistral"
+  - "fastapi"
+  - "openai"
+  - "microsoft-azure"
+company: "Anaconda"
+summary: "Anaconda developed a systematic approach called Evaluations Driven Development (EDD) to improve their AI coding assistant's performance through continuous testing and refinement. Using their in-house \"llm-eval\" framework, they achieved dramatic improvements in their assistant's ability to handle Python debugging tasks, increasing success rates from 0-13% to 63-100% across different models and configurations. The case study demonstrates how rigorous evaluation, prompt engineering, and automated testing can significantly enhance LLM application reliability in production."
+link: "https://www.anaconda.com/blog/introducing-evaluations-driven-development?utm_source=chatgpt.com"
+year: 2024
+seo:
+  title: "Anaconda: Evaluations Driven Development for Production LLM Applications - ZenML LLMOps Database"
+  description: "Anaconda developed a systematic approach called Evaluations Driven Development (EDD) to improve their AI coding assistant's performance through continuous testing and refinement. Using their in-house \"llm-eval\" framework, they achieved dramatic improvements in their assistant's ability to handle Python debugging tasks, increasing success rates from 0-13% to 63-100% across different models and configurations. The case study demonstrates how rigorous evaluation, prompt engineering, and automated testing can significantly enhance LLM application reliability in production."
+  canonical: "https://www.zenml.io/llmops-database/evaluations-driven-development-for-production-llm-applications"
+  ogTitle: "Anaconda: Evaluations Driven Development for Production LLM Applications - ZenML LLMOps Database"
+  ogDescription: "Anaconda developed a systematic approach called Evaluations Driven Development (EDD) to improve their AI coding assistant's performance through continuous testing and refinement. Using their in-house \"llm-eval\" framework, they achieved dramatic improvements in their assistant's ability to handle Python debugging tasks, increasing success rates from 0-13% to 63-100% across different models and configurations. The case study demonstrates how rigorous evaluation, prompt engineering, and automated testing can significantly enhance LLM application reliability in production."
+---
+
+## Summary
+
+Anaconda, the company behind the popular Python distribution and data science platform, published a detailed case study describing their approach to building and improving their "Anaconda Assistant" — an AI-powered coding companion designed to help data scientists with tasks like code generation, debugging, and explanation. The central thesis of the case study is their development of a methodology they call "Evaluations Driven Development" (EDD), which focuses on systematic testing and iterative prompt refinement rather than model fine-tuning to improve LLM performance in production applications.
+
+The Anaconda Assistant is built on top of existing language models (the case study specifically mentions GPT-3.5-Turbo and Mistral 7B Instruct), and its primary use cases include generating code snippets, suggesting code improvements, providing explanations of functions and modules, recommending data preprocessing techniques, and most notably, intelligent debugging. According to their telemetry data, approximately 60% of user interactions with the Assistant involve debugging help, making error handling accuracy a critical capability to optimize.
+
+## The LLMOps Challenge
+
+The case study presents a concrete and honest assessment of the initial performance challenges they faced. When testing their error handling capabilities on a specific debugging scenario (a ValueError raised by invalid input to a function), the initial success rates were remarkably low:
+
+- GPT-3.5-Turbo (v0125) at temperature 0: 12% success rate
+- GPT-3.5-Turbo (v0125) at temperature 1: 13% success rate
+- Mistral 7B Instruct v0.2 at temperature 0: 0% success rate
+- Mistral 7B Instruct v0.2 at temperature 1: 2% success rate
+
+These results were based on 500 iterations per configuration, providing statistically meaningful baselines. The transparency about these initial poor results is notable, as many vendor case studies tend to gloss over challenges. This established a clear problem: the underlying LLMs, when used with naive prompting, could not reliably identify bugs and provide working solutions.
+
+## The llm-eval Framework
+
+Central to their EDD approach is an in-house testing framework called "llm-eval." This framework enables automated evaluation of LLM responses across multiple dimensions. The key components of their evaluation methodology include:
+
+**Defining Evaluation Criteria**: The team focused on metrics that matter to end users, specifically the accuracy of error explanations and the clarity of code explanations. Rather than relying on abstract benchmarks like perplexity or generic NLP metrics, they prioritized real-world task completion.
+
+**Test Case Curation**: They assembled diverse test cases spanning common data science challenges, from simple syntax errors to complex issues involving data types and performance. This is a critical LLMOps practice — having representative test suites that mirror actual production workloads.
+
+**Automated Execution and Validation**: The llm-eval framework executes generated code snippets in a controlled environment, capturing execution details including errors and exceptions, and compares outputs to expected results. This is essentially a form of code execution-based evaluation, which is more rigorous than purely semantic or LLM-as-judge approaches for code generation tasks.
+
+**Iterative Refinement**: Based on evaluation results, the team identifies weaknesses and edge cases, then refines prompts, queries, and knowledge bases accordingly. This creates a feedback loop where evaluation insights directly drive improvement.
+
+The framework appears to have revealed specific patterns where the Assistant struggled, including "errors involving complex data structures or multiple interrelated files." This level of diagnostic insight is valuable for prioritizing improvement efforts.
+
+## Prompt Engineering Techniques
+
+Rather than fine-tuning the underlying models (which is expensive, time-consuming, and may not transfer well across model updates), Anaconda focused on prompt engineering to improve performance. They employed several established techniques:
+
+**Few-Shot Learning**: By including examples of previously explained errors and their fixes in the prompt, they aimed to guide the model toward generating more accurate error explanations and code corrections. These examples were selected from a dataset of common Python errors and their solutions.
+
+**Chain-of-Thought Prompting**: They structured prompts to request an explanation of the error before requesting the fixed code. This encourages the model to reason step-by-step about the problem, mimicking how a human developer approaches debugging.
+
+The case study includes concrete examples of their prompts, showing a system prompt that positions the Assistant as a "Jupyter Notebook expert" with specific guidelines about explaining errors, asking permission before providing corrected code, and including comments in code to highlight changes. This level of detail about prompt structure is valuable for practitioners.
+
+## Agentic Feedback Iteration
+
+One of the more innovative aspects of their approach is what they call "Agentic Feedback Iteration." This technique uses LLMs themselves to analyze evaluation results and suggest prompt improvements:
+
+- Evaluation results, including original prompts, generated responses, and accuracy metrics, are fed into a language model
+- The model analyzes this data and provides specific suggestions for prompt modifications to address identified weaknesses
+- These suggestions are incorporated into prompts, and the evaluation cycle is repeated
+- The process continues iteratively until significant accuracy improvements are achieved
+
+This is essentially using LLMs for meta-optimization of prompts — a form of automated prompt engineering. The case study provides specific examples of changes made through this process, such as changing the user prompt from "Explain this error" to "How can I fix this error?" — a subtle but meaningful shift that focuses the model on actionable solutions rather than just explanations.
+
+The system prompt was also refined from a brief instruction to a more structured format with explicit numbered guidelines covering: providing code snippets with output errors, explaining errors in simple terms, asking permission before providing corrected code, providing corrected code in a single Python block, and including comments in code to highlight changes and reasons.
+
+## Results and Impact
+
+After applying their EDD methodology with prompt engineering and Agentic Feedback Iteration, the results showed substantial improvement:
+
+- GPT-3.5-Turbo (0125) at temperature 0: 87% success rate (up from 12%)
+- GPT-3.5-Turbo (0125) at temperature 1: 63% success rate (up from 13%)
+- Mistral 7B Instruct v0.2 at temperature 0.1: 87% success rate (up from 0%)
+- Mistral 7B Instruct v0.2 at temperature 1: 100% success rate (up from 2%)
+
+These improvements are dramatic, particularly for the Mistral model which went from essentially unusable (0-2% success) to highly reliable (87-100% success). The fact that Mistral 7B at temperature 1 achieved 100% success is notable, as it suggests that for this particular task, the combination of well-engineered prompts and some output diversity (higher temperature) actually improved reliability.
+
+It's worth noting that these results are self-reported and based on a specific test scenario. While the improvements are impressive, real-world performance may vary across different error types and user contexts. The case study does acknowledge this is "just the beginning" and outlines plans for expanding their evaluation framework.
+
+## Continuous Improvement Through User Data
+
+The case study mentions that the Assistant "is always getting smarter thanks to our Evaluations Driven Development process. Every interaction with users who have consented to data collection is an opportunity to refine the prompts and queries." This indicates a production feedback loop where real user interactions inform ongoing improvements — a key LLMOps practice for maintaining and improving production AI systems over time.
+
+## Future Directions
+
+Anaconda outlines several planned improvements:
+
+- Expanding the llm-eval framework to incorporate more complex, multi-step coding challenges and domain-specific evaluation criteria
+- Making the llm-eval framework publicly available as an open-source contribution
+- Integrating user feedback analysis (usage patterns, feature requests, performance ratings) into the improvement process
+
+## Critical Assessment
+
+While the case study presents compelling results, a balanced assessment should note several considerations:
+
+The evaluation was demonstrated on a single specific error scenario (a ValueError). While the methodology is sound, the 100% success rate should be understood in this limited context rather than as a general claim about the Assistant's capabilities.
+
+The improvements achieved through prompt engineering are impressive but may not generalize across all use cases. Different types of errors, programming patterns, or user query styles may require different prompt optimizations.
+
+The "Agentic Feedback Iteration" concept, while innovative, raises questions about reproducibility and interpretability — using LLMs to optimize LLM prompts adds another layer of complexity and potential variability.
+
+That said, the overall approach of rigorous evaluation, systematic prompt engineering, and iterative refinement represents sound LLMOps practice. The transparency about initial poor performance and the specific metrics-driven improvements add credibility to the case study. The focus on real-world task completion (actually fixing bugs in code) rather than proxy metrics is also a strength of their methodology.

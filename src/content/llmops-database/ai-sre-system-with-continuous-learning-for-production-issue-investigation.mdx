@@ -1,0 +1,100 @@
+---
+title: "AI SRE System with Continuous Learning for Production Issue Investigation"
+slug: "ai-sre-system-with-continuous-learning-for-production-issue-investigation"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "67725d97bbb9f216635c5f99"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:50:45.935Z"
+  createdOn: "2024-12-30T08:45:11.851Z"
+llmopsTags:
+  - "high-stakes-application"
+  - "realtime-application"
+  - "multi-agent-systems"
+  - "agent-based"
+  - "human-in-the-loop"
+  - "error-handling"
+  - "monitoring"
+  - "databases"
+  - "microservices"
+  - "langchain"
+  - "reliability"
+  - "elasticsearch"
+  - "microsoft-azure"
+  - "prompt-engineering"
+company: "Cleric AI"
+summary: "Cleric AI developed an AI-powered SRE system that automatically investigates production issues using existing observability tools and infrastructure. They implemented continuous learning capabilities using LangSmith to compare different investigation strategies, track investigation paths, and aggregate performance metrics. The system learns from user feedback and generalizes successful investigation patterns across deployments while maintaining strict privacy controls and data anonymization."
+link: "https://blog.langchain.dev/customers-cleric/"
+year: 2024
+seo:
+  title: "Cleric AI: AI SRE System with Continuous Learning for Production Issue Investigation - ZenML LLMOps Database"
+  description: "Cleric AI developed an AI-powered SRE system that automatically investigates production issues using existing observability tools and infrastructure. They implemented continuous learning capabilities using LangSmith to compare different investigation strategies, track investigation paths, and aggregate performance metrics. The system learns from user feedback and generalizes successful investigation patterns across deployments while maintaining strict privacy controls and data anonymization."
+  canonical: "https://www.zenml.io/llmops-database/ai-sre-system-with-continuous-learning-for-production-issue-investigation"
+  ogTitle: "Cleric AI: AI SRE System with Continuous Learning for Production Issue Investigation - ZenML LLMOps Database"
+  ogDescription: "Cleric AI developed an AI-powered SRE system that automatically investigates production issues using existing observability tools and infrastructure. They implemented continuous learning capabilities using LangSmith to compare different investigation strategies, track investigation paths, and aggregate performance metrics. The system learns from user feedback and generalizes successful investigation patterns across deployments while maintaining strict privacy controls and data anonymization."
+---
+
+## Summary
+
+Cleric AI is an AI agent that functions as an autonomous Site Reliability Engineer (SRE) teammate, designed to help engineering teams debug production issues. The core value proposition is automating the complex, time-consuming investigations that typically drain engineering productivity. When an alert fires in a customer's environment, Cleric automatically begins investigating using the customer's existing observability tools and infrastructure, examining multiple systems simultaneously—including database metrics, network traffic, application logs, and system resources—through read-only access to production systems.
+
+The case study, published in December 2024, focuses on how Cleric AI leverages LangSmith to improve their LLMOps practices, specifically around conducting parallel investigations, tracking performance metrics, and implementing a continuous learning system that generalizes insights across customer deployments.
+
+## The Production Challenge
+
+One of the fundamental challenges Cleric AI faced is unique to production debugging scenarios: production issues present learning opportunities that cannot be reproduced later. Unlike code generation tasks where you can run the same input multiple times, production environments are stateful and dynamic. Once an issue is resolved, that exact system state is gone, along with the opportunity to learn from it. This creates a time-sensitive learning window that requires robust observability and tracing infrastructure.
+
+The Cleric team needed to test different investigation approaches simultaneously. For example, one investigation path might prioritize checking database connection pools and query patterns, while another focuses first on network traffic and system resources. This creates a complex matrix of concurrent investigations across multiple systems using different strategies. The key operational questions became: How could the team monitor and compare the performance of different investigation strategies running simultaneously? And how could they determine which investigation approaches would work best for different types of issues?
+
+## LangSmith Integration for Parallel Investigation Monitoring
+
+LangSmith was adopted to provide clear visibility into parallel investigations and experiments. The integration enables several critical LLMOps capabilities:
+
+The system can now compare different investigation strategies side-by-side, which is essential for understanding which approaches are more effective for specific types of production issues. This comparative capability extends to tracking investigation paths across all systems that Cleric examines during an incident.
+
+Performance metrics can be aggregated for different investigation approaches, providing quantitative data on strategy effectiveness. This is particularly important because relying on an approach that worked once is not sufficient evidence that it will generalize to other incidents—data-driven validation is crucial for building reliable autonomous systems.
+
+LangSmith's tracing capabilities enable the Cleric team to analyze investigation patterns across thousands of concurrent traces. This scale of analysis is necessary for measuring which approaches consistently lead to faster resolutions. The ability to perform direct comparisons of different approaches handling the same incident provides controlled experimental conditions for strategy evaluation.
+
+## Continuous Learning and Feedback Integration
+
+A significant portion of the case study focuses on Cleric's continuous learning system, which represents an interesting LLMOps pattern for multi-tenant AI systems. Cleric learns continuously from interactions within each customer environment, and when an engineering team provides feedback on an investigation—whether positive or negative—this creates an opportunity to improve future investigations.
+
+The challenge Cleric faced was determining which learnings are specific to a team or company versus which represent broader patterns that could help all users. For example, a solution that works in one environment might depend on specific internal tools or processes that don't exist elsewhere. This is a nuanced problem in LLMOps: how do you build a system that learns from customer interactions while respecting the boundaries between customer-specific knowledge and generalizable patterns?
+
+The feedback integration workflow operates as follows: When Cleric completes an investigation, engineers provide feedback through their normal interactions with Cleric via Slack or ticketing systems. This feedback is captured through LangSmith's feedback API and tied directly to the investigation trace. Cleric stores both the specific details of the investigation and the key patterns that led to its resolution.
+
+The system then analyzes these patterns to create generalized memories that strip away environment-specific details while preserving the core problem-solving approach. These generalized memories are made available selectively during new investigations across all deployments. LangSmith helps track when and how these memories are used, and whether they improve investigation outcomes.
+
+By comparing performance metrics across different teams, companies, and industries, Cleric can determine the appropriate scope for each learning. Some memories might only be useful within a specific team, while others provide value across all customer deployments.
+
+## Privacy and Data Handling
+
+The case study notes that Cleric employs strict privacy controls and data anonymization before generalizing any learnings. All customer-specific details, proprietary information, and identifying data are stripped before any patterns are analyzed or shared. This is an important LLMOps consideration for any multi-tenant AI system that aims to learn from customer interactions—the balance between learning and privacy must be carefully managed.
+
+## Measuring Impact
+
+LangSmith's tracing and metrics capabilities allow the Cleric team to measure the impact of shared learnings by comparing investigation success rates, resolution times, and other key metrics before and after introducing new memories. This data-driven approach helps validate which learnings truly generalize across environments and which should remain local to specific customers.
+
+This creates what the case study describes as a "Knowledge Hierarchy"—how Cleric organizes operational learning with separate knowledge spaces for customer-specific context for unique environments and procedures, alongside a growing library of generalized problem-solving patterns that benefit all users.
+
+## Critical Assessment
+
+It's worth noting that this case study is published on the LangChain blog, which is the company behind LangSmith, so there is an inherent promotional element to the content. The case study does not provide specific quantitative metrics on improvement rates, resolution time reductions, or other concrete outcomes that would allow independent verification of the claimed benefits.
+
+The architecture described—parallel investigation strategies, feedback-driven learning, and knowledge generalization across tenants—represents a sophisticated LLMOps setup, but the actual implementation details and the challenges encountered during development are not deeply explored. The case study reads more as a description of capabilities rather than a detailed technical deep-dive.
+
+Additionally, the claims about moving toward "autonomous, self-healing systems" should be viewed with some skepticism, as production SRE work involves significant complexity and edge cases that are difficult to fully automate. The case study acknowledges that Cleric asks for guidance when needed and works alongside human engineers, which is a more realistic framing of AI-assisted operations.
+
+## Integration Patterns
+
+The case study highlights several interesting integration patterns for LLMOps practitioners. The use of Slack as the primary communication interface means that Cleric operates within existing engineering workflows rather than requiring teams to adopt new tooling. The read-only access pattern for production systems is a sensible security constraint for an AI agent operating in sensitive environments.
+
+The feedback loop architecture—where user feedback in Slack or ticketing systems flows through LangSmith's feedback API and gets tied to specific traces—represents a practical approach to collecting training signal from real-world usage without requiring engineers to use separate evaluation interfaces.
+
+## Conclusion
+
+The Cleric AI case study demonstrates a production LLMOps system focused on autonomous debugging and investigation, with sophisticated use of tracing, parallel experimentation, and continuous learning across multi-tenant deployments. While the specific metrics and detailed technical implementation remain opaque, the architectural patterns described—particularly around parallel strategy comparison, feedback integration, and knowledge hierarchy—provide useful reference points for teams building similar AI-powered operational tools.

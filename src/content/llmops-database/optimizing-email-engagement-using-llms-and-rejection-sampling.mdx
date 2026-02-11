@@ -1,0 +1,132 @@
+---
+title: "Optimizing Email Engagement Using LLMs and Rejection Sampling"
+slug: "optimizing-email-engagement-using-llms-and-rejection-sampling"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f3e5b68e9a3a6d291350c"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:34:21.546Z"
+  createdOn: "2024-11-21T14:06:19.939Z"
+llmopsTags:
+  - "cache"
+  - "cost-optimization"
+  - "error-handling"
+  - "fallback-strategies"
+  - "fine-tuning"
+  - "monitoring"
+  - "openai"
+  - "prompt-engineering"
+  - "realtime-application"
+  - "reliability"
+  - "scalability"
+  - "structured-output"
+company: "Nextdoor"
+summary: "Nextdoor developed a novel system to improve email engagement by generating optimized subject lines using a combination of ChatGPT API and a custom reward model. The system uses prompt engineering to generate authentic subject lines without hallucination, and employs rejection sampling with a reward model to select the most engaging options. The solution includes robust engineering components for cost optimization and model performance maintenance, resulting in a 1% lift in sessions and 0.4% increase in Weekly Active Users."
+link: "https://engblog.nextdoor.com/let-ai-entertain-you-increasing-user-engagement-with-generative-ai-and-rejection-sampling-50a402264f56"
+year: 2023
+seo:
+  title: "Nextdoor: Optimizing Email Engagement Using LLMs and Rejection Sampling - ZenML LLMOps Database"
+  description: "Nextdoor developed a novel system to improve email engagement by generating optimized subject lines using a combination of ChatGPT API and a custom reward model. The system uses prompt engineering to generate authentic subject lines without hallucination, and employs rejection sampling with a reward model to select the most engaging options. The solution includes robust engineering components for cost optimization and model performance maintenance, resulting in a 1% lift in sessions and 0.4% increase in Weekly Active Users."
+  canonical: "https://www.zenml.io/llmops-database/optimizing-email-engagement-using-llms-and-rejection-sampling"
+  ogTitle: "Nextdoor: Optimizing Email Engagement Using LLMs and Rejection Sampling - ZenML LLMOps Database"
+  ogDescription: "Nextdoor developed a novel system to improve email engagement by generating optimized subject lines using a combination of ChatGPT API and a custom reward model. The system uses prompt engineering to generate authentic subject lines without hallucination, and employs rejection sampling with a reward model to select the most engaging options. The solution includes robust engineering components for cost optimization and model performance maintenance, resulting in a 1% lift in sessions and 0.4% increase in Weekly Active Users."
+---
+
+## Overview
+
+Nextdoor, a neighborhood-focused social networking platform, developed a novel approach to improving user engagement with AI-generated content (AIGC) for their notification email subject lines. The case study is particularly instructive because it demonstrates that off-the-shelf generative AI models do not automatically produce content that drives user engagement, and presents a practical framework for addressing this limitation through rejection sampling and reward models.
+
+The core problem Nextdoor sought to solve was improving the subject lines of their "New and Trending" notification emails. These emails contain a single post that the platform believes a user might be interested in, and historically the subject line was simply the first few words of the post. This approach often resulted in uninformative subject lines consisting of greetings or introductory remarks (like "Hello!") that provided little value to recipients.
+
+## The Problem with Vanilla Generative AI
+
+A key insight from this case study is that simply deploying ChatGPT API to generate email subject lines actually decreased engagement. Initial A/B tests showed that ChatGPT-generated subject lines produced only 56% of the clicks compared to user-generated subject lines. The team identified three specific challenges:
+
+- **Engagement optimization gap**: Generative AI models are not trained to produce content specifically optimized for user engagement metrics like click-through rates. While the content may be well-written and informative, this does not translate to increased engagement.
+
+- **Authenticity concerns**: AI-generated subject lines often read like marketing phrases, making emails appear spammy. For example, ChatGPT produced "Support backyard chickens in Papillion, NE!" which has an overtly promotional tone.
+
+- **Hallucination risks**: Generative AI is prone to producing content that is not grounded in the source material. In one example, given a short post saying "Sun bathing ☀️", ChatGPT generated "Soak Up the Sun: Tips for Relaxing Sun Bathing Sessions"—content entirely fabricated and unrelated to the original post.
+
+## Technical Architecture
+
+Nextdoor developed a two-model system to address these challenges:
+
+### Subject Line Generator
+
+The team used OpenAI API without fine-tuning but with carefully engineered prompts. The critical insight was to instruct the model to **extract** the most interesting part of the post rather than **rewrite** content. This extraction approach provides several benefits: it eliminates hallucinations (since the model only selects existing content), maintains authenticity (by preserving the user's original voice), and prevents marketing-style phrasing.
+
+The prompts included specific requirements like "Do not insert or remove any word," "Do not change capitalization," and "If the first 10 words are interesting, use them as a subject line." The team tested four different prompt versions and selected the best performer through A/B testing. This extraction-based approach improved sessions by 3% relative to asking the model to write subject lines from scratch.
+
+### Reward Model
+
+The reward model represents the main innovation in this system. It is a fine-tuned OpenAI API model (using the smallest "ada" model) that predicts whether a given subject line will generate more engagement than the user-generated alternative.
+
+**Training data collection** presented a unique challenge: there are no clear rules for what makes a subject line "more engaging," and the team found that their own human intuitions were often wrong. Subject lines they believed would be more engaging actually performed worse. To solve this, they collected training data through experimentation, serving different subject line variants to 2-3% of users (~20k) per post and learning from actual click data which performed better.
+
+The training dataset consisted of approximately 50,000 examples, with 40% having the OpenAI API subject as the winner and 60% having the user-generated subject as the winner. The model was fine-tuned to output "Yes" or "No" predictions, with a logit bias of 100 applied to both tokens to boost output probability for these specific responses. Training used 4 epochs, though the team noted minimal performance improvement after 2-3 epochs.
+
+Interestingly, larger OpenAI models did not improve predictive performance despite higher costs, so the team opted for the smallest and most economical option.
+
+### Rejection Sampling
+
+The core mechanism combining these two models is rejection sampling, a technique borrowed from reinforcement learning. For each post, the subject line generator produces a candidate subject. The reward model then compares this candidate against the user-generated subject line. The AI-generated subject is accepted only if the reward model predicts it will outperform the baseline—otherwise, the system falls back to the user-generated subject.
+
+This approach is conservative by design: it only uses AI-generated content when there is confidence it will improve upon the baseline. The reward model achieved approximately 65% accuracy in predicting which subject line would be more engaging—modest but sufficient to drive meaningful improvements.
+
+## Production Engineering and LLMOps Considerations
+
+The case study provides detailed insights into the engineering required to operate this system in production:
+
+### Cost Optimization through Caching
+
+Each post is sent to an average of 600 users, but the system processes each post only once by caching both the generator output and reward model predictions. This reduced costs to 1/600th of what a naive implementation would require. Caching also reduces the number of API requests and token usage.
+
+### Monitoring and Model Maintenance
+
+The team implemented daily monitoring of the reward model's predictive performance using next-day user click data as ground truth. This is critical because user preferences may drift over time and content styles/topics on the platform may shift. The monitoring system compares model predictions against actual engagement data from control buckets.
+
+If accuracy drops by 10% or more, the team retrains the reward model with new data. This represents a pragmatic approach to model maintenance in production—not continuous retraining, but triggered retraining based on performance thresholds.
+
+### Experiment Design for Ground Truth
+
+The system maintains separate user buckets for ongoing evaluation: a "control" bucket that always receives user-generated subjects and an "always OpenAI API" bucket that always receives AI-generated subjects regardless of reward model predictions. This experimental infrastructure provides ongoing ground truth for model accuracy measurement.
+
+### Error Handling and Fallbacks
+
+Given the dependency on external API calls, the system implements retries with exponential backoff using the Tenacity library. After a configured number of retry attempts, the system falls back to user-generated subject lines. This ensures graceful degradation when OpenAI API experiences rate limiting or transient errors.
+
+### Output Post-processing
+
+Despite prompt instructions specifying a 10-word limit and providing examples, the subject line generator sometimes produced longer outputs. The team implemented post-processing to truncate outputs to the first 10 words. A/B testing confirmed that 10 words was the optimal length.
+
+## Results and Learnings
+
+The final system achieved meaningful improvements over the baseline:
+
+- 1% lift in sessions
+- 0.4% increase in Weekly Active Users
+- 1% increase in ad revenue
+
+Key learnings from the A/B testing process include:
+
+- Prompt engineering provides improvements but has a ceiling. After a few iterations, metrics showed only marginal improvements and failed to beat the control.
+- Finding an "optimal" prompt is challenging because the search space is effectively infinite and there is no systematic method for prompt optimization—it relies heavily on human intuition.
+- The reward model was the critical factor in achieving positive session lift. Without it, even well-engineered prompts could not consistently outperform user-generated content.
+
+## Future Directions
+
+The team identified several potential improvements:
+
+- Fine-tuning the subject line generator itself using winning subjects identified by the reward model (full reinforcement learning from rejection sampling)
+- Daily rescoring of posts as engagement data accumulates, potentially improving reward model accuracy
+- Adding personalization to subject lines without dramatically increasing computational costs
+
+## Critical Assessment
+
+This case study provides valuable evidence that deploying generative AI for user-facing content requires careful engineering beyond simply calling an API. The rejection sampling approach is particularly notable because it acknowledges that AI-generated content is not always better and builds in a mechanism to detect and filter out underperforming outputs.
+
+The 65% accuracy of the reward model is relatively modest, and the final 1% session lift, while meaningful at scale, suggests there is substantial room for improvement. The team's transparency about the limitations of prompt engineering and the difficulty of predicting engaging content adds credibility to the findings. The cost optimization achieved through caching (600x reduction) demonstrates the importance of infrastructure engineering when deploying LLM-based systems at scale.

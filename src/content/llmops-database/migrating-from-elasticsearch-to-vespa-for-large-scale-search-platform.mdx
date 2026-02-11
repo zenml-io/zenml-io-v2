@@ -1,0 +1,152 @@
+---
+title: "Migrating from Elasticsearch to Vespa for Large-Scale Search Platform"
+slug: "migrating-from-elasticsearch-to-vespa-for-large-scale-search-platform"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "674f1eed639fcd9dc805fa09"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:47:17.687Z"
+  createdOn: "2024-12-03T15:08:29.996Z"
+llmopsTags:
+  - "unstructured-data"
+  - "realtime-application"
+  - "vector-search"
+  - "semantic-search"
+  - "latency-optimization"
+  - "cost-optimization"
+  - "elasticsearch"
+  - "monitoring"
+  - "load-balancing"
+  - "microservices"
+  - "scaling"
+  - "databases"
+  - "redis"
+  - "cache"
+  - "cloudflare"
+company: "Vinted"
+summary: "Vinted, a major e-commerce platform, successfully migrated their search infrastructure from Elasticsearch to Vespa to handle their growing scale of 1 billion searchable items. The migration resulted in halving their server count, improving search latency by 2.5x, reducing indexing latency by 3x, and decreasing visibility time for changes from 300 to 5 seconds. The project, completed between May 2023 and April 2024, demonstrated significant improvements in search relevance and operational efficiency through careful architectural planning and phased implementation."
+link: "https://vinted.engineering/2024/09/05/goodbye-elasticsearch-hello-vespa/"
+year: 2024
+seo:
+  title: "Vinted: Migrating from Elasticsearch to Vespa for Large-Scale Search Platform - ZenML LLMOps Database"
+  description: "Vinted, a major e-commerce platform, successfully migrated their search infrastructure from Elasticsearch to Vespa to handle their growing scale of 1 billion searchable items. The migration resulted in halving their server count, improving search latency by 2.5x, reducing indexing latency by 3x, and decreasing visibility time for changes from 300 to 5 seconds. The project, completed between May 2023 and April 2024, demonstrated significant improvements in search relevance and operational efficiency through careful architectural planning and phased implementation."
+  canonical: "https://www.zenml.io/llmops-database/migrating-from-elasticsearch-to-vespa-for-large-scale-search-platform"
+  ogTitle: "Vinted: Migrating from Elasticsearch to Vespa for Large-Scale Search Platform - ZenML LLMOps Database"
+  ogDescription: "Vinted, a major e-commerce platform, successfully migrated their search infrastructure from Elasticsearch to Vespa to handle their growing scale of 1 billion searchable items. The migration resulted in halving their server count, improving search latency by 2.5x, reducing indexing latency by 3x, and decreasing visibility time for changes from 300 to 5 seconds. The project, completed between May 2023 and April 2024, demonstrated significant improvements in search relevance and operational efficiency through careful architectural planning and phased implementation."
+---
+
+## Overview
+
+Vinted is a European second-hand marketplace that needed to scale its search infrastructure to handle approximately 1 billion active searchable items while maintaining low latency and high relevance. This case study documents their migration from Elasticsearch to Vespa, an open-source search engine and vector database originally built by Yahoo!. While this is primarily a search infrastructure case study rather than a pure LLMOps story, it has significant relevance to LLMOps practitioners due to Vespa's integrated machine learning model inference capabilities, vector search support, and the patterns used for deploying ML-enhanced search at scale.
+
+The migration began in May 2023, with item search traffic fully switched to Vespa by November 2023, and facet traffic migrated by April 2024. The team chose Vespa specifically because it supports vector search, lexical search, and structured data queries in a single system, with integrated machine-learned model inference for real-time AI applications.
+
+## The Problem: Elasticsearch Limitations at Scale
+
+Vinted had been using Elasticsearch since May 2015 (migrating from Sphinx). As the platform grew, they encountered several limitations with their Elasticsearch setup:
+
+- Managing 6 Elasticsearch clusters with 20 data nodes each, plus dozens of client nodes
+- Each server had substantial resources (128 cores, 512GB RAM, 0.5TB SSD RAID1, 10Gbps network)
+- Search result visibility required a 300-second refresh interval
+- Complex shard and replica configuration management was time-consuming and error-prone
+- "Hot nodes" caused uneven load distribution
+- Limited ability to increase ranking depth without performance degradation
+- Re-indexing when fields changed required complex shard rebalancing and alias switches
+
+## The Solution: Vespa Architecture and Implementation
+
+The team formed a dedicated Search Platform team of four Search Engineers with diverse backgrounds and shared expertise in search technologies. They divided the project into five key areas: architecture, infrastructure, indexing, querying, and metrics/performance testing.
+
+### Architecture Decisions
+
+Vespa's architecture provided several advantages over Elasticsearch. The team applied Little's and Amdahl's laws to optimize the parts of the system that most impact overall performance. Key architectural benefits included:
+
+- Horizontal scaling through content distribution across multiple nodes
+- Content groups that allow easy scaling by adding nodes without complex data reshuffling
+- Elimination of the need for careful shard and replica tuning
+- Single deployment (cluster) handling all traffic, improving search result consistency
+
+### Infrastructure Transformation
+
+The new infrastructure consists of:
+- 1 Vespa deployment with 60 content nodes (down from 120+ nodes across 6 Elasticsearch clusters)
+- 3 config nodes and 12 container nodes
+- Each content node: 128 cores, 512GB RAM, 3TB NVMe RAID1 disks, 10Gbps network
+- HAProxy load balancer for traffic routing to stateless Vespa container nodes
+- Bare metal servers in their own data centers
+
+The Vespa Application Package (VAP) deployment model encapsulates the entire application model into a single package, including schema definitions, ranking configurations, and content node specifications.
+
+### Real-Time Indexing Pipeline
+
+One of the most significant improvements was in the indexing architecture. The team built a Search Indexing Pipeline (SIP) on top of Apache Flink, integrated with Vespa through Vespa Kafka Connect—a connector they open-sourced as no Vespa sink was previously available.
+
+The indexing performance achieved:
+- Real-time daily feeding at 10,300 RPS for update/remove operations
+- Single item update latency of 4.64 seconds at the 99th percentile from Apache Flink to Vespa
+- Tested capacity of up to 50k RPS for updates and removals per deployment
+- Item visibility time reduced from 300 seconds to approximately 5 seconds
+
+The case study emphasizes that in modern search systems, indexing latency directly affects the lead time of feature development and the pace of search performance experimentation—a principle that applies equally to ML/LLM feature deployment.
+
+### Querying and ML Integration
+
+Vespa's querying capabilities enable what Vinted calls their "triangle of search": combining traditional lexical search, modern vector search, and structured data queries in single requests. This hybrid approach is crucial for relevance in e-commerce search.
+
+Key querying implementation details:
+- Custom searchers implemented by extending `com.yahoo.search.Searcher` class
+- Searchers construct YQL (Vespa's query language) to call Vespa
+- A Golang middleware service acts as a gateway with a predefined "search contract"
+- The search contract abstraction was crucial for seamless engine migration
+- Approximately 12 unique queries implemented across various product channels
+
+The team contributed Lucene text analysis component integration to upstream Vespa, allowing them to retain language analyzers from Elasticsearch while benefiting from Vespa's scalability. This is notable as it demonstrates contributing back to open source while solving production needs.
+
+### Migration Strategy and Testing
+
+The migration followed a careful, risk-mitigated approach:
+
+- Shadow traffic: Initially, incoming query traffic was served by Elasticsearch and mirrored to Vespa
+- Traffic amplification: The Go service could amplify traffic to Vespa by fractional amounts, tested up to 3x
+- A/B testing: Four A/B test iterations were required for the main search query before relevance was satisfactory
+- Performance testing: Rigorous simulation of peak traffic loads, stress testing the indexing pipeline, and validating search result accuracy under various conditions
+- Inactive region testing: Infrastructure or query workload changes could be tested in inactive regions before production deployment
+
+### Monitoring and Observability
+
+Vespa's built-in Prometheus metrics system provides detailed insights into:
+- Query latency
+- Indexing throughput
+- Content distribution across nodes
+- Potential bottlenecks
+
+The ability to test changes in inactive regions before they impact users is a pattern valuable for any ML/LLM system deployment.
+
+## Results and Business Impact
+
+The migration delivered significant quantifiable improvements:
+
+- **Server reduction**: From 120+ nodes to 60 content nodes (50% reduction)
+- **Latency improvement**: Search latency improved 2.5x, indexing latency improved 3x
+- **Visibility time**: Reduced from 300 seconds to 5 seconds
+- **Ranking depth**: Increased 3x to 200,000 candidate items, with significant business impact on search relevance
+- **Load distribution**: Even distribution across all nodes, eliminating "hot nodes"
+- **Peak performance**: 20,000 requests per second under 150ms at the 99th percentile
+- **Operational burden**: No more toiling over shard and replica ratio tuning
+
+## Relevance to LLMOps
+
+While this case study focuses on search infrastructure migration rather than LLM deployment specifically, several aspects are highly relevant to LLMOps practitioners:
+
+- **Vector search at scale**: Vespa's vector search capabilities are fundamental to deploying embedding-based retrieval systems, including RAG architectures
+- **Real-time ML inference**: Vespa's integrated machine-learned model inference allows applying AI to data in real-time, which is essential for production LLM applications
+- **Hybrid search patterns**: Combining vector, lexical, and structured search is a common pattern in production RAG systems
+- **Indexing latency impact on ML iteration**: The emphasis on fast indexing enabling rapid experimentation applies directly to LLM feature development
+- **A/B testing for relevance**: The iterative A/B testing approach for validating search relevance translates directly to LLM output quality testing
+- **Shadow traffic and gradual rollout**: These patterns are essential for safely deploying any ML system, including LLMs
+- **Infrastructure abstraction**: The search contract abstraction that enabled seamless migration is a valuable pattern for LLM service interfaces
+
+Vinted now runs 21 unique Vespa deployments across diverse use cases including item search, image retrieval, and search suggestions, with plans to fully transition remaining Elasticsearch features by end of 2024. This consolidation under a single platform that supports both traditional search and vector/ML capabilities positions them well for future LLM-enhanced search features.

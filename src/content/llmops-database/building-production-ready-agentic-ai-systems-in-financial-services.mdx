@@ -1,0 +1,167 @@
+---
+title: "Building Production-Ready Agentic AI Systems in Financial Services"
+slug: "building-production-ready-agentic-ai-systems-in-financial-services"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "693be44eca054238df1ceb4d"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:36:03.267Z"
+  createdOn: "2025-12-12T09:45:50.393Z"
+llmopsTags:
+  - "document-processing"
+  - "data-analysis"
+  - "summarization"
+  - "question-answering"
+  - "high-stakes-application"
+  - "regulatory-compliance"
+  - "unstructured-data"
+  - "multi-modality"
+  - "multi-agent-systems"
+  - "agent-based"
+  - "prompt-engineering"
+  - "rag"
+  - "few-shot"
+  - "human-in-the-loop"
+  - "error-handling"
+  - "cost-optimization"
+  - "latency-optimization"
+  - "system-prompts"
+  - "evals"
+  - "semantic-search"
+  - "embeddings"
+  - "reranking"
+  - "chunking"
+  - "langchain"
+  - "llama-index"
+  - "monitoring"
+  - "databases"
+  - "orchestration"
+  - "open-source"
+  - "documentation"
+  - "guardrails"
+  - "reliability"
+  - "scalability"
+  - "fastapi"
+  - "nvidia"
+company: "Fitch Group"
+summary: "Jayeeta Putatunda, Director of AI Center of Excellence at Fitch Group, shares lessons learned from deploying agentic AI systems in the financial services industry. The discussion covers the challenges of moving from proof-of-concept to production, emphasizing the importance of evaluation frameworks, observability, and the \"data prep tax\" required for reliable AI agent deployments. Key insights include the need to balance autonomous agents with deterministic workflows, implement comprehensive logging at every checkpoint, combine LLMs with traditional predictive models for numerical accuracy, and establish strong business-technical partnerships to define success metrics. The conversation highlights that while agentic frameworks enable powerful capabilities, production success requires careful system design, multi-layered evaluation, human-in-the-loop validation patterns, and a focus on high-ROI use cases rather than chasing the latest model architectures."
+link: "https://www.youtube.com/watch?v=_DNMRug6wDc"
+year: 2025
+seo:
+  title: "Fitch Group: Building Production-Ready Agentic AI Systems in Financial Services - ZenML LLMOps Database"
+  description: "Jayeeta Putatunda, Director of AI Center of Excellence at Fitch Group, shares lessons learned from deploying agentic AI systems in the financial services industry. The discussion covers the challenges of moving from proof-of-concept to production, emphasizing the importance of evaluation frameworks, observability, and the \"data prep tax\" required for reliable AI agent deployments. Key insights include the need to balance autonomous agents with deterministic workflows, implement comprehensive logging at every checkpoint, combine LLMs with traditional predictive models for numerical accuracy, and establish strong business-technical partnerships to define success metrics. The conversation highlights that while agentic frameworks enable powerful capabilities, production success requires careful system design, multi-layered evaluation, human-in-the-loop validation patterns, and a focus on high-ROI use cases rather than chasing the latest model architectures."
+  canonical: "https://www.zenml.io/llmops-database/building-production-ready-agentic-ai-systems-in-financial-services"
+  ogTitle: "Fitch Group: Building Production-Ready Agentic AI Systems in Financial Services - ZenML LLMOps Database"
+  ogDescription: "Jayeeta Putatunda, Director of AI Center of Excellence at Fitch Group, shares lessons learned from deploying agentic AI systems in the financial services industry. The discussion covers the challenges of moving from proof-of-concept to production, emphasizing the importance of evaluation frameworks, observability, and the \"data prep tax\" required for reliable AI agent deployments. Key insights include the need to balance autonomous agents with deterministic workflows, implement comprehensive logging at every checkpoint, combine LLMs with traditional predictive models for numerical accuracy, and establish strong business-technical partnerships to define success metrics. The conversation highlights that while agentic frameworks enable powerful capabilities, production success requires careful system design, multi-layered evaluation, human-in-the-loop validation patterns, and a focus on high-ROI use cases rather than chasing the latest model architectures."
+---
+
+## Overview
+
+This case study presents insights from Fitch Group's experience building and deploying agentic AI systems in financial services. Jayeeta Putatunda, Director of AI Center of Excellence at Fitch Group, discusses practical lessons learned from moving AI agent systems from proof-of-concept to production environments. The conversation, hosted by Krishna Gade from Fiddler AI, provides a comprehensive look at the operational challenges, evaluation strategies, and architectural decisions required to successfully deploy LLM-based agent systems in a highly regulated industry where accuracy and reliability are paramount.
+
+Fitch Group operates in the financial services sector, where the stakes for AI system failures are exceptionally high. The discussion reveals how the organization approaches agentic AI not as a wholesale replacement for existing systems but as an augmentation layer that combines the strengths of large language models with traditional predictive analytics, knowledge graphs, and causal AI approaches. The conversation emphasizes that production-ready agent systems require fundamentally different operational practices compared to traditional software or even standard LLM applications.
+
+## Reality Check: From Proof-of-Concept to Production
+
+One of the most significant insights shared is what Putatunda calls the "80-20 rule" for AI agent development. She emphasizes that 80% of focus should be on use cases with high impact-to-effort ratios rather than spending months prototyping with the latest frameworks that may become obsolete within six months. This pragmatic approach reflects the rapid pace of change in the agentic AI landscape, where new models and frameworks emerge constantly.
+
+The biggest reality check when moving from proof-of-concept to production is the establishment of baseline metrics before beginning development. Unlike traditional software where success metrics might be obvious, agentic AI systems require careful upfront definition of what "better" means in the specific business context. This includes not just productivity gains but specific, measurable improvements such as dollar savings, developer time reduction, or cycle completion time.
+
+Putatunda stresses that evaluation frameworks must be in place before building agent systems, not as an afterthought. This represents a significant shift from earlier ML practices where models were often built first and evaluation added later. The non-deterministic nature of LLM outputs makes this upfront evaluation design even more critical.
+
+## Types of Agent Systems and Architectural Patterns
+
+The discussion distinguishes between two primary types of agent systems deployed at Fitch Group. The first type follows a more deterministic workflow pattern, similar to RPA (Robotic Process Automation) processes but augmented with LLM capabilities. These systems maintain a manually constructed workflow with deterministic routing but leverage model calls and tool calls to enhance existing business process automation. This approach is particularly effective for processes that previously involved calling multiple APIs, gathering data, processing it, and producing outputs in specific formats.
+
+The second type involves more autonomous agents that use reflection and self-optimization patterns. These systems employ what Putatunda describes as "LLM-as-a-judge" methodology, where evaluation agents assess outputs and reflection agents critique and refine results based on predefined business rules. However, she emphasizes that even these "autonomous" agents operate within carefully defined guardrails rather than having complete autonomy. This is especially important in financial services where regulatory compliance and accountability are non-negotiable.
+
+The reflection pattern involves multiple coordinated agents: an evaluation agent that assesses outputs against business criteria, and a reflection agent that takes those evaluations, compares them against historical business rules and current workflow data, and provides feedback for optimization. Importantly, these reflection agents are not given complete autonomy to judge outputs themselves due to observed biases where LLMs can favor outputs from other LLMs over human-written content.
+
+## Use Cases and Application Domains
+
+Specific use cases deployed at Fitch Group include report generation with templatized models, document processing workflows for extracting information from lengthy financial documents (such as 500-page PDFs), and conversational interfaces that allow analysts to query information rather than manually reading through extensive documentation. The goal is consistently to free analysts from time-consuming data gathering tasks so they can focus on higher-value analysis work.
+
+One particularly challenging use case involves processing financial documents that mix text, tables, and infographics (some tables appearing as images rather than structured data). The system must coordinate extraction across these different modalities and ensure the resulting summary maintains coherence and doesn't lose critical information in translation. This requires careful orchestration of text-based extraction, image analysis, and table processing components with validation to ensure alignment across all extracted data.
+
+Putatunda emphasizes that for financial applications, fully autonomous agent systems are neither practical nor desirable given current LLM capabilities and regulatory requirements. The focus is on augmentation rather than full automation, with human-in-the-loop patterns incorporated at strategic checkpoints. The key is finding the right balance between automation for efficiency and human oversight for accuracy and compliance.
+
+## The "Data Prep Tax" and Evaluation Infrastructure
+
+A critical concept introduced is the "data prep tax"—the significant upfront work required to make data "AI ready" for both building and evaluating agent systems. This involves not just preparing training or context data but also creating evaluation datasets with proper lineage and versioning. Putatunda emphasizes that this foundational work is unavoidable for production-grade systems, particularly in legacy organizations where data exists in disparate, unstructured formats.
+
+Evaluation must happen in stages with multiple checkpoints rather than as a single end-to-end assessment. The discussion reveals a comprehensive evaluation framework that includes traceability (logging all calls, tool calls, and outputs), infrastructure monitoring (token usage, response times, error rates, model failures versus generation failures), and business-specific metrics (accuracy on domain-specific tasks, adherence to business rules, output quality patterns).
+
+Versioning emerges as a crucial operational practice that extends beyond code to encompass prompts, evaluation outputs, system prompts, business rules, and style prompts. Every component that feeds into the agent system must be versioned like an API, with different test cases for each version. This allows teams to track how changes in any component affect system behavior across different models, tools, and workflow steps.
+
+## Testing, Validation, and Quality Assurance
+
+The testing approach for agent systems differs significantly from traditional software testing due to the non-deterministic nature of LLM outputs. Putatunda describes a multi-stage testing process that includes development testing with curated datasets, QA testing in controlled environments, beta testing with selected users who can push the system to its limits, and only then moving to production.
+
+Beta testing is particularly critical for uncovering edge cases that developers and product managers haven't considered. By opening the system to a subset of real users before full production deployment, teams can discover failure modes and refine the system based on actual usage patterns. The emphasis is on finding where systems break under real-world conditions rather than assuming that passing development tests guarantees production success.
+
+For handling production failures, comprehensive logging at every checkpoint is essential. When building a single agent with multiple sequential steps, each step should log its input, output, tool calls, and responses. While this can generate massive amounts of log data, Putatunda advocates for over-logging initially, especially when first deploying a use case. As teams mature in understanding their specific workflow, they can reduce logging volume, but starting with comprehensive telemetry is crucial for debugging and optimization.
+
+The discussion references a recent research paper on multi-agent LLM failures that identifies key failure categories including system design issues, agent coordination problems, and task verification failures (premature termination, incomplete verification, incorrect verification). These represent new failure modes specific to agentic systems that don't exist in traditional software and require new debugging and monitoring approaches.
+
+## Hybrid Approaches: Combining LLMs with Traditional ML
+
+A particularly important insight for production systems is the continued importance of classical machine learning models. Putatunda strongly advocates for hybrid systems that layer agentic AI capabilities on top of existing predictive models rather than attempting to replace proven systems entirely. This is especially critical for handling numerical data in financial contexts, where LLMs' token-based prediction can lead to catastrophic errors (such as incorrectly comparing 9.9 versus 9.11 due to treating them as text rather than numbers).
+
+The hybrid approach uses LLMs for time-consuming tasks like initial data extraction from unstructured documents, then grounds those outputs using established predictive models that the organization has refined over years. Legacy predictive models become a form of few-shot learning material and grounding mechanism for LLM outputs. This approach also leverages knowledge graphs, which have experienced renewed interest given that LLMs make them easier to create and maintain than in the past.
+
+Causal AI represents another important grounding mechanism. Fitch Group explores ways to ground non-deterministic LLM outputs using causal analysis that econometrics and statistical teams have already performed. This helps assess the "correctness" (if not strict accuracy) of agent outputs and identify gaps in the system's reasoning.
+
+## Observability and Monitoring in Production
+
+Observability for agentic AI systems extends traditional software observability (reliability, latency, throughput, server utilization) to include LLM-specific and agent-specific dimensions. Key observability areas include traceability of all tool calls and their correctness, quality assessment of retrieved information (such as validating that web links returned by research agents are high-quality rather than low-quality sources), model usage patterns (tracking multi-model and multimodal calls across different layers), and drift detection.
+
+The human-in-the-loop component of observability focuses on pattern detection rather than manual review of every output. For example, when extracting data from thousands of documents, human reviewers look for patterns indicating systematic failures—such as specific indicators consistently failing for certain document types—rather than reviewing each extraction individually. This allows teams to scale evaluation while maintaining quality oversight.
+
+Observability is no longer an afterthought as it was in earlier ML deployments. Teams now start with metrics and logging infrastructure before building the agent system itself. This shift reflects the recognition that non-deterministic systems require more comprehensive monitoring to ensure reliability and enable debugging when issues arise.
+
+## Failure Modes and Production Challenges
+
+The discussion addresses the common problem where agent systems work well in development but experience reliability issues in production. Putatunda attributes this to insufficient collaboration between engineers and business stakeholders to understand edge cases and real-world usage patterns. Developers may test against 25 or even 100 test cases and assume the system is ready, but without beta testing and stakeholder feedback, critical edge cases remain undiscovered.
+
+Production failures often stem from agents lacking properly defined scope, leading to unexpected behaviors such as generating thousands of lines of code when a user simply asks for help with a problem. Providing structured context—specifying not just what to do but which tools to use and which constraints to follow—creates more reliable, context-aware systems that can be properly evaluated and observed.
+
+Agent coordination in multi-agent systems presents particular challenges. Ensuring that one agent works correctly with another, managing task verification to prevent premature termination, and avoiding incomplete or incorrect verification all represent failure modes specific to agentic architectures. These require new monitoring approaches and checkpoint designs that don't exist in traditional software.
+
+## Stakeholder Management and Building Trust
+
+A recurring theme is the critical importance of business-technical partnerships. Putatunda emphasizes that the partnership between business stakeholders and developers has never been more important than in the era of non-deterministic agent systems. Technical teams need business context to distinguish between genuine errors and acceptable variance, while business teams need to understand technical constraints and possibilities to set realistic expectations.
+
+When stakeholders ask how to trust unpredictable agent systems, the recommended approach begins with education and collaborative discussion rather than attempting to provide traditional accuracy metrics. This involves helping stakeholders understand how LLMs work, their inherent limitations, and the safeguards being implemented. Sharing relevant research papers, discussing concerns openly, and acknowledging legitimate fears (such as agents failing during client demonstrations) builds trust more effectively than overpromising reliability.
+
+Putatunda stresses that stakeholder buy-in starts with clearly describing the value proposition—how the system will make users' lives easier—then explaining the entire process including key risks, and collaboratively defining success metrics. Business stakeholders must believe in the vision and understand their role in helping define evaluation criteria, as developers cannot define appropriate metrics without deep business context.
+
+## Practical Development Recommendations
+
+For teams starting their agentic AI journey, Putatunda offers a practical recipe focused on three core components. First, clearly define the expected output and user problem being solved, then work backward to assess what systems and data already exist and identify gaps. Second, prioritize data gaps over process gaps, as processes can now be addressed relatively easily with open-source frameworks like LangGraph, but missing or poor-quality data remains a fundamental blocker. Third, establish checkpoints and identify subject matter experts who will support the project before beginning development.
+
+The recommendation strongly emphasizes avoiding "building in a silo" where developers create systems without ongoing business input. This inevitably leads to low adoption rates because the resulting product doesn't address actual user needs. Instead, teams should conduct thorough problem-market fit analysis to ensure they're solving genuine bottlenecks rather than building complicated systems for their own sake.
+
+Starting simple is repeatedly emphasized as a best practice. Simple agents with two specific tool calls focused on a narrow, well-defined task can deliver substantial time savings without introducing unnecessary complexity. The 80-20 rule applies here as well: prioritize use cases that solve the most significant problems rather than attempting to build elaborate multi-agent systems with five agents calling three other agents each.
+
+## Risk Assessment and Use Case Selection
+
+When evaluating whether a use case is appropriate for agentic AI, Putatunda recommends assessing risk and variance tolerance. Use cases where the variance tolerated in outputs is extremely low—such as autonomous financial analysis agents that might generate completely incorrect trend analyses—are not good candidates for high-autonomy systems. However, these same use cases might benefit from agents handling initial data extraction and formatting, with subsequent steps performed by more deterministic processes.
+
+A useful framework referenced comes from research on human-AI collaboration: if a task is low-risk or requires very low variance in outputs, autonomous agent systems may not be appropriate, at least with current capabilities. The goal is finding use cases where AI augmentation provides clear value without introducing unacceptable risk. This often means breaking complex workflows into stages and applying agentic AI only to the stages where its strengths (handling unstructured data, flexible reasoning) align with acceptable risk levels.
+
+## The Evolution from MLOps to LLMOps to AgentOps
+
+The progression from MLOps to LLMOps to AgentOps introduces new considerations while retaining foundational principles. Baseline metrics remain consistent: Is the system useful? Is it accurate? Does it respond relevantly to user requests? Is it reliable without excessive downtime? These fundamental questions persist across all three paradigms.
+
+However, AgentOps introduces new dimensions such as agent coordination verification, task verification to prevent premature termination, incomplete verification detection, and incorrect verification prevention. These represent entirely new categories of monitoring and testing that don't exist in traditional ML or even single-LLM systems. The multi-agent orchestration patterns require new ways of thinking about system design, logging, and failure diagnosis.
+
+Putatunda emphasizes that despite these new complexities, the core principle remains: build systems that solve real user problems, are accurate within acceptable tolerances, and provide measurable value. The additional complexity of agents doesn't change this fundamental goal; it simply requires more sophisticated approaches to achieving it.
+
+## Conclusion and Forward-Looking Perspectives
+
+The case study reveals that successful production deployment of agentic AI systems in financial services requires a pragmatic, hybrid approach that combines the strengths of LLMs with traditional ML, implements comprehensive evaluation and observability from the start, maintains strong business-technical partnerships, and focuses on high-value use cases with appropriate risk profiles. The "compounding AI systems" concept—where value comes from the complete workflow including data preparation, model selection, evaluation design, and system integration rather than model capabilities alone—represents the actual moat for organizations deploying these technologies.
+
+While frameworks and models change rapidly, the organizations that succeed are those that build strong evaluation practices, comprehensive observability, effective stakeholder collaboration, and modular architectures that allow continuous refinement. The non-deterministic nature of LLMs requires more sophisticated operational practices than traditional software, but with proper design, agentic AI systems can deliver substantial productivity improvements while maintaining the accuracy and reliability required for financial services applications.

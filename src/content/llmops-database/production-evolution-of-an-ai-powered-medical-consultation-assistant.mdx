@@ -1,0 +1,103 @@
+---
+title: "Production Evolution of an AI-Powered Medical Consultation Assistant"
+slug: "production-evolution-of-an-ai-powered-medical-consultation-assistant"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "678a84872ae6847a76872c4f"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:55:39.311Z"
+  createdOn: "2025-01-17T16:25:43.662Z"
+llmopsTags:
+  - "healthcare"
+  - "speech-recognition"
+  - "summarization"
+  - "prompt-engineering"
+  - "fine-tuning"
+  - "few-shot"
+  - "error-handling"
+  - "human-in-the-loop"
+  - "monitoring"
+  - "documentation"
+  - "openai"
+company: "Doctolib"
+summary: "Doctolib developed and deployed an AI-powered consultation assistant for healthcare professionals that combines speech recognition, summarization, and medical content codification. Through a comprehensive approach involving simulated consultations, extensive testing, and careful metrics tracking, they evolved from MVP to production while maintaining high quality standards. The system achieved widespread adoption and positive feedback through iterative improvements based on both explicit and implicit user feedback, combining short-term prompt engineering optimizations with longer-term model and data improvements."
+link: "https://medium.com/doctolib/key-learnings-to-elevate-the-quality-of-doctolibs-ai-powered-consultation-assistant-3656eb2b9bc7"
+year: 2023
+seo:
+  title: "Doctolib: Production Evolution of an AI-Powered Medical Consultation Assistant - ZenML LLMOps Database"
+  description: "Doctolib developed and deployed an AI-powered consultation assistant for healthcare professionals that combines speech recognition, summarization, and medical content codification. Through a comprehensive approach involving simulated consultations, extensive testing, and careful metrics tracking, they evolved from MVP to production while maintaining high quality standards. The system achieved widespread adoption and positive feedback through iterative improvements based on both explicit and implicit user feedback, combining short-term prompt engineering optimizations with longer-term model and data improvements."
+  canonical: "https://www.zenml.io/llmops-database/production-evolution-of-an-ai-powered-medical-consultation-assistant"
+  ogTitle: "Doctolib: Production Evolution of an AI-Powered Medical Consultation Assistant - ZenML LLMOps Database"
+  ogDescription: "Doctolib developed and deployed an AI-powered consultation assistant for healthcare professionals that combines speech recognition, summarization, and medical content codification. Through a comprehensive approach involving simulated consultations, extensive testing, and careful metrics tracking, they evolved from MVP to production while maintaining high quality standards. The system achieved widespread adoption and positive feedback through iterative improvements based on both explicit and implicit user feedback, combining short-term prompt engineering optimizations with longer-term model and data improvements."
+---
+
+## Overview
+
+Doctolib, a European healthcare technology company, developed an AI-powered Consultation Assistant designed to help healthcare professionals streamline their documentation workflow. The system combines three core components: automatic speech recognition (ASR) to convert consultation audio into text, summarization to transform transcripts into structured medical consultation summaries, and medical content codification to map summaries into standard medical ontologies like ICD-10. This case study documents their journey from an MVP through continuous production improvement, sharing practical insights into evaluation, feedback collection, and iterative enhancement strategies.
+
+The article, published in January 2025, describes learnings accumulated over approximately a year of development and beta testing. While the company reports "widespread adoption and overwhelmingly positive feedback," it's important to note this is a self-reported success story from the product team, so some claims should be viewed with appropriate context.
+
+## Bootstrapping the Problem: Addressing the Cold Start Challenge
+
+One of the most significant LLMOps challenges the team faced was the classic bootstrapping problem: effective AI systems require user feedback for improvement, but meaningful feedback only comes from users engaging with a reasonably functional system. The team's solution was pragmatic—they accepted that initial performance would be imperfect and focused on building a "safe and usable" MVP.
+
+To generate initial training and evaluation data without real users, the team conducted "fake consultations" by leveraging their internal workforce. Team members role-played with actual practitioners and created fake patient personas to simulate plausible consultation scenarios. This simulation included realistic acoustic conditions and consultation content. This approach provided crucial data for initial system evaluation without exposing real patients or burdening actual practitioners during the early development phase.
+
+The team set up dedicated audio recording infrastructure to capture these simulated consultations under conditions that would approximate real-world usage, which is a thoughtful approach to ensuring their evaluation data would be representative of production scenarios.
+
+## Evaluation Strategy and Metric Selection
+
+The team's approach to evaluation metrics is particularly noteworthy for its pragmatism. They researched established metrics for evaluating summarization and medical content codification, but rather than adopting standard metrics wholesale, they validated which metrics actually correlated with meaningful quality in their specific pipeline.
+
+For summary quality assessment, they employed an LLM-as-judge approach for automated evaluation. This allowed them to focus on critical quality dimensions such as hallucination rate (for factuality) and recall (for completeness). Interestingly, they found that commonly used academic metrics like ROUGE, BLEU, and BERTScore proved less effective than expected at correlating with actual summary quality in their use case, leading them to discard these in favor of LLM-based evaluation. This finding highlights an important LLMOps lesson: established metrics don't always transfer well to specific production contexts, and teams should validate metric relevance empirically.
+
+For medical content codification, they used the standard F1 score to measure their ability to detect and correctly code medical concepts. This aligns with standard practice in medical NLP and provides a quantifiable measure of clinical accuracy.
+
+Before deployment to real beta testers, internal medical experts conducted thorough safety and usability reviews, establishing a formal go/no-go decision process. This human oversight step is critical for healthcare AI applications where errors can have serious consequences.
+
+## Production Feedback Collection Architecture
+
+The team designed a dual-mode feedback collection system that balances thoroughness with minimal disruption to busy healthcare professionals. This is a crucial consideration in healthcare settings where practitioner time is precious and workflow interruption must be minimized.
+
+Their explicit feedback mechanism solicits direct input from practitioners through ratings and verbatim comments. This provides high-quality, interpretable insights into perceived weaknesses but is optional to avoid disrupting clinical workflows. Users can provide feedback at their convenience rather than being forced to rate every interaction.
+
+Their implicit feedback mechanism captures usage signals without requiring any additional user action. They track signals such as deletions, edits, validations, and section interactions. These behavioral patterns reveal how practitioners actually interact with the product, highlighting areas of confusion, frustration, or success. This continuous stream of behavioral data complements the targeted insights from explicit feedback and provides much larger sample sizes for analysis.
+
+## Online Metrics and Bias Mitigation
+
+The team derived several real-time online metrics from their feedback data:
+
+For adoption tracking, they monitor Power User Rate (proportion of beta testers using the assistant for all consultations) and Activation Rate (percentage of consultations where the assistant is activated).
+
+For quality tracking, they monitor Suggestion Acceptance Rate (reflecting ASR accuracy and utility), Average Rating (per consultation or per user), and Bad Experience Rate (percentage of consultations with subpar experiences).
+
+The team demonstrates sophisticated awareness of potential biases in their feedback data. They identify three specific bias patterns: New User Bias, where new users tend to provide more positive ratings due to initial enthusiasm; Memory Effect, where users' grading standards evolve over time so ratings at different periods aren't directly comparable; and Weekend/Holiday Effect, where they observed higher ratings during weekends and holidays, suggesting timing influences feedback patterns.
+
+To mitigate these biases and isolate the true impact of changes, the team employs A/B testing as their "gold standard" for evaluation. They randomly assign consultations to test or control groups and compare KPIs between groups after a defined period.
+
+They use A/B testing for two distinct purposes: Hypothesis Testing to validate and quantify the positive impact of promising new versions that showed good backtesting results, and "Do Not Harm" Testing to ensure that infrastructure changes, pseudonymization methods, or other under-the-hood modifications don't negatively affect user experience even when backtesting appears neutral or positive. This latter use case reflects mature thinking about production ML systems where changes can have unexpected second-order effects.
+
+## Continuous Improvement Strategy: Dual Time-Horizon Loops
+
+The team implemented a multi-tiered optimization strategy with distinct time-frame loops, recognizing that different types of improvements require different iteration speeds.
+
+The Short-Term Improvement Loop (days to weeks) focuses on rapid iteration to address immediate user frustrations. The process involves identifying key frustrations from user feedback, benchmarking and refining prompts through prompt engineering, subjecting promising candidates to medical expert validation, rigorously evaluating impacts through A/B testing, deploying successful improvements to all users, and then iterating continuously. The team acknowledges that this short-term loop faces diminishing returns as easily addressable issues are resolved—a realistic assessment that motivates their long-term loop.
+
+The Long-Term Improvement Loop (weeks to months) focuses on fundamental improvements to data and model training. This includes refining data annotation processes by incorporating user feedback and addressing identified model weaknesses, adapting sampling strategies, annotation tools, guidelines, and review processes. They employ weak labeling techniques to broaden and enrich training data beyond manual user corrections, including automatically translating general language into medical terminology. They also work on model fine-tuning optimization using improved datasets from weak labeling and enhanced annotation, exploring optimizations in base model selection, training data mixture, and hyperparameters.
+
+## Key LLMOps Lessons and Observations
+
+Several aspects of this case study are particularly relevant for LLMOps practitioners. First, the validation of evaluation metrics against actual quality rather than assuming standard academic metrics will work is valuable. Finding that ROUGE/BLEU/BERTScore didn't correlate well with their quality needs and pivoting to LLM-as-judge evaluation demonstrates practical engineering judgment.
+
+Second, the combination of explicit and implicit feedback with awareness of various bias patterns shows sophisticated thinking about production ML feedback loops. The Weekend/Holiday Effect observation is particularly interesting and not commonly discussed in ML literature.
+
+Third, using A/B testing not just for feature validation but also for "do not harm" verification of infrastructure changes reflects mature production practices.
+
+Fourth, the explicit acknowledgment that prompt engineering has diminishing returns and that long-term improvements require investment in data quality and model training provides a realistic view of LLMOps progression.
+
+It's worth noting that the article focuses primarily on process and methodology rather than specific quantitative results. While they report "widespread adoption and overwhelmingly positive feedback," concrete metrics on improvement magnitudes, error rates, or clinical outcomes are not provided. This is common in company blog posts but limits independent verification of the claimed success. Additionally, the healthcare domain adds regulatory and safety complexity that may not be fully addressed in this overview.
+
+The case study provides a practical template for healthcare organizations looking to deploy LLM-based documentation assistance while maintaining rigorous quality standards and continuous improvement processes.

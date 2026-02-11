@@ -1,0 +1,146 @@
+---
+title: "On-Device Personalized Lexicon Learning for Mobile Keyboard"
+slug: "on-device-personalized-lexicon-learning-for-mobile-keyboard"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "694ad91e40b8daf2e669f612"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2026-01-07T09:40:39.763Z"
+  lastUpdated: "2025-12-23T20:12:20.373Z"
+  createdOn: "2025-12-23T18:02:06.449Z"
+llmopsTags:
+  - "content-moderation"
+  - "chatbot"
+  - "model-optimization"
+  - "latency-optimization"
+  - "error-handling"
+  - "cache"
+  - "monitoring"
+company: "Grammarly"
+summary: "Grammarly developed an on-device machine learning model for their iOS keyboard that learns users' personal vocabulary and provides personalized autocorrection suggestions without sending data to the cloud. The challenge was to build a model that could distinguish between valid personal vocabulary and typos while operating within severe mobile constraints (under 5 MB RAM, minimal latency). The solution involved memory-mapped storage, time-based decay functions for vocabulary management, noisy input filtering, and edit-distance-based frequency thresholding to verify new words. Deployed to over 5 million devices, the model demonstrated measurable improvements with decreased rates of reverted suggestions and increased acceptance rates, while maintaining minimal memory footprint and responsive performance."
+link: "https://www.grammarly.com/blog/engineering/personal-language-model/"
+year: 2024
+seo:
+  title: "Grammarly: On-Device Personalized Lexicon Learning for Mobile Keyboard - ZenML LLMOps Database"
+  description: "Grammarly developed an on-device machine learning model for their iOS keyboard that learns users' personal vocabulary and provides personalized autocorrection suggestions without sending data to the cloud. The challenge was to build a model that could distinguish between valid personal vocabulary and typos while operating within severe mobile constraints (under 5 MB RAM, minimal latency). The solution involved memory-mapped storage, time-based decay functions for vocabulary management, noisy input filtering, and edit-distance-based frequency thresholding to verify new words. Deployed to over 5 million devices, the model demonstrated measurable improvements with decreased rates of reverted suggestions and increased acceptance rates, while maintaining minimal memory footprint and responsive performance."
+  canonical: "https://www.zenml.io/llmops-database/on-device-personalized-lexicon-learning-for-mobile-keyboard"
+  ogTitle: "Grammarly: On-Device Personalized Lexicon Learning for Mobile Keyboard - ZenML LLMOps Database"
+  ogDescription: "Grammarly developed an on-device machine learning model for their iOS keyboard that learns users' personal vocabulary and provides personalized autocorrection suggestions without sending data to the cloud. The challenge was to build a model that could distinguish between valid personal vocabulary and typos while operating within severe mobile constraints (under 5 MB RAM, minimal latency). The solution involved memory-mapped storage, time-based decay functions for vocabulary management, noisy input filtering, and edit-distance-based frequency thresholding to verify new words. Deployed to over 5 million devices, the model demonstrated measurable improvements with decreased rates of reverted suggestions and increased acceptance rates, while maintaining minimal memory footprint and responsive performance."
+---
+
+## Overview
+
+Grammarly's case study describes the development and deployment of an on-device machine learning model that powers personalized vocabulary learning for their iOS keyboard application. This represents a particularly interesting LLMOps challenge because it combines the operational complexities of production ML systems with the extreme constraints of mobile edge deployment. The model learns users' personal lexicons—including pet names, project terminology, and other non-standard vocabulary—and provides tailored autocorrection suggestions that improve over time as the user types.
+
+The strategic decision to build this functionality entirely on-device rather than using cloud-based inference or a hybrid approach was driven primarily by privacy considerations, but it introduced significant operational and technical constraints that required creative solutions. Grammarly deployed this system to over 5 million devices, making it a substantial production deployment that needed to be both performant and reliable at scale.
+
+## The Business Problem and Use Case
+
+The fundamental problem Grammarly identified was a gap in traditional keyboard autocorrection systems: they don't adapt to users' personal vocabulary. When someone types their pet's nickname, a workplace acronym, or any term outside standard dictionaries, generic keyboards either fail to recognize these words or provide unhelpful corrections that interrupt the user's flow. This creates friction in communication and degrades the user experience, particularly for words and phrases that individuals use frequently in their daily typing.
+
+From a product perspective, this represented an opportunity to differentiate Grammarly's keyboard offering by providing truly personalized suggestions that improve the more someone uses the product. However, the personalization had to work within Grammarly's privacy-first philosophy, which meant that sensitive personal data about what users type could never leave their devices or be exposed to third parties.
+
+## Technical Architecture and On-Device Constraints
+
+The decision to build entirely on-device introduced severe operational constraints that shaped the entire system design. Mobile devices typically have around 4 GB of total RAM, but iOS keyboards are limited to approximately 70 MB of RAM at any given time. The Grammarly Keyboard already consumed 60 MB for core functionality, leaving less than 5 MB available for new features like personalized vocabulary learning. Additionally, keyboard performance is critical—any perceptible lag when typing would be immediately noticed and negatively impact user experience.
+
+To address these constraints, Grammarly implemented several key technical strategies. The model itself is stored in persistent memory rather than being loaded entirely into RAM. They use a memory-mapped key-value store that retrieves relevant n-grams into RAM on an on-demand basis, meaning only the specific vocabulary entries needed for a given typing context are loaded into active memory. This approach allows them to maintain a larger vocabulary model in storage while keeping the RAM footprint minimal.
+
+Caching is another critical component of their performance optimization. The system caches recurring computations to enable efficient cold start times (when the keyboard is first opened) and warm start times (when returning to the keyboard after using other apps). This caching strategy is essential because recomputing vocabulary probabilities and n-gram lookups on every keystroke would be computationally prohibitive within the time and memory constraints.
+
+To prevent the vocabulary dictionary from bloating device storage, Grammarly implemented limits on the total size of unigrams and n-grams stored in the custom vocabulary. This constraint introduced a new challenge: the system needed an intelligent way to manage which words to keep and which to discard when the dictionary reached capacity.
+
+## Vocabulary Management and Temporal Dynamics
+
+The limited vocabulary capacity required a sophisticated approach to determining which words are worth keeping versus which should be forgotten. Grammarly implemented a time-based decay function that dynamically adjusts word probabilities based on recency of use. This approach recognizes that personal vocabulary changes over time—project names from old jobs become obsolete, while new terminology from current contexts becomes relevant.
+
+The decay function allows the model to distinguish between words that are genuinely part of a user's active vocabulary versus words that were typed frequently in the past but are no longer relevant. When the dictionary reaches capacity, the system deletes the least-used words (as calculated by the decay function) to create space for new additions. This creates a self-managing system that continuously adapts to users' evolving communication patterns without requiring manual intervention or reaching capacity limits that would prevent learning new words.
+
+This temporal approach to vocabulary management is particularly well-suited to on-device deployment because it operates entirely based on local usage patterns without needing to sync state with cloud services or maintain complex versioning across devices. The tradeoff is that if a user switches to a new device, their personalized vocabulary doesn't transfer—though this aligns with Grammarly's privacy-first approach where personal data isn't stored on their servers.
+
+## Handling Noisy Inputs and Distinguishing Typos from Valid Vocabulary
+
+One of the most challenging aspects of learning personal vocabulary on-the-fly is the cold start problem for individual words: when the model encounters a word it hasn't seen before, how does it determine whether this is valid vocabulary that should be learned or simply a typo? Unlike traditional NLP tasks where you can validate against reference dictionaries or large corpora, there's no ground truth for what constitutes a user's legitimate personal lexicon.
+
+Grammarly's approach to this problem involved two main strategies. First, they implemented extensive filtering to identify and exclude "noisy inputs"—casual versions of standard words that users wouldn't want the keyboard to learn and suggest in professional contexts. These noisy inputs include words with extra vowels or consonants to convey tone (like "awwwww" or "heeyyy"), words with missing apostrophes ("dont" instead of "don't"), or incorrect capitalization ("i" instead of "I").
+
+The noisy input detection uses a combination of regex filters and specific rules to identify these patterns. Only inputs that aren't flagged as noisy are considered candidates for learning. Developing these filters required iterative refinement—Grammarly's offline evaluation framework revealed that their initial implementation wasn't properly handling common cases like "dont" or "cant," which led to creating additional regex filters to catch these patterns.
+
+The second strategy addresses the question of whether to learn words that pass the noisy input filters but might still be typos. Grammarly adopted what they call a "trust-but-verify" method. The model initially learns every new word that passes the noise filters, but it doesn't start suggesting that word until it has appeared enough times to establish confidence that it's legitimate vocabulary rather than a repeated typo.
+
+Specifically, they use edit-distance-based frequency thresholding to determine when a candidate word has met the criteria to transition from learning to suggesting. This means the model tracks how frequently words appear and considers their edit distance from known words to assess whether they represent consistent personal vocabulary. A word that appears multiple times with consistent spelling is more likely to be legitimate vocabulary, while a word that appears once or twice might be a typo.
+
+This approach represents a pragmatic tradeoff: it avoids the computational expense of more sophisticated validation methods (which would be challenging to run on-device within the memory and latency constraints) while still providing reasonable accuracy in distinguishing typos from valid personal vocabulary. The downside is that users need to type new vocabulary terms multiple times before the keyboard begins suggesting them, which creates some delay before the personalization benefits become apparent.
+
+## Evaluation Framework and Offline Testing
+
+Grammarly built an offline evaluation framework to simulate production behavior and validate model performance before deployment. This framework was critical for identifying edge cases and potential errors without exposing users to problematic behavior. The evaluation approach involved creating test scenarios that replicated the patterns the model would encounter in production, including various types of personal vocabulary, noisy inputs, proper nouns, and potential edge cases.
+
+The offline evaluation revealed several important findings. First, it validated that the model successfully learned common proper nouns like "iTunes" that aren't part of standard dictionaries but are legitimate vocabulary many users need. This confirmed that the approach was working as intended for a significant category of personal vocabulary. Second, the evaluation identified specific failures, such as the system not properly handling contractions without apostrophes, which directly led to improvements in the regex filtering logic.
+
+This evaluation framework represents a crucial component of the LLMOps workflow for this project. Unlike cloud-based models where you can easily run A/B tests or gradual rollouts with quick rollback capabilities, on-device models are more difficult to update quickly once deployed. Users need to download app updates to receive model changes, which means the deployment cycle is longer and mistakes are more costly. The offline evaluation framework provided confidence that the model would perform well in production before committing to a release.
+
+However, it's worth noting that the case study doesn't provide extensive detail about how the evaluation framework was constructed or what specific metrics were used to validate model quality during development. The description focuses more on the types of insights the framework provided rather than the technical implementation details or the specific evaluation datasets used.
+
+## Production Deployment and Monitoring
+
+Grammarly deployed this personalized vocabulary model to over 5 million iOS devices through the Grammarly Keyboard application. This represents a substantial production deployment at scale, though the on-device nature means that each model instance operates independently rather than as a centralized service handling millions of requests.
+
+The production monitoring approach relies on aggregated logging metrics collected from devices. Grammarly tracks several key indicators of model performance and impact:
+
+- **Rate of reverted suggestions**: How often users manually revert or undo suggestions provided by the keyboard. A decrease in this metric indicates that suggestions are becoming more relevant and accurate.
+- **Rate of accepted suggestions**: How often users accept the keyboard's suggestions. An increase indicates improved suggestion quality.
+- **RAM usage metrics**: Monitoring actual memory consumption to ensure the model stays within the strict 5 MB constraint.
+- **Cold and warm start times**: Measuring keyboard responsiveness when first opened and when returning from other apps.
+
+The case study reports that deployment showed a "significant decrease" in reverted suggestions and a "slight increase" in accepted suggestions, indicating positive impact on user experience. The performance metrics validated that the model operates with minimal RAM usage and efficient startup times, confirming that the optimization strategies successfully kept the keyboard responsive.
+
+These production results suggest that the system is working as intended, though the case study doesn't provide specific numerical improvements or statistical significance levels. The monitoring approach appears focused on high-level business metrics (suggestion acceptance/reversion) and resource utilization metrics (memory, latency) rather than detailed model quality metrics. This makes sense given the on-device deployment—detailed logging of model internals would be challenging to collect at scale without impacting performance or raising privacy concerns.
+
+## LLMOps and Production ML Challenges
+
+While this case study predates the widespread adoption of large language models, it addresses many core challenges that are central to LLMOps: deploying ML models in production environments with strict constraints, managing model updates and performance at scale, balancing accuracy with resource utilization, and monitoring production behavior.
+
+The on-device deployment model presents unique operational challenges compared to cloud-based LLM deployments. There's no ability to quickly update models, run real-time A/B tests, or scale computational resources dynamically. Instead, each model instance must be self-contained, performant on limited hardware, and reliable without external dependencies. This requires extensive upfront validation and testing, as evidenced by Grammarly's investment in the offline evaluation framework.
+
+The vocabulary management system with time-based decay represents a form of continuous learning or online learning, where the model adapts to changing user behavior over time without requiring retraining or updates from a central system. This is conceptually similar to challenges in LLMOps around fine-tuning and personalization, though implemented in a much more constrained environment.
+
+The privacy-first approach of keeping all data on-device aligns with emerging trends in responsible AI deployment, where organizations are increasingly conscious of data governance and user privacy. However, it comes with tradeoffs—there's no ability to aggregate data across users to improve the model, identify common failure patterns, or leverage network effects. Each model instance must learn independently based solely on that individual user's typing patterns.
+
+## Limitations and Tradeoffs
+
+The case study presents the project positively, as expected from a company blog post, but several limitations and tradeoffs are apparent from the technical details:
+
+- **Cold start for new words**: The trust-but-verify approach means users must type new vocabulary terms multiple times before the keyboard begins suggesting them. This creates initial friction before personalization benefits appear.
+
+- **No cross-device synchronization**: Personal vocabulary learned on one device doesn't transfer to others, meaning users who switch devices or use multiple devices start from scratch. While this aligns with the privacy approach, it degrades the user experience for multi-device users.
+
+- **Limited vocabulary capacity**: The size constraints mean the model can only remember a limited number of personal vocabulary terms. Active vocabulary is prioritized through the decay function, but users with very diverse vocabulary might find that older terms are forgotten before they stop being relevant.
+
+- **Simple validation approach**: The edit-distance-based frequency thresholding is computationally efficient but may not be as accurate as more sophisticated approaches. The system could potentially learn some typos that occur repeatedly or fail to learn legitimate vocabulary that's used sporadically.
+
+- **Limited metrics transparency**: The case study reports "significant decrease" in reverted suggestions and "slight increase" in accepted suggestions but doesn't provide specific numbers or statistical confidence. This makes it difficult to assess the true magnitude of the improvement.
+
+- **iOS-only initially**: The case study specifically mentions iOS deployment, suggesting that Android or other platforms may not have received this feature yet (or may require different technical approaches due to different constraints).
+
+## Broader Context and Technical Approach
+
+It's important to note that this case study describes an NLP model for vocabulary learning and text prediction rather than a large language model or generative AI system in the contemporary sense. The model appears to be based on n-gram statistics and frequency analysis rather than neural language models. However, it addresses many of the same operational challenges that organizations face when deploying LLMs in production: resource constraints, performance optimization, accuracy validation, production monitoring, and balancing model capability with practical deployment constraints.
+
+The technical approach is pragmatic and well-suited to the constraints. Rather than attempting to deploy a sophisticated neural model on-device (which would likely be infeasible within the 5 MB RAM constraint), Grammarly built a system using statistical methods, efficient data structures (memory-mapped key-value stores), and smart caching strategies. This demonstrates an important principle in production ML: the best solution is often the one that meets the requirements within the constraints, not necessarily the most sophisticated or state-of-the-art approach.
+
+The memory-mapped storage approach is particularly clever for on-device deployment, as it allows the system to maintain a larger model than would fit in RAM by storing it on disk and loading only relevant portions as needed. This is conceptually similar to techniques used in deploying large language models where weights are quantized, cached, or streamed from disk to minimize memory requirements.
+
+## Team and Development Process
+
+The case study notes that the project involved a substantial cross-functional team including engineers across mobile development, machine learning, infrastructure, and product. The list of contributors includes eleven named individuals, suggesting this was a significant investment requiring coordination across multiple specialties. This team structure reflects the complexity of production ML deployments, which typically require expertise spanning model development, infrastructure, application integration, and testing.
+
+The iterative development process—including the discovery of regex filter gaps through offline evaluation—suggests a careful, methodical approach to ensuring quality before deployment. This aligns with the high stakes of on-device deployment where mistakes are difficult to correct quickly.
+
+## Conclusion and Relevance to LLMOps
+
+Grammarly's on-device personalized lexicon model represents a successful production ML deployment that addressed real user needs while respecting privacy constraints. The technical approach balanced accuracy requirements with severe resource constraints through careful optimization, intelligent vocabulary management, and pragmatic validation strategies. The deployment to 5 million devices with measurable improvements in user experience demonstrates that the system achieved its goals in production.
+
+For LLMOps practitioners, this case study offers valuable lessons about deploying ML systems in constrained environments, the importance of offline evaluation when rapid iteration isn't possible, the value of pragmatic solutions over sophisticated ones when constraints demand it, and the operational challenges of systems that must function independently without cloud connectivity. While not involving large language models per se, the production deployment challenges and solutions are highly relevant to contemporary LLMOps concerns around edge deployment, privacy-preserving ML, and resource-constrained inference.

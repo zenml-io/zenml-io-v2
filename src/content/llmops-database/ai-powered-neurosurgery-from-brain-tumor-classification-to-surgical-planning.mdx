@@ -1,0 +1,105 @@
+---
+title: "AI-Powered Neurosurgery: From Brain Tumor Classification to Surgical Planning"
+slug: "ai-powered-neurosurgery-from-brain-tumor-classification-to-surgical-planning"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "677809aceb73ac5c95023cd9"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:53:25.326Z"
+  createdOn: "2025-01-03T16:00:44.093Z"
+llmopsTags:
+  - "healthcare"
+  - "high-stakes-application"
+  - "realtime-application"
+  - "regulatory-compliance"
+  - "classification"
+  - "model-optimization"
+  - "error-handling"
+  - "latency-optimization"
+  - "pytorch"
+  - "tensorflow"
+  - "monitoring"
+  - "microsoft-azure"
+company: "Cedars Sinai"
+summary: "Cedars Sinai and various academic institutions have implemented AI and machine learning solutions to improve neurosurgical outcomes across multiple areas. The applications include brain tumor classification using CNNs achieving 95% accuracy (surpassing traditional radiologists), hematoma prediction and management using graph neural networks with 80%+ accuracy, and AI-assisted surgical planning and intraoperative guidance. The implementations demonstrate significant improvements in patient outcomes while highlighting the importance of balanced innovation with appropriate regulatory oversight."
+link: "https://www.youtube.com/watch?v=CiDY6VrwptM"
+seo:
+  title: "Cedars Sinai: AI-Powered Neurosurgery: From Brain Tumor Classification to Surgical Planning - ZenML LLMOps Database"
+  description: "Cedars Sinai and various academic institutions have implemented AI and machine learning solutions to improve neurosurgical outcomes across multiple areas. The applications include brain tumor classification using CNNs achieving 95% accuracy (surpassing traditional radiologists), hematoma prediction and management using graph neural networks with 80%+ accuracy, and AI-assisted surgical planning and intraoperative guidance. The implementations demonstrate significant improvements in patient outcomes while highlighting the importance of balanced innovation with appropriate regulatory oversight."
+  canonical: "https://www.zenml.io/llmops-database/ai-powered-neurosurgery-from-brain-tumor-classification-to-surgical-planning"
+  ogTitle: "Cedars Sinai: AI-Powered Neurosurgery: From Brain Tumor Classification to Surgical Planning - ZenML LLMOps Database"
+  ogDescription: "Cedars Sinai and various academic institutions have implemented AI and machine learning solutions to improve neurosurgical outcomes across multiple areas. The applications include brain tumor classification using CNNs achieving 95% accuracy (surpassing traditional radiologists), hematoma prediction and management using graph neural networks with 80%+ accuracy, and AI-assisted surgical planning and intraoperative guidance. The implementations demonstrate significant improvements in patient outcomes while highlighting the importance of balanced innovation with appropriate regulatory oversight."
+---
+
+## Overview
+
+This presentation, delivered by Tage Patel, a neurosurgery researcher at Cedars Sinai Hospital in Los Angeles, provides a comprehensive survey of how machine learning and AI are being deployed in production settings to improve neurosurgical outcomes. The talk was presented at the NLP Summit focusing on generative AI in healthcare and life sciences. While this presentation is more of a research survey than a single production deployment case study, it provides valuable insights into the state of ML operations in the neurosurgical field, highlighting both successful implementations and remaining challenges.
+
+The presentation is notable for its balanced perspective, acknowledging both the tremendous potential of AI in neurosurgery while also cautioning about the need for regulatory oversight and ethical considerations. The speaker explicitly warns against letting "fixation on results and on Capital trump our purpose for improving patient care for all."
+
+## Cedars Sinai's Own ML Projects
+
+The presenter's team at Cedars Sinai has developed two notable machine learning projects that have been validated through peer review and conference presentations:
+
+The first project involves a predictive graph neural network designed to identify brain bleed symptoms in presenting patients. This model examines three types of brain bleeds (epidural hematoma, subdural hematoma, and subarachnoid hemorrhage) and correlates them with their most prominent symptoms (loss of consciousness, headaches, and aphasia respectively). The graph convolutional neural network architecture treats pixels within segmented hematoma regions as nodes and uses spatial proximity between connecting pixels as edges. This approach achieved 80%+ accuracy in determining symptom-hematoma correlations.
+
+The second project developed a sophisticated algorithm capable of differentiating brain tumors from other neurological abnormalities such as tumor-active multiple sclerosis. Both projects have received recognition including the best conference paper award at the International Conference on Knowledge Innovation and Invention and the International Conference on Intelligent Informatics and Biomedical Sciences, and have been published in the IEEE Bioengineering Journal.
+
+## Brain Tumor Classification Systems
+
+One of the most developed areas for ML in neurosurgery is brain tumor classification. The presentation highlights a fundamental problem: traditional radiologists can only classify and distinguish between brain tumors (gliomas, meningiomas, and pituitary adenomas) with accuracy ranging from 69% to 77%. This limitation stems from overlapping imaging characteristics—for example, pituitary adenomas and meningiomas are both well-circumscribed and enhance homogeneously, making differentiation near the sella region extremely challenging.
+
+Multiple ML approaches have been developed to address this:
+
+- **Logistic Regression Hybrid Models**: Work by Priya Jadea and Suchin Jain from AJ Kumar Engineering College demonstrated 89% accuracy for small datasets and 87% for large datasets, outperforming traditional radiologists but lacking pre-trained CNN capabilities.
+
+- **Convolutional Neural Networks**: Research presented at the International Conference on Contemporary Computing compared various ML algorithms (SVMs, K-nearest neighbors) and found that deep learning approaches, specifically CNNs, are optimal for brain tumor classification. CNNs excel because they detect important features like edges, textures, and shapes—critical for distinguishing irregular-shaped gliomas from well-circumscribed meningiomas. These models incorporate softmax layers enabling probabilistic differentiation between tumor types, achieving over 95% accuracy.
+
+- **Multimodal Feature Fusion**: Research from the Department of Bioengineering at Sevita School of Engineering investigated combining MRI (providing anatomical information and high contrast for soft tissues) with SPECT imaging (providing functional information about blood flow and metabolic activity). This fusion approach achieved 96.8% classification accuracy using support vector machines.
+
+## Surgical Planning Optimization
+
+AI systems are being deployed for pre-operative planning with several specific applications:
+
+**Revision Surgery Prediction**: The Stanford AI in Neurosurgery Lab developed deep learning models to predict the likelihood of patients needing revision surgery within three months of cervical spine surgery. This capability allows hospitals to allocate resources more efficiently and tailor pre and post-operative care.
+
+**Patient Selection for Outpatient Procedures**: Research from Columbia University Medical Center demonstrates how AI can assess patient medical history and health status to determine surgery risks, benefits, and expected length of stay. This is particularly relevant for posterior spinal fusion procedures (performed over 342,000 times annually in the US), where AI can help surgeons predict which patients are suitable for outpatient care versus those requiring extended hospitalization.
+
+**Osteoporotic Vertebrae Prediction**: Machine learning regression algorithms can estimate T-scores (bone density measures) based on clinical data such as age, sex, and Hounsfield units. Early identification of osteoporosis enables better surgical planning and reduces complications like fractures during or after spinal surgery.
+
+## Hematoma Expansion Prediction
+
+Beyond classification, ML is being applied to predict hematoma growth and expansion:
+
+**Tongjin Hospital Model**: Published in the International Journal of General Medicine, this hybrid model masks hematomas by fusing radiomics, clinical data, and convolutional neural networks to determine hematoma expansion with high accuracy.
+
+**Yale Department of Radiology Model**: This represents a more sophisticated approach, combining characteristics of the hematoma including axial slices and cross-sectional brain images. The model incorporates Monte Carlo Dropout simulations and Shannon's entropy to generate uncertainty estimates, identifying patients with high-confidence predictions. The model achieved an AUC of 0.81 for hematoma expansion greater than 3ml and 0.81 for expansion greater than 6ml.
+
+## Intraoperative AI Systems
+
+Perhaps the most widely adopted production applications are in real-time surgical assistance:
+
+**Surgical Instrument Tracking**: Research from Avalon University School of Medicine describes AI systems that analyze live video feeds from laparoscopes and robotic surgical platforms to enable real-time tracking of surgical instruments and their precise movements relative to critical anatomical landmarks. These systems also provide augmented reality overlays and visual cues projected onto the surgical field.
+
+**Smoke Removal from Surgical Footage**: The University of Southern California Keck School of Medicine validated a CNN specifically designed to remove smoke (caused by electrocautery devices) from intraoperative surgical footage, addressing a common issue that impairs surgical precision.
+
+**Brain Tumor Removal Guidance**: The Cleveland Clinic Neurosurgery Department developed AI systems that generate and overlay saliency heat maps in real-time, identifying probable cancer locations to guide surgeons during tumor resection. Additionally, an AI model trained on signal feedback from ultrasonic aspirators helps surgeons remove cancerous tissue while preserving healthy brain tissue—critical for preventing neurological deficits.
+
+## Production Considerations and Challenges
+
+The presentation identifies several challenges that remain for operationalizing these ML systems:
+
+- **Data Scarcity**: Limited availability of labeled datasets for training medical AI models remains a significant barrier
+- **Computing Power**: While current limitations exist, the presenter notes these barriers are likely to diminish with rapid AI technology advancement
+- **Regulatory Oversight**: The speaker explicitly calls for caution, citing concerns about AI systems operating without appropriate controls—referencing the concern that autonomous medical AI could make harmful decisions without human oversight
+
+## Ethical Considerations and Balanced Perspective
+
+It's worth noting that this presentation offers a measured view of AI in medicine. The speaker quotes Nick Bilton's warning about AI systems potentially making catastrophic autonomous decisions, and explicitly calls for the scientific community to prioritize patient care over results and capital. This reflects an increasingly important operational consideration: production AI systems in healthcare must include appropriate guardrails, oversight mechanisms, and fail-safes.
+
+## Assessment
+
+While this presentation covers a wide range of research and production applications, it's important to note that many of the cited studies represent academic research rather than fully deployed production systems. The accuracy figures cited (95%+ for tumor classification, 80%+ for symptom prediction) represent controlled research conditions and may differ in real-world deployment scenarios. The presentation also largely focuses on traditional deep learning approaches (CNNs, GNNs) rather than large language models specifically, though these computer vision and predictive models represent an important component of the broader AI/ML operational landscape in healthcare. The multimodal fusion approaches and the integration of clinical data with imaging data represent particularly promising directions for production systems that can leverage diverse data sources available in hospital settings.

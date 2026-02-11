@@ -1,0 +1,199 @@
+---
+title: "Building Production AI Agents and Agentic Platforms at Scale"
+slug: "building-production-ai-agents-and-agentic-platforms-at-scale"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "6936bbddfe9e98761d099f03"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:34:59.302Z"
+  createdOn: "2025-12-08T11:51:57.168Z"
+llmopsTags:
+  - "code-generation"
+  - "chatbot"
+  - "data-analysis"
+  - "poc"
+  - "high-stakes-application"
+  - "document-processing"
+  - "content-moderation"
+  - "prompt-engineering"
+  - "rag"
+  - "model-optimization"
+  - "few-shot"
+  - "agent-based"
+  - "multi-agent-systems"
+  - "human-in-the-loop"
+  - "latency-optimization"
+  - "cost-optimization"
+  - "error-handling"
+  - "evals"
+  - "token-optimization"
+  - "monitoring"
+  - "api-gateway"
+  - "serverless"
+  - "cicd"
+  - "orchestration"
+  - "continuous-deployment"
+  - "open-source"
+  - "documentation"
+  - "security"
+  - "guardrails"
+  - "reliability"
+  - "scalability"
+  - "fastapi"
+  - "postgresql"
+  - "redis"
+  - "cache"
+  - "langchain"
+  - "amazon-aws"
+  - "anthropic"
+  - "openai"
+  - "meta"
+  - "microsoft-azure"
+company: "Vercel"
+summary: "This AWS re:Invent 2025 session explores the challenges organizations face moving AI projects from proof-of-concept to production, addressing the statistic that 46% of AI POC projects are canceled before reaching production. AWS Bedrock team members and Vercel's director of AI engineering present a comprehensive framework for production AI systems, focusing on three critical areas: model switching, evaluation, and observability. The session demonstrates how Amazon Bedrock's unified APIs, guardrails, and Agent Core capabilities combined with Vercel's AI SDK and Workflow Development Kit enable rapid development and deployment of durable, production-ready agentic systems. Vercel showcases real-world applications including V0 (an AI-powered prototyping platform), Vercel Agent (an AI code reviewer), and various internal agents deployed across their organization, all powered by Amazon Bedrock infrastructure."
+link: "https://www.youtube.com/watch?v=b0qdrFi7MCw"
+year: 2025
+seo:
+  title: "Vercel: Building Production AI Agents and Agentic Platforms at Scale - ZenML LLMOps Database"
+  description: "This AWS re:Invent 2025 session explores the challenges organizations face moving AI projects from proof-of-concept to production, addressing the statistic that 46% of AI POC projects are canceled before reaching production. AWS Bedrock team members and Vercel's director of AI engineering present a comprehensive framework for production AI systems, focusing on three critical areas: model switching, evaluation, and observability. The session demonstrates how Amazon Bedrock's unified APIs, guardrails, and Agent Core capabilities combined with Vercel's AI SDK and Workflow Development Kit enable rapid development and deployment of durable, production-ready agentic systems. Vercel showcases real-world applications including V0 (an AI-powered prototyping platform), Vercel Agent (an AI code reviewer), and various internal agents deployed across their organization, all powered by Amazon Bedrock infrastructure."
+  canonical: "https://www.zenml.io/llmops-database/building-production-ai-agents-and-agentic-platforms-at-scale"
+  ogTitle: "Vercel: Building Production AI Agents and Agentic Platforms at Scale - ZenML LLMOps Database"
+  ogDescription: "This AWS re:Invent 2025 session explores the challenges organizations face moving AI projects from proof-of-concept to production, addressing the statistic that 46% of AI POC projects are canceled before reaching production. AWS Bedrock team members and Vercel's director of AI engineering present a comprehensive framework for production AI systems, focusing on three critical areas: model switching, evaluation, and observability. The session demonstrates how Amazon Bedrock's unified APIs, guardrails, and Agent Core capabilities combined with Vercel's AI SDK and Workflow Development Kit enable rapid development and deployment of durable, production-ready agentic systems. Vercel showcases real-world applications including V0 (an AI-powered prototyping platform), Vercel Agent (an AI code reviewer), and various internal agents deployed across their organization, all powered by Amazon Bedrock infrastructure."
+---
+
+## Overview
+
+This case study documents insights from AWS re:Invent 2025 featuring both AWS Bedrock platform capabilities and Vercel's production implementations. The session addresses a critical industry challenge: research shows that 46% of AI POC projects are canceled before reaching production. The speakers—Larry from AWS Bedrock's go-to-market team, Julia Bodela (senior technical product manager on Bedrock), and Dan Erickson (director of AI engineering at Vercel)—present a comprehensive view of production LLMOps challenges and solutions.
+
+The fundamental premise is that organizations struggle with production AI deployment not primarily due to technical feasibility of POCs, but due to inadequate platform architecture. Many teams take traditional software development lifecycles and attempt to "bolt on" AI capabilities, which proves insufficient. The speakers argue that successful production AI requires fundamentally rethinking development practices and establishing robust AI platform foundations from day one.
+
+## Core Production Challenges
+
+The presentation identifies several critical challenges that prevent successful production deployment. First, many AI platforms are built too statically from inception and cannot keep pace with the rapid evolution of models, capabilities, and provider offerings. Second, teams struggle with the non-deterministic nature of LLM outputs and lack frameworks for managing this uncertainty. Third, organizations find it difficult to gain visibility into what's failing in their AI applications. Finally, traditional software development practices don't translate well to AI systems, requiring new approaches to testing, evaluation, deployment, and monitoring.
+
+The speakers emphasize that what starts as a simple model invocation quickly compounds into complex platform requirements. Teams must address safe AI practices, prompt management, custom data integration through RAG, security, governance, model selection, orchestration, and more. This complexity is precisely what AWS Bedrock aims to abstract and simplify.
+
+## Five Pillars of AI Platforms
+
+Every production AI platform, regardless of cloud provider or tooling, will eventually incorporate five foundational pillars. First is the **models pillar**, noting critically that this is not singular—production systems require access to multiple models. Second is **deployment and orchestration**, including configuration management. Third is the **data foundation**, encompassing RAG, vector databases, and other context augmentation mechanisms. Fourth is **security and governance**, providing guardrails and compliance. Fifth is the **agentic pillar**, which has become increasingly important as systems move beyond simple prompt-response patterns to more complex multi-step reasoning and tool use.
+
+AWS recently launched Agent Core specifically in response to customer feedback requesting better primitives for building and deploying agents at scale. Agent Core provides building blocks that teams can compose to create appropriate agent architectures for their specific use cases, moving beyond one-size-fits-all solutions.
+
+## Model Switching: A Critical Day-One Capability
+
+The presentation argues strongly that model switching capability must be architected from day one, not retrofitted later. This is essential because hundreds of models launch annually with many being deprecated quickly. Organizations commonly find their chosen model is already outdated before completing development cycles. Additionally, regional expansion often requires model switching when preferred models aren't available in new regions. Cost optimization, performance improvements, and competitive pressure all create ongoing needs to swap models.
+
+However, model switching is deceptively difficult. There's no universal plug-and-play interface across model providers. Each provider has different APIs, parameter structures, and behavioral characteristics. Without strong evaluation frameworks, switching becomes prohibitively expensive and risky.
+
+AWS Bedrock provides three key tools for model switching. The **Converse API** offers a unified interface for calling any Bedrock model with consistent input/output formats, standardizing prompts and responses across all providers. This abstraction continues working with newly launched models automatically. The **Strands Agent SDK** (part of Agent Core) maintains model agnosticism for agents, allowing model swapping without changing agent logic or code. **Amazon Bedrock Guardrails** provide configurable safeguards—harmful content filters, PII redaction, hallucination detection, denied topics, and recently announced code generation safety checks—that apply uniformly across any model choice. Guardrails create a single unified safe AI policy that persists regardless of underlying model changes.
+
+The guardrails architecture applies checks at both input and output boundaries. If checks pass, the application receives the model output. If checks fail, the failure is logged and the application can implement appropriate fallback behavior. Critically, guardrails work not only with Bedrock models but with external foundation models and custom fine-tuned models on SageMaker, providing consistent governance across heterogeneous model deployments.
+
+## Evaluation: The Foundation of Model Confidence
+
+Julia Bodela emphasizes that evaluation is essential but challenging. Teams must analyze model performance across quality, cost, and latency dimensions for their specific use cases and data. Generic benchmarks don't sufficiently validate business-specific requirements. Organizations need to monitor biases and ensure safe, trusted behavior.
+
+The evaluation process is inherently iterative and multi-step. Teams must select candidate models from the expanding frontier model catalog, choose appropriate metrics and algorithms (which requires specialized expertise), find or create relevant datasets (since open-source datasets often don't match specific business contexts), spin up evaluation infrastructure, conduct automated evaluations, incorporate human review (particularly for golden datasets), record results, synthesize insights, and make quality-cost-latency tradeoffs. This cycle repeats for every new model and every new application, making automation critical.
+
+Bedrock offers several evaluation tools. **LLM-as-a-judge** replaces programmatic evaluators (like accuracy or robustness) and expensive human evaluation (for brand voice, tone, style) with LLM-based evaluation. Another LLM scores outputs, providing scores, visual distributions, and ratings automatically. Bedrock also supports **bringing your own inference**, meaning teams can evaluate models, applications, or responses hosted anywhere, not just Bedrock-native models.
+
+The recently announced **Agent Core Evaluations** provides three key benefits. First, continuous real-time scoring samples and scores live interactions using 13 built-in evaluators for common quality dimensions like correctness, helpfulness, and goal success rate. This requires no complex setup. Second, teams can build custom evaluators for use-case-specific quality assessments, configuring prompts and model choices. Third, it's fully managed—the 13 built-in evaluators work out-of-the-box without requiring teams to build evaluation infrastructure or manage operational complexity.
+
+Agent Core Evaluations works across diverse deployment scenarios: agents on the Agent Core runtime, agents running outside Agent Core (such as on EKS or Lambda), tools from Agent Core Gateway, context from Agent Core Memory, and specialized capabilities like code interpreter and browser tools. All evaluation sources export logs in OpenTelemetry standard format, feeding into comprehensive evaluation dashboards for real-time analysis.
+
+The evaluations interface allows teams to select evaluators in under a minute—choosing from 13 pre-built options or creating custom ones. Agent Core Evaluations automatically calls the most performant Bedrock model as the LLM judge for each metric. Importantly, it doesn't merely indicate failures but provides explanatory context for root cause analysis. This enables continuous improvement cycles, with evaluation results feeding directly into Agent Core Observability for production monitoring and optimization.
+
+## Observability: Understanding Production Behavior
+
+Observability enables holistic system health assessment, root cause analysis across model calls, and performance degradation tracking before customer impact. Classical observability relies on three pillars: logs, metrics, and traces. However, AI systems introduce unique challenges. Fragmented tracing makes it difficult to stitch together interactions across LLMs, agents, and RAG bases. Scaling evaluations is tough because human-in-the-loop processes slow iteration. Organizations lack visibility into whether agents meet quality response requirements.
+
+AWS provides two primary observability solutions. **Amazon CloudWatch** offers out-of-the-box insights into application performance, health, and accuracy in a unified view. It provides curated views of agents across popular frameworks including Strands Agents, LangGraph, and CrewAI. End-to-end prompt tracing spans LLMs, agents, and knowledge bases, providing visibility into every component. CloudWatch extends capabilities to identify hidden dependencies, bottlenecks, and blast radius risks.
+
+Critically, model invocation logging is **not enabled by default**—teams must explicitly enable it in the CloudWatch console and choose destinations (S3, CloudWatch, or both). Once enabled, teams gain a comprehensive dashboard showing performance across applications and models centrally. Logging metrics include latency, token counts, throttles, error counts, and filters for timing, tool usage, and knowledge lookups. Full integration with CloudWatch alarms and metrics capabilities enables proactive monitoring. CloudWatch Log Insights uses machine learning to identify patterns across logs for faster root cause analysis.
+
+**Agent Core Observability**, launched recently, eliminates the need for developers to manually instrument code with observability libraries. Using Strands or another AI SDK adds this functionality automatically. It provides three key benefits: comprehensive end-to-end views of agent behaviors and operations across all Agent Core services, enabling tracing, debugging, monitoring, and quality maintenance; real-time dashboards available out-of-the-box in CloudWatch without requiring custom dashboard construction or data source configuration; and integration flexibility—if CloudWatch isn't the preferred tool, metrics can route to third-party observability platforms.
+
+Agent Core Observability supports metrics from any Agent Core primitive and any framework, tool, or runtime, including those running outside Amazon Bedrock (EC2, EKS, Lambda, or alternative cloud providers). Metrics converge in Agent Core, then output to Agent Core Observability dashboards or third-party tools. Data emission in standard OpenTelemetry-compatible format ensures consistent observability regardless of agent execution location—a core Agent Core principle.
+
+The CloudWatch observability dashboards provide 360-degree workflow views, monitoring key telemetry including traces, costs, latency, tokens, and tool usage. Teams can add custom attributes to agent traces for business-specific optimization. Advanced analytics capabilities extend beyond basic monitoring. The architecture supports sending trace information from agents built with any AI SDK (CrewAI, LangGraph, Vercel AI SDK) to CloudWatch, as long as data is OpenTelemetry-compliant.
+
+## Vercel's Production Implementation
+
+Dan Erickson from Vercel provides a practitioner's perspective on building production AI systems since 2019. Vercel has experienced firsthand the challenges of constant ground movement—new models, capabilities, and limitations emerging every few weeks. Teams must maintain pace without rewriting entire stacks. Once shipped, systems need deep visibility under real load, not just staged demos. Organizations need confidence deploying AI to customers, operations teams, and finance departments, not just early adopters.
+
+Vercel builds open-source frameworks like Next.js that provide great developer experiences for web applications, sites, and APIs. Their platform provides "self-driving infrastructure" for global-scale deployment. Developers push to Git, receive preview environments for testing changes, and merge to production for global distribution. Built-in observability and performance monitoring are standard. Over recent years, Vercel has applied this philosophy to AI, building tools and infrastructure helping customers progress from concept to production reliably.
+
+### V0: AI-Powered Prototyping Platform
+
+V0 is described as a "vibe coding platform" enabling designers, product managers, and engineers to prototype by describing desired outcomes rather than writing from scratch. Users chat with an AI agent about websites, apps, or dashboards they want to build. V0 transforms descriptions into full-fledged applications using AI. Generated code can be handed to engineers, checked into repositories, and deployed globally on Vercel or elsewhere. This provides AI-assisted prototyping speed with the safety and control of real code.
+
+### Vercel Agent: AI Code Review
+
+Vercel Agent handles code review, analyzing pull requests before deployment. It highlights potential bugs, regressions, and anti-patterns. In production, it investigates log anomalies, digging through logs and traces across the full stack and multiple projects to accelerate root cause identification. The same agent spans the complete lifecycle from "don't ship this bug" to "here's what broke in production and why."
+
+### Cross-Functional Internal Agents
+
+Vercel's philosophy mirrors Microsoft's "a computer on every desk" vision—they believe agents will eventually assist almost every role in every company. They're building internal agents across departments. The go-to-market team uses agents for lead qualification and expansion opportunity identification. Finance explores procurement agents for streamlining software purchases. The data team built a Slack bot letting anyone ask BI questions in natural language, receiving answers backed by their data warehouse. The same underlying platform serves all these diverse use cases and stakeholders.
+
+Amazon Bedrock serves as the foundation for all Vercel's AI and agentic workloads, providing access to high-quality foundation models with necessary security, compliance, and scalability while enabling rapid experimentation and model switching as capabilities improve.
+
+## Vercel's Technical Architecture
+
+Vercel's rapid development velocity stems from using their own platform—V0 and Vercel Agent are applications deployed on Vercel infrastructure, leveraging the same workflows provided to customers. The "secret sauce" is the AI-specific toolset built atop this foundation: a set of building blocks making it easier to design, monitor, and operate production agents.
+
+### Vercel AI SDK
+
+When building V0, Vercel anticipated rapid model landscape evolution and wanted to avoid rewriting the codebase with each new model. They built a clean abstraction layer for writing application logic once while plugging in different models and providers underneath. This became the **Vercel AI SDK**, now open source.
+
+The AI SDK provides excellent developer experience for building AI chats and agents. Structured tool calling, human-in-the-loop flows, streaming responses, and agentic loops are first-class primitives. Built-in observability shows prompt and tool performance. It works seamlessly with Bedrock models as just another backend—from the application's perspective, calling Bedrock, OpenAI, Anthropic, or other providers uses identical code, enabling effortless model switching.
+
+### AI Gateway
+
+Once systems run in production, teams need control planes for understanding production behavior. Vercel built the **AI Gateway** for detailed visibility into agent-model interactions across all providers. The gateway tracks every model call: which agent made it, latency and cost metrics, and how these change over time. Because it sits in front of any provider, it enables safe testing of new models immediately upon availability. When OpenAI or Bedrock launches new models, teams simply change a string to experiment.
+
+This observability and routing layer is essential for running AI systems at scale. The AI SDK and AI Gateway sufficed for simple, short-lived agents like chatbots and quick helpers.
+
+### Workflow Development Kit
+
+Building complex workflows like Vercel Agent for code review required handling long-running background tasks while scaling like familiar serverless primitives. This motivated the **Workflow Development Kit (WDK)**.
+
+At its core, WDK is a compiler layer atop TypeScript transforming any TypeScript function into a durable workflow. Marking orchestration functions with a `use workflow` directive makes them pausable and resumable. Adding `use step` directives to called functions transforms them into asynchronous, queue-backed, durable steps. The result is "self-driving infrastructure for AI agents"—developers write straightforward TypeScript while WDK handles deployment, execution, and resumption behind the scenes.
+
+## Technical Implementation Demonstration
+
+Dan demonstrated building a production agent incrementally. Starting with simple text generation using Bedrock's Sonnet 3.5 model via the AI SDK, the example imports `generateText` from the AI package and the Bedrock provider. This sends a single request to the model using its built-in knowledge.
+
+To enable current information access, the agent becomes a tool-using agent with browser capabilities. Importing browser tools from Agent Core (announced that week), which provides cloud-based browser instances that LLMs can pilot, the code creates a `ToolLoopAgent` with instructions and browser tools. Bedrock provides Vercel AI SDK-compatible tools directly usable within the SDK.
+
+Adding code interpreter tools alongside browser tools creates an analyst agent capable of deeper research—spidering through Agent Core documentation and performing calculations via generated code. However, this introduces a challenge: the agent may use the browser for multiple minutes or write complex code requiring execution time, exceeding typical serverless timeout limits.
+
+Making the agent durable with Workflow Development Kit involves swapping `ToolUseAgent` for `DurableAgent` (a 1:1 mapping) imported from the WDK package rather than the AI SDK. Wrapping in a workflow orchestration function with the `use workflow` directive ensures any tool use decorated with `use step` executes as a durable, queue-backed step with observability and error handling. Agent Core tools have `use step` built-in, enabling installation from npm and immediate use without custom durability implementation.
+
+This combination delivers critical production capabilities: agents communicating with LLMs, rapid model swapping, tool orchestration with clear instructions, and durable execution that remains responsive to users. The demonstration shows that Agent Core tools integrate seamlessly with Workflow Development Kit's durability model.
+
+## Production Patterns and Results
+
+Vercel uses identical patterns for V0, Vercel Agent, and internal agents, demonstrating proven production viability. The architecture combines Amazon Bedrock for model infrastructure, Vercel's AI SDK and AI Gateway for building and observing agents, and Workflow Development Kit for production-ready durability.
+
+The system handles diverse use cases with consistent infrastructure: customer-facing products like V0's prototyping capabilities, developer tools like Vercel Agent's code review and production debugging, and internal business agents spanning go-to-market, finance, and data analytics. This demonstrates the architecture's flexibility and robustness across different performance requirements, latency tolerances, and accuracy needs.
+
+## Key Takeaways and Critical Assessment
+
+The session concludes with three consistently neglected areas in production AI: model switching capability, data-driven evaluation frameworks, and observability of performance changes over time. The speakers emphasize that specific tools matter less than ensuring these capabilities exist. Organizations can use third-party tools, build custom solutions, or leverage AWS tools—the critical factor is having robust implementations of all three areas.
+
+The overarching message is confidence that building with Bedrock provides access to latest models, features, and innovations needed for continuous AI platform iteration. AWS added over 30 new foundation models in 2025 alone, launched Agent Core, and introduced numerous features, with more planned for 2026.
+
+However, a balanced assessment must note several considerations. While the session provides valuable technical insights, it's clearly promotional for AWS services and Vercel's offerings. The 46% POC cancellation statistic, while striking, lacks context about methodology, sample size, or how cancellations were defined. Some POCs fail for valid business reasons unrelated to technical platform capabilities—market conditions change, priorities shift, or pilots reveal fundamental product-market fit issues.
+
+The claim that teams can enable comprehensive observability or evaluation "in under a minute" should be viewed skeptically. While initial setup may be rapid, configuring meaningful alerts, establishing appropriate thresholds, creating relevant custom evaluators, and interpreting results requires significant expertise and iteration. The presentation somewhat underplays the complexity of production AI operations.
+
+The architecture shown is AWS-centric, and while OpenTelemetry compatibility provides some portability, teams deeply invested in this stack face substantial migration challenges if they need to move providers. The tight integration between Bedrock, Agent Core, CloudWatch, and Vercel's tools creates powerful capabilities but also potential lock-in.
+
+That said, the technical approaches demonstrated—unified APIs for model abstraction, comprehensive guardrails, automated evaluation with LLM-as-a-judge, and OpenTelemetry-based observability—represent genuine LLMOps best practices applicable regardless of specific tool choices. Vercel's real-world production implementations provide credible evidence that these patterns work at scale. The emphasis on durability through Workflow Development Kit addresses a real gap in serverless architectures for long-running agentic workflows.
+
+The integration of evaluation directly into the agent development loop, with results feeding into observability dashboards, represents mature MLOps thinking applied to LLMs. The distinction between automated evaluation and human-in-the-loop validation, particularly for golden datasets, shows appropriate caution about fully automated quality assurance.
+
+Overall, while promotional in nature, the session provides substantial technical value for teams building production AI systems, particularly around the often-overlooked areas of model switching, systematic evaluation, and comprehensive observability that differentiate POCs from production-ready systems.

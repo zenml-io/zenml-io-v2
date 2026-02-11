@@ -1,0 +1,127 @@
+---
+title: "Converting Natural Language to Structured GraphQL Queries Using LLMs"
+slug: "converting-natural-language-to-structured-graphql-queries-using-llms"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "6791fababef3c739da664e7e"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:57:19.232Z"
+  createdOn: "2025-01-23T08:15:54.466Z"
+llmopsTags:
+  - "structured-output"
+  - "question-answering"
+  - "prompt-engineering"
+  - "error-handling"
+  - "system-prompts"
+  - "kubernetes"
+  - "fastapi"
+  - "guardrails"
+  - "amazon-aws"
+  - "anthropic"
+company: "Cato Networks"
+summary: "Cato Networks implemented a natural language search interface for their SASE management console's events page using Amazon Bedrock's foundation models. They transformed free-text queries into structured GraphQL queries by employing prompt engineering and JSON schema validation, reducing query time from minutes to near-instant while making the system more accessible to new users and non-English speakers. The solution achieved high accuracy with an error rate below 0.05 while maintaining reasonable costs and latency."
+link: "https://aws.amazon.com/blogs/machine-learning/how-cato-networks-uses-amazon-bedrock-to-transform-free-text-search-into-structured-graphql-queries?tag=soumet-20"
+year: 2025
+seo:
+  title: "Cato Networks: Converting Natural Language to Structured GraphQL Queries Using LLMs - ZenML LLMOps Database"
+  description: "Cato Networks implemented a natural language search interface for their SASE management console's events page using Amazon Bedrock's foundation models. They transformed free-text queries into structured GraphQL queries by employing prompt engineering and JSON schema validation, reducing query time from minutes to near-instant while making the system more accessible to new users and non-English speakers. The solution achieved high accuracy with an error rate below 0.05 while maintaining reasonable costs and latency."
+  canonical: "https://www.zenml.io/llmops-database/converting-natural-language-to-structured-graphql-queries-using-llms"
+  ogTitle: "Cato Networks: Converting Natural Language to Structured GraphQL Queries Using LLMs - ZenML LLMOps Database"
+  ogDescription: "Cato Networks implemented a natural language search interface for their SASE management console's events page using Amazon Bedrock's foundation models. They transformed free-text queries into structured GraphQL queries by employing prompt engineering and JSON schema validation, reducing query time from minutes to near-instant while making the system more accessible to new users and non-English speakers. The solution achieved high accuracy with an error rate below 0.05 while maintaining reasonable costs and latency."
+---
+
+## Overview
+
+Cato Networks is a leading provider of secure access service edge (SASE) solutions, offering enterprise networking and security as a unified cloud-centered service. Their platform includes SD-WAN, cloud networking, and various security service edge (SSE) functions such as firewall as a service, secure web gateway, and zero trust network access. The case study describes how they enhanced their management console's Events page by implementing a natural language search capability powered by large language models.
+
+The Events page in Cato's SASE management console serves as a central hub for viewing security, connectivity, system, and management events occurring on customer accounts. With potentially millions of events over a selected time range, users needed to manually configure filters to narrow down results. This process required deep familiarity with the product glossary and was time-consuming, creating a barrier for new users who lacked product-specific knowledge.
+
+## The Technical Challenge
+
+The existing filter system used a conjunction of statements consisting of a key (field name), operator (such as "is", "in", "includes", "greater than"), and value(s). Users also had to specify time ranges following the ISO 8601 standard. This structured query format, while powerful, was difficult for users unfamiliar with the specific terminology and syntax required by the product.
+
+The goal was to enable users to perform free text searches that would be automatically converted into structured queries compatible with the product's GraphQL API. This is a classic natural language processing (NLP) task that benefits significantly from modern foundation models.
+
+## Solution Architecture
+
+Cato Networks built their solution using Amazon Bedrock, which provides serverless access to foundation models from various providers. The architecture consists of four main components:
+
+- **Management Console**: The user-facing application where customers view network and security events
+- **GraphQL Server**: A backend service providing a GraphQL API for accessing account data
+- **Natural Language Search (NLS) Service**: An Amazon EKS-hosted service that bridges the management console and Amazon Bedrock, responsible for prompt construction and response validation
+- **Amazon Bedrock**: The cloud service hosting and serving requests to the foundation model
+
+The decision to use Amazon Bedrock was driven by several factors. The service simplified access to multiple state-of-the-art foundation models through a single serverless API, making it straightforward to benchmark and switch between different models without infrastructure management overhead. Additionally, some models available through Bedrock, particularly from Anthropic (Claude) and Cohere, offer native understanding of JSON schemas and structured data, which was particularly valuable for this use case.
+
+## Prompt Engineering Approach
+
+The team evaluated three approaches to customize foundation models for their specific task: prompt engineering, Retrieval Augmented Generation (RAG), and fine-tuning. They found that prompt engineering alone was sufficient to achieve their required results.
+
+The prompt design follows a sophisticated structure centered on JSON schema validation. Rather than asking the model to generate GraphQL API requests directly, they implemented a two-step approach: first, instruct the model to return a response following a well-defined JSON schema, then validate the output against that schema before translating it to GraphQL.
+
+The system prompt includes several critical components:
+
+- General instructions establishing the task context (converting free text to JSON for querying SASE events)
+- A complete JSON schema definition compatible with the IETF standard for JSON Schema validation
+- Schema definitions for all available filter types, operators, and valid values
+- Time range specifications following ISO 8601 format
+
+Each user query is structured to include the free text query itself plus contextual information such as the current datetime and day of week (necessary for handling relative time references like "last week" or "yesterday").
+
+## Validation and Error Handling
+
+A key aspect of their LLMOps approach is the recognition that model behavior is inherently non-deterministic. Rather than trusting model outputs blindly, they implemented a robust validation pipeline using the same JSON schema included in the prompt.
+
+The JSON schema serves a dual purpose: it instructs the model on the expected output format and provides a mechanism for validating responses. When validation fails, the schema can identify the exact violation, enabling nuanced error handling policies:
+
+- For missing required fields: output a translation failure to the user
+- For incorrectly formatted filter values: remove the problematic filter, create an API request from valid values, and output a warning to the user
+
+This approach acknowledges the reality of working with LLMs in production—outputs may not always be perfect, but with proper validation, the system can degrade gracefully rather than failing completely.
+
+## Evaluation and Benchmarking
+
+The team created a comprehensive benchmark consisting of hundreds of text queries paired with their expected JSON outputs. This allowed systematic evaluation of model performance across three outcome categories:
+
+- **Success**: Valid JSON, valid by schema, and full match of filters
+- **Partial**: Valid JSON, valid by schema, but only partial match of filters
+- **Error**: Invalid JSON or invalid by schema
+
+The release criterion was an error rate below 0.05, and the selected model was the one with the highest success rate meeting this criterion. After evaluating several foundation models on Amazon Bedrock for accuracy, latency, and cost, they selected `anthropic.claude-3-5-sonnet-20241022-v2:0` as their production model.
+
+This benchmarking approach represents a mature LLMOps practice—establishing clear, measurable criteria for model selection and creating reproducible evaluation pipelines that can be rerun as new models become available.
+
+## Production Deployment Considerations
+
+The NLS service is deployed on Amazon EKS, providing container orchestration for the translation service. This architecture separates concerns effectively: the translation service handles prompt construction and response validation, while Amazon Bedrock handles model inference as a fully managed service.
+
+The serverless nature of Amazon Bedrock was particularly valuable for this use case, as it eliminated the need to manage GPU infrastructure or handle scaling concerns. The team could focus on the application logic rather than infrastructure management.
+
+## Business Results and Impact
+
+The case study reports several positive outcomes, though these should be evaluated with the understanding that this is a vendor-published blog post:
+
+- Reduced query time from minutes of manual filtering to near-instant results
+- Positive customer feedback, particularly from users unfamiliar with Cato's products
+- Multi-language input support (natively provided by the foundation model) improved accessibility for non-native English speakers
+- Near-zero time to value with minimal learning curve for account administrators
+
+## Future Considerations
+
+The team acknowledges that while prompt engineering met their current needs, there are scenarios where alternative approaches might be warranted. Specifically, they note that including the entire JSON schema in the prompt can lead to high token counts per query. For users handling very complex schemas, fine-tuning a model to embed product knowledge into the weights (rather than including it in every prompt) could reduce costs.
+
+This represents an important consideration for LLMOps practitioners: the trade-off between prompt complexity (and associated token costs) versus the investment required for fine-tuning. The Cato Networks team made a pragmatic choice to start with prompt engineering, which allowed them to iterate quickly and get to production faster, while leaving the door open for optimization as usage patterns become clearer.
+
+## Key LLMOps Takeaways
+
+This case study illustrates several LLMOps best practices:
+
+- Using managed services like Amazon Bedrock to reduce infrastructure complexity and accelerate time-to-market
+- Implementing robust validation pipelines that don't trust model outputs blindly
+- Creating comprehensive benchmarks with clear success criteria before deploying to production
+- Designing for graceful degradation rather than binary success/failure
+- Separating the translation layer from the core business logic (GraphQL API), allowing the LLM integration to be updated independently
+- Starting with simpler approaches (prompt engineering) before investing in more complex solutions (fine-tuning)

@@ -1,0 +1,158 @@
+---
+title: "Enterprise Agentic AI for Customer Support and Sales Using Amazon Bedrock AgentCore"
+slug: "enterprise-agentic-ai-for-customer-support-and-sales-using-amazon-bedrock-agentcore"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "693bdd076fb80582d400e1ea"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:35:11.445Z"
+  createdOn: "2025-12-12T09:14:47.602Z"
+llmopsTags:
+  - "customer-support"
+  - "chatbot"
+  - "poc"
+  - "regulatory-compliance"
+  - "multi-agent-systems"
+  - "agent-based"
+  - "prompt-engineering"
+  - "latency-optimization"
+  - "cost-optimization"
+  - "system-prompts"
+  - "mcp"
+  - "a2a"
+  - "evals"
+  - "docker"
+  - "kubernetes"
+  - "monitoring"
+  - "api-gateway"
+  - "microservices"
+  - "cicd"
+  - "scaling"
+  - "serverless"
+  - "devops"
+  - "orchestration"
+  - "continuous-deployment"
+  - "continuous-integration"
+  - "open-source"
+  - "documentation"
+  - "security"
+  - "compliance"
+  - "guardrails"
+  - "scalability"
+  - "fastapi"
+  - "postgresql"
+  - "redis"
+  - "cache"
+  - "amazon-aws"
+  - "anthropic"
+  - "meta"
+company: "Swisscom"
+summary: "Swisscom, Switzerland's leading telecommunications provider, implemented Amazon Bedrock AgentCore to build and scale enterprise AI agents for customer support and sales operations across their organization. The company faced challenges in orchestrating AI agents across different departments while maintaining Switzerland's strict data protection compliance, managing secure cross-departmental authentication, and preventing redundant efforts. By leveraging Amazon Bedrock AgentCore's Runtime, Identity, and Memory services along with the Strands Agents framework, Swisscom deployed two B2C use cases—personalized sales pitches and automated technical support—achieving stakeholder demos within 3-4 weeks, handling thousands of monthly requests with low latency, and establishing a scalable foundation that enables secure agent-to-agent communication while maintaining regulatory compliance."
+link: "https://aws.amazon.com/blogs/machine-learning/how-swisscom-builds-enterprise-agentic-ai-for-customer-support-and-sales-using-amazon-bedrock-agentcore?tag=soumet-20"
+year: 2025
+seo:
+  title: "Swisscom: Enterprise Agentic AI for Customer Support and Sales Using Amazon Bedrock AgentCore - ZenML LLMOps Database"
+  description: "Swisscom, Switzerland's leading telecommunications provider, implemented Amazon Bedrock AgentCore to build and scale enterprise AI agents for customer support and sales operations across their organization. The company faced challenges in orchestrating AI agents across different departments while maintaining Switzerland's strict data protection compliance, managing secure cross-departmental authentication, and preventing redundant efforts. By leveraging Amazon Bedrock AgentCore's Runtime, Identity, and Memory services along with the Strands Agents framework, Swisscom deployed two B2C use cases—personalized sales pitches and automated technical support—achieving stakeholder demos within 3-4 weeks, handling thousands of monthly requests with low latency, and establishing a scalable foundation that enables secure agent-to-agent communication while maintaining regulatory compliance."
+  canonical: "https://www.zenml.io/llmops-database/enterprise-agentic-ai-for-customer-support-and-sales-using-amazon-bedrock-agentcore"
+  ogTitle: "Swisscom: Enterprise Agentic AI for Customer Support and Sales Using Amazon Bedrock AgentCore - ZenML LLMOps Database"
+  ogDescription: "Swisscom, Switzerland's leading telecommunications provider, implemented Amazon Bedrock AgentCore to build and scale enterprise AI agents for customer support and sales operations across their organization. The company faced challenges in orchestrating AI agents across different departments while maintaining Switzerland's strict data protection compliance, managing secure cross-departmental authentication, and preventing redundant efforts. By leveraging Amazon Bedrock AgentCore's Runtime, Identity, and Memory services along with the Strands Agents framework, Swisscom deployed two B2C use cases—personalized sales pitches and automated technical support—achieving stakeholder demos within 3-4 weeks, handling thousands of monthly requests with low latency, and establishing a scalable foundation that enables secure agent-to-agent communication while maintaining regulatory compliance."
+---
+
+## Overview
+
+Swisscom, Switzerland's leading telecommunications provider with approximately $19B in revenue and over $37B market capitalization as of June 2025, presents a comprehensive case study in enterprise-scale LLMOps deployment. The company has been recognized as the Most Sustainable Company in the Telecom industry for three consecutive years and is committed to achieving net-zero greenhouse gas emissions by 2035. This sustainability-first approach extends to their AI strategy as they work to break through what they describe as the "automation ceiling"—where traditional automation approaches fail to meet modern business demands.
+
+As an early adopter of Amazon Bedrock in the AWS Europe Region (Zurich), Swisscom has established itself as a leader in enterprise AI implementation. Their existing infrastructure includes a Chatbot Builder system, Conversational AI powered by Rasa, fine-tuned LLMs on Amazon SageMaker, and the Swisscom myAI assistant, all built to meet Swiss data protection standards. The implementation of Amazon Bedrock AgentCore represents their next evolution in scaling agentic AI across the enterprise while maintaining strict compliance requirements.
+
+## The Production Challenge: Multi-Agent Orchestration at Enterprise Scale
+
+The fundamental challenge Swisscom faced was managing siloed agentic solutions while facilitating seamless cross-departmental coordination. Operating under Switzerland's strict data protection laws added an additional layer of complexity, requiring a framework that could balance compliance requirements with efficient scaling capabilities. The company needed to prevent redundant efforts across departments while maintaining high security standards and enabling agents to work together effectively.
+
+To understand the practical implications, consider a common customer service scenario where an agent must help restore Internet router connectivity. The issue could stem from three different causes: a billing problem, a network outage, or a configuration pairing issue. Each of these typically resides in different departments, illustrating the critical need for secure, efficient cross-departmental agent orchestration. Without AgentCore, this architecture required complex custom solutions for authentication, session management, and inter-agent communication.
+
+The pre-AgentCore architecture involved deploying customer-facing generic agents as containerized runtimes within a shared VPC, requiring both foundation model invocation capabilities and robust session management. Agents needed access to other agents and Model Context Protocol (MCP) servers distributed across multiple AWS accounts, also deployed as containerized runtimes within the shared VPC. Internal application access primarily occurred through SAIL (Service and Interface Library), Swisscom's central system for API hosting and service integration, while corporate network resources were accessible via AWS Direct Connect with a VPC Transit Gateway facilitating secure cross-network communication.
+
+## Critical LLMOps Challenges Identified
+
+Swisscom identified several critical production challenges that needed addressing for successful enterprise-scale deployment:
+
+**Security and Authentication:** The team needed to implement secure, transitive authentication and authorization that enforces least-privilege access based on intersecting permissions across customer, agent, and department contexts. This required controlled resource sharing across departments, cloud systems, and on-premises networks. Each interaction required temporary access tokens that authenticate both the agent and the customer context, with bidirectional validation essential across all system components—agents, MCP servers, and tools all needed to verify incoming tokens for service requests.
+
+**Integration and Interoperability:** Making MCP servers and other agents centrally available to other use cases while maintaining compatibility with existing agentic implementations across Swisscom's infrastructure presented significant operational complexity. The organization needed standardized protocols for agent-to-agent communication that could work across their distributed architecture.
+
+**Customer Intelligence and Operations:** Effectively capturing and utilizing customer insights across multiple agentic interactions required sophisticated session management and long-term memory capabilities. The team also needed to implement standardized evaluation and observability practices across all agents to ensure consistent performance and enable continuous improvement.
+
+## The Amazon Bedrock AgentCore Solution
+
+Amazon Bedrock AgentCore provided Swisscom with a comprehensive platform that addresses their enterprise-scale agentic AI challenges through four key components:
+
+**AgentCore Runtime** enables developers to focus on building agents while the system handles secure, cost-efficient hosting and automatic scaling through Docker container deployment that maintains session-level isolation. Critically, hosting in the shared VPC allows access to internal APIs, maintaining Swisscom's security posture while enabling necessary connectivity.
+
+**AgentCore Identity** seamlessly integrates with Swisscom's existing identity provider, managing both inbound and outbound authentication. This eliminates the need for custom token exchange servers and dramatically simplifies secure interactions between agents, tools, and data sources. The system validates the client's token and generates new tokens for the agent's downstream tool usage, maintaining security throughout the transaction chain.
+
+**AgentCore Memory** delivers robust solutions for managing both session-based and long-term memory storage with custom memory strategies. This capability proves particularly valuable for B2C operations where understanding customer context across interactions is crucial. Keeping each user's data separate supports both security and compliance efforts while enabling personalized experiences.
+
+**Strands Agents Framework** has demonstrated high adoption among Swisscom's developers due to its simplified agent construction, faster development cycles, seamless integration with Bedrock AgentCore services, and built-in capabilities for tracing, evaluation, and OpenTelemetry logging. The framework's developer experience has proven critical to accelerating adoption across the organization.
+
+## Architecture and Implementation Details
+
+The production architecture with AgentCore works as follows: The client sends a request to the Strands agent running on AgentCore Runtime, passing an authentication token from the Swisscom IdP. The client's token is validated and a new token for the agent's downstream tool usage is generated and passed back to the agent. The agent invokes the foundation model on Bedrock and stores sessions in AgentCore Memory, with all traffic traversing VPC endpoints for Bedrock and Bedrock AgentCore to keep traffic private. The agent can then access internal APIs, MCP servers, and Agent2Agent (A2A) protocol servers inside the shared VPC, authenticating with the temporary token from AgentCore Identity.
+
+The flexibility to use a subset of AgentCore features and their Amazon VPC integration allows Swisscom to remain secure and flexible, using Bedrock AgentCore services for their specific needs, including integration with existing agents on Amazon EKS. The VPC integration facilitates secure communication between agents and internal resources while maintaining compliance with Swiss data protection standards.
+
+Swisscom's implementation leverages both Model Context Protocol (MCP) servers and the Agent2Agent protocol (A2A) for seamless agent communication across domains. This multi-agent architecture enables sophisticated orchestration where specialized agents can collaborate on complex tasks that span multiple business domains, all while maintaining appropriate security boundaries and access controls.
+
+## Production Deployment and Real-World Results
+
+Swisscom partnered with AWS to implement Amazon Bedrock AgentCore for two B2C use cases: generating personalized sales pitches and providing automated customer support for technical issues like self-service troubleshooting. Both agents are being integrated into Swisscom's existing customer generative AI-powered chatbot system called SAM, which necessitates high-performance agent-to-agent communication protocols due to the high volume of Swisscom customers and strict latency requirements. Throughout the development process, the team created agents designed to be shared across the organization through MCP and A2A protocols.
+
+The production results demonstrate the effectiveness of the LLMOps approach:
+
+**Development Velocity:** Development teams achieved their first business stakeholder demos within 3-4 weeks, despite having no prior experience with Strands Agents. One project team migrated from their LangGraph implementation to Strands Agents, citing reduced complexity and faster development cycles. This represents a significant improvement in time-to-value for AI agent development.
+
+**Scalability and Performance:** AgentCore Runtime allows these agents to efficiently handle thousands of requests per month each, maintaining low latency while optimizing costs. The automatic scaling capabilities ensure the system can handle variable demand without manual intervention.
+
+**Memory and Personalization:** Using Bedrock AgentCore Memory for long-term insights, Swisscom can track and analyze customer interactions across different touchpoints, continuously improving the customer experience across domains. This enables sophisticated personalization while maintaining compliance with data protection requirements.
+
+**Security and Access Control:** AgentCore Identity facilitates robust security, implementing precise access controls that limit agents to only those resources authorized for the specific customer interaction. This least-privilege approach ensures compliance while enabling the necessary functionality.
+
+**Observability and Monitoring:** The Strands framework's native OpenTelemetry integration supported seamless export of performance traces to Swisscom's existing observability infrastructure, maintaining consistency with enterprise-wide monitoring standards. This integration allows teams to leverage their existing monitoring tools and practices while gaining visibility into agent performance.
+
+**Evaluation and Quality Assurance:** The Strands evaluation test cases allowed teams to quickly put an evaluation pipeline together without the need for additional tools, enabling rapid validation of proof-of-concept implementations and ensuring quality standards before production deployment.
+
+## LLMOps Best Practices and Lessons Learned
+
+The case study highlights several critical LLMOps considerations for enterprise deployments:
+
+**Architectural Foundation as a Prerequisite:** By addressing fundamental challenges of secure cross-organization authentication, standardized agent orchestration, and comprehensive observability upfront, Swisscom established a scalable foundation that accelerates rather than constrains deployment. The integration of AgentCore Runtime, Identity, and Memory services accelerated infrastructure setup, allowing teams to focus on business value rather than undifferentiated infrastructure work.
+
+**Framework Selection Impact:** The adoption of Strands Agents framework demonstrates how the right development tools can dramatically reduce time-to-value. Teams achieving stakeholder demos within 3-4 weeks, coupled with successful migrations from alternative frameworks, validates the importance of developer experience in enterprise AI adoption. The built-in evaluation, tracing, and logging capabilities reduce the operational overhead typically associated with production LLM deployments.
+
+**Compliance as Enabler, Not Inhibitor:** Swisscom proved that regulatory compliance need not impede innovation. The system's ability to scale while maintaining data sovereignty and user privacy has proven particularly valuable in the Swiss market, where regulatory compliance is paramount. The architecture demonstrates that proper security and compliance controls can be built into the platform layer, freeing application teams to focus on business logic.
+
+**Multi-Agent Coordination Complexity:** The use of MCP servers and A2A protocols highlights the importance of standardized communication patterns for multi-agent systems. These protocols enable agents to collaborate across organizational boundaries while maintaining appropriate security controls and avoiding tight coupling between systems.
+
+**Observability and Evaluation Integration:** The seamless integration with OpenTelemetry and built-in evaluation capabilities demonstrates the importance of treating observability and quality assurance as first-class concerns in LLMOps platforms. These capabilities enable teams to monitor production performance, debug issues, and continuously improve agent quality.
+
+## Future Roadmap and Strategic Direction
+
+The future roadmap focuses on three key areas that represent the evolution of their LLMOps practice:
+
+**Agent Sharing and Reuse:** A centralized agent registry will facilitate discovery and reuse across the organization, supported by standardized documentation and shared best practices. This represents a shift toward treating agents as reusable organizational assets rather than one-off implementations.
+
+**Cross-Domain Integration:** Enhanced integration will enable seamless collaboration between different business units, with clear standards for agent communication and interoperability. This evolution will unlock more sophisticated use cases that span multiple business domains.
+
+**Governance and Compliance:** Implementation of robust governance mechanisms, including version control, usage monitoring, and regular security audits, will facilitate sustainable growth of the system while maintaining compliance with enterprise standards. This comprehensive approach will drive continuous improvement based on real-world usage patterns and feedback.
+
+## Critical Assessment
+
+While the case study presents compelling results, several considerations warrant balanced assessment. The publication comes from AWS's blog and naturally emphasizes the benefits of their platform. The rapid development timelines (3-4 weeks to stakeholder demos) are impressive but may reflect proof-of-concept rather than full production deployment complexity. The "thousands of requests per month" metric, while indicating production use, represents relatively modest scale compared to some enterprise deployments that handle millions of requests.
+
+The case study would benefit from more specific metrics around cost optimization, latency improvements compared to previous solutions, and concrete customer satisfaction or business outcome measurements. The emphasis on compliance and security is appropriate for the Swiss market but may represent overhead that organizations in different regulatory environments might not require. The migration from LangGraph to Strands Agents is mentioned as beneficial but lacks detail on the effort required or specific technical challenges encountered.
+
+The multi-agent architecture with MCP and A2A protocols represents sophisticated orchestration but also introduces complexity that may not be necessary for simpler use cases. Organizations should carefully assess whether their requirements justify this architectural complexity. The tight integration with AWS services provides benefits but also creates vendor lock-in considerations that enterprises should evaluate based on their cloud strategy.
+
+Despite these considerations, Swisscom's implementation represents a mature, production-grade approach to enterprise LLMOps that addresses real operational challenges in authentication, memory management, observability, and multi-agent coordination. The focus on developer experience, compliance integration, and scalable infrastructure demonstrates thoughtful platform engineering that other enterprises can learn from when deploying LLMs at scale.

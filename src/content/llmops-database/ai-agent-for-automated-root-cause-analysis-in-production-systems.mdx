@@ -1,0 +1,121 @@
+---
+title: "AI Agent for Automated Root Cause Analysis in Production Systems"
+slug: "ai-agent-for-automated-root-cause-analysis-in-production-systems"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "6880a2402c1d5d9accd947ce"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:11:25.763Z"
+  createdOn: "2025-07-23T08:50:08.478Z"
+llmopsTags:
+  - "customer-support"
+  - "code-generation"
+  - "data-analysis"
+  - "data-cleaning"
+  - "data-integration"
+  - "realtime-application"
+  - "high-stakes-application"
+  - "agent-based"
+  - "multi-agent-systems"
+  - "prompt-engineering"
+  - "few-shot"
+  - "human-in-the-loop"
+  - "evals"
+  - "error-handling"
+  - "fallback-strategies"
+  - "kubernetes"
+  - "monitoring"
+  - "databases"
+  - "api-gateway"
+  - "microservices"
+  - "devops"
+  - "orchestration"
+  - "open-source"
+  - "documentation"
+  - "security"
+  - "guardrails"
+  - "reliability"
+  - "scalability"
+  - "fastapi"
+  - "postgresql"
+  - "redis"
+  - "cache"
+  - "elasticsearch"
+company: "Cleric"
+summary: "Cleric developed an AI agent system to automatically diagnose and root cause production alerts by analyzing observability data, logs, and system metrics. The agent operates asynchronously, investigating alerts when they fire in systems like PagerDuty or Slack, planning and executing diagnostic tasks through API calls, and reasoning about findings to distill information into actionable root causes. The system faces significant challenges around ground truth validation, user feedback loops, and the need to minimize human intervention while maintaining high accuracy across diverse infrastructure environments."
+link: "https://www.youtube.com/watch?v=wFOlxreyDtE"
+year: 2025
+seo:
+  title: "Cleric: AI Agent for Automated Root Cause Analysis in Production Systems - ZenML LLMOps Database"
+  description: "Cleric developed an AI agent system to automatically diagnose and root cause production alerts by analyzing observability data, logs, and system metrics. The agent operates asynchronously, investigating alerts when they fire in systems like PagerDuty or Slack, planning and executing diagnostic tasks through API calls, and reasoning about findings to distill information into actionable root causes. The system faces significant challenges around ground truth validation, user feedback loops, and the need to minimize human intervention while maintaining high accuracy across diverse infrastructure environments."
+  canonical: "https://www.zenml.io/llmops-database/ai-agent-for-automated-root-cause-analysis-in-production-systems"
+  ogTitle: "Cleric: AI Agent for Automated Root Cause Analysis in Production Systems - ZenML LLMOps Database"
+  ogDescription: "Cleric developed an AI agent system to automatically diagnose and root cause production alerts by analyzing observability data, logs, and system metrics. The agent operates asynchronously, investigating alerts when they fire in systems like PagerDuty or Slack, planning and executing diagnostic tasks through API calls, and reasoning about findings to distill information into actionable root causes. The system faces significant challenges around ground truth validation, user feedback loops, and the need to minimize human intervention while maintaining high accuracy across diverse infrastructure environments."
+---
+
+This case study explores Cleric's development of an AI agent system designed to automate root cause analysis for production alerts in cloud infrastructure environments. The conversation between multiple speakers provides deep insights into the practical challenges of deploying LLMs in production for complex technical tasks where accuracy and reliability are paramount.
+
+## Overview and Problem Statement
+
+Cleric's core product is an AI agent that automatically investigates production alerts when they fire in systems like PagerDuty or Slack. The agent's primary function is to analyze production systems, observability stacks, logs, metrics, and other data sources to diagnose issues and provide engineers with root cause analysis or actionable findings. This represents a significant departure from traditional reactive debugging approaches where engineers manually investigate alerts, often spending considerable time switching between tools and gathering context.
+
+The fundamental challenge the company addresses is the time-intensive nature of production debugging. Engineers typically face a tedious process of accessing multiple consoles, correlating data across different systems, and performing repetitive investigative work before they can apply their domain expertise to actually solve problems. Cleric's agent aims to automate this "grunt work" and present engineers with a distilled analysis that leverages their existing knowledge and intuition.
+
+## Technical Architecture and Approach
+
+The agent operates through a sophisticated workflow involving planning, execution, and reasoning phases. When an alert fires, the system begins by analyzing the available context including time series data, logs, code repositories, and communication channels like Slack conversations. The agent then plans a series of investigative tasks, executes them through API calls to various observability tools, and iteratively reasons about the findings until it can present a coherent root cause analysis or set of diagnostic findings.
+
+One of the most interesting technical aspects discussed is how the system handles the inherently sparse and distributed nature of production data. The speakers describe the core challenge as an information retrieval problem - taking sparse information spread across multiple systems and creating dense, contextual insights relevant to the specific problem. This involves sophisticated data correlation and synthesis capabilities that go beyond simple log analysis.
+
+The agent is designed to operate asynchronously rather than in real-time interactive mode. This design decision was intentional, as the speakers explain that synchronous engagement with engineers proved problematic due to the immediate, high-pressure nature of production issues. The asynchronous approach allows the agent to work as an "ambient background agent" that processes alerts and provides findings when engineers are ready to review them.
+
+## Ground Truth and Evaluation Challenges
+
+A significant portion of the discussion centers on the fundamental challenge of establishing ground truth in production environments. Unlike traditional machine learning applications where training data and expected outcomes are well-defined, production debugging lacks clear success metrics. Engineers themselves often cannot definitively confirm whether a proposed root cause is correct, leading to responses like "this looks good but I'm not sure if it's real."
+
+The team has learned that removing humans from both the execution loop and the feedback/labeling process is crucial for scalability. They emphasize the need for automated feedback mechanisms that can operate in hours or minutes rather than days or weeks. This includes developing implicit feedback systems where user interactions (like clicking to expand findings or ignoring certain suggestions) provide signals about the quality of the agent's output.
+
+The company has developed sophisticated approaches to evaluation including trace analysis, clustering of failure modes, and heat map visualizations that show agent performance across different types of tasks and metrics. These heat maps reveal patterns where the agent excels or struggles, such as difficulties with specific types of API queries or getting stuck in reasoning loops.
+
+## Simulation and Testing Infrastructure
+
+One of the most innovative aspects of Cleric's LLMOps approach is their development of simulation environments for testing and evaluation. Initially, the team attempted to use actual cloud infrastructure for testing, spinning up real GCP projects and Kubernetes clusters. However, this approach proved problematic because production systems are designed to self-heal, making it difficult to maintain consistent broken states for reproducible testing.
+
+Their current simulation approach involves creating mock APIs and environments that closely mimic production systems like DataDog, Prometheus, and Kubernetes. The challenge lies in making these simulations realistic enough to fool the AI agent while avoiding the complexity of rebuilding entire observability platforms. Interestingly, the speakers note that newer language models have become sophisticated enough to detect when they're operating in simulation environments, requiring additional efforts to make the simulated data more realistic.
+
+The simulation infrastructure enables much faster iteration cycles and more systematic evaluation of agent capabilities across different scenarios. It also allows for controlled testing of edge cases and failure modes that would be difficult or dangerous to reproduce in actual production environments.
+
+## User Experience and Interface Design
+
+The conversation reveals deep thinking about the human-computer interaction challenges inherent in AI agent systems. The speakers reference Don Norman's work on gulfs of execution and evaluation, identifying three critical gaps that must be bridged: specification (communicating intent to the AI), generalization (ensuring the AI's understanding applies to the actual task), and comprehension (understanding and validating the AI's outputs).
+
+Cleric has made deliberate design decisions about user control surfaces. Rather than exposing raw prompts to users, they provide contextual guidance mechanisms that allow engineers to inject domain-specific knowledge without requiring them to understand the underlying prompt engineering. This approach prevents users from making ad-hoc modifications that might not generalize across different scenarios.
+
+The system includes hierarchical feedback mechanisms, starting with simple binary interactions (click/don't click) and allowing for more detailed open-ended feedback. Users can highlight problematic outputs and provide stream-of-consciousness explanations, which are then processed by AI assistants to suggest prompt improvements and identify recurring failure patterns.
+
+## Performance Buckets and Capability Management
+
+The team has developed a pragmatic approach to managing expectations and capabilities by categorizing alerts into three buckets: those they can confidently solve immediately, those they can learn to solve through production experience, and those that may be beyond current capabilities. This framework helps with both product positioning and continuous improvement efforts.
+
+The first bucket represents the value proposition that justifies deployment - problems the system can solve reliably from day one. The second bucket represents the growth opportunity where the system learns and improves through production experience. The third bucket helps establish realistic boundaries and prevents over-promising on capabilities.
+
+This approach also extends to customization, where the system adapts agent capabilities based on the specific technology stack and infrastructure patterns of each customer. Rather than exposing full customization to users, Cleric contextually modifies agent skill sets based on whether customers use technologies like DataDog versus Prometheus, Kubernetes versus other orchestration platforms, or specific programming languages.
+
+## Challenges and Lessons Learned
+
+The case study reveals several critical challenges in deploying LLMs for complex production tasks. The speakers emphasize that while AI agents can achieve good baseline performance relatively easily, reaching high performance levels requires significant engineering effort and domain expertise. They explicitly reject the notion that you can simply "fork an open source agent and it'll just work."
+
+Model collapse and the whack-a-mole nature of improvements represent ongoing challenges. The team has observed that solving one class of problems sometimes introduces new failure modes, and there appears to be a saturation point where additional evaluation scenarios and prompt improvements yield diminishing returns.
+
+The importance of minimizing context switching and tool friction becomes apparent throughout the discussion. The speakers note that engineers often dread the mechanical aspects of debugging - accessing consoles, correlating data across systems, and performing repetitive investigations. The value proposition lies not in replacing engineering expertise but in automating the tedious preparatory work that precedes the application of domain knowledge.
+
+## Data Processing and Parallel Applications
+
+The conversation also explores parallel applications in data processing workflows, where similar challenges arise around ground truth, evaluation, and user interaction patterns. The development of systems like DOCTL (described as MapReduce pipelines where LLMs execute the map and reduce operations) faces analogous problems around bridging specification gaps and handling the long tail of failure modes.
+
+The discussion reveals common patterns across different AI agent applications: the difficulty of translating user intent into effective prompts, the challenge of verifying outputs when ground truth is unclear, and the need for rapid feedback loops that minimize human intervention while still capturing meaningful signals about system performance.
+
+This case study provides valuable insights into the practical realities of deploying sophisticated AI agents in production environments where accuracy, reliability, and user trust are paramount. The technical approaches, evaluation methodologies, and user experience considerations discussed offer a comprehensive view of the current state of LLMOps for complex, high-stakes applications.

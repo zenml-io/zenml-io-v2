@@ -1,0 +1,161 @@
+---
+title: "Scaling Email Content Extraction Using LLMs in Production"
+slug: "scaling-email-content-extraction-using-llms-in-production"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f414cbd64d6869637f18b"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:44:02.049Z"
+  createdOn: "2024-11-21T14:18:52.212Z"
+llmopsTags:
+  - "cost-optimization"
+  - "devops"
+  - "document-processing"
+  - "google-gcp"
+  - "latency-optimization"
+  - "model-optimization"
+  - "monitoring"
+  - "prompt-engineering"
+  - "realtime-application"
+  - "reliability"
+  - "scalability"
+  - "scaling"
+  - "security"
+  - "structured-output"
+company: "Yahoo"
+summary: "Yahoo Mail faced challenges with their existing ML-based email content extraction system, hitting a coverage ceiling of 80% for major senders while struggling with long-tail senders and slow time-to-market for model updates. They implemented a new solution using Google Cloud's Vertex AI and LLMs, achieving 94% coverage for standard domains and 99% for tail domains, with 51% increase in extraction richness and 16% reduction in tracking API errors. The implementation required careful consideration of hybrid infrastructure, cost management, and privacy compliance while processing billions of daily messages."
+link: "https://www.youtube.com/watch?v=hVrv0sv93ls"
+year: 2023
+seo:
+  title: "Yahoo: Scaling Email Content Extraction Using LLMs in Production - ZenML LLMOps Database"
+  description: "Yahoo Mail faced challenges with their existing ML-based email content extraction system, hitting a coverage ceiling of 80% for major senders while struggling with long-tail senders and slow time-to-market for model updates. They implemented a new solution using Google Cloud's Vertex AI and LLMs, achieving 94% coverage for standard domains and 99% for tail domains, with 51% increase in extraction richness and 16% reduction in tracking API errors. The implementation required careful consideration of hybrid infrastructure, cost management, and privacy compliance while processing billions of daily messages."
+  canonical: "https://www.zenml.io/llmops-database/scaling-email-content-extraction-using-llms-in-production"
+  ogTitle: "Yahoo: Scaling Email Content Extraction Using LLMs in Production - ZenML LLMOps Database"
+  ogDescription: "Yahoo Mail faced challenges with their existing ML-based email content extraction system, hitting a coverage ceiling of 80% for major senders while struggling with long-tail senders and slow time-to-market for model updates. They implemented a new solution using Google Cloud's Vertex AI and LLMs, achieving 94% coverage for standard domains and 99% for tail domains, with 51% increase in extraction richness and 16% reduction in tracking API errors. The implementation required careful consideration of hybrid infrastructure, cost management, and privacy compliance while processing billions of daily messages."
+---
+
+## Overview
+
+This case study, presented at Google Cloud Next 2024, details Yahoo Mail's journey from prototype to production using Vertex AI and generative AI for email extraction at consumer scale. The presentation features speakers from both Google Cloud and Yahoo Mail engineering, providing a comprehensive view of both the platform capabilities and the real-world implementation challenges faced by Yahoo.
+
+Yahoo Mail is a consumer email platform serving hundreds of millions of mailboxes, processing billions of messages daily. The platform focuses on helping users manage the "business of their lives" through features like package tracking and receipt management. These features rely heavily on accurate extraction of structured information from unstructured email content—a task that became the focus of their LLM deployment.
+
+## The Problem: Coverage Ceiling and Time to Market
+
+Yahoo's previous approach used traditional sequence-to-sequence machine learning models for mail extractions. While this worked for top-tier senders (Amazon, Walmart, and similar large retailers), they encountered what they described as a "coverage ceiling." The email ecosystem follows an 80/20 distribution: the top 20% of senders (major retailers) contribute 80% of receipts and packages, while the remaining 80% of long-tail senders contribute only 20% of coverage.
+
+The critical insight was that consumer trust is fragile—one missing receipt or incorrect package update can cause users to lose faith in the entire module. When trust erodes, users fall back to manual inbox triaging, defeating the purpose of the automated features.
+
+Additionally, their time-to-market was problematic. In an ecosystem receiving fresh data every second, having model retraining cycles that took six months or longer was unacceptable. Slow model refresh cycles led to data quality degradation, performance issues, and poor user experience.
+
+## The Catalyst: Cloud Migration and Generative AI
+
+Two events accelerated Yahoo's evolution toward LLM-based extraction:
+
+The first was the release of ChatGPT in November 2022, which demonstrated the potential of large language models. The second was Yahoo's strategic decision in January 2023 to select Google Cloud as their mail cloud provider. These factors combined to enable an internal Yahoo hackathon exploring LLMs for mail extraction, which showed promising results.
+
+By summer 2023, the Yahoo and Google Cloud teams collaborated on a full-day generative AI workshop to define their roadmap for the next six months. The outcome was an aggressive timeline: release a 0-to-1 beta at Google Cloud Next 2023 (August), then scale to 100% of US daily active users before Black Friday and Cyber Monday for the Q4 shopping season.
+
+## LLMOps Challenges and Solutions
+
+### Managing Hybrid Infrastructure
+
+Yahoo was in the middle of a cloud transformation, with systems partly on-premises and partly in Google Cloud. This hybrid architecture created significant complexity for production LLM deployment.
+
+A key challenge was comparing the performance of production models against new LLM models. The team implemented a sampling approach where a small percentage of live traffic runs through both the legacy model and the new LLM system. This dual-inference approach enabled quality validation before go/no-go decisions.
+
+This validation step proved crucial. During their planned November release, the post-validation step uncovered problems that forced them to delay. After fixing the issues, they achieved a successful release in December—demonstrating that robust evaluation pipelines are essential for production LLM deployments.
+
+Additional hybrid challenges included:
+- Network configuration to ensure Vertex AI endpoints could be accessed from on-premises extraction pipelines
+- JDK compatibility issues (extraction libraries were JDK8 compliant but GCP required JDK11+)
+- Building provisions in the extraction pipeline to prevent data leaks and hallucinations
+
+### GPU Infrastructure and Fine-Tuning
+
+While Yahoo had established ML infrastructure for data gathering, training, and inference pipelines, they lacked sufficient GPUs for fine-tuning LLM models. Rather than procuring and managing GPU hardware, they leveraged Vertex AI managed training through Vertex AI notebooks, gaining access to A100 GPUs. This approach significantly accelerated experimentation and enabled faster iteration cycles.
+
+### Model Selection and Inference Architecture
+
+For their use case, Yahoo selected the PaLM T5 open-source model from Google with 250 million parameters. This decision balanced capability against cost—a critical consideration given their scale of billions of daily messages.
+
+The team conducted extensive experiments with Google's PSO (Professional Services Organization) to determine optimal batch sizes and GPU configurations. They deployed multiple Vertex AI endpoints across various US regions, aligning infrastructure placement with traffic patterns to minimize latency and optimize resource utilization.
+
+### Real-Time Processing Requirements
+
+A key requirement was extraction freshness: for a delightful user experience, extraction had to happen instantaneously after mail delivery but before users opened their email. This real-time constraint influenced their entire architecture, requiring low-latency inference endpoints and efficient batching strategies.
+
+### Privacy and Compliance
+
+Mail extraction involves sensitive user data from personal mailboxes. The team emphasized that security, legal compliance, and privacy were paramount concerns. All data remained within their tenant, with careful attention to data handling throughout the pipeline.
+
+## Deployment Architecture
+
+The architecture featured a hybrid design with Yahoo's private cloud on one side and Google Cloud on the other. Test and training data from the private cloud was copied to Google Cloud Storage (GCS) for model training in Vertex AI notebooks. On the production side, the extraction pipeline and error analysis tools operated across both environments.
+
+The team built a hybrid solution for:
+- Error analysis and model monitoring
+- Active learning loops to incorporate user feedback
+- Continuous model improvement based on production signals
+
+## Results and Business Impact
+
+After successful deployment to 100% of US daily active users in December 2023, Yahoo achieved:
+
+- 3.5 million new purchase receipt extractions daily
+- 94% coverage of standard domains (vs. the previous 80%)
+- 5.5 million new package extractions daily  
+- 99% coverage of tail domains (a dramatic improvement for long-tail senders)
+- 51% increase in extraction richness (more attributes per extraction, including tracking URLs, tracking numbers, and expected arrival times)
+- 16% reduction in tracking API errors
+
+The team characterized these results as achieving "better coverage, more rich signal, and better quality of the signals."
+
+## MLOps Framework for Generative AI
+
+The presentation outlined Google's framework for MLOps in the generative AI era, covering:
+
+- **Data curation**: Procuring and evaluating datasets for fine-tuning and evaluation
+- **Development and experimentation**: Testing prompts, comparing models (including Google models, competitors, and open-source options), and tracking experiments
+- **Release process**: Validation, deployment of multi-model architectures orchestrated by agents
+- **Prediction lifecycle**: Real-time inference with cost-effective model selection
+- **Monitoring**: Continuous feedback gathering and system improvement
+- **Customization**: Fine-tuning and augmenting underlying models
+- **Governance**: Ensuring the entire process meets compliance requirements
+
+## Future Roadmap
+
+Yahoo's plans for continued development include:
+
+- Fully automated ML pipeline using Vertex AI offerings
+- LLM-based label generation to reduce dependency on costly, slow human labeling
+- Automated quality validation using LLMs to prevent issues like those encountered in November
+- RAG (Retrieval Augmented Generation) implementation to reduce time-to-market for new schemas and verticals
+
+## Vertex AI Tooling Demonstrated
+
+The presentation included demonstrations of Vertex AI capabilities supporting the prototype-to-production journey:
+
+- **Multimodal prompting**: Testing prompts against PDFs, videos, and audio files
+- **Prompt management**: Saving prompts with notes for experiment tracking
+- **Code generation**: Automatically generating Python, Node.js, Java, and curl code from prompt experiments
+- **Colab Enterprise**: Running notebooks within the secure tenant environment with custom runtime templates
+- **Embeddings**: Multimodal and text embeddings for similarity search
+- **Vector storage**: Feature store and vector search for scaled embedding operations
+- **Vertex Pipelines**: Automated, repeatable embedding generation
+- **Agent Builder**: Low-code option for building RAG applications without extensive API coding
+
+## Key Lessons Learned
+
+The case study highlighted several important lessons for production LLM deployments:
+
+The team acknowledged that their November release failed, but emphasized that persistence and robust validation were key—they retried and succeeded in December. This honest assessment of setbacks demonstrates that production LLM deployments require resilience and iterative problem-solving.
+
+The hybrid infrastructure challenges were substantial, requiring significant engineering effort to bridge on-premises and cloud systems. Organizations undergoing cloud transformation while simultaneously adopting LLMs should expect additional complexity.
+
+Cost management at scale remains critical. The team repeatedly emphasized that for large-scale consumer products processing billions of messages, extraction cost minimization and resource utilization optimization are essential considerations—not afterthoughts.
+
+Finally, the tight integration of evaluation and monitoring into the deployment process prevented potentially damaging production issues, reinforcing that LLMOps requires robust quality gates before releasing to users.

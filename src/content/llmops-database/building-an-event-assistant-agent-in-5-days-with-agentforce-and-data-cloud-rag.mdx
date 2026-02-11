@@ -1,0 +1,130 @@
+---
+title: "Building an Event Assistant Agent in 5 Days with Agentforce and Data Cloud RAG"
+slug: "building-an-event-assistant-agent-in-5-days-with-agentforce-and-data-cloud-rag"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "690a0f235d1a41e565bdbd12"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:25:37.681Z"
+  createdOn: "2025-11-04T14:35:15.788Z"
+llmopsTags:
+  - "customer-support"
+  - "question-answering"
+  - "chatbot"
+  - "realtime-application"
+  - "structured-output"
+  - "rag"
+  - "prompt-engineering"
+  - "embeddings"
+  - "semantic-search"
+  - "vector-search"
+  - "reranking"
+  - "agent-based"
+  - "human-in-the-loop"
+  - "chunking"
+  - "system-prompts"
+  - "api-gateway"
+  - "monitoring"
+  - "databases"
+  - "microservices"
+  - "devops"
+  - "documentation"
+  - "llama-index"
+  - "postgresql"
+  - "openai"
+company: "Salesforce"
+summary: "Salesforce's engineering team built \"Ask Astro Agent,\" an AI-powered event assistant for their Dreamforce conference, in just five days by migrating from a homegrown OpenAI-based solution to their Agentforce platform with Data Cloud RAG capabilities. The agent helped attendees find information grounded in FAQs, manage schedules, and receive personalized session recommendations. The team leveraged vector and hybrid search indexing, streaming data updates via Mulesoft, knowledge article integration, and Salesforce's native tooling to create a production-ready agent that demonstrated the power of their enterprise AI stack while handling real-time event queries from thousands of attendees."
+link: "https://www.salesforce.com/blog/build-an-ai-agent/"
+year: 2024
+seo:
+  title: "Salesforce: Building an Event Assistant Agent in 5 Days with Agentforce and Data Cloud RAG - ZenML LLMOps Database"
+  description: "Salesforce's engineering team built \"Ask Astro Agent,\" an AI-powered event assistant for their Dreamforce conference, in just five days by migrating from a homegrown OpenAI-based solution to their Agentforce platform with Data Cloud RAG capabilities. The agent helped attendees find information grounded in FAQs, manage schedules, and receive personalized session recommendations. The team leveraged vector and hybrid search indexing, streaming data updates via Mulesoft, knowledge article integration, and Salesforce's native tooling to create a production-ready agent that demonstrated the power of their enterprise AI stack while handling real-time event queries from thousands of attendees."
+  canonical: "https://www.zenml.io/llmops-database/building-an-event-assistant-agent-in-5-days-with-agentforce-and-data-cloud-rag"
+  ogTitle: "Salesforce: Building an Event Assistant Agent in 5 Days with Agentforce and Data Cloud RAG - ZenML LLMOps Database"
+  ogDescription: "Salesforce's engineering team built \"Ask Astro Agent,\" an AI-powered event assistant for their Dreamforce conference, in just five days by migrating from a homegrown OpenAI-based solution to their Agentforce platform with Data Cloud RAG capabilities. The agent helped attendees find information grounded in FAQs, manage schedules, and receive personalized session recommendations. The team leveraged vector and hybrid search indexing, streaming data updates via Mulesoft, knowledge article integration, and Salesforce's native tooling to create a production-ready agent that demonstrated the power of their enterprise AI stack while handling real-time event queries from thousands of attendees."
+---
+
+## Overview and Business Context
+
+This case study describes how Salesforce's internal engineering team built "Ask Astro Agent," an AI-powered event assistant that went live at their Dreamforce 2024 conference. The project represents a practical example of rapid LLM deployment under tight time constraints, transitioning from a homegrown solution to an enterprise-grade platform in just five days before the event. The Marketing Event Tech team, led by Software Engineering Architect Amool Gupta, had initially built an AI agent using OpenAI function-calling and a vector database hosted in Heroku, but leadership challenged them to migrate to Salesforce's own Agentforce Service Agent and Data Cloud RAG stack—essentially "eating their own dog food" to demonstrate the platform's capabilities at their flagship event.
+
+The agent's core functionality included answering attendee questions grounded in FAQ knowledge bases, managing user schedules through action-taking capabilities, and recommending sessions based on multiple factors including search queries, timing, meeting summaries, and session types. This use case exemplifies event-driven LLM applications where information freshness, accuracy, and user experience are critical, particularly when serving thousands of attendees in real-time during a major conference.
+
+## Technical Architecture and Data Pipeline
+
+The foundation of Ask Astro Agent's implementation began with establishing a robust data pipeline. Robert Xue, the Software Engineering Architect on the Retrieval Augmented Generation team who authored the case study, started with session data ingestion into Data Cloud. Rather than following more complex approaches, he chose to create a data model directly from CSV files—specifically an "all-dreamforce-sessions.csv" file—which proved significantly faster than creating custom objects in Salesforce core, uploading via CSV, and managing permission sets.
+
+The data architecture involved creating a vector index using Data Cloud's unstructured data semantic search capability. This indexing process appears to have been relatively automated, as the author mentions taking a meal break and finding the vector index ready upon return. The search infrastructure represents a critical component of the RAG system, enabling semantic retrieval of relevant session information based on attendee queries.
+
+A particularly interesting architectural decision involved the streaming data pipeline built to handle real-time updates. Software Engineer Lakshmi Siva Kallam joined the effort to implement recurring data refresh logic using Mulesoft. The team developed Java code (with assistance from an LLM for JSON processing) to convert their vendor's session API output into the appropriate format. They then built a recurring data-ingestion pipeline with change-data capture support in Mulesoft Anypoint Studio, deploying it as a new data stream. This enabled near real-time synchronization of session schedules and speaker information updates—a crucial capability for an event where schedules frequently change. The team validated this by removing speakers from the vendor system, adding themselves as test speakers, and confirming within minutes that the search index reflected these changes.
+
+## Search Technology Evolution: From Vector to Hybrid
+
+One of the most technically substantive aspects of this case study involves the evolution of the search implementation. Initially, the team relied purely on vector search for semantic retrieval, but they quickly encountered limitations when handling specific entity queries like speaker names. When users searched for "Adam Evans," the system would sometimes return sessions for other speakers named Adam, Adams, or Evans because the speaker name constituted only a small portion of the vectorized session information, and multiple speakers shared similar names.
+
+To address this, the team implemented hybrid search, which was available as a beta feature in Data Cloud. The rationale is clearly articulated: vector search excels at understanding semantic similarities and context but lacks precision with specific domain vocabulary, while keyword search provides strong lexical similarity matching but misses semantic relationships. Hybrid search combines both approaches, leveraging the semantic awareness of vector search with the precision and speed of keyword-based retrieval.
+
+Beyond hybrid search, the team employed augmented indexing—a technique where large data chunks are broken down into smaller, query-optimized pieces. For speaker name searches, they derived speaker information from session data and created individual chunks formatted as "Adam Evans, SVP, AI Platform Cloud, Salesforce." These augmented chunks would receive high keyword scores and reasonable vector scores when queries like "Adam Evans" or misspellings like "Adm Evens" were submitted. When these chunks matched, the system would return full session information to the LLM for RAG processing. This represents a sophisticated approach to handling mixed retrieval scenarios where both semantic understanding and precise entity matching are required.
+
+## Agent Development and Prompt Engineering
+
+The agent itself was built using Agentforce Service Agent, with Product Manager Andrew Clauson leading the conversion of existing agent logic into Agentforce configurations. The implementation involved creating Apex classes to handle vector database calls and expose them as agent actions. The resulting Ask Astro Agent comprised three topics and 12 actions, which began responding appropriately to test utterances relatively quickly.
+
+The case study reveals several interesting details about the prompt engineering and debugging process. Action descriptions were used strategically to handle edge cases—for instance, the product manager resolved a time zone issue by incorporating "prompt magic" into the action descriptions rather than requiring code changes. This highlights the importance of thoughtful prompt design in agent behavior tuning.
+
+The debugging cycle was remarkably fast, clocking in at approximately 30 seconds according to the text. This rapid iteration capability, enabled by LLM-powered agents and Salesforce's Agent Builder interface, represents a significant operational advantage compared to traditional software development cycles. The team continuously refined prompts, adjusted topic configurations, and updated FAQ content throughout the development period, with testing partners providing feedback that informed iterative improvements.
+
+Topic instructions and action selection logic were carefully designed to ensure appropriate routing. When users asked questions like "Marc Benioff's sessions on Tuesday," the system needed to identify the correct topic (Session management), select the appropriate action (Retrieve Sessions from DataCloud), and pass the right parameters (searchTerm = "Marc Benioff", startsBetween representing Tuesday). This multi-step reasoning process required careful orchestration between the Atlas Reasoning Engine (Salesforce's underlying LLM orchestration layer) and the various retrieval and action components.
+
+## Knowledge Management Integration
+
+Beyond session data retrieval, the team implemented a knowledge management integration for FAQ handling. They converted FAQ spreadsheets into formal knowledge articles and leveraged the "Answer Questions with Knowledge" action to surface FAQ responses. This architectural decision provided significant operational benefits: the Marketing Event Tech team could now use Salesforce's native Lightning Knowledge interface to manage article versions and trigger knowledge base rebuilds through a "Rebuild Index" button.
+
+This represents a more sustainable LLMOps approach compared to managing FAQs in spreadsheets or flat files. Version control, content governance, and update workflows become standardized through existing Salesforce tooling rather than requiring custom solutions. The knowledge integration also demonstrates the multi-source RAG capability of the system—combining structured session data retrieval with unstructured FAQ knowledge retrieval in a single agent experience.
+
+## Deployment and Production Readiness
+
+The deployment timeline was aggressive: the team received green light approval to ship the Data Cloud version of Ask Astro Agent to colleagues and Dreamforce attendees on the day before the conference started. This rapid deployment reflects both the confidence in the testing that had been conducted and the inherent advantages of working within a managed platform where infrastructure concerns are largely abstracted away.
+
+The production architecture involved multiple integrated components: Mulesoft Anypoint Studio for data integration, Data Cloud Ingestion API for streaming updates, data mapping layers (DLO to DMO mapping mentioned in the text), vector and hybrid indexes with augmented chunks, query services enhanced with hybrid search re-ranking, the Atlas Reasoning Engine for agent orchestration, knowledge action integration, the Agent Builder for configuration, an invocable action framework for schedule updates, Bot API for mobile app connectivity, and Einstein feedback for monitoring.
+
+This technology stack demonstrates the complexity of modern LLM applications in production. While the case study emphasizes the speed of development, it's important to recognize that this velocity was enabled by extensive pre-existing platform capabilities. The team wasn't building these foundational components from scratch but rather composing them together—a significant advantage of enterprise platforms but also a potential limitation for organizations seeking more flexibility or cost optimization.
+
+## Monitoring, Feedback, and Iteration
+
+Production monitoring was implemented through Einstein feedback, which tracked how attendees interacted with Ask Astro Agent. This telemetry enabled the team to understand improvement areas for FAQ content and agent behavior. The feedback mechanisms would inform enhancements for future Salesforce events like World Tour or TDX conferences.
+
+The case study doesn't provide detailed metrics on agent performance—information like query volume, response accuracy rates, user satisfaction scores, or latency measurements are not disclosed. This absence of quantitative results is notable, as it leaves open questions about actual production performance. We learn that the agent went live and was used by attendees, but we don't have data on how well it performed compared to the previous homegrown solution or what percentage of queries were successfully resolved.
+
+## Critical Assessment and LLMOps Considerations
+
+While the case study presents an impressive story of rapid development, several aspects warrant balanced consideration. First, the five-day timeline is somewhat misleading—the Marketing Event Tech team had already spent a month (since August 26) building the initial homegrown version with OpenAI and vector databases. The five-day sprint was essentially a migration and enhancement effort rather than building from scratch. This context is important for organizations considering similar timelines.
+
+Second, the case study is explicitly promotional in nature, showcasing Salesforce's own products at their flagship conference. The author acknowledges the message was "Don't DIY your AI, and we're ready to help you on this journey," which frames the entire project as both a functional tool and a marketing demonstration. Claims about productivity improvements and superior debugging capabilities compared to "open source stacks" should be viewed with appropriate skepticism, as detailed comparative analysis or benchmarks are not provided.
+
+Third, the reliance on multiple Salesforce-specific components (Apex classes, Data Cloud, Mulesoft, Agentforce platform, Lightning Knowledge) creates significant vendor lock-in. While this may be acceptable or even advantageous for Salesforce customers with existing investments, it represents a different tradeoff profile than more portable approaches using standard APIs and open-source components. The configurability and debugging improvements mentioned are platform-specific benefits that wouldn't transfer if an organization decided to migrate to different infrastructure.
+
+Fourth, the use of LLMs for code generation is mentioned casually—the author notes using an "LLM code-generation" tool to implement Apex classes in 30 minutes and using LLM assistance for JSON processing in Java code in 45 minutes. This represents an interesting meta-layer of LLM usage (LLMs helping to build LLM applications) but also raises questions about code quality, maintainability, and the debugging burden that might emerge from AI-generated code in production systems.
+
+The hybrid search implementation and augmented indexing approach represent genuinely interesting technical contributions to handling mixed semantic and lexical retrieval scenarios. However, these techniques aren't novel inventions—hybrid search has been explored extensively in information retrieval literature, and query-specific chunk optimization is a known RAG enhancement pattern. The value here is in the practical implementation within a constrained timeline rather than technical innovation per se.
+
+## Operational Maturity and Production Considerations
+
+From an LLMOps maturity perspective, this case study demonstrates several positive practices: automated data pipeline with change-data capture, versioned knowledge management, rapid debugging cycles, production monitoring via feedback mechanisms, and systematic testing with multiple stakeholders before full deployment. The streaming data architecture ensuring near real-time index updates is particularly important for event scenarios where information freshness is critical.
+
+However, several standard LLMOps concerns receive limited attention in the case study. Cost management isn't discussed—we don't know the infrastructure costs associated with running vector indexes, hybrid search, and LLM inference for potentially thousands of concurrent users during a major conference. Model selection and evaluation processes aren't detailed; we're told the system uses the Atlas Reasoning Engine but not which underlying LLMs, how they were selected, or how different models were compared. Safety mechanisms like content filtering, handling of inappropriate queries, or fallback behaviors for out-of-scope questions aren't explicitly covered.
+
+The testing approach appears primarily manual and stakeholder-driven rather than automated. While the 30-second debugging cycle is impressive for interactive testing, we don't see evidence of systematic evaluation frameworks, regression test suites, or automated quality gates. For a production agent serving a major conference, one would expect more rigorous testing infrastructure, though this may exist but simply wasn't highlighted in the narrative.
+
+## Broader Implications for LLM Deployment
+
+This case study offers valuable lessons for organizations deploying LLMs in production contexts, particularly for event-driven or time-sensitive applications. The emphasis on composability—leveraging pre-built platform capabilities rather than building everything from scratch—enabled rapid deployment but required operating within the constraints and capabilities of the chosen platform. The migration from a homegrown solution to a vendor platform demonstrates a common tension in AI deployment: flexibility and control versus speed and integrated tooling.
+
+The multi-source RAG architecture combining structured data retrieval (sessions) with unstructured knowledge (FAQs) reflects real-world complexity in enterprise AI applications. Many production use cases require blending different data types, retrieval strategies, and reasoning approaches, making the orchestration layer (in this case, Agentforce and Atlas Reasoning Engine) critically important.
+
+The project also illustrates the importance of domain-specific optimization. The augmented indexing for speaker names, the hybrid search implementation, and the time zone handling in prompts all represent customizations needed to move from a general-purpose agent to one that actually works well for the specific event assistant use case. This kind of domain adaptation and refinement is often where the real work in LLM deployment happens, beyond initial prototype development.
+
+Overall, this case study provides a concrete example of enterprise LLM deployment with realistic time pressures, multiple technical components, and the complexities of production operations. While the promotional framing and absence of detailed performance metrics limit our ability to fully assess outcomes, the technical architecture and rapid iteration approach offer useful reference points for practitioners building similar systems. The five-day migration timeline is impressive when properly contextualized as enhancement of existing work rather than greenfield development, and the emphasis on platform-enabled velocity highlights both the advantages and tradeoffs of working within comprehensive enterprise AI platforms.

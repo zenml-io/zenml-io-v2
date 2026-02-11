@@ -1,0 +1,240 @@
+---
+title: "Building an Internal ChatGPT-like Tool for Enterprise-wide AI Access"
+slug: "building-an-internal-chatgpt-like-tool-for-enterprise-wide-ai-access"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "694ad97262d4a3172e9daa32"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2026-01-07T09:40:39.763Z"
+  lastUpdated: "2025-12-23T20:12:19.460Z"
+  createdOn: "2025-12-23T18:03:30.193Z"
+llmopsTags:
+  - "chatbot"
+  - "customer-support"
+  - "poc"
+  - "rag"
+  - "embeddings"
+  - "prompt-engineering"
+  - "token-optimization"
+  - "security"
+  - "documentation"
+  - "fastapi"
+  - "langchain"
+  - "openai"
+  - "anthropic"
+  - "google-gcp"
+company: "Grab"
+summary: "Grab's ML Platform team faced overwhelming support channel inquiries that consumed engineering time with repetitive questions. An engineer initially attempted to build a RAG-based chatbot for platform documentation but encountered context window limitations with GPT-3.5-turbo and scalability issues. Pivoting from this failed experiment, the engineer built GrabGPT, an internal ChatGPT-like tool accessible to all employees, deployed over a weekend using existing frameworks and Grab's model-serving platform. The tool rapidly scaled to nearly company-wide adoption, with over 3000 users within three months and 600 daily active users, providing secure, auditable, and globally accessible LLM capabilities across multiple model providers including OpenAI, Claude, and Gemini."
+link: "https://engineering.grab.com/the-birth-of-grab-gpt"
+year: 2025
+seo:
+  title: "Grab: Building an Internal ChatGPT-like Tool for Enterprise-wide AI Access - ZenML LLMOps Database"
+  description: "Grab's ML Platform team faced overwhelming support channel inquiries that consumed engineering time with repetitive questions. An engineer initially attempted to build a RAG-based chatbot for platform documentation but encountered context window limitations with GPT-3.5-turbo and scalability issues. Pivoting from this failed experiment, the engineer built GrabGPT, an internal ChatGPT-like tool accessible to all employees, deployed over a weekend using existing frameworks and Grab's model-serving platform. The tool rapidly scaled to nearly company-wide adoption, with over 3000 users within three months and 600 daily active users, providing secure, auditable, and globally accessible LLM capabilities across multiple model providers including OpenAI, Claude, and Gemini."
+  canonical: "https://www.zenml.io/llmops-database/building-an-internal-chatgpt-like-tool-for-enterprise-wide-ai-access"
+  ogTitle: "Grab: Building an Internal ChatGPT-like Tool for Enterprise-wide AI Access - ZenML LLMOps Database"
+  ogDescription: "Grab's ML Platform team faced overwhelming support channel inquiries that consumed engineering time with repetitive questions. An engineer initially attempted to build a RAG-based chatbot for platform documentation but encountered context window limitations with GPT-3.5-turbo and scalability issues. Pivoting from this failed experiment, the engineer built GrabGPT, an internal ChatGPT-like tool accessible to all employees, deployed over a weekend using existing frameworks and Grab's model-serving platform. The tool rapidly scaled to nearly company-wide adoption, with over 3000 users within three months and 600 daily active users, providing secure, auditable, and globally accessible LLM capabilities across multiple model providers including OpenAI, Claude, and Gemini."
+---
+
+## Overview
+
+GrabGPT represents an internal LLM deployment case study from Grab, a Southeast Asian superapp company operating across mobility, deliveries, and digital financial services. The project began in March 2023 as an attempt to reduce support burden on the ML Platform team but evolved into a company-wide internal ChatGPT alternative. This case study is particularly interesting from an LLMOps perspective because it demonstrates the rapid evolution from a failed RAG implementation to a successful general-purpose internal tool, highlighting pragmatic decision-making, deployment infrastructure reuse, and the importance of non-technical factors like security and accessibility in enterprise LLM adoption.
+
+The narrative, authored by engineer Wenbo Wei and published in May 2025, provides a first-person account of the development process, though as with any self-reported case study, claims about adoption rates and impact should be considered within the context of internal promotion of the tool. The case study offers valuable insights into the operational considerations of deploying LLMs at enterprise scale, particularly around authentication, model agnosticism, auditability, and data security requirements.
+
+## Initial Problem and First Attempt
+
+The original motivation stemmed from a common enterprise pain point: the ML Platform team at Grab was experiencing high volumes of repetitive user inquiries through Slack channels, consuming significant on-call engineering time. The initial hypothesis was that a specialized chatbot could be built to automatically answer questions based on the platform's documentation, potentially using retrieval-augmented generation (RAG) approaches.
+
+The engineer explored open-source frameworks and discovered chatbot-ui, which could be integrated with LLMs. The approach involved attempting to feed over 20,000 words of platform Q&A documentation to the system. However, this immediately encountered a fundamental LLMOps challenge: GPT-3.5-turbo's context window limitation of 8,000 tokens (approximately 2,000 words). To work within these constraints, the engineer spent considerable time summarizing the documentation down to less than 800 words, a reduction of over 95% of the original content.
+
+This first attempt reveals several LLMOps lessons. The engineer tried multiple technical approaches: first, the heavily summarized documentation approach, which worked only for a handful of frequently asked questions; and second, embedding search (presumably a RAG approach), which "didn't work that well too." The case study doesn't provide detailed technical reasons for the RAG failure, which limits our ability to assess whether this was due to embedding quality, retrieval precision issues, document chunking strategies, or prompt engineering challenges. The lack of detail here is somewhat notable—successful RAG implementations for documentation Q&A were certainly possible in early 2023, suggesting either implementation challenges, insufficient experimentation time, or architectural mismatches with the specific use case.
+
+Importantly, the engineer made the pragmatic decision to abandon this specialized use case rather than continuing to iterate on the RAG approach. This pivot decision, while potentially premature from a pure technical perspective, proved strategically valuable.
+
+## The Pivot: Building GrabGPT
+
+The key insight that led to GrabGPT was recognizing an organizational gap: Grab lacked an internal ChatGPT-like tool, and the engineer already had accumulated the necessary knowledge (LLM framework familiarity) and infrastructure access (Grab's model-serving platform called Catwalk). This pivot represents a common pattern in successful internal tools—building general-purpose infrastructure rather than overfitting to a specific narrow use case.
+
+From an LLMOps deployment perspective, the implementation timeline was remarkably rapid: the initial version was built and deployed over a single weekend. The core components included:
+
+- **Framework extension**: Building on the existing chatbot-ui framework that had been explored during the first attempt
+- **Authentication integration**: Adding Google login for user authentication, leveraging existing SSO infrastructure
+- **Model serving infrastructure**: Utilizing Grab's existing Catwalk platform for model serving, avoiding the need to build deployment infrastructure from scratch
+- **Internal deployment**: Deploying within Grab's internal infrastructure rather than using external services
+
+This rapid deployment was enabled by reusing existing infrastructure and frameworks rather than building from scratch. The engineer didn't need to solve model hosting, scaling, or authentication infrastructure—these were already available. This highlights an important LLMOps principle: the availability of mature internal ML infrastructure can dramatically accelerate LLM application deployment.
+
+## Adoption and Scale
+
+The adoption metrics presented in the case study are impressive, though as self-reported figures they should be interpreted with appropriate context:
+
+- Day 1: 300 user registrations
+- Day 2: 600 new users (cumulative ~900)
+- Week 1: 900 new users total mentioned
+- Month 3: Over 3,000 users with 600 daily active users
+- Current state (as of May 2025): "Almost all Grabbers" using the tool
+
+These figures suggest rapid viral adoption within the organization. The 600 daily active users out of 3,000 total users at month 3 represents a 20% DAU/MAU ratio, which is reasonably healthy for an internal tool. However, the claim that "almost all Grabbers" are using it by May 2025 (roughly two years after launch) is difficult to assess without knowing Grab's total employee count or having more specific metrics.
+
+From an LLMOps perspective, this adoption trajectory would have created significant operational challenges around scaling, cost management, and infrastructure reliability. The case study unfortunately doesn't discuss how the team handled:
+
+- Cost management and budgeting for API calls across thousands of users
+- Rate limiting and quota management per user or team
+- Infrastructure scaling to handle concurrent user load
+- Monitoring and observability of system performance
+- Incident response and support for a tool with such high organizational dependency
+
+These omissions are notable because they represent some of the most critical LLMOps challenges when moving from prototype to production at scale.
+
+## Key Technical and Operational Features
+
+The case study identifies several features that contributed to GrabGPT's success, which provide insight into enterprise LLMOps requirements:
+
+**Data Security and Privacy**: GrabGPT operates on a "private route," ensuring that company data doesn't leave Grab's infrastructure. This is presented as a key differentiator from using public ChatGPT, where data would be sent to OpenAI's servers and potentially used for training. For an organization handling sensitive transportation, delivery, and financial services data, this is a critical requirement. From an LLMOps perspective, this likely means that all model inference happens either on-premises or within Grab's cloud infrastructure with strict network isolation.
+
+However, the case study doesn't clarify an important technical detail: if GrabGPT supports models from OpenAI, Claude, and Gemini (as claimed), how is the "private route" maintained? There are several possible architectures:
+
+- Using API calls to these providers but with contractual data protection agreements (not truly "private route" in the strictest sense)
+- Deploying open-source alternative models that don't require external API calls
+- Using enterprise versions of these models with stricter data handling agreements
+- Running fine-tuned or licensed versions of these models on Grab's own infrastructure
+
+The lack of clarity here is significant because it affects the interpretation of the security claims. True data isolation would require self-hosted models, which would dramatically increase the operational complexity and cost.
+
+**Global Accessibility**: The case study emphasizes that unlike ChatGPT, which is banned or restricted in some regions (specifically mentioning China), GrabGPT is accessible to all Grab employees regardless of location. This addresses a real challenge for multinational companies, particularly those operating in Southeast Asia where Grab is headquartered. From an LLMOps perspective, this requires infrastructure deployment across multiple regions, potentially including China, with appropriate networking and compliance considerations.
+
+**Model Agnosticism**: GrabGPT supports multiple LLM providers including OpenAI, Claude, and Gemini. This is an important architectural decision from an LLMOps perspective, as it provides:
+
+- **Flexibility**: Users can choose models based on their specific needs (cost, performance, capabilities)
+- **Risk mitigation**: Reduced dependency on any single provider
+- **Cost optimization**: Ability to route requests to more cost-effective models for simpler queries
+- **Resilience**: Fallback options if one provider experiences outages
+
+However, maintaining a multi-model architecture introduces operational complexity:
+
+- Different API interfaces and authentication mechanisms
+- Varying rate limits and pricing structures across providers
+- Inconsistent output formats and capabilities
+- Need for abstraction layers to present a unified interface to users
+- Potential confusion for users about which model to choose
+
+The case study doesn't discuss how these tradeoffs were managed or whether there's intelligent routing to automatically select appropriate models for different query types.
+
+**Auditability**: Every interaction on GrabGPT is auditable, which is highlighted as important for data security and governance teams. This is a critical enterprise LLMOps requirement that often distinguishes internal tools from consumer applications. Auditability enables:
+
+- Compliance monitoring and reporting
+- Investigation of potential data leakage or misuse
+- Usage pattern analysis for optimization
+- Cost attribution to teams or individuals
+- Detection of anomalous behavior
+
+From an implementation perspective, this likely requires:
+
+- Comprehensive logging of all prompts and responses
+- User attribution for every query
+- Secure storage of potentially sensitive log data
+- Search and analysis capabilities for audit purposes
+- Retention policies balancing investigative needs with privacy concerns
+
+The case study doesn't discuss the technical implementation of auditability or how privacy is balanced with logging requirements (for example, whether sensitive information in prompts is redacted or encrypted).
+
+## LLMOps Lessons and Critical Assessment
+
+The case study presents several lessons learned, which are worth examining from an LLMOps perspective:
+
+**Failure as a stepping stone**: The narrative frames the failed RAG chatbot as essential groundwork for GrabGPT's success. While this makes for a compelling story, it's worth noting that the initial failure and pivot happened quite quickly—the engineer spent "days" on summarization before abandoning the approach. From a technical perspective, more persistence on the RAG approach might have yielded success given that documentation Q&A was (and is) a solved problem with proper architecture. However, the organizational impact of building a general-purpose tool was arguably much higher than solving the narrow support channel problem, so the pivot was strategically correct even if technically premature.
+
+**Timing matters**: The case study emphasizes that GrabGPT succeeded because it "addressed a critical need at the right time" (March 2023, shortly after ChatGPT's public release in November 2022). This is accurate—there was a brief window where internal ChatGPT alternatives provided significant value before enterprise offerings became widely available. However, this also raises questions about the long-term sustainability and differentiation of GrabGPT as enterprise LLM products mature.
+
+**Start small, scale up**: The weekend prototype to company-wide tool trajectory is presented as a success story, but from an LLMOps maturity perspective, this rapid scaling likely created technical debt. Production-grade LLM systems typically require:
+
+- Robust monitoring and alerting
+- Cost management and budgeting systems
+- Performance optimization and caching
+- Content filtering and safety guardrails
+- Comprehensive testing and evaluation
+- Documentation and user training
+- Support processes and SLAs
+
+The case study doesn't discuss whether these production requirements were addressed proactively or reactively as issues emerged. The rapid adoption likely meant that many of these operational aspects were built while the system was already critical to many users' workflows, which can be stressful and risky.
+
+## Missing Technical Details and Open Questions
+
+Several important LLMOps aspects are not addressed in the case study:
+
+**Cost Management**: With 600 daily active users and potential access to expensive models like GPT-4, Claude, and Gemini, the operational costs could be substantial. The case study doesn't discuss:
+
+- Total cost of operation
+- Cost per user or per query
+- Budget management and allocation
+- Rate limiting or quota systems
+- Cost optimization strategies
+
+**Performance and Reliability**: No discussion of:
+
+- Response time SLAs or performance metrics
+- System availability and uptime
+- Handling of API failures from external providers
+- Caching strategies to reduce latency and cost
+- Load balancing and scaling approaches
+
+**Content Safety and Compliance**: No mention of:
+
+- Content filtering for inappropriate outputs
+- Mechanisms to prevent jailbreaking or misuse
+- Compliance with data protection regulations
+- Handling of PII or sensitive information in prompts
+- Usage policies and enforcement
+
+**Model Selection and Configuration**: Limited information about:
+
+- Which specific models are available (GPT-3.5, GPT-4, Claude 3, etc.)
+- How users select models
+- Default configurations (temperature, max tokens, etc.)
+- Whether there's prompt engineering or system prompts applied
+- Whether there are specialized configurations for different use cases
+
+**User Experience and Interface**: Minimal details about:
+
+- The actual UI and UX beyond being "ChatGPT-like"
+- Features beyond basic chat (history, sharing, collaboration, etc.)
+- Mobile access or integration with other tools
+- Customization options for different user needs
+
+**Evolution and Improvement**: The case study covers the launch but doesn't discuss:
+
+- How the system has evolved from March 2023 to May 2025
+- Feature additions or improvements
+- User feedback integration
+- Handling of incidents or issues
+- Team growth and operational maturity
+
+## Broader Impact and Strategic Considerations
+
+The case study claims that GrabGPT "sparked a broader conversation about how LLMs can be leveraged across Grab" and demonstrates that "a single engineer, provided with the right tools and timing, can create something transformative." These are significant organizational claims that go beyond the technical implementation.
+
+From an LLMOps strategy perspective, GrabGPT's success likely had several organizational effects:
+
+- **Democratizing AI access**: Providing hands-on LLM experience to employees across functions, increasing AI literacy and potentially generating ideas for other applications
+- **Building internal expertise**: The operational experience of running GrabGPT at scale likely developed valuable LLMOps capabilities within Grab
+- **Proving value**: Demonstrating concrete productivity improvements from LLMs, potentially justifying further AI investments
+- **Creating dependency**: With near-universal adoption, GrabGPT became critical infrastructure, requiring sustained investment and maintenance
+
+However, there are also potential strategic concerns:
+
+- **Sustainability**: As enterprise LLM solutions mature (Microsoft Copilot, Google Workspace AI, etc.), does maintaining a custom internal tool remain the best use of resources?
+- **Feature parity**: Can an internal tool keep pace with rapidly evolving commercial offerings?
+- **Specialization vs. generalization**: Did the pivot to a general-purpose tool leave the original problem (support channel overload) unsolved?
+- **Shadow IT risk**: If deployed too quickly, did the tool receive adequate security review and governance?
+
+## Conclusion and LLMOps Takeaways
+
+GrabGPT represents a pragmatic and successful internal LLM deployment that addressed real organizational needs around security, accessibility, and multi-model support. The case study is most valuable for demonstrating the importance of non-technical factors in enterprise LLM adoption, the value of reusing existing infrastructure, and the organizational impact of democratizing AI access.
+
+However, the case study is notably light on technical implementation details, operational challenges, and the evolution of the system over its two-year lifetime. Many critical LLMOps concerns—cost management, performance optimization, content safety, and production reliability—are either glossed over or not mentioned at all. This may reflect the blog post's audience (general technical readers rather than LLMOps practitioners) or the author's focus on the strategic narrative rather than operational details.
+
+For practitioners, the key takeaways are: the importance of leveraging existing infrastructure for rapid deployment; the value of model agnosticism in enterprise settings; the critical nature of security, auditability, and compliance features for enterprise adoption; and the sometimes-underestimated organizational importance of accessibility (geographic and otherwise). The rapid adoption also demonstrates that when security and access barriers are removed, demand for LLM capabilities within enterprises can be substantial and immediate.
+
+The case study also serves as a reminder to approach vendor claims and success stories with appropriate skepticism. While the adoption metrics are impressive, many operational details that would be critical for assessing the full picture of success (costs, reliability, user satisfaction beyond usage numbers, support burden, etc.) are absent. Nonetheless, GrabGPT appears to represent a genuine success in internal LLM deployment, even if the case study leaves many LLMOps questions unanswered.

@@ -1,0 +1,178 @@
+---
+title: "Agent-Based AI Assistants for Enterprise and E-commerce Applications"
+slug: "agent-based-ai-assistants-for-enterprise-and-e-commerce-applications"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f3ed5090aafd80ff8e2ca"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:40:22.628Z"
+  createdOn: "2024-11-21T14:08:21.213Z"
+llmopsTags:
+  - "chatbot"
+  - "compliance"
+  - "cost-optimization"
+  - "customer-support"
+  - "data-analysis"
+  - "databases"
+  - "embeddings"
+  - "guardrails"
+  - "latency-optimization"
+  - "microservices"
+  - "multi-agent-systems"
+  - "openai"
+  - "prompt-engineering"
+  - "realtime-application"
+  - "reliability"
+  - "scalability"
+  - "scaling"
+  - "security"
+  - "semantic-search"
+  - "structured-output"
+  - "unstructured-data"
+company: "Prosus"
+summary: "Prosus developed two major AI agent applications: Toan, an internal enterprise AI assistant used by 15,000+ employees across 24 companies, and OLX Magic, an e-commerce assistant that enhances product discovery. Toan achieved significant reduction in hallucinations (from 10% to 1%) through agent-based architecture, while saving users approximately 50 minutes per day. OLX Magic transformed the traditional e-commerce experience by incorporating generative AI features for smarter product search and comparison."
+link: "https://www.youtube.com/watch?v=mVo_l9m9R1s"
+year: 2024
+seo:
+  title: "Prosus: Agent-Based AI Assistants for Enterprise and E-commerce Applications - ZenML LLMOps Database"
+  description: "Prosus developed two major AI agent applications: Toan, an internal enterprise AI assistant used by 15,000+ employees across 24 companies, and OLX Magic, an e-commerce assistant that enhances product discovery. Toan achieved significant reduction in hallucinations (from 10% to 1%) through agent-based architecture, while saving users approximately 50 minutes per day. OLX Magic transformed the traditional e-commerce experience by incorporating generative AI features for smarter product search and comparison."
+  canonical: "https://www.zenml.io/llmops-database/agent-based-ai-assistants-for-enterprise-and-e-commerce-applications"
+  ogTitle: "Prosus: Agent-Based AI Assistants for Enterprise and E-commerce Applications - ZenML LLMOps Database"
+  ogDescription: "Prosus developed two major AI agent applications: Toan, an internal enterprise AI assistant used by 15,000+ employees across 24 companies, and OLX Magic, an e-commerce assistant that enhances product discovery. Toan achieved significant reduction in hallucinations (from 10% to 1%) through agent-based architecture, while saving users approximately 50 minutes per day. OLX Magic transformed the traditional e-commerce experience by incorporating generative AI features for smarter product search and comparison."
+---
+
+## Overview
+
+Prosus is a global technology group that operates e-commerce platforms across approximately 100 countries, connecting buyers and sellers across diverse verticals including food delivery, groceries, electronics, fashion, real estate, and automotive. With an existing ecosystem of about 1,000 AI experts and several hundred ML models already in production by 2018, the company embarked on an ambitious journey to deploy LLM-based agents across their organization starting in 2022, well before the public release of ChatGPT.
+
+This case study covers two distinct but related agent deployments: Tokan, an internal AI assistant for employees, and OLX Magic, a consumer-facing e-commerce discovery experience. Both systems share underlying technology and learnings, providing valuable insights into deploying LLMs at enterprise scale.
+
+## Tokan: The Enterprise AI Assistant
+
+### Philosophy and Approach
+
+Prosus took an unconventional approach to enterprise AI adoption. Rather than dictating specific use cases from the top down, they pursued what they call a "collective discovery process." The reasoning was straightforward: during early large-scale field tests of GPT-3 around 2020, they observed that users were discovering solutions and use cases that the organization hadn't anticipated. This led them to conclude that the best strategy was to provide the best possible tools to everyone and let them figure out valuable applications themselves.
+
+### Technical Architecture
+
+Tokan is designed as an LLM-agnostic platform that integrates with multiple large language models. The architecture consists of several key components:
+
+- **Access Layer**: Users can interact with Tokan through Slack (primary for engineering teams), web interface, or APIs
+- **Agentic Framework**: The core orchestration layer that unpacks user requests into parallelizable sub-tasks
+- **Tool Router**: Determines which tools are needed for a given task and routes accordingly
+- **Reflection-Action Loop**: Implements iterative refinement where the agent can evaluate its outputs and adjust its approach
+- **Insights Model**: A separate model that analyzes usage patterns while respecting privacy, categorizing conversations by topic (learning, programming language, etc.) to inform product development
+
+The system connects to internal databases and data lakes, enabling use cases like natural language data exploration where users can query databases in English without knowing SQL. The Data Explorer agent, for example, identifies relevant tables and columns, generates queries, executes them, handles errors through self-correction, and can even produce visualizations.
+
+### Evolution and Hallucination Reduction
+
+One of the most interesting aspects of this deployment is the transparent tracking of hallucination rates. Prosus implemented a feedback mechanism with four reaction options: thumbs up, thumbs down, love, and notably "Pinocchio" - specifically designed to signal when the AI was making things up.
+
+The hallucination journey shows significant improvement:
+- October 2022: ~10% hallucination rate
+- Current (2024): ~1% hallucination rate
+
+This reduction came from three factors: improved underlying models, users becoming more skilled at using the tools (avoiding problematic use cases), and crucially, the introduction of agents in January 2024. The agentic architecture with its tool-calling capabilities and reflection loops appears to have been a major contributor to reliability improvements.
+
+### Cost Economics
+
+The cost analysis presented is particularly valuable for practitioners. Token costs dropped approximately 98% over the development period, following the general trend in the LLM market. However, the full cost picture is more nuanced:
+
+Between May and August 2024 (just four months):
+- Cost per token decreased ~50%
+- Number of questions increased
+- Tokens per question increased even more significantly (due to agentic workflows requiring multiple LLM calls)
+- Net result: Cost per interaction stabilized around 25 cents
+
+This dynamic illustrates a key challenge in LLMOps: while individual token costs decrease, agentic systems consume more tokens per interaction, partially offsetting savings. Prosus has experimented with various optimization strategies including model switching (using appropriate models for different tasks), prompt caching, reserved instances, and their own GPUs.
+
+### Scale and Adoption
+
+Current metrics indicate substantial enterprise adoption:
+- 24 companies using the platform
+- Over 20,000 continuous users
+- Approaching 1 million requests per month
+- Team of approximately 15 people maintaining and developing Tokan
+
+Interestingly, usage patterns shifted over time. Initially, about 50% of usage was engineering-focused (developers, product managers). After introducing agents, non-engineering usage increased significantly, suggesting the improved reliability and capability made the tool more accessible to broader user groups. The current split (41% technical, 59% non-technical) roughly mirrors the overall company composition.
+
+### Impact Measurement
+
+Rather than relying on subjective surveys, Prosus trained a model to estimate time saved per interaction. This model was trained on comparison activities to understand the difference between working with and without the assistant for various task types.
+
+Key findings:
+- Average time saved: ~48 minutes per day per user
+- Time savings distributed across many micro-productivity bursts (not easily automatable individually)
+
+However, Prosus emphasizes that time saved isn't the primary value. User feedback highlights other benefits: increased independence (not needing to tap colleagues for help), ability to work outside comfort zones (e.g., coding in unfamiliar languages), and eliminating "writer's block" to get started on tasks. The aggregate effect is described as making "the entire organization a bit more senior."
+
+### iFood Case Study: Organizational Change
+
+The iFood implementation (Brazil's largest food delivery company in the Prosus portfolio) provides a compelling example of how to maximize value from AI assistants. By giving everyone access to data querying in natural language:
+
+- 21% of data requests were automated through the agent
+- Previously backlogged questions could finally be addressed
+- 90-100 person-days per month freed from data analysts
+- 75% reduction in time-to-insight
+
+Critically, Prosus learned that the real value comes not from making data analysts faster, but from enabling the entire organization to query data directly, reducing dependency on specialized roles. This required organizational change, not just tool deployment.
+
+## OLX Magic: Consumer-Facing E-commerce Agent
+
+### Product Evolution
+
+OLX Magic represents the application of the same agentic technology to consumer-facing e-commerce. OLX is a large online marketplace for classified goods (secondhand items, real estate, cars, jobs). The system is currently live in Poland.
+
+An important product lesson emerged: the initial approach of building a "ChatGPT for e-commerce" with a blank conversational canvas failed. Users found this interface too unfamiliar for commercial settings. The team iterated to an experience that maintains familiar e-commerce patterns (search bars, results grids, filters) while infusing AI-powered features throughout.
+
+### Gen-AI Powered Features
+
+The experience includes several LLM-powered capabilities:
+
+- **Dynamic Filter Suggestions**: After searching for "espresso machine," the system suggests refinements like "semi-automatic" based on understanding the product category
+- **Custom Natural Language Filters**: Users can type "machines with a milk foamer" and have this understood and applied as a filter
+- **Contextual Highlights**: Individual listings show which user-relevant features they have (e.g., "has milk foamer")
+- **Smart Compare**: Side-by-side product comparison with criteria identified on-the-fly and recommendations based on the user's stated preferences
+
+### Technical Architecture
+
+OLX Magic uses a similar agentic framework to Tokan but specialized for e-commerce:
+
+- **Tools**: Catalog search (text and visual), web search for product information
+- **Memory**: Both conversation context and user history for personalization
+- **Planning**: Multi-step reasoning to determine how to satisfy user queries
+- **E-commerce-specific guardrails**: Safety and appropriateness for commercial interactions
+
+### Key Learnings
+
+The presentation highlighted three crucial learnings for e-commerce agents:
+
+The first learning concerns user experience: conversational interfaces alone don't work for e-commerce. Users need familiar patterns enhanced with AI, not replaced by AI.
+
+The second learning is about domain-specific agent design: generic agent frameworks aren't sufficient. The tools, prompts, evaluations, memory systems, and guardrails all need to be specifically designed for the e-commerce journey. Personalization, product understanding, and purchase-appropriate interactions require specialized development.
+
+The third learning relates to search infrastructure: "Your gen-AI assistant is only as good as your search." The existing search pipelines weren't suitable for the OLX Magic experience. The team had to rebuild from the ground up, including creating embeddings for listings based on titles, images, and descriptions, and building retrieval pipelines that could work with LLM-generated queries.
+
+### Results
+
+While specific metrics weren't disclosed (the project is still in development), Prosus indicated they're measuring standard e-commerce KPIs (transactions, engagement) and seeing positive results. Their stated philosophy is "make it work, then make it fast, then make it cheap."
+
+## Cross-Cutting LLMOps Insights
+
+Several themes emerge across both deployments that are relevant for LLMOps practitioners:
+
+**Continuous Learning Infrastructure**: The insights model within Tokan that categorizes usage patterns represents an important pattern - building observability not just for debugging but for product development.
+
+**Feedback Mechanisms**: The "Pinocchio" button for hallucination reporting demonstrates the value of specific, actionable feedback mechanisms beyond simple thumbs up/down.
+
+**Cost Awareness**: The detailed tracking of cost per interaction, cost per token, and tokens per question shows mature cost management thinking essential for sustainable production LLM deployments.
+
+**Model Flexibility**: Both systems are described as LLM-agnostic, using multiple models and routing to appropriate ones based on task requirements. This flexibility appears important for both cost optimization and capability matching.
+
+**Organizational Change**: The iFood example emphasizes that technical deployment alone isn't sufficient - organizational processes must change to capture full value from AI assistants.
+
+**Iterative Product Development**: Both products evolved significantly from initial versions, suggesting that LLM-based products require significant iteration informed by real user behavior.

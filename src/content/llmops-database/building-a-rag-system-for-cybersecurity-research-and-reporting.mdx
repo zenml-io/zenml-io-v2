@@ -1,0 +1,145 @@
+---
+title: "Building a RAG System for Cybersecurity Research and Reporting"
+slug: "building-a-rag-system-for-cybersecurity-research-and-reporting"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f3fd6edc95dfd13e1a3d2"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:37:26.959Z"
+  createdOn: "2024-11-21T14:12:38.652Z"
+llmopsTags:
+  - "amazon-aws"
+  - "chunking"
+  - "compliance"
+  - "databases"
+  - "document-processing"
+  - "embeddings"
+  - "openai"
+  - "pinecone"
+  - "qdrant"
+  - "rag"
+  - "regulatory-compliance"
+  - "reliability"
+  - "scalability"
+  - "security"
+  - "semantic-search"
+  - "unstructured-data"
+  - "vector-search"
+company: "Trainingracademy"
+summary: "TrainGRC developed a Retrieval Augmented Generation (RAG) system for cybersecurity research and reporting to address the challenge of fragmented knowledge in the cybersecurity domain. The system tackles issues with LLM censorship of security topics while dealing with complex data processing challenges including PDF extraction, web scraping, and vector search optimization. The implementation focused on solving data quality issues, optimizing search quality through various embedding algorithms, and establishing effective context chunking strategies."
+link: "https://www.youtube.com/watch?v=_uPWW0ExiPw"
+year: 2024
+seo:
+  title: "Trainingracademy: Building a RAG System for Cybersecurity Research and Reporting - ZenML LLMOps Database"
+  description: "TrainGRC developed a Retrieval Augmented Generation (RAG) system for cybersecurity research and reporting to address the challenge of fragmented knowledge in the cybersecurity domain. The system tackles issues with LLM censorship of security topics while dealing with complex data processing challenges including PDF extraction, web scraping, and vector search optimization. The implementation focused on solving data quality issues, optimizing search quality through various embedding algorithms, and establishing effective context chunking strategies."
+  canonical: "https://www.zenml.io/llmops-database/building-a-rag-system-for-cybersecurity-research-and-reporting"
+  ogTitle: "Trainingracademy: Building a RAG System for Cybersecurity Research and Reporting - ZenML LLMOps Database"
+  ogDescription: "TrainGRC developed a Retrieval Augmented Generation (RAG) system for cybersecurity research and reporting to address the challenge of fragmented knowledge in the cybersecurity domain. The system tackles issues with LLM censorship of security topics while dealing with complex data processing challenges including PDF extraction, web scraping, and vector search optimization. The implementation focused on solving data quality issues, optimizing search quality through various embedding algorithms, and establishing effective context chunking strategies."
+---
+
+## Overview
+
+This case study comes from a presentation by Wes from Trainingracademy (referred to as "Train GRC" in the transcript), a startup focused on cloud security training. The company developed Stinkbait.io, a retrieval-augmented generation (RAG) application designed specifically for cybersecurity research and reporting. The presentation was given at what appears to be an MLOps community meetup, with Wes being identified as the MLOps community organizer for Austin.
+
+The cybersecurity domain presents unique challenges for building RAG systems. First, knowledge is highly fragmented across different subcommunities and even sub-subcommunities, creating a siloed approach to information sharing that makes collecting comprehensive knowledge bases particularly challenging. Second, and perhaps more critically, cybersecurity topics are often censored by mainstream LLMs like ChatGPT, which may refuse to provide certain information "for ethical safety reasons." This censorship creates significant obstacles for sharing proper information in the cybersecurity space and was a key motivator for building a custom RAG solution.
+
+## Data Quality Challenges
+
+The presentation emphasizes that data quality is one of the most significant hurdles in building production RAG systems. The team at Trainingracademy encountered several specific challenges in their data processing pipeline.
+
+### PDF Processing Issues
+
+The team developed an internal exercise they call "is it really a PDF" - highlighting how problematic PDF handling can be in practice. Despite PDFs existing since 1993, there are numerous extensions and variations that may not be valid PDFs by technical standards. Website PDF generator plugins frequently produce invalid PDFs, and many documents are simply poorly photocopied versions that claim to be PDFs. This matters because optical character recognition (OCR) tools, which are essential for extracting text from these documents, may fail when encountering these edge cases.
+
+The team uses Amazon Textract for OCR processing. Even with a proven enterprise solution like Textract, they frequently encounter errors indicating that files are not valid PDFs. Their workaround involves transforming problematic PDFs into JPEG format and then reprocessing through Textract as images. This fallback capability allows them to extract data from a wider variety of documents that might otherwise be rejected. This is a practical pattern worth noting for anyone building similar systems - having fallback processing paths for edge cases is essential for production robustness.
+
+### Web Scraping Challenges
+
+Web scraping presents another major data quality challenge. Despite HTML being a structured format in theory, the reality is that web content is often poorly structured due to the variety of web frameworks and WYSIWYG editors used to create websites. The team found that third-party and open-source web scraping tools often return data that isn't as "well manicured" as expected.
+
+Their conclusion is somewhat sobering: high-quality web scraping often requires manual inspection of various websites and understanding which HTML elements are most relevant for each particular site. This manual work is time-intensive but critically important. The hosts of the presentation reinforced this point with the classic "garbage in, garbage out" principle, noting that much of the work required to make these models performant happens in the preprocessing and processing of data.
+
+## Search Quality and Vector Database Selection
+
+The second major category of challenges relates to search quality, which involves selecting appropriate indexing algorithms and vector databases.
+
+### Indexing Algorithm Tradeoffs
+
+The team discusses the fundamental tradeoff between exact K-nearest neighbor (KNN) searches and approximate nearest neighbor (ANN) searches. While exact KNN provides perfect accuracy, the latency is typically unacceptable for real-time applications. This necessitates the use of indexing algorithms, each with different recall/accuracy versus latency tradeoffs.
+
+The presentation mentions several specific algorithms:
+- IVF-flat (Inverted File Index with flat quantization)
+- HNSW (Hierarchical Navigable Small World)
+- DiskANN (a newer entrant at the time of the presentation)
+
+The team's experience with PostgreSQL and pgvector provides a cautionary tale. They initially chose this combination because pgvector only supported IVF-flat at the time, and they believed using open-source database technology would provide benefits as they grew. However, when they observed the actual latency results with IVF-flat, they realized they needed to consider alternative approaches.
+
+### Vector Database Decision-Making
+
+The presentation raises an important strategic question: different vector databases support different indexing algorithms, and organizations must decide whether to pass responsibility for algorithm selection to a vector database vendor or maintain fuller control themselves. If choosing the latter path, teams must honestly assess whether they can achieve comparable quality and latency results to managed solutions.
+
+This is a practical decision that many organizations building RAG systems must face, and the team's experience suggests that the initial choice of database technology can have significant downstream implications. It's worth noting that the vector database landscape has evolved significantly, but the fundamental tradeoffs between control and operational complexity remain relevant.
+
+## Embedding Model Selection
+
+The presentation provides valuable guidance on embedding model selection, cautioning against simply defaulting to OpenAI's Ada embeddings because of API convenience.
+
+### Ada Embeddings Considerations
+
+The team acknowledges that Ada embeddings have practical advantages: the context length is very long (approximately five pages of document content per embedding), and it performs reasonably well on the Hugging Face MTEB (Massive Text Embedding Benchmark) leaderboard. However, Ada is not the state-of-the-art model on this leaderboard, and the best-performing model varies depending on the specific evaluation metric being considered.
+
+### Model Training Data Considerations
+
+The presentation highlights an often-overlooked factor: what types of data was the embedding model trained on? Different model architectures are optimized for different use cases:
+- Multi-QA models (sentence transformers) are trained on short question and answer responses
+- MS MARCO passage models are optimized for longer-form text
+- Multilingual models may be necessary for non-English content
+- Multimodal models that handle both image and text may be required for certain applications
+
+This is an important reminder that "best" is context-dependent, and production systems should evaluate models against their specific use cases rather than relying on general benchmarks.
+
+## Context Chunking Strategies
+
+The presentation addresses the challenge of context chunking - how to divide documents into appropriately-sized pieces for embedding. The ideal approach would be to chunk along conceptual boundaries, ensuring that all information about one topic goes into one embedding and information about another topic goes into a separate embedding.
+
+However, the team's experience at scale suggests this ideal is rarely achievable in practice. The realistic approaches to chunking include:
+- Sentence-level chunking
+- Using formatting markers as proxies for conceptual boundaries
+
+The team specifically mentions markdown formatting as a useful proxy, where heading values can serve as natural break points for text. While this approach creates "a proxy for contextual separation," it is acknowledged that this is not equivalent to true contextual separation. The discussion with the host touches on how this remains an area of active research - markdown headings may reflect how content was organized for digestibility rather than deep semantic relationships.
+
+## Future-Proofing and Storage Strategies
+
+The final practical consideration discussed involves planning for changes in databases or embedding models. The team offers specific recommendations:
+
+### Vector Storage Strategy
+
+If experimenting with vector databases and anticipating potential changes, storing vectors on disk or in blob storage (rather than solely in the database) eliminates the need to recompute embeddings later. This is a simple but valuable pattern for maintaining flexibility during the experimentation phase.
+
+### Embedding Model Evaluation
+
+When evaluating embedding models, teams should consider:
+- The dimensionality of the vectors and the resulting storage requirements
+- The style and format of the source data
+- Whether the model's training data matches the target use case
+
+Choosing the wrong model may make it impossible to achieve desired results, making upfront evaluation critical.
+
+## Key Takeaways for LLMOps Practitioners
+
+This case study provides several actionable insights for teams building RAG systems in production:
+
+The emphasis on data quality cannot be overstated. The "garbage in, garbage out" principle applies strongly to RAG systems, and significant effort must be invested in preprocessing pipelines that can handle edge cases gracefully.
+
+Vector database and indexing algorithm selection has real performance implications. The team's experience migrating away from their initial PostgreSQL/pgvector choice demonstrates the importance of understanding latency requirements early.
+
+Embedding model selection should be deliberate rather than defaulting to the most convenient option. Understanding the training data and benchmarks relevant to your specific use case is essential.
+
+Context chunking remains a challenging problem without perfect solutions. Using formatting markers as proxies for conceptual boundaries is a pragmatic approach, but teams should understand its limitations.
+
+Planning for change by storing vectors independently of databases provides valuable flexibility during system development and evolution.
+
+The cybersecurity-specific context also highlights that certain domains may require custom RAG solutions due to content moderation policies in general-purpose LLMs, making domain-specific knowledge bases particularly valuable.

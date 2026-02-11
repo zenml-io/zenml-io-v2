@@ -1,0 +1,162 @@
+---
+title: "Practical Lessons Learned from Building and Deploying GenAI Applications"
+slug: "practical-lessons-learned-from-building-and-deploying-genai-applications"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "67ba2b9d3cb9a15056fefb21"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:01:12.504Z"
+  createdOn: "2025-02-22T19:55:09.605Z"
+llmopsTags:
+  - "chatbot"
+  - "translation"
+  - "speech-recognition"
+  - "high-stakes-application"
+  - "realtime-application"
+  - "prompt-engineering"
+  - "rag"
+  - "fine-tuning"
+  - "error-handling"
+  - "latency-optimization"
+  - "cost-optimization"
+  - "human-in-the-loop"
+  - "agent-based"
+  - "multi-agent-systems"
+  - "langchain"
+  - "monitoring"
+  - "databases"
+  - "fastapi"
+  - "docker"
+  - "kubernetes"
+  - "cicd"
+  - "scaling"
+  - "wandb"
+  - "openai"
+  - "hugging-face"
+  - "microsoft-azure"
+  - "amazon-aws"
+  - "google-gcp"
+company: "Bolbeck"
+summary: "A comprehensive overview of lessons learned from building GenAI applications over 1.5 years, focusing on the complexities and challenges of deploying LLMs in production. The presentation covers key aspects of LLMOps including model selection, hosting options, ensuring response accuracy, cost considerations, and the importance of observability in AI applications. Special attention is given to the emerging role of AI agents and the critical balance between model capability and operational costs."
+link: "https://www.youtube.com/watch?v=YYcNm2RexnY"
+year: 2023
+seo:
+  title: "Bolbeck: Practical Lessons Learned from Building and Deploying GenAI Applications - ZenML LLMOps Database"
+  description: "A comprehensive overview of lessons learned from building GenAI applications over 1.5 years, focusing on the complexities and challenges of deploying LLMs in production. The presentation covers key aspects of LLMOps including model selection, hosting options, ensuring response accuracy, cost considerations, and the importance of observability in AI applications. Special attention is given to the emerging role of AI agents and the critical balance between model capability and operational costs."
+  canonical: "https://www.zenml.io/llmops-database/practical-lessons-learned-from-building-and-deploying-genai-applications"
+  ogTitle: "Bolbeck: Practical Lessons Learned from Building and Deploying GenAI Applications - ZenML LLMOps Database"
+  ogDescription: "A comprehensive overview of lessons learned from building GenAI applications over 1.5 years, focusing on the complexities and challenges of deploying LLMs in production. The presentation covers key aspects of LLMOps including model selection, hosting options, ensuring response accuracy, cost considerations, and the importance of observability in AI applications. Special attention is given to the emerging role of AI agents and the critical balance between model capability and operational costs."
+---
+
+## Overview
+
+This case study is derived from a presentation by Juan Pero, a founder, architect, consultant, and developer with over 15 years of IT experience at Bolbeck. The presentation shares practical lessons learned from approximately 18 months of building generative AI applications in production environments. Rather than focusing on a single deployment, this talk provides a comprehensive overview of the challenges, tools, and best practices encountered when operationalizing LLMs across various projects.
+
+The presentation is particularly valuable because it comes from hands-on experience rather than theoretical frameworks, offering candid assessments of what works, what doesn't, and where the industry still has significant challenges to overcome. The speaker deliberately debunks some of the hype around AI development, noting that while AI coding assistants can help, they won't "build everything for you" as marketing materials sometimes suggest.
+
+## The Complexity Shift: Traditional Applications vs. AI Applications
+
+A core theme of the presentation is that adding AI to applications introduces an entirely new layer of complexity. In traditional application development, teams worry about front ends, backends, and infrastructure. However, the moment AI is integrated, teams must consider:
+
+- **Model selection**: Which LLM to use and whether it needs fine-tuning
+- **Prompt engineering**: How to structure inputs to get reliable outputs
+- **RAG implementation**: Whether retrieval-augmented generation is needed
+- **Hallucination prevention**: How to validate that responses are accurate
+- **Model lifecycle management**: Evaluating new models as they're released (often every few weeks)
+- **Infrastructure considerations**: GPU hosting, whether on-premises or cloud-based
+
+This is a significant operational burden that many organizations underestimate when embarking on AI projects. The speaker emphasizes that benchmarks don't always translate to real-world performance—a model that excels on standard benchmarks may not work well for a specific use case.
+
+## Hosting and Infrastructure Decisions
+
+The presentation provides practical guidance on hosting decisions. For local development and exploration, tools like Ollama are recommended as they allow developers to download and experiment with models on their own machines. However, the speaker cautions that the machine needs to be "beefy enough" for the model being tested.
+
+For cloud deployment, the traditional cloud providers (AWS, Azure, Google Cloud) are options, but the speaker highlights newer tools that simplify LLM deployment:
+
+- **Modal**: A platform that allows Python developers to add decorators to their code and use a CLI to deploy, with Modal handling container building and cloud deployment. The speaker notes personal experience using this for hosting models.
+- **SkyPilot**: A tool for cost optimization that can spread clusters across multiple clouds to minimize expenses.
+
+A critical point made is that GPU hosting fundamentally changes the cost equation. The speaker draws a stark comparison: traditional CPU instances might cost cents per hour, while an A100 GPU can cost four to five dollars per hour. This has significant implications for production workloads.
+
+## Ensuring Output Quality
+
+The speaker is refreshingly honest about the difficulty of ensuring LLM outputs are correct, sharing a personal anecdote about an LLM that returned "33" when asked for 3×3. Building a chatbot is now trivially easy, but making sure that chatbot gives correct answers remains "really, really hard."
+
+Several techniques are discussed for improving output quality:
+
+**Prompt Engineering** involves adding detailed instructions to user queries before passing them to the LLM. However, the speaker notes that even precise instructions may be ignored by the model, and there's no guarantee of correct behavior.
+
+**Guardrails** use a secondary LLM as a classifier that runs before or after the main LLM to filter inappropriate questions or responses. While effective, this approach adds latency due to the additional API call and increases costs. The classifier itself is also probabilistic and may make mistakes.
+
+**Retrieval-Augmented Generation (RAG)** involves breaking company information into chunks, storing them in a vector database, and retrieving relevant context when answering questions. The speaker emphasizes that RAG quality is heavily dependent on data quality—if the vector database contains outdated information, the LLM will provide outdated answers. This makes data curation a critical operational concern.
+
+**Fine-tuning** involves additional training on domain-specific data. The speaker warns that this is more expensive, takes longer, and doesn't guarantee better results. In fact, fine-tuning can degrade model quality if done incorrectly, as the model may "forget" existing knowledge or become confused between new and existing information.
+
+The honest assessment is that no single technique guarantees correct outputs, but combining multiple approaches can significantly improve reliability.
+
+## Evaluation Throughout the Development Lifecycle
+
+The speaker strongly advocates for continuous evaluation at every stage of development. Several tools are recommended:
+
+- **Ollama** for running hundreds of LLMs locally during initial exploration
+- **Hugging Face** for accessing thousands of open-source models and reviewing spaces (code examples) built by others
+- **OpenRouter** for testing prompts against multiple models and providers. The speaker shares that $50 deposited six months ago still has about $40 remaining despite daily use, as OpenRouter routes to the cheapest provider offering a given model. However, the speaker cautions that production use requires additional safeguards around provider selection.
+- **LangSmith** (created by the LangChain team) for ongoing model evaluation, recording runs, and comparing performance over time
+
+## Externalizing Prompts
+
+A strong recommendation is made against hardcoding prompts in application code. Instead, prompts should be externalized using tools like LangChain Hub. This approach offers several benefits:
+
+**Collaboration with domain experts**: Non-technical experts (e.g., education specialists for an education application) can log in, modify prompts, test them against the LLM, and commit changes that flow directly into the application—all without coding.
+
+**Future-proofing**: Given the rapid pace of model releases, prompts that work with one model version may not work with the next. Externalized prompts can be quickly modified and tested against new models.
+
+**Faster development**: Easy prompt access and modification accelerates the development cycle.
+
+## Agentic Systems: Promise and Pitfalls
+
+The speaker identifies agents as potentially "one of the best additions" to the LLM ecosystem, as they allow LLMs to break out of chatbot constraints and interact with the real world. Agents can autonomously decide which tools (functions) to call based on user requests—for example, receiving a book and autonomously calling translation and audio generation tools.
+
+However, agents introduce significant operational challenges:
+
+**Latency accumulation**: If each LLM call takes 2-3 seconds and an agent makes 4-5 calls, response times reach 12-15 seconds. This is problematic when users expect millisecond response times. The speaker recommends using frameworks like LangChain, LlamaIndex, or LangFlow that support concurrent calls and branching to minimize latency.
+
+**Cost multiplication**: The speaker provides a detailed cost analysis for a hypothetical call center handling 3,000 calls per day with 15 function calls per conversation. Using OpenAI's o1 model at $15 per million input tokens and $60 per million output tokens, with 1,500 input and 3,000 output tokens per call, the math works out to:
+- $24 per call
+- $9,270 per day
+- Nearly $300,000 per month
+
+Switching to Llama 3.3 70B drops this to 52 cents per call and approximately $50,000 per month—a roughly 6x cost reduction. The speaker emphasizes that model and provider selection is a critical business decision.
+
+The speaker also references speed benchmarks showing dramatic differences in token output speed—Cerebras and Groq can run Llama 3.1 70B at over 1,000 tokens per second (Cerebras exceeds 2,000), while other providers manage only 29-31 tokens per second. This directly impacts user experience.
+
+## Observability: A Critical Requirement
+
+The speaker describes debugging agentic applications as significantly harder than traditional applications because of their non-deterministic nature. A system might run correctly 1,000 times and fail on the 1,001st request due to subtle input variations.
+
+A real example is shared: an LLM-powered database lookup worked correctly for a long time until it started failing. Using traces, the team discovered users were entering "john" (lowercase) instead of "John" (capitalized). The fix was simple—adding "ignore case" to the externalized prompt—but without observability, debugging would have taken much longer.
+
+Tools like LangSmith are recommended for agent observability, providing:
+- Ordered traces of which models were called and in what sequence
+- Metadata for each call
+- Input and output logging
+- Error tracking with full context
+
+The speaker emphasizes that if teams don't use existing observability tools, they should build their own, because agent debugging without proper instrumentation is extremely difficult.
+
+## Key Takeaways for LLMOps Practitioners
+
+The presentation offers several overarching lessons for teams building production LLM applications:
+
+- Don't underestimate the operational complexity that AI adds to traditional applications
+- Evaluate models continuously, not just at project start—new models release frequently but may not work for your specific use case
+- Use multiple techniques (prompt engineering, guardrails, RAG) in combination, as no single approach guarantees correctness
+- Externalize prompts for collaboration, future-proofing, and faster iteration
+- Design agents for concurrency to minimize latency
+- Choose models based on the specific use case—smaller, cheaper models often suffice and benefit both budgets and the environment
+- Invest in observability early, as debugging probabilistic systems without proper tracing is extremely challenging
+
+The honest, experience-based nature of this presentation makes it a valuable resource for teams moving beyond prototypes to production LLM deployments.

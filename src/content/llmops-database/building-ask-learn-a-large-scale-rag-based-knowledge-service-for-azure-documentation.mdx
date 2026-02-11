@@ -1,0 +1,176 @@
+---
+title: "Building Ask Learn: A Large-Scale RAG-Based Knowledge Service for Azure Documentation"
+slug: "building-ask-learn-a-large-scale-rag-based-knowledge-service-for-azure-documentation"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "694adce48cbf51555479c56b"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2026-01-07T09:40:39.763Z"
+  lastUpdated: "2025-12-23T20:11:46.469Z"
+  createdOn: "2025-12-23T18:18:12.108Z"
+llmopsTags:
+  - "question-answering"
+  - "chatbot"
+  - "document-processing"
+  - "summarization"
+  - "customer-support"
+  - "rag"
+  - "embeddings"
+  - "prompt-engineering"
+  - "chunking"
+  - "semantic-search"
+  - "vector-search"
+  - "error-handling"
+  - "human-in-the-loop"
+  - "latency-optimization"
+  - "cost-optimization"
+  - "evals"
+  - "monitoring"
+  - "api-gateway"
+  - "microservices"
+  - "orchestration"
+  - "documentation"
+  - "security"
+  - "compliance"
+  - "guardrails"
+  - "fastapi"
+  - "pytorch"
+  - "microsoft-azure"
+  - "openai"
+company: "Microsoft"
+summary: "Microsoft's Skilling organization built \"Ask Learn,\" a retrieval-augmented generation (RAG) system that powers AI-driven question-answering capabilities for Microsoft Q&A and serves as ground truth for Microsoft Copilot for Azure. Starting from a 2023 hackathon project, the team evolved a naïve RAG implementation into an advanced RAG system featuring sophisticated pre- and post-processing pipelines, continuous content ingestion from Microsoft Learn documentation, vector database management, and comprehensive evaluation frameworks. The system handles massive scale, provides accurate and verifiable answers, and serves multiple use cases including direct question answering, grounding data for other chat handlers, and fallback functionality when the Copilot cannot complete requested tasks."
+link: "https://devblogs.microsoft.com/engineering-at-microsoft/how-we-built-ask-learn-the-rag-based-knowledge-service/"
+year: 2024
+seo:
+  title: "Microsoft: Building Ask Learn: A Large-Scale RAG-Based Knowledge Service for Azure Documentation - ZenML LLMOps Database"
+  description: "Microsoft's Skilling organization built \"Ask Learn,\" a retrieval-augmented generation (RAG) system that powers AI-driven question-answering capabilities for Microsoft Q&A and serves as ground truth for Microsoft Copilot for Azure. Starting from a 2023 hackathon project, the team evolved a naïve RAG implementation into an advanced RAG system featuring sophisticated pre- and post-processing pipelines, continuous content ingestion from Microsoft Learn documentation, vector database management, and comprehensive evaluation frameworks. The system handles massive scale, provides accurate and verifiable answers, and serves multiple use cases including direct question answering, grounding data for other chat handlers, and fallback functionality when the Copilot cannot complete requested tasks."
+  canonical: "https://www.zenml.io/llmops-database/building-ask-learn-a-large-scale-rag-based-knowledge-service-for-azure-documentation"
+  ogTitle: "Microsoft: Building Ask Learn: A Large-Scale RAG-Based Knowledge Service for Azure Documentation - ZenML LLMOps Database"
+  ogDescription: "Microsoft's Skilling organization built \"Ask Learn,\" a retrieval-augmented generation (RAG) system that powers AI-driven question-answering capabilities for Microsoft Q&A and serves as ground truth for Microsoft Copilot for Azure. Starting from a 2023 hackathon project, the team evolved a naïve RAG implementation into an advanced RAG system featuring sophisticated pre- and post-processing pipelines, continuous content ingestion from Microsoft Learn documentation, vector database management, and comprehensive evaluation frameworks. The system handles massive scale, provides accurate and verifiable answers, and serves multiple use cases including direct question answering, grounding data for other chat handlers, and fallback functionality when the Copilot cannot complete requested tasks."
+---
+
+## Overview
+
+Microsoft's Skilling organization developed "Ask Learn," one of the world's first retrieval-augmented generation (RAG) systems deployed at massive scale. This case study provides detailed insights into building production-grade LLM applications, moving from experimental prototypes to enterprise systems serving millions of Azure customers. The system originated from a February 2023 hackathon and evolved into a critical component powering Microsoft Q&A and Microsoft Copilot for Azure, announced at Microsoft Ignite in November 2023.
+
+The team, led by Principal Engineering Manager Joel Martinez and involving collaboration across multiple Microsoft organizations including the CX Data & AI team, Azure Portal team, and content teams, faced the challenge of making Azure's extensive technical documentation accessible through conversational AI. The resulting system demonstrates sophisticated LLMOps practices including advanced RAG architectures, continuous content pipeline management, comprehensive evaluation frameworks, and production monitoring at scale.
+
+## From Naïve to Advanced RAG Architecture
+
+The case study explicitly distinguishes between "naïve RAG" and "advanced RAG" implementations, providing valuable insight into the evolution required for production systems. The initial naïve RAG approach followed the standard pattern: chunk documents, create embeddings, store in vector database, retrieve relevant chunks via cosine similarity search, and send to the LLM with the user's question. While this provided "decent results," Microsoft's quality bar demanded reliability, relevance, accuracy, and verifiability.
+
+The advanced RAG implementation adds substantial complexity through pre-processing and post-processing stages at virtually every step. Pre-retrieval processing includes query rewriting, query expansion, and query clarification to better understand user intent. Post-retrieval processing encompasses re-ranking retrieved document chunks, expanding chunks to provide additional context, filtering irrelevant or low-quality information, and compressing results into more compact forms. After the LLM generates responses, additional processing ensures answers meet quality standards and don't violate safety, ethical, or operational guidelines.
+
+This architectural evolution represents a critical LLMOps learning: simple RAG patterns work for demos but production systems require sophisticated orchestration. The team adopted a service-oriented architecture with a high-level orchestration layer calling individual services for each major responsibility, enabling independent scaling, testing, and improvement of different system components.
+
+## Knowledge Service: The Foundation
+
+The Knowledge Service forms the cornerstone of the Ask Learn system, responsible for the massive data engineering effort of processing Microsoft Learn's technical documentation. This service breaks hundreds of thousands of documents into appropriately sized chunks, generates embedding vectors for each chunk using Azure OpenAI's embedding models, and maintains these in a vector database with associated metadata.
+
+The chunking strategy required extensive experimentation to find the right balance. Chunks must be small enough to fit within model token limits and context windows but large enough to contain sufficient context for meaningful answers. The team experimented with chunk size, overlap between consecutive chunks, and various organizational strategies to improve retrieval quality. They note that Azure AI Search now offers built-in functionality to assist with some of these challenges, highlighting how the platform ecosystem evolved alongside their implementation.
+
+One of the most significant engineering challenges was maintaining freshness: the Knowledge Service must continuously update the vector database as technical writers publish documentation changes. The team consulted with Microsoft's Discovery and Search teams and Bing teams, who had solved similar problems years earlier for web indexing. This demonstrates the value of leveraging organizational knowledge when building new LLM applications, as many challenges have analogs in existing search and information retrieval systems.
+
+Content processing also required substantial post-chunking cleanup and validation. The team needed to handle versioning where certain product facts apply only to specific versions, ensure metadata supported effective retrieval, and validate that content structure enabled the LLM to extract accurate information. This led to ongoing collaboration with technical writers to improve documentation based on how well it served RAG use cases.
+
+## Building the Golden Dataset for Evaluation
+
+One of the team's most critical early decisions was investing in a "golden dataset" before extensive system development. This carefully curated benchmark consists of question-answer pairs, metadata including topic and question type, references to source documents serving as ground truth, and variations capturing different phrasings of the same questions. The golden dataset enables systematic evaluation of system changes, allowing engineers to measure whether modifications improve or degrade performance.
+
+Tom FitzMacken highlighted a specific use case: when considering major changes to what gets indexed for the knowledge service, the team could run before-and-after tests over the golden dataset to quantify impact. This disciplined approach to evaluation represents mature LLMOps practice, providing objective measures in otherwise subjective generative AI systems.
+
+The golden dataset was developed collaboratively by a virtual team including technical writers, engineers, data scientists from the Skilling organization, and the CX Data & AI team working with subject matter experts across various technologies. This cross-functional effort continues to grow the dataset, ensuring it represents the diversity of questions customers actually ask and the evolving content corpus.
+
+## Technology Stack and Evolution
+
+The implementation leveraged Azure OpenAI for both embeddings and completions, with the technology stack evolving as the Azure AI ecosystem matured. Senior Software Engineer Jeremy Stayton described initially building their solution using .NET to make direct calls to Azure OpenAI APIs, later migrating to the Azure SDK's preview package for Azure OpenAI as it became available. This pattern of building custom solutions while waiting for platform abstractions, then migrating to standard tooling, characterized the "first mover" experience.
+
+For evaluation, the team initially built custom Python notebooks measuring retrieval quality (ensuring relevance of retrieved documents to questions), groundedness (ensuring generated responses were factually grounded in source documents), and answer relevance. They also developed custom harms evaluation tools to identify potential risks in responses. Eventually, these custom evaluation tools were replaced with evaluation flows in Prompt flow, Microsoft's orchestration framework for LLM applications.
+
+The vector database selection and configuration represented another key technical decision, though specific database technology isn't detailed in the case study. The system employs cosine similarity (also called nearest neighbor) search to find candidate article chunks matching user questions. The post-retrieval re-ranking adds another layer, likely using more sophisticated models to better assess relevance beyond simple vector similarity.
+
+## API Design and Multi-Use Case Architecture
+
+Ask Learn was architected from the start to serve multiple consumers through a web API. Initially built to power Microsoft Q&A Assist features, the service required only minor tweaks to also serve Microsoft Copilot for Azure. This flexibility enabled three distinct use patterns that Product Manager Brian Steggeman described:
+
+Direct question answering represents the most obvious use case, embodying the "ask, don't search" paradigm. Instead of context-switching to search documentation in a separate browser tab, users get answers directly in the Azure portal. This reduces cognitive load from sifting through search results and adapting generic articles to specific situations.
+
+Grounding data for other services represents a less obvious but critical use case. When Copilot for Azure needs to orchestrate across multiple "chat handlers" (super-powered plugins) to complete complex tasks, it may call Ask Learn first to retrieve reliable facts and context that inform subsequent actions. In this scenario, Ask Learn doesn't answer the user directly but contributes ground truth ensuring other components produce accurate results.
+
+Fallback functionality provides a safety net when the Copilot cannot complete a requested task or isn't certain how to proceed. Rather than simply stating inability to help, the system calls Ask Learn to find relevant resources enabling user self-service. This graceful degradation represents good production system design.
+
+The extensibility model acknowledges that Azure's portal supports hundreds of thousands to millions of distinct operations, requiring partner teams to create specialized chat handlers for their domains. Ask Learn functions as one such provider in this ecosystem.
+
+## Handling Non-Determinism in Production
+
+The case study explicitly addresses one of the most significant challenges in production LLM systems: non-determinism. Given identical inputs, generative AI models may produce different outputs on different invocations. This makes traditional software engineering practices around testing, debugging, and reliability challenging to apply.
+
+The team's approach combined multiple strategies. The golden dataset provided reproducible test cases for measuring aggregate system behavior even when individual responses varied. Extensive pre- and post-processing added deterministic logic gates around the non-deterministic LLM calls. Multiple inference steps with different temperature settings or system prompts could be used to achieve more consistent results, though the team had to carefully balance improved consistency against increased latency and costs.
+
+The case study honestly notes that question phrasing significantly affects answer quality and even truthfulness. The same question asked slightly differently might receive dramatically different responses. The AI might answer correctly 999 times out of 1,000 but occasionally provide incorrect answers. This led to the decision that human oversight remains necessary, at least for catching edge cases and continuously improving the system.
+
+## Production Feedback and Continuous Improvement
+
+Capturing and acting on production feedback presented unique challenges due to Microsoft's privacy commitments. The company's privacy policies state that customer data belongs to customers, and Microsoft employees cannot see customer data including generative AI inputs and outputs by default. This constraint significantly complicated the feedback loop essential for improving LLM applications.
+
+The team experimented with different feedback mechanisms when Copilot for Azure launched in public preview. Initially, customers could provide thumbs up/down ratings, which were aggregated into quality metrics helping identify broad issues. Working closely with Microsoft's privacy team, the team eventually added a feature asking customers for explicit consent to share their chat history when providing feedback, along with verbatim comments.
+
+When verbatim feedback is acquired, the team performs intensive root cause analysis on each response, regardless of whether feedback was positive or negative. This forensics process takes up to 30 minutes per response, investigating how queries produced results, whether correct chunks were retrieved from documentation, the chunking strategy used for specific articles, and potential improvements to pre- or post-processing steps. In some cases, analysis revealed content gaps where Microsoft Learn documentation lacked ground truth needed to answer certain questions.
+
+The case study emphasizes that forensics becomes increasingly challenging at scale. To address this, the team developed an assessment pipeline with custom tooling evaluating metrics that approximate answer quality. The assessment answers questions like: "Given this user question, why did we provide this answer? What articles did we send to Azure OpenAI? What were the results after running through our inference pipeline?" Outcomes include improving the inference pipeline and identifying documentation gaps or clarity issues that content teams can address.
+
+## Lessons Learned: Planning and Content
+
+The team provides extensive practical guidance for organizations building similar systems. On content planning, they emphasize starting by assessing whether existing content can answer expected questions with sufficient context for LLM rephrasing. Content must be structured well with supporting metadata. Organizations must determine appropriate chunking strategies, understanding that Azure AI Search now helps with this but significant experimentation remains necessary.
+
+Versioning presents special challenges: when product facts apply only to specific versions, the system must handle these edge cases appropriately. RAG projects often drive content changes, requiring active engagement with content writers in evaluating how their work affects LLM outputs. Content must be fresh and accurate; poor quality input documents will produce poor quality answers regardless of sophisticated LLM techniques.
+
+## Lessons Learned: Evaluation and Metrics
+
+On evaluation, the team recommends developing metrics early to understand improvements or regressions over time. User satisfaction metrics related to relevance correlate directly with accuracy. Organizations should develop methods to evaluate answers against ground truth, if not for all content then at least for a golden dataset representing the entire corpus. Data privacy and AI safety standards should be established before implementation rather than retrofitted.
+
+Organizations must understand the substantial human costs of evaluating customer feedback. Don't underestimate the person-hours required to review, validate, and understand inference steps and documents used to generate answers. This ongoing operational overhead is essential for maintaining quality but resource-intensive.
+
+## Lessons Learned: Technical Considerations
+
+On technical implementation, the team learned that adding multiple inference steps is one of the easiest ways to improve results, but there's constant tension between quality improvements versus increased latency and costs. Every additional LLM call adds both time and expense, requiring careful measurement and optimization.
+
+Scale planning is essential: understand throughput constraints and how they affect capacity as usage grows. Vector database performance, rate limits on LLM APIs, and orchestration overhead all impact scalability.
+
+Safety and privacy must be part of the release plan from the start, not added later. Common deliverables include designing privacy and safety requirements including governmental compliance, performing risk and privacy impact assessments, adding data protection measures at every customer touchpoint, and testing safeguards through red-teaming. Red-teaming, simulating adversary actions to identify vulnerabilities, proved important for Responsible AI safety evaluations. One significant risk is "jailbreaking" where users bypass the model's built-in safety, ethical, or operational guidelines. External safety reviews and comprehensive documentation of safety and privacy aspects round out this discipline.
+
+## Organizational Challenges of Being First
+
+The case study provides candid insights into organizational challenges facing teams pioneering new capabilities. Being "first" meant becoming a forcing function driving answers to questions the team needed to proceed. They sought input and guidance from legal, AI ethics, privacy, and security teams, which sometimes required those teams to institute new policies and procedures on the spot.
+
+Being first also meant existing products, services, or abstractions weren't available for portions of the solution architecture. Rather than waiting for product teams to release building blocks, they built custom solutions, then later decided whether to adopt emerging standards or continue with custom approaches. This pragmatic balance between building and buying, between custom and standard, characterizes mature engineering organizations operating at the frontier.
+
+The team also had to educate stakeholders on how these systems work and set appropriate expectations. Generative AI excels at summarization, perfect for Ask Learn's use case, but performs less well at tasks requiring logic or discriminative functionality. The non-deterministic nature means minor variations in question phrasing can dramatically affect answers. This education effort is itself an important LLMOps practice when introducing new AI capabilities.
+
+## Production Operations and Monitoring
+
+While the case study doesn't detail specific monitoring and observability practices, several operational concerns are mentioned. The team tracks latency metrics for the multi-step inference pipeline. Cost monitoring is essential given that each LLM call incurs charges. Quality metrics from the assessment pipeline provide ongoing visibility into system performance.
+
+The continuous content ingestion pipeline represents a significant operational challenge, requiring reliability engineering to ensure documentation updates flow through to the vector database without service disruption. The system's service-oriented architecture suggests each component has independent monitoring and health checks, though specifics aren't provided.
+
+The integration with Microsoft Q&A and Copilot for Azure required production-grade API reliability, rate limiting, error handling, and graceful degradation. The API design supporting multiple use cases (direct answering, grounding, fallback) suggests sophisticated routing and orchestration logic with associated operational complexity.
+
+## Critical Success Factors
+
+Several factors emerge as critical to the project's success. Early investment in the golden dataset provided objective evaluation throughout development. Cross-functional collaboration between engineers, data scientists, content writers, product managers, and specialists in privacy, safety, and AI ethics ensured the system met diverse requirements. The service-oriented architecture enabled independent evolution of components like the Knowledge Service, evaluation tools, and orchestration layer.
+
+Pragmatic technology choices, building custom solutions when necessary but migrating to standard tools as they matured, allowed the team to move quickly without being blocked by missing platform capabilities. The willingness to learn from other teams within Microsoft who had solved analogous problems in search and information retrieval accelerated development.
+
+Finally, the team's commitment to continuous improvement through user feedback, forensic analysis, and iterative refinement of both the system and underlying content demonstrates mature LLMOps practice. They acknowledge the journey toward high-quality results takes time and sustained effort, involving content improvements, safeguards, ongoing research, and focus on responsible AI.
+
+## Broader Implications
+
+This case study represents one of the most detailed public descriptions of building production RAG systems at enterprise scale. The honest discussion of challenges, false starts, custom tooling that was later replaced, and ongoing operational overhead provides valuable guidance for organizations undertaking similar efforts. The distinction between naïve and advanced RAG architectures alone offers important framing for teams assessing their own system maturity.
+
+The multi-use case design where Ask Learn serves direct question answering, provides grounding for other services, and functions as fallback demonstrates architectural thinking beyond simple chatbot implementations. The integration into a broader ecosystem of chat handlers and plugins shows how LLM applications fit into larger product experiences rather than existing as standalone solutions.
+
+The emphasis on content quality, version management, continuous updates, and collaboration with technical writers highlights that RAG systems are as much about content operations as ML operations. The privacy and safety considerations, including the creative solution of requesting user consent to share chat history for feedback, demonstrate the regulatory and ethical complexity of production LLM applications.
+
+Overall, Ask Learn represents a sophisticated, production-grade implementation of RAG at massive scale, with the case study providing unusually detailed and honest insights into the technical, organizational, and operational challenges involved in building such systems.

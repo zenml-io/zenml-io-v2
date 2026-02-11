@@ -1,0 +1,135 @@
+---
+title: "Using GenAI to Automatically Fix Java Resource Leaks"
+slug: "using-genai-to-automatically-fix-java-resource-leaks"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "681b133d88f1501682f4ab3d"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:07:33.973Z"
+  createdOn: "2025-05-07T08:01:01.560Z"
+llmopsTags:
+  - "code-generation"
+  - "code-interpretation"
+  - "prompt-engineering"
+  - "error-handling"
+  - "cicd"
+  - "documentation"
+  - "guardrails"
+  - "openai"
+  - "microsoft-azure"
+company: "Uber"
+summary: "Uber developed FixrLeak, a framework combining generative AI and Abstract Syntax Tree (AST) analysis to automatically detect and fix resource leaks in Java code. The system processes resource leaks identified by SonarQube, analyzes code safety through AST, and uses GPT-4 to generate appropriate fixes. When tested on 124 resource leaks in Uber's codebase, FixrLeak successfully automated fixes for 93 out of 102 eligible cases, significantly reducing manual intervention while maintaining code quality."
+link: "https://www.uber.com/en-NL/blog/fixrleak-fixing-java-resource-leaks-with-genai/"
+year: 2024
+seo:
+  title: "Uber: Using GenAI to Automatically Fix Java Resource Leaks - ZenML LLMOps Database"
+  description: "Uber developed FixrLeak, a framework combining generative AI and Abstract Syntax Tree (AST) analysis to automatically detect and fix resource leaks in Java code. The system processes resource leaks identified by SonarQube, analyzes code safety through AST, and uses GPT-4 to generate appropriate fixes. When tested on 124 resource leaks in Uber's codebase, FixrLeak successfully automated fixes for 93 out of 102 eligible cases, significantly reducing manual intervention while maintaining code quality."
+  canonical: "https://www.zenml.io/llmops-database/using-genai-to-automatically-fix-java-resource-leaks"
+  ogTitle: "Uber: Using GenAI to Automatically Fix Java Resource Leaks - ZenML LLMOps Database"
+  ogDescription: "Uber developed FixrLeak, a framework combining generative AI and Abstract Syntax Tree (AST) analysis to automatically detect and fix resource leaks in Java code. The system processes resource leaks identified by SonarQube, analyzes code safety through AST, and uses GPT-4 to generate appropriate fixes. When tested on 124 resource leaks in Uber's codebase, FixrLeak successfully automated fixes for 93 out of 102 eligible cases, significantly reducing manual intervention while maintaining code quality."
+---
+
+## Overview
+
+Uber's Programming Systems group developed FixrLeak, a production system that leverages generative AI to automatically fix Java resource leaks at scale. Resource leaks—where resources like files, database connections, or streams aren't properly released after use—represent a persistent challenge in Java applications that can lead to performance degradation and system failures. While static analysis tools like SonarQube effectively identify such leaks, the fixing process traditionally remained manual, time-consuming, and error-prone. FixrLeak addresses this gap by combining traditional code analysis techniques with large language models to automate the repair process.
+
+The system represents an interesting case study in applying LLMs to a well-defined, scoped problem in software engineering. Rather than attempting to solve all code quality issues with AI, Uber focused on a specific class of problems where generative AI could be highly effective: intra-function resource leaks that can be safely fixed using Java's try-with-resources pattern.
+
+## Technical Architecture and LLM Integration
+
+FixrLeak employs a multi-stage pipeline that carefully orchestrates traditional static analysis with LLM-based code generation. This hybrid approach is notable because it recognizes the limitations of both traditional tools and pure LLM solutions, combining them strategically.
+
+### Input Gathering and Preprocessing
+
+The system begins by scanning resource leaks reported by SonarQube, an established static analysis tool. This is a pragmatic design choice—rather than relying on AI for leak detection (which would introduce additional uncertainty), FixrLeak leverages a trusted, deterministic tool for this phase. Key details like file names and line numbers are gathered, and a deterministic hash based on file and function name is used for accurate tracking of leaks and their fixes across codebase changes.
+
+Once identified, FixrLeak uses the Tree-sitter library to parse the code and extract the relevant function for analysis. Tree-sitter is a well-established incremental parsing library that provides robust AST (Abstract Syntax Tree) manipulation capabilities across many programming languages.
+
+### AST-Level Analysis as a Guard Rail
+
+A critical aspect of FixrLeak's design is its use of AST-level analysis to determine which leaks are safe to fix automatically. This represents an important lesson in responsible LLM deployment: not all problems should be handed to the AI. The system specifically filters out cases where:
+
+- Resources are passed as parameters to the function
+- Resources are returned from the function
+- Resources are stored in class fields
+
+These scenarios typically involve resources that outlive the function's scope, where blindly applying try-with-resources could introduce use-after-close errors. By focusing only on intra-function leaks where the resource's lifetime is confined to the allocating function, FixrLeak achieves higher accuracy and avoids introducing new bugs.
+
+This filtering is particularly important from an LLMOps perspective. It demonstrates a "narrow the scope" principle: by carefully constraining the problem space presented to the LLM, the team achieved much higher success rates than previous approaches like InferFix, which attempted to handle more complex cases and achieved only 70% accuracy.
+
+### Prompt Engineering
+
+For leaks that pass the AST-level safety checks, FixrLeak crafts tailored prompts for OpenAI's GPT-4O model. The text doesn't provide extensive details on the prompt engineering approach, but the context-specific nature of the prompts is emphasized—they include the relevant function code and information about the specific resource leak to be fixed.
+
+The choice of GPT-4O (likely referring to GPT-4 Omni or a similar variant) as the underlying model is notable. While this creates a dependency on an external API and proprietary model, it provides access to state-of-the-art code generation capabilities without the need to train or fine-tune custom models.
+
+### Pull Request Generation and Verification
+
+The LLM response is processed to extract the suggested fix, which replaces the original leaky function. However, the system doesn't blindly trust the AI output. Before submitting a pull request, FixrLeak runs multiple validation checks:
+
+- Verification that the target binary builds successfully
+- Execution of all existing tests to confirm no regressions
+- Optional recheck with SonarQube to confirm the resource leak has been resolved
+
+This multi-layer validation pipeline is essential for production LLM deployments. It acknowledges that LLM outputs, while often correct, can occasionally contain subtle errors or break assumptions elsewhere in the codebase. The automated verification catches these issues before human review.
+
+Finally, pull requests are generated for developer review. The text notes that "usually, all they need to do is one-click accept," suggesting high confidence in the fixes, though human oversight remains part of the workflow.
+
+## Results and Effectiveness
+
+The case study provides concrete metrics on FixrLeak's performance at Uber:
+
+- 124 resource leaks were identified by SonarQube in the Java codebase
+- 12 cases in deprecated code were excluded
+- 112 leaks were processed through AST-level analysis
+- 102 cases were deemed eligible for automated fixing (the remaining 10 presumably involved inter-procedural scenarios filtered out by AST analysis)
+- 93 leaks were successfully fixed automatically
+
+This represents approximately 91% success rate on eligible cases, and 75% of all non-deprecated leaks being fixed automatically. While impressive, it's worth noting the careful scoping that went into achieving these results—the AST-level filtering removed the harder cases before they reached the LLM.
+
+The system is deployed as a continuous process that "runs periodically on the Java codebase and will quickly generate fixes for resource leaks introduced in the future," representing a mature production deployment rather than a one-time batch fix.
+
+## Comparison with Previous Approaches
+
+The case study contextualizes FixrLeak against previous solutions:
+
+**RLFixer** (non-GenAI): Relied on pre-designed templates and the WALA analysis framework. While effective for some leaks, it struggled to scale in massive codebases and required extensive manual setup for each new programming idiom.
+
+**InferFix** (GenAI-based): An earlier LLM-based approach that achieved only 70% fix accuracy and had challenges with complex leaks. It also relied on proprietary models that couldn't easily adapt to evolving technologies.
+
+FixrLeak's improvement comes from its "template-free approach" that leverages modern LLMs' code generation capabilities, combined with strategic use of AST analysis to focus on well-scoped problems.
+
+## LLMOps Lessons and Best Practices
+
+The case study articulates several key takeaways that align with LLMOps best practices:
+
+**Prioritize structured code analysis**: AST-based techniques help ensure fixes are safe and context-aware. This represents a broader principle of combining traditional deterministic tools with probabilistic LLM outputs.
+
+**Automate targeted fixes**: Focus on well-scoped, high-confidence fixes first to maximize success rates. This is essentially a guidance to "start narrow and expand" rather than attempting to solve all cases at once.
+
+**Integrate AI responsibly**: Validate AI-generated code with rigorous testing and code review processes. Human oversight remains important even with high-accuracy systems.
+
+## Future Directions
+
+The team outlines planned expansions:
+
+- Support for inter-procedural fixes (handling resource leaks spanning multiple functions)
+- GenAI-based leak detection (using LLMs to identify leaks, not just fix them), including expansion to Golang
+- Advanced source code analysis for better accuracy with user-defined resource classes
+
+These directions suggest confidence in the current approach and ambition to tackle progressively harder problems.
+
+## Critical Assessment
+
+While the case study presents compelling results, several aspects warrant consideration:
+
+The 93 successfully fixed leaks out of 102 eligible cases is a strong result, but it represents a carefully filtered subset of the original 124 leaks. The true complexity lies in the remaining cases—inter-procedural leaks, deprecated code, and the 9 failures even among eligible cases.
+
+The reliance on OpenAI's GPT-4O creates an external dependency that may have cost, latency, and availability implications at scale. The text doesn't discuss these operational considerations.
+
+The "one-click accept" characterization for code review may oversimplify the cognitive load on developers reviewing AI-generated fixes. Even high-quality automated fixes require careful review, particularly for subtle resource management issues.
+
+Overall, FixrLeak represents a mature, pragmatic application of LLMs to a well-defined software engineering problem, with appropriate safeguards and validation pipelines. The combination of traditional static analysis tools with generative AI, rather than relying solely on either approach, appears to be a key factor in its success.

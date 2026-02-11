@@ -1,0 +1,102 @@
+---
+title: "Production AI Agents for Insurance Policy Management with Amazon Bedrock"
+slug: "production-ai-agents-for-insurance-policy-management-with-amazon-bedrock"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "68a6ce9369d7ebd7a5dd169b"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:19:16.908Z"
+  createdOn: "2025-08-21T07:45:23.437Z"
+llmopsTags:
+  - "healthcare"
+  - "customer-support"
+  - "document-processing"
+  - "structured-output"
+  - "multi-modality"
+  - "unstructured-data"
+  - "regulatory-compliance"
+  - "chatbot"
+  - "prompt-engineering"
+  - "evals"
+  - "agent-based"
+  - "multi-agent-systems"
+  - "rag"
+  - "embeddings"
+  - "system-prompts"
+  - "human-in-the-loop"
+  - "monitoring"
+  - "api-gateway"
+  - "serverless"
+  - "guardrails"
+  - "reliability"
+  - "security"
+  - "compliance"
+  - "fastapi"
+  - "postgresql"
+  - "documentation"
+  - "amazon-aws"
+  - "anthropic"
+company: "CDL"
+summary: "CDL, a UK-based insurtech company, has developed a comprehensive AI agent system using Amazon Bedrock to handle insurance policy management tasks in production. The solution includes a supervisor agent architecture that routes customer intents to specialized domain agents, enabling customers to manage their insurance policies through conversational AI interfaces available 24/7. The implementation addresses critical production concerns through rigorous model evaluation processes, guardrails for safety, and comprehensive monitoring, while preparing their APIs to be AI-ready for future digital assistant integrations."
+link: "https://www.youtube.com/watch?v=ad_vpUA038U"
+year: 2025
+seo:
+  title: "CDL: Production AI Agents for Insurance Policy Management with Amazon Bedrock - ZenML LLMOps Database"
+  description: "CDL, a UK-based insurtech company, has developed a comprehensive AI agent system using Amazon Bedrock to handle insurance policy management tasks in production. The solution includes a supervisor agent architecture that routes customer intents to specialized domain agents, enabling customers to manage their insurance policies through conversational AI interfaces available 24/7. The implementation addresses critical production concerns through rigorous model evaluation processes, guardrails for safety, and comprehensive monitoring, while preparing their APIs to be AI-ready for future digital assistant integrations."
+  canonical: "https://www.zenml.io/llmops-database/production-ai-agents-for-insurance-policy-management-with-amazon-bedrock"
+  ogTitle: "CDL: Production AI Agents for Insurance Policy Management with Amazon Bedrock - ZenML LLMOps Database"
+  ogDescription: "CDL, a UK-based insurtech company, has developed a comprehensive AI agent system using Amazon Bedrock to handle insurance policy management tasks in production. The solution includes a supervisor agent architecture that routes customer intents to specialized domain agents, enabling customers to manage their insurance policies through conversational AI interfaces available 24/7. The implementation addresses critical production concerns through rigorous model evaluation processes, guardrails for safety, and comprehensive monitoring, while preparing their APIs to be AI-ready for future digital assistant integrations."
+---
+
+CDL is a UK-based insurtech company that specializes in building digital insurance journeys powered by data and AI. The company has implemented a comprehensive production AI system using Amazon Bedrock to transform how customers interact with their insurance policies, moving beyond traditional call centers and web portals to conversational AI interfaces.
+
+## Architecture and Implementation
+
+The core architecture centers around Amazon Bedrock and follows a supervisor agent pattern. When customers authenticate through their portal, their intent is routed to a supervisor agent that coordinates with one or more specialized domain agents. These agents are organized following domain-driven design principles, mapping to specific business domains within insurance operations. The system includes an "AI integration layer" (also referred to as an anti-corruption layer) consisting of Lambda functions that interface with existing CDL APIs, which weren't originally designed for AI interaction.
+
+The technical implementation demonstrates sophisticated prompt engineering where the system dynamically injects context including user policy information, tool specifications, and business rules at runtime. The agents are equipped with OpenAPI specifications that define available actions, such as policy modifications like setting auto-renewal preferences. When a customer makes a request, the large language model receives both the user's policy context and the tool specifications as part of the prompt, enabling it to understand what actions are available and what parameters are required.
+
+## Model Evaluation and Selection Strategy
+
+CDL has implemented what they call "the battle of the LLMs" - a comprehensive model evaluation framework that runs continuously to assess different models against their specific use cases. They conduct two types of evaluations: automated LLM-as-a-judge evaluations and human expert evaluations. The automated evaluations use one LLM to answer questions and a second LLM to assess the quality of responses against ground truth data provided by domain experts.
+
+Their evaluation metrics include technical factors like completeness, correctness, faithfulness, and helpfulness, as well as responsible AI metrics covering stereotyping, harmfulness, and refusal rates. For human evaluations, they leverage Amazon SageMaker and Amazon Mechanical Turk to create private workforce evaluations where their domain experts assess model responses against curated ground truth answers. This dual approach ensures both scalability and domain expertise in model selection.
+
+The evaluation process is designed to be ongoing rather than one-time, recognizing the rapid pace of model releases and updates. They integrate evaluations into their CI/CD pipelines and run them whenever new models become available or when making significant changes to prompts or system configurations.
+
+## Production Safety and Risk Mitigation
+
+Addressing the critical concern of hallucinations in insurance applications, CDL has implemented Amazon Bedrock Guardrails as a key safety mechanism. Their guardrails operate at both input and output stages, checking prompts before they reach the LLM and responses before they're returned to users. They've configured topic-based filtering to prevent discussions of high-risk insurance topics like credit history, criminal records, and past claims, redirecting such conversations to human agents.
+
+The guardrails system supports both text and multimodal content, with violence detection capabilities for images. CDL can customize violation messages differently for input versus output filtering, providing appropriate guidance to users when certain topics are blocked. The system maintains confidence scores for its detections, adding another layer of reliability assessment.
+
+## Monitoring and Observability
+
+CDL has enabled comprehensive model invocation logging in Amazon Bedrock, with all inference activities logged to Amazon S3. They've set up Amazon Athena to query these logs using SQL, enabling them to track user behavior patterns, identify potentially problematic interactions, and monitor system performance. This logging capability addresses concerns about users attempting to extract sensitive information and provides the foundation for ongoing system improvement.
+
+The monitoring extends beyond basic logging to include detailed tracing through their Lambda functions, allowing them to track the complete request flow from user input through agent processing to API calls and responses. This comprehensive observability enables both technical debugging and business intelligence gathering.
+
+## Data Pipeline Integration
+
+Recognizing that AI quality depends heavily on data quality, CDL has invested in robust data pipeline capabilities. They use AWS Glue for ETL operations, including data profiling and quality rule enforcement. Amazon DataZone serves as their central data catalog with metadata management and AI-powered data profiling capabilities.
+
+For retrieval-augmented generation (RAG) use cases, they've built pipelines to vectorize data from operational databases like PostgreSQL and store vectors in services like Amazon OpenSearch or PostgreSQL's vector capabilities. They emphasized the importance of transforming data into AI-friendly formats, particularly converting SharePoint content to markdown for better AI processing.
+
+An interesting application is their use of Amazon Bedrock Data Automation for converting unstructured documents (like receipts) into structured data. This capability automatically extracts tables, text, and metadata from images and documents, converting them into CSV, markdown, and other structured formats for further processing in data pipelines.
+
+## Production Deployment Considerations
+
+The system is designed with production readiness in mind, including version control for agents and the ability to use aliases for A/B testing different agent configurations. CDL emphasized that their APIs weren't originally designed for AI interaction, highlighting the importance of the integration layer that makes existing systems AI-ready without requiring complete rebuilds.
+
+Their approach to making APIs "AI-ready" involves creating OpenAPI specifications that can be injected into prompts, allowing LLMs to understand available functionality and required parameters. This pattern enables existing business logic to be exposed to AI agents while maintaining separation of concerns.
+
+## Business Impact and Future Vision
+
+CDL's implementation addresses multiple business objectives: reducing call center wait times, providing 24/7 customer service capabilities, and preparing for future digital assistant integrations. They're positioning themselves for a future where customers might interact with insurance services through platforms like Google Gemini or other digital assistants.
+
+The technical implementation demonstrates practical solutions to common LLMOps challenges including model evaluation, safety guardrails, monitoring, and integration with existing systems. While the presentation included marketing elements typical of conference talks, the technical details and demonstrated capabilities provide concrete evidence of successful production AI deployment in a regulated industry.
+
+The case study illustrates the complexity of productionizing AI systems, showing that success requires not just selecting and deploying models, but building comprehensive evaluation frameworks, safety systems, monitoring capabilities, and integration layers. CDL's approach provides a practical template for other organizations looking to deploy conversational AI in production environments, particularly in regulated industries where accuracy, safety, and compliance are paramount.

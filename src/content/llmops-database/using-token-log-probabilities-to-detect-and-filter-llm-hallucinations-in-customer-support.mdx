@@ -1,0 +1,97 @@
+---
+title: "Using Token Log-Probabilities to Detect and Filter LLM Hallucinations in Customer Support"
+slug: "using-token-log-probabilities-to-detect-and-filter-llm-hallucinations-in-customer-support"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "67bc29bf11b1bf33a66a1066"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:01:52.598Z"
+  createdOn: "2025-02-24T08:11:43.553Z"
+llmopsTags:
+  - "customer-support"
+  - "question-answering"
+  - "high-stakes-application"
+  - "error-handling"
+  - "prompt-engineering"
+  - "fallback-strategies"
+  - "monitoring"
+  - "guardrails"
+  - "openai"
+  - "anthropic"
+  - "meta"
+company: "Gusto"
+summary: "Gusto developed a method to improve the reliability of their LLM-based customer support system by using token log-probabilities as a confidence metric. The approach monitors sequence log-probability scores to identify and filter out potentially hallucinated or low-quality LLM responses. In their case study, they found a 69% relative difference in accuracy between high and low confidence responses, with the highest confidence responses achieving 76% accuracy compared to 45% for the lowest confidence responses."
+link: "https://engineering.gusto.com/tackling-ai-hallucinations-in-llm-apps-6d46692f8cac"
+year: 2024
+seo:
+  title: "Gusto: Using Token Log-Probabilities to Detect and Filter LLM Hallucinations in Customer Support - ZenML LLMOps Database"
+  description: "Gusto developed a method to improve the reliability of their LLM-based customer support system by using token log-probabilities as a confidence metric. The approach monitors sequence log-probability scores to identify and filter out potentially hallucinated or low-quality LLM responses. In their case study, they found a 69% relative difference in accuracy between high and low confidence responses, with the highest confidence responses achieving 76% accuracy compared to 45% for the lowest confidence responses."
+  canonical: "https://www.zenml.io/llmops-database/using-token-log-probabilities-to-detect-and-filter-llm-hallucinations-in-customer-support"
+  ogTitle: "Gusto: Using Token Log-Probabilities to Detect and Filter LLM Hallucinations in Customer Support - ZenML LLMOps Database"
+  ogDescription: "Gusto developed a method to improve the reliability of their LLM-based customer support system by using token log-probabilities as a confidence metric. The approach monitors sequence log-probability scores to identify and filter out potentially hallucinated or low-quality LLM responses. In their case study, they found a 69% relative difference in accuracy between high and low confidence responses, with the highest confidence responses achieving 76% accuracy compared to 45% for the lowest confidence responses."
+---
+
+## Overview
+
+Gusto, a company that provides payroll, benefits, and HR software for small and medium businesses, published an engineering blog post detailing their approach to tackling one of the most challenging problems in production LLM systems: hallucinations. The case study focuses on their FAQ service, which uses LLMs to answer customer support questions by generating responses based on internal documentation. This is a common enterprise use case where customers ask questions like "How do I add a contractor?" or "How to change an employee status to part-time?" and expect accurate, reliable answers.
+
+The fundamental challenge they address is that LLMs, while powerful, can produce outputs that are irrelevant, vague, or entirely fabricated. In a customer support context, providing incorrect information can lead to compliance issues, frustrated customers, and reputational damage. The article presents a practical approach to mitigating this risk using a technique borrowed from machine translation research: analyzing token log-probabilities to estimate model confidence.
+
+## The Problem with LLM Outputs in Production
+
+Unlike traditional machine learning models that output class labels with associated confidence scores, LLMs produce free-form text. This makes it challenging to apply standard ML quality control techniques like precision-recall tradeoffs. In a classification model, one can simply set a confidence threshold and reject predictions below that threshold. With LLMs, there is no obvious equivalent mechanism.
+
+The article acknowledges that LLMs like ChatGPT, Claude, and LLaMA are "incredibly powerful but are still an emerging technology that can pose unique risks." The author references a real-world example where ChatGPT hallucinated legal cases that were subsequently cited by a law firm, illustrating the serious consequences of unchecked LLM hallucinations. This context underscores the importance of having robust quality control mechanisms in production LLM applications.
+
+## Technical Approach: Sequence Log-Probability as Confidence
+
+The core insight of Gusto's approach comes from machine translation literature, where transformer-based models have been extensively studied. The key hypothesis, drawn from academic research (specifically the paper "Looking for a Needle in a Haystack: A Comprehensive Study of Hallucinations in Neural Machine Translation"), is that when an LLM is hallucinating, it is typically less confident in its outputs.
+
+The technical mechanism works as follows: GPT-style models work with a fixed vocabulary of tokens and, at each position in the generated sequence, compute a probability distribution over all possible next tokens. The model then samples or selects the most likely token. These token probabilities are accessible through APIs like OpenAI's, which provide log-probability (logprob) values for generated tokens.
+
+The Seq-Logprob metric is computed as the average of log-probabilities across all tokens in a generated sequence. For example, if an LLM generates the text "the boy went to the playground" with token log-probabilities of [-0.25, -0.1, -0.15, -0.3, -0.2, -0.05], the confidence score would be the mean of these values (-0.175). Higher values (closer to 0) indicate greater model confidence, while lower values (more negative) indicate less confidence.
+
+The article cites research showing that "Seq-Logprob is the best heuristic and performs on par with reference-based COMET" and that "the less confident the model is, the more likely it is to generate an inadequate translation." A significant practical advantage is that these scores are "easily obtained as a by-product of generating" a response—no additional inference passes or specialized models are required.
+
+## Experimental Validation
+
+Gusto conducted an experiment with 1,000 support questions processed through their LLM-based FAQ service. They recorded the Seq-Logprob confidence scores for each generated response and then had customer support experts manually label the outputs as either "good quality" or "bad quality." This created a binary ground truth that could be correlated with the confidence scores.
+
+The results showed a clear relationship between confidence and quality. When responses were grouped into bins based on confidence scores, the top confidence bin achieved 76% accuracy while the bottom confidence bin achieved only 45% accuracy—a 69% relative difference. This substantial gap demonstrates that the confidence metric has meaningful predictive power for identifying potentially problematic outputs.
+
+The author also observed qualitative patterns in the relationship between confidence and output quality. Low-confidence responses tended to be "vague or overly broad," were "more likely to make stuff up," and were "less likely to follow prompt guidelines, such as including sources or not engaging in a conversation." In contrast, high-confidence responses were "usually precise in their instructions, understanding the problem and solution exactly."
+
+An important caveat noted in the article is that "LLM confidence distribution is sensitive to prompt changes," meaning that if the prompts are modified, the confidence thresholds need to be recalibrated accordingly. This is a practical consideration for production systems where prompts may evolve over time.
+
+## Practical Implementation Patterns
+
+The article outlines a design pattern for implementing confidence-based filtering in production LLM systems:
+
+- **Collect confidence scores**: During normal operation, record Seq-Logprob scores for all outputs to understand the expected confidence distribution. The OpenAI API and similar services provide these values directly.
+
+- **Monitor the distribution**: The author found that confidence scores follow a normal distribution across a sample of 1,000 generations, which provides a useful baseline for setting thresholds.
+
+- **Implement decision boundaries**: Based on the confidence distribution, set thresholds that enable automated actions such as rejecting poor-quality responses entirely, routing low-confidence responses to human experts for verification, or attempting to collect more information to make the LLM more confident before responding.
+
+The ability to construct precision-recall curves for the LLM system is a particularly valuable outcome. By treating the binary quality label as the target variable and the confidence score as the prediction threshold, teams can visualize and optimize the tradeoff between showing more responses to users (higher recall) and ensuring those responses are correct (higher precision). This brings LLM systems closer to the well-established evaluation paradigms of traditional ML systems.
+
+## Limitations and Considerations
+
+While the article presents a compelling approach, several limitations should be acknowledged. The 76% accuracy in the highest confidence bin still means that roughly one in four responses may be incorrect—a significant error rate for customer-facing applications. The approach is best viewed as a filtering mechanism that reduces but does not eliminate the risk of poor outputs.
+
+The experimental setup is relatively small (1,000 samples), and the results may not generalize across different types of questions, different LLM models, or different prompt configurations. The sensitivity of confidence distributions to prompt changes means that ongoing calibration is required as the system evolves.
+
+Additionally, the approach relies on access to token log-probabilities, which may not be available for all LLM providers or may be restricted in some API tiers. Organizations using models without logprob access would need alternative approaches.
+
+The article also mentions related work on semantic entropy and mutual information between multiple generations as alternative or complementary confidence estimation techniques, suggesting that this is an active area of research with multiple viable approaches.
+
+## Broader LLMOps Implications
+
+This case study illustrates several important LLMOps principles. First, it demonstrates the value of treating LLM systems with the same rigor as traditional ML systems—establishing baselines, measuring performance, and implementing quality gates. Second, it shows how existing infrastructure (API-provided logprobs) can be leveraged for quality control without requiring additional model training or specialized infrastructure.
+
+The human-in-the-loop pattern for low-confidence responses is a pragmatic approach that acknowledges current LLM limitations while still extracting value from automation. Rather than an all-or-nothing approach, organizations can use confidence scoring to route easy cases to full automation while reserving human expertise for ambiguous situations.
+
+Finally, the approach of building precision-recall curves for LLM systems is a valuable conceptual bridge that makes LLM quality control more accessible to teams familiar with traditional ML evaluation techniques. This could facilitate broader adoption of systematic quality control practices in LLM-powered applications.

@@ -1,0 +1,125 @@
+---
+title: "Building Production LLM Pipelines for Insurance Risk Assessment and Document Processing"
+slug: "building-production-llm-pipelines-for-insurance-risk-assessment-and-document-processing"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "6792a02c4cdbc36e37f4bb6d"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:57:29.643Z"
+  createdOn: "2025-01-23T20:01:48.694Z"
+llmopsTags:
+  - "fraud-detection"
+  - "document-processing"
+  - "classification"
+  - "regulatory-compliance"
+  - "prompt-engineering"
+  - "error-handling"
+  - "token-optimization"
+  - "docker"
+  - "fastapi"
+  - "langchain"
+  - "postgresql"
+  - "redis"
+  - "kubernetes"
+  - "openai"
+  - "amazon-aws"
+company: "Vouch"
+summary: "Vouch Insurance implemented a production machine learning system using Metaflow to handle risk classification and document processing for their technology-focused insurance business. The system combines traditional data warehousing with LLM-powered predictions, processing structured and unstructured data through hourly pipelines. They built a comprehensive stack that includes data transformation, LLM integration via OpenAI, and a FastAPI service layer with an SDK for easy integration by product engineers."
+link: "https://www.youtube.com/watch?v=j295EoVHHmo"
+seo:
+  title: "Vouch: Building Production LLM Pipelines for Insurance Risk Assessment and Document Processing - ZenML LLMOps Database"
+  description: "Vouch Insurance implemented a production machine learning system using Metaflow to handle risk classification and document processing for their technology-focused insurance business. The system combines traditional data warehousing with LLM-powered predictions, processing structured and unstructured data through hourly pipelines. They built a comprehensive stack that includes data transformation, LLM integration via OpenAI, and a FastAPI service layer with an SDK for easy integration by product engineers."
+  canonical: "https://www.zenml.io/llmops-database/building-production-llm-pipelines-for-insurance-risk-assessment-and-document-processing"
+  ogTitle: "Vouch: Building Production LLM Pipelines for Insurance Risk Assessment and Document Processing - ZenML LLMOps Database"
+  ogDescription: "Vouch Insurance implemented a production machine learning system using Metaflow to handle risk classification and document processing for their technology-focused insurance business. The system combines traditional data warehousing with LLM-powered predictions, processing structured and unstructured data through hourly pipelines. They built a comprehensive stack that includes data transformation, LLM integration via OpenAI, and a FastAPI service layer with an SDK for easy integration by product engineers."
+---
+
+## Overview
+
+Vouch Insurance is a company that provides business insurance specifically tailored for technology startups and other innovator-focused businesses. This case study, presented by Emily (Senior Machine Learning Engineer at Vouch) during a Metaflow Office Hours session, describes how the company has implemented LLM-powered solutions in production for two primary use cases: risk classification in underwriting and document AI processing. The presentation offers an honest look at their architecture, implementation choices, and lessons learned from running LLMs in production.
+
+## Business Context and Problem Statement
+
+Insurance is fundamentally a document-intensive industry with significant potential for AI and machine learning applications. Vouch identified two key areas where LLMs could provide value:
+
+The first use case involves risk classification, which is central to the underwriting business. Insurers need to assess risks and understand whether potential customers fall within their appetite to insure. Traditional approaches to risk classification can be labor-intensive and may not fully leverage the available data.
+
+The second use case revolves around document AI. Insurance companies deal with numerous documents containing valuable information—both business transaction documents and publicly available information on the web that can help better understand customers. Extracting structured information from these documents (typically PDFs, though not exclusively) is a natural fit for LLM-based solutions.
+
+## Technical Architecture
+
+Vouch describes themselves as a "modern data stack company," and their LLM infrastructure reflects this philosophy. The architecture integrates several components in a thoughtful pipeline design:
+
+### Infrastructure Foundation
+
+The team started with the AWS Batch Terraform template provided by Metaflow and extended it for their specific needs. One notable extension was integrating AWS Cognito for user authentication at the Application Load Balancer (ALB) level, allowing Vouch users to sign in via Gmail. Connor, one of the team members who contributed to this work, mentioned that they forked the Terraform module to add this capability, which required various backend changes to support the authentication flow.
+
+### Data Pipeline Architecture
+
+The overall flow follows this pattern:
+
+Data preparation begins with Metaflow running data transformations orchestrated through DBT. Once data is prepared, it is sent to LLM providers (OpenAI being the first they tried, though the presentation notes they are not exclusively tied to OpenAI). Predictions are generated based on this data.
+
+Post-processing is a critical step that the team emphasizes. When LLM responses come back, they "often still need a fair bit of work." The Metaflow pipelines handle additional transformations to enforce structure when output parsers fail or don't work entirely as expected. This is an honest acknowledgment of the reality of working with LLMs in production—they don't always return perfectly structured responses.
+
+The final predictions are written to a PostgreSQL database, served through a FastAPI instance, and also reverse-ETL'd back to Snowflake for reporting on prediction quality and performance.
+
+### Developer Experience and SDK
+
+A particularly thoughtful aspect of the architecture is the investment in developer experience. The team built a custom SDK that allows product engineers to retrieve predictions with just a couple lines of code, abstracting away the complexity of the underlying LLM infrastructure.
+
+For developers working on the LLM pipelines themselves, the team uses Docker Compose to spin up the entire service locally, including pipelines, API, and databases. This containerized approach was adopted specifically to address cross-platform development challenges, particularly issues with Mac AMD architectures across different developers' machines.
+
+## Operational Considerations
+
+### Execution Patterns
+
+The team runs different execution patterns for different use cases. Risk classification pipelines run every hour, checking for new data that needs processing. Document AI workflows run on an as-needed basis, triggered when documents hit their services.
+
+### Scale and Data Characteristics
+
+Being a startup, Vouch works at a scale of "terabytes or hundreds of terabytes" for the tables involved in feature engineering. The data is a mix of structured and semi-structured numeric and text data, plus documents (primarily PDFs).
+
+### Cost Management
+
+The team implements several strategies to manage LLM API costs:
+
+Prediction caching is used to avoid redundant API calls. Before making an LLM call, the system checks whether a prediction already exists, which helps narrow down the amount of work required. This is explicitly described as important because "all those calls are expensive."
+
+Token management is implemented, though the presenter notes this is a common pattern covered in educational content.
+
+The hourly cadence of the risk classification pipeline works well for their scale—they haven't encountered overwhelming volumes at this frequency.
+
+### LangChain Integration
+
+The team uses LangChain to make calls to OpenAI APIs. Longer timeouts are configured on steps that involve LLM calls, acknowledging the inherent latency variability of external API calls.
+
+## Lessons Learned and Honest Assessments
+
+The presentation includes several candid observations that are valuable for others building similar systems:
+
+The AWS Batch Terraform template was praised as "really great for getting us up and running and into production" with the statement that "nothing beats that." However, as the project matured, the team realized they probably need event-driven pipelines. While examples exist in the Metaflow documentation, the team expressed a desire for more comprehensive examples that don't have gaps.
+
+The local development experience across different machines and architectures proved challenging enough that they moved to a fully containerized development environment. While this approach has "quirks," it helps insulate the team from platform-specific issues. The presenter specifically called out interest in hearing how others have handled these problems.
+
+One team member (Sam) mentioned learning extensively about micro Mamba and the Netflix Metaflow extension, noting that recent Metaflow releases have improved the developer experience.
+
+## Community and Ecosystem Engagement
+
+The presentation occurred in a community setting (Metaflow Office Hours), and several Vouch team members participated. This suggests an organization that values community engagement and knowledge sharing. The presenter mentioned taking the Outerbounds (the company behind Metaflow) course and finding the transition from the class to the community "smooth and welcoming."
+
+The Q&A portion of the presentation provided additional context about potential future improvements, including the new `@pypi` decorator that could simplify package management and Kubernetes-based event-driven triggering options that could replace or supplement the current polling-based approach.
+
+## Assessment
+
+This case study represents a practical, production-ready approach to LLMOps in the insurance industry. The architecture shows thoughtful consideration of:
+
+- Developer experience (SDK, containerized development)
+- Cost management (prediction caching, avoiding redundant calls)
+- Robustness (post-processing for when LLM outputs don't parse correctly)
+- Observability (reverse ETL for reporting on prediction quality)
+
+The honest acknowledgment of challenges—particularly around local development, event-driven architectures, and LLM output parsing—adds credibility to the case study. This is not a polished marketing piece but rather a practitioner's view of what it actually takes to run LLMs in production for a real business use case.

@@ -1,0 +1,128 @@
+---
+title: "Building and Deploying AI-Powered Visual and Semantic Search in Design Tools"
+slug: "building-and-deploying-ai-powered-visual-and-semantic-search-in-design-tools"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "67e116db4d53eb7dbcffc1b8"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:04:30.451Z"
+  createdOn: "2025-03-24T08:24:59.464Z"
+llmopsTags:
+  - "visualization"
+  - "unstructured-data"
+  - "structured-output"
+  - "rag"
+  - "embeddings"
+  - "semantic-search"
+  - "vector-search"
+  - "fastapi"
+  - "elasticsearch"
+  - "openai"
+company: "Figma"
+summary: "Figma tackled the challenge of designers spending excessive time searching for existing designs by implementing AI-powered search capabilities. They developed both visual search (using screenshots or sketches) and semantic search features, using RAG and custom embedding systems. The team focused on solving real user workflows, developing systematic quality evaluations, and scaling the infrastructure to handle billions of embeddings while managing costs. The project evolved from an initial autocomplete prototype to a full-featured search system that helps designers find and reuse existing work more efficiently."
+link: "https://www.figma.com/blog/how-we-built-ai-search-in-figma/"
+year: 2024
+seo:
+  title: "Figma: Building and Deploying AI-Powered Visual and Semantic Search in Design Tools - ZenML LLMOps Database"
+  description: "Figma tackled the challenge of designers spending excessive time searching for existing designs by implementing AI-powered search capabilities. They developed both visual search (using screenshots or sketches) and semantic search features, using RAG and custom embedding systems. The team focused on solving real user workflows, developing systematic quality evaluations, and scaling the infrastructure to handle billions of embeddings while managing costs. The project evolved from an initial autocomplete prototype to a full-featured search system that helps designers find and reuse existing work more efficiently."
+  canonical: "https://www.zenml.io/llmops-database/building-and-deploying-ai-powered-visual-and-semantic-search-in-design-tools"
+  ogTitle: "Figma: Building and Deploying AI-Powered Visual and Semantic Search in Design Tools - ZenML LLMOps Database"
+  ogDescription: "Figma tackled the challenge of designers spending excessive time searching for existing designs by implementing AI-powered search capabilities. They developed both visual search (using screenshots or sketches) and semantic search features, using RAG and custom embedding systems. The team focused on solving real user workflows, developing systematic quality evaluations, and scaling the infrastructure to handle billions of embeddings while managing costs. The project evolved from an initial autocomplete prototype to a full-featured search system that helps designers find and reuse existing work more efficiently."
+---
+
+## Overview
+
+Figma, the collaborative design platform, developed AI-powered search capabilities to address a common pain point: designers spending excessive time finding existing designs. The company observed that their own designers were losing time trying to track down source files when they only had a screenshot, with hundreds of messages appearing in Slack channels where designers asked teammates for help. This led to the development of two AI-powered search features launched at Config 2024: visual search (allowing searches using screenshots, selected frames, or quick sketches) and semantic search (understanding the context behind text-based queries even when users don't know exact terms for component names or descriptions).
+
+The case study provides valuable insights into how a product-focused tech company approaches building AI features that genuinely add value rather than being built purely for hype. The journey from initial hackathon prototype to production feature took over a year and involved significant pivots based on user research.
+
+## Initial Approach and Pivot
+
+The project originated from a three-day AI hackathon in June 2023, which produced 20 completed projects including a working prototype for "design autocomplete" - an AI assistant that would suggest components as designers work (e.g., suggesting a "Get started" button for an onboarding flow). The team initially added this to the product roadmap and began building it.
+
+However, as they shared the working prototype with internal teams and conducted user research sessions, consistent patterns emerged. The team discovered that designers don't just start from scratch—they constantly riff on existing work, revisiting past explorations and using them to push their own work forward. In fact, 75% of all objects added to the Figma canvas come from other files. This insight led to a critical pivot: rather than focusing on autocomplete, the team recognized that improving search and navigation was the more pressing need.
+
+This pivot demonstrates a mature approach to AI product development—being willing to adjust direction based on user feedback rather than pushing forward with a technically impressive feature that may not address core user needs.
+
+## Technical Architecture and RAG Foundation
+
+The team explicitly mentions building on Retrieval Augmented Generation (RAG) principles. They understood that they could improve AI outputs by providing examples from search; if design autocomplete could find designs similar to what a designer was working on, it could better suggest the next component. This insight meant that even if they shipped search first, the underlying infrastructure would support future AI features like autocomplete.
+
+The technical approach involved generating and indexing embeddings to power visual and semantic search. While the article references a separate companion piece on the infrastructure specifics, it provides insights into the indexing challenges unique to their domain.
+
+## Challenges of Indexing an Infinite Canvas
+
+One of the most interesting LLMOps challenges described is the problem of determining what to index. Unlike traditional document search where the unit of indexing is clear, Figma's infinite canvas presents unique challenges:
+
+- **Cost constraints**: They couldn't index everything—it would be too costly. This required intelligent decisions about what deserves indexing.
+
+- **Identifying UI designs**: Designers often organize their work in sections or other frames, making it tricky to identify actual UI designs. The team solved this using heuristics like looking at common UI frame dimensions and considering non-top-level frames if they met certain conditions.
+
+- **Handling duplicates**: Designers frequently duplicate and tweak work, creating many pages with similar designs. The team developed logic to make only one version searchable rather than every duplicate. The same approach applied to copied files—unaltered copies could be skipped entirely.
+
+- **Quality signals**: The average designer's file contains many iterations of varying quality as well as non-designs (graveyard pages, archived explorations). The team needed to surface polished, share-ready designs without dredging up archived work. One solution was to delay indexing until a file hadn't been edited for four hours, increasing the chances of surfacing completed designs while keeping unfinished work out of results.
+
+- **Testing quality signals**: The team mentions experimenting with signals like whether a frame is marked "ready for development" to better identify high-quality, production-ready designs.
+
+These indexing decisions significantly impact both the quality of search results and infrastructure costs—a classic LLMOps tradeoff.
+
+## Evaluation Strategy
+
+The case study provides detailed insight into their evaluation methodology. The team built custom evaluation tools to measure search quality:
+
+- **Query selection**: They selected evaluation queries by talking to internal designers and analyzing how people used Figma's file browser. Queries ranged from simple ("checkout screen") to descriptive ("red website with green squiggly lines") to specific ("project [codename] theme picker").
+
+- **Multi-level relevance**: The solution needed to deliver relevant results across different similarity levels—from exact matches to highly similar results to somewhat different options. Their research showed that users prefer to start with something closer or more similar, even when ultimately seeking diverse results. They recognized that if they couldn't prove they could find the "needle in the haystack," designers wouldn't trust the feature for broader exploration.
+
+- **Custom evaluation tooling**: Using Figma's public plugin API, they built a tool for grading search results on an infinite canvas. This allowed internal users to mark results as correct or incorrect and visually track whether their search model had improved. They even added keyboard shortcuts to make labeling efficient—a thoughtful touch that likely increased the volume of evaluation data they could collect.
+
+This approach to building domain-specific evaluation tools is a best practice in LLMOps. Rather than relying solely on generic metrics, the team created evaluation mechanisms that matched their specific product context and could be used by domain experts (designers) rather than just ML engineers.
+
+## Iterative Development and Internal Beta
+
+The team followed an iterative development approach with several notable practices:
+
+- **Rapid staging deployments**: They continuously shipped updates to their staging environment, using insights from their internal beta to refine features.
+
+- **Internal dogfooding**: Before external launch, the features were tested extensively by Figma's own designers, who were experiencing the very problems the features aimed to solve.
+
+- **Cross-disciplinary collaboration**: The team emphasizes that success stemmed from close cooperation across product, content, engineering, and research teams—a reminder that AI features require more than just technical implementation.
+
+## Design Considerations for AI Features
+
+An interesting aspect of this case study is the attention to UX design for AI-powered features:
+
+- **Unified interface**: Rather than building separate interfaces for different search types, they created a unified interface for refining search results regardless of input type (visual or text).
+
+- **Handling workflow oscillation**: Instead of trying to guess which mode designers are in (exploration vs. execution), Figma decided to offer a range of results and let users pick what fits their needs.
+
+- **Integration with Actions panel**: As other teams at Figma explored a single home for AI features (the Actions panel), the search team realized it was the perfect location for their improved search, though this brought unique design challenges like limited space for search results.
+
+- **Feature explorations**: The team explored concepts that were ultimately scrapped, like "rabbit holing" which would let designers dive deeper into a result type by clicking on it. This was dropped to keep the experience straightforward—demonstrating restraint in feature scope.
+
+## Key Principles and Takeaways
+
+The team articulated four guiding principles for shipping AI features:
+
+- **AI for existing workflows**: They applied AI to streamline tasks that users already perform, like file browsing and copying frames, rather than creating entirely new workflows.
+
+- **Rapid iteration**: Continuous deployment to staging with insights from internal beta driving refinements.
+
+- **Systematic quality checks**: Custom evaluation tools to monitor and improve search result accuracy over time.
+
+- **Cross-disciplinary teamwork**: Collaboration across product, content, engineering, and research.
+
+## Honest Assessment
+
+While this case study provides valuable insights into Figma's approach, it's worth noting some limitations in the information provided:
+
+- **No quantitative results**: The article doesn't provide specific metrics on search quality improvements, user adoption, or productivity gains. The 75% statistic about objects coming from other files is about user behavior, not feature performance.
+
+- **Limited technical depth on ML**: While the article mentions embeddings and RAG, it doesn't detail specific model architectures, embedding dimensions, vector databases, or retrieval mechanisms.
+
+- **First-party source**: As a company blog post, this naturally presents the project in a positive light and may not capture challenges, failures, or limitations encountered.
+
+That said, the case study offers genuine value for LLMOps practitioners, particularly in its discussion of domain-specific indexing challenges, custom evaluation tooling, and the product thinking that guided technical decisions. The willingness to pivot from autocomplete to search based on user research is a particularly noteworthy example of user-centered AI development.

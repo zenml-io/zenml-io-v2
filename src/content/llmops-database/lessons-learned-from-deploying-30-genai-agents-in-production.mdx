@@ -1,0 +1,154 @@
+---
+title: "Lessons Learned from Deploying 30+ GenAI Agents in Production"
+slug: "lessons-learned-from-deploying-30-genai-agents-in-production"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "682725f357569a05cb67e841"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:08:39.139Z"
+  createdOn: "2025-05-16T11:48:03.109Z"
+llmopsTags:
+  - "customer-support"
+  - "multi-modality"
+  - "high-stakes-application"
+  - "regulatory-compliance"
+  - "rag"
+  - "prompt-engineering"
+  - "error-handling"
+  - "human-in-the-loop"
+  - "system-prompts"
+  - "multi-agent-systems"
+  - "fallback-strategies"
+  - "monitoring"
+  - "databases"
+  - "documentation"
+  - "security"
+  - "compliance"
+  - "guardrails"
+  - "reliability"
+  - "fastapi"
+  - "openai"
+  - "google-gcp"
+company: "Quic"
+summary: "Quic shares their experience deploying over 30 AI agents across various industries, focusing on customer experience and e-commerce applications. They developed a comprehensive approach to LLMOps that includes careful planning, persona development, RAG implementation, API integration, and robust testing and monitoring systems. The solution achieved 60% resolution of tier-one support issues with higher quality than human agents, while maintaining human involvement for complex cases."
+link: "https://www.youtube.com/watch?v=8MjDOtdEYlc"
+year: 2023
+seo:
+  title: "Quic: Lessons Learned from Deploying 30+ GenAI Agents in Production - ZenML LLMOps Database"
+  description: "Quic shares their experience deploying over 30 AI agents across various industries, focusing on customer experience and e-commerce applications. They developed a comprehensive approach to LLMOps that includes careful planning, persona development, RAG implementation, API integration, and robust testing and monitoring systems. The solution achieved 60% resolution of tier-one support issues with higher quality than human agents, while maintaining human involvement for complex cases."
+  canonical: "https://www.zenml.io/llmops-database/lessons-learned-from-deploying-30-genai-agents-in-production"
+  ogTitle: "Quic: Lessons Learned from Deploying 30+ GenAI Agents in Production - ZenML LLMOps Database"
+  ogDescription: "Quic shares their experience deploying over 30 AI agents across various industries, focusing on customer experience and e-commerce applications. They developed a comprehensive approach to LLMOps that includes careful planning, persona development, RAG implementation, API integration, and robust testing and monitoring systems. The solution achieved 60% resolution of tier-one support issues with higher quality than human agents, while maintaining human involvement for complex cases."
+---
+
+## Overview
+
+This case study is based on a presentation by Bill O'Neal, co-founder and SVP of Engineering and Product at Quic, delivered at the Argyle CIO Leadership Forum in early 2025. Quic is a company specializing in AI agents for customer experience, and O'Neal shared lessons learned from deploying over 30 AI agents across various industries over a two-year period. The presentation provides a practitioner's perspective on the challenges and best practices for deploying large language model-based systems in production environments, with a particular focus on customer-facing applications in e-commerce and customer care.
+
+It's worth noting that this is a vendor presentation, so some claims should be taken with appropriate skepticism. However, the technical lessons shared appear grounded in real operational experience and align with known challenges in the LLMOps space.
+
+## Strategic Context and Vision
+
+O'Neal frames the evolution of digital customer support from phone (1960s) to web/email (late 1990s) to mobile (2007) to the current AI agent era. He makes a significant observation about a fundamental shift: previously, consumers had to learn how to interact with brands (navigating websites, mobile apps, chatbots), but AI agents invert this responsibility—the agents must now understand customers rather than customers understanding the brand. This has implications for how production systems are designed and operated.
+
+The presentation predicts that 10% of all e-commerce transactions will be assisted by AI in the coming year, and that AI agents will become the primary face of companies within 2-5 years. While these predictions may be optimistic, they highlight the growing importance of robust LLMOps practices as AI agents take on more customer-facing responsibilities.
+
+## Planning Phase: Production Considerations
+
+The planning section emphasizes several LLMOps-relevant principles. First, maintaining realistic scope is critical—O'Neal notes that customers often get so excited by LLM capabilities that they jump into deployment without articulating clear business value, only realizing the gap after launch. This represents a common anti-pattern in LLM deployments.
+
+An important operational insight is that AI will not completely replace humans. O'Neal suggests that AI agents might resolve around 60% of tier one support with higher satisfaction than human agents, but humans must remain in the loop. This has significant implications for system design, including handoff mechanisms, escalation paths, and the need to measure how AI impacts human agents' productivity and efficiency.
+
+The presentation cautions against treating LLMs as a universal solution. O'Neal specifically mentions using Google Dialogflow for intent analysis and quick routing because it's significantly faster than large language models. This highlights a key LLMOps principle: production systems often require a mix of traditional ML, rule-based systems, and LLMs, each applied where most appropriate. Speed, cost, and determinism requirements may favor simpler approaches for certain tasks.
+
+Another planning consideration is the continued importance of UI/UX elements. While early LLM enthusiasm focused on blank text boxes for conversational interaction, O'Neal recommends maintaining traditional UI components like date pickers and list selectors, but making them dynamic rather than static. This hybrid approach acknowledges both the power of conversational AI and the efficiency of structured interfaces.
+
+## Agent Persona and Governance
+
+Designing the agent persona involves more than creative branding. O'Neal discusses governance and compliance requirements, using an airline regulated by the Department of Transportation as an example—certain responses must be canned (predetermined) rather than generative to comply with regulations. This has architectural implications: the LLM orchestration must support guardrails that enforce deterministic responses for regulated content.
+
+Bias management and hallucination prevention are identified as critical concerns requiring guardrails. The level of creative freedom given to an agent depends on brand identity and risk tolerance. A financial institution like Chase would have stricter guardrails than a consumer brand like Mountain Dew. This risk-based approach to guardrail configuration is an important LLMOps design pattern.
+
+## Data Architecture and RAG Implementation
+
+The presentation covers Retrieval-Augmented Generation (RAG), which O'Neal describes as combining information retrieval with text generation to provide context-aware responses. However, he positions RAG as "table stakes"—necessary but not sufficient. He characterizes basic RAG as "fancy search" and emphasizes the need to move beyond simple Q&A to enable agents to accomplish tasks for customers.
+
+Several non-functional requirements specific to LLM deployments are highlighted:
+
+**LLM Data Privacy**: Contracts with foundational model providers must explicitly prohibit using customer data for model training. This is a critical compliance and security consideration for production deployments.
+
+**Token Quotas**: While GPU availability has improved compared to 18 months prior, production systems must still account for quota limits, particularly during peak traffic periods like Black Friday. Capacity planning for LLM-based systems requires understanding token consumption patterns.
+
+**Model Tuning Considerations**: O'Neal notes that Quic has "never needed to fine-tune models"—foundational models are sufficiently powerful for their use cases. However, organizations planning to fine-tune or bring their own models should factor this into their architecture.
+
+## API Integration and Contextual Intelligence
+
+A key differentiator for production AI agents is API integration. APIs enable agents to accomplish meaningful tasks rather than just answering questions. O'Neal uses a flight cancellation example: the AI agent identifies the customer, pulls their current state (impacted by a hurricane), intelligently filters inappropriate options (no vacation packages during a crisis), proactively offers relevant intents, retrieves task-specific knowledge (flight cancellation policies rather than the full knowledge base), and executes rebooking via APIs.
+
+This targeted retrieval approach—pulling only relevant knowledge for the current task rather than the entire knowledge base—improves response quality and reduces token consumption. Authentication and security models must be carefully designed for APIs that perform consequential actions like changing bookings or issuing refunds.
+
+## Organizational and Skills Considerations
+
+O'Neal identifies an emerging role called "AI Engineer" that expands beyond traditional conversational designer skills. AI Engineers need to understand RAG, data ingestion and transformation, prompt engineering, Python coding, and user experience design. Organizations with existing conversational designers will likely face skills gaps and need to invest in upskilling or new hiring.
+
+Budget allocation decisions are also discussed. Many organizations prefer to focus innovation budgets on building rich API tooling that enables AI agents to perform more actions, rather than on LLM orchestration infrastructure itself. This "buy vs. build" decision for the orchestration layer affects both initial deployment and ongoing operational complexity.
+
+## Development Best Practices
+
+### Regression Testing for Generative Systems
+
+Regression testing is fundamentally different for LLM-based systems. Because outputs are generative and non-deterministic, traditional assertion-based testing (if input X, expect output Y) doesn't work. Instead, Quic uses LLM-based evaluation where a differently-trained model evaluates whether responses are "close enough within threshold" to target responses. This approach, borrowed from autonomous driving testing paradigms, requires building hundreds or thousands of test cases.
+
+A critical operational challenge is model deprecation. When foundational model providers like OpenAI deprecate models, these are "not trivial changes"—they can break production AI agents. Robust regression suites are essential not just for initial development but for safely transitioning to new model versions when deprecations occur. This is a particularly important LLMOps consideration that catches many organizations off guard.
+
+### Observability for Opaque Systems
+
+LLMs are inherently opaque—you provide input and receive output without visibility into the reasoning process. Production observability must enable teams to monitor, understand, and interpret internal states and decision-making processes. This becomes more complex as systems grow more autonomous and run multiple prompts in parallel (O'Neal mentions running nine prompts simultaneously in some cases). When one parallel prompt fails or returns unexpected results, operators need debugging tools to quickly understand what happened.
+
+Key observability metrics include costs, token usage, inference times, and goal state tracking (defining and monitoring success/failure states). Alerting on threshold violations helps catch drift early.
+
+### LLM-as-Judge Evaluation
+
+A recurring pattern is using large language models to evaluate the outputs of other large language models. This is applied for trend analysis, sentiment analysis, detecting emerging intents, and anticipating drift. The evaluating model is "trained differently" than the generative agent to assess response quality objectively.
+
+### Hallucination Detection and Claim Verification
+
+Hallucination remains a significant production challenge. O'Neal describes Quic's approach: a separate non-generative model that outputs a confidence score (0 to 1) based on gathering evidence from the conversation state and comparing the LLM's proposed response against that evidence. Low-confidence responses are rejected, and the agent either asks clarifying questions or escalates to a human agent. This claim verification layer is essential for production deployments where incorrect information could harm customers or the business.
+
+## Deployment Strategies
+
+### Agent-Facing Before Public-Facing
+
+A recommended de-risking strategy is deploying AI agents internally first, serving company staff before external customers. This provides real-world validation with lower risk exposure and allows staff to become more productive while identifying issues before public launch. When transitioning to public deployment, certain capabilities may need to be removed (like the ability to issue credits or refunds without approval).
+
+### Multi-Modal Integration
+
+Production systems increasingly combine voice and digital modalities. O'Neal gives an example of a voice call where the customer receives appointment options via text message that automatically update the voice conversation. This requires orchestration across modalities and integration with specialized providers (Deepgram is mentioned for voice).
+
+### Graduated Rollout
+
+Rather than full cutover, O'Neal recommends going live in limited windows—perhaps two hours per day initially—then reverting to traditional systems. This allows teams to identify new requirements and handle unexpected usage patterns without catastrophic impact. He notes that "LLM agents are held to a higher standard than human agents" with some organizations performing 100% conversation review initially. C-level executives will often test the system personally and their feedback carries significant weight, so having flexibility to quickly adjust is important.
+
+## Post-Launch Operations
+
+Even after successful launch with improved CSAT scores, resolution rates, and reduced agent handling times, continuous operations are essential. Key activities include:
+
+- **KPI monitoring and drift detection**: Standard operational metrics plus LLM-specific indicators
+- **Trend analysis**: Using LLMs to evaluate agent conversations and identify emerging issues or demographic shifts
+- **Intent discovery**: Detecting new intents that weren't anticipated in the original design
+- **Feedback loop management**: Tooling that allows stakeholders to flag and tag specific conversations for AI Engineer review (O'Neal specifically warns against using Excel for this)
+
+### Knowledge Management
+
+In the Q&A section, O'Neal addresses knowledge management for keeping AI agents accurate over time. The typical approach involves connecting to disparate knowledge sources and ingesting them on a regular cadence—typically every 24 hours, especially during early deployment when there's high churn in knowledge requirements. When observability tools reveal that generative responses are poor due to missing knowledge, that feedback flows back to knowledge base maintainers who update the source, which then flows through ingestion pipelines that transform, index, and store content in vector databases for the next day's use.
+
+## Tools and Technologies Mentioned
+
+The presentation references several specific tools and technologies: Google Dialogflow for intent analysis, ChatGPT as a foundational model example, Hugging Face, LangChain, Haystack, vector databases, prompt flow, and DAG workflows as components organizations might use for LLM orchestration. Quic's own "AI Studio" is presented as an integrated platform that provides observability, prompt replay, conversation review, and management capabilities for production AI agents. Deepgram is mentioned for voice modality support.
+
+## Critical Assessment
+
+While the presentation offers valuable practical insights, it's important to note the vendor context. Claims about specific resolution rates and satisfaction improvements should be validated independently. The characterization of Quic's platform as solving these challenges may be somewhat promotional. However, the challenges identified—model deprecation, hallucination, regression testing for generative systems, observability for opaque models—are well-documented across the industry and the approaches described align with emerging best practices in LLMOps.

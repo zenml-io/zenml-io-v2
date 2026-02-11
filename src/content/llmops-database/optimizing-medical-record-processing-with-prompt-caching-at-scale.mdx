@@ -1,0 +1,141 @@
+---
+title: "Optimizing Medical Record Processing with Prompt Caching at Scale"
+slug: "optimizing-medical-record-processing-with-prompt-caching-at-scale"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "69242ec1f92316ef0e191088"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:28:10.938Z"
+  createdOn: "2025-11-24T10:09:05.365Z"
+llmopsTags:
+  - "healthcare"
+  - "document-processing"
+  - "classification"
+  - "high-stakes-application"
+  - "regulatory-compliance"
+  - "prompt-engineering"
+  - "token-optimization"
+  - "cost-optimization"
+  - "latency-optimization"
+  - "databases"
+  - "monitoring"
+  - "security"
+  - "compliance"
+  - "guardrails"
+  - "scalability"
+  - "fastapi"
+  - "amazon-aws"
+company: "Care Access"
+summary: "Care Access, a global health services and clinical research organization, faced significant operational challenges when processing 300-500+ medical records daily for their health screening program. Each medical record required multiple LLM-based analyses through Amazon Bedrock, but the approach of reprocessing substantial portions of medical data for each separate analysis question led to high costs and slower processing times. By implementing Amazon Bedrock's prompt caching feature—caching the static medical record content while varying only the analysis questions—Care Access achieved an 86% reduction in data processing costs (7x decrease) and 66% faster processing times (3x speedup), saving 4-8+ hours of processing time daily. This optimization enabled the organization to scale their health screening program efficiently while maintaining strict HIPAA compliance and privacy standards, allowing them to connect more participants with personalized health resources and clinical trial opportunities."
+link: "https://aws.amazon.com/blogs/machine-learning/how-care-access-achieved-86-data-processing-cost-reductions-and-66-faster-data-processing-with-amazon-bedrock-prompt-caching?tag=soumet-20"
+year: 2025
+seo:
+  title: "Care Access: Optimizing Medical Record Processing with Prompt Caching at Scale - ZenML LLMOps Database"
+  description: "Care Access, a global health services and clinical research organization, faced significant operational challenges when processing 300-500+ medical records daily for their health screening program. Each medical record required multiple LLM-based analyses through Amazon Bedrock, but the approach of reprocessing substantial portions of medical data for each separate analysis question led to high costs and slower processing times. By implementing Amazon Bedrock's prompt caching feature—caching the static medical record content while varying only the analysis questions—Care Access achieved an 86% reduction in data processing costs (7x decrease) and 66% faster processing times (3x speedup), saving 4-8+ hours of processing time daily. This optimization enabled the organization to scale their health screening program efficiently while maintaining strict HIPAA compliance and privacy standards, allowing them to connect more participants with personalized health resources and clinical trial opportunities."
+  canonical: "https://www.zenml.io/llmops-database/optimizing-medical-record-processing-with-prompt-caching-at-scale"
+  ogTitle: "Care Access: Optimizing Medical Record Processing with Prompt Caching at Scale - ZenML LLMOps Database"
+  ogDescription: "Care Access, a global health services and clinical research organization, faced significant operational challenges when processing 300-500+ medical records daily for their health screening program. Each medical record required multiple LLM-based analyses through Amazon Bedrock, but the approach of reprocessing substantial portions of medical data for each separate analysis question led to high costs and slower processing times. By implementing Amazon Bedrock's prompt caching feature—caching the static medical record content while varying only the analysis questions—Care Access achieved an 86% reduction in data processing costs (7x decrease) and 66% faster processing times (3x speedup), saving 4-8+ hours of processing time daily. This optimization enabled the organization to scale their health screening program efficiently while maintaining strict HIPAA compliance and privacy standards, allowing them to connect more participants with personalized health resources and clinical trial opportunities."
+---
+
+## Overview
+
+Care Access is a global health services and clinical research organization that operates hundreds of clinical research locations, mobile clinics, and employs clinicians across the globe to deliver health research and medical services to underserved communities. At the core of their operations is a health screening program that provides advanced blood tests to nearly 15,000 new participants monthly worldwide, with projections for rapid growth. A key component of this program involves participants voluntarily sharing their medical records, which enables Care Access to provide personalized medical oversight and identify relevant health resources, including clinical trial opportunities matched to individual health profiles.
+
+The challenge that Care Access faced was fundamentally an LLMOps scalability problem: how to efficiently process hundreds of medical records daily through an LLM-based analysis pipeline while maintaining strict healthcare compliance standards and managing operational costs. The initial implementation processed each medical record through multiple separate prompts, with each prompt requiring the reprocessing of substantial portions of the medical record content. As the program scaled and hundreds of participants began sharing records daily, this approach created significant cost pressures and processing time constraints that threatened to become a bottleneck for program growth.
+
+## The Technical Challenge and Why LLMs Were Chosen
+
+While electronic health records (EHRs) may follow normalized data standards like FHIR or HL7, the actual content within each record varies widely based on how information is documented across different healthcare providers and for different types of patient visits. Traditional rule-based systems and OCR-based extraction methods exist but have limitations when dealing with this variability. Care Access chose LLMs specifically because of their ability to understand context and interpret variations in medical documentation across different healthcare providers without requiring extensive rule customization for each data source format.
+
+However, the nature of their use case presented a specific inefficiency: each participant's medical record remained static, but multiple different analysis questions needed to be asked about that same record. The initial implementation approach meant that for every question asked about a medical record—whether about medications, conditions, family history, or trial eligibility—the entire medical record needed to be processed again as input tokens, resulting in redundant computation and costs.
+
+## Solution Architecture and Implementation
+
+Care Access implemented a four-stage inference pipeline built on AWS infrastructure, leveraging their existing partnership with AWS and their data lake architecture:
+
+**Stage 1 - Medical Record Retrieval:** Individual electronic health records are retrieved from Amazon S3 buckets, normalized for processing, and prepared for inference with unnecessary data removed to follow data minimization principles.
+
+**Stage 2 - Prompt Cache Management:** This is the critical optimization stage where the medical record content becomes the static cached prefix, while specific analysis questions form the dynamic portion that varies with each query. The implementation uses labeled component prompt caching, which allows different parts of the prompt to be marked as cacheable or non-cacheable.
+
+**Stage 3 - LLM Inference:** Each cached health record receives multiple analysis questions through Amazon Bedrock. Cache checkpointing automatically activates when the prefix matches existing cache content and exceeds the minimum 1,000 token requirement.
+
+**Stage 4 - Output Processing:** Results from multiple queries are combined into a single JSON document per participant and stored in Amazon S3 for downstream analytics via Amazon Athena, ultimately enabling participants to be matched with relevant clinical trials.
+
+## Data Schema and Structure
+
+The medical records processed through the pipeline follow a custom data schema based on Care Access's input data sources. Each record contains multiple sections including past health history, medications, prior visits, conditions, diagnostic reports, family member history, and social history. The provided example shows a structured JSON format with nested objects containing clinical resources (organizations and practitioners), resource groups (medications, encounters, conditions, diagnostic reports, family member history, social history), with each element containing relevant metadata like dates, statuses, and subtitles.
+
+The records processed typically contain thousands to tens of thousands of tokens, which made them ideal candidates for the prompt caching optimization given the 1,000-token minimum threshold required for caching to activate.
+
+## Prompt Caching Implementation Details
+
+The technical implementation of prompt caching leverages Amazon Bedrock's labeled component caching feature. The prompt structure separates the static medical record content (the cacheable prefix) from the dynamic question component. The JSON structure shows a content array with two elements: the first contains the medical record data marked with a "cache-control" property of type "ephemeral," and the second contains the variable question text without caching directives.
+
+This structure is particularly effective for Care Access's use case because the vast majority of tokens (the entire medical record) get cached and reused across multiple queries, while only the small question portion needs to be processed as new input tokens each time. When a medical record is first processed, Amazon Bedrock stores or caches the prefix and assigns it a unique promptId. For subsequent queries about the same record, the cached prefix is retrieved via this promptId and combined with the new question for inference, avoiding the need to reprocess the medical record content.
+
+Care Access's team adopted a "default caching approach" where caching is enabled by default when prompts are expected to vary in size, particularly when biased toward larger token counts. Given that most EHRs in their pipeline contain thousands to tens of thousands of tokens, the pipeline automatically enables caching when records are sufficiently large, exceeding the 1,000-token minimum threshold.
+
+## Security, Privacy, and Compliance Considerations
+
+Operating in the healthcare domain means Care Access faces stringent requirements that significantly impact their LLMOps implementation decisions. These requirements include HIPAA or HIPAA-like standards compliance for all PHI (Personal Health Information) handling, adherence to the minimal necessary information principle, audit trail requirements for all data access, and secure data transmission and storage.
+
+Care Access addresses these requirements through several technical mechanisms integrated into their LLMOps pipeline. AWS Lake Formation manages privileged IAM permissions for all services involved (Amazon S3, Amazon Bedrock, Amazon Athena), providing centralized governance. Following HIPAA guidelines, only minimally necessary PHI (medical conditions and relevant clinical information) is used in the inference process, with unnecessary PHI being discarded. All PII (Personally Identifying Information such as names, addresses, phone numbers) is removed from the records before processing, retaining only unique identifiers for record indexing. Complete audit trails are maintained through Amazon CloudWatch for all data and service access, enabling compliance verification and security monitoring.
+
+The fact that Amazon Bedrock was chosen is itself significant from a compliance perspective. AWS's commitment to healthcare compliance standards and their track record with Care Access throughout their growth from startup to multinational enterprise provided the trust foundation necessary for processing sensitive medical data. The prompt caching feature operates entirely within this secure environment, with cached data subject to the same security and privacy controls as the original data.
+
+## Results and Performance Improvements
+
+The implementation of prompt caching delivered substantial quantifiable benefits. From a cost perspective, Care Access achieved an 86% reduction in Amazon Bedrock costs, representing a 7x decrease in their inference expenses. This dramatic cost reduction was directly attributable to the reduction in input tokens processed—instead of reprocessing the entire medical record for each question, only the cached promptId and the new question tokens needed to be processed.
+
+Performance improvements were equally significant, with a 66% reduction in processing time per record, translating to 3x faster processing speeds. This meant 4-8+ hours of processing time saved daily, which becomes increasingly important as the program scales. The operational benefits extended beyond just cost and speed: the approach reduced total token consumption through context reuse, improved response times for sequential queries, and maintained context integrity across all medical record processing operations.
+
+Critically, these technical achievements enabled Care Access to meet all implementation deadlines despite ambitious timelines. According to Josh Brandoff, Head of Applied Machine Learning & Analytics at Care Access, the team was able to launch their medical history review solution in six weeks instead of several months, and when record intake spiked sooner than predicted, the prompt caching capability allowed them to manage costs with minimal technical changes.
+
+## LLMOps Maturity and Best Practices
+
+The case study reveals several aspects of Care Access's LLMOps maturity. The implementation timeline—six weeks from start to production deployment—suggests a well-established MLOps foundation that could be extended to LLMOps use cases. The integration with existing data lake architecture on AWS (S3, Athena, Lake Formation) indicates that the LLM solution was built within an existing data platform rather than as an isolated system.
+
+The team's approach to optimization demonstrates practical LLMOps thinking. Rather than immediately implementing prompt caching from the beginning, they first deployed a functional solution and then optimized based on observed usage patterns and costs. When the scaling challenge emerged ("when our record intake spiked sooner than predicted"), they were able to implement the optimization "with minimal technical changes," suggesting good architectural decisions that kept the system flexible and maintainable.
+
+Key learnings from Care Access's implementation include their token threshold strategy of leveraging the fact that most EHRs contain thousands to tens of thousands of tokens, making the 1,000-token minimum threshold naturally satisfied. Their default caching approach of enabling caching by default when expected prompts vary in size proved effective. Their cache optimization strategy of structuring prompts so that large static content (medical records) becomes the cached prefix while small dynamic content (questions) remains uncached represents a generalizable pattern applicable to many document analysis scenarios.
+
+## Critical Assessment and Limitations
+
+While the case study presents impressive results, several considerations warrant balanced assessment. The post is published on an AWS blog and co-written with AWS Solutions Architects, which inherently creates some promotional bias toward AWS services. The 86% cost reduction figure is dramatic but lacks baseline cost context—we don't know whether the initial costs were $100 or $100,000 monthly, which affects the significance of the savings.
+
+The case study doesn't discuss certain technical details that would be valuable for understanding the full LLMOps implementation. For instance, we don't learn about their model selection process or why specific Amazon Bedrock models were chosen, how they handle cache invalidation when medical records are updated, what their cache hit rates are in practice, how they manage cache TTL (time-to-live) for ephemeral caches, or whether there are limits to how many records can be cached simultaneously.
+
+The compliance discussion, while present, is somewhat surface-level. The case study mentions HIPAA compliance but doesn't detail specific technical controls, explain how they validate that cached data doesn't leak between participants, or discuss their model output validation process to ensure medical accuracy. Healthcare LLM applications require significant attention to output validation and error handling, but these aspects aren't covered in depth.
+
+The case study also doesn't discuss certain operational aspects that would be expected in a mature LLMOps implementation. There's no mention of monitoring strategies for model performance degradation, A/B testing approaches for prompt improvements, version control for prompt templates and caching configurations, or disaster recovery and business continuity planning. The evaluation strategy for ensuring that cached prompts produce equivalent results to non-cached prompts isn't discussed.
+
+## Broader Implications for LLMOps
+
+Despite these limitations, the case study provides valuable insights for LLMOps practitioners, particularly in domains involving repeated analysis of large documents. The prompt caching pattern demonstrated here—separating static large context from dynamic small queries—is applicable beyond healthcare to legal document analysis, financial record processing, customer service with account histories, and research paper analysis.
+
+The case study illustrates an important principle in LLMOps: optimization opportunities often emerge from understanding the specific structure of your use case rather than from generic best practices. The insight that medical records remain static while questions vary is specific to Care Access's workflow, but the general principle of identifying and caching invariant portions of prompts is broadly applicable.
+
+The timeline achievements (six-week deployment, ability to handle unexpected scaling) suggest that successful LLMOps doesn't necessarily require building everything from scratch. Leveraging managed services like Amazon Bedrock and integrating with existing data infrastructure enabled rapid deployment and scaling. This represents a pragmatic approach to LLMOps that prioritizes business value delivery over custom infrastructure development.
+
+## Technology Stack and Integration Points
+
+The technology stack described in the case study centers on AWS services: Amazon S3 for storage of medical records and processed results, Amazon Bedrock for LLM inference with prompt caching, AWS Lake Formation for access control and governance, Amazon Athena for downstream analytics queries on processed results, and Amazon CloudWatch for audit logging and monitoring. The integration between these services appears relatively seamless, which aligns with AWS's vision of an integrated cloud platform but also creates vendor lock-in considerations that aren't discussed in the case study.
+
+The inference pipeline architecture follows a fairly standard pattern for document processing workflows: retrieve, preprocess, infer, post-process, store. The innovation isn't in the overall architecture but in the specific optimization of the inference stage through prompt caching. This suggests that organizations with existing document processing pipelines could potentially adopt similar optimizations without wholesale architectural changes.
+
+## Scaling Considerations and Future Challenges
+
+The case study mentions that Care Access currently provides health screenings to nearly 15,000 new participants monthly and projects rapid growth. At hundreds of medical records processed daily with multiple questions per record, the processing volume is significant but not extraordinarily large by enterprise standards. The 4-8+ hours of daily processing time saved suggests the previous approach was taking substantial computational resources, but the case study doesn't detail whether processing happened in real-time, batch, or some hybrid approach.
+
+As Care Access continues to scale, additional challenges may emerge that aren't addressed in the current implementation discussion. Cache management at very large scale could become complex—with thousands of participants, managing which records are cached, for how long, and handling cache eviction policies becomes more critical. If the program expands internationally with varying regulatory requirements, managing compliance across different jurisdictions could require architectural changes. As medical knowledge evolves and models are updated, ensuring consistency between analyses performed with different model versions could become important for longitudinal studies.
+
+## Conclusion on LLMOps Maturity
+
+Overall, this case study represents a solid production LLMOps implementation with measurable business impact. Care Access successfully identified a specific optimization opportunity (prompt caching), implemented it within their existing infrastructure, and achieved significant cost and performance improvements. The relatively short deployment timeline and ability to handle unexpected scaling suggest good engineering practices and appropriate use of managed services.
+
+However, the case study as presented focuses primarily on the infrastructure and optimization aspects of LLMOps while leaving questions about monitoring, evaluation, versioning, and quality assurance largely unaddressed. A truly comprehensive LLMOps implementation would include these elements, and their absence from the case study (whether because they weren't implemented or simply weren't discussed) represents a gap in our understanding of the full operational picture.
+
+For organizations considering similar implementations, the key takeaway is that prompt caching represents a valuable optimization technique for use cases involving repeated analysis of large static documents, but it should be viewed as one component of a broader LLMOps strategy that includes monitoring, evaluation, governance, and continuous improvement.

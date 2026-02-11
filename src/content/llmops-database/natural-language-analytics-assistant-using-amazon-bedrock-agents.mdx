@@ -1,0 +1,117 @@
+---
+title: "Natural Language Analytics Assistant Using Amazon Bedrock Agents"
+slug: "natural-language-analytics-assistant-using-amazon-bedrock-agents"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "68bfdc2113dc91bebd21a93a"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:21:02.671Z"
+  createdOn: "2025-09-09T07:49:53.235Z"
+llmopsTags:
+  - "data-analysis"
+  - "question-answering"
+  - "chatbot"
+  - "data-cleaning"
+  - "data-integration"
+  - "visualization"
+  - "rag"
+  - "prompt-engineering"
+  - "multi-agent-systems"
+  - "agent-based"
+  - "latency-optimization"
+  - "cost-optimization"
+  - "error-handling"
+  - "chunking"
+  - "system-prompts"
+  - "monitoring"
+  - "api-gateway"
+  - "orchestration"
+  - "scaling"
+  - "serverless"
+  - "security"
+  - "compliance"
+  - "reliability"
+  - "scalability"
+  - "fastapi"
+  - "amazon-aws"
+  - "anthropic"
+company: "Skai"
+summary: "Skai, an omnichannel advertising platform, developed Celeste, an AI agent powered by Amazon Bedrock Agents, to transform how customers access and analyze complex advertising data. The solution addresses the challenge of time-consuming manual report generation (taking days or weeks) by enabling natural language queries that automatically collect data from multiple sources, synthesize insights, and provide actionable recommendations. The implementation reduced report generation time by 50%, case study creation by 75%, and transformed weeks-long processes into minutes while maintaining enterprise-grade security and privacy for sensitive customer data."
+link: "https://aws.amazon.com/blogs/machine-learning/skai-uses-amazon-bedrock-agents-to-significantly-improve-customer-insights-by-revolutionized-data-access-and-analysis?tag=soumet-20"
+year: 2025
+seo:
+  title: "Skai: Natural Language Analytics Assistant Using Amazon Bedrock Agents - ZenML LLMOps Database"
+  description: "Skai, an omnichannel advertising platform, developed Celeste, an AI agent powered by Amazon Bedrock Agents, to transform how customers access and analyze complex advertising data. The solution addresses the challenge of time-consuming manual report generation (taking days or weeks) by enabling natural language queries that automatically collect data from multiple sources, synthesize insights, and provide actionable recommendations. The implementation reduced report generation time by 50%, case study creation by 75%, and transformed weeks-long processes into minutes while maintaining enterprise-grade security and privacy for sensitive customer data."
+  canonical: "https://www.zenml.io/llmops-database/natural-language-analytics-assistant-using-amazon-bedrock-agents"
+  ogTitle: "Skai: Natural Language Analytics Assistant Using Amazon Bedrock Agents - ZenML LLMOps Database"
+  ogDescription: "Skai, an omnichannel advertising platform, developed Celeste, an AI agent powered by Amazon Bedrock Agents, to transform how customers access and analyze complex advertising data. The solution addresses the challenge of time-consuming manual report generation (taking days or weeks) by enabling natural language queries that automatically collect data from multiple sources, synthesize insights, and provide actionable recommendations. The implementation reduced report generation time by 50%, case study creation by 75%, and transformed weeks-long processes into minutes while maintaining enterprise-grade security and privacy for sensitive customer data."
+---
+
+## Overview
+
+Skai (formerly Kenshoo) is an AI-driven omnichannel advertising and analytics platform that serves brands and agencies by providing unified access to data from over 100 publishers and retail networks. The company faced significant challenges with their traditional analytics approach, where customers spent substantial time manually preparing reports and struggled with complex data queries. This case study demonstrates how Skai leveraged Amazon Bedrock Agents to build Celeste, a generative AI assistant that transforms data analysis from a manual, time-intensive process into a conversational, natural language experience.
+
+## Technical Architecture and Implementation
+
+The solution architecture centers around Amazon Bedrock Agents as the core orchestration layer, with a custom frontend and backend system designed to maintain strict data privacy while delivering sophisticated analytics capabilities. The architecture includes several key components working in concert to deliver the user experience.
+
+The frontend consists of a Customer Experience UI (CX UI) that serves as the primary interface for natural language queries, paired with a Chat Manager that orchestrates conversation flow and manages session state. Behind this sits a Chat Executor that handles business logic, interfaces with Amazon Bedrock Agent, and manages conversation workflow and short-term memory.
+
+The core AI processing leverages Amazon Bedrock Agents as the orchestrator, which receives queries from the Chat Executor, determines appropriate tool invocations based on query analysis, and manages the overall tool invocation process. The system utilizes Anthropic's Claude 3.5 Sonnet V2 as the foundation model for generating natural language responses, creating API queries, and processing structured data returned by various tools to produce coherent, contextual answers.
+
+A critical architectural decision was the implementation of a separate Tool API layer that maintains strict data isolation between customer data and Amazon Bedrock. This API receives tool invocation requests from the Amazon Bedrock agent and queries customer data without ever exposing raw customer information to the AI service, addressing privacy and compliance requirements that are crucial for enterprise customers handling sensitive advertising data.
+
+## LLMOps Challenges and Solutions
+
+The implementation faced several significant LLMOps challenges that required innovative solutions. Initial prototypes suffered from severe latency issues, with response times exceeding 90 seconds when chaining multiple agents and APIs. The team addressed this through the development of a custom orchestrator and implementation of streaming responses, achieving a 30% reduction in median latency and bringing average response times from 136 seconds down to 44 seconds.
+
+Token limit management presented another significant challenge, as customers frequently analyzed multi-year datasets that exceeded Anthropic Claude's context window limitations. The solution involved implementing dynamic session chunking to split conversations while retaining key context, combined with Retrieval Augmented Generation (RAG)-based memory retrieval to maintain conversation coherence across extended analytical sessions.
+
+Error handling at scale required a comprehensive monitoring and reliability strategy. The team implemented real-time tracing using WatchDog with Amazon CloudWatch Logs Insights to monitor over 230 agent metrics, automatic retry mechanisms for failed API calls with specific error codes like "BEDROCK_MODEL_INVOCATION_SERVICE_UNAVAILABLE," and comprehensive CloudWatch monitoring and alerting systems to ensure production reliability.
+
+## Production Deployment and Scaling Considerations
+
+The production deployment strategy emphasized the advantages of using managed AI services over building custom infrastructure. Amazon Bedrock provided a frictionless path from concept to production, allowing the team to experiment within hours and deliver working proof of concepts in days rather than weeks. The managed service approach minimized DevOps overhead for model deployment and scaling while eliminating the need for specialized ML expertise in foundation model tuning.
+
+Built-in action groups in Amazon Bedrock Agents replaced thousands of lines of custom integration code that would have required weeks of development time. The platform's native memory and session management capabilities allowed the team to focus on business logic rather than infrastructure concerns, while declarative API definitions reduced integration time from weeks to hours. The integrated code interpreter simplified mathematical problem management and facilitated accuracy at scale.
+
+Security and compliance were non-negotiable requirements for Skai's enterprise customers. Amazon Bedrock addressed these through comprehensive compliance certifications including HIPAA, SOC2, and ISO27001, along with a commitment to not retaining customer data for model training. The seamless integration with existing AWS IAM policies and VPC configurations simplified deployment while maintaining security standards. During client demonstrations, data privacy and security were consistently the first concerns raised, and AWS infrastructure provided the confidence needed to address these concerns effectively.
+
+## Cost Optimization and Economic Model
+
+The economic model leveraged Amazon Bedrock's pay-as-you-go pricing to scale economically without upfront AI infrastructure investment. This avoided costly commitments to GPU clusters or specialized instances, instead leveraging automatic scaling based on actual usage patterns. The team achieved granular cost attribution to specific agents, allowing detailed understanding and optimization of spending patterns. The flexibility to select the most appropriate model for each specific task further optimized both performance and costs.
+
+## Performance Metrics and Business Impact
+
+The implementation achieved significant measurable improvements across key performance indicators. Report generation time improved by 50%, representing a substantial reduction in the time customers spent on manual data preparation. Case study generation time saw a dramatic 75% improvement, transforming processes that previously took weeks into tasks completed in minutes. Quarterly Business Review (QBR) composition time improved by 80%, while the time from report to recommendation decreased by 90%.
+
+These metrics represent more than mere efficiency gains; they fundamentally changed how users interact with advertising data. The solution addressed the core challenge of connecting disparate data points across campaigns, ads, products, and keywords, providing comprehensive understanding that was previously time-consuming to achieve. Users gained intuitive tools to dynamically explore data dimensions, enabling holistic views and crucial insights for informed decision-making.
+
+## Enterprise Support and Partnership Strategy
+
+The case study highlights the importance of strategic partnerships in successful LLMOps implementations. AWS Enterprise Support provided dedicated Technical Account Management (TAM) and Solutions Architect (SA) services that extended beyond traditional reactive problem-solving. Regular architectural reviews optimized the Amazon Bedrock Agents implementation, while proactive monitoring recommendations helped identify potential bottlenecks before they impacted customer experience.
+
+Direct access to AWS service teams provided deep technical expertise on advanced Amazon Bedrock Agents features, while strategic guidance supported scaling from prototype to production. This comprehensive support framework was instrumental in achieving aggressive KPIs and time-to-market goals, reducing the proof of concept to production timeline by 50% and maintaining 99.9% uptime during critical customer demonstrations.
+
+## Customer Experience and Natural Language Interface Design
+
+The natural language interface represents a significant advancement in data analytics accessibility. Users can now pose complex analytical questions such as "Compare ad group performance across low-performing campaigns in Q1" without requiring database expertise. The system automatically joins datasets from profiles, campaigns, ads, products, keywords, and search terms across multiple advertising publishers, generating comprehensive insights and actionable recommendations.
+
+A practical example demonstrates the system's capabilities: when asked about launching new home security product campaigns, Celeste quickly identified high-performing keywords and match types from existing campaigns, provided estimated CPCs and budgets, and delivered a comprehensive testing plan including negative keywords to reduce campaign conflict. This represents the kind of exploratory analysis that previously required significant manual effort and expertise.
+
+## Future Development and Roadmap
+
+The roadmap for Celeste includes expanding capabilities in several key areas. Personalization features will retain memories and preferences across multiple sessions, creating a more tailored user experience. Custom data asset ingestion will allow clients to bring their own data into Celeste, seamlessly connecting it with existing platform data and knowledge.
+
+New tools for team integration will enable Celeste to generate client presentations, build data dashboards, and provide timely notifications. These enhancements represent the evolution from a query-response system to a comprehensive analytics partner that integrates into existing workflows and business processes.
+
+## Critical Assessment and Limitations
+
+While the case study presents impressive results, it's important to note that the metrics and testimonials come primarily from Skai and AWS, which have commercial interests in promoting the success of this implementation. The 75% improvement in case study generation and 90% reduction in report-to-recommendation time, while significant, should be understood within the context of Skai's specific use case and may not be universally applicable across different industries or data complexity levels.
+
+The solution's effectiveness depends heavily on the quality and structure of underlying data, and the natural language processing capabilities are bounded by the current limitations of foundation models. Complex edge cases, ambiguous queries, or requests requiring deep domain expertise beyond what's encoded in the training data may still require human intervention. Additionally, the cost-effectiveness of the pay-as-you-go model scales with usage, and organizations with extremely high query volumes might need to evaluate the long-term economic implications.
+
+The reliance on Amazon Bedrock also introduces vendor lock-in considerations, and organizations should evaluate the portability of their solution architecture if they need to migrate to different AI platforms in the future. Nevertheless, the case study demonstrates a well-executed implementation of LLMOps principles, with appropriate attention to security, scalability, and user experience in a production enterprise environment.

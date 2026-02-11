@@ -1,0 +1,122 @@
+---
+title: "Building Personalized Financial and Gardening Experiences with LLMs"
+slug: "building-personalized-financial-and-gardening-experiences-with-llms"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f3abca31179989bd0a031"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:42:58.032Z"
+  createdOn: "2024-11-21T13:50:52.543Z"
+llmopsTags:
+  - "compliance"
+  - "customer-support"
+  - "google-gcp"
+  - "kubernetes"
+  - "microsoft-azure"
+  - "model-optimization"
+  - "monitoring"
+  - "multi-agent-systems"
+  - "multi-modality"
+  - "prompt-engineering"
+  - "realtime-application"
+  - "regulatory-compliance"
+  - "reliability"
+  - "scalability"
+  - "scaling"
+  - "security"
+  - "semantic-search"
+  - "structured-output"
+  - "unstructured-data"
+company: "Bud Financial / Scotts Miracle-Gro"
+summary: "This case study explores how Bud Financial and Scotts Miracle-Gro leverage Google Cloud's AI capabilities to create personalized customer experiences. Bud Financial developed a conversational AI solution for personalized banking interactions, while Scotts Miracle-Gro implemented an AI assistant called MyScotty for gardening advice and product recommendations. Both companies utilize various Google Cloud services including Vertex AI, GKE, and AI Search to deliver contextual, regulated, and accurate responses to their customers."
+link: "https://www.youtube.com/watch?v=O2xVgbSGqwc"
+year: 2024
+seo:
+  title: "Bud Financial / Scotts Miracle-Gro: Building Personalized Financial and Gardening Experiences with LLMs - ZenML LLMOps Database"
+  description: "This case study explores how Bud Financial and Scotts Miracle-Gro leverage Google Cloud's AI capabilities to create personalized customer experiences. Bud Financial developed a conversational AI solution for personalized banking interactions, while Scotts Miracle-Gro implemented an AI assistant called MyScotty for gardening advice and product recommendations. Both companies utilize various Google Cloud services including Vertex AI, GKE, and AI Search to deliver contextual, regulated, and accurate responses to their customers."
+  canonical: "https://www.zenml.io/llmops-database/building-personalized-financial-and-gardening-experiences-with-llms"
+  ogTitle: "Bud Financial / Scotts Miracle-Gro: Building Personalized Financial and Gardening Experiences with LLMs - ZenML LLMOps Database"
+  ogDescription: "This case study explores how Bud Financial and Scotts Miracle-Gro leverage Google Cloud's AI capabilities to create personalized customer experiences. Bud Financial developed a conversational AI solution for personalized banking interactions, while Scotts Miracle-Gro implemented an AI assistant called MyScotty for gardening advice and product recommendations. Both companies utilize various Google Cloud services including Vertex AI, GKE, and AI Search to deliver contextual, regulated, and accurate responses to their customers."
+---
+
+## Overview
+
+This case study is derived from a panel discussion featuring representatives from two distinct industries: Bud Financial (fintech/banking technology) and Scotts Miracle-Gro (consumer gardening products), along with their integration partner Quantify. The discussion highlights how both companies are leveraging Google Cloud's AI capabilities to create deeply personalized customer experiences, though their specific use cases and challenges differ significantly.
+
+## Bud Financial: AI-Powered Financial Personalization
+
+Bud Financial works with banks and financial services companies to help them understand their customers through transactional data analysis. Their mission addresses a fundamental problem in modern banking: the lack of genuine personalization. The company's representative, Michael, illustrated this with an anecdote about a banking app sending a push notification offering to increase an overdraft limit, only to reject the customer after they clicked—creating frustration rather than value. This exemplifies the superficial personalization that plagues the financial services industry.
+
+### The YZ Agent
+
+Bud Financial developed a solution called "YZ," an AI agent that enables consumers to interact with their bank through conversational interfaces. What distinguishes YZ from generic chatbots is its deep customer context—it understands income patterns, spending habits (down to specific merchants like "Dunkin' Donuts and McDonald's"), and can provide genuinely personalized advice. The vision is to recreate the relationship customers once had with bank managers, but in a scalable, digital format.
+
+### Technical Architecture
+
+Bud Financial's infrastructure is heavily built on Google Kubernetes Engine (GKE), which serves as the backbone for both their model training and production environments. For their offline data environment where they train proprietary models from scratch, GKE provides access to GPUs and creates a flexible system that allows data scientists to focus on model development rather than infrastructure management.
+
+In production, they continue to use GKE with a mix of TPUs, GPUs, and Intel compute-optimized machine types. This heterogeneous compute strategy allows them to balance performance, latency, and cost while maintaining ease of scaling and management. For conversational AI capabilities, they use Gemini through the Vertex AI API suite.
+
+Their journey with Google Cloud began with what was then called "Generative App Builder" (which has since been renamed multiple times—Vertex Conversation, and now Agent Builder). This progression reflects the rapid evolution of Google's generative AI tooling. The initial UI-based tools enabled rapid iteration, which is crucial for generative AI projects. As their needs matured, they moved toward API-based implementations for greater flexibility.
+
+### Handling Regulation and Explainability
+
+Operating in a highly regulated financial services environment presents unique challenges. The key principle for Bud Financial is explainability and transparency. When suggesting financial products like mortgages, the system cannot simply make recommendations—it must explain how it arrived at those conclusions, why it believes certain income figures are accurate, and how spending patterns factor into recommendations.
+
+For regulated journeys, deterministic responses are essential. Vertex AI Conversation provides some of this capability out of the box, but when using APIs and building custom orchestration layers, the team must implement validation logic to ensure specific, compliant messaging for certain user journeys. This isn't just about throwing data at an API; it requires careful routing logic to ensure that when users enter sensitive conversational paths, the system provides precisely worded, regulation-compliant responses.
+
+Testing is another critical aspect. Before deploying the YZ agent to the public, Bud Financial tested it internally with customer service agents. This sandbox approach minimizes risk and provides assurance that the system responds appropriately within the organization's risk appetite—a key concept in regulated industries.
+
+## Scotts Miracle-Gro: AI-Enhanced Gardening Experiences
+
+Scotts Miracle-Gro's vision is to help people express themselves through gardening with "virtually no limit to their creativity." To support this, they're building AI capabilities that provide the ultimate gardener experience through personalized products, advice, and digital experiences.
+
+### My Scotty: The AI Gardening Assistant
+
+Scotts Miracle-Gro developed "My Scotty" (also referred to as "Ascot"), an AI assistant that engages customers in multi-turn, human-like conversations to provide comprehensive gardening guidance. The assistant provides two main features: specific product recommendations based on customer context (location, plant types, goals) and generalized gardening advice drawn from the company's knowledge base.
+
+### Technical Stack (via Quantify)
+
+Van J Hu from Quantify, the integration partner, detailed the technical architecture:
+
+**Conversational AI**: The system uses Vertex AI Conversations (formerly various names like "J App Builder") to create human-like interactions. Gen AI Playbooks (now rebranded as Agents) provide agentic workflows that navigate through user context to make specific product recommendations.
+
+**Search and RAG**: Vertex AI Search powers the knowledge retrieval component. Instead of simple keyword matching, it uses embeddings to represent user queries in an embedding space where concepts and context can be detected. This semantic approach returns results that are meaningful even when user queries don't contain specific keywords. FAO from Scotts emphasized that this allows customers to express their questions naturally while still receiving highly relevant results with summaries and citations.
+
+The integration was described as "seamless" because Vertex AI abstracts away complexity like indexing, managing vector databases, and retrieval-augmented generation (RAG) implementation.
+
+**Multimodality**: My Scotty includes image recognition capabilities using custom Vertex AI image recognition models. Customers can upload pictures of plants and succulents, which provides additional context for the conversational interface. This isn't typical LLM multimodality but rather a complementary computer vision pipeline that feeds into the conversation.
+
+### Unique Product Recommendation Challenges
+
+Product recommendation for Scotts differs fundamentally from typical e-commerce or streaming recommendations. While Netflix might suggest five or ten shows ("customers like you also liked..."), Scotts cannot afford such broad recommendations. Providing five product options for a gardening problem might mean three are unhelpful and one could actually harm the customer's plants. Recommendations must be unique and precisely contextualized to the end user's specific situation.
+
+This is where Gemini and the agentic workflow become critical—they enable the system to gather sufficient context through conversation before making a single, confident product recommendation rather than a list of possibilities.
+
+### Data Governance Challenges
+
+A significant challenge highlighted is data governance for unstructured data. While structured data governance has matured with open-source tools and cloud technologies, unstructured data (like the knowledge base articles, research, and SME-generated content that powers My Scotty) presents ongoing challenges. The team wants to ensure customers receive the most accurate and up-to-date information from Scotts' research.
+
+LLMs are being leveraged to generate additional metadata for unstructured content, but this remains an evolving area. Data governance is recognized as an ongoing activity rather than a one-time effort.
+
+## Shared Themes and Outcomes
+
+### Rapid Iteration
+Both companies emphasized the importance of rapid iteration in generative AI projects. Google Cloud's tools—from the initial UI-based App Builder to the more flexible API approaches—enabled fast experimentation and progression.
+
+### Personalization as a Competitive Imperative
+Michael from Bud Financial stated that "in 2024, personalization is not optional anymore." Personalized messages and outreach generate more than twice the response rate, while lack of personalization actively damages customer relationships. This framing positions personalization not just as a nice-to-have but as essential to customer trust and business outcomes.
+
+### Accelerated Development
+FAO from Scotts noted that Google's technologies—including the latest LLM models and agents—have allowed them to "accelerate extremely the development of products that are more relevant and provide a more personalized experience." The ability to have natural, frequent conversations with customers helps the company better understand their needs, feeding into product development.
+
+## Critical Assessment
+
+While the discussion provides valuable insights into how these companies are deploying LLMs in production, it's worth noting that this was a panel at what appears to be a Google Cloud event, so the testimonials naturally emphasize positive outcomes. Specific metrics on accuracy, cost savings, or customer satisfaction improvements were not provided.
+
+The challenges mentioned—regulatory compliance, testing in sandbox environments, data governance for unstructured data—are real and significant, but the solutions described are somewhat high-level. Organizations looking to replicate these approaches would need to develop substantial internal expertise in prompt engineering, validation logic for regulated use cases, and ongoing content curation for RAG systems.
+
+The evolution of Google's product naming (from Generative App Builder to Vertex Conversation to Agent Builder) was mentioned humorously, but it does reflect the rapidly changing landscape of LLMOps tooling that practitioners must navigate.

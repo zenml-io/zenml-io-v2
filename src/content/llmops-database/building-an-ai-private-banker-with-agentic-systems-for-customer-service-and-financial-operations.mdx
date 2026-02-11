@@ -1,0 +1,177 @@
+---
+title: "Building an AI Private Banker with Agentic Systems for Customer Service and Financial Operations"
+slug: "building-an-ai-private-banker-with-agentic-systems-for-customer-service-and-financial-operations"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "683429fdf4f3c32291af9558"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:09:57.286Z"
+  createdOn: "2025-05-26T08:44:45.993Z"
+llmopsTags:
+  - "customer-support"
+  - "fraud-detection"
+  - "chatbot"
+  - "classification"
+  - "question-answering"
+  - "high-stakes-application"
+  - "structured-output"
+  - "multi-modality"
+  - "realtime-application"
+  - "regulatory-compliance"
+  - "prompt-engineering"
+  - "fine-tuning"
+  - "few-shot"
+  - "agent-based"
+  - "multi-agent-systems"
+  - "human-in-the-loop"
+  - "error-handling"
+  - "fallback-strategies"
+  - "system-prompts"
+  - "langchain"
+  - "monitoring"
+  - "api-gateway"
+  - "microservices"
+  - "cicd"
+  - "scaling"
+  - "devops"
+  - "continuous-deployment"
+  - "continuous-integration"
+  - "documentation"
+  - "security"
+  - "compliance"
+  - "guardrails"
+  - "reliability"
+  - "scalability"
+  - "fastapi"
+  - "postgresql"
+  - "cache"
+  - "openai"
+  - "meta"
+company: "Nubank"
+summary: "Nubank, one of Brazil's largest banks serving 120 million users, implemented large-scale LLM systems to create an AI private banker for their customers. They deployed two main applications: a customer service chatbot handling 8.5 million monthly contacts with 60% first-contact resolution through LLMs, and an agentic money transfer system that reduced transaction time from 70 seconds across nine screens to under 30 seconds with over 90% accuracy and less than 0.5% error rate. The implementation leveraged LangChain, LangGraph, and LangSmith for development and evaluation, with a comprehensive four-layer ecosystem including core engines, testing tools, and developer experience platforms. Their evaluation strategy combined offline and online testing with LLM-as-a-judge systems that achieved 79% F1 score compared to 80% human accuracy through iterative prompt engineering and fine-tuning."
+link: "https://www.youtube.com/watch?v=paaOevEFNlo"
+year: 2025
+seo:
+  title: "Nubank: Building an AI Private Banker with Agentic Systems for Customer Service and Financial Operations - ZenML LLMOps Database"
+  description: "Nubank, one of Brazil's largest banks serving 120 million users, implemented large-scale LLM systems to create an AI private banker for their customers. They deployed two main applications: a customer service chatbot handling 8.5 million monthly contacts with 60% first-contact resolution through LLMs, and an agentic money transfer system that reduced transaction time from 70 seconds across nine screens to under 30 seconds with over 90% accuracy and less than 0.5% error rate. The implementation leveraged LangChain, LangGraph, and LangSmith for development and evaluation, with a comprehensive four-layer ecosystem including core engines, testing tools, and developer experience platforms. Their evaluation strategy combined offline and online testing with LLM-as-a-judge systems that achieved 79% F1 score compared to 80% human accuracy through iterative prompt engineering and fine-tuning."
+  canonical: "https://www.zenml.io/llmops-database/building-an-ai-private-banker-with-agentic-systems-for-customer-service-and-financial-operations"
+  ogTitle: "Nubank: Building an AI Private Banker with Agentic Systems for Customer Service and Financial Operations - ZenML LLMOps Database"
+  ogDescription: "Nubank, one of Brazil's largest banks serving 120 million users, implemented large-scale LLM systems to create an AI private banker for their customers. They deployed two main applications: a customer service chatbot handling 8.5 million monthly contacts with 60% first-contact resolution through LLMs, and an agentic money transfer system that reduced transaction time from 70 seconds across nine screens to under 30 seconds with over 90% accuracy and less than 0.5% error rate. The implementation leveraged LangChain, LangGraph, and LangSmith for development and evaluation, with a comprehensive four-layer ecosystem including core engines, testing tools, and developer experience platforms. Their evaluation strategy combined offline and online testing with LLM-as-a-judge systems that achieved 79% F1 score compared to 80% human accuracy through iterative prompt engineering and fine-tuning."
+---
+
+## Overview
+
+Nubank is a digital bank operating in Brazil, Mexico, and Colombia, serving nearly 120 million customers. The presentation, delivered by Tan, a four-year veteran at the company, describes their journey building what they call an "AI private banker" for all customers. The scale is remarkable: Nubank is the third-largest bank in Brazil, the fastest-growing bank in Mexico and Colombia, and has provided first-time credit card access to 21 million people in Brazil over the past five years. This massive user base and the critical nature of financial services create unique challenges for deploying LLMs in production.
+
+The core problem Nubank aims to solve is that people are notoriously bad at making financial decisions—from deciding which subscriptions to cancel to making complex loan and investment decisions. The AI systems they've built aim to democratize access to sophisticated financial guidance that was previously available only to wealthy individuals with private bankers.
+
+## Two Core LLM Applications
+
+### Customer Service Chatbot
+
+Nubank receives approximately 8.5 million customer contacts per month, with chat being the primary channel. Currently, 60% of these contacts are first handled by LLMs. The company emphasizes that results are continuously improving as they build specialized agents for different situations.
+
+The customer service application faces unique challenges in financial services. Unlike typical chatbots, the system must handle sensitive financial inquiries with appropriate empathy and tone. As the speaker notes, if a customer calls about an unrecognized charge on their account or a missing card, a robotic response loses customer trust. The balance between being helpful without being overly flattering is critical—the speaker references OpenAI's experience with GPT-4.1 being recalled due to issues with overly agreeable responses.
+
+### Agentic Money Transfer System
+
+The more technically interesting application is a multimodal agentic system that handles money transfers via voice, image, and chat through WhatsApp integration. Key metrics cited include:
+
+- Transaction time reduced from 70 seconds (navigating nine different screens) to under 30 seconds
+- Customer satisfaction (CSAT) above 90%
+- Inaccuracy rate below 0.5%
+
+The system includes robust security measures, requiring multiple password confirmations before enabling transactions. Users can give natural language instructions like "make a transfer to Jose for 100 reais," and the system confirms the recipient before executing.
+
+## Technical Architecture: Nubank's LLM Ecosystem
+
+Nubank's LLM ecosystem consists of four layers:
+
+- **Core Engine**: The foundational LLM capabilities
+- **Testing and Evaluation Tools**: LLM-as-a-judge and online quality evaluation
+- **Developer Experience**: Built on LangGraph and LangChain
+- **Observability and Logging**: Using LangSmith for tracing and monitoring
+
+The speaker emphasizes that without LangGraph, they couldn't achieve fast iterations or establish canonical approaches for building agentic and RAG systems. A key insight is that graphs decrease the cognitive effort required to represent complex flows, making it easier for both machines and humans to understand the system architecture.
+
+## The Scalability Challenge
+
+A critical observation from the talk is the importance of not building one-off solutions. In financial services, there are hundreds of operations involving money movement or micro-decisions. Building separate systems and agents for each would be unscalable. The architecture must be designed for reusability while still allowing rapid iteration.
+
+The company operates 1,800 services with deployments every two minutes, all decisions driven by A/B testing. This CI/CD velocity requires robust evaluation and observability infrastructure.
+
+## Evaluation Strategy: Offline and Online
+
+### Business and Technical Evaluation Needs
+
+The evaluation requirements differ significantly between the customer service and money transfer use cases:
+
+**Customer Service Evaluation Dimensions:**
+- Accuracy of responses
+- Empathy and appropriate tone
+- Intent understanding
+- Content and context retrieval quality
+- Deep link accuracy (the app has 3,000 pages with hundreds of deep links)
+- Avoiding hallucinations
+
+**Money Transfer Evaluation Dimensions:**
+- Name/entity recognition (handling cases like "send $100 to my brother" when there are multiple brothers in contacts)
+- Correct interpretation of temporal instructions ("do it tomorrow" vs. immediate execution to avoid overdraft)
+- Action identification (recognizing cancellation requests at the last step)
+- Source account verification
+- Fraud detection
+- Collection status checking
+- Multi-product context awareness (lending, investing, banking, credit cards, dependent accounts)
+
+### Offline Evaluation
+
+After running experiments, results are fed to LLM applications for both individual and pairwise evaluation. The process primarily uses human labelers but also incorporates LLM evaluation and custom heuristics. Statistical tests determine the winning variant for launch.
+
+### Online Evaluation
+
+Online evaluation enables continuous improvement loops in controlled sandbox environments. The key insight is that relying solely on offline evaluation significantly slows decision-making for developers and analysts. Online evaluation with proper tracing, logging, and alerting dramatically increases development velocity. Nubank employs both approaches in parallel.
+
+## LLM-as-a-Judge Development
+
+The LLM-as-a-judge system was developed to address the scalability problem of human evaluation. With hundreds of thousands to millions of transactions daily, even sampling-based human labeling isn't sufficient to maintain product quality. Training human labelers is also expensive and error-prone.
+
+The goal was to achieve LLM judge quality comparable to human evaluators. The development process went through six iterations over approximately two weeks with a couple of developers:
+
+**Test 1**: Simple prompt, GPT-4 Mini (chosen for cost efficiency), no fine-tuning. Result: 51% F1 score (humans at 80% accuracy).
+
+**Test 2**: Added fine-tuning to GPT-4 Mini. Result: 59% F1 score (+8 points).
+
+**Test 3**: Changed prompt (V2). Result: 70% F1 score (+11 points, the biggest jump).
+
+**Test 4**: Upgraded from GPT-4 Mini to GPT-4. Incremental improvement.
+
+**Test 5**: Additional prompt changes. Result: 80% F1 score.
+
+**Test 6**: Additional fine-tuning adjustments. Result: 79% F1 score.
+
+The team chose Test 6 over Test 5 despite the slightly lower overall F1 score because it better identified inaccurate information—a more critical metric for financial services where catching errors matters more than overall accuracy.
+
+The speaker emphasizes that this rapid iteration was only possible because they had online tracing systems in place through LangSmith.
+
+## Multilingual and Cultural Challenges
+
+Operating in Brazil, Mexico, and Colombia means handling Portuguese and Spanish with various dialects and regional expressions. With 58% of the Brazilian population as customers, understanding diverse communication styles is essential. The brand's prominence (more recognized than McDonald's or Nike in Brazil) creates additional pressure to maintain high standards, particularly around jailbreak prevention and guardrails.
+
+## Democratizing Data and Decision-Making
+
+A notable aspect of Nubank's approach is democratizing access to LLM system data beyond just developers. Business analysts, product managers, and operations teams can access the graphical interface provided by LangSmith to make faster decisions about prompts, inputs, and parameters. This centralized logging and graphical representation of LLM flows enables non-technical stakeholders to contribute to system improvement.
+
+## Key Takeaways
+
+The speaker concludes with practical advice for LLMOps practitioners:
+
+- There is no magic in building agents or LLM systems—it requires hard work
+- Evaluations are hard work but essential
+- If you don't evaluate, you don't know what you're building
+- If you don't know what you're building, you cannot ship it
+- Evaluation should go beyond hallucination and red teaming to include nuanced aspects like empathy and tone of voice
+
+The flywheel model Nubank has established—observability to filtering to dataset definition to experimentation and back—represents a mature approach to LLMOps that enables continuous improvement at scale in a highly regulated industry where accuracy and trust are paramount.

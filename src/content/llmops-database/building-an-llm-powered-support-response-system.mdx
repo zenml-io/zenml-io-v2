@@ -1,0 +1,99 @@
+---
+title: "Building an LLM-Powered Support Response System"
+slug: "building-an-llm-powered-support-response-system"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f3fd6e531d1c2ecb800fa"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:38:20.288Z"
+  createdOn: "2024-11-21T14:12:38.795Z"
+llmopsTags:
+  - "classification"
+  - "customer-support"
+  - "documentation"
+  - "error-handling"
+  - "fallback-strategies"
+  - "fine-tuning"
+  - "guardrails"
+  - "human-in-the-loop"
+  - "monitoring"
+  - "openai"
+  - "prompt-engineering"
+  - "reliability"
+  - "scalability"
+company: "Stripe"
+summary: "Stripe developed an LLM-based system to help support agents handle customer inquiries more efficiently by providing relevant response prompts. The solution evolved from a simple GPT implementation to a sophisticated multi-stage framework incorporating fine-tuned models for question validation, topic classification, and response generation. Despite strong offline performance, the team faced challenges with agent adoption and online monitoring, leading to valuable lessons about the importance of UX consideration, online feedback mechanisms, and proper data management in LLM production systems."
+link: "https://www.youtube.com/watch?v=uW4MUatKINs"
+year: 2023
+seo:
+  title: "Stripe: Building an LLM-Powered Support Response System - ZenML LLMOps Database"
+  description: "Stripe developed an LLM-based system to help support agents handle customer inquiries more efficiently by providing relevant response prompts. The solution evolved from a simple GPT implementation to a sophisticated multi-stage framework incorporating fine-tuned models for question validation, topic classification, and response generation. Despite strong offline performance, the team faced challenges with agent adoption and online monitoring, leading to valuable lessons about the importance of UX consideration, online feedback mechanisms, and proper data management in LLM production systems."
+  canonical: "https://www.zenml.io/llmops-database/building-an-llm-powered-support-response-system"
+  ogTitle: "Stripe: Building an LLM-Powered Support Response System - ZenML LLMOps Database"
+  ogDescription: "Stripe developed an LLM-based system to help support agents handle customer inquiries more efficiently by providing relevant response prompts. The solution evolved from a simple GPT implementation to a sophisticated multi-stage framework incorporating fine-tuned models for question validation, topic classification, and response generation. Despite strong offline performance, the team faced challenges with agent adoption and online monitoring, leading to valuable lessons about the importance of UX consideration, online feedback mechanisms, and proper data management in LLM production systems."
+---
+
+## Overview
+
+Stripe, a global payments company serving millions of customers with a wide suite of payment and data products, developed an LLM-powered system to assist their support operations. The presentation, given by Sophie Daley, a data scientist at Stripe, covers the lessons learned from building their first production application of large language models in the support space. The core goal was to help support agents solve customer cases more efficiently by prompting them with relevant, AI-generated responses to user questions. Importantly, customers would always interact directly with human agents—the LLM system was designed purely as an agent assistance tool, not a customer-facing chatbot.
+
+The support operations team handles tens of thousands of text-based support cases weekly, making it a prime candidate for LLM applications. The complexity and breadth of Stripe's product offerings mean that agents often spend significant time researching answers, which the team aimed to reduce through intelligent response suggestions.
+
+## The Problem with Out-of-the-Box LLMs
+
+One of the first and most significant lessons the team learned was that LLMs are not oracles. When testing out-of-the-box GPT (specifically DaVinci) with basic support questions like "How can I pause payouts?", the model would produce plausible-sounding but factually incorrect answers. This was true for the majority of questions Stripe customers ask because the pre-training materials were either outdated, incomplete, or confused with generic instructions that might relate to other payments companies.
+
+While prompt engineering could potentially fix specific answers, the scope and complexity of Stripe's support space made this approach unviable at scale. This is an important lesson for organizations considering LLM deployment: domain-specific accuracy often cannot be achieved through prompting alone when dealing with proprietary, rapidly-changing, or highly specialized knowledge.
+
+## The Sequential GPT Framework Solution
+
+To address these limitations, the team developed a multi-stage pipeline that broke down the problem into more manageable ML steps:
+
+- **Question Validation**: A classification step to identify whether the user is asking a valid, actionable question, filtering out chit-chat or questions lacking sufficient context
+- **Topic Classification**: Another classification step to identify what topic the question relates to
+- **Response Generation**: Using topic-relevant context, a fine-tuned model generates the answer to the question
+- **Tone Adjustment**: A final step modifies responses to meet Stripe's desired tone—friendly but succinct
+
+This approach provided several benefits. First, it gave the team much more control over the solution framework. Second, fine-tuning completely mitigated hallucinations in their case, which is a notable claim worth examining critically. The team found that fine-tuning on GPT required approximately 500 labels per class, allowing them to move quickly using expert agent annotations. The framework leveraged fine-tuned GPT models for both classification and generation tasks.
+
+## Offline vs. Online Evaluation Challenges
+
+The team relied on standard backtest evaluations for classification models using labeled datasets. For generative models, expert agents manually reviewed and labeled responses for quantitative assessment. User testing and training data collection also involved agents who dictated what ML response prompts should look like for different input question types.
+
+After many ML iterations, offline feedback trended positively and the team felt confident in their model accuracy, leading them to ship to production. They designed a controlled experiment comparing cases where agents received ML-generated response prompts versus those that didn't.
+
+However, a significant gap emerged: online case labeling was not feasible at scale, leaving them without visibility into online accuracy trends. Once shipped, they discovered that agent adoption rates were much lower than expected—very few cases were actually using the ML-generated answers. Without online accuracy metrics, the team was essentially operating in the dark trying to understand whether there was a discrepancy between online and offline performance.
+
+To address this, they developed a heuristic-based "match rate" metric representing how often ML-generated responses matched what agents actually sent to users. This provided a crude lower-bound measure of expected accuracy and helped them understand model trends in production. Even though offline testing and online accuracy trends looked good, agents were too accustomed to their existing workflows and were ignoring the prompts. This lack of engagement became a major bottleneck for realizing efficiency gains, requiring a much larger UX effort to increase adoption.
+
+## Key Monitoring and Operational Lessons
+
+Several practical lessons emerged from this experience:
+
+- **Consider human behavior early**: Ask whether human behavior can affect solving your business problem, and if so, engage with UX teams early in the process
+- **Develop proxy online metrics**: Directional feedback using heuristics is far better than having no visibility at all when direct accuracy measurement isn't feasible
+- **Ship stages incrementally**: Deploy each stage of the framework in shadow mode as soon as it's ready rather than waiting for one large end-to-end ship. This enables debugging and validation sequentially
+- **Prioritize monitoring from the start**: The team emphasized that monitoring should be treated as equally important as other ML development tasks. A common pitfall is treating monitoring as something to "catch up on later after we've shipped," especially in resource-constrained teams. The lesson: a model is not truly shipped unless it has full monitoring and a dashboard
+
+## Data as the Critical Success Factor
+
+Perhaps the most significant lesson was that data remains the most important factor when solving business problems with LLMs. The speaker pushed back against the notion that newer or more advanced LLM architectures will solve everything if you just find the right prompt. LLMs are not a silver bullet—production deployment still requires data collection, testing, experimentation infrastructure, and iteration just like any other ML model.
+
+The classic 80/20 rule for data science held true: writing the code for the LLM framework took days or weeks, while iterating on the training dataset took months. Iterating on label data quality yielded higher performance gains compared to using more advanced GPT engines. The ML errors they encountered related to "gotchas" specific to Stripe's support domain rather than general gaps in model understanding, meaning adding or improving data samples typically addressed performance gaps.
+
+## Evolution of the Solution
+
+Interestingly, scaling proved to be more of a data management challenge than a model advancement challenge. Collecting labels for generative fine-tuning models added significant complexity. For their second iteration (noted as currently in development), the team made a notable architectural decision: they swapped out the generative ML component for more straightforward classification approaches. This allowed them to leverage weak supervision techniques like Snorkel machine learning and embedding-based classification to label data at scale without requiring explicit human labelers.
+
+The team also heavily invested in a subject matter expertise strategy program to collect and maintain their dataset. Because Stripe's support space changes over time as products evolve, labels need to stay fresh for the model to remain accurate. Their goal is for this dataset to become a "living oracle" guaranteeing ML responses stay fresh and accurate into the future.
+
+## Critical Assessment
+
+This case study offers valuable honest insights into the challenges of productionalizing LLMs, though some claims warrant scrutiny. The assertion that fine-tuning "completely mitigated hallucinations" is a strong claim that would benefit from more rigorous verification—hallucination mitigation typically involves tradeoffs and isn't usually absolute. Additionally, the low agent adoption rates despite positive offline metrics highlight a common but often underappreciated gap between ML performance and real-world utility.
+
+The pivot from generative to classification-based approaches in their second iteration is particularly noteworthy, suggesting that simpler, more controllable ML approaches may sometimes outperform generative models in production settings where reliability and maintainability are paramount. This pragmatic evolution reflects mature ML engineering judgment rather than chasing the newest techniques.
+
+Overall, this case study provides a candid look at the operational realities of deploying LLMs in enterprise support settings, with lessons applicable across industries deploying similar agent-assistance systems.

@@ -1,0 +1,124 @@
+---
+title: "Agentic AI Manufacturing Reasoner for Automated Root Cause Analysis"
+slug: "agentic-ai-manufacturing-reasoner-for-automated-root-cause-analysis"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "68512e36bda24745beecbd45"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:11:41.538Z"
+  createdOn: "2025-06-17T08:58:30.982Z"
+llmopsTags:
+  - "poc"
+  - "realtime-application"
+  - "internet-of-things"
+  - "data-analysis"
+  - "visualization"
+  - "structured-output"
+  - "rag"
+  - "multi-agent-systems"
+  - "agent-based"
+  - "prompt-engineering"
+  - "system-prompts"
+  - "redis"
+  - "elasticsearch"
+  - "fastapi"
+  - "postgresql"
+  - "monitoring"
+  - "api-gateway"
+  - "microservices"
+  - "scaling"
+  - "databases"
+  - "anthropic"
+  - "amazon-aws"
+company: "Apollo Tyres"
+summary: "Apollo Tyres developed a Manufacturing Reasoner powered by Amazon Bedrock Agents to automate root cause analysis for their tire curing processes. The solution replaced manual analysis that took 7 hours per issue with an AI-powered system that delivers insights in under 10 minutes, achieving an 88% reduction in manual effort. The multi-agent system analyzes real-time IoT data from over 250 automated curing presses to identify bottlenecks across 25+ subelements, enabling data-driven decision-making and targeting annual savings of approximately 15 million Indian rupees in their passenger car radial division."
+link: "https://aws.amazon.com/blogs/machine-learning/how-apollo-tyres-is-unlocking-machine-insights-using-agentic-ai-powered-manufacturing-reasoner?tag=soumet-20"
+year: 2025
+seo:
+  title: "Apollo Tyres: Agentic AI Manufacturing Reasoner for Automated Root Cause Analysis - ZenML LLMOps Database"
+  description: "Apollo Tyres developed a Manufacturing Reasoner powered by Amazon Bedrock Agents to automate root cause analysis for their tire curing processes. The solution replaced manual analysis that took 7 hours per issue with an AI-powered system that delivers insights in under 10 minutes, achieving an 88% reduction in manual effort. The multi-agent system analyzes real-time IoT data from over 250 automated curing presses to identify bottlenecks across 25+ subelements, enabling data-driven decision-making and targeting annual savings of approximately 15 million Indian rupees in their passenger car radial division."
+  canonical: "https://www.zenml.io/llmops-database/agentic-ai-manufacturing-reasoner-for-automated-root-cause-analysis"
+  ogTitle: "Apollo Tyres: Agentic AI Manufacturing Reasoner for Automated Root Cause Analysis - ZenML LLMOps Database"
+  ogDescription: "Apollo Tyres developed a Manufacturing Reasoner powered by Amazon Bedrock Agents to automate root cause analysis for their tire curing processes. The solution replaced manual analysis that took 7 hours per issue with an AI-powered system that delivers insights in under 10 minutes, achieving an 88% reduction in manual effort. The multi-agent system analyzes real-time IoT data from over 250 automated curing presses to identify bottlenecks across 25+ subelements, enabling data-driven decision-making and targeting annual savings of approximately 15 million Indian rupees in their passenger car radial division."
+---
+
+## Company Overview and Business Context
+
+Apollo Tyres is a prominent international tire manufacturer headquartered in Gurgaon, India, with production facilities across India and Europe. The company operates under two global brands - Apollo and Vredestein - and distributes products in over 100 countries through an extensive network of outlets. Their product portfolio spans the complete spectrum of tire manufacturing, including passenger car, SUV, truck-bus, two-wheeler, agriculture, industrial, and specialty tires.
+
+As part of an ambitious digital transformation initiative, Apollo Tyres collaborated with Amazon Web Services to implement a centralized data lake architecture. The company's strategic focus centers on streamlining their entire business value process, with particular emphasis on manufacturing optimization. This digital transformation journey led to the development of their Manufacturing Reasoner solution, which represents a sophisticated application of generative AI in industrial settings.
+
+## Problem Statement and Business Challenge
+
+The core challenge faced by Apollo Tyres centered on the manual and time-intensive process of analyzing dry cycle time (DCT) for their highly automated curing presses. Plant engineers were required to conduct extensive manual analysis to identify bottlenecks and focus areas using industrial IoT descriptive dashboards. This analysis needed to cover millions of parameters across multiple dimensions including all machines, stock-keeping units (SKUs), cure mediums, suppliers, machine types, subelements, and sub-subelements.
+
+The existing process presented several critical limitations. First, the analysis consumed between 7 hours per issue on average, with some cases requiring up to 2 elapsed hours per issue for initial assessment. Second, subelement-level analysis - particularly bottleneck analysis of subelement and sub-subelement activities - was not feasible using traditional root cause analysis tools. Third, the process required coordination between subject matter experts from various departments including manufacturing, technology, and industrial engineering. Finally, since insights were not generated in real-time, corrective actions were consistently delayed, impacting operational efficiency.
+
+## Technical Architecture and LLMOps Implementation
+
+The Manufacturing Reasoner solution represents a sophisticated multi-agent architecture built on Amazon Bedrock. The system demonstrates advanced LLMOps practices through its comprehensive agent orchestration, real-time data processing, and natural language interface capabilities.
+
+### Multi-Agent Architecture Design
+
+The solution employs a primary AI agent that serves as the orchestration layer, classifying question complexity and routing requests to specialized agents. This primary agent coordinates with several specialized agents, each designed for specific analytical functions. The complex transformation engine agent functions as an on-demand transformation engine for context and specific questions. The root cause analysis agent constructs multistep, multi-LLM workflows to perform detailed automated RCA, particularly valuable for complex diagnostic scenarios.
+
+The system also includes an explainer agent that uses Anthropic's Claude Haiku model to generate two-part explanations: evidence providing step-by-step logical explanations of executed queries, and conclusions offering brief answers referencing Amazon Redshift records. A visualization agent generates Plotly chart code for creating visual charts using Anthropic's Claude Sonnet model. This multi-agent approach demonstrates sophisticated LLMOps practices in agent coordination and specialization.
+
+### Data Integration and Real-Time Processing
+
+The technical infrastructure connects curing machine data flows to AWS Cloud through industrial Internet of Things (IoT) integration. Machines continuously transmit real-time sensor data, process information, operational metrics, events, and condition monitoring data to the cloud infrastructure. This real-time data streaming capability is essential for the solution's effectiveness in providing immediate insights and enabling rapid corrective actions.
+
+The system leverages Amazon Redshift as its primary data warehouse, providing reliable access to actionable data for the AI agents. Amazon Bedrock Knowledge Bases integration with Amazon OpenSearch Service vector database capabilities enables efficient context extraction for incoming requests. This architecture demonstrates mature LLMOps practices in data pipeline management and real-time processing.
+
+### Natural Language Interface and User Experience
+
+The user interface is implemented as a Chainlit application hosted on Amazon EC2, enabling plant engineers to interact with the system using natural language queries in English. This interface represents a significant advancement in manufacturing analytics, allowing domain experts to access complex industrial IoT data without requiring technical expertise in query languages or data manipulation.
+
+The system processes user questions through the primary AI agent, which classifies complexity and routes requests appropriately. The primary agent calls explainer and visualization agents concurrently using multiple threads, demonstrating efficient parallel processing capabilities. Results are streamed back to the application, which dynamically displays statistical plots and formats records in tables, providing comprehensive visual and textual insights.
+
+## Performance Optimization and LLMOps Best Practices
+
+The development team encountered and addressed several critical performance challenges that highlight important LLMOps considerations for production deployments. Initially, the solution faced significant response time delays when using Amazon Bedrock, particularly with multiple agent involvement. Response times exceeded 1 minute for data retrieval and processing across all three agents, which was unacceptable for operational use.
+
+Through systematic optimization efforts, the team reduced response times to approximately 30-40 seconds by carefully selecting appropriate large language models and small language models, and disabling unused workflows within agents. This optimization process demonstrates the importance of model selection and workflow efficiency in production LLMOps environments.
+
+The team also addressed challenges related to LLM-generated code for data visualization. Initially, generated code often contained inaccuracies or failed to handle large datasets correctly. Through continuous refinement and iterative development, they developed a dynamic approach capable of accurately generating chart code for efficiently managing data within data frames, regardless of record volume. This iterative improvement process exemplifies mature LLMOps practices in code generation and validation.
+
+### Data Quality and Consistency Management
+
+Consistency issues were resolved by ensuring correct data format ingestion into the Amazon data lake for the knowledge base. The team established a structured format including questions in natural language, complex transformation engine scripts, and associated metadata. This structured approach to data preparation demonstrates important LLMOps practices in data quality management and knowledge base maintenance.
+
+## Governance and Safety Implementation
+
+The solution implements Amazon Bedrock Guardrails to establish tailored filters and response limits, ensuring that interactions with machine data remain secure, relevant, and compliant with operational guidelines. These guardrails prevent errors and inaccuracies by automatically verifying information validity, which is essential for accurate root cause identification in manufacturing environments.
+
+This governance approach demonstrates mature LLMOps practices in production safety and compliance management. The guardrails help maintain system reliability while enabling natural language interaction with sensitive operational data.
+
+## Operational Impact and Business Results
+
+The Manufacturing Reasoner solution delivers significant operational improvements across multiple dimensions. The system analyzes data from over 250 automated curing presses, more than 140 SKUs, three types of curing mediums, and two types of machine suppliers across 25+ automated subelements. This comprehensive coverage enables detailed bottleneck identification and targeted improvement recommendations.
+
+The solution achieved an 88% reduction in manual effort for root cause analysis, reducing analysis time from up to 7 hours per issue to less than 10 minutes per issue. This dramatic improvement enables plant engineers to focus on implementing corrective actions rather than data analysis. The system provides real-time triggers to highlight continuous anomalous shifts in DCT for mistake-proofing and error prevention, aligning with Poka-yoke methodologies.
+
+Additional benefits include observability of elemental-wise cycle time with graphs and statistical process control charts, press-to-press direct comparison on real-time streaming data, and on-demand RCA capabilities with daily alerts to manufacturing subject matter experts. The targeted annual savings of approximately 15 million Indian rupees in the passenger car radial division alone demonstrates substantial business value from the LLMOps implementation.
+
+## Lessons Learned and LLMOps Best Practices
+
+The Apollo Tyres implementation provides several valuable insights for LLMOps practitioners working with industrial IoT and real-time data. The team learned that applying generative AI to streaming real-time industrial IoT data requires extensive research due to the unique nature of each use case. The journey from prototype to proof-of-concept involved exploring multiple strategies to develop an effective manufacturing reasoner for automated RCA scenarios.
+
+Performance optimization emerged as a critical consideration, requiring careful model selection and workflow optimization to achieve acceptable response times. The iterative approach to improving code generation capabilities demonstrates the importance of continuous refinement in production LLMOps environments.
+
+Data quality and consistency management proved essential for reliable system operation. The structured approach to knowledge base preparation and maintenance ensures consistent system performance and accurate insights.
+
+## Future Scaling and Development Plans
+
+The Apollo Tyres team is scaling the successful solution from tire curing to various areas across different locations, advancing toward Industry 5.0 goals. Amazon Bedrock will play a pivotal role in extending the multi-agentic Retrieval Augmented Generation solution through specialized agents with distinct roles for specific functionalities.
+
+The team continues focusing on benchmarking and optimizing response times for queries, streamlining decision-making and problem-solving capabilities across the extended solution. Apollo Tyres is also exploring additional generative AI applications using Amazon Bedrock for other manufacturing and non-manufacturing processes.
+
+This expansion strategy demonstrates mature LLMOps thinking in scaling successful solutions across broader organizational contexts while maintaining performance and reliability standards. The focus on specialized agents for different domains shows sophisticated understanding of multi-agent system design and deployment strategies.
+
+The Manufacturing Reasoner case study represents a comprehensive example of production LLMOps implementation in industrial settings, demonstrating successful integration of multiple AI agents, real-time data processing, natural language interfaces, and robust governance frameworks to deliver substantial business value through manufacturing optimization.

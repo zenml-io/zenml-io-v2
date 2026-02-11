@@ -1,0 +1,180 @@
+---
+title: "Fine-tuning Custom Embedding Models for Enterprise Search"
+slug: "fine-tuning-custom-embedding-models-for-enterprise-search"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "67cd51de8c112da1f4af1724"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:03:05.909Z"
+  createdOn: "2025-03-09T08:31:26.950Z"
+llmopsTags:
+  - "document-processing"
+  - "question-answering"
+  - "unstructured-data"
+  - "regulatory-compliance"
+  - "data-integration"
+  - "rag"
+  - "embeddings"
+  - "fine-tuning"
+  - "semantic-search"
+  - "vector-search"
+  - "chunking"
+  - "error-handling"
+  - "latency-optimization"
+  - "cost-optimization"
+  - "human-in-the-loop"
+  - "elasticsearch"
+  - "fastapi"
+  - "postgresql"
+  - "redis"
+  - "cache"
+  - "monitoring"
+  - "databases"
+  - "api-gateway"
+  - "load-balancing"
+  - "microservices"
+  - "scaling"
+  - "documentation"
+  - "security"
+  - "compliance"
+  - "guardrails"
+  - "reliability"
+  - "scalability"
+  - "openai"
+  - "google-gcp"
+  - "microsoft-azure"
+company: "Glean"
+summary: "Glean implements enterprise search and RAG systems by developing custom embedding models for each customer. They tackle the challenge of heterogeneous enterprise data by using a unified data model and fine-tuning embedding models through continued pre-training and synthetic data generation. Their approach combines traditional search techniques with semantic search, achieving a 20% improvement in search quality over 6 months through continuous learning from user feedback and company-specific language adaptation."
+link: "https://www.youtube.com/watch?v=jTBsWJ2TKy8"
+year: 2023
+seo:
+  title: "Glean: Fine-tuning Custom Embedding Models for Enterprise Search - ZenML LLMOps Database"
+  description: "Glean implements enterprise search and RAG systems by developing custom embedding models for each customer. They tackle the challenge of heterogeneous enterprise data by using a unified data model and fine-tuning embedding models through continued pre-training and synthetic data generation. Their approach combines traditional search techniques with semantic search, achieving a 20% improvement in search quality over 6 months through continuous learning from user feedback and company-specific language adaptation."
+  canonical: "https://www.zenml.io/llmops-database/fine-tuning-custom-embedding-models-for-enterprise-search"
+  ogTitle: "Glean: Fine-tuning Custom Embedding Models for Enterprise Search - ZenML LLMOps Database"
+  ogDescription: "Glean implements enterprise search and RAG systems by developing custom embedding models for each customer. They tackle the challenge of heterogeneous enterprise data by using a unified data model and fine-tuning embedding models through continued pre-training and synthetic data generation. Their approach combines traditional search techniques with semantic search, achieving a 20% improvement in search quality over 6 months through continuous learning from user feedback and company-specific language adaptation."
+---
+
+## Overview
+
+This case study is drawn from a technical talk by Manov, a software engineer at Glean who has been with the company for approximately three years, working primarily on semantic search and ML systems for search ranking and assistant quality. The presentation was part of a course on systematically improving RAG applications, hosted by Jason (likely Jason Liu of instructor fame). Glean is an enterprise AI company that aggregates data from various enterprise applications (Google Drive, GitHub, Jira, Confluence, Slack, etc.) to power search and AI assistant capabilities. The talk focuses specifically on how Glean approaches embedding model fine-tuning to achieve high-quality enterprise search, which serves as the foundation for their RAG systems.
+
+## The Core Problem
+
+Enterprise AI search faces fundamentally different challenges compared to internet search. While web search benefits from power-law distributions where most queries target popular websites and common information sources like Wikipedia or Stack Overflow, enterprise data is highly heterogeneous. Companies use a diverse array of applications including document stores (Google Docs, Confluence, Notion), messaging platforms (Slack), code repositories (GitHub, GitLab), meeting systems, and various specialized tools. Each of these has different data structures, and importantly, each company develops its own internal dialect with project names, acronyms, and domain-specific terminology that generic embedding models simply cannot understand.
+
+Glean's guiding philosophy is that search quality is the foundation of enterprise AI. Without reliable, high-quality search, RAG systems will pull irrelevant context, leading to hallucinations and poor user experiences that create significant business costs. This makes the embedding layer critical infrastructure for the entire system.
+
+## Technical Architecture and Approach
+
+### Unified Data Model
+
+A key architectural decision at Glean is the creation of a unified data model that maps diverse enterprise applications into a consistent document schema. Rather than building federated search across disparate systems, Glean creates a single unified index. This requires careful mapping of each application's data structures to the standardized format. For example, Slack messages, which are naturally short and lack titles, require special handling—Glean models conversations (threads or temporally-grouped messages) as documents rather than individual messages, using the first message as a proxy for a title and the rest as the body.
+
+This unified data model is essential not just for search but for scalable ML training. It allows the ML team to work with consistent abstractions across all customer data sources, making it feasible to build training pipelines that work across hundreds of enterprise deployments.
+
+### Custom Embedding Models Per Customer
+
+Rather than using a single large, general-purpose embedding model, Glean builds custom embedding models for each customer. The rationale is that enterprise-specific models, even if smaller, significantly outperform generic models when fine-tuned to the specific domain and task. This represents a significant operational challenge—with hundreds of customers, there are hundreds of models to train, manage, evaluate, and deploy.
+
+### Multi-Stage Training Pipeline
+
+The training process involves several stages:
+
+**Stage 1: Masked Language Modeling for Domain Adaptation**
+
+The process begins with a base model using BERT-based architecture. Despite newer architectures being available, BERT remains tried-and-true for this application. The first phase uses masked language modeling (MLM) to adapt the general language model to the company's specific domain. This involves taking sentences from the customer's corpus, masking certain words, and training the model to predict them. Glean mentions using techniques to specifically mask domain-relevant words to accelerate learning of company-specific terminology.
+
+The advantage of MLM is that it requires no labeled data—every document in the enterprise becomes training data. This means even small customers with limited activity still have sufficient data for this domain adaptation phase.
+
+**Stage 2: Contrastive Learning for Embedding Quality**
+
+MLM alone produces a language model, not an embedding model optimized for search. The next phase converts this domain-adapted language model into a high-quality embedding model through contrastive learning on pairs of semantically related content. Glean uses several sources for generating these pairs:
+
+- **Title-Body Pairs**: Document titles mapped to random passages from the document body. Not a perfect signal, but provides a good bootstrap for learning document-level relevance.
+
+- **Anchor Data**: Documents that link to other documents are likely related. The titles of linked documents can form positive pairs. This is analogous to PageRank's insight that link structure reveals relevance.
+
+- **Co-Access Patterns**: When users access multiple documents in a short time window (e.g., during research on a topic), those documents are likely related. The titles of co-accessed documents form positive pairs.
+
+- **Public Datasets**: High-quality public datasets like Quora Question Pairs and MS MARCO are mixed with enterprise-specific data to prevent catastrophic forgetting while maintaining general language understanding.
+
+### Handling Heterogeneous Enterprise Data
+
+The talk emphasizes that naive application of these techniques to all data sources fails. Each application has nuances that must be understood:
+
+- **Slack**: Individual messages are too short and context-dependent. Glean models conversations (threads or time-grouped messages) as documents. Channels like "random" or "happy-birthday" contain low-value training data and should be filtered.
+
+- **Permissions and Privacy**: Not all documents should be trained on equally. Documents accessible to many users are more valuable training signal than private documents, both for privacy reasons and because widely-accessed documents affect more users.
+
+The speaker emphasizes that there's no substitute for understanding your data and talking to customers. Due to security constraints, engineers often cannot directly view customer data, making customer interviews and behavior understanding even more critical.
+
+### Synthetic Data Generation
+
+For smaller customers or corpuses with limited data, synthetic data generation using LLMs becomes valuable. The approach involves generating question-answer pairs from documents using LLMs. However, naive prompting produces poor results—LLMs tend to generate questions that closely mirror the exact phrasing of the source text, which doesn't reflect how real users formulate queries.
+
+Effective synthetic data generation requires:
+- Clear instructions that encourage diverse question phrasings
+- Awareness that users don't have the document in front of them when asking questions
+- Coverage of different query types (navigational, informational, etc.)
+- Focus on popular/important documents rather than random ones to maximize training value
+
+### Continuous Learning from User Feedback
+
+Glean operates a search product alongside their assistant, which provides valuable user feedback through query-click pairs. When users search and click on results, this provides positive training signal for the embedding model. After six months of continuous learning, Glean reports approximately 20% improvement in search quality.
+
+For RAG-only settings without explicit search, gathering feedback is more challenging. The speaker acknowledges this as an open problem. Some proxy signals include:
+- Upvote/downvote on responses (sparse but valuable)
+- Clicks on citations (if a user clicks to read more, the cited document was relevant)
+- Usage patterns (increasing usage suggests value)
+
+Models are retrained monthly. The speaker notes that major new concepts rarely become critically important within a week, so monthly retraining balances freshness with operational overhead. Importantly, when models are updated, all vectors must be re-indexed—there's no way to avoid this if embedding quality matters.
+
+## Evaluation Strategy
+
+Evaluating enterprise search is complex because:
+- End-to-end RAG evaluation involves many components (query planning, retrieval, summarization)
+- Each customer has a custom model
+- Engineers cannot typically access customer data directly
+
+Glean's approach involves:
+
+**Online Metrics**: Session satisfaction (do users find relevant documents based on click patterns?), time spent on clicked documents, upvote/downvote ratios, and usage trends.
+
+**Unit Testing for Models**: Rather than trying to evaluate everything holistically, Glean builds targeted eval sets for specific desirable behaviors. For example:
+- Paraphrase understanding: Do paraphrases of the same query retrieve similar results?
+- Entity recognition: Are company-specific entities handled correctly?
+
+Each custom model is evaluated against target benchmarks for these capabilities. Models underperforming on specific tests can be investigated and hyperparameter-tuned.
+
+**LLM-as-Judge**: For comparing system versions, Glean uses A/B testing with LLM judges evaluating response quality across dimensions like factuality and relevance. The speaker notes LLM judges have noise and brittleness (small output changes can flip judgments), but they enable scalable evaluation when combined with multiple quality dimensions.
+
+## Key Insights and Philosophy
+
+The speaker emphasizes several principles:
+
+- **Traditional IR Still Matters**: For 60-70% of enterprise queries, basic lexical search with signals like recency can suffice. Semantic search adds value for more complex queries, but systems should use traditional signals as the foundation.
+
+- **Smaller Models Often Win**: In the enterprise context, smaller fine-tuned models frequently outperform large general-purpose models because they're optimized for the specific domain and task.
+
+- **Isolation for Progress**: While end-to-end testing remains important, day-to-day improvements come from isolating and optimizing individual components.
+
+- **Authority Beyond Freshness**: Old documents aren't necessarily irrelevant. A document containing the WiFi password may not have been updated in years but remains authoritative if users consistently access it. User interaction patterns reveal true authoritativeness.
+
+## Access Control
+
+Access control is handled at query time via their search engine, filtering results based on user-level ACL information. However, training also considers permissions—training preferentially on widely-accessible documents both respects privacy and provides more useful signal (widely-accessed documents affect more users).
+
+## Operational Considerations
+
+The talk touches on several operational realities of running embedding systems at scale:
+- Monthly retraining cadence
+- Full re-indexing when models update
+- Managing hundreds of customer-specific models
+- Privacy constraints limiting direct data inspection
+- Using distributed processing frameworks (Spark/Beam) for large-scale data processing
+
+This represents a mature LLMOps operation where the embedding layer is treated as core infrastructure requiring rigorous engineering practices around training, evaluation, and deployment.

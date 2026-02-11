@@ -1,0 +1,182 @@
+---
+title: "Context Engineering and Agent Development at Scale: Building Open Deep Research"
+slug: "context-engineering-and-agent-development-at-scale-building-open-deep-research"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "695108d8d19fe1ec3cbe62b4"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2026-01-07T09:40:39.763Z"
+  lastUpdated: "2025-12-28T10:51:50.738Z"
+  createdOn: "2025-12-28T10:39:20.009Z"
+llmopsTags:
+  - "code-generation"
+  - "summarization"
+  - "chatbot"
+  - "question-answering"
+  - "document-processing"
+  - "poc"
+  - "rag"
+  - "embeddings"
+  - "prompt-engineering"
+  - "few-shot"
+  - "semantic-search"
+  - "vector-search"
+  - "agent-based"
+  - "multi-agent-systems"
+  - "human-in-the-loop"
+  - "latency-optimization"
+  - "cost-optimization"
+  - "chunking"
+  - "system-prompts"
+  - "mcp"
+  - "reranking"
+  - "token-optimization"
+  - "error-handling"
+  - "langchain"
+  - "chromadb"
+  - "pinecone"
+  - "qdrant"
+  - "fastapi"
+  - "postgresql"
+  - "redis"
+  - "cache"
+  - "docker"
+  - "monitoring"
+  - "cicd"
+  - "open-source"
+  - "documentation"
+  - "anthropic"
+  - "openai"
+  - "meta"
+  - "google-gcp"
+  - "hugging-face"
+  - "microsoft-azure"
+company: "LangChain"
+summary: "Lance Martin from LangChain discusses the emerging discipline of \"context engineering\" through his experience building Open Deep Research, a deep research agent that evolved over a year to become the best-performing open-source solution on Deep Research Bench. The conversation explores how managing context in production agent systems—particularly across dozens to hundreds of tool calls—presents challenges distinct from simple prompt engineering, requiring techniques like context offloading, summarization, pruning, and multi-agent isolation. Martin's iterative development journey illustrates the \"bitter lesson\" for AI engineering: structured workflows that work well with current models can become bottlenecks as models improve, requiring engineers to continuously remove structure and embrace more general approaches to capture exponential model improvements."
+link: "https://www.youtube.com/watch?v=_IlTcWciEC4"
+year: 2025
+seo:
+  title: "LangChain: Context Engineering and Agent Development at Scale: Building Open Deep Research - ZenML LLMOps Database"
+  description: "Lance Martin from LangChain discusses the emerging discipline of \"context engineering\" through his experience building Open Deep Research, a deep research agent that evolved over a year to become the best-performing open-source solution on Deep Research Bench. The conversation explores how managing context in production agent systems—particularly across dozens to hundreds of tool calls—presents challenges distinct from simple prompt engineering, requiring techniques like context offloading, summarization, pruning, and multi-agent isolation. Martin's iterative development journey illustrates the \"bitter lesson\" for AI engineering: structured workflows that work well with current models can become bottlenecks as models improve, requiring engineers to continuously remove structure and embrace more general approaches to capture exponential model improvements."
+  canonical: "https://www.zenml.io/llmops-database/context-engineering-and-agent-development-at-scale-building-open-deep-research"
+  ogTitle: "LangChain: Context Engineering and Agent Development at Scale: Building Open Deep Research - ZenML LLMOps Database"
+  ogDescription: "Lance Martin from LangChain discusses the emerging discipline of \"context engineering\" through his experience building Open Deep Research, a deep research agent that evolved over a year to become the best-performing open-source solution on Deep Research Bench. The conversation explores how managing context in production agent systems—particularly across dozens to hundreds of tool calls—presents challenges distinct from simple prompt engineering, requiring techniques like context offloading, summarization, pruning, and multi-agent isolation. Martin's iterative development journey illustrates the \"bitter lesson\" for AI engineering: structured workflows that work well with current models can become bottlenecks as models improve, requiring engineers to continuously remove structure and embrace more general approaches to capture exponential model improvements."
+---
+
+## Overview
+
+This case study centers on Lance Martin's work at LangChain developing Open Deep Research, an open-source deep research agent that represents a year-long journey in production agent development. The discussion, hosted on the Latent Space podcast, provides deep insights into the emerging practice of "context engineering"—a term popularized by Andrej Karpathy that captures the shared challenges engineers face when deploying agents in production environments. Martin's experience building and iterating on Open Deep Research serves as a concrete example of how production LLM applications require fundamentally different approaches than simple chatbot interactions, particularly when agents execute dozens to hundreds of tool calls and must manage massive amounts of flowing context.
+
+The case study is particularly valuable because it documents not just technical solutions but the evolution of thinking required when building on rapidly improving foundation models. Martin explicitly connects his practical experience to the "bitter lesson" from AI research—the observation that general approaches with less hand-coded structure tend to outperform carefully engineered solutions as compute and model capabilities scale. This creates a unique challenge for production AI engineering: systems must work with today's models while remaining flexible enough to capture the exponential improvements in model capabilities.
+
+## The Context Engineering Challenge
+
+Martin defines context engineering as distinct from traditional prompt engineering. While prompt engineering focuses primarily on crafting the human message input to a chat model, context engineering addresses the challenge of managing context that flows into an agent from multiple sources throughout its execution trajectory. In a production agent system, context comes not just from user instructions but continuously from tool call results across potentially hundreds of interactions.
+
+The problem manifests concretely in Martin's early experience with Open Deep Research. Building what seemed like a simple tool-calling loop, he found his naive implementation consuming 500,000 tokens per run at $1-2 per execution. This experience—shared by many practitioners—stems from naively accumulating all tool call feedback in the agent's message history. The context window grows explosively, leading to two interconnected problems: the trivial issue of hitting context window limits, and the more subtle problem of performance degradation as context lengthens.
+
+Martin references work from Chroma on "context rot"—the phenomenon where LLM performance degrades in weird and idiosyncratic ways as context grows longer. This isn't just about hitting technical limits; it's about maintaining agent reliability and accuracy across long-running tasks. Production agents at companies like Anthropic routinely execute hundreds of tool calls, making context management a first-order concern rather than an afterthought.
+
+## Context Management Techniques
+
+Martin organizes context engineering into five main categories, drawing from his own work, Anthropic's research, Manis's production experience, and Cognition's Devon system:
+
+**Context Offloading** represents perhaps the most impactful technique. Rather than naively passing full tool call results back into the agent's message history, developers should offload content to external storage—either disk, as Manis recommends, or agent state objects like those in LangGraph. The agent receives a summary or reference (like a URL or file path) rather than full content, dramatically reducing token costs. Martin emphasizes that the quality of summarization matters enormously here. For Open Deep Research, he carefully prompts models to produce exhaustive bullet-point summaries that maintain high recall of document contents while achieving significant compression. This allows the agent to determine whether to retrieve full context later without carrying that context through every subsequent step.
+
+Cognition's work on Devon highlights that summarization is non-trivial enough to warrant fine-tuned models. They use specialized models for compressing context at agent boundaries to ensure sufficient information passes between components. This investment in the summarization step reflects the critical nature of maintaining information fidelity while reducing token load.
+
+**Context Reduction and Pruning** involves more aggressive techniques for managing context windows. Claude Code provides a familiar example—when approaching 95% context window utilization, it performs compaction. Martin uses summarization at tool call boundaries in Open Deep Research, and references Hugging Face's implementation that uses code-based tool calls (where tool invocations are code blocks executed in an environment) to naturally keep raw results separate from agent context.
+
+However, Martin strongly emphasizes Manis's warning about irreversible pruning. Aggressive summarization carries information loss risk, which is why offloading strategies that preserve raw content are preferable. This allows recovery from summarization mistakes without requiring re-execution of expensive operations.
+
+An interesting debate emerges around pruning failed or mistaken paths. Manis argues for keeping mistakes in context so agents can learn from errors. However, Drew Brunick's work on "context poisoning" suggests hallucinations stuck in context can steer agents off track—a phenomenon Gemini documented in their technical reports. Martin's personal experience with Claude Code leads him to prefer keeping failures in context, particularly for tool call errors where the error message helps the agent correct course. He notes this is simpler architecturally than trying to selectively prune message history, which adds complex logic to the agent scaffolding.
+
+**Retrieval and Agentic Search** represents a category where Martin offers particularly interesting counterintuitive insights. Traditional RAG (Retrieval Augmented Generation) approaches use vector embeddings, semantic similarity search, and complex multi-stage pipelines. Verun from Windsurf describes their system using carefully designed semantic boundaries for code chunking, embeddings, vector search, graph-based retrieval, and reranking—a sophisticated multi-step RAG pipeline.
+
+In stark contrast, Boris from Anthropic's Claude Code takes a radically different approach: no indexing whatsoever. Claude Code uses simple agentic search with basic file tools, leveraging the model's ability to explore and discover needed context through tool calls. Martin tested this thoroughly, comparing three approaches on 20 LangGraph coding questions: traditional vector store indexing, llm.txt with file loading tools, and context stuffing (passing all 3 million tokens of documentation).
+
+His finding was striking: llm.txt—a simple markdown file listing documentation URLs with LLM-generated descriptions—combined with a basic file retrieval tool proved extremely effective. The agent reads descriptions, determines which documents to retrieve, and fetches them on demand. Martin built a small utility that uses cheap LLMs to automatically generate high-quality descriptions of documentation pages, which he found critical for agent performance. The quality of these descriptions directly impacts the agent's ability to select relevant context.
+
+This represents a significant practical insight for production systems: sophisticated indexing infrastructure may be unnecessary overhead when agentic search with well-described resources works effectively. Martin personally uses this llm.txt approach rather than vector stores for his development work. The trade-off appears to depend on scale and query patterns, but for documentation retrieval, simpler approaches often suffice.
+
+**Context Isolation with Multi-Agent Architecture** presents one of the most nuanced discussions in the conversation. Cognition's position against sub-agents argues that agent-to-agent communication is difficult and sub-agents making independent decisions can create conflicting outputs that are hard to reconcile. Walden Yan from Cognition specifically discusses "read versus write" tasks—when sub-agents are each writing components of a final solution (like code modules), implicit conflicts emerge that are difficult to resolve.
+
+Martin agrees this is a serious concern but argues multi-agent approaches work well for specific problem types. The key insight is parallelization of read-only operations. Deep research is an ideal use case: sub-agents independently gather context (reading/researching), then a single agent performs the final write (report generation) using all collected context. Anthropic's multi-agent researcher follows this exact pattern. Each sub-agent does pure context collection without making decisions that need coordination, avoiding the conflict problem Cognition identifies.
+
+For coding agents, Martin acknowledges the challenge is much harder. When sub-agents write different code components, coordination becomes critical and multi-agent approaches may create more problems than they solve. However, he notes Claude Code now supports sub-agents, suggesting Anthropic believes they've found workable patterns even for coding tasks.
+
+The conversation highlights that context isolation's value depends heavily on whether tasks are truly parallelizable without coordination requirements. This architectural decision has major implications for production systems.
+
+**Caching** emerged as the fifth category, though the discussion reveals modern APIs increasingly handle this automatically. Manis explicitly recommends caching prior message history to reduce both cost and latency. However, the conversation clarifies that OpenAI, Anthropic, and Gemini now provide automatic caching in various forms, reducing the need for explicit cache management.
+
+Martin makes the critical point that caching solves cost and latency but doesn't address long context problems or context rot. Whether context is cached or not, a 100,000-token context still presents the same performance degradation challenges. Caching is an operational optimization but not a solution to fundamental context engineering challenges.
+
+## The Bitter Lesson for AI Engineering
+
+Martin's development arc with Open Deep Research provides a compelling illustration of how the "bitter lesson" from AI research applies to production engineering. The bitter lesson, articulated by Rich Sutton and expanded by Hyung Won Chung (formerly OpenAI, now at MSL), observes that general methods with fewer hand-coded assumptions and more compute consistently outperform carefully structured approaches as compute scales exponentially.
+
+Martin started Open Deep Research in early 2024 with a highly structured workflow that didn't use tool calling (considered unreliable at the time). He decomposed research into predefined sections, parallelized section writing, and embedded assumptions about how research should be conducted. This structure made the system more reliable than agents in early 2024.
+
+However, as models improved through 2024, this structure became a bottleneck. Martin couldn't leverage MCP as it gained adoption, couldn't take advantage of significantly improved tool calling, and found his multi-agent writing approach produced disjoint reports because sub-agents wrote independently without coordination (exactly the Cognition concern). He had to completely rebuild the system twice, progressively removing structure.
+
+The current version uses tool calling, lets the agent determine research paths, and performs one-shot writing at the end after all context collection. This more general approach now outperforms the earlier structured system, achieving the best results among open-source deep research agents on Deep Research Bench (though Martin honestly notes it still doesn't match OpenAI's end-to-end RL-trained Deep Research).
+
+The key insight for production engineering is temporal: at any point in time, adding structure helps systems work with current model capabilities. But structure creates technical debt as models improve. Engineers must continuously reassess assumptions and remove bottlenecking structure. This is particularly challenging in large organizations where structure becomes embedded in processes and multiple teams' work.
+
+Martin draws a parallel to Cursor's trajectory: the product didn't work particularly well initially, but when Claude 3.5 Sonnet released, it unlocked the product and drove explosive growth. Building products slightly ahead of current capabilities can position teams to capture exponential gains when models cross capability thresholds. However, there's risk in building too much structure that assumes current model limitations will persist.
+
+The conversation touches on how this affects incumbents: existing products with established workflows face challenges removing structure because the structure often IS the product. This explains why AI-native tools like Cursor and Windsurf can outcompete IDE extensions, and why Cognition's Devon can reimagine coding workflows from scratch rather than bolting AI onto existing IDE paradigms.
+
+## Framework Philosophy and LangGraph
+
+An interesting meta-discussion emerges about frameworks and abstractions in production agent development. Martin distinguishes between low-level orchestration frameworks (like LangGraph) and high-level agent abstractions (like `from framework import agent`).
+
+He's sympathetic to anti-framework perspectives but argues they're often really anti-abstraction positions. High-level agent abstractions are problematic because developers don't understand what's happening under the hood. When models improve and systems need restructuring, opaque abstractions become barriers. This echoes the bitter lesson discussion—abstractions encode assumptions that become technical debt.
+
+However, Martin argues low-level orchestration frameworks that provide composable primitives (nodes, edges, state) offer value without creating abstraction barriers. LangGraph's design philosophy aligns with this: it provides building blocks that developers can recombine arbitrarily as requirements change. The framework handles operational concerns like checkpointing and state management while remaining transparent.
+
+This philosophy appears validated by enterprise adoption. Martin references a Shopify talk about their internal "Roast" framework, which independently converged on LangGraph's architecture. Large organizations want standardized tooling for code review and reduced cognitive load, but need flexibility to respond to rapidly evolving model capabilities. Low-level composable primitives provide standardization without brittle abstractions.
+
+The MCP discussion with John Welsh from Anthropic reinforces this point. When tool calling became reliable in mid-2024, everyone built custom integrations, creating chaos in large organizations. MCP emerged as a standard protocol, reducing cognitive load and enabling code review without constraining what developers could build. This pragmatic approach—standardize protocols and primitives, not solutions—appears to be the winning pattern for production LLM engineering.
+
+## Memory and Long-Running Agents
+
+Martin's perspective on memory is that it converges with retrieval at scale. Memory retrieval is fundamentally retrieval from a specific context (past conversations) rather than a novel capability requiring different infrastructure. He suspects ChatGPT indexes past conversations using semantic search and other RAG techniques, making sophisticated memory systems essentially specialized RAG pipelines.
+
+He strongly advocates for simple memory approaches, highlighting Claude's design: it reads all .claude.md files on startup and writes new memories only when users explicitly request it. This zero-automation approach (00 on read/write automation axes) is simple and effective. In contrast, ChatGPT automates both reading and writing, leading to failure modes like Simon Willison's experience where location information inappropriately appeared in image generation.
+
+For ambient agents—long-running agents like his email assistant—Martin argues memory pairs naturally with human-in-the-loop patterns. When users correct agent behavior or edit tool calls before execution, those corrections should feed into memory. He uses an LLM to reflect on corrections, update instructions accordingly, and build up user preferences over time. This creates a clear, bounded use case for memory that avoids the ambiguity of fully automated systems.
+
+His email assistant implementation demonstrates this: it's an agent that processes email with human-in-the-loop approval before sending. Corrections and tone adjustments become memory updates. This pattern—learning from explicit human feedback in supervised settings—appears more reliable than attempting to automatically infer what should be remembered.
+
+## Production Insights and Trade-offs
+
+Throughout the conversation, Martin demonstrates a balanced perspective on production trade-offs that resists hype while acknowledging genuine advances:
+
+He's honest about Open Deep Research's limitations—it doesn't match OpenAI's RL-trained system—while noting it's the best performing open-source solution and that GPT-5 results are promising. This suggests the approach will continue improving with model advances.
+
+On multi-agent architectures, he avoids blanket recommendations, instead carefully delineating when they work (parallelizable read operations) versus when they create problems (coordinated write operations). This nuance is critical for practitioners making architectural decisions.
+
+For retrieval, he challenges the assumption that sophisticated infrastructure is always necessary, providing empirical evidence that simpler approaches can be equally effective. However, he doesn't claim this always holds—he acknowledges he hasn't deeply explored systems like ColBERT's late interaction approach, and that scale and query patterns matter.
+
+On summarization quality, he's candid that prompt engineering has been sufficient for his use case while acknowledging Cognition's investment in fine-tuned summarization models for Devon. This suggests the appropriate level of investment depends on requirements and failure tolerance.
+
+His discussion of caching corrects his initial understanding when other participants note automatic caching in modern APIs, demonstrating intellectual flexibility and the rapidly evolving nature of the space.
+
+## Practical Resources and Tooling
+
+Martin emphasizes building "on-ramps" for complex systems, inspired by Andrej Karpathy's observation that repositories get little attention until accompanied by educational content. He's created courses on building Open Deep Research and ambient agents, providing notebooks that walk through implementation details. This educational approach helps practitioners learn patterns rather than just consume finished products.
+
+His MCP-doc server and llm-description-generator utilities represent practical tooling for common context engineering patterns. These small utilities reflect his philosophy: simple, composable tools that solve specific problems without creating abstraction barriers.
+
+The emphasis on llm.txt as a lightweight standard for making documentation agentic-search-friendly represents an interesting grassroots approach to improving LLM integration. Rather than requiring complex infrastructure, it provides a convention that developers can adopt incrementally.
+
+## Conclusion
+
+This case study captures a pivotal moment in production LLM engineering where practitioners are developing shared language and patterns for challenges that weren't apparent in simpler chatbot applications. Context engineering as a discipline emerges from real production needs—agents executing hundreds of tool calls with massive context management challenges.
+
+Martin's experience demonstrates that production LLM systems require careful engineering of context flow, but that engineering must remain flexible as models improve exponentially. The tension between adding structure for current models and removing structure to capture future improvements creates a unique challenge for the field. Success requires both technical sophistication in techniques like offloading, summarization, and multi-agent isolation, and strategic thinking about which assumptions to encode and when to revisit them.
+
+The broader lesson is that production LLM engineering is fundamentally different from traditional software engineering because the capability substrate is improving exponentially. This demands a different mindset: build for today while planning to rebuild tomorrow, favor general approaches over specialized solutions, and maintain flexibility to capture model improvements. Organizations that master this dynamic—exemplified by products like Claude Code, Cursor, and Open Deep Research—will be positioned to ride the exponential improvement curve rather than be disrupted by it.

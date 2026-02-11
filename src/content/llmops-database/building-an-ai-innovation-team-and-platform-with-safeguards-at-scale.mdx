@@ -1,0 +1,107 @@
+---
+title: "Building an AI Innovation Team and Platform with Safeguards at Scale"
+slug: "building-an-ai-innovation-team-and-platform-with-safeguards-at-scale"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "677ba042e97e04cc32da03c9"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:54:11.198Z"
+  createdOn: "2025-01-06T09:20:02.616Z"
+llmopsTags:
+  - "customer-support"
+  - "chatbot"
+  - "realtime-application"
+  - "rag"
+  - "agent-based"
+  - "prompt-engineering"
+  - "error-handling"
+  - "human-in-the-loop"
+  - "reliability"
+  - "scalability"
+  - "documentation"
+  - "security"
+  - "compliance"
+  - "microsoft-azure"
+  - "openai"
+company: "Twilio"
+summary: "Twilio's Emerging Tech and Innovation team tackled the challenge of integrating AI capabilities into their customer engagement platform while maintaining quality and trust. They developed an AI assistance platform that bridges structured and unstructured customer data, implementing a novel approach using a separate \"Twilio Alpha\" brand to enable rapid iteration while managing customer expectations. The team successfully balanced innovation speed with enterprise requirements through careful team structure, flexible architecture, and open communication practices."
+link: "https://www.youtube.com/watch?v=AVjrkXGnF2M"
+year: 2023
+seo:
+  title: "Twilio: Building an AI Innovation Team and Platform with Safeguards at Scale - ZenML LLMOps Database"
+  description: "Twilio's Emerging Tech and Innovation team tackled the challenge of integrating AI capabilities into their customer engagement platform while maintaining quality and trust. They developed an AI assistance platform that bridges structured and unstructured customer data, implementing a novel approach using a separate \"Twilio Alpha\" brand to enable rapid iteration while managing customer expectations. The team successfully balanced innovation speed with enterprise requirements through careful team structure, flexible architecture, and open communication practices."
+  canonical: "https://www.zenml.io/llmops-database/building-an-ai-innovation-team-and-platform-with-safeguards-at-scale"
+  ogTitle: "Twilio: Building an AI Innovation Team and Platform with Safeguards at Scale - ZenML LLMOps Database"
+  ogDescription: "Twilio's Emerging Tech and Innovation team tackled the challenge of integrating AI capabilities into their customer engagement platform while maintaining quality and trust. They developed an AI assistance platform that bridges structured and unstructured customer data, implementing a novel approach using a separate \"Twilio Alpha\" brand to enable rapid iteration while managing customer expectations. The team successfully balanced innovation speed with enterprise requirements through careful team structure, flexible architecture, and open communication practices."
+---
+
+## Overview
+
+This case study comes from a conference presentation by Dominic Kundle, who leads Product and Design within Twilio's Emerging Tech and Innovation team. The presentation provides an honest and practical look at how a large enterprise communications company is navigating the rapid pace of AI development, with specific focus on the operational challenges of deploying LLM-based solutions in production environments. The team consists of 16 people spanning engineering, product, design, and go-to-market functions, operating somewhat independently from Twilio's main business units focused on Communications APIs (SMS, voice, email) and Customer Data Platform.
+
+## Context and Strategic Positioning
+
+Twilio positions AI as a feature that spreads across all products rather than treating it as a separate product line. The Emerging Tech and Innovation team specifically focuses on disruptive innovation, which the speaker distinguishes from sustaining innovation using the framework from "The Innovator's Dilemma." This distinction is particularly relevant for LLMOps because it acknowledges that generative AI and agents represent disruptive technologies that are not yet ready for enterprise prime time but require active exploration.
+
+The speaker candidly acknowledges several current limitations of AI agents in enterprise settings: quality issues (citing examples like the Chevy Tahoe chatbot selling a car for a dollar and Air Canada's chatbot making up policies), cost concerns (agents are not cheap yet for high-quality implementations), and regulatory uncertainty (with legal teams often dictating adoption more than product teams). This honest assessment provides valuable context for understanding why the team takes the approach they do.
+
+## Technical Solutions and Architecture
+
+The team developed two core AI systems designed to bridge unstructured communications data with structured customer data:
+
+**AI Personalization Engine**: This is described as a RAG (Retrieval-Augmented Generation) system built on top of customer profiles within Segment (Twilio's customer data platform). The purpose is to enable personalized customer engagement by retrieving relevant customer context and using it to inform AI-generated responses.
+
+**AI Perception Engine**: This system works in the opposite direction, taking communications data from customer conversations and translating it into structured customer profile information. The insight here is that conversations contain rich information about customers that should be captured centrally rather than scattered in agent notes or lost entirely.
+
+Together, these systems form what the team calls "customer memory" - a unified system for maintaining context about customers across interactions. The speaker notes that LLMs are particularly well-suited for this bridging function because they excel at translating between structured and unstructured data formats. This architectural insight is valuable for anyone building customer-facing AI systems.
+
+**AI Assistants (Agent Builder)**: Building on the customer memory concept, the team developed an agent builder designed to enable omnichannel customer engagement chatbots. This represents a move from feature-level AI (the perception and personalization engines) to a more comprehensive agent-based approach.
+
+## Challenges and Lessons Learned
+
+The presentation is particularly valuable for its honest discussion of challenges faced during production deployment:
+
+**Challenge 1: Handing Off Disruptive Innovation to R&D**
+The team's initial prototypes, while receiving positive customer feedback, struggled to gain traction within Twilio's R&D organization. The products were solving niche use cases for an emerging market (AI agents and generative AI solutions) rather than addressing immediate large-market needs. The lesson learned was that customer obsession alone wasn't sufficient - they needed to build ideas out further to gain internal traction and successfully hand off to R&D teams focused on sustaining innovation and profitability.
+
+**Challenge 2: Quality Expectations vs. Rapid Iteration**
+Generative AI fundamentally changed the product development lifecycle. Traditional ML development required gathering data first, training models to quality thresholds, then releasing. GenAI allows rapid prototyping without that data, but this creates a dilemma: systems that aren't quite production-quality still need user feedback to improve, but enterprise customers expect high quality. This tension between "move fast" and "don't break things" is a core LLMOps challenge.
+
+**Solution: Sub-Branding for Expectation Management**
+The team created "Twilio Alpha" as a sub-brand specifically for early-stage products, inspired by GitHub Next (creators of GitHub Copilot) and Cloudflare's Emerging Technologies and Incubation group. This approach allows them to ship early and often while setting appropriate expectations around reliability, capabilities, and availability. The sub-brand enables waitlists for developer previews, quick onboarding, and internal POCs for learning - all while protecting the main Twilio brand's reputation for reliability.
+
+## Operational Practices
+
+**Internal Hackathons and Customer Testing**: Rather than relying solely on demo-driven feedback, the team ran internal hackathons and gave rough prototypes directly to customers visiting the office, asking them to spend a day using the product and reporting everything wrong with it. The speaker describes this as "both terrifying and incredibly insightful."
+
+**Dogfooding with Low-Risk Use Cases**: The team started using their own AI assistant for an IT help desk use case. They acknowledged this wasn't the perfect target customer for their solution, but it provided valuable data on quality challenges and system structure without risking customer relationships.
+
+**Model Flexibility Architecture**: The team assumes every model they use will be redundant tomorrow. Rather than chasing every new model, they maintain a clear understanding of their known limitations and can quickly validate whether a new model (like Claude 3.5 Sonnet) addresses those limitations. The speaker mentions being able to determine within a day whether a new model deserves attention or should go to the backlog.
+
+**Roadmap Flexibility**: As a new team without preexisting customer commitments, they actively defend their roadmap flexibility. They distinguish between stable expectations (like trust and safety, which are worth committing to) versus rapidly changing expectations (like multimodality preferences, which shift frequently - from images to voice being the current trend). This allows them to adapt to the fast-moving AI landscape.
+
+## Team and Culture
+
+The team's hiring philosophy emphasizes curiosity and creativity over existing AI experience. This aligns with Twilio's broader culture (referenced through co-founder Jeff Lawson's book "Ask Your Developer") of empowering developers to solve business problems, not just coding problems. By giving engineers problems to solve rather than specifications to implement, the team can move faster and adapt to changing requirements.
+
+**Sharing Knowledge**: An important lesson was learning to share work both internally and externally rather than operating in isolation. Initially, the team was too self-contained, leading to other teams not knowing they existed or what they were working on. This prevented collaboration and made it harder to find conflicts or synergies. Externally, sharing learnings helps B2B customers become thought leaders in their own organizations - particularly valuable given that most enterprises are asking the same questions about AI strategy.
+
+## Principles Established
+
+The team codified their learnings into four base principles:
+
+- **Customer and Developer Obsessed**: Talking to customers early and often, understanding not just current problems but their vision for customer engagement to anticipate future needs
+- **Ship Early and Often**: Setting appropriate expectations but getting products into customer hands for feedback
+- **Curious Team That Owns Problems**: Building quickly by giving engineers ownership of problems rather than specifications
+- **Share As We Go**: Both internally to empower other teams and externally to help customers become thought leaders
+
+## Honest Assessment
+
+This presentation provides a refreshingly honest view of the challenges of building LLM-based products in an enterprise context. The speaker acknowledges that they "haven't figured out yet what is fast enough" and that they need to "be okay with failures." The examples of AI failures (Chevy Tahoe, Air Canada) demonstrate awareness of real risks, and the solutions presented (sub-branding, dogfooding, model flexibility) are practical rather than theoretical.
+
+However, it should be noted that the presentation is somewhat light on technical implementation details - we don't learn specifics about the RAG architecture, evaluation frameworks, or production monitoring approaches. The focus is more on organizational and process innovation than technical LLMOps practices. The products described (AI personalization engine, perception engine, AI assistants) are presented at a conceptual level rather than with detailed technical specifications.
+
+The case study is most valuable as an example of how an established enterprise is structuring its innovation efforts around AI, managing the tension between moving fast and maintaining enterprise reliability, and building organizational practices that support rapid iteration in a fast-moving technology landscape.

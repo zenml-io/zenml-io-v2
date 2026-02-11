@@ -1,0 +1,158 @@
+---
+title: "Multi-Agent Framework for Automated Telecom Change Request Processing"
+slug: "multi-agent-framework-for-automated-telecom-change-request-processing"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "69806f697b11cd528b699b02"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2026-02-03T15:19:04.226Z"
+  lastUpdated: "2026-02-02T10:00:07.431Z"
+  createdOn: "2026-02-02T09:33:29.404Z"
+llmopsTags:
+  - "code-generation"
+  - "legacy-system-integration"
+  - "regulatory-compliance"
+  - "structured-output"
+  - "multi-agent-systems"
+  - "rag"
+  - "prompt-engineering"
+  - "few-shot"
+  - "agent-based"
+  - "human-in-the-loop"
+  - "error-handling"
+  - "evals"
+  - "orchestration"
+  - "serverless"
+  - "cicd"
+  - "monitoring"
+  - "databases"
+  - "api-gateway"
+  - "microservices"
+  - "devops"
+  - "continuous-deployment"
+  - "continuous-integration"
+  - "documentation"
+  - "security"
+  - "reliability"
+  - "scalability"
+  - "fastapi"
+  - "pytorch"
+  - "anthropic"
+  - "amazon-aws"
+company: "Totogi"
+summary: "Totogi, an AI company serving the telecommunications industry, faced challenges with traditional Business Support Systems (BSS) that required lengthy change request processing—typically taking 7 days and involving costly, specialized engineering talent. To address this, Totogi developed BSS Magic, which combines a comprehensive telco ontology with a multi-agent AI framework powered by Anthropic Claude models on Amazon Bedrock. The solution orchestrates five specialized AI agents (Business Analyst, Technical Architect, Developer, QA, and Tester) through AWS Step Functions and Lambda, automating the entire software development lifecycle from requirements analysis to code generation and testing. In collaboration with the AWS Generative AI Innovation Center, Totogi achieved significant results: reducing change request processing time from 7 days to a few hours, achieving 76% code coverage in automated testing, and delivering production-ready telecom-grade code with minimal human intervention."
+link: "https://aws.amazon.com/blogs/machine-learning/how-totogi-automated-change-request-processing-with-totogi-bss-magic-and-amazon-bedrock?tag=soumet-20"
+year: 2026
+seo:
+  title: "Totogi: Multi-Agent Framework for Automated Telecom Change Request Processing - ZenML LLMOps Database"
+  description: "Totogi, an AI company serving the telecommunications industry, faced challenges with traditional Business Support Systems (BSS) that required lengthy change request processing—typically taking 7 days and involving costly, specialized engineering talent. To address this, Totogi developed BSS Magic, which combines a comprehensive telco ontology with a multi-agent AI framework powered by Anthropic Claude models on Amazon Bedrock. The solution orchestrates five specialized AI agents (Business Analyst, Technical Architect, Developer, QA, and Tester) through AWS Step Functions and Lambda, automating the entire software development lifecycle from requirements analysis to code generation and testing. In collaboration with the AWS Generative AI Innovation Center, Totogi achieved significant results: reducing change request processing time from 7 days to a few hours, achieving 76% code coverage in automated testing, and delivering production-ready telecom-grade code with minimal human intervention."
+  canonical: "https://www.zenml.io/llmops-database/multi-agent-framework-for-automated-telecom-change-request-processing"
+  ogTitle: "Totogi: Multi-Agent Framework for Automated Telecom Change Request Processing - ZenML LLMOps Database"
+  ogDescription: "Totogi, an AI company serving the telecommunications industry, faced challenges with traditional Business Support Systems (BSS) that required lengthy change request processing—typically taking 7 days and involving costly, specialized engineering talent. To address this, Totogi developed BSS Magic, which combines a comprehensive telco ontology with a multi-agent AI framework powered by Anthropic Claude models on Amazon Bedrock. The solution orchestrates five specialized AI agents (Business Analyst, Technical Architect, Developer, QA, and Tester) through AWS Step Functions and Lambda, automating the entire software development lifecycle from requirements analysis to code generation and testing. In collaboration with the AWS Generative AI Innovation Center, Totogi achieved significant results: reducing change request processing time from 7 days to a few hours, achieving 76% code coverage in automated testing, and delivering production-ready telecom-grade code with minimal human intervention."
+---
+
+## Overview
+
+Totogi is an AI company focused on helping telecommunications companies modernize their business operations and adopt AI at scale. The case study describes their flagship product, BSS Magic, which addresses fundamental challenges in telecom Business Support Systems (BSS) through a sophisticated multi-agent AI framework. The solution was developed in partnership with the AWS Generative AI Innovation Center (GenAIIC) and leverages Amazon Bedrock for LLM capabilities. This case study represents a mature production deployment of LLMs in an enterprise context, with particular emphasis on code generation, automated quality assurance, and the orchestration of specialized AI agents to handle complex software development workflows.
+
+The telecommunications industry faces unique challenges with BSS platforms, which typically consist of hundreds of different applications from various vendors. These systems are notoriously difficult to integrate and customize, requiring specialized engineering talent and lengthy development cycles. Traditional change requests could take seven days to complete, involving multiple rounds of coding, testing, and reconfiguration. This complexity creates significant technical debt, inflates operational expenses, and limits the ability of telecom operators to respond quickly to market demands. Totogi's solution aims to transform this paradigm through intelligent automation powered by large language models.
+
+## Technical Architecture and Infrastructure
+
+The BSS Magic platform is built on a robust AWS infrastructure foundation that provides the enterprise-grade reliability, security, and scalability essential for telecom-grade solutions. The system uses Anthropic Claude large language models accessed through Amazon Bedrock as the core AI capability. Amazon Bedrock provides the scalable AI models and infrastructure with the high-level security and reliability critical for telecommunications applications. The orchestration layer coordinates specialized AI agents through a combination of AWS Step Functions for state management and workflow coordination, along with AWS Lambda functions for execution. This architecture ensures reliable progression through each stage of the software development lifecycle while maintaining comprehensive audit trails of decisions and actions.
+
+The choice of Step Functions for orchestration is particularly noteworthy from an LLMOps perspective, as it provides built-in state management, error handling, and visual workflow monitoring. This allows the system to coordinate complex multi-agent interactions while maintaining visibility into the process. Each agent maintains context through Retrieval Augmented Generation (RAG) and few-shot prompting techniques to generate accurate domain-specific outputs. The system manages agent communication and state transitions in a coordinated fashion, ensuring that outputs from one agent can be properly consumed by downstream agents in the pipeline.
+
+## The Telco Ontology Foundation
+
+A critical component of BSS Magic is the telco ontology, which serves as a semantic blueprint detailing concepts, relationships, and domain knowledge specific to telecommunications. This ontology translates the complex BSS landscape into a clear, reusable, and interoperable ecosystem. By adopting FAIR principles (Findability, Accessibility, Interoperability, and Reusability), the ontology-driven architecture transforms static, siloed data into dynamic, interconnected knowledge assets. This approach unlocks previously trapped data and accelerates innovation by providing the AI agents with a structured understanding of how different components of telecom systems relate to each other.
+
+The ontology understanding enables the AI agents to comprehend the semantic meanings of data structures and relationships between disparate systems, facilitating seamless integration across any vendor or system. This is particularly important in telecommunications, where operators typically deal with heterogeneous systems from multiple vendors. The ontology provides a common language and framework that allows AI agents to reason about telecom-specific concepts, business rules, and technical requirements. While the case study presents this as a key differentiator, it's worth noting that the effectiveness of this approach depends heavily on the comprehensiveness and accuracy of the ontology itself, which requires ongoing maintenance and domain expertise.
+
+## Multi-Agent Framework Architecture
+
+BSS Magic employs a sophisticated multi-agent architecture where each agent is specialized for a specific role in the software development pipeline. This design embodies principles of separation of concerns and modular architecture, which are valuable from both a software engineering and LLMOps perspective. The five core agents work in sequence with feedback loops:
+
+The **Business Analysis Agent** serves as the entry point to the pipeline, translating unstructured requirements from statement of work (SOW) documents and acceptance criteria into formal business specifications. This agent leverages Claude's natural language understanding capabilities combined with custom prompt templates optimized for telecom BSS domain knowledge. The agent extracts key requirements while maintaining traceability between business requirements and technical implementations, producing structured specifications for downstream processing.
+
+The **Technical Architect Agent** transforms business requirements into concrete AWS service configurations and architectural patterns. It generates comprehensive API specifications and data models while incorporating AWS Well-Architected principles. The agent validates architectural decisions against established patterns and best practices, producing infrastructure-as-code templates for automated deployment. This demonstrates an interesting application of LLMs to generate not just application code but also infrastructure definitions, which expands the scope of automation.
+
+The **Developer Agent** converts technical specifications into implementation code using Claude's code generation capabilities. The agent produces robust, production-ready code that includes proper error handling and logging mechanisms. The pipeline incorporates feedback from validation steps to iteratively improve code quality and maintain consistency with AWS best practices. This represents a core capability of the system—generating telecom-grade code that can be deployed to production environments.
+
+The **QA Agent** performs comprehensive code analysis and validation using carefully crafted prompts. The QA code analysis prompt instructs the agent to act as a senior QA backend engineer analyzing Python code for serverless applications, with specific tasks including comparing requirements against implemented code, identifying missing features, suggesting improvements in code quality and efficiency, and providing actionable feedback. The prompt specifically directs the agent to focus on overall implementation versus minor details and consider serverless best practices. The QA process maintains continuous feedback loops with the development stage, facilitating rapid iteration and improvement of generated code based on quality metrics and best practices adherence.
+
+The **Tester Agent** creates comprehensive test suites that verify both functional and non-functional requirements. The testing framework uses a sophisticated multi-stage prompt approach with three distinct prompts: an initial test structure prompt that requests the creation of pytest-based test structure including suite organization, resource configurations, test approach and methodology, and required imports and dependencies; a test implementation prompt that generates complete pytest implementation including unit tests for each function, integration tests for API endpoints, AWS service mocking, edge case coverage, and error scenario handling; and a test results analysis prompt that evaluates test outputs and coverage reports to verify test completion status, track results and outcomes, measure coverage metrics, and provide actionable feedback. This structured prompting approach leads to comprehensive test coverage—currently achieving 76% code coverage—while maintaining high quality standards.
+
+## Feedback Loops and Iterative Refinement
+
+A particularly important aspect of the BSS Magic architecture is its implementation of feedback loops between agents. The QA Agent provides feedback to the Developer Agent to improve code quality, and the Tester Agent similarly provides feedback based on test execution results. This creates an iterative refinement process where code is progressively improved through multiple evaluation cycles. From an LLMOps perspective, these feedback loops represent a critical pattern for achieving production-quality outputs from LLMs. Rather than relying on a single generation pass, the system incorporates evaluation and refinement stages that allow the AI to learn from its mistakes and produce higher-quality results.
+
+The feedback loop mechanism addresses a common challenge in LLM-based code generation: ensuring that generated code not only compiles but also meets quality standards, handles edge cases appropriately, and aligns with best practices. By having specialized QA and testing agents evaluate the code and provide structured feedback, the system can identify and address issues that might not be apparent from the initial requirements alone. This multi-pass approach with specialized evaluation stages represents a mature LLMOps practice that balances automation with quality control.
+
+## Prompt Engineering and Context Management
+
+The case study provides several examples of prompt engineering, particularly for the QA and Tester agents. These prompts demonstrate several LLMOps best practices: role-based prompting (instructing the model to act as a "senior QA backend engineer" or "senior QA engineer"), structured task decomposition (breaking down complex tasks into specific subtasks), domain-specific guidance (incorporating references to serverless best practices, pytest frameworks, and AWS service mocking), and output formatting instructions (specifying the structure and content of expected outputs).
+
+The system uses RAG and few-shot prompting techniques to maintain context and generate accurate domain-specific outputs. The RAG approach likely involves retrieving relevant examples, documentation, or patterns from the telco ontology and existing codebases to provide the LLM with appropriate context for generation. Few-shot prompting provides examples of desired outputs to guide the model toward producing results in the correct format and style. These techniques are essential for ensuring that the generated code adheres to organization-specific conventions and patterns rather than producing generic code that might not fit the telecom domain.
+
+While the case study mentions these techniques, it doesn't provide extensive detail on how context is managed across multiple agent interactions or how the system ensures consistency as context windows expand through the pipeline. Context management becomes increasingly challenging in multi-agent systems where each agent needs access to different subsets of information, and maintaining coherence across the entire development lifecycle requires careful orchestration.
+
+## Performance Results and Evaluation
+
+The case study reports significant performance improvements from the BSS Magic system. The primary metric highlighted is the reduction in change request processing time from seven days to a few hours—representing approximately a 95% reduction in cycle time. This dramatic improvement demonstrates the potential of AI automation for software development tasks, though it's important to note that the case study doesn't provide detailed breakdowns of how much of the original seven-day process was active development time versus waiting time, review cycles, or other factors.
+
+The automated testing framework achieved 76% code coverage, which is a solid achievement for automated test generation. This metric provides some quantifiable validation of the system's ability to produce comprehensive test suites. However, the case study doesn't discuss other important quality metrics such as code defect rates, production incident rates, or comparisons of code quality between AI-generated and human-written code. From a balanced LLMOps perspective, it would be valuable to understand not just coverage metrics but also the effectiveness of the tests in catching real bugs and the maintenance burden of AI-generated test code.
+
+The case study emphasizes that the system consistently delivers "high-quality telecom-grade code," but provides limited objective metrics to support this claim beyond the test coverage percentage. It's worth noting that achieving production-grade code generation is a significant accomplishment, as it requires not just syntactically correct code but code that handles edge cases, includes appropriate error handling and logging, follows organizational conventions, and integrates properly with existing systems.
+
+## Collaboration with AWS Generative AI Innovation Center
+
+A noteworthy aspect of this case study is the collaboration with the AWS Generative AI Innovation Center (GenAIIC), which provided access to AI expertise, industry-leading talent, and a rigorous iterative process to optimize the AI agents and code-generation workflows. GenAIIC offered guidance on several critical areas: prompt engineering techniques, RAG implementation, model selection, automated code review processes, feedback loop design, and robust performance metrics for evaluating AI-generated outputs.
+
+This collaboration highlights an important reality in enterprise LLMOps: successfully deploying sophisticated LLM systems often requires specialized expertise that may not exist within the organization initially. The partnership approach allowed Totogi to accelerate their development while building internal capabilities. The involvement of GenAIIC likely contributed to establishing best practices for maintaining reliability while scaling automation across the platform, addressing concerns around consistency, quality control, and production readiness.
+
+## LLMOps Maturity and Production Considerations
+
+The BSS Magic system demonstrates several characteristics of mature LLMOps implementations. The use of AWS Step Functions for orchestration provides production-grade workflow management with built-in monitoring, error handling, and state persistence. The comprehensive audit trail of decisions and actions mentioned in the case study indicates proper logging and observability practices, which are essential for debugging, compliance, and continuous improvement.
+
+The multi-agent architecture with specialized agents for different tasks represents a sophisticated approach to LLM system design. Rather than attempting to use a single prompt or model for all tasks, the system decomposes the problem into manageable components with clear responsibilities. This modularity provides several benefits: each agent can be optimized independently for its specific task, failures can be isolated to particular components, and the system can be extended with new agents without redesigning the entire pipeline.
+
+However, the case study leaves several important production considerations unaddressed. There's no discussion of how the system handles failures or edge cases where the AI agents produce invalid or low-quality outputs. What happens when the QA Agent identifies critical issues that the Developer Agent cannot resolve after multiple feedback iterations? How does the system escalate to human oversight when necessary? These questions are crucial for understanding the practical reliability of the system in production environments.
+
+Similarly, there's limited discussion of monitoring and observability beyond the mention of audit trails. In production LLM systems, it's important to monitor not just whether agents complete their tasks but also the quality and consistency of outputs over time. Are there mechanisms to detect model drift, prompt degradation, or other issues that might affect output quality? How does the system track metrics like token usage, latency, and cost across the multi-agent pipeline?
+
+## Cost and Resource Considerations
+
+The case study emphasizes cost reduction benefits but doesn't provide specific cost analysis. From an LLMOps perspective, multi-agent systems with multiple LLM calls, especially those involving feedback loops and iterative refinement, can consume substantial computational resources and incur significant API costs. A change request that previously took seven days of human time might now complete in hours but could involve dozens of LLM API calls across the five different agents plus multiple feedback iterations.
+
+The trade-off between speed, quality, and cost is a critical consideration in production LLM systems. Organizations need to balance the desire for comprehensive automation against the financial reality of API costs, especially when using capable models like Claude. The case study's claim of reducing change request time from seven days to "a few hours" suggests the system provides substantial value, but without concrete cost figures, it's difficult to fully assess the economic benefits.
+
+## Domain Specificity and Generalization
+
+The case study notes that while BSS Magic is specifically designed for the telecommunications industry, the multi-agent framework "can be repurposed for general software development across other industries." This claim warrants careful consideration. The telco ontology and domain-specific prompts are clearly tailored to telecommunications requirements, which is both a strength and a limitation. The deep domain knowledge embedded in the system enables it to generate appropriate telecom-specific code, but adapting the system to other domains would require significant effort to develop equivalent ontologies and domain-specific prompts.
+
+From an LLMOps perspective, this raises interesting questions about the balance between domain-specific and general-purpose AI systems. The success of BSS Magic appears to rely heavily on the comprehensive telco ontology and carefully crafted prompts that incorporate telecommunications knowledge. This suggests that achieving production-quality results in specialized domains requires more than just applying generic LLMs—it requires substantial domain expertise embedded in the system design, prompts, and knowledge bases.
+
+## Future Directions and Limitations
+
+The case study mentions future enhancements focusing on expanding the model's domain knowledge in telecom and potentially other domains, as well as integrating an AI model to predict potential issues in change requests based on historical data. These directions suggest recognition that the current system, while valuable, still has room for improvement. The predictive capability mentioned would represent a shift from reactive automation (processing change requests as they arrive) to proactive risk management (identifying potential issues before they occur).
+
+It's important to note that the case study is published on AWS's blog and cowritten by both Totogi employees and AWS personnel, which introduces potential bias in the presentation. The piece naturally emphasizes successes and benefits while providing limited discussion of challenges, failures, or limitations encountered during development and deployment. In reality, implementing sophisticated multi-agent LLM systems involves substantial trial and error, prompt tuning, handling of edge cases, and addressing quality issues that may not be fully represented in this success-focused narrative.
+
+## Technical Debt and Maintenance Considerations
+
+An interesting aspect not deeply explored in the case study is how AI-generated code affects technical debt and maintenance burden over time. While the system aims to reduce the technical debt associated with traditional BSS customizations, AI-generated code presents its own maintenance challenges. Code generated by LLMs may follow patterns that are unfamiliar to human developers, may include verbose or redundant implementations, or may make assumptions that aren't immediately obvious from reading the code.
+
+The 76% test coverage provides some safety net for modifications, but maintaining and evolving AI-generated codebases over time remains an open question in the industry. As the generated code accumulates and evolves, will developers be able to effectively maintain and modify it? How does the system handle updates to requirements or bug fixes in production code—are these fed back through the entire multi-agent pipeline, or do humans make direct modifications?
+
+## Conclusion and Assessment
+
+The Totogi BSS Magic case study represents a sophisticated application of LLMs in production for a specific enterprise use case. The multi-agent architecture with specialized agents for different development lifecycle stages demonstrates thoughtful system design and represents a mature approach to LLMOps. The integration with AWS services provides enterprise-grade infrastructure and reliability, and the collaboration with AWS GenAIIC likely contributed to best practices in prompt engineering, evaluation, and system design.
+
+The reported results—reducing change request processing from seven days to hours and achieving 76% automated test coverage—suggest substantial practical value, though the case study would benefit from more comprehensive metrics around code quality, defect rates, and cost analysis. The emphasis on feedback loops and iterative refinement shows recognition that single-pass LLM generation is insufficient for production quality, and the multi-stage evaluation process represents good LLMOps practice.
+
+However, readers should approach the claims with appropriate skepticism given the promotional nature of the content. The case study leaves important questions unanswered about failure modes, human oversight requirements, cost structures, and long-term maintainability of AI-generated code. The success appears heavily dependent on domain-specific knowledge captured in the telco ontology and specialized prompts, which limits the immediate generalizability to other domains despite claims to the contrary.
+
+Overall, this case study provides valuable insights into how multi-agent LLM systems can be orchestrated for complex software development tasks in specialized domains, while highlighting the importance of domain knowledge, careful prompt engineering, iterative refinement through feedback loops, and robust infrastructure for production deployments.

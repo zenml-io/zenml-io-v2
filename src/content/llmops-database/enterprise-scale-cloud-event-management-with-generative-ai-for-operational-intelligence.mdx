@@ -1,0 +1,177 @@
+---
+title: "Enterprise-Scale Cloud Event Management with Generative AI for Operational Intelligence"
+slug: "enterprise-scale-cloud-event-management-with-generative-ai-for-operational-intelligence"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "69305e579c883eab2ccb95ec"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:31:37.494Z"
+  createdOn: "2025-12-03T15:59:19.263Z"
+llmopsTags:
+  - "fraud-detection"
+  - "data-analysis"
+  - "summarization"
+  - "classification"
+  - "high-stakes-application"
+  - "realtime-application"
+  - "rag"
+  - "embeddings"
+  - "prompt-engineering"
+  - "semantic-search"
+  - "agent-based"
+  - "multi-agent-systems"
+  - "cost-optimization"
+  - "latency-optimization"
+  - "chunking"
+  - "system-prompts"
+  - "mcp"
+  - "error-handling"
+  - "fallback-strategies"
+  - "kubernetes"
+  - "docker"
+  - "monitoring"
+  - "databases"
+  - "api-gateway"
+  - "microservices"
+  - "cicd"
+  - "scaling"
+  - "serverless"
+  - "devops"
+  - "orchestration"
+  - "open-source"
+  - "documentation"
+  - "security"
+  - "compliance"
+  - "guardrails"
+  - "reliability"
+  - "scalability"
+  - "fastapi"
+  - "postgresql"
+  - "redis"
+  - "cache"
+  - "elasticsearch"
+  - "langchain"
+  - "chromadb"
+  - "pinecone"
+  - "amazon-aws"
+  - "anthropic"
+company: "Fidelity Investments"
+summary: "Fidelity Investments faced the challenge of managing massive volumes of AWS health events and support case data across 2,000+ AWS accounts and 5 million resources in their multi-cloud environment. They built CENTS (Cloud Event Notification Transport Service), an event-driven data pipeline that ingests, enriches, routes, and acts on AWS health and support data at scale. Building upon this foundation, they developed and published the MAKI (Machine Augmented Key Insights) framework using Amazon Bedrock, which applies generative AI to analyze support cases and health events, identify trends, provide remediation guidance, and enable agentic workflows for vulnerability detection and automated code fixes. The solution reduced operational costs by 57%, improved stakeholder engagement through targeted notifications, and enabled proactive incident prevention by correlating patterns across their infrastructure."
+link: "https://www.youtube.com/watch?v=tWULplELhxI"
+year: 2025
+seo:
+  title: "Fidelity Investments: Enterprise-Scale Cloud Event Management with Generative AI for Operational Intelligence - ZenML LLMOps Database"
+  description: "Fidelity Investments faced the challenge of managing massive volumes of AWS health events and support case data across 2,000+ AWS accounts and 5 million resources in their multi-cloud environment. They built CENTS (Cloud Event Notification Transport Service), an event-driven data pipeline that ingests, enriches, routes, and acts on AWS health and support data at scale. Building upon this foundation, they developed and published the MAKI (Machine Augmented Key Insights) framework using Amazon Bedrock, which applies generative AI to analyze support cases and health events, identify trends, provide remediation guidance, and enable agentic workflows for vulnerability detection and automated code fixes. The solution reduced operational costs by 57%, improved stakeholder engagement through targeted notifications, and enabled proactive incident prevention by correlating patterns across their infrastructure."
+  canonical: "https://www.zenml.io/llmops-database/enterprise-scale-cloud-event-management-with-generative-ai-for-operational-intelligence"
+  ogTitle: "Fidelity Investments: Enterprise-Scale Cloud Event Management with Generative AI for Operational Intelligence - ZenML LLMOps Database"
+  ogDescription: "Fidelity Investments faced the challenge of managing massive volumes of AWS health events and support case data across 2,000+ AWS accounts and 5 million resources in their multi-cloud environment. They built CENTS (Cloud Event Notification Transport Service), an event-driven data pipeline that ingests, enriches, routes, and acts on AWS health and support data at scale. Building upon this foundation, they developed and published the MAKI (Machine Augmented Key Insights) framework using Amazon Bedrock, which applies generative AI to analyze support cases and health events, identify trends, provide remediation guidance, and enable agentic workflows for vulnerability detection and automated code fixes. The solution reduced operational costs by 57%, improved stakeholder engagement through targeted notifications, and enabled proactive incident prevention by correlating patterns across their infrastructure."
+---
+
+## Overview
+
+Fidelity Investments, a major financial services institution with roots dating back to 1946, has undergone significant cloud transformation. By 2019, they had begun accelerating their cloud journey, and as of the presentation, approximately 80% of their 8,500+ applications run in the cloud across multiple cloud providers. This massive scale includes nearly 2,000 AWS accounts and approximately 5 million resources, generating over 150,000 AWS health events in just the last two years. The case study, presented by Rahul Singler (Senior Enterprise Support Manager), Jason Casamiro (VP of Cloud Engineering at Fidelity), and Joe from AWS, demonstrates how Fidelity built a sophisticated operational intelligence platform and then layered generative AI capabilities on top to evolve from reactive monitoring to proactive, AI-augmented operations.
+
+The fundamental challenge they addressed was the growing complexity of enterprise cloud environments at scale. In financial services, every minute of downtime can mean millions of dollars in lost revenue and damaged customer trust. Research shows that organizations with comprehensive data monitoring detect incidents 3.5 times faster than those without. The key insight driving their approach was that different data domains—AWS health events (service issues and scheduled maintenance) and support cases (recurring problems and resolutions)—when combined together, build a holistic picture of operational health. Correlating a spike in support cases with a health event, or connecting a configuration change to performance degradation, enables true operational intelligence and what they call "holistic technical hygiene."
+
+## Foundation: The CENTS Platform
+
+Before applying generative AI, Fidelity built CENTS (Cloud Event Notification Transport Service), an enterprise-scale data pipeline and notification platform. The evolution of this system reflects important lessons about building production systems at scale.
+
+**Initial Architecture (2019):** Their first iteration was deliberately simple—a time-based pull mechanism using AWS Health API to extract data from accounts, aggregate events and support cases into a central hub, and process them. They sent simple email notifications. As Jason Casamiro emphasized, "when you get to scale, simplicity matters because any complex architecture at scale is brittle." This initial system was focused on rapid delivery, following Fidelity's culture of getting things into developers' hands quickly and iterating rather than experiencing analysis paralysis. However, the email-based notification system quickly became overwhelming and ineffective, with engineers drowning in notifications that ended up ignored.
+
+**Evolved Architecture (Current):** As Fidelity scaled to 2,000 accounts and millions of resources, they completely rearchitected CENTS into an event-driven system. Key enablers from AWS included the delegated administrative account feature (allowing a single account to aggregate all organizational events), EventBridge for native event-driven integration, and third-party integration capabilities. The redesigned system features several critical components:
+
+- **Event Ingestion:** A single EventBridge rule in a delegated administrative account aggregates events from all 2,000 AWS accounts. They made a conscious choice to route events through an API rather than processing directly, primarily for multi-cloud consistency (since they aggregate events from multiple cloud providers) and for resiliency architecture using Route 53 to pivot during outages.
+
+- **Event Enrichment:** Raw events are enriched with metadata, dependencies, upstream/downstream relationships, and contextual information specific to Fidelity's environment. This enrichment transforms generic cloud events into actionable intelligence for Fidelity engineers.
+
+- **Storage and Search:** Events are stored in DynamoDB (moving away from their previous relational database approach to a simpler big table model) and indexed in OpenSearch clusters in near real-time. This enables engineers to search and analyze historical events rather than constantly asking support teams "did something happen?"—teaching users to "fish" rather than answering their questions repeatedly.
+
+- **Support Case Integration:** Unlike AWS Health events which have a single EventBridge rule, support case data ingestion is more complex. Fidelity leveraged their internal "platform injection framework" to deploy cross-account roles consistently across 1,900 accounts, allowing them to aggregate support case data at scale alongside health data.
+
+- **People Data and Preferences:** A crucial innovation was building a preference management system where users can specify how they want to be notified (Teams, Slack, email, work items) based on environment type (production vs. dev), severity, and event type. This personalization dramatically improved engagement compared to mass email blasts.
+
+- **Notification Routing:** The system integrates with internal incident management, work management, and communication platforms to route notifications based on user preferences, ensuring notifications result in action rather than being ignored.
+
+The results of this foundational platform were significant: 57% cost reduction (moving from poll-based to event-driven architecture while adding capabilities like the OpenSearch cluster), improved stakeholder engagement through targeted notifications rather than mass emails, and the ability to ingest and route data at true enterprise scale. A concrete example of impact: when AWS issued RDS certificate expiration notices with a hard deadline of August 22nd, the consistent delivery of targeted notifications to the right stakeholders enabled Fidelity to avoid any customer impact from certificate renewal issues.
+
+## Generative AI Layer: The MAKI Framework
+
+Building on the CENTS foundation, Fidelity and AWS developed MAKI (Machine Augmented Key Insights), a framework published in AWS samples on GitHub that applies generative AI to operational data using Amazon Bedrock. This represents the evolution from reactive and proactive monitoring toward AI-augmented operations.
+
+**Core Architecture and Approach:**
+
+The MAKI framework takes AWS support case data and health event data and processes them through Amazon Bedrock with several important production-oriented patterns:
+
+- **Prompt Engineering with Augmentation:** For support cases, the framework augments each case with reference data (like case categories) before sending to Bedrock. This follows standard prompt engineering practices, taking data documentation into the system prompt and calling the Bedrock converse API. The results enable categorization and bucketing of thousands of support cases, identifying similar event trends—addressing one of Jason's stated goals for data-driven operations.
+
+- **Staged Processing with Model Selection:** The framework uses different models for different stages. For event-level analysis (processing individual events), they use lightweight, fast models like Amazon Nova Micro or Anthropic Claude Haiku. For aggregate-level analysis (analyzing patterns across many events), they use more sophisticated models like Anthropic Claude Sonnet or Opus. This embodies the principle of "use the right tool for the right job" and demonstrates production-oriented thinking about cost and performance optimization.
+
+- **Resilience Through Batch and On-Demand Routing:** A particularly notable production pattern is their approach to handling different workload characteristics. For streaming events (like during an active service incident), they route to Amazon Bedrock on-demand inference for immediate analysis. For large-scale retrospective analysis (like end-of-year reviews of tens of thousands of support cases), they route to Bedrock batch inference. This prevents token exhaustion and throttling issues while being more cost-effective for non-time-sensitive workloads. This demonstrates mature thinking about LLM infrastructure resilience.
+
+**Capabilities Enabled:**
+
+The MAKI framework provides several levels of operational intelligence:
+
+- **Event-Level Summarization:** Each support case conversation is summarized into a digestible format with specific suggestions and documentation links for resolving the issue. Similarly, health events are summarized with remediation guidance and relevant documentation. This captures the "golden nuggets" buried in lengthy support conversations.
+
+- **Aggregate Analysis:** By analyzing health events and support cases together in a holistic view (recognizing that health events often correlate with support cases), the system generates aggregate summaries of the operational environment and can produce actionable plans—for example, generating a plan to improve resilience based on AWS prescriptive guidance.
+
+- **Trend and Pattern Identification:** Processing thousands of events through this pipeline enables identification of similar events and trends across the organization, addressing the problem where one team might struggle with an issue another team has already solved.
+
+**Agentic Workflows with MCP:**
+
+The most advanced capabilities demonstrated involve agentic workflows using the Model Context Protocol (MCP). In this architecture, events are fed into OpenSearch with embeddings created using Amazon Bedrock Titan embedding models. Importantly, they maintain a hybrid approach: structured metadata from health events remains in structured form (queryable via traditional structured queries), while natural language fields like event descriptions are embedded for semantic search. This enables lexical search, semantic search, and hybrid search tools that are exposed to an MCP stack hosted in Quiro (using Claude).
+
+The live demonstration showed several compelling agentic use cases:
+
+- **Proactive Event Management:** Asking "do I have any AWS health events coming up" and receiving contextually relevant S3 replication and lifecycle events scheduled for January. The agent then proactively checked for related support cases (actions already in place) and queried specific S3 buckets via API calls to determine if they would be impacted by the scheduled changes.
+
+- **Security Vulnerability Management:** In a development environment context, the agent pulled recent CVEs from public records, analyzed them for relevance, identified specific vulnerabilities in the code (including command injection and networking issues), located exactly where in the codebase these vulnerabilities existed, and then automatically generated fixes. The presenter emphasized that while developers likely have CVE checks in CI/CD pipelines, they may not catch vulnerabilities that just emerged yesterday—and the agent can address these in minutes compared to the extensive manual effort required for vulnerabilities like Heartbleed or Log4j.
+
+**Production Considerations and Balanced Assessment:**
+
+While the demonstrations are impressive, several important caveats and production considerations emerge:
+
+- **Data Quality Foundation:** The presenters consistently emphasized that generative AI capabilities are only valuable with a solid data foundation. As Joe stated, "if you can't get that consistent and clean, none of these fancy tools are gonna do anything for you." The years of work building CENTS was prerequisite to effective AI application.
+
+- **Prompt Engineering and Context:** The framework relies heavily on standard prompt engineering practices—augmenting prompts with reference data, structured system prompts, and contextual awareness. These are well-established techniques, and the presenters acknowledged this is "document generation summarization RAG stuff" seen at previous conferences, though they emphasized it's still very effective.
+
+- **Maturity Progression:** The presenters were transparent about their maturity journey, showing they've achieved ingestion at scale and are now working toward the next levels of trend identification, guidance generation, and ultimately automated remediation and augmented operations.
+
+- **Not Silver Bullets:** While demonstrations showed automated code fixes, real-world deployment of such capabilities requires extensive testing, validation, and risk management—aspects not fully covered in the presentation.
+
+**Future Vision and Data Integration:**
+
+The presentation concluded with an expansive vision for enriching the operational worldview by continuously adding data domains:
+
+- **Additional Internal Data:** Observability records (correlating health events with production metrics), change management data (scanning incoming changes for CVEs), cost data (understanding cost implications of infrastructure changes)
+
+- **Multi-Cloud and Hybrid:** Integrating signals from other cloud providers and on-premises infrastructure to achieve the "holy grail" single pane of glass, with MCP potentially serving as an API aggregator
+
+- **External Public Data:** Public CVE databases (already demonstrated), news, social media, weather, financial market data—enabling scenarios like preemptively scaling infrastructure before predicted black swan events
+
+This vision is ambitious but grounded in the principle that each additional data domain enriches the worldview and enables more meaningful actions.
+
+## LLMOps Lessons and Production Insights
+
+Several important LLMOps principles emerge from this case study:
+
+**Foundation First:** The most critical lesson is that generative AI capabilities require solid data infrastructure. Fidelity spent years building CENTS before layering on AI capabilities. The data ingestion, enrichment, storage, and routing infrastructure proved essential, and shortcuts here would undermine AI effectiveness.
+
+**Progressive Maturity:** The journey from reactive monitoring (2019: polling and emails) to proactive monitoring (event-driven CENTS) to AI-augmented operations (MAKI framework) demonstrates realistic maturity progression. Each stage built on the previous, and they were transparent about still working toward full automation goals.
+
+**Right Model for Right Task:** The pattern of using fast, lightweight models for event-level processing and sophisticated models for aggregate analysis demonstrates production-oriented cost and performance optimization. Similarly, routing to batch vs. on-demand inference based on workload characteristics shows mature thinking about LLM infrastructure.
+
+**Hybrid Approaches:** Maintaining structured data in structured form while embedding natural language fields demonstrates understanding that pre-generative-AI techniques remain valuable. Not everything needs to be embedded or processed by LLMs.
+
+**Action-Oriented Design:** The entire system was designed around enabling action, not just generating reports. The preference management system, integration with work management tools, and contextual enrichment all focus on ensuring insights lead to concrete actions.
+
+**Scale Considerations:** Jason's repeated emphasis that "nobody understands a scale problem until you have a scale problem" and that "any complex architecture at scale is brittle" reflects hard-won wisdom about building production systems.
+
+**Resilience and Failure Modes:** The conscious architectural choices around API routing (for multi-cloud consistency and failover capability), batch/on-demand routing (for throttling prevention), and regional backup (AWS Health's new capability they plan to adopt) all demonstrate thinking about LLM system resilience.
+
+The case study represents a sophisticated, production-grade application of LLMs for operational intelligence at massive enterprise scale, with both the impressive capabilities and the realistic challenges and prerequisites clearly presented.

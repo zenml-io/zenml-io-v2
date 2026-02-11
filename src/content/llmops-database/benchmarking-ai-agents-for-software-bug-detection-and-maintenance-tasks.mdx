@@ -1,0 +1,114 @@
+---
+title: "Benchmarking AI Agents for Software Bug Detection and Maintenance Tasks"
+slug: "benchmarking-ai-agents-for-software-bug-detection-and-maintenance-tasks"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "68414b6b4450c2b7d481811c"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:10:42.360Z"
+  createdOn: "2025-06-05T07:46:51.795Z"
+llmopsTags:
+  - "code-generation"
+  - "poc"
+  - "prompt-engineering"
+  - "multi-agent-systems"
+  - "agent-based"
+  - "error-handling"
+  - "few-shot"
+  - "monitoring"
+  - "open-source"
+  - "documentation"
+  - "reliability"
+  - "pytorch"
+  - "fastapi"
+  - "anthropic"
+  - "openai"
+  - "meta"
+  - "google-gcp"
+company: "Bismuth"
+summary: "Bismuth, a startup focused on software agents, developed SM-100, a comprehensive benchmark to evaluate AI agents' capabilities in software maintenance tasks, particularly bug detection and fixing. The benchmark revealed significant limitations in existing popular agents, with most achieving only 7% accuracy in finding complex bugs and exhibiting high false positive rates (90%+). While agents perform well on feature development benchmarks like SWE-bench, they struggle with real-world maintenance tasks that require deep system understanding, cross-file reasoning, and holistic code evaluation. Bismuth's own agent achieved better performance (10 out of 100 bugs found vs. 7 for the next best), demonstrating that targeted improvements in model architecture, prompting strategies, and navigation techniques can enhance bug detection capabilities in production software maintenance scenarios."
+link: "https://www.youtube.com/watch?v=wAQK7O3WGEE"
+year: 2025
+seo:
+  title: "Bismuth: Benchmarking AI Agents for Software Bug Detection and Maintenance Tasks - ZenML LLMOps Database"
+  description: "Bismuth, a startup focused on software agents, developed SM-100, a comprehensive benchmark to evaluate AI agents' capabilities in software maintenance tasks, particularly bug detection and fixing. The benchmark revealed significant limitations in existing popular agents, with most achieving only 7% accuracy in finding complex bugs and exhibiting high false positive rates (90%+). While agents perform well on feature development benchmarks like SWE-bench, they struggle with real-world maintenance tasks that require deep system understanding, cross-file reasoning, and holistic code evaluation. Bismuth's own agent achieved better performance (10 out of 100 bugs found vs. 7 for the next best), demonstrating that targeted improvements in model architecture, prompting strategies, and navigation techniques can enhance bug detection capabilities in production software maintenance scenarios."
+  canonical: "https://www.zenml.io/llmops-database/benchmarking-ai-agents-for-software-bug-detection-and-maintenance-tasks"
+  ogTitle: "Bismuth: Benchmarking AI Agents for Software Bug Detection and Maintenance Tasks - ZenML LLMOps Database"
+  ogDescription: "Bismuth, a startup focused on software agents, developed SM-100, a comprehensive benchmark to evaluate AI agents' capabilities in software maintenance tasks, particularly bug detection and fixing. The benchmark revealed significant limitations in existing popular agents, with most achieving only 7% accuracy in finding complex bugs and exhibiting high false positive rates (90%+). While agents perform well on feature development benchmarks like SWE-bench, they struggle with real-world maintenance tasks that require deep system understanding, cross-file reasoning, and holistic code evaluation. Bismuth's own agent achieved better performance (10 out of 100 bugs found vs. 7 for the next best), demonstrating that targeted improvements in model architecture, prompting strategies, and navigation techniques can enhance bug detection capabilities in production software maintenance scenarios."
+---
+
+## Overview
+
+Bismuth is a startup that has been developing software agents for over a year, founded by Ian (CEO, with a background in data engineering, ML, and search from Zillow) and Nick (CTO, with experience in software security at Google). The company presented their work at an event called "Engineers World Fair," introducing SM-100, a novel benchmark designed to evaluate how well LLM-based coding agents perform at finding and fixing bugs—a critical but underexplored aspect of the software development lifecycle.
+
+The core thesis of their presentation is that while existing benchmarks (like HumanEval, Polyglot Benchmark, and LiveCodeBench) measure code generation capabilities effectively, they fail to capture the reality that feature development is only one part of what developers do. Maintenance tasks—bug fixes, dependency upgrades, migrations—represent a substantial portion of real-world engineering work, yet no comprehensive benchmarks existed to evaluate agent performance in this domain.
+
+## The SM-100 Benchmark
+
+Bismuth built SM-100 by painstakingly gathering 100 bugs from 84 public repositories. These bugs have all been remediated in the wild, representing real-world issues encountered and fixed by developers across various experience levels. The benchmark was designed with several key principles in mind.
+
+First, they focused on objective bugs only—explicit security issues or logical issues that could cause data loss or system crashes. They explicitly excluded feature requests, optimizations, style/formatting issues, and design decisions. This approach reduces ambiguity and makes the benchmark reproducible, as subjective issues like code style are still debated among human developers today.
+
+The benchmark is multi-language, covering Python, TypeScript, JavaScript, and Go. Python and TypeScript/JavaScript were chosen because they are popular languages where LLMs supposedly perform best, while Go was included as a control representing lower-level systems engineering languages where performance might differ.
+
+Each bug was annotated with rich metadata including severity, context (where defined and called), domain knowledge requirements, difficulty (how long even an expert would take to find it), and the implication category (data loss, crash, security exploit, etc.). This classification system allows researchers to understand what level of bugs AI agents can find regularly, rather than just whether they occasionally get lucky on complex issues.
+
+## Evaluation Methodology
+
+The benchmark produces four key metrics for each system evaluated:
+
+- **Needle in Haystack**: Can the system discover bugs without any prior knowledge? This measures pure bug-finding capability.
+- **False Positive Rate**: Of all the bugs reported, how many are actually valid? This is crucial for real-world usability since developers won't sift through hundreds of false positives.
+- **PR Review Detection**: Given the pull request or commit that introduces the bug, can the agent identify it with that additional context?
+- **Remediation Quality**: When the agent identifies a bug, can it produce a fix that actually works without breaking the rest of the codebase?
+
+For the needle in haystack evaluation, Bismuth developed a clever methodology to avoid biasing the results while keeping evaluation tractable. Rather than asking agents to scan entire repositories (which would take too long), they broke repositories into subsystems containing interrelated files. They then filtered to subsystems containing files modified in the bug-fixing commit, providing the agent with a reduced but complete view of a relevant code section. This approach avoids hinting at the actual bug while still scoping the search appropriately.
+
+## Key Findings on Agent Performance
+
+The results paint a sobering picture of current agent capabilities. Bismuth's own agent led the pack on needle in haystack detection, finding 10 of the 100 bugs, with the next best solution finding only 7. While these numbers highlight significant room for improvement across the industry, they also demonstrate an unsaturated benchmark that can drive future progress.
+
+On true positive rates, the variance was striking. Claude Code achieved 16%, Bismuth 25%, and Codex (presumably OpenAI's) led with 45%. However, other popular agents like Devin, Cursor Agent, and Cosign reported between 900-1,300 items with only 3-10% true positive rates—essentially flooding developers with false positives.
+
+Basic agents (simple agentic loops with shell tools, search/replace, and a report mechanism) performed quite poorly. DeepSeek R1 achieved only a 1% true positive rate, Llama Maverick 2%, while Sonnet 4 in a loop found 6 needles with a 3% true positive rate and O3 found 2 with 6%. The authors noted that a basic implementation—giving an agent shell tools and putting it in a loop—might technically "work" and even find some bugs, but with a 97% false positive rate, such agents are not practically useful.
+
+One particularly concerning finding: an agent produced 70 bug reports for a single issue. As the presenters noted, no engineer will realistically sift through 70 potential bugs to find the one that matters. This highlights that raw capability isn't enough—agents must also demonstrate precision and signal quality.
+
+## Analysis of Agent Limitations
+
+The Bismuth team identified several key patterns in why current agents struggle:
+
+**Narrow Thinking**: Even thinking models exhibit surprisingly narrow reasoning. They explore a limited number of potential avenues at a single time, missing bugs that human developers would catch immediately while confirming bugs that humans would immediately discard. This narrowness manifests even when using models specifically designed for extended reasoning.
+
+**Lack of Holistic Evaluation**: On a per-run basis, the total number of bugs found remains roughly consistent, but the specific bugs change between runs. This suggests agents aren't holistically inventorying everything in a file—they appear to have different biases causing them to look at code one way versus another in different runs.
+
+**Shallow Depth**: Even when agents do focus on something, they don't go deep enough. The combination of narrow scope and shallow depth means complex bugs requiring understanding of system architecture and cross-file relationships are frequently missed.
+
+**Gap Between Generation and Maintenance**: The most striking finding is the disconnect between performance on existing benchmarks and SM-100. Despite agents scoring 60-80% on SWE-Bench (a popular coding benchmark), they still struggle significantly with SM-100. The implication is clear: current agents can create software upfront but will struggle to manage and fix software after deployment.
+
+## Specific Examples and Technical Insights
+
+The presentation highlighted a concrete example: a state management bug where `isDirty` was never set to false, preventing form clearing after submission. Only two agents (Bismuth and Codex) found this issue. While not a critical security vulnerability, this type of bug has real user experience consequences and is exactly the kind of issue a human developer would catch immediately.
+
+The team referenced a recent case where O3 was able to find a zero-day exploit, but importantly noted it took approximately 100 runs over the same context to achieve this. While this demonstrates possibility, it's far from practical reliability for everyday use.
+
+Bismuth itself runs primarily on Anthropic models (particularly through Vertex) and was able to outperform Claude Code in multiple categories while building on the same base model. This suggests that agent architecture, system prompting, information presentation, and navigation strategy matter significantly beyond just the underlying model capabilities.
+
+## Infrastructure and Compute
+
+The presentation noted that Base10 provided credits and compute for running the benchmark across both DeepSeek R1 and Llama for Maverick, indicating the significant computational resources required for comprehensive agent evaluation.
+
+## Implications for LLMOps
+
+This case study carries several important implications for production LLM deployments:
+
+The evaluation highlighted that the most frequently used agents today have a high risk of introducing bugs—a concerning finding for organizations relying on these tools for production code. However, newer agents (including Bismuth, Claude Code, and Codex) are showing improved reasoning capabilities and tighter, more focused output.
+
+For organizations deploying LLM-based coding tools, the findings suggest that feature development assistance may be reliable enough for production use, but maintenance tasks—bug detection, code review, and remediation—require much more careful human oversight. The high false positive rates from many agents mean that treating their output as trustworthy without review would be counterproductive.
+
+The multi-language analysis is also relevant for LLMOps: organizations should expect different performance characteristics across languages. The inclusion of Go as a "control" for systems engineering languages suggests that organizations working in less common languages should be especially cautious about agent reliability.
+
+Finally, the benchmark itself represents valuable infrastructure for the LLMOps space. Having reproducible, objective metrics for maintenance-oriented tasks enables organizations to make informed decisions about which tools to deploy and provides a roadmap for improvement across the industry.

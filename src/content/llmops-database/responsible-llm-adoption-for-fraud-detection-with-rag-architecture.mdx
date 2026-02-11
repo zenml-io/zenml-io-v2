@@ -1,0 +1,127 @@
+---
+title: "Responsible LLM Adoption for Fraud Detection with RAG Architecture"
+slug: "responsible-llm-adoption-for-fraud-detection-with-rag-architecture"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "677ba0a1ab434479d24ace3c"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:53:44.802Z"
+  createdOn: "2025-01-06T09:21:37.094Z"
+llmopsTags:
+  - "fraud-detection"
+  - "high-stakes-application"
+  - "regulatory-compliance"
+  - "unstructured-data"
+  - "rag"
+  - "fine-tuning"
+  - "few-shot"
+  - "error-handling"
+  - "human-in-the-loop"
+  - "monitoring"
+  - "scaling"
+  - "security"
+  - "compliance"
+  - "guardrails"
+  - "reliability"
+  - "scalability"
+  - "openai"
+  - "microsoft-azure"
+company: "Mastercard"
+summary: "Mastercard successfully implemented LLMs in their fraud detection systems, achieving up to 300% improvement in detection rates. They approached this by focusing on responsible AI adoption, implementing RAG (Retrieval Augmented Generation) architecture to handle their large amounts of unstructured data, and carefully considering access controls and security measures. The case study demonstrates how enterprise-scale LLM deployment requires careful consideration of technical debt, infrastructure scaling, and responsible AI principles."
+link: "https://www.youtube.com/watch?v=IbJ40EwaNlM"
+year: 2024
+seo:
+  title: "Mastercard: Responsible LLM Adoption for Fraud Detection with RAG Architecture - ZenML LLMOps Database"
+  description: "Mastercard successfully implemented LLMs in their fraud detection systems, achieving up to 300% improvement in detection rates. They approached this by focusing on responsible AI adoption, implementing RAG (Retrieval Augmented Generation) architecture to handle their large amounts of unstructured data, and carefully considering access controls and security measures. The case study demonstrates how enterprise-scale LLM deployment requires careful consideration of technical debt, infrastructure scaling, and responsible AI principles."
+  canonical: "https://www.zenml.io/llmops-database/responsible-llm-adoption-for-fraud-detection-with-rag-architecture"
+  ogTitle: "Mastercard: Responsible LLM Adoption for Fraud Detection with RAG Architecture - ZenML LLMOps Database"
+  ogDescription: "Mastercard successfully implemented LLMs in their fraud detection systems, achieving up to 300% improvement in detection rates. They approached this by focusing on responsible AI adoption, implementing RAG (Retrieval Augmented Generation) architecture to handle their large amounts of unstructured data, and carefully considering access controls and security measures. The case study demonstrates how enterprise-scale LLM deployment requires careful consideration of technical debt, infrastructure scaling, and responsible AI principles."
+---
+
+## Overview
+
+This case study comes from a Mastercard presentation discussing their transition from traditional structured data AI systems to leveraging large language models (LLMs) with unstructured data in production environments. The speaker, from Mastercard's AI engineering team, provides insights into both the strategic vision and practical challenges of deploying LLMs at enterprise scale within a highly regulated financial services environment.
+
+Mastercard announced in February 2024 (referenced as a "recent press release") that they had used generative AI to boost fraud detection by up to 300% in some cases. This represents one of the concrete production outcomes from their LLM adoption journey, though the presentation is more focused on the broader challenges and architectural decisions involved in bringing LLMs to production rather than deep technical details of specific implementations.
+
+## The Shift to Unstructured Data
+
+The presentation begins by contextualizing the challenge: over the last 10-15 years, most AI value in enterprises has come from structured data using supervised learning and deep learning for classification tasks. However, the speaker notes that an estimated 80% or more of organizational data is unstructured, and approximately 71% of organizations struggle with managing and securing this data. This represents both a significant untapped opportunity and a substantial operational challenge.
+
+LLMs provide a pathway to leverage this unstructured data by using it to contextualize and customize language models. The speaker describes this as providing an "extended memory" to the language model, enabling it to formulate answers based on domain-specific data within the organization. This framing is important from an LLMOps perspective because it acknowledges that foundation models alone are insufficient—they must be coupled with enterprise data to deliver business value.
+
+## Intelligence Augmentation vs. AGI Hype
+
+The presentation takes a grounded approach to LLM capabilities, explicitly rejecting AGI hype. The speaker emphasizes that at Mastercard, generative AI is viewed as "augmenting human productivity" rather than replacing human workers. This philosophical stance has practical implications for how they architect and deploy systems.
+
+The speaker references the autoregressive nature of LLMs as a fundamental limitation, noting that when the model makes a mistake, it "really amplifies over time because the other generation of tokens is so dependent on what it already generated." This understanding of LLM limitations directly influences their approach to production systems, particularly the emphasis on RAG architectures that can ground outputs in factual, retrievable sources.
+
+The presentation also emphasizes focusing on current, tangible AI risks rather than speculative future concerns—a perspective that shapes their responsible AI governance approach and helps regulators develop more practical policies.
+
+## Essential Requirements for Production GenAI
+
+The speaker outlines four essential components for building successful generative AI applications in production:
+
+- **Access to a variety of foundation models**: Rated as not particularly challenging, though trade-offs between cost and model size must be considered.
+
+- **Environment to customize contextual LLMs**: Described as "a bit challenging" because most enterprises have AI environments, but these were not built for such large models with their unique requirements.
+
+- **Easy-to-use tools for building and deploying applications**: Identified as "the most challenging part of the whole equation" because the tooling landscape is new—none of the widely used tools existed before LLMs became mainstream.
+
+- **Scalable ML infrastructure**: Also noted as challenging, with reference to OpenAI data showing that GPU compute and RAM for inference is becoming greater than the compute used for training models.
+
+This infrastructure reality has significant LLMOps implications: organizations must plan for inference-heavy workloads that require rapid scaling (not just creating replicas, but creating them at speeds that work for end users).
+
+## The 95% Problem: Technical Debt and System Complexity
+
+A central theme of the presentation is the reference to the 2015 NeurIPS paper on hidden technical debt in ML systems, which showed that ML code represents only a small fraction (less than 5%) of what goes into building end-to-end pipelines. The speaker emphasizes this remains true—and perhaps even more pronounced—for LLM systems.
+
+This observation challenges the notion that AI engineering is "just about connecting APIs and getting the plumbing in place." Rather, it involves building the complete end-to-end pipeline, which accounts for more than 95% of the work. Mastercard has published research reinforcing this finding specifically for LLM applications, showing that the surrounding infrastructure around LLM code or foundation model adoption accounts for more than 90% of what goes into building such applications.
+
+The implication is clear: organizations that focus primarily on model selection and prompt engineering while underinvesting in data pipelines, infrastructure, monitoring, and governance will struggle to achieve production-grade deployments.
+
+## Closed Book vs. RAG Approaches
+
+The presentation compares two fundamental architectural approaches for enterprise LLM deployment:
+
+**Closed Book Approach** (using foundation models directly with zero-shot, few-shot, or fine-tuning):
+
+The speaker identifies several operationalization challenges with this approach that enterprise teams commonly encounter:
+- Hallucination: Models generate incorrect information confidently
+- Attribution: Cannot understand why models produce specific outputs
+- Staleness: Models go out of date, which is problematic given regulatory requirements (GDPR, California AI laws) where users can opt out and their data must be removed from training
+- Model editing: Difficult to update foundation models to reflect changing requirements
+- Customization: Hard to ground outputs in domain-specific data
+
+**RAG (Retrieval-Augmented Generation) Approach**:
+
+RAG couples foundation models to external memory through domain-specific data retrieval. The presentation notes this approach addresses the closed book challenges:
+- Grounding: Improves factual recall and reduces hallucination (references a paper titled "Retrieval Augmentation Reduces Hallucination in Conversation")
+- Up-to-date: Can swap vector indices in and out for data revision
+- Attribution: Access to retrieval sources enables understanding why the model generated specific outputs
+- Revision: Can handle compliance requirements around data removal
+
+However, the speaker is careful to note that production RAG is "not so easy" and raises important unresolved questions about optimizing retrievers and generators to work together. The mainstream approach treats these as two separate planes that are unaware of each other, but the original RAG paper from Facebook AI Research (FAIR) actually proposed training them in parallel. This requires access to model parameters, which is now possible through open-source models, enabling fine-tuning the generator to produce factual information based on retriever outputs rather than treating the retrieval context as an afterthought.
+
+## Access Controls and Enterprise Governance
+
+A crucial LLMOps challenge highlighted in the presentation is preserving access controls within enterprise LLM systems. The speaker emphasizes that organizations cannot simply build a "global LLM system that can really have access to all of the data behind the scene." Instead, they must maintain the same access controls that exist in source systems, creating specialized models for specific tasks with appropriate data access boundaries.
+
+This governance requirement has significant architectural implications, suggesting federated or role-based access approaches to RAG systems rather than monolithic deployments.
+
+## Responsible AI as a Core Principle
+
+Mastercard's approach to LLM adoption is explicitly framed around responsible AI principles. The speaker mentions "seven core principles of building responsible AI" covering privacy, security, and reliability. These principles are enforced through a governing body and clear strategy that influences how LLM applications are built.
+
+The key insight here is that de-risking new technologies like LLMs requires having the right safeguards in place—ensuring access controls, preventing PII exposure, and building appropriate guardrails. This governance-first approach is presented as fundamental to their ability to adopt LLMs for production services.
+
+## Practical Realism About LLM Adoption
+
+The presentation closes with a pragmatic acknowledgment: one reviewer of Mastercard's published paper questioned whether LLMs are the right tool given the "huge number of IT challenges and technical debt." The speaker's response invokes the saying "you can't make an omelet without breaking a few eggs"—recognizing that transformative technology adoption inevitably involves overcoming significant challenges.
+
+This candid assessment serves as a useful counterweight to vendor hype: LLMs offer genuine business value (evidenced by the 300% fraud detection improvement), but achieving production-grade deployments requires substantial investment in infrastructure, governance, and operational excellence beyond the models themselves.
+
+The Mastercard AI engineering team appears to be taking a measured, infrastructure-focused approach to LLM adoption, publishing their findings and emphasizing that putting AI in production requires attention to the complete system rather than just the model code.

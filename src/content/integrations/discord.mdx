@@ -1,0 +1,64 @@
+---
+title: "Discord"
+slug: "discord"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "665712efa0aeb7463bbe4651"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2024-10-22T12:54:05.951Z"
+  lastUpdated: "2024-10-14T07:40:30.362Z"
+  createdOn: "2024-05-29T11:35:11.444Z"
+integrationType: "alerter"
+logo:
+  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/65d6b0d7/66d867a04ca00e02f4e6542d_discord.png"
+shortDescription: "Seamlessly Integrate Automated Alerts and Human Interaction into Your ML Pipelines with ZenML's Discord Integration"
+docsUrl: "https://docs.zenml.io/integrations/discord"
+githubUrl: "https://github.com/zenml-io/zenml/tree/main/examples/integration_discord"
+mainImage:
+  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/a7078b6e/665712e6c81ad89f31118007_CleanShot_2024-05-29_at_13.34.05.png"
+seo:
+  title: "Integrate Discord with ZenML - Alerter Integrations"
+  description: "Seamlessly Integrate Automated Alerts and Human Interaction into Your ML Pipelines with ZenML's Discord Integration"
+  canonical: "https://www.zenml.io/integrations/discord"
+  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/a7078b6e/665712e6c81ad89f31118007_CleanShot_2024-05-29_at_13.34.05.png"
+  ogTitle: "Integrate Discord with ZenML - Alerter Integrations"
+  ogDescription: "Seamlessly Integrate Automated Alerts and Human Interaction into Your ML Pipelines with ZenML's Discord Integration"
+---
+
+<ul id=""><li id="">Effortlessly send automated alerts and notifications to Discord channels from ZenML pipelines</li><li id="">Integrate human-in-the-loop interactions by posting messages and waiting for user approval</li><li id="">Customize alert messages using dedicated formatter steps to communicate relevant pipeline artifacts</li><li id="">Enhance pipeline monitoring, failure detection, and model deployment workflows</li><li id="">Seamlessly install and configure the Discord integration using simple ZenML CLI commands</li></ul>
+
+‍<ul id=""><li id="">Real-time messaging and collaboration platform</li><li id="">Customizable bots for automated interactions</li><li id="">Secure and scalable infrastructure for reliable message delivery</li><li id="">Granular permission controls and access management</li><li id="">Rich message formatting options including embeds, attachments, and reactions</li></ul>
+
+‍You need to first setup a Discord bot in your workspace and have a channel with its ID where you want to post messages to. Once you’re ready with the details, you can register your Discord alerter stack component in ZenML, as follows.
+
+<div data-rt-embed-type="true"><pre><code fs-codehighlight-element="code" class="language-shell">zenml alerter register discord_alerter \
+ &nbsp; &nbsp;--flavor=discord \
+ &nbsp; &nbsp;--discord_token=&lt;DISCORD_TOKEN&gt; \
+ &nbsp; &nbsp;--default_discord_channel_id=&lt;DISCORD_CHANNEL_ID&gt;</code></pre></div>
+
+<div data-rt-embed-type="true"><pre><code fs-codehighlight-element="code" class="language-python">from zenml.integrations.discord.steps.discord_alerter_post_step import discord_alerter_post_step
+from zenml import step, pipeline
+
+@step
+def generate_alert_message(accuracy: float) -&gt; str:
+ &nbsp; &nbsp;return f"Model training completed with accuracy: {accuracy:.2f}"
+
+@pipeline
+def discord_alerts_pipeline(accuracy: float):
+ &nbsp; &nbsp;message = generate_alert_message(accuracy)
+ &nbsp; &nbsp;discord_alerter_post_step(message)
+
+if __name__ == "__main__":
+ &nbsp; &nbsp;# Ensure the discord integration is installed
+ &nbsp; &nbsp;# zenml integration install discord -y
+
+ &nbsp; &nbsp;# Register the discord alerter
+ &nbsp; &nbsp;# zenml alerter register discord_alerter --flavor=discord --discord_token=&lt;DISCORD_TOKEN&gt; --default_discord_channel_id=&lt;DISCORD_CHANNEL_ID&gt;
+
+ &nbsp; &nbsp;# Add the discord alerter to your stack
+ &nbsp; &nbsp;# zenml stack update -al discord_alerter
+
+ &nbsp; &nbsp;discord_alerts_pipeline(accuracy=0.87)
+</code></pre></div>The provided code example demonstrates how to send automated alerts to a Discord channel from a ZenML pipeline. The generate_alert_message step takes a model accuracy value and formats it into a message string. The discord_alerter_post_step is then used in the pipeline to post this generated message to the configured Discord channel. The example also includes commented instructions for installing the Discord integration, registering the alerter, and updating the ZenML stack.

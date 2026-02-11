@@ -1,0 +1,142 @@
+---
+title: "From SMS to AI: Lessons from 5 Years of Chatbot Development for Social Impact"
+slug: "from-sms-to-ai-lessons-from-5-years-of-chatbot-development-for-social-impact"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f3e5748f0202b77dd7f8b"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:43:30.087Z"
+  createdOn: "2024-11-21T14:06:15.682Z"
+llmopsTags:
+  - "api-gateway"
+  - "chatbot"
+  - "databases"
+  - "meta"
+  - "monitoring"
+  - "multi-agent-systems"
+  - "multi-modality"
+  - "prompt-engineering"
+  - "reliability"
+  - "scalability"
+  - "scaling"
+  - "translation"
+company: "ONE"
+summary: "ONE's journey deploying chatbots for advocacy work from 2018-2024 provides valuable insights into operating messaging systems at scale for social impact. Starting with a shift from SMS to Facebook Messenger, and later expanding to WhatsApp, ONE developed two chatbots reaching over 38,000 users across six African countries. The project demonstrated both the potential and limitations of non-AI chatbots, achieving 17,000+ user actions while identifying key challenges in user acquisition costs ($0.17-$1.77 per user), retention, and re-engagement restrictions. Their experience highlights the importance of starting small, continuous user testing, marketing investment planning, systematic re-engagement strategies, and organization-wide integration of chatbot initiatives."
+link: "https://www.ictworks.org/lessons-learned-running-chatbot-social-good/"
+year: 2024
+seo:
+  title: "ONE: From SMS to AI: Lessons from 5 Years of Chatbot Development for Social Impact - ZenML LLMOps Database"
+  description: "ONE's journey deploying chatbots for advocacy work from 2018-2024 provides valuable insights into operating messaging systems at scale for social impact. Starting with a shift from SMS to Facebook Messenger, and later expanding to WhatsApp, ONE developed two chatbots reaching over 38,000 users across six African countries. The project demonstrated both the potential and limitations of non-AI chatbots, achieving 17,000+ user actions while identifying key challenges in user acquisition costs ($0.17-$1.77 per user), retention, and re-engagement restrictions. Their experience highlights the importance of starting small, continuous user testing, marketing investment planning, systematic re-engagement strategies, and organization-wide integration of chatbot initiatives."
+  canonical: "https://www.zenml.io/llmops-database/from-sms-to-ai-lessons-from-5-years-of-chatbot-development-for-social-impact"
+  ogTitle: "ONE: From SMS to AI: Lessons from 5 Years of Chatbot Development for Social Impact - ZenML LLMOps Database"
+  ogDescription: "ONE's journey deploying chatbots for advocacy work from 2018-2024 provides valuable insights into operating messaging systems at scale for social impact. Starting with a shift from SMS to Facebook Messenger, and later expanding to WhatsApp, ONE developed two chatbots reaching over 38,000 users across six African countries. The project demonstrated both the potential and limitations of non-AI chatbots, achieving 17,000+ user actions while identifying key challenges in user acquisition costs ($0.17-$1.77 per user), retention, and re-engagement restrictions. Their experience highlights the importance of starting small, continuous user testing, marketing investment planning, systematic re-engagement strategies, and organization-wide integration of chatbot initiatives."
+---
+
+## Overview
+
+This case study documents ONE's journey building chatbot services for social good advocacy across Africa. ONE is a campaigning and advocacy organization focused on fighting extreme poverty and preventable diseases, particularly in Africa. Importantly, this case study explicitly notes that their chatbots are **not currently AI-powered** but use simple decision-tree formats with keyword recognition. However, the learnings and infrastructure described provide valuable foundational insights for organizations considering the transition from rule-based chatbots to generative AI-powered solutions in production environments.
+
+The case study represents approximately five years of iterative development (2019-2024), during which ONE developed multiple versions of chatbots serving over 38,000 unique users across Kenya, Nigeria, Ethiopia, South Africa, Senegal, and the Democratic Republic of Congo. The organization shares practical lessons that would apply equally to LLMOps implementations, particularly around user acquisition, engagement, testing, and organizational integration.
+
+## Technical Architecture
+
+ONE's chatbot infrastructure consists of several integrated components forming a production system:
+
+- **WhatsApp Business Provider**: Turn (formerly known as 'Engage') handles WhatsApp API integration, allowing the organization to send and receive messages through WhatsApp's restricted business API
+- **Chat-flow Builder**: RapidPro manages the conversation logic and decision trees
+- **CRM Platform**: ActionKit handles supporter data management and action tracking
+- **Data Visualization**: Tableau dashboards built on Google BigQuery data warehouse for analytics and performance monitoring
+- **Messaging Platforms**: Both Facebook Messenger (via a global Facebook page widget and ONE Africa website) and WhatsApp serve as user-facing channels
+
+The current implementation supports bilingual operation (English and French, with French speakers representing 28% of the audience) and enables multiple action types including learning about ONE, becoming a supporter, learning about campaigning issues, signing petitions, taking quizzes, answering FAQs, and contacting the ONE team directly. Nigerian users can additionally join local WhatsApp activist groups for real-world campaigning activities.
+
+## Development Methodology and Iteration
+
+ONE's approach to chatbot development offers lessons applicable to LLMOps deployments. They started with focused experimentation in 2019, initially targeting Nigerian youth on Messenger and WhatsApp. The organization used a cycle of user research, designing, launching, and testing prototypes built around specific campaigns and markets one at a time.
+
+The development process involved what the authors describe as a "steep learning curve" covering:
+- Design of chatbot flows and conversation architecture
+- Writing, localizing, and uploading content
+- Integration with third-party platforms
+- Building and testing flows
+- Integrating data tracking and analytics
+- Making sense of performance data
+- Marketing and user acquisition
+- Understanding costs and scalability
+
+The MVP approach allowed ONE to adapt quickly during the COVID-19 pandemic, rapidly updating the bot with content promoting trusted Nigerian COVID information and support services, as well as case-tracking data. This demonstrates the value of modular, maintainable chatbot architecture that can respond to changing requirements.
+
+## User Testing and Feedback Integration
+
+A significant portion of the case study focuses on user testing methodology, which would be equally critical for LLMOps deployments. ONE leveraged their network of youth activists in Nigeria and other markets, using WhatsApp groups to gather qualitative insights and monitoring feedback via polls and open questions within the bot itself.
+
+User testing revealed valuable insights about user experience preferences:
+- Users described the chatbot as "interactive," "funny," and "easy"
+- The conversational tone and localized language were particularly appreciated
+- Button-based navigation was seen as an efficiency rather than a hindrance
+- Users preferred multiple language options (English, Pidgin, Hausa) rather than a pidgin-English mix
+
+Pain points identified through testing included message length issues, the need for responsive small-talk handling (greetings like "hello," "thank you," "OK"), and requests for increased personalization such as name-based greetings. This feedback loop demonstrates the importance of continuous user research in any production conversational system.
+
+The case study emphasizes that while backend data analysis provides the "what," regular user feedback provides the "why," and ultimately the confidence to continue investing in the platform. This dual approach to understanding system performance would be essential for any LLMOps deployment.
+
+## User Acquisition Economics
+
+ONE's experiments with user acquisition provide concrete benchmarks that would inform LLMOps cost planning. Key findings include:
+
+- Messenger user acquisition was significantly cheaper than WhatsApp ($0.17 per new Messenger user versus $1.77 for new WhatsApp users)
+- Female users were 2.5x more expensive to acquire than male users, reflecting gendered internet usage patterns
+- Cross-app compatibility issues caused significant drop-off between link clicks and conversation starts
+- Email re-engagement campaigns achieved 8.5% click-through rates, with 3.4% of those emailed going on to sign petitions via the chatbot
+
+The case study notes that only 14% of their userbase is on WhatsApp despite the additional investment, highlighting how platform economics can shape user distribution in ways that may not align with strategic preferences.
+
+## Re-engagement Challenges and Meta Platform Constraints
+
+One of the most valuable sections for LLMOps practitioners concerns user re-engagement within Meta's messaging platform constraints. Outside a free 24-hour window triggered by user-initiated messages, organizations can only send unsolicited messages at cost that match specific use cases, or pay for sponsored messages with significant limitations.
+
+WhatsApp-specific constraints include:
+- Each message template must be approved by WhatsApp
+- Broadcast messages are throttled in tiers of 1,000 to 100,000 messages
+- Complex technical restrictions make re-engagement challenging
+
+ONE initially built a "fairly complex automated re-engagement system" but eventually scaled back significantly after learning how challenging it was to work around broadcast message rules and make sense of re-engagement data. Their current approach involves one re-engagement nudge within 24 hours of first chat (when users are most likely to re-engage) and a system for Messenger-only broadcast messages outside the 24-hour window.
+
+Current data shows 25% of nudged users take at least one additional action within the bot. The case study also highlights that re-engagement challenges extend beyond technical constraints to audience engagement strategy—they realized they had not mapped out a supporter journey beyond initial engagements, meaning they often did not know what to drive existing users toward next.
+
+## Organizational Integration Challenges
+
+The case study candidly discusses organizational challenges that parallel common LLMOps adoption issues. The chatbot work operated largely in a silo, relying on a small group of staff and external experts with technical expertise. While the team coordinated with local and global colleagues for campaign objectives, content development, user testing, and sharing learnings, making sense of performance data on a regular basis and generating motivation and accountability proved challenging.
+
+The authors recommend:
+- Integrating chatbot work across teams from the start
+- Ensuring staff across the organization are sufficiently invested
+- Identifying an internal "chatbot champion" to promote integration into day-to-day thinking
+- Demonstrating value to team members, not just users, to prevent sidelining in favor of other priorities
+
+They note that chatbot work enabled ONE to better understand its African audience (adding value to campaign and policy teams) and raised questions about supporter journeys that fed into wider organizational discussions. This demonstrates how conversational AI systems can generate insights beyond their primary function.
+
+## Future AI Considerations
+
+The case study concludes with reflections on transitioning from rule-based chatbots to generative AI-powered solutions. The authors argue their learnings remain relevant because marketing costs, retention strategies, and staff expertise challenges are "tech-agnostic hurdles."
+
+However, they acknowledge that user tolerance for non-AI-backed services may decrease as generative AI becomes mainstream on platforms like Snapchat. They envision potential AI applications including:
+- Automatically pulling relevant campaign information from websites rather than designing individual user flows
+- Building custom GPT-like tools that combine instructions, extra knowledge, and skills for richer user experiences
+
+The authors also raise important accessibility considerations for generative AI in low-and-middle-income country contexts:
+- AI-powered products drain phone batteries faster due to continuous data exchange
+- Regular communication with large databases challenges users with limited phone credit
+- Gender barriers persist in internet and phone usage access
+- Environmental sustainability concerns exist given AI's energy consumption
+
+The case study concludes that basic chatbots, SMS, and IVR still have roles to play, alongside real-world interactions—noting that one of the most popular chatbot conversations was how to join a local activist group.
+
+## Performance Metrics and Results
+
+The chatbot currently serves over 38,000 unique users with over 17,000 actions taken, with most engaged users taking multiple actions. The 25% re-engagement rate for nudged users represents a starting point for optimization. While the organization considers these results positive for reaching and engaging citizens, they acknowledge not having definitively answered questions about comparative value relative to other digital channels (Facebook, X, email) regarding user retention.
+
+The case study emphasizes the importance of demonstrating clear Return on Investment with meaningful data rather than vanity metrics, and ensuring robust reporting infrastructure focusing on small amounts of meaningful data to enable performance analysis and iterative improvement.

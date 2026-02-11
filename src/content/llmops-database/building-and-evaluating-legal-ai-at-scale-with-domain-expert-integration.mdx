@@ -1,0 +1,121 @@
+---
+title: "Building and Evaluating Legal AI at Scale with Domain Expert Integration"
+slug: "building-and-evaluating-legal-ai-at-scale-with-domain-expert-integration"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "68342c91099366f897b87b1d"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-06-02T08:54:38.721Z"
+  lastUpdated: "2025-05-26T09:05:05.180Z"
+  createdOn: "2025-05-26T08:55:45.336Z"
+llmopsTags:
+  - "document-processing"
+  - "question-answering"
+  - "summarization"
+  - "classification"
+  - "content-moderation"
+  - "high-stakes-application"
+  - "structured-output"
+  - "regulatory-compliance"
+  - "unstructured-data"
+  - "rag"
+  - "prompt-engineering"
+  - "few-shot"
+  - "semantic-search"
+  - "vector-search"
+  - "chunking"
+  - "system-prompts"
+  - "human-in-the-loop"
+  - "multi-agent-systems"
+  - "agent-based"
+  - "langchain"
+  - "monitoring"
+  - "documentation"
+  - "guardrails"
+  - "reliability"
+  - "openai"
+company: "Harvey"
+summary: "Harvey, a legal AI company, has developed a comprehensive approach to building and evaluating AI systems for legal professionals, serving nearly 400 customers including one-third of the largest 100 US law firms. The company addresses the complex challenges of legal document analysis, contract review, and legal drafting through a suite of AI products ranging from general-purpose assistants to specialized workflows for large-scale document extraction. Their solution integrates domain experts (lawyers) throughout the entire product development process, implements multi-layered evaluation systems combining human preference judgments with automated LLM-based evaluations, and has built custom benchmarks and tooling to assess quality in this nuanced domain where mistakes can have career-impacting consequences."
+link: "https://www.youtube.com/watch?v=kuXtW03cZEA"
+year: 2025
+seo:
+  title: "Harvey: Building and Evaluating Legal AI at Scale with Domain Expert Integration - ZenML LLMOps Database"
+  description: "Harvey, a legal AI company, has developed a comprehensive approach to building and evaluating AI systems for legal professionals, serving nearly 400 customers including one-third of the largest 100 US law firms. The company addresses the complex challenges of legal document analysis, contract review, and legal drafting through a suite of AI products ranging from general-purpose assistants to specialized workflows for large-scale document extraction. Their solution integrates domain experts (lawyers) throughout the entire product development process, implements multi-layered evaluation systems combining human preference judgments with automated LLM-based evaluations, and has built custom benchmarks and tooling to assess quality in this nuanced domain where mistakes can have career-impacting consequences."
+  canonical: "https://www.zenml.io/llmops-database/building-and-evaluating-legal-ai-at-scale-with-domain-expert-integration"
+  ogTitle: "Harvey: Building and Evaluating Legal AI at Scale with Domain Expert Integration - ZenML LLMOps Database"
+  ogDescription: "Harvey, a legal AI company, has developed a comprehensive approach to building and evaluating AI systems for legal professionals, serving nearly 400 customers including one-third of the largest 100 US law firms. The company addresses the complex challenges of legal document analysis, contract review, and legal drafting through a suite of AI products ranging from general-purpose assistants to specialized workflows for large-scale document extraction. Their solution integrates domain experts (lawyers) throughout the entire product development process, implements multi-layered evaluation systems combining human preference judgments with automated LLM-based evaluations, and has built custom benchmarks and tooling to assess quality in this nuanced domain where mistakes can have career-impacting consequences."
+---
+
+Harvey represents a sophisticated case study in deploying large language models for legal applications at enterprise scale. The company, led by Ben Lee Wilds who heads engineering, has built a comprehensive AI platform serving nearly 400 customers globally, including one-third of the largest 100 US law firms and eight out of the top 10 largest law firms. This represents a significant deployment of LLMs in a highly regulated, risk-sensitive industry where accuracy and reliability are paramount.
+
+**Company Overview and Product Suite**
+
+Harvey offers a multi-faceted AI platform designed specifically for legal professionals, with a vision to enable lawyers to do all their work within Harvey while making Harvey available wherever legal work is performed. The product suite spans several key areas: general-purpose assistants for document drafting and summarization, large-scale document extraction tools, and numerous domain-specific agents and workflows. The platform leverages firm-specific information including internal knowledge bases and templates to customize outputs, representing a sophisticated approach to personalization in enterprise AI deployments.
+
+The large-scale document analysis capabilities address a critical pain point in legal work, where due diligence and legal discovery tasks typically involve analyzing thousands of contracts, documents, or emails manually. Harvey's system can process hundreds or thousands of documents simultaneously, outputting results to tables or summaries, potentially saving weeks of manual work. This represents a clear example of LLMs being deployed to automate traditionally labor-intensive processes at scale.
+
+**Technical Architecture and Development Philosophy**
+
+Harvey's approach to LLMOps is distinguished by several key principles that inform their technical architecture. First, they position themselves as an applied company, emphasizing that success requires combining state-of-the-art AI with best-in-class user interfaces. This reflects a mature understanding that LLM deployment success depends not just on model capabilities but on how those capabilities are packaged and delivered to end users.
+
+The most distinctive aspect of Harvey's approach is their "lawyer in the loop" methodology, which embeds legal domain experts throughout the entire product development lifecycle. Lawyers work directly alongside engineers, designers, and product managers on all aspects of product development, from use case identification and dataset collection to evaluation rubric creation, UI iteration, and end-to-end testing. This represents a sophisticated approach to domain expertise integration that goes well beyond typical subject matter expert consultation models.
+
+The company has also adopted a "prototype over PRD" philosophy, believing that great products in complex domains emerge through frequent prototyping and iteration rather than extensive specification documents. To support this approach, Harvey has invested significantly in building their own AI prototyping stack that enables rapid iteration on prompts, algorithms, and user interfaces. This investment in internal tooling represents a common pattern among successful LLMOps implementations, where companies build specialized infrastructure to accelerate their development cycles.
+
+**Multi-Layered Evaluation Strategy**
+
+Harvey's evaluation methodology represents one of the most sophisticated approaches to LLM evaluation described in the case study. They employ a three-pronged evaluation strategy that acknowledges the complexity and nuance inherent in legal AI applications.
+
+The primary evaluation method focuses on efficiently collecting human preference judgments, recognizing that human evaluation remains their highest quality signal given the nuanced nature of legal work. They have built custom tooling to scale these evaluations, using classic side-by-side comparisons where human raters evaluate two responses to standardized queries. Raters provide both relative preferences and absolute ratings on a seven-point scale, along with qualitative feedback. The company has invested significantly in toolchain development to scale these evaluations across multiple tasks and use cases.
+
+The second evaluation layer involves building model-based auto-evaluations using LLM-as-a-judge approaches to approximate human review quality. However, Harvey acknowledges the limitations of existing academic benchmarks for legal applications. Standard benchmarks like LegalBench contain relatively simple yes/no questions that don't reflect real-world legal work complexity. In response, Harvey developed their own evaluation benchmark called "Big Law Bench," which contains complex, open-ended tasks with subjective answers that more closely mirror actual legal work.
+
+For automated evaluation of complex tasks, Harvey creates detailed rubrics that break down evaluation into multiple categories: structure (formatting requirements), style (emphasis on actionable advice), substance (accuracy of factual content), and hallucination detection. Importantly, these evaluation criteria are crafted by in-house domain experts and are distinct for each question-answer pair, representing a significant investment in evaluation infrastructure.
+
+The third evaluation approach involves decomposing complex multi-step workflows and agents into component steps that can be evaluated separately. This is exemplified in their RAG (Retrieval-Augmented Generation) implementation for question-answering over large document corpora, where they separately evaluate query rewriting, document retrieval, answer generation, and citation creation. This decomposition makes automated evaluation more tractable while providing granular insights into system performance.
+
+**Real-World Deployment Example: GPT-4.1 Integration**
+
+The case study provides a concrete example of Harvey's evaluation methodology in action through their integration of OpenAI's GPT-4.1 model. When they received early access to the model, they followed a systematic evaluation process that demonstrates their mature LLMOps practices.
+
+Initially, they ran Big Law Bench to get a rough assessment of model quality, finding that GPT-4.1 performed better than other foundation models within Harvey's AI systems. They then conducted human rater evaluations using their established side-by-side comparison methodology, which showed significant quality improvements with the new system skewing toward higher ratings on their seven-point scale.
+
+However, Harvey didn't stop at these positive results. They conducted additional testing on product-specific datasets to understand where the model worked well and where it had shortcomings. They also performed extensive internal dogfooding to collect qualitative feedback from in-house teams. This comprehensive evaluation approach helped them identify regressions, such as GPT-4.1's tendency to start responses with "Certainly!" which was inconsistent with their brand voice. They addressed these issues before rolling out to customers, demonstrating the value of thorough evaluation beyond just performance metrics.
+
+**Technical Infrastructure and Tooling**
+
+Harvey's technical infrastructure reflects a hybrid approach to LLMOps tooling. They leverage LangSmith extensively for routine evaluations, particularly those involving decomposed tasks where they can evaluate individual steps. However, they have also built custom tools for human rater-focused evaluations, recognizing that no single platform meets all their needs. This pragmatic approach to tooling selection represents a mature understanding of LLMOps infrastructure requirements.
+
+The company has made significant investments in evaluation tooling, which Ben Lee Wilds describes as paying back "10-fold" in terms of improved iteration speed, product quality, and team confidence. This investment enabled more teams to use evaluations more frequently, creating a positive feedback loop that accelerated product development.
+
+**Challenges and Domain-Specific Considerations**
+
+The legal domain presents unique challenges for LLM deployment that Harvey has had to address systematically. Legal documents are often highly complex, with extensive cross-references, multiple formats, and sophisticated layouts including handwriting, scanned notes, multi-column formats, and embedded tables. The outputs required are equally complex, involving long-form text, complex tables, and sometimes diagrams or charts.
+
+Perhaps most critically, mistakes in legal AI can be career-impacting, making verification essential. Harvey has implemented a citation feature to ground all statements in verifiable sources, allowing users to verify AI-generated summaries and analyses. The challenge extends beyond simple hallucinations to more subtle issues of misconstrued or misinterpreted statements that may be factually incorrect in context.
+
+Quality assessment in the legal domain is particularly nuanced and subjective. The case study provides an example where two factually correct answers to the same question about a specific contract clause were rated very differently by in-house lawyers, with the preferred answer containing additional nuance and definitional details that domain experts valued. This subjectivity makes automated evaluation particularly challenging and underscores the importance of human expert involvement.
+
+Data sensitivity presents another significant challenge, as legal work is highly confidential by nature. Obtaining reliable datasets, product feedback, or even bug reports can be difficult, requiring careful handling of sensitive information throughout the development and evaluation process.
+
+**Organizational Learning and Best Practices**
+
+Harvey's experience has yielded several key insights about LLMOps in complex domains. Their first major learning emphasizes the importance of "sharpening your axe" - treating evaluation as fundamentally an engineering problem where investments in tooling, processes, and documentation pay significant dividends. This engineering-focused approach to evaluation infrastructure has enabled them to scale evaluation activities across their organization.
+
+Their second insight acknowledges that while rigorous and repeatable evaluations are critical for making product progress, human judgment, qualitative feedback, and taste remain equally important. They consistently learn from qualitative feedback from raters, internal dogfooding, and customer interactions, making improvements that don't necessarily impact evaluation metrics but clearly enhance the user experience through improved speed, consistency, or usability.
+
+**Future-Looking Perspectives on Agentic Systems**
+
+Ben Lee Wilds offers a forward-looking perspective on the future of agentic AI systems in professional services, arguing that "the most important data doesn't exist yet." While acknowledging the success of scaling foundation models on publicly available data, he suggests that building domain-specific agentic workflows for real-world tasks requires a different type of data: process data that captures how work actually gets done within organizations.
+
+Using M&A transactions as an example, he describes how such complex, multi-month processes involving hundreds of subtasks typically lack written playbooks and exist primarily in institutional knowledge, hallway conversations, and handwritten notes. Extracting and applying this process data to models represents what he sees as the next breakthrough opportunity for agentic systems. This perspective highlights the importance of going beyond text-based training data to capture the procedural knowledge that underlies professional expertise.
+
+**Critical Assessment**
+
+While Harvey's approach appears sophisticated and comprehensive, the case study represents a single company's perspective and should be evaluated with appropriate skepticism. The claimed customer base and adoption rates among large law firms are impressive but would benefit from independent verification. The company's evaluation methodology, while thorough, may still struggle with the inherent subjectivity of legal quality assessment, and their custom benchmarks may not translate well to other organizations or use cases.
+
+The heavy reliance on domain expert integration throughout the development process, while valuable, also represents a significant resource investment that may not be feasible for all organizations. The custom tooling and evaluation infrastructure they've built likely requires substantial engineering resources and ongoing maintenance costs that aren't fully detailed in the presentation.
+
+Nevertheless, Harvey's approach demonstrates several best practices for LLMOps in complex, high-stakes domains: systematic evaluation methodology combining multiple approaches, significant investment in custom tooling and infrastructure, deep integration of domain expertise throughout the development lifecycle, and careful attention to the unique challenges of their specific industry vertical. Their experience provides valuable insights for other organizations looking to deploy LLMs in similarly complex and regulated domains.

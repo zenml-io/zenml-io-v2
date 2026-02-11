@@ -1,0 +1,116 @@
+---
+title: "Building a Production AI Agent System for Customer Support"
+slug: "building-a-production-ai-agent-system-for-customer-support"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "67b7082d3f6c78e10211e8e2"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:00:57.427Z"
+  createdOn: "2025-02-20T10:47:09.936Z"
+llmopsTags:
+  - "customer-support"
+  - "multi-modality"
+  - "high-stakes-application"
+  - "regulatory-compliance"
+  - "prompt-engineering"
+  - "error-handling"
+  - "human-in-the-loop"
+  - "multi-agent-systems"
+  - "agent-based"
+  - "system-prompts"
+  - "monitoring"
+  - "guardrails"
+  - "security"
+  - "compliance"
+  - "api-gateway"
+  - "openai"
+company: "Decagon"
+summary: "Decagon has developed a comprehensive AI agent system for customer support that handles multiple communication channels including chat, email, and voice. Their system includes a core AI agent brain, intelligent routing, agent assistance capabilities, and robust testing and monitoring infrastructure. The solution aims to improve traditionally painful customer support experiences by providing consistent, quick responses while maintaining brand voice and safely handling sensitive operations like refunds."
+link: "https://www.youtube.com/watch?v=t42Ohg19HZk"
+year: 2023
+seo:
+  title: "Decagon: Building a Production AI Agent System for Customer Support - ZenML LLMOps Database"
+  description: "Decagon has developed a comprehensive AI agent system for customer support that handles multiple communication channels including chat, email, and voice. Their system includes a core AI agent brain, intelligent routing, agent assistance capabilities, and robust testing and monitoring infrastructure. The solution aims to improve traditionally painful customer support experiences by providing consistent, quick responses while maintaining brand voice and safely handling sensitive operations like refunds."
+  canonical: "https://www.zenml.io/llmops-database/building-a-production-ai-agent-system-for-customer-support"
+  ogTitle: "Decagon: Building a Production AI Agent System for Customer Support - ZenML LLMOps Database"
+  ogDescription: "Decagon has developed a comprehensive AI agent system for customer support that handles multiple communication channels including chat, email, and voice. Their system includes a core AI agent brain, intelligent routing, agent assistance capabilities, and robust testing and monitoring infrastructure. The solution aims to improve traditionally painful customer support experiences by providing consistent, quick responses while maintaining brand voice and safely handling sensitive operations like refunds."
+---
+
+## Overview
+
+Decagon is a Series B startup building AI agents specifically for customer support and customer service use cases. The company was discussed in a presentation by Behon, who leads product at Decagon and previously spent four years at Scale AI working on data and foundation model tooling. This background provides an interesting perspective on the evolution from base models to applied agentic AI in enterprise settings.
+
+The core problem Decagon addresses is the historically poor customer support experience that users face—long wait times, bouncing between specialists, and agents lacking the right information to solve issues. Traditional customer support has been associated with "pain and suffering," and Decagon aims to create a more humanlike, efficient experience using AI agents.
+
+## Why Customer Support is Suited for AI Agents
+
+The presentation highlighted several reasons why customer support is an attractive domain for LLM-based agents. First, there is abundant unstructured information readily available in most organizations: internal knowledge bases, help center articles, and standard operating procedures (SOPs) that document complex workflows. LLMs have become capable enough to ingest this unstructured data and generate helpful, contextual responses.
+
+Beyond just generating responses, these agents can take actual actions and create dynamic, humanlike interactions. They ask follow-up questions, synthesize relevant information, and draw conclusions—something that was extremely difficult in the pre-generative AI era when systems relied on hard-coded decision trees. Previously, if a customer didn't perfectly match a predefined workflow path, they would "fall off the cracks" and have a poor experience.
+
+## The AI Agent Engine Architecture
+
+Decagon describes their system as an "AI Agent Engine" consisting of five interconnected components that form a data flywheel for continuous improvement.
+
+### Core AI Agent
+
+The core AI agent serves as a "brain" that handles all the logic for a particular enterprise. This brain is loaded with knowledge (articles, data, information), actions and workflows (similar to how human agents are onboarded with operating procedures), and the ability to perform specific actions like issuing refunds or looking up order status.
+
+Under the hood, the architecture is more sophisticated than a simple ReAct-style loop. The speaker mentioned that while you can have simple agents that loop and call tools, Decagon has built an "ecosystem of agents" that work together, review each other's work, and look for specific qualities. This multi-agent approach is abstracted away into a unified agent brain.
+
+The same agent brain can be applied across multiple channels: chat, email, SMS, and voice. However, product constraints differ by modality—chat users expect responses within a minute, email users don't expect immediate replies, and voice requires near-instant responses. The core workflow logic (like issuing a refund) remains the same, but presentation and timing adapt to each channel.
+
+Regarding the transferability of human SOPs to AI agents, the speaker noted that while much is transferable, there are key differences. The instructions for taking actions differ significantly between human training manuals and function/tool calling specifications. Interestingly, the speaker suggested that AI agents can actually be "more human than a human" in some ways—more adaptive than new human agents who strictly follow procedures. The AI can learn from tenured human agents' conversations and adapt accordingly.
+
+### Tool Calling and Guardrails
+
+For sensitive actions like issuing refunds or credits, Decagon works with customers to define specific guardrails on a case-by-case basis. These can be explicit criteria (user subscription status, refund history in the last seven days, good account standing) or more qualitative and fuzzy criteria (user appears very angry, has asked for refund three times, or seems likely to churn). This flexibility to incorporate both structured rules and qualitative assessment is a key differentiator.
+
+Prompt injection and jailbreak attempts are a real concern. Decagon has built guardrails to detect potential injections and manipulation. Given that they work with enterprises that have regulatory and compliance requirements, they implement enterprise-grade security around all actions. Customers also conduct penetration testing to ensure no unexpected agent behavior occurs.
+
+### Routing
+
+Routing handles cases where conversations need to be escalated to human agents. This is particularly important in sensitive industries like healthcare, financial services, and legal, where certain cases should always go to a human. It also handles scenarios where the knowledge base or workflow isn't built out for a particular interaction. Customers can dynamically define criteria for routing decisions.
+
+The handoff between AI and human agents is configurable. Some customers prefer that once a conversation goes to a human, it stays there. Others allow the AI agent to jump back in after a certain time threshold if the human agent is managing multiple conversations. This flexibility accommodates different organizational preferences and risk tolerances.
+
+### Agent Assist (Human Co-Pilot)
+
+For conversations that are routed to human agents, Decagon provides a co-pilot experience. Human agents receive tickets with conversation history and get AI-generated assistance—suggestions for responses, relevant information pulled from knowledge bases, and recommended actions. The human retains an "extra layer of review and approval" before sending messages or executing actions.
+
+This approach is particularly valuable for enterprises that are more cautious about GenAI adoption. Some partners prefer to start with agent assist (AI as co-pilot) and gradually work toward putting AI at the front lines as confidence builds.
+
+### Admin Dashboard
+
+The admin dashboard is where customers spend significant time building, configuring, testing, and monitoring their AI agents. It contains all the building blocks for configuring agents to be representative of the brand, have access to relevant knowledge, and execute appropriate workflows and actions.
+
+Brand customization is critical for enterprises since the AI agent represents their company. Decagon works closely with customers to define brand guidelines, tone, structure, and specific nuances. This includes decisions like whether responses should be concise bullet points or longer conversational prose. All of this behavior is tuned and tested before deployment.
+
+Key metrics tracked in the dashboard include deflection rate (or automation rate)—the percentage of conversations handled entirely by the AI without human escalation—and customer satisfaction scores (CSAT or NPS). Higher deflection rates are generally desirable as they allow human agents to focus on more complex, interesting work.
+
+### Testing and Evaluation
+
+Testing is presented as one of the most challenging aspects of deploying AI agents well. Decagon employs a two-phase testing approach: pre-deployment and ongoing continuous improvement.
+
+For pre-deployment testing, the Decagon team works with customers to develop test sets of conversations covering expected agent behaviors. Tests evaluate tone, formatting, whether the agent pulls correct information, provides accurate answers, finds the correct workflow, and calls the appropriate tools. The size of test sets varies significantly by customer—those in sensitive industries often come with pre-built datasets and evaluation criteria, while others start from scratch. Generally, Decagon aims for "a couple hundred conversations per workflow" to cover different paths the agent could take.
+
+For evaluation metrics, particularly qualitative aspects like tone, Decagon uses an LLM-as-judge approach (though specifics were described as "secret sauce"). An evaluation agent ingests the conversation, the information available at runtime, the generated response, and then scores it against defined evaluation criteria.
+
+The speaker emphasized that real-world data distributions differ from test sets and change over time—for example, when a company releases new products, entirely new question types emerge. This necessitates ongoing evaluation where the team continuously examines what people are asking, whether existing tests cover these scenarios, and whether new tests need to be created from unexpected interaction patterns.
+
+### QA Interface
+
+Quality management is described as essential for continuous improvement. Beyond aggregate metrics, granular feedback requires humans to review how conversations are actually progressing. Best practices include rapid QA iteration loops when rolling out to initial user batches (e.g., 5% of users) before broader rollout to catch edge cases early.
+
+QA involves defining a taxonomy for evaluation (accuracy, topic, etc.) and having team members label, categorize, or QA conversations both quantitatively (preset taxonomy) and qualitatively (open-ended comments and feedback). Because everything lives in one platform, changes to the AI agent can be implemented quickly based on aggregated QA insights.
+
+## Technical Considerations and Honest Assessment
+
+While the presentation highlights impressive capabilities, it's worth noting some nuances. Specific metrics on deflection rates, CSAT improvements, or customer results were not shared in this discussion, making it difficult to independently assess the system's effectiveness. The speaker repeatedly referred to implementation details as "secret sauce" that would require joining the company to learn, which limits technical transparency.
+
+The multi-agent architecture mentioned (agents reviewing each other's work) sounds promising but wasn't detailed—it's unclear how this differs from more conventional approaches or what specific improvements it provides. Similarly, the voice capabilities and whether they use newer real-time APIs was explicitly left unanswered.
+
+That said, the overall architecture described—with its emphasis on brand customization, flexible guardrails, human-in-the-loop options, comprehensive testing, and continuous QA—represents a mature approach to deploying LLM agents in production enterprise environments. The acknowledgment that data distributions shift over time and that testing must be ongoing reflects realistic operational experience rather than idealized marketing claims.

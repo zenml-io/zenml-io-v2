@@ -1,0 +1,205 @@
+---
+title: "AI-Powered Teacher Assistant for Core Curriculum Alignment in K-5 Education"
+slug: "ai-powered-teacher-assistant-for-core-curriculum-alignment-in-k-5-education"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "690895ee9f94e4d3936683bb"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:24:54.002Z"
+  createdOn: "2025-11-03T11:45:50.151Z"
+llmopsTags:
+  - "chatbot"
+  - "question-answering"
+  - "customer-support"
+  - "rag"
+  - "embeddings"
+  - "prompt-engineering"
+  - "semantic-search"
+  - "agent-based"
+  - "human-in-the-loop"
+  - "token-optimization"
+  - "evals"
+  - "chunking"
+  - "vector-search"
+  - "pinecone"
+  - "monitoring"
+  - "pytorch"
+  - "openai"
+company: "eSpark"
+summary: "eSpark, an adaptive learning platform for K-5 students, developed an LLM-powered teacher assistant to address a critical post-COVID challenge: school administrators were emphasizing expensive core curricula investments while relegating supplemental programs like eSpark to secondary status. The team built a RAG-based recommendation system that matches eSpark's 15 years of curated content with hundreds of different core curricula, enabling teachers to seamlessly integrate eSpark activities with their mandated lesson plans. Through continuous teacher interviews and iterative development, they evolved from a conversational chatbot interface (which teachers found overwhelming) to a streamlined dropdown-based system with AI-generated follow-up questions. The solution leverages embeddings databases, tool-calling agents, and a sophisticated eval framework using Brain Trust for testing across hundreds of curricula, ultimately helping teachers work more efficiently while keeping eSpark relevant in a changing educational landscape."
+link: "https://www.youtube.com/watch?v=Sh1C63_xmp8"
+year: 2025
+seo:
+  title: "eSpark: AI-Powered Teacher Assistant for Core Curriculum Alignment in K-5 Education - ZenML LLMOps Database"
+  description: "eSpark, an adaptive learning platform for K-5 students, developed an LLM-powered teacher assistant to address a critical post-COVID challenge: school administrators were emphasizing expensive core curricula investments while relegating supplemental programs like eSpark to secondary status. The team built a RAG-based recommendation system that matches eSpark's 15 years of curated content with hundreds of different core curricula, enabling teachers to seamlessly integrate eSpark activities with their mandated lesson plans. Through continuous teacher interviews and iterative development, they evolved from a conversational chatbot interface (which teachers found overwhelming) to a streamlined dropdown-based system with AI-generated follow-up questions. The solution leverages embeddings databases, tool-calling agents, and a sophisticated eval framework using Brain Trust for testing across hundreds of curricula, ultimately helping teachers work more efficiently while keeping eSpark relevant in a changing educational landscape."
+  canonical: "https://www.zenml.io/llmops-database/ai-powered-teacher-assistant-for-core-curriculum-alignment-in-k-5-education"
+  ogTitle: "eSpark: AI-Powered Teacher Assistant for Core Curriculum Alignment in K-5 Education - ZenML LLMOps Database"
+  ogDescription: "eSpark, an adaptive learning platform for K-5 students, developed an LLM-powered teacher assistant to address a critical post-COVID challenge: school administrators were emphasizing expensive core curricula investments while relegating supplemental programs like eSpark to secondary status. The team built a RAG-based recommendation system that matches eSpark's 15 years of curated content with hundreds of different core curricula, enabling teachers to seamlessly integrate eSpark activities with their mandated lesson plans. Through continuous teacher interviews and iterative development, they evolved from a conversational chatbot interface (which teachers found overwhelming) to a streamlined dropdown-based system with AI-generated follow-up questions. The solution leverages embeddings databases, tool-calling agents, and a sophisticated eval framework using Brain Trust for testing across hundreds of curricula, ultimately helping teachers work more efficiently while keeping eSpark relevant in a changing educational landscape."
+---
+
+## Overview
+
+eSpark is an adaptive reading and math program serving kindergarten through fifth grade students. The platform addresses a fundamental classroom challenge: students in the same grade work at vastly different levels, with some third graders reading at fifth grade level while others read at first grade level. eSpark provides individualized learning paths through diagnostic testing and offers pre-made lessons consisting of videos, games, and assessments following the "I do, we do, you do" pedagogical model.
+
+The case study focuses on eSpark's development of an AI-powered teacher assistant, which represents their fourth major LLM-based feature since November 2022. The team includes Tom Vanadu (principal product designer with over 10 years at eSpark), Mary (director of learning design and product manager with 13 years at eSpark, former teacher), and Ray Lions (VP of product and engineering with almost 12 years at eSpark, background in management consulting).
+
+## The Business Problem and Strategic Context
+
+Post-COVID, the educational technology landscape underwent significant transformation. During the pandemic, school districts massively expanded their digital supplemental learning programs, often going from a couple of programs to 50 or more. However, in the post-COVID years, there has been a reconciliation with administrators wrestling back control and pulling away from letting teachers freely choose programs. Administrators were increasingly focused on "core curriculum" - the main textbooks for reading and math - while relegating supplemental programs like eSpark to secondary importance.
+
+eSpark's strategic framework views the edtech landscape as a "chain link of three stakeholders": students who actively use the product but don't purchase it, teachers who are gatekeepers deciding whether to use eSpark but don't pay for it, and administrators who purchase the product but rarely use it directly. The team conducts continuous discovery interviews with both administrators and teachers, and through these conversations identified a critical insight: administrators had just spent millions on core curricula and wanted to ensure success, while teachers felt overwhelmed by mandates to use these curricula with minimal training and wanted to know if eSpark could help.
+
+An additional contextual factor was the shift to the "science of reading" in the past five years, meaning teachers were receiving brand new core curricula after teaching with different methods for 10-15 years, creating an acute need for better access and support for these new curricula.
+
+## Technical Journey: From Home-Rolled to Sophisticated LLMOps
+
+### Early AI Experience (Pre-Teacher Assistant)
+
+Before tackling the teacher assistant, eSpark had built three student-facing AI features over approximately two years. Their technical infrastructure was basic: they used the OpenAI playground (which at the time didn't even have prompt versioning), maintained complex Notion databases to track prompt versions and changes with multiple stakeholders, and used single-shot calls to OpenAI's completions API endpoint.
+
+The evaluation process for these student-facing features was remarkably sophisticated despite lacking dedicated tooling. Mary's team, comprised of former teachers and curriculum experts, created extensive rubrics for evaluating LLM outputs - adapting their existing pedagogical assessment expertise to AI evaluation. They would manually copy-paste outputs into Notion databases, evaluate against rubrics, use pass/fail tags, and iterate on prompts to address specific rubric failures. After approximately 20 iterations, they would move to the next grade level or content type. This was high-stakes work since any obvious AI-generated mistakes visible to teachers could damage trust.
+
+### Initial Prototyping and User Research Insights
+
+The teacher assistant project began conceptually around April 2024 with documents exploring the idea of a "super agentic teacher assistant." However, the team didn't start actual delivery until late 2024 (November/December) due to other priorities.
+
+The team created early prototypes with ambitious visions: a mobile-friendly conversational interface where teachers could chat naturally with the assistant. They even got board approval and excitement for the concept. However, when they put the conversational interface in front of actual teachers, they discovered critical usability issues. Teachers faced with an empty text box didn't know what to type. They experienced trepidation about asking questions "the right way" and struggled with the open-ended nature. The team describes teachers as "rule followers" who were uncomfortable with the ambiguity.
+
+This insight came from watching just four or five teacher interviews, but it fundamentally reshaped their approach. Teachers working on "Sunday scaries" (Sunday night lesson planning for Monday's 30 students) don't have time to chat with an AI - they need fast, efficient solutions with minimal cognitive overhead.
+
+### RAG Implementation Challenges
+
+The teacher assistant required capabilities beyond previous features: matching eSpark's tens of thousands of activities accumulated over 15 years with content from hundreds of different core curricula. The team initially questioned whether they truly needed RAG or if they could simply embed everything in the prompt context. Testing revealed that core curriculum data was too dense and messy to include directly, and including all content would be prohibitively expensive from a token cost perspective.
+
+The team had to learn several new technical concepts simultaneously:
+
+**Embeddings and Vector Databases**: They chose Pine Cone as their vector database but initially struggled with implementation. Their first approach simply took a database table replica, threw it into Pine Cone, ran embeddings on it, and hoped for the best. This produced poor results because their content metadata lacked richness. Activities had basic information like title, short 80-character human-written descriptions, URLs, grade levels, and associated standards - but nothing capturing semantic nuance.
+
+**The Long A Problem**: A telling example of their embeddings challenges involved phonics. When teachers searched for "long a" (a vowel sound), the system failed despite having numerous activities about long vowels. The embeddings representing letter combinations like "long a" just couldn't capture the semantic meaning effectively through standard approaches.
+
+**Tool Calling Architecture**: Moving from single-shot prompts to tool calling represented a new muscle for the team. They had to learn how to hand control to the prompt, allowing it to decide whether to call tools, and how to structure tool inputs/outputs with proper descriptions.
+
+**Learning Process**: The team openly describes "fumbling through" these challenges, relying on podcasts, documentation, conversations with their engineering team, and importantly, using LLMs to help understand how to implement these patterns. They deliberately tried to avoid niche approaches, sticking to mainstream best practices.
+
+### Metadata Enhancement Strategy
+
+To solve their embeddings quality issues, the team developed an offline enrichment process using LLMs. They created an asynchronous prompt flow that takes their limited keyword-based metadata and enhances it with significantly more context. The prompt uses a structured schema to extract or generate comprehensive information about each activity including:
+
+- Learning objectives
+- Detailed standards alignment  
+- Topic and subtopic classifications (e.g., topic: "phonics", subtopic: "long e")
+- Domain information (distinguishing whether concepts fall under geometry, algebraic thinking, etc.)
+- Additional keywords and semantic context
+
+This approach offloaded inferencing work from the production prompt to an asynchronous enrichment process, making the runtime semantic search more reliable and accurate. The team essentially used LLMs to create better training data for their embeddings rather than depending on real-time inferencing.
+
+### Dual RAG Architecture
+
+The final architecture uses two different retrieval approaches:
+
+**eSpark Content Retrieval**: Uses semantic search through Pine Cone embeddings database to find relevant activities. This requires the sophisticated metadata enrichment described above because teachers might query in various ways and the system needs to understand conceptual relationships.
+
+**Core Curriculum Retrieval**: Interestingly, this doesn't use semantic search at all. Since teachers select a specific lesson from a dropdown (e.g., "long division"), the system simply retrieves that lesson's chunk of text and includes it in the prompt. Each lesson fits comfortably within token windows without excessive cost. This represents a good example of not over-engineering - using the simplest approach that solves the problem.
+
+### Interface Evolution
+
+The final interface moved away from conversational chat to a structured workflow:
+
+- Teachers select their core curriculum from a dropdown
+- They select their current lesson (e.g., "long division")
+- The system immediately displays recommended eSpark activities
+- The LLM generates three contextually relevant follow-up questions (e.g., "What are some hands-on activities for long division?" or "How can I extend these activities for struggling students?")
+- Teachers can click these questions to get additional support, with each response generating new follow-up options
+
+The follow-up question generation prompt was developed iteratively. It instructs the LLM to act as a teacher at the appropriate grade level, considers the lesson content and recommendations already made, and selects from a curated list of question types that Mary's learning design team identified as generally valuable to teachers (providing scaffolds, creating mini-lessons, etc.). This approach both provides immediate value and serves as a data collection mechanism to understand which types of teacher needs receive the most traction.
+
+### Technology Stack
+
+The team uses Brain Trust as their primary LLMOps platform, which they describe as "life changing." Brain Trust provides:
+
+- **Prompt Management**: UI for writing and versioning prompts
+- **Tool Configuration**: UI for connecting tool calling without needing to deeply understand the underlying mechanics
+- **Observability**: Complete traces showing prompt execution, tool calls, Pine Cone responses, and full workflow debugging
+- **Evaluation Framework**: Data sets, expected outputs, scoring definitions, and visualization of results
+- **Collaboration Features**: Annotation, tagging team members, and commenting on specific traces
+- **Non-Engineer Accessibility**: Crucially, Brain Trust made previously engineering-dominated workflows accessible to product managers and learning designers
+
+They also use:
+
+- OpenAI APIs (completions endpoint, though specifics of model versions not detailed)
+- Pine Cone for vector database/embeddings storage
+- Intercom for customer support integration
+- Brain Trust for observability and evaluation
+
+### Evaluation Strategy
+
+The evaluation approach evolved significantly with Brain Trust adoption. For the teacher assistant specifically:
+
+**Data Set Creation**: The most time-consuming aspect is creating data sets that map core curriculum lessons to expected eSpark activity matches. Some lessons have 24 different learning objectives, each potentially matching 3-4 activities, meaning a single lesson could legitimately match 50+ activities. Creating representative data sets across curricula requires extensive manual work from domain experts.
+
+**Code-Based Scorers**: The team implements several Python-based scoring functions:
+
+- **Precision**: Of the recommended assignments, what percentage are in the expected list?
+- **Recall**: Of the expected assignments, how many are covered by the recommendations?
+- **JSON Validation**: Ensuring output format correctness
+
+These are written by Mary and Tom (non-engineers) with LLM assistance.
+
+**Human Evaluation**: Remains critical in their workflow. They conduct:
+
+- **Teacher Impression Scoring**: At a glance, would a teacher find this useful?
+- **Breadth Assessment**: Does the system cover the full range of learning objectives in the curriculum, or only focus narrowly?
+
+**Threshold Calibration**: An important learning was that their initial expectations for code-based scores (80-90% precision/recall) were unrealistic. Humans creating the "golden" data sets miss valid matches, and the inherent subjectivity means perfect scores aren't achievable or necessarily desirable. Through human evaluation, they calibrated more realistic thresholds around 60% for code-based scores while maintaining high standards for human impression scores.
+
+**Production Workflow**: Brain Trust now serves as their go/no-go gate for releasing new core curricula. They run evaluation loops before each curriculum addition, and the quantitative+qualitative results determine production readiness. This replaced their previous "squinting" and guessing approach.
+
+**LLM-as-Judge**: While not used for teacher assistant evaluation, the team circled back to their earlier Choice Text (story generation) feature and implemented LLM-based scorers for dimensions like text complexity, language appropriateness, and vocabulary level - areas where LLM judgment aligns well with human expertise.
+
+### Deployment and Monitoring
+
+The system launched in a limited way before schools let out in spring 2024 for alpha/beta testing, with full rollout beginning September 2024 when schools returned. They implement:
+
+- Classic thumbs up/thumbs down feedback in the interface, monitored closely
+- Full trace logging through Brain Trust for debugging and analysis
+- Unexpected use case monitoring (teachers asking customer support questions in the open text field, requiring quick prompt adaptations to handle these gracefully and route to Intercom)
+
+The team emphasizes the seasonal nature of their business - real usage data only becomes meaningful when schools are in full session.
+
+## Results and Future Direction
+
+While quantitative results aren't extensively detailed (the feature only recently launched to meaningful scale), the team reports:
+
+- Thousands of teachers now use the assistant daily
+- High engagement with recommended activities
+- Successful alignment with core curricula that previously felt disconnected from eSpark
+- Thumbs up/down feedback being monitored closely
+
+The team learned that their customer support team correctly predicted an unintended use case: teachers asking basic "how do I print this?" questions in the open text field rather than instructional queries. This required quick adaptation to provide basic knowledge and routing to support channels.
+
+### Future Roadmap
+
+The highest priority enhancement is integrating student performance data to make recommendations contextually aware. Rather than just matching curriculum to content, the system would understand how students are actually performing and adjust recommendations accordingly - mimicking what teachers do naturally. This presents interesting data architecture challenges around feeding prompts appropriate amounts of student data without overwhelming the system.
+
+## Broader LLMOps Insights and Tradeoffs
+
+**Small Team Advantage**: Ray notes that LLM tooling has eliminated team size as a disadvantage. Small teams can move quickly, build substantial features, and experiment at low cost compared to pre-LLM eras that required much more infrastructure.
+
+**Domain Expertise Critical**: Having former teachers and curriculum experts (Mary's team) directly involved in prompt engineering, evaluation rubric creation, and product decisions proved essential. Their pedagogical expertise translated directly to effective LLM instruction and evaluation.
+
+**User Research Over Assumptions**: Despite 10+ years serving teachers, the team's assumptions about how teachers would interact with AI interfaces proved wrong. Continuous teacher interviews (weekly cadence mentioned) and watching actual usage provided critical redirection.
+
+**Simplicity Over Sophistication**: The final interface is far simpler than initial visions of mobile-first, highly agentic assistants. The dropdown-based approach with structured options better serves the actual user need: fast, low-cognitive-overhead lesson planning.
+
+**RAG Isn't Always Semantic Search**: The dual approach (semantic search for content, simple retrieval for curriculum) demonstrates thoughtful architecture decisions rather than applying trendy techniques uniformly.
+
+**Evaluation as Product Development**: The team doesn't view evaluation as purely technical validation but as product insight generation. The follow-up questions serve dual purposes: immediate value and data collection for future feature prioritization.
+
+**Realistic Quality Expectations**: Calibrating evaluation thresholds based on human judgment rather than aspirational targets represents mature thinking about AI product quality and the inherent variability in subjective assessments.
+
+**Cost Consciousness**: Token economics influenced architectural decisions, driving the RAG approach over simply including all context in prompts.
+
+This case study exemplifies iterative, user-centered LLMOps practices with a small team leveraging modern tooling to solve complex real-world educational challenges while maintaining quality standards appropriate for their high-stakes context of K-5 education.

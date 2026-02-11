@@ -1,0 +1,132 @@
+---
+title: "Real-time Data Streaming Architecture for AI Customer Support"
+slug: "real-time-data-streaming-architecture-for-ai-customer-support"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f3aa06e32ff78d39b9076"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:38:53.529Z"
+  createdOn: "2024-11-21T13:50:24.451Z"
+llmopsTags:
+  - "cache"
+  - "customer-support"
+  - "databases"
+  - "elasticsearch"
+  - "embeddings"
+  - "error-handling"
+  - "latency-optimization"
+  - "microservices"
+  - "multi-agent-systems"
+  - "multi-modality"
+  - "openai"
+  - "rag"
+  - "realtime-application"
+  - "reliability"
+  - "scalability"
+  - "scaling"
+  - "semantic-search"
+  - "system-prompts"
+  - "vector-search"
+company: "Clari"
+summary: "A fictional airline case study demonstrates how shifting from batch processing to real-time data streaming transformed their AI customer support system. By implementing a shift-left data architecture using Kafka and Flink, they eliminated data silos and delayed processing, enabling their AI agents to access up-to-date customer information across all channels. This resulted in improved customer satisfaction, reduced latency, and decreased operational costs while enabling their AI system to provide more accurate and contextual responses."
+link: "https://www.youtube.com/watch?v=6JYdSbODQE8"
+year: 2023
+seo:
+  title: "Clari: Real-time Data Streaming Architecture for AI Customer Support - ZenML LLMOps Database"
+  description: "A fictional airline case study demonstrates how shifting from batch processing to real-time data streaming transformed their AI customer support system. By implementing a shift-left data architecture using Kafka and Flink, they eliminated data silos and delayed processing, enabling their AI agents to access up-to-date customer information across all channels. This resulted in improved customer satisfaction, reduced latency, and decreased operational costs while enabling their AI system to provide more accurate and contextual responses."
+  canonical: "https://www.zenml.io/llmops-database/real-time-data-streaming-architecture-for-ai-customer-support"
+  ogTitle: "Clari: Real-time Data Streaming Architecture for AI Customer Support - ZenML LLMOps Database"
+  ogDescription: "A fictional airline case study demonstrates how shifting from batch processing to real-time data streaming transformed their AI customer support system. By implementing a shift-left data architecture using Kafka and Flink, they eliminated data silos and delayed processing, enabling their AI agents to access up-to-date customer information across all channels. This resulted in improved customer satisfaction, reduced latency, and decreased operational costs while enabling their AI system to provide more accurate and contextual responses."
+---
+
+## Overview
+
+This case study, presented by Emily Neol (presumably associated with Clari), uses a fictional airline company called "Bited Airlines" to illustrate the importance of real-time data streaming architecture for production AI customer support systems. The presentation is pedagogical in nature, designed to demonstrate how data architecture decisions directly impact the quality and reliability of LLM-based customer service agents. While the company is fictional, the challenges and solutions presented reflect real-world LLMOps concerns that many organizations face when deploying AI agents in production environments.
+
+The core thesis is that AI customer support agents fail primarily due to two reasons: lack of information and stale information, both of which lead to poor responses and hallucinations. The proposed solution involves implementing what the presenter calls "shift left data architecture" to address these fundamental data availability issues.
+
+## The Problem: Traditional Batch ETL and Its Impact on AI Agents
+
+The fictional Bited Airlines faced several critical challenges that are common in enterprise AI deployments:
+
+**Data Delays and Staleness**: The company relied on traditional batch-processed ETL (Extract, Transform, Load) systems that introduced significant delays—sometimes as much as a day—before data became available to AI systems. This meant that when a customer contacted support, the AI agent might not have access to recent interactions, bookings, or changes the customer had made.
+
+**Data Silos and Fragmentation**: Customer data was scattered across multiple disconnected systems. The presenter notes that even human customer support agents had to bridge five or more different systems to compose a complete customer context. This fragmentation was even more problematic for AI agents, which often couldn't access or integrate data from all these sources effectively.
+
+**Complex and Costly ETL Processes**: The existing architecture included both traditional ETL and reverse ETL processes, making it difficult to determine where data would land and when. This complexity added operational overhead and made the system brittle and hard to maintain.
+
+**Poor AI Agent Performance**: When Bited Airlines first implemented their AI customer support agent, the project underperformed expectations. The AI agent said things that didn't make sense to customers, appeared to lack knowledge about recent interactions (like flights the customer had just rebooked), and couldn't provide coherent responses across multiple touchpoints. This resulted in customer frustration and undermined trust in the AI system.
+
+## The Solution: Shift Left Data Architecture
+
+The proposed solution centers on implementing real-time data streaming using technologies like Apache Kafka and Apache Flink. The term "shift left" refers to moving data processing and transformation earlier in the pipeline—closer to the source—rather than relying on downstream batch processing.
+
+### Technical Architecture Components
+
+**Real-Time Streaming with Kafka**: Instead of periodically extracting data in batches, the new architecture uses Kafka to stream data continuously from all customer interaction channels. This includes traditional support channels, web interactions, mobile app events, and even social media (the presenter specifically mentions being able to capture "that angry tweet the customer just sent").
+
+**Stream Processing with Flink**: Apache Flink is used to transform the streaming data in real-time. This transformation step is crucial because raw data often needs to be cleaned, normalized, and prepared before it can be useful for AI systems.
+
+**Embedding Generation**: The transformed data is then embedded—converted into vector representations suitable for semantic search and retrieval. This embedding step happens as part of the streaming pipeline, ensuring that new information becomes searchable almost immediately.
+
+**Vector Store Integration**: The embedded data lands directly in a vector store, which serves as the primary knowledge base for the AI agents. This is a key architectural decision that enables RAG (Retrieval-Augmented Generation) patterns where the AI agent can retrieve relevant context at query time.
+
+**Unified Customer Context**: With all data flowing through a single streaming pipeline into a unified vector store, the AI agent has access to a complete, current view of the customer. This eliminates the need for the agent to stitch together information from multiple systems.
+
+## LLMOps Implications and Best Practices
+
+### Addressing Hallucination
+
+The presenter explicitly identifies hallucination as one of the two primary failure modes of AI systems (the other being lack of information). By ensuring that AI agents have access to fresh, accurate data, the shift left architecture directly reduces the likelihood of hallucinations. When an AI agent has the correct information available, it is less likely to confabulate or provide outdated responses.
+
+This represents an important LLMOps insight: model quality improvements alone cannot solve data quality problems. Even the most advanced LLM will provide poor responses if it doesn't have access to accurate, timely information. This case study emphasizes that data architecture is just as important as model selection in production AI systems.
+
+### First Contact Resolution
+
+One of the key metrics mentioned is first contact resolution—the ability to solve a customer's problem in a single interaction. The batch processing approach forced customers to repeat information across multiple contacts because the AI agent didn't have context from recent interactions. With real-time streaming, the AI agent can resolve issues on first contact, improving both customer satisfaction and operational efficiency.
+
+### Operational Cost Considerations
+
+The presentation notes that with proper data architecture, the AI customer support agent can provide "a seamless unified customer experience that is similar to that of the humans but at a lower operational cost." This is a common justification for AI customer support systems, though it's worth noting that the fictional nature of this case study means we don't have concrete metrics on actual cost savings.
+
+### Analytics and Reporting Considerations
+
+During the Q&A portion, an interesting discussion emerges about the downstream implications for analytics. The presenter notes that shift left architecture also benefits analytics use cases, particularly when AI agents are expected to answer reporting-type questions. If the underlying data is stale (from batch processing), the AI agent might provide answers that differ from what users would see in the actual reporting UI, creating confusion and distrust. Real-time data ensures consistency across all access points.
+
+## Future Directions
+
+The case study outlines several areas of future development for the fictional "Enlightened Airlines" (the rebranded company):
+
+**Larger Context Windows**: As LLMs evolve to support larger context windows, the real-time architecture will enable handling more complex queries with richer context.
+
+**Multimodal Models**: The company plans to expand beyond text to support customers sending images or other forms of communication. This represents a common trajectory for customer support AI systems.
+
+**Multi-Agent Systems**: Perhaps most significantly, the presenter mentions expanding into multi-agent systems that would allow customers to take actions (transactions) in the system simply by chatting with the AI support bot. This is an important evolution from purely informational AI agents to agentic systems that can execute tasks on behalf of users.
+
+## Critical Assessment
+
+It's important to note that this is a fictional case study designed to illustrate architectural principles rather than document actual results. The presenter is advocating for a particular approach (shift left architecture), and the case study is structured to support that advocacy. Real-world implementations would likely face additional challenges not covered here, including:
+
+- Data governance and privacy concerns with streaming all customer data to a central vector store
+- Complexity of maintaining real-time streaming infrastructure at scale
+- Cost considerations for running Kafka and Flink clusters
+- Handling of data quality issues in real-time (garbage in, garbage out still applies)
+- Integration challenges with legacy systems that may not support event streaming
+
+That said, the core insight—that AI agent quality depends heavily on data freshness and completeness—is well-founded and reflects genuine LLMOps best practices. The emphasis on reducing data latency for production AI systems is a valuable contribution to the discourse around deploying LLMs effectively.
+
+## Key Takeaways for LLMOps Practitioners
+
+The case study reinforces several important principles for anyone deploying LLMs in production customer support scenarios:
+
+- Data architecture decisions directly impact AI agent quality and reliability
+- Real-time data access is crucial for customer support use cases where context changes rapidly
+- Vector stores combined with streaming pipelines enable RAG patterns at low latency
+- Hallucination can often be addressed by ensuring the model has access to accurate, timely information
+- Unified data views eliminate the need for AI agents to orchestrate across multiple systems
+- The same architecture that benefits AI agents can also improve human agent efficiency and analytics quality
+
+The presenter recommends checking out "The Shift Left Data Architecture" article by Kai Warner for those wanting to explore these concepts further.

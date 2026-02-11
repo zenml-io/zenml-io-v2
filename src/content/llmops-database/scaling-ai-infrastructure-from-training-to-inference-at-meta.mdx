@@ -1,0 +1,157 @@
+---
+title: "Scaling AI Infrastructure: From Training to Inference at Meta"
+slug: "scaling-ai-infrastructure-from-training-to-inference-at-meta"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "6827273d76573b4c2991be41"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:08:52.884Z"
+  createdOn: "2025-05-16T11:53:33.576Z"
+llmopsTags:
+  - "high-stakes-application"
+  - "realtime-application"
+  - "code-interpretation"
+  - "structured-output"
+  - "rag"
+  - "model-optimization"
+  - "latency-optimization"
+  - "cost-optimization"
+  - "semantic-search"
+  - "vector-search"
+  - "error-handling"
+  - "fallback-strategies"
+  - "kubernetes"
+  - "monitoring"
+  - "databases"
+  - "load-balancing"
+  - "scaling"
+  - "reliability"
+  - "scalability"
+  - "postgresql"
+  - "redis"
+  - "elasticsearch"
+  - "vllm"
+  - "meta"
+  - "microsoft-azure"
+  - "google-gcp"
+  - "amazon-aws"
+  - "openai"
+company: "Meta"
+summary: "Meta shares their journey in scaling AI infrastructure to support massive LLM training and inference operations. The company faced challenges in scaling from 256 GPUs to over 100,000 GPUs in just two years, with plans to reach over a million GPUs by year-end. They developed solutions for distributed training, efficient inference, and infrastructure optimization, including new approaches to data center design, power management, and GPU resource utilization. Key innovations include the development of a virtual machine service for secure code execution, improvements in distributed inference, and novel approaches to reducing model hallucinations through RAG."
+link: "https://www.youtube.com/watch?v=Zi2TA3guXrY"
+year: 2024
+seo:
+  title: "Meta: Scaling AI Infrastructure: From Training to Inference at Meta - ZenML LLMOps Database"
+  description: "Meta shares their journey in scaling AI infrastructure to support massive LLM training and inference operations. The company faced challenges in scaling from 256 GPUs to over 100,000 GPUs in just two years, with plans to reach over a million GPUs by year-end. They developed solutions for distributed training, efficient inference, and infrastructure optimization, including new approaches to data center design, power management, and GPU resource utilization. Key innovations include the development of a virtual machine service for secure code execution, improvements in distributed inference, and novel approaches to reducing model hallucinations through RAG."
+  canonical: "https://www.zenml.io/llmops-database/scaling-ai-infrastructure-from-training-to-inference-at-meta"
+  ogTitle: "Meta: Scaling AI Infrastructure: From Training to Inference at Meta - ZenML LLMOps Database"
+  ogDescription: "Meta shares their journey in scaling AI infrastructure to support massive LLM training and inference operations. The company faced challenges in scaling from 256 GPUs to over 100,000 GPUs in just two years, with plans to reach over a million GPUs by year-end. They developed solutions for distributed training, efficient inference, and infrastructure optimization, including new approaches to data center design, power management, and GPU resource utilization. Key innovations include the development of a virtual machine service for secure code execution, improvements in distributed inference, and novel approaches to reducing model hallucinations through RAG."
+---
+
+## Overview
+
+This case study comes from Meta's "At Scale" conference, featuring presentations by Serupa (focused on the AI software stack) and Peter H (focused on infrastructure). The talks provide a comprehensive view of how Meta is approaching LLMOps at massive scale, covering everything from model training and post-training to distributed inference and the underlying physical infrastructure required to support production AI workloads.
+
+The speakers emphasize three core principles guiding their infrastructure decisions: optionality (designing for flexibility when the future product landscape is uncertain), time to market (recognizing the competitive race to harness AI potential), and innovation (acknowledging that existing stacks don't work well for generative AI). These principles permeate all their technical decisions.
+
+## Evolution of Model Training and Serving
+
+A significant shift has occurred in the past year at Meta. While the previous year's focus was primarily on scaling single training jobs across large GPU clusters, several important developments have changed the landscape:
+
+**Model distillation** has become essential as models grew larger and more expensive to serve. Meta, along with other major players like OpenAI and Google, has been creating distilled versions of their models that preserve quality while being smaller and less expensive to serve. This is a practical production concern - serving costs can quickly become prohibitive without these optimizations.
+
+**Sparse mixture of experts (MoE)** architectures have replaced dense models across much of the industry. As discussed at Llamicon the week prior to this talk, these LLMs only need to activate a portion of the model's parameters to answer a particular query, specifically the parameters relevant to that expert. This provides significant flexibility at serving time and helps reduce inference costs.
+
+**Reasoning models** with chain-of-thought capabilities and agentic reasoning represent perhaps the most exciting development. These models leverage reinforcement learning in ways that create fundamentally different systems challenges compared to pre-training.
+
+## Reinforcement Learning for Post-Training
+
+The reinforcement learning (RL) post-training step presents unique systems challenges that differ substantially from pre-training. While pre-training scale is largely bound by the number of high-quality tokens available, RL is described as a "mostly unbounded search optimization problem where the algorithm tries iteratively to find a near optimal solution without falling into overfitting."
+
+The architecture consists of two major components: a generator (left side) and a trainer (right side). The process involves taking a pre-trained model, giving the LLM a large number of tasks to perform, evaluating the quality and accuracy of responses, having a rewards model provide feedback, updating model weights, and repeating this loop many times.
+
+Three key challenges emerge from this architecture:
+
+**Scaling the RL step** remains mathematically uncertain. The industry is still determining what percentage of GPU flops should be devoted to pre-training versus post-training, making optionality in infrastructure design crucial.
+
+**Efficiency** is complicated by the generator and trainer steps being quite different from each other. Finding ways to batch and asynchronously update model weights would unlock significant efficiency gains, but this cannot come at the cost of model accuracy. Creating separation between generator and trainer components could help.
+
+**Latency and reliability** are challenged by the diverse nature of prompts given to the LLM during RL. Some tasks are simple (adding numbers), while others involve complex agentic operations like launching browsers, completing transactions, or performing code editing. Providing consistent latency and reliability guarantees across such diverse workloads is non-trivial.
+
+The performance of the RL step is largely bounded by generator response time, which is mostly bounded by inference computation time. This has driven significant excitement around inference system optimizations, some inspired by DeepSeek's work earlier in 2025.
+
+## VM Vending Machine for Agentic Use Cases
+
+A concrete example of systems infrastructure built for agentic AI is the "VM vending machine" (VM VM) - a service that rapidly provisions virtual machines for secure code execution instances. This was built in a matter of months and launched into production in early 2025.
+
+The system demonstrates impressive scale:
+- Currently capable of running 250,000 concurrent code execution instances
+- Over 40 billion code execution instances have been executed since January 2025 launch
+
+This represents the kind of rapid infrastructure development required for production agentic AI systems, where secure code execution is a fundamental requirement. The speaker explicitly notes pride in "moving fast in the bottom of the stack" as essential for winning in the era of GenAI.
+
+## Distributed Inference Challenges
+
+As models have grown larger, a critical constraint has emerged: they no longer fit in the GPU memory of a single host. This has necessitated partitioning models across multiple pieces on different hosts, creating several new challenges:
+
+**Routing complexity** - To respond to a query, the system must discover which model partition to route to and successfully route there.
+
+**Placement constraints** - Different inference tasks need to communicate with each other and be connected via GPU-to-GPU backend networks. This was not a requirement for inference a year ago.
+
+**Blurring of inference and training workloads** - The requirements for distributed inference are beginning to resemble those of training, requiring high-speed backend networks historically associated only with training. This allows treating multiple machines as a single unit, addresses latency requirements, and enables elastic capacity movement between training and inference based on user load throughout the day.
+
+## Reducing Hallucinations with RAG
+
+Hallucinations remain one of the biggest problems in current-generation LLMs. Meta is employing Retrieval Augmented Generation (RAG) as a standard technique, though it's acknowledged this isn't a complete solution.
+
+The approach involves:
+- Representing queries as vectors
+- Looking up additional information from external sources
+- Having the LLM compose responses using both its internal knowledge and external context
+
+For the database infrastructure, this relies on vector databases capable of both filter-based lexical searches and similarity searches (k-nearest neighbors). Meta mentions "Graphra" and other techniques being used to provide personalized context to LLMs in a "secure and privacy safe way" for more accurate responses. This work is described as early-stage, with more details expected as the team makes progress.
+
+## Programming Model Innovation: From SPMD to Single Controller
+
+The current programming model for AI comes from classic supercomputing: Single Program Multiple Data (SPMD). For pre-training, the same program runs across hundreds of thousands of GPUs with different input data portions. This model has an "all or nothing" fault tolerance approach - when one GPU host fails during pre-training, the entire operation stops and must restore from checkpoints.
+
+As clusters grow larger, failure becomes the norm rather than the exception, and checkpoint restoration becomes prohibitively expensive in terms of GPU cycles. Meta is exploring a "single controller" approach that centralizes control while operating on tensors distributed across many devices, potentially across different geographic locations.
+
+Benefits of this approach include:
+- More natural expression of complex parallelism forms (e.g., pipeline parallelism using device meshes for pipeline stages)
+- Improved fault tolerance through devices maintaining command history records, allowing new hosts to resume by replaying commands
+- Better handling of heterogeneous infrastructure across multiple data centers
+
+This is acknowledged as a significant programming model shift still in early development stages.
+
+## Infrastructure Scale and Power Challenges
+
+The infrastructure section reveals the magnitude of scale Meta is operating at:
+
+- Training clusters have grown from 256 GPUs (state-of-art 2-3 years ago) to 24,000 GPU clusters for Llama 3, to over 100,000 GPUs in a single cluster for Llama 4 (announced October 2024)
+- Plans for over one million GPUs online by end of 2025
+- This represents a 38,000% increase in GPU count in just over two years
+
+**Data center scale** has evolved from 150 MW regions (equivalent to 100,000-150,000 homes) to a new 2 GW facility in Richland Parish, Louisiana, approximately the size of Manhattan. For context, the Hoover Dam's average output is about 1 GW, meaning this single facility needs 1-2 Hoover Dams worth of power.
+
+**Power sustainability** has driven an RFP for 1-4 GW of new nuclear power generation in the United States.
+
+**Power oscillation challenges** emerged at around 30,000 GPUs - the power difference between job start and stop can be 10-15 MW (equivalent to 10,000-15,000 homes switching on/off instantaneously). This creates challenges for grid operators who design for linear ramp-ups and ramp-downs. Solutions include faster restarts, faster checkpointing, and the single controller model to smooth out power curves.
+
+## Multi-Region and Cloud Deployment
+
+As GPU fleets approach one million, they cannot all reside in a single building. This creates challenges with latency (speed of light constraints over fiber), varying reliability and bandwidth constraints across data centers, and the need to abstract these differences from end users.
+
+For the first time in Meta's history, they have deployed production workloads on public cloud, leveraging cloud providers' physical infrastructure while overlaying their own core systems, operating systems, and management layers like Twine.
+
+## Key Takeaways
+
+The speakers conclude with three important points:
+- Nothing matters if products don't work - Meta serves 3.4 billion people daily (almost half the world's population)
+- More problems than solutions were shared - the future is still being written
+- This is the start of a generational shift in systems and reliability, with potentially 20 years of innovation ahead
+
+The case study represents a candid look at the operational realities of running LLMs at hyperscale, acknowledging both achievements and ongoing challenges. It demonstrates that LLMOps at this scale requires coordinated innovation across the entire stack, from programming models and software architecture to physical infrastructure and even power grid relationships.

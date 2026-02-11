@@ -1,0 +1,170 @@
+---
+title: "Agentic AI System for Construction Industry Tender Management and Quote Generation"
+slug: "agentic-ai-system-for-construction-industry-tender-management-and-quote-generation"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "6968e1c3bc99beb0bcb5957e"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2026-02-03T15:19:04.226Z"
+  lastUpdated: "2026-01-15T12:55:49.262Z"
+  createdOn: "2026-01-15T12:46:59.989Z"
+llmopsTags:
+  - "document-processing"
+  - "classification"
+  - "structured-output"
+  - "high-stakes-application"
+  - "poc"
+  - "multi-agent-systems"
+  - "agent-based"
+  - "human-in-the-loop"
+  - "prompt-engineering"
+  - "semantic-search"
+  - "chunking"
+  - "evals"
+  - "error-handling"
+  - "rag"
+  - "monitoring"
+  - "orchestration"
+  - "open-source"
+  - "documentation"
+  - "openai"
+  - "anthropic"
+company: "Tendos AI"
+summary: "Tendos AI built an agentic AI platform to automate the tendering and quoting process for manufacturers in the construction industry. The system addresses the massive inefficiency in back-office workflows where manufacturers receive customer requests via email with attachments, manually extract information, match products, and generate quotes. Their multi-agent LLM system automatically categorizes incoming requests, extracts entities from documents up to thousands of pages, matches products from complex catalogs using semantic understanding, and generates detailed quotes for human review. Starting with a narrow focus on radiators with a single design partner, they iteratively expanded to support full workflows across multiple product categories, employing sophisticated agentic architectures with planning patterns, review agents, and extensive evaluation frameworks at each pipeline step."
+link: "https://www.youtube.com/watch?v=DBkRCTMNkN8"
+year: 2026
+seo:
+  title: "Tendos AI: Agentic AI System for Construction Industry Tender Management and Quote Generation - ZenML LLMOps Database"
+  description: "Tendos AI built an agentic AI platform to automate the tendering and quoting process for manufacturers in the construction industry. The system addresses the massive inefficiency in back-office workflows where manufacturers receive customer requests via email with attachments, manually extract information, match products, and generate quotes. Their multi-agent LLM system automatically categorizes incoming requests, extracts entities from documents up to thousands of pages, matches products from complex catalogs using semantic understanding, and generates detailed quotes for human review. Starting with a narrow focus on radiators with a single design partner, they iteratively expanded to support full workflows across multiple product categories, employing sophisticated agentic architectures with planning patterns, review agents, and extensive evaluation frameworks at each pipeline step."
+  canonical: "https://www.zenml.io/llmops-database/agentic-ai-system-for-construction-industry-tender-management-and-quote-generation"
+  ogTitle: "Tendos AI: Agentic AI System for Construction Industry Tender Management and Quote Generation - ZenML LLMOps Database"
+  ogDescription: "Tendos AI built an agentic AI platform to automate the tendering and quoting process for manufacturers in the construction industry. The system addresses the massive inefficiency in back-office workflows where manufacturers receive customer requests via email with attachments, manually extract information, match products, and generate quotes. Their multi-agent LLM system automatically categorizes incoming requests, extracts entities from documents up to thousands of pages, matches products from complex catalogs using semantic understanding, and generates detailed quotes for human review. Starting with a narrow focus on radiators with a single design partner, they iteratively expanded to support full workflows across multiple product categories, employing sophisticated agentic architectures with planning patterns, review agents, and extensive evaluation frameworks at each pipeline step."
+---
+
+## Overview
+
+Tendos AI has developed a sophisticated multi-agent LLM system that serves as a "system of action" for manufacturers in the construction industry, specifically targeting the highly inefficient tendering and quoting workflow. The company was founded by a team with deep domain expertise in construction, with their CEO having family background in the industry. This domain knowledge proved critical in identifying a problem space that had been previously unsolvable with traditional software but became tractable with the advent of large language models.
+
+The core problem they address involves the complex tendering chain in construction projects, which typically involves 10+ different parties including project owners, subcontractors, architects, planners, wholesalers, and manufacturers. A single project can take 6-12 months in cycle time due to feedback loops and manual processing. The workflow complexity explodes because it's not one-to-one relationships but one-to-many, creating a massive tree of parties and manual jobs. When a manufacturer receives a customer request, they must open emails, read attachments that can be hundreds or thousands of pages long, extract relevant information, match products from their catalog, check configurations, and generate detailed quotes. Each request requires transferring approximately 20 different pieces of information into legacy CRM systems, making it an extremely labor-intensive copy-paste job.
+
+## Initial Prototyping and Validation
+
+The founding team started with a strong conviction that AI represented the first time enterprises would be open to rethinking entire workflows, as opposed to previous SaaS eras where ROI cases were difficult to make for replacing existing systems. They began with extremely naive prototypes, simply putting data into large language models and observing outputs to see if they could steer the models toward expected results. This early experimentation validated that the technology had promise and was moving in the right direction, even if it wasn't perfect yet.
+
+A critical early insight was recognizing that while the technology might not be fully capable initially, its value would only increase over time as models became more capable. This forward-looking perspective gave them confidence to invest in building the platform even when certain capabilities were still emerging.
+
+They secured a design partner early on and worked closely with them to understand the workflow. In what proved to be an invaluable exercise, the Tendos team spent a full week on-site with their design partner, sitting next to users and observing how they actually worked. This revealed the full complexity of the workflow as employees switched between Outlook, SharePoint, Salesforce, SAP, and various folders to complete their tasks. This immersive observation was described as eye-opening and likely provided more learning than almost any other activity they could have undertaken.
+
+## Starting Narrow: The Radiator Focus
+
+A key strategic decision was to start extremely narrow in scope. They chose to focus on a specific subset of one manufacturer's product portfolio: a particular type of radiator. This allowed them to scope down to working with a single department within their design partner, dramatically reducing complexity. This narrow focus meant they only needed to define rules for one product group rather than an entire portfolio, which could include vastly different products like pipes, toilets, showers, and bathtubs that don't mix well when processed by LLMs.
+
+The team operated with very little data initially but had clear focus. They acknowledge they sometimes discussed whether they were being too narrow, but consistently chose focus as their guiding principle, learning from past mistakes of trying to be everywhere at once. This was especially important given the nature of AI systems where getting to 70-80% accuracy is relatively easy, but solving the last 20% is exceptionally hard.
+
+An interesting organizational choice was to remain engineering-heavy without building traditional support teams, believing that support should be handled by engineers and AI-driven support processes. This reflects their deep commitment to automation and their belief in the technology they're building.
+
+## Iterative Product Development
+
+The team makes a clear distinction between prototypes and their first real product. Multiple prototype iterations focused solely on validating hypotheses about whether the problem could be solved with the technology. They used these prototypes to ensure they were running in the right direction before building the actual product.
+
+A critical product decision was whether to integrate directly with legacy systems like SAP or to build their own web application. They chose to own the interface, reasoning that an AI-first experience required controlling the UX layer. This proved to be the right decision as it allowed them to gradually take over more steps in the workflow, starting with simple functionality and progressively automating more tasks. Eventually, they could make intelligent suggestions and ultimately automate entire steps when confidence was high enough.
+
+The initial product focused on handling small documents. They knew document and entity extraction was challenging, especially for large documents running into hundreds of pages, so they deliberately started with shorter documents to prove value with faster turnaround times. This allowed them to nail the entity extraction and product matching capabilities for manageable inputs.
+
+An unexpected but positive development occurred when their users began experimenting on their own, sending progressively larger documents. This organic expansion pulled them into solving the large document problem earlier than planned, driven by actual user behavior rather than their own roadmap. Users were essentially stress-testing the system and revealing the next critical capability gap.
+
+The documents the system handles range from simple one-page requirements for specific products to comprehensive building plans that can exceed 1,800 pages and describe every detail of a construction project, including wall colors, flooring, ceiling heights, windows, radiators, lamps, and more. The system needs to identify which portions of these massive documents are relevant to the manufacturer's product portfolio and extract only those sections.
+
+Input formats also vary widely beyond PDFs. The system handles large Excel files, images of products, and even floor plans. Users naturally experimented with these formats, sending pictures of products asking for identification, even before Tendos officially supported image inputs. This user-driven exploration helped shape the product roadmap.
+
+## Technical Architecture: Multi-Agent Pipeline
+
+The technical architecture represents a sophisticated multi-agent system that Tendos describes as an "agentic architecture." The pipeline begins with relatively static steps that execute for every incoming email, then transitions to highly dynamic workflows that adapt based on intermediate results.
+
+The first step analyzes the email text itself, which is the easiest data to work with since it's already in text format. The system identifies the intent of the email: Is it asking for a manual? Is it a support request? Is something broken and needs replacement? Or is it a renovation request with multiple products? This intent classification is fundamental to routing the request correctly.
+
+For project valuation, the system extracts key metadata to help prioritize requests. It estimates potential revenue, identifies submission deadlines, extracts information about planners and partners involved, and checks whether the project has been encountered before. All of this data flows into the customer's CRM system automatically, replacing what would otherwise be manual copy-paste work. This creates accountability and monitoring capability that previously required significant human effort.
+
+When PDFs are attached, the system performs entity extraction across potentially thousands of pages. It classifies positions, identifies relevant chapters, and can even handle cases where information is scattered across multiple PDFs. The documents are chunked into digestible parts based on their structure, with context being carefully managed throughout.
+
+A critical optimization involves using the requester's identity as context to narrow the search space. If a request comes from someone known to work with windows, the system can immediately exclude irrelevant product categories like toilets, dramatically reducing the search space and improving accuracy.
+
+The system employs multiple specialized agents with different capabilities. Depending on the product category, different processing routes are taken. The goal throughout is to make human-generated requests as understandable as possible to LLMs, then find the most fitting products from the customer's catalog.
+
+The product matching process doesn't just find one product but explores a broader set and reasons about which is most appropriate. A key design decision was around confidence handling. Rather than simply reporting confidence percentages, which provide limited actionable insight, the system takes a different approach. If confidence is low or uncertainty exists, the system explicitly states it doesn't know yet and presents multiple choices to the human reviewer. This is more valuable than claiming 70% confidence on a single answer.
+
+This design acknowledges a fundamental characteristic of LLMs: they tend to provide answers to every question, even when those answers aren't necessarily correct. By implementing explicit uncertainty handling and presenting choices rather than uncertain single answers, Tendos addresses this hallucination tendency proactively.
+
+## Agent Orchestration and Review Patterns
+
+The architecture includes a planning pattern where an orchestrator agent examines context and available rules to create a plan for processing each request. Importantly, this plan is dynamic and can be updated based on findings during execution. If the system goes down the wrong path, it can circle back and reassess with new information.
+
+A particularly interesting architectural choice is the implementation of review agents that operate somewhat independently from the main processing agents. The review agents intentionally have some data kept separate to avoid interference and provide fair evaluation. This mirrors a code review process where one agent completes work and another agent reviews it, asking questions like "Have you thought about this?" or "That's not a best practice."
+
+The orchestrator agent conducts exploration and makes its best guess. A review agent then examines that work and provides feedback. The orchestrator gets an opportunity to try again based on the feedback. Multiple agents participate in this process, and eventually agents will indicate they've done all they can with available information. When agents collectively determine they cannot proceed further without additional input, the system surfaces this to the human user rather than making uncertain guesses.
+
+This multi-agent approach with explicit review stages and feedback loops represents sophisticated production LLM architecture that goes well beyond simple prompt engineering or single-model inference.
+
+## Evaluation and Quality Assurance
+
+Tendos places extraordinarily high emphasis on evaluation, recognizing that their product operates in a high-stakes environment where errors can lead to millions in damages if incorrect configurations are offered or critical requirements are missed. Their evaluation strategy operates at multiple levels.
+
+For each customer, they maintain dedicated evaluation sets that track performance over time. As they add more use cases and customers, they acknowledge this creates an exponentially growing problem that requires proactive management to avoid unsatisfied customers.
+
+The evaluation infrastructure enables rapid iteration. They make small changes to parts of the system, run targeted evaluations, assess whether performance is on par or better, and iterate further. This creates a tight feedback loop with good control over system behavior while enabling continuous capability additions.
+
+Critically, they evaluate not just the end-to-end chain but each individual agent in the pipeline. This agent-level evaluation was described as initially tricky to implement at scale but vital for the system's success. When debugging issues, agent-level evaluation makes it dramatically easier to identify where in the chain things went wrong. Without this granularity, debugging becomes extremely difficult as you have no indication of where the pipeline diverged from expected behavior.
+
+They also sample production data after users have confirmed or changed results, incorporating this real-world feedback into evaluations. This creates a learning loop where human corrections inform future system behavior. They describe working toward the "holy grail of the self-learning large language model" where human feedback guides the system toward better performance over time. While fully self-learning systems remain aspirational, they're building toward that capability by making human feedback interpretable and usable for the LLM system.
+
+From a product data perspective, the system doesn't just look at individual product parameters but examines complete product portfolios to identify differentiating rules. It tries to understand what makes one product appropriate for a given context and another inappropriate. For example, hospital settings require completely different products than residential areas, and the system must recognize these contextual requirements.
+
+## Custom Tooling for Observability
+
+An interesting operational decision involves their approach to observability and evaluation tooling. They evaluated many existing tracing, observability, and evaluation solutions in the market but currently build and maintain their own tooling. They remain open to adopting external solutions but haven't found tools that meet their specific needs.
+
+Their custom tooling includes the ability to ask questions about their evaluation data while combining it with their proprietary data sources. This is described as a hard problem to solve in a general way since every company has different data sources and setups. Having this capability dramatically speeds up error analysis, allowing them to classify failures into groups, compare current behavior to past behavior, and assess severity of issues at scale.
+
+When dealing with thousands of evaluation entries, these capabilities become essential for understanding whether issues are new or longstanding, and whether they're completely wrong or just slightly off. They also built custom interfaces for understanding model reasoning because their system involves so many agent interactions along the chain. Commercial solutions may have changed, but at the time they built their system, existing tools weren't optimized for the volume of decisions happening in their agentic pipeline, making custom development faster than adapting general-purpose tools.
+
+## Context and Rule Extraction
+
+The system incorporates sophisticated context management throughout the pipeline. When examining product portfolios, it identifies rules that differentiate products and tries to determine what needs to be requested for a product to be a correct fit. This goes beyond simple parameter matching to understanding functional requirements and constraints.
+
+Product descriptions in the construction industry contain critical semantic information designed for human readability. Before the LLM era, this semantic content was extremely hard for computers to process. LLMs fundamentally changed this, making it possible to understand both unstructured customer requests and semantic product descriptions, then match between them effectively.
+
+Quality measures specific to the construction industry are incorporated into decision-making. The system can look up project locations and consider requirements like earthquake resistance in certain geographic areas. These domain-specific constraints are essential for correct product selection.
+
+The system also considers factors like project importance based on potential revenue, reliability of partners, and relationships history. These business-context elements inform prioritization, helping sales teams focus effort appropriately.
+
+For highly configured products versus standard off-the-line products, the system makes differentiations and routes decisions appropriately. It can identify when configuration is needed, whether a legal configuration exists that can be offered, or when something is too specialized and may require custom production or might not be feasible at all.
+
+## Human-in-the-Loop and Automation Boundaries
+
+While the system automates extensively, Tendos maintains clear boundaries around human involvement. They differentiate between low-volume, low-risk requests where automation can extend further versus high-value, complex requests where human expertise remains essential. For large projects involving millions in potential revenue and significant penalty risk, the expert human remains at the center of decision-making for specific or configurational decisions.
+
+The human-in-the-loop design serves as both a safety mechanism and a feedback source. Humans review proposed quotes before they're sent, ensuring quality while also providing corrections that feed back into the learning system. This approach acknowledges that in high-stakes business contexts, full automation without human oversight would create unacceptable risk.
+
+Users embraced the system enthusiastically. After just two days of using the platform, users at their design partner held an internal workshop to name the AI system, calling it "Chassis." This was notable because the Tendos team had intentionally avoided anthropomorphizing the system, keeping it more technical. Users themselves felt they were collaborating with the system and wanted to give it a name, which was described as an "aha moment" revealing deeper product-market fit than initially expected.
+
+## Expansion Strategy and Current State
+
+The expansion from radiators to broader product coverage followed a methodical approach. They collected all available data, including online sources, and ran automated tests against evaluation sets to assess system performance across different product areas. This provided an initial assessment of the market and technical readiness for different product categories.
+
+They identified additional design partners strategically in areas that made sense for expansion, acknowledging they didn't have all the answers and needed customer collaboration to expand correctly. Currently, the technical groundwork supports any product in general. The primary constraints are product data quality and configuration complexity. Some product categories lack standardized data or involve significant personal decision-making and configuration, requiring upfront work to standardize product data before the system can effectively support them.
+
+The system now supports nearly all segments within the construction industry, covering products like doors, ceiling materials, lighting, and essentially everything visible in a construction environment. A notable exception is infrastructure work, like road construction, where they worked with a partner but determined their product didn't support that use case well enough. Rather than allowing distraction, they aligned with that partner to revisit the opportunity later after focusing on their core workflow and customer segments.
+
+The current product covers the full workflow from inbox management through offer generation. It categorizes incoming requests as support, offer requests, or orders. It prioritizes requests and automatically assigns them to correct projects in the CRM. It creates offer proposals for user approval. For support requests, it drafts responses that users must approve before sending. They're currently exploring technical planning capabilities involving calculations, drawings, and documents with unclear requirements that need assumptions.
+
+## Future Direction and Organizational Learning
+
+Looking forward, the team expects to continue expanding with more agents and more use cases as their engineering team grows. Customer requests increasingly involve not small feature additions but significant new use cases asking for help with adjacent problems. They're focusing on interaction improvements to make it even easier for construction industry employees to engage with the solution and receive answers faster.
+
+An interesting current focus involves reworking parts of the application to increase flexibility. They recognize that just as technology moves incredibly fast, with progress measured in months rather than years, UX patterns are also evolving rapidly. They're seeing new interaction patterns emerge and believe they've gained understanding about future direction. The goal is to achieve more flexibility and adaptability to customer needs without requiring new features for every request, while maintaining high quality bars.
+
+Importantly, they want to ensure that common high-frequency tasks don't devolve into chat interfaces but retain clear structure for efficient execution. This reflects sophisticated thinking about when conversational interfaces are appropriate versus when structured workflows better serve users.
+
+The company represents a compelling case study in production LLM deployment with several key lessons: starting with narrow focus and deep domain expertise, building multi-agent architectures with explicit review and feedback loops, investing heavily in evaluation at multiple levels of granularity, implementing custom tooling when necessary, maintaining appropriate human-in-the-loop boundaries, and letting customer needs pull expansion rather than building speculatively. Their success demonstrates how LLMs enable solving previously intractable problems in traditional industries when combined with strong domain knowledge and sophisticated engineering.

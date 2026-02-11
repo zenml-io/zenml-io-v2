@@ -1,0 +1,121 @@
+---
+title: "Text-to-Floor Plan Generation Using LLMs with Prompt Engineering and Fine-Tuning"
+slug: "text-to-floor-plan-generation-using-llms-with-prompt-engineering-and-fine-tuning"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "683d79a5f8c0b5f5dbb72fc0"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:10:26.171Z"
+  createdOn: "2025-06-02T10:15:00.999Z"
+llmopsTags:
+  - "poc"
+  - "structured-output"
+  - "prompt-engineering"
+  - "fine-tuning"
+  - "few-shot"
+  - "embeddings"
+  - "vector-search"
+  - "model-optimization"
+  - "pytorch"
+  - "fastapi"
+  - "elasticsearch"
+  - "redis"
+  - "cache"
+  - "monitoring"
+  - "databases"
+  - "api-gateway"
+  - "serverless"
+  - "documentation"
+  - "amazon-aws"
+  - "anthropic"
+  - "meta"
+company: "ZURU"
+summary: "ZURU Tech, a construction technology company, collaborated with AWS to develop a text-to-floor plan generator that allows users to create building designs using natural language descriptions. The project aimed to improve upon existing GPT-2 baseline results by implementing both prompt engineering with Claude 3.5 Sonnet on Amazon Bedrock and fine-tuning approaches with Llama models on Amazon SageMaker. Through careful dataset preparation, dynamic few-shot prompting, and comprehensive evaluation frameworks, the team achieved a 109% improvement in instruction adherence accuracy compared to their baseline model, with fine-tuning also delivering a 54% improvement in mathematical correctness for spatial relationships and dimensions."
+link: "https://aws.amazon.com/blogs/machine-learning/how-zuru-improved-the-accuracy-of-floor-plan-generation-by-109-using-amazon-bedrock-and-amazon-sagemaker?tag=soumet-20"
+year: 2025
+seo:
+  title: "ZURU: Text-to-Floor Plan Generation Using LLMs with Prompt Engineering and Fine-Tuning - ZenML LLMOps Database"
+  description: "ZURU Tech, a construction technology company, collaborated with AWS to develop a text-to-floor plan generator that allows users to create building designs using natural language descriptions. The project aimed to improve upon existing GPT-2 baseline results by implementing both prompt engineering with Claude 3.5 Sonnet on Amazon Bedrock and fine-tuning approaches with Llama models on Amazon SageMaker. Through careful dataset preparation, dynamic few-shot prompting, and comprehensive evaluation frameworks, the team achieved a 109% improvement in instruction adherence accuracy compared to their baseline model, with fine-tuning also delivering a 54% improvement in mathematical correctness for spatial relationships and dimensions."
+  canonical: "https://www.zenml.io/llmops-database/text-to-floor-plan-generation-using-llms-with-prompt-engineering-and-fine-tuning"
+  ogTitle: "ZURU: Text-to-Floor Plan Generation Using LLMs with Prompt Engineering and Fine-Tuning - ZenML LLMOps Database"
+  ogDescription: "ZURU Tech, a construction technology company, collaborated with AWS to develop a text-to-floor plan generator that allows users to create building designs using natural language descriptions. The project aimed to improve upon existing GPT-2 baseline results by implementing both prompt engineering with Claude 3.5 Sonnet on Amazon Bedrock and fine-tuning approaches with Llama models on Amazon SageMaker. Through careful dataset preparation, dynamic few-shot prompting, and comprehensive evaluation frameworks, the team achieved a 109% improvement in instruction adherence accuracy compared to their baseline model, with fine-tuning also delivering a 54% improvement in mathematical correctness for spatial relationships and dimensions."
+---
+
+## Overview
+
+ZURU Tech is a construction technology company focused on transforming how buildings are designed and manufactured. Their Dreamcatcher platform enables users of varying experience levels to collaborate on building design and construction. The core innovation discussed in this case study is a text-to-floor plan generator that allows users to describe buildings in natural language (e.g., "Create a house with three bedrooms, two bathrooms, and an outdoor space for entertainment") and receive a unique floor plan within the 3D design space.
+
+This project represents a collaboration between ZURU Tech, the AWS Generative AI Innovation Center, and AWS Professional Services. The goal was to improve the accuracy of floor plan generation using generative AI, specifically large language models. The case study provides valuable insights into the LLMOps practices used to iterate quickly on model selection, prompt engineering, and fine-tuning approaches.
+
+## The Challenge and Initial Approach
+
+The fundamental challenge in generating floor plans from natural language involves two distinct requirements. First, the model must understand the semantic relationships between rooms—their purposes and spatial orientations within a two-dimensional vector system. This relates to how well the model can adhere to features described in user prompts. Second, there is a mathematical component ensuring rooms meet specific dimensional and floor space criteria.
+
+The ZURU team initially explored generative adversarial networks (GANs) for this task but found that experimentation with a GPT-2 LLM showed promising results. This established their baseline for comparison and validated the hypothesis that an LLM-based approach could provide the required accuracy for text-to-floor plan generation.
+
+## Evaluation Framework
+
+A critical element of this LLMOps implementation was the creation of a novel evaluation framework. This framework measured model outputs based on two key metrics: instruction adherence (how well the generated floor plan matches the user's requested features) and mathematical correctness (proper dimensions, positioning, and orientation of rooms). Having this evaluation framework in place was essential for enabling fast R&D iteration cycles and making data-driven decisions about which approaches to pursue.
+
+The testing framework incorporated several sophisticated components. A prompt deduplication system identified and consolidated duplicate instructions in the test dataset, reducing computational overhead. A distribution-based performance assessment filtered unique test cases and promoted representative sampling through statistical analysis. The metric-based evaluation enabled comparative analysis against both the baseline GPT-2 model and alternative approaches.
+
+## Dataset Preparation
+
+The dataset preparation process demonstrates rigorous data quality practices essential for production LLM systems. Floor plans from thousands of publicly available houses were gathered and reviewed by a team of in-house architects. ZURU built a custom application with a simple yes/no decision mechanism (similar to social matching applications) that allowed architects to quickly approve or reject plans based on compatibility with their building system.
+
+Further data quality improvements included filtering out approximately 30% of low-quality data by evaluating metric scores on the ground truth dataset. Data points not achieving 100% accuracy on instruction adherence were removed from the training dataset. This data preparation improved fine-tuning and prompt engineering efficiency by more than 20%.
+
+An important finding during exploratory data analysis was that the dataset contained prompts matching multiple floor plans and floor plans matching multiple prompts. To prevent data leakage, the team moved all related prompt and floor plan combinations to the same data split (training, validation, or testing), promoting robust evaluation.
+
+## Prompt Engineering Approach
+
+The prompt engineering approach utilized Anthropic's Claude 3.5 Sonnet through Amazon Bedrock. Two key techniques were combined: dynamic few-shot prompting and prompt decomposition.
+
+Dynamic few-shot prompting differs from traditional static sampling by retrieving the most relevant examples at runtime based on the specific input prompt details. Rather than using fixed examples, the system searches a high-quality dataset to find contextually appropriate examples for each user query.
+
+Prompt decomposition breaks down complex tasks into smaller, more manageable components. By decomposing queries, each component can be optimized for its specific purpose. The combination of these methods improved relevancy in example selection and reduced latency in retrieving example data.
+
+The workflow consists of five steps. First, prompt decomposition executes three smaller tasks to retrieve highly relevant examples matching the same house features the user requested. Second, these relevant examples are injected into the prompt to perform dynamic few-shot prompting for floor plan generation. Third, a reflection technique asks the model to self-assess whether the generated content adheres to requirements.
+
+## Prompt Engineering Architecture Details
+
+The architecture leverages multiple AWS services in a purpose-built pipeline. For the first step (understanding unique house features), Amazon Bedrock provides a serverless API-driven endpoint for inference using Mistral 7B, which offers the right balance between cost, latency, and accuracy for this decomposed step.
+
+The second step uses Amazon Bedrock Knowledge Bases backed by Amazon OpenSearch Serverless as a vector database. This enables metadata filtering and hybrid search to retrieve the most relevant record identifiers. Amazon S3 provides storage for the dataset, while Amazon Bedrock Knowledge Bases offers a managed solution for vectorizing and indexing metadata.
+
+The third step retrieves actual floor plan data by record identifier using Amazon DynamoDB. By splitting search and retrieval into two steps, the team could use purpose-built services—OpenSearch for low-latency search and DynamoDB for low-latency key-value retrieval.
+
+Step four uses Amazon Bedrock with Claude 3.5 Sonnet to generate the new floor plan, leveraging its strong benchmarks in deep reasoning and mathematics.
+
+The fifth step implements reflection, passing the original prompt, instructions, examples, and newly generated floor plan back to Claude 3.5 Sonnet with instructions to double-check and correct any mistakes.
+
+## Fine-Tuning Approach
+
+The team explored two fine-tuning methods: full parameter fine-tuning and Low-Rank Adaptation (LoRA). Full fine-tuning adjusts all LLM parameters but requires significant memory and training time. LoRA tunes only a small subset of parameters, reducing resource requirements.
+
+The workflow was implemented within a SageMaker JupyterLab Notebook provisioned with an ml.p4.24xlarge instance, providing access to NVIDIA A100 GPUs with 320 GB GPU memory. Using interactive notebooks allowed the team to iterate quickly and debug experiments while maturing training and testing scripts.
+
+Key insights from fine-tuning experiments included the critical importance of dataset quality and diversity. Carefully selecting training samples with larger diversity helped the model learn more robust representations. While larger batch sizes generally improved performance within memory constraints, these had to be balanced against computational resources and training time targets of 1-2 days.
+
+Through several iterations, the team experimented with initial few-sample quick instruction fine-tuning, larger dataset fine-tuning, fine-tuning with early stopping, comparing Llama 3.1 8B versus Llama 3 8B models, and varying instruction length in fine-tuning samples. Full fine-tuning of Llama 3.1 8B using a curated dataset of 200,000 samples produced the best results.
+
+The full fine-tuning process using BF16 with a microbatch size of three involved eight epochs with 30,000 steps, taking 25 hours to complete. In contrast, the LoRA approach demonstrated significant computational efficiency, requiring only 2 hours of training time and producing an 89 MB checkpoint.
+
+## Results and Trade-offs
+
+The evaluation results provide clear guidance on the trade-offs between different approaches. Both the prompt engineering approach with Claude 3.5 Sonnet and the full fine-tuning approach with Llama 3.1 8B achieved a 109% improvement in instruction adherence over the baseline GPT-2 model. This suggests that either approach could be viable depending on team skillsets and infrastructure preferences.
+
+However, for mathematical correctness, the prompt engineering approach did not create significant improvements over baseline, while full fine-tuning achieved a 54% increase. This indicates that for tasks requiring precise numerical and spatial reasoning, fine-tuning may be the preferred approach.
+
+The LoRA-based tuning approach achieved slightly lower performance, with 20% lower scores on instruction adherence and 50% lower scores on mathematical correctness compared to full fine-tuning. This demonstrates the trade-offs available when balancing time, cost, and hardware constraints against model accuracy.
+
+## LLMOps Implications
+
+This case study illustrates several LLMOps best practices. The evaluation framework was central to enabling rapid experimentation and data-driven decision making. Data quality processes, including human review and automated filtering, were essential for achieving good results. The use of managed services like Amazon Bedrock and Amazon SageMaker reduced operational overhead while enabling experimentation with multiple models and approaches.
+
+The comparison between prompt engineering and fine-tuning approaches provides valuable guidance for practitioners facing similar decisions. Prompt engineering with a capable foundation model can achieve substantial improvements with lower infrastructure requirements, while fine-tuning offers additional benefits for tasks requiring precise mathematical reasoning. The LoRA approach presents a middle ground when computational resources are constrained.
+
+It is worth noting that this case study comes from an AWS blog, which naturally emphasizes AWS services. The underlying approaches—dynamic few-shot prompting, prompt decomposition, reflection techniques, and fine-tuning comparisons—are applicable across cloud providers and infrastructure choices.

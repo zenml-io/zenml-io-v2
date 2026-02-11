@@ -1,0 +1,174 @@
+---
+title: "Building Gemini Deep Research: An Agentic Research Assistant with Custom-Tuned Models"
+slug: "building-gemini-deep-research-an-agentic-research-assistant-with-custom-tuned-models"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "694ad8c2fccde60ce1a10276"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2026-01-07T09:40:39.763Z"
+  lastUpdated: "2025-12-23T20:12:18.831Z"
+  createdOn: "2025-12-23T18:00:34.647Z"
+llmopsTags:
+  - "question-answering"
+  - "summarization"
+  - "chatbot"
+  - "content-moderation"
+  - "data-analysis"
+  - "rag"
+  - "prompt-engineering"
+  - "fine-tuning"
+  - "agent-based"
+  - "multi-agent-systems"
+  - "few-shot"
+  - "semantic-search"
+  - "latency-optimization"
+  - "error-handling"
+  - "human-in-the-loop"
+  - "evals"
+  - "chunking"
+  - "system-prompts"
+  - "langchain"
+  - "llama-index"
+  - "fastapi"
+  - "monitoring"
+  - "orchestration"
+  - "documentation"
+  - "databases"
+  - "cache"
+  - "google-gcp"
+  - "openai"
+  - "anthropic"
+  - "meta"
+company: "Google Deepmind"
+summary: "Google DeepMind developed Gemini Deep Research, an AI-powered research assistant that autonomously browses the web for 5-10 minutes to generate comprehensive research reports with citations. The product addresses the challenge of users wanting to go from \"zero to 50\" on new topics quickly, automating what would typically require opening dozens of browser tabs and hours of manual research. The team solved key technical challenges around agentic planning, transparent UX design with editable research plans, asynchronous orchestration, and post-training custom models (initially Gemini 1.5 Pro, moving toward 2.0 Flash) to reliably perform iterative web search and synthesis. The product launched in December 2024 and has been widely praised as potentially the most useful public-facing AI agent to date, with users reporting it can compress hours or days of research work into minutes."
+link: "https://www.latent.space/p/gdr"
+year: 2025
+seo:
+  title: "Google Deepmind: Building Gemini Deep Research: An Agentic Research Assistant with Custom-Tuned Models - ZenML LLMOps Database"
+  description: "Google DeepMind developed Gemini Deep Research, an AI-powered research assistant that autonomously browses the web for 5-10 minutes to generate comprehensive research reports with citations. The product addresses the challenge of users wanting to go from \"zero to 50\" on new topics quickly, automating what would typically require opening dozens of browser tabs and hours of manual research. The team solved key technical challenges around agentic planning, transparent UX design with editable research plans, asynchronous orchestration, and post-training custom models (initially Gemini 1.5 Pro, moving toward 2.0 Flash) to reliably perform iterative web search and synthesis. The product launched in December 2024 and has been widely praised as potentially the most useful public-facing AI agent to date, with users reporting it can compress hours or days of research work into minutes."
+  canonical: "https://www.zenml.io/llmops-database/building-gemini-deep-research-an-agentic-research-assistant-with-custom-tuned-models"
+  ogTitle: "Google Deepmind: Building Gemini Deep Research: An Agentic Research Assistant with Custom-Tuned Models - ZenML LLMOps Database"
+  ogDescription: "Google DeepMind developed Gemini Deep Research, an AI-powered research assistant that autonomously browses the web for 5-10 minutes to generate comprehensive research reports with citations. The product addresses the challenge of users wanting to go from \"zero to 50\" on new topics quickly, automating what would typically require opening dozens of browser tabs and hours of manual research. The team solved key technical challenges around agentic planning, transparent UX design with editable research plans, asynchronous orchestration, and post-training custom models (initially Gemini 1.5 Pro, moving toward 2.0 Flash) to reliably perform iterative web search and synthesis. The product launched in December 2024 and has been widely praised as potentially the most useful public-facing AI agent to date, with users reporting it can compress hours or days of research work into minutes."
+---
+
+## Overview
+
+Google DeepMind's Gemini Deep Research represents one of the first widely successful consumer-facing AI agent products. Led by Product Manager Aarush Selvan and Tech Lead Mukund Sridhar, the team created a research assistant that takes user queries and autonomously browses the web for approximately 5-10 minutes to generate comprehensive, fully-cited research reports. The product launched in December 2024 (with Gemini Advanced) and has been described by notable figures as comparable to having a "PhD-level research assistant" that can complete work that previously took hours or days in just minutes.
+
+The core problem Deep Research addresses is the common user pattern of opening 50-60 browser tabs when researching complex topics with multiple facets, often giving up due to information overload. The team deliberately focused on queries where users want to go "from zero to 50 really fast" on a new topic, rather than simple factoid lookups better suited to traditional search.
+
+## Model Architecture and Post-Training
+
+A critical technical detail is that Gemini Deep Research does not use the standard Gemini 1.5 Pro model available through APIs. Instead, the team developed a custom post-trained version specifically optimized for the research agent use case. This post-training work was essential to achieving consistent, reliable performance across the complex multi-step research workflow.
+
+The team emphasized that while users could theoretically replicate some aspects of Deep Research using the public Gemini API, the custom post-training makes a significant difference in reliability and quality. The post-training focused on several key capabilities: generating coherent research plans, performing iterative planning based on information discovered during browsing, deciding when to search versus when to dive deep into specific webpages, and synthesizing information across multiple sources while maintaining proper citations.
+
+As the team transitions to newer models like Gemini 2.0 Flash and explores integration with reasoning models (like the o1/o3 style "thinking" models), they face interesting challenges around balancing different types of inference-time compute. The team distinguishes between two forms of inference-time compute: time spent within the model doing chain-of-thought reasoning, and time spent using external tools like search. There's a potential tension where reasoning models might try to answer questions from internal knowledge rather than properly sourcing information from the web, which would undermine the grounding and citation goals of Deep Research.
+
+## Agentic Architecture and Planning
+
+The architecture of Deep Research revolves around a multi-phase agentic workflow. First, the model generates an initial research plan that breaks down the user's query into specific investigation steps. This plan is presented to the user in an editable format—what the team calls "editable chain of thought." Users can review the plan, add or remove steps, and provide steering before execution begins. This design decision emerged from recognizing that when asking an intern to do research, they would naturally ask clarifying questions first.
+
+During the execution phase, the model performs parallel searches across multiple websites while maintaining the ability to do sequential, iterative planning. The model can read results from previous searches and use that information to inform subsequent searches—for example, discovering what additives the EU allows and then specifically checking if the FDA has similar regulations. This iterative planning capability was identified as one of the hardest technical problems, as the team wanted to avoid having to manually specify planning strategies for each domain or research pattern.
+
+The model has access to two primary tools: the ability to perform web searches and the ability to dive deeper into specific webpages of interest. The system typically starts with breadth-first exploration across different aspects of the research plan, then selectively does depth-first investigation when it encounters incomplete information, inconsistencies, or particularly relevant sources. The model autonomously decides when it has gathered sufficient information to move to the synthesis phase.
+
+## Asynchronous Orchestration and Infrastructure
+
+Moving from synchronous chat interactions to asynchronous agent execution required building entirely new infrastructure. The team developed a custom asynchronous platform that handles job scheduling, state management, failure recovery, and progress tracking. This was necessary because research jobs can run for 5-10 minutes or longer, during which users might close their browsers, switch devices, or navigate away.
+
+The orchestration system maintains durability—if individual API calls fail during a multi-minute research session, the system can retry without losing overall progress. The platform also handles notification delivery across devices (desktop, Android, iOS) to alert users when research completes. This infrastructure needed to be flexible enough to potentially support even longer-running research jobs (hours or days) that might be useful for more complex use cases in the future.
+
+The team drew comparisons to workflow orchestration systems like Apache Airflow, Temporal, and AWS Step Functions, though they noted Deep Research requires more dynamic capabilities since the model determines the execution graph on the fly rather than following a static predefined workflow. The orchestration must accommodate the model's autonomous decisions about what to search next, how many parallel searches to conduct, and when to conclude research.
+
+## Handling Web Content and Long Context
+
+For web browsing, the team uses both HTML-to-markdown conversion and native HTML processing depending on the context. Markdown conversion helps reduce noise from JavaScript, CSS, and other non-content elements, but they maintain the ability to work with raw HTML when needed, such as for embedded snippets. The newer generation Gemini models have improved native understanding of HTML and other web representations.
+
+Vision capabilities for analyzing images, charts, and other visual content on web pages are not yet integrated, though the team acknowledges this would be valuable for certain use cases. The trade-off between added latency from rendering and processing images versus the incremental value has not yet been justified for the majority of queries, though they see it as more important for specialized domains.
+
+Deep Research leverages Gemini's extremely long context windows (1-2 million tokens) to maintain all browsed content in context across multiple turns of conversation. This enables users to ask follow-up questions without triggering new web searches when the answer already exists in previously gathered material. When context limits are approached (which can happen after many follow-up queries), the system falls back to a retrieval-augmented generation (RAG) approach. The team's rule of thumb is to keep recent research tasks and their content in the full context window since users are likely to ask complex follow-up questions, while older research tasks can be moved to RAG-based retrieval since cross-comparisons with much older content are less common.
+
+## User Experience and Transparency
+
+The UX design philosophy emphasizes transparency and user control throughout the research process. The editable research plan shown upfront serves multiple purposes: it helps users understand what the agent will investigate, provides an opportunity for steering before committing time, and educates users about the topic by breaking down the query into specific facets. Early beta testing revealed that users weren't editing plans initially, so the team added an explicit "Edit" button to draw attention to this capability, even though conversational editing was already possible.
+
+During the browsing phase, the system shows in real-time which websites are being read, with the count updating dynamically. This transparency was a deliberate choice to make the agent's actions visible and trustworthy. Users can click into sources while research is ongoing to see what the agent is reading. The team took a "publisher-forward" approach, ensuring proper attribution and making it easy for users to verify information sources.
+
+The final output is presented in a side-by-side artifact format similar to Anthropic's Artifacts or ChatGPT's Canvas. The research report appears on one side with full citations, while the chat interface remains available on the other side for follow-up questions or refinements. This design supports three types of follow-up interactions: extracting additional factoids that might already be captured in the browsed content, requesting modifications to the report structure or content, or triggering entirely new deep research on related topics.
+
+Users can export reports directly to Google Docs with all citations preserved, enabling integration with their broader workflow and providing a permanent save mechanism. The team found that many users highly value this export functionality.
+
+## Evaluation Challenges and Strategies
+
+Evaluating Deep Research posed significant challenges due to the high entropy of possible outputs. For any given research query, there are countless valid ways to structure a report, countless legitimate sources to cite, and many valid synthesis approaches. Auto-raters using LLMs to judge quality bring their own biases and limitations.
+
+The team developed a multi-faceted evaluation approach combining automated metrics, human evaluation, and product-oriented quality assessments. Automated metrics track behavioral characteristics like research plan length, number of planning iterations, number of websites browsed, and distribution of search-to-browse ratios across a development set. These metrics serve as early warning signals when new model versions produce substantially different behavioral patterns, which could indicate improvement or regression.
+
+For quality assessment, the team performs extensive human evaluation focused on product-defined criteria including comprehensiveness, completeness, groundedness in sources, accuracy, and appropriate depth of analysis. These evaluations are conducted by team members and trained raters against representative queries from their use case ontology.
+
+A critical innovation was developing an "ontology of use cases" rather than organizing evaluation by verticals like travel or shopping. The team identified underlying research behavior patterns that cut across domains: broad-but-shallow exploration (like finding many options for summer camps), deep-and-narrow investigation (like thoroughly understanding a specific technical topic), comparison tasks (evaluating a few known options), and compound tasks that combine multiple research patterns (like comprehensive wedding planning requiring venues, catering, coordination, etc.).
+
+This ontology-based approach ensures evaluation coverage across different types of research journeys users might undertake. The team maintains a development set with queries spanning all points in this ontology space, from extremely broad-shallow to extremely specific-deep, including various midpoints and compounds. Each model iteration is evaluated against this diverse set to ensure well-rounded performance.
+
+## Latency, User Perception, and Compute Trade-offs
+
+Counterintuitively, the team discovered that longer research times are often perceived positively by users, contrary to typical Google product orthodoxy where reducing latency always improves metrics. Users value seeing the agent visit many websites and spend extended time researching, interpreting this as thoroughness and quality work. Some users even questioned whether the system artificially delays results to create the impression of work being done, when in fact the compute is genuinely needed.
+
+This created an unexpected dynamic where the team initially worried extensively about latency, even building a "hardcore mode" that took 15 minutes but ultimately shipping a 5-minute version with hard limits on duration. In retrospect, users would have tolerated or even preferred longer research times for complex queries. This represents a significant departure from the Assistant team's experience and other Google products where latency reduction consistently drove all success metrics upward.
+
+However, the team is careful to note they're currently in a "honeymoon period" where taking more time is perceived as value without clear upper bounds. As the space matures, users may develop more discernment about whether extended research time actually produces proportionally better results or just represents inefficiency. The team continues to explore the optimal balance between exploration (visiting more sources), verification (double-checking information across sources), and synthesis quality.
+
+From an engineering perspective, the trade-off centers on how to spend inference-time compute: either exploring more diverse sources to ensure completeness, or verifying and cross-checking information more thoroughly for accuracy. Different query types likely benefit from different balances—factual historical queries about Federal Reserve rate changes require high verification to avoid hallucination, while exploratory queries about local birthday celebration venues allow more leeway.
+
+## Iterative Planning and Data Efficiency
+
+One of the most technically challenging aspects was teaching the model to plan iteratively in a domain-general way without requiring specialized training data for each research pattern. The team wanted to avoid the nightmare scenario of needing to demonstrate planning traces for every conceivable type of research query in their ontology.
+
+They achieved this through careful post-training that balanced leveraging the model's pre-trained knowledge while adding just enough specialized capability without overfitting. Data augmentation techniques helped create training examples, but the key was finding the right amount of post-training—enough to reliably trigger the desired agentic behaviors, but not so much that it degraded the model's general knowledge and reasoning capabilities from pre-training.
+
+The iterative planning capability allows the model to form hypotheses, search for information, incorporate findings into its understanding, and then formulate new search strategies based on what was learned. For example, when researching milk and meat regulations, the model might first discover specific EU regulations around additives, then specifically search for corresponding FDA policies to enable direct comparison. This sequential decision-making, grounded in previously gathered information, enables much richer research outputs than would be possible with purely parallel search strategies.
+
+## Product Philosophy and Future Directions
+
+The team's product philosophy emphasizes user-centered design over chasing benchmarks. While they acknowledge the industry value of benchmarks for rallying research communities and comparing capabilities, they deliberately avoided optimizing for academic benchmarks like MMLU or humanities exams that don't reflect realistic research query patterns. Their focus remains on delivering value for actual user research tasks rather than achieving high scores on synthetic evaluations.
+
+Looking forward, several enhancement areas are under exploration. Personalization represents a major opportunity—research reports should be tailored to the user's background (high school student vs. PhD researcher) and adapt based on their learning journey and demonstrated knowledge. Multimodal capabilities would enable richer inputs (allowing users to upload images or diagrams as part of queries) and outputs (generating reports with embedded charts, maps, images, and interactive visualizations rather than pure text).
+
+Access to content beyond the open web is critical for more specialized use cases. Users increasingly want to incorporate their own documents, proprietary corporate knowledge bases, and subscription-only content sources into deep research. Enterprise users particularly need the ability to run deep research over internal documentation rather than just public websites.
+
+The team is also exploring how to enable longer, more interactive research sessions where users can steer research in progress rather than only at the planning stage. This might involve the agent proactively checking in with the user when encountering ambiguities or important decision points, similar to how a human research assistant would naturally do.
+
+Memory across sessions is another frontier—maintaining understanding of a user's ongoing projects and research areas over time so that new research tasks can build on previous work without requiring explicit context. This ties into the broader personalization vision of Deep Research adapting to each user's knowledge state and interests.
+
+## Lessons on Agent UX Patterns
+
+The team's experience reveals several emerging patterns for agent user experience design. The shift from synchronous to asynchronous interaction requires new UX paradigms—users need clear status updates, the ability to check progress, and notifications when tasks complete. Most current implementations, including Gemini Deep Research's initial version, use a "locking" approach where users cannot interact with the chat while the agent works. The team acknowledges that more sophisticated implementations like Devin allow users to chat with the agent and modify the plan during execution, which becomes increasingly important for longer-running tasks.
+
+The side-by-side artifact pattern emerged as effective for research output, separating the generated artifact from the conversation space. This mirrors patterns seen in Anthropic's Artifacts and ChatGPT's Canvas, suggesting convergence on this as a good UX pattern for long-form generated content.
+
+Transparency in agent actions remains paramount for building user trust. Showing the research plan upfront, displaying websites being visited in real-time, and providing full source attribution throughout reports all contribute to users feeling comfortable with and confident in the agent's output.
+
+The concept of "editable chain of thought" where users can review and modify the agent's planned approach before execution may become a common pattern for agents that require significant time or resources to execute. This gives users agency and builds confidence that their time investment will be well-spent.
+
+## Technical Stack and Implementation Details
+
+While the team uses some internal Google infrastructure, they emphasized that most of the technical approach could be replicated by external teams using public APIs and standard tooling. The custom post-training is the primary differentiator that isn't directly accessible to outside teams, though similar results could potentially be achieved through fine-tuning or other adaptation techniques.
+
+The architecture doesn't rely on specialized search ranking algorithms beyond what the model itself learns to do. When presented with search results, the model evaluates which sources appear most relevant and decides which to explore further based on the information scent and how it relates to the research plan. This ranking is emergent from the model's capabilities rather than being explicitly engineered.
+
+For content extraction, they balance between processed formats (markdown) and raw formats (HTML) depending on what works best for the model generation they're using and the specific content being analyzed. Newer model generations handle raw HTML better, reducing the need for preprocessing, but markdown conversion still helps with noise reduction when appropriate.
+
+The team maintains all the infrastructure internally rather than relying on external agent frameworks or orchestration platforms. This reflects their view that the agent space is still too early and fast-moving to standardize on horizontal platforms. They believe teams should focus on building one vertical use case really well rather than trying to generalize too early. As Bret Taylor of Sierra noted in a related interview, most successful agent companies are building their full stacks internally rather than relying on external frameworks, at least in 2025.
+
+## Market Context and Competitive Landscape
+
+Gemini Deep Research launched in December 2024, establishing the category. OpenAI released their Deep Research agent in early February 2025, followed quickly by numerous open-source clones, Perplexity's Deep Research, and xAI's Deep Search. This rapid proliferation validated the concept while also intensifying competition.
+
+The team views this as a healthy dynamic where good ideas get reproduced and built upon across the industry. They were pleased to see other products adopt some of their key design principles like transparent research plans, real-time visibility into sources being browsed, and side-by-side artifact presentation. Rather than viewing this as pure competition, they see it as evidence that these patterns represent good solutions to common UX challenges in agent design.
+
+From a marketing perspective, OpenAI's launch generated significantly more public attention and benchmark comparisons despite launching months after Gemini. The team has deliberately chosen not to over-invest in benchmarks for a product where synthetic evaluations don't capture real user value, though they acknowledge benchmarks serve important purposes for technical communities and can effectively motivate research teams internally.
+
+The broader trajectory points toward "Deep Research" style agents becoming table stakes across AI assistants, with differentiation coming from quality, speed, depth, personalization, and integration with specific workflows or knowledge bases. The team expects continued rapid evolution as models improve, costs decrease, and teams learn what users actually want from research agents versus what sounds good in theory.

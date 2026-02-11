@@ -1,0 +1,183 @@
+---
+title: "Enterprise Challenges and Opportunities in Large-Scale LLM Deployment"
+slug: "enterprise-challenges-and-opportunities-in-large-scale-llm-deployment"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f3a9f8f1b68703db9c45d"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:41:28.142Z"
+  createdOn: "2024-11-21T13:50:23.499Z"
+llmopsTags:
+  - "amazon-aws"
+  - "compliance"
+  - "cost-optimization"
+  - "devops"
+  - "fine-tuning"
+  - "google-gcp"
+  - "guardrails"
+  - "high-stakes-application"
+  - "latency-optimization"
+  - "legacy-system-integration"
+  - "microsoft-azure"
+  - "model-optimization"
+  - "monitoring"
+  - "openai"
+  - "orchestration"
+  - "prompt-engineering"
+  - "regulatory-compliance"
+  - "reliability"
+  - "scalability"
+  - "scaling"
+  - "security"
+  - "system-prompts"
+  - "token-optimization"
+company: "Barclays"
+summary: "A senior leader in industry discusses the key challenges and opportunities in deploying LLMs at enterprise scale, highlighting the differences between traditional MLOps and LLMOps. The presentation covers critical aspects including cost management, infrastructure needs, team structures, and organizational adaptation required for successful LLM deployment, while emphasizing the importance of leveraging existing MLOps practices rather than completely reinventing the wheel."
+link: "https://www.youtube.com/watch?v=L4tFxMWFVFc"
+year: 2024
+seo:
+  title: "Barclays: Enterprise Challenges and Opportunities in Large-Scale LLM Deployment - ZenML LLMOps Database"
+  description: "A senior leader in industry discusses the key challenges and opportunities in deploying LLMs at enterprise scale, highlighting the differences between traditional MLOps and LLMOps. The presentation covers critical aspects including cost management, infrastructure needs, team structures, and organizational adaptation required for successful LLM deployment, while emphasizing the importance of leveraging existing MLOps practices rather than completely reinventing the wheel."
+  canonical: "https://www.zenml.io/llmops-database/enterprise-challenges-and-opportunities-in-large-scale-llm-deployment"
+  ogTitle: "Barclays: Enterprise Challenges and Opportunities in Large-Scale LLM Deployment - ZenML LLMOps Database"
+  ogDescription: "A senior leader in industry discusses the key challenges and opportunities in deploying LLMs at enterprise scale, highlighting the differences between traditional MLOps and LLMOps. The presentation covers critical aspects including cost management, infrastructure needs, team structures, and organizational adaptation required for successful LLM deployment, while emphasizing the importance of leveraging existing MLOps practices rather than completely reinventing the wheel."
+---
+
+## Overview
+
+This case study is derived from a conference presentation by Andy, a senior industry leader at West Group (a large enterprise with 500 data scientists and engineers) and author of "Machine Learning Engineering with Python." The talk focuses on the practical challenges and strategic opportunities when deploying LLMs and generative AI at enterprise scale. This is not a specific implementation case study but rather a practitioner's perspective on the state of LLMOps in large organizations, offering valuable insights into what makes enterprise LLM deployment difficult and how organizations can navigate these challenges.
+
+The speaker makes a critical observation that resonates across the industry: while many organizations are actively using generative AI, very few have successfully deployed it at production scale, especially in larger enterprises. Most organizations, according to the speaker, are getting stuck at the "develop" stage of the machine learning lifecycle, unable to make the transition to actual production deployment.
+
+## The Four-Stage ML Lifecycle and Where Organizations Struggle
+
+The presentation references a four-stage machine learning lifecycle framework: Discover (understanding the problem), Play (building a proof of concept), Develop, and Deploy. The key insight is that the generative AI revolution has created a bottleneck at the development stage, where organizations struggle to transition from experimentation to production-ready systems.
+
+## Key Differences Between MLOps and LLMOps
+
+The speaker emphasizes that traditional MLOps and LLMOps are fundamentally different, which creates challenges for organizations that have built significant muscle memory around classical machine learning operations. Some of the critical differences highlighted include:
+
+- **Problem framing**: Instead of asking whether a problem can be solved with classification, regression, or unsupervised approaches, teams now must determine if a generative approach is appropriate
+- **Data characteristics**: The primary data artifacts are now prompts and context rather than tabular data and features (though features can still factor in)
+- **Tooling**: Different tools are required for pipelining, orchestration, and metrics
+- **Process adaptation**: Organizations must adapt their established processes to accommodate the new paradigm
+
+This transition is particularly challenging for enterprises that have invested heavily in building classical MLOps capabilities over the years.
+
+## Foundation Model Selection Criteria
+
+An important perspective shared is how enterprise leaders should think about foundation model selection. Rather than focusing on which models top the Hugging Face leaderboard, the speaker advocates for a more pragmatic evaluation framework centered on:
+
+- **Cost per query**: Understanding the actual expense of completing specific tasks
+- **Cost per user/response/day**: Building a comprehensive view of operational costs
+- **Speed, latency, and throughput**: Performance characteristics that matter for production workloads
+- **Problem-solution fit**: Whether the model fundamentally solves the business problem and delivers expected benefits
+
+This practical approach contrasts with the hype-driven model selection that often occurs in early experimentation phases.
+
+## The Emerging GenAI Stack
+
+The presentation references the a16z (Andreessen Horowitz) diagram of the emerging GenAI/LLM stack, which includes both familiar components (orchestration, monitoring, logging, caching) and new elements. Key observations include:
+
+- **New components**: Embedding models and vector databases represent genuinely new additions to the technology stack
+- **Evolved components**: Even familiar concepts like orchestration must be adapted, with tools like LangChain, LlamaIndex, and GripTape becoming essential
+- **Stack volatility**: The rapid evolution creates challenges for enterprises with long budget and infrastructure cycles
+
+The speaker notes that large organizations often struggle to adapt quickly to these changes due to their inherent bureaucratic processes around budget approval and infrastructure provisioning.
+
+## Enterprise-Scale Considerations
+
+At enterprise scale, several factors become particularly challenging:
+
+- **Pre-training investments**: Building your own foundation model requires massive investment (Bloomberg GPT is cited as an example)
+- **Fine-tuning costs**: Even fine-tuning represents a significant investment
+- **Storage explosion**: Models are large, and the data needed for systems like RAG is substantial
+- **Latency optimization**: Performance tuning becomes critical at scale
+- **Cost management**: Everything operates within budget constraints and ROI justification requirements
+
+### Strategic Recommendations
+
+The speaker offers practical guidance for enterprises:
+
+- **Avoid pre-training**: Unless your organization is like Bloomberg with specific needs, or you're a model vendor, pre-training your own LLM is generally not advisable
+- **Use scalable frameworks for fine-tuning**: If fine-tuning is necessary, leverage established frameworks that can scale
+- **Apply off-the-shelf optimization**: Techniques like quantization, memoization, and caching should be leveraged rather than reinvented
+- **Build for reuse**: Develop a portfolio of tools and architectures designed for reusability across use cases
+
+## The New Data Layer Challenge
+
+One of the most significant challenges highlighted is the evolution of the enterprise data layer. Organizations that have built data lakes, lakehouses, experiment metadata trackers, and model registries must now augment these with:
+
+- **Vector databases**: Essential for semantic search and RAG implementations
+- **Prompt hubs**: Centralized management of prompts
+- **Application databases**: More extensive application-level data storage than typically required in traditional analytics functions
+
+This represents a fundamental shift in how data and analytics teams structure their data infrastructure.
+
+## Monitoring and Evaluation
+
+The speaker emphasizes that monitoring in LLMOps is critically important but substantially more complex than in traditional MLOps. The challenge lies in building workflows that effectively combine:
+
+- Objective ground truth (where available)
+- Subject matter expertise
+- Human evaluation
+- LLM-as-a-judge evaluation approaches
+
+This multi-faceted approach to evaluation is still evolving, and best practices are not yet well established.
+
+## Guardrails Implementation
+
+For safety and control, the speaker recommends tools like NVIDIA's NeMo Guardrails, which are described as easy to configure and build. However, a significant open question remains: how do you standardize guardrails implementations across very large teams? At West Group, with 500 data scientists and engineers, ensuring everyone works to the same standards is a substantial organizational challenge.
+
+## Organizational and Process Challenges
+
+The dynamic, rapidly evolving architecture of the GenAI space poses particular challenges for large organizations. The speaker notes that even RAG, which just arrived on the scene, already has articles arguing it's becoming obsolete. This pace of change is difficult for enterprises to absorb.
+
+### Strategic Organizational Responses
+
+The speaker recommends:
+
+- **Centers of Excellence**: Building dedicated teams that can aggregate learnings across different use case teams
+- **Architecture teams**: Creating groups that bridge platform-level decisions with use-case-level implementations
+- **Cross-team learning**: Facilitating rapid knowledge sharing, which is admittedly difficult in large organizations
+
+## Team Structure Evolution
+
+The composition of ML/AI teams is changing with the advent of generative AI:
+
+- **New roles**: The "AI Engineer" role is emerging as a distinct position
+- **Cross-functional collaboration**: Software developers are increasingly working alongside ML engineers and data scientists
+- **Frontend emphasis**: Natural language interfaces bring users closer to the AI, requiring more frontend development
+- **Database expertise**: Increased need for database work to support the new data layer requirements
+
+## Historical Context and Maturity Perspective
+
+The speaker provides valuable historical perspective, noting that when data science first took off, 80-90% of organizations couldn't put solutions in production. There was similar confusion and hype. MLOps emerged to help mature these practices, and the speaker predicts the same will happen with LLMOps and generative AI.
+
+## Winning Strategy for Organizations
+
+The presentation concludes with a clear thesis: organizations that will succeed in this space are those that can:
+
+- Industrialize the generative AI development process
+- Leverage learnings from their existing MLOps journeys
+- Adapt those learnings to GenAI with appropriate modifications
+- Embrace necessary changes to teams, organizational structures, and operating models
+- Recognize that LLMOps is additive to MLOps, not a replacement
+
+The key message is that enterprises should not reinvent the wheel. Much of what has been built in MLOps over recent years still applies; organizations are simply adding new pieces to an existing foundation.
+
+## Cost Estimation Discussion
+
+During the Q&A, an important practical question arose about estimating cost per query. The speaker's advice:
+
+- Leverage pricing mechanisms provided by vendors (OpenAI, Azure, AWS Bedrock, etc.)
+- Accept that token counts are often uncertain and work with reasonable envelopes
+- Don't try to reinvent the wheel on pricing calculations
+- Be sensible and practical with estimates
+
+## Critical Assessment
+
+It's worth noting that this presentation is a practitioner's perspective rather than a documented case study with measurable outcomes. The insights are valuable for understanding enterprise challenges, but claims about best practices should be evaluated in context. The speaker's experience is primarily from one large organization, and approaches may vary across industries and organizational cultures. The recommendation to avoid pre-training, while generally sound, may not apply to all situations, particularly as costs decrease and specialized use cases emerge.

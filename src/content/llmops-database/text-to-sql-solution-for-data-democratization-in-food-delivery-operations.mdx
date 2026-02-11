@@ -1,0 +1,146 @@
+---
+title: "Text-to-SQL Solution for Data Democratization in Food Delivery Operations"
+slug: "text-to-sql-solution-for-data-democratization-in-food-delivery-operations"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "694ad9b740b8daf2e66a77ea"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2026-01-07T09:40:39.763Z"
+  lastUpdated: "2025-12-23T20:12:19.983Z"
+  createdOn: "2025-12-23T18:04:39.823Z"
+llmopsTags:
+  - "question-answering"
+  - "data-analysis"
+  - "structured-output"
+  - "rag"
+  - "embeddings"
+  - "prompt-engineering"
+  - "few-shot"
+  - "vector-search"
+  - "error-handling"
+  - "chunking"
+  - "serverless"
+  - "fastapi"
+  - "databases"
+  - "security"
+  - "cache"
+  - "openai"
+  - "databricks"
+  - "amazon-aws"
+company: "Swiggy"
+summary: "Swiggy, a food delivery and quick commerce company, developed Hermes, a text-to-SQL solution that enables non-technical users to query company data using natural language through Slack. The problem addressed was the significant time and technical expertise required for teams to access specific business metrics, creating bottlenecks in decision-making. The solution evolved from a basic GPT-3.5 implementation (V1) to a sophisticated RAG-based architecture with GPT-4o (V2) that compartmentalizes business units into \"charters\" with dedicated metadata and knowledge bases. Results include hundreds of users across the organization answering several thousand queries with average turnaround times under 2 minutes, dramatically improving data accessibility for product managers, data scientists, and analysts while reducing dependency on technical resources."
+link: "https://bytes.swiggy.com/hermes-a-text-to-sql-solution-at-swiggy-81573fb4fb6e"
+year: 2024
+seo:
+  title: "Swiggy: Text-to-SQL Solution for Data Democratization in Food Delivery Operations - ZenML LLMOps Database"
+  description: "Swiggy, a food delivery and quick commerce company, developed Hermes, a text-to-SQL solution that enables non-technical users to query company data using natural language through Slack. The problem addressed was the significant time and technical expertise required for teams to access specific business metrics, creating bottlenecks in decision-making. The solution evolved from a basic GPT-3.5 implementation (V1) to a sophisticated RAG-based architecture with GPT-4o (V2) that compartmentalizes business units into \"charters\" with dedicated metadata and knowledge bases. Results include hundreds of users across the organization answering several thousand queries with average turnaround times under 2 minutes, dramatically improving data accessibility for product managers, data scientists, and analysts while reducing dependency on technical resources."
+  canonical: "https://www.zenml.io/llmops-database/text-to-sql-solution-for-data-democratization-in-food-delivery-operations"
+  ogTitle: "Swiggy: Text-to-SQL Solution for Data Democratization in Food Delivery Operations - ZenML LLMOps Database"
+  ogDescription: "Swiggy, a food delivery and quick commerce company, developed Hermes, a text-to-SQL solution that enables non-technical users to query company data using natural language through Slack. The problem addressed was the significant time and technical expertise required for teams to access specific business metrics, creating bottlenecks in decision-making. The solution evolved from a basic GPT-3.5 implementation (V1) to a sophisticated RAG-based architecture with GPT-4o (V2) that compartmentalizes business units into \"charters\" with dedicated metadata and knowledge bases. Results include hundreds of users across the organization answering several thousand queries with average turnaround times under 2 minutes, dramatically improving data accessibility for product managers, data scientists, and analysts while reducing dependency on technical resources."
+---
+
+## Overview and Business Context
+
+Swiggy built Hermes as an internal text-to-SQL generative AI solution to democratize data access across their organization. The company operates in the food delivery and quick commerce space, making data-driven decisions critical to operations. The fundamental problem Hermes addresses is the friction involved in answering specific quantitative business questions—queries like "how many customers were impacted by a telco outage and missed receiving order-specific updates last month" or "what is the P95 of customer claims in a certain cohort of restaurants in a particular region." Without Hermes, such questions required either finding an existing dashboard (often unavailable), writing SQL queries directly (requiring database knowledge, access permissions, and SQL expertise), or submitting requests to analysts (taking minutes to days). This friction led to important questions going unasked or being answered with proxy or incorrect information.
+
+The motivation behind Hermes centered on three objectives: improving data accessibility by reducing dependency on technical resources like analysts, enhancing decision-making speed across different roles, and streamlining the data querying process to boost efficiency and productivity. The solution enables users to ask questions in natural language via Slack and receive both the generated SQL query and execution results directly in the messaging platform.
+
+## Technical Architecture Evolution
+
+### Hermes V1: Initial Implementation
+
+The first version of Hermes used a straightforward approach with GPT-3.5 variants. Users provided their own metadata (table and column descriptions) and typed prompts into the system. This implementation integrated with Lumos, Swiggy's in-house data catalog based on Alation. While initial performance assessments showed results generally aligned with industry benchmarks and existing vendor solutions, the team quickly discovered limitations when dealing with the complexity of real user queries at Swiggy's scale.
+
+The primary challenges identified in V1 included the sheer volume of data, tables, and columns that needed to be considered, and the necessity of incorporating Swiggy-specific business context. A particularly significant insight was that different business units had distinct but sometimes overlapping data structures—for example, metrics related to Swiggy Food differed from but resembled those for Swiggy Instamart. The "kitchen-sink approach" of treating all business needs and data uniformly proved ineffective.
+
+### Hermes V2: Production-Grade Architecture
+
+Based on V1 learnings, the team redesigned Hermes around the concept of "charters"—compartmentalized implementations for each business or logical unit (e.g., Swiggy Food, Swiggy Instamart, Swiggy Genie). Each charter maintains its own metadata and addresses specific use cases for teams within that business unit. The V2 architecture consists of three primary layers:
+
+The **user interface layer** leverages Slack as the entry point where users type natural language prompts and receive both the SQL query and output as responses. This integration choice capitalizes on existing organizational communication patterns and reduces friction in adoption.
+
+The **middleware layer** uses AWS Lambda to facilitate communication between the UI and the GenAI model. This layer incorporates preprocessing and formatting of inputs before sending them to the model pipeline, handling authentication, request routing, and response formatting.
+
+The **GenAI model layer** operates on Databricks. When a request arrives from middleware, a new Databricks job is created that fetches the appropriate charter's GenAI model (GPT-4o), generates the SQL query, executes it against the database, and returns both the query and results. This architecture choice enables scalable execution and proper resource management for compute-intensive operations.
+
+## RAG-Based Knowledge Base Approach
+
+The core innovation in V2 is implementing a Knowledge Base + RAG (Retrieval-Augmented Generation) approach that incorporates Swiggy-specific context to help the model select appropriate tables and columns. The knowledge base contains key metadata for each charter, including metrics definitions, table schemas, column descriptions, and reference SQL queries. The team emphasizes that metadata collection quality is paramount for text-to-SQL implementations for several reasons: it provides contextual understanding for mapping natural language to database structures, disambiguates terms (e.g., whether "sales" refers to a table or column), improves query accuracy, and enables scalability across different databases and data sources.
+
+### Multi-Stage Model Pipeline
+
+The model pipeline breaks down the user prompt into discrete stages to control information flow and minimize noise in the final query generation. The primary objective is passing clean, relevant information through each stage:
+
+**Metrics retrieval** forms the first stage, identifying relevant metrics to understand the user's question. This leverages the knowledge base through embedding-based vector lookup to fetch associated queries and historical SQL examples. This stage establishes what the user wants to measure.
+
+**Table and column retrieval** follows, identifying necessary tables and columns using metadata descriptions. The implementation combines LLM querying, filtering, and vector-based lookup. For tables with large numbers of columns, multiple LLM calls are made to avoid token limits. Column descriptions are matched with user questions and metrics using vector search to ensure all relevant columns are identified.
+
+**Few-shot SQL retrieval** leverages a corpus of ground-truth, verified reference queries maintained for key metrics. Vector-based retrieval fetches relevant reference queries to aid the generation process, providing the model with concrete examples of correct query patterns for similar questions.
+
+**Structured prompt creation** compiles all gathered information into a structured prompt. This includes querying the database to collect data snapshots (likely for validation or context), which are sent to the LLM for final SQL generation.
+
+**Query validation** forms the final stage where the generated SQL query is validated by executing it against the database. Errors are relayed back to the LLM for correction with a set number of retries. Once an executable SQL is obtained, it runs and results return to the user. If retries fail, the query is shared with users along with modification notes, maintaining transparency about limitations.
+
+## LLMOps Considerations and Production Practices
+
+### Evaluation and Continuous Improvement
+
+The team conducted systematic evaluations at both V1 and V2 stages. Initial assessments compared their implementation against multiple vendor solutions and research papers using out-of-the-box approaches with minimal Swiggy-specific modifications. V2 evaluations revealed that performance varied significantly based on charter-specific factors: charters with well-defined metadata and relatively smaller numbers of tables performed substantially better, validating the hypothesis that metadata quality from data governance efforts was crucial to overall performance.
+
+The compartmentalized charter approach proved beneficial for product lifecycle management, enabling the team to onboard new charters, test outputs independently, and make continuous adjustments to each knowledge base as needed. This modular architecture allows for iterative improvement without impacting other business units.
+
+User interaction patterns revealed important insights for prompt engineering. Clear, straightforward prompts from users provided better instructions for the model, resulting in superior performance compared to ambiguous prompts that produced incorrect or partially-correct answers. As the implementation improved and users gained familiarity with the system, first-shot acceptance rates for generated SQL increased dramatically, suggesting both technical improvements and user education contributed to success.
+
+### Feedback Mechanisms and Quality Assurance
+
+Swiggy implemented a feedback mechanism directly within the Slack bot where users can rate the accuracy of returned queries. This feedback loop enables the team to evaluate model failures, conduct root cause analyses, and develop fixes. The direct integration into the user workflow ensures high feedback collection rates without requiring users to switch contexts.
+
+For new charter onboarding, an automated system ensures quality control. A cron job automatically generates queries for all metrics in newly onboarded charters once metadata is populated, sending these queries for quick QA where relevant analysts validate responses. This systematic approach ensures baseline quality before exposing new charters to broader user populations.
+
+### Security and Access Control
+
+Data security is handled through seamless authentication integration with Snowflake. The system only executes queries on tables that users have access to based on their existing permissions, ensuring the text-to-SQL capability doesn't bypass established data governance policies. This approach maintains security boundaries while enabling self-service data access.
+
+## Adoption Patterns and Use Cases
+
+Hermes has been adopted by hundreds of users across Swiggy over several months, processing several thousand queries with average turnaround times under 2 minutes. Different organizational roles leverage the system for distinct purposes:
+
+**Product Managers and Business teams** use Hermes to obtain sizing numbers for initiatives, conduct post-release validations, and perform quick metric check-ins across dimensions like cities, time slots, and customer segments. This enables rapid validation of hypotheses and reduces the iteration time for product decisions.
+
+**Data scientists** leverage Hermes to independently conduct deep dives into issues such as identifying discrepancies (e.g., differences between predicted and actual delivery times), gathering examples for root cause analyses (e.g., orders with egregious delays), and conducting detailed investigations into specific geographical locations based on examples. This self-service capability allows data scientists to explore more hypotheses in parallel without queuing for analyst support.
+
+**Analysts** use Hermes to answer specific questions during analyses, streamlining validation processes. Examples include tracking current trends and diving deeper into trend distributions. This allows analysts to focus on interpretation and strategic recommendations rather than query construction.
+
+## Challenges and Balanced Assessment
+
+While the case study presents Hermes as a success, several challenges and limitations deserve consideration. The V1 experience revealed that out-of-the-box solutions and simple implementations weren't sufficient for Swiggy's complexity, requiring substantial custom engineering. The need to compartmentalize by charter suggests that truly general-purpose text-to-SQL solutions face significant challenges with large, complex data estates.
+
+The dependency on high-quality metadata is both a strength and potential limitation. Organizations without mature data governance practices or comprehensive metadata management may struggle to replicate this approach. The case study acknowledges that performance "heavily depended on the complexity of the use cases and the quality of the metadata added to the knowledge base," suggesting significant variability in effectiveness across different domains.
+
+The requirement for clear, straightforward prompts from users indicates that while the system reduces technical barriers, it doesn't entirely eliminate the need for users to understand how to ask good questions. There's an implicit learning curve and prompt engineering burden shifted to end users, though the case study suggests this improves with familiarity.
+
+The query validation approach with retries addresses execution errors but doesn't necessarily guarantee semantic correctness—a query might execute successfully but answer the wrong question if the model misunderstood the user's intent. The reliance on user feedback to identify such issues means some incorrect queries may be accepted and acted upon before errors are detected.
+
+## Future Development Directions
+
+Swiggy outlines several upcoming improvements that reveal current limitations and areas for enhancement:
+
+Adding a **knowledge base of historical queries** would leverage Swiggy's corpus of past and current queries (thousands run daily) as few-shot examples to augment the model pipeline. This suggests the current few-shot approach using curated reference queries is limited in coverage.
+
+A **query explanation layer** would provide logic behind query construction to drive user confidence and help the LLM generate better queries. The need for this feature suggests current opacity in query generation may limit trust and adoption, particularly for complex analytical questions where users need to verify correctness.
+
+A **ReAct agent** for enhancing column retrieval and summarization aims to reduce noise in the final prompt, improving accuracy. This indicates that the current multi-stage pipeline still passes some irrelevant information to the final generation stage, degrading performance.
+
+## Technical Stack and Integration Points
+
+The production system integrates multiple technologies: GPT-4o as the core language model, Databricks for compute and orchestration, AWS Lambda for middleware, Slack for the user interface, Snowflake as the data warehouse with authentication integration, and Alation-based Lumos as the data catalog. Vector search capabilities enable embedding-based retrieval for metrics, columns, and few-shot examples, though the specific vector database technology isn't mentioned. This multi-component architecture requires coordination across several systems and suggests significant operational complexity in maintaining the production system.
+
+The use of Databricks job creation for each query request is an interesting architectural choice that provides isolation and resource management but may introduce latency and cost considerations at scale. The average turnaround time of under 2 minutes is presented positively but represents a significant delay compared to traditional SQL query execution, suggesting the multi-stage pipeline and LLM inference introduce substantial overhead.
+
+## Organizational Impact and Maturity
+
+Hermes represents a maturing LLMOps practice at Swiggy, evolving from experimental V1 to production V2 with systematic evaluation, user feedback, automated quality assurance, and security integration. The charter-based architecture demonstrates organizational sophistication in recognizing that different business units require tailored approaches rather than one-size-fits-all solutions. The involvement of multiple senior engineers and leaders (acknowledged in the article) suggests significant organizational investment and commitment to the initiative.
+
+The democratization of data access achieved through Hermes has the potential to shift organizational dynamics, reducing bottlenecks in analytics teams while enabling broader participation in data-driven decision-making. However, this also requires ongoing investment in metadata quality, user education, and system maintenance to sustain these benefits. The case study represents a realistic example of deploying LLMs in production environments with complex requirements, showing both the potential and the substantial engineering effort required to make such systems effective.

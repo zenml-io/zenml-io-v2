@@ -1,0 +1,172 @@
+---
+title: "Building a Production Fantasy Football AI Assistant in 8 Weeks"
+slug: "building-a-production-fantasy-football-ai-assistant-in-8-weeks"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "693167e7f1a6aff475d0e50b"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:33:21.310Z"
+  createdOn: "2025-12-04T10:52:23.603Z"
+llmopsTags:
+  - "chatbot"
+  - "question-answering"
+  - "data-analysis"
+  - "realtime-application"
+  - "prompt-engineering"
+  - "agent-based"
+  - "multi-agent-systems"
+  - "token-optimization"
+  - "latency-optimization"
+  - "cost-optimization"
+  - "fallback-strategies"
+  - "mcp"
+  - "error-handling"
+  - "semantic-search"
+  - "kubernetes"
+  - "docker"
+  - "monitoring"
+  - "api-gateway"
+  - "scaling"
+  - "orchestration"
+  - "open-source"
+  - "guardrails"
+  - "reliability"
+  - "scalability"
+  - "cache"
+  - "fastapi"
+  - "anthropic"
+  - "amazon-aws"
+company: "NFL"
+summary: "The NFL, in collaboration with AWS Generative AI Innovation Center, developed a fantasy football AI assistant for NFL Plus users that went from concept to production in just 8 weeks. Fantasy football managers face overwhelming amounts of data and conflicting expert advice, making roster decisions stressful and time-consuming. The team built an agentic AI system using Amazon Bedrock, Strands Agent framework, and Model Context Protocol (MCP) to provide analyst-grade fantasy advice in under 5 seconds, achieving 90% analyst approval ratings. The system handles complex multi-step reasoning, accesses NFL NextGen Stats data through semantic data layers, and successfully manages peak Sunday traffic loads with zero reported incidents in the first month of 10,000+ questions."
+link: "https://www.youtube.com/watch?v=qen3nBhEalM"
+year: 2025
+seo:
+  title: "NFL: Building a Production Fantasy Football AI Assistant in 8 Weeks - ZenML LLMOps Database"
+  description: "The NFL, in collaboration with AWS Generative AI Innovation Center, developed a fantasy football AI assistant for NFL Plus users that went from concept to production in just 8 weeks. Fantasy football managers face overwhelming amounts of data and conflicting expert advice, making roster decisions stressful and time-consuming. The team built an agentic AI system using Amazon Bedrock, Strands Agent framework, and Model Context Protocol (MCP) to provide analyst-grade fantasy advice in under 5 seconds, achieving 90% analyst approval ratings. The system handles complex multi-step reasoning, accesses NFL NextGen Stats data through semantic data layers, and successfully manages peak Sunday traffic loads with zero reported incidents in the first month of 10,000+ questions."
+  canonical: "https://www.zenml.io/llmops-database/building-a-production-fantasy-football-ai-assistant-in-8-weeks"
+  ogTitle: "NFL: Building a Production Fantasy Football AI Assistant in 8 Weeks - ZenML LLMOps Database"
+  ogDescription: "The NFL, in collaboration with AWS Generative AI Innovation Center, developed a fantasy football AI assistant for NFL Plus users that went from concept to production in just 8 weeks. Fantasy football managers face overwhelming amounts of data and conflicting expert advice, making roster decisions stressful and time-consuming. The team built an agentic AI system using Amazon Bedrock, Strands Agent framework, and Model Context Protocol (MCP) to provide analyst-grade fantasy advice in under 5 seconds, achieving 90% analyst approval ratings. The system handles complex multi-step reasoning, accesses NFL NextGen Stats data through semantic data layers, and successfully manages peak Sunday traffic loads with zero reported incidents in the first month of 10,000+ questions."
+---
+
+## Overview
+
+The NFL's NextGen Stats group partnered with AWS Generative AI Innovation Center to build a production-grade fantasy football AI assistant that launched in approximately 8 weeks during the 2024 season. Mike Band, senior manager of research and analytics at NFL NextGen Stats, worked with Michael Butler (principal deep learning architect) and Henry Wong (senior applied scientist) from AWS to create an agentic system that provides fantasy football advice to NFL Plus subscribers through the NFL Pro platform. The use case addresses a real pain point for fantasy football managers who are overwhelmed with data from multiple sources, conflicting expert opinions, injury reports updating by the minute, and high-stakes decisions that need to be made within tight timeframes before games begin.
+
+The project represents a compelling example of getting LLMs into production under significant time pressure while maintaining quality standards appropriate for the NFL brand. The team went from initial concept in June to production launch in time for the regular season, with no formal design or requirements at the outset—just an idea and a pressing deadline. The case study emphasizes pragmatic production decisions over perfection, making deliberate trade-offs to achieve three core requirements: analyst-expert approval (90% directionally correct answers), speed (initial responses under 5 seconds, complex analysis under 30 seconds at 95th percentile), and security/reliability (zero incidents due to strict guardrails preventing the system from answering non-fantasy questions).
+
+## Technical Architecture
+
+The system architecture centers on an agentic framework hosted on Amazon EKS (Elastic Kubernetes Service) with auto-scaling capabilities. User queries flow into the fantasy AI agent, which uses large language models from Amazon Bedrock for reasoning and orchestration. The agent maintains conversation context by pulling session memory from Amazon S3 buckets, allowing it to understand follow-up questions within a conversation thread.
+
+A key architectural decision was the separation of concerns between the agent logic and data access through Model Context Protocol (MCP). The agent connects via MCP to multiple data sources including NFL NextGen Stats APIs (providing comprehensive player tracking data and statistics) and RotWire (supplying additional roster and player information). This semantic data layer architecture allows the agent to make tool calls to retrieve data without embedding complex data access logic directly in the agent code. The separation provides several benefits: independent scaling of agent computation versus data layer resources, reusability of the data layer for future agent personas or use cases, and cleaner maintainability of both components.
+
+The entire request-response cycle from user input through agent reasoning, tool calling, data retrieval, and response generation completes in under 5 seconds even during peak Sunday traffic when football games are happening and user demand spikes dramatically. This performance requirement was non-negotiable for user experience, as fantasy managers often make last-minute decisions right before kickoff.
+
+## Framework Selection and Development Acceleration
+
+The team selected Strands Agent as their agentic framework, which proved instrumental in achieving the aggressive 8-week timeline. Strands Agent is an open-source framework that provides production-ready scaffolding for building agentic systems with just a few lines of code. The framework handles critical undifferentiated functionality including session management, prompt management, multi-model support for plugging in different LLMs, and model-driven orchestration where the LLM itself decides which tools to call and in what sequence.
+
+By using Strands Agent, the development team could focus their limited time on the domain-specific logic—how to reason about fantasy football questions, which data to retrieve, how to formulate responses—rather than building infrastructure for agent orchestration from scratch. The model-driven orchestration capability specifically enabled the agent to autonomously plan multi-step reasoning paths, call multiple tools as needed, and iterate through reasoning loops to arrive at comprehensive answers.
+
+The team also leveraged AI-assisted coding extensively to accelerate development, though they emphasize this was done thoughtfully rather than blindly. AI coding assistants proved valuable for three specific purposes: learning new frameworks faster through customized Q&A rather than reading documentation cover-to-cover, understanding unfamiliar concepts or technologies in depth (like EKS orchestration details), and generating undifferentiated code like test suites that would otherwise take hours or days to write manually. The team stresses that developers still needed to validate all AI-generated code rather than blindly accepting it, but the acceleration was substantial—test writing that might take hours or days compressed to minutes of generation plus validation time.
+
+## Semantic Data Dictionary and Token Optimization
+
+One of the most interesting technical innovations was the creation of a semantic data dictionary to help the agent understand NFL NextGen Stats data without overwhelming token budgets. NFL NextGen Stats contains hundreds of unique data fields with complex contextual meanings—"snaps" alone can refer to snap share, quarterback dropbacks, ratios, percentages, or situational metrics depending on context. Simply providing rich, human-readable API documentation to the agent for every query would consume hundreds of thousands of tokens and slow response times unacceptably.
+
+The team worked with NFL Pro analysts to understand how human experts break down fantasy questions and which data sources they use for different types of analysis. They categorized each NextGen Stats API and data source by its contextual usage, building a basic data dictionary that encoded when and how different stats should be applied. Rather than passing verbose descriptions, they stripped the dictionary down to just field names and concise usage guidance in language optimized for LLM understanding rather than human readability.
+
+The team then used an LLM-assisted refinement process where they asked the model how it would use various stats, evaluated those responses with a larger model, and iteratively refined the data dictionary until the LLM demonstrated proper understanding. This semantic approach allowed the agent to receive only the relevant portions of the data dictionary at runtime based on the type of question asked. The agent could then use its reasoning capabilities within the Strands Agent loop to determine what additional data it needed and retrieve it through tool calls.
+
+This semantic data dictionary approach reduced initial token consumption by approximately 70% compared to providing comprehensive API documentation. The token savings directly translated to faster response times, higher throughput, lower costs, and the ability to handle more concurrent users during peak traffic. The approach represents a pragmatic production solution—not a complex third-party service or elaborate data layer, but a focused dictionary that provided just enough context for the agent to make intelligent decisions about data retrieval.
+
+## Tool Design Evolution and Consolidation
+
+The team initially made a common mistake in tool design that provides valuable lessons for others building agentic systems. They started by creating individual tools for each major use case they anticipated—separate tools for weekly projections, season projections, rest-of-season projections, each broken down further by player, team, or defense. This resulted in 29 different narrowly-scoped tools.
+
+In practice, this fragmented tool set caused problems during agent execution. When given instructions to be complete and thorough, the agent would make dozens of sequential tool calls, each returning narrow bits of information that lacked rich context. The agent essentially became a sophisticated API caller rather than an autonomous reasoning system. Response times suffered due to multiple round-trips, and the fragmented data made it difficult for the agent to synthesize comprehensive answers to broad questions.
+
+The solution was to consolidate tools based on data boundaries rather than anticipated use cases. For example, instead of six separate projection tools, they created a single "get projections" tool that accepts multiple dimensions as parameters—projection type (weekly, season, rest-of-season), entity type (player, team, defense), and the specific entities of interest. This gave the agent autonomy to express rich, nuanced intent in a single tool call, retrieving all related data at once rather than through multiple loops.
+
+The trade-off was increased complexity in the tool implementation itself, as the consolidated tools needed logic to handle various parameter combinations and compress the returned data appropriately for token efficiency. The team reduced their tool spec by approximately 50% through this consolidation—not in terms of token count (since individual tool docstrings became richer) but in the number of distinct tools, which translated to fewer decision points for the agent, fewer LLM invocations, lower latency, and higher throughput.
+
+To help the agent understand when and how to use the flexible parameters in consolidated tools, the team again used LLM-assisted refinement. They stripped everything from docstrings except parameter definitions, asked the agent how it would use those parameters, evaluated with a larger model, and refined until the docstrings were optimized for LLM comprehension. The result was docstrings that might not make immediate sense to a human developer on first reading, but which the LLM understood naturally. They simply added human-readable comments below the LLM-optimized docstrings for developer maintenance purposes.
+
+## Production Resilience: Fallback Models and Circuit Breakers
+
+Recognizing the risks of launching with emerging non-deterministic technology on a compressed timeline, the team built defensive mechanisms to ensure reliability even under unexpected conditions. One of the most critical was a fallback model provider system to handle throttling and capacity limits.
+
+Despite careful planning based on NFL Pro traffic history and appropriate service quota configuration for Amazon Bedrock, the team recognized uncertainty around actual production behavior—user volumes might be higher than expected, questions might be more complex than anticipated, or emergent agent behavior might differ from testing. If users encountered throttling exceptions or capacity limits, they wouldn't return, and the NFL's brand would be damaged.
+
+The team extended the Strands Agent framework with a custom "bedrock fallback provider" capability that sits between the agent and the Bedrock service. When Bedrock returns any throttling exception, quota exceeded message, or service unavailability error, this fallback layer intercepts the message and redirects the request to a secondary model. They chose the Anthropic family of models with a frontier model as primary and a well-tested model as fallback. Users receive responses with only milliseconds of additional latency and never see error messages, while the team gains battle-tested production data on actual throughput and token consumption patterns.
+
+The team acknowledges this introduces bimodal system behavior—an anti-pattern where you can't predict which model will service a request. They made this deliberate trade-off to achieve a 90% reduction in throttling exceptions on launch day, prioritizing user experience over architectural purity. The fallback mechanism is explicitly considered technical debt that will be removed once they have real-world production data to properly calibrate service quotas. This represents a pragmatic production decision where short-term measures ensure successful launch while planning for proper long-term architecture.
+
+Complementing the fallback provider is a circuit breaker pattern that prevents continuously hammering a throttled service. When the primary model returns throttling errors, the circuit breaker opens and routes traffic to the fallback model for a configured time period. It then reevaluates the primary model's availability, and if throttling has cleared, closes the circuit to resume normal operation. This prevents the system from adding load to an already overwhelmed service while maintaining user experience.
+
+## Observability and Emergent Behavior Detection
+
+The team recognized that emerging technology with non-deterministic outputs requires deep observability to understand actual behavior before it reaches users at scale. They extended the Strands Agent framework to provide per-turn reasoning instrumentation, giving visibility into exactly what the agent was doing at each step—which tools it called, with what parameters, what data was returned, and how it used that information in its reasoning process.
+
+This instrumentation proved critical during user acceptance testing when NFL Pro analysts submitted hundreds of test questions. The observability revealed certain decision patterns that would have caused serious problems in production. One particularly illuminating example came from the question "Who's the best wide receiver to pick up for week 10?" The agent provided an excellent, thoroughly researched answer that passed all QA checkpoints. However, the instrumentation revealed the query consumed 1.3 million tokens.
+
+The root cause was the agent's interpretation of its instructions to provide "complex and thorough reasoning, defensible and backed by data." It requested stats, backstory context, and projections for every single wide receiver in the NFL—roughly 80+ players—when realistically fantasy managers only consider the top 5-10 available options for waiver wire pickups. Without the per-turn instrumentation, this token consumption pattern would have gone undetected until production, where it would have devastated throughput and potentially caused capacity issues during peak usage.
+
+The team used these insights to implement appropriate guardrails around maximum data retrieval, constraining how much data the agent could pull under various circumstances while still allowing it autonomy to make intelligent decisions. The lesson emphasized is that even with unit tests, UAT, and performance testing, teams must interrogate model behavior until they understand emergent patterns inside and out, especially with non-deterministic AI systems.
+
+## Caching Strategy for Token-Rich Environments
+
+Given the vast scope of NFL NextGen Stats data, even with all the optimizations around semantic data dictionaries, consolidated tools, and guardrails on data retrieval, the system still operated in an inherently token-rich environment. The team implemented a sophisticated caching strategy to dramatically improve throughput and reduce costs.
+
+They leveraged the four caching tiers available in the Anthropic model family they were using. Most teams already use two standard caching points: system prompts (which typically don't change between requests) and tool specifications (which remain constant for a given agent version). The team had two additional cache tiers to allocate strategically.
+
+Rather than trying to build a complex predictive algorithm for caching behavior before launch, they studied conversational patterns from NFL Pro analysts and real fantasy users they could access. This revealed that fantasy users tend to ask follow-up questions about the same entity—if they ask about Justin Jefferson's outlook for the weekend, the next question is likely also about Justin Jefferson rather than switching to a completely different player. The agent might retrieve player stats (50 tokens), relevant news articles (280 tokens), injury context, and other data. Without caching, every follow-up question about the same player would re-retrieve all that data.
+
+The team implemented a simple sliding window mechanism for the two additional cache tiers, caching the two most recent "heavy hitter" MCP tool calls—those returning substantial token volumes. When a new heavy tool call comes in, the oldest cached response slides out. This straightforward pattern, implemented after all other optimizations, increased agent throughput by 2x and reduced costs by 45%. The team emphasizes that simple, practical patterns often deliver dramatic results in production, and it's better to ship the 80% win quickly using real-world data to optimize further rather than trying to achieve perfect prediction before launch.
+
+The caching strategy also interacts with their consolidated tool design—by having tools return richer data in single calls rather than fragmented data across many calls, the cached data becomes more valuable across follow-up queries, creating compounding benefits from the architectural decisions.
+
+## Mental Model for Prioritizing Agentic Features
+
+A significant contribution from this case study is the mental model the team shares for thinking about feature prioritization when building agentic applications under time pressure. They break agentic applications into two fundamental layers: intelligence and delivery.
+
+Intelligence comprises reasoning (the agent's ability to think, plan, orchestrate, and execute steps), tools (the mechanisms for taking actions), and data (the information the agent operates on). The delivery layer encompasses infrastructure (resilience, security, privacy, compliance, performance) and user experience (how intelligence is exposed to users, interface design, accessibility).
+
+The critical insight is that intelligence is the product in agentic AI applications. If the agent doesn't provide valuable, accurate, timely intelligence, users won't return regardless of how perfect the infrastructure is or how polished the UX appears. The team's philosophy became: get intelligence right first, then ship "good enough" on delivery. This doesn't mean neglecting well-architected principles or creating a poor user experience, but rather prioritizing relentlessly to ensure the core value proposition works before perfecting supporting elements.
+
+For fantasy AI, this meant focusing on three non-negotiable intelligence metrics: 90% analyst approval on answer quality, response streaming in under 5 seconds, and complex analysis completion within 30 seconds. The delivery layer needed to be secure, reliable, and capable of handling traffic spikes, but features like conversation history, league integration, user feedback loops, and custom preferences—all valuable—were explicitly deferred because they didn't prove "job number one."
+
+Importantly, the team designed delivery features like conversation history to be "reconfiguration actions" rather than "refactors" when the time comes to implement them. Because they used Strands Agent's S3 session manager to persist conversation data from day one, exposing that history to users is primarily a front-end exercise rather than a backend rebuild. These are the types of design decisions that allow rapid iteration after proving the core intelligence value.
+
+## Launch Results and Beyond
+
+The fantasy AI assistant launched successfully for the 2024 NFL season with impressive results. In the first month of production, the system handled over 10,000 questions from users with zero reported incidents—a critical achievement given the NFL's stringent requirements around brand safety and the legal implications of providing advice that could be construed as gambling recommendations. The guardrails preventing the assistant from answering non-fantasy questions functioned perfectly.
+
+The system achieved its core metrics: 90% of responses were directionally approved by NFL fantasy experts, meaning analysts agreed with the reasoning and recommendations even if they might have framed them slightly differently. Initial question responses streamed back to users in under 5 seconds, and complex multi-step analysis requiring multiple data sources completed in under 30 seconds at the 95th percentile. The system successfully handled the dramatic traffic spikes that occur on Sunday afternoons when games are happening, Thursday nights, and Monday nights—the most critical times when fantasy managers need fast advice.
+
+Beyond the external user-facing application, the NFL is now exploring internal use cases. NFL analysts who write weekly insights and create content for broadcasters are using the fantasy AI assistant to bootstrap their work, dramatically increasing productivity. The team demonstrated an example where they asked the AI to analyze Patriots rookie running back Traveon Henderson's Week 13 performance against the Jets and format the analysis as a four-sentence NextGen Stats insight. The AI-generated insight closely matched what a human analyst wrote independently, including similar statistical highlights (27.3 fantasy points, 90% snap share, 9 missed tackles forced, 37.5% missed tackle rate) while presenting the information in the proper format and style.
+
+The team is careful to note this isn't about replacing human analysts, whose football acumen and contextual knowledge (like a defensive coordinator being fired affecting team performance) remains essential. Rather, the AI assists with research, helps find statistical nuggets, drafts initial content in the right format, and allows the team to potentially 10x their output. A human analyst might write 5 insights per week; with AI assistance for research and initial drafting, that same analyst might produce 20-30 insights of comparable quality, focusing their expertise on validation, contextualization, and refinement rather than manual data gathering.
+
+## Key Takeaways for LLMOps Practitioners
+
+This case study offers several valuable lessons for teams deploying LLMs in production, particularly under aggressive timelines. The emphasis throughout is on pragmatic production decisions rather than architectural perfection:
+
+**Make deliberate trade-offs with full awareness**: The fallback model provider introduces bimodal system behavior that the team openly acknowledges as technical debt. They accepted this trade-off to ensure user experience on launch day, with explicit plans to remove it once real-world data allows proper capacity planning. Being honest about trade-offs and their implications, while having a remediation plan, is more valuable than pretending compromises don't exist.
+
+**Focus on intelligence first, delivery second**: For agentic applications, if the core intelligence doesn't deliver value, users won't return regardless of infrastructure polish. Prove the core value proposition with the simplest adequate delivery layer, then iterate based on real usage patterns.
+
+**Use frameworks to accelerate development**: Strands Agent provided weeks or months of acceleration by handling undifferentiated orchestration concerns. Selecting the right framework and accepting some framework-specific patterns is often worth the trade-off for development speed.
+
+**Optimize for LLM understanding, not human readability**: The semantic data dictionary and LLM-optimized tool docstrings reduced tokens by 70% and improved agent decision-making by speaking in language the model naturally understands, even if developers found it initially less intuitive.
+
+**Deep observability is non-negotiable**: Per-turn reasoning instrumentation revealed the 1.3-million-token query that passed all functional tests but would have destroyed production throughput. Understanding emergent behavior through instrumentation is essential with non-deterministic systems.
+
+**Simple patterns often win**: The sliding window caching mechanism was straightforward to implement but delivered 2x throughput improvement and 45% cost reduction. Don't over-engineer before you have real-world data to optimize against.
+
+**Design for evolution**: Using patterns like MCP for data access and frameworks with pluggable components means features like conversation history become configuration rather than refactoring when the time comes to implement them.
+
+The case study represents a realistic view of production LLM deployment—not a perfect architecture with unlimited time and resources, but a functional system built under pressure that delivers real value while explicitly acknowledging its limitations and planned evolution. The team's transparency about challenges, failures, and trade-offs makes this an unusually valuable learning resource for practitioners facing similar constraints.

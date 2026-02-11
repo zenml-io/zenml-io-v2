@@ -1,0 +1,151 @@
+---
+title: "Automated Sports Commentary Generation using LLMs"
+slug: "automated-sports-commentary-generation-using-llms"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f414be0052aa9e40575a4"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:37:59.885Z"
+  createdOn: "2024-11-21T14:18:51.964Z"
+llmopsTags:
+  - "cache"
+  - "databases"
+  - "error-handling"
+  - "few-shot"
+  - "guardrails"
+  - "microservices"
+  - "monitoring"
+  - "openai"
+  - "prompt-engineering"
+  - "realtime-application"
+  - "reliability"
+  - "scaling"
+  - "structured-output"
+  - "summarization"
+  - "system-prompts"
+  - "token-optimization"
+  - "translation"
+company: "WSC Sport"
+summary: "WSC Sport developed an automated system to generate real-time sports commentary and recaps using LLMs. The system takes game events data and creates coherent, engaging narratives that can be automatically translated into multiple languages and delivered with synthesized voice commentary. The solution reduced production time from 3-4 hours to 1-2 minutes while maintaining high quality and accuracy."
+link: "https://www.youtube.com/watch?v=XVfmzkJYl-8"
+year: 2023
+seo:
+  title: "WSC Sport: Automated Sports Commentary Generation using LLMs - ZenML LLMOps Database"
+  description: "WSC Sport developed an automated system to generate real-time sports commentary and recaps using LLMs. The system takes game events data and creates coherent, engaging narratives that can be automatically translated into multiple languages and delivered with synthesized voice commentary. The solution reduced production time from 3-4 hours to 1-2 minutes while maintaining high quality and accuracy."
+  canonical: "https://www.zenml.io/llmops-database/automated-sports-commentary-generation-using-llms"
+  ogTitle: "WSC Sport: Automated Sports Commentary Generation using LLMs - ZenML LLMOps Database"
+  ogDescription: "WSC Sport developed an automated system to generate real-time sports commentary and recaps using LLMs. The system takes game events data and creates coherent, engaging narratives that can be automatically translated into multiple languages and delivered with synthesized voice commentary. The solution reduced production time from 3-4 hours to 1-2 minutes while maintaining high quality and accuracy."
+---
+
+## Overview
+
+WSC Sport, a sports technology company with approximately 400 employees operating globally, has developed an automated AI-powered sports commentary system that generates complete game recap videos with synthetic narration. The company works with major sports leagues including NBA, NFL, NHL, Bundesliga, and Premier League. This case study, presented by Alik who leads the NLP team at WSC Sport, demonstrates how they built a production system that reduces the time to create narrated sports recaps from 3-4 hours to approximately 1-2 minutes.
+
+The fundamental problem they're solving is meeting the demands of modern sports consumers, particularly younger audiences who don't want to watch entire games but instead prefer quick 5-10 minute summaries that tell the complete story with all the key moments and interesting statistics. Traditional production of such content requires human commentators who need to know all the game information, statistics, player backgrounds (such as returns from injury), and game momentum—a process that traditionally takes hours including data collection, script writing, studio recording, and quality assurance.
+
+## System Architecture
+
+The production pipeline consists of several key components working together:
+
+**Highlight Generation**: WSC Sport's core technology automatically identifies and extracts key moments from sports broadcasts within minutes. This existing capability provides the foundation—the system already knows what events occurred and can rate their significance.
+
+**Script Generation (Roger)**: The LLM-based component they internally call "Roger" takes all the event data and background knowledge to write coherent scripts. This includes understanding what happened before and during the game, momentum shifts (like comebacks from deficits), interesting statistics, and notable achievements (such as record-breaking performances like LeBron's historic moments that everyone talks about).
+
+**Audio Synthesis (John)**: The text-to-speech component they call "John" serves as the synthetic commentator. It must stay synchronized with the video content, know when to inject emotion and excitement, and produce natural-sounding narration that matches what's happening on screen.
+
+**Translation Layer**: An additional model handles translation to multiple languages including Spanish, French, Portuguese (Brazilian), Turkish, and Polish—each with its own challenges and nuances.
+
+## Data Structure and Event Representation
+
+The system works with rich structured data about each game event. For each moment, they have access to:
+- Event ratings indicating how unusual or significant the action is
+- The specific action type (dunks, three-pointers, assists, etc.)
+- Special parameters and attributes
+- Statistical context
+- Player and team information
+
+This structured metadata is crucial because, as they emphasize throughout the presentation, they explicitly provide this information to the model rather than having it guess—a key strategy for reducing hallucinations.
+
+## Evolution of Approaches
+
+**Naive Approach (Zero-Shot)**: Their initial attempt was straightforward—feed all events with their details into the model and generate the complete script in one pass. This approach failed for several reasons:
+- Length control was nearly impossible—they couldn't control how verbosely each event was described
+- Synchronization broke down because if one event was described with 2-3 sentences while the video had already moved to the next event, the narration would fall out of sync and potentially spoil upcoming action
+- Limited ability to focus the model's attention on specific aspects of each event
+
+**Sequential Approach**: They moved to processing each event in isolation, which provided better control but introduced new challenges.
+
+## Key Technical Challenges
+
+**Repetition (Petition)**: When generating a 2-minute recap, certain phrases would repeat. For example, every replay might trigger "let's take another look" which becomes grating to viewers. The system needed to vary its language while maintaining appropriate context.
+
+**Logical Errors**: The model needed to understand sports commentary conventions. For example, it's nonsensical to say a team is "still leading" less than a minute into a game—there's no "still" about it. The model needed to understand the logical context of sports timing.
+
+**Hallucinations**: This was described as a particularly difficult problem. Examples included:
+- A player who was a rookie (first-year player) two years ago might still be described as a rookie by a model trained on older data
+- The model might invent statistics or events that didn't happen
+- These errors could cause serious problems with leagues and embarrass the company
+
+## Three-Pillar Solution
+
+**1. System Prompt Engineering**
+
+Their system prompt follows three guiding principles:
+- **Contextual awareness**: The prompt provides context about which sport, which league, and even which specific competition is being covered. Different leagues have different jargon and vocabulary.
+- **Structured approach**: They work in a highly structured manner, explicitly telling the model who the players are, who the teams are, and various attributes rather than letting it guess.
+- **Explicit instructions**: Clear guidance on what to do and what not to do. For example, NBA specifically doesn't want negative sentiment about players having bad nights—even if someone shot 10% from the field, they shouldn't highlight this negatively in the broadcast recap.
+
+**2. Dynamic Prompt Instructions**
+
+To combat repetition and hallucinations, they built a system where the few-shot examples in the prompt are dynamically selected based on the current event being described. The system indexes examples by:
+- Action type
+- Time in game
+- Special attributes
+- Whether statistics were involved
+
+For each incoming event, they retrieve relevant examples and perform random sampling from the matched pool. This significantly reduced repetitiveness in the output.
+
+They are currently developing a more semantic approach to this retrieval, moving beyond simple indexing because as they scale across all sports, there are many different attributes that vary between sports, making pure indexing approaches unwieldy.
+
+**3. Structured Metadata**
+
+Rather than describing events in natural language and hoping the model extracts the right information, they explicitly provide structured data: what the action was, what parameters applied, what happened after the action, any statistics—all in an explicit format to minimize model errors.
+
+## Hallucination Detection and Guardrails
+
+Even with all the above measures, hallucination remained a significant challenge. They implemented a guardrailing process using Chain of Thought (CoT) prompting for detection.
+
+The example given: An event was described as having a "steal" (ball interception) when no steal actually occurred. Their solution:
+
+- They converted their detection prompt into a Chain of Thought system prompt
+- The model was instructed to break down the problem into smaller verification steps
+- Through additional iterations, the model checks for assertions versus the actual event data
+- If a "steal" is mentioned but the play action was actually a "two-pointer," the system identifies this discrepancy
+- Similarly for invented "momentum" claims that weren't supported by the event description
+
+The presentation emphasized that while Chain of Thought is well-documented in academic papers, translating it to practical production use required careful prompt engineering to structure the verification process appropriately.
+
+## Production Deployment Considerations
+
+The system is currently deployed in production, visible in the NBA app with Spanish, French, and Portuguese commentary. The presenter mentioned they also produce content for other major leagues globally.
+
+Key production insights shared:
+- **Focus on the core**: Despite the complex pipeline involving text-to-speech, translation, and video editing, they identified script generation as the critical bottleneck. This is where they concentrated their LLMOps efforts because the script quality determines the final product quality.
+- **Real-time requirements**: Sports content must be produced quickly—games end and recaps need to be available almost immediately. The 1-2 minute generation time (down from hours) enables this.
+- **Scalability across sports**: They're building infrastructure to handle multiple sports with different terminology, rules, and conventions, requiring flexible prompt systems.
+- **Quality at scale**: They need automated quality assurance since human review of every generated recap would negate the efficiency gains.
+
+## Future Directions
+
+The presentation hinted at several expansion areas:
+- Adding on-screen statistics and graphics dynamically
+- Experimenting with creative styles (demonstrated with a Snoop Dogg-style musical remix of highlights)
+- Expanding language support to more challenging languages
+- Adding graphic overlays and visual elements during video playback
+
+## Critical Assessment
+
+While the presentation demonstrates impressive capabilities, it's worth noting this is primarily a product pitch. The claimed reduction from 3-4 hours to 1-2 minutes is dramatic but likely represents best-case scenarios. The hallucination challenges they describe remain inherent to LLM-based generation, and while their mitigation strategies are sound, the presentation doesn't provide metrics on error rates or human oversight requirements in production. The system's effectiveness likely varies across different sports, languages, and edge cases not covered in a conference demo.

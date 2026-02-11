@@ -1,0 +1,151 @@
+---
+title: "AI-Assisted Activity Onboarding in Travel Marketplace"
+slug: "ai-assisted-activity-onboarding-in-travel-marketplace"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "694adb0764d67fc640f6d824"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2026-01-07T09:40:39.763Z"
+  lastUpdated: "2025-12-23T20:11:50.037Z"
+  createdOn: "2025-12-23T18:10:15.906Z"
+llmopsTags:
+  - "content-moderation"
+  - "customer-support"
+  - "summarization"
+  - "structured-output"
+  - "unstructured-data"
+  - "prompt-engineering"
+  - "a2a"
+  - "evals"
+  - "human-in-the-loop"
+  - "error-handling"
+  - "monitoring"
+  - "documentation"
+company: "GetYourGuide"
+summary: "GetYourGuide faced challenges with their lengthy 16-step activity creation process, where suppliers spent up to an hour manually entering content that often had quality issues, leading to traveler confusion and lower conversion rates. They implemented a generative AI solution that allows activity providers to paste existing content and automatically generates descriptions and fills structured fields across 8 key onboarding steps. After an initial failed experiment due to UX confusion and measurement challenges, they iterated with improved UI/UX design and developed a novel permutation testing framework. The second rollout successfully increased activity completion rates, improved content quality, and reduced onboarding time to as little as 14 minutes, ultimately achieving positive impacts on both supplier efficiency and traveler engagement metrics."
+link: "https://www.getyourguide.careers/posts/revolutionizing-the-experience-marketplace-the-dual-impact-of-generative-ai-on-suppliers-and-consumers"
+year: 2025
+seo:
+  title: "GetYourGuide: AI-Assisted Activity Onboarding in Travel Marketplace - ZenML LLMOps Database"
+  description: "GetYourGuide faced challenges with their lengthy 16-step activity creation process, where suppliers spent up to an hour manually entering content that often had quality issues, leading to traveler confusion and lower conversion rates. They implemented a generative AI solution that allows activity providers to paste existing content and automatically generates descriptions and fills structured fields across 8 key onboarding steps. After an initial failed experiment due to UX confusion and measurement challenges, they iterated with improved UI/UX design and developed a novel permutation testing framework. The second rollout successfully increased activity completion rates, improved content quality, and reduced onboarding time to as little as 14 minutes, ultimately achieving positive impacts on both supplier efficiency and traveler engagement metrics."
+  canonical: "https://www.zenml.io/llmops-database/ai-assisted-activity-onboarding-in-travel-marketplace"
+  ogTitle: "GetYourGuide: AI-Assisted Activity Onboarding in Travel Marketplace - ZenML LLMOps Database"
+  ogDescription: "GetYourGuide faced challenges with their lengthy 16-step activity creation process, where suppliers spent up to an hour manually entering content that often had quality issues, leading to traveler confusion and lower conversion rates. They implemented a generative AI solution that allows activity providers to paste existing content and automatically generates descriptions and fills structured fields across 8 key onboarding steps. After an initial failed experiment due to UX confusion and measurement challenges, they iterated with improved UI/UX design and developed a novel permutation testing framework. The second rollout successfully increased activity completion rates, improved content quality, and reduced onboarding time to as little as 14 minutes, ultimately achieving positive impacts on both supplier efficiency and traveler engagement metrics."
+---
+
+## Overview
+
+GetYourGuide, a leading travel marketplace platform, implemented a generative AI solution to transform their activity supplier onboarding process. This case study provides valuable insights into the real-world challenges of deploying LLM-based features in production environments, particularly in two-sided marketplaces where AI impacts both supply-side (activity providers) and demand-side (travelers) participants. The initiative spanned multiple quarters and involved four cross-functional teams: Supply Data Products, Catalog Tech, Content Management, and Analytics.
+
+## Business Problem and Context
+
+The original activity creation process required suppliers to navigate a 16-step product creation wizard where they manually entered descriptions, photos, availability, pricing, and location information. This process was identified as a significant pain point through supplier feedback and research, with several critical issues:
+
+- **Time inefficiency**: Activity providers were spending up to an hour manually creating a single new product through the wizard
+- **Content quality issues**: Despite providing instructions, tips, and examples, supplier-generated content frequently contained missing information, contradictory details, and lacked GetYourGuide's traveler-friendly tone of voice
+- **Downstream impacts**: Poor content quality led to traveler confusion, negatively impacted conversion rates for new products, and resulted in high contact rates to customer care for clarification before booking
+
+The hypothesis driving this initiative was that generative AI could simultaneously address both efficiency and quality concerns while ensuring consistency across the experience catalog. This dual benefit would create value for suppliers (faster onboarding) and travelers (better content quality leading to higher trust and conversion).
+
+## Solution Architecture and Implementation
+
+The production solution enables activity providers to paste existing content (such as from their own websites) into a designated input box. The LLM-powered system then processes this input to:
+
+- Generate longer free-text content sections, particularly the full activity description
+- Auto-populate structured fields including transportation types, location tags, and other categorical data
+- Complete 8 key steps of the onboarding wizard automatically, reducing manual data entry
+
+The approach represents a practical application of prompt engineering where the LLM needs to understand unstructured supplier input and transform it into both engaging narrative content and structured metadata that fits GetYourGuide's platform requirements. The system must balance creativity in generating traveler-friendly descriptions with accuracy in extracting and categorizing factual information about activities.
+
+## LLMOps Challenges and Lessons
+
+### Evaluation and Experimentation Complexity
+
+One of the most significant LLMOps challenges encountered was measuring the success of the AI feature in a two-sided marketplace context. GetYourGuide's existing experimentation platform was primarily designed for traveler-focused A/B tests and couldn't be directly applied to this supplier-side feature. The core measurement challenge stemmed from the fact that while activity providers could be assigned to treatment or control groups, travelers could not be separately assigned to variants—an activity created through AI couldn't simultaneously have a non-AI version.
+
+This constraint led to the development of a novel permutation testing framework specifically designed to account for:
+- Potential skew introduced by certain high-volume or high-impact activity providers
+- Pre-experiment differences in metrics between groups (metrics showed significant differences between A and B groups even before the experiment began)
+- The need to measure both supplier-side metrics (completion rates, time spent) and demand-side metrics (conversion rates, content quality, customer care contacts)
+
+The case study emphasizes a critical LLMOps principle: the black-box nature of LLM systems makes evaluation particularly challenging. The correctness and suitability of AI-generated outputs depend on multiple factors including input data quality and algorithm design, and outputs may be technically correct but not meet platform constraints or business requirements.
+
+### First Experiment Failure and Root Cause Analysis
+
+The initial full-scale experiment used a 75/25 split between treatment and control groups, with the larger treatment group accounting for an expected 60% opt-in rate (resulting in approximately 50% of activities created via AI). This experiment revealed critical issues:
+
+**User confusion and trust deficit**: The primary success metric (percentage of activities submitted out of those that started the wizard) was significantly lower in the treatment group. Root cause analysis revealed that activity providers didn't understand how the AI tool fit into the onboarding process. The UI design of the AI input page was insufficiently clear, causing suppliers to think they were in the wrong place and restarting the activity creation process multiple times.
+
+**Expectation mismatch**: Activity providers in the treatment group spent longer on pages not filled out by AI, indicating frustration about having to complete certain sections manually. The feature hadn't adequately set expectations about which fields would be automated versus which would require manual input.
+
+**Measurement complications**: The planned standard A/B analysis approach failed because experiment groups showed significant pre-experiment differences in both traveler and supplier-side metrics. Certain activity providers could significantly skew results based on their group assignment, violating fundamental assumptions of the statistical approach.
+
+The decision to close the experiment without launching demonstrates appropriate LLMOps rigor—recognizing when a deployment isn't ready despite organizational pressure to ship AI features.
+
+### Iteration and Successful Second Deployment
+
+Following the failed first experiment, the team made several improvements informed by data-driven analysis:
+
+**UX refinements**: The AI input page was redesigned to clearly show it as a step within the normal product creation wizard, with a visible left-side menu/progress bar providing context. Visual design and microcopy were improved to set explicit expectations about what the tool would and wouldn't automate.
+
+**Model improvements**: The LLM was refined to improve content quality and automatically fill out additional sections, reducing the manual work required from suppliers.
+
+**Measurement framework**: The custom permutation testing framework was finalized to properly account for marketplace dynamics and pre-experiment group differences.
+
+The second experiment achieved measurable success across multiple dimensions:
+- 5 percentage point reduction in user drop-off from the AI input page to the following page
+- Normalized time spent on non-AI-assisted pages (reduced from first experiment levels)
+- Increased activity completion rates (suppliers more likely to finish onboarding)
+- Improved activity performance metrics for AI-onboarded activities
+- Qualitative validation through Hotjar surveys with positive supplier feedback
+- Documented cases of suppliers completing the entire process in just 14 minutes (a significant reduction from the original hour-long process)
+
+## Production Deployment and Monitoring
+
+Following the successful second experiment, the feature was rolled out to 100% of the supplier base. While specific monitoring infrastructure isn't detailed, the case study emphasizes the importance of anticipating potential issues before they arise and setting up monitoring systems to track them. This forward-thinking approach to observability is a key LLMOps practice for production AI systems.
+
+The deployment represents a full-scale production LLM application that directly impacts business-critical workflows. The system processes supplier-provided content in real-time during the onboarding flow, generating both creative and structured outputs that immediately become part of the product catalog visible to travelers.
+
+## Organizational and Process Learnings for LLMOps
+
+The case study provides extensive insights into the organizational aspects of deploying LLM features in production:
+
+**Cross-functional collaboration**: The project involved four teams over multiple quarters, requiring structured coordination through bi-weekly syncs, active Slack channels, and ad-hoc meetings. The complexity of LLM projects often requires this level of coordination across ML/AI teams, product teams, engineering infrastructure teams, and analytics teams.
+
+**Documentation and knowledge management**: A centralized master document with all important links (referencing 30+ other documents) proved essential for alignment. For LLMOps projects dealing with complex metrics and multiple teams, maintaining a "master table" documenting all assumptions and logic prevents confusion and ensures consistent decision-making.
+
+**Early analytics involvement**: Including analysts from the project's inception, even before immediate analytical work was needed, ensured better context and more meaningful insights. This is particularly important for LLMOps projects where defining success metrics and measurement approaches for AI-generated outputs requires domain expertise.
+
+**Iteration and perseverance**: The willingness to learn from failure and iterate rather than abandon the project after the first failed experiment represents mature LLMOps practice. The case study explicitly notes that "failure is often a part of the learning process" and that understanding why experiments fail enables turning things around.
+
+**Scope management**: The team identified scope creep as a common pitfall—underestimating AI limitations and over-promising what LLMs can realistically achieve. Balancing ambitious goals with practical constraints while maintaining adaptability to rapid AI advancements proved crucial.
+
+## Critical Success Factors and Best Practices
+
+Several LLMOps best practices emerge from this case study:
+
+**Attention to outliers**: Statistical anomalies and edge cases often highlight important user patterns and pain points. Investigating outlier behavior in the first experiment proved instrumental in refining the product for the second test.
+
+**Transparency about limitations**: Clear communication about both benefits and limitations of AI tools significantly improved user satisfaction and adoption. The UI explicitly set expectations about what the tool could and couldn't do, addressing the trust deficit observed in the first experiment.
+
+**Data-driven iteration**: Close monitoring of metrics at each step of the supplier journey, segmented by key dimensions, enabled identifying who was engaging successfully versus struggling. This granular analysis informed specific improvements rather than broad changes.
+
+**Measurement framework adaptation**: Recognizing when standard A/B testing approaches don't apply and developing custom statistical frameworks represents sophisticated LLMOps practice. The permutation testing toolkit they developed for marketplace dynamics could be valuable for other two-sided platform contexts.
+
+## Balanced Assessment
+
+While the case study presents a success story, several caveats merit consideration:
+
+**Limited technical detail**: The case provides minimal information about the actual LLM architecture, model selection, prompt engineering techniques, or infrastructure. It's unclear whether they use proprietary models, commercial APIs, or open-source alternatives, and what specific technical approaches enable the dual output of creative content and structured fields.
+
+**Selective metrics disclosure**: While the case mentions increases in "all success metrics" and specific improvements like the 5 percentage point drop-off reduction, many quantitative results are presented qualitatively ("solid increase," "higher quality content") without precise numbers. This is common in company blog posts but limits the ability to assess magnitude of impact.
+
+**Quality control mechanisms unclear**: The case doesn't detail how content quality is evaluated or what guardrails exist to prevent AI-generated content from containing errors, inappropriate tone, or hallucinated information. For a travel marketplace where accuracy is critical, these quality control mechanisms would be important LLMOps components.
+
+**Cost considerations absent**: No discussion of computational costs, API expenses, or cost-benefit analysis compared to the previous manual process. LLMOps in production requires managing these economic tradeoffs.
+
+**Opt-in dynamics**: With a 60% adoption rate, 40% of suppliers still chose not to use the AI feature even after improvements. Understanding why these suppliers opted out and whether their activities perform differently would provide useful context.
+
+Despite these limitations, the case study provides valuable real-world insights into deploying LLM features in production environments, particularly the challenges of measurement, iteration based on user behavior, and organizational coordination required for successful LLMOps at scale in marketplace contexts. The transparency about failure and the detailed discussion of what went wrong in the first experiment makes this particularly valuable for practitioners facing similar challenges.

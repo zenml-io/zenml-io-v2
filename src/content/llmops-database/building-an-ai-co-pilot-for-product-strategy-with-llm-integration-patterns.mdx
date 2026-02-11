@@ -1,0 +1,182 @@
+---
+title: "Building an AI Co-pilot for Product Strategy with LLM Integration Patterns"
+slug: "building-an-ai-co-pilot-for-product-strategy-with-llm-integration-patterns"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f3fad6a98870aaf4d76a4"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-01T11:07:45.646Z"
+  lastUpdated: "2025-11-26T06:44:45.333Z"
+  createdOn: "2024-11-21T14:11:57.330Z"
+llmopsTags:
+  - "caption-generation"
+  - "chunking"
+  - "data-analysis"
+  - "databases"
+  - "documentation"
+  - "embeddings"
+  - "google-gcp"
+  - "langchain"
+  - "microsoft-azure"
+  - "openai"
+  - "poc"
+  - "prompt-engineering"
+  - "rag"
+  - "reliability"
+  - "scalability"
+  - "semantic-search"
+  - "structured-output"
+  - "system-prompts"
+  - "vector-search"
+company: "Thoughtworks"
+summary: "Thoughtworks built Boba, an experimental AI co-pilot for product strategy and ideation, to explore effective patterns for LLM-powered applications beyond simple chat interfaces. The team developed and documented key patterns including templated prompts, structured responses, real-time progress streaming, context management, and external knowledge integration. The case study provides detailed implementation insights for building sophisticated LLM applications with better user experiences."
+link: "https://martinfowler.com/articles/building-boba.html"
+year: 2023
+seo:
+  title: "Thoughtworks: Building an AI Co-pilot for Product Strategy with LLM Integration Patterns - ZenML LLMOps Database"
+  description: "Thoughtworks built Boba, an experimental AI co-pilot for product strategy and ideation, to explore effective patterns for LLM-powered applications beyond simple chat interfaces. The team developed and documented key patterns including templated prompts, structured responses, real-time progress streaming, context management, and external knowledge integration. The case study provides detailed implementation insights for building sophisticated LLM applications with better user experiences."
+  canonical: "https://www.zenml.io/llmops-database/building-an-ai-co-pilot-for-product-strategy-with-llm-integration-patterns"
+  ogTitle: "Thoughtworks: Building an AI Co-pilot for Product Strategy with LLM Integration Patterns - ZenML LLMOps Database"
+  ogDescription: "Thoughtworks built Boba, an experimental AI co-pilot for product strategy and ideation, to explore effective patterns for LLM-powered applications beyond simple chat interfaces. The team developed and documented key patterns including templated prompts, structured responses, real-time progress streaming, context management, and external knowledge integration. The case study provides detailed implementation insights for building sophisticated LLM applications with better user experiences."
+---
+
+## Overview
+
+Thoughtworks, a global technology consultancy, developed an experimental AI co-pilot called "Boba" designed to augment product strategy and generative ideation processes. The project, published in June 2023, serves as both a practical tool and a learning platform for understanding how to build LLM-powered generative applications that go beyond simple chat interfaces. The team documented their learnings in the form of eight reusable patterns that address common challenges when building production-ready LLM applications.
+
+Boba is positioned as an "AI co-pilot" — an AI-powered assistant designed to help users with specific domain tasks, in this case early-stage strategy ideation and concept generation. The application mediates interactions between human users and OpenAI's GPT-3.5/4 models, adding UI elements and prompt orchestration logic that help users who may not be skilled prompt engineers get better results from the underlying LLM.
+
+## Technical Architecture and Stack
+
+The application is built as a web application with a frontend that communicates with a backend service that interfaces with OpenAI's API. Key technology choices include:
+
+- **LLM Provider**: OpenAI GPT-3.5 and GPT-4
+- **Orchestration Framework**: LangChain for prompt chaining, templating, and vector store integration
+- **Vector Store**: HNSWLib (Hierarchical Navigable Small World) for in-memory vector similarity search
+- **Embeddings**: OpenAI Embeddings API
+- **Image Generation**: Stable Diffusion for storyboard illustrations
+- **External APIs**: Google SERP API for web search, Extract API for article content retrieval
+
+The team noted a significant observation about development time allocation: approximately 80% of effort went into user interface development, while only 20% went into the AI/prompt engineering aspects. This suggests that building production LLM applications involves substantial frontend and UX work beyond just the model integration.
+
+## Pattern 1: Templated Prompt
+
+The first pattern addresses the need to enrich simple user inputs with additional context and structure before sending them to the LLM. Using LangChain's templating capabilities (similar to JavaScript templating engines like Nunjucks or Handlebars), the team built prompt templates that incorporate user selections from the UI along with domain-specific context.
+
+For example, when generating future scenarios, a user might simply enter "Show me the future of payments," but the template enriches this with parameters for time horizon, optimism level, and realism constraints. The team emphasized keeping templates simple and avoiding complex conditional logic within templates — instead using different template files for substantially different use cases.
+
+A key prompt engineering technique mentioned is the "Adopt a Persona" approach, where the prompt begins by telling the LLM to act as a specific role (e.g., "You are a visionary futurist"). The team found this technique particularly effective for producing relevant completions.
+
+## Pattern 2: Structured Response
+
+Almost all production LLM applications need to parse LLM output into structured data for further processing. The team focused on getting GPT to return well-formed JSON and reported being "quite surprised by how well and consistently GPT returns well-formed JSON based on the instructions."
+
+They documented two approaches for achieving structured output:
+
+- **Schema description in pseudo-code**: Describing the expected JSON schema directly in the prompt, including nested structures
+- **Few-shot prompting with examples**: Providing complete examples of the expected output format, which they found helped the LLM "think" in the right context
+
+The team observed an interesting side effect: by repeating row and column values before generating ideas in a Creative Matrix scenario, they successfully nudged the quality of responses. This aligns with the concept that "LLMs think in tokens" — providing more contextual tokens before generation leads to better outputs.
+
+They also mentioned OpenAI's Function Calling feature (released around the time of writing) as an alternative approach for structured responses, particularly useful when invoking external tools.
+
+## Pattern 3: Real-Time Progress
+
+A critical UX challenge in LLM applications is latency. The team noted that "a user can only wait on a spinner for so long before losing patience" and recommended showing real-time progress for any operation taking more than a few seconds.
+
+Their implementation uses LangChain's streaming callbacks:
+
+```javascript
+const chat = new ChatOpenAI({
+  streaming: true,
+  callbackManager: CallbackManager.fromHandlers({
+    async handleLLMNewToken(token) {
+      onTokenStream(token)
+    },
+  })
+});
+```
+
+However, they acknowledge this adds significant complexity, requiring best-effort JSON parsing during streaming and temporal state management during LLM calls. They mention the Vercel AI SDK as a promising library for simplifying streaming in web applications.
+
+An important UX benefit of streaming is the ability to let users stop a generation mid-completion if the initial results don't match expectations, improving the overall interactive experience.
+
+## Pattern 4: Select and Carry Context
+
+This pattern addresses the limitation of single-threaded context in chat interfaces. By allowing users to select specific elements (scenarios, strategies, concepts) and perform actions on them, the application can narrow or broaden the scope of interaction dynamically.
+
+Implementation varies in complexity depending on context size:
+
+- **Short context (fits in context window)**: Implemented through prompt engineering alone, using multi-message chat conversations in LangChain
+- **Context with tag delimiters**: Embedding selected content within XML-like tags in the prompt
+- **Large context (exceeds context window)**: Requires external short-term memory using vector stores
+
+The team recommends watching Linus Lee's talk "Generative Experiences Beyond Chat" for deeper exploration of this pattern.
+
+## Pattern 5: Contextual Conversation
+
+While Boba aims to break out of the chat interface paradigm, the team found it valuable to maintain a "fallback" channel for direct LLM conversation within specific contexts. This supports interactions not explicitly designed in the UI and cases where natural language conversation is genuinely the best UX.
+
+Key implementation details include providing example messages/templates to help users understand the types of conversations possible, and rendering LLM responses as formatted Markdown for readability.
+
+## Pattern 6: Out-Loud Thinking
+
+Based on the principle that "LLMs 'think' in tokens" (attributed to Andrej Karpathy), this pattern uses Chain of Thought (CoT) prompting to improve response quality. By asking the LLM to generate intermediate reasoning steps (such as questions that expand on the user's prompt) before producing final answers, the team achieved higher-quality and more relevant outputs.
+
+The team offers two variants:
+
+- **Visible reasoning**: Showing the thinking process to users, which provides additional context for iteration
+- **Internal monologue**: Generating reasoning in a separate part of the response that gets parsed out and hidden from users
+
+They recommend creating UI affordances for toggling visibility of the reasoning process, giving users control over the level of detail they see.
+
+## Pattern 7: Iterative Response
+
+Acknowledging that LLMs will inevitably misunderstand user intent or generate unsatisfactory responses, this pattern emphasizes building robust back-and-forth interaction capabilities. Approaches include:
+
+- Correcting original input
+- Refining parts of the co-pilot's response
+- Providing feedback to nudge the application in different directions
+
+A concrete example is Boba's storyboarding feature, where users can iterate on Stable Diffusion image prompts for individual scenes without regenerating the entire storyboard.
+
+The team mentions working on reinforcement learning-style feedback mechanisms (thumbs up/down, natural language feedback) to improve recommendations over time, similar to GitHub Copilot's approach of demoting ignored suggestions.
+
+## Pattern 8: Embedded External Knowledge (RAG)
+
+This pattern addresses LLM knowledge cutoff limitations by combining LLMs with external data sources. The team's implementation for the "Research Signals" feature follows a classic RAG (Retrieval-Augmented Generation) pipeline:
+
+- **Web Search**: Google SERP API for retrieving relevant articles
+- **Content Extraction**: Extract API for reading full article content
+- **Chunking and Embedding**: Using RecursiveCharacterTextSplitter and OpenAI Embeddings
+- **Vector Storage**: HNSWLib for in-memory similarity search
+- **Query and Generation**: VectorDBQAChain from LangChain for question-answering
+
+The implementation is notably concise with LangChain:
+
+```javascript
+const vectorStore = await HNSWLib.fromDocuments(docs, new OpenAIEmbeddings());
+const chain = VectorDBQAChain.fromLLM(model, vectorStore);
+const res = await chain.call({
+  input_documents: docs,
+  query: prompt + ". Be detailed in your response.",
+});
+```
+
+For larger-scale or long-term memory use cases, the team recommends external vector databases like Pinecone or Weaviate instead of in-memory solutions.
+
+An important benefit of this approach is providing proper source links and references — since search results come from a real search engine, the references won't be hallucinations (the team humorously notes "as long as the search engine isn't partaking of the wrong mushrooms").
+
+## Key Learnings and Production Considerations
+
+Several cross-cutting observations are valuable for LLMOps practitioners:
+
+- **Prompt iteration workflow**: The team found iterating on prompts directly in ChatGPT offered the shortest path from idea to experimentation before implementing in code
+- **Template simplicity**: Keeping prompt templates simple and using separate templates for different use cases rather than complex conditional logic
+- **UX investment**: 80% of development time went to UI, suggesting production LLM applications require substantial frontend investment
+- **Streaming complexity**: While essential for UX, streaming adds significant application complexity including partial JSON parsing and state management
+- **Context window management**: Many patterns require strategies for handling context that exceeds LLM context window limits
+
+The article represents a practical, experience-based perspective on building LLM applications, with the patterns offering reusable approaches that other teams can adapt. The team acknowledges this is "just scratching the surface" and that many principles, patterns, and practices for LLM-powered applications are still being discovered.

@@ -1,0 +1,126 @@
+---
+title: "Tuning RAG Search for Production Customer Support Chatbot"
+slug: "tuning-rag-search-for-production-customer-support-chatbot"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "67e5667ebb0d5ef140e4344b"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:04:52.449Z"
+  createdOn: "2025-03-27T14:53:50.402Z"
+llmopsTags:
+  - "customer-support"
+  - "chatbot"
+  - "question-answering"
+  - "rag"
+  - "embeddings"
+  - "semantic-search"
+  - "vector-search"
+  - "prompt-engineering"
+  - "reranking"
+  - "error-handling"
+  - "chunking"
+  - "elasticsearch"
+  - "monitoring"
+  - "api-gateway"
+  - "documentation"
+  - "reliability"
+  - "microsoft-azure"
+  - "openai"
+company: "Elastic"
+summary: "Elastic's Field Engineering team developed and improved a customer support chatbot using RAG and LLMs. They faced challenges with search relevance, particularly around CVE and version-specific queries, and implemented solutions including hybrid search strategies, AI-generated summaries, and query optimization techniques. Their improvements resulted in a 78% increase in search relevance for top-3 results and generated over 300,000 AI summaries for future applications."
+link: "https://www.elastic.co/search-labs/blog/elser-rag-search-for-relevance"
+year: 2024
+seo:
+  title: "Elastic: Tuning RAG Search for Production Customer Support Chatbot - ZenML LLMOps Database"
+  description: "Elastic's Field Engineering team developed and improved a customer support chatbot using RAG and LLMs. They faced challenges with search relevance, particularly around CVE and version-specific queries, and implemented solutions including hybrid search strategies, AI-generated summaries, and query optimization techniques. Their improvements resulted in a 78% increase in search relevance for top-3 results and generated over 300,000 AI summaries for future applications."
+  canonical: "https://www.zenml.io/llmops-database/tuning-rag-search-for-production-customer-support-chatbot"
+  ogTitle: "Elastic: Tuning RAG Search for Production Customer Support Chatbot - ZenML LLMOps Database"
+  ogDescription: "Elastic's Field Engineering team developed and improved a customer support chatbot using RAG and LLMs. They faced challenges with search relevance, particularly around CVE and version-specific queries, and implemented solutions including hybrid search strategies, AI-generated summaries, and query optimization techniques. Their improvements resulted in a 78% increase in search relevance for top-3 results and generated over 300,000 AI summaries for future applications."
+---
+
+## Overview
+
+This case study from Elastic details how their Field Engineering team iteratively improved the relevance of a RAG (Retrieval-Augmented Generation) powered customer support chatbot called the "Support AI Assistant." The article is part of a multi-part blog series and focuses specifically on the search tuning aspects of their RAG implementation, demonstrating the critical importance of retrieval quality in production LLM applications. While the content originates from Elastic's own engineering blog and naturally showcases their Elasticsearch product, the technical details provide genuine insights into real-world RAG optimization challenges.
+
+The team started with a functional but imperfect system and through systematic analysis of user feedback and query patterns, identified specific failure modes that they then addressed through targeted technical solutions. Their approach emphasizes that RAG tuning is fundamentally a search problem requiring both high-quality data and accurate retrieval, noting that without both elements working together, LLMs risk hallucinating and generating misleading responses that erode user trust.
+
+## Initial Architecture and Data Foundation
+
+The system was built on a foundation of over 300,000 documents including Technical Support Knowledge Articles, Product Documentation, and blog content crawled from Elastic's website. All of this data was stored and indexed in Elasticsearch, leveraging the platform's native capabilities for both traditional keyword search and semantic search.
+
+For querying, the team implemented a hybrid search strategy combining BM25 (keyword-based search) with ELSER (Elastic Learned Sparse EncodeR) for semantic search. The semantic component used `text_expansion` queries against both title and summary embeddings, while the keyword component employed `cross_fields` matching with `minimum_should_match` parameters tuned for longer queries. Phrase matches received higher boosts as they typically signal greater relevance.
+
+The generation pipeline was straightforward: after search, the system built a system prompt with instructions and the top 3 search results as context, then fed the conversation alongside the context into GPT-4 via Azure OpenAI (using Provisioned Throughput Units). The limitation to only 3 results was driven by token constraints in their dedicated deployment combined with a large user base.
+
+For feedback collection, the team used a third-party tool to capture client-side events, storing data in BigQuery for analysis. This was supplemented by direct qualitative feedback from internal users, which proved instrumental in identifying relevance issues.
+
+## Challenge 1: CVE (Common Vulnerabilities and Exposures) Queries
+
+One of the first significant issues identified was poor performance on CVE-related queries. Customers frequently encounter security alerts about CVEs and naturally asked questions like "Does CVE-2016-1837 or CVE-2019-11756 affect Elastic products?" Despite having dedicated, well-maintained CVE Knowledge Articles, the search results were returning only one relevant hit out of three, leaving the LLM without sufficient context to generate proper answers.
+
+The solution leveraged a key insight: users often include near-exact CVE codes in their queries, and these codes typically appear in the article titles. The team implemented conditional boosting of title field matches for such queries. By detecting CVE patterns and significantly increasing the weight of title matches when they occur, they improved precision dramatically for this query type.
+
+This solution demonstrates an important LLMOps principle: while semantic search is powerful, understanding and leveraging user intent patterns can provide simple but highly effective optimizations for specific query types.
+
+## Challenge 2: Product Version Queries
+
+A more complex challenge emerged with queries involving specific product versions. Users frequently asked about features, migration guides, or version comparisons, but the search results were returning irrelevant content. A query about Elasticsearch 8.14.2 would return results about Apache Hadoop version 8.14.1, APM version 8.14, and other unrelated content.
+
+Investigation revealed three distinct problems:
+
+**Inaccurate Semantic Matching**: The root cause was that the `summary` field for Product Documentation articles was simply the first few characters of the document body, generated during the crawling process. This redundancy created vector embeddings that poorly represented the actual document content. To solve this, the team developed a custom AI Enrichment Service using GPT-4 to generate four new fields: a proper summary, category classification, tags, and topics. This process created over 300,000 AI-generated summaries that enriched the underlying indices and enabled much better semantic matching.
+
+**Multiple Versions of Same Articles**: The top 3 results were often cluttered with different versions of the same article (e.g., documentation for versions 8.14, 8.13, 8.12), reducing diversity in the context provided to the LLM. The team addressed this using Elasticsearch's `collapse` parameter with a computed `slug` field that identifies different versions of the same article, ensuring only the top-scored version appears in results.
+
+**Wrong Versions Being Returned**: Even when the right article was retrieved, it wasn't always the correct version. The team implemented version extraction from user queries using regex patterns, then added conditional boosting of the `version` field to prioritize results matching the requested version.
+
+## Data Enrichment Service
+
+The AI Enrichment Service deserves special attention as it represents a significant investment in data quality. The team built this internal tool for several reasons: they had unused PTU (Provisioned Throughput Units) resources available in Azure OpenAI, the data quality gap was their greatest relevance detractor, and they wanted full customization for experimentation.
+
+The service generated four fields for each document:
+- **summary**: A concise AI-generated summary of the content
+- **category**: Classification of the document type
+- **tags**: Relevant keywords and topics
+- **topics**: Broader thematic classifications
+
+These fields were ingested into a new index and made available to the target indices through Enrich Processors. The AI-generated embeddings were stored under `ai_fields.ml.inference`, providing dramatically improved semantic matching capabilities. Beyond the immediate relevance improvements, this created a valuable data asset of 300,000+ AI-generated summaries for potential future applications.
+
+## Evaluation Framework
+
+The team implemented a systematic evaluation approach using Elasticsearch's Ranking Evaluation API with Precision@K (P@K) metrics, where K=3 to match the number of results fed to the LLM. They compiled a test suite of 12 queries spanning diverse topics (CVE queries, version comparisons, feature configuration, API usage) with curated lists of relevant results for each.
+
+A TypeScript/Node.js script automated the evaluation process, running both the "before" and "after" query versions against their development Elasticsearch instance and outputting P@K values for each query. This enabled quantitative measurement of improvements across their test suite.
+
+## Results and Metrics
+
+The evaluation showed significant improvements across multiple query types:
+
+- **Support Diagnostics Tool**: P@K improved from 0.333 to 1.000 (+200%)
+- **CVE Implications**: P@K improved from 0.000 to 1.000 (from no relevant results to all relevant)
+- **Comparing Elasticsearch Versions**: P@K improved from 0.000 to 0.667 (from no relevant results to two of three)
+- **Searchable Snapshot Deletion**: P@K improved from 0.667 to 1.000 (+50%)
+- **Creating Data Views via API in Kibana**: P@K improved from 0.333 to 0.667 (+100%)
+
+The overall average P@K improvement was reported as 78.41% (the headline ~75% figure). Importantly, no queries showed regression - some remained stable while others improved significantly.
+
+The team acknowledged that some queries (Proxy Certificates Rotation, Enrich Processor Setup) showed no improvement, highlighting that relevance optimization is an ongoing effort requiring continuous iteration and expansion of test cases.
+
+## Future Directions
+
+The article outlines three areas for continued improvement:
+
+**Data Curation**: The team observed that semantically close search candidates often led to less effective responses, and some crawled pages generate noise rather than value. Future work involves curating and enhancing the knowledge base to make it leaner and more effective.
+
+**Conversational Context in RAG**: The current system doesn't handle follow-up questions well. A query like "What about Windows?" following a Linux configuration question should be reformulated to include the full conversational context before searching.
+
+**Conditional Context Inclusion**: By extracting semantic meaning from user questions, the system could conditionally include only relevant pieces of data as context, saving token limits and potentially reducing round trips to external services.
+
+## Critical Assessment
+
+While this case study provides valuable technical insights, it's worth noting some limitations. The evaluation was performed on a relatively small test suite of 12 queries, which may not be representative of the full breadth of user queries. The metrics focus exclusively on retrieval precision and don't directly measure end-user satisfaction or LLM response quality. Additionally, as a vendor blog post, there's inherent bias toward showcasing Elasticsearch's capabilities.
+
+That said, the case study demonstrates solid LLMOps practices: systematic identification of failure modes through user feedback analysis, targeted technical solutions for specific query patterns, investment in data quality as a foundation for retrieval quality, and quantitative evaluation of improvements. The approach of treating RAG optimization as fundamentally a search problem, rather than focusing solely on the LLM component, provides a useful framework for practitioners building similar systems.

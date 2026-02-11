@@ -1,0 +1,107 @@
+---
+title: "Scaling GenAI Applications with vLLM for High-Throughput LLM Serving"
+slug: "scaling-genai-applications-with-vllm-for-high-throughput-llm-serving"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "68b5c70d9a68ccc947fa6612"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:20:26.199Z"
+  createdOn: "2025-09-01T16:17:17.390Z"
+llmopsTags:
+  - "customer-support"
+  - "question-answering"
+  - "classification"
+  - "chatbot"
+  - "structured-output"
+  - "realtime-application"
+  - "data-analysis"
+  - "embeddings"
+  - "model-optimization"
+  - "latency-optimization"
+  - "cost-optimization"
+  - "chunking"
+  - "system-prompts"
+  - "vllm"
+  - "kubernetes"
+  - "docker"
+  - "monitoring"
+  - "api-gateway"
+  - "microservices"
+  - "scaling"
+  - "serverless"
+  - "devops"
+  - "orchestration"
+  - "open-source"
+  - "security"
+  - "reliability"
+  - "scalability"
+  - "fastapi"
+  - "pytorch"
+  - "cache"
+  - "nvidia"
+company: "LinkedIn"
+summary: "LinkedIn adopted vLLM, an open-source LLM inference framework, to power over 50 GenAI use cases including LinkedIn Hiring Assistant and AI Job Search, running on thousands of hosts across their platform. The company faced challenges in deploying LLMs at scale with low latency and high throughput requirements, particularly for applications requiring complex reasoning and structured outputs. By leveraging vLLM's PagedAttention technology and implementing a five-phase evolution strategy—from offline mode to a modular, OpenAI-compatible architecture—LinkedIn achieved significant performance improvements including ~10% TPS gains and GPU savings of over 60 units for certain workloads, while maintaining sub-600ms p95 latency for thousands of QPS in production applications."
+link: "https://www.linkedin.com/blog/engineering/ai/how-we-leveraged-vllm-to-power-our-genai-applications?utm_source=substack&utm_medium=email"
+year: 2025
+seo:
+  title: "LinkedIn: Scaling GenAI Applications with vLLM for High-Throughput LLM Serving - ZenML LLMOps Database"
+  description: "LinkedIn adopted vLLM, an open-source LLM inference framework, to power over 50 GenAI use cases including LinkedIn Hiring Assistant and AI Job Search, running on thousands of hosts across their platform. The company faced challenges in deploying LLMs at scale with low latency and high throughput requirements, particularly for applications requiring complex reasoning and structured outputs. By leveraging vLLM's PagedAttention technology and implementing a five-phase evolution strategy—from offline mode to a modular, OpenAI-compatible architecture—LinkedIn achieved significant performance improvements including ~10% TPS gains and GPU savings of over 60 units for certain workloads, while maintaining sub-600ms p95 latency for thousands of QPS in production applications."
+  canonical: "https://www.zenml.io/llmops-database/scaling-genai-applications-with-vllm-for-high-throughput-llm-serving"
+  ogTitle: "LinkedIn: Scaling GenAI Applications with vLLM for High-Throughput LLM Serving - ZenML LLMOps Database"
+  ogDescription: "LinkedIn adopted vLLM, an open-source LLM inference framework, to power over 50 GenAI use cases including LinkedIn Hiring Assistant and AI Job Search, running on thousands of hosts across their platform. The company faced challenges in deploying LLMs at scale with low latency and high throughput requirements, particularly for applications requiring complex reasoning and structured outputs. By leveraging vLLM's PagedAttention technology and implementing a five-phase evolution strategy—from offline mode to a modular, OpenAI-compatible architecture—LinkedIn achieved significant performance improvements including ~10% TPS gains and GPU savings of over 60 units for certain workloads, while maintaining sub-600ms p95 latency for thousands of QPS in production applications."
+---
+
+LinkedIn's comprehensive case study demonstrates a mature approach to LLMOps through their strategic adoption and evolution of vLLM for large-scale GenAI applications. The company successfully deployed vLLM to power more than 50 different GenAI use cases, including prominent applications like LinkedIn Hiring Assistant and AI Job Search, running across thousands of hosts in their production environment.
+
+**Company Context and Scale**
+
+LinkedIn operates at massive scale, serving a global professional network with stringent performance requirements. Their GenAI applications must handle thousands of queries per second (QPS) while maintaining low latency (sub-600ms p95) for real-time user experiences. The company needed to support both online interactive experiences and offline large-scale data processing workloads, making their LLMOps requirements particularly challenging.
+
+**Technical Implementation and Architecture Evolution**
+
+LinkedIn's approach to vLLM implementation demonstrates sophisticated LLMOps maturity through a well-planned five-phase evolution strategy. They began with vLLM v0.6.1.post2 in offline mode using the LLM class and engine.step() for basic inference validation. This initial phase focused on proving performance and accuracy metrics but was limited in concurrency, making it suitable primarily for low-QPS workloads.
+
+The second phase involved transitioning to AsyncLLMEngine, which unlocked asynchronous request handling and significantly better parallelism. This architectural change was crucial for supporting higher concurrent request volumes while maintaining stable latency characteristics. The move to asynchronous processing represents a key LLMOps consideration for production deployments where throughput and responsiveness are critical.
+
+During the third phase, LinkedIn upgraded to v0.7.0 and implemented performance tuning optimizations, notably increasing the --num-scheduler-steps parameter from default to 8. This configuration change alone yielded approximately 10% TPS (tokens per second) improvement at 1.5 QPS without requiring custom kernels or engine modifications. The company's approach of exposing key vLLM parameters to internal customers demonstrates mature platform thinking, allowing developers to tune performance without modifying core engine code.
+
+The fourth phase involved evaluating and adopting the v1 engine, which achieved similar performance to their tuned v0.7.0 implementation (~1245 tokens/sec under saturation, representing ~10% improvement over v0.6.1.post2) while saving over 60 GPUs for specific workloads. The decision to choose the v1 engine was based on future readiness, simplified configuration, and better scheduling efficiency at high QPS rather than pure performance metrics.
+
+The fifth and most sophisticated phase involved re-architecting their serving stack with a modular, OpenAI-compatible design. This represents advanced LLMOps thinking where the custom gRPC server is decoupled from the vLLM engine, allowing for greater flexibility and reduced maintenance burden. The new architecture enables support for advanced features like image generation without replicating vLLM server logic.
+
+**Key LLMOps Parameters and Configurations**
+
+LinkedIn's approach to exposing critical vLLM parameters demonstrates deep understanding of production LLM deployment considerations. They made several key parameters configurable from day one:
+
+DTYPE settings allow teams to balance performance and numerical stability based on hardware capabilities, typically using FP16 precision formats. ENABLE_PREFIX_CACHING is particularly valuable for LinkedIn's use cases where over 50% of requests share prefix tokens, allowing computation reuse for shared input prefixes and dramatically reducing prefill latency and GPU load.
+
+ENABLE_CHUNKED_PREFILL helps manage GPU memory usage by breaking large prefills into smaller chunks, avoiding memory spikes that could cause instability. GPU_MEMORY_UTILIZATION controls the fraction of GPU memory allocated for model execution, allowing the platform to push utilization higher without triggering out-of-memory errors.
+
+**Production Use Cases and Performance Characteristics**
+
+The LinkedIn Hiring Assistant represents a complex structured classification problem where traditional models would struggle with nuanced qualifications like calculating years of experience in specific areas. The LLM-based approach provides both explanations and classifications with high accuracy, outputting nearly 1000 tokens on average per candidate evaluation. With hirers potentially evaluating hundreds to thousands of candidates per job, this creates a high-fanout workload that benefits significantly from vLLM's continuous batching and prefix caching optimizations.
+
+LinkedIn AI Job Search tackles sophisticated query understanding challenges where job search queries are often ambiguous and context-dependent. The system must interpret free-form text and translate it into structured interpretations and facet suggestions while meeting stringent latency requirements of sub-600ms p95 under thousands of QPS. Traditional Named Entity Recognition models proved brittle and costly to maintain, while LLMs offer superior reasoning and generalization capabilities for unified intent interpretation.
+
+**Performance Optimizations and Contributions**
+
+LinkedIn's contributions to the vLLM open-source community demonstrate their commitment to advancing the ecosystem. Their work on CUDA graph optimization addressed repeated kernel launches during forward passes, even with CUDA graphs enabled. By introducing persistent memory buffers for attention mechanisms, they achieved 7% improvement in Time Per Output Token (TPOT) for small models.
+
+Another significant optimization involved eliminating unnecessary device-to-host memory synchronization in the sampler by refactoring code to avoid problematic tensor indexing. This change enabled better CPU-GPU overlap and resulted in 8% improvement in decoding speed for smaller models.
+
+**Infrastructure and Operational Considerations**
+
+The case study reveals sophisticated infrastructure management with vLLM running on thousands of hosts across LinkedIn's platform. The modular architecture with OpenAI-compatible APIs demonstrates mature platform design that reduces vendor lock-in and enables easier integration with existing systems.
+
+LinkedIn's approach to both server-side and client-side batching, combined with streaming mode for model outputs and parallel execution of recognized tools, showcases advanced techniques for managing high-concurrency LLM workloads. The ability to support complex reasoning tasks while maintaining production-grade performance metrics represents sophisticated LLMOps implementation.
+
+**Balanced Assessment and Limitations**
+
+While LinkedIn presents impressive performance improvements and scale metrics, it's important to note that their specific results may not generalize to all organizations or use cases. The 10% TPS improvements and GPU savings are tied to their particular workload characteristics, model sizes, and infrastructure setup. Organizations with different request patterns, model architectures, or hardware configurations may see different results.
+
+The company's success with vLLM also reflects their significant engineering resources and expertise in distributed systems, which may not be available to smaller organizations. The five-phase evolution strategy, while methodical, represents substantial engineering investment over time.
+
+However, LinkedIn's systematic approach to parameter exposure, performance monitoring, and incremental optimization provides valuable lessons for other organizations implementing LLMOps at scale. Their contributions back to the open-source community and collaborative partnerships with organizations like Red Hat, UC Berkeley Sky Computing, and NVIDIA demonstrate healthy ecosystem participation that benefits the broader GenAI community.

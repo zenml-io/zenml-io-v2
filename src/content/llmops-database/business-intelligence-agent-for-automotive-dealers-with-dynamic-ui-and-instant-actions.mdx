@@ -1,0 +1,135 @@
+---
+title: "Business Intelligence Agent for Automotive Dealers with Dynamic UI and Instant Actions"
+slug: "business-intelligence-agent-for-automotive-dealers-with-dynamic-ui-and-instant-actions"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "69284d1b4000fb090be0803a"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:29:35.082Z"
+  createdOn: "2025-11-27T13:07:39.324Z"
+llmopsTags:
+  - "customer-support"
+  - "data-analysis"
+  - "chatbot"
+  - "agent-based"
+  - "prompt-engineering"
+  - "token-optimization"
+  - "latency-optimization"
+  - "evals"
+  - "fastapi"
+  - "monitoring"
+company: "Prosus"
+summary: "Prosus, a machine learning engineering team, built an AI-powered business intelligence assistant for Otomoto, Poland's largest secondhand car dealer platform with thousands of dealers and millions of users. The problem was that dealers were overwhelmed by the platform's rich data and struggled to organize listings and take actionable insights. The initial chat-based agent achieved only 10% engagement with negligible repeat usage, revealing \"chat fatigue\" - users didn't know what to ask and found the open text box intimidating. The solution involved moving away from pure chat interfaces to a dynamic UI with context-aware action buttons, interactive responses with clickable elements, streaming for perceived faster responses, and purpose-built data aggregation tools using CSV format to reduce token consumption. Results showed that users were significantly more likely to engage when presented with clickable buttons rather than open-ended questions, with button clicks leading to follow-up questions and improved engagement metrics."
+link: "https://www.youtube.com/watch?v=7c4OdqpJXWU"
+year: 2025
+seo:
+  title: "Prosus: Business Intelligence Agent for Automotive Dealers with Dynamic UI and Instant Actions - ZenML LLMOps Database"
+  description: "Prosus, a machine learning engineering team, built an AI-powered business intelligence assistant for Otomoto, Poland's largest secondhand car dealer platform with thousands of dealers and millions of users. The problem was that dealers were overwhelmed by the platform's rich data and struggled to organize listings and take actionable insights. The initial chat-based agent achieved only 10% engagement with negligible repeat usage, revealing \"chat fatigue\" - users didn't know what to ask and found the open text box intimidating. The solution involved moving away from pure chat interfaces to a dynamic UI with context-aware action buttons, interactive responses with clickable elements, streaming for perceived faster responses, and purpose-built data aggregation tools using CSV format to reduce token consumption. Results showed that users were significantly more likely to engage when presented with clickable buttons rather than open-ended questions, with button clicks leading to follow-up questions and improved engagement metrics."
+  canonical: "https://www.zenml.io/llmops-database/business-intelligence-agent-for-automotive-dealers-with-dynamic-ui-and-instant-actions"
+  ogTitle: "Prosus: Business Intelligence Agent for Automotive Dealers with Dynamic UI and Instant Actions - ZenML LLMOps Database"
+  ogDescription: "Prosus, a machine learning engineering team, built an AI-powered business intelligence assistant for Otomoto, Poland's largest secondhand car dealer platform with thousands of dealers and millions of users. The problem was that dealers were overwhelmed by the platform's rich data and struggled to organize listings and take actionable insights. The initial chat-based agent achieved only 10% engagement with negligible repeat usage, revealing \"chat fatigue\" - users didn't know what to ask and found the open text box intimidating. The solution involved moving away from pure chat interfaces to a dynamic UI with context-aware action buttons, interactive responses with clickable elements, streaming for perceived faster responses, and purpose-built data aggregation tools using CSV format to reduce token consumption. Results showed that users were significantly more likely to engage when presented with clickable buttons rather than open-ended questions, with button clicks leading to follow-up questions and improved engagement metrics."
+---
+
+## Overview
+
+This case study details the journey of Prosus's machine learning engineering team in building and iterating on an AI agent for Otomoto, Poland's largest secondhand car dealer platform. The project, presented by Don, a machine learning engineer at Prosus, focuses on a critical LLMOps insight: as the industry moves into an "agentic world," production deployments need to move beyond traditional chat interfaces toward instant actions and dynamic experiences. The use case specifically targeted dealers (not end-user car buyers) who were struggling to leverage the platform's rich data environment to optimize their listings and sales strategies.
+
+The presentation reveals a thoughtful, iterative approach to deploying LLMs in production, with particular emphasis on the gap between building intelligent agents and achieving actual user adoption. The team's findings around "chat fatigue" - where open-ended chat boxes are intimidating and overwhelming for new users - represent a valuable contribution to understanding LLMOps best practices for user experience design.
+
+## Business Context and Initial Challenges
+
+Otomoto operates at significant scale, serving thousands of dealers and millions of users on their platform. The business challenge was clear: while the platform contained valuable data and insights that could help dealers optimize their listings, reach, and sales strategies, the sheer volume and complexity of information was overwhelming. Dealer feedback consistently indicated that even when they could parse all the available information, translating insights into actionable steps required too much work.
+
+This was framed as a "disrupt project," meaning the team needed to demonstrate value quickly to justify continued investment. The approach centered on rapid iteration with fast feedback loops to determine whether dealers - who had been operating successfully for years with established processes - could be convinced to engage with an AI agent in any meaningful way.
+
+## First Iteration: Basic React Agent with Limited Success
+
+The initial agent deployment was intentionally limited in scope to enable quick learning. The architecture was based on a React agent framework with just a few basic tools for data retrieval and data analysis. The team deliberately allowed users to ask questions about any feature or information, but didn't always answer them - a design choice aimed at gathering feedback about user expectations without overcommitting engineering resources.
+
+The results after two weeks were sobering but instructive. Despite achieving 100% reach (every targeted dealer saw the agent), only 10% engaged with it in any measurable way, and repeat usage was essentially negligible. However, the team extracted valuable insights from this failure. Users consistently asked "what can you do?" and "how do I ask you questions?" - clear signals that they didn't understand the agent's capabilities. Users expressed frustration at the limited abilities, which the team interpreted positively as evidence of demand for more functionality. Critically, the team noticed that preset question snippets displayed as clickable buttons received more engagement than open-ended text entry, and that 10% engagement, while low, represented some potential to capture attention.
+
+## Second Iteration: Dynamic UI and Purpose-Built Tools
+
+Armed with learnings from the first experiment, the team developed a hypothesis: could they ease dealers into using the agent through guided interactions without explicit onboarding, training, or lengthy tooltips? This led to the core insight that "chat fatigue exists" and production deployments need to emphasize instant action through dynamic UI.
+
+The agent architecture remained fundamentally a React agent but with substantial improvements. The tool set expanded significantly with more data access, improved prompting, and better overall intelligence. However, the truly innovative aspects focused on UX design and the button interface.
+
+### Dynamic Navigation Bar and Context Awareness
+
+The team implemented a flexible navigation bar that persisted across different platform pages but adapted its contents based on context. The bar included both non-AI shortcuts (like "upload and sell" and "extend" that were pure frontend implementations) and AI-powered buttons (like "recent changes" which opened the AI assistant with a preset question about inventory movement). The standard AI assistant chat window remained available but was repositioned as just one option among several interaction modes.
+
+This approach provided the illusion of context awareness without building a full web agent capable of seeing the UI. Since dealers navigate through numerous tabs and expect the agent to understand what they're looking at, the dynamic navbar adapted to each page, changing the preset questions and functions available. For example, on the announcements page, buttons filtered to show ads about to expire, while on the inquiries page, buttons highlighted messages needing replies.
+
+The team acknowledged this was a pragmatic solution that delivered the user experience of context awareness without the engineering complexity of true visual understanding. This represents a practical LLMOps approach: identifying minimum viable solutions that deliver value without over-engineering.
+
+### Tool Design Philosophy: The Swiss Army Knife Approach
+
+The presentation includes thoughtful discussion of tool design tradeoffs in production LLM systems. At one extreme sits the "hammer" - highly stringent tools that each do exactly one thing with zero flexibility but maximum reliability and safety. At the other extreme is the "giant toolbox" - maximum flexibility (like allowing the agent to write arbitrary SQL queries) but with corresponding complexity in usage, context building, and token consumption.
+
+The team settled on a middle ground they characterized as a "Swiss Army knife" - a fixed, manageable number of purpose-built tools where each tool's function is clearly defined, balancing some flexibility against manageable complexity. Specifically, they implemented "purpose-built aggregation tools" where each data retrieval tool relates to a specific concept and aggregates data appropriately for that use case.
+
+Each tool returns three components:
+- **Summary statistics**: Aggregated data providing high-level insights
+- **Data explanation**: Plain text explanations of data concepts and interpretation guidance
+- **Raw data snippet**: A sample of broader output the agent can use if summary statistics are insufficient
+
+An example shown was a promotions tool that returns summary statistics of a dealer's promotion portfolio, explains what certain terminology means, and provides some raw promotion data for additional context if needed. This structure helps the LLM understand data without excessive token consumption while maintaining the reliability needed for production deployment.
+
+### Data Representation: JSON to CSV Migration
+
+The team confronted a common LLMOps challenge: how to represent large amounts of data to agents without exploding context windows. Initially, they returned data as JSON because of its superior interpretability - each element is self-contained and labeled with clear key-value pairs. However, JSON proved incredibly token-expensive, consuming almost double the tokens of CSV format.
+
+The team migrated to CSV representation as their default, with the acknowledgment that this tradeoff sacrifices some comprehensibility. In CSV format, data appears as comma-separated values tied to headers, making it harder for the LLM to connect specific numbers to their meanings compared to the self-documenting nature of JSON. The summary statistics component of their tool design became crucial here - by providing aggregated insights at the top of each response, they compensated for CSV's reduced readability without paying the token cost of JSON.
+
+The team noted awareness of emerging approaches like the "Tune" library for token object notation but had not yet adopted it. This represents the kind of ongoing optimization work characteristic of mature LLMOps practices, where teams continuously balance interpretability, token efficiency, and response quality.
+
+### Interactive Responses and Token-Efficient Linking
+
+A key insight was that LLMs produce plain text, which is neither easy to consume in large quantities nor particularly actionable. To add genuine value, responses needed to be interactive. The team implemented dynamic UI elements that replace plain text with actionable components. For example, when the agent references specific car advertisements, the listing titles become clickable links that navigate directly to the full advert.
+
+The implementation revealed an interesting backend-frontend contract challenge. Initially, they returned full URL-encoded links from the agent, which had multiple problems: the agent had to maintain the link correctly (error-prone), it consumed 66 tokens even for short titles, and it complicated context management. An engineer developed a more elegant solution - a special token format that includes just the ad ID and name, which the frontend recognizes and transforms into a clickable link. This reduced token consumption dramatically while shifting the rendering responsibility appropriately to the frontend, and notably didn't require changes to the backend when the frontend rendering evolved.
+
+This example illustrates sophisticated LLMOps thinking about the division of responsibilities between model outputs and application layer rendering, optimizing for both token efficiency and maintainability.
+
+### Streaming for Perceived Latency Reduction
+
+The team's P99 latency was nearly 20 seconds, which is prohibitively long for good user experience if users must wait for complete responses. Implementing streaming - where the response appears progressively as it's generated rather than all at once - was described as a "quick win" that didn't require making the agent smarter but significantly improved user engagement by creating the perception of faster responses. This represents a classic LLMOps optimization: improving user experience through delivery mechanism changes rather than model improvements.
+
+## Evaluation and Monitoring Approaches
+
+The case study touches on evaluation practices at multiple levels. The team tracks questions the agent couldn't answer alongside what tool would have helped, feeding into a pipeline that informs development of new tools. This parallel process represents good LLMOps practice for identifying capability gaps in production deployments.
+
+A team member focused on evaluations built comprehensive eval suites that assess whether the correct tool was called and whether tool outputs were used correctly. Both metrics can flag when tools need review. The team also distinguishes between response evaluations (did the agent answer correctly) and engagement evaluations (did users click on elements, ask follow-ups, etc.), tracking the latter through event logging.
+
+There was interesting discussion about how clickable links in responses affect evaluations - whether clicks represent successful interactions or confound metrics designed to measure conversational engagement. The team's approach treats clicks primarily as engagement signals rather than quality metrics for the agent's conversational performance, which seems pragmatic given their emphasis on action-oriented interactions over pure chat.
+
+## Results and Key Learnings
+
+The results section focuses on engagement patterns rather than business metrics. The most compelling finding is captured in a graph showing that when users clicked buttons to initiate interactions (yellow and blue lines), they were substantially more likely to ask follow-up questions compared to when they started with open-ended questions (purple line, barely visible on the graph). This validates the core hypothesis that guided interactions through buttons can lead users into more exploratory conversations with the agent.
+
+The team sees this as validation for making the UI even more dynamic, potentially reducing reliance on open questions altogether by predicting and preempting what users need next. This represents a significant departure from traditional chatbot thinking toward more proactive, anticipatory agent experiences.
+
+## Ongoing Challenges and Future Directions
+
+Several threads indicate ongoing work. The team is exploring agent-generated tools but wrestling with monitoring and maintenance complexity - particularly ensuring generated tools are correct and safe. They're experimenting with a fallback tool that attempts SQL query generation when safe tools don't work, but treating this carefully as a last resort. They've experimented with allowing the agent to perform additional operations on data but found the compute too slow, so they're investigating faster compute solutions.
+
+Personalization represents the next major challenge, with the team questioning what personalization means when the end user is a business rather than an individual. This reflects thoughtful consideration of how traditional personalization concepts need adaptation for B2B agent deployments.
+
+The conversation about tool proliferation - how many tools to create and when - reveals ongoing iteration informed by comprehensive evaluations and analysis of unanswered questions. This iterative, data-driven approach to tool development represents mature LLMOps practice.
+
+## Critical Assessment
+
+The presentation offers valuable insights but leaves some questions unanswered. The claim that only 10% engagement was "disappointing" may deserve more context - many production AI deployments would consider 10% adoption for a new, unfamiliar interaction paradigm within two weeks to be a reasonable starting point. The framing suggests the team had higher expectations, but we don't know what comparable adoption rates look like for new platform features at Otomoto.
+
+The second iteration's results are presented primarily through engagement graphs rather than business impact metrics. While the pattern showing button clicks leading to follow-up questions is compelling, we don't see data on whether this increased engagement translated to better business outcomes for dealers - such as faster listing optimizations, higher sales conversions, or time saved. This absence is notable given the project was framed as needing to show value quickly in a "disrupt" context.
+
+The team's solution to context awareness - changing button options based on page location - is clever and pragmatic but fundamentally limited. Dealers may be looking at specific listings, messages, or data points that the dynamic navbar can't truly "see," which presumably still leads to some breakdown in user expectations. The presentation doesn't explore how often users ask questions that require true visual context the system lacks.
+
+The tool design philosophy appears sound but raises questions about scalability. As dealer needs evolve and new platform features emerge, how sustainable is the manual process of designing purpose-built aggregation tools? The team's exploration of agent-generated tools suggests awareness of this challenge, but the careful, safety-focused approach may limit how quickly the agent can expand its capabilities compared to more flexible (if less reliable) approaches.
+
+The CSV versus JSON tradeoff is presented as clearly favoring CSV for token efficiency, but the loss of interpretability is somewhat glossed over. We don't see evaluation results comparing the agent's accuracy with JSON versus CSV formatted data, which would help assess whether the token savings come at a meaningful cost to response quality.
+
+Overall, the case study represents thoughtful, iterative LLMOps work with genuine insights about production deployment challenges, particularly around user experience design for agentic systems. The emphasis on moving beyond chat interfaces toward instant actions and dynamic UI feels like an important contribution to the field's evolving best practices. However, the presentation would be strengthened by more concrete business impact metrics and longer-term adoption data.

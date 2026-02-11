@@ -1,0 +1,95 @@
+---
+title: "Generating 3D Shoppable Product Visualizations with Veo Video Generation Model"
+slug: "generating-3d-shoppable-product-visualizations-with-veo-video-generation-model"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "68550b09e953062538543bfa"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:12:01.419Z"
+  createdOn: "2025-06-20T07:17:29.410Z"
+llmopsTags:
+  - "content-moderation"
+  - "visualization"
+  - "multi-modality"
+  - "structured-output"
+  - "fine-tuning"
+  - "model-optimization"
+  - "tensorflow"
+  - "pytorch"
+  - "google-gcp"
+company: "Google"
+summary: "Google developed a three-generation evolution of AI-powered systems to transform 2D product images into interactive 3D visualizations for online shopping, culminating in a solution based on their Veo video generation model. The challenge was to replicate the tactile, hands-on experience of in-store shopping in digital environments while making the technology scalable and cost-effective for retailers. The latest approach uses Veo's diffusion-based architecture, fine-tuned on millions of synthetic 3D assets, to generate realistic 360-degree product spins from as few as one to three product images. This system now powers interactive 3D visualizations across multiple product categories on Google Shopping, significantly improving the online shopping experience by enabling customers to virtually inspect products from multiple angles."
+link: "https://research.google/blog/bringing-3d-shoppable-products-online-with-generative-ai/"
+year: 2025
+seo:
+  title: "Google: Generating 3D Shoppable Product Visualizations with Veo Video Generation Model - ZenML LLMOps Database"
+  description: "Google developed a three-generation evolution of AI-powered systems to transform 2D product images into interactive 3D visualizations for online shopping, culminating in a solution based on their Veo video generation model. The challenge was to replicate the tactile, hands-on experience of in-store shopping in digital environments while making the technology scalable and cost-effective for retailers. The latest approach uses Veo's diffusion-based architecture, fine-tuned on millions of synthetic 3D assets, to generate realistic 360-degree product spins from as few as one to three product images. This system now powers interactive 3D visualizations across multiple product categories on Google Shopping, significantly improving the online shopping experience by enabling customers to virtually inspect products from multiple angles."
+  canonical: "https://www.zenml.io/llmops-database/generating-3d-shoppable-product-visualizations-with-veo-video-generation-model"
+  ogTitle: "Google: Generating 3D Shoppable Product Visualizations with Veo Video Generation Model - ZenML LLMOps Database"
+  ogDescription: "Google developed a three-generation evolution of AI-powered systems to transform 2D product images into interactive 3D visualizations for online shopping, culminating in a solution based on their Veo video generation model. The challenge was to replicate the tactile, hands-on experience of in-store shopping in digital environments while making the technology scalable and cost-effective for retailers. The latest approach uses Veo's diffusion-based architecture, fine-tuned on millions of synthetic 3D assets, to generate realistic 360-degree product spins from as few as one to three product images. This system now powers interactive 3D visualizations across multiple product categories on Google Shopping, significantly improving the online shopping experience by enabling customers to virtually inspect products from multiple angles."
+---
+
+## Overview
+
+This case study presents Google's three-generation evolution of AI systems designed to transform 2D product images into interactive 3D visualizations for e-commerce applications. The initiative addresses a fundamental challenge in online retail: bridging the gap between the tactile, hands-on experience of in-store shopping and the limitations of traditional 2D product imagery on digital platforms. The solution demonstrates sophisticated LLMOps practices through the deployment of increasingly advanced generative AI models, culminating in a production system powered by Veo, Google's state-of-the-art video generation model.
+
+The business problem centers on the fact that billions of people shop online daily, yet struggle to replicate the intuitive experience of physically examining products in stores. Traditional approaches to creating 3D product visualizations are costly and time-consuming for businesses to implement at scale, creating a significant barrier to enhanced online shopping experiences. Google's solution evolved through three distinct generations of technology, each addressing limitations of the previous approach while scaling to handle the massive volume of products on Google Shopping.
+
+## Technical Architecture and Evolution
+
+### First Generation: Neural Radiance Fields (NeRF) Foundation
+
+The initial approach, launched in 2022, was built on Neural Radiance Fields (NeRF) technology to learn 3D representations of products from five or more images. This first-generation system required solving multiple complex sub-problems including intelligent image selection, background removal, 3D prior prediction, camera position estimation from sparse object-centric images, and optimization of 3D product representations.
+
+The system successfully launched interactive 360-degree visualizations for shoes on Google Search, representing a significant breakthrough in applying NeRF technology to commercial applications. However, the approach revealed significant limitations when dealing with complex geometries such as sandals and heels, where thin structures proved challenging to reconstruct accurately from sparse input views. The system also suffered from noisy input signals, particularly inaccurate camera poses, which impacted the quality and reliability of the generated 3D models.
+
+### Second Generation: View-Conditioned Diffusion Integration
+
+In 2023, Google introduced a second-generation approach that integrated view-conditioned diffusion models to address the limitations of the NeRF-based system. This approach represented a significant advancement in LLMOps methodology, demonstrating how newer generative AI techniques could be systematically integrated into existing production systems.
+
+The view-conditioned diffusion model enables the system to predict how a product appears from any viewpoint, even when only limited viewpoint images are available. For example, given an image of the top of a shoe, the model can predict what the front of the shoe looks like. This capability was implemented using a variant of score distillation sampling (SDS), originally proposed in DreamFusion.
+
+The training process involves rendering the 3D model from random camera views, using the view-conditioned diffusion model and available posed images to generate targets from the same camera view, and calculating scores by comparing rendered images with generated targets. This score directly informs the optimization process, continuously refining the 3D model's parameters to enhance quality and realism.
+
+This second-generation approach achieved significant scaling advantages, enabling the generation of 3D representations for many shoes viewed daily on Google Shopping. The system successfully expanded to handle sandals, heels, boots, and other footwear categories, with the majority of interactive 360-degree visualizations on Google Shopping being created by this technology.
+
+### Third Generation: Veo-Powered Generalization
+
+The latest breakthrough builds on Veo, Google's state-of-the-art video generation model, representing a fundamental shift in approach and demonstrating advanced LLMOps practices in model adaptation and deployment. Veo's strength lies in its ability to generate videos that capture complex interactions between light, material, texture, and geometry through its powerful diffusion-based architecture and multi-modal task fine-tuning capabilities.
+
+The fine-tuning process for Veo involved creating a comprehensive dataset of millions of high-quality, 3D synthetic assets. These assets were rendered from various camera angles and lighting conditions to create paired datasets of images and videos. Veo was then supervised to generate 360-degree spins conditioned on one or more input images.
+
+This approach demonstrated remarkable generalization capabilities across diverse product categories including furniture, apparel, and electronics. The system captures complex lighting and material interactions, including challenging scenarios like shiny surfaces, which were problematic for previous generations. Importantly, the Veo-based approach eliminates the need to estimate precise camera poses from sparse object-centric product images, significantly simplifying the problem and increasing system reliability.
+
+## Production Deployment and Scaling Considerations
+
+The deployment of this system represents sophisticated LLMOps practices in several key areas. The system demonstrates progressive model evolution, where each generation builds upon lessons learned from the previous implementation while maintaining backward compatibility and service continuity. The transition from NeRF to diffusion-based approaches, and finally to Veo, shows careful consideration of model performance, scalability, and operational complexity.
+
+The fine-tuning of Veo required substantial computational resources and careful dataset curation. The creation of millions of synthetic 3D assets and their rendering from various angles and lighting conditions represents a significant engineering effort in data pipeline management and model training orchestration. The system's ability to generate realistic 3D representations from as few as one image, while improving quality with additional input images (up to three for optimal results), demonstrates thoughtful design for practical deployment scenarios.
+
+The production system handles massive scale, processing products across Google Shopping's extensive catalog. The system's ability to generalize across diverse product categories without requiring category-specific fine-tuning represents a significant achievement in model generalization and operational efficiency.
+
+## Technical Performance and Limitations
+
+While the Veo-based system represents a significant advancement, the case study acknowledges important limitations that reflect honest assessment of production AI system capabilities. Like any generative 3D technology, Veo must hallucinate details from unseen views, such as the back of an object when only front-view images are available. The system's performance improves with additional input images, with three images capturing most object surfaces being sufficient to significantly improve quality and reduce hallucinations.
+
+The system's ability to capture complex material properties and lighting interactions represents a significant advancement over previous generations, but the case study doesn't make exaggerated claims about perfect reconstruction or universal applicability. This balanced assessment reflects mature LLMOps practices where system limitations are clearly understood and communicated.
+
+## Operational Impact and Business Results
+
+The deployment of this system has enabled interactive 3D visualizations across multiple product categories on Google Shopping, significantly enhancing the online shopping experience. The system's scalability allows it to handle the massive volume of products in Google's e-commerce ecosystem while maintaining quality and performance standards.
+
+The evolution from a system requiring five or more images to one that can work effectively with as few as three images represents a significant reduction in operational complexity for retailers and content creators. This improvement in input requirements directly translates to reduced costs and increased scalability for businesses looking to implement 3D product visualizations.
+
+## LLMOps Lessons and Best Practices
+
+This case study demonstrates several important LLMOps principles in action. The systematic evolution through three distinct generations shows how production AI systems can be continuously improved while maintaining service continuity. Each generation addresses specific limitations of the previous approach while building upon proven components.
+
+The integration of different AI techniques (NeRF, diffusion models, video generation) demonstrates the importance of staying current with rapidly evolving AI capabilities and systematically evaluating new approaches for production deployment. The careful fine-tuning of Veo on synthetic datasets shows sophisticated approach to model adaptation for specific use cases.
+
+The acknowledgment of system limitations and the clear communication of when additional input images are needed reflects mature operational practices in AI system deployment. The system's design for practical deployment scenarios, balancing quality with operational constraints, demonstrates thoughtful consideration of real-world usage patterns.
+
+The case study also highlights the importance of cross-functional collaboration, with researchers from Google Labs, Google DeepMind, and Google Shopping working together to solve complex technical challenges. This collaborative approach is essential for successful deployment of advanced AI systems in production environments.

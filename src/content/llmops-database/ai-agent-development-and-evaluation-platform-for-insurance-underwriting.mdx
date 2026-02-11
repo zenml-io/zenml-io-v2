@@ -1,0 +1,122 @@
+---
+title: "AI Agent Development and Evaluation Platform for Insurance Underwriting"
+slug: "ai-agent-development-and-evaluation-platform-for-insurance-underwriting"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "687626ecf346425ab97659b6"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:13:51.561Z"
+  createdOn: "2025-07-15T10:01:16.247Z"
+llmopsTags:
+  - "healthcare"
+  - "fraud-detection"
+  - "customer-support"
+  - "document-processing"
+  - "question-answering"
+  - "classification"
+  - "high-stakes-application"
+  - "structured-output"
+  - "regulatory-compliance"
+  - "agent-based"
+  - "multi-agent-systems"
+  - "prompt-engineering"
+  - "few-shot"
+  - "human-in-the-loop"
+  - "error-handling"
+  - "fallback-strategies"
+  - "langchain"
+  - "postgresql"
+  - "sqlite"
+  - "fastapi"
+  - "monitoring"
+  - "databases"
+  - "api-gateway"
+  - "documentation"
+  - "security"
+  - "compliance"
+  - "guardrails"
+  - "reliability"
+  - "scalability"
+  - "openai"
+  - "anthropic"
+  - "google-gcp"
+company: "Snorkel"
+summary: "Snorkel developed a comprehensive benchmark dataset and evaluation framework for AI agents in commercial insurance underwriting, working with Chartered Property and Casualty Underwriters (CPCUs) to create realistic scenarios for small business insurance applications. The system leverages LangGraph and Model Context Protocol to build ReAct agents capable of multi-tool reasoning, database querying, and user interaction. Evaluation across multiple frontier models revealed significant challenges in tool use accuracy (36% error rate), hallucination issues where models introduced domain knowledge not present in guidelines, and substantial variance in performance across different underwriting tasks, with accuracy ranging from single digits to 80% depending on the model and task complexity."
+link: "https://snorkel.ai/blog/evaluating-ai-agents-for-insurance-underwriting/"
+year: 2025
+seo:
+  title: "Snorkel: AI Agent Development and Evaluation Platform for Insurance Underwriting - ZenML LLMOps Database"
+  description: "Snorkel developed a comprehensive benchmark dataset and evaluation framework for AI agents in commercial insurance underwriting, working with Chartered Property and Casualty Underwriters (CPCUs) to create realistic scenarios for small business insurance applications. The system leverages LangGraph and Model Context Protocol to build ReAct agents capable of multi-tool reasoning, database querying, and user interaction. Evaluation across multiple frontier models revealed significant challenges in tool use accuracy (36% error rate), hallucination issues where models introduced domain knowledge not present in guidelines, and substantial variance in performance across different underwriting tasks, with accuracy ranging from single digits to 80% depending on the model and task complexity."
+  canonical: "https://www.zenml.io/llmops-database/ai-agent-development-and-evaluation-platform-for-insurance-underwriting"
+  ogTitle: "Snorkel: AI Agent Development and Evaluation Platform for Insurance Underwriting - ZenML LLMOps Database"
+  ogDescription: "Snorkel developed a comprehensive benchmark dataset and evaluation framework for AI agents in commercial insurance underwriting, working with Chartered Property and Casualty Underwriters (CPCUs) to create realistic scenarios for small business insurance applications. The system leverages LangGraph and Model Context Protocol to build ReAct agents capable of multi-tool reasoning, database querying, and user interaction. Evaluation across multiple frontier models revealed significant challenges in tool use accuracy (36% error rate), hallucination issues where models introduced domain knowledge not present in guidelines, and substantial variance in performance across different underwriting tasks, with accuracy ranging from single digits to 80% depending on the model and task complexity."
+---
+
+This case study presents Snorkel's comprehensive approach to developing and evaluating AI agents for insurance underwriting applications, representing a significant contribution to understanding how large language models perform in complex enterprise environments. The work demonstrates both the potential and limitations of current frontier models when deployed in production-like scenarios that require domain expertise, multi-tool coordination, and real-world business logic.
+
+## Company and Use Case Overview
+
+Snorkel, known for its data development platform and expert data services, developed this benchmark to address critical gaps in AI agent evaluation for enterprise settings. The motivation stems from observations that while AI agents show promise in enterprise applications, they often exhibit inaccuracy and inefficiency when tackling business problems. Unlike academic benchmarks that focus on easily verifiable tasks like coding and mathematics, this initiative aimed to create realistic evaluation scenarios that mirror the complexity of actual business operations.
+
+The specific use case centers on commercial property and casualty insurance underwriting for small businesses in North America. The team created a fictional insurance company called "All National Insurance" that sells directly to customers without intermediary agents or brokers. This setup requires the AI system to gather complete information and make nuanced decisions about risk assessment, business classification, policy limits, and product recommendations based on complex business rules and regulatory requirements.
+
+## Technical Architecture and Implementation
+
+The technical foundation of this LLMOps implementation leverages several key frameworks and technologies. The core agent architecture is built using LangGraph, a framework that provides flexibility for working with various AI models, both open-source and proprietary. The system incorporates Model Context Protocol (MCP) to standardize tool interactions, allowing agents to seamlessly integrate with databases, document repositories, and other enterprise systems.
+
+Each AI model evaluated in the benchmark is wrapped as a ReAct (Reasoning and Acting) agent, which represents a common pattern in enterprise AI deployment where agents need to reason about problems and take actions through tool use. This architecture choice reflects practical considerations that many organizations face when prototyping AI systems, making the benchmark results more applicable to real-world deployment scenarios.
+
+The system design includes a sophisticated IT ecosystem simulation that presents agents with realistic challenges they would encounter in production environments. This includes multiple database tables containing business classification codes, regulatory information, and company profiles, along with free-text underwriting guidelines that require natural language processing and reasoning capabilities.
+
+## Data Development and Expert Network Integration
+
+A crucial aspect of this LLMOps implementation is the integration of domain expertise through Snorkel's Expert Data-as-a-Service network. The team collaborated extensively with Chartered Property and Casualty Underwriters (CPCUs) to ensure the benchmark reflects real-world complexity and business logic. This expert involvement occurred across multiple iterations, covering individual data samples, overall guidelines, data table structures, business rule development, and validation of company profiles for realism.
+
+The data development process involved creating thousands of fictional companies representing the broad spectrum of small businesses in North America. This required careful sampling of North American Industry Classification System (NAICS) codes and business statistics, combined with frontier model assistance to generate structured profiles that CPCUs validated for realism. The attention to detail in this data creation process demonstrates how effective LLMOps requires not just technical implementation but also deep domain knowledge integration.
+
+The benchmark includes six fundamental task types that mirror actual underwriting workflows: determining if insurance types are "in appetite" for the company, recommending additional insurance products, qualifying businesses as small enterprises, proper business classification using NAICS codes, setting appropriate policy limits, and determining suitable deductibles. Each task type presents different challenges in terms of tool use complexity and reasoning requirements.
+
+## Multi-Tool Reasoning and Complex Workflow Orchestration
+
+One of the most significant LLMOps challenges addressed in this system is the orchestration of complex, multi-step workflows that require proper sequencing of tool use and information gathering. The benchmark reveals that effective AI agents must navigate intricate dependencies between different data sources and business rules, often requiring three to four tools used in correct sequence.
+
+For example, determining small business qualification requires agents to find proper NAICS classification codes from the 2012 version of the schema, use this code to query Small Business Administration tables to identify relevant qualification criteria (employee count versus annual revenue), and determine appropriate thresholds. This process involves multiple SQL queries across different tables and requires understanding of how NAICS codes have evolved between different versions of the classification system.
+
+Similarly, property insurance appetite determination requires agents to read free-text underwriting guidelines, identify if applicants belong to special real estate-related class codes, gather additional property information from users, classify property construction types, and make final decisions based on complex business rules. These workflows demonstrate how production AI systems must handle ambiguous, interconnected information sources while maintaining accuracy and efficiency.
+
+## Evaluation Framework and Performance Metrics
+
+The evaluation framework developed for this LLMOps implementation goes beyond simple accuracy metrics to provide actionable insights for enterprise deployment. The team designed multiple evaluation criteria that reflect real-world business concerns: task solution correctness measured against expert-generated reference answers, task solution conciseness to avoid information overload, tool use correctness for basic functionality, and tool use efficiency to assess planning and execution quality.
+
+The evaluation reveals significant challenges in current frontier model performance. Task solution correctness varies dramatically across models, ranging from single digits to approximately 80% accuracy. More concerning for production deployment is the discovery of a clear tradeoff between test-time compute consumption and accuracy, with the highest performing models showing substantially higher token consumption. This finding has direct implications for deployment costs and system scalability in enterprise environments.
+
+Performance analysis across different task types reveals interesting patterns that inform deployment strategies. Business classification tasks achieved the highest accuracy (77.2%) because they represent foundational capabilities required for other tasks. Policy limits and deductibles showed good performance (76.2% and 78.4% respectively) when underwriting guidelines contained clear defaults. However, the most challenging tasks—appetite checks (61.5%) and product recommendations (37.7%)—require complex multi-tool coordination and nuanced reasoning that current models struggle to handle reliably.
+
+## Critical Error Modes and Production Challenges
+
+The benchmark uncovered several critical error modes that have significant implications for production AI deployment. Tool use errors occurred in 36% of conversations across all models, including top performers, despite agents having access to proper metadata for tool usage. This finding challenges assumptions about model capabilities and suggests that even sophisticated models require careful engineering for reliable tool interaction in production environments.
+
+Particularly concerning is the lack of correlation between tool use errors and overall performance. Even the three most accurate models made tool call errors in 30-50% of conversations, often requiring multiple attempts to retrieve metadata and correct their approach. This behavior pattern suggests that production systems cannot rely on models to self-correct efficiently, potentially leading to increased costs and reduced user experience quality.
+
+The evaluation also revealed a distinct hallucination error mode related to pretrained domain knowledge. High-performing models that were clearly trained on insurance data sometimes hallucinated guidelines that might appear online but were not contained in the provided documentation. For example, top-performing OpenAI models hallucinated insurance products not mentioned in guidelines 15-45% of the time, leading to misleading answers and irrelevant user interactions.
+
+## Domain Knowledge Integration and Proprietary Information Challenges
+
+This case study demonstrates the critical importance of properly integrating proprietary domain knowledge in production AI systems. The fictional "All National Insurance" company has specific underwriting guidelines and business rules that represent the type of proprietary knowledge that gives companies competitive advantages. Models that rely too heavily on generic, publicly available information introduce subtle but potentially catastrophic factual inaccuracies.
+
+The hallucination of generic insurance knowledge when specific guidelines should take precedence illustrates a fundamental challenge in enterprise AI deployment. Production systems must ensure that proprietary business rules and processes take precedence over general domain knowledge, requiring careful prompt engineering, fine-tuning, or other techniques to maintain accuracy and business alignment.
+
+## Implications for Enterprise AI Deployment
+
+The findings from this comprehensive evaluation have several important implications for organizations considering AI agent deployment in enterprise settings. First, the significant variation in model performance across different task types suggests that organizations should conduct thorough evaluations using realistic scenarios before selecting models for production deployment. Generic benchmarks may not reveal performance issues that emerge in domain-specific applications.
+
+Second, the high rate of tool use errors even among top-performing models indicates that production systems require robust error handling and recovery mechanisms. Organizations cannot assume that frontier models will reliably interact with enterprise systems without additional engineering effort to handle edge cases and provide appropriate guardrails.
+
+Third, the tradeoff between accuracy and computational cost requires careful consideration of business requirements and budget constraints. Higher-performing models may consume significantly more resources, affecting both operational costs and system scalability. Organizations must balance performance requirements with practical deployment considerations.
+
+Finally, the hallucination of generic domain knowledge highlights the need for careful validation and testing of AI systems in enterprise contexts. Organizations must ensure that their AI systems prioritize proprietary business rules and processes over general domain knowledge, requiring ongoing monitoring and evaluation to maintain accuracy and business alignment.
+
+This case study represents a significant contribution to understanding how AI agents perform in realistic enterprise environments, providing valuable insights for organizations considering production deployment of large language models in complex business contexts. The comprehensive evaluation framework and detailed error analysis offer practical guidance for developing more reliable and effective AI systems in enterprise settings.

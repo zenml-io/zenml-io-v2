@@ -226,7 +226,7 @@ const blogSchema = z.object({
 
   // Blog-specific fields
   author: slugReference('authors'),
-  category: slugReference('categories'),
+  category: slugReference('categories').optional(), // 8 posts have no category in Webflow
   tags: slugReferenceArray('tags'),
   date: z.coerce.date(),
   readingTime: z.string().optional(),
@@ -473,6 +473,33 @@ export const collections = {
     schema: quoteSchema,
   }),
 
-  // Main collection loaders will be added in Phase 2F after copying MDX files to src/content/
-  // Schemas are defined above: blog, integrations, llmops-database, compare, team, projects, old-projects
+  // Main collection loaders (Phase 2F)
+  blog: defineCollection({
+    loader: glob({ pattern: '**/*.mdx', base: './src/content/blog' }),
+    schema: blogSchema,
+  }),
+  integrations: defineCollection({
+    loader: glob({ pattern: '**/*.mdx', base: './src/content/integrations' }),
+    schema: integrationSchema,
+  }),
+  'llmops-database': defineCollection({
+    loader: glob({ pattern: '**/*.mdx', base: './src/content/llmops-database' }),
+    schema: llmopsSchema,
+  }),
+  compare: defineCollection({
+    loader: glob({ pattern: '**/*.mdx', base: './src/content/compare' }),
+    schema: compareSchema,
+  }),
+  team: defineCollection({
+    loader: glob({ pattern: '**/*.mdx', base: './src/content/team' }),
+    schema: teamSchema,
+  }),
+  projects: defineCollection({
+    loader: glob({ pattern: '**/*.mdx', base: './src/content/projects' }),
+    schema: projectSchema,
+  }),
+  'old-projects': defineCollection({
+    loader: glob({ pattern: '**/*.mdx', base: './src/content/old-projects' }),
+    schema: oldProjectSchema,
+  }),
 };

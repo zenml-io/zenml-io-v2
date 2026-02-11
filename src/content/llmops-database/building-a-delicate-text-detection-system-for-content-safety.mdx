@@ -1,0 +1,100 @@
+---
+title: "Building a Delicate Text Detection System for Content Safety"
+slug: "building-a-delicate-text-detection-system-for-content-safety"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f3db98acbecd97374ef25"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:39:15.416Z"
+  createdOn: "2024-11-21T14:03:37.497Z"
+llmopsTags:
+  - "classification"
+  - "compliance"
+  - "content-moderation"
+  - "documentation"
+  - "fine-tuning"
+  - "guardrails"
+  - "high-stakes-application"
+  - "hugging-face"
+  - "open-source"
+  - "reliability"
+  - "security"
+  - "semantic-search"
+company: "Grammarly"
+summary: "Grammarly developed a novel approach to detect delicate text content that goes beyond traditional toxicity detection, addressing a gap in content safety. They created DeTexD, a benchmark dataset of 40,000 training samples and 1,023 test paragraphs, and developed a RoBERTa-based classification model that achieved 79.3% F1 score, significantly outperforming existing toxic text detection methods for identifying potentially triggering or emotionally charged content."
+link: "https://www.grammarly.com/blog/engineering/detecting-delicate-text/"
+year: 2024
+seo:
+  title: "Grammarly: Building a Delicate Text Detection System for Content Safety - ZenML LLMOps Database"
+  description: "Grammarly developed a novel approach to detect delicate text content that goes beyond traditional toxicity detection, addressing a gap in content safety. They created DeTexD, a benchmark dataset of 40,000 training samples and 1,023 test paragraphs, and developed a RoBERTa-based classification model that achieved 79.3% F1 score, significantly outperforming existing toxic text detection methods for identifying potentially triggering or emotionally charged content."
+  canonical: "https://www.zenml.io/llmops-database/building-a-delicate-text-detection-system-for-content-safety"
+  ogTitle: "Grammarly: Building a Delicate Text Detection System for Content Safety - ZenML LLMOps Database"
+  ogDescription: "Grammarly developed a novel approach to detect delicate text content that goes beyond traditional toxicity detection, addressing a gap in content safety. They created DeTexD, a benchmark dataset of 40,000 training samples and 1,023 test paragraphs, and developed a RoBERTa-based classification model that achieved 79.3% F1 score, significantly outperforming existing toxic text detection methods for identifying potentially triggering or emotionally charged content."
+---
+
+## Overview
+
+Grammarly, the widely-used AI-powered writing assistant, developed a research initiative to address a gap in content safety that existing toxicity detection systems were failing to capture. Their work on "delicate text" detection represents an important contribution to the broader field of AI safety, particularly relevant as LLMs become more prevalent in production environments where they may encounter or generate sensitive content.
+
+The core insight driving this research is that harmful text is not limited to explicitly toxic or offensive content. Delicate text, as defined by Grammarly's researchers, encompasses any text that is emotionally charged or potentially triggering, where engaging with it has the potential to result in harm. This includes content about self-harm, mental health issues, controversial political topics, discussions of race, gender, religion, and socioeconomic status—content that may not contain profanity or explicit hate speech but still presents risks for users or AI agents exposed to it.
+
+## The Problem with Existing Approaches
+
+The research highlights a significant limitation in current content moderation and safety systems. Traditional toxicity detection methods, including widely-used commercial APIs like Google's Perspective API and OpenAI's moderation and content filter APIs, are designed to detect explicitly offensive, hateful, or abusive language. However, they systematically underperform when it comes to identifying delicate content that falls outside these narrower definitions.
+
+The Grammarly team evaluated multiple existing approaches against their new benchmark, including HateBERT fine-tuned on various datasets (AbusEval, HatEval, OffensEval), Google's Perspective API, and OpenAI's content moderation tools. The results were revealing: even the best-performing existing methods achieved F1 scores well below the 79.3% achieved by Grammarly's purpose-built baseline model. Google's Perspective API achieved only 42.3% F1, while OpenAI's moderation API reached just 31.1% F1.
+
+This performance gap has direct implications for LLM operations. Systems that rely solely on toxicity detection may allow delicate content to pass through undetected, potentially exposing users to triggering content or allowing AI systems to generate responses about sensitive topics without appropriate safeguards.
+
+## Dataset Construction Methodology
+
+The creation of the DeTexD dataset followed a rigorous methodology that offers valuable lessons for teams building specialized datasets for content safety applications. The data sourcing employed two complementary techniques:
+
+- **Domain Specification**: The team specifically targeted news websites, forums discussing sensitive topics, and controversial online communities. This targeted approach ensured coverage of content that naturally contains delicate material.
+
+- **Keyword Matching**: They developed a dictionary of delicate keywords with severity ratings for each keyword. This dictionary served to refine the dataset and ensure coverage across various topics and risk levels.
+
+The annotation process addressed the inherent subjectivity of determining what constitutes delicate content. Expert linguists with prior experience in similar annotation tasks performed a two-stage annotation process: first identifying whether texts were delicate or not, then rating the risk level of delicate texts. Final labels were determined by majority vote among annotators. The team provided detailed examples and instructions to annotators to improve consistency.
+
+The resulting dataset includes 40,000 labeled samples for training and 1,023 paragraphs for benchmark evaluation. Both the benchmark dataset and the baseline model have been released publicly through Hugging Face, along with annotation guidelines, demonstrating a commitment to reproducibility and community contribution.
+
+## Model Architecture and Training
+
+For their baseline model, the team chose to fine-tune a RoBERTa-based classifier on the DeTexD Training dataset. RoBERTa (Robustly Optimized BERT Pretraining Approach) represents a well-established transformer architecture that has proven effective for text classification tasks. The choice of RoBERTa provides a good balance between performance and computational efficiency, making it suitable for production deployment scenarios.
+
+The fine-tuned model, released as `grammarly/detexd-roberta-base` on Hugging Face, provides a ready-to-use solution for teams looking to incorporate delicate text detection into their applications. This is a significant operational advantage, as it eliminates the need for other organizations to collect and annotate their own datasets from scratch.
+
+## Evaluation Results and Analysis
+
+The evaluation results provide important insights for practitioners considering how to implement content safety in production LLM systems. The comparison table in the paper shows that the baseline model achieves 81.4% precision and 78.3% recall, with an F1 score of 79.3%. This balanced performance is notable because many existing methods show extreme trade-offs between precision and recall.
+
+For example, HateBERT fine-tuned on HatEval achieves 95.2% precision but only 6.0% recall at its default threshold—meaning it catches very little delicate content despite being highly accurate when it does flag something. When calibrated to optimize F1 score, this flips to 41.1% precision and 86.0% recall, catching more content but with many false positives.
+
+The analysis also confirmed the researchers' hypothesis that delicate text detection and toxic text detection are fundamentally different tasks. The fine-tuned model tends to be more permissive with texts containing profanities unrelated to sensitive topics, while being more likely to flag discussions of race, violence, and sexuality even when not labeled as toxic by traditional metrics. This distinction is crucial for production systems that need nuanced content handling.
+
+## LLMOps Implications
+
+This research has several important implications for teams operating LLMs in production:
+
+The first is the recognition that content safety is multi-dimensional. Organizations deploying LLMs should not rely solely on toxicity detection but should consider broader categories of potentially harmful content. The DeTexD benchmark provides a way to evaluate how well existing safety measures capture delicate content.
+
+The public release of artifacts—including the benchmark dataset, the trained model, and annotation guidelines—enables other teams to incorporate delicate text detection into their safety pipelines or to extend this research for their specific domains. The availability of the model on Hugging Face significantly lowers the barrier to adoption.
+
+The paper also emphasizes responsible use of these tools, with the authors explicitly noting that they do not recommend using these artifacts without proper due diligence for privacy, security, sensitivity, legal, and compliance measures. This reflects an understanding that content moderation tools must be deployed thoughtfully within broader governance frameworks.
+
+For teams building LLM-powered applications that may receive or generate content about mental health, medical topics, political issues, or other sensitive areas, the DeTexD approach offers a complementary layer of protection beyond standard toxicity filters. This is particularly relevant for customer-facing applications, content moderation systems, and AI assistants that interact with vulnerable populations.
+
+## Limitations and Considerations
+
+While this research represents a valuable contribution, practitioners should be aware of certain limitations. The definition of "delicate" text is inherently subjective and culturally dependent—what is considered delicate may vary across communities and contexts. The annotation was performed by expert linguists, but their perspectives may not fully represent the diversity of potential users.
+
+The benchmark dataset, while substantial at over 40,000 samples, focuses on English-language content from specific online sources. Teams operating in multilingual environments or different cultural contexts may need to develop supplementary datasets.
+
+Additionally, the research was published through an academic workshop, and while performance metrics are provided, there is limited information about inference latency, computational requirements, or how the model performs at scale in production environments. Teams considering adoption would need to conduct their own performance testing for their specific deployment scenarios.
+
+## Conclusion
+
+Grammarly's DeTexD research addresses a meaningful gap in content safety for AI systems. By distinguishing delicate text from purely toxic content and providing publicly available tools and benchmarks, the work enables more nuanced and comprehensive safety measures in production LLM deployments. For organizations serious about responsible AI deployment, incorporating delicate text detection alongside traditional toxicity filtering represents a more robust approach to user protection.

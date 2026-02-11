@@ -1,0 +1,130 @@
+---
+title: "Video Super-Resolution at Scale for Ads and Generative AI Content"
+slug: "video-super-resolution-at-scale-for-ads-and-generative-ai-content"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "69009f94aaff9136869607c5"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:22:12.459Z"
+  createdOn: "2025-10-28T10:48:52.803Z"
+llmopsTags:
+  - "multi-modality"
+  - "realtime-application"
+  - "data-analysis"
+  - "model-optimization"
+  - "latency-optimization"
+  - "cost-optimization"
+  - "evals"
+  - "monitoring"
+  - "scaling"
+  - "serverless"
+  - "open-source"
+  - "pytorch"
+  - "tensorflow"
+  - "meta"
+  - "google-gcp"
+  - "nvidia"
+company: "Meta"
+summary: "Meta's Media Foundation team deployed AI-powered video super-resolution (VSR) models at massive scale to enhance video quality across their ecosystem, processing over 1 billion daily video uploads. The problem addressed was the prevalence of low-quality videos from poor camera quality, cross-platform uploads, and legacy content that degraded user experience. The solution involved deploying multiple VSR models—both CPU-based (using Intel's RVSR SDK) and GPU-based—to upscale and enhance video quality for ads and generative AI features like Meta Restyle. Through extensive subjective evaluation with thousands of human raters, Meta identified effective quality metrics (VMAF-UQ), determined which videos would benefit most from VSR, and successfully deployed the technology while managing GPU resource constraints and ensuring quality improvements aligned with user preferences."
+link: "http://www.youtube.com/watch?v=9LgKq4Mvjaw"
+year: 2025
+seo:
+  title: "Meta: Video Super-Resolution at Scale for Ads and Generative AI Content - ZenML LLMOps Database"
+  description: "Meta's Media Foundation team deployed AI-powered video super-resolution (VSR) models at massive scale to enhance video quality across their ecosystem, processing over 1 billion daily video uploads. The problem addressed was the prevalence of low-quality videos from poor camera quality, cross-platform uploads, and legacy content that degraded user experience. The solution involved deploying multiple VSR models—both CPU-based (using Intel's RVSR SDK) and GPU-based—to upscale and enhance video quality for ads and generative AI features like Meta Restyle. Through extensive subjective evaluation with thousands of human raters, Meta identified effective quality metrics (VMAF-UQ), determined which videos would benefit most from VSR, and successfully deployed the technology while managing GPU resource constraints and ensuring quality improvements aligned with user preferences."
+  canonical: "https://www.zenml.io/llmops-database/video-super-resolution-at-scale-for-ads-and-generative-ai-content"
+  ogTitle: "Meta: Video Super-Resolution at Scale for Ads and Generative AI Content - ZenML LLMOps Database"
+  ogDescription: "Meta's Media Foundation team deployed AI-powered video super-resolution (VSR) models at massive scale to enhance video quality across their ecosystem, processing over 1 billion daily video uploads. The problem addressed was the prevalence of low-quality videos from poor camera quality, cross-platform uploads, and legacy content that degraded user experience. The solution involved deploying multiple VSR models—both CPU-based (using Intel's RVSR SDK) and GPU-based—to upscale and enhance video quality for ads and generative AI features like Meta Restyle. Through extensive subjective evaluation with thousands of human raters, Meta identified effective quality metrics (VMAF-UQ), determined which videos would benefit most from VSR, and successfully deployed the technology while managing GPU resource constraints and ensuring quality improvements aligned with user preferences."
+---
+
+## Overview
+
+Ryan Lei from Meta's Media Foundation team presents a comprehensive case study on deploying video super-resolution (VSR) models at unprecedented scale across Meta's family of apps. While VSR itself is primarily a computer vision task rather than a traditional LLM application, this case study is relevant to LLMOps because it demonstrates production deployment of AI models (particularly generative AI models like MovieGen) and addresses common operational challenges that apply to any large-scale AI deployment including LLMs: model selection, quality evaluation without reliable automated metrics, infrastructure constraints, and serving architecture decisions.
+
+Meta processes over 1 billion video uploads daily and serves more than 1 trillion view requests, with video now representing over 60% of time spent on Facebook and Instagram according to their 2024 Q1 earnings report. The company has accumulated more than 1 trillion video assets in inventory. The scale of this operation makes it one of the largest AI model deployment scenarios in the world, and the lessons learned translate directly to LLMOps challenges around evaluation, resource management, and production deployment.
+
+## The Problem Space
+
+Meta identified three primary sources of low-quality video content in their ecosystem. First, users create videos using lower-quality cameras, poor lighting conditions, and these videos undergo heavy compression during upload. Second, videos are downloaded from other platforms and cross-posted to Meta's apps, often losing quality in the process. Third, Meta's inventory contains legacy videos created at lower resolutions and quality standards that no longer meet modern user expectations on high-resolution displays.
+
+The business impact of this quality issue is significant given that video has become the key lever driving user engagement and revenue growth across Meta's ecosystem. Poor quality video directly translates to reduced engagement and potentially lost advertising revenue. The challenge was to find a scalable, cost-effective way to enhance video quality across billions of assets without fundamentally changing creator intent or introducing artifacts.
+
+## Solution Architecture
+
+Meta's approach involves deploying VSR models at two different points in their video processing pipeline. On the ingestion side, when receiving lower-resolution, lower-quality videos, they apply VSR to upscale content and create high-quality source material for downstream adaptive bitrate (ABR) encoding. This server-side approach leverages robust datacenter infrastructure to run computationally intensive models for maximum quality improvement. On the playback side, depending on network bandwidth constraints, users may still receive lower-resolution encodings, where client-side VSR could potentially be applied (though the presentation focuses primarily on server-side deployment due to the computational challenges of running sophisticated models on mobile devices with battery constraints).
+
+The infrastructure strategy is particularly noteworthy from an operational perspective. Rather than relying solely on scarce GPU resources—which are in high demand across Meta for various AI-powered features—the team partnered with Intel to deploy advanced VSR models on standard x86 CPU infrastructure. This was accomplished by adopting Intel's RVSR SDK and OpenVINO toolkit, which provide a middleware stack that abstracts the complexity of AI-based video processing. The RVSR SDK supports multiple video enhancement features including several high-performance pre-optimized VSR models exposed through standard FFmpeg plug-ins, making integration with existing processing workflows straightforward.
+
+This multi-platform approach demonstrates sophisticated thinking about resource constraints in production AI deployments. By maintaining a portfolio of solutions that can run on both CPUs and GPUs, Meta gains operational flexibility and cost efficiency. The CPU-based deployment eliminates dependency on scarce GPU resources for certain use cases, while GPU-based models remain available for latency-sensitive applications where the computational power justifies the resource cost.
+
+## Use Cases and Deployment
+
+Meta deployed VSR technology for two primary use cases during this initiative. The first was enhancing lower-resolution advertising videos and images in their inventory. This has significant business value as ad quality directly impacts advertising effectiveness and revenue. The presentation shows examples where VSR-processed images display noticeably sharper edges and cleaner product details compared to conventional upscaling algorithms like bilinear or bicubic interpolation.
+
+The second use case involves Meta's Restyle feature, representing cutting-edge AI-based content creation. Restyle allows users to transform photos and short video clips by changing outfits, backgrounds, lighting, and artistic style using preset options or custom prompts. This feature is available in Meta AI and Instagram editor apps. The processing pipeline for Restyle involves a MovieGen model—which is a generative AI model—to convert video from the original user input to a different style. After the restyled video is created, it goes through an optional post-processing pipeline where, depending on user requests, frame rate up-conversion, super-resolution, and other enhancements can be applied to improve the resolution and quality of the final generated video.
+
+For the Restyle use case, latency considerations drive different architectural decisions. To reduce end-to-end processing latency, Meta uses GPU-based VSR models that run together with the MovieGen model on the same GPU host. To further reduce latency, videos can be split into multiple segments and processed in parallel across many GPUs, then merged together. This demonstrates the tradeoff between resource efficiency (CPU-based processing) and latency requirements (GPU-based processing), a common consideration in production AI deployments.
+
+## Data Model and Infrastructure Features
+
+To support VSR deployment at scale, Meta expanded their video data model to support multi-variant content. Previously, when a user uploaded a video, Meta would create a single data model in the backend to manage that video's lifetime. With VSR and other enhancement technologies, they're not creating entirely new videos but rather new versions of the same video. The multi-variant feature allows them to apply different enhancement technologies to create different variants with new cells (likely referring to storage cells or processing units), then control which variants should be encoded and delivered to end users.
+
+This infrastructure design choice reveals sophisticated thinking about content management at scale. Rather than proliferating entirely separate video objects, the variant system allows for efficient management, storage optimization, and flexible delivery decisions. It also enables A/B testing and gradual rollout of enhancement technologies, as different user segments can receive different variants for comparison.
+
+## The Evaluation Challenge
+
+One of the most valuable aspects of this case study from an LLMOps perspective is Meta's approach to quality evaluation in the absence of reliable automated metrics. Unlike video compression, which has well-established quality metrics and methodologies to benchmark different codecs (like PSNR, SSIM, and VMAF), VSR lacks universally accepted quality metrics that can reliably measure quality improvement or detect introduced artifacts.
+
+This situation parallels the evaluation challenges in LLMOps, where automated metrics often fail to capture the nuances of model output quality, and human evaluation becomes necessary. Meta's approach demonstrates best practices that translate directly to LLM evaluation scenarios.
+
+Meta built an automated framework for large-scale crowd-based subjective evaluation. The framework displays videos processed by different VSR solutions side-by-side and asks human raters to provide MOS (Mean Opinion Score) ratings for each video and indicate their preferences. Critically, raters are also asked to identify any artifacts they observe in the videos, enabling detection of failure modes that automated metrics might miss.
+
+After collecting raw ratings, Meta leverages state-of-the-art statistical methodology to analyze the data and extract insights. This rigorous approach to human evaluation, including careful statistical analysis rather than naive averaging of ratings, demonstrates sophisticated evaluation practices.
+
+## Key Findings from Evaluation
+
+Through multiple rounds of subjective evaluation, Meta identified several critical insights. First, they found that VMAF-UQ (a variant of VMAF developed by Google) shows very good correlation with human subjective ratings. The presentation includes charts comparing MOS improvement with different VSR solutions alongside corresponding VMAF-UQ scores, demonstrating strong alignment. This discovery is valuable because it provides a quality metric that can be used to indicate quality improvement without requiring expensive human evaluation for every video processed.
+
+However, Meta's analysis revealed important nuances that automated metrics alone might miss. When grouping videos based on their input VMAF-UQ scores, they discovered that only videos with medium to high quality can meaningfully benefit from VSR. If the input video quality is already very low, applying VSR shows no noticeable improvement in subjective ratings. This finding has significant operational implications: by targeting VSR only to specific videos that can benefit from it, Meta can substantially reduce overall compute costs while maintaining the same perceived quality improvements.
+
+This insight demonstrates the value of combining automated metrics with human evaluation to understand not just whether a model works on average, but under what conditions it provides value. This kind of conditional deployment—applying expensive AI processing only where it provides measurable benefit—is a key optimization strategy in production AI systems.
+
+The evaluation process also helps identify risks of different VSR solutions, presumably including cases where super-resolution introduces undesirable artifacts or fundamentally changes content in ways that violate creator intent. This risk identification is particularly important at Meta's scale, where even low-probability failure modes could affect millions of videos.
+
+## Operational Considerations and Tradeoffs
+
+The case study reveals several important operational tradeoffs that Meta navigated in their deployment. The tension between GPU and CPU deployment represents a fundamental resource allocation challenge. GPUs provide superior performance and lower latency but are scarce and expensive, with high demand from multiple AI initiatives across the company. CPUs are abundant and cost-effective but may have higher latency or require more optimized models to achieve acceptable performance.
+
+Meta's solution—maintaining both CPU-based and GPU-based VSR capabilities—provides flexibility but also increases system complexity. Different use cases can be matched to appropriate infrastructure based on their requirements. Latency-sensitive applications like Restyle use GPU-based processing, while batch processing of ad inventory can leverage CPU-based solutions.
+
+Another key tradeoff involves quality versus compute cost. More sophisticated VSR models can provide better quality improvements but require more computational resources. The discovery that only medium-to-high quality input videos benefit from VSR enables targeted deployment that optimizes this tradeoff. Rather than applying expensive processing to all videos indiscriminately, Meta can intelligently select which assets to enhance based on input quality metrics.
+
+The parallel processing approach for Restyle—splitting videos into segments and processing them on multiple GPUs simultaneously—represents a classic scaling pattern that trades increased resource utilization for reduced latency. This is effective for user-facing features where end-to-end latency directly impacts user experience, but would be wasteful for batch processing scenarios where sequential processing would be more resource-efficient.
+
+## Challenges and Limitations
+
+While the presentation emphasizes successes, it's important to note several challenges and limitations that emerge from the case study. First, the mobile deployment challenge remains largely unsolved. While Meta supports "full solution on both server side and client side," the presentation acknowledges that deploying sophisticated VSR models on typical mobile platforms remains "very challenging" due to power and compute limitations. Solutions deployed on mobile devices must be lightweight and avoid excessive battery consumption, limiting the quality improvements achievable compared to server-side processing.
+
+Second, the evaluation methodology, while sophisticated, is expensive and time-consuming. Large-scale subjective evaluation with crowd-based raters requires significant operational overhead and cannot be applied to every model update or configuration change. The correlation with VMAF-UQ helps address this by providing a proxy metric, but the presentation doesn't detail how well this metric generalizes across different types of content or whether edge cases exist where VMAF-UQ and subjective ratings diverge.
+
+Third, the preservation of creator intent and avoiding fundamental changes to original content represents an ongoing challenge. The presentation mentions this as a critical requirement but doesn't detail the specific mechanisms or safeguards implemented to ensure VSR enhancements don't cross this line. At Meta's scale, determining what constitutes an acceptable enhancement versus an unacceptable alteration likely involves complex policy decisions beyond technical metrics.
+
+Fourth, the cost-benefit analysis of VSR deployment remains somewhat unclear. While the presentation demonstrates that VSR improves quality, it doesn't provide specific metrics on user engagement improvements, revenue impact, or return on the substantial computational investment required to process videos at billion-video scale. This makes it difficult to assess whether similar investments would be justified for organizations with different scales or business models.
+
+## Future Directions
+
+Meta's stated future directions provide insight into their ongoing challenges and priorities. They plan to expand their scope to explore other advanced enhancement technologies beyond super-resolution, suggesting a broader strategy of AI-powered video enhancement. They want to experiment with enhancement for video calling use cases, which introduces real-time latency constraints even more stringent than the Restyle feature. They also plan to continue investing in solutions targeted for mobile platforms, indicating that the mobile deployment challenge remains a priority despite its difficulty.
+
+Perhaps most significantly, Meta emphasizes continued investment in quality evaluation and media understanding to apply enhancement technologies "safely and intelligently." The recognition that this is a "common challenge everyone will be facing in the industry" when deploying AI-based enhancement and content creation demonstrates awareness that evaluation and quality assurance remain fundamental unsolved problems, not just implementation details. Meta's stated desire to share learnings and collaborate with academia and industry suggests these challenges may require collective effort beyond what any single organization can achieve.
+
+## Relevance to LLMOps
+
+While this case study focuses on video super-resolution rather than LLMs, it demonstrates several practices and patterns directly applicable to LLMOps. The evaluation challenge—lacking reliable automated metrics and requiring extensive human evaluation to understand model performance—mirrors the evaluation challenges in LLM deployment. Meta's approach of building automated frameworks for large-scale human evaluation, applying rigorous statistical analysis, and identifying proxy metrics that correlate with human judgment provides a template for LLM evaluation strategies.
+
+The infrastructure decisions around CPU versus GPU deployment, and maintaining a portfolio of models with different quality-complexity tradeoffs, reflect resource allocation challenges common to any large-scale AI deployment. The multi-variant content model that enables different users to receive different versions of content parallels A/B testing and gradual rollout strategies essential in LLMOps.
+
+The emphasis on targeted deployment—applying expensive AI processing only where it provides measurable value rather than universally—demonstrates cost optimization thinking applicable to LLM deployments. The parallel processing approach for latency reduction and the integration with existing systems (FFmpeg) through standard interfaces shows practical deployment patterns that translate across AI technologies.
+
+Most importantly, the case study demonstrates the gap between model development and production deployment at scale. The technical challenges Meta faced—model selection, quality evaluation, infrastructure constraints, cost management, and risk mitigation—are the core concerns of LLMOps, regardless of whether the underlying models are vision models, LLMs, or generative AI systems. The inclusion of generative AI (MovieGen) in the Restyle pipeline further reinforces the connection to broader GenAI and LLMOps practices, as the VSR models work in concert with generative models to deliver a complete user-facing feature.

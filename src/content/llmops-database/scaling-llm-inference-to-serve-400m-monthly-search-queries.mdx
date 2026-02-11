@@ -1,0 +1,105 @@
+---
+title: "Scaling LLM Inference to Serve 400M+ Monthly Search Queries"
+slug: "scaling-llm-inference-to-serve-400m-monthly-search-queries"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "679c8c457b1ae44107a2d507"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:59:12.840Z"
+  createdOn: "2025-01-31T08:39:33.815Z"
+llmopsTags:
+  - "question-answering"
+  - "summarization"
+  - "realtime-application"
+  - "model-optimization"
+  - "latency-optimization"
+  - "cost-optimization"
+  - "token-optimization"
+  - "kubernetes"
+  - "triton"
+  - "vllm"
+  - "load-balancing"
+  - "scaling"
+  - "monitoring"
+  - "nvidia"
+  - "microsoft-azure"
+company: "Perplexity"
+summary: "Perplexity AI scaled their LLM-powered search engine to handle over 435 million queries monthly by implementing a sophisticated inference architecture using NVIDIA H100 GPUs, Triton Inference Server, and TensorRT-LLM. Their solution involved serving 20+ AI models simultaneously, implementing intelligent load balancing, and using tensor parallelism across GPU pods. This resulted in significant cost savings - approximately $1 million annually compared to using third-party LLM APIs - while maintaining strict service-level agreements for latency and performance."
+link: "https://developer.nvidia.com/blog/spotlight-perplexity-ai-serves-400-million-search-queries-a-month-using-nvidia-inference-stack"
+year: 2024
+seo:
+  title: "Perplexity: Scaling LLM Inference to Serve 400M+ Monthly Search Queries - ZenML LLMOps Database"
+  description: "Perplexity AI scaled their LLM-powered search engine to handle over 435 million queries monthly by implementing a sophisticated inference architecture using NVIDIA H100 GPUs, Triton Inference Server, and TensorRT-LLM. Their solution involved serving 20+ AI models simultaneously, implementing intelligent load balancing, and using tensor parallelism across GPU pods. This resulted in significant cost savings - approximately $1 million annually compared to using third-party LLM APIs - while maintaining strict service-level agreements for latency and performance."
+  canonical: "https://www.zenml.io/llmops-database/scaling-llm-inference-to-serve-400m-monthly-search-queries"
+  ogTitle: "Perplexity: Scaling LLM Inference to Serve 400M+ Monthly Search Queries - ZenML LLMOps Database"
+  ogDescription: "Perplexity AI scaled their LLM-powered search engine to handle over 435 million queries monthly by implementing a sophisticated inference architecture using NVIDIA H100 GPUs, Triton Inference Server, and TensorRT-LLM. Their solution involved serving 20+ AI models simultaneously, implementing intelligent load balancing, and using tensor parallelism across GPU pods. This resulted in significant cost savings - approximately $1 million annually compared to using third-party LLM APIs - while maintaining strict service-level agreements for latency and performance."
+---
+
+## Overview
+
+Perplexity is an AI-powered search engine that processes more than 435 million queries each month, with each query triggering multiple AI inference requests under the hood. This case study, published on the NVIDIA Developer blog in December 2024, details how their inference team architected and operates a large-scale LLM inference platform. It's worth noting that this case study is published by NVIDIA and focuses heavily on their technology stack, so the perspective naturally emphasizes the NVIDIA tools and hardware used rather than providing a vendor-neutral assessment.
+
+The core challenge Perplexity faced is common to many production AI systems: balancing cost efficiency with optimal user experience at massive scale. The inference team needed to serve a diverse range of AI workloads—including search, summarization, and question answering—while meeting strict service-level agreements (SLAs) for latency and maintaining reasonable infrastructure costs.
+
+## Multi-Model Architecture
+
+One of the most interesting aspects of Perplexity's infrastructure is their multi-model approach. The team serves over 20 AI models simultaneously in production, including different variations of the open-source Llama 3.1 family (8B, 70B, and 405B parameter versions). This heterogeneous model landscape is typical of sophisticated production AI systems that need to balance capability against cost and latency for different use cases.
+
+The system uses smaller classifier models to determine user intent before routing requests to the appropriate larger model. This pattern of using lightweight models for routing decisions before invoking more expensive models is a well-established LLMOps best practice that helps control costs while maintaining quality. Tasks detected by classifiers, such as text completion, are then directed to specific models deployed on GPU pods.
+
+Each pod consists of one or more NVIDIA H100 GPUs managed by an NVIDIA Triton Inference Server instance. The pods operate under strict SLAs governing both cost efficiency and user interactivity, demonstrating how production LLM systems must balance multiple competing objectives.
+
+## Infrastructure and Orchestration
+
+The infrastructure is built on Kubernetes, which allows the team to accommodate fluctuating traffic throughout the day through dynamic scaling. The pods are hosted within a Kubernetes cluster and feature a front-end scheduler built in-house that routes traffic to the appropriate pod based on load and usage. This custom scheduler is noteworthy—rather than relying solely on out-of-the-box Kubernetes scheduling, Perplexity developed their own routing logic to ensure SLAs are consistently met.
+
+The case study provides interesting details about load balancing strategies. The scheduling algorithm used by the front-end scheduler can significantly affect inter-token latency, particularly in improving the worst percentile of performance. The team compared round-robin, least requests, and power-of-two random choices load balancing strategies, finding meaningful differences in latency distribution. They continue to explore optimizations, including better handling of sequence length variations across requests—a common challenge in LLM inference where request sizes can vary dramatically.
+
+NVIDIA Triton Inference Server serves as a critical component, providing optimized model serving across various backends, batching incoming user requests, and exposing GPU utilization metrics to the scheduler. These metrics enable the auto-scaling of deployments and GPUs based on inference request volume.
+
+## SLA Definition and A/B Testing
+
+The approach to defining SLAs demonstrates mature LLMOps practices. Rather than setting arbitrary latency targets, the inference team conducts comprehensive A/B testing to evaluate different configurations and their impact on user experience. The goal is to maximize GPU utilization while consistently meeting the target SLA for each specific use case. This empirical, user-experience-driven approach to SLA definition is more sophisticated than simply targeting technical benchmarks.
+
+Different model types require different optimization strategies. For smaller models (under 1 billion parameters) used in real-time retrieval—such as embedding models—the focus is on achieving the lowest possible latency. These models are typically hidden from users and are part of broader workflows, so configurations use low batch sizes. Given their smaller memory footprints, the team runs multiple models concurrently on NVIDIA H100 GPUs to maintain high resource utilization.
+
+For user-facing models like Llama 8B, 70B, and 405B, which have greater impact on user experience and deployment costs, the team conducts deeper performance analysis. Key metrics evaluated include time to first token (TTFT), tokens per second per user, and cost per million queries. These metrics align with industry-standard LLM inference benchmarks and reflect both user experience and economic considerations.
+
+## Model Parallelism and Cost Optimization
+
+To optimize performance while controlling costs, Perplexity parallelizes model deployment across multiple GPUs. Due to strict SLAs, the team opted to increase tensor parallelism to four and eight GPUs, which yields lower serving costs for very latency-sensitive requests within a fixed GPU budget. This finding is noteworthy: increasing parallelism across more GPUs, while reducing utilization per GPU, can actually lower overall serving costs for latency-sensitive workloads.
+
+The case study reports that sharding the Llama 8B model using tensor parallelism across four NVIDIA Hopper GPUs reduces relative cost per million tokens by up to 3x for latency-sensitive requests. However, it's important to note that data or pipeline parallelism was found to be more useful for maximizing throughput in less latency-sensitive settings. This illustrates that the optimal parallelization strategy depends heavily on the specific workload characteristics.
+
+The team uses TensorRT-LLM in combination with proprietary LLM runtimes built with optimized CUDA kernels to serve Llama-based models. The mention of proprietary optimizations alongside open-source tools is notable—it suggests that achieving their performance targets required custom engineering beyond what standard tools provide.
+
+## Cost Savings and Build vs. Buy Decisions
+
+The case study provides a concrete example of their build-versus-buy analysis. The team estimated approximately $1 million in annual savings by serving models that power their Related-Questions feature on cloud-hosted NVIDIA GPUs rather than using third-party LLM provider APIs. While this figure is impressive, it should be understood in context: it represents one specific feature and doesn't account for engineering time and operational overhead of self-hosting. Nevertheless, at Perplexity's scale, self-hosting clearly provides significant economic advantages for suitable workloads.
+
+The decision framework is instructive: the team hosts models when they can serve them at lower cost while meeting strict SLAs compared to third-party providers. This pragmatic approach suggests they likely use a mix of self-hosted and third-party models based on economics and operational considerations.
+
+## Emerging Techniques: Disaggregated Serving
+
+One of the more forward-looking aspects of the case study is the mention of disaggregated serving, described as a collaboration between Perplexity and NVIDIA's Triton engineering team. This technique separates the prefill and decode inference phases of LLM workflows onto separate GPUs.
+
+In LLM inference, the prefill phase (processing the input prompt) and decode phase (generating output tokens) have very different computational characteristics. Prefill is compute-bound and can benefit from high-bandwidth GPUs, while decode is more memory-bound. By separating these phases onto different GPU types optimized for each workload, teams can potentially achieve better overall system throughput while meeting SLAs, translating to lower cost per token.
+
+This technique also provides flexibility to use different NVIDIA GPU products for each inference phase based on specific hardware resource requirements. While the case study doesn't provide detailed results from this approach (suggesting it may still be in development or early deployment), it represents an interesting direction for LLM inference optimization.
+
+## Hardware Considerations
+
+The team currently uses NVIDIA H100 Tensor Core GPUs and expresses interest in evaluating the NVIDIA Blackwell platform. The case study notes that Blackwell promises 30x improvement in inference performance for trillion-parameter LLMs through innovations including second-generation Transformer Engine with FP4 support and fifth-generation NVLink. While these claims come from NVIDIA's marketing materials and should be evaluated against independent benchmarks, they highlight the importance of hardware evolution for LLM inference economics.
+
+## Critical Assessment
+
+While this case study provides valuable insights into large-scale LLM inference, several caveats are worth noting. First, as an NVIDIA-published blog post featuring Perplexity as a customer, the content naturally emphasizes NVIDIA's technology stack. Alternative approaches using different hardware or software are not discussed.
+
+The specific cost savings figures ($1 million annually, 3x cost reduction) are useful benchmarks but may not be directly applicable to other organizations with different scale, traffic patterns, or SLA requirements. The case study also doesn't discuss challenges, failures, or lessons learned—topics that would provide a more complete picture of operating LLMs at this scale.
+
+Additionally, while the case study mentions proprietary optimizations and custom schedulers, it doesn't provide details that would allow others to replicate these approaches. This is understandable from a competitive standpoint but limits the practical applicability of the case study for practitioners.
+
+Nevertheless, the case study offers valuable insights into production LLM deployment at significant scale, particularly around multi-model architectures, parallelization strategies, and the empirical approach to SLA definition through A/B testing. These practices represent mature LLMOps methodology that organizations building similar systems can learn from.

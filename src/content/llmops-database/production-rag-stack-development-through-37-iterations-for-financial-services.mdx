@@ -1,0 +1,132 @@
+---
+title: "Production RAG Stack Development Through 37 Iterations for Financial Services"
+slug: "production-rag-stack-development-through-37-iterations-for-financial-services"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "68414ab40e700cee2de724f2"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:10:37.545Z"
+  createdOn: "2025-06-05T07:43:48.400Z"
+llmopsTags:
+  - "question-answering"
+  - "document-processing"
+  - "customer-support"
+  - "rag"
+  - "embeddings"
+  - "reranking"
+  - "semantic-search"
+  - "vector-search"
+  - "prompt-engineering"
+  - "chunking"
+  - "few-shot"
+  - "docker"
+  - "monitoring"
+  - "qdrant"
+  - "langchain"
+  - "llama-index"
+  - "pytorch"
+  - "fastapi"
+  - "open-source"
+  - "openai"
+  - "cohere"
+  - "nvidia"
+  - "hugging-face"
+  - "meta"
+  - "google-gcp"
+company: "jonfernandes"
+summary: "Independent AI engineer Jonathan Fernandez shares his experience developing a production-ready RAG (Retrieval Augmented Generation) stack through 37 failed iterations, focusing on building solutions for financial institutions. The case study demonstrates the evolution from a naive RAG implementation to a sophisticated system incorporating query processing, reranking, and monitoring components. The final architecture uses LlamaIndex for orchestration, Qdrant for vector storage, open-source embedding models, and Docker containerization for on-premises deployment, achieving significantly improved response quality for document-based question answering."
+link: "https://www.youtube.com/watch?v=2CXn-CByNoo"
+year: 2025
+seo:
+  title: "jonfernandes: Production RAG Stack Development Through 37 Iterations for Financial Services - ZenML LLMOps Database"
+  description: "Independent AI engineer Jonathan Fernandez shares his experience developing a production-ready RAG (Retrieval Augmented Generation) stack through 37 failed iterations, focusing on building solutions for financial institutions. The case study demonstrates the evolution from a naive RAG implementation to a sophisticated system incorporating query processing, reranking, and monitoring components. The final architecture uses LlamaIndex for orchestration, Qdrant for vector storage, open-source embedding models, and Docker containerization for on-premises deployment, achieving significantly improved response quality for document-based question answering."
+  canonical: "https://www.zenml.io/llmops-database/production-rag-stack-development-through-37-iterations-for-financial-services"
+  ogTitle: "jonfernandes: Production RAG Stack Development Through 37 Iterations for Financial Services - ZenML LLMOps Database"
+  ogDescription: "Independent AI engineer Jonathan Fernandez shares his experience developing a production-ready RAG (Retrieval Augmented Generation) stack through 37 failed iterations, focusing on building solutions for financial institutions. The case study demonstrates the evolution from a naive RAG implementation to a sophisticated system incorporating query processing, reranking, and monitoring components. The final architecture uses LlamaIndex for orchestration, Qdrant for vector storage, open-source embedding models, and Docker containerization for on-premises deployment, achieving significantly improved response quality for document-based question answering."
+---
+
+## Overview
+
+Jonathan Fernandez, an independent AI engineer with experience predating the ChatGPT era, presents a detailed walkthrough of building production-ready RAG (Retrieval Augmented Generation) systems. This case study is framed as lessons learned from 37 failed implementations, making it a practical guide rather than a theoretical overview. The presenter works primarily with financial institutions, which imposes specific constraints around data privacy and on-premise deployment requirements.
+
+The core value proposition of this case study is demonstrating the journey from a naive RAG implementation that produces poor results to a sophisticated pipeline capable of accurate, contextual responses. The example domain is a railway company knowledge base, with the test query being "Where can I get help in London?"
+
+## Development Environment and Workflow
+
+The presenter advocates for a clear separation between prototyping and production environments. For prototyping, Google Colab is the preferred environment, primarily because it provides free access to hardware accelerators (GPUs), which accelerates experimentation with embedding models and LLMs. This is a pragmatic choice for rapid iteration.
+
+For production deployment, Docker is the technology of choice. This decision is driven by the flexibility it provides—the same containerized solution can run on-premise (a common requirement for financial institutions handling sensitive data) or in cloud environments when needed. The presenter describes a Docker Compose-based architecture where different components (ingestion, vector database, frontend, model serving, tracing, evaluation) run as separate containers.
+
+## RAG Stack Components
+
+### Orchestration Layer
+
+For orchestration, the presenter uses LlamaIndex for both prototyping and production. LangGraph is mentioned as an alternative for prototyping. The choice of LlamaIndex is notable because it provides a high-level abstraction that allows building a basic RAG solution in just a few lines of code, which is demonstrated in the video with a simple directory reader and vector store query engine.
+
+### Embedding Models
+
+The embedding strategy follows a pragmatic approach: closed models (like OpenAI's text-embedding-ada-002 or text-embedding-3-large) for prototyping due to their simplicity of use via APIs, but open models for production. The specific open models mentioned include those from Nvidia and BAI (BAAI), with the BGE-small model from BAI demonstrated in the code walkthrough. This transition from closed to open models is driven by the need for on-premise deployment in financial services contexts, where sending data to external APIs may not be acceptable.
+
+The presenter demonstrates downloading the embedding model directly to Google Colab using HuggingFace, showing how open models can be self-hosted. This is a critical consideration for LLMOps—the trade-off between the convenience of API-based models and the control and privacy of self-hosted alternatives.
+
+### Vector Database
+
+Qdrant is the chosen vector database, praised for its excellent scalability characteristics. The presenter notes it works well from "a couple of documents to hundreds of thousands of documents." This scalability is important for production systems that need to handle growing knowledge bases. In the demonstration, an in-memory Qdrant client is used for simplicity, but the architecture supports persistent storage for production use.
+
+### Large Language Models
+
+The LLM strategy mirrors the embedding approach: closed models (OpenAI GPT-3.5 Turbo, GPT-4) for prototyping, open models for production. The open models mentioned include Meta's Llama 3.2 and Alibaba's Qwen 3 (specifically the 4B parameter version). For serving these models in production, Ollama and HuggingFace Text Generation Inference (TGI) are recommended.
+
+A notable configuration detail is setting temperature to 0 for the production LLM, which is a common practice for RAG systems where deterministic, factual responses are preferred over creative variation.
+
+## Improving RAG Quality: From Naive to Sophisticated
+
+The case study demonstrates the evolution from a naive RAG implementation to a more sophisticated one. The naive approach—embedding the query, retrieving similar documents from the vector database, and generating a response—produces unsatisfactory results. The presenter shows how the answer to "Where can I get help in London?" evolves from irrelevant responses about wheelchair-accessible taxis to accurate information about assistance at London St. Pancras International.
+
+### Query Processing
+
+The presenter mentions a query processing step where personally identifiable information (PII) might be removed before the query enters the RAG pipeline. This is particularly relevant for financial services applications where data privacy is paramount.
+
+### Cross-Encoders vs. Bi-Encoders
+
+A significant portion of the case study is dedicated to explaining the technical distinction between cross-encoders and bi-encoders, and where each fits in the RAG pipeline.
+
+Bi-encoders use separate encoder models for the query and document, producing embeddings that can be compared using cosine similarity. This approach is fast and scalable, making it ideal for the initial retrieval step against a large document corpus. This is what powers the vector database retrieval.
+
+Cross-encoders, in contrast, take both the query and document together through a single BERT model with a classifier head, producing a similarity score between 0 and 1. While more accurate for semantic comparison, this approach doesn't scale well because it requires processing each query-document pair together. Therefore, cross-encoders are positioned as a post-retrieval reranking step, applied only to the top-k documents already retrieved by the bi-encoder.
+
+### Rerankers in Practice
+
+For reranking, the presenter uses Cohere's reranker for prototyping (again, API-based for convenience) and Nvidia's open reranker for production. In the demonstrated code, the top 5 results from the vector database are retrieved, then reranked to select the top 2 most relevant documents before passing to the LLM. This reranking step is shown to significantly improve response quality.
+
+## Monitoring and Tracing
+
+The importance of monitoring and tracing RAG solutions is emphasized, particularly for troubleshooting and understanding where time is spent in the pipeline. Two tools are mentioned: LangSmith and Arize Phoenix. Phoenix is the production choice because it has a Docker container available, making it easy to deploy alongside other components.
+
+Monitoring enables visibility into latency across different components (embedding, retrieval, reranking, generation) and helps identify bottlenecks or issues in production systems.
+
+## Evaluation
+
+For evaluation, the RAGAS framework is recommended. The presenter notes that a single test query is insufficient for assessing RAG quality—a systematic evaluation across many queries is necessary. RAGAS works with LLMs to automate evaluation, making it more scalable than manual assessment. This is a critical LLMOps consideration, as continuous evaluation is needed to ensure system quality doesn't degrade as knowledge bases grow or change.
+
+## Production Architecture
+
+The presenter describes a Docker Compose-based production architecture with the following components running as separate containers:
+
+- Data ingestion service connected to the knowledge base
+- Qdrant vector database (pulled from Docker Hub)
+- Frontend application
+- Model serving via Ollama or HuggingFace TGI
+- Arize Phoenix for tracing
+- RAGAS for evaluation
+
+This microservices approach allows for independent scaling and updating of components, which is a best practice for production ML systems.
+
+## Key Takeaways for LLMOps
+
+The case study provides several important lessons for LLMOps practitioners. First, there's a clear distinction between prototyping and production tooling—what's convenient for experimentation (API-based closed models) often isn't appropriate for production (self-hosted open models, especially in regulated industries). Second, RAG quality requires more than just retrieval; post-processing steps like reranking with cross-encoders can significantly improve results. Third, monitoring and evaluation aren't optional—they're essential for understanding system behavior and maintaining quality over time. Finally, containerization with Docker provides the flexibility needed for deployment across different environments (cloud vs. on-premise).
+
+The "37 fails" framing, while somewhat marketing-oriented, does underscore a genuine reality of building LLM-powered systems: iteration and failure are part of the process, and having a well-designed stack with proper evaluation makes learning from those failures systematic rather than chaotic.

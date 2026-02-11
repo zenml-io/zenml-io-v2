@@ -1,0 +1,159 @@
+---
+title: "Building Production-Scale AI Search with Knowledge Graphs, MCP, and DSPy"
+slug: "building-production-scale-ai-search-with-knowledge-graphs-mcp-and-dspy"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "698070494e09096d63618fbe"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2026-02-03T15:19:04.226Z"
+  lastUpdated: "2026-02-02T10:00:28.462Z"
+  createdOn: "2026-02-02T09:37:13.462Z"
+llmopsTags:
+  - "document-processing"
+  - "question-answering"
+  - "classification"
+  - "summarization"
+  - "chatbot"
+  - "multi-modality"
+  - "unstructured-data"
+  - "content-moderation"
+  - "rag"
+  - "embeddings"
+  - "prompt-engineering"
+  - "semantic-search"
+  - "vector-search"
+  - "reranking"
+  - "agent-based"
+  - "multi-agent-systems"
+  - "token-optimization"
+  - "chunking"
+  - "evals"
+  - "langchain"
+  - "chromadb"
+  - "pinecone"
+  - "qdrant"
+  - "fastapi"
+  - "monitoring"
+  - "databases"
+  - "api-gateway"
+  - "orchestration"
+  - "open-source"
+  - "documentation"
+  - "security"
+  - "guardrails"
+  - "openai"
+  - "anthropic"
+  - "hugging-face"
+company: "Dropbox"
+summary: "Dropbox faced the challenge of enabling users to search and query their work content scattered across 50+ SaaS applications and tabs, which proprietary LLMs couldn't access. They built Dash, an AI-powered universal search and agent platform using a sophisticated context engine that combines custom connectors, content understanding, knowledge graphs, and index-based retrieval (primarily BM25) over federated approaches. The system addresses MCP scalability challenges through \"super tools,\" uses LLM-as-a-judge for relevancy evaluation (achieving high agreement with human evaluators), and leverages DSPy for prompt optimization across 30+ prompts in their stack. This infrastructure enables cross-app intelligence with fast, accurate, and ACL-compliant retrieval for agentic queries at enterprise scale."
+link: "https://dropbox.tech/machine-learning/vp-josh-clemm-knowledge-graphs-mcp-and-dspy-dash"
+year: 2026
+seo:
+  title: "Dropbox: Building Production-Scale AI Search with Knowledge Graphs, MCP, and DSPy - ZenML LLMOps Database"
+  description: "Dropbox faced the challenge of enabling users to search and query their work content scattered across 50+ SaaS applications and tabs, which proprietary LLMs couldn't access. They built Dash, an AI-powered universal search and agent platform using a sophisticated context engine that combines custom connectors, content understanding, knowledge graphs, and index-based retrieval (primarily BM25) over federated approaches. The system addresses MCP scalability challenges through \"super tools,\" uses LLM-as-a-judge for relevancy evaluation (achieving high agreement with human evaluators), and leverages DSPy for prompt optimization across 30+ prompts in their stack. This infrastructure enables cross-app intelligence with fast, accurate, and ACL-compliant retrieval for agentic queries at enterprise scale."
+  canonical: "https://www.zenml.io/llmops-database/building-production-scale-ai-search-with-knowledge-graphs-mcp-and-dspy"
+  ogTitle: "Dropbox: Building Production-Scale AI Search with Knowledge Graphs, MCP, and DSPy - ZenML LLMOps Database"
+  ogDescription: "Dropbox faced the challenge of enabling users to search and query their work content scattered across 50+ SaaS applications and tabs, which proprietary LLMs couldn't access. They built Dash, an AI-powered universal search and agent platform using a sophisticated context engine that combines custom connectors, content understanding, knowledge graphs, and index-based retrieval (primarily BM25) over federated approaches. The system addresses MCP scalability challenges through \"super tools,\" uses LLM-as-a-judge for relevancy evaluation (achieving high agreement with human evaluators), and leverages DSPy for prompt optimization across 30+ prompts in their stack. This infrastructure enables cross-app intelligence with fast, accurate, and ACL-compliant retrieval for agentic queries at enterprise scale."
+---
+
+## Overview
+
+Dropbox Dash represents a comprehensive production deployment of LLM technology designed to solve a fundamental problem of modern work: content fragmentation across dozens of SaaS applications. Josh Clemm, VP of Engineering for Dropbox Dash, shared detailed insights into their LLMOps architecture in a January 2026 presentation for Jason Liu's Maven course on RAG. The case study is particularly valuable because it addresses real-world production challenges at enterprise scale, moving beyond basic RAG implementations to tackle issues like MCP scalability, cross-app intelligence, and prompt management across large engineering teams.
+
+The core problem Dropbox identified is that while modern LLMs possess broad knowledge about topics like quantum physics, they lack access to proprietary work content that exists within organizational "walled gardens" across multiple third-party applications. Users typically have 50+ browser tabs open and dozens of SaaS accounts, making content discovery extremely challenging. Dash connects to all these third-party apps and brings content into one unified search and query interface where users can perform searches, get answers, and execute agentic queries across their entire work context.
+
+## Architecture: The Context Engine
+
+The foundation of Dash is what Dropbox calls their "context engine," which consists of several sophisticated layers working together. The first layer involves custom **connectors** that crawl and integrate with various third-party applications. Clemm emphasizes that this is non-trivial engineering work, as each application has unique API quirks, rate limits, and ACL/permission systems that must be handled correctly. Getting this foundation right is essential for bringing all content into one accessible place.
+
+The second layer handles **content understanding and enrichment**. This goes well beyond simple text extraction. The system first normalizes incoming files into standardized formats like markdown, then extracts key information including titles, metadata, links, and generates various embeddings. The complexity varies significantly by content type. Documents are relatively straightforward—extract text and index it. Images require media understanding, where CLIP-based models provide a starting point but complex images demand true multimodal capabilities. PDFs present challenges when they contain both text and figures. Audio requires transcription. Videos represent the most complex case, particularly when they lack dialogue—Clemm uses the example of a famous Jurassic Park scene with no speaking, which would require multimodal models to extract and understand individual scenes to make them searchable later.
+
+## Index-Based vs. Federated Retrieval
+
+A critical architectural decision was choosing between index-based and federated retrieval approaches. Clemm frames this as a "choose your fighter" moment in modern RAG architecture. Federated retrieval processes everything on-the-fly at query time, while index-based retrieval pre-processes content during ingestion.
+
+Federated retrieval offers several advantages: it's easy to get running initially, eliminates storage costs, provides mostly fresh data, and allows easy addition of new MCP servers and connectors. However, Dropbox identified significant weaknesses for their use case. Organizations become dependent on varying API speeds, quality, and ranking across different services. Access is limited to individual user data rather than company-wide shared content. Substantial post-processing work is required to merge information and perform re-ranking. Most importantly, Clemm notes that token counts escalate rapidly when using chatbots with MCP, as reasoning over large amounts of retrieved information consumes significant context window space.
+
+Index-based retrieval, which Dropbox ultimately chose, provides access to company-wide connectors and shared content. The time advantage during ingestion allows creation of enriched datasets that don't exist in source systems. Offline ranking experiments can be conducted to improve recall, and query performance is very fast. However, Clemm is transparent about the downsides: this approach requires tremendous custom engineering work, presents freshness challenges if rate limits aren't managed well, can be extremely expensive for storage, and requires complex decisions about storage architecture (vector database, BM25, hybrid approaches, or full graph RAG). Dropbox emphasized that this approach is "not for the faint of heart" and requires substantial infrastructure and data pipeline development.
+
+For their storage layer, Dropbox uses both lexical indexing with BM25 and dense vector storage in a vector database, enabling hybrid retrieval. Interestingly, they found that BM25 alone was "very effective" with relevant signals and serves as "an amazing workhorse" for building indexes. All information—embeddings, chunks, and contextual graph representations—flows into highly secure data stores, with multiple ranking passes applied to personalize results and enforce ACL policies.
+
+## Knowledge Graphs for Cross-App Intelligence
+
+Knowledge graphs represent a key innovation in Dash's architecture. Rather than treating each document in isolation, Dropbox models relationships across various applications. A calendar invite, for example, might have attachments, meeting minutes, transcripts, attendees, and associated Jira projects. Each connected app has its own concept of "people," so establishing a canonical ID for individuals proved "very, very impactful" for relevance and retrieval. Users can view unified profiles on Dash, but more importantly, the people model dramatically improves query understanding. When someone searches for "all the past context engineering talks from Jason," the system must first resolve who "Jason" is—the knowledge graph enables this without requiring multiple separate retrievals.
+
+Dropbox measures retrieval quality using normalized discounted cumulative gain (NDCG) and saw "really nice wins" from incorporating people-based results into their scoring. The architecture is complex, intentionally moving beyond simple one-to-one mappings from source documents to end documents. They derive and create unique characteristics across the graph.
+
+An interesting implementation detail: Dropbox experimented with graph databases but encountered challenges with latency and query patterns. Hybrid retrieval integration was particularly problematic. Instead, they built graphs in a more asynchronous way, creating what they call "knowledge bundles"—not traditional graphs but more like summaries or embeddings of graph structures. These bundles contain contextual information and are processed through the same index pipeline as other content, getting chunked and generating embeddings for both lexical and semantic retrieval. This pragmatic approach avoided the operational complexity of maintaining a separate graph database while still capturing cross-app relationships.
+
+## MCP Scalability Challenges and Solutions
+
+When Model Context Protocol (MCP) emerged about a year before this presentation (around early 2025), significant hype suggested it would eliminate the need for custom APIs—organizations could just "add MCP to your agent." Clemm addresses this claim with practical production experience, identifying major challenges with typical MCP implementations.
+
+The primary issue is that MCP tool definitions consume valuable context window real estate, causing "quite a bit of degradation" in chat and agent effectiveness—classic context rot. Dropbox caps their context at approximately 100,000 tokens, but tool definitions fill this quickly. When performing retrieval, results are substantial and immediately fill the context window. Performance is also problematic—simple queries with some MCP-based agents can take up to 45 seconds, whereas raw index queries return results within seconds.
+
+Dropbox implemented several solutions to make MCP work at their scale:
+
+- **Super Tools**: Instead of exposing 5-10 different retrieval tools, they wrap their index functionality into a single "super tool," significantly reducing tool definition overhead.
+
+- **Knowledge Graph Tokenization**: Modeling data within knowledge graphs significantly reduces token usage by returning only the most relevant information for queries rather than verbose tool results.
+
+- **Local Result Storage**: Tool results contain enormous amounts of context, which Dropbox chooses to store locally rather than inserting into the LLM context window.
+
+- **Sub-Agent Architecture**: For complex agentic queries, they use classifiers to select appropriate sub-agents, each with much narrower tool sets, preventing context window bloat.
+
+These adaptations demonstrate the gap between MCP's promise and production realities at enterprise scale, requiring significant engineering to make the protocol viable.
+
+## LLM-as-Judge for Relevancy Evaluation
+
+A sophisticated challenge in production LLM systems is evaluating retrieval quality. Clemm contrasts this with Google search, where humans provide direct signal by clicking on results—if your 10 blue links are high quality, humans tell you immediately through their behavior. In RAG systems, retrieved results serve the LLM, not the human directly, eliminating this direct feedback mechanism.
+
+Dropbox's solution is using LLMs as judges to evaluate relevance, typically on a 1-5 scale. Human feedback still provides some signal through thumbs up/down on result quality, and human evaluators can help with labeling. The key question Dropbox asked: how accurately can the LLM judge match human judgment?
+
+They conducted experiments where engineers labeled numerous documents, measuring disagreement rates between human evaluators and the LLM judge. Their initial prompt achieved 8% disagreement—decent but with room for improvement. Through classic prompt refinement techniques like "provide explanations for what you're doing," disagreements decreased. Upgrading to OpenAI's o3 reasoning model (far more powerful) further reduced disagreements with humans.
+
+A unique challenge in work contexts is that judges lack knowledge of organization-specific information like acronyms. If someone asks "What is RAG?" the judge might know this acronym from training data, but internal company acronyms wouldn't be known. Dropbox's creative solution, which Clemm acknowledges is "a little tongue-in-cheek," is "RAG as a judge"—the judge itself can perform retrieval to fetch context about unfamiliar terms rather than relying solely on pre-computed knowledge. This innovation further reduced disagreements.
+
+Clemm notes that reaching zero disagreement may be impossible, as even multiple humans will disagree on relevance sets. However, they're pleased with current results and continue grinding on improvements. The investment in accurate judges "really lifts all boats" across the entire system, producing nice outcomes throughout the stack.
+
+## DSPy for Prompt Optimization at Scale
+
+Dropbox uses DSPy, a prompt optimization framework, to systematically improve prompts based on evaluation sets. This proved particularly effective for their LLM-as-judge use case, which has very clear rubrics and expected outcomes—ideal conditions for automated optimization. Dropbox has over 30 different prompts throughout the Dash stack, spanning ingestion paths, LLM-as-judge implementations, offline evaluations, and online agentic platforms.
+
+An interesting emergent behavior occurred when using DSPy: rather than simply describing improvements, they could create bullet points listing disagreements and have DSPy optimize those bullets directly. When multiple disagreements existed, DSPy would work to reduce them, creating a "really nice flywheel" with good results.
+
+Beyond optimization, DSPy provides valuable benefits for production LLMOps:
+
+**Prompt Management at Scale**: With 30+ prompts and 5-15 engineers tweaking them at any given time, managing prompts as text strings in code repositories becomes problematic. Edge case fixes often break other cases, creating whack-a-mole situations. Defining prompts programmatically and letting tools generate actual prompts "just works better at scale."
+
+**Model Switching**: Every model has unique quirks and optimal prompting approaches. Introducing new models traditionally requires extensive prompt re-optimization. With DSPy, you simply plug in the new model, define goals, and receive an optimized prompt. This is particularly valuable for modern agentic systems that don't rely on one giant LLM but instead use planning LLMs and multiple specialized sub-agents. Each sub-agent might use a model highly tuned to its particular task, making rapid prompt optimization essential.
+
+Clemm emphasizes that prompt optimizers "do work at scale" and are "absolutely essential at scale," though they provide value at any scale. He recommends investing in effective LLM judges rather than stopping at "good enough" initial prompts. Grinding down to improve accuracy produces system-wide benefits.
+
+## Production Philosophy and Recommendations
+
+Clemm concludes with practical recommendations grounded in Dropbox's multi-year experience building Dash with a large engineering team:
+
+The index-based approach is superior for their use case, but organizations should not approach this lightly. It requires substantial infrastructure and data pipeline development, careful consideration of data storage, indexing strategies, and retrieval mechanisms. The work is significant but worthwhile at scale.
+
+Cross-app intelligence through knowledge graphs absolutely works. Creating relationships and incorporating organizational context (like org charts) into prompts provides real value, though implementation isn't easy. Clemm notes that if they knew the exact queries users would ask repeatedly, they'd build optimal knowledge bundles for those specific queries—but this predictability luxury rarely exists.
+
+For MCP, he highly recommends limiting tool usage through super tools, exploring tool selection mechanisms, using sub-agents with tool call limits, and carefully guarding the context window.
+
+The overarching philosophy is the classic software engineering principle: "make it work, then make it better." Many techniques Dropbox employs resulted from years of daily work by a large engineering team. Organizations just getting started should invest in MCP tools and real-time approaches first, then look for optimization opportunities as customer usage patterns emerge and scale increases.
+
+## Critical Evaluation
+
+This case study offers unusual transparency about production LLM challenges and pragmatic solutions. Several claims warrant balanced assessment:
+
+The superiority of index-based over federated retrieval is presented as definitive, but this is highly context-dependent. For organizations without Dropbox's engineering resources or those prioritizing data freshness over enrichment, federated approaches may be more appropriate. The 45-second query time Clemm cites for MCP-based agents seems particularly slow and may not represent optimized implementations.
+
+The knowledge graph approach, while innovative, involves significant complexity that Dropbox acknowledges. The decision to avoid graph databases and instead create "knowledge bundles" processed through standard indexing suggests that even they found pure graph approaches operationally challenging. This pragmatic compromise is honest but indicates knowledge graphs at scale remain difficult.
+
+The LLM-as-judge results are impressive but lack specific accuracy numbers. Stating disagreement rates decreased is less valuable than knowing absolute performance. Additionally, "RAG as a judge" introduces another layer of potential failure—what happens when judge retrieval returns irrelevant context?
+
+DSPy adoption appears genuinely valuable, though Clemm's emphasis on emergent behavior (optimizing disagreement bullet points) suggests the tool's capabilities may still be exploratory rather than fully systematized. The claim that DSPy enables rapid model switching is appealing but probably oversimplified—each model's unique capabilities may require architectural changes beyond prompt optimization.
+
+Overall, this case study demonstrates sophisticated production LLMOps at enterprise scale, with Dropbox showing admirable transparency about challenges and tradeoffs. Their willingness to acknowledge that approaches like pure graph databases didn't work and that they had to build pragmatic alternatives adds credibility. The emphasis on making systems work first, then optimizing, is sound advice often lost in hype cycles around new technologies like MCP.

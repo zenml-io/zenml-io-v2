@@ -1,0 +1,90 @@
+---
+title: "QualityFlow"
+slug: "qualityflow"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "68ad6ffe12deed5e31bfce19"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-09-18T08:21:47.272Z"
+  lastUpdated: "2025-09-01T11:34:56.510Z"
+  createdOn: "2025-08-26T08:27:42.215Z"
+description: "AI-powered automated test generation and coverage analysis pipeline built with ZenML and LLMs."
+githubUrl: "https://github.com/zenml-io/zenml-projects/tree/main/qualityflow"
+mainImageLink: "https://public-flavor-logos.s3.eu-central-1.amazonaws.com/projects/43.jpg"
+previewImage:
+  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/097cf562/68ad717012deed5e31c07a97_architecture.png"
+tags:
+  - "llm"
+  - "test-generation"
+  - "coverage-analysis"
+tools:
+  - "zenml"
+  - "openai"
+  - "anthropic"
+  - "pytest"
+  - "coverage"
+  - "jinja2"
+createdAt: "2025-08-26T08:27:41.738Z"
+updatedAt: "2025-08-26T08:33:51.946Z"
+projectId: "qualityflow"
+seo:
+  title: "QualityFlow"
+  description: "AI-powered automated test generation and coverage analysis pipeline built with ZenML and LLMs."
+  canonical: "https://www.zenml.io/projects/qualityflow"
+  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/097cf562/68ad717012deed5e31c07a97_architecture.png"
+  ogTitle: "QualityFlow"
+  ogDescription: "AI-powered automated test generation and coverage analysis pipeline built with ZenML and LLMs."
+---
+
+#### Generate & Evaluate Pipeline
+
+Selects code, generates tests with LLM and baseline, runs them with coverage, and reports results.#### Stack Components
+
+<ul><li><strong>Orchestrator:</strong> default</li><li><strong>Artifact Store:</strong> default</li></ul>QualityFlow is an AI-powered test generation pipeline that demonstrates how to
+build production-ready workflows for automated unit test generation using
+Large Language Models (LLMs) with ZenML. It focuses on generating tests,
+comparing against a baseline, and producing real coverage analysis.
+
+### What It Does
+
+<ul>
+<li>
+<p>Integrates LLM providers (OpenAI/Anthropic) for intelligent unit test generation</p>
+</li>
+<li>
+<p>Selects target source files via configurable strategies with max_files limits</p>
+</li>
+<li>
+<p>Generates baseline heuristic tests to compare with LLM-generated tests</p>
+</li>
+<li>
+<p>Executes tests and produces coverage metrics and detailed reports</p>
+</li>
+<li>
+<p>Tracks token usage and estimated costs via run metadata</p>
+</li>
+</ul>
+
+### How It Works
+
+<ul>
+<li>
+<p>A single Generate &amp; Evaluate pipeline orchestrates: input selection, source fetching,<br>
+  code analysis, LLM test generation, baseline test generation, test execution with<br>
+  coverage, and comparative reporting</p>
+</li>
+<li>
+<p>Uses ZenML Path artifacts to support remote/containerized execution</p>
+</li>
+<li>
+<p>Configurable via YAML files to control speed, providers, and test limits</p>
+</li>
+</ul>
+
+### Architecture
+
+The architecture connects a streamlined test-generation pipeline to LLM providers and
+test execution backends, producing coverage reports and markdown summaries that are
+versioned and tracked in ZenML.

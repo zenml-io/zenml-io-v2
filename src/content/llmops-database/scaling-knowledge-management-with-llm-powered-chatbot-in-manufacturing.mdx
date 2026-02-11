@@ -1,0 +1,140 @@
+---
+title: "Scaling Knowledge Management with LLM-powered Chatbot in Manufacturing"
+slug: "scaling-knowledge-management-with-llm-powered-chatbot-in-manufacturing"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "68270ed2fb35790898a90b64"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:08:47.581Z"
+  createdOn: "2025-05-16T10:09:22.077Z"
+llmopsTags:
+  - "question-answering"
+  - "chatbot"
+  - "legacy-system-integration"
+  - "regulatory-compliance"
+  - "high-stakes-application"
+  - "rag"
+  - "semantic-search"
+  - "vector-search"
+  - "error-handling"
+  - "fallback-strategies"
+  - "human-in-the-loop"
+  - "cicd"
+  - "elasticsearch"
+  - "fastapi"
+  - "documentation"
+  - "guardrails"
+  - "reliability"
+  - "amazon-aws"
+  - "anthropic"
+company: "OSRAM"
+summary: "OSRAM, a century-old lighting technology company, faced challenges with preserving institutional knowledge amid workforce transitions and accessing scattered technical documentation across their manufacturing operations. They partnered with Adastra to implement an AI-powered chatbot solution using Amazon Bedrock and Claude, incorporating RAG and hybrid search approaches. The solution achieved over 85% accuracy in its initial deployment, with expectations to exceed 90%, successfully helping workers access critical operational information more efficiently across different departments."
+link: "https://www.youtube.com/watch?v=67gYz-7aDkI"
+year: 2025
+seo:
+  title: "OSRAM: Scaling Knowledge Management with LLM-powered Chatbot in Manufacturing - ZenML LLMOps Database"
+  description: "OSRAM, a century-old lighting technology company, faced challenges with preserving institutional knowledge amid workforce transitions and accessing scattered technical documentation across their manufacturing operations. They partnered with Adastra to implement an AI-powered chatbot solution using Amazon Bedrock and Claude, incorporating RAG and hybrid search approaches. The solution achieved over 85% accuracy in its initial deployment, with expectations to exceed 90%, successfully helping workers access critical operational information more efficiently across different departments."
+  canonical: "https://www.zenml.io/llmops-database/scaling-knowledge-management-with-llm-powered-chatbot-in-manufacturing"
+  ogTitle: "OSRAM: Scaling Knowledge Management with LLM-powered Chatbot in Manufacturing - ZenML LLMOps Database"
+  ogDescription: "OSRAM, a century-old lighting technology company, faced challenges with preserving institutional knowledge amid workforce transitions and accessing scattered technical documentation across their manufacturing operations. They partnered with Adastra to implement an AI-powered chatbot solution using Amazon Bedrock and Claude, incorporating RAG and hybrid search approaches. The solution achieved over 85% accuracy in its initial deployment, with expectations to exceed 90%, successfully helping workers access critical operational information more efficiently across different departments."
+---
+
+## Overview
+
+OSRAM, the well-known lighting company, presented a case study at an AWS event alongside their implementation partner Adastra. OSRAM operates a manufacturing plant in Germany that was originally built in 1961—a classic "brownfield" industrial facility that represents typical legacy German manufacturing. The company has undergone a dramatic transformation as the lighting industry shifted from traditional bulbs to LED technology, with production volumes dropping from 4,000 tons to just 4 tons annually. This shift fundamentally changed their business model from mass production to project-based work with shorter product lifecycles.
+
+The presentation featured multiple speakers from OSRAM (plant manager Ingo and R&D representative Brent) as well as a technical consultant from Adastra (Johannes), providing perspectives from both the business problem side and the solution implementation side.
+
+## Business Problem and Motivation
+
+The core challenge OSRAM faced was knowledge preservation and accessibility in a rapidly changing manufacturing environment. Several factors drove the need for a GenAI solution:
+
+The aging workforce presented a critical risk—experienced workers leaving the company take valuable institutional knowledge with them. In a high-precision manufacturing environment where efficiency depends heavily on accumulated expertise, this knowledge drain was unsustainable. The presentation candidly acknowledged that they "cannot afford" to lose this knowledge.
+
+Data and documentation were scattered across the organization in various legacy systems and file formats. The plant's long history meant dealing with old tools and file formats, including information trapped in images and documents that were difficult to access electronically. Finding the right information took significant time, impacting operational efficiency.
+
+The workforce diversity added complexity to the solution requirements. The plant employs operators, maintenance personnel, engineers, and scientists—each with different information needs, varying educational backgrounds, and different levels of technical sophistication. Any solution needed to accommodate this diversity.
+
+The company had already embarked on a digitalization journey as part of their broader strategy combining lean management principles (pokayoke, color coding) with digital transformation. This chatbot initiative was positioned as part of that larger Industry 4.0 effort, for which OSRAM had already received external recognition (an Industry 4.0 award).
+
+## Technical Architecture and Implementation
+
+The solution was built on AWS infrastructure using Amazon Bedrock as the foundation for LLM capabilities. The implementation partner Adastra brought their expertise as an AWS Partner of the Year (Data Analytics and Innovation in EMEA) to design and deploy the system.
+
+### Data Ingestion and Pre-processing
+
+The first step in their five-step approach involved collecting documents from various sources and storing them in an Amazon S3 bucket. This included PDFs, PowerPoint presentations, and other document formats containing procedural information, error resolution steps, and operational guidance. Pre-processing was necessary to extract and structure information from these diverse sources.
+
+### Hybrid Search Strategy with OpenSearch
+
+A particularly interesting technical decision was the implementation of a hybrid search approach using Amazon OpenSearch. Rather than relying solely on vector similarity search (the typical RAG approach), they combined semantic vector search with traditional keyword search. This hybrid approach was specifically chosen to handle the abundance of technical terminology in manufacturing documentation. Technical terms can be difficult to capture accurately with embeddings alone, especially in specialized industrial contexts where precise terminology matters. The keyword search component helps ensure that specific technical terms are found accurately even when semantic similarity might miss them.
+
+### Foundation Model Selection
+
+The team selected Claude from Anthropic as their foundation model, accessed through Amazon Bedrock. The presentation noted that Bedrock's flexibility allows them to switch models as needed—they mentioned Amazon Nova as a potential future option. This model-agnostic architecture is a sensible LLMOps practice that avoids vendor lock-in at the model layer.
+
+### RAG Implementation
+
+The retrieval-augmented generation approach stores document embeddings in the OpenSearch vector database, retrieves relevant context based on user queries, and provides that context to Claude for generating answers. The system includes conversation history to provide contextual continuity across multi-turn interactions.
+
+### Hallucination Mitigation
+
+The presentation explicitly addressed the critical issue of hallucinations in an operational manufacturing context. If a chatbot provides incorrect instructions, operators could damage expensive machinery or create safety hazards. Their approach involves the system recognizing when information cannot be directly found in the source documents. Rather than making up answers, the chatbot acknowledges the limitation and attempts to provide relevant guidance from previous conversation context or related documented procedures. This is a crucial safety measure for industrial applications where incorrect information has real consequences.
+
+### User Interface
+
+The user-facing interface was built using Streamlit, providing a simple chat interface accessible to shop floor workers. The emphasis was on simplicity—workers shouldn't need to navigate complex tools or switch between multiple systems. The chatbot serves as a single point of access to consolidated organizational knowledge.
+
+### Feedback Mechanism
+
+The system incorporates a thumbs up/thumbs down feedback mechanism that allows users to rate the quality of responses. This feedback is used to iteratively improve the solution over time. This is a standard but essential LLMOps practice for continuous improvement of production AI systems.
+
+## Deployment and MLOps/LLMOps Practices
+
+The presentation emphasized that this was not just a proof of concept but a production-ready solution with proper operational foundations:
+
+### CI/CD Pipeline
+
+A robust CI/CD pipeline was implemented from the start, recognizing that scalability was a core requirement. The team acknowledged that "it's not just about a proof of concept" and stressed getting value quickly while maintaining the ability to scale.
+
+### Infrastructure as Code
+
+Terraform was used for infrastructure as code, enabling consistent and reproducible deployments. This was specifically mentioned as essential for future scaling to other departments and other OSRAM plants.
+
+### Testing
+
+The presentation mentioned having tests in place as part of their deployment pipeline, though specific testing strategies were not detailed.
+
+## Performance Metrics and Current Status
+
+At the time of the presentation, the solution had been deployed with an accuracy of over 85%. The team expressed confidence in reaching "well above 90%" in the coming weeks through continued iteration based on user feedback. While these accuracy figures sound promising, it's worth noting that the specific methodology for measuring accuracy wasn't detailed—this could refer to retrieval accuracy, answer quality, or some other metric.
+
+## Change Management and User Adoption
+
+An often-overlooked aspect of LLMOps that OSRAM addressed was user adoption and training. They implemented what they called "artificial intelligence consultation hours"—sessions held directly on the shop floor with workers to gather feedback and ensure the solution meets actual user needs. This iterative feedback approach from real users is credited with helping improve the solution.
+
+The presentation also emphasized the importance of training users to understand what the solution can and cannot do, ensuring that guardrails are respected and value is created where appropriate. This represents a mature understanding that deploying an LLM solution is as much about organizational change as it is about technology.
+
+OSRAM highlighted their workforce's existing "future skills" and adaptability, with a stated cultural credo of "never too old to learn"—suggesting that user adoption was facilitated by an existing culture of continuous improvement.
+
+## Future Roadmap
+
+The stated next steps include:
+
+- Continuing to improve accuracy beyond 90%
+- Rolling out to additional departments (sales and marketing was mentioned)
+- Expanding to additional OSRAM plants
+- Ongoing user training and education
+
+## Critical Assessment
+
+This case study presents a solid example of applying RAG-based LLM technology to a real industrial knowledge management problem. Several aspects deserve recognition:
+
+The hybrid search approach combining vector search with keyword search is a practical solution to a real limitation of pure semantic search, especially in technical domains. The emphasis on CI/CD and infrastructure as code from day one reflects mature engineering practices. The explicit attention to hallucination risks and the implementation of guardrails shows appropriate concern for safety in an industrial context.
+
+However, some caution is warranted. The presentation was delivered by OSRAM and their implementation partner Adastra at an AWS event, creating obvious incentive to present the project favorably. The accuracy metrics (85%+, targeting 90%+) are stated without methodology, making them difficult to evaluate. The solution appears to still be relatively early in its deployment, so long-term operational success remains to be proven. The presentation also doesn't address costs, maintenance requirements, or challenges encountered during implementation.
+
+Overall, this represents a credible example of LLM technology being deployed in a production manufacturing environment with appropriate attention to operational concerns, though the full success of the initiative will only be evident over time as it scales across the organization.

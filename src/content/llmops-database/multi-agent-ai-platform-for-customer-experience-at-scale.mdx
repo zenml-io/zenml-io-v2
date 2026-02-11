@@ -1,0 +1,178 @@
+---
+title: "Multi-Agent AI Platform for Customer Experience at Scale"
+slug: "multi-agent-ai-platform-for-customer-experience-at-scale"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "68336826ceaa65170bf4fd3e"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:09:37.952Z"
+  createdOn: "2025-05-25T18:57:42.164Z"
+llmopsTags:
+  - "customer-support"
+  - "healthcare"
+  - "fraud-detection"
+  - "regulatory-compliance"
+  - "high-stakes-application"
+  - "structured-output"
+  - "realtime-application"
+  - "legacy-system-integration"
+  - "multi-agent-systems"
+  - "fine-tuning"
+  - "prompt-engineering"
+  - "few-shot"
+  - "human-in-the-loop"
+  - "agent-based"
+  - "cost-optimization"
+  - "latency-optimization"
+  - "system-prompts"
+  - "langchain"
+  - "postgresql"
+  - "sqlite"
+  - "monitoring"
+  - "api-gateway"
+  - "microservices"
+  - "orchestration"
+  - "open-source"
+  - "security"
+  - "compliance"
+  - "guardrails"
+  - "reliability"
+  - "scalability"
+  - "databases"
+  - "anthropic"
+  - "openai"
+  - "meta"
+  - "databricks"
+company: "Cisco"
+summary: "Cisco developed an agentic AI platform leveraging LangChain to transform their customer experience operations across a 20,000-person organization managing $26 billion in recurring revenue. The solution combines multiple specialized agents with a supervisor architecture to handle complex workflows across customer adoption, renewals, and support processes. By integrating traditional machine learning models for predictions with LLMs for language processing, they achieved 95% accuracy in risk recommendations and reduced operational time by 20% in just three weeks of limited availability deployment, while automating 60% of their 1.6-1.8 million annual support cases."
+link: "https://www.youtube.com/watch?v=gPhyPRtIMn0"
+year: 2025
+seo:
+  title: "Cisco: Multi-Agent AI Platform for Customer Experience at Scale - ZenML LLMOps Database"
+  description: "Cisco developed an agentic AI platform leveraging LangChain to transform their customer experience operations across a 20,000-person organization managing $26 billion in recurring revenue. The solution combines multiple specialized agents with a supervisor architecture to handle complex workflows across customer adoption, renewals, and support processes. By integrating traditional machine learning models for predictions with LLMs for language processing, they achieved 95% accuracy in risk recommendations and reduced operational time by 20% in just three weeks of limited availability deployment, while automating 60% of their 1.6-1.8 million annual support cases."
+  canonical: "https://www.zenml.io/llmops-database/multi-agent-ai-platform-for-customer-experience-at-scale"
+  ogTitle: "Cisco: Multi-Agent AI Platform for Customer Experience at Scale - ZenML LLMOps Database"
+  ogDescription: "Cisco developed an agentic AI platform leveraging LangChain to transform their customer experience operations across a 20,000-person organization managing $26 billion in recurring revenue. The solution combines multiple specialized agents with a supervisor architecture to handle complex workflows across customer adoption, renewals, and support processes. By integrating traditional machine learning models for predictions with LLMs for language processing, they achieved 95% accuracy in risk recommendations and reduced operational time by 20% in just three weeks of limited availability deployment, while automating 60% of their 1.6-1.8 million annual support cases."
+---
+
+## Overview
+
+Cisco's Customer Experience (CX) division presented a comprehensive case study on deploying agentic AI at enterprise scale. This division is responsible for managing customer lifecycle operations for a $56 billion company, with over $26 billion in recurring revenue and approximately 20,000 employees. The presentation, delivered at a LangChain conference, details how Cisco has moved beyond experimentation to production-grade multi-agent systems that power renewals, adoption, support, and delivery workflows.
+
+The speaker emphasizes that Cisco's AI journey didn't start with LLMs—they have been working with machine learning and predictive AI models for over a decade. This foundation in traditional data science proved critical because, as they note, LLMs are excellent for language-based interactions but "really bad for predictions." The current agentic AI approach combines both paradigms: LLMs for natural language understanding and generation, and traditional ML models for deterministic predictions and risk scoring.
+
+## Business Context and Use Case Selection
+
+Before diving into technical implementation, Cisco established a rigorous framework for use case selection. They recount an experience with a customer who initially identified 412 potential AI use cases, which after proper evaluation reduced to just 5 that actually contributed business value—less than 10% of the original list. This experience shaped their approach to require all use cases to fit one of three strategic buckets:
+
+- Use cases that help customers get immediate value and maximize their Cisco investment (renewals and adoption)
+- Use cases that make operations more secure and reliable (support)
+- Use cases that provide visibility and insights across the whole customer lifecycle (correlation and agentic workflows)
+
+This disciplined approach prevents teams from pursuing "cool" AI projects that don't tie back to business outcomes. The speaker is emphatic that defining use cases and metrics first is essential—before considering RAG, prompts, few-shot learning, supervisor patterns, or fine-tuning.
+
+## Technical Architecture
+
+### Multi-Model Strategy
+
+Cisco's architecture supports flexible deployment models to accommodate diverse customer requirements including federal customers, healthcare organizations, and European customers with strict data residency regulations. Their stack includes:
+
+- Mistral Large for on-premises deployments (they worked closely with Mistral on developing models that run on-premises)
+- Claude 3.7 Sonnet for cloud deployments
+- GPT-4.1 through o3 for various use cases
+
+The key architectural achievement is that the same agentic framework can run identically on-premises in physical data centers and 100% in the cloud without any code changes. This speaks to a well-abstracted architecture where the LLM provider is configurable rather than hard-coded.
+
+### Supervisor-Based Multi-Agent Architecture
+
+The system employs a supervisor pattern for orchestrating multiple specialized agents. Before supervisor architectures were widely discussed in the industry, Cisco developed their own approach where a supervisor agent receives natural language queries, decomposes them, and routes them to appropriate specialized agents.
+
+For example, a typical renewals question like "What's the upcoming renewed status for customer XYZ and the actions required to minimize its potential risk?" requires:
+
+- Identifying the customer
+- Determining what products they purchased
+- Finding purchase dates to establish renewal cycles
+- Understanding current adoption status
+- Mapping all risk signals across potentially multiple products
+
+A single monolithic agent couldn't achieve the required 95%+ accuracy target. Instead, the supervisor decomposes the query and orchestrates calls across:
+
+- Renewals Agent
+- Adoption Agent
+- Delivery Agent
+- Sentiment Analysis Agent
+- Installed Base Agent (for competitive intelligence)
+
+These agents can operate in parallel where appropriate, with context being carried back and forth through the LangChain framework. The system uses LangSmith for tracing all interactions between supervisors and agents.
+
+### Combining LLMs with ML Models
+
+A crucial architectural decision is the integration of traditional machine learning models for predictions. As the speaker notes, "LLMs are very probabilistic" while ML models are "very deterministic"—combining both achieves the accuracy levels required for enterprise use.
+
+When processing a risk-related query, the system routes to a predictive machine learning model rather than asking an LLM to make predictions. This hybrid approach leverages each technology's strengths: LLMs for language understanding, reasoning, and generation; ML models for numerical predictions, risk scoring, and pattern recognition based on historical data.
+
+### SQL Integration Challenges
+
+The speaker candidly discusses the challenges of integrating LLMs with SQL databases, stating that "the three-letter acronym SQL and another three-letter acronym LLM don't go on a date." They emphasize avoiding using LLMs for SQL joins, which he describes as working "royally" poorly.
+
+Their solution involves using Snowflake's Cortex for semantic context on metadata, but critically, they normalize data first before any LLM interaction. This approach separates the concerns: structured data operations happen through traditional SQL and data pipelines, while LLMs handle natural language interfaces and reasoning.
+
+## Production Operations and Team Structure
+
+### Parallel Development Tracks
+
+Cisco runs three parallel workstreams with separate teams:
+
+- **Production team**: Focused on deployed systems with production metrics (stability, latency, cost)
+- **Limited availability team**: Works with subject matter experts and cohorts to understand real user questions before full deployment
+- **Experimentation team**: Has latitude to try and fail fast, building pipelines for future use cases
+
+The speaker emphasizes the importance of this separation. Production teams have different metrics than experimentation teams—mixing them causes problems. The experimentation team needs freedom to fail fast, while the production team needs stability.
+
+### Evaluation Independence
+
+A key organizational insight is maintaining separation between development and evaluation teams. As the speaker colorfully puts it, "you don't make the dog the custodian of the sausages." The evaluation team maintains golden datasets and independently assesses whether systems meet performance, cost, and accuracy requirements. This prevents the natural tendency for development teams to rationalize their own results.
+
+### User-Centric Development
+
+The limited availability phase involves direct interaction with end users before building features. The speaker notes that renewals people ask renewals-related questions while adoption people ask adoption-related questions—this seems obvious but many teams build AI features first and only then try to understand user needs. Cisco reverses this: they go to users first, understand their questions, and then build AI to help them.
+
+## Results and Scale
+
+The system operates at significant scale:
+
+- Handling workflows for 20,000+ employees
+- Processing 1.6-1.8 million support cases annually
+- Achieving 60% full automation of support cases without human intervention
+- 20% reduction in time spent on operational tasks within 3 weeks of limited availability deployment
+- 95%+ accuracy on risk recommendations
+
+For the renewals use case specifically, they consolidated over 50 different data sets and numerous tools that renewal agents previously had to navigate manually.
+
+## Advanced Topics: Context and Agent Interoperability
+
+The speaker touches on forward-looking work around agent interoperability, mentioning that MCP (Model Context Protocol) is valuable but "needs to evolve" and is currently like "Swiss cheese" with gaps. Cisco and LangChain are co-championing an open-source initiative called "Agency" that proposes a full architecture for agent communication.
+
+The analogy used is DNS servers—when you access the internet, DNS resolution is fundamental infrastructure. Currently, there's no equivalent "directory service" for agents. The Agency architecture addresses:
+
+- Agent directory and discovery
+- Authentication between agents
+- Semantic and syntactic layers for agent communication
+- Standards beyond just protocol sharing (MCP, H2A, etc.)
+
+## Key Takeaways and Lessons Learned
+
+The speaker offers several practical recommendations:
+
+- Define use cases and metrics before selecting tools or techniques
+- RAG, prompts, few-shot learning, supervisor patterns, and fine-tuning are means to ends—the use case comes first
+- Maintain separate teams for experimentation, limited availability, and production
+- Keep evaluation independent from development
+- Accept that LLM-SQL integration is genuinely difficult and architect around this limitation
+- Fine-tune models when needed for accuracy, particularly for on-premises deployments
+- Leverage the combination of deterministic ML models with probabilistic LLMs for optimal results
+
+The presentation represents a mature, production-grade implementation with clear evidence of real-world deployment at scale, moving well beyond proof-of-concept or pilot stages.

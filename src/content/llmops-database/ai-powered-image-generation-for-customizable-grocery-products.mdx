@@ -1,0 +1,107 @@
+---
+title: "AI-Powered Image Generation for Customizable Grocery Products"
+slug: "ai-powered-image-generation-for-customizable-grocery-products"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "694ada88d62c2ae6fb6452b5"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2026-01-07T09:40:39.763Z"
+  lastUpdated: "2025-12-23T20:11:47.171Z"
+  createdOn: "2025-12-23T18:08:08.956Z"
+llmopsTags:
+  - "content-moderation"
+  - "poc"
+  - "prompt-engineering"
+  - "human-in-the-loop"
+  - "fastapi"
+  - "documentation"
+  - "google-gcp"
+company: "Instacart"
+summary: "Instacart's FoodStorm Order Management System faced the challenge of providing high-quality product images for countless customizable grocery items like deli sandwiches, cakes, and prepared foods, where professional photography for every configuration was impractical and costly. The solution involved integrating generative AI image generation capabilities through Instacart's internal Pixel service (which provides access to Google Imagen and other models) directly into FoodStorm's user interface, allowing grocery retailers to create product images on-demand with customizable prompts. Through multiple design iterations, the system evolved from simple one-click generation to a sophisticated interface where users can fine-tune prompts, preview multiple variations, and inspect details for quality control, ultimately enabling retailers to efficiently produce images for ingredients, toppings, promotional banners, and category thumbnails across the Instacart platform."
+link: "https://tech.instacart.com/enhancing-foodstorm-with-ai-image-generation-d76a74867fa4"
+year: 2024
+seo:
+  title: "Instacart: AI-Powered Image Generation for Customizable Grocery Products - ZenML LLMOps Database"
+  description: "Instacart's FoodStorm Order Management System faced the challenge of providing high-quality product images for countless customizable grocery items like deli sandwiches, cakes, and prepared foods, where professional photography for every configuration was impractical and costly. The solution involved integrating generative AI image generation capabilities through Instacart's internal Pixel service (which provides access to Google Imagen and other models) directly into FoodStorm's user interface, allowing grocery retailers to create product images on-demand with customizable prompts. Through multiple design iterations, the system evolved from simple one-click generation to a sophisticated interface where users can fine-tune prompts, preview multiple variations, and inspect details for quality control, ultimately enabling retailers to efficiently produce images for ingredients, toppings, promotional banners, and category thumbnails across the Instacart platform."
+  canonical: "https://www.zenml.io/llmops-database/ai-powered-image-generation-for-customizable-grocery-products"
+  ogTitle: "Instacart: AI-Powered Image Generation for Customizable Grocery Products - ZenML LLMOps Database"
+  ogDescription: "Instacart's FoodStorm Order Management System faced the challenge of providing high-quality product images for countless customizable grocery items like deli sandwiches, cakes, and prepared foods, where professional photography for every configuration was impractical and costly. The solution involved integrating generative AI image generation capabilities through Instacart's internal Pixel service (which provides access to Google Imagen and other models) directly into FoodStorm's user interface, allowing grocery retailers to create product images on-demand with customizable prompts. Through multiple design iterations, the system evolved from simple one-click generation to a sophisticated interface where users can fine-tune prompts, preview multiple variations, and inspect details for quality control, ultimately enabling retailers to efficiently produce images for ingredients, toppings, promotional banners, and category thumbnails across the Instacart platform."
+---
+
+## Overview
+
+This case study describes how Instacart integrated generative AI image generation capabilities into FoodStorm, their Order Management System (OMS) used by grocery retailers to manage customizable prepared food products. The fundamental business problem centered on the difficulty and expense of sourcing high-quality product images for every possible configuration of customizable items like sandwiches with various fillings, cakes with different decorations, and other prepared foods. While professional photography remains ideal for hero product shots, the sheer combinatorial explosion of possible configurations (different fillings, toppings, sides, etc.) made comprehensive photography impractical.
+
+The author, Anthony Super (Head of Engineering and Co-Founder of FoodStorm at Instacart), provides a transparent view of the integration process, acknowledging both the capabilities and limitations of AI-generated imagery. Notably, he emphasizes that AI-generated images are not meant to replace authentic professional photography of actual products, but rather to fill gaps where visualizing individual components (diced onions, shredded lettuce, condiments) would otherwise require prohibitively expensive photo shoots. The case study is published in July 2024 on Instacart's engineering blog.
+
+## Technical Infrastructure and Model Access
+
+The implementation benefited significantly from Instacart's existing AI infrastructure. The company had already developed an internal text-to-image service called **Pixel**, which served as an abstraction layer providing access to multiple generative AI models. Specifically mentioned is **Google Imagen**, which the team found particularly effective at generating images "on a white background" — a requirement that other AI tools sometimes struggle with. This standardized background is crucial for e-commerce product imagery where consistency and clarity are paramount.
+
+The Pixel service provided several critical production capabilities beyond just model access. It included built-in controls around acceptable use of prompts to generate images, addressing potential concerns around inappropriate content generation. This governance layer is an important LLMOps consideration when deploying generative AI in customer-facing applications. The existence of this internal service meant the FoodStorm team could focus on integration and user experience rather than building model infrastructure from scratch, significantly accelerating time-to-production.
+
+## Iterative Design and Prompt Engineering Challenges
+
+The case study provides valuable insight into the iterative design process required to make generative AI usable for end users. The initial implementation was a technical spike that demonstrated one-click AI image generation for sandwich fillings directly within FoodStorm OMS. While this generated internal excitement and validated the technical feasibility, it quickly revealed significant limitations in production use.
+
+The core problem was prompt quality. Simply using a filling name like "cheese" as the prompt was far too vague and underspecified. The model couldn't determine what type of cheese (cheddar, monterey jack, swiss), what form (sliced, grated, cubed), or what presentation style would be appropriate. This resulted in images that were technically competent but often misaligned with the retailer's actual product offerings. This highlights a fundamental challenge in deploying generative AI: the gap between what domain experts understand implicitly and what must be explicitly specified to AI models.
+
+The second iteration addressed this through a more sophisticated user interface that allowed retailers to fine-tune their prompts with specific details. Users could specify "sliced monterey jack cheese on a white background" rather than just "cheese." Crucially, the system also supported generating multiple image variations, allowing users to preview different options and select the most appropriate result. This acknowledges the non-deterministic nature of generative AI models and builds human evaluation into the workflow rather than assuming the first generation will be optimal.
+
+The third and final iteration described in the case study added a larger preview capability, enabling users to closely inspect generated images for artifacts and errors. The author acknowledges that "AI doesn't always nail it on the first try" and provides examples of failure cases, including an amusing image of what appears to be an Australian Bilby (a small marsupial) nibbling raspberries instead of just showing raspberries. This quality control step is essential for maintaining brand standards and ensuring that only appropriate images are published to customer-facing platforms.
+
+## Production Deployment Considerations
+
+The integration involved several production-ready engineering practices beyond the core generative AI functionality. Post-generation image processing included compression and scaling to optimize images for web use, balancing visual quality with load times and bandwidth considerations. The system leverages Instacart's content delivery network (CDN) to serve generated images efficiently across multiple touchpoints including the Instacart App, Storefront, Storefront Pro, and FoodStorm Kiosk for in-store ordering.
+
+From a legal and compliance perspective, the implementation requires users to agree to relevant terms of use before accessing the AI image generation feature. This is a critical LLMOps consideration, ensuring that users understand the nature of AI-generated content and any limitations or restrictions on its use. This compliance layer protects both Instacart and the grocery retailers using the system.
+
+The deployment strategy also demonstrates thoughtful user experience design. Rather than creating a separate, disconnected AI image generation tool, the team built the "Create AI Image" dialog box as an enhancement to the existing image upload component. This meant that anywhere users could previously upload an image manually, they could now generate one using AI. This design choice reduces cognitive overhead for users and integrates AI capabilities naturally into existing workflows rather than requiring users to learn entirely new processes.
+
+## Use Cases and Scope
+
+While the initial motivation focused on ingredient and topping images for customizable food items, the deployed system supports a broader range of use cases. Beyond product component images, FoodStorm uses generative AI to create hero images, promotional content, category thumbnails, and marketing banners. The case study shows examples of promotional banners that would traditionally require graphic design work but can now be produced quickly by retailers themselves. This democratization of creative capabilities is a significant value proposition, particularly for smaller grocery retailers who may not have dedicated design resources.
+
+The author is careful to position AI as a complement to, not a replacement for, traditional creative channels. The recommendation is to "balance its use with genuine photography and other creative channels" and emphasizes the importance of "quality controls in place." This measured perspective is important for understanding the real-world deployment of generative AI — it's positioned as a productivity tool and gap-filler rather than a wholesale replacement for human creativity.
+
+## Model Performance and Evaluation
+
+The case study provides qualitative assessments of model performance rather than quantitative metrics. Google Imagen is noted for excelling at creating images of food components like "perfectly diced onions, finely shredded lettuce, or just the right amount of strawberry jam." The ability to generate images "on a white background" is highlighted as a particular strength compared to other AI tools.
+
+However, the evaluation approach is primarily human-in-the-loop rather than automated. Users preview multiple variations and select the best result, and they're encouraged to closely inspect images for artifacts before publishing. The example of the Bilby-nibbling-raspberries error illustrates that the system doesn't guarantee perfect outputs, but rather provides tools for users to identify and reject problematic generations. This is a pragmatic approach to quality control in production generative AI systems where automated evaluation remains challenging.
+
+The multi-variation preview capability is effectively a simple implementation of best-of-n sampling, a common technique in generative AI systems to improve output quality. By generating several candidates and allowing human selection, the system increases the probability that at least one generation will meet quality standards, without requiring the model itself to be perfect.
+
+## LLMOps Maturity and Architecture
+
+This implementation demonstrates several characteristics of mature LLMOps practices. The existence of the Pixel service shows investment in platform capabilities that can be leveraged across multiple applications. Rather than each team integrating directly with various AI model providers, the centralized service provides consistent interfaces, governance controls, and potentially cost management and monitoring capabilities.
+
+The iterative development approach — from technical spike to initial production release to multiple refinements based on user needs — reflects an agile methodology adapted for AI product development. The team validated technical feasibility quickly, deployed something functional, and then refined based on real-world usage patterns and user feedback. This is preferable to extensive pre-deployment development that might miss actual user needs.
+
+The integration of AI capabilities into existing workflows (the image upload component) rather than as standalone tools demonstrates product thinking that considers user adoption and change management. The lower the barrier to using AI features, the more likely they are to deliver value in practice.
+
+## Limitations and Balanced Assessment
+
+While the case study is promotional in nature (it concludes with a call to action to book a demo), the author provides a reasonably balanced view. The explicit acknowledgment that "nothing can replace the authenticity of professional photographs showing the real product" sets appropriate expectations. The examples of AI failures (the Bilby incident) and the emphasis on quality control needs demonstrate transparency about limitations.
+
+However, several important LLMOps considerations are not deeply addressed in the article. There's no discussion of costs associated with AI image generation, which could be significant at scale if many retailers are generating large numbers of images. There's no mention of monitoring and observability — how does Instacart track generation failures, user satisfaction with generated images, or the percentage of generated images that are actually published versus rejected? Performance characteristics like generation latency aren't discussed, though this could impact user experience if users must wait significant time for variations to generate.
+
+The content moderation and safety controls mentioned in the Pixel service are noted but not detailed. Given that this is a user-facing tool where retailers control the prompts, there are potential risks around inappropriate content generation that would need to be managed. The exact mechanisms for this aren't described, though their existence is acknowledged.
+
+There's also no discussion of model versioning or updates. As Google Imagen or other underlying models are updated, how are those changes managed? Do updates automatically flow through Pixel to FoodStorm, or is there a testing and validation process? These are important operational considerations for production AI systems that aren't covered in this promotional article.
+
+## Business Impact and Value Proposition
+
+The core value proposition is productivity and enablement for grocery retailers. Rather than requiring expensive photography for every possible product configuration, or leaving some items without images (which hurts conversion), retailers can quickly generate appropriate imagery themselves. The extension to promotional content and category thumbnails further increases value by reducing dependence on external design resources.
+
+For smaller retailers in particular, this democratization of creative capabilities could be significant. The "time saver and dynamic creative tool" framing positions AI as augmenting retailer capabilities rather than replacing human roles. However, no quantitative results are provided — we don't know how many retailers have adopted the feature, how many images have been generated, or what impact on sales or user engagement has been observed. This is typical for promotional case studies but limits our ability to assess actual business impact.
+
+## Conclusion
+
+This case study illustrates a practical, production deployment of generative AI for a specific business need in the grocery retail space. The technical implementation leverages existing internal AI infrastructure (Pixel service), integrates with established workflows, and includes appropriate quality control mechanisms. The iterative design process shows thoughtful consideration of user needs and the challenges of making AI capabilities accessible to non-technical users.
+
+From an LLMOps perspective, the case demonstrates several best practices: centralized AI services for consistent access and governance, human-in-the-loop evaluation for quality control, integration into existing user workflows, and legal/compliance considerations. However, as a promotional article, it lacks detail on operational aspects like cost management, performance monitoring, error rates, and quantitative business impact.
+
+The balanced acknowledgment of AI limitations and the positioning as a complement to rather than replacement for traditional creative work is appropriate and sets reasonable expectations. The emphasis on "quality controls in place" and the multi-step review process before publication shows awareness of the risks of deploying generative AI in customer-facing contexts. Overall, this represents a thoughtful, practical application of generative AI technology to solve a real business problem, implemented with attention to both user experience and operational concerns, though the full operational maturity and impact remain somewhat unclear from this promotional treatment.

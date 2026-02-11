@@ -1,0 +1,91 @@
+---
+title: "Company-Wide GenAI Transformation Through Hackathon-Driven Culture and Centralized Infrastructure"
+slug: "company-wide-genai-transformation-through-hackathon-driven-culture-and-centralized-infrastructure"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "6899a093f16099f284c3529c"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:18:20.131Z"
+  createdOn: "2025-08-11T07:49:39.188Z"
+llmopsTags:
+  - "customer-support"
+  - "code-generation"
+  - "document-processing"
+  - "content-moderation"
+  - "translation"
+  - "question-answering"
+  - "classification"
+  - "summarization"
+  - "chatbot"
+  - "code-interpretation"
+  - "data-analysis"
+  - "structured-output"
+  - "caption-generation"
+  - "prompt-engineering"
+  - "few-shot"
+  - "multi-agent-systems"
+  - "agent-based"
+  - "human-in-the-loop"
+  - "cost-optimization"
+  - "fallback-strategies"
+  - "system-prompts"
+  - "mcp"
+  - "evals"
+  - "monitoring"
+  - "api-gateway"
+  - "load-balancing"
+  - "microservices"
+  - "scaling"
+  - "devops"
+  - "orchestration"
+  - "continuous-deployment"
+  - "continuous-integration"
+  - "open-source"
+  - "documentation"
+  - "security"
+  - "compliance"
+  - "guardrails"
+  - "reliability"
+  - "scalability"
+  - "fastapi"
+  - "postgresql"
+  - "sqlite"
+  - "redis"
+  - "cache"
+  - "langchain"
+  - "openai"
+  - "microsoft-azure"
+company: "Agoda"
+summary: "Agoda transformed from GenAI experiments to company-wide adoption through a strategic approach that began with a 2023 hackathon, grew into a grassroots culture of exploration, and was supported by robust infrastructure including a centralized GenAI proxy and internal chat platform. Starting with over 200 developers prototyping 40+ ideas, the initiative evolved into 200+ applications serving both internal productivity (73% employee adoption, 45% of tech support tickets automated) and customer-facing features, demonstrating how systematic enablement and community-driven innovation can scale GenAI across an entire organization."
+link: "https://medium.com/agoda-engineering/a-retrospective-agodas-genai-journey-thus-far-b0739683d53e"
+year: 2025
+seo:
+  title: "Agoda: Company-Wide GenAI Transformation Through Hackathon-Driven Culture and Centralized Infrastructure - ZenML LLMOps Database"
+  description: "Agoda transformed from GenAI experiments to company-wide adoption through a strategic approach that began with a 2023 hackathon, grew into a grassroots culture of exploration, and was supported by robust infrastructure including a centralized GenAI proxy and internal chat platform. Starting with over 200 developers prototyping 40+ ideas, the initiative evolved into 200+ applications serving both internal productivity (73% employee adoption, 45% of tech support tickets automated) and customer-facing features, demonstrating how systematic enablement and community-driven innovation can scale GenAI across an entire organization."
+  canonical: "https://www.zenml.io/llmops-database/company-wide-genai-transformation-through-hackathon-driven-culture-and-centralized-infrastructure"
+  ogTitle: "Agoda: Company-Wide GenAI Transformation Through Hackathon-Driven Culture and Centralized Infrastructure - ZenML LLMOps Database"
+  ogDescription: "Agoda transformed from GenAI experiments to company-wide adoption through a strategic approach that began with a 2023 hackathon, grew into a grassroots culture of exploration, and was supported by robust infrastructure including a centralized GenAI proxy and internal chat platform. Starting with over 200 developers prototyping 40+ ideas, the initiative evolved into 200+ applications serving both internal productivity (73% employee adoption, 45% of tech support tickets automated) and customer-facing features, demonstrating how systematic enablement and community-driven innovation can scale GenAI across an entire organization."
+---
+
+Agoda's GenAI transformation represents one of the most comprehensive enterprise-wide LLMOps implementations documented, spanning from initial experimentation to production-scale deployment across 200+ applications. The journey began in February 2023 with a company-wide GPT hackathon that engaged over 200 developers across three days, resulting in 40+ prototyped ideas ranging from customer support bots to SEO content generators. This hackathon served as a catalyst, demonstrating that LLMs were capable of real production work beyond simple chat demonstrations, highlighting the critical importance of prompt engineering, and identifying internal context and data access as the primary technical challenges.
+
+The most significant aspect of Agoda's approach was their systematic building of infrastructure to support scalable GenAI adoption. At the heart of their LLMOps architecture is a centralized GenAI Proxy that serves as the single access point for all GenAI traffic within the organization. This proxy provides several critical production capabilities including centralized compliance and legal review processes for new use cases, intelligent routing between different GenAI providers (initially OpenAI and Azure OpenAI, later expanding to additional providers), granular usage tracking down to individual requests and tokens, automatic cost attribution back to teams, and comprehensive rate limiting and monitoring capabilities. This centralized approach enabled rapid experimentation while maintaining governance and cost control, addressing one of the most challenging aspects of enterprise GenAI deployment.
+
+Complementing the proxy infrastructure, Agoda developed an internal Chat Assistant Platform built as a Progressive Web App that replaced reliance on external GenAI interfaces. This platform was designed with three key principles: GenAI-agnostic assistant behavior definition under internal control, avoidance of costly per-seat pricing models, and provision of a unified interface that could work across any model provider. The platform includes a comprehensive chat UI with integration to Agoda's internal systems, the ability to create custom assistants with pluggable tool support for specialized tasks like SEO and data queries, a playground environment for prototyping prompts and function calls, and a Chrome extension that provides contextual assistance using full page content.
+
+The cultural transformation was equally important to the technical infrastructure. The organic growth from the initial hackathon was sustained through community-driven learning spaces, particularly a Slack channel called "mastering-gpt" that became the nerve center for sharing techniques, announcing tools, and collaborative problem-solving. This grassroots momentum was supported by practical enablement measures including rollout of coding assistants like GitHub Copilot across all developer IDEs, and the deployment of Slack bot integrations that allowed employees to interact with GenAI directly within their existing workflows.
+
+Agoda's "Inside-Out" approach focused first on improving internal workflows to develop the necessary skills, patterns, and infrastructure for responsible GenAI deployment before extending to customer-facing applications. This methodology enabled teams to learn how to build GenAI-powered applications effectively, develop prompt mastery treating prompting as interface design, figure out appropriate testing strategies for non-deterministic GenAI features, and build infrastructure supporting rapid iteration and safe deployment without the high stakes of customer-facing environments.
+
+The production applications demonstrate sophisticated LLMOps implementations across multiple domains. Internal productivity tools include Query Assist for natural language SQL generation, Document Processor for applying GenAI to structured data processing in spreadsheets, AskGoda for automated technical support handling 50% of incoming tickets using documentation and historical data, and Meeting Helper for automatic meeting summarization with proactive follow-up capabilities. Engineering acceleration tools include Jira Planning Assistants that enrich user stories with internal knowledge, autonomous coding agents for large-scale migrations with test validation, code review assistants providing consistent automated feedback, auto-documentation tools triggered by code changes, monitoring and log analysis agents integrated with anomaly detection systems, and custom Model Context Protocols exposing internal systems to coding assistants.
+
+Customer-facing applications leverage the same robust infrastructure with Q&A assistants embedded across the platform for natural language support, review helpers for summarizing and filtering large volumes of guest reviews, and enhanced content curation through automated tagging and enrichment of unstructured content. The systematic approach to LLMOps enabled Agoda to achieve remarkable adoption metrics with 73% of employees using GenAI productivity tools and consistent growth from 119 applications in 2023 to 204 by mid-2025.
+
+The technical architecture demonstrates several important LLMOps best practices including centralized access control and governance, comprehensive monitoring and cost attribution, multi-provider support and intelligent routing, secure internal deployment avoiding external dependencies, and systematic testing and evaluation frameworks. The emphasis on building reusable infrastructure and maintaining a community of practice around GenAI development enabled sustainable scaling that avoided the common pitfalls of isolated experimentation and ungoverned proliferation of GenAI applications.
+
+Agoda's approach to production GenAI deployment addresses critical challenges including the gap between prototypes and production-ready applications, the need for robust testing methodologies for non-deterministic systems, cost management and usage attribution at enterprise scale, governance and compliance requirements, and the cultural transformation required for organization-wide adoption. Their systematic documentation of lessons learned provides valuable insights for other organizations undertaking similar GenAI transformations, particularly the importance of infrastructure investment, community building, and the iterative development of expertise through internal use cases before expanding to customer-facing applications.
+
+The case study demonstrates that successful enterprise GenAI deployment requires more than just access to LLM APIs, but rather a comprehensive approach encompassing technical infrastructure, governance frameworks, cultural transformation, and systematic capability building. Agoda's journey from hackathon to production deployment at scale provides a detailed template for organizations seeking to implement GenAI across their operations while maintaining quality, security, and cost effectiveness.

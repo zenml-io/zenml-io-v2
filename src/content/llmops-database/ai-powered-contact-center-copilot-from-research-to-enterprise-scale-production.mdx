@@ -1,0 +1,162 @@
+---
+title: "AI-Powered Contact Center Copilot: From Research to Enterprise-Scale Production"
+slug: "ai-powered-contact-center-copilot-from-research-to-enterprise-scale-production"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "6914671f945dc78b41b056e9"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:27:01.976Z"
+  createdOn: "2025-11-12T10:53:19.697Z"
+llmopsTags:
+  - "customer-support"
+  - "chatbot"
+  - "classification"
+  - "content-moderation"
+  - "high-stakes-application"
+  - "poc"
+  - "fine-tuning"
+  - "few-shot"
+  - "human-in-the-loop"
+  - "model-optimization"
+  - "instruction-tuning"
+  - "error-handling"
+  - "agent-based"
+  - "multi-agent-systems"
+  - "evals"
+  - "kubernetes"
+  - "docker"
+  - "monitoring"
+  - "databases"
+  - "cicd"
+  - "scaling"
+  - "devops"
+  - "orchestration"
+  - "continuous-deployment"
+  - "continuous-integration"
+  - "open-source"
+  - "documentation"
+  - "pytorch"
+  - "tensorflow"
+  - "fastapi"
+  - "langchain"
+  - "spacy"
+  - "openai"
+  - "meta"
+  - "google-gcp"
+  - "hugging-face"
+company: "Cresta / OpenAI"
+summary: "Cresta, founded in 2017 by Stanford PhD students with OpenAI research experience, developed an AI copilot system for contact center agents that provides real-time suggestions during customer conversations. The company tackled the challenge of transforming academic NLP and reinforcement learning research into production-grade enterprise software by building domain-specific models fine-tuned on customer conversation data. Starting with Intuit as their first customer through an unconventional internship arrangement, they demonstrated measurable ROI through A/B testing, showing improved conversion rates and agent productivity. The solution evolved from custom LSTM and transformer models to leveraging pre-trained foundation models like GPT-3/4 with fine-tuning, ultimately serving Fortune 500 customers across telecommunications, airlines, and banking with demonstrated value including a pilot generating $100 million in incremental revenue."
+link: "https://www.youtube.com/watch?v=N62FTn0sAO0"
+year: 2025
+seo:
+  title: "Cresta / OpenAI: AI-Powered Contact Center Copilot: From Research to Enterprise-Scale Production - ZenML LLMOps Database"
+  description: "Cresta, founded in 2017 by Stanford PhD students with OpenAI research experience, developed an AI copilot system for contact center agents that provides real-time suggestions during customer conversations. The company tackled the challenge of transforming academic NLP and reinforcement learning research into production-grade enterprise software by building domain-specific models fine-tuned on customer conversation data. Starting with Intuit as their first customer through an unconventional internship arrangement, they demonstrated measurable ROI through A/B testing, showing improved conversion rates and agent productivity. The solution evolved from custom LSTM and transformer models to leveraging pre-trained foundation models like GPT-3/4 with fine-tuning, ultimately serving Fortune 500 customers across telecommunications, airlines, and banking with demonstrated value including a pilot generating $100 million in incremental revenue."
+  canonical: "https://www.zenml.io/llmops-database/ai-powered-contact-center-copilot-from-research-to-enterprise-scale-production"
+  ogTitle: "Cresta / OpenAI: AI-Powered Contact Center Copilot: From Research to Enterprise-Scale Production - ZenML LLMOps Database"
+  ogDescription: "Cresta, founded in 2017 by Stanford PhD students with OpenAI research experience, developed an AI copilot system for contact center agents that provides real-time suggestions during customer conversations. The company tackled the challenge of transforming academic NLP and reinforcement learning research into production-grade enterprise software by building domain-specific models fine-tuned on customer conversation data. Starting with Intuit as their first customer through an unconventional internship arrangement, they demonstrated measurable ROI through A/B testing, showing improved conversion rates and agent productivity. The solution evolved from custom LSTM and transformer models to leveraging pre-trained foundation models like GPT-3/4 with fine-tuning, ultimately serving Fortune 500 customers across telecommunications, airlines, and banking with demonstrated value including a pilot generating $100 million in incremental revenue."
+---
+
+## Overview
+
+Cresta represents a compelling case study in operationalizing academic AI research for enterprise production use. The company was founded around 2017-2018 by Stanford AI Lab PhD students who had experience at OpenAI working on reinforcement learning for digital environments (specifically the "World of Bits" project). The founders pivoted from pure RL research to building an AI copilot for knowledge workers, specifically targeting contact center agents in customer support and sales contexts. The company grew to 300-400 employees serving Fortune 500 customers including Intuit, AT&T, United Airlines, Alaska Airlines, and US Bank, with revenue roughly doubling year-over-year.
+
+The core product provides real-time AI-powered suggestions to contact center agents as they interact with customers via chat or voice. The system learns from historical conversation data to identify expert behaviors and provide recommendations on what to say next, aiming to make every agent perform like a top performer from day one. This represents a classic LLMOps challenge: taking NLP models from research to production at scale, with stringent requirements around latency, accuracy, reliability, and measurable business impact.
+
+## Technical Evolution and Architecture
+
+The technical journey of Cresta illustrates the evolution of production NLP systems over nearly a decade. The company started in an era before modern transformer architectures dominated, initially building custom models using LSTMs (Long Short-Term Memory networks) and other recurrent neural network architectures. The founder explicitly mentions that early deep learning for NLP was "just getting started" when they began, and many classical approaches like dialog flow systems with rule-based conversation graphs were still common among competitors in the chatbot space.
+
+A critical technical decision was taking a contrarian approach compared to the chatbot hype of 2017-2018. Rather than attempting full automation through rule-based systems, Cresta focused on augmenting human agents with AI, learning from human conversation data rather than trying to replace humans entirely. This human-in-the-loop approach proved more pragmatic given the limitations of models at the time and provided a continuous source of training data from real expert interactions.
+
+The architecture evolved significantly as pre-trained language models became available. The team mentions completely rewriting their system when BERT was released, gaining substantial quality improvements. A particularly notable moment came with GPT-2, where fine-tuning on customer data produced what they describe as a "wow effect" with quality jumping significantly. However, they acknowledge a key lesson here: while they fine-tuned GPT-2 on their specific data for immediate customer value, OpenAI scaled GPT-2 to create GPT-3, demonstrating the "bitter lesson" that scale often matters more than domain-specific optimization for frontier capabilities.
+
+By the time of the interview (likely 2024-2025 based on references to recent developments), Cresta had transitioned to building their stack on top of foundation models like GPT-3 and GPT-4, using fine-tuning and what they describe as "mid-training" or continued pre-training on domain-specific conversation data. This represents a pragmatic shift from training everything from scratch to leveraging frontier lab models as a base and customizing them for enterprise needs.
+
+## Data Engineering and MLOps Infrastructure
+
+A recurring theme throughout the case study is that data engineering, not algorithmic innovation, drove most production improvements. The founder emphasizes that in academia, novel algorithms and architectures receive the most attention, but in production, "a lot of it is actually data engineering—figuring out what data you train on, what mixture, what kind of format you should train it on." This pragmatic insight reflects the reality of LLMOps at scale.
+
+Cresta built extensive internal MLOps infrastructure to support continuous model training and deployment. They describe building pipelines similar to DevOps but for ML models, enabling rapid iteration on new ideas from academic research. The system could ingest millions of conversations from customers, apply various data processing and labeling steps, train models, and continuously evaluate them against benchmarks. This infrastructure was critical for operating at enterprise scale across multiple customers with different conversation patterns.
+
+The data collection strategy evolved significantly over time. Initially, Cresta relied heavily on human labeling, building in-house teams of former contact center agents and experts to create labels for different conversation segments. This was described as "very intensive and expensive." As foundation models improved, they shifted toward more self-supervised and reinforcement learning approaches that required fewer human labels, making the operation more scalable and cost-effective.
+
+An interesting business innovation was negotiating clauses in customer contracts where, by default, customers would contribute conversation data to a shared domain-specific repository in exchange for incentives. Over time, this built up a substantial corpus of telco, healthcare, financial services, and other industry-specific conversational data. They would then use this for continued pre-training (what they call "mid-training") to create domain-specific models that performed better across all customers in that vertical. However, they also had to maintain single-tenant deployments with separate VPCs and data residency for customers with stricter data requirements, given that each contract was large enough to justify this overhead.
+
+## Evaluation and ROI Measurement
+
+A critical differentiator for Cresta in enterprise sales was rigorous evaluation and ROI measurement. The founder emphasizes that they "always kind of start with eval"—they would go to customers, build benchmarks on what "good looks like," and align with customers on the evaluation set before beginning ML work. This eval-first approach reflects best practices in modern LLMOps.
+
+For measuring actual business impact, Cresta conducted extensive A/B testing comparing agents using the AI copilot versus those without it. Contact centers already had well-defined metrics: average handle time (shorter is better), customer satisfaction scores, conversion rates, and revenue goals for sales contexts. By running controlled experiments and demonstrating measurable differences, they could directly attribute value to their AI system. The founder mentions one pilot with Intuit that drove $100 million in incremental revenue, from which they charged a fraction.
+
+This rigorous measurement approach was essential for overcoming enterprise skepticism, especially in the 2017-2019 era when chatbots had created significant hype but generally failed to deliver. Cresta had to convince customers they were different from rule-based chatbot providers and that their AI actually worked. Demonstrating ROI through A/B tests became their primary sales tool.
+
+Beyond outcome metrics, Cresta also tracked proxy metrics, particularly usage and adoption rates of the AI suggestions. They found that usage was a strong predictor of downstream value—if agents weren't clicking on suggestions, no business impact would occur. Interestingly, they discovered that veteran agents were often the most resistant to using the tool, believing they already knew best practices, while newer hires adopted it more readily. This led to building manager tools that provided real-time visibility into usage patterns and enabled coaching to drive adoption.
+
+## Model Serving and Production Challenges
+
+Running AI models in production for contact centers presented unique operational challenges. The founder mentions waking up at 5 AM because "the service was down," highlighting the reliability requirements for mission-critical business systems. Unlike academic research where experiments can fail without consequence, contact center downtime directly impacts revenue and customer satisfaction.
+
+Inference cost was a major consideration, especially in the early days around 2018 when running deep learning models was expensive. This influenced their pricing strategy—rather than standard SaaS per-seat pricing, they experimented with value-based pricing tied to the ROI delivered, since their AI costs scaled with usage. This required sophisticated cost modeling and ROI measurement to make the unit economics work.
+
+The UI surface area was deliberately kept minimal—primarily a Chrome plugin that inserted suggestions into the agent interface. This lightweight approach allowed them to integrate with existing contact center platforms (Salesforce Service Cloud, Nice, and others) rather than attempting to replace them. Positioning themselves as "a layer on top" rather than a competitor helped with enterprise sales, though they did have to compete against claims from incumbent platforms that they "also do AI."
+
+Latency was critical for the user experience. Suggestions needed to appear in real-time as conversations progressed, requiring efficient model serving infrastructure. The evolution from custom LSTMs to transformers to fine-tuned GPT models required continuous optimization of the serving stack to maintain acceptable latency as model sizes grew.
+
+## Customer-Specific Customization and Scaling
+
+A central challenge in Cresta's LLMOps journey was balancing customization versus generalization. Initially, each enterprise customer required significant bespoke work—ingesting their specific conversation data, training models on their domain, and optimizing for their particular use cases. While the overall architecture was shared across customers, the fine-tuning process meant each deployment was somewhat unique. This "Palantir approach" of getting the model working well for each large customer was necessary early on but posed scaling challenges.
+
+The founder describes this as a key difference between AI products and traditional SaaS: "It's not like a language model today where we can apply it to anything. It's like a narrow AI, narrow domain AI. You have to retrain the model in some sense for each customer." Every customer had different conversation patterns, different products they sold, different best practices from their top performers. This meant the path to value for a new customer involved significant ML work, not just configuration.
+
+To scale beyond manual customer-by-customer work, Cresta pursued several strategies. First, as mentioned earlier, they built up domain-specific data repositories by aggregating opted-in customer data. This allowed them to create vertical-specific models for telecommunications, banking, airlines, etc., that provided a better starting point for new customers in those industries. Second, the shift to foundation models like GPT-3/4 provided much better out-of-the-box capabilities, reducing the amount of fine-tuning needed. Third, they built more sophisticated multi-tenancy infrastructure to serve smaller customers more cost-effectively, while maintaining single-tenant deployments for large enterprises with strict data requirements.
+
+The company evolved from working exclusively with Fortune 500 enterprises to being able to serve a broader range of customers, though the sweet spot remained large contact centers with hundreds or thousands of agents where the high-touch implementation effort could be justified by the large contract values.
+
+## Research Background and Its Influence
+
+The founders' research backgrounds at Stanford AI Lab and OpenAI significantly shaped their approach to production LLMOps. The founder worked on applying reinforcement learning to NLP and on the concept of "open-endedness"—how to train models that generalize across different tasks and benchmarks rather than overfitting to single objectives. This research background gave them intuitions about model capabilities and limitations that proved valuable in production.
+
+However, the transition from research to product required unlearning certain academic habits. The founder explicitly mentions that in academia there's pressure to find "the most novel, the best approach" to solve problems, whereas in building a company, "getting things done is actually very important." Managing ML teams required different skills than doing individual research—setting expectations was difficult because ML experiments have inherent uncertainty about what performance levels are achievable until you try.
+
+The experience at OpenAI working on "World of Bits"—an early project attempting to train RL agents that could use computers, keyboards, and mice in digital environments—informed their understanding of both the promise and limitations of RL. The founder reflects that early OpenAI had a thesis that AGI would emerge from RL in simulated game environments, which didn't pan out as expected. Key challenges included sparse rewards, high variance gradients, and lack of basic perceptual understanding that foundation models later provided.
+
+Interestingly, the founder notes that many of the RL and agentic AI ideas from 2016-2017 that failed then are now being revisited with foundation models as a base. Computer use, multi-environment training, and RL fine-tuning are all working better now because models have rich pre-trained representations of the world. They suggest the field is entering a new era where "algorithms matter" again after several years focused purely on scaling, with frontier labs exploring approaches like evolutionary algorithms, neurosymbolic methods, and novel RL techniques on top of foundation models.
+
+## Business Model and Go-to-Market Lessons
+
+From an LLMOps business perspective, Cresta's journey offers several lessons. The founding story itself is unconventional: one co-founder took an internship at Intuit while they built the product externally, eventually negotiating with founder Scott Cook to get the source code on a USB drive when they signed the contract. This creative approach to customer acquisition—essentially achieving product-market fit as an employee before spinning out—was risky but effective for their first major customer.
+
+A key mistake they acknowledge was being too engineering-heavy initially without strong go-to-market leadership. As technically-minded PhD founders, they eventually learned they needed to hire experienced enterprise sales leaders early to build a scalable sales machine. This is a common challenge for technical founders bringing academic research to market.
+
+The shift from chatbot hype to actual enterprise AI value was navigated by focusing on augmentation rather than automation. While their ultimate goal was 99% automation, they positioned themselves as helping companies transform progressively from wherever they were. This pragmatic messaging resonated better with enterprises concerned about job displacement and skeptical after failed chatbot projects.
+
+On pricing and packaging, the tension between SaaS subscription models and AI cost structures forced innovation. Per-seat pricing didn't capture value appropriately when AI inference costs were high and variable, leading them to experiment with value-based pricing tied to measured ROI. This required building sophisticated measurement and attribution capabilities that became a competitive advantage.
+
+## Technical Culture and Team Building
+
+Building an AI-first product company required different team structures and processes than traditional SaaS companies. The founder emphasizes that hiring the right ML talent was paramount, and they invested heavily in technical content and releases to build a talent brand showing they worked on frontier NLP problems while delivering enterprise value. This positioning—at the intersection of cutting-edge research and practical business impact—helped attract strong researchers who might otherwise have joined pure research labs.
+
+Managing ML teams required accepting more uncertainty than traditional engineering. Unlike shipping features with clear specifications and timelines, ML work involves running experiments where five ideas might be tried and only one proves promising. The team had to develop processes for setting expectations with stakeholders when model performance levels couldn't be guaranteed upfront, and for deciding whether to build new features versus focusing all energy on improving model accuracy.
+
+The evolution of their technical stack reflects pragmatic adaptation to the changing ML landscape. They weren't dogmatic about building everything themselves—when foundation models became powerful enough, they shifted from training from scratch to fine-tuning pre-trained models. The founder frames this not as "outsourcing AI" but as using the best available technology to serve customers, drawing an analogy to how Google wouldn't outsource search but Cresta isn't trying to build frontier foundation models.
+
+## Current State and Future Directions
+
+By the time of the interview, Cresta had matured into a late-stage company with 300-400 employees, growing revenue nearly 2x year-over-year, serving major enterprise customers across multiple verticals. The founder had transitioned to a board and technical advisor role, noting the company was in a good position with their technology roadmap and benefiting from increasingly capable pre-trained models.
+
+The technical direction had shifted significantly toward building on top of foundation models rather than training from scratch. The infrastructure for continuous training, evaluation, and deployment remained critical, but the models themselves evolved from custom LSTMs to fine-tuned transformers to systems built on GPT-3/4. This evolution reflects the broader industry trend of foundation models becoming the base layer for enterprise AI applications.
+
+Looking forward, the founder expresses interest in returning to research on topics like agentic AI and computer use, noting that many ideas that didn't work in 2016-2017 may now be viable with better foundation models. They mention areas like evolutionary algorithms, neurosymbolic approaches, and novel RL methods as potentially promising for the next wave of AI capabilities. The challenge of sample efficiency—getting AI to learn from few examples like humans do rather than requiring millions of rollouts—remains a key open problem.
+
+## Broader LLMOps Insights
+
+This case study illustrates several important LLMOps principles that generalize beyond contact centers. First, the importance of evaluation and measurement—starting with aligned metrics, building benchmarks, and rigorously measuring business impact through experiments. Second, the primacy of data engineering over algorithmic innovation in production settings. Third, the value of human-in-the-loop approaches during the journey toward automation. Fourth, the operational challenges of serving models at scale with reliability, latency, and cost constraints.
+
+The evolution from custom models to fine-tuned foundation models reflects the changing economics and capabilities of the ML landscape. Early AI-first companies had to build most components themselves; newer entrants can leverage powerful pre-trained models and focus on domain-specific data and evaluation. However, the fundamental LLMOps challenges around deployment, monitoring, continuous improvement, and ROI measurement remain constant.
+
+The tension between customization and generalization—needing bespoke models for each customer initially but wanting to scale—is common in enterprise AI. Strategies like building domain-specific models from aggregated opt-in data and reducing customization needs through better foundation models both help address this challenge.
+
+Finally, the importance of change management and adoption alongside technical capabilities shouldn't be underestimated. Cresta invested significantly in training, gamification, manager tools, and customer success to drive usage of their AI, recognizing that the best model is worthless if users don't adopt it. This human side of LLMOps is often overlooked in technical discussions but proves critical for real-world impact.

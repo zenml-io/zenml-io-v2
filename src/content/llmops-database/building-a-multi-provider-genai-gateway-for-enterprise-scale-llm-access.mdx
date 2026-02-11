@@ -1,0 +1,122 @@
+---
+title: "Building a Multi-Provider GenAI Gateway for Enterprise-Scale LLM Access"
+slug: "building-a-multi-provider-genai-gateway-for-enterprise-scale-llm-access"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "67bc29ecf4aa4a5defe98dd5"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:01:28.149Z"
+  createdOn: "2025-02-24T08:12:28.328Z"
+llmopsTags:
+  - "content-moderation"
+  - "translation"
+  - "speech-recognition"
+  - "question-answering"
+  - "regulatory-compliance"
+  - "chatbot"
+  - "structured-output"
+  - "realtime-application"
+  - "rag"
+  - "fine-tuning"
+  - "prompt-engineering"
+  - "cost-optimization"
+  - "latency-optimization"
+  - "error-handling"
+  - "fallback-strategies"
+  - "api-gateway"
+  - "load-balancing"
+  - "monitoring"
+  - "vllm"
+  - "security"
+  - "compliance"
+  - "guardrails"
+  - "reliability"
+  - "scalability"
+  - "openai"
+  - "microsoft-azure"
+  - "amazon-aws"
+  - "google-gcp"
+company: "Grab"
+summary: "Grab developed an AI Gateway to provide centralized, secure access to multiple GenAI providers (including OpenAI, Azure, AWS Bedrock, and Google VertexAI) for their internal developers. The gateway handles authentication, cost management, auditing, and rate limiting while providing a unified API interface. Since its launch in 2023, it has enabled over 300 unique use cases across the organization, from real-time audio analysis to content moderation, while maintaining security and cost efficiency through centralized management."
+link: "https://engineering.grab.com/grab-ai-gateway"
+year: 2025
+seo:
+  title: "Grab: Building a Multi-Provider GenAI Gateway for Enterprise-Scale LLM Access - ZenML LLMOps Database"
+  description: "Grab developed an AI Gateway to provide centralized, secure access to multiple GenAI providers (including OpenAI, Azure, AWS Bedrock, and Google VertexAI) for their internal developers. The gateway handles authentication, cost management, auditing, and rate limiting while providing a unified API interface. Since its launch in 2023, it has enabled over 300 unique use cases across the organization, from real-time audio analysis to content moderation, while maintaining security and cost efficiency through centralized management."
+  canonical: "https://www.zenml.io/llmops-database/building-a-multi-provider-genai-gateway-for-enterprise-scale-llm-access"
+  ogTitle: "Grab: Building a Multi-Provider GenAI Gateway for Enterprise-Scale LLM Access - ZenML LLMOps Database"
+  ogDescription: "Grab developed an AI Gateway to provide centralized, secure access to multiple GenAI providers (including OpenAI, Azure, AWS Bedrock, and Google VertexAI) for their internal developers. The gateway handles authentication, cost management, auditing, and rate limiting while providing a unified API interface. Since its launch in 2023, it has enabled over 300 unique use cases across the organization, from real-time audio analysis to content moderation, while maintaining security and cost efficiency through centralized management."
+---
+
+## Overview
+
+Grab, the Southeast Asian superapp platform providing ride-hailing, food delivery, and financial services across eight countries, built an internal AI Gateway to democratize access to Generative AI capabilities across the organization. The gateway serves as a centralized platform connecting employees ("Grabbers") to multiple external AI providers including OpenAI, Azure, AWS Bedrock, and Google VertexAI, along with in-house open source models. This case study represents a practical example of enterprise-scale LLMOps infrastructure designed to balance innovation speed with governance, security, and cost management.
+
+## Problem Statement
+
+Before the AI Gateway, Grab faced several challenges in enabling widespread GenAI adoption across the organization. Each AI provider required different authentication mechanisms—some using key-based authentication while others required instance roles or cloud credentials. This fragmentation created significant friction for developers wanting to experiment with or deploy LLM-powered applications. Additionally, there was no centralized way to manage costs, enforce security policies, or audit usage across the enterprise.
+
+The problem extended beyond mere access. Reserved capacity purchases from AI providers risked wastage if individual services were deprecated, and there was no global view of usage trends to inform capacity planning decisions. From a security and governance perspective, there was no systematic way to review use cases for compliance with privacy and cybersecurity standards before production deployment—a critical concern given that GenAI applications can inadvertently expose sensitive information through improper authorization setups.
+
+## Architectural Approach
+
+The AI Gateway is fundamentally designed as a set of reverse proxies to different external AI providers. This minimalist approach was a deliberate architectural decision that has proven beneficial for keeping pace with rapid innovation in the GenAI space. From the user's perspective, the gateway acts like the actual provider—users only need to set the correct base URLs to access LLMs, while the gateway handles all the complexity of authentication, authorization, and rate limiting.
+
+The gateway implements a request path-based authorization system. API keys can be requested for two purposes: short-term "exploration keys" for personal experimentation, or long-term "service keys" for production usage. Once authenticated, the AI Gateway replaces the internal key with the appropriate provider key and executes the request on behalf of the user. Responses from providers are returned to users with minimal processing, keeping the gateway lightweight and reducing latency overhead.
+
+The gateway is not limited to chat completion APIs. It exposes other endpoints including embedding generation, image generation, audio processing, and supports functionalities like fine-tuning, file storage, search, and context caching. This comprehensive coverage means teams can build diverse AI-powered applications through a single integration point.
+
+## Unified API Interface
+
+A particularly valuable feature is the unified API interface that allows users to interact with multiple AI providers through a single interface. The gateway uses the OpenAI API schema as the common format, translating request payloads to provider-specific input schemes before forwarding to reverse proxies. Response translations work in reverse, converting provider responses back to the OpenAI response schema.
+
+This approach significantly lowers the barrier for experimentation between different providers and models. Users can switch providers simply by changing the "model" parameter in API requests without rewriting application logic or learning new SDKs. The unified interface also enables easy setup of fallback logic and dynamic routing across providers, improving reliability and helping with quota management across regions.
+
+## Governance and Onboarding Process
+
+Given the inherent risks of GenAI applications—including generation of offensive or incorrect output and potential for hostile takeover by malicious actors—Grab implemented a structured onboarding process. Every new production use case requires a mini-RFC (Request For Comments) and a checklist reviewed by the platform team. In certain cases, an in-depth review by an AI Governance task force may be requested.
+
+To reduce friction while maintaining governance, the platform provides exploration keys that allow employees to build prototypes and experiment with APIs before going through the full review process. These exploration keys are short-lived (valid for only a few days), have stricter rate limits, and are restricted to the staging environment. Over 3,000 Grabbers have requested exploration keys to experiment with APIs, demonstrating strong internal adoption.
+
+## Cost Management and Attribution
+
+The gateway implements comprehensive cost attribution at the request level. For each request, once a response is received from the provider, the gateway calculates the cost based on token usage. This cost data is archived in Grab's data lake along with the audit trail. For asynchronous usages like fine-tuning, cost calculation is handled through a separate daily batch job. An aggregation job produces per-service cost reports used for dashboards and showback to teams.
+
+The centralized approach to capacity management is particularly valuable for cost efficiency. With a shared capacity pool, deprecated services simply free up bandwidth for new services to utilize. The platform team gains a global view of usage trends, enabling informed decisions about reallocating reserved capacity according to demand and future trends.
+
+## Auditing and Security
+
+Every API call's request body, response body, and metadata (token usage, URL path, model name) is recorded in Grab's data lake. This audit trail can be inspected for security threats like prompt injection attempts or potential data policy violations. The centralized setup ensures that all use cases undergo thorough review for compliance with privacy and cybersecurity standards before production deployment.
+
+Currently, users are responsible for implementing their own guardrails and safety measures for applications processing clear text input/output from customers. However, the roadmap includes plans for built-in support for security threats like prompt injection detection and guardrails for filtering input/output, which would reduce implementation burden on application teams.
+
+## Dynamic Routing and Load Balancing
+
+The gateway provides dynamic routing capabilities for maintaining usage efficiency across various reserved instance capacities. It can dynamically route requests for certain models to different but similar models backed by reserved instances. Smart load balancing across different regions addresses region-specific constraints related to maximum available quotas, helping minimize rate limiting issues.
+
+Rate limiting is implemented at the key level on top of global provider limits to ensure quotas are not consumed by a single service. The current implementation uses basic request rate-based limits, though the team acknowledges this has limitations and plans to introduce more advanced policies based on token usage or daily/monthly running costs.
+
+## Integration with ML Platform
+
+The AI Gateway is integrated with Grab's broader ML platform ecosystem. For Chimera notebooks used for ideation and development, exploration keys are automatically mounted when a user spins up a notebook. For production deployments through Catwalk, users can configure gateway integration which sets up required environment variables and mounts the appropriate keys into the application.
+
+The gateway also provides access to in-house open source models, offering users a taste of OSS capabilities before deciding to deploy dedicated instances using Catwalk's VLLM offering. This approach helps teams evaluate different model options before committing to specific infrastructure investments.
+
+## Challenges and Lessons Learned
+
+The team encountered several challenges as adoption scaled. Keeping up with the rapid pace of innovation in the GenAI space required continuous dedicated effort. The team learned to balance release timelines with user expectations rather than attempting to support every new feature immediately.
+
+Fair distribution of quota across use cases with different service level objectives proved challenging. Batch use cases requiring high throughput but tolerating failures can interfere with online applications sensitive to latency and rate limits when they share underlying provider resources. While async APIs help mitigate these issues, not all use cases can adhere to the turnaround times async processing requires.
+
+Maintaining the reverse proxy architecture also presented complexity. While the design ensures compatibility with provider-specific SDKs, edge cases emerged where certain SDK functionalities didn't work as expected due to missing paths or configurations. The team addressed this through comprehensive integration testing with SDKs before deployments.
+
+## Production Use Cases
+
+The gateway powers a variety of production applications including real-time audio signal analysis for enhancing ride safety, content moderation for blocking unsafe content, and description generators for menu items. Internal productivity tools powered by the gateway include a GenAI portal for translation, language detection, and image generation; text-to-insights for converting natural language questions to SQL queries; incident management automation for triaging and reporting; and a support bot for answering user queries in Slack channels using a knowledge base.
+
+## Future Roadmap
+
+The team plans to develop a model catalogue to help users navigate the over 50 available AI models, including metadata on input/output modality, token limits, provider quota, pricing, and reference guides. Built-in governance features including prompt injection detection and input/output filtering guardrails are planned to reduce implementation burden on application teams. Smarter rate limiting policies based on token usage or cost rather than just request rate are also on the roadmap.

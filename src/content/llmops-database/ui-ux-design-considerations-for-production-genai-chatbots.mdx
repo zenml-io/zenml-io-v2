@@ -1,0 +1,112 @@
+---
+title: "UI/UX Design Considerations for Production GenAI Chatbots"
+slug: "ui-ux-design-considerations-for-production-genai-chatbots"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "67e566b74bf014db3ca2bec5"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:04:40.964Z"
+  createdOn: "2025-03-27T14:54:47.383Z"
+llmopsTags:
+  - "customer-support"
+  - "chatbot"
+  - "rag"
+  - "error-handling"
+  - "prompt-engineering"
+  - "semantic-search"
+  - "latency-optimization"
+  - "elasticsearch"
+  - "fastapi"
+  - "microsoft-azure"
+company: "Elastic"
+summary: "Elastic's Field Engineering team developed a customer support chatbot, focusing on crucial UI/UX design considerations for production deployment. The case study details how they tackled challenges including streaming response handling, timeout management, context awareness, and user engagement through carefully designed animations. The team created a custom chat interface using their EUI component library, implementing innovative solutions for handling long-running LLM requests and managing multiple types of contextual information in a user-friendly way."
+link: "https://www.elastic.co/search-labs/blog/genai-elastic-elser-chat-interface"
+year: 2024
+seo:
+  title: "Elastic: UI/UX Design Considerations for Production GenAI Chatbots - ZenML LLMOps Database"
+  description: "Elastic's Field Engineering team developed a customer support chatbot, focusing on crucial UI/UX design considerations for production deployment. The case study details how they tackled challenges including streaming response handling, timeout management, context awareness, and user engagement through carefully designed animations. The team created a custom chat interface using their EUI component library, implementing innovative solutions for handling long-running LLM requests and managing multiple types of contextual information in a user-friendly way."
+  canonical: "https://www.zenml.io/llmops-database/ui-ux-design-considerations-for-production-genai-chatbots"
+  ogTitle: "Elastic: UI/UX Design Considerations for Production GenAI Chatbots - ZenML LLMOps Database"
+  ogDescription: "Elastic's Field Engineering team developed a customer support chatbot, focusing on crucial UI/UX design considerations for production deployment. The case study details how they tackled challenges including streaming response handling, timeout management, context awareness, and user engagement through carefully designed animations. The team created a custom chat interface using their EUI component library, implementing innovative solutions for handling long-running LLM requests and managing multiple types of contextual information in a user-friendly way."
+---
+
+## Overview
+
+This case study from Elastic provides an inside look at the frontend and user experience challenges encountered when building a generative AI-powered customer support chatbot for production use. Written by Ian Moersen, a UI designer at Elastic, the article is part of a larger series documenting how the Field Engineering team leveraged the Elastic stack with generative AI to create what they describe as a "lovable and effective customer support chatbot." The focus here is specifically on the chat interface design and the unique production challenges that arise when deploying LLM-based conversational systems.
+
+While the article positions this as a success story from Elastic's own product development, it offers practical technical insights into real-world challenges that many organizations face when deploying LLM applications. The case study is particularly valuable because it addresses often-overlooked aspects of LLMOps: the user interface and experience considerations that determine whether end users will actually adopt and benefit from AI-powered tools.
+
+## Technical Architecture and Latency Challenges
+
+One of the most concrete LLMOps insights from this case study is the breakdown of end-to-end latency in their GenAI pipeline. The team documented observed latency across their system:
+
+- Initial request (client to server): 100-500ms
+- RAG search (server to Elasticsearch cluster): 1-2.5 seconds
+- Call to LLM (server to LLM): 1-2.5 seconds
+- First streamed byte (LLM to server to client): 3-6 seconds
+- Total end-to-end latency: 5.1-11.5 seconds
+
+This latency breakdown is instructive for anyone planning LLM deployments. The total time of 5-11+ seconds before users see any response represents a significant UX challenge. The team notes that during their internal alpha testing, the initial LLM endpoint wasn't even streaming responses—it would generate and return the entire answer in a single HTTP response, which the author describes as taking "forever."
+
+The decision to implement streaming was clearly a critical production optimization. However, even with streaming, the 3-6 second wait for the first streamed byte creates user experience friction that had to be addressed through careful UI design.
+
+## Managing User Engagement During Latency
+
+To address the lengthy wait times inherent in LLM response generation, the team developed a custom loading animation. Rather than using a generic spinner, they created a branded animation using Elastic's existing EuiIcon component with three dots that pulse, blink, and change colors using Elastic's brand color palette and standard animation bezier curves.
+
+An interesting meta-observation here is that the team actually used their own chatbot (an early version of the Support Assistant they were building) to help generate the CSS for the loading animation. The author notes the chatbot "came up with something very nearly perfect on its first try," after which they applied fine-tuning and code refactoring. This represents an early example of using LLMs to assist in their own development—a practice that has become increasingly common in software engineering workflows.
+
+## Handling Streaming Failures: The Killswitch Pattern
+
+Perhaps the most operationally relevant section of this case study covers how the team handles streaming failures and timeouts. The author highlights a key difference between traditional web applications and LLM-based streaming applications: in traditional apps, network timeouts are straightforward to handle with error codes and try/catch blocks. With streaming LLM responses, the situation is more complex.
+
+The team observed that they would often receive a 200 OK response quickly (indicating the LLM was ready to stream), but then experience long delays or complete connection hangs before or during the actual data stream. This is a well-known operational challenge with LLM APIs—the initial connection succeeds but the generation process can stall or fail silently.
+
+Their solution was to implement what they call a "killswitch" pattern. Through empirical observation, they determined that if no data was received for 10 seconds during an active stream, it was highly likely that the stream would either eventually fail or take over one minute to resume. This 10-second threshold became their timeout trigger.
+
+The implementation uses JavaScript's AbortController signals combined with setTimeout to create a mechanism that aborts the fetch request if the stream goes silent for more than 10 seconds. This allows the system to quickly return an error to the user, enabling a retry that may succeed faster than waiting for the original request to eventually timeout or fail. The author notes this is a much better user experience than waiting for traditional network timeouts.
+
+This pattern represents a practical example of production-grade error handling for LLM applications. The willingness to fail fast and retry, rather than waiting for potentially very long timeouts, is a pragmatic approach to maintaining system responsiveness when dealing with the inherent unpredictability of LLM inference times.
+
+## Context Management in Production RAG Systems
+
+The case study provides valuable insights into managing context in a production RAG (Retrieval Augmented Generation) system. The team identifies multiple types of context that their chatbot needs to handle:
+
+- **Conversational context**: The history of messages within the current chat session. The team's approach is straightforward—serialize all previous chat messages into a JSON object and send it along with the latest question to the LLM endpoint. They note smaller considerations like how to serialize metadata and RAG search results.
+
+- **Page context**: Information about what the user is currently viewing. For example, if a user is reading a support case, they might ask "how long has this case been open?" The system needs to pass the support case data as context to the LLM.
+
+- **Knowledge base context**: Results from searching Elastic's knowledge base, needed when users ask about technical terms or concepts they encounter.
+
+The challenge was designing a UI that could convey which context was being used, allow users to control context selection, and fit within the limited screen real estate of a chat widget. The team evaluated several options:
+
+- Breadcrumbs: Small footprint but better suited for representing URLs and paths
+- Banner at top of chat: Out of the way but not easy to interact with
+- Micro-badges: Easy for displaying multiple contexts but difficult for editing
+- Prepended menu with number badge: Close to input field and easy to interact with, though space-constrained
+
+They ultimately chose the prepended element approach, placing a context indicator directly next to the text input area. This design decision reflects the insight that context is attached to the user's next question, not the previous answer. An EUI context menu allows power users to edit their context selections—for example, including both case history and knowledge base search for a question like "How do I implement the changes the Elastic engineer is asking me to make?"
+
+The design also provides flexibility for future enhancements, such as allowing the LLM itself to determine appropriate context after each question, with the UI able to display and notify users of any context updates.
+
+## Build vs. Buy Decisions
+
+The case study touches on a common LLMOps decision: whether to use off-the-shelf components or build custom solutions. For the chat interface, the team decided against pulling a library off the shelf, opting instead to build their own interface using Elastic's EUI (Elastic UI) component library. While EUI doesn't have a dedicated "ChatBot" component, it provides the building blocks—avatars, panels, text areas—needed to create a custom chat window.
+
+This decision was driven partly by the desire to "get the small things right" and ensure the interface matched Elastic's design standards and brand guidelines. However, building custom also allowed them to address the specific challenges of their LLM application, such as the custom loading animations, timeout handling, and context management UI.
+
+## Production Considerations Summary
+
+The case study emphasizes that while LLM and backend services naturally receive most engineering attention in chatbot implementations, the UX/UI components require "adequate time and attention as well." Key production-focused takeaways include:
+
+- Streaming responses are essential for acceptable user experience given LLM latency
+- Custom loading animations can maintain user engagement during wait times
+- Traditional timeout handling is insufficient for streaming LLM responses
+- Implementing fail-fast patterns (like the 10-second killswitch) improves perceived responsiveness
+- Context management UI needs careful design to handle multiple context sources
+- Users should understand and control what context informs LLM responses
+
+The author's concluding point—that "even though we're building a generation of products that use AI technology, it's always going to be important to design for humans"—reflects a mature perspective on LLMOps that extends beyond purely technical considerations to encompass the full user experience of AI-powered applications in production environments.

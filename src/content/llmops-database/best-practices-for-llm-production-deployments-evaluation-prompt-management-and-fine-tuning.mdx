@@ -1,0 +1,165 @@
+---
+title: "Best Practices for LLM Production Deployments: Evaluation, Prompt Management, and Fine-tuning"
+slug: "best-practices-for-llm-production-deployments-evaluation-prompt-management-and-fine-tuning"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f3d1261fb810cb927179e"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:42:07.547Z"
+  createdOn: "2024-11-21T14:00:50.291Z"
+llmopsTags:
+  - "cicd"
+  - "code-generation"
+  - "compliance"
+  - "cost-optimization"
+  - "devops"
+  - "documentation"
+  - "error-handling"
+  - "fine-tuning"
+  - "guardrails"
+  - "latency-optimization"
+  - "microsoft-azure"
+  - "monitoring"
+  - "prompt-engineering"
+  - "reliability"
+  - "scalability"
+  - "security"
+  - "wandb"
+company: "HumanLoop"
+summary: "HumanLoop, based on their experience working with companies from startups to large enterprises like Jingo, shares key lessons for successful LLM deployment in production. The talk emphasizes three critical aspects: systematic evaluation frameworks for LLM applications, treating prompts as serious code artifacts requiring proper versioning and collaboration, and leveraging fine-tuning for improved performance and cost efficiency. The presentation uses GitHub Copilot as a case study of successful LLM deployment at scale."
+link: "https://www.youtube.com/watch?v=HEONuKPBrsI"
+year: 2023
+seo:
+  title: "HumanLoop: Best Practices for LLM Production Deployments: Evaluation, Prompt Management, and Fine-tuning - ZenML LLMOps Database"
+  description: "HumanLoop, based on their experience working with companies from startups to large enterprises like Jingo, shares key lessons for successful LLM deployment in production. The talk emphasizes three critical aspects: systematic evaluation frameworks for LLM applications, treating prompts as serious code artifacts requiring proper versioning and collaboration, and leveraging fine-tuning for improved performance and cost efficiency. The presentation uses GitHub Copilot as a case study of successful LLM deployment at scale."
+  canonical: "https://www.zenml.io/llmops-database/best-practices-for-llm-production-deployments-evaluation-prompt-management-and-fine-tuning"
+  ogTitle: "HumanLoop: Best Practices for LLM Production Deployments: Evaluation, Prompt Management, and Fine-tuning - ZenML LLMOps Database"
+  ogDescription: "HumanLoop, based on their experience working with companies from startups to large enterprises like Jingo, shares key lessons for successful LLM deployment in production. The talk emphasizes three critical aspects: systematic evaluation frameworks for LLM applications, treating prompts as serious code artifacts requiring proper versioning and collaboration, and leveraging fine-tuning for improved performance and cost efficiency. The presentation uses GitHub Copilot as a case study of successful LLM deployment at scale."
+---
+
+## Overview
+
+This talk, presented by a co-founder of HumanLoop, provides a practitioner's perspective on the challenges and best practices of deploying large language models in production environments. HumanLoop has built a developer tools platform focused on helping teams find optimal prompts for LLM applications and evaluate system performance in production. Through their work with diverse companies—from large enterprises like Duolingo to innovative startups—they have observed patterns of success and failure that inform the key recommendations presented.
+
+The speaker uses GitHub Copilot as a running case study throughout the presentation, highlighting it as one of the most successful LLM applications by metrics (quickly reaching a million users) and as an exemplar of sound LLMOps practices.
+
+## Why LLM Applications Are Difficult
+
+The speaker identifies several factors that make building LLM applications more challenging than traditional machine learning or software development:
+
+**Evaluation Complexity**: Unlike traditional ML where you have ground truth labels and can calculate F1 scores or precision/recall, LLM applications often lack a single "correct" answer. For instance, what constitutes a good sales email? The answer is inherently subjective and varies by user preference. This makes quantitative evaluation during development extremely challenging.
+
+**Prompt Engineering Impact**: Prompt engineering has an enormous impact on performance, yet it remains somewhat of a "black art." Without good evaluation frameworks, it's difficult to know whether prompt changes are improvements or regressions.
+
+**Hallucination**: The well-known problem of LLMs generating plausible but incorrect information adds complexity to production deployments.
+
+**Third-Party Model Dependencies**: Using third-party models introduces concerns around privacy, latency, and cost that may not have existed when running smaller local models.
+
+**Differentiation Concerns**: Practitioners worry about how to differentiate their applications when competitors could potentially "just stick something around GPT-4."
+
+## The GitHub Copilot Architecture
+
+The speaker provides a detailed breakdown of GitHub Copilot's architecture as an exemplary LLM application:
+
+**Model Selection**: Copilot uses a custom fine-tuned 12 billion parameter model (OpenAI's Codex). The relatively smaller size compared to state-of-the-art models is intentional—latency is critical for IDE-based code completion. Users cannot wait seconds for predictions; responses must be nearly instantaneous.
+
+**Context Building Strategy**: Rather than using embeddings and cosine similarity (which would be computationally expensive), Copilot employs a simpler approach:
+- Maintains a running memory of the 10-12 most recently touched files
+- Chunks the codebase from these recent files
+- Uses edit distance comparison (not cosine similarity) to find code chunks most similar to the text immediately behind the cursor
+- Feeds these chunks into a structured prompt template
+
+This design choice prioritizes speed over sophistication, recognizing that latency constraints are paramount for the user experience.
+
+**Evaluation Framework**: This is where GitHub Copilot truly excels according to the speaker. The primary metrics they track are:
+- Acceptance rate of suggestions
+- What fraction of accepted code remains in the codebase at various time intervals (15 seconds, 30 seconds, 2 minutes, 5 minutes)
+
+The multi-interval approach indicates sophisticated thinking about evaluation—immediate acceptance is one thing, but code that persists provides stronger signal about quality.
+
+**Continuous Improvement Loop**: Copilot regularly fine-tunes on data that scores highly from their production application, creating a flywheel effect where the model continuously improves for their specific domain.
+
+## Three Core Best Practices
+
+### Best Practice 1: Systematic Evaluation (Most Critical)
+
+The speaker emphasizes this is the most important practice, stating that if you take away one thing from the talk, it should be the importance of evaluation frameworks.
+
+**Common Mistakes in Evaluation**:
+- Not having a systematic process at all—eyeballing a few examples and deploying ("YOLO it into production")
+- Not evaluating each component individually (retrievers, prompts, LLM responses) in isolation
+- Not designing evaluation into the product from the start
+- Using inappropriate tools (like dumping logs to files or using analytics tools like Mixpanel that can't correlate results with prompts, embeddings, and models)
+
+**Consequences of Poor Evaluation**: The speaker shares a striking anecdote: they observed two different teams on their platform tackling similar problems. One team with good evaluation achieved amazing results, while the other concluded GPT-4 couldn't do the task. The only real difference was how much time they invested in evaluation.
+
+The speaker also cites correspondence with Alex Graveley, the lead product manager on GitHub Copilot, who stated that "evaluation needs to be the core of any AI app" and that without it, you're not serious about building production AI.
+
+**Implicit vs. Explicit Feedback**: The best applications combine both:
+- Explicit feedback: thumbs up/down buttons (though these can be biased and have low response rates)
+- Implicit feedback: user actions that signal satisfaction (copy, insert, generate, edit actions)
+
+The speaker mentions Sudowrite (fiction writing assistant for novelists) as an example that links various user actions to feedback signals.
+
+**LLM-as-Evaluator**: Increasingly, teams use LLMs to evaluate outputs, but this must be done carefully:
+- Constrain to binary questions or float outputs
+- Ask factual questions about inputs and outputs (e.g., "Was the final answer contained in the retrieved context? Yes/No")
+- Avoid vague questions about quality, which produce noisy evaluations
+- Noisy evaluation can be worse than no evaluation
+
+**Academic Benchmarks Can Mislead**: The speaker cites the Stanford HELM benchmark finding that on CNN summarization datasets, humans actually preferred model-generated summaries to the "ground truth" annotations. Relying solely on such benchmarks could lead to anti-correlated conclusions.
+
+### Best Practice 2: Proper Prompt Management
+
+Many teams treat prompt engineering casually—working in playgrounds, Jupyter notebooks, or Excel, then copy-pasting to deploy. The speaker argues prompts should be treated as seriously as code.
+
+**Common Problems**:
+- Experimentation without tracking leads to lost institutional knowledge
+- Teams try the same approaches repeatedly without knowing others already tried them
+- One company did the same annotation task twice because different teams were unaware of each other's work
+- Homegrown solutions tend to be myopic and create "Frankenstein" systems
+
+**Why This Matters**: The speaker references a DeepMind paper from "last week" showing that automated prompt search significantly outperformed human-crafted prompts. The prompt has become part of your application—it affects output quality as much as code does.
+
+**Git Is Necessary But Insufficient**: While version control feels natural for prompts (they're text), the main friction is collaboration with non-technical stakeholders. Domain experts, product managers, and content specialists often have valuable input on prompts but can't easily work in Git. The speaker recommends solutions that provide Git integration plus accessible collaboration tools.
+
+### Best Practice 3: Don't Underestimate Fine-Tuning
+
+Fine-tuning is often neglected because major providers (OpenAI, Anthropic, Cohere) didn't offer fine-tuning APIs until recently, and it's hard to beat GPT-4's raw performance.
+
+**Value Proposition of Fine-Tuning**:
+- Significant improvements in cost and latency (even if raw quality doesn't exceed GPT-4)
+- Private models for sensitive use cases
+- Domain-specific performance that can exceed general-purpose models
+
+**The Fine-Tuning Flywheel Pattern**:
+The speaker describes a common successful pattern:
+- Generate initial data using the highest-quality available model
+- Use evaluation and user feedback to filter this dataset
+- Train a smaller, specialized model on the filtered data
+- Repeat the cycle for continuing improvement
+
+This is exactly what GitHub Copilot does—regularly fine-tuning on production data that scores highly on their evaluation metrics.
+
+**Case Study - Bloop/Find**: The speaker mentions "Find" (possibly Bloop), a code search and question-answering company that fine-tuned LLaMA to outperform GPT-4 on human evaluations. Their advantage: 70,000 question-answer pairs with production feedback, filtered to only the high-quality examples. This demonstrates how production data plus evaluation creates a sustainable competitive advantage.
+
+## Broader Observations on LLM Applications
+
+The speaker conducted a personal exercise listing LLM applications in five minutes, demonstrating the explosion of use cases: improved code search (Bloop, Cursor, GitHub Copilot), marketing writing assistants, sales email generation, information retrieval applications, and many more. The remarkable aspect is that vastly different use cases build on nearly identical foundational technology.
+
+## Audience Discussion
+
+During Q&A, several interesting points emerged:
+
+**On Required Expertise**: The speaker suggests the expertise required isn't fundamentally different from traditional ML—it's still systematic measurement of system performance. However, the types of people building these applications has shifted dramatically. Three years ago, HumanLoop primarily worked with ML engineers. Now, their majority customers are generalist software engineers and product managers, often bringing in domain experts like linguists and content specialists.
+
+**On Domain Shift**: The challenge is exacerbated compared to traditional ML because foundation models are so general. The long tail of use cases means the gap between training and production distributions is larger than typical, almost guaranteeing domain shift. Additionally, evaluating correctness is harder because models output correct answers in so many different forms.
+
+**On Integration with Existing ML Teams**: Companies with established ML/data science groups are sometimes slower to accept LLMs outperforming their existing solutions. Teams starting with software engineers may be less resistant because they feel less threatened by the shift. As fine-tuning becomes more important with better open-source models, traditional ML skill sets are becoming more relevant again.
+
+## HumanLoop's Platform Position
+
+The speaker notes that HumanLoop has built their platform to address these challenges, particularly around prompt management and evaluation. The design is informed by lessons learned from production deployments across many companies over several years. While the talk presents HumanLoop's perspective, the practices described align with broader industry observations about successful LLM deployments.

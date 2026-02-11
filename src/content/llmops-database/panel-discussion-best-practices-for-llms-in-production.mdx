@@ -1,0 +1,114 @@
+---
+title: "Panel Discussion: Best Practices for LLMs in Production"
+slug: "panel-discussion-best-practices-for-llms-in-production"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f405f061b34722152c2c1"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:41:50.202Z"
+  createdOn: "2024-11-21T14:14:55.636Z"
+llmopsTags:
+  - "compliance"
+  - "cost-optimization"
+  - "devops"
+  - "error-handling"
+  - "fallback-strategies"
+  - "fine-tuning"
+  - "guardrails"
+  - "high-stakes-application"
+  - "hugging-face"
+  - "human-in-the-loop"
+  - "latency-optimization"
+  - "model-optimization"
+  - "monitoring"
+  - "openai"
+  - "poc"
+  - "rag"
+  - "reliability"
+  - "scalability"
+  - "scaling"
+  - "security"
+company: "Various"
+summary: "A panel of industry experts from companies including Titan ML, YLabs, and Outer Bounds discuss best practices for deploying LLMs in production. They cover key challenges including prototyping, evaluation, observability, hardware constraints, and the importance of iteration. The discussion emphasizes practical advice for teams moving from prototype to production, highlighting the need for proper evaluation metrics, user feedback, and robust infrastructure."
+link: "https://www.youtube.com/watch?v=xC5vwTk0Q-k"
+year: 2023
+seo:
+  title: "Various: Panel Discussion: Best Practices for LLMs in Production - ZenML LLMOps Database"
+  description: "A panel of industry experts from companies including Titan ML, YLabs, and Outer Bounds discuss best practices for deploying LLMs in production. They cover key challenges including prototyping, evaluation, observability, hardware constraints, and the importance of iteration. The discussion emphasizes practical advice for teams moving from prototype to production, highlighting the need for proper evaluation metrics, user feedback, and robust infrastructure."
+  canonical: "https://www.zenml.io/llmops-database/panel-discussion-best-practices-for-llms-in-production"
+  ogTitle: "Various: Panel Discussion: Best Practices for LLMs in Production - ZenML LLMOps Database"
+  ogDescription: "A panel of industry experts from companies including Titan ML, YLabs, and Outer Bounds discuss best practices for deploying LLMs in production. They cover key challenges including prototyping, evaluation, observability, hardware constraints, and the importance of iteration. The discussion emphasizes practical advice for teams moving from prototype to production, highlighting the need for proper evaluation metrics, user feedback, and robust infrastructure."
+---
+
+## Overview
+
+This panel discussion, hosted as part of the Generative AI World Summit at the MLOps World Summit in Austin, Texas, brought together six industry practitioners to discuss practical aspects of deploying generative AI solutions. The panelists included Miriam Eric (CEO of Titan ML, focused on LLM deployability), Greg Lochain (Generative AI educator and CEO of AI Makerspace), Alicia Viznik (CEO of YLabs, specializing in AI observability), Chris Alexiuk (ML engineer and educator known as "the LLM wizard"), Hannes Hapke (Principal ML Engineer at Digits, author of two ML books), and Ville Tuulos (Co-founder and CEO of Outerounds, creator of Metaflow at Netflix).
+
+The discussion represents a valuable cross-section of perspectives from different parts of the LLMOps stack—from deployment platforms to observability solutions to ML infrastructure—providing a comprehensive view of the current state of production LLM deployments.
+
+## Getting Started: Prototype-First Approach
+
+A strong consensus emerged among panelists about the importance of rapid prototyping before committing to more complex solutions. Ville Tuulos emphasized the nascent state of the field, noting that no one has five years of experience putting LLMs in production, and encouraged experimentation with new interaction patterns beyond the chatbot paradigm popularized by ChatGPT.
+
+Hannes Hapke recommended starting with API providers like OpenAI to validate product-market fit before investing in fine-tuning or hosting custom models. The rationale is clear: fine-tuning and hosting carry significant costs, with GPU requirements far exceeding those for traditional classification models. This pragmatic approach helps ensure that infrastructure investments are warranted by actual user traction.
+
+Greg Lochain advocated for extremely rapid prototyping, suggesting teams aim to build the "quickest dirtiest prototype" within one to two days. He emphasized treating this as fundamentally a digital product management problem—MVP principles apply regardless of the AI underneath. For those in highly regulated industries where cloud computing isn't an option, he suggested prototyping off-grid first, then demonstrating value before requesting infrastructure investment.
+
+Miriam Eric added a crucial point about system design: much of the value in LLM applications comes not from the model itself but from the system and product built around it. She recommended spending time whiteboarding system architecture with experienced practitioners before building, as poor architectural decisions can lead to wasted resources—such as fine-tuning when a simpler BERT-based solution would suffice.
+
+## The Prototype-to-Production Gap
+
+Multiple panelists highlighted the unique challenge in generative AI: prototyping is remarkably easy while production deployment is exceptionally difficult. Miriam Eric characterized this as "probably one of the hardest questions in gen AI" and identified the fundamental tradeoff between cost, latency, and quality that plagues LLM deployments. Clients frequently report models that are too slow, too expensive, or forced to use smaller models than their use case requires.
+
+Hannes Hapke shared concrete experiences with hardware scarcity, describing the difficulty of accessing GPU machines during the spring of 2023. He recounted instances of fine-tuning jobs being preempted because other customers paid more, calling it "the communism of machine learning"—simply not enough hardware regardless of budget. While the situation has improved, the constraints remain real and force trade-offs between model size and scalability.
+
+Ville Tuulos challenged the binary framing of "before production" and "after production," arguing that everything interesting happens after production. This mindset shift—treating production as the beginning rather than the end—encourages teams to iterate continuously rather than pursuing perfection before launch. Key considerations include the ability to run A/B tests between models, handle systematic failures in certain prompt classes, and maintain toolchains for identifying and fixing issues.
+
+Chris Alexiuk highlighted practical production challenges including rate limiting, latency issues when scaling to many users, and the critical importance of having observability infrastructure in place from the first day of public deployment. The modular nature of LLM systems—"little Lego blocks piped together"—makes it essential to understand which component handles which part of the application and where failures occur.
+
+## Observability and Evaluation
+
+The panel devoted significant attention to observability, with Alicia Viznik noting that while teams are now bought into the need for observability, many struggle with knowing what to measure. She cautioned against measuring easily accessible metrics like token usage and latency if they don't directly reflect user experience and value delivery.
+
+Key recommendations for evaluation include implementing simple feedback mechanisms like thumbs up/down ratings, measuring user interactions with the experience, tracking edit distance for summarization applications, and monitoring refresh rates for interactive experiences. These indicators show whether the investment in building the experience is actually valuable to users.
+
+Chris Alexiuk identified user feedback as the single best metric, noting that users will tell you if and how the model is failing. Frameworks like RAGAS are emerging to help evaluate outputs, often leveraging large models to critique smaller models' outputs, but human involvement remains essential.
+
+Hannes Hapke shared a practical approach used at Digits: combining semantic similarity to example sentences with Levenshtein distance to encourage creative (non-repetitive) outputs. This composite metric allows automated quality assessment before human review.
+
+Alicia Viznik recommended the HELM benchmark framework as a starting point for identifying evaluation metrics, noting it enumerates 59 different metrics. However, she emphasized selecting one primary optimization metric and a handful of supporting indicators rather than trying to optimize everything. Use-case-specific metrics matter—for a healthcare chatbot, measuring topic similarity to unapproved medical advice topics would be crucial.
+
+## RAG vs. Fine-Tuning: Complementary Approaches
+
+An important clarification emerged around the relationship between RAG (Retrieval-Augmented Generation) and fine-tuning. Miriam Eric emphasized these are not alternatives but serve different purposes: RAG is effective for injecting factual knowledge that's less likely to be wrong, while fine-tuning helps models understand domain-specific terminology and respond in desired ways—what she called "the vibe of the situation."
+
+This distinction has practical implications for retraining frequency. If the goal is keeping the model up-to-date with current knowledge, RAG is the appropriate solution rather than repeated fine-tuning. Chris Alexiuk reinforced that retrieval is often the highest-leverage part of RAG systems—most LLMs are "smart enough" to produce good answers given good context, so engineering effort on retrieval optimization typically yields better returns than fine-tuning.
+
+Ville Tuulos offered a forward-looking perspective: as fine-tuning costs decrease over time, the question of "how often should I fine-tune?" may become more about optimal frequency for user experience rather than technical limitations. Building systems with this future in mind could provide long-term advantages.
+
+## Infrastructure and Tooling
+
+The panel discussed specific tools and infrastructure components essential for production LLM systems:
+
+- **Versioning systems** extend beyond code to include data, indices, and prompts—Chris Alexiuk emphasized this as non-negotiable for navigating the modular, rapidly-changing nature of these systems.
+- **Hardware heterogeneity** is becoming a reality, with Ville Tuulos noting the shift from all-in-on-AWS to navigating NVIDIA GPUs, AWS Trainium, AMD chips, TPUs, and potentially local GPU boxes. This complicates the software stack significantly.
+- **User experience design** often receives insufficient attention, per Alicia Viznik. The non-deterministic nature of LLM outputs—which can be offensive or dangerous garbage—requires careful UX consideration for error recovery and user protection. Input/output guardrails are essential, particularly for preventing PII leakage to public API endpoints.
+- **Hardware-agnostic deployment frameworks** like Titan ML's Takeoff address the need to deploy across diverse GPU/CPU architectures efficiently. Miriam Eric noted that optimizing deployments to reduce computational expense is typically a full team's job within companies like OpenAI, beyond the capacity of most organizations.
+
+## Key Takeaways
+
+Several themes emerged consistently across panelists:
+
+- Production is the starting point of ML development, not the finish line
+- Observability and evaluation pipelines must be established before or concurrent with production deployment
+- User feedback is the gold standard for evaluation, supplemented by automated metrics
+- Rapid prototyping with API providers de-risks investments in custom infrastructure
+- System architecture and product design often provide more value than model selection
+- The modular nature of LLM systems requires comprehensive tracing and visibility
+- Hardware constraints remain real but are expected to improve over time
+- RAG and fine-tuning serve complementary purposes and should not be conflated
+
+The panel collectively represented a balanced, pragmatic view of the current state of LLMOps—acknowledging both the remarkable accessibility of these technologies and the genuine challenges of reliable production deployment. Their advice emphasized humility about the nascent state of the field while advocating for rigorous engineering practices adapted from traditional ML and software development.

@@ -1,0 +1,164 @@
+---
+title: "Automating Weather Forecast Text Generation Using Fine-Tuned Vision-Language Models"
+slug: "automating-weather-forecast-text-generation-using-fine-tuned-vision-language-models"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "6936b61406da2dc2fa4b5faa"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:34:13.854Z"
+  createdOn: "2025-12-08T11:27:16.023Z"
+llmopsTags:
+  - "poc"
+  - "data-analysis"
+  - "structured-output"
+  - "multi-modality"
+  - "realtime-application"
+  - "high-stakes-application"
+  - "fine-tuning"
+  - "prompt-engineering"
+  - "model-optimization"
+  - "few-shot"
+  - "evals"
+  - "instruction-tuning"
+  - "error-handling"
+  - "latency-optimization"
+  - "cost-optimization"
+  - "docker"
+  - "kubernetes"
+  - "monitoring"
+  - "databases"
+  - "cicd"
+  - "scaling"
+  - "serverless"
+  - "devops"
+  - "orchestration"
+  - "fastapi"
+  - "postgresql"
+  - "redis"
+  - "cache"
+  - "elasticsearch"
+  - "amazon-aws"
+  - "anthropic"
+  - "hugging-face"
+  - "nvidia"
+  - "meta"
+company: "UK MetOffice"
+summary: "The UK Met Office partnered with AWS to automate the generation of the Shipping Forecast, a 100-year-old maritime weather forecast that traditionally required expert meteorologists several hours daily to produce. The solution involved fine-tuning Amazon Nova foundation models (both LLM and vision-language model variants) to convert complex multi-dimensional weather data into structured text forecasts. Within four weeks of prototyping, they achieved 52-62% accuracy using vision-language models and 62% accuracy using text-based LLMs, reducing forecast generation time from hours to under 5 minutes. The project demonstrated scalable architectural patterns for data-to-text conversion tasks involving massive datasets (45GB+ per forecast run) and established frameworks for rapid experimentation with foundation models in production weather services."
+link: "https://www.youtube.com/watch?v=VLjzP9n63mA"
+year: 2025
+seo:
+  title: "UK MetOffice: Automating Weather Forecast Text Generation Using Fine-Tuned Vision-Language Models - ZenML LLMOps Database"
+  description: "The UK Met Office partnered with AWS to automate the generation of the Shipping Forecast, a 100-year-old maritime weather forecast that traditionally required expert meteorologists several hours daily to produce. The solution involved fine-tuning Amazon Nova foundation models (both LLM and vision-language model variants) to convert complex multi-dimensional weather data into structured text forecasts. Within four weeks of prototyping, they achieved 52-62% accuracy using vision-language models and 62% accuracy using text-based LLMs, reducing forecast generation time from hours to under 5 minutes. The project demonstrated scalable architectural patterns for data-to-text conversion tasks involving massive datasets (45GB+ per forecast run) and established frameworks for rapid experimentation with foundation models in production weather services."
+  canonical: "https://www.zenml.io/llmops-database/automating-weather-forecast-text-generation-using-fine-tuned-vision-language-models"
+  ogTitle: "UK MetOffice: Automating Weather Forecast Text Generation Using Fine-Tuned Vision-Language Models - ZenML LLMOps Database"
+  ogDescription: "The UK Met Office partnered with AWS to automate the generation of the Shipping Forecast, a 100-year-old maritime weather forecast that traditionally required expert meteorologists several hours daily to produce. The solution involved fine-tuning Amazon Nova foundation models (both LLM and vision-language model variants) to convert complex multi-dimensional weather data into structured text forecasts. Within four weeks of prototyping, they achieved 52-62% accuracy using vision-language models and 62% accuracy using text-based LLMs, reducing forecast generation time from hours to under 5 minutes. The project demonstrated scalable architectural patterns for data-to-text conversion tasks involving massive datasets (45GB+ per forecast run) and established frameworks for rapid experimentation with foundation models in production weather services."
+---
+
+## Overview
+
+The UK Met Office, in collaboration with AWS's specialist prototyping team, developed a production LLM system to automate the generation of the Shipping Forecast, an iconic 100-year-old maritime weather forecast that is broadcast four times daily and covers 31 sea regions around the UK. This case study represents a practical implementation of LLMs in a critical government service context where accuracy, reliability, and adherence to strict formatting rules are paramount.
+
+The Shipping Forecast is not simply a weather report—it's a highly structured text product that must follow specific length constraints, terminology, and formatting rules. Traditionally, expert meteorologists spend several hours each day analyzing complex numerical weather prediction (NWP) model outputs and condensing this information into precise text sentences. The Met Office sought to automate this "last mile" of weather forecasting—the transformation of raw model data into actionable, human-readable text—using large language models and vision-language models.
+
+## Technical Problem Statement
+
+The challenge involves transforming massive multi-dimensional arrays of weather data into structured natural language. A single forecast run generates approximately 45 gigabytes of atmospheric model data and 5 gigabytes of ocean model data. Even after subsetting to the relevant geographic region and parameters (wind speed, wind direction, sea state, visibility, weather type), this amounts to about 152 megabytes of atmospheric data and 7 megabytes of ocean data per forecast. For a three-month training dataset, this totaled roughly 86 gigabytes of numerical data.
+
+The data is inherently complex: it spans multiple dimensions (latitude, longitude, time), includes both deterministic and probabilistic model outputs, combines atmospheric and ocean variables, and is stored in netCDF format—a standard in the atmospheric sciences but less common in typical machine learning workflows. The output text must follow extremely strict rules with precise terminology, making this a high-stakes, low-tolerance application where creative variations are unacceptable.
+
+## Architectural Approaches
+
+The team explored two primary architectural approaches, both built on AWS infrastructure within a four-week prototyping period.
+
+### LLM-Based Text Approach
+
+The first approach used a text intermediary to bridge raw gridded data and language models. Raw weather sensor data is processed through numerical weather prediction models (both deterministic and probabilistic) to produce multi-dimensional output arrays. These arrays undergo significant data preprocessing—extracting statistics for each of the 31 sea regions and summarizing conditions. For example, if 90% of wind in a region flows north and 10% northeast, the entire region is categorized as "north direction." This processed, summarized text data is then fed to foundation models (Amazon Nova Pro 1.0 and Claude 3.7 Sonnet were compared) via Amazon Bedrock.
+
+The architecture for this approach includes S3 buckets for raw input grid data storage, parallel processing using Amazon ECS (with options for EKS or AWS Batch), and direct invocation of Bedrock foundation models. For production scenarios, the team proposed enhancements including AWS Glue Catalog and Lake Formation for fine-grained data access control, Amazon SQS for decoupling and fault tolerance (with dead letter queues for failed records), and various orchestration options. Bedrock's batch inference capability was highlighted as particularly valuable for processing large volumes of historical data efficiently and cost-effectively.
+
+Alternative production architectures were presented for different use cases: streaming data scenarios using Amazon Kinesis Data Streams with Lambda functions for processing; and fully serverless event-driven architectures where S3 uploads trigger Lambda functions orchestrated by AWS Step Functions. These variations demonstrate the flexibility of the foundational pattern.
+
+### Vision-Language Model (VLM) Approach
+
+The second, more innovative approach treats weather data as video input for vision-language models. This method bypasses the information bottleneck inherent in text intermediaries and allows the model to directly interpret spatial and temporal patterns in the raw gridded data.
+
+The data preprocessing pipeline converts multi-dimensional numerical arrays into video format. For each weather attribute (wind speed, wind direction, sea state, visibility, weather type) and each sea region, the system generates hourly snapshots of the sensor data. These 24 hourly images (representing 24 hours of forecast data) are assembled into a one-second video at 24 frames per second. For a single forecast covering 31 sea regions and 5 weather attributes, this creates 155 individual videos. The three-month training dataset resulted in approximately 56 gigabytes of video data (converted from the original 86GB of numerical data, with some data cleaning to remove edge cases where forecasts for multiple regions were combined).
+
+The VLM architecture follows a similar pattern to the LLM approach but with critical differences. Raw input grid data is stored in S3, processed through parallel compute (ECS, EKS, or Batch) to generate videos, and these videos become the training data stored in dedicated S3 buckets. The team used Amazon SageMaker AI to submit fine-tuning jobs for the Amazon Nova Lite model. Once training completed, model weights were stored in S3 and the fine-tuned models were deployed via Amazon Bedrock for inference.
+
+Production enhancements for the VLM architecture include Amazon FSx for Lustre for low-latency caching when high-performance data access is required, SQS for decoupling the compute plane, and options for both SageMaker Training Jobs and SageMaker HyperPod depending on scale requirements. For this prototype with three-hour training runs on P5.48xlarge instances (4 GPUs), SageMaker Training Jobs were sufficient. However, for production scenarios with years of training data and weeks-long training on hundreds of GPUs, SageMaker HyperPod would be more appropriate.
+
+## Fine-Tuning Methodology and Experiments
+
+The team conducted approximately 20-25 fine-tuning experiments exploring various configurations and approaches. The training data format followed a conversational structure with system prompts ("You are an expert in meteorology specialized in UK maritime forecasting"), user prompts with instructions to analyze one-second videos and generate forecasts, input video URIs pointing to S3, and ground truth outputs from historical expert-written forecasts. Typically, 3,000 training examples were used along with separate validation datasets.
+
+The fine-tuning configuration was managed through YAML recipe files specifying the target model (Nova Lite), number of GPU replicas, training hyperparameters (epochs, learning rates, regularization), optimizers, and LoRA configuration for adapter-based approaches. The actual training script was remarkably concise—defining the YAML file path, input/output S3 locations, training and validation data, Docker image URI, instance type (P5.48xlarge with 4 or 8 GPUs), and TensorBoard output configuration. The estimator would then fit the model, typically completing in about three hours for their dataset.
+
+### Key Experimental Findings
+
+**Combined vs. Individual Models**: The team compared training a single model on all weather attributes (wind, visibility, sea state, etc. in one 5-second video) versus training separate models for each attribute. Individual models outperformed the combined approach by an average of 2.7%. The individual approach provided increased opportunity for specialized prompts, better control over each attribute, and reduced context switching during inference.
+
+**Continuous vs. Categorical Data Representation**: Weather data is inherently continuous (e.g., wave heights as numeric values), but the Shipping Forecast uses categorical terminology (specific bands like "moderate," "rough," etc.). The team experimented with presenting raw continuous color scales versus banded categorical values corresponding to official terminology in the video inputs. Categorical representations dramatically outperformed continuous data by an average of 25.4%, with particularly strong improvements for weather type classification where numeric labels are meaningless without categorical context.
+
+**Overfitting vs. Early Stopping**: Counterintuitively, models trained until overfitting (higher validation loss) outperformed models with early stopping (optimized for lower validation loss). This unexpected result stems from a discrepancy between the training objective (minimizing perplexity/embedded probability) and the evaluation metric (word-based F1 score). Overfitting enhanced memorization of precise word patterns and specific terminology required by the Shipping Forecast, producing more confident and complete outputs. Early stopping optimized for perplexity but failed to capture the nuanced wording requirements. This highlights the critical importance of alignment between training objectives and actual production requirements.
+
+**LoRA vs. Full Fine-Tuning**: Low-Rank Adaptation (LoRA) fine-tuning applies adapter layers to frozen foundation model weights, while full fine-tuning updates all model parameters. Full fine-tuning outperformed LoRA by approximately 6.2% across experiments. This performance gap reflects fundamental trade-offs: full fine-tuning optimizes the entire model for a narrow, specialized task, achieving better performance for that specific application. However, it risks "catastrophic forgetting"—overwriting the model's general capabilities that weren't represented in the training data. LoRA, in contrast, "learns less but forgets less," preserving the foundation model's broader capabilities while adding task-specific knowledge.
+
+The team noted important practical implications of these approaches for deployment. LoRA fine-tuned models can use on-demand inference in Amazon Bedrock because the foundation model weights remain in AWS service buckets while only the adapter weights reside in the customer account. These are combined at inference time, allowing pay-per-token pricing. Full fine-tuned models, however, require provisioned throughput because the entire updated model must be hosted continuously on dedicated instances, representing a significant cost difference.
+
+Recent research suggests middle-ground approaches: applying LoRA adapters to each layer of the network (not just the final layer) could significantly increase performance while maintaining the "regret-free" characteristics of adapter-based methods, albeit with increased latency. The team also mentioned Amazon Nova Forge as a potential future avenue for more comprehensive fine-tuning capabilities.
+
+## Evaluation Methodology
+
+The team employed rigorous, strict evaluation metrics appropriate for a production safety-critical application. They used word-based F1 scoring, directly comparing generated text against expert-written forecasts word-by-word. True positives (matching words), false negatives (missing words), and false positives (extra words) were counted to calculate precision, recall, and F1 scores.
+
+For example, if the expected text was "northeast veering southeast 3 to 5" and the generated text was "east or northeast 3 to 5," the scoring would identify 4 true positives, 2 false negatives, and 2 false positives, yielding an F1 score of 67%. This extremely strict metric reflects the reality that in maritime safety forecasts, precision matters—there's no room for "close enough."
+
+The team explicitly rejected softer alternatives like BERT score, which provides semantic similarity rather than exact matches. BERT score would give misleadingly high scores (86% instead of 67% in the above example) and would even assign 82% similarity to opposite directional terms like "north" vs. "south"—a catastrophic error in weather forecasting. The word-based F1 approach ensures that evaluations reflect real-world operational requirements.
+
+## Model Comparisons and Results
+
+For the LLM text-based approach, Amazon Nova Pro achieved an average word-based F1 score of 62%, compared to Claude 3.7 Sonnet's 57%, with Nova Pro also offering lower costs. However, the team appropriately cautioned against over-interpreting these specific numbers, as foundation models evolve rapidly. The key architectural insight is that deploying through Amazon Bedrock enables model-agnostic infrastructure—switching from Claude 3.7 to Claude 4.5 Sonnet or any other model requires only a one-line code change (updating the model ID).
+
+Comparing LLM vs. VLM approaches is more nuanced. The LLM approach incorporated additional domain knowledge through the text intermediary and used the more capable Nova Pro model, achieving 62% accuracy. The VLM approach used simpler representations of probabilistic information and the lighter Nova Lite model, achieving 52-62% accuracy. Despite current performance gaps, the team expects VLMs to eventually outperform LLMs for this task because they eliminate the information bottleneck of text intermediaries and can directly process spatial and temporal patterns in the raw data. The VLM approach represents the more scalable, future-proof direction.
+
+Importantly, all of these results represent performance compared to expert meteorologist-written bulletins within just four weeks of prototyping, including environment setup, data pipeline development, model training, and evaluation. The system reduced forecast generation time from several hours to under 5 minutes, representing a dramatic operational efficiency gain.
+
+## Deployment and Production Considerations
+
+The deployment strategy leveraged Amazon Bedrock's managed infrastructure for hosting fine-tuned models. After training via SageMaker, models were registered in Bedrock using `create_custom_model` API calls, which ingested the model weights, and `create_custom_deployment` calls, which deployed the models for inference (taking approximately one hour). The custom deployment ARN serves as the model ID for all subsequent inference calls.
+
+Inference uses Bedrock's standard Converse API, making the fine-tuned models compatible with all Bedrock features including guardrails, without any code changes beyond updating the model ID. This abstraction is critical for production LLMOps—it decouples the application layer from specific model implementations, enabling rapid experimentation and evolution.
+
+For production VLM inference, the architecture includes significant data preprocessing time (approximately one minute to convert raw gridded data to video format), followed by Bedrock API calls for inference. The team discussed alternative hosting options including SageMaker Endpoints or Amazon EKS for open-source models (like Llama Vision), but chose Bedrock for its integrated features and operational simplicity.
+
+User-facing interfaces were developed with multiple architectural patterns: public internet applications using CloudFront with API Gateway and Lambda, decoupled via SQS; applications with CloudFront, Application Load Balancer, and containerized services on Amazon ECS; and simpler deployments using Amazon App Runner or AWS Amplify for hosting. These patterns demonstrate production-grade considerations for various access requirements.
+
+## Operational and Organizational Insights
+
+The Met Office emphasized that this project is a "demonstrator" for transforming multiple products and services, not just the Shipping Forecast. The Shipping Forecast was chosen specifically because its iconic status and centenary anniversary (2024) made it compelling, but more importantly because it tests diverse technical challenges: combining atmospheric and ocean model data, handling both probabilistic and deterministic outputs, processing multi-dimensional spatial-temporal data, and managing massive data volumes at scale.
+
+The broader context is significant: the Met Office ingests 215 billion observations daily, runs physics-based numerical weather prediction on supercomputers, and delivers an estimated £56 billion in benefit to the UK economy over 10 years (a 19:1 return on taxpayer investment). Weather forecasting itself has undergone a "quiet revolution" with improvements of half a day to one day per decade in forecast accuracy. Data-driven machine learning models are now beginning to match or exceed physics-based models for certain parameters, with breakthrough papers in December 2022 from DeepMind, Nvidia, and Huawei demonstrating this capability.
+
+However, the Met Office's focus on the "last mile"—transforming predictions into decisions—reflects a mature understanding that forecast value derives from actionable insights, not just accuracy. This automation enables more personalized services, multi-modal delivery (data plus narrative), and reduced burden on human experts, while maintaining the strict quality standards required for safety-critical applications.
+
+## Critical Assessment and Balanced Perspective
+
+While the results are impressive for a four-week prototype, several important caveats and limitations should be noted. The 52-62% accuracy represents performance against expert-written forecasts, which means the system is still producing errors or deviations in 38-48% of cases. For a safety-critical maritime application, this level would require human review before operational deployment, somewhat limiting the immediate efficiency gains.
+
+The team's transparency about overfitting outperforming early stopping is commendable but also concerning from an LLMOps perspective—it suggests the models are memorizing patterns rather than genuinely understanding meteorological principles. This could lead to brittle behavior when encountering weather patterns outside the training distribution. The discrepancy between training objectives and evaluation metrics highlights a common challenge in production LLM systems: ensuring that optimization targets align with real-world requirements.
+
+The comparison between LLM and VLM approaches is somewhat apples-to-oranges, given the different models (Nova Pro vs. Nova Lite), different information representations, and different experimental configurations. The claim that VLMs will "eventually outperform" LLMs for this task is reasonable but remains speculative and depends on continued advances in vision-language model capabilities.
+
+The architectural patterns presented are comprehensive but come with significant infrastructure complexity and cost implications. The production architectures involve multiple AWS services (S3, ECS/EKS, SageMaker, Bedrock, SQS, Glue, Lake Formation, CloudFront, etc.), requiring substantial operational expertise and ongoing management. The cost of provisioned throughput for fully fine-tuned models versus on-demand inference for LoRA models represents a real economic trade-off that organizations must carefully evaluate.
+
+Despite these limitations, the case study demonstrates sophisticated LLMOps practices: systematic experimentation with clear metrics, thoughtful architectural patterns addressing scale and reliability, rigorous evaluation aligned with operational requirements, and transparency about trade-offs and future work. The four-week timeframe for achieving these results is genuinely impressive and speaks to the maturity of both the AWS tooling and the Met Office's technical capabilities.
+
+## Future Directions
+
+The team is moving forward with expanded evaluation by operational meteorologists, not just for the Shipping Forecast but for similar text-generation workflows across Met Office services. Improvements to VLM representations of probabilistic information and exploration of Nova Forge capabilities for more comprehensive tuning are planned. The framework for rapid experimentation and model-agnostic deployment through Bedrock positions the Met Office to continuously leverage advances in foundation models as they emerge.
+
+This case study represents a practical, production-oriented implementation of LLMs for a genuinely challenging domain problem, demonstrating that even 100-year-old institutions can rapidly adopt cutting-edge AI technologies when paired with appropriate infrastructure, clear requirements, and rigorous evaluation.

@@ -1,0 +1,121 @@
+---
+title: "Building an AI Agent for Real Estate with Systematic Evaluation Framework"
+slug: "building-an-ai-agent-for-real-estate-with-systematic-evaluation-framework"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "679348a421f289d7c5a90593"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:57:48.730Z"
+  createdOn: "2025-01-24T08:00:36.457Z"
+llmopsTags:
+  - "chatbot"
+  - "structured-output"
+  - "multi-modality"
+  - "fine-tuning"
+  - "prompt-engineering"
+  - "few-shot"
+  - "error-handling"
+  - "human-in-the-loop"
+  - "agent-based"
+  - "system-prompts"
+  - "cicd"
+  - "monitoring"
+  - "documentation"
+  - "openai"
+company: "Rechat"
+summary: "Rechat developed an AI agent to assist real estate agents with tasks like contact management, email marketing, and website creation. Initially struggling with reliability and performance issues using GPT-3.5, they implemented a comprehensive evaluation framework that enabled systematic improvement through unit testing, logging, human review, and fine-tuning. This methodical approach helped them achieve production-ready reliability and handle complex multi-step commands that combine natural language with UI elements."
+link: "https://www.youtube.com/watch?v=eLXF0VojuSs"
+year: 2023
+seo:
+  title: "Rechat: Building an AI Agent for Real Estate with Systematic Evaluation Framework - ZenML LLMOps Database"
+  description: "Rechat developed an AI agent to assist real estate agents with tasks like contact management, email marketing, and website creation. Initially struggling with reliability and performance issues using GPT-3.5, they implemented a comprehensive evaluation framework that enabled systematic improvement through unit testing, logging, human review, and fine-tuning. This methodical approach helped them achieve production-ready reliability and handle complex multi-step commands that combine natural language with UI elements."
+  canonical: "https://www.zenml.io/llmops-database/building-an-ai-agent-for-real-estate-with-systematic-evaluation-framework"
+  ogTitle: "Rechat: Building an AI Agent for Real Estate with Systematic Evaluation Framework - ZenML LLMOps Database"
+  ogDescription: "Rechat developed an AI agent to assist real estate agents with tasks like contact management, email marketing, and website creation. Initially struggling with reliability and performance issues using GPT-3.5, they implemented a comprehensive evaluation framework that enabled systematic improvement through unit testing, logging, human review, and fine-tuning. This methodical approach helped them achieve production-ready reliability and handle complex multi-step commands that combine natural language with UI elements."
+---
+
+## Overview
+
+Rechat is a real estate technology company that provides software for real estate agents and brokers, offering features like contact management, email marketing, and social marketing. The company's CTO, Emil, along with partner Hamel, presented their journey of building an AI agent called "Lucy" for real estate professionals. This case study is particularly valuable because it candidly discusses the challenges of moving from a prototype to a production-ready LLM application, and the systematic evaluation framework that ultimately made this transition possible.
+
+The company recognized they had substantial internal APIs and customer data, leading them to build an AI agent that could perform tasks like creating contacts, sending emails, finding listings, and even creating websites for real estate agents. While this started as an exciting prototype, the journey to production readiness proved far more challenging than anticipated.
+
+## The Prototype Phase and Initial Challenges
+
+Rechat initially built their prototype using GPT-3.5 and the ReAct (Reasoning and Acting) framework. The prototype was described as "very very slow" and "making mistakes all the time," yet when it worked, it provided what they called a "majestic experience." This is a common pattern in LLM development where the potential is clearly visible but the reliability is not yet production-ready.
+
+The fundamental problem they faced when trying to improve the system was a lack of visibility into actual performance. When making changes to prompts or system configurations, the team would invoke the system a few times and get a "feeling" about whether it worked, but they had no quantitative understanding of success or failure rates. They couldn't determine whether changes would work 50% or 80% of the time, making it essentially impossible to confidently launch a production application.
+
+An additional complication was the regression problem: improving one use case through prompt changes would often break other use cases. Without systematic evaluation, they were "essentially in the dark" about the overall health of the system.
+
+## The Evaluation Framework Approach
+
+Hamel, the partner brought in to help make the application production-ready, emphasized that while "vibe checks" and rapid iteration work well for building MVPs, this approach "doesn't work for that long at all" and "leads to stagnation." The core insight was simple: "if you don't have a way of measuring progress you can't really build."
+
+The systematic approach they developed can be broken down into several key components:
+
+### Unit Tests and Assertions
+
+One of the most important lessons from this case study is the emphasis on starting with simple, deterministic tests before reaching for more complex evaluation methods. The team emphasized that many developers skip this step and jump straight to "LLM as a judge" or generic evaluations, which is a mistake.
+
+The assertions Rechat developed were based on observed failure modes in the data. Examples included testing whether agents (as in tool-calling agents) were working properly, checking for emails not being sent correctly, validating that invalid placeholders weren't appearing in outputs, and ensuring certain details weren't being repeated when they shouldn't be. These simple tests provided immediate feedback and were essentially free to run.
+
+For running these assertions, they used CI (Continuous Integration), acknowledging that while teams might outgrow CI as they mature, the philosophy should be to "use what you have when you begin" rather than immediately jumping to specialized tools.
+
+### Logging and Visualization
+
+Results from assertions and tests were logged to a database. Rechat already used Metabase for analytics, so they simply logged results there to visualize and track progress over time. This aligns with the repeated guidance to "keep it simple and stupid" and use existing tools rather than buying new ones when starting out.
+
+### Trace Logging and Human Review
+
+For logging traces, the team did recommend using tools from the start, as this is one area where the tooling provides significant value. They mentioned various commercial and open-source tools, with Rechat ultimately choosing LangSmith. However, they emphasized that logging is meaningless if you don't actually review the data.
+
+A critical insight from this case study is the importance of reducing friction in data review. The team found that off-the-shelf tools often had too much friction for their specific use case, so they built their own data viewing and annotation application. This could be done in frameworks like Gradio, Streamlit, or Shiny for Python.
+
+The custom application they built included domain-specific features: the ability to filter data in ways specific to real estate use cases, display associated metadata for each trace, and facilitate human review and labeling workflows. The key message was emphatic: "if you have any friction in looking at data people are not going to do it and it will destroy the whole process."
+
+### Synthetic Data Generation
+
+To bootstrap test cases, especially when starting out without enough real user data, the team used LLMs to synthetically generate inputs. In Rechat's case, they had an LLM "roleplay as a real estate agent" and generate questions covering different features, scenarios, and tools to achieve comprehensive test coverage.
+
+### The Iteration Loop
+
+With a minimal evaluation system in place, the recommended approach was to iterate through prompt engineering cycles as many times as possible. This served dual purposes: making actual progress on the AI while simultaneously stress-testing the evaluation system itself—checking whether test coverage was adequate, traces were logging correctly, and friction had been minimized.
+
+### Data Curation for Fine-Tuning
+
+An important "superpower" that emerged from having a comprehensive evaluation framework was the ability to curate data for fine-tuning. The eval framework could filter out good cases for human review, enabling efficient data curation. Failed cases could be worked through and used to continuously update fine-tuning datasets. The team observed that as the eval framework became more comprehensive, the cost of human review decreased because more processes were automated.
+
+### LLM-as-a-Judge
+
+Only after establishing the foundation of simpler evaluations did the team recommend moving to LLM-as-a-judge for cases where assertions couldn't capture the evaluation criteria. A critical point emphasized was the need to align the LLM judge with human judgment. They recommended using a simple spreadsheet where domain experts label critique data, iterating until the LLM judge demonstrates high alignment with human evaluators.
+
+## Common Mistakes to Avoid
+
+The presentation highlighted several anti-patterns:
+
+- **Not looking at data**: Even though it sounds obvious, teams often fail at this fundamental task. Removing friction is the key to success.
+- **Focusing on tools over processes**: If conversations about evals immediately jump to tool selection, that's a warning sign. Understanding the process manually first is essential to being able to evaluate tools properly.
+- **Using generic off-the-shelf evals**: Metrics like "conciseness score" or "toxicity score" shouldn't be the primary focus. Domain-specific evaluations are far more valuable.
+- **Using LLM-as-a-judge too early**: Assertions and simpler tests often cover more ground than expected. LLM-as-a-judge should be reserved for truly subjective or complex evaluations, and must be aligned with human judgment.
+
+## Why Fine-Tuning Was Necessary
+
+Despite improvements through prompt engineering, Rechat ultimately found that fine-tuning was essential for certain capabilities. The team explicitly pushed back against the notion that few-shot prompting can replace fine-tuning in all cases. They noted they "wish we could just be a ChatGPT wrapper" but their use case demanded more.
+
+Three specific challenges required fine-tuning:
+
+- **Mixed structured and unstructured output**: The agent needed to combine natural language with embedded UI elements in its responses. Getting this to work reliably required fine-tuning.
+- **Feedback loops**: When the agent needed additional information from users to complete a task, especially while also injecting UI elements into the conversation, prompt engineering alone was insufficient.
+- **Complex multi-tool commands**: The demo showed a command that required finding listings matching criteria, creating a website for the most expensive one, generating an Instagram post video, preparing an email with all the information, and creating a follow-up task—all from a single user request. This level of orchestration across five or six different tools required fine-tuning to work reliably.
+
+## Results
+
+While specific metrics weren't provided, the team reported they "managed to rapidly increase the success rate of the LLM application" once they achieved the "virtuous cycle" of the evaluation framework. The project was described as "completely impossible" without this framework. The end result was an agent that could compress hours of work for a real estate agent into approximately one minute, demonstrating genuine productivity gains for non-technical users.
+
+## Key Takeaways
+
+This case study demonstrates that production-readiness for LLM applications requires more than just good prompts or model selection. The emphasis on evaluation infrastructure, friction reduction in human review workflows, building custom tools when needed, and the discipline to start simple before adding complexity provides a practical roadmap for teams building LLM-powered products. The candid acknowledgment that fine-tuning was ultimately necessary despite advances in prompting techniques is also valuable for teams who may be receiving contradictory advice about when fine-tuning is appropriate.

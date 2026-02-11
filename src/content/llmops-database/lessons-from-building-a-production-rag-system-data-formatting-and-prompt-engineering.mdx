@@ -1,0 +1,131 @@
+---
+title: "Lessons from Building a Production RAG System: Data Formatting and Prompt Engineering"
+slug: "lessons-from-building-a-production-rag-system-data-formatting-and-prompt-engineering"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f3a9f92c26dfff5b373aa"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:36:52.596Z"
+  createdOn: "2024-11-21T13:50:23.583Z"
+llmopsTags:
+  - "anthropic"
+  - "chunking"
+  - "compliance"
+  - "cost-optimization"
+  - "data-integration"
+  - "databases"
+  - "document-processing"
+  - "embeddings"
+  - "monitoring"
+  - "openai"
+  - "prompt-engineering"
+  - "rag"
+  - "regulatory-compliance"
+  - "reliability"
+  - "scalability"
+  - "scaling"
+  - "security"
+  - "semantic-search"
+company: "Credal"
+summary: "A case study detailing lessons learned from processing over 250k LLM calls on 100k corporate documents at Credal. The team discovered that successful LLM implementations require careful data formatting and focused prompt engineering. Key findings included the importance of structuring data to maximize LLM understanding, especially for complex documents with footnotes and tables, and concentrating prompts on the most challenging aspects of tasks rather than trying to solve multiple problems simultaneously."
+link: "https://www.credal.ai/blog/takeaways-from-using-llms-on-corporate-documents"
+year: 2023
+seo:
+  title: "Credal: Lessons from Building a Production RAG System: Data Formatting and Prompt Engineering - ZenML LLMOps Database"
+  description: "A case study detailing lessons learned from processing over 250k LLM calls on 100k corporate documents at Credal. The team discovered that successful LLM implementations require careful data formatting and focused prompt engineering. Key findings included the importance of structuring data to maximize LLM understanding, especially for complex documents with footnotes and tables, and concentrating prompts on the most challenging aspects of tasks rather than trying to solve multiple problems simultaneously."
+  canonical: "https://www.zenml.io/llmops-database/lessons-from-building-a-production-rag-system-data-formatting-and-prompt-engineering"
+  ogTitle: "Credal: Lessons from Building a Production RAG System: Data Formatting and Prompt Engineering - ZenML LLMOps Database"
+  ogDescription: "A case study detailing lessons learned from processing over 250k LLM calls on 100k corporate documents at Credal. The team discovered that successful LLM implementations require careful data formatting and focused prompt engineering. Key findings included the importance of structuring data to maximize LLM understanding, especially for complex documents with footnotes and tables, and concentrating prompts on the most challenging aspects of tasks rather than trying to solve multiple problems simultaneously."
+---
+
+## Overview
+
+Credal is an enterprise AI platform that helps companies safely use their data with generative AI. This case study documents their learnings from processing over 250,000 LLM calls on more than 100,000 corporate documents for enterprise customers with thousands of employees. The insights provided offer a practical look at what it takes to move from demo-quality LLM applications to production-grade systems that handle real-world data complexity at scale.
+
+The core thesis of this case study is that LLM attention is a scarce resource that must be carefully managed. When models are asked to perform multiple logical steps or process large amounts of potentially relevant context, their performance degrades significantly. This fundamental constraint shapes most of the technical decisions and workarounds described in the case study.
+
+## Data Formatting and Document Representation Challenges
+
+One of the most significant findings is that the way data is represented to LLMs dramatically impacts answer quality. Credal discovered that out-of-the-box document loaders from libraries like LangChain fail to preserve the semantic relationships within documents that humans take for granted.
+
+### The Footnote Problem
+
+When processing documents with footnotes (common in academic papers, legal documents, and research reports), standard parsers place all footnotes at the end of the document. This creates a critical problem for retrieval-based systems: when a user asks "Which author said X?" the citation information needed to answer that question is semantically unrelated to the quote itself in embedding space. The author's name and the quotation will almost never appear together in search results.
+
+Credal's solution was to inline footnote content directly where the reference appears in the text. Instead of seeing `Said Bin Taimur oversaw a "domestic tyranny"[75]`, the LLM sees `Said Bin Taimur oversaw a "domestic tyranny" [Calvin Allen Jr, W. Lynn Rigsbee II, Oman under Qaboos...]`. This simple restructuring transforms an impossible question into a trivial one for the LLM.
+
+### The Table Representation Problem
+
+Similarly, tables parsed from Google Docs or similar sources come through as confusingly formatted strings with special characters and unclear structure. Credal found that even the most powerful models (GPT-4-32k, Claude 2) failed to correctly reason about data in poorly formatted tables. When asked to count monarchs whose reign started between 1970 and 1980, GPT-4 incorrectly included a monarch who started in 1986, demonstrating a failure in date-based reasoning that was exacerbated by the confusing data format.
+
+The solution involved converting tables to CSV format before sending to the LLM. This representation is both 36% more token-efficient than the raw parsed format and significantly easier for models to reason about correctly. The efficiency gain matters not just for cost but also for performance, as every unnecessary token "dissipates the model's attention" from the actual question.
+
+### LLM-Generated Metadata Tagging
+
+For summary questions like "What is the main thesis of the paper?", traditional semantic search fails because the relevant passage often doesn't contain the query keywords. The section that actually summarizes a thesis might never use the words "thesis" or "summary." Keyword-based hybrid search doesn't help either when the semantic mismatch is this fundamental.
+
+Credal's solution was to use LLMs at ingestion time to generate metadata tags for each document section. These tags categorize content by type (high-level summary vs. exposition) and by entities mentioned (customers, products, features, etc.). When a user asks a summary question, the system can pre-filter to summary sections before performing semantic search, dramatically improving retrieval quality.
+
+This represents an interesting pattern in LLMOps: using LLMs to preprocess and enrich data at ingestion time to improve downstream LLM performance at query time. The approach requires human experts to define the relevant tag taxonomy for their domain, but the actual tagging work is automated. Credal frames this as "human-computer symbiosis" where humans direct AI attention and computers handle the reading and summarization at scale.
+
+## RAG vs. Full Context Window Approaches
+
+The case study discusses the tradeoffs between RAG (Retrieval Augmented Generation) and full-context approaches. For a single document, using Claude's 100k context window can produce excellent summaries, but at costs potentially exceeding $1-2 per query. With thousands of users, this becomes prohibitively expensive.
+
+More importantly, context window approaches don't scale to enterprise use cases involving thousands of documents. When dealing with a corpus of legal contracts, a company's entire Google Drive, or 4,000 written letters, you cannot fit everything in context. RAG becomes necessary, but it requires careful attention to data formatting and retrieval strategy to work reliably.
+
+The case study also notes that even identifying whether a question requires a summary (full-context) approach versus a detail-lookup (RAG) approach is non-trivial and needs to be handled dynamically.
+
+## Prompt Engineering for Production Reliability
+
+The second major learning concerns how to structure prompts for reliable production performance. Credal built a system where multiple domain-specific "AI experts" live in Slack channels, and incoming questions must be routed to the correct expert with 95%+ accuracy.
+
+### The Attention Distribution Problem
+
+Using GPT-3.5 for cost and latency reasons, Credal initially tried LangChain's StructuredOutputParser to get JSON responses. The problem was that the extensive formatting instructions (10-20 lines about JSON structure) distracted the model from the actual hard part: correctly matching user questions to expert descriptions. GPT-3.5's accuracy dropped to only 50% even with a single expert in the channel.
+
+The solution was counter-intuitive: remove the sophisticated LangChain tooling and hand-roll a simpler approach. By making the few-shot examples the bulk of the prompt (using JSON naturally within the examples rather than extensive format instructions), they focused model attention on the matching task itself.
+
+### Sequential Prompts Over Monolithic Calls
+
+When the simplified prompt occasionally produced malformed JSON, Credal added a second GPT-3.5 call specifically for JSON formatting. This two-call approach (with accuracy checking between calls) was both faster and cheaper than a single GPT-4 call while achieving better reliability. This pattern of sequential, specialized prompts with intermediate validation emerged as more robust than trying to accomplish multiple tasks in a single call.
+
+## Limitations of Standard Libraries
+
+A recurring theme is that libraries like LangChain, while useful for demos and simple use cases, proved insufficient for production enterprise requirements. Credal still uses some LangChain components but found that solving "the hard parts" required custom implementations.
+
+The specific failure modes included:
+- Document loaders that don't preserve semantic relationships (footnotes, table structure)
+- Output parsers that consume too much model attention
+- Default chunking strategies that don't account for document structure
+
+The case study notes that when building demos with controlled data and hand-picked questions, naive approaches work fine. Production systems face long, strangely formatted documents, cost and latency constraints, and diverse user phrasings that break simple approaches.
+
+## Model-Specific Observations
+
+The case study provides some interesting observations about different models:
+- GPT-4 and all current LLMs struggle with date-based reasoning, particularly when combined with large context and complex data
+- Claude 2's massive context window produces excellent summaries but at high cost
+- GPT-3.5 requires more careful prompt engineering but can match GPT-4 performance on specific tasks when prompts are properly focused
+- Even when dates are explicitly stated in text, models make errors like treating 1986 as falling "between 1970 and 1980"
+
+## Cost and Scalability Considerations
+
+Throughout the case study, cost consciousness is apparent. Making GPT-4 calls on every message in a 5,000-person company Slack channel would be "painful." The solutions consistently optimize for using cheaper, faster models (GPT-3.5) where possible, through better prompting and data formatting rather than simply throwing more powerful models at problems.
+
+The insight that more efficient data representation (CSV vs. raw parsed format) saves tokens while also improving accuracy demonstrates how optimization for cost and quality can align in LLMOps.
+
+## Key Takeaways for Production LLM Systems
+
+The case study concludes with several principles that emerged from real-world deployment:
+- Model attention is limited, so prompts should focus on the hardest part of the task
+- Real-world data contains nuanced structure that standard loaders don't capture
+- Sequential prompts with intermediate validation outperform monolithic approaches
+- LLM-generated metadata at ingestion time can dramatically improve retrieval quality
+- Date reasoning is a particular weakness of current LLMs
+- Demo-quality solutions require substantial additional engineering for production reliability
+
+This represents a valuable practitioner's view of LLMOps challenges, grounded in real deployment experience rather than theoretical concerns. While Credal is naturally promoting their platform, the technical insights about document formatting, prompt engineering, and system architecture are broadly applicable to anyone building production LLM applications.

@@ -1,0 +1,157 @@
+---
+title: "Building Goal-Oriented Retrieval Agents for Low-Latency Recommendations at Scale"
+slug: "building-goal-oriented-retrieval-agents-for-low-latency-recommendations-at-scale"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f3bb08f1b68703dbb2204"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:41:06.426Z"
+  createdOn: "2024-11-21T13:54:56.075Z"
+llmopsTags:
+  - "cache"
+  - "cost-optimization"
+  - "customer-support"
+  - "embeddings"
+  - "healthcare"
+  - "hugging-face"
+  - "human-in-the-loop"
+  - "latency-optimization"
+  - "model-optimization"
+  - "open-source"
+  - "rag"
+  - "realtime-application"
+  - "regulatory-compliance"
+  - "reliability"
+  - "scalability"
+  - "scaling"
+  - "security"
+company: "Faber Labs"
+summary: "Faber Labs developed Gora (Goal-Oriented Retrieval Agents), a system that transforms subjective relevance ranking using cutting-edge technologies. The system optimizes for specific KPIs like conversion rates and average order value in e-commerce, or minimizing surgical engagements in healthcare. They achieved this through a combination of real-time user feedback processing, unified goal optimization, and high-performance infrastructure built with Rust, resulting in consistent 200%+ improvements in key metrics while maintaining sub-second latency."
+link: "https://www.youtube.com/watch?v=cJ_sNYes9CA"
+year: 2024
+seo:
+  title: "Faber Labs: Building Goal-Oriented Retrieval Agents for Low-Latency Recommendations at Scale - ZenML LLMOps Database"
+  description: "Faber Labs developed Gora (Goal-Oriented Retrieval Agents), a system that transforms subjective relevance ranking using cutting-edge technologies. The system optimizes for specific KPIs like conversion rates and average order value in e-commerce, or minimizing surgical engagements in healthcare. They achieved this through a combination of real-time user feedback processing, unified goal optimization, and high-performance infrastructure built with Rust, resulting in consistent 200%+ improvements in key metrics while maintaining sub-second latency."
+  canonical: "https://www.zenml.io/llmops-database/building-goal-oriented-retrieval-agents-for-low-latency-recommendations-at-scale"
+  ogTitle: "Faber Labs: Building Goal-Oriented Retrieval Agents for Low-Latency Recommendations at Scale - ZenML LLMOps Database"
+  ogDescription: "Faber Labs developed Gora (Goal-Oriented Retrieval Agents), a system that transforms subjective relevance ranking using cutting-edge technologies. The system optimizes for specific KPIs like conversion rates and average order value in e-commerce, or minimizing surgical engagements in healthcare. They achieved this through a combination of real-time user feedback processing, unified goal optimization, and high-performance infrastructure built with Rust, resulting in consistent 200%+ improvements in key metrics while maintaining sub-second latency."
+---
+
+## Overview
+
+Faber Labs, a startup founded by Zoe Zoe and her co-founders, has developed GORA (Goal Oriented Retrieval Agents), which they describe as the first specialized agents designed to autonomously maximize specific business KPIs through subjective relevance ranking. The company positions itself as providing an "embedded KPI optimization layer" for consumer-facing businesses, essentially attempting to replicate the recommendation engine capabilities that power companies like Amazon (reportedly contributing 35% of Amazon's revenue) and make them available to a broader range of businesses.
+
+The presentation was delivered at what appears to be a technical AI/ML conference, with the speaker walking through both the architectural decisions and business outcomes of their system. While the claims about 200%+ improvements are significant and should be viewed with appropriate skepticism given the promotional nature of the talk, the technical architecture decisions discussed provide valuable insights into building production agent systems.
+
+## Use Cases and Applications
+
+GORA has been applied across multiple industries, each with different optimization targets:
+
+- **E-commerce and Retail**: Optimizing for conversion rate and average order value (AOV), providing personalized product rankings that adapt in real-time to user behavior
+- **Healthcare/Medical**: Helping clinicians find alternatives to ineffective surgical procedures, with the goal of lowering readmission rates for value-based care platforms
+- **Neo-banks/Financial Services**: Though mentioned briefly, the company notes they are expanding into this vertical, leveraging their on-premise deployment capabilities for privacy-sensitive financial data
+
+The key insight from their approach is that different clients have fundamentally different and sometimes conflicting optimization goals. For example, maximizing conversion rate doesn't necessarily maximize gross merchandise value because users might convert more frequently but purchase cheaper items. Their system aims to jointly optimize these potentially conflicting metrics.
+
+## Technical Architecture and LLMOps Considerations
+
+### Three Core Pillars
+
+The system is built around three foundational concepts:
+
+- **User Behavior**: Historical data combined with real-time, in-session feedback
+- **Contextual Insights**: Understanding the context of user interactions
+- **Real-time Adaptation**: The ability to respond to minute user feedback signals immediately
+
+### Large Event Models
+
+One of the more novel technical contributions discussed is their development of "Large Event Models" (LEMs). These are custom models trained from scratch to generalize to user event data, analogous to how LLMs generalize to unseen text. The key innovation here is that these models can understand event sequences they haven't explicitly seen before, enabling transfer learning across different client contexts.
+
+The company trains these models using client data, and they've specifically designed their data pipeline to handle "messy" client data without extensive preprocessing requirements. This is a practical consideration for any production ML system—real-world data is rarely clean, and building systems that can tolerate data quality issues is essential for scalability.
+
+Importantly, they claim to leverage network effects across clients for the reward/alignment layer without leaking private information between clients. This suggests some form of federated learning or privacy-preserving technique, though the specifics weren't detailed.
+
+### LLM Integration
+
+While LEMs handle the core ranking logic, the company does use open-source LLMs for specific components—particularly for "gluing everything together" and presenting results to users. This hybrid approach is notable: rather than relying on LLMs for the computationally intensive ranking operations, they use specialized models for the core task and leverage LLMs where their language capabilities are most valuable.
+
+### End-to-End Reinforcement Learning
+
+The architecture employs end-to-end reinforcement learning with policy models to jointly optimize multiple model components:
+
+- Embedding generators
+- Reranking models
+- Agent models
+
+This holistic optimization approach is designed to avoid the common pitfall of "stacked models" where individual components are optimized for different objectives that may conflict with each other. The unified goal system ensures all components work toward the same business outcome.
+
+### Backend Infrastructure: The Rust Decision
+
+One of the most emphasized architectural decisions was migrating the backend to Rust. The speaker acknowledged this was controversial, especially for a team with Python and data science backgrounds, but described it as one of their best decisions. The benefits they cite:
+
+- **Memory safety and concurrent processing**: Rust's ownership model eliminates many classes of bugs and enables safe concurrent execution
+- **Zero-cost abstractions**: Performance optimizations without runtime overhead
+- **Reduced infrastructure costs**: Critical for a bootstrapped startup
+- **Enhanced privacy and security**: The language's safety guarantees contribute to more secure code
+- **Ultra-low latency**: Essential for their real-time, conversation-aware system
+
+The speaker specifically mentioned that Discord's migration to Rust was an inspiration for this decision. They use Rust for:
+
+- The core backend layer
+- User request orchestration
+- Model management aspects including key-value caching
+
+The transition was described as "super painful," with many Rust concepts being counterintuitive for developers coming from Python. However, the investment paid off in enabling their on-premise deployment option, which would have been much more difficult with a heavier technology stack.
+
+### Latency Management
+
+Latency is a critical concern for the system, with the speaker citing research that 53% of mobile users abandon sites taking longer than 3 seconds to load. Their approach includes:
+
+- **Component-level latency budgets**: Each part of the system has specific time allocations
+- **Parallel processing**: Optimizing inter-component communication
+- **Intelligent GPU caching**: Specifically for managing conversation context, they cache key-value pairs on the GPU to avoid regenerating them for follow-up prompts in conversations
+
+The speaker emphasized that their latency numbers should be evaluated in context—this is a conversation-aware, context-aware system with agent capabilities, not a simple single-pass query-embedding retrieval system. Compared to other conversational and adaptive agent-based systems, their response times are competitive.
+
+### Conversation and Feedback Loop Management
+
+A key technical challenge for any production agent system is managing multi-turn conversations efficiently. As conversations grow, the context becomes increasingly large and unwieldy. Their solutions include:
+
+- Real-time feedback processing integrated with agent decision-making
+- Feedback influencing context selection and modifying agent behavior
+- GPU-based intelligent caching for conversation history
+
+## Privacy and Deployment Considerations
+
+Privacy emerged as a significant concern, particularly for healthcare and financial services clients. Their approach includes:
+
+- **On-premise deployment option**: Made feasible by the lightweight, fast Rust-based system
+- **Privacy-preserving cross-client learning**: Learning from aggregate patterns without leaking specific client data
+- **Client data isolation**: While benefiting from network effects, they don't share direct information between clients
+
+The speaker noted that having an on-premise solution is an additional engineering challenge that can be a "killer" for early-stage businesses, but their Rust infrastructure made it manageable.
+
+## Reported Results
+
+The claimed results are substantial, though should be evaluated with appropriate caution given the promotional context:
+
+- Over 200% improvements in conversion rate and average order value jointly
+- Response times suitable for real-time conversational interactions
+- System designed to improve as newer, faster models and frameworks become available
+
+The speaker emphasized that these gains come from joint optimization of metrics that are often at odds with each other, not just optimizing one metric at the expense of others.
+
+## Lessons for Practitioners
+
+Several practical takeaways emerge from this case study:
+
+- **Language choice matters for production systems**: While Python dominates ML development, Rust can provide significant operational benefits for production backends, especially where latency and memory efficiency are critical
+- **Hybrid approaches work**: Using specialized models (LEMs) for core functionality while leveraging LLMs for appropriate tasks (language generation, synthesis) can be more efficient than using LLMs for everything
+- **End-to-end optimization prevents objective conflicts**: When multiple model components must work together, optimizing them jointly toward a unified goal prevents the issues that arise from piecemeal optimization
+- **Privacy constraints shape architecture**: Offering on-premise deployment opens up privacy-sensitive industries but requires engineering investments that must be factored in from the start
+- **Managing conversation context is a key challenge**: For any multi-turn agent system, efficiently handling growing conversation history is essential, and GPU caching can help
+
+The speaker's honest acknowledgment of challenges—the painful Rust transition, the difficulty of on-premise solutions, the need to handle messy client data—adds credibility to the technical discussion and provides realistic expectations for teams considering similar approaches.

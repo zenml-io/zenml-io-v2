@@ -1,0 +1,104 @@
+---
+title: "Scaling LLM Infrastructure: Building and Operating 24K GPU Clusters for LLaMA Training"
+slug: "scaling-llm-infrastructure-building-and-operating-24k-gpu-clusters-for-llama-training"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f3e59168c94baa4dede27"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:39:24.613Z"
+  createdOn: "2024-11-21T14:06:17.929Z"
+llmopsTags:
+  - "cost-optimization"
+  - "devops"
+  - "high-stakes-application"
+  - "latency-optimization"
+  - "meta"
+  - "model-optimization"
+  - "monitoring"
+  - "orchestration"
+  - "pytorch"
+  - "reliability"
+  - "scalability"
+  - "scaling"
+company: "Meta"
+summary: "Meta faced the challenge of scaling their AI infrastructure from training smaller recommendation models to massive LLM training jobs like LLaMA 3. They built two 24K GPU clusters (one with RoCE, another with InfiniBand) to handle the unprecedented scale of computation required for training models with thousands of GPUs running for months. Through full-stack optimizations across hardware, networking, and software layers, they achieved 95% training efficiency for the LLaMA 3 70B model, while dealing with challenges in hardware reliability, thermal management, network topology, and collective communication operations."
+link: "https://www.youtube.com/watch?v=1lhrGRqqPWU"
+year: 2024
+seo:
+  title: "Meta: Scaling LLM Infrastructure: Building and Operating 24K GPU Clusters for LLaMA Training - ZenML LLMOps Database"
+  description: "Meta faced the challenge of scaling their AI infrastructure from training smaller recommendation models to massive LLM training jobs like LLaMA 3. They built two 24K GPU clusters (one with RoCE, another with InfiniBand) to handle the unprecedented scale of computation required for training models with thousands of GPUs running for months. Through full-stack optimizations across hardware, networking, and software layers, they achieved 95% training efficiency for the LLaMA 3 70B model, while dealing with challenges in hardware reliability, thermal management, network topology, and collective communication operations."
+  canonical: "https://www.zenml.io/llmops-database/scaling-llm-infrastructure-building-and-operating-24k-gpu-clusters-for-llama-training"
+  ogTitle: "Meta: Scaling LLM Infrastructure: Building and Operating 24K GPU Clusters for LLaMA Training - ZenML LLMOps Database"
+  ogDescription: "Meta faced the challenge of scaling their AI infrastructure from training smaller recommendation models to massive LLM training jobs like LLaMA 3. They built two 24K GPU clusters (one with RoCE, another with InfiniBand) to handle the unprecedented scale of computation required for training models with thousands of GPUs running for months. Through full-stack optimizations across hardware, networking, and software layers, they achieved 95% training efficiency for the LLaMA 3 70B model, while dealing with challenges in hardware reliability, thermal management, network topology, and collective communication operations."
+---
+
+## Overview
+
+This case study, presented by Meta's production engineering, hardware systems, and network engineering teams, provides an in-depth look at the infrastructure required to train LLaMA 3, one of the largest open-source large language models. The presentation features three speakers: Jan Lee (production engineer), Kishar Kishore (hardware systems engineer), and Adi Gangidi (network engineer), each covering their respective domains in building and operating a 24,000-GPU training cluster.
+
+The fundamental challenge Meta faced was a paradigm shift in AI training requirements. Previously, their infrastructure focused on training recommendation systems for ads, feeds, and ranking—workloads characterized by numerous small to medium-sized training jobs requiring between 8 and 500 GPUs each. The transition to generative AI, particularly LLaMA 3, represented an entirely different scale: a single model requiring thousands of GPUs operating continuously for months. LLaMA 2 was trained on 2 trillion tokens, while LLaMA 3 scaled to 15 trillion high-quality tokens, representing a 7.5x increase in training data alone.
+
+## Training Parallelism Strategies
+
+For the LLaMA 3 70B parameter model, Meta employed multiple forms of parallelism to distribute the computational workload effectively:
+
+**Tensor Parallelism** involves splitting individual tensors so that operations on large tensors can be performed in parallel by distributing computations across multiple devices. This is mapped to stay within a single server where GPU-to-GPU communication benefits from the lowest latency and highest bandwidth via NVLink.
+
+**Pipeline Parallelism** splits the model into different stages, each processed on different devices concurrently. This is constrained to stay within the same "small cluster" (3K GPU domain) to benefit from full bisection bandwidth networking.
+
+**Data Parallelism** processes different subsets of training data simultaneously across data parallel groups. This parallelism extends across small clusters, tolerating the reduced bandwidth (1/7th oversubscription) available at the aggregation network layer.
+
+The synchronization point at the end of each training iteration, called "all-reduce," aggregates results from all groups and shares them back with every node in the system. This has profound implications for infrastructure design: the entire training job waits on the slowest GPU until it finishes its computation. A single underperforming GPU can degrade the performance of thousands of others.
+
+## Hardware Challenges and Solutions
+
+The hardware team faced multiple unprecedented challenges. Simply procuring GPUs at scale from a single dominant vendor (Nvidia) while many competitors sought the same supply was itself a significant engineering challenge. Beyond procurement, the team had to fit next-generation AI hardware into existing data centers designed for previous compute workloads—Meta operates tens of millions of general-purpose servers, and data center construction lead times are substantial.
+
+The team adapted the "Grand Teton" platform, originally designed for ranking and recommendation workloads. Key modifications included increasing GPU compute power from 500W to 700W to extract more computational throughput, and upgrading HBM (High Bandwidth Memory) configurations to achieve higher memory bandwidth for decode operations. These changes required corresponding adjustments to power limits, cooling systems, and chassis design. Notably, increasing fan speeds to manage thermals had to be balanced against decibel limits for operator safety within data centers.
+
+The final configuration places 8 GPUs within a chassis and 16 GPUs per rack. The data center layout shifted significantly—previous clusters showed an even distribution of GPUs and general compute, while the GenAI-optimized layout concentrates GPUs much more densely, with supporting services moved out to maximize compute density.
+
+A particularly illustrative failure scenario was described: during an otherwise normal training evening, performance suddenly degraded by 50%. Investigation revealed GPU number 6 on host 535 was running hotter than others and experienced thermal throttling. This single GPU's slowdown caused the entire training job to wait during synchronization. After removing the host and tuning automation thresholds, performance immediately recovered. This exemplifies how failures at this scale are qualitatively different—issues that would be inconsequential in smaller jobs become critical when thousands of GPUs must operate in lockstep.
+
+Common hardware failures include GPUs "falling off the bus" (becoming undetectable from the CPU on the PCI bus), GPU driver hangs, and uncorrectable DRAM or SRAM errors. Many of these issues required collaboration with vendors who had never seen such failure patterns before—Meta was operating at bleeding-edge scale where new failure modes emerge. The team achieved approximately 95% training efficiency on the LLaMA 3 70B model, measured on a 24-hour rolling window. This efficiency metric accounts for all overhead including checkpoint creation, checkpoint restoration, detection and recovery from failures, and time lost between the last checkpoint and failure events.
+
+## Network Architecture Decisions
+
+The network team faced a significant architectural decision: RoCE (RDMA over Converged Ethernet) versus InfiniBand. Meta had built RoCE clusters for ranking workloads over four years, but the largest was only 4,000 GPUs. Conversely, Meta had built research InfiniBand clusters up to 16K GPUs, but these weren't in production environments. Unable to find industry precedent comparing both fabrics at identical scale for the same application, Meta built two parallel 24K GPU clusters—one RoCE, one InfiniBand—to learn from operational experience.
+
+The RoCE cluster was optimized for quick time-to-build, while the InfiniBand cluster was optimized for lowest latency and full bisection bandwidth. Both clusters were used to train LLaMA models, with the RoCE cluster notably being used for training the largest model. Through tuning, both clusters were brought to a point where the network was not a significant bottleneck for application performance.
+
+The RoCE 24K GPU cluster architecture uses a 3K GPU "small cluster" as its building block, consisting of 192 racks connected by cluster switches offering full bisection bandwidth. Each rack contains 16 GPUs split between two servers. Eight of these 3K clusters are stamped within a data center building and connected via an aggregation layer to form the 24K cluster. The aggregation layer has 1:7 oversubscription—if all GPUs in one 3K cluster communicate with all GPUs in another, they achieve only 1/7th of maximum bandwidth.
+
+This network topology creates a bandwidth hierarchy: highest bandwidth exists between GPUs in the same server (NVLink scale-out domain, also lowest latency), followed by GPUs within the same 3K cluster (full bisection bandwidth), with lowest bandwidth and highest latency between GPUs in different small clusters.
+
+## Performance Optimization
+
+Out-of-the-box performance on large clusters was poor and variable compared to smaller clusters. The team invested in three key optimization areas:
+
+First, they assigned different model and data parallel communication to appropriate network topology layers, as described in the parallelism mapping above. This ensures communication-intensive operations use the highest-bandwidth network paths.
+
+Second, they implemented custom collective communication patterns to reduce latency sensitivity. Instead of conventional algorithms like ring-based collectives, they used algorithms like recursive doubling or recursive halving that are better suited to their network topology.
+
+Third, like ranking workloads, GenAI jobs produce "fat flows" that challenge network load distribution across available paths. The team invested in network load balancing and routing optimizations to distribute traffic more effectively.
+
+Critically, implementing optimal parallelism-to-topology mapping required teaching network topology awareness to multiple software layers: the job scheduler, the distributed ML framework layer, and collective communication libraries. All these components must make topology-informed decisions to achieve optimal performance.
+
+## Operational Challenges
+
+Operating such clusters introduces unexpected challenges beyond hardware failures. When large training jobs suddenly stop, the power draw from the grid drops precipitously, prompting calls from utility companies about power spikes. Managing and modulating power consumption became an operational concern.
+
+The efficiency metric used to track cluster performance removes all "administrative" time from total training time: checkpoint creation, checkpoint restoration, time lost from the last checkpoint to failure, failure detection time, and mitigation time. Reducing each of these components is essential for maximizing effective training time.
+
+## Technology Stack
+
+The team heavily relies on PyTorch as their open-source ML framework, noting that it enables rapid research-to-production development cycles. Their stated goal is to make training models requiring thousands of GPUs as simple as training ones requiring just a few.
+
+Future challenges include training much larger models requiring an order of magnitude more GPUs connected by the same network fabric, dealing with reliability at even greater scale, and managing the performance implications of longer distances and latency. Meta explicitly states their intent to build on open ecosystems and commodity hardware, believing in collaborative problem-solving across the industry.
+
+## Key Takeaways for LLMOps Practitioners
+
+This case study demonstrates that large-scale LLM training is fundamentally a systems engineering challenge spanning hardware, networking, and software. The synchronous nature of distributed training means single-point failures can halt thousands of GPUs. Achieving high training efficiency (95% in Meta's case) requires full-stack optimization: topology-aware parallelism mapping, custom collective communication implementations, network load balancing, thermal management, fast failure detection and recovery, and efficient checkpointing strategies. The decision to build both RoCE and InfiniBand clusters in parallel, rather than making assumptions, reflects an experimental approach to infrastructure decisions at unprecedented scale.

@@ -1,0 +1,162 @@
+---
+title: "Multi-Agent Financial Research and Question Answering System"
+slug: "multi-agent-financial-research-and-question-answering-system"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "6932b4d16dd23fc664d14e81"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:34:11.424Z"
+  createdOn: "2025-12-05T10:32:49.139Z"
+llmopsTags:
+  - "question-answering"
+  - "data-analysis"
+  - "chatbot"
+  - "high-stakes-application"
+  - "structured-output"
+  - "multi-modality"
+  - "unstructured-data"
+  - "realtime-application"
+  - "regulatory-compliance"
+  - "rag"
+  - "embeddings"
+  - "prompt-engineering"
+  - "multi-agent-systems"
+  - "agent-based"
+  - "few-shot"
+  - "semantic-search"
+  - "vector-search"
+  - "error-handling"
+  - "human-in-the-loop"
+  - "latency-optimization"
+  - "cost-optimization"
+  - "fallback-strategies"
+  - "chunking"
+  - "system-prompts"
+  - "mcp"
+  - "evals"
+  - "langchain"
+  - "guardrails"
+  - "postgresql"
+  - "sqlite"
+  - "redis"
+  - "cache"
+  - "chromadb"
+  - "pinecone"
+  - "qdrant"
+  - "serverless"
+  - "monitoring"
+  - "databases"
+  - "api-gateway"
+  - "microservices"
+  - "orchestration"
+  - "open-source"
+  - "documentation"
+  - "security"
+  - "compliance"
+  - "reliability"
+  - "scalability"
+  - "fastapi"
+  - "amazon-aws"
+  - "meta"
+  - "openai"
+  - "anthropic"
+company: "Yahoo! Finance"
+summary: "Yahoo! Finance built a production-scale financial question answering system using multi-agent architecture to address the information asymmetry between retail and institutional investors. The system leverages Amazon Bedrock Agent Core and employs a supervisor-subagent pattern where specialized agents handle structured data (stock prices, financials), unstructured data (SEC filings, news), and various APIs. The solution processes heterogeneous financial data from multiple sources, handles temporal complexities of fiscal years, and maintains context across sessions. Through a hybrid evaluation approach combining human and AI judges, the system achieves strong accuracy and coverage metrics while processing queries in 5-50 seconds at costs of 2-5 cents per query, demonstrating production viability at scale with support for 100+ concurrent users."
+link: "https://www.youtube.com/watch?v=Bw7H8PEiJrc"
+year: 2025
+seo:
+  title: "Yahoo! Finance: Multi-Agent Financial Research and Question Answering System - ZenML LLMOps Database"
+  description: "Yahoo! Finance built a production-scale financial question answering system using multi-agent architecture to address the information asymmetry between retail and institutional investors. The system leverages Amazon Bedrock Agent Core and employs a supervisor-subagent pattern where specialized agents handle structured data (stock prices, financials), unstructured data (SEC filings, news), and various APIs. The solution processes heterogeneous financial data from multiple sources, handles temporal complexities of fiscal years, and maintains context across sessions. Through a hybrid evaluation approach combining human and AI judges, the system achieves strong accuracy and coverage metrics while processing queries in 5-50 seconds at costs of 2-5 cents per query, demonstrating production viability at scale with support for 100+ concurrent users."
+  canonical: "https://www.zenml.io/llmops-database/multi-agent-financial-research-and-question-answering-system"
+  ogTitle: "Yahoo! Finance: Multi-Agent Financial Research and Question Answering System - ZenML LLMOps Database"
+  ogDescription: "Yahoo! Finance built a production-scale financial question answering system using multi-agent architecture to address the information asymmetry between retail and institutional investors. The system leverages Amazon Bedrock Agent Core and employs a supervisor-subagent pattern where specialized agents handle structured data (stock prices, financials), unstructured data (SEC filings, news), and various APIs. The solution processes heterogeneous financial data from multiple sources, handles temporal complexities of fiscal years, and maintains context across sessions. Through a hybrid evaluation approach combining human and AI judges, the system achieves strong accuracy and coverage metrics while processing queries in 5-50 seconds at costs of 2-5 cents per query, demonstrating production viability at scale with support for 100+ concurrent users."
+---
+
+## Overview
+
+Yahoo! Finance, in collaboration with the AWS Generative AI Innovation Center, developed a sophisticated multi-agent financial question answering system to democratize access to financial research capabilities. The project addresses a fundamental challenge in financial markets: the information and analytical capability gap between retail investors who must manually piece together data from scattered sources and institutional investors who have access to teams of analysts, premium data feeds, and sophisticated AI tools. Yahoo! Finance serves over 150 million users globally as the leading financial news and information platform, making the challenge of serving accurate, timely financial information at scale particularly acute.
+
+The business problem is compounded by the sheer volume and heterogeneity of financial data. The system must process thousands of SEC filings daily (4,700 filings), thousands of news articles (3,000 per day), over 100,000 press releases, and generate insights from 1.5 billion data points created by 370,000 daily equity trades. This ocean of information represents fuel for professional investors but an overwhelming challenge for retail users. The goal was to create an AI-powered system that could read across millions of data points, connect non-obvious correlations, optimize investment research strategies, and present insights in digestible formats—all while maintaining accuracy, avoiding providing financial advice, and operating at production scale.
+
+## Multi-Agent Architecture and Design Patterns
+
+The system implements a supervisor-subagent pattern, one of the most common multi-agent orchestration approaches discussed in the presentation. The architecture recognizes that single agents, while capable with modern LLMs, become error-prone when their scope expands. Providing too many tools to a single agent leads to confusion in tool selection, especially when tool definitions overlap, and causes prompt bloat as all tool definitions and API documentation must be included in the agent's context. The multi-agent approach enables agenttic specialization where specific sub-agents excel in focused domains with manageable tool sets, leading to superior overall performance.
+
+The Yahoo! Finance implementation features a supervisor agent that coordinates multiple specialized subagents. These include: a financial data agent that handles structured data queries through tool calling to internal and partner APIs for stock prices, fundamentals, and key metrics; an insider transaction agent that similarly uses tool calling for accessing insider trading data; an SEC filings agent implemented as a RAG-style agent with access to a specialized vector knowledge base containing indexed SEC documents; and a news agent that also uses RAG with its own knowledge base, augmented by restricted web search from reputable sources when licensed data proves insufficient.
+
+The presenters discuss the theoretical underpinnings of agentic reasoning patterns beyond the standard ReAct (Reasoning and Acting) loop. ReAct intertwines thought, action, and observation in iterative cycles, allowing the agent to decide after each tool call whether it needs more information or can answer directly. However, for financial research applications, additional patterns prove valuable. The ReWOO (Reasoning Without Observation) pattern generates complex execution plans upfront before calling tools, then executes data gathering steps in parallel—particularly useful for simultaneously fetching stock prices, earnings reports, and market indicators. The Reflexion pattern promotes self-reflection and iterative refinement, allowing agents to evaluate generated reports, identify research gaps, and refine conclusions. The Yahoo! Finance system leverages aspects of all three strategies: parallel execution for efficient data gathering, self-reflection for quality assurance, and ReAct's adaptive reasoning for complex multi-step processes.
+
+## Production Infrastructure and AWS Services
+
+The initial prototype was straightforward—a synchronous chat API connected to a database with an equity research agent accessing an LLM service. However, this proved inadequate for production. Query processing times ranging from 5 to 50 seconds created API bottlenecks, and while WebSockets were considered, their stateful nature complicates scaling. The architecture evolved to decouple the API from agent execution: clients submit questions and poll for answers, allowing asynchronous agentic workflows. When agents complete their work, they write results to the database for client retrieval.
+
+The production system on AWS uses Lambda functions for serverless, resilient asynchronous execution. If something fails, it can retry without affecting other concurrent queries. The handover from API to agent happens through SQS queues—the API writes requests to SQS, and Lambda concurrency controls how many agents execute simultaneously, keeping costs predictable while allowing scaling. LLMs are abstracted into services accessible to any agent, enabling model flexibility. The team used LangChain as the primary framework for building agents, particularly for tool-calling capabilities in the financial data and insider transaction agents. For SEC filings and news agents, they leveraged Bedrock Agents with Bedrock Knowledge Bases, taking advantage of AWS's managed RAG infrastructure.
+
+Input and output guardrails using AWS Bedrock Guardrails provide critical defense layers. The system intentionally avoids answering questions like "Should I buy Apple?" or "Where is the market headed?"—queries that would constitute financial advice. Guardrails detect and block such queries, as well as protecting against prompt injections. The team configured highly specific policies to detect finance-related topics (filtering out generic queries like "what is a black hole"), set word policies, and identify sensitive information like credit card numbers. The guardrail deployment process supports Terraform-based infrastructure-as-code approaches, enabling versioned, repeatable deployments.
+
+The databases use Amazon RDS for storing conversation history, context, and specialized datasets generated by background workflows. These workflows are event-driven—as soon as new SEC filings are published or news articles appear, Lambda functions trigger to index them into knowledge bases, ensuring the system has access to the latest information. For observability, the team initially used CloudWatch Metrics to track token counts, agent invocations, latencies, and performance.
+
+## Amazon Bedrock Agent Core Integration
+
+A significant portion of the presentation focuses on Amazon Bedrock Agent Core, AWS's recently launched agent orchestration platform that addresses production challenges. The presenters from AWS emphasize that moving from POC to production at enterprise scale typically encounters five critical challenges: performance issues when scaling from a few test users to thousands, scalability concerns around dynamic resource management and throughput bottlenecks, security challenges in authentication and identity management between agents, context preservation across long-term user sessions, and observability/audit/compliance requirements specific to each enterprise.
+
+Bedrock Agent Core offers a modular solution where customers can adopt individual components without committing to the entire platform. The architecture is framework-agnostic, model-agnostic, and doesn't lock users into specific technology stacks. Key value propositions include reducing time-to-value by eliminating infrastructure and operational overhead concerns, enabling development with any framework or model, and providing secure, scalable, reliable agent deployment on proven AWS infrastructure.
+
+The platform consists of several integrated components. Agent Core Runtime provides secure, scalable execution environments supporting large payloads for multimodal inputs (text, images, audio, video)—critical for deep research scenarios involving charts, documents, and video transcripts. Auto-scaling is built-in to handle varying workloads from normal operations to high-traffic events like earnings seasons. The runtime supports both synchronous real-time inference and asynchronous batch processing for millions of nightly or periodic inferences. Session isolation provides multi-tenancy so every user session remains secure and private without cross-contamination. Integrating Agent Core into existing agents requires minimal code—adding runtime, identity, and observability decorators takes approximately 10 lines of code.
+
+Agent Core Gateway acts as a centralized hosting point for all tools and MCP (Model Context Protocol) servers, with built-in support for Agent Core browser and interpreter capabilities. Agent Core Identity provides authentication mechanisms ensuring secure agent-to-agent communication with fine-grained role-based access control—agents can be assigned roles that determine which data sources they can access. Agent Core Memory offers dual-layer memory architecture: long-term memory for retaining historical context and research correlations (similar to human memory of prior research), and short-term memory for current workflow information. This eliminates the need for separate databases to manage conversation state. The memory system supports 8-hour runtime sessions, enabling long-running deep research cycles including multi-market analysis, comprehensive backtesting, and model refinement.
+
+Agent Core Observability integrates with open telemetry standards, allowing metrics to flow into existing enterprise monitoring tools. For multi-agent architectures, observability provides granular visibility into which subagents were called, which tools they invoked, token usage at each step, and where latency occurs. This enables rapid identification of performance bottlenecks whether in the primary agent, upstream subagents, downstream tools, or external APIs. The presenters also mentioned upcoming Agent Core Policy (for fine-grained control over agent actions) and Agent Core Evaluation (for systematic assessment), though these were not detailed as they were being announced at the re:Invent conference.
+
+## Data Management and Knowledge Base Strategies
+
+Managing heterogeneous financial data presents unique challenges that the system addresses through specialized strategies. Financial data is incredibly diverse: structured data like price histories, financial statements, and insider transactions; unstructured data including SEC filings, news articles, and earnings transcripts; and multimodal content such as charts, audio earnings calls, and video interviews. Access mechanisms vary—some data comes through APIs, others through data feeds—and update frequencies differ dramatically across sources.
+
+Temporal complexity adds another dimension. Companies follow different fiscal year patterns that don't align with calendar years, so answering "What was Apple's latest revenue growth?" depends on understanding Apple's fiscal year boundaries and whether the question is asked before or after earnings announcements. The system addresses this by providing tools that can query company fiscal quarters given a ticker symbol, allowing the agent to contextualize queries temporally. The presenters emphasize that simple prompt instructions on representing fiscal quarters and formatting large numbers consistently prove surprisingly effective.
+
+For RAG and knowledge base enhancement, the team adopted hierarchical chunking when working with large documents. SEC filings and news articles are lengthy and structured, and hierarchical chunking maintains document structure in vector indexes, improving retrieval quality. Metadata integration is deep—dates, filing types, publishers, company identifiers, and other contextual information are included in indexes so retrieval can leverage these signals. The team experimented with query rewriting for time-sensitive queries, reformulating questions to be more precise before retrieving documents. Knowledge base re-ranking ensures the most relevant chunks surface first in retrieval results.
+
+System prompt refinement focuses on leveraging LLM capabilities for query intent identification and named entity recognition rather than over-specifying logic. Prompts provide hints about available tools and let the LLM determine which tools to use—this approach proves remarkably effective. Standardized output formats are requested (how fiscal quarters should be represented, how large numbers should be formatted) to ensure consistency across responses.
+
+The system maintains knowledge bases through event-driven workflows. As new SEC filings are published (4,700 per day) or news articles appear (3,000 per day), Lambda functions automatically trigger indexing processes. This ensures agents always work with current information—critical in financial domains where information can materially affect investment decisions within minutes. The architecture separates licensed data that Yahoo! Finance obtains through partnerships from publicly available data gathered through restricted web searches, giving agents access to both proprietary and public information sources.
+
+## Evaluation Strategy and Quality Assurance
+
+Evaluation of financial question answering systems presents distinct challenges that the team addresses through a sophisticated hybrid approach. The primary difficulties are: finding a representative dataset of user queries when you don't know what users will ask until the feature launches; building a golden dataset of question-answer pairs that requires deep domain expertise and time-consuming validation; and dealing with rapid answer obsolescence as market conditions and company fundamentals change daily.
+
+The team recognizes two evaluation paradigms with complementary strengths and weaknesses. Human evaluation is highly trustworthy, catches subtle mistakes, and handles diverse query types flexibly, but it's slow, expensive, not scalable, and introduces variability between evaluators and subjective judgment. Automated evaluation using LLM-as-judge is fast, cheap, consistent, and scalable, but suffers from a trust gap—can you trust a system where AI produces answers and AI evaluates them?
+
+Yahoo! Finance's hybrid approach begins with data generation using templates rather than full question-answer pairs. A small set of templates expands to generate large question datasets (approximately 150 question patterns expanding to 450 questions for human evaluation, scaling to thousands for AI evaluation). They define an evaluation rubric with common metrics and clear instructions applicable to both human evaluators (as training guidelines) and AI judges (as prompt components). The scoring scale is fixed and consistent.
+
+The process starts with a small dataset that humans evaluate while AI judges run simultaneously. The team enters an iterative loop to fine-tune the AI judge's prompt to converge with human scores. Once convergence is achieved, they measure the offset or gap between AI judge and human judge scores on the validation set. When scaling evaluation to larger datasets, this offset is applied to AI judge scores to produce educated estimates of true performance.
+
+For quality metrics, the team focuses on three dimensions. Accuracy (analogous to precision in ML contexts) measures whether presented information is correct. Coverage assesses whether all key data points are included in answers. Presentation evaluates understandability, structure, and clarity of responses. These metrics provide a balanced view of system quality beyond simple correctness.
+
+Performance metrics show query latencies ranging from 5 to 50 seconds depending on complexity and number of tool calls required. The system has been tested at 100 concurrent queries and can scale linearly to thousands by increasing Lambda concurrency limits. If requirements exceed Lambda's capabilities, the architecture can migrate to Fargate or dedicated compute. Token consumption runs 10,000 to 50,000 tokens per query, translating to costs of 2 to 5 cents per query—economically viable at scale for serving millions of users.
+
+## Production Lessons and Best Practices
+
+The presentation emphasizes that complexity slows innovation, particularly infrastructure management complexity in scaling from POCs to production. The Yahoo! Finance journey illustrates progression from individual agent development on laptops with simple tools, to scaling within teams with multiple users, to expanding across business units with shared tools like GitHub and Atlassian, to ultimately coordinating thousands of agents interacting with thousands of other agents across organizational boundaries and thousands of tools. This progression presents escalating challenges in coordination, resource management, security, and governance—the primary reasons POCs fail to reach production.
+
+The concept of agentic AI maturity levels provides useful framing. The presenters describe a scale from rules-based automation (pre-defined LLM sequences executing tasks one after another) to generative AI assistants with RAG and web search (2023-2024 boom period enabling access beyond pre-trained data), to goal-driven AI agents that independently execute tasks toward higher-level objectives without setting their own goals (current state, Tier 3), to fully autonomous agents that set their own goals (Tier 4, not yet achieved). Most enterprises operate between Tiers 2 and 3, with RAG-based services and increasing autonomous agent deployment. Understanding where a use case fits on this maturity scale helps determine appropriate architectural approaches.
+
+The supervisor-subagent pattern versus agent swarm pattern distinction illuminates orchestration choices. Supervisor-subagent creates hierarchical control where a supervisor routes between worker subagents and makes final decisions—more structured and predictable. Agent swarms enable collective collaboration where each agent has awareness of others' message lists and decides when to hand off sessions—more distributed decision-making that can prevent repetitive tasks when agents have similar tool sets. Hybrid patterns combining hierarchical flow with collaborative intelligence offer additional flexibility. The Yahoo! Finance implementation uses supervisor-subagent for structured control while maintaining specialized focus across financial domains.
+
+The importance of observability throughout the agent lifecycle cannot be overstated. The system needs to audit which agents were invoked, which tools they called, what data sources were accessed, token usage at each step, and where latencies occur. This becomes critical for debugging production issues, optimizing performance, identifying cost drivers, and maintaining compliance with financial regulations requiring audit trails of information sources used in investment research. Integration with open telemetry standards allows observability data to flow into existing enterprise monitoring stacks rather than requiring separate specialized tools.
+
+Security and guardrails represent essential production components. The input guardrails filter inappropriate queries before they reach agents, preventing wasted compute and potential regulatory issues. Output guardrails examine generated answers for investment advice, future predictions, or other content the system shouldn't provide. The use of AWS Bedrock Guardrails with Terraform-based deployment demonstrates the importance of treating safety measures as versioned, tested infrastructure code rather than afterthoughts.
+
+The presenters acknowledge the presentation's positioning—representatives from AWS and a customer showcasing AWS services—but the architectural patterns, challenges, and solutions discussed apply broadly. The emphasis that Agent Core is framework-agnostic, model-agnostic, and that the initial architecture could be implemented on any cloud platform suggests genuine focus on solving real problems rather than pure vendor promotion. The Yahoo! Finance team's detailed discussion of evaluation challenges, cost metrics, and architectural evolution lends credibility to the practical insights shared.
+
+## Broader Context and Future Directions
+
+The case study situates within the broader trend of agentic AI moving from hype to reality through convergence of key enablers. Advanced foundation models with improved reasoning capabilities plan and coordinate across tools more effectively. Data and knowledge integration allows grounding insights in enterprise context and proprietary datasets. Scalable, secure infrastructure and agentic protocols like Model Context Protocol (MCP) enable safe agent connections. Sophisticated agent development tools and frameworks make building and deploying agents increasingly accessible. These converging factors explain the current excitement about practical AI agent implementations across industries and functions.
+
+The financial domain provides a particularly demanding test case for agentic systems due to accuracy requirements, regulatory constraints, need for audit trails, temporal complexity, and data heterogeneity. Success in this domain suggests the patterns and approaches can transfer to other high-stakes applications. The team's explicit avoidance of financial advice, trading recommendations, tax guidance, and legal guidance demonstrates appropriate scoping and risk management—critical for production AI systems in regulated industries.
+
+Looking forward, the team mentions exploring additional patterns including text-to-SQL agents with unified knowledge bases for answering questions from tabular data, and extending existing patterns (tool calling and RAG) to more data sources like earnings transcripts and video transcripts. The mention of upcoming Agent Core Policy for fine-grained control over agent actions and Agent Core Evaluation for systematic assessment indicates the platform continues evolving to address production requirements. The ability to run agents for up to 8 hours enables future long-running research workflows including multi-market analysis, comprehensive backtesting, and iterative model refinement—potentially approaching more autonomous research capabilities.
+
+The case demonstrates that production LLMOps for multi-agent systems requires careful attention to architecture patterns, infrastructure automation, evaluation methodology, security and governance, observability, cost management, and data pipeline orchestration. The hybrid evaluation approach, event-driven knowledge base updates, hierarchical chunking strategies, and modular adoption of managed services illustrate practical solutions to these challenges. While questions remain about long-term evaluation dataset maintenance, cost scaling at millions of users, and handling of edge cases in complex financial scenarios, the system represents a substantial achievement in deploying sophisticated agentic AI at production scale in a demanding domain.

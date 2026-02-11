@@ -1,0 +1,143 @@
+---
+title: "Scaling Agent-Based Architecture for Legal AI Assistant"
+slug: "scaling-agent-based-architecture-for-legal-ai-assistant"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "694ada58f4cca4649038197a"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2026-01-07T09:40:39.763Z"
+  lastUpdated: "2025-12-23T20:12:19.314Z"
+  createdOn: "2025-12-23T18:07:20.254Z"
+llmopsTags:
+  - "document-processing"
+  - "question-answering"
+  - "summarization"
+  - "classification"
+  - "high-stakes-application"
+  - "structured-output"
+  - "regulatory-compliance"
+  - "prompt-engineering"
+  - "agent-based"
+  - "multi-agent-systems"
+  - "evals"
+  - "system-prompts"
+  - "fine-tuning"
+  - "semantic-search"
+  - "langchain"
+  - "cicd"
+  - "continuous-integration"
+  - "continuous-deployment"
+  - "monitoring"
+  - "documentation"
+  - "orchestration"
+  - "guardrails"
+  - "openai"
+company: "Harvey"
+summary: "Harvey, a legal AI platform provider, transitioned their Assistant product from bespoke orchestration to a fully agentic framework to enable multiple engineering teams to scale feature development collaboratively. The company faced challenges with feature discoverability, complex retrieval integrations, and limited pathways for new capabilities, leading them to adopt an agent architecture in mid-2025. By implementing three core principles—eliminating custom orchestration through the OpenAI Agent SDK, creating Tool Bundles for modular capabilities with partial system prompt control, and establishing eval gates with leave-one-out validation—Harvey successfully scaled in-thread feature development from one to four teams while maintaining quality and enabling emergent feature combinations across retrieval, drafting, review, and third-party integrations."
+link: "https://www.harvey.ai/blog/principles-that-helped-us-scale-agent-development"
+year: 2025
+seo:
+  title: "Harvey: Scaling Agent-Based Architecture for Legal AI Assistant - ZenML LLMOps Database"
+  description: "Harvey, a legal AI platform provider, transitioned their Assistant product from bespoke orchestration to a fully agentic framework to enable multiple engineering teams to scale feature development collaboratively. The company faced challenges with feature discoverability, complex retrieval integrations, and limited pathways for new capabilities, leading them to adopt an agent architecture in mid-2025. By implementing three core principles—eliminating custom orchestration through the OpenAI Agent SDK, creating Tool Bundles for modular capabilities with partial system prompt control, and establishing eval gates with leave-one-out validation—Harvey successfully scaled in-thread feature development from one to four teams while maintaining quality and enabling emergent feature combinations across retrieval, drafting, review, and third-party integrations."
+  canonical: "https://www.zenml.io/llmops-database/scaling-agent-based-architecture-for-legal-ai-assistant"
+  ogTitle: "Harvey: Scaling Agent-Based Architecture for Legal AI Assistant - ZenML LLMOps Database"
+  ogDescription: "Harvey, a legal AI platform provider, transitioned their Assistant product from bespoke orchestration to a fully agentic framework to enable multiple engineering teams to scale feature development collaboratively. The company faced challenges with feature discoverability, complex retrieval integrations, and limited pathways for new capabilities, leading them to adopt an agent architecture in mid-2025. By implementing three core principles—eliminating custom orchestration through the OpenAI Agent SDK, creating Tool Bundles for modular capabilities with partial system prompt control, and establishing eval gates with leave-one-out validation—Harvey successfully scaled in-thread feature development from one to four teams while maintaining quality and enabling emergent feature combinations across retrieval, drafting, review, and third-party integrations."
+---
+
+## Overview
+
+Harvey is a legal AI platform company that provides domain-specific AI tools for legal professionals, including an Assistant for document analysis and drafting, a Vault for document storage, Knowledge for legal research, and Workflows for custom legal processes. This case study describes Harvey's engineering team's transition from traditional LLM orchestration to a fully agentic framework for their Assistant product during 2025, specifically addressing the operational and organizational challenges of scaling LLM-based feature development across multiple engineering teams.
+
+The case represents a significant LLMOps initiative where Harvey needed to solve both technical and organizational problems: how to enable multiple teams to contribute capabilities to a single conversational AI system while maintaining quality, reducing conflicts, and leveraging the full potential of modern foundation models. The document provides insight into production-scale challenges that emerge when operating LLM systems beyond simple proof-of-concept deployments.
+
+## Business Context and Initial Problem
+
+Harvey's Assistant product aimed to proactively plan, create, and execute end-to-end legal tasks on behalf of customers. The system needed to integrate core building blocks including retrieval, drafting, and review into unified conversational threads. Customer queries varied significantly in complexity—from making multiple retrieval requests to specialized tax law databases cross-referenced with recent news, to dynamically pulling information from customer Vaults to address difficult sections in long drafts, to adding and aggregating columns in document review tables.
+
+Before the agent framework adoption, Harvey's Assistant team operated with a straightforward development model: engineers wrote Python code mixed with LLM calls, ran evaluations, and shipped features. This approach produced highly tuned systems that achieved benchmark-leading performance on internal datasets. However, the team routed features through explicit design choices—Draft mode for drafting, knowledge source recommendations for retrieval, and limited pathways for other teams to contribute beyond retrieval knowledge sources.
+
+This model hit multiple walls simultaneously. From a UX perspective, users weren't discovering Draft mode effectively. From an engineering standpoint, integrating multiple retrieval calls behind a single interface became complex to maintain. From a collaboration perspective, new features like the Ask LexisNexis integration lacked clear launch paths. The Assistant was also becoming the integration point for critical third-party systems like iManage and new product modes like Deep Research, making it impractical for a single team to own all capability additions.
+
+## Strategic Rationale for Agent Framework Adoption
+
+Harvey identified that their problems—open-ended problem solving and numerous integrations—aligned well with agent framework capabilities. An agent architecture could cleanly separate specific capabilities (such as "adding columns," "editing drafts," "searching Lexis") from the model's core reasoning logic. This separation would theoretically enable Harvey to scale in-thread feature development from one team to four, unlock emergent feature combinations where capabilities could work together in unexpected ways, and enable centralized evaluation across all capabilities.
+
+The engineering team recognized that "the hardest part of adopting agents isn't writing the code—it's learning, as an engineering org, to share ownership of a single brain." This insight proved central to their approach, as the technical challenge was less about implementing agent loops and more about establishing collaboration patterns that would prevent teams from undermining each other's work.
+
+## Initial Agent Implementation and Emerging Challenges
+
+In mid-2025, Harvey shifted to a pure agent framework where forced retrieval calls became tool calls, new integrations became tool calls, and bespoke editing logic became tool calls, all coordinated through a growing system prompt. The initial assumption was that collaboration would be straightforward: one team owns the system prompt, others own tools.
+
+However, production experience quickly revealed more nuanced challenges. Each new capability required its own set of instructions within the main system prompt, and as soon as multiple engineers modified the system's core instructions, conflicts emerged. As one Harvey developer described it, "You're no longer merging unit-testable code, you're merging English."
+
+Specific conflicts manifested in predictable patterns. If Developer A focused on improving tool recall for retrieval tools, they might instruct the system prompt to "call all the tools at your disposal." Meanwhile, Developer B working on reducing average query latency might instruct the prompt to "not overthink things and take the fastest path to the goal." In a traditional orchestrated system, these engineers would work on separate components with clear boundaries. In an agentic system, their objectives directly collided within the shared reasoning system.
+
+## Three Core Principles for Scaling Agent Development
+
+To address these challenges while maintaining their three goals—high quality output that improves over time, interoperability between features, and minimal centralized team involvement—Harvey adopted three core principles that shaped their LLMOps practices.
+
+### Principle 1: No Custom Orchestration
+
+Harvey established a strict policy that all new product features living in Assistant must be implemented as Tool Bundles, and every top-level thread interface must be an agent. Individual product developers were accustomed to writing bespoke orchestration for specific goals, such as a case law research product that would deterministically query a user's document and then use results to investigate recent case law. While this approach offered shorter paths to product goals, it reintroduced the routing complexity and human decision-making that undermined their architecture goals.
+
+Rather than building their own agent library with flexible orchestration options, Harvey deliberately adopted the OpenAI Agent SDK. This external framework explicitly excluded workflow-type orchestration capabilities. This apparent limitation became a forcing function that compelled teams to work with the strengths of modern foundation models—calling tools in loops—rather than building hybrid systems that would fragment the architecture.
+
+The case law research product example illustrates the tradeoffs. While the team couldn't guarantee deterministic execution, they achieved high recall rates with tuned prompts. More importantly, by adhering to the framework, they immediately unlocked integration with other knowledge sources and their Deep Research system—emergent capabilities that wouldn't have been possible with custom orchestration.
+
+### Principle 2: Capabilities as Tool Bundles
+
+Harvey designed a Tool Bundle interface that became central to their scaling strategy. A Tool Bundle allows developers to package new capabilities—potentially composed of multiple tools or sub-agents—into a single entity with associated instructions. Critically, Tool Bundles give feature and integration developers the ability to inject instructions into the main agent system prompt without requiring approval or implementation work from the central Assistant team.
+
+The file system Tool Bundle exemplifies this pattern, comprising a grep-like file search tool, a file open tool, and a semantic search tool, along with instructions guiding the model on leveraging these tools together. Similarly, the drafting Tool Bundle comprises an editing tool and a drafting sub-agent. This modular architecture enables capabilities to be portable between different agents while giving teams partial control over how the model reasons about their specific domain.
+
+The Tool Bundle abstraction addresses the collaboration challenge by providing clear ownership boundaries. Feature teams own their bundles and the instructions for using them, while the central team maintains the overall system prompt and coordination logic. This distribution of responsibility enables parallel development while maintaining architectural coherence.
+
+### Principle 3: Eval Gates on Capabilities
+
+Harvey identified three major risks in their contribution-based framework: system prompt to Tool Bundle conflicts where reasoning updates might reduce tool recall, Tool Bundle to system prompt conflicts where bundle-specific instructions might trigger unintended behavior in other bundles, and context rot where new tool outputs might overwhelm the agent with excessive context.
+
+To guard against these risks, Harvey requires both the central Assistant team and feature/integration developers to maintain datasets and evaluators for each Tool Bundle, along with thresholds that trigger alerts if metrics drop below specified scores. The retrieval dataset, for example, defines numerous queries with expected recall across knowledge sources. When any change is made to the system—whether to the central prompt, a specific bundle, or a model upgrade—developers can verify that their capability has not regressed.
+
+This evaluation framework implements a leave-one-out validation gating approach. Before any Tool Bundle or system prompt upgrade can be deployed, it must pass tests demonstrating that existing capabilities maintain their performance levels. This creates a continuous integration-style quality gate specifically designed for the unique challenges of multi-team agent development.
+
+## LLMOps Architecture and Technical Patterns
+
+The resulting architecture demonstrates several notable LLMOps patterns. Harvey's agents are composed of a system prompt and a set of Tool Bundles, with the OpenAI Agent SDK managing the tool-calling loop. This creates a three-layer architecture: the foundation model reasoning layer, the tool orchestration layer managed by the SDK, and the capability layer implemented through Tool Bundles.
+
+The team explicitly leveraged the capabilities of modern foundation models rather than compensating for perceived weaknesses through deterministic code. This represents a philosophical shift in LLMOps practice—trusting model capabilities for coordination while using engineering discipline (Tool Bundles, eval gates) to ensure reliability. The approach accepts some non-determinism in execution paths while maintaining determinism in outcome quality through comprehensive evaluation.
+
+The prompt engineering approach distributes responsibility across teams through the Tool Bundle instruction mechanism. Rather than having all prompt engineering flow through a central team, feature teams contribute domain-specific instructions while the central team maintains overall coherence. This distributed prompt engineering approach requires strong interfaces and evaluation to prevent conflicts, but enables much faster feature development.
+
+## Production Challenges and Ongoing Work
+
+Despite the successes, Harvey's engineering team acknowledges ongoing challenges in their agent-based LLMOps practice. They are working to deepen their understanding of agents and introduce new best practices around system prompt and tool design. The combinatorial complexity of testing multiple Tool Bundles together remains a scaling concern—how do they smartly test for all possible capability combinations as the number of bundles grows?
+
+The team is also exploring reinforcement fine-tuning to improve tool recall, answer quality, and reduce reliance on prompt engineering. This suggests recognition that while their architectural patterns enable scaling, they may be reaching limits of what pure prompt engineering can achieve, necessitating more sophisticated model customization approaches.
+
+Context management remains an active area of development. As Tool Bundles add more tools and those tools return richer outputs, maintaining model performance within context limits requires ongoing attention. The team hasn't detailed their specific approaches to context management, but this challenge is inherent in agentic systems that accumulate tool call history within conversation threads.
+
+## Critical Assessment and Balanced Perspective
+
+This case study provides valuable insights into production LLMOps practices, though readers should consider several caveats. First, the document is published by Harvey's engineering team as a recruitment and thought leadership piece, so it naturally emphasizes successes while providing limited detail on failures or ongoing challenges. The team mentions "what broke along the way" but provides minimal specifics beyond the collaboration challenges.
+
+The adoption of the OpenAI Agent SDK represents both a strength and potential risk. While it provided forcing functions that improved architectural discipline, it also creates vendor dependency and may constrain future architectural evolution. Harvey doesn't discuss fallback strategies if the SDK proves limiting or if they need to migrate to alternative frameworks.
+
+The evaluation framework, while clearly important to Harvey's approach, lacks detailed specification in this document. How comprehensive are the datasets? What percentage of real-world usage do they cover? How do they handle edge cases or adversarial inputs? The leave-one-out validation approach catches regressions but may not detect subtle degradations or identify positive transfer opportunities.
+
+The claim that this approach "ultimately enabled us to scale feature development and accelerate delivery" is supported by the increase from one to four teams, but without quantitative metrics on delivery velocity, quality improvements, or customer satisfaction changes. The emergent feature combinations are mentioned but not demonstrated with concrete examples beyond the case law research integration.
+
+From a technical perspective, the approach represents mature LLMOps thinking that balances model capabilities with engineering discipline. The Tool Bundle abstraction is well-designed for the collaboration problem, though it may introduce overhead as the number of bundles grows. The no-custom-orchestration rule shows strong architectural conviction, though some use cases might genuinely benefit from deterministic flows.
+
+The framework appears well-suited for Harvey's specific context—a product where open-ended problem solving across multiple legal domains is the core value proposition, and where multiple engineering teams need to contribute domain-specific capabilities. Organizations with simpler use cases or smaller teams might find this architecture introduces unnecessary complexity. Conversely, organizations at even larger scale might discover additional challenges that Harvey hasn't yet encountered.
+
+## Broader LLMOps Implications
+
+This case study illustrates several broader trends in production LLM systems. The shift from bespoke orchestration to agent frameworks reflects growing confidence in foundation model capabilities and a maturing understanding of where deterministic code adds value versus where it constrains potential. The multi-team collaboration challenge Harvey faced will become increasingly common as LLM applications scale beyond single-team projects.
+
+The distributed prompt engineering pattern enabled by Tool Bundles suggests one approach to the "prompt ownership" problem that many organizations face. Rather than treating prompts as monolithic artifacts owned by a single team, Harvey's approach enables modular prompt contributions with clear interfaces and evaluation gates. This may become a more common pattern as prompt complexity grows.
+
+The emphasis on evaluation frameworks as enabling rather than just gatekeeping technology is noteworthy. Harvey's eval gates don't just prevent bad changes—they enable confident parallel development by multiple teams. This represents a mature perspective on evaluation as a core LLMOps capability rather than a final quality check.
+
+Finally, the candid acknowledgment that "the hardest part of adopting agents isn't writing the code—it's learning, as an engineering org, to share ownership of a single brain" highlights that LLMOps success depends as much on organizational practices as technical architecture. The code patterns matter, but the collaboration patterns enabled by those technical choices may matter more for scaling production LLM systems.

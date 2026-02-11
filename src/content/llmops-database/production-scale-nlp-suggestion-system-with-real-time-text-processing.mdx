@@ -1,0 +1,124 @@
+---
+title: "Production-Scale NLP Suggestion System with Real-Time Text Processing"
+slug: "production-scale-nlp-suggestion-system-with-real-time-text-processing"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "694adda9467e6f926b72e16e"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2026-01-07T09:40:39.763Z"
+  lastUpdated: "2025-12-23T20:11:49.607Z"
+  createdOn: "2025-12-23T18:21:29.028Z"
+llmopsTags:
+  - "content-moderation"
+  - "document-processing"
+  - "latency-optimization"
+  - "error-handling"
+  - "system-prompts"
+  - "microservices"
+  - "api-gateway"
+  - "orchestration"
+  - "open-source"
+  - "documentation"
+  - "reliability"
+  - "scalability"
+  - "fastapi"
+  - "cache"
+company: "Grammarly"
+summary: "Grammarly built a sophisticated production system for delivering writing suggestions to 30 million users daily. The company developed an extensible operational transformation protocol using Delta format to represent text changes, user edits, and AI-generated suggestions in a unified manner. The system addresses critical challenges in managing ML-generated suggestions at scale: maintaining suggestion relevance as users edit text in real-time, rebasing suggestion positions according to ongoing edits without waiting for backend updates, and applying multiple suggestions simultaneously without UI freezing. The architecture includes a Suggestions Repository, Delta Manager for rebasing operations, and Highlights Manager, all working together to ensure suggestions remain accurate and applicable as document state changes dynamically."
+link: "https://www.grammarly.com/blog/engineering/how-suggestions-work-grammarly-editor/"
+year: 2022
+seo:
+  title: "Grammarly: Production-Scale NLP Suggestion System with Real-Time Text Processing - ZenML LLMOps Database"
+  description: "Grammarly built a sophisticated production system for delivering writing suggestions to 30 million users daily. The company developed an extensible operational transformation protocol using Delta format to represent text changes, user edits, and AI-generated suggestions in a unified manner. The system addresses critical challenges in managing ML-generated suggestions at scale: maintaining suggestion relevance as users edit text in real-time, rebasing suggestion positions according to ongoing edits without waiting for backend updates, and applying multiple suggestions simultaneously without UI freezing. The architecture includes a Suggestions Repository, Delta Manager for rebasing operations, and Highlights Manager, all working together to ensure suggestions remain accurate and applicable as document state changes dynamically."
+  canonical: "https://www.zenml.io/llmops-database/production-scale-nlp-suggestion-system-with-real-time-text-processing"
+  ogTitle: "Grammarly: Production-Scale NLP Suggestion System with Real-Time Text Processing - ZenML LLMOps Database"
+  ogDescription: "Grammarly built a sophisticated production system for delivering writing suggestions to 30 million users daily. The company developed an extensible operational transformation protocol using Delta format to represent text changes, user edits, and AI-generated suggestions in a unified manner. The system addresses critical challenges in managing ML-generated suggestions at scale: maintaining suggestion relevance as users edit text in real-time, rebasing suggestion positions according to ongoing edits without waiting for backend updates, and applying multiple suggestions simultaneously without UI freezing. The architecture includes a Suggestions Repository, Delta Manager for rebasing operations, and Highlights Manager, all working together to ensure suggestions remain accurate and applicable as document state changes dynamically."
+---
+
+## Overview
+
+Grammarly operates one of the world's largest production NLP systems, serving 30 million daily users and 30,000 professional teams with real-time writing assistance. This case study describes the technical architecture behind how Grammarly manages AI-generated writing suggestions in production, focusing on the complex orchestration required to keep suggestions relevant, accurate, and performant as users actively edit their documents. While the article was published in 2022 and doesn't explicitly mention large language models, it addresses fundamental LLMOps challenges that remain highly relevant for any production system serving ML-generated suggestions at scale: managing model outputs in dynamic contexts, handling client-server synchronization, and maintaining user experience quality.
+
+The core technical challenge Grammarly addresses is fundamentally an LLMOps problem: how to deploy machine learning model outputs (writing suggestions) in a production environment where the input context (user's text) is constantly changing, and do so with requirements for instant responsiveness, perfect accuracy in suggestion placement, and the ability to handle complex multi-suggestion scenarios. This represents a sophisticated approach to operationalizing NLP models in a highly interactive, user-facing application.
+
+## Technical Architecture and Protocol Design
+
+The foundation of Grammarly's production system is an operational transformation (OT) protocol built around the Delta format. This protocol serves as the unified representation layer for three distinct types of data flows in the system: the document text itself, user-initiated edits, and AI-generated suggestions from the backend. The elegance of this approach lies in its extensibility—by representing all changes as Deltas, the system can handle increasingly complex suggestion types without requiring protocol modifications.
+
+A Delta consists of three operation types: "insert" for adding text, "delete" for removing text, and "retain" for specifying position. This simple vocabulary proves sufficiently expressive to represent everything from basic spelling corrections to complex multi-paragraph rewrites. For example, a suggestion to correct "schock" to "shock" at position 9 is represented as: `[{retain: 9}, {insert: "shock"}, {delete: 6}]`. The critical insight here is that by using the same representation format for both user edits and ML suggestions, the system can apply the same transformation algorithms to both, dramatically simplifying the complexity of keeping suggestions synchronized with rapidly changing text.
+
+The extensibility of this protocol has proven valuable as Grammarly's ML capabilities evolved. Originally designed for single-word corrections, the system now handles suggestions that span sentences, paragraphs, or even entire documents for consistency improvements. Notably, none of these advances required changes to the underlying protocol—a testament to the importance of building flexible abstractions when deploying ML systems in production. This is a key LLMOps principle: the interface layer between models and application logic should be designed for evolution as model capabilities improve.
+
+## Managing Suggestion Lifecycle in Production
+
+The architecture for managing suggestions in production consists of several interconnected components. The Suggestions Repository serves as the central store for all active suggestions received from backend ML models. Each suggestion can exist in different states: "registered" (relevant and correct), "applied" (accepted by user), or removed (no longer relevant). The Delta Manager is responsible for the critical task of keeping suggestion Deltas synchronized with the current text state through a continuous rebasing process. The Highlights Manager handles the visual rendering of mistakes in the user interface.
+
+These components operate in what the engineers describe as a "cycle": whenever text changes occur, the system must notify the Delta and Highlights Managers, re-render affected UI elements, potentially update the Suggestions Repository, and handle bidirectional communication with the backend. This cyclic architecture represents a common pattern in production ML systems where model outputs must be continuously reconciled with changing ground truth.
+
+The engineering team emphasizes that having many interconnected entities performing computations in the browser requires careful attention to algorithms and data structures. Even slightly suboptimal algorithms repeated across multiple components can degrade into a slow or unresponsive application. This highlights a crucial but often overlooked aspect of LLMOps: the computational efficiency of the orchestration layer that manages model outputs can be just as important as the efficiency of the models themselves.
+
+## The Rebase Procedure: Keeping Suggestions Accurate
+
+The rebase procedure is the technical heart of how Grammarly maintains suggestion accuracy as documents evolve. Every time a user makes an edit, all registered suggestions must be updated to reflect the new document state—and this must happen instantly on the client side without waiting for the backend to regenerate suggestions. This requirement stems from a fundamental UX constraint: suggestions must be instantly applicable when clicked, and cards must never flicker or point to incorrect text locations.
+
+Consider a concrete example: a suggestion targets the word "schock" at position 9 with the Delta `[{retain: 9}, {insert: "shock"}, {delete: 6}]`. The user then edits the beginning of the document, changing "A" to "The", which shifts all subsequent text by two characters. The Delta Manager must rebase the suggestion Delta onto this edit Delta, producing `[{retain: 11}, {insert: "shock"}, {delete: 6}]`—the retain value increases from 9 to 11 to account for the positional shift.
+
+The rebasing algorithm iterates over the operation lists of both the suggestion Delta and the edit Delta, merging them into a new operation list. Grammarly built this on top of Quill's rebase algorithm, demonstrating the value of leveraging proven open-source foundations when building production ML systems. The algorithm must handle all combinations of operation types (insert, delete, retain) and correctly compose them while maintaining semantic correctness.
+
+This rebasing capability enables a critical architectural decision: the client can maintain suggestion accuracy without backend involvement for every edit. This dramatically reduces latency and backend load while ensuring responsive UX. From an LLMOps perspective, this represents an important pattern for production systems: building intelligent client-side logic that can adapt model outputs to changing contexts, reducing the need for expensive model re-inference.
+
+## Relevance Management and Suggestion Invalidation
+
+Beyond positional accuracy, suggestions must also remain semantically relevant. If a user independently fixes a mistake that a suggestion addresses, that suggestion should be immediately hidden as it's no longer useful. The system implements sophisticated logic to determine when suggestions should be invalidated based on user edits.
+
+For simple suggestions like spelling corrections, the logic is straightforward: if the user changes the target word, hide the suggestion. But Grammarly's more advanced suggestions that span sentences or paragraphs introduce complexity. These suggestions typically highlight only specific phrases within a larger span of text. The system must distinguish between edits to highlighted portions (which should invalidate the suggestion) and edits to non-highlighted portions (which should preserve the suggestion).
+
+For example, if a sentence-level suggestion highlights certain phrases but a user edits a different, non-highlighted word in that sentence, the suggestion remains valid and visible. This requires the system to track not just the overall span of a suggestion but also the specific sub-spans that are semantically critical to that suggestion. The article doesn't provide implementation details for this tracking mechanism, but it represents a sophisticated approach to managing ML output relevance in dynamic contexts.
+
+This relevance management is crucial for user experience—irrelevant suggestions create friction and erode trust in the system. From an LLMOps perspective, this highlights the importance of building robust invalidation logic around model outputs. It's not sufficient to simply serve model predictions; production systems must actively monitor when those predictions become stale or irrelevant and remove them accordingly.
+
+## Batch Suggestion Application and Performance Optimization
+
+One of Grammarly's most requested features was the ability to accept multiple suggestions at once, particularly for straightforward corrections like spelling mistakes. This seemingly simple feature revealed interesting challenges in the production architecture. The naive implementation—iterating through suggestions and applying each one sequentially—technically works but creates serious UX problems when applying large batches. Users would experience the editor freezing for several seconds as the browser repeated the full "cycle" of updates for each suggestion.
+
+The engineering team's investigation revealed that the most time-consuming operation was updating the text editor Delta, which was being repeated for every suggestion. The solution leverages a mathematical property of Deltas: multiple Deltas can be composed together into a single Delta representing all changes at once. By composing all suggestion Deltas before applying them to the text, the team transformed a repeated O(n) operation into a single operation, eliminating the UI freeze.
+
+However, this optimization introduced a subtle correctness problem. When suggestions are composed together, each subsequent suggestion must be rebased as if all previous suggestions had already been applied to the text. Without this rebasing step, the composed Delta would apply suggestions to incorrect positions, resulting in corrupted text with "characters all mixed up." The corrected implementation rebases each suggestion Delta onto the accumulating composed Delta before adding it: `rebasedDelta = delta.rebase(composedDelta); composedDelta = composedDelta.compose(rebasedDelta)`.
+
+This optimization story illustrates important LLMOps principles. First, performance engineering of the orchestration layer is critical for production ML systems—the way you manage and apply model outputs can be as important as the outputs themselves. Second, optimizations that change the order or batching of operations can introduce subtle correctness bugs that require careful reasoning about state transformations. The team had to deeply understand the mathematical properties of their Delta representation to implement batch processing correctly.
+
+## Production Infrastructure and Scale Considerations
+
+While the article focuses primarily on client-side architecture, it provides glimpses of the broader production infrastructure. Suggestions originate from backend services that scan text for mistakes, implying a model serving layer that processes documents and generates predictions. The backend communicates suggestions to clients through a client-server protocol, with the system designed to minimize backend dependencies through intelligent client-side processing.
+
+The architecture serves 30 million daily users and 30,000 professional teams, representing significant scale. This scale requirement drove many of the architectural decisions described in the article. The need to minimize backend round-trips, handle rapid user edits without backend consultation, and maintain responsive UX all stem from operating at this scale. The article notes that engineers "need to know and use proper algorithms and data structures" because inefficiencies compound across the many interconnected components.
+
+From an LLMOps perspective, the system demonstrates a sophisticated approach to distributing intelligence between backend model serving and client-side orchestration. The backend is responsible for running ML models and generating suggestions, while the client handles the complex task of maintaining suggestion relevance and accuracy as context changes. This division of responsibilities allows the backend to focus on model inference while the client provides the real-time responsiveness users expect.
+
+## Technical Debt and Evolution Considerations
+
+Interestingly, the article notes that the OT protocol has "never had to change" despite significant evolution in Grammarly's product capabilities. What started as a system for single-word corrections now handles complex multi-paragraph rewrites and document-wide consistency improvements. This stability speaks to the quality of the original abstraction design but also raises questions about whether the protocol's flexibility comes with any accumulated technical debt or performance implications.
+
+The article doesn't address potential limitations of the Delta-based approach or scenarios where it might struggle. For instance, how does the system handle suggestions that require understanding of context beyond the immediate text span? How are suggestion priorities or conflicts managed when multiple suggestions overlap? These questions represent common challenges in production ML systems that the article doesn't explore.
+
+Additionally, while the article celebrates the protocol's extensibility, it doesn't discuss any monitoring or observability infrastructure for the suggestion system. In production LLMOps, tracking metrics like suggestion acceptance rates, invalidation frequencies, rebase operation counts, and performance characteristics would be crucial for understanding system health and identifying optimization opportunities.
+
+## Critical Assessment and Balanced Perspective
+
+It's important to note that this article is published on Grammarly's technical blog as both a technical deep-dive and recruitment content. While the technical details appear sound and the engineering challenges are genuinely complex, the article naturally presents Grammarly's approach in a positive light without discussing alternative architectures, failed experiments, or significant limitations.
+
+The article doesn't address some practical questions about the production system. How does error handling work when rebasing fails or produces invalid states? What happens when client and server states diverge significantly? How does the system handle offline editing scenarios? These are common challenges in production systems that aren't covered. Additionally, while the article mentions that suggestions include "syntactic sugar and additional metainformation," it doesn't detail what this metadata is or how it's used, leaving gaps in understanding the full system complexity.
+
+The performance optimization story around batch suggestion application is presented as a clear success, but the article doesn't provide quantitative metrics on improvement (e.g., how much faster the optimized version is, or what batch sizes were causing problems). This makes it harder to assess the actual impact of the optimization or to apply lessons to other contexts.
+
+Despite these limitations, the article provides valuable insights into real-world LLMOps challenges and solutions. The core concepts—using unified representations for model outputs and application state, building client-side intelligence to reduce backend dependencies, and careful attention to performance in ML orchestration layers—are broadly applicable principles for production ML systems.
+
+## Relevance to Modern LLMOps
+
+While this article predates the widespread adoption of large language models, the challenges and solutions it describes remain highly relevant to modern LLMOps. Contemporary LLM applications face similar issues: managing model outputs in dynamically changing contexts, minimizing latency through intelligent client-side processing, handling batch operations efficiently, and maintaining output relevance as user input evolves.
+
+The operational transformation approach and Delta format represent one architectural pattern for managing these challenges. Modern LLM applications might use different representations (like JSON patches, CRDTs, or event sourcing), but they face fundamentally similar problems around state synchronization, position tracking, and performance optimization. The rebase operation Grammarly describes is conceptually similar to how modern LLM applications must update prompt contexts or re-anchor tool calls when conversation state changes.
+
+The article also demonstrates the importance of thoughtful abstraction design in ML systems. By choosing a flexible representation format early on, Grammarly was able to evolve their ML capabilities without rewriting core infrastructure. This lesson is particularly relevant for modern LLMOps where model capabilities are evolving rapidly—building abstractions that can accommodate future improvements is crucial for sustainable production systems.

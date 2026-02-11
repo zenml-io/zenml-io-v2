@@ -1,0 +1,195 @@
+---
+title: "Production LLM Systems: Document Processing and Real Estate Agent Co-pilot Case Studies"
+slug: "production-llm-systems-document-processing-and-real-estate-agent-co-pilot-case-studies"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f405d1faea791aaf43425"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:38:35.852Z"
+  createdOn: "2024-11-21T14:14:53.164Z"
+llmopsTags:
+  - "cache"
+  - "chunking"
+  - "cicd"
+  - "document-processing"
+  - "fine-tuning"
+  - "human-in-the-loop"
+  - "kubernetes"
+  - "langchain"
+  - "model-optimization"
+  - "monitoring"
+  - "multi-modality"
+  - "openai"
+  - "prompt-engineering"
+  - "realtime-application"
+  - "redis"
+  - "reliability"
+  - "scalability"
+  - "semantic-search"
+  - "structured-output"
+  - "triton"
+  - "vector-search"
+company: "Various"
+summary: "A comprehensive webinar featuring two case studies of LLM systems in production. First, Docugami shared their experience building a document processing pipeline that leverages hierarchical chunking and semantic understanding, using custom LLMs and extensive testing infrastructure. Second, Reet presented their development of Lucy, a real estate agent co-pilot, highlighting their journey with OpenAI function calling, testing frameworks, and preparing for fine-tuning while maintaining production quality."
+link: "https://www.youtube.com/watch?v=ll-Xit_Khq0"
+year: 2023
+seo:
+  title: "Various: Production LLM Systems: Document Processing and Real Estate Agent Co-pilot Case Studies - ZenML LLMOps Database"
+  description: "A comprehensive webinar featuring two case studies of LLM systems in production. First, Docugami shared their experience building a document processing pipeline that leverages hierarchical chunking and semantic understanding, using custom LLMs and extensive testing infrastructure. Second, Reet presented their development of Lucy, a real estate agent co-pilot, highlighting their journey with OpenAI function calling, testing frameworks, and preparing for fine-tuning while maintaining production quality."
+  canonical: "https://www.zenml.io/llmops-database/production-llm-systems-document-processing-and-real-estate-agent-co-pilot-case-studies"
+  ogTitle: "Various: Production LLM Systems: Document Processing and Real Estate Agent Co-pilot Case Studies - ZenML LLMOps Database"
+  ogDescription: "A comprehensive webinar featuring two case studies of LLM systems in production. First, Docugami shared their experience building a document processing pipeline that leverages hierarchical chunking and semantic understanding, using custom LLMs and extensive testing infrastructure. Second, Reet presented their development of Lucy, a real estate agent co-pilot, highlighting their journey with OpenAI function calling, testing frameworks, and preparing for fine-tuning while maintaining production quality."
+---
+
+## Overview
+
+This case study summarizes a webinar featuring two companies—Docugami and Rehat—sharing their experiences deploying LLMs into production. Both presenters offer complementary perspectives: Docugami focuses on document engineering with custom models and hierarchical understanding, while Rehat describes building a conversational AI copilot for real estate agents. The presentations are unified by their use of LangChain and LangSmith for orchestration, observability, and continuous improvement.
+
+---
+
+## Docugami: Document Engineering at Scale
+
+### Company Background
+
+Docugami is a document engineering company founded by Jean Paoli (co-creator of the XML standard) and Mike Tuck, with around five years of experience building systems that understand and generate complex documents. Their core product processes real-world documents—such as leases, insurance policies, and legal contracts—that contain complex layouts, tables, multi-column structures, and nested semantic hierarchies.
+
+### Challenge 1: Structural Chunking for Document Understanding
+
+One of the fundamental challenges Docugami addresses is that real-world documents are not flat text. Standard text extraction and naive chunking approaches fail to capture the true structure of documents. For example, a legal document may have inline headings, two-column layouts, tables spanning columns, and key-value pairs that are semantically related but visually separated.
+
+Docugami's approach involves:
+
+- Using multimodal models (combining layout analysis with text extraction) to detect structural elements like headings, tables, paragraphs, and floating boxes
+- Stitching together reading order across non-linear layouts using language models
+- Creating hierarchical chunks where smaller chunks are nested inside larger structural units (e.g., a table cell inside a table, inside a section)
+- Preserving semantic relationships through an XML-based knowledge graph where each chunk has a semantic label (e.g., "landlord," "commencement date," "rentable area")
+
+This hierarchical awareness is critical for high-signal retrieval in RAG applications. Without it, a question like "What is the rentable area for the property owned by DHA group?" fails because standard retrievers cannot disambiguate references across the document.
+
+### Challenge 2: Semantic Knowledge Graphs for Retrieval
+
+Beyond structure, Docugami builds semantic knowledge graphs that label chunks with domain-specific metadata. This enables advanced retrieval techniques like the LangChain self-querying retriever, which can filter documents based on metadata rather than just text similarity.
+
+In the webinar, a demonstration showed that without Docugami metadata, the self-querying retriever returns zero documents because it tries to filter on file names. With Docugami's enriched metadata (e.g., filtering by "landlord"), the retriever successfully finds relevant documents.
+
+The XML data model is conceptually simple: chunks contain other chunks, and every chunk has a semantic label. Documents that discuss similar topics share the same labeling schema, enabling cross-document reasoning.
+
+### Challenge 3: Debugging Complex Chains
+
+Docugami shared an example of a complex chain for natural language to SQL translation. The chain includes:
+
+- Generating SQL from natural language using few-shot prompting
+- Running the SQL and catching exceptions
+- Attempting fix-up logic when SQL fails (similar to agent behavior, but without full agent overhead)
+- Running explanation generation in parallel for both the query and the result
+
+They avoid full agent architectures because agents consume many tokens and smaller custom models are not tuned for agent syntax. Instead, they use LangChain Expression Language (LCEL) to build sophisticated chains with retry logic and parallel execution.
+
+LangSmith is essential for debugging these complex chains. The team demonstrated how to trace through each step—from input parsing to few-shot example selection to parallel explanation generation—and diagnose failures like context overflow or broken SQL that fix-up logic couldn't repair.
+
+The team emphasized that making LangSmith traces "look good and be actionable" is an art, including naming lambdas properly and passing config correctly to conditionally invoked runnables.
+
+### End-to-End LLMOps Workflow
+
+Docugami uses a custom LLM deployed on their own infrastructure for efficiency. Their architecture includes:
+
+- Apache Spark as the execution engine
+- Kubernetes for orchestration
+- Nvidia Triton for model hosting
+- Redis for vector storage and caching
+
+Their continuous improvement workflow involves:
+
+- Regularly reviewing failed runs and user-disliked runs in LangSmith
+- Adding problematic runs to LangSmith datasets
+- Using larger models (e.g., 70B parameter models) offline to propose fixes for mistakes made by smaller production models
+- Post-processing fixed outputs to ensure syntactic correctness (e.g., valid SQL or XQuery)
+- Fine-tuning smaller models with corrected examples and redeploying
+
+Every 500 fixed runs, they sample 10% to add to their few-shot learning set, which is reloaded weekly. This improves in-context learning for specific users and question types. However, they note that few-shot learning alone doesn't generalize well—fine-tuning remains essential for broader improvements.
+
+For data annotation, they use V7 Labs for image-based document annotation and Prodigy (by Explosion AI) for NLP annotation. They expressed interest in deeper integration between tools like Prodigy and LangSmith for a unified workflow.
+
+---
+
+## Rehat: Building Lucy, a Real Estate AI Copilot
+
+### Company Background
+
+Rehat provides a SaaS platform for real estate agents, consolidating 10-20 different tools into a single "super app." Lucy is their AI copilot, designed as a conversational interface that can perform any action within the platform—managing CRM, marketing, and other agent workflows.
+
+### Initial Approach and Pivot
+
+The team initially built Lucy using LangChain's structured chat agent, which provided reasoning capabilities and structured outputs. However, this approach was too slow and produced unreliable structured outputs because the prompt grew very large as they added tools.
+
+The release of OpenAI's function calling capability was transformative. Function calling embedded reasoning and structured output into the model itself, resulting in 3-4x latency improvements and much more reliable outputs. The timing of this release gave the team confidence that they were solving the right problems.
+
+### Evaluation and Testing Challenges
+
+A major challenge was measuring LLM performance. They needed to quantify improvements from prompt engineering and fine-tuning, but traditional approaches didn't fit:
+
+- LLM evaluation frameworks target language models, not applications built on top of them
+- They had no users yet to provide feedback (chicken-and-egg problem)
+- LLMs are non-deterministic, so individual test cases weren't reliable
+
+Their solution was to build a custom testing pipeline that runs hundreds of synthetic test cases concurrently. They generated test cases by manually asking ChatGPT to create 50 user requests per use case in JSON format, then imported them into their CI/CD system.
+
+The pipeline provides statistical feedback—showing how many tests pass or fail for each use case—rather than binary yes/no results. They continuously add new assertions to catch additional failure modes.
+
+While they built their own test runner (which they acknowledge may have been a mistake), they integrated deeply with LangSmith:
+
+- Sending tags (commit hash, branch name, test suite name) to LangSmith for traceability
+- Linking failed tests directly to LangSmith traces for one-click debugging
+- Using the LangSmith playground to reproduce and manipulate failed cases
+
+This workflow enables rapid iteration: push code, read logs, click a failed test link, reproduce in playground, fix the prompt, commit, and validate against all test cases—all in minutes.
+
+### Prompt Engineering Insights
+
+OpenAI function calling imposes constraints on prompt engineering:
+
+- The iterative nature of function calling makes latency a concern; breaking problems into multiple prompts makes it worse
+- The model follows JSON schemas well but ignores natural language instructions in tool descriptions
+- Few-shot prompting in tool descriptions is ignored or can cause hallucinations
+- Enumerations in function schemas are problematic, especially optional ones—but LangChain's `handle_parsing_errors` flag eliminated these issues
+
+Some behaviors cannot be fixed through prompting. For example, the model always adds "Regards, [your name]" placeholders to emails, regardless of instructions. These cases require fine-tuning or software patches.
+
+### Fine-Tuning Strategy
+
+Because Lucy relies heavily on function calling and reasoning, Rehat has standardized on GPT models. GPT-4 is too slow for their iterative function-calling architecture, so they use GPT-3.5.
+
+When OpenAI announced GPT-3.5 fine-tuning, they were excited—but fine-tuned models currently lose function calling capability. They are building the pipeline infrastructure so that when OpenAI releases fine-tuning with function calling support, they'll be ready.
+
+Their planned workflow uses LangSmith datasets:
+
+- Conversations that go well are added to a "good samples" bucket
+- Poor conversations go to a "bad samples" bucket
+- Engineers curate bad samples through manual labeling and annotation to transform them into training examples
+
+Currently, a human QA team makes the good/bad determination during hundreds of daily test conversations. They may later use LLM evaluators for scalability, but value human oversight during this phase.
+
+### Philosophical Takeaways
+
+Rehat emphasized several principles:
+
+- Best practices are not yet established; everything is evolving rapidly
+- Tooling is improving fast—LangSmith's appearance saved them from building more in-house infrastructure
+- Not everything needs to be 100% automated; manual processes that work well are acceptable
+- Everything is temporary—expect to replace current solutions as better tools emerge
+- The hardest part is getting from "works" to "works reliably at the quality users expect"
+
+---
+
+## Common Themes Across Both Case Studies
+
+Both teams emphasized the importance of LangSmith for observability, debugging, and continuous improvement. They use it to trace complex chains, identify failure modes, and build datasets for fine-tuning.
+
+Both acknowledge that fine-tuning is essential for generalization—prompt engineering and few-shot learning can only take you so far. However, they also recognize the value of hybrid approaches: using larger models offline to correct smaller models, and combining human annotation with LLM-assisted labeling.
+
+Cost and latency are persistent concerns. Docugami hosts models locally on Kubernetes with Nvidia Triton to control costs and protect customer data. Rehat is constrained to GPT-3.5 because GPT-4's latency is unacceptable for their iterative function-calling architecture.
+
+Finally, both teams stress the importance of domain expertise. Docugami leverages decades of document engineering knowledge to build hierarchical understanding. Rehat uses deep understanding of real estate workflows to design Lucy's capabilities. Generic LLM approaches are insufficient; domain-specific structure and supervision are essential for production-quality applications.

@@ -1,0 +1,150 @@
+---
+title: "Building Production-Grade Generative AI Applications with Comprehensive LLMOps"
+slug: "building-production-grade-generative-ai-applications-with-comprehensive-llmops"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "675b1e685c51bc5ca6e6a734"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:48:29.564Z"
+  createdOn: "2024-12-12T17:33:28.613Z"
+llmopsTags:
+  - "chatbot"
+  - "customer-support"
+  - "document-processing"
+  - "structured-output"
+  - "regulatory-compliance"
+  - "high-stakes-application"
+  - "rag"
+  - "fine-tuning"
+  - "prompt-engineering"
+  - "embeddings"
+  - "vector-search"
+  - "model-optimization"
+  - "latency-optimization"
+  - "cost-optimization"
+  - "semantic-search"
+  - "few-shot"
+  - "error-handling"
+  - "monitoring"
+  - "cicd"
+  - "kubernetes"
+  - "docker"
+  - "fastapi"
+  - "redis"
+  - "postgresql"
+  - "elasticsearch"
+  - "langchain"
+  - "wandb"
+  - "chromadb"
+  - "databricks"
+  - "openai"
+  - "microsoft-azure"
+  - "amazon-aws"
+company: "Block (Square)"
+summary: "Block (Square) implemented a comprehensive LLMOps strategy across multiple business units using a combination of retrieval augmentation, fine-tuning, and pre-training approaches. They built a scalable architecture using Databricks' platform that allowed them to manage hundreds of AI endpoints while maintaining operational efficiency, cost control, and quality assurance. The solution enabled them to handle sensitive data securely, optimize model performance, and iterate quickly while maintaining version control and monitoring capabilities."
+link: "https://www.youtube.com/watch?v=8lZfvGMmZew"
+year: 2023
+seo:
+  title: "Block (Square): Building Production-Grade Generative AI Applications with Comprehensive LLMOps - ZenML LLMOps Database"
+  description: "Block (Square) implemented a comprehensive LLMOps strategy across multiple business units using a combination of retrieval augmentation, fine-tuning, and pre-training approaches. They built a scalable architecture using Databricks' platform that allowed them to manage hundreds of AI endpoints while maintaining operational efficiency, cost control, and quality assurance. The solution enabled them to handle sensitive data securely, optimize model performance, and iterate quickly while maintaining version control and monitoring capabilities."
+  canonical: "https://www.zenml.io/llmops-database/building-production-grade-generative-ai-applications-with-comprehensive-llmops"
+  ogTitle: "Block (Square): Building Production-Grade Generative AI Applications with Comprehensive LLMOps - ZenML LLMOps Database"
+  ogDescription: "Block (Square) implemented a comprehensive LLMOps strategy across multiple business units using a combination of retrieval augmentation, fine-tuning, and pre-training approaches. They built a scalable architecture using Databricks' platform that allowed them to manage hundreds of AI endpoints while maintaining operational efficiency, cost control, and quality assurance. The solution enabled them to handle sensitive data securely, optimize model performance, and iterate quickly while maintaining version control and monitoring capabilities."
+---
+
+## Overview
+
+This case study captures insights from a joint presentation between Databricks and Block (the parent company of Square, Cash App, TIDAL, and TBD) at a Databricks conference. The presentation featured Ina Koleva from Databricks' Product Team and Bradley Axen from Block's Engineering and Machine Learning Team. The discussion provides a comprehensive look at how Block built and operationalized generative AI applications at enterprise scale, emphasizing the importance of treating LLM applications as versioned models and building a flexible yet robust platform infrastructure.
+
+Block's situation is particularly instructive because they operate multiple distinct business units—Square (payments and point-of-sale), Cash App (peer-to-peer payments and banking), TIDAL (music streaming), and TBD (blockchain technologies)—each with different Gen AI requirements. This diversity necessitated a platform approach that could generalize across use cases while avoiding over-engineering in a rapidly evolving space.
+
+## The Platform Philosophy
+
+Block's approach to LLMOps was driven by two key tensions: the need for a flexible platform that could support diverse AI solutions across business units, versus the reality that the generative AI space evolves so rapidly that over-building risks creating infrastructure that becomes obsolete within months. Their solution was to invest in platform capabilities that enable quick iteration and deployment while maintaining operational control.
+
+A critical insight from Block's experience was recognizing early that without treating the entire LLM stack as a versioned model, teams quickly lose track of performance across different prompt versions and model configurations. This realization led them to standardize on MLflow for experiment tracking and model versioning, allowing them to perform A/B testing and compare versions systematically.
+
+## Architecture and Infrastructure
+
+### Model Serving and Endpoint Management
+
+Block's infrastructure grew to encompass approximately two hundred serving endpoints, creating significant operational challenges around visibility, cost management, and rate limiting. Their architecture separates the application-specific chains (which handle prompts, validation, and orchestration) from the foundational models that power them. This separation is crucial because while they have many application endpoints, they don't want to host separate GPU instances for each one—that would be prohibitively expensive.
+
+The solution involves using MLflow AI Gateway as a central routing layer. Multiple serving endpoints call out to the AI Gateway, which then routes requests to various foundational models—whether self-hosted Llama, OpenAI's ChatGPT, Anthropic's Claude, or other vendors. This architecture provides several operational benefits:
+
+- **Single point of visibility** for rate limits, usage tracking, and cost attribution
+- **Enforcement of company-wide rate limits** to prevent one application from consuming the entire quota and disrupting production systems
+- **Easy model swapping** without requiring application code changes—teams can switch from GPT-4 to a fine-tuned model or different vendor by updating the gateway configuration
+
+### Handling Sensitive Data with Self-Hosted Models
+
+Given Block's position in financial services, data security is paramount. For their most sensitive data, they recognized early that relying on self-hosted models was essential rather than sending data to third-party APIs. However, naively self-hosting large models using standard PyTorch containers resulted in dramatically slower inference compared to optimized vendor solutions.
+
+The breakthrough came from optimized GPU serving endpoints (leveraging technology from Databricks' acquisition of MosaicML). This optimization was described as "night and day"—without it, self-hosted latency was simply too high for production use cases. The optimized serving reduced latency per token to acceptable levels, enabling secure, self-hosted inference for sensitive financial data.
+
+## Use Case Examples
+
+### Action-Based Conversations (Structured Output Generation)
+
+One of Block's use cases involves converting natural language input into structured JSON to trigger backend actions—essentially replacing form-filling with conversational interfaces. The implementation progression illustrates common LLMOps patterns:
+
+The initial approach used a powerful model (GPT-4) with few-shot examples and field descriptions. However, GPT-4 wasn't 100% accurate, so a validation step was added with retry logic and fallback options. Performance concerns led to experimenting with GPT-4 Turbo, new prompts, and alternative models. Within a short time, the team had iterated through six or seven versions of the chain.
+
+This rapid iteration underscored the importance of versioning. Without tracking each configuration as a versioned model, comparing performance becomes impossible. By implementing proper MLflow tracking, teams could conduct A/B tests and make data-driven improvements while applications only needed to know how to call the stable serving endpoint.
+
+### Customer-Facing Chat with RAG
+
+Block's customer-facing chat implementations rely heavily on retrieval-augmented generation (RAG) to ensure responses reference accurate, company-specific content rather than the base model's training data. The architecture involves:
+
+- **Vector Search** for document retrieval, integrated with their data platform
+- **Separation of context updates from model updates**—a crucial operational improvement over their initial approach of keeping vectors in memory
+
+Early implementations stored vector embeddings within the model serving container itself. While this worked for small scale, it created operational headaches because any context update required model redeployment. By decoupling vector search into a separate endpoint, Block achieved two independent iteration cycles: one for prompts and model selection, another for adding new context and documents.
+
+## Quality Assurance and Safety
+
+Block implemented pre- and post-processing steps to ensure quality and safety in customer-facing applications:
+
+- **Input filtering** to detect prompt injection attempts and other malicious inputs
+- **Output validation** to prevent toxic content from reaching customers
+- **Hallucination detection** using a second model to validate outputs before presentation
+
+These safeguards are implemented as additional steps in their Python-based model chains, benefiting from the same versioning and A/B testing infrastructure. Teams can add new requirements, compare performance with and without various safeguards, and iterate confidently.
+
+## Fine-Tuning Strategy
+
+Block's fine-tuning efforts focus primarily on latency reduction and cost optimization rather than improving raw model capability. The insight is that even complex chains spend the vast majority of their latency budget and cost on the generation step—the large foundational models.
+
+Their approach: if a 13-billion parameter model works adequately, fine-tuning might enable equivalent performance from a 3-billion parameter model, dramatically reducing inference costs and latency. Block has prior experience successfully building BERT-based chat models under 1 billion parameters, giving them confidence that smaller fine-tuned models can work—they just needed operationally scalable tooling.
+
+Key considerations for fine-tuning at Block:
+
+- **Endpoint architecture**: Fine-tuned models can be hosted on AI Gateway and shared across multiple application endpoints, similar to general-purpose models
+- **Scale requirements**: There's a minimum scale to justify fine-tuning investment—both the upfront training costs and ongoing GPU hosting costs (even a single A10 is relatively expensive)
+- **Reduced talent overhead**: Tools like MosaicML have reduced the implementation complexity from requiring RLHF expertise to simply assembling input-output pairs and running fine-tuning jobs
+
+## Observability and Monitoring
+
+Block's monitoring strategy centers on inference tables—logging model inputs and outputs to structured data stores. This data is then joined with customer feedback (logged through Kafka pipelines to Delta tables) to measure actual business outcomes. This infrastructure enables:
+
+- **A/B test outcome measurement** comparing different model versions
+- **Root cause analysis** when outputs are problematic, tracing back to problematic inputs
+- **Continuous improvement cycles** based on real usage patterns
+
+The emphasis on unified monitoring across data and ML systems (Lakehouse Monitoring in Databricks terminology) addresses a common failure mode: when data quality monitoring is separate from ML monitoring, lineage breaks and root cause analysis becomes impossible. If a served endpoint produces bad results due to upstream data issues, connected lineage allows engineers to trace back to which table had unexpected data patterns.
+
+## Key Takeaways and Lessons Learned
+
+Block's experience yields several practical insights for production LLM systems:
+
+- **Treat everything as a versioned model**: Even simple applications benefit from version tracking and systematic comparison
+- **Decouple components**: Separate context/vector stores from model chains; separate application endpoints from foundational model hosting
+- **Plan for proliferation**: With hundreds of endpoints, centralized visibility and rate limit enforcement become essential
+- **Security through self-hosting**: For sensitive data, optimized self-hosted inference is viable but requires proper GPU optimization
+- **Iterate incrementally**: Start with prompt engineering, add RAG, then fine-tuning—each step should demonstrably improve performance or reduce costs
+- **Invest minimally but deliberately**: Build platform capabilities that enable quick iteration without over-engineering for a space that changes rapidly
+
+The maturity curve Block and Databricks recommend—from prompt engineering to RAG to fine-tuning to pre-training—isn't strictly linear. These techniques complement each other: a RAG application might use fine-tuned embedding models for retrieval and a fine-tuned LLM for generation. The key is establishing evaluation baselines and systematically measuring the impact of each enhancement.

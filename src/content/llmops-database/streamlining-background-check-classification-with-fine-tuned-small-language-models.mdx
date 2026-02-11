@@ -1,0 +1,94 @@
+---
+title: "Streamlining Background Check Classification with Fine-tuned Small Language Models"
+slug: "streamlining-background-check-classification-with-fine-tuned-small-language-models"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "674f1ff0f5fec418840eae2e"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:46:46.879Z"
+  createdOn: "2024-12-03T15:12:48.982Z"
+llmopsTags:
+  - "classification"
+  - "high-stakes-application"
+  - "regulatory-compliance"
+  - "fine-tuning"
+  - "prompt-engineering"
+  - "model-optimization"
+  - "latency-optimization"
+  - "cost-optimization"
+  - "token-optimization"
+  - "monitoring"
+  - "fastapi"
+  - "vllm"
+  - "microsoft-azure"
+  - "openai"
+company: "Checkr"
+summary: "Checkr tackled the challenge of classifying complex background check records by implementing a fine-tuned small language model (SLM) solution. They moved from using GPT-4 to fine-tuning Llama-2 models on Predibase, achieving 90% accuracy for their most challenging cases while reducing costs by 5x and improving response times to 0.15 seconds. This solution helped automate their background check adjudication process, particularly for the 2% of complex cases that required classification into 230 distinct categories."
+link: "https://predibase.com/blog/how-checkr-streamlines-background-checks-with-fine-tuned-small-language"
+year: 2024
+seo:
+  title: "Checkr: Streamlining Background Check Classification with Fine-tuned Small Language Models - ZenML LLMOps Database"
+  description: "Checkr tackled the challenge of classifying complex background check records by implementing a fine-tuned small language model (SLM) solution. They moved from using GPT-4 to fine-tuning Llama-2 models on Predibase, achieving 90% accuracy for their most challenging cases while reducing costs by 5x and improving response times to 0.15 seconds. This solution helped automate their background check adjudication process, particularly for the 2% of complex cases that required classification into 230 distinct categories."
+  canonical: "https://www.zenml.io/llmops-database/streamlining-background-check-classification-with-fine-tuned-small-language-models"
+  ogTitle: "Checkr: Streamlining Background Check Classification with Fine-tuned Small Language Models - ZenML LLMOps Database"
+  ogDescription: "Checkr tackled the challenge of classifying complex background check records by implementing a fine-tuned small language model (SLM) solution. They moved from using GPT-4 to fine-tuning Llama-2 models on Predibase, achieving 90% accuracy for their most challenging cases while reducing costs by 5x and improving response times to 0.15 seconds. This solution helped automate their background check adjudication process, particularly for the 2% of complex cases that required classification into 230 distinct categories."
+---
+
+## Overview
+
+Checkr is a technology company specializing in modern and compliant background checks, serving over 100,000 customers. Founded in 2014, they have leveraged AI and machine learning to enhance the efficiency, inclusivity, and transparency of their background check processes. This case study, presented at the LLMOps Summit in San Francisco, details their journey building a production-grade LLM classification system for automating the adjudication of background checks.
+
+The core business problem Checkr faced was around adjudication—the process of reviewing background check results to determine a candidate's suitability for hiring based on company policies. While their existing automated adjudication solution reduced manual reviews by 95% using a tuned logistic regression model for 98% of their data, the remaining 2% presented significant challenges. These complex cases required categorizing data records into 230 distinct categories, and their original Deep Neural Network (DNN) solution could only classify 1% of these cases with decent accuracy, leaving the other 1% unclassified and requiring customer intervention.
+
+## Technical Challenges
+
+The production requirements for this LLM system were demanding across multiple dimensions:
+
+The data complexity was significant—the remaining 2% of background checks involved noisy, unstructured text data that was challenging for both human reviewers and automated models. Manual human reviews would take hours per case. The task was synchronous, meaning it had to meet low-latency SLAs to provide customers with near real-time employment insights. High accuracy was critical since these reports are used to make important decisions about prospective employees' futures. Finally, all of this had to be achieved while maintaining reasonable inference costs, as Checkr processes millions of tokens monthly.
+
+## Experimentation Journey
+
+The team's approach to solving this problem demonstrates a methodical exploration of various LLM patterns and architectures, which is valuable from an LLMOps perspective.
+
+Their first experiment involved using GPT-4 as a general-purpose "Expert LLM." On the 98% of easier classification cases, GPT-4 achieved 87-88% accuracy. However, on the hardest 2% of cases, it only achieved 80-82% accuracy. The round-trip time was approximately 15 seconds, and costs were around $12k (presumably per month or for a benchmark dataset).
+
+When integrating RAG (Retrieval-Augmented Generation) with the Expert LLM, they achieved an impressive 96% accuracy on the easier dataset that was well-represented in the training set. However, accuracy actually decreased for the more difficult dataset because the training set examples were leading the LLM away from better logical conclusions. This is an important finding for practitioners—RAG doesn't always improve performance and can sometimes hurt it when examples don't generalize well to edge cases. The latency improved to 7 seconds and costs dropped to approximately $7k.
+
+The breakthrough came when they fine-tuned the much smaller open-source model, Llama-2-7b. This achieved 97% accuracy on the easier dataset and 85% on the difficult dataset—improvements across all metrics compared to GPT-4. Response times dropped dramatically to under half a second, and costs plummeted to less than $800. Interestingly, when they experimented with combining fine-tuned and expert models, this hybrid approach didn't yield any improvements in performance.
+
+## Production Deployment with Predibase
+
+For productionization, Checkr selected Predibase as their platform after testing several LLM fine-tuning and inference platforms. It should be noted that this case study was published on Predibase's blog, so there's an inherent promotional aspect to the content. That said, the technical details and results shared provide valuable insights.
+
+Their best-performing production model was Llama-3-8b-instruct, a small open-source LLM fine-tuned on Predibase. This achieved 90% accuracy for the most challenging 2% of cases—outperforming both GPT-4 and all other fine-tuning experiments. The improvement from 85% with Llama-2-7b to 90% with Llama-3-8b-instruct demonstrates how newer base models can provide meaningful gains when fine-tuned for specific use cases.
+
+The latency improvements were substantial. Predibase consistently delivers 0.15-second response times for production traffic, which is 30x faster than their GPT-4 experiments. This is critical for meeting their synchronous, low-latency SLA requirements. The platform uses open-source LoRAX under the hood, which enables serving additional LoRA Adapters without requiring more GPUs—a key consideration for cost-effective scaling.
+
+The cost reduction of 5x compared to GPT-4 is significant for a system processing millions of tokens monthly. The multi-LoRA serving capability on LoRAX promises further cost reductions as they scale to more use cases, allowing multiple fine-tuned adapters to share the same GPU infrastructure.
+
+## Lessons Learned from Fine-Tuning
+
+The case study offers several practical lessons from fine-tuning dozens of models on a large dataset of 150,000 training examples:
+
+Monitoring model convergence was identified as crucial. If the model isn't converging as expected, experimenting without the auto-stopping parameter can help the model reach a global minimum instead of getting stuck at a local one. This suggests that default early stopping parameters may be too aggressive for some fine-tuning scenarios.
+
+An interesting finding was that fine-tuned models are less sensitive to hyperparameters than traditional deep learning models. This reduced the number of trials and tuning iterations required, which is good news for practitioners looking to reduce experimentation costs.
+
+Short prompts were recommended for extending cost savings. The team found that prompt engineering had minimal impact on their fine-tuned model's performance, which allowed them to significantly reduce token usage by keeping prompts concise. This is a useful insight—once a model is properly fine-tuned for a task, elaborate prompting becomes unnecessary.
+
+For classification tasks, they developed a technique to identify less confident predictions by adjusting inference parameters. Lowering the temperature increased next-token variance while lowering top_k decreased the options the model could choose from. This combination maintained precision but resulted in a broader distribution of confidence scores, helping identify predictions where the model was less certain.
+
+Finally, they found that Parameter Efficient Fine-Tuning (PEFT) using Low-Rank Adaptation (LoRA) matched the efficiency of full fine-tuning while reducing training cost and time. This validates the use of LoRA as a practical approach for production fine-tuning workflows.
+
+## Critical Assessment
+
+While the results presented are impressive, a few caveats should be noted. This case study was published on Predibase's blog, so the comparison with other platforms may not be entirely objective. The specific accuracy numbers and cost comparisons would benefit from more context—for instance, the training data size, evaluation methodology, and exact cost calculation methods aren't fully detailed.
+
+The 90% accuracy on the most difficult 2% of cases, while a significant improvement over their previous DNN solution (which only handled 1% with decent accuracy), still leaves 10% of these complex cases potentially misclassified. Given that these reports affect hiring decisions, the team should have robust fallback mechanisms for uncertain predictions.
+
+That said, the overall approach—systematically evaluating multiple LLM patterns, comparing commercial vs. open-source models, and ultimately finding that fine-tuned SLMs outperform larger commercial models for this specific task—represents a mature LLMOps methodology. The focus on latency, cost, and accuracy as balanced objectives, rather than optimizing for just one, reflects production-ready thinking.
+
+The infrastructure choices around LoRA adapters and multi-LoRA serving through LoRAX demonstrate forward-looking architecture that can scale to multiple use cases without proportional cost increases. This is particularly relevant for enterprises looking to expand LLM usage across their organization while maintaining cost discipline.

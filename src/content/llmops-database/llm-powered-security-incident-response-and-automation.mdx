@@ -1,0 +1,142 @@
+---
+title: "LLM-Powered Security Incident Response and Automation"
+slug: "llm-powered-security-incident-response-and-automation"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "694ad9c7360490b9491a24f2"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2026-01-07T09:40:39.763Z"
+  lastUpdated: "2025-12-23T20:12:19.560Z"
+  createdOn: "2025-12-23T18:04:55.309Z"
+llmopsTags:
+  - "fraud-detection"
+  - "content-moderation"
+  - "classification"
+  - "summarization"
+  - "document-processing"
+  - "high-stakes-application"
+  - "rag"
+  - "embeddings"
+  - "prompt-engineering"
+  - "semantic-search"
+  - "vector-search"
+  - "human-in-the-loop"
+  - "latency-optimization"
+  - "multi-agent-systems"
+  - "evals"
+  - "databases"
+  - "monitoring"
+  - "api-gateway"
+  - "microservices"
+  - "orchestration"
+  - "open-source"
+  - "documentation"
+  - "security"
+  - "guardrails"
+  - "reliability"
+  - "scalability"
+company: "Agoda"
+summary: "Agoda, a global travel platform processing sensitive data at scale, faced operational bottlenecks in security incident response due to high alert volumes, manual phishing email reviews, and time-consuming incident documentation. The security team implemented three LLM-powered workflows: automated triage for Level 1-2 security alerts using RAG to retrieve historical context, autonomous phishing email classification responding in under 25 seconds, and multi-source incident report generation reducing drafting time from 5-7 hours to 10 minutes. The solutions achieved 97%+ alignment with human analysts for alert triage, 99% precision in phishing classification with no false negatives, and 95% factual accuracy in report generation, while significantly reducing analyst workload and response times."
+link: "https://medium.com/agoda-engineering/improving-security-incident-response-at-agoda-with-large-language-models-78b1f33151e0"
+year: 2025
+seo:
+  title: "Agoda: LLM-Powered Security Incident Response and Automation - ZenML LLMOps Database"
+  description: "Agoda, a global travel platform processing sensitive data at scale, faced operational bottlenecks in security incident response due to high alert volumes, manual phishing email reviews, and time-consuming incident documentation. The security team implemented three LLM-powered workflows: automated triage for Level 1-2 security alerts using RAG to retrieve historical context, autonomous phishing email classification responding in under 25 seconds, and multi-source incident report generation reducing drafting time from 5-7 hours to 10 minutes. The solutions achieved 97%+ alignment with human analysts for alert triage, 99% precision in phishing classification with no false negatives, and 95% factual accuracy in report generation, while significantly reducing analyst workload and response times."
+  canonical: "https://www.zenml.io/llmops-database/llm-powered-security-incident-response-and-automation"
+  ogTitle: "Agoda: LLM-Powered Security Incident Response and Automation - ZenML LLMOps Database"
+  ogDescription: "Agoda, a global travel platform processing sensitive data at scale, faced operational bottlenecks in security incident response due to high alert volumes, manual phishing email reviews, and time-consuming incident documentation. The security team implemented three LLM-powered workflows: automated triage for Level 1-2 security alerts using RAG to retrieve historical context, autonomous phishing email classification responding in under 25 seconds, and multi-source incident report generation reducing drafting time from 5-7 hours to 10 minutes. The solutions achieved 97%+ alignment with human analysts for alert triage, 99% precision in phishing classification with no false negatives, and 95% factual accuracy in report generation, while significantly reducing analyst workload and response times."
+---
+
+## Overview
+
+Agoda operates a global travel platform serving millions of users and handling sensitive data including personally identifiable information (PII), payment credentials, and booking histories. The company's infrastructure spans hundreds of microservices, distributed systems, and multiple cloud environments. The Security Incident Response (IR) team faced significant operational challenges managing the volume and complexity of security operations at this scale, where traditional manual processes could not keep pace with the demands of maintaining security posture while ensuring high service availability.
+
+The IR team developed and deployed three distinct LLM-powered production systems to address specific pain points in their security operations workflow: alert triage automation, phishing email classification, and incident report generation. These systems represent a pragmatic approach to LLMOps, focusing on targeted, measurable improvements to well-defined processes rather than attempting comprehensive automation of all security operations.
+
+## Problem Context and Motivation
+
+The security incident response workflow at Agoda encompasses multiple stages, each generating substantial operational overhead as the company scaled. The team identified three primary bottlenecks that were particularly suitable for LLM augmentation due to their repetitive nature and well-structured patterns.
+
+Security alerts required investigation even when patterns were well-understood, creating significant noise and consuming analyst time. Each Level 1-2 alert investigation typically required 20-40 minutes of manual effort, involving log review, correlation with historical incidents, and documentation of findings. This repetitive work drained analyst capacity that could be better spent on complex investigations.
+
+Phishing reports submitted by employees needed individual acknowledgment and review, despite the vast majority (over 98%) being harmless. The manual review process involved reading email bodies, analyzing headers, cross-checking against threat intelligence feeds, and responding to users with verdicts. While most submissions were safe, each required dedicated analyst attention, creating operational overhead and delaying user feedback.
+
+Incident documentation presented another challenge, with comprehensive reports taking 5-7 hours to compile. The process involved gathering context from Slack conversations, Jira tickets, Confluence pages, Teams meeting transcripts, and email chains across multiple teams. While these reports were essential for knowledge sharing, post-incident reviews, and compliance, the time investment was substantial and the quality could vary depending on analyst availability and documentation discipline.
+
+## Technical Architecture and Implementation
+
+### Alert Triage Automation with RAG
+
+The alert triage system represents the most technically sophisticated of the three implementations, leveraging Retrieval-Augmented Generation (RAG) to provide historical context for incident analysis. The workflow begins when alerts enter through Agoda's existing security pipeline, maintaining integration with established monitoring and alerting infrastructure.
+
+Upon alert ingestion, the system gathers a timeline of events and associated metadata related to the security event. This context collection phase is critical for providing the LLM with sufficient information to make informed assessments. The RAG component then queries a vector database containing past incidents and root cause analyses, retrieving similar historical cases that provide relevant context for the current alert.
+
+The LLM receives the alert timeline, metadata, and retrieved historical cases as input. The prompt engineering strategy positions the model to emulate a seasoned security analyst, generating a structured output that includes a summary of the alert, impact assessment, and a verdict on whether escalation is required. The system is deliberately tuned to favor over-escalation, recognizing that false positives are quickly reviewed and closed while missed threats could have severe consequences.
+
+This triage system has been processing over 400 alerts every 15 days in production, reducing average analysis time from 20-40 minutes to under 5 minutes per alert. Internal validation over a three-month period demonstrated 97%+ alignment with human analyst conclusions during peer review. Critically, no high-impact incidents have been misclassified since rollout, validating the conservative escalation strategy.
+
+The RAG architecture is particularly noteworthy as it addresses a fundamental challenge in applying LLMs to security operations: the need for domain-specific historical context. By retrieving relevant past incidents, the system can recognize patterns, reference previous root causes, and apply lessons learned from historical investigations. This approach effectively augments the LLM's general reasoning capabilities with Agoda-specific security knowledge without requiring fine-tuning of the base model.
+
+### Phishing Email Classification System
+
+The phishing email classification system operates as a fully autonomous 24/7 workflow, processing user-submitted reports with minimal human intervention. When a phishing report arrives, the email is parsed and enriched with threat intelligence derived from headers and metadata. This enrichment step is crucial for providing the LLM with signals beyond just the email content, including sender reputation, routing information, and known threat indicators.
+
+The LLM receives the complete email content along with the enriched context and classifies the submission as phishing, spam, or safe. Based on this classification, an automated response is generated and sent to the reporter in real time, providing immediate feedback on their submission. The entire process completes in under 25 seconds, compared to 2-3 minutes for manual analysis.
+
+In production, the system has maintained over 99% classification precision, correctly identifying both malicious and benign submissions. Importantly, there have been no known false negatives since deployment, meaning no actual phishing emails have been incorrectly classified as safe. This high precision has enabled the team to eliminate response queues entirely, with reports being processed immediately upon receipt.
+
+The autonomous nature of this system represents a significant LLMOps achievement, demonstrating that with proper input enrichment and careful evaluation, LLMs can be trusted to handle certain security classifications independently. The team's confidence in deploying this as a fully automated system likely stems from the relatively low risk of false negatives (confirmed by monitoring) combined with the significant operational benefit of real-time response.
+
+### Incident Report Generation
+
+The incident report generation workflow addresses the time-consuming task of documenting security events by automating the consolidation of information from multiple sources. When an incident is resolved, the workflow collects relevant data associated with the investigation from various systems and communication channels.
+
+The LLM summarizes the incident timeline, detection signals, impact assessment, and resolution steps in a structured report format that follows organizational standards. A human reviewer then validates the content before final publication to the internal documentation system. This semi-automated approach reduces report drafting time to under 10 minutes, with approximately 30 minutes allocated for human review and validation.
+
+The system maintains over 95% factual accuracy in production, though this metric bears scrutiny as it's unclear how "factual accuracy" is measured in practice. The value proposition is clear: consistent report structure, standard language, and comprehensive coverage of key sections, all delivered promptly after incident resolution. The human-in-the-loop review step provides a safety net for catching errors or omissions while still capturing the majority of efficiency gains.
+
+The multi-source summarization capability is particularly valuable given the distributed nature of modern incident response work, which spans multiple communication and documentation platforms. By automatically aggregating and synthesizing this scattered information, the LLM effectively serves as an intelligent document compiler that understands the semantic relationships between different data sources.
+
+## LLMOps Considerations and Lessons Learned
+
+The article provides valuable insights into the practical challenges and considerations when deploying LLMs in security operations, acknowledging limitations often glossed over in promotional content.
+
+The team explicitly recognizes that LLMs are non-deterministic and that outputs can vary or even conflict given the same input. Their approach to addressing this includes having one LLM cross-check another's response in some cases, though the article doesn't detail exactly where this pattern is applied. More importantly, they emphasize that human oversight remains crucial for high-stakes decisions, reflecting a mature understanding of LLM limitations.
+
+A key operational principle is that when the LLM lacks full context (such as prior alerts or historical signals), the system is designed to over-escalate and route cases for human review rather than rely on limited understanding. This conservative approach prioritizes security over operational efficiency, which is appropriate for incident response scenarios where the cost of missed threats significantly exceeds the cost of false positives.
+
+The team has learned that input quality directly impacts output quality, though they note that models don't require exhaustive data dumps. The more structured and enriched the input, the stronger and more reliable the analysis. This observation aligns with general LLMOps best practices around prompt engineering and context management, but is particularly important in security contexts where precision matters.
+
+An interesting capability the team highlights is the LLM's competence at finding outliers and unique behaviors in security incident data and logs. They describe this as finding "needles in haystacks" when dealing with large datasets. However, they also acknowledge that LLMs can lose context and make errors when supplied with too much data, creating a tension between providing comprehensive information and maintaining focus. Getting the "right data and context" is identified as the key to success.
+
+## Critical Assessment and Open Questions
+
+While the case study presents impressive metrics and clear operational benefits, several aspects warrant closer examination from an LLMOps perspective.
+
+The evaluation methodologies are not fully detailed. For alert triage, "97%+ alignment with human analyst conclusions" is measured during peer review, but the article doesn't specify the sample size, review frequency, or how edge cases are handled. Similarly, "over 99% classification precision" for phishing emails and "95% factual accuracy" for incident reports lack detail on measurement methodology. These are critical metrics for production LLM systems, and more transparency about evaluation approaches would strengthen confidence in the results.
+
+The article doesn't discuss which LLM models are being used, whether they're commercial APIs (like OpenAI, Anthropic) or self-hosted open-source models, or how model selection decisions were made. This omission is significant for readers trying to understand the technical architecture and cost implications. Similarly, there's no discussion of prompt engineering strategies beyond the high-level mention of positioning the model to "emulate a seasoned security analyst."
+
+The vector database implementation for the RAG system is mentioned but not detailed. Questions about embedding models, chunking strategies, retrieval algorithms, and how the similarity search is tuned remain unanswered. Given that RAG is a core component of the most sophisticated workflow (alert triage), more technical detail would be valuable.
+
+There's no discussion of cost considerations, which are typically significant for LLM-powered systems processing hundreds of alerts and emails. The cost-benefit analysis beyond time savings (person-hours to API costs) would be informative, particularly for organizations considering similar implementations.
+
+The article mentions that one LLM can cross-check another's response but doesn't detail when this pattern is used or how conflicts are resolved. Similarly, the human oversight mechanisms beyond the mention of peer review are not fully described. Understanding where humans remain in the loop and how their feedback improves the system would strengthen the case study.
+
+Failure modes and edge cases are barely discussed. While the article mentions no high-impact incidents being misclassified and no false negatives in phishing detection, there's little discussion of what happens when the system does make mistakes, how these are detected, and what feedback loops exist for continuous improvement.
+
+The timeline for development and deployment is not provided, making it difficult to assess the effort required to achieve these results. Was this months or years of work? How many engineers were involved? What were the major challenges encountered during development?
+
+## Conclusion and Industry Implications
+
+Despite the gaps in technical detail, this case study represents a pragmatic and apparently successful application of LLMs to operational security challenges. The approach of targeting specific, well-defined workflows with measurable outcomes rather than attempting comprehensive automation is commendable and likely contributed to the successful deployment.
+
+The three systems demonstrate different levels of automation and human involvement, from fully autonomous phishing classification to human-reviewed incident reports, showing thoughtful consideration of where full automation is appropriate versus where human oversight remains essential. The consistent theme of designing for over-escalation and maintaining human oversight for high-stakes decisions reflects mature operational thinking.
+
+The use of RAG for incorporating historical context in alert triage is particularly noteworthy as a pattern that likely generalizes to other security operations contexts. The ability to leverage organizational knowledge without fine-tuning models represents a practical path to domain-specific LLM applications.
+
+For organizations considering similar implementations, the key takeaways appear to be: focus on high-volume, repetitive tasks with clear patterns; invest in input enrichment and context gathering; design conservative systems that favor escalation over missed detections; maintain human oversight for critical decisions; and measure outcomes rigorously even if the measurement methodologies themselves could be more transparent.
+
+The article concludes with the observation that LLMs are "great assistants" in security incident response, especially for lean technical teams, and that humans will always be required in the loop to validate results and analysis. This balanced perspective, acknowledging both capabilities and limitations, is refreshing and likely reflects real operational experience rather than theoretical potential. The acknowledgment that LLMs can both find needles in haystacks and lose context with too much data captures the practical reality of working with these systems in production environments.

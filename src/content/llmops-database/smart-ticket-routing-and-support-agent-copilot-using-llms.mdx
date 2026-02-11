@@ -1,0 +1,112 @@
+---
+title: "Smart Ticket Routing and Support Agent Copilot using LLMs"
+slug: "smart-ticket-routing-and-support-agent-copilot-using-llms"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f39b2c1af4efe9e1f90e0"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:35:00.608Z"
+  createdOn: "2024-11-21T13:46:26.583Z"
+llmopsTags:
+  - "classification"
+  - "cost-optimization"
+  - "customer-support"
+  - "document-processing"
+  - "kubernetes"
+  - "langchain"
+  - "latency-optimization"
+  - "microservices"
+  - "microsoft-azure"
+  - "model-optimization"
+  - "monitoring"
+  - "rag"
+  - "reliability"
+  - "scalability"
+  - "scaling"
+  - "semantic-search"
+company: "Adyen"
+summary: "Adyen, a global financial technology platform, implemented LLM-powered solutions to improve their support team's efficiency. They developed a smart ticket routing system and a support agent copilot using LangChain, deployed in a Kubernetes environment. The solution resulted in more accurate ticket routing and faster response times through automated document retrieval and answer suggestions, while maintaining flexibility to switch between different LLM models."
+link: "https://blog.langchain.dev/llms-accelerate-adyens-support-team-through-smart-ticket-routing-and-support-agent-copilot/"
+year: 2023
+seo:
+  title: "Adyen: Smart Ticket Routing and Support Agent Copilot using LLMs - ZenML LLMOps Database"
+  description: "Adyen, a global financial technology platform, implemented LLM-powered solutions to improve their support team's efficiency. They developed a smart ticket routing system and a support agent copilot using LangChain, deployed in a Kubernetes environment. The solution resulted in more accurate ticket routing and faster response times through automated document retrieval and answer suggestions, while maintaining flexibility to switch between different LLM models."
+  canonical: "https://www.zenml.io/llmops-database/smart-ticket-routing-and-support-agent-copilot-using-llms"
+  ogTitle: "Adyen: Smart Ticket Routing and Support Agent Copilot using LLMs - ZenML LLMOps Database"
+  ogDescription: "Adyen, a global financial technology platform, implemented LLM-powered solutions to improve their support team's efficiency. They developed a smart ticket routing system and a support agent copilot using LangChain, deployed in a Kubernetes environment. The solution resulted in more accurate ticket routing and faster response times through automated document retrieval and answer suggestions, while maintaining flexibility to switch between different LLM models."
+---
+
+## Overview
+
+Adyen is a publicly-traded financial technology platform that provides end-to-end payments capabilities, data-driven insights, and financial products to large enterprises including Meta, Uber, H&M, and Microsoft. As their merchant base and transaction volumes grew, their support teams faced increasing pressure. Rather than simply expanding headcount, Adyen's engineering-focused culture led them to explore LLM-based solutions to scale efficiently. They established a dedicated team of Data Scientists and Machine Learning Engineers at their Madrid Tech Hub specifically to tackle high-impact projects, starting with support team acceleration.
+
+The case study, published in November 2023, demonstrates a practical approach to deploying LLMs in a production environment for enterprise customer support operations. It showcases how a fintech company navigated the challenges of building LLM applications that needed to handle sensitive customer interactions while maintaining accuracy and reliability.
+
+## Problem Statement
+
+The core challenge Adyen identified was that ticket routing between teams was significantly impacting response times. When support tickets are misrouted, they create delays as they bounce between teams looking for the right expertise. Given Adyen's wide array of products, features, and services, matching incoming tickets to the most qualified technical experts was non-trivial. This challenge was particularly acute because their enterprise clients expect rapid, accurate support responses.
+
+The team recognized this as an opportunity where LLM capabilities could provide significant leverage. As Andreu Mora, SVP of Engineering - Data, noted, the goal was to "understand, harness, and advance technology like LLMs to make our teams and customers more efficient and more satisfied."
+
+## Solution Architecture
+
+Adyen developed two complementary LLM applications to address their support challenges:
+
+**Smart Ticket Routing System:** This system analyzes incoming tickets to determine their theme and sentiment, then dynamically adjusts priority based on the user context. The goal is to get tickets to the right support person as quickly as possible based on content analysis, reducing the back-and-forth that typically slows down response times.
+
+**Support Agent Copilot (Question Answering Suggestions):** This system provides support agents with suggested responses to customer inquiries. It combines retrieval-augmented generation (RAG) with curated document collections to surface relevant information and draft potential answers that agents can review and modify.
+
+### Technical Implementation
+
+The team chose LangChain as their primary framework for several strategic reasons. First, LangChain provided a single, customizable framework that could take them from prototype to production without requiring a rewrite. Second, and perhaps more importantly for an enterprise environment, it prevented vendor lock-in to any single model. This flexibility was crucial as Adyen experimented with different underlying LLMs to find the optimal balance of response quality and costs.
+
+To integrate with their existing infrastructure, Adyen extended LangChain's base LLM class with a custom class that connected to their internal LLM API endpoint. This approach allowed them to maintain control over their LLM access while still benefiting from LangChain's abstractions and tooling.
+
+The deployment architecture uses an event-driven microservice pattern hosted on a Kubernetes cluster. This architectural choice aligns with modern cloud-native practices and provides scalability, resilience, and easier deployment management for their LLM-powered services.
+
+### RAG Implementation
+
+For the support agent copilot, Adyen built a comprehensive RAG pipeline. Over approximately 4 months, they assembled a collection of relevant documents combining both public and private company documentation. These documents were processed and stored in a vector database using an embedding model optimized for effective retrieval.
+
+The team's initial milestone focused specifically on document retrieval quality before connecting to the generative LLM component. This phased approach allowed them to validate that their retrieval system was finding the most relevant and up-to-date documents from their collection. According to the case study, this approach significantly outperformed traditional keyword-based search methods. Importantly, this validation step helped establish organizational trust in the new system before expanding its capabilities.
+
+Once retrieval was validated, the team connected the retrieval pipeline to an LLM to generate suggested responses. The resulting copilot presents support agents with modifiable potential answers to customer inquiries, allowing agents to maintain quality control while reducing the cognitive load of researching and drafting responses from scratch.
+
+## Evaluation and Observability
+
+The case study highlights Adyen's use of LangSmith, LangChain's developer platform, for evaluating application performance. This tooling allowed them to compare how different underlying models affected both response quality and operational costs. This evaluation capability is critical in production LLM deployments where model selection can significantly impact both accuracy and expenses.
+
+While the case study doesn't provide specific metrics or benchmarks, the emphasis on evaluation tooling suggests a mature approach to LLMOps that goes beyond simply deploying a proof-of-concept. The ability to systematically compare models and measure performance is essential for maintaining and improving production LLM applications over time.
+
+## Results and Outcomes
+
+The case study reports several positive outcomes, though it should be noted that specific quantitative metrics are not provided:
+
+**Improved Ticket Routing Accuracy:** The LLM-driven analysis of ticket theme and sentiment enables more accurate initial routing, connecting merchants with technical experts best suited to respond quickly to their specific issues.
+
+**Faster Response Times:** By reducing misrouted tickets and providing agents with suggested responses, the overall support workflow became more efficient. The 4-month development timeline from conception to functional system demonstrates relatively rapid time-to-value.
+
+**Agent Satisfaction:** Beyond efficiency gains, the case study emphasizes improved agent satisfaction. With better-routed queues and AI-assisted response drafting, agents can focus more on providing quality support rather than researching documentation or handling tickets outside their expertise.
+
+## Critical Assessment
+
+It's worth noting that this case study is published on LangChain's blog and focuses primarily on the positive aspects of the implementation. While the technical approach appears sound, the absence of specific metrics (e.g., percentage improvement in routing accuracy, reduction in average response time, agent satisfaction scores) makes it difficult to objectively assess the impact.
+
+The claim that the RAG approach "far outperformed traditional keyword-based search" is not substantiated with comparative data. Additionally, the case study doesn't discuss challenges encountered during development, edge cases where the system might fail, or ongoing operational considerations like handling model updates or drift in ticket patterns.
+
+That said, the architectural choices—using LangChain for flexibility, custom LLM class integration, Kubernetes-based microservices, and systematic evaluation with LangSmith—represent reasonable best practices for enterprise LLM deployments. The phased approach of validating retrieval before adding generation components shows methodical system development.
+
+## Key Takeaways for LLMOps
+
+This case study offers several lessons for teams considering similar LLM deployments:
+
+The importance of framework flexibility cannot be overstated. Adyen's choice to use LangChain specifically to avoid model lock-in reflects the rapidly evolving LLM landscape where optimal model choices may change over time.
+
+Building trust incrementally matters for organizational adoption. By first demonstrating that their retrieval system outperformed existing search, the team established credibility before expanding the system's capabilities.
+
+Integration with existing infrastructure requires careful planning. The custom LLM class extending LangChain's base class and the event-driven microservice architecture on Kubernetes show thoughtful consideration of how LLM components fit into enterprise systems.
+
+Finally, evaluation and observability tooling should be treated as essential infrastructure, not optional add-ons. The ability to compare model performance and costs systematically enables informed decision-making as the LLM ecosystem evolves.

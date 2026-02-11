@@ -1,0 +1,193 @@
+---
+title: "Understanding the AI Act: February 2025 Updates and Implications"
+slug: "understanding-the-ai-act-february-2025-updates-and-implications"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "67b449296d3d47eaa35f88fa"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-04-29T16:16:05.368Z"
+  lastUpdated: "2025-04-27T13:11:48.155Z"
+  createdOn: "2025-02-18T08:47:37.720Z"
+author: "alex-strick-van-linschoten"
+category: "mlops"
+tags:
+  - "compliance"
+  - "ai-act"
+  - "mlops"
+  - "best-practices"
+  - "monitoring"
+  - "production"
+date: "2025-02-18T00:00:00.000Z"
+readingTime: 6 mins
+mainImage:
+  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/0337f43b/67b448c8e4e0b333d8c2f64b_CleanShot_Feb_17_EU_AI_Act__1_.png"
+seo:
+  title: "Understanding the AI Act: February 2025 Updates and Implications - ZenML Blog"
+  description: "The EU AI Act, now partially in effect as of February 2025, introduces comprehensive regulations for artificial intelligence systems with significant implications for global AI development. This landmark legislation categorizes AI systems based on risk levels - from prohibited applications to high-risk and limited-risk systems - establishing strict requirements for transparency, accountability, and compliance. The Act imposes substantial penalties for violations, up to €35 million or 7% of global turnover, and provides a clear timeline for implementation through 2027. Organizations must take immediate action to audit their AI systems, implement robust governance infrastructure, and enhance development practices to ensure compliance, with tools like ZenML offering technical solutions for meeting these regulatory requirements."
+  canonical: "https://www.zenml.io/blog/understanding-the-ai-act-february-2025-updates-and-implications"
+  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/0337f43b/67b448c8e4e0b333d8c2f64b_CleanShot_Feb_17_EU_AI_Act__1_.png"
+  ogTitle: "Understanding the AI Act: February 2025 Updates and Implications - ZenML Blog"
+  ogDescription: "The EU AI Act, now partially in effect as of February 2025, introduces comprehensive regulations for artificial intelligence systems with significant implications for global AI development. This landmark legislation categorizes AI systems based on risk levels - from prohibited applications to high-risk and limited-risk systems - establishing strict requirements for transparency, accountability, and compliance. The Act imposes substantial penalties for violations, up to €35 million or 7% of global turnover, and provides a clear timeline for implementation through 2027. Organizations must take immediate action to audit their AI systems, implement robust governance infrastructure, and enhance development practices to ensure compliance, with tools like ZenML offering technical solutions for meeting these regulatory requirements."
+---
+
+The [AI Act](https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai) is the European Union's landmark legislation governing artificial intelligence. Its primary focus is high-risk AI applications, but its scope is broad, affecting AI systems across various risk categories. It introduces strict requirements for transparency, accountability, and compliance.
+
+As of February 2, 2025, several key parts of the AI Act are now in effect:
+
+<ul id=""><li id=""><strong id="">Definitions of AI systems</strong>: The AI Act establishes clear definitions of what constitutes an AI system.</li><li id=""><strong id="">AI literacy initiatives</strong>: Organizations must promote awareness and understanding of AI systems.</li><li id=""><strong id="">Prohibited AI practices</strong>: AI applications that pose an “unacceptable risk” become unlawful under Article 5.</li></ul>
+
+While the AI Act originates from the EU, its reach extends far beyond European borders. The legislation has [extraterritorial scope](https://ec.europa.eu/commission/presscorner/detail/en/qanda_21_1683), meaning non-EU companies offering AI systems in the EU or affecting EU individuals must comply with these rules. This includes companies that "place on the market" or "put into service" AI systems in the EU, even without a physical EU presence. For example, if a US company uses AI to screen EU job applicants or provides AI-powered services to European customers, they must follow the same requirements as EU-based companies. Notably, providers of high-risk AI systems based outside the EU must appoint an authorised EU representative, similar to [GDPR requirements](https://gdpr-info.eu/). The Act can enforce compliance through substantial fines and coordinated cross-border actions, making it essential for global AI developers to understand and prepare for these regulations.
+
+*Disclaimer: This blog post is intended for informational purposes only and does not constitute legal advice. I am not a lawyer, and this summary is based on my review of available sources. While the guidance provided aligns with general best practices for machine learning, it is important to consult with a legal professional for advice specific to your situation.*
+
+## How Does the AI Act Categorize AI Systems?
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/2792f221/67b448832e4234c4bbcfe2f4_CleanShot_Feb_17_2025_EU_AI_Act.png" alt="__wf_reserved_inherit" />
+</figure>
+
+The AI Act classifies AI systems based on their [risk level](https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai), imposing different regulatory requirements depending on their impact. The ones we need to be aware of as developers are the unacceptable, high and limited risk categories. Below these categories there is a 'minimal risk' category which is exempt from most of the requirements.
+
+### Prohibited AI Systems
+
+The AI Act's [Article 5](https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=OJ:L_202401689#art_5) bans AI systems that:
+
+<ul id=""><li id="">Manipulate users subliminally or deceptively to cause harm.</li><li id="">Exploit vulnerabilities of specific groups (e.g., children, elderly, disabled individuals) to distort behavior.</li><li id="">Facilitate government-run social scoring systems.</li><li id="">Enable predictive policing that profiles individuals based on AI-driven risk assessments.</li><li id="">Collect facial recognition data indiscriminately (e.g., scraping images from the internet or CCTV without consent).</li><li id="">Deploy real-time biometric identification in public spaces, such as live facial recognition by law enforcement, except in narrowly defined exceptions (e.g., searching for a missing child).</li><li id="">Use biometric categorization systems to infer sensitive characteristics like race, political orientation, or religious beliefs.</li><li id="">Deploy AI-driven emotion recognition in workplaces, schools, or law enforcement settings.</li></ul>
+
+### High-Risk AI Systems
+
+High-risk AI systems fall into two main categories:
+
+**1. AI in regulated products**
+
+These include AI systems used as safety components in existing EU-regulated sectors such as:
+
+<ul id=""><li id="">Medical devices</li><li id="">Automotive systems (e.g., AI-assisted driving technologies)</li><li id="">Aviation and aerospace</li><li id="">Machinery (e.g., industrial automation AI)</li><li id="">Toys (e.g., interactive learning AI)</li></ul>
+
+**2. AI in sensitive areas**
+
+These systems significantly impact individuals' rights and safety and are explicitly listed in Annex III of the AI Act, including:
+
+<ul id=""><li id="">Education and vocational training (e.g., automated exam grading, university admissions screening)</li><li id="">Employment and HR (e.g., CV screening, AI-assisted employee monitoring)</li><li id="">Access to essential services (e.g., credit scoring, AI-driven welfare eligibility decisions)</li><li id="">Law enforcement (e.g., predictive crime analytics, automated evidence evaluation tools)</li><li id="">Border control and migration (e.g., AI-powered risk assessment, automated visa processing, lie detection at border crossings)</li><li id="">Justice administration (e.g., AI-assisted legal decisions, predictive case outcome analysis)</li><li id="">Biometric identification and categorization (e.g., AI-powered face recognition for authentication, sorting individuals by biometric characteristics)</li></ul>
+
+These systems must meet stringent requirements for transparency, documentation, and human oversight.
+
+### Limited-Risk AI Systems
+
+Between high-risk and minimal-risk systems, the AI Act defines a category of AI systems that have transparency obligations but do not require extensive oversight. These include:
+
+<ul id=""><li id="">AI that interacts with humans: Users must be informed that they are engaging with an AI system (e.g., chatbots, voice assistants).</li><li id="">AI-generated synthetic media: AI-generated images, videos, or audio that could mislead users must be labeled as artificial unless used in artistic or entertainment contexts (e.g., deepfake disclosures in journalism).</li><li id="">Emotion recognition or biometric categorization AI (where not outright prohibited): Organizations must disclose when AI analyzes individuals' emotions or biometric data in permissible settings.</li></ul>
+
+Failure to meet transparency obligations can lead to regulatory penalties.
+
+## Penalties for Non-Compliance
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/3073ff82/67b4489909b6f0e45e1848df_CleanShot_Feb_17_EU_AI_Act.png" alt="__wf_reserved_inherit" />
+</figure>
+
+The EU AI Act establishes a comprehensive penalty framework with substantial [financial consequences for violations](https://ec.europa.eu/commission/presscorner/detail/en/qanda_21_1683). For the most severe infractions, particularly the deployment of prohibited AI systems or deliberate circumvention of the Act's restrictions, organisations face fines of up to €35 million or 7% of worldwide annual turnover, whichever is higher. This unprecedented penalty cap, which exceeds even the GDPR's 4% maximum, reflects the EU's serious stance on AI regulation and its commitment to preventing harmful AI practices.
+
+The Act implements a tiered penalty structure based on violation severity. Failures to comply with high-risk AI system requirements, such as inadequate risk management, insufficient documentation, or deploying non-compliant systems, can result in fines up to €15 million or 3% of global turnover. Less severe violations, such as providing misleading information to regulators or notified bodies during certification processes, may incur penalties up to €7.5 million or 1% of turnover.
+
+Regulatory authorities will assess each violation individually, considering factors such as the infringement's nature and gravity, intent or negligence, number of affected individuals, mitigation efforts, and previous violations. The Act emphasises that penalties should be "effective, proportionate, and dissuasive." Companies demonstrating wilful non-compliance or causing significant harm are likely to face maximum penalties, while good-faith errors may receive more lenient treatment.
+
+Beyond monetary penalties, regulators possess broad enforcement powers. They can issue remedial orders requiring the withdrawal of non-compliant AI systems from the market, mandate the deletion of problematic datasets, or impose periodic penalty payments for ongoing non-compliance. These daily fines serve as a powerful deterrent against persistent violations.
+
+The Act's penalties extend beyond regulatory fines to encompass broader legal and liability risks. Non-compliance can expose organisations to civil litigation, particularly under the forthcoming AI Liability Directive, which will facilitate legal action for AI-related harms. Evidence of non-compliance may support negligence claims in court proceedings. In severe cases involving prohibited AI practices that cause harm, criminal liability might arise under Member State laws. Furthermore, AI deployments that violate other regulations, such as the GDPR, can trigger additional penalties from relevant authorities.
+
+## Actionable Steps for Engineers and ML Teams
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/cad20a93/67b448b86a3487f1081647cc_CleanShot_Feb_17_2025_EU_AI_Act__1_.png" alt="__wf_reserved_inherit" />
+</figure>
+
+Engineering and platform teams must take several concrete technical steps to ensure compliance with the AI Act. First and foremost, teams must immediately cease using any AI systems that fall under the [prohibited categories](https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=OJ:L_202401689#art_5). This includes reviewing and potentially shutting down existing applications and pipelines that may have used data collected through now-prohibited methods, such as indiscriminate facial recognition data collection or emotion recognition systems in workplace settings.
+
+Teams should implement robust safeguards and monitoring systems to prevent future violations. This includes establishing technical controls that can flag and prevent the deployment of prohibited AI use cases. A critical component is implementing [comprehensive model versioning and lineage tracking capabilities](https://docs.zenml.io/concepts/metadata) that can demonstrate the provenance of training data and document the methods used throughout the model development lifecycle.
+
+For data governance, teams should conduct thorough reviews of existing datasets, paying particular attention to any biometric data. This includes auditing historical data collection methods and ensuring they align with the Act's requirements. Organizations should update their internal AI governance policies to reflect the Act's immediate requirements, implementing mandatory compliance reviews for new AI applications and establishing clear protocols for handling sensitive data.
+
+To support these compliance efforts, teams should leverage appropriate technical tools:
+
+<ul id=""><li id=""><a href="https://docs.zenml.io/concepts/metadata" id="">Metadata tracking systems</a> to document model and data characteristics</li><li id=""><a href="https://docs.zenml.io/stacks/stack-components/experiment-trackers" id="">Experiment tracking platforms</a> to maintain detailed records of model development</li><li id=""><a href="https://docs.zenml.io/stack-components/model-registries" id="">Model registries</a> to version and catalog AI assets</li><li id=""><a href="https://www.zenml.io" id="">MLOps platforms like ZenML</a> that combine these capabilities with governance features</li></ul>
+
+These tools can help teams maintain the necessary documentation and traceability required for compliance while streamlining the implementation of governance controls within existing development workflows.
+
+## Upcoming AI Act Milestones
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/0337f43b/67b448c8e4e0b333d8c2f64b_CleanShot_Feb_17_EU_AI_Act__1_.png" alt="__wf_reserved_inherit" />
+</figure>
+
+<ul id=""><li id=""><strong id="">May 2, 2025</strong>: EU Commission releases AI governance guidance.</li></ul>
+
+The European Commission will issue detailed guidance and codes of practice specifically targeting providers of general-purpose AI (GPAI) models. This guidance will primarily impact organisations developing and training foundation models, providing clarity on compliance requirements and best practices.
+
+<ul id=""><li id=""><strong id="">August 2, 2025</strong>: General-purpose AI (GPAI) model governance rules apply.</li></ul>
+
+GPAI providers must begin complying with comprehensive governance rules enforced by EU member states. This includes providing detailed technical documentation, ensuring copyright compliance during model training, delivering transparent summaries of training data, and conducting thorough assessments of potential systemic risks. Member states will establish specific penalties for non-compliance with these obligations.
+
+<ul id=""><li id=""><strong id="">August 2026</strong>: High-risk AI obligations become enforceable.</li></ul>
+
+This marks the full enforcement date for high-risk AI systems, encompassing areas like biometric identification, critical infrastructure, education, employment, essential services, law enforcement, migration control, and justice administration. Systems must undergo rigorous conformity assessments and meet extensive requirements including: implementing comprehensive risk management, using high-quality unbiased training data, enabling operation logging for traceability, maintaining detailed technical documentation, providing clear user instructions, ensuring human oversight capabilities, and maintaining robust security measures. The Act's penalty regime becomes fully operational, with significant fines for non-compliance. Additionally, limited-risk AI systems must meet transparency obligations, such as disclosing AI interactions and labeling AI-generated content.
+
+<ul id=""><li id=""><strong id="">August 2027</strong>: Compliance deadlines for pre-existing AI systems.</li></ul>
+
+Final compliance deadline for GPAI systems deployed before August 2, 2025, and high-risk AI systems embedded in products requiring third-party certification under other EU regulations (such as medical devices, automobiles, aviation equipment, and toys). This represents the last major milestone in the Act's implementation timeline, after which all AI systems within scope must be fully compliant.
+
+## How to Be Proactive About Compliance
+
+As AI regulation evolves globally, implementing robust governance and lineage tracking capabilities is becoming essential - not just for compliance, but for building trustworthy AI systems that serve users effectively. Here's how to prepare your organisation for AI Act compliance, with a focus on practical technical implementations:
+
+### For High-Risk AI Applications
+
+If your AI system falls into the high-risk category, you'll need to implement comprehensive controls including:
+
+<ul id=""><li id="">A documented risk management system</li><li id="">High-quality training data with bias mitigation</li><li id=""><a href="https://docs.zenml.io/concepts/metadata" id="">Extensive logging</a> and traceability</li><li id="">Detailed technical documentation</li><li id="">Human oversight mechanisms</li><li id="">Robust security measures</li></ul>
+
+### Technical Implementation Steps
+
+<ol id=""><li id=""><strong id="">Audit and Categorise Your AI Systems</strong><ul id=""><li id="">Inventory existing AI applications</li><li id="">Assess risk categories</li><li id="">Identify compliance gaps</li></ul></li><li id=""><strong id="">Implement Governance Infrastructure</strong><ul id=""><li id="">Deploy <a href="https://docs.zenml.io/concepts/metadata" id="">data versioning and metadata tracking</a></li><li id="">Establish <a href="https://docs.zenml.io/stack-components/model-registries" id="">model registries</a></li><li id="">Create <a href="https://docs.zenml.io/user-guides/starter-guide/create-an-ml-pipeline" id="">standardised MLOps pipelines</a></li><li id="">Implement <a href="https://docs.zenml.io/stacks/stack-components/data-validators" id="">explainability reporting</a></li><li id="">Set up <a href="https://docs.zenml.io/stacks/stack-components/alerters" id="">monitoring</a> and incident response</li></ul></li><li id=""><strong id="">Enhance Development Practices</strong><ul id=""><li id="">Embed compliance checks in CI/CD</li><li id="">Add bias detection and guardrails</li><li id="">Improve data cleaning processes</li><li id="">Implement comprehensive logging</li><li id="">Enable human oversight for high-risk cases</li></ul></li></ol>
+
+### How ZenML Supports Compliance
+
+ZenML provides comprehensive technical infrastructure that makes implementing AI Act requirements straightforward and efficient. At its core, ZenML offers [robust traceability features](https://docs.zenml.io/concepts/metadata) that maintain complete lineage of data, models, and deployments throughout the ML lifecycle. This traceability is [automatic and seamless](https://docs.zenml.io/concepts/artifacts) - as teams work within their normal development workflows, ZenML captures and stores detailed metadata about every step of the process, from initial data processing to final model deployment
+
+.
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/54d3bc5c/67b448e42a9d9bb96bd945af_EU_AI_Act_Models.gif" alt="__wf_reserved_inherit" />
+</figure>
+
+The platform's lineage tracking capabilities go beyond simple version control. When data scientists and engineers use ZenML to develop and deploy models, the system automatically [documents the relationships between different components](https://docs.zenml.io/user-guides/starter-guide/track-ml-models) of the ML pipeline. This means you can trace any prediction back to its source, understanding exactly which version of the model made it, what data that model was trained on, and what preprocessing steps were applied. This level of detail is crucial for meeting the AI Act's documentation requirements, particularly for high-risk systems.
+
+In terms of governance and compliance, ZenML integrates sophisticated tools directly into the development workflow. The platform includes [built-in bias detection capabilities](https://docs.zenml.io/stacks/stack-components/data-validators) that can analyze training data and model outputs for potential fairness issues. These checks can be automated as part of your CI/CD pipeline, ensuring that problematic models don't make it to production. ZenML also facilitates the generation of standardized model cards (using the [model control plane](https://docs.zenml.io/concepts/models)), which document model characteristics, limitations, and intended uses - a key requirement for transparency under the AI Act.
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/f3682df7/67b448f6d756ec6ee50e2f93_CleanShot_Feb_17_EU_AI_Act__2_.png" alt="__wf_reserved_inherit" />
+</figure>
+
+For production environments, ZenML implements [comprehensive monitoring systems](https://docs.zenml.io/concepts/metadata) that track model performance in real-time. This goes beyond basic accuracy metrics to include custom fairness metrics, data drift detection, and automated alerting when models behave unexpectedly. The platform maintains [detailed audit logs](https://docs.zenml.io/concepts/steps_and_pipelines/logging) of all system interactions, making it possible to reconstruct exactly what happened in any given situation. This is particularly valuable for high-risk applications where human oversight is required - ZenML can integrate with human-in-the-loop workflows, ensuring that critical decisions receive appropriate review.
+
+One of ZenML's key strengths is its pipeline templating system. Teams can create [standardized pipeline templates](https://docs.zenml.io/concepts/templates) that embed compliance requirements directly into the development process. These templates can enforce data quality checks, require specific documentation steps, and implement mandatory review phases for high-risk applications. By standardizing these processes, organizations can ensure consistent compliance across all their AI development efforts while still maintaining flexibility for different use cases.
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/d95666c4/67b4490c72481c274bc1f6f1_ZenML_Features_Dashboard_EU_AI_Act_Blog.webp" alt="__wf_reserved_inherit" />
+</figure>
+
+The platform's [artifact management system](https://docs.zenml.io/concepts/artifacts) provides a secure, centralized repository for all ML assets. This includes not just models and datasets, but also evaluation results, preprocessing functions, and deployment configurations. Each artifact is versioned and its lineage is tracked, making it possible to demonstrate compliance with data quality requirements and prove that models were developed using approved methodologies.
+
+ZenML's approach to supporting compliance isn't just about meeting regulatory requirements - it's about building better, more trustworthy AI systems. The platform's features help teams implement best practices that improve model quality and reliability while simultaneously satisfying regulatory obligations. This means that investing in ZenML's compliance capabilities pays dividends beyond just regulatory conformance: it results in more robust, maintainable, and transparent AI systems that better serve their users.
+
+Remember to maintain proportionality in your compliance efforts - focus the most stringent controls on high-risk systems while keeping minimal bureaucracy for low-risk applications. By implementing these capabilities through ZenML, you're not just meeting regulatory requirements - you're building better, more trustworthy AI systems that benefit your users through increased transparency and reliability.
+
+## Practical Next Steps
+
+While the AI Act introduces comprehensive regulations for high-risk AI systems, developers working on limited or minimal risk applications can take a proportionate approach to compliance. The key takeaways are that you need to understand your system's risk category, implement appropriate transparency measures, and maintain good engineering practices around documentation and monitoring.
+
+For teams building lower-risk AI applications, focus on implementing foundational best practices: maintain clear documentation of your AI systems, implement basic monitoring and logging, and ensure transparency about AI use in your user interfaces. Consider adopting tools like ZenML to help automate these practices. While you may not need the full compliance infrastructure required for high-risk systems, having these basics in place will make it easier to adapt if requirements change or if you later develop higher-risk applications.
+
+Some practical next steps include: auditing your current AI systems to confirm their risk category, documenting your AI development processes, implementing basic model and data versioning, and setting up monitoring for key metrics. Remember that even for lower-risk systems, maintaining good engineering practices around AI development isn't just about compliance - it helps build user trust and creates more reliable, maintainable AI applications.

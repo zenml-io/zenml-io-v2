@@ -1,0 +1,178 @@
+---
+title: "Best Practices for Implementing LLMs in High-Stakes Applications"
+slug: "best-practices-for-implementing-llms-in-high-stakes-applications"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f3e611faea791aaf1b44d"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:37:22.740Z"
+  createdOn: "2024-11-21T14:06:25.875Z"
+llmopsTags:
+  - "anthropic"
+  - "compliance"
+  - "documentation"
+  - "embeddings"
+  - "error-handling"
+  - "fallback-strategies"
+  - "fine-tuning"
+  - "guardrails"
+  - "healthcare"
+  - "high-stakes-application"
+  - "human-in-the-loop"
+  - "monitoring"
+  - "openai"
+  - "prompt-engineering"
+  - "regulatory-compliance"
+  - "reliability"
+  - "security"
+  - "system-prompts"
+company: "Moonhub"
+summary: "The presentation discusses implementing LLMs in high-stakes use cases, particularly in healthcare and therapy contexts. It addresses key challenges including robustness, controllability, bias, and fairness, while providing practical solutions such as human-in-the-loop processes, task decomposition, prompt engineering, and comprehensive evaluation strategies. The speaker emphasizes the importance of careful consideration when implementing LLMs in sensitive applications and provides a framework for assessment and implementation."
+link: "https://www.youtube.com/watch?v=kthdeOW3TZQ"
+year: 2023
+seo:
+  title: "Moonhub: Best Practices for Implementing LLMs in High-Stakes Applications - ZenML LLMOps Database"
+  description: "The presentation discusses implementing LLMs in high-stakes use cases, particularly in healthcare and therapy contexts. It addresses key challenges including robustness, controllability, bias, and fairness, while providing practical solutions such as human-in-the-loop processes, task decomposition, prompt engineering, and comprehensive evaluation strategies. The speaker emphasizes the importance of careful consideration when implementing LLMs in sensitive applications and provides a framework for assessment and implementation."
+  canonical: "https://www.zenml.io/llmops-database/best-practices-for-implementing-llms-in-high-stakes-applications"
+  ogTitle: "Moonhub: Best Practices for Implementing LLMs in High-Stakes Applications - ZenML LLMOps Database"
+  ogDescription: "The presentation discusses implementing LLMs in high-stakes use cases, particularly in healthcare and therapy contexts. It addresses key challenges including robustness, controllability, bias, and fairness, while providing practical solutions such as human-in-the-loop processes, task decomposition, prompt engineering, and comprehensive evaluation strategies. The speaker emphasizes the importance of careful consideration when implementing LLMs in sensitive applications and provides a framework for assessment and implementation."
+---
+
+## Overview
+
+This case study is derived from a conference talk by Yada, a professional with a background in ML engineering research, working at the intersection of NLP and healthcare/mental health, currently at Moonhub (techster.com). The presentation addresses the critical question of how to responsibly incorporate large language models into high-stakes environments, particularly in healthcare and mental health applications.
+
+The talk is notably cautionary in nature, emphasizing that while LLMs show impressive capabilities in medicine and law according to various headlines, there are significant caveats and failure modes that practitioners must consider before deploying these models in production environments where errors can have serious consequences.
+
+## The High-Stakes Context: Therapy Bot Example
+
+The speaker uses a hypothetical therapy bot as a running example throughout the talk to illustrate the unique challenges of deploying LLMs in sensitive domains. This is an effective pedagogical choice because therapy bots represent one of the most challenging applications for LLMs, requiring consideration of:
+
+- **Therapeutic Framework Adherence**: A therapy bot needs to operate within established therapeutic frameworks such as Cognitive Behavioral Therapy (CBT) or family dynamics approaches. This requires a level of controllability that general-purpose LLMs may struggle to maintain consistently.
+
+- **Bias and Fairness Concerns**: The speaker highlights a concrete example where speech-to-text components in a call-in therapy service could have accuracy issues with accented speakers, leading to downstream degradations in the experience for users with non-standard accents. This cascading effect of bias through the ML pipeline is a critical consideration for any production LLM system.
+
+- **State Management**: Healthcare applications require careful tracking of patient information including social history, emergency contacts, and other critical data during intake flows. The system must reliably maintain dialogue state throughout interactions.
+
+## Failure Modes and Robustness Concerns
+
+The presentation acknowledges several categories of LLM failure that are particularly concerning in high-stakes environments:
+
+- **Distribution Shift Robustness**: Models may perform differently when encountering inputs that differ from their training distribution, which is almost guaranteed in real-world healthcare deployments where patient populations are diverse.
+
+- **Symmetrical Equivalent Perturbations**: Small changes to inputs that should not affect outputs can sometimes cause significant changes in model behavior.
+
+- **Low Resource Settings**: Performance degradation in domains or languages with limited training data.
+
+- **Factuality Issues**: As context windows and grounding documents increase in size, factuality becomes increasingly challenging to maintain. The speaker notes this remains an issue even with more capable models like GPT-4.
+
+## Best Practices for Production LLM Deployment
+
+### Learning from Previous Paradigms
+
+The speaker recommends looking back at pre-LLM approaches for lessons in controllability. Specifically, referencing dialogue systems built with platforms like DialogFlow that used more structured approaches:
+
+- Intent and entity recognition for natural language understanding
+- Explicit dialogue state management
+- Conversation trees and branching logic
+
+These structured approaches offer insights into how to maintain controllability even when incorporating LLMs into the system.
+
+### Human-in-the-Loop Design Patterns
+
+A central theme of the talk is the importance of human oversight in high-stakes LLM applications. The speaker outlines several implementation patterns:
+
+- **Expert User Review**: When the end user is a domain expert (e.g., a doctor), the system can present LLM outputs for verification before action is taken.
+- **Background Expert Monitoring**: When end users are not domain experts, having human experts monitor for alerts or potentially fatal cases in the background.
+- **Escalation Protocols**: Having clear protocols for when human intervention is required.
+
+### Task Decomposition Strategies
+
+Breaking complex tasks into smaller, more manageable subtasks is recommended as a risk mitigation strategy. For example, in an information retrieval product, rather than attempting to match a question to an entire document, the system should:
+
+- Process each paragraph individually
+- Aggregate results from paragraph-level matching
+- This reduces the complexity at each step and improves reliability
+
+### Simplifying the Problem Space
+
+The talk offers several guidelines for making LLM tasks more tractable:
+
+- **Prefer Classification over Generation**: Classification tasks have bounded output spaces and are generally more reliable than open-ended generation.
+- **Reduce Output Space**: A model predicting among 10 classes will typically be more reliable than one predicting among 1,000 classes.
+- **Reduce Input Variability**: Limiting the variability in inputs helps improve model consistency.
+
+### Prompt Management and Retrieval
+
+For organizations using off-the-shelf models through APIs, the speaker emphasizes the importance of:
+
+- **Prompt Databases**: Maintaining organized repositories of prompts for different use cases.
+- **Embedding-Based Retrieval**: Using embeddings to retrieve relevant in-context examples.
+- **Fine-Tuned Embeddings**: Adapting embedding models to the specific domain to improve retrieval quality for in-context learning.
+- **Structured Prompt Development**: Following systematic approaches to building and testing prompts.
+
+### Ensemble Methods
+
+Drawing from traditional data science practices, the speaker advocates for ensemble approaches:
+
+- Combining predictions from multiple models (both black-box APIs and fine-tuned models)
+- Incorporating traditional retrieval methods alongside neural approaches
+- Using self-consistency and similar techniques that leverage multiple samples
+
+### When Not to Use LLMs
+
+A refreshingly practical recommendation is to avoid LLMs when simpler approaches suffice. In high-stakes environments, this might mean:
+
+- Using regex for structured pattern matching
+- Employing traditional ML models (logistic regression, random forests) where their behavior is more interpretable
+- Recognizing that these simpler models have their own limitations but may be more appropriate for certain subtasks
+
+### Fine-Tuning Considerations
+
+The speaker suggests that fine-tuning your own LLM offers several advantages for high-stakes applications:
+
+- **Confidence Scores**: Access to model internals for uncertainty quantification
+- **Stability**: No unexpected updates to model behavior from API providers
+- **Control**: Ability to incorporate state-of-the-art techniques from research
+- **Customization**: Better adaptation to domain-specific requirements
+
+## Evaluation Frameworks for High-Stakes Deployment
+
+The talk emphasizes rigorous evaluation practices:
+
+- **Cohort-Based Evaluation**: Measuring performance across different subpopulations that will use the product to ensure equitable outcomes.
+- **Robustness Testing**: Evaluating model behavior under various perturbations and edge cases.
+- **Calibration Analysis**: Understanding the correlation between model confidence scores and actual correctness. Well-calibrated models are essential for appropriate human-AI collaboration.
+- **Dialogue-Specific Evaluation**: Using user simulators to test conversational AI systems, with references to academic papers on this approach.
+
+## Critical Assessment of External Benchmarks
+
+The speaker provides a framework for evaluating external benchmark results and headlines about LLM capabilities:
+
+- **Task Distance**: How different are the benchmark tasks from your actual production tasks?
+- **Domain Distance**: How different is the benchmark domain from your specific domain, considering privacy requirements, robustness constraints, and other operational factors?
+
+If there is significant distance on either dimension, impressive benchmark numbers may not translate to production performance.
+
+## Open Questions Highlighted
+
+The talk acknowledges several unresolved challenges in deploying LLMs in high-stakes settings:
+
+- **Explainability**: How to provide meaningful explanations when using black-box API models.
+- **Active Learning**: How to implement active learning strategies without access to confidence scores, which is common when using third-party API services.
+
+## Key Takeaways for LLMOps Practitioners
+
+This talk provides a sobering counterbalance to the hype around LLM capabilities. For practitioners working on high-stakes applications, the key messages are:
+
+- Be skeptical of headline-grabbing benchmark results and carefully assess applicability to your specific use case
+- Invest heavily in human-in-the-loop design patterns appropriate to your domain expertise distribution
+- Consider fine-tuning for better control and access to model internals
+- Break complex tasks into smaller, more verifiable components
+- Implement rigorous evaluation across all relevant subpopulations
+- Don't use LLMs where simpler, more interpretable methods will suffice
+
+The emphasis throughout is on responsible deployment and risk mitigation rather than capability maximization, which is appropriate guidance for anyone deploying LLMs in environments where errors have significant consequences.

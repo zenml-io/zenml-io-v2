@@ -1,0 +1,69 @@
+---
+title: "TensorFlow"
+slug: "tensorflow"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "6527b8a8f9346497a5ed4f37"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2024-10-22T12:54:05.951Z"
+  lastUpdated: "2024-10-14T08:02:40.141Z"
+  createdOn: "2023-10-12T09:13:12.540Z"
+integrationType: "modeling"
+logo:
+  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/38c14d54/66d86940d75a1237ceb976ac_tensorflow.png"
+shortDescription: "Accelerate TensorFlow Model Development with ZenML"
+docsUrl: "https://www.fuzzylabs.ai/blog-post/the-road-to-zen-part-1-getting-started-pipelines"
+mainImage:
+  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/5ff4a2fa/66e745170314d43f577134ff_tensorflow_integration.png"
+seo:
+  title: "Integrate TensorFlow with ZenML - Modeling Integrations"
+  description: "Accelerate TensorFlow Model Development with ZenML"
+  canonical: "https://www.zenml.io/integrations/tensorflow"
+  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/5ff4a2fa/66e745170314d43f577134ff_tensorflow_integration.png"
+  ogTitle: "Integrate TensorFlow with ZenML - Modeling Integrations"
+  ogDescription: "Accelerate TensorFlow Model Development with ZenML"
+---
+
+<ul id=""><li id=""><strong id="">Streamlined TensorFlow Model Training<br>‍</strong>Effortlessly incorporate TensorFlow training steps into your ZenML pipelines for a seamless model development experience.</li><li id=""><strong id="">Scalable Machine Learning Workflows<br>‍</strong>Leverage ZenML's distributed computing capabilities to scale your TensorFlow training pipelines across multiple nodes and GPUs.</li><li id=""><strong id="">Reproducible and Versioned Models<br>‍</strong>Ensure reproducibility and traceability of your TensorFlow models with ZenML's built-in versioning and artifact tracking features.</li><li id=""><strong id="">Simplified Model Deployment<br>‍</strong>Seamlessly deploy your trained TensorFlow models using ZenML's deployment integrations, enabling rapid model serving and inference.</li></ul>
+
+‍<ul id=""><li id="">Comprehensive machine learning framework</li><li id="">Supports wide range of model architectures and algorithms</li><li id="">Efficient training on CPUs, GPUs, and TPUs</li><li id="">Extensive ecosystem of tools and libraries</li><li id="">Strong community support and resources</li></ul>
+
+‍<div data-rt-embed-type="true"><pre><code fs-codehighlight-element="code" class="language-python">
+import tensorflow as tf
+from zenml import step, pipeline
+
+@step
+def load_dataset() -&gt; tf.data.Dataset:
+ &nbsp; &nbsp;"""Step that loads and returns a tf.data.Dataset."""
+ &nbsp; &nbsp;# For this example, we'll create a simple dataset
+ &nbsp; &nbsp;x = tf.random.normal((100, 5))
+ &nbsp; &nbsp;y = tf.random.uniform((100,), maxval=2, dtype=tf.int32)
+ &nbsp; &nbsp;dataset = tf.data.Dataset.from_tensor_slices((x, y))
+ &nbsp; &nbsp;return dataset.batch(32)
+
+@step
+def train_tiny_model(dataset: tf.data.Dataset) -&gt; tf.keras.Model:
+ &nbsp; &nbsp;"""Step that trains a tiny model using the input dataset."""
+ &nbsp; &nbsp;model = tf.keras.Sequential([
+ &nbsp; &nbsp; &nbsp; &nbsp;tf.keras.layers.Dense(10, activation='relu', input_shape=(5,)),
+ &nbsp; &nbsp; &nbsp; &nbsp;tf.keras.layers.Dense(1, activation='sigmoid')
+ &nbsp; &nbsp;])
+
+ &nbsp; &nbsp;model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+
+ &nbsp; &nbsp;# Train for just one epoch
+ &nbsp; &nbsp;model.fit(dataset, epochs=1)
+
+ &nbsp; &nbsp;return model
+
+@pipeline(enable_cache=False)
+def tiny_model_pipeline():
+ &nbsp; &nbsp;dataset = load_dataset()
+ &nbsp; &nbsp;model = train_tiny_model(dataset)
+
+tiny_model_pipeline()
+</code></pre></div>
+
+‍This code defines a simple ZenML pipeline that creates a small dataset using TensorFlow, trains a tiny neural network model on that dataset for one epoch, and returns the trained model. The pipeline consists of two steps: load_dataset() which generates a random dataset, and train_tiny_model() which defines and trains a small sequential model using the dataset. Finally, the tiny_model_pipeline() function orchestrates the pipeline by executing the steps in order and returning the trained model.

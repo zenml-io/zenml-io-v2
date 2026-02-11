@@ -1,0 +1,157 @@
+---
+title: "Hardening AI Agents for E-commerce at Scale: Multi-Company Perspectives on RL Alignment and Reliability"
+slug: "hardening-ai-agents-for-e-commerce-at-scale-multi-company-perspectives-on-rl-alignment-and-reliability"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "69284db4c47fa861f84e7ca3"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:29:37.791Z"
+  createdOn: "2025-11-27T13:10:12.950Z"
+llmopsTags:
+  - "customer-support"
+  - "chatbot"
+  - "realtime-application"
+  - "speech-recognition"
+  - "translation"
+  - "classification"
+  - "content-moderation"
+  - "high-stakes-application"
+  - "fine-tuning"
+  - "prompt-engineering"
+  - "few-shot"
+  - "agent-based"
+  - "multi-agent-systems"
+  - "human-in-the-loop"
+  - "latency-optimization"
+  - "cost-optimization"
+  - "error-handling"
+  - "instruction-tuning"
+  - "token-optimization"
+  - "reranking"
+  - "monitoring"
+  - "api-gateway"
+  - "microservices"
+  - "scaling"
+  - "guardrails"
+  - "reliability"
+  - "fastapi"
+  - "pytorch"
+  - "tensorflow"
+  - "langchain"
+  - "openai"
+  - "google-gcp"
+  - "microsoft-azure"
+  - "anthropic"
+  - "hugging-face"
+  - "meta"
+company: "Prosus / Microsoft / Inworld AI / IUD"
+summary: "This panel discussion features experts from Microsoft, Google Cloud, InWorld AI, and Brazilian e-commerce company IUD (Prosus partner) discussing the challenges of deploying reliable AI agents for e-commerce at scale. The panelists share production experiences ranging from Google Cloud's support ticket routing agent that improved policy adherence from 45% to 90% using DPO adapters, to Microsoft's shift away from prompt engineering toward post-training methods for all Copilot models, to InWorld AI's voice agent architecture optimization through cascading models, and IUD's struggles with personalization balance in their multi-channel shopping agent. Key challenges identified include model localization for UI elements, cost efficiency, real-time voice adaptation, and finding the right balance between automation and user control in commerce experiences."
+link: "https://www.youtube.com/watch?v=TT7-BunQ_88"
+year: 2025
+seo:
+  title: "Prosus / Microsoft / Inworld AI / IUD: Hardening AI Agents for E-commerce at Scale: Multi-Company Perspectives on RL Alignment and Reliability - ZenML LLMOps Database"
+  description: "This panel discussion features experts from Microsoft, Google Cloud, InWorld AI, and Brazilian e-commerce company IUD (Prosus partner) discussing the challenges of deploying reliable AI agents for e-commerce at scale. The panelists share production experiences ranging from Google Cloud's support ticket routing agent that improved policy adherence from 45% to 90% using DPO adapters, to Microsoft's shift away from prompt engineering toward post-training methods for all Copilot models, to InWorld AI's voice agent architecture optimization through cascading models, and IUD's struggles with personalization balance in their multi-channel shopping agent. Key challenges identified include model localization for UI elements, cost efficiency, real-time voice adaptation, and finding the right balance between automation and user control in commerce experiences."
+  canonical: "https://www.zenml.io/llmops-database/hardening-ai-agents-for-e-commerce-at-scale-multi-company-perspectives-on-rl-alignment-and-reliability"
+  ogTitle: "Prosus / Microsoft / Inworld AI / IUD: Hardening AI Agents for E-commerce at Scale: Multi-Company Perspectives on RL Alignment and Reliability - ZenML LLMOps Database"
+  ogDescription: "This panel discussion features experts from Microsoft, Google Cloud, InWorld AI, and Brazilian e-commerce company IUD (Prosus partner) discussing the challenges of deploying reliable AI agents for e-commerce at scale. The panelists share production experiences ranging from Google Cloud's support ticket routing agent that improved policy adherence from 45% to 90% using DPO adapters, to Microsoft's shift away from prompt engineering toward post-training methods for all Copilot models, to InWorld AI's voice agent architecture optimization through cascading models, and IUD's struggles with personalization balance in their multi-channel shopping agent. Key challenges identified include model localization for UI elements, cost efficiency, real-time voice adaptation, and finding the right balance between automation and user control in commerce experiences."
+---
+
+## Overview
+
+This case study captures insights from a panel discussion featuring four organizations deploying AI agents in production for e-commerce and related use cases. The panelists represent different perspectives across the LLM technology stack: Swati Vayita from Google Cloud (product leader), Arushi Jain from Microsoft (senior applied scientist), Audi Leu from InWorld AI (senior product manager), and Isabella Pinga from IUD/Prosus (director of technology and innovation). The discussion centers on practical challenges of hardening AI agents for production deployment, with particular emphasis on reinforcement learning alignment, reliability concerns, and the various technical approaches organizations are taking to make agents production-ready.
+
+The panel reveals a significant shift happening in enterprise LLM deployment: away from prompt engineering as the primary optimization method and toward post-training techniques including DPO (Direct Preference Optimization), PEFT (Parameter-Efficient Fine-Tuning), and other alignment methods. Each organization shares specific production experiences that inform their current reliability practices, providing a multi-faceted view of the real-world challenges in deploying AI agents at scale.
+
+## Google Cloud: Support Ticket Routing with DPO Alignment
+
+Swati Vayita from Google Cloud discusses a production agent deployed for troubleshooting support experiences, specifically focused on cloud compute (GPUs, TPUs). The agent's primary function was to pre-qualify complex technical support tickets before routing them to human support representatives. This use case is particularly critical given the influx of high-value customers consuming GPU/TPU resources for AI workloads.
+
+The initial deployment revealed a significant challenge: the base model was excessively conversational for the target customer segment and frequently failed to adhere to strict internal service level policies. This is a critical insight into production LLM deployment—foundation models, even powerful ones, are often not well-calibrated for specific enterprise contexts that require strict policy compliance. The policy adherence score started at only 45%, which was unacceptable for an enterprise support workflow handling "large whales" (major customers) with critical deployment issues.
+
+The team's solution involved implementing a DPO adapter trained exclusively on human-reviewed compliant rejections. This approach is noteworthy because it leverages preference learning specifically on examples of proper policy-compliant behavior, essentially teaching the model to align with enterprise requirements rather than general conversational patterns. The results were dramatic: policy adherence improved from 45% to 90% in less than 48 hours after deploying the DPO adapter.
+
+This case demonstrates the power of targeted post-training for enterprise reliability. Rather than attempting to solve the problem through prompt engineering or extensive fine-tuning of the entire model, the team used parameter-efficient methods (PEFT adapters) to add a compliance layer. Swati emphasizes that in enterprise contexts, especially with critical workloads and high-value customers, reliability is essentially synonymous with compliance. The rapid improvement timeframe (48 hours) also highlights the operational efficiency of this approach compared to retraining base models.
+
+Looking forward, Swati advocates for "internalized trust" within agents—the development of learned confidence scores that allow agents to self-assess risk before executing high-impact actions. This represents a shift from reactive correction (current DPO/RLHF approaches) to proactive risk assessment, where the agent itself incorporates uncertainty quantification and risk evaluation into its decision-making process.
+
+## Microsoft: Post-Training Dominance for Copilot Models
+
+Arushi Jain from Microsoft provides perhaps the most striking revelation in the discussion: Microsoft has completely eliminated prompt engineering as a primary optimization method for their Copilot products, relying almost entirely on post-training methods instead. This represents a fundamental shift in LLMOps strategy for one of the world's largest AI deployments.
+
+Arushi leads language understanding and reasoning for post-training of OpenAI models deployed in Microsoft's M365 ecosystem through their partnership. She reports that post-training has dramatically reduced output variance and hallucinations while grounding models in Microsoft 365-specific data. The key insight is that all horizontal layer models currently deployed in Copilot are post-trained models—none rely on out-of-the-box prompt engineering. This muscle has been built over approximately 1.5 years of development.
+
+The technical approach involves training models on queries similar to what customers actually perform in Copilot, creating domain-specific optimization that goes beyond what prompt engineering can achieve. This makes sense from an LLMOps perspective: prompt engineering is inherently limited in how much it can shift model behavior, whereas post-training can fundamentally alter model weights to better align with specific use cases and data distributions.
+
+Arushi also discusses Microsoft's work on computer-use agents, which are agents that can interact with user interfaces by taking screenshots and performing actions. This work reveals important limitations in current foundation models. She identifies two critical challenges:
+
+First, localization of UI elements remains problematic. Agents process interfaces screenshot-by-screenshot and frequently struggle with small dropdown menus, icons, and buttons. This is particularly challenging because websites are designed for human consumption, not agent processing. Arushi notes that some websites (particularly Indian e-commerce sites) are visually cluttered even for humans, making them extremely difficult for agents to navigate. Interestingly, she argues this is a fundamental problem that cannot be solved through post-training alone—it requires improvements to base model intelligence through pre-training. Post-training can handle higher-level preferences (like which websites to prefer), but the core capability to accurately localize and interact with UI elements must come from the foundation model's inherent visual and spatial reasoning capabilities.
+
+Second, the choice between DOM (Document Object Model) text processing versus screenshot-based vision approaches presents trade-offs. Some websites render DOM data with lag or inaccuracies, making text-based processing unreliable. This forces a decision between strengthening vision capabilities for screenshot processing or relying on DOM parsing where available.
+
+Arushi provides specific examples of persistent challenges: date pickers for travel sites, scrolling interactions, and customization interfaces (like pizza topping selection) remain difficult for agents to handle reliably. These represent fundamental interaction patterns that humans expect to work seamlessly but require sophisticated reasoning and UI understanding from agents.
+
+Looking ahead 18 months, Arushi identifies cost efficiency as the critical challenge. She notes that per-token generation costs remain prohibitively high for sustainable deployment—even major tech companies haven't achieved favorable cost-to-revenue ratios, and companies like OpenAI and Perplexity are "burning a lot more money." This frames the LLMOps challenge not just as technical capability but as economic viability: can organizations deliver the promised product efficiencies while making the economics work?
+
+## InWorld AI: Architecture Choices for Voice Agent Reliability
+
+Audi Leu from InWorld AI brings a different perspective focused on real-time conversational agents powered by text-to-speech models. InWorld provides TTS models ranked number one on Hugging Face and Artificial Analysis, and many customers use their technology to build real-time shopping and support agents for companies like Netflix.
+
+Audi shares a compelling case study about model architecture selection as a key reliability factor. A production customer initially deployed an end-to-end speech-to-speech model prioritizing latency for natural conversation flow. However, they later switched to a cascaded architecture—separating speech-to-text, LLM processing, and text-to-speech into distinct components. While this added approximately 200 milliseconds of latency, it dramatically improved tool calling accuracy.
+
+This architecture decision enabled the customer to pull user data (balances, memories, preferences) much more accurately without fine-tuning any models. The key insight is that developers can achieve reliability improvements not just through model training but by choosing architectures that allow customization of logic between components. The cascaded approach provides flexibility for parallel processing, custom function calling logic, and component optimization that end-to-end models cannot easily support.
+
+The customer saw significant improvements in customer acquisition and retention metrics due to more accurate personalization and data retrieval. This demonstrates an important LLMOps principle: sometimes architectural decisions matter more than model capabilities, and developers should "rely on shoulders of foundational companies" training the models while focusing on composing the right pieces together for their specific use case.
+
+Audi also challenges assumptions about agency versus control in e-commerce agents. He argues that different shopping experiences require different levels of automation. For experiential purchases (like buying clothing), users may prefer interactive voice agents that provide feedback ("you look great") rather than full automation. For utilitarian purchases (toothbrush replenishment) or complex research tasks (finding optimal travel itineraries), higher levels of agency and automation are appropriate.
+
+This segmentation insight is critical for LLMOps practitioners: not all use cases benefit from maximum agency. Sometimes the reliability challenge is providing the right level of assistance rather than maximum automation. Audi cites examples from cursor's development tools, which introduced both "agent mode" for long-running autonomous tasks and "plan mode" for guided but controlled workflows, recognizing that agency can be a trade-off rather than purely beneficial.
+
+Looking forward, Audi wants agents to adapt in real time to user needs—changing speaking speed, tone, compassion, voice, and accent dynamically. This level of personalization and adaptability currently "works naturally in humans" but remains difficult with LLMs.
+
+## IUD/Prosus: E-commerce Personalization Balance in Brazil
+
+Isabella Pinga from IUD (partnered with Prosus) provides the perspective of a pure-play e-commerce company deploying agents in production. IUD is building "ISO," described as a multi-channel generative AI agent for their Brazilian e-commerce platform. They developed a "large commerce model" (LCM) in partnership with Prosus to understand consumer behavior and enable personalization.
+
+Isabella identifies a critical challenge that differs from the technical reliability issues discussed by others: finding the right balance in offering recommendations. The agent can successfully interpret customer messages and identify optimal offers, but the challenge is determining how much to offer and how to present options so customers feel confident rather than overwhelmed.
+
+Specifically, IUD observes good conversion between offer presentation and adding items to cart, but the funnel breaks down between cart and order completion. This suggests the agent may be over-personalizing or providing too many options at the wrong stage of the customer journey. This is a nuanced LLMOps challenge—the model performs well technically, but the product experience requires careful calibration of when and how to present AI-generated recommendations.
+
+The multi-channel aspect adds complexity: the same agent must work across voice-to-voice, text-based, WhatsApp, in-car systems, and smart home devices like Alexa. Each channel has different user expectations and interaction patterns, requiring the agent to adapt its behavior appropriately.
+
+Isabella's 18-month vision focuses on creating seamless omnichannel experiences where customers can simply request something simple like "my favorite lunch in 30 minutes" from any connected device, and the system understands and delivers appropriately. This represents agent deployment at a genuinely ambient, integrated level that goes beyond single-channel implementations.
+
+## Cross-Cutting Technical Themes
+
+Several important LLMOps themes emerge across the panel discussions:
+
+**Post-Training Over Prompt Engineering:** Multiple panelists emphasize that post-training methods (DPO, RLHF, PEFT adapters, fine-tuning) have become primary optimization approaches, with Microsoft explicitly abandoning prompt engineering as a primary method. This represents a maturation of LLMOps practices where organizations invest in model-level optimization rather than relying on brittle prompt-based approaches.
+
+**Cost as a Critical Constraint:** Arushi explicitly identifies per-token generation cost as potentially the most important challenge for the next 18 months. Even with improving model capabilities, economic viability remains uncertain for many agent applications. This grounds the LLMOps discussion in business reality—technical capabilities matter little if deployment costs exceed value creation.
+
+**Architecture Matters as Much as Models:** InWorld's cascading architecture example demonstrates that system design choices can improve reliability without model training. This suggests LLMOps practitioners should consider the full system architecture rather than focusing exclusively on model optimization.
+
+**Domain-Specific Challenges Require Base Model Improvements:** Arushi's point about UI localization needing pre-training improvements rather than post-training fixes highlights that some capabilities cannot be retrofitted through fine-tuning alone. This has implications for LLMOps teams who must understand when foundation model limitations require waiting for better base models versus when optimization techniques can solve problems.
+
+**User Experience Balance:** Multiple panelists note that maximum agency isn't always optimal. Finding the right level of automation, personalization, and user control is as important as technical reliability. This frames LLMOps as requiring product sense alongside technical capabilities.
+
+**Multimodal Complexity:** Voice agents add layers of complexity including accent handling, noisy environments, real-time latency requirements, and the need for natural conversational flow. These requirements create different reliability challenges than text-based agents.
+
+**Future Direction—Self-Verification:** Swati's vision of "internalized trust" with learned confidence scores represents an important evolution beyond current RLHF/DPO approaches. Rather than training models to produce better outputs reactively, the goal is proactive uncertainty quantification where agents self-assess before high-stakes actions.
+
+## Production Deployment Challenges
+
+The discussion reveals several persistent production challenges:
+
+- **Policy compliance** in enterprise contexts requires specialized training beyond general model capabilities
+- **UI interaction reliability** for computer-use agents remains fundamentally limited by base model capabilities
+- **Conversion optimization** in e-commerce requires balancing personalization with user autonomy
+- **Cost-to-value ratios** remain unfavorable even for well-resourced organizations
+- **Multimodal integration** (voice, text, multiple channels) creates consistency and adaptation challenges
+- **Real-time performance** requirements often conflict with accuracy and capability goals
+
+The panel also reveals organizational differences in how companies approach these challenges. Cloud providers (Google, Microsoft) focus on platform-level reliability and policy compliance. Infrastructure providers (InWorld) focus on component quality and architectural flexibility. E-commerce operators (IUD) focus on user experience and conversion optimization. These different perspectives create a comprehensive picture of the LLMOps landscape for agent deployments.
+
+The discussion concludes with forward-looking visions that emphasize adaptive personalization (voice, tone, accent), proactive risk assessment, seamless omnichannel experiences, and sustainable economic models. These represent the next frontier beyond current reactive optimization approaches and single-channel deployments.

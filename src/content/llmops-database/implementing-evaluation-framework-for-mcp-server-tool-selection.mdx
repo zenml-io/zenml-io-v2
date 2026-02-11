@@ -1,0 +1,112 @@
+---
+title: "Implementing Evaluation Framework for MCP Server Tool Selection"
+slug: "implementing-evaluation-framework-for-mcp-server-tool-selection"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "6853c131ec9d2192a6d246f5"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:12:03.973Z"
+  createdOn: "2025-06-19T07:50:09.029Z"
+llmopsTags:
+  - "code-generation"
+  - "data-integration"
+  - "prompt-engineering"
+  - "multi-agent-systems"
+  - "human-in-the-loop"
+  - "error-handling"
+  - "postgresql"
+  - "fastapi"
+  - "open-source"
+  - "monitoring"
+  - "anthropic"
+company: "Neon"
+summary: "Neon developed a comprehensive evaluation framework to test their Model Context Protocol (MCP) server's ability to correctly use database migration tools. The company faced challenges with LLMs selecting appropriate tools from a large set of 20+ tools, particularly for complex stateful workflows involving database migrations. Their solution involved creating automated evals using Braintrust, implementing \"LLM-as-a-judge\" scoring techniques, and establishing integrity checks to ensure proper tool usage. Through iterative prompt engineering guided by these evaluations, they improved their tool selection success rate from 60% to 100% without requiring code changes."
+link: "https://neon.com/blog/test-evals-for-mcp"
+year: 2025
+seo:
+  title: "Neon: Implementing Evaluation Framework for MCP Server Tool Selection - ZenML LLMOps Database"
+  description: "Neon developed a comprehensive evaluation framework to test their Model Context Protocol (MCP) server's ability to correctly use database migration tools. The company faced challenges with LLMs selecting appropriate tools from a large set of 20+ tools, particularly for complex stateful workflows involving database migrations. Their solution involved creating automated evals using Braintrust, implementing \"LLM-as-a-judge\" scoring techniques, and establishing integrity checks to ensure proper tool usage. Through iterative prompt engineering guided by these evaluations, they improved their tool selection success rate from 60% to 100% without requiring code changes."
+  canonical: "https://www.zenml.io/llmops-database/implementing-evaluation-framework-for-mcp-server-tool-selection"
+  ogTitle: "Neon: Implementing Evaluation Framework for MCP Server Tool Selection - ZenML LLMOps Database"
+  ogDescription: "Neon developed a comprehensive evaluation framework to test their Model Context Protocol (MCP) server's ability to correctly use database migration tools. The company faced challenges with LLMs selecting appropriate tools from a large set of 20+ tools, particularly for complex stateful workflows involving database migrations. Their solution involved creating automated evals using Braintrust, implementing \"LLM-as-a-judge\" scoring techniques, and establishing integrity checks to ensure proper tool usage. Through iterative prompt engineering guided by these evaluations, they improved their tool selection success rate from 60% to 100% without requiring code changes."
+---
+
+## Overview
+
+Neon, a serverless Postgres provider, developed and deployed a Model Context Protocol (MCP) server with over 20 tools to enable LLMs to interact with their database platform. This case study details their systematic approach to implementing evaluation frameworks for ensuring reliable LLM tool selection in production environments, specifically focusing on complex database migration workflows.
+
+The company identified a critical challenge: LLMs struggle significantly with tool selection when presented with large tool sets, becoming increasingly confused as the number of available tools grows. This problem was particularly acute for Neon's MCP server, which offers a comprehensive suite of database management tools including specialized migration tools that require careful orchestration.
+
+## Technical Challenge and Architecture
+
+Neon's MCP server includes two sophisticated tools that form a stateful workflow for database migrations:
+
+- **prepare_database_migration**: Initiates migration processes by applying SQL code to temporary Neon branches (instantly created Postgres branches containing identical data to the main branch)
+- **complete_database_migration**: Finalizes migrations by executing changes on the main branch and cleaning up temporary branches
+
+This workflow presents multiple complexity layers for LLMs. First, it maintains state regarding pending migrations, requiring the LLM to understand and track the migration lifecycle. Second, the sequential nature of the tools creates opportunities for confusion, where LLMs might bypass the safe staging process and directly execute SQL using the general-purpose "run_sql" tool instead of following the proper migration workflow.
+
+The stateful nature of this system represents a significant challenge in LLMOps, as it requires the LLM to understand not just individual tool capabilities but also the relationships and dependencies between tools. This goes beyond simple function calling to orchestrating complex, multi-step workflows that have real consequences for production database systems.
+
+## Evaluation Framework Implementation
+
+Neon implemented a comprehensive evaluation system using Braintrust's TypeScript SDK, establishing what they term "evals" - analogous to traditional software testing but specifically designed for LLM behavior validation. Their evaluation framework incorporates multiple sophisticated components:
+
+### LLM-as-a-Judge Scoring
+
+The core evaluation mechanism employs an "LLM-as-a-judge" approach using Claude 3.5 Sonnet as the scoring model. Their factuality scorer uses a detailed prompt template that compares submitted LLM responses against expert-crafted expected outputs. The scorer is designed to be robust against non-functional differences such as specific IDs, formatting variations, and presentation order while focusing on core factual accuracy.
+
+The scoring system employs a nuanced classification approach with five categories: subset responses missing key information (0.4 score), superset responses that agree with core facts then add additional information (0.8 score), factually equivalent responses (1.0 score), factually incorrect or contradictory responses (0.0 score), and responses differing only in implementation details (1.0 score). This graduated scoring system allows for realistic evaluation of LLM responses that may vary in completeness or style while maintaining accuracy.
+
+### Database Integrity Validation
+
+Beyond content evaluation, Neon implemented a "mainBranchIntegrityCheck" that performs actual database schema comparisons before and after test runs. This technical validation ensures that the prepare_database_migration tool correctly operates only on temporary branches without affecting production data. The integrity check captures complete PostgreSQL database dumps and performs direct comparisons, providing concrete verification that the LLM's tool usage follows safe practices.
+
+This dual-layer validation approach - combining semantic evaluation with technical verification - represents a sophisticated approach to LLMOps testing that addresses both the correctness of LLM reasoning and the safety of actual system interactions.
+
+### Test Case Design and Execution
+
+The evaluation framework includes comprehensive test cases covering various database migration scenarios, such as adding columns, modifying existing structures, and other common database operations. Each test case specifies both the input request and expected behavioral outcomes, formatted as natural language descriptions that capture the desired LLM response patterns.
+
+The system runs trials with configurable concurrency limits (set to 2 in their implementation) and multiple iterations (20 trials per evaluation) to account for LLM variability and provide statistical confidence in results. This approach acknowledges the non-deterministic nature of LLM responses while establishing reliability baselines for production deployment.
+
+## Performance Optimization Through Prompt Engineering
+
+One of the most significant findings from Neon's evaluation implementation was the dramatic improvement achieved through iterative prompt refinement. Initially, their MCP server achieved only a 60% success rate on tool selection evaluations. Through systematic testing and prompt optimization guided by their evaluation framework, they improved performance to 100% success rate.
+
+Critically, this improvement required no code changes to the underlying MCP server implementation. The entire performance gain resulted from refining the tool descriptions and prompts that guide LLM decision-making. This demonstrates the crucial importance of prompt engineering in LLMOps and highlights how evaluation frameworks can guide optimization efforts effectively.
+
+The ability to achieve perfect scores through prompt engineering alone suggests that their evaluation methodology successfully identified the root causes of tool selection failures and provided actionable feedback for improvement. This iterative approach - implement evaluations, measure performance, refine prompts, re-evaluate - represents a mature LLMOps practice that enables continuous improvement of LLM-based systems.
+
+## Production Deployment Considerations
+
+Neon's approach addresses several critical LLMOps challenges for production systems. Their evaluation framework runs against actual database systems rather than mocked environments, ensuring that tests reflect real-world operational conditions. The cleanup procedures (deleting non-default branches after each test) demonstrate attention to resource management in automated testing environments.
+
+The use of Braintrust as a managed evaluation platform provides important operational benefits including user interface for debugging test runs, historical tracking of evaluation results, and collaborative analysis capabilities. This managed approach reduces the operational overhead of maintaining custom evaluation infrastructure while providing professional tooling for LLMOps workflows.
+
+## Technical Implementation Details
+
+The evaluation system is built using TypeScript and integrates closely with Neon's existing infrastructure. The code structure separates concerns effectively, with distinct components for test case definition, execution orchestration, scoring mechanisms, and result analysis. The open-source nature of their evaluation code contributes valuable patterns to the broader LLMOps community.
+
+Their implementation handles several practical challenges including incomplete database dump responses (which could cause false negatives) and the need to maintain clean test environments between runs. These details reflect the real-world complexity of implementing robust LLMOps evaluation systems.
+
+## Broader LLMOps Implications
+
+This case study illustrates several important principles for LLMOps practitioners. The emphasis on comprehensive testing for LLM-based tools mirrors traditional software engineering practices while addressing the unique challenges of non-deterministic AI systems. The combination of semantic evaluation (LLM-as-a-judge) with technical validation (database integrity checks) provides a model for multi-layered testing approaches.
+
+The dramatic improvement achieved through prompt engineering, guided by systematic evaluation, demonstrates the value of data-driven optimization approaches in LLMOps. Rather than relying on intuition or ad-hoc testing, Neon's methodology provides reproducible, measurable approaches to LLM system improvement.
+
+Their experience also highlights the importance of tool design for LLM consumption. The complexity they encountered with tool selection scaling problems reinforces the need for careful consideration of cognitive load when designing LLM tool interfaces. The recommendation against auto-generating MCP servers with too many tools reflects practical insights about LLM limitations in production environments.
+
+## Recommendations and Best Practices
+
+Neon's case study yields several actionable recommendations for LLMOps practitioners. First, the implementation of comprehensive evaluation frameworks should be considered essential rather than optional for production LLM systems. The ability to measure and track performance systematically enables continuous improvement and provides confidence in system reliability.
+
+Second, the combination of multiple evaluation approaches - semantic scoring and technical validation - provides more robust assessment than either approach alone. This multi-layered validation strategy can be adapted to various LLMOps contexts beyond database management.
+
+Third, the focus on prompt engineering as a primary optimization lever, guided by systematic evaluation, offers a practical approach to improving LLM system performance without requiring architectural changes. This suggests that evaluation-driven prompt optimization should be a standard practice in LLMOps workflows.
+
+Finally, the use of managed evaluation platforms like Braintrust reduces operational complexity while providing professional tooling for LLMOps teams. This approach may be particularly valuable for organizations seeking to implement sophisticated evaluation practices without investing heavily in custom infrastructure development.

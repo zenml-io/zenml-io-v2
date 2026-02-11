@@ -1,0 +1,117 @@
+---
+title: "Building and Evaluating a RAG-based Menopause Information Chatbot"
+slug: "building-and-evaluating-a-rag-based-menopause-information-chatbot"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "67780605a2b26aa6347b17bf"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:52:36.176Z"
+  createdOn: "2025-01-03T15:45:09.484Z"
+llmopsTags:
+  - "healthcare"
+  - "chatbot"
+  - "question-answering"
+  - "regulatory-compliance"
+  - "rag"
+  - "embeddings"
+  - "prompt-engineering"
+  - "semantic-search"
+  - "error-handling"
+  - "langchain"
+  - "fastapi"
+  - "openai"
+  - "anthropic"
+company: "Vira Health"
+summary: "Vira Health developed and evaluated an AI chatbot to provide reliable menopause information using peer-reviewed position statements from The Menopause Society. They implemented a RAG (Retrieval Augmented Generation) architecture using GPT-4, with careful attention to clinical safety and accuracy. The system was evaluated using both AI judges and human clinicians across four criteria: faithfulness, relevance, harmfulness, and clinical correctness, showing promising results in terms of safety and effectiveness while maintaining strict adherence to trusted medical sources."
+link: "https://www.youtube.com/watch?v=D19ABUlJzBQ"
+year: 2023
+seo:
+  title: "Vira Health: Building and Evaluating a RAG-based Menopause Information Chatbot - ZenML LLMOps Database"
+  description: "Vira Health developed and evaluated an AI chatbot to provide reliable menopause information using peer-reviewed position statements from The Menopause Society. They implemented a RAG (Retrieval Augmented Generation) architecture using GPT-4, with careful attention to clinical safety and accuracy. The system was evaluated using both AI judges and human clinicians across four criteria: faithfulness, relevance, harmfulness, and clinical correctness, showing promising results in terms of safety and effectiveness while maintaining strict adherence to trusted medical sources."
+  canonical: "https://www.zenml.io/llmops-database/building-and-evaluating-a-rag-based-menopause-information-chatbot"
+  ogTitle: "Vira Health: Building and Evaluating a RAG-based Menopause Information Chatbot - ZenML LLMOps Database"
+  ogDescription: "Vira Health developed and evaluated an AI chatbot to provide reliable menopause information using peer-reviewed position statements from The Menopause Society. They implemented a RAG (Retrieval Augmented Generation) architecture using GPT-4, with careful attention to clinical safety and accuracy. The system was evaluated using both AI judges and human clinicians across four criteria: faithfulness, relevance, harmfulness, and clinical correctness, showing promising results in terms of safety and effectiveness while maintaining strict adherence to trusted medical sources."
+---
+
+## Overview
+
+Vira Health is a digital health company founded approximately four years ago with a mission to extend the healthy life expectancy of women, starting with menopause care. The company has built a product called Stella, which is an end-to-end digital care pathway for supporting menopause symptoms. This case study, presented by Alex Andy (Head of Data Science at Vira Health and Senior Research Fellow at University College London), details the development and rigorous evaluation of an AI chatbot designed to provide reliable menopause information using a Retrieval Augmented Generation (RAG) architecture.
+
+The business context is significant: research conducted with Korn Ferry Institute identified that approximately one-third of women have either quit or considered quitting their jobs due to menopause symptoms, highlighting a substantial care gap that Vira Health aims to address through technology-enabled solutions.
+
+## Prior NLP and AI Work at Vira Health
+
+Before diving into the generative AI chatbot, it's worth noting that Vira Health was already using NLP across several areas of their platform. This includes topic modeling on coach interactions for analytics purposes, semantic search and exploration techniques for surfacing customer insights from user interviews, and NLP embedded directly into app functionality for features like semantic search and content recommendations. This existing expertise in NLP provided a strong foundation for exploring generative AI applications.
+
+## Initial ChatGPT Evaluation
+
+When ChatGPT was publicly launched at the end of 2022, the team quickly began exploring how it could be used at Vira Health, particularly for domain-specific menopause questions. They noted that public benchmarks at the time focused primarily on closed-form, multiple-choice questions which weren't representative of actual user experiences in their care pathway.
+
+The team conducted a preliminary study evaluating ChatGPT's performance on 26 frequently asked questions from the North American Menopause Society website. They treated the website answers as ground truth and assessed similarity between ChatGPT's responses and those answers, along with manual evaluation for human-likeness, safety, and accuracy measures including likelihood of harm, incorrect recall, and missing content. This work was presented at the British Menopause Society conference.
+
+The key finding was that ChatGPT provided convincing answers that were challenging to distinguish from human-written responses, with limited examples of harmful outputs. However, the team recognized that more research was needed on biases and potential harms before integrating such technology into live production or clinical settings. Critically, there was no way to know where ChatGPT's information was coming from, which is problematic in a clinical context where verified sources are essential.
+
+## Motivation for Custom RAG-Based Chatbot
+
+Three key motivators drove the development of a custom menopause chatbot:
+
+First, user research indicated that a significant proportion of users prefer processing information through ongoing conversational formats rather than static FAQs, especially when trying to understand how information applies to their particular context. Second, the inability to trace sources in general-purpose LLMs was a critical limitation for clinical applications where verified sources are essential. Third, there was a need to maintain and reach a clinically defined level of performance ensuring responses are clinically relevant, sensitive, and accurate.
+
+The objective became clear: develop and evaluate an AI chatbot that could provide reliable menopause information exclusively by using peer-reviewed position statements from The Menopause Society. These position statements are clinical guidance documents that include current recommended clinical practice based on available evidence, typically spanning 10-20 pages with tens of thousands of words each.
+
+## Technical Architecture
+
+The team built their chatbot around a Retrieval Augmented Generation (RAG) architecture, which was becoming increasingly common in the LLM application space at the time. The core idea is to enhance LLM performance by constraining or providing context from a trusted set of domain-specific documents. When a query comes in, rather than passing it directly to the LLM, the system first retrieves relevant content from the trusted document corpus and includes those chunks as context alongside the question.
+
+The team made an interesting architectural decision to build in vanilla Python rather than using frameworks like LlamaIndex that were available at the time. This was partly due to availability but also to give themselves extra flexibility and learning opportunities in this early prototype phase.
+
+Key technical specifications included:
+
+- **Document Chunking**: Position statements were chunked into 512-word segments
+- **Embeddings**: Text was embedded using OpenAI's Ada-002 endpoint
+- **Vector Storage**: Documents were stored in a FAISS index for efficient similarity search
+- **Context Retrieval**: Top-5 (k=5) similar chunks were selected for each query
+- **LLM**: OpenAI GPT-4 (specifically the 0125-preview version at the time)
+- **Position Statements**: Four TMS position statements covering hormone therapy, osteoporosis, genitourinary symptoms, and other menopause topics
+
+The team also built a conversational interface using Gradio to enable qualitative testing alongside structured evaluation.
+
+## Evaluation Methodology
+
+The evaluation methodology was notably rigorous and represents a strong example of LLMOps best practices for healthcare AI. The team designed 40 open-ended questions based on the position statements, using a blended approach for question generation: they ran the position statements through GPT-4 (separately from their RAG system) to generate candidate questions, which were then reviewed, refined, and finalized by two clinicians.
+
+For evaluation, they again used a blended approach combining manual clinical review with an AI judge. Importantly, they used Claude 2.1 from Anthropic as the AI judge specifically to avoid biases that might arise from using an OpenAI model to evaluate responses generated by another OpenAI model. Both clinicians and the AI judge were given the same scoring rubric and prompted to evaluate on four criteria using a 1-5 Likert scale:
+
+- **Faithfulness**: The extent to which the answer is generated from the provided context (those five chunks from the position statements)
+- **Relevance**: The extent to which the answer is directly related to the given question
+- **Harmfulness**: The extent to which the answer could be harmful if advice was used by a patient or provider (1 = extremely harmful, 5 = not harmful)
+- **Clinical Correctness**: The extent to which the answer aligns with published clinical guidelines from medical organizations (not just TMS, but other sources as well)
+
+## Evaluation Results
+
+The results across the four criteria were generally positive but revealed interesting nuances in AI vs. human evaluation:
+
+**Faithfulness**: There was some misalignment between the AI judge (which scored lower) and clinicians. Investigation suggested limitations in the AI judge's ability to interpret the prompt correctly. The team employed an alternative method using a package called "Raggers" that calculates faithfulness by identifying claims in each response and determining how many could be inferred from the provided context. This automated faithfulness score came in at 95%, providing strong evidence that responses were being generated almost exclusively from the position statement content.
+
+**Relevance**: Strong alignment was observed between the AI judge and clinical evaluators, with consistently high scores indicating the chatbot was delivering relevant answers to questions asked.
+
+**Harmfulness**: Strong alignment between AI judge and clinical evaluation, with potential harmfulness assessed as "not harmful" across almost all responses. Only one question was assessed as potentially moderately harmful by one clinician, corroborating earlier findings about safety performance in this domain.
+
+**Clinical Correctness**: Some misalignment appeared again between the AI judge and clinicians, with the AI judge potentially being too literal in detecting slight deviations in wording. Manual clinical evaluations showed much stronger evidence of consistent clinical correctness with higher averages.
+
+## Conclusions and Future Work
+
+The study demonstrated that it is possible to develop an AI chatbot that provides menopause information genuinely derived from trusted position statements, with high clinical correctness and low risk of harm. This establishes an important foundation of safety and effectiveness for building healthcare applications.
+
+However, the team explicitly acknowledges that further research is needed before applying this in clinical settings. Specifically, they want to explore new models, additional guardrails, and integration of a wider range of trusted peer-reviewed sources beyond just clinical guidelines.
+
+## LLMOps Considerations
+
+This case study offers several valuable LLMOps lessons for healthcare and other regulated industries:
+
+The decision to build in vanilla Python rather than using existing frameworks reflects a common early-stage tradeoff between flexibility and speed, allowing the team to deeply understand the system behavior during prototyping. The use of a separate LLM (Claude 2.1) as an AI judge to avoid same-model biases is a thoughtful evaluation practice. The combination of automated metrics (faithfulness scoring via Raggers) with human clinical evaluation represents a robust multi-modal evaluation approach. The 95% faithfulness score provides quantitative evidence of RAG effectiveness in constraining outputs to source documents.
+
+The acknowledgment that this is still research-stage work and not ready for clinical deployment reflects appropriate caution in healthcare AI applications. The team's identification of limitations in AI judge performance (potentially overly literal interpretation, misalignment with human evaluators) provides honest assessment of evaluation challenges that are common when deploying LLM-based systems in production.

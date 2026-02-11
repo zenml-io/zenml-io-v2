@@ -1,0 +1,128 @@
+---
+title: "T-RAG: Tree-Based RAG Architecture for Question Answering Over Organizational Documents"
+slug: "t-rag-tree-based-rag-architecture-for-question-answering-over-organizational-documents"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f3ed47c74541c4d737173"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:44:19.118Z"
+  createdOn: "2024-11-21T14:08:20.648Z"
+llmopsTags:
+  - "chromadb"
+  - "chunking"
+  - "databases"
+  - "document-processing"
+  - "embeddings"
+  - "fine-tuning"
+  - "hugging-face"
+  - "monitoring"
+  - "open-source"
+  - "prompt-engineering"
+  - "question-answering"
+  - "rag"
+  - "regulatory-compliance"
+  - "reliability"
+  - "scalability"
+  - "security"
+  - "semantic-search"
+  - "spacy"
+  - "token-optimization"
+company: "Qatar Computing Research Institute"
+summary: "Qatar Computing Research Institute developed a novel question-answering system for organizational documents combining RAG, finetuning, and a tree-based entity structure. The system, called T-RAG, handles confidential documents on-premise using open source LLMs and achieves 73% accuracy on test questions, outperforming baseline approaches while maintaining robust entity tracking through a custom tree structure."
+link: "https://arxiv.org/html/2402.07483v2"
+year: 2024
+seo:
+  title: "Qatar Computing Research Institute: T-RAG: Tree-Based RAG Architecture for Question Answering Over Organizational Documents - ZenML LLMOps Database"
+  description: "Qatar Computing Research Institute developed a novel question-answering system for organizational documents combining RAG, finetuning, and a tree-based entity structure. The system, called T-RAG, handles confidential documents on-premise using open source LLMs and achieves 73% accuracy on test questions, outperforming baseline approaches while maintaining robust entity tracking through a custom tree structure."
+  canonical: "https://www.zenml.io/llmops-database/t-rag-tree-based-rag-architecture-for-question-answering-over-organizational-documents"
+  ogTitle: "Qatar Computing Research Institute: T-RAG: Tree-Based RAG Architecture for Question Answering Over Organizational Documents - ZenML LLMOps Database"
+  ogDescription: "Qatar Computing Research Institute developed a novel question-answering system for organizational documents combining RAG, finetuning, and a tree-based entity structure. The system, called T-RAG, handles confidential documents on-premise using open source LLMs and achieves 73% accuracy on test questions, outperforming baseline approaches while maintaining robust entity tracking through a custom tree structure."
+---
+
+## Overview
+
+This case study from Qatar Computing Research Institute (QCRI) presents T-RAG (Tree-RAG), a practical LLM application built for question answering over private governance documents for a large non-profit organization. The work is notable for its focus on real-world deployment constraints and the lessons learned from building production LLM systems. The system was built to handle queries about organizational governance manuals, which contain descriptions of governing principles, duties of governing bodies, and hierarchical information about entities within the organization.
+
+The researchers highlight several key production constraints that shaped their architecture: data security concerns requiring on-premise deployment (ruling out API-based proprietary models), limited computational resources, and the critical need for reliable and accurate responses. This represents a common enterprise scenario where organizations cannot simply use cloud-based LLM APIs due to confidentiality requirements.
+
+## Technical Architecture
+
+T-RAG combines three main components: standard RAG for document retrieval, a finetuned open-source LLM for answer generation, and a novel tree-based entity context system for handling hierarchical organizational information.
+
+### Model Selection and Deployment
+
+The team chose Llama-2 7B as their base model, specifically the chat variant, due to its open-source nature enabling on-premise deployment. This decision was driven by practical considerations: larger models (like Llama-2 70B) would require more computational resources than typically available to small and medium enterprises, and geographic restrictions on GPU access can further limit options. The smaller 7B model proved sufficient for their use case while remaining manageable for finetuning and inference.
+
+For inference, they used greedy decoding (temperature 0) with a repetition penalty of 1.1 to generate responses. This conservative approach to generation helps ensure more consistent and predictable outputs in a production setting.
+
+### RAG Implementation
+
+The RAG pipeline follows a standard architecture but with careful attention to implementation details. Documents are chunked based on section headers rather than arbitrary token counts, which preserves semantic coherence. The Chroma DB vector database stores document embeddings, and they use the Instructor embedding model for vectorization, which can produce embeddings optimized for different domains.
+
+For retrieval, they employ Maximum Marginal Relevance (MMR) rather than simple similarity search. MMR optimizes for both relevance to the query and diversity among retrieved documents, helping to avoid redundant context. The system retrieves chunks that are then merged into context for the LLM.
+
+### Finetuning Pipeline
+
+The finetuning process demonstrates practical approaches to creating training data when resources are limited. The team generated an instruction dataset of 1,614 Q&A pairs through an iterative process using the Llama-2 model itself:
+
+- First iteration: For each document chunk, the model was prompted to generate various question types (True/False, Summary, Short Answer, etc.) along with answers
+- Second iteration: The model generated dialog-style conversations between users and an AI assistant
+- Third iteration: The model was provided with human expert-created example questions as few-shot examples to guide generation
+
+Quality control included manual inspection and duplicate removal. The dataset was split 90/10 for training and validation.
+
+For the actual finetuning, they used QLoRA (Quantized Low-Rank Adaptation), which combines 4-bit quantization of model weights with LoRA for parameter-efficient finetuning. With rank r=64, this reduced trainable parameters to approximately 33.5 million—about 200x fewer than the full model parameters. Training was performed on 4 Quadro RTX 6000 GPUs with 24GB memory each, using the Hugging Face PEFT library.
+
+A critical production consideration was testing for overfitting. The team evaluated their finetuned model against the base model on the MMLU benchmark to ensure general language capabilities weren't degraded. The finetuned model achieved 43% overall accuracy compared to 45.3% for the base model, indicating minimal capability loss.
+
+### Tree-Based Entity Context (Novel Contribution)
+
+The most distinctive aspect of T-RAG is the tree structure for representing organizational hierarchies. Standard RAG struggles with questions about entity relationships within complex hierarchies because the relevant information may be scattered across documents or represented in organizational charts that don't embed well.
+
+The solution encodes the organizational hierarchy as a tree where each node represents an entity and parent-child relationships indicate categorical membership. For example, in a UNHCR-style structure, "Global Service Center in Budapest" would be a child of "Deputy High Commissioner" which would be under "High Commissioner Executive Office."
+
+The entity detection pipeline uses spaCy with custom rules for named entity recognition tailored to the organization's entities. Standard NER would detect "Budapest" as a location, but custom rules identify "Global Service Center in Budapest" as an organizational entity. When a query mentions entities, the system:
+
+- Parses entity names from the user query using the custom NER
+- Searches the tree structure to retrieve hierarchical information
+- Converts tree information to natural language statements
+- Combines this with standard RAG context before prompting the LLM
+
+This adaptive approach means the tree search is only performed when entity-related questions are detected, avoiding unnecessary context pollution for other query types.
+
+## Evaluation Methodology
+
+The evaluation approach reflects practical deployment concerns with multiple rounds of real user testing. Three sets of questions were gathered from organizational end users across testing phases, totaling 37 questions.
+
+Human evaluation was chosen over automated LLM-based evaluation, with responses marked as Correct (C) or Correct-Verbose (CV). The CV category captures an important production concern: responses that are factually correct but include irrelevant information. This verbosity metric is valuable because overly long responses waste user time and may bury the actual answer.
+
+Results showed T-RAG achieved 73% total accuracy (27/37) compared to 56.8% for standard RAG (21/37) and 54.1% for finetuning alone (20/37). However, T-RAG produced more verbose responses (6 CV vs 1 for other methods), indicating a tradeoff between accuracy and conciseness.
+
+### Entity-Specific Evaluation
+
+For entity-related questions, the team created separate test sets: "simple" questions (direct queries about single entities) and "complex" questions (listing entities under categories or compound questions). The tree context dramatically improved performance—the finetuned model without tree context answered 47.1% of simple questions correctly, while with tree context this jumped to 100%. For complex questions, accuracy improved from 36.4% to 77.3%.
+
+### Needle in a Haystack Testing
+
+This evaluation tested retrieval robustness by placing relevant context at different positions (top, middle, end) surrounded by varying numbers of irrelevant chunks (k=2 or k=10). Results showed models generally performed better with relevant information at context ends rather than the middle. Critically, T-RAG maintained 64.1% accuracy with relevant context buried in the middle among 10 unrelated chunks, while standard RAG dropped to 33.3%. This demonstrates the tree context's value in providing reliable entity information regardless of position in the context window.
+
+## Lessons Learned and Production Considerations
+
+The paper provides valuable practical insights from deployment experience:
+
+- **Robustness is hard**: While building an initial RAG is straightforward, making it robust requires domain expertise and extensive optimization across all pipeline components (chunking strategy, embedding model selection, retrieval algorithms, etc.)
+
+- **Finetuned models are phrasing-sensitive**: Small changes in question wording can significantly affect outputs. For example, asking for "a comprehensive list of all the..." produced hallucinations while "a list of all the..." was answered correctly. This sensitivity to distribution shift from training data is a known challenge requiring careful prompt design or broader training data coverage.
+
+- **Context window efficiency**: Finetuning can reduce context requirements by encoding information in model parameters, leaving more context window space for chat history or other dynamic information. This may be more practical than pursuing ever-larger context windows.
+
+- **End user involvement**: Regular testing with actual end users throughout development provided valuable feedback for system refinement.
+
+- **Hybrid approaches are promising**: Neither RAG nor finetuning alone was optimal. RAG provides grounding that reduces hallucinations but is sensitive to retrieval quality. Finetuning adapts tone and incorporates knowledge but risks overfitting and hallucinations on out-of-distribution queries. Combining both approaches proved most effective.
+
+- **Update considerations**: RAG is better suited for frequently changing documents since the vector database can be updated easily. Finetuning requires regenerating training data and retraining, making it better for more stable documents like governance manuals.
+
+The work represents a thoughtful approach to production LLM deployment that acknowledges constraints and tradeoffs rather than simply pursuing maximum benchmark performance. The combination of practical architectural choices, careful evaluation methodology, and honest assessment of limitations makes this a useful reference for enterprise LLM application development.

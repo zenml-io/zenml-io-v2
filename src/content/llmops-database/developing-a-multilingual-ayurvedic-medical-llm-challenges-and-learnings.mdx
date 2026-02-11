@@ -1,0 +1,127 @@
+---
+title: "Developing a Multilingual Ayurvedic Medical LLM: Challenges and Learnings"
+slug: "developing-a-multilingual-ayurvedic-medical-llm-challenges-and-learnings"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "67780656c87f56805219bde7"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:53:20.785Z"
+  createdOn: "2025-01-03T15:46:30.657Z"
+llmopsTags:
+  - "healthcare"
+  - "translation"
+  - "multi-modality"
+  - "fine-tuning"
+  - "rag"
+  - "semantic-search"
+  - "token-optimization"
+  - "pytorch"
+  - "tensorflow"
+  - "microsoft-azure"
+  - "databricks"
+  - "hugging-face"
+company: "Trigent Software"
+summary: "Trigent Software attempted to develop IRGPT, a fine-tuned LLM for multilingual Ayurvedic medical consultations. The project aimed to combine traditional Ayurvedic medicine with modern AI capabilities, targeting multiple South Indian languages. Despite assembling a substantial dataset and implementing a fine-tuning pipeline using GPT-2 medium, the team faced significant challenges with multilingual data quality and cultural context. While the English-only version showed promise, the full multilingual implementation remains a work in progress."
+link: "https://www.youtube.com/watch?v=cwOPEUkkLFU"
+year: 2023
+seo:
+  title: "Trigent Software: Developing a Multilingual Ayurvedic Medical LLM: Challenges and Learnings - ZenML LLMOps Database"
+  description: "Trigent Software attempted to develop IRGPT, a fine-tuned LLM for multilingual Ayurvedic medical consultations. The project aimed to combine traditional Ayurvedic medicine with modern AI capabilities, targeting multiple South Indian languages. Despite assembling a substantial dataset and implementing a fine-tuning pipeline using GPT-2 medium, the team faced significant challenges with multilingual data quality and cultural context. While the English-only version showed promise, the full multilingual implementation remains a work in progress."
+  canonical: "https://www.zenml.io/llmops-database/developing-a-multilingual-ayurvedic-medical-llm-challenges-and-learnings"
+  ogTitle: "Trigent Software: Developing a Multilingual Ayurvedic Medical LLM: Challenges and Learnings - ZenML LLMOps Database"
+  ogDescription: "Trigent Software attempted to develop IRGPT, a fine-tuned LLM for multilingual Ayurvedic medical consultations. The project aimed to combine traditional Ayurvedic medicine with modern AI capabilities, targeting multiple South Indian languages. Despite assembling a substantial dataset and implementing a fine-tuning pipeline using GPT-2 medium, the team faced significant challenges with multilingual data quality and cultural context. While the English-only version showed promise, the full multilingual implementation remains a work in progress."
+---
+
+## Overview
+
+This case study presents a refreshingly honest account from Trigent Software, a consulting company with approximately 30 years of experience as a Microsoft and Oracle partner, about their attempt to build "IRGPT" (also referred to as "Ayur GPT") — a fine-tuned large language model designed for multilingual Ayurveda consultations. The presenter, Andy (Anand Pia), explicitly frames this as a learning experience rather than a success story, making it a valuable case study in the challenges of deploying LLMs in specialized medical domains with multilingual requirements.
+
+Ayurveda is an ancient Indian holistic healing system approximately 5,000 years old, based on balancing mind, body, and spirit through concepts like doshas (body imbalances), prakriti/vikriti (constitutional balance), and herbal treatments. The ambitious goal was to modernize access to this traditional medicine through AI-powered consultations.
+
+## Project Objectives and Scope
+
+The team set out with highly ambitious objectives that ultimately proved too complex to achieve in a single iteration:
+
+- Align a medical LLM with ancient Ayurvedic concepts
+- Enable multilingual understanding for South Indian regional languages (Kannada, Tamil, Malayalam)
+- Maintain contextual relevance of Ayurvedic terminology while integrating modern medical terminology
+- Apply diagnostic processes based on symptoms, doshas, and imbalances
+- Provide culturally-aware, colloquial responses appropriate to different linguistic regions
+- Generate personalized treatment and lifestyle recommendations
+
+The presenter candidly admits that attempting all these objectives simultaneously led to project failure, requiring a significant scope reduction.
+
+## Data Engineering and Preparation
+
+The data preparation phase consumed significant effort and became a major source of challenges. The team aggregated data from multiple sources:
+
+- **ChatDoctor dataset**: 113,000 rows of medical conversational data from Hugging Face
+- **PubMed dataset**: 273,000 rows of medical question-answer pairs
+- **Ayurveda books**: Approximately 2GB of public domain texts intended for RAG (Retrieval-Augmented Generation) implementation
+- **Synthetic data**: 35,000 rows of generated patient interactions covering disease descriptions and symptoms in colloquial forms across target languages
+
+The data preprocessing pipeline included extensive deduplication, filtering of non-essential or uncommon conversation pieces, and restructuring into conversation pairs with medical queries and treatments. They labeled datasets and organized them to support multilingual setups, applying translation for regional language variants.
+
+However, the team encountered what they described as "The Good, Bad, and Ugly" of data challenges. While they had volume (approximately 1 million rows across multilingual variants), validation proved extremely difficult. Translations were frequently inaccurate, contextual meanings were lost, and the team lacked resources to manually validate such large datasets. Some translations were described as "bizarre" and many unknowns remained unaddressed.
+
+After extensive iteration on data quality — including additional deduplication, question rephrasing, further classification, contextualization, and summarization — they reduced to approximately 113,000 validated data samples as a working dataset.
+
+## Strategic Pivot and Model Training
+
+Facing the reality of multilingual complexity, the team made a pragmatic decision to pivot back to basics by focusing solely on English. This simplification allowed them to make progress and gather learnings that could inform future iterations. The presenter emphasized this as an "agile" approach — accepting current limitations to enable forward movement.
+
+For the fine-tuning approach, they selected **GPT-2 Medium** as their base model and applied standard fine-tuning techniques:
+
+- Probability estimation and tokenization using Byte Pair Encoding (BPE)
+- Standard GPT-2 architecture without modifications (deliberately conservative to reduce risk)
+- Training on 130,000-150,000 validated samples
+- Model with 347 million parameters
+- Training infrastructure: NVIDIA A100 GPU
+
+The training ran for approximately 590 steps/batches until the loss stabilized sufficiently. They used TensorBoard for monitoring, which the presenter praised as working well for their needs.
+
+## Challenges Encountered
+
+The case study is notable for its transparency about failures and challenges:
+
+**Language and Cultural Nuances**: The original vision of multilingual support for Kannada, Tamil, and Malayalam proved far more difficult than anticipated. Standard machine translation approaches failed to capture the nuanced meaning of Ayurvedic terminology, which often has no direct equivalent in modern medical vocabulary. Cultural context embedded in how symptoms and treatments are described varied significantly across regions.
+
+**Domain-Specific Data Scarcity**: Limited availability of Ayurveda-specific data in regional languages was identified as the single biggest challenge. This specialized domain combined with low-resource languages created a compounding difficulty that could not be solved with existing translation models.
+
+**Contextual Accuracy**: Even when translations were technically correct, the contextual and cultural relevance of responses was often inappropriate. Medical advice that works culturally in one region may not translate appropriately to another, even within the same country.
+
+**Validation at Scale**: With datasets approaching 1 million rows in multilingual form, manual validation was impractical. The team had to accept that some amount of noise would remain in training data.
+
+## RAG Integration Plans
+
+The presentation mentions plans to use approximately 2GB of Ayurveda books through RAG logic to "inject terminologies and have that sequenced in the easiest manner possible." While the full RAG implementation details weren't extensively covered, this represents a hybrid approach combining fine-tuning with retrieval to ground responses in authoritative Ayurvedic texts.
+
+## Current State and Future Direction
+
+The team developed a working demo (mentioned as available via private beta access), though they acknowledge it has noticeable limitations in cultural nuances and contextual accuracy. The presenter describes IRGPT as "promising" as a step toward combining AI with traditional medicine.
+
+Future plans include:
+
+- Collaboration with academic partners to gather more diverse and regionally accurate data (targeting December 2024)
+- Focusing on context-aware responses specifically for diagnostics
+- Potentially integrating "easier" languages first before tackling more complex regional variants
+- Continued model improvements based on learnings from the English-only prototype
+
+## LLMOps Lessons and Production Considerations
+
+This case study offers several valuable lessons for LLMOps practitioners:
+
+**Scope Management**: The team's experience demonstrates the importance of iterative development. Their initial scope was too ambitious, combining fine-tuning, multilingual support, cultural adaptation, and medical domain expertise simultaneously. The pivot to English-only represents a classic "minimum viable product" approach that should have been the starting point.
+
+**Data Quality Over Quantity**: Despite having access to approximately 1 million rows of data, the effective usable dataset was only about 113,000 rows after quality filtering. This highlights the LLMOps reality that raw data volume is often misleading.
+
+**Domain Expertise Requirements**: Medical AI applications, especially in traditional medicine systems with specialized terminology, require deep domain expertise for data validation and output evaluation. The gap between technical ML capabilities and domain-specific requirements is often underestimated.
+
+**Infrastructure Choices**: The use of A100 GPUs and GPT-2 Medium represents a practical middle ground — powerful enough for meaningful fine-tuning but not requiring the most expensive infrastructure. This reflects real-world budget constraints mentioned by the presenter.
+
+**Honest Assessment Culture**: Perhaps the most valuable aspect of this case study is the culture of honest self-assessment. Rather than presenting inflated claims, the team acknowledges failures openly and frames them as learning opportunities. This approach is essential for productive LLMOps, where understanding what doesn't work is often as valuable as knowing what does.
+
+The presentation was delivered at an NLP Summit, suggesting the company values contributing to the broader community's knowledge even when results are mixed. This openness to sharing failures and inviting collaboration represents best practices in the evolving field of LLMOps.

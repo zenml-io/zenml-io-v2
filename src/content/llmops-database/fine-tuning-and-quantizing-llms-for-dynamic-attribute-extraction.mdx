@@ -1,0 +1,113 @@
+---
+title: "Fine-Tuning and Quantizing LLMs for Dynamic Attribute Extraction"
+slug: "fine-tuning-and-quantizing-llms-for-dynamic-attribute-extraction"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f3de7ff1f4649143f182c"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:34:52.480Z"
+  createdOn: "2024-11-21T14:04:23.732Z"
+llmopsTags:
+  - "cost-optimization"
+  - "data-analysis"
+  - "devops"
+  - "documentation"
+  - "fine-tuning"
+  - "google-gcp"
+  - "hugging-face"
+  - "latency-optimization"
+  - "model-optimization"
+  - "monitoring"
+  - "multi-modality"
+  - "prompt-engineering"
+  - "reliability"
+  - "scalability"
+  - "scaling"
+  - "structured-output"
+  - "token-optimization"
+  - "unstructured-data"
+  - "wandb"
+company: "Mercari"
+summary: "Mercari tackled the challenge of extracting dynamic attributes from user-generated marketplace listings by fine-tuning a 2B parameter LLM using QLoRA. The team successfully created a model that outperformed GPT-3.5-turbo while being 95% smaller and 14 times more cost-effective. The implementation included careful dataset preparation, parameter efficient fine-tuning, and post-training quantization using llama.cpp, resulting in a production-ready model with better control over hallucinations."
+link: "https://engineering.mercari.com/en/blog/entry/20240913-fine-tuning-an-llm-to-extract-dynamically-specified-attributes/"
+year: 2024
+seo:
+  title: "Mercari: Fine-Tuning and Quantizing LLMs for Dynamic Attribute Extraction - ZenML LLMOps Database"
+  description: "Mercari tackled the challenge of extracting dynamic attributes from user-generated marketplace listings by fine-tuning a 2B parameter LLM using QLoRA. The team successfully created a model that outperformed GPT-3.5-turbo while being 95% smaller and 14 times more cost-effective. The implementation included careful dataset preparation, parameter efficient fine-tuning, and post-training quantization using llama.cpp, resulting in a production-ready model with better control over hallucinations."
+  canonical: "https://www.zenml.io/llmops-database/fine-tuning-and-quantizing-llms-for-dynamic-attribute-extraction"
+  ogTitle: "Mercari: Fine-Tuning and Quantizing LLMs for Dynamic Attribute Extraction - ZenML LLMOps Database"
+  ogDescription: "Mercari tackled the challenge of extracting dynamic attributes from user-generated marketplace listings by fine-tuning a 2B parameter LLM using QLoRA. The team successfully created a model that outperformed GPT-3.5-turbo while being 95% smaller and 14 times more cost-effective. The implementation included careful dataset preparation, parameter efficient fine-tuning, and post-training quantization using llama.cpp, resulting in a production-ready model with better control over hallucinations."
+---
+
+## Overview
+
+Mercari, a major Japanese customer-to-customer (C2C) marketplace, faced the challenge of understanding and extracting key attributes from user-generated listing descriptions. The AI/LLM team at Mercari embarked on an experiment to fine-tune a smaller, open-source large language model to perform attribute extraction from product listings, comparing its performance against commercial APIs like GPT-3.5 Turbo. This case study demonstrates how a well-executed fine-tuning approach with modern parameter-efficient techniques can yield models that outperform much larger commercial alternatives while significantly reducing operational costs.
+
+The core business problem centered on the variability and complexity of user-generated content in a C2C marketplace. Sellers describe their listings in vastly different ways, essential attributes vary across product categories, and the content continuously evolves over time. By accurately extracting key attributes from listing descriptions, Mercari could better understand what sellers are offering and potentially help them enhance their listings for improved effectiveness.
+
+## Why LLMs Over Conventional ML
+
+The team articulated clear reasoning for why traditional machine learning approaches were insufficient for this task. First, the dynamic nature of attributes—where how items are described changes frequently—would require continuous model retraining with conventional approaches, leading to high maintenance overhead. Second, LLMs offer superior generalization capabilities, performing well even with limited training data and on out-of-distribution examples. Third, the multilingual nature of Mercari's listings (primarily Japanese but also English, Chinese, and others) necessitated a model with strong multilingual capabilities.
+
+At the same time, the team identified limitations with using commercial LLM APIs exclusively. The cost of commercial APIs, while decreasing, remained prohibitively expensive given the sheer volume of requests in Mercari's production environment. Additionally, controlling hallucinations purely through prompt engineering proved difficult with commercial APIs. These considerations motivated the decision to experiment with fine-tuning their own model.
+
+## Technical Approach and Infrastructure
+
+The experiment utilized a single NVIDIA A100 GPU with 80GB memory on a GCP VM instance (`a2-ultragpu-1g`). The team selected Google's `gemma-2b-it` model as their base, informed by resources like the Nejumi Leaderboard for Japanese LMs curated by the Weights and Biases Japan team. This leaderboard provided comprehensive evaluations of various LLMs' capabilities in handling Japanese text, which was crucial given that most Mercari listings are in Japanese.
+
+The input-output paradigm was clearly defined: the model receives a listing description and a list of attribute keys to extract, then outputs the extracted attribute values or "NONE" for attributes not found in the text. This dynamic specification of attributes was a key design decision, allowing the same model to handle different categories without retraining.
+
+### Dataset Preparation
+
+The team built their dataset from historical listing descriptions along with their corresponding attributes. Given that attribute keys vary across item categories, they focused initially on the top 20 categories by listing volume. Data was structured into input-output pairs and integrated with specific prompts in both English and Japanese. The prompt template included an initial instruction sentence, the extraction task specification, the input text (listing description), and the expected output format.
+
+Training data was managed through Weights & Biases artifacts, providing versioning and traceability for the dataset. This is a solid MLOps practice that enables reproducibility and lineage tracking throughout the model development lifecycle.
+
+### QLoRA Fine-Tuning
+
+The team employed QLoRA (Quantized Low-Rank Adaptation), a parameter-efficient fine-tuning technique that significantly reduces memory requirements while maintaining performance comparable to full fine-tuning. As noted in the original QLoRA paper, this approach enables fine-tuning of models up to 65B parameters on a single 48GB GPU.
+
+The fine-tuning configuration targeted key transformer modules including `q_proj`, `k_proj`, `v_proj`, `o_proj`, `gate_proj`, `down_proj`, `up_proj`, and `lm_head`. The LoRA configuration used a rank of 16, alpha of 16, and dropout of 0.05. For quantization during training, they employed 4-bit Normal Float (NF4) quantization with double quantization enabled, computing in bfloat16 precision.
+
+Training hyperparameters included a learning rate of 2e-4, batch size of 4 with gradient accumulation steps of 4, linear learning rate scheduler with 0.1 warmup ratio, and FP16 training. The team used HuggingFace's SFTTrainer (Supervised Fine-Tuning Trainer) with sequence packing enabled and a maximum sequence length of 1024 tokens.
+
+A notable implementation detail was upcasting layer norms to float32 for numerical stability—a common practice when working with mixed-precision training that can prevent gradient issues.
+
+### Post-Training Quantization
+
+After fine-tuning, the team applied post-training quantization using llama.cpp, an open-source library for efficient LLM inference in C/C++. The process involved converting the HuggingFace format model to a format compatible with llama.cpp, then applying 4-bit precision quantization using the q4_k_m method. The resulting model was stored in the GGUF format.
+
+This two-stage quantization approach—QLoRA during training followed by llama.cpp quantization for inference—represents a practical strategy for minimizing both training and inference costs.
+
+## Results and Evaluation
+
+The evaluation compared the fine-tuned and quantized model against GPT-3.5 Turbo (specifically `gpt-3.5-turbo-0125`), which was selected as the baseline given that GPT-4o models were not yet available at the time of the experiment. Key metrics included BLEU score for extraction quality, model size, and latency.
+
+The results were compelling: the final 4-bit quantized GGUF model was approximately 95% smaller than the original gemma-2b-it base model while achieving a BLEU score more than five percentage points higher than GPT-3.5 Turbo. The team's rough estimate suggested cost savings of more than 14 times compared to using the commercial API, though they appropriately noted that rapidly changing API pricing structures make such estimates volatile.
+
+## LLMOps Implications
+
+This case study highlights several important LLMOps considerations for production deployments:
+
+**Model Selection Trade-offs**: The team's decision to fine-tune a smaller model rather than rely on commercial APIs was driven by both cost and control considerations. While commercial APIs offer convenience, the volume of production requests and the need for fine-grained control over model behavior (particularly hallucination reduction) justified the investment in fine-tuning.
+
+**Parameter-Efficient Fine-Tuning**: QLoRA enabled the team to fine-tune effectively on a single GPU, making the approach accessible without requiring massive computational resources. This democratizes LLM fine-tuning for teams that may not have access to large GPU clusters.
+
+**Quantization Strategy**: The combination of QLoRA during training and llama.cpp quantization for inference demonstrates a practical approach to managing model size and inference costs. The 95% size reduction with maintained (even improved) performance is significant for production deployment economics.
+
+**Experiment Tracking**: The use of Weights & Biases for artifact management and experiment tracking reflects mature MLOps practices. This infrastructure supports reproducibility, collaboration, and iteration velocity—all critical for production ML systems.
+
+**Evaluation Methodology**: Using BLEU score as the primary quality metric for extraction tasks provides a quantitative basis for comparing approaches. The team's benchmarking against a well-known commercial model (GPT-3.5 Turbo) offers a meaningful reference point, though it's worth noting that BLEU score has known limitations for certain NLP tasks.
+
+**Cost Considerations**: The 14x cost reduction estimate (with appropriate caveats about pricing volatility) highlights the potential economic benefits of fine-tuning for high-volume production use cases. However, this must be weighed against the engineering investment required for fine-tuning, maintenance, and infrastructure management.
+
+## Limitations and Considerations
+
+While the results are promising, several factors warrant careful consideration. The BLEU score comparison, while favorable, may not capture all dimensions of extraction quality relevant to the business use case. The team focused on the top 20 categories, so performance on long-tail categories remains to be validated. Additionally, the ongoing maintenance burden of a self-hosted model—including monitoring, updating, and potentially retraining as content evolves—should be factored into the total cost of ownership.
+
+The experiment demonstrates that fine-tuning smaller models can be highly effective for specific, well-defined tasks. However, this approach may be less suitable for more general-purpose applications where the breadth of commercial models provides value. The success here appears tied to the focused nature of the extraction task and the availability of quality training data from historical listings.
+
+Overall, this case study provides a practical template for organizations considering alternatives to commercial LLM APIs for high-volume, domain-specific NLP tasks, showcasing both the technical approach and the reasoning behind key design decisions.

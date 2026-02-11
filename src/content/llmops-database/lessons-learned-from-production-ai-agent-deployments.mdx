@@ -1,0 +1,109 @@
+---
+title: "Lessons Learned from Production AI Agent Deployments"
+slug: "lessons-learned-from-production-ai-agent-deployments"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f3def8acbecd973753417"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:46:04.762Z"
+  createdOn: "2024-11-21T14:04:31.001Z"
+llmopsTags:
+  - "multi-agent-systems"
+  - "google"
+  - "google-gcp"
+  - "rag"
+  - "prompt-engineering"
+company: "Google / Vertex AI"
+summary: "A comprehensive overview of lessons learned from deploying AI agents in production at Google's Vertex AI division. The presentation covers three key areas: meta-prompting techniques for optimizing agent prompts, implementing multi-layered safety and guard rails, and the critical importance of evaluation frameworks. These insights come from real-world experience delivering hundreds of models into production with various developers, customers, and partners."
+link: "https://www.youtube.com/watch?v=3y17VO3C8jo"
+year: 2024
+seo:
+  title: "Google / Vertex AI: Lessons Learned from Production AI Agent Deployments - ZenML LLMOps Database"
+  description: "A comprehensive overview of lessons learned from deploying AI agents in production at Google's Vertex AI division. The presentation covers three key areas: meta-prompting techniques for optimizing agent prompts, implementing multi-layered safety and guard rails, and the critical importance of evaluation frameworks. These insights come from real-world experience delivering hundreds of models into production with various developers, customers, and partners."
+  canonical: "https://www.zenml.io/llmops-database/lessons-learned-from-production-ai-agent-deployments"
+  ogTitle: "Google / Vertex AI: Lessons Learned from Production AI Agent Deployments - ZenML LLMOps Database"
+  ogDescription: "A comprehensive overview of lessons learned from deploying AI agents in production at Google's Vertex AI division. The presentation covers three key areas: meta-prompting techniques for optimizing agent prompts, implementing multi-layered safety and guard rails, and the critical importance of evaluation frameworks. These insights come from real-world experience delivering hundreds of models into production with various developers, customers, and partners."
+---
+
+## Overview
+
+This case study comes from a conference presentation by Patrick Marlow, a Staff Engineer at Google's Vertex Applied AI Incubator. Patrick has over 12 years of experience in conversational AI and NLP, and his team works on cutting-edge aspects of large language models including function calling, Gemini SDKs, and multi-agent architectures. The presentation distills lessons learned from delivering "hundreds of models into production" with various developers, customers, and partners. Rather than focusing on how to build an agent, the talk pivots to share practical, battle-tested insights for successfully operating agents in production environments.
+
+The presentation coincided with the release of a white paper on agents that Patrick co-authored, reflecting the depth of experience informing these recommendations. His perspective is particularly valuable as it comes from someone who manages open-source repositories at Google and contributes to LangChain, giving him visibility across the broader ecosystem.
+
+## Evolution of LLM Architectures
+
+Patrick provides helpful context by tracing the evolution of LLM application architectures. In the early days, applications consisted simply of models—users would send queries and receive token responses. While impressive, these systems suffered from hallucinations and confident incorrectness. This led to the rise of Retrieval Augmented Generation (RAG) in 2023, which Patrick calls "the year of RAG." This architecture brought vector databases for storing embeddings and allowed models to ground themselves with external knowledge, reducing hallucinations.
+
+However, RAG remained a "single-shot architecture"—query in, retrieval, generation, done. The need for additional orchestration gave rise to agents in late 2023 and early 2024. Agents introduced reasoning, orchestration, and multi-turn inference capabilities, with access to tools and sometimes multiple models. This agent architecture is the focus of the production lessons shared.
+
+## Production Systems Are More Than Models
+
+A key insight Patrick emphasizes is that production agents are far more than just the underlying model. He notes there has been hyperfocus on model selection—"are you using 01, are you using 3.5 Turbo, are you using Gemini Pro or Flash"—but the reality is that production systems involve extensive additional components: grounding, tuning, prompt engineering, orchestration, API integrations, CI/CD pipelines, and analytics.
+
+Patrick makes an interesting prediction: models will eventually become commoditized—all fast, good, and cheap. What will differentiate successful deployments is the ecosystem built around the model. This perspective should inform how teams invest their efforts when building production systems.
+
+## Meta-Prompting: Using AI to Build AI
+
+The first major lesson involves meta-prompting—using AI to generate and optimize prompts for other AI systems. The architecture involves a meta-prompting system that generates prompts for a target agent system. The target agent produces responses that can be evaluated, with those evaluations feeding back to refine the meta-prompting system in an iterative loop.
+
+Patrick demonstrates this with a practical example. A handwritten prompt might say: "You're a Google caliber software engineer with exceptional expertise in data structures and algorithms..." This is typical prompt engineering. However, feeding this through a meta-prompting system produces a more detailed, higher-fidelity version that's semantically similar but structured and described in ways that LLMs can more accurately follow. The insight is that "humans aren't always necessarily great at explaining themselves"—LLMs can embellish and add detail that improves downstream performance.
+
+Two key meta-prompting techniques are discussed:
+
+**Seeding**: Starting with a system prompt for the meta-prompt system (e.g., "you're an expert at building virtual agent assistants"), then providing a seed prompt with context about the end use case. The meta-prompting system generates target agent prompts that can be refined iteratively. This is particularly valuable for developers who aren't skilled at creative writing or prompt engineering but need high-fidelity starting points.
+
+**Optimization**: Taking the system further by evaluating agent responses against metrics like coherence, fluency, and semantic similarity, then feeding those evaluations back to the meta-prompting system. This allows requests like "optimize my prompt for better coherence" or "reduce losses in tool calling."
+
+Patrick acknowledges this can feel like "writing prompts to write prompts to produce prompts" but points to practical tools that implement these techniques, including dspy, Adal Flow, and Vertex Prompt Optimizer. He notes these techniques work across providers including Gemini, OpenAI, and Claude.
+
+## Safety and Guardrails: Multi-Layer Defense
+
+The second major lesson addresses safety, which Patrick identifies as often overlooked, especially for internal-use agents. Developers often assume their users are "super friendly" and rely solely on prompt engineering as their defense layer. This breaks down when agents face the public domain with bad actors attempting prompt injection and other attacks.
+
+Patrick advocates for multi-layer defenses throughout the agent pipeline:
+
+**Input Filters**: Before queries reach the agent, implement language classification checks, category checks, and session limit checks. An important insight is that many prompt injection techniques play out over many conversation turns, so limiting sessions to 30-50 turns eliminates much of the "long-tail of conversation turns where the Bad actors are living."
+
+**Agent-Side Protections**: Beyond typical API security and safety filters, teams must consider the return journey. This includes error handling and retries for 5xx errors, controlled generation, and JSON output validation.
+
+**Caching**: Patrick highlights an often-overlooked aspect—caching. He notes the propensity to always use the latest technology, but what matters is the outcome achieved, not how it was achieved. Caching responses for frequently repeated queries can bypass the agentic system entirely, saving money on tokens and improving response speed while maintaining quality.
+
+**Analytics Feedback**: Signals from production should feed back to data analyst and data science teams to inform updates to prompts, input filters, and output filters.
+
+## Evaluations: The Non-Negotiable Practice
+
+Patrick is emphatic about evaluations: "if you're building agent systems, the number one thing that you could do is just implement evaluations. If you don't do anything else, implement evaluations." Evaluations provide measurement and a barometer for agent performance in production.
+
+He describes a common scenario: a team launches an agent successfully, then releases a new feature (new tool, database connection, prompt changes), and suddenly users report the agent is "garbage"—hallucinating and responding incorrectly. Without evaluations, teams are stuck manually inspecting responses trying to understand what went wrong.
+
+The evaluation approach begins with a "golden data set" (also called expectations)—defining ideal scenarios for agent interactions. Examples: "when a user says this, the agent should say this" or "when a user responds with this, the agent should call a tool with these inputs and then say this." These expectations are compared against actual runtime responses and scored on metrics like semantic similarity, tool calling accuracy, coherence, and fluency.
+
+As agents are iterated, expectations remain mostly static, allowing teams to detect variations and regressions. For example, identifying that "tool calling is suffering and that is causing semantic similarity in agent responses to also suffer."
+
+Patrick provides a particularly valuable insight about multi-stage RAG pipelines. A typical pipeline might involve: query rewrite → retrieval → reranking → summarization. If you only evaluate the end-to-end output, you can identify that quality has degraded but not why. When swapping in a new model, is the query rewrite suffering, or the summarization, or the reranking? 
+
+The solution is evaluating at every stage of the pipeline, not just end-to-end. This allows teams to identify that "the largest losses are happening inside the summarization stage" and make targeted changes rather than wholesale rollbacks.
+
+Patrick recommends the Vertex SDK's rapid eval capabilities and points to open-source repositories with notebooks and code for running evaluations. He emphasizes that the specific framework doesn't matter—what matters is that evaluations are actually being performed.
+
+## Version Management and CI/CD
+
+In the Q&A, Patrick addresses agent version management. The recommended approach is to "break up the agent into all of its individual components and think of it all as code." This means pushing prompts, functions, tools, and all components into git repositories. Version control applies to prompts themselves, allowing diff comparisons and rollbacks to previous commits. This treats agent development with the same rigor as traditional software development life cycles with CI/CD.
+
+## Tools and Frameworks Mentioned
+
+Throughout the presentation, several tools and frameworks are referenced:
+- Vertex AI and Gemini (Google's offerings)
+- Conversational Agents Platform (previously Dialog Flow CX)
+- Scrappy (Google open-source library Patrick manages)
+- LangChain (Patrick is a contributor)
+- dspy, Adal Flow, Vertex Prompt Optimizer (for meta-prompting)
+- Various vector databases (for RAG implementations)
+
+## Key Takeaways
+
+The presentation synthesizes experience from hundreds of production deployments into three actionable focus areas: meta-prompting for prompt optimization, multi-layer safety and guardrails, and comprehensive evaluations at every pipeline stage. Patrick's emphasis that evaluations are non-negotiable—and should be implemented even if nothing else is—reflects the practical reality that without measurement, teams cannot understand or improve their production systems. The insight that models will become commoditized while the surrounding ecosystem becomes the differentiator suggests teams should invest accordingly in tooling, evaluation infrastructure, and operational practices rather than focusing exclusively on model selection.

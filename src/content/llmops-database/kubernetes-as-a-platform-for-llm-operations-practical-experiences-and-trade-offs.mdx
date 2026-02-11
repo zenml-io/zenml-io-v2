@@ -1,0 +1,145 @@
+---
+title: "Kubernetes as a Platform for LLM Operations: Practical Experiences and Trade-offs"
+slug: "kubernetes-as-a-platform-for-llm-operations-practical-experiences-and-trade-offs"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f405dbd64d6869636e4b9"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:40:33.060Z"
+  createdOn: "2024-11-21T14:14:53.204Z"
+llmopsTags:
+  - "cost-optimization"
+  - "databases"
+  - "devops"
+  - "docker"
+  - "fine-tuning"
+  - "google-gcp"
+  - "high-stakes-application"
+  - "kubernetes"
+  - "latency-optimization"
+  - "model-optimization"
+  - "monitoring"
+  - "orchestration"
+  - "reliability"
+  - "scalability"
+  - "scaling"
+company: "Various"
+summary: "A panel discussion between experienced Kubernetes and ML practitioners exploring the challenges and opportunities of running LLMs on Kubernetes. The discussion covers key aspects including GPU management, cost optimization, training vs inference workloads, and architectural considerations. The panelists share insights from real-world implementations while highlighting both benefits (like workload orchestration and vendor agnosticism) and challenges (such as container sizes and startup times) of using Kubernetes for LLM operations."
+link: "https://www.youtube.com/watch?v=0e5q4zCBtBs"
+year: 2023
+seo:
+  title: "Various: Kubernetes as a Platform for LLM Operations: Practical Experiences and Trade-offs - ZenML LLMOps Database"
+  description: "A panel discussion between experienced Kubernetes and ML practitioners exploring the challenges and opportunities of running LLMs on Kubernetes. The discussion covers key aspects including GPU management, cost optimization, training vs inference workloads, and architectural considerations. The panelists share insights from real-world implementations while highlighting both benefits (like workload orchestration and vendor agnosticism) and challenges (such as container sizes and startup times) of using Kubernetes for LLM operations."
+  canonical: "https://www.zenml.io/llmops-database/kubernetes-as-a-platform-for-llm-operations-practical-experiences-and-trade-offs"
+  ogTitle: "Various: Kubernetes as a Platform for LLM Operations: Practical Experiences and Trade-offs - ZenML LLMOps Database"
+  ogDescription: "A panel discussion between experienced Kubernetes and ML practitioners exploring the challenges and opportunities of running LLMs on Kubernetes. The discussion covers key aspects including GPU management, cost optimization, training vs inference workloads, and architectural considerations. The panelists share insights from real-world implementations while highlighting both benefits (like workload orchestration and vendor agnosticism) and challenges (such as container sizes and startup times) of using Kubernetes for LLM operations."
+---
+
+## Overview
+
+This case study captures insights from a panel discussion featuring multiple industry experts discussing the intersection of Kubernetes and large language model operations. The panelists include Manjot (investor at Lightspeed with background as a product manager on the Kubernetes team at Google), Rahul (founder of AI Hero focused on LLMOps deployment), Patrick (tech lead at a startup focused on LLM planning with previous experience at Heptio/VMware), and Shri (engineer at Outerbounds building managed ML platforms). The discussion provides a practitioner's perspective on the real-world challenges of running LLMs in production on Kubernetes infrastructure.
+
+## Historical Context and Kubernetes Origins
+
+The panel establishes important context about Kubernetes' origins and design philosophy. Manjot explains that Kubernetes was inspired by Google's internal Borg system and was primarily designed to make workloads scalable and reliable through container orchestration. Critically, the original design never considered machine learning workloads specifically—it was focused on traditional workloads like APIs and microservices. This architectural heritage has significant implications for how well Kubernetes handles LLM workloads today.
+
+Despite this, the core principles of Kubernetes—providing an abstraction layer that hides hardware complexity while delivering reliability, scalability, and efficiency—remain valuable for ML workloads. The past few years have seen an explosion of products and libraries that help run machine learning workloads on Kubernetes, building on these foundational principles.
+
+## Enterprise Drivers for Kubernetes-Based LLM Deployment
+
+Rahul highlights a key business driver: enterprises are increasingly looking to deploy and train models in-house because they don't want data leaving their VPC. This privacy and data sovereignty requirement makes Kubernetes an attractive option because it provides a cloud-agnostic platform for training and deploying machine learning models. Organizations can avoid vendor lock-in while maintaining control over their data and infrastructure.
+
+The panel notes that cloud service providers and startups have developed Kubernetes-native solutions for ML deployment, giving enterprises multiple options for building their LLM infrastructure while maintaining the flexibility to move between cloud providers.
+
+## Batch vs. Streaming Workloads
+
+An interesting debate emerges around whether Kubernetes is well-suited for batch workloads, which have traditionally dominated machine learning. Shri notes that while Kubernetes offers support for batch jobs through the Kubernetes Job resource and community projects like Argo, batch workloads have not been first-class citizens in the Kubernetes ecosystem, which was always more focused on long-running services.
+
+Patrick offers a counter-perspective, suggesting that generative AI workloads are actually more streaming-oriented than batch-oriented. He notes a shift away from DAGs (directed acyclic graphs) toward chains and agent-based architectures. Furthermore, he argues that as LLMs grow, they can be thought of as microservices themselves—with different model partitions that need to communicate with each other, requiring pod scheduling and networking. This actually aligns well with Kubernetes' strengths.
+
+## GPU Challenges and Cost Management
+
+The panel extensively discusses GPU-related challenges, which are central to LLM operations. Key points include:
+
+**Cost as the Primary Constraint**: Patrick emphasizes that GPU costs are significant, especially for startups. Running LLM models is expensive, and keeping GPU nodes running continuously adds up quickly. The startup time for GPU nodes is also substantial—spinning up a node and loading model weights can take several minutes, which affects both cost and user experience.
+
+**GPU Scarcity**: Rahul shares experience from a recent hackathon where the team attempted to fine-tune an LLM using RLHF with the DeepSpeed library on Kubernetes. The original goal of implementing auto-scaling had to be abandoned because GPUs are simply too scarce—even if you want to scale, you can't get the resources. The practical advice is to negotiate with cloud providers to reserve GPU nodes in advance.
+
+**Future Market Dynamics**: Rahul speculates that as H100 GPUs become generally available and adoption increases, A100 GPUs will become more available and cheaper. This market self-correction may help with GPU availability, though it remains to be seen.
+
+**Spot Instances**: Manjot mentions that spot instances can help reduce costs, but notes that the details of how Kubernetes components like the scheduler and auto-scaler work require significant optimization for ML workloads.
+
+## Kubernetes Component Limitations
+
+The panel identifies several Kubernetes components that need optimization for LLM workloads:
+
+**Scheduler**: The way Kubernetes decides to provision and schedule nodes and pods can be significantly optimized for ML workloads, particularly around data transfer between nodes and pods, and location-aware scheduling.
+
+**Auto-scaler**: Manjot notes that auto-scaling has always been a way to "shoot yourself in the foot" even for traditional workloads, and it's even harder to make it work well for ML and LLM workloads. Given GPU scarcity, auto-scaling becomes almost moot—the focus should be on building a repeatable platform for rapid deployment and iteration rather than over-optimizing auto-scaling.
+
+## Container Size and Deployment Challenges
+
+Rahul provides concrete technical details about the challenges of containerizing LLMs:
+
+**Large Container Sizes**: LLM containers can be tens of gigabytes in size. This creates cascading problems including inconsistent pull times (some nodes pulling in 15 seconds, others taking a minute and a half), potential pod failures due to disk space limitations, and increased costs from repeatedly pulling large container images.
+
+**Model Weight Loading**: The startup time to load model weights into GPU memory adds to the overall deployment latency.
+
+**Potential Solutions**: Patrick mentions exploring "hot swap LoRAs or QLoRAs" as a potential optimization—instead of spinning up entire nodes, running base models and swapping in fine-tuned adapters for specific capabilities.
+
+## LLM Workload Types and Kubernetes Fit
+
+The panel discusses four main categories of LLM workloads and how Kubernetes serves each:
+
+**Training from Scratch**: Building foundational models requires petabytes of data and months of compute time. This is the most resource-intensive category.
+
+**Fine-tuning**: Using techniques like PEFT and LoRA to adapt models to specific use cases. While you're only training a small portion of parameters, you still need the entire model in memory.
+
+**Prompt Engineering**: This is less infrastructure-intensive but still requires reliable serving infrastructure.
+
+**Inference/Serving**: Manjot notes that Kubernetes is currently more battle-tested for training and fine-tuning than for inference. There's still work needed to optimize the inference path.
+
+**Service-Oriented Architectures**: Patrick and Rahul emphasize that Kubernetes excels at orchestrating multiple services—like a vector database, a web application, and an LLM—that need to work together. This composability is a key strength.
+
+## Developer Experience Considerations
+
+The panel addresses the tension between data scientist productivity and Kubernetes complexity:
+
+**Abstraction Layers**: Rahul suggests that one-line commands that containerize and deploy code to Kubernetes can be a good starting point. However, he cautions that this isn't ideal for building repeatable, production-grade systems.
+
+**Organizational Structure**: Manjot notes that organizations typically separate deployment teams from data science teams. In some cases, models are written in Python, converted to other code by a separate team, and then deployed—a process that seems highly inefficient.
+
+**Hidden Complexity**: The consensus is that the best experience for data scientists is not having to deal with Kubernetes directly. Platforms like Metaflow (mentioned by Shri as a project he's involved with) can abstract away Kubernetes complexity while providing the benefits of container orchestration.
+
+## Hardware Abstraction Challenges
+
+Manjot raises an interesting tension: the entire point of Kubernetes and containers is to abstract away hardware, but LLM workloads often require specific libraries and drivers that work with accelerators or specific hardware components. This creates a situation where the abstraction isn't complete—you still need to think about the underlying hardware, which somewhat undermines the containerization philosophy.
+
+## Emerging Architecture Patterns
+
+Rahul describes service-oriented LLM architectures that combine:
+- Vector databases for retrieval
+- Orchestration services connecting components
+- External LLM APIs (OpenAI, Azure OpenAI, Anthropic Claude)
+- User feedback loops for continuous improvement
+
+The challenge is that these architectures involve data leaving the VPC to reach external services, which conflicts with the privacy requirements that drove organizations to Kubernetes-based solutions in the first place. This requires building robust, self-contained platforms that can support the full MLOps lifecycle including human feedback integration.
+
+## Startup vs. Enterprise Considerations
+
+Patrick emphasizes that organizational size matters significantly. Startups face compounding costs—both Kubernetes overhead and LLM costs are high, making the total cost substantial. For smaller organizations, using something like a Cloudflare Worker with the OpenAI API might be significantly more cost-effective. Larger enterprises with capital available can invest in proper Kubernetes-based platforms that provide long-term benefits in terms of control and flexibility.
+
+## Current State and Future Outlook
+
+The panel acknowledges that the space is moving so rapidly that definitive best practices don't yet exist. New tools and platforms emerge weekly—from Colab to Replicate to various open-source solutions. This creates both opportunity for new products and services to fill gaps, and uncertainty for organizations trying to make technology choices.
+
+Key problems that need solving include:
+- Hallucinations and reliability of LLM outputs
+- Cost management for GPU-intensive workloads
+- Latency optimization for inference
+- Building the right abstractions that balance flexibility with ease of use
+
+The panelists agree that Kubernetes will likely remain part of the answer, but significant work is needed to optimize Kubernetes components and build appropriate abstraction layers for LLM workloads. The opportunity exists for new cloud offerings and platforms that can address these challenges while hiding the underlying complexity from practitioners.

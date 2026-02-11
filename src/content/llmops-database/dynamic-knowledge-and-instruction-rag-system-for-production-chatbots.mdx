@@ -1,0 +1,98 @@
+---
+title: "Dynamic Knowledge and Instruction RAG System for Production Chatbots"
+slug: "dynamic-knowledge-and-instruction-rag-system-for-production-chatbots"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "6790aa425c6f378f757958ee"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:56:40.431Z"
+  createdOn: "2025-01-22T08:20:18.300Z"
+llmopsTags:
+  - "customer-support"
+  - "chatbot"
+  - "classification"
+  - "rag"
+  - "embeddings"
+  - "prompt-engineering"
+  - "semantic-search"
+  - "vector-search"
+  - "error-handling"
+  - "human-in-the-loop"
+  - "databases"
+  - "monitoring"
+  - "fastapi"
+  - "elasticsearch"
+  - "microsoft-azure"
+  - "openai"
+company: "Wix"
+summary: "Wix developed an innovative approach to enhance their AI Site-Chat system by creating a hybrid framework that combines LLMs with traditional machine learning classifiers. They introduced DDKI-RAG (Dynamic Domain Knowledge and Instruction Retrieval-Augmented Generation), which addresses limitations of traditional RAG systems by enabling real-time learning and adaptability based on site owner feedback. The system uses a novel classification approach combining LLMs for feature extraction with CatBoost for final classification, allowing chatbots to continuously improve their responses and incorporate unwritten domain knowledge."
+link: "https://www.wix.engineering/post/how-wix-s-ai-site-chat-redefines-chatbots-with-adaptive-feedback-and-dynamic-knowledge"
+year: 2024
+seo:
+  title: "Wix: Dynamic Knowledge and Instruction RAG System for Production Chatbots - ZenML LLMOps Database"
+  description: "Wix developed an innovative approach to enhance their AI Site-Chat system by creating a hybrid framework that combines LLMs with traditional machine learning classifiers. They introduced DDKI-RAG (Dynamic Domain Knowledge and Instruction Retrieval-Augmented Generation), which addresses limitations of traditional RAG systems by enabling real-time learning and adaptability based on site owner feedback. The system uses a novel classification approach combining LLMs for feature extraction with CatBoost for final classification, allowing chatbots to continuously improve their responses and incorporate unwritten domain knowledge."
+  canonical: "https://www.zenml.io/llmops-database/dynamic-knowledge-and-instruction-rag-system-for-production-chatbots"
+  ogTitle: "Wix: Dynamic Knowledge and Instruction RAG System for Production Chatbots - ZenML LLMOps Database"
+  ogDescription: "Wix developed an innovative approach to enhance their AI Site-Chat system by creating a hybrid framework that combines LLMs with traditional machine learning classifiers. They introduced DDKI-RAG (Dynamic Domain Knowledge and Instruction Retrieval-Augmented Generation), which addresses limitations of traditional RAG systems by enabling real-time learning and adaptability based on site owner feedback. The system uses a novel classification approach combining LLMs for feature extraction with CatBoost for final classification, allowing chatbots to continuously improve their responses and incorporate unwritten domain knowledge."
+---
+
+## Overview
+
+Wix, the well-known website building platform serving over 200 million users, developed an AI Site-Chat system designed to help website visitors interact more effectively with websites. The core innovation described in this case study is the "Site Owner's Feedback" feature, which allows business owners to teach and customize their chatbot's behavior without requiring technical expertise. This represents an interesting approach to solving a fundamental problem in production LLM systems: how to adapt generic language models to specific business contexts and capture domain-specific "unwritten knowledge" that may not exist in any formal documentation.
+
+The article, published on the Wix Engineering blog in January 2025, presents two main technical concepts that work together to create an adaptive chatbot system. While the article is clearly promotional in nature and comes from Wix's own engineering team, it does provide substantive technical details about their approach that are worth examining.
+
+## The Problem Space
+
+Traditional AI chatbots using LLMs face a significant challenge: they cannot easily customize responses based on the specific preferences of business owners. The article uses a compelling example of a Slovenia tourism website where owners might want the chatbot to always mention that every house has a wooden heating system when users ask about winter conditions—a detail that wouldn't naturally surface in generic LLM responses and might not even be written on the website itself.
+
+This problem manifests in several ways in production environments. Static knowledge bases become outdated quickly. Owners cannot provide feedback about what topics to emphasize or avoid. There's no mechanism to capture the tacit knowledge that exists only in the minds of business owners. Traditional RAG systems require manual updates and reindexing to incorporate new information.
+
+## Technical Approach: Hybrid LLM-ML Classification Framework
+
+The first major technical contribution described is a hybrid approach that combines LLMs with traditional machine learning classifiers for text classification. This is presented as a solution to several well-documented limitations of using LLMs directly for classification tasks.
+
+The article identifies four key challenges with direct LLM classification: comprehensive domain knowledge requirements (LLMs need detailed class definitions for specialized domains), overconfidence and hallucination (LLMs produce high-confidence outputs even when uncertain), prompt fatigue (long prompts with many examples cause the LLM to lose coherence), and price/performance concerns (longer prompts increase cost and latency).
+
+Their proposed solution uses LLMs for feature extraction rather than direct classification. The process works as follows: they formulate a set of carefully designed yes/no/don't know questions that capture essential characteristics relevant to the classification task. These questions are sent to the LLM in parallel (which is an important operational optimization for latency). The LLM's responses become categorical features that are then fed into a CatBoost gradient boosting classifier for the final classification decision.
+
+The example classes mentioned for their e-commerce chatbot context include: Enrichment (adding or correcting information on the site), Escalate (contact site owner to be involved), and Don't Answer (chatbot should not answer about a specific topic). The feature extraction questions are designed to distinguish between these classes, such as "Does the feedback provide additional knowledge not present in the chatbot's answer?" or "Is the feedback explicitly requesting that the issue should be handled or escalated directly to a person?"
+
+This hybrid approach offers several operational advantages. Running many short parallel prompts is faster than running one long prompt. The classifier provides interpretability through feature importance analysis. CatBoost specifically handles categorical data well and helps avoid overfitting. The approach also provides more reliable confidence estimates compared to raw LLM outputs.
+
+## Technical Approach: DDKI-RAG (Dynamic Domain Knowledge and Instruction RAG)
+
+The second major contribution is what Wix calls DDKI-RAG (Dynamic Domain Knowledge and Instruction Retrieval-Augmented Generation), which extends traditional RAG with feedback-driven updates to both the knowledge base and system prompts.
+
+Traditional RAG systems have several limitations that DDKI-RAG aims to address. The knowledge base is static and requires manual reindexing for updates. System prompts are fixed and cannot adapt to different contexts. There's no mechanism to capture unwritten knowledge. Users may receive outdated or generic responses.
+
+The DDKI-RAG system introduces two types of documents that can be dynamically created based on feedback: Knowledge Documents (containing information to enrich context for future queries) and Instruction Documents (containing modifications to system prompts).
+
+The indexing workflow operates as follows: an owner asks a question and receives a response, then provides feedback (corrections, additional information, or instructions). The hybrid classification system categorizes this feedback. Based on the classification, the system generates either a knowledge document or a prompt instruction document. The new document is embedded and stored in the vector database for future retrieval.
+
+During inference, when a user query comes in, the system retrieves relevant documents which may include regular RAG documents, knowledge documents, or instruction documents. Knowledge documents provide additional context to the LLM. Instruction documents modify the system prompt dynamically using one of three methods: additive (appending to the prompt), template-based (inserting into predefined slots), or transformation language (using specialized syntax to modify prompt structure).
+
+## Production Considerations and LLMOps Implications
+
+From an LLMOps perspective, this system introduces several interesting patterns worth noting. The parallel execution of feature extraction prompts is a practical optimization for reducing latency in production systems. By breaking one complex classification task into multiple simple yes/no questions that can run concurrently, they potentially reduce wall-clock time while maintaining accuracy.
+
+The use of a traditional ML classifier (CatBoost) as the final decision maker rather than relying solely on LLM outputs provides better interpretability and more reliable confidence scores. This is particularly valuable in production settings where understanding why a system made a particular decision is important for debugging and improvement.
+
+The dynamic prompt modification capability is a form of runtime prompt engineering that allows the system to adapt without requiring code deployments. This could be valuable for rapid iteration but also introduces complexity in terms of testing and validation—how do you ensure that dynamically modified prompts don't produce unintended behaviors?
+
+The feedback loop mechanism creates an interesting continuous learning system, though the article doesn't address several practical concerns. How do they handle conflicting feedback from site owners? What safeguards exist to prevent prompt injection through the feedback mechanism? How do they evaluate whether the dynamic updates are actually improving performance?
+
+## Critical Assessment
+
+While the technical approach is interesting and the article provides genuine implementation details, several aspects warrant critical examination. The article doesn't provide quantitative results comparing DDKI-RAG to traditional RAG systems or measuring the accuracy of the hybrid classification approach. No information is given about scale—how many sites use this feature, how much feedback is processed, or what the latency characteristics are in practice.
+
+The complexity of the system is also notable. Maintaining a hybrid LLM-ML pipeline with dynamic document generation and prompt modification introduces operational overhead. The article doesn't discuss monitoring, debugging, or failure modes for this system.
+
+Additionally, while the "unwritten knowledge" capture is an appealing concept, the examples given are relatively simple. More complex business rules or nuanced preferences might be harder to capture through this feedback mechanism.
+
+## Conclusion
+
+Wix's AI Site-Chat represents a thoughtful approach to making LLM-powered chatbots more adaptable and business-specific. The hybrid LLM-ML classification framework offers a pragmatic solution to LLM classification limitations, and DDKI-RAG extends traditional RAG with useful dynamic capabilities. The system demonstrates several LLMOps patterns including parallel prompt execution, combining LLMs with traditional ML, and runtime prompt modification. However, the lack of quantitative evaluation and discussion of operational challenges means the practical effectiveness of these approaches remains somewhat unclear from this case study alone.

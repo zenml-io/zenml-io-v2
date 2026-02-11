@@ -1,0 +1,184 @@
+---
+title: "Scaling Chatbot Platform with Hybrid LLM and Custom Model Approach"
+slug: "scaling-chatbot-platform-with-hybrid-llm-and-custom-model-approach"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f414b7564eb5b1475d615"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:40:56.644Z"
+  createdOn: "2024-11-21T14:18:51.847Z"
+llmopsTags:
+  - "anthropic"
+  - "api-gateway"
+  - "cache"
+  - "chatbot"
+  - "cost-optimization"
+  - "documentation"
+  - "error-handling"
+  - "few-shot"
+  - "fine-tuning"
+  - "latency-optimization"
+  - "load-balancing"
+  - "microservices"
+  - "microsoft-azure"
+  - "monitoring"
+  - "openai"
+  - "prompt-engineering"
+  - "question-answering"
+  - "redis"
+  - "reliability"
+  - "scalability"
+  - "scaling"
+  - "structured-output"
+company: "Voiceflow"
+summary: "Voiceflow, a chatbot and voice assistant platform, integrated large language models into their existing infrastructure while maintaining custom language models for specific tasks. They used OpenAI's API for generative features but kept their custom NLU model for intent/entity detection due to superior performance and cost-effectiveness. The company implemented extensive testing frameworks, prompt engineering, and error handling while dealing with challenges like latency variations and JSON formatting issues."
+link: "https://www.youtube.com/watch?v=y1HqPNwBp0U"
+year: 2023
+seo:
+  title: "Voiceflow: Scaling Chatbot Platform with Hybrid LLM and Custom Model Approach - ZenML LLMOps Database"
+  description: "Voiceflow, a chatbot and voice assistant platform, integrated large language models into their existing infrastructure while maintaining custom language models for specific tasks. They used OpenAI's API for generative features but kept their custom NLU model for intent/entity detection due to superior performance and cost-effectiveness. The company implemented extensive testing frameworks, prompt engineering, and error handling while dealing with challenges like latency variations and JSON formatting issues."
+  canonical: "https://www.zenml.io/llmops-database/scaling-chatbot-platform-with-hybrid-llm-and-custom-model-approach"
+  ogTitle: "Voiceflow: Scaling Chatbot Platform with Hybrid LLM and Custom Model Approach - ZenML LLMOps Database"
+  ogDescription: "Voiceflow, a chatbot and voice assistant platform, integrated large language models into their existing infrastructure while maintaining custom language models for specific tasks. They used OpenAI's API for generative features but kept their custom NLU model for intent/entity detection due to superior performance and cost-effectiveness. The company implemented extensive testing frameworks, prompt engineering, and error handling while dealing with challenges like latency variations and JSON formatting issues."
+---
+
+## Overview
+
+Voiceflow is a conversational AI platform that enables customers to build chat and voice assistants in a self-serve manner. The company has been operating their platform for nearly five years and began integrating generative AI features approximately six months before this presentation. Dennis, the Machine Learning Lead at Voiceflow, presented a detailed look at the challenges and lessons learned from running both traditional language models (LMs) and large language models (LLMs) in production environments.
+
+The presentation provides valuable insights into the practical realities of LLMOps, particularly around the decision-making process of when to use third-party LLM APIs versus self-hosted custom models, and the various production challenges that arise when working with generative AI systems.
+
+## Platform Context and Use Cases
+
+Voiceflow's platform serves multiple verticals including automotive, retail, and banking, which necessitates support for a wide variety of use cases and domains. Their LLM integration spans two distinct scenarios:
+
+**Creation-time use cases**: These are internal-facing features used by platform users when building their chatbots and assistants. This includes data generation for training bots and an AI playground for experimenting with different language models.
+
+**Runtime use cases**: These are end-user facing features that execute during conversation flows, including prompt chaining and generative response steps. The platform also includes a knowledge base feature that allows users to upload documents and have responses summarized by LLMs—essentially a RAG (Retrieval-Augmented Generation) implementation.
+
+## Defining Large Language Models for Production
+
+Dennis offered a practical, production-oriented definition of what constitutes a "large language model" for their purposes: a general-purpose language model capable of handling multiple tasks (summarization, generation, etc.) across different domains, performing at or above the level of the original GPT-3 release from 2020. This definition matters because it determines which models qualify for their platform's generative features, where they need consistent cross-domain performance rather than task-specific optimization.
+
+## Infrastructure and Integration Approach
+
+### ML Gateway Architecture
+
+Voiceflow built an internal service called "ML Gateway" that serves as a unified interface for both their custom language models and third-party LLM APIs. This abstraction layer connects with their services and provides endpoints for each model. For LLMs, it includes additional functionality such as:
+
+- Prompt validation
+- Rate limiting
+- Usage tracking
+
+The same service architecture handles connections to OpenAI and Anthropic (Claude), allowing them to add new model providers without significant architectural changes. This approach exemplifies good LLMOps practice by creating a consistent interface that decouples application code from specific model providers.
+
+### Decision Not to Self-Host LLMs
+
+A key strategic decision was to use third-party APIs rather than hosting their own LLM infrastructure. The rationale was multifaceted: they didn't want to manage a fleet of A100 GPUs, the research space is evolving rapidly (with quantization techniques moving from 8-bit to 4-bit precision in a short time), and LLM infrastructure isn't core to their business. Their core value proposition is providing supportive features to customers, not conducting LLM research or infrastructure management.
+
+## Production Challenges with LLMs
+
+### JSON Parsing and Output Formatting
+
+A significant challenge involved getting LLMs to produce valid, parseable JSON output. The models frequently produced malformed JSON despite careful prompt engineering. Their solution involved multiple layers:
+
+- Prompt engineering to improve output format
+- Regex-based rules for post-processing and cleanup
+- Error tracking and metrics collection for all parsing failures
+- A prompt testing framework that would re-run erroring prompts through new prompt variations
+- Back-testing successful prompts before pushing to their "prompt store"
+
+It's worth noting that this work was done before OpenAI released function calling capabilities, which could have addressed some of these issues.
+
+### Fine-Tuning Experiments
+
+The team experimented with fine-tuning smaller OpenAI models (like DaVinci) for their specific formatting requirements. The results were mixed:
+
+- Fine-tuning improved formatting consistency
+- However, it decreased overall answering quality and accuracy
+- Hallucination issues were observed in fine-tuned models
+- The smaller fine-tunable models couldn't match GPT-3.5 or GPT-4's general capabilities
+
+They generated training data by passing documents through the model to create question-answer pairs, then manually validated the answers before fine-tuning. Ultimately, they didn't deploy fine-tuned models for most use cases.
+
+### Model Migration Challenges
+
+When ChatGPT's API became available, they faced a common LLMOps dilemma: newer, cheaper models were available, but the engineering effort to re-do prompts and integrations wasn't always justified. They migrated new features to ChatGPT but left existing integrations on older models. This highlights an important operational reality—prompt engineering work represents technical debt that can make model migrations costly.
+
+GPT-4 was tested but deemed too slow for their production use cases, though they made it available as an option for customers who prefer quality over speed.
+
+### Latency Variability
+
+Production latency was highly inconsistent compared to their internal models. Key findings:
+
+- OpenAI API showed significant p99 latency spikes
+- Azure OpenAI was approximately three times faster than standard OpenAI
+- Azure also showed lower standard deviation, providing more consistent experience
+- The trade-off was Azure's upfront cost commitment
+
+This inconsistency created customer communication challenges—when downstream services have issues, platform providers must explain problems they cannot fix. The AWS outage mentioned during the presentation week served as a timely reminder of this dependency risk.
+
+### Cost Considerations
+
+Few-shot learning, while powerful, significantly increases costs due to higher prompt token counts. The example given: a 2K token prompt (easily reached with few-shot examples) costs approximately 6 cents per inference on GPT-4. This multiplied across high production volumes becomes substantial.
+
+## Custom Language Model Infrastructure
+
+### Models Deployed
+
+Voiceflow maintains four custom language models in production:
+
+- Utterance recommendation (later deprecated in favor of LLMs)
+- Conflict resolution
+- Clarity scoring
+- NLU (Natural Language Understanding) for intent and entity detection
+
+### Architecture Evolution
+
+Their original ML platform used Google Pub/Sub architecture with a 150ms SLA target for p50 latency. This worked well for longer-running requests like utterance recommendation. However, when they deployed their NLU model requiring fast inference, the Pub/Sub architecture created unacceptable p99 latencies.
+
+The actual model inference was extremely fast (16-18 milliseconds), but the messaging layer added significant overhead. The solution required re-architecting to use Redis as a queue, deployed closer to the application layer. This enabled them to hit both p50 and p99 targets while outperforming industry benchmarks.
+
+### Deprecating Custom Models
+
+Interestingly, the first model they pushed to production (utterance recommendation) was eventually deprecated in favor of LLM APIs. For multilingual support and diverse domain coverage, the third-party API made more business sense despite the personal investment in the custom solution. Dennis candidly acknowledged the emotional difficulty of deprecating "your baby" when it no longer provides the best customer value.
+
+## LLM vs Custom Model Trade-offs
+
+The presentation concluded with a direct comparison for their NLU use case:
+
+- **Latency**: Custom model significantly faster (16-18ms vs. LLM API latencies with high variability)
+- **Accuracy**: Custom NLU model outperforms GPT-4 on intent/entity detection for their data
+- **Cost**: Custom model costs approximately 1000x less than GPT-4 for inference (demonstrated on 3,000 inferences)
+
+This comparison is particularly valuable as it provides concrete evidence that LLMs are not always the optimal production solution, even for language-related tasks. The specific nature of intent classification and entity extraction—well-defined, narrow tasks with clear training data—makes them better suited to specialized models.
+
+## Hosting Decision Framework
+
+Dennis presented a decision matrix for model hosting that considers:
+
+- Whether you're hosting your own model
+- Whether you're training your own model
+- Whether you're using your own data
+
+Voiceflow operates at both extremes of this matrix: fully managed LLM APIs (bottom-left) for generative features, and fully self-hosted custom training and inference (top-right) for their NLU models. They deliberately avoided middle-ground solutions, taking an "opinionated approach" based on what makes business sense for each use case.
+
+The framework acknowledges that hosting decisions should evolve with technology—managed solutions for LLMs may become more attractive as infrastructure matures, avoiding the need to manage high-end GPU clusters.
+
+## Testing and Evaluation
+
+The team built an internal LLM testing framework to handle the unique challenges of evaluating generative outputs. Key features include:
+
+- Support for both technical and non-technical users to write test cases
+- Integration with customer use case understanding
+- Iterative development approach
+- Plans to eventually productize this capability
+
+This addresses a fundamental LLMOps challenge: conversational AI testing is inherently difficult due to the variability of acceptable outputs.
+
+## Key Takeaways
+
+The presentation offers several practical insights for LLMOps practitioners: third-party LLM APIs provide rapid integration but sacrifice control and consistency; custom models remain superior for well-defined, narrow tasks with sufficient training data; infrastructure choices made early can constrain future model deployments; and the rapid pace of LLM advancement makes long-term infrastructure investment risky. The hybrid approach—using APIs for generative capabilities while maintaining custom models for core classification tasks—represents a pragmatic production strategy that balances innovation with operational stability.

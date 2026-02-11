@@ -1,0 +1,102 @@
+---
+title: "Enterprise-Wide LLM Assistant Deployment and Evolution Towards Fine-Tuned Models"
+slug: "enterprise-wide-llm-assistant-deployment-and-evolution-towards-fine-tuned-models"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "6780e293bbfb917abcfb0a95"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:54:52.095Z"
+  createdOn: "2025-01-10T09:04:19.425Z"
+llmopsTags:
+  - "high-stakes-application"
+  - "regulatory-compliance"
+  - "legacy-system-integration"
+  - "rag"
+  - "fine-tuning"
+  - "prompt-engineering"
+  - "model-optimization"
+  - "cost-optimization"
+  - "latency-optimization"
+  - "api-gateway"
+  - "scaling"
+  - "monitoring"
+  - "amazon-aws"
+  - "microsoft-azure"
+company: "Marsh McLennan"
+summary: "Marsh McLennan, a global professional services firm, implemented a comprehensive LLM-based assistant solution reaching 87% of their 90,000 employees worldwide, processing 25 million requests annually. Initially focused on productivity enhancement through API access and RAG, they evolved their strategy from using out-of-the-box models to incorporating fine-tuned models for specific tasks, achieving better accuracy than GPT-4 while maintaining cost efficiency. The implementation has conservatively saved over a million hours annually across the organization."
+link: "https://youtu.be/GbpoMw-S1tg?si=ayY5KFf9aU7060-a"
+year: 2023
+seo:
+  title: "Marsh McLennan: Enterprise-Wide LLM Assistant Deployment and Evolution Towards Fine-Tuned Models - ZenML LLMOps Database"
+  description: "Marsh McLennan, a global professional services firm, implemented a comprehensive LLM-based assistant solution reaching 87% of their 90,000 employees worldwide, processing 25 million requests annually. Initially focused on productivity enhancement through API access and RAG, they evolved their strategy from using out-of-the-box models to incorporating fine-tuned models for specific tasks, achieving better accuracy than GPT-4 while maintaining cost efficiency. The implementation has conservatively saved over a million hours annually across the organization."
+  canonical: "https://www.zenml.io/llmops-database/enterprise-wide-llm-assistant-deployment-and-evolution-towards-fine-tuned-models"
+  ogTitle: "Marsh McLennan: Enterprise-Wide LLM Assistant Deployment and Evolution Towards Fine-Tuned Models - ZenML LLMOps Database"
+  ogDescription: "Marsh McLennan, a global professional services firm, implemented a comprehensive LLM-based assistant solution reaching 87% of their 90,000 employees worldwide, processing 25 million requests annually. Initially focused on productivity enhancement through API access and RAG, they evolved their strategy from using out-of-the-box models to incorporating fine-tuned models for specific tasks, achieving better accuracy than GPT-4 while maintaining cost efficiency. The implementation has conservatively saved over a million hours annually across the organization."
+---
+
+## Overview
+
+This case study comes from a conversation with Paul Beswick, Global Chief Information Officer at Marsh McLennan, a Fortune 500 professional services organization with approximately 90,000 employees operating in over 130 countries. The company works in insurance and reinsurance broking, health, wealth, career consulting, and investment services. The discussion covers their generative AI journey from early 2023 through their plans for 2025, offering valuable insights into how a large enterprise approaches LLMOps at scale.
+
+Marsh McLennan's technology organization comprises about 5,000 people globally. Beswick's perspective is particularly valuable because it represents a pragmatic, ROI-focused approach to generative AI adoption rather than the typical "flashy demos" mentality often seen in Silicon Valley startups. The organization has 120 years of history, which means they approach new technology adoption with a different lens than typical startups.
+
+## Timeline and Deployment Strategy
+
+The generative AI journey at Marsh McLennan began in early 2023. By approximately April 2023, they had APIs available to anyone in the technology team with appropriate security measures in place. Around June 2023, they piloted an LLM-based assistant, which they progressively built out. By August or September 2023, they launched this tool to the entire organization globally. As of the time of this discussion (late 2024), the tool processes approximately 25 million requests per year, with about 87% of their 90,000 employees having used the tool.
+
+A key philosophical distinction in their approach was proactive rather than reactive adoption. Beswick notes that typically when new technology emerges, IT organizations wait to be asked to implement it by the business. However, given how immediately powerful and accessible generative AI appeared, the technology team decided to get ahead of the curve and ensure the capability was available to the organization before being asked.
+
+## Approach to Use Case Selection
+
+Beswick articulates a notably contrarian view on use case identification that warrants careful consideration. He describes the traditional "use case sweep" as potentially a trap in large corporations. His reasoning centers on several observations:
+
+The typical enterprise approach involves identifying a new technology, conducting a use case sweep to find value, and immediately entering a project setup with steering committees and business case conversations. This creates challenges when there's significant uncertainty about where value will emerge. Additionally, while the cumulative value of generative AI across an organization like Marsh McLennan is substantial, individual use cases typically represent tens or hundreds of thousands of dollars in value rather than millions. When treating each as an isolated project with typical enterprise overhead (often a few hundred thousand dollars as an entry price), the ROI mathematics become problematic.
+
+Furthermore, Beswick observes that business cases often default to cost reduction plays, which positions this exciting new technology as a threat rather than an enabler. This creates a less fertile environment for experimentation and learning. Instead, Marsh McLennan took a "let a thousand flowers bloom" approach, making experimentation cheap and allowing value to emerge organically.
+
+## Infrastructure and Cost Philosophy
+
+A central theme throughout the discussion is making experimentation economically viable. Marsh McLennan explicitly chose to rent models by the call rather than building or hosting large language models themselves. This pay-per-use approach significantly lowered the barrier to experimentation. Beswick mentions that individual experiments could essentially be run "for the price of a coffee" in terms of API usage.
+
+The tools provided to colleagues were specifically designed to enable experimentation and allow individuals to discover their own ways to create value. Given the diffuse and diverse nature of work across the organization, a centralized approach to capturing all use cases would have been impractical. Instead, when the technology team observes trends in usage, they build enabling capabilities to support those patterns.
+
+## The Fine-Tuning Evolution
+
+Perhaps the most operationally relevant part of this case study is Beswick's evolution on fine-tuning. Initially, he was skeptical for two primary reasons:
+
+First, fine-tuning was more expensive than using out-of-the-box models, and there was substantial low-hanging fruit available through prompting and RAG that didn't require fine-tuning investment. Second, fine-tuning introduces operational complexity around data governance. When using RAG, it's straightforward to control who has access to what data because it matches existing paradigms for data access control. When data is trained into models, it becomes embedded in the model weights, creating uncertainty about where it might surface in outputs. The obvious solution of partitioning models for different user groups would multiply infrastructure requirements and maintenance overhead.
+
+However, Beswick's view shifted significantly with the introduction of LoRA-based approaches, specifically through their work with Predibase. The ability to share infrastructure across multiple fine-tuned adapters fundamentally changed the economics. He notes that training cycles now cost approximately $20, which he contrasts with "horror stories" about how much organizations have spent training internal models. This dramatic cost reduction eliminated his primary concern about infrastructure economics.
+
+The current results show response times that meet their requirements and accuracy that exceeds GPT-4 on their specific use cases. They now route approximately half a million requests per week through their fine-tuned small models, primarily for tool selection calls within their main assistant application.
+
+## Job Augmentation vs. Replacement
+
+Beswick offers a nuanced perspective on the automation question. In the near term, he sees the impact as predominantly job augmentation rather than job replacement. His reasoning is that the accuracy standard required to fully replace human work is significantly higher than the standard needed to make people more efficient. While generative AI may increase the pace of productivity-driven churn somewhat, the balance remains heavily biased toward augmentation.
+
+The organization reports conservatively saving at least one million hours annually through their generative AI initiatives. Importantly, Beswick notes this has manifested as better client service, improved decision-making, and better work-life balance rather than headcount reduction. This framing appears intentional to create a more supportive environment for adoption and experimentation.
+
+## 2025 Plans and Automation Strategy
+
+Looking forward, Marsh McLennan plans several evolutions in their approach. The productivity suite will continue to be enhanced, including deeper integration with the Microsoft Office suite, expanded basic capabilities, and surrounding helper applications powered by AI.
+
+The major shift for 2025 involves moving from general productivity augmentation to more targeted process and task automation. This involves working through processes to identify where AI can make meaningful efficiency differences and automate "less interesting parts of the job" so people can focus on higher-value activities.
+
+Beswick describes an emerging pattern they call a "flywheel concept": start with LLMs and prompting to get a process working quickly, gather data about accuracy, and then feed that data into fine-tuning processes to create specialized models that reduce costs and increase accuracy ceilings over time. This represents a maturation from opportunistic AI adoption to systematic process improvement.
+
+They're also seeing value in fragmenting models for specialized subtasks. Beswick references Apple's approach discussed at AWS re:Invent, where models are quite narrowly targeted for specific tasks. He sees significant value in bringing highly specialized models to bear on the right parts of their processes.
+
+## Key LLMOps Lessons
+
+Several operational lessons emerge from this case study. The importance of making experimentation cheap cannot be overstated. By renting models by the call and designing tools for self-service experimentation, Marsh McLennan enabled organic value discovery without requiring upfront business cases for each initiative.
+
+Infrastructure decisions matter enormously. The shift to LoRA-based fine-tuning changed the fundamental economics of model specialization. The ability to share base model infrastructure across multiple adapters eliminated what was previously a blocking concern.
+
+Data governance complexity with fine-tuned models is real but manageable. While RAG offers simpler access control paradigms, the value of fine-tuning can justify the additional complexity when the economics work.
+
+Measuring diffuse value requires different approaches. The organization tracks hours saved rather than trying to attribute specific cost reductions to specific use cases, acknowledging that productivity improvements manifest in various ways including client service quality and work-life balance.
+
+Finally, the path from productivity augmentation to process automation appears to be a natural maturation journey. Starting with general-purpose assistants allows organizations to learn while specialized automation requires more targeted work on specific processes and higher accuracy thresholds.

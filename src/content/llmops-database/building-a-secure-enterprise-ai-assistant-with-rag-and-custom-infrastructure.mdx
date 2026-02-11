@@ -1,0 +1,150 @@
+---
+title: "Building a Secure Enterprise AI Assistant with RAG and Custom Infrastructure"
+slug: "building-a-secure-enterprise-ai-assistant-with-rag-and-custom-infrastructure"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "68248f3d505099996ad4bb56"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:08:06.161Z"
+  createdOn: "2025-05-14T12:40:29.022Z"
+llmopsTags:
+  - "chatbot"
+  - "question-answering"
+  - "regulatory-compliance"
+  - "high-stakes-application"
+  - "rag"
+  - "embeddings"
+  - "prompt-engineering"
+  - "error-handling"
+  - "few-shot"
+  - "system-prompts"
+  - "chunking"
+  - "kubernetes"
+  - "guardrails"
+  - "security"
+  - "postgresql"
+  - "fastapi"
+  - "mistral"
+  - "monitoring"
+  - "cicd"
+  - "reliability"
+  - "scalability"
+  - "amazon-aws"
+  - "microsoft-azure"
+  - "nvidia"
+company: "Hexagon"
+summary: "Hexagon's Asset Lifecycle Intelligence division developed HxGN Alix, an AI-powered digital worker to enhance user interaction with their Enterprise Asset Management products. They implemented a secure solution using AWS services, custom infrastructure, and RAG techniques. The solution successfully balanced security requirements with AI capabilities, deploying models on Amazon EKS with private subnets, implementing robust guardrails, and solving various RAG-related challenges to provide accurate, context-aware responses while maintaining strict data privacy standards."
+link: "https://aws.amazon.com/blogs/machine-learning/how-hexagon-built-an-ai-assistant-using-aws-generative-ai-services?tag=soumet-20"
+year: 2025
+seo:
+  title: "Hexagon: Building a Secure Enterprise AI Assistant with RAG and Custom Infrastructure - ZenML LLMOps Database"
+  description: "Hexagon's Asset Lifecycle Intelligence division developed HxGN Alix, an AI-powered digital worker to enhance user interaction with their Enterprise Asset Management products. They implemented a secure solution using AWS services, custom infrastructure, and RAG techniques. The solution successfully balanced security requirements with AI capabilities, deploying models on Amazon EKS with private subnets, implementing robust guardrails, and solving various RAG-related challenges to provide accurate, context-aware responses while maintaining strict data privacy standards."
+  canonical: "https://www.zenml.io/llmops-database/building-a-secure-enterprise-ai-assistant-with-rag-and-custom-infrastructure"
+  ogTitle: "Hexagon: Building a Secure Enterprise AI Assistant with RAG and Custom Infrastructure - ZenML LLMOps Database"
+  ogDescription: "Hexagon's Asset Lifecycle Intelligence division developed HxGN Alix, an AI-powered digital worker to enhance user interaction with their Enterprise Asset Management products. They implemented a secure solution using AWS services, custom infrastructure, and RAG techniques. The solution successfully balanced security requirements with AI capabilities, deploying models on Amazon EKS with private subnets, implementing robust guardrails, and solving various RAG-related challenges to provide accurate, context-aware responses while maintaining strict data privacy standards."
+---
+
+## Summary
+
+Hexagon's Asset Lifecycle Intelligence division embarked on a journey to develop HxGN Alix, an AI-powered digital worker designed to revolutionize how users interact with their Enterprise Asset Management (EAM) products. This case study represents a comprehensive example of enterprise LLMOps, covering strategy formulation, technology selection, implementation challenges, and operational considerations for deploying LLMs in production environments with stringent security requirements.
+
+The primary motivation was to address the difficulty users faced when navigating extensive PDF manuals to find information about EAM products. The solution needed to operate within high-security environments, maintain data privacy, support multiple languages, and provide accurate, grounded responses to user queries.
+
+## Strategic Approach: Crawl, Walk, Run
+
+Hexagon adopted a phased approach to their generative AI implementation, which is a sensible strategy for organizations new to production LLM deployments. The three phases were structured as follows:
+
+The **Crawl phase** focused on establishing foundational infrastructure with emphasis on data privacy and security. This included implementing guardrails around security, compliance, and data privacy, setting up capacity management and cost governance, and creating the necessary policies, monitoring mechanisms, and architectural patterns for long-term scalability. This foundation-first approach is critical for enterprise LLMOps, as retrofitting security and compliance controls after deployment is significantly more difficult.
+
+The **Walk phase** transitioned from proof of concept to production-grade implementations. The team deepened their technical expertise, refined operational processes, and gained real-world experience with generative AI models. They integrated domain-specific data to improve relevance while reinforcing tenant-level security for proper data segregation. This phase validated AI-driven solutions in real-world scenarios through iterative improvements.
+
+The **Run phase** focused on scaling development across multiple teams in a structured and repeatable manner. By standardizing best practices and development frameworks, they enabled different products to adopt AI capabilities efficiently while focusing on high-value use cases.
+
+## Technology Stack Selection
+
+Hexagon's technology selection criteria reflected the balance between control, customization, cost, and compliance that enterprise LLMOps demands.
+
+### LLM Selection: Open Source vs. Commercial
+
+The team evaluated multiple criteria for choosing between commercial and open source LLMs. They ultimately selected **Mistral NeMo**, a 12-billion parameter open source LLM built in collaboration with NVIDIA and released under the Apache 2.0 license. Key factors in this decision included:
+
+- **Cost management** to avoid unpredictable expenses
+- **Customization** capabilities for domain-specific terminology
+- **Intellectual property and licensing** control
+- **Data privacy** adherence to strict confidentiality requirements
+- **Model lifecycle control** allowing updates and maintenance aligned with business objectives without third-party dependency
+
+Mistral NeMo offered a large context window of up to 128,000 tokens, optimization for function calling, and strong multilingual capabilities across English, French, German, Spanish, Italian, Portuguese, Chinese, Japanese, Korean, Arabic, and Hindi.
+
+### Infrastructure Choices
+
+For compute and deployment, the team leveraged **Amazon EKS** (Elastic Kubernetes Service), utilizing their existing production cluster which already had the required safety, manageability, and DevOps integration. This approach allowed them to use existing investments in infrastructure and tooling while maintaining high availability and scalability.
+
+They selected **Amazon EC2 G6e.48xlarge instances** powered by NVIDIA L40S GPUs, described as the most cost-efficient GPU instances for deploying generative AI models under 12 billion parameters.
+
+**Amazon S3** provided secure storage for product documentation and user data, while **Amazon Bedrock** served as a fallback solution using the Mistral 7B model with multi-Region endpoints to handle Regional failures and maintain service availability.
+
+## RAG Implementation and Challenges
+
+A significant portion of the case study details the implementation of Retrieval Augmented Generation (RAG), which was essential for grounding the model's responses in accurate documentation and reducing hallucinations.
+
+### Chunking Challenges
+
+The team encountered the common problem of context destruction when chunking documents. Applying standard chunking methods to tables or complex structures risks losing relational data, which can result in critical information not being retrieved. To address this, they used the **hierarchical chunking capability of Amazon Bedrock Knowledge Bases**, which helped preserve context in the final chunks.
+
+### Document Format Handling
+
+Hexagon's product documentation, accumulated over decades, varied greatly in format with many non-textual elements such as tables. Tables are particularly difficult to interpret when directly queried from PDFs or Word documents. The team used the **FM parsing capability of Amazon Bedrock Knowledge Bases**, which processed raw documents with an LLM before creating final chunks, ensuring data from non-textual elements was correctly interpreted.
+
+### Handling LLM Boundaries
+
+User queries sometimes exceeded system capabilities, such as requests for comprehensive lists of product features. Because documentation is split into multiple chunks, the retrieval system might not return all necessary documents. The team created custom documents containing FAQs and special instructions for these edge cases, adding them to the knowledge base as few-shot examples to help the model produce more accurate and complete responses.
+
+### Grounding and Hallucination Mitigation
+
+To address the inherent tendency of LLMs to produce potentially inaccurate outputs, the team used a combination of specialized prompts along with **contextual grounding checks from Amazon Bedrock Guardrails**. This dual approach helps ensure responses are factually grounded in the retrieved documentation.
+
+### Conversational Context Management
+
+Users often engage in brief follow-up questions like "Can you elaborate?" or "Tell me more." When processed in isolation by the RAG system, these queries yield no results. The team tested two approaches:
+
+**Prompt-based search reformulation** has the LLM first identify user intent and generate a more complete query for the knowledge base. While this requires an additional LLM call, it yields highly relevant results and keeps the final prompt concise.
+
+**Context-based retrieval with chat history** sends the last five messages from chat history to the knowledge base, allowing broader results with faster response times due to only one LLM round trip.
+
+The first method worked better with large document sets by focusing on highly relevant results, while the second approach was more effective with smaller, focused document sets.
+
+## Security and Compliance
+
+Security was paramount throughout the implementation. The team used isolated private subnets to ensure code interacting with models wasn't connected to the internet, enhancing information protection for users.
+
+Critically, because user interactions are in free-text format and might include personally identifiable information (PII), the team designed the system to not store any user interactions in any format. This approach provides complete confidentiality of AI use, adhering to strict data privacy standards.
+
+**Amazon Bedrock Guardrails** provided the framework for enforcing safety and compliance, enabling customization of filtering policies to ensure AI-generated responses align with organizational standards and regulatory requirements. The guardrails include capabilities to detect and mitigate harmful content, define content moderation rules, restrict sensitive topics, and establish enterprise-level security for generative AI interactions.
+
+## Development Lifecycle Adjustments
+
+The case study highlights important considerations for adapting traditional software development practices to generative AI systems:
+
+**Testing challenges** are significant because generative AI systems cannot rely solely on unit tests. Prompts can return different results each time, making verification more complex. The team had to develop new testing and QA methodologies to ensure consistent and reliable responses.
+
+**Performance variability** is another concern, with LLM responses varying significantly in latency from 1-60 seconds depending on the user's query, unlike traditional APIs with predictable response times.
+
+Continuous monitoring was implemented to track performance metrics and user interactions, allowing for ongoing optimization of the AI system.
+
+**Amazon Bedrock Prompt Management** simplified the creation, evaluation, versioning, and sharing of prompts within the engineering team to optimize responses from foundation models.
+
+## Critical Assessment
+
+While the case study presents a comprehensive approach to enterprise LLMOps, it's worth noting some considerations:
+
+The content is published on AWS's blog and co-authored by AWS solutions architects, so naturally emphasizes AWS services. Organizations should evaluate whether equivalent capabilities exist in other cloud providers or open-source alternatives.
+
+The quantitative results are somewhat limited—the case study describes qualitative improvements in user experience and workflow efficiency but doesn't provide specific metrics on accuracy improvements, cost savings, or productivity gains. This makes it difficult to objectively assess the ROI of the implementation.
+
+The selection of Mistral NeMo as a 12B parameter model is interesting, as it sits in a middle ground between larger commercial models and smaller, more deployable open-source options. The trade-offs between model size, cost, and capability are important considerations that could benefit from more detailed analysis.
+
+Overall, this case study provides valuable insights into the practical challenges of deploying LLMs in enterprise environments, particularly around RAG implementation, security considerations, and the need to adapt development practices for AI systems. The phased approach and emphasis on foundational security before scaling represent sound practices for organizations embarking on similar initiatives.

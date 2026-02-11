@@ -1,0 +1,120 @@
+---
+title: "Building a Scalable AI Feature Evaluation System"
+slug: "building-a-scalable-ai-feature-evaluation-system"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "6792a2b9d7e2215aaadd68c7"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:57:12.095Z"
+  createdOn: "2025-01-23T20:12:41.894Z"
+llmopsTags:
+  - "question-answering"
+  - "document-processing"
+  - "chatbot"
+  - "rag"
+  - "prompt-engineering"
+  - "error-handling"
+  - "semantic-search"
+  - "documentation"
+  - "monitoring"
+  - "databases"
+  - "openai"
+  - "microsoft-azure"
+company: "Notion"
+summary: "Notion developed an advanced evaluation system for their AI features, transitioning from a manual process using JSONL files to a sophisticated automated workflow powered by Braintrust. This transformation enabled them to improve their testing and deployment of AI features like Q&A and workspace search, resulting in a 10x increase in issue resolution speed, from 3 to 30 issues per day."
+link: "https://www.braintrust.dev/blog/notion"
+year: 2023
+seo:
+  title: "Notion: Building a Scalable AI Feature Evaluation System - ZenML LLMOps Database"
+  description: "Notion developed an advanced evaluation system for their AI features, transitioning from a manual process using JSONL files to a sophisticated automated workflow powered by Braintrust. This transformation enabled them to improve their testing and deployment of AI features like Q&A and workspace search, resulting in a 10x increase in issue resolution speed, from 3 to 30 issues per day."
+  canonical: "https://www.zenml.io/llmops-database/building-a-scalable-ai-feature-evaluation-system"
+  ogTitle: "Notion: Building a Scalable AI Feature Evaluation System - ZenML LLMOps Database"
+  ogDescription: "Notion developed an advanced evaluation system for their AI features, transitioning from a manual process using JSONL files to a sophisticated automated workflow powered by Braintrust. This transformation enabled them to improve their testing and deployment of AI features like Q&A and workspace search, resulting in a 10x increase in issue resolution speed, from 3 to 30 issues per day."
+---
+
+## Overview
+
+Notion is a popular connected workspace platform used for documents, knowledge bases, and project management by millions of users ranging from startups to large enterprises. The company was an early adopter of generative AI, beginning experimentation with large language models shortly after GPT-2 launched in 2019. This case study documents their evolution from manual AI evaluation processes to a more scalable, systematic approach for testing and improving their AI features in production.
+
+It's worth noting that this case study is published by Braintrust, a vendor that Notion partnered with, so the narrative naturally emphasizes the benefits of their partnership. However, the underlying LLMOps challenges and solutions described provide valuable insights into production AI evaluation workflows regardless of the specific tooling used.
+
+## AI Feature Timeline and Capabilities
+
+Notion's journey with production AI features progressed rapidly:
+
+- November 2022: Launched Notion AI as a writing assistant, notably two weeks before ChatGPT was publicly released
+- June 2023: Introduced AI Autofill for generating summaries and running custom prompts across workspaces
+- November 2023: Released Notion Q&A for conversational interaction with workspace content
+
+Today, Notion AI encompasses four core capabilities: searching workspaces, generating and editing tailored documents, analyzing PDFs and images, and answering questions using both workspace data and web information. The Q&A feature in particular represents a complex RAG (Retrieval-Augmented Generation) system where users can ask questions and the AI retrieves relevant information from their Notion pages to provide contextual responses.
+
+## The Evaluation Challenge
+
+The Q&A feature exemplifies the complexity of evaluating generative AI in production. Despite having broad and unstructured input and output spaces, the system needed to consistently return helpful responses. Behind this user-facing simplicity was substantial engineering effort to understand diverse user queries and generate appropriate outputs.
+
+Notion's initial evaluation workflow suffered from several operational challenges. Large and diverse datasets were stored as JSONL files in a git repository, which made them difficult to manage, version, and collaborate on across the team. Human evaluators scored individual responses, creating an expensive and time-consuming feedback loop that couldn't scale with the pace of AI development.
+
+While this manual approach was sufficient to launch Q&A in beta in late 2023, it became clear that scaling their AI products would require a more efficient evaluation infrastructure. This is a common inflection point for AI teams—what works for an initial MVP often breaks down when trying to iterate rapidly on production features.
+
+## Transformed Evaluation Workflow
+
+The new evaluation workflow, implemented with Braintrust, follows a structured five-step process that addresses the previous pain points while enabling faster iteration.
+
+### Identifying Improvements
+
+The process begins with deciding on a specific improvement, which could be adding a new feature, fixing an issue based on user feedback, or enhancing existing capabilities. The emphasis on specific, targeted improvements rather than broad optimization reflects a mature approach to LLMOps where changes are made incrementally with clear success criteria.
+
+### Dataset Curation and Management
+
+Instead of manually creating JSONL files, Notion now uses a more sophisticated dataset management approach. They typically start with 10-20 examples for a given evaluation scenario. The datasets are curated from two sources: real-world usage automatically logged during production, and hand-written examples for specific edge cases or capabilities. This combination of organic and synthetic test data provides both realistic scenarios and targeted coverage of known challenges.
+
+Importantly, Notion maintains hundreds of evaluation datasets that continue to grow weekly. This investment in comprehensive test coverage is a hallmark of mature LLMOps practices and enables confidence when making changes to production AI systems.
+
+### Scoring Function Design
+
+Notion takes a deliberately narrow approach to defining the scope of each dataset and scoring function. Rather than trying to evaluate everything with a single metric, they use multiple well-defined evaluations for complex tasks, each testing for specific criteria. This aligns with best practices in AI evaluation—broad metrics often mask important regressions in specific capabilities.
+
+The scoring approach combines multiple methodologies: heuristic scorers for objective criteria, LLM-as-a-judge for more subjective quality assessment, and human review for cases requiring nuanced judgment. The ability to define custom scoring functions is crucial, as it allows testing of diverse criteria including tool usage accuracy, factual correctness, hallucination detection, and recall metrics.
+
+### Running Experiments and Analyzing Results
+
+The evaluation execution phase focuses on understanding both overall performance changes and specific improvements or regressions. The team's analysis process includes several key activities:
+
+- Focusing on specific scorers and test cases to verify whether updates achieved targeted improvements
+- Reviewing all scores holistically to catch unintended regressions across other dimensions
+- Investigating failures and low scores to understand remaining failure modes
+- Comparing outputs from multiple experiments side-by-side to understand behavioral changes
+- Optionally curating additional test examples to expand dataset coverage based on discoveries
+
+This systematic approach to experiment analysis helps prevent the common pitfall of shipping improvements that inadvertently break other capabilities—a particularly important concern with LLM-based systems where changes can have unpredictable effects.
+
+### Rapid Iteration
+
+The final step establishes a tight feedback loop: make an update, run evaluations, inspect results, and repeat until improvements are satisfactory. This cycle continues until the team is confident enough to ship the changes to production.
+
+## Quantified Results
+
+The case study reports a significant improvement in operational efficiency: the team can now triage and fix 30 issues per day compared to just 3 per day with the previous workflow. This 10x improvement in velocity is substantial, though it's worth noting that such metrics can be influenced by many factors beyond tooling changes, including team growth, process maturation, and improved understanding of the AI system's behavior.
+
+## LLMOps Insights and Best Practices
+
+Several key LLMOps patterns emerge from this case study:
+
+**Investment in Evaluation Infrastructure**: Notion's experience demonstrates that as AI features mature, evaluation infrastructure becomes a critical bottleneck. The shift from ad-hoc manual evaluation to systematic, tool-supported workflows is a common maturation pattern for AI teams.
+
+**Diverse Scoring Approaches**: The combination of heuristics, LLM-as-a-judge, and human review reflects the reality that no single evaluation method is sufficient for complex AI applications. Heuristics provide fast, reproducible checks for objective criteria; LLM judges offer scalable assessment of subjective quality; and human review remains essential for the most nuanced cases.
+
+**Dataset as Living Asset**: The emphasis on continuously growing evaluation datasets—with Notion maintaining hundreds that increase weekly—highlights how test data becomes a core asset for AI teams. This contrasts with traditional software testing where test suites are relatively stable.
+
+**Targeted, Narrow Evaluations**: The preference for narrowly-scoped evaluations over broad metrics enables more actionable feedback. When an evaluation fails, a narrow scope makes it clearer what went wrong and how to fix it.
+
+**Production Data Feedback Loop**: Using real-world usage data logged in production to curate evaluation datasets creates a virtuous cycle where the most relevant scenarios get covered. This practice helps ensure that evaluations remain representative of actual user behavior.
+
+## Considerations and Limitations
+
+While the case study presents compelling results, readers should consider several factors. The source is a vendor case study, so the narrative naturally emphasizes positive outcomes. The 10x improvement metric, while impressive, may reflect multiple factors beyond tooling changes. Additionally, the specific quantification of "30 issues per day" versus "3 per day" lacks detail about what constitutes an issue and how complexity varied.
+
+Nevertheless, the underlying workflow evolution—from manual JSONL files and human scoring to curated datasets with automated and semi-automated evaluation—represents a common and valuable maturation path for AI teams. The patterns described are applicable regardless of specific tooling choices.

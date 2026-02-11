@@ -1,0 +1,153 @@
+---
+title: "Building QueryAnswerBird: An AI Data Analyst with Text-to-SQL and RAG"
+slug: "building-queryanswerbird-an-ai-data-analyst-with-text-to-sql-and-rag"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "694ad7bda9bbc9fe10941ca7"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2026-01-07T09:40:39.763Z"
+  lastUpdated: "2025-12-23T20:12:18.970Z"
+  createdOn: "2025-12-23T17:56:13.263Z"
+llmopsTags:
+  - "data-analysis"
+  - "question-answering"
+  - "chatbot"
+  - "structured-output"
+  - "rag"
+  - "prompt-engineering"
+  - "embeddings"
+  - "few-shot"
+  - "semantic-search"
+  - "vector-search"
+  - "agent-based"
+  - "multi-agent-systems"
+  - "error-handling"
+  - "latency-optimization"
+  - "cost-optimization"
+  - "chunking"
+  - "evals"
+  - "langchain"
+  - "monitoring"
+  - "cicd"
+  - "databases"
+  - "load-balancing"
+  - "microservices"
+  - "orchestration"
+  - "continuous-deployment"
+  - "continuous-integration"
+  - "open-source"
+  - "documentation"
+  - "guardrails"
+  - "cache"
+  - "postgresql"
+  - "openai"
+  - "microsoft-azure"
+company: "Delivery Hero"
+summary: "Woowa Brothers, part of Delivery Hero, developed QueryAnswerBird (QAB), an LLM-based AI data analyst to address employee challenges with SQL query generation and data literacy. Through a company-wide survey, they identified that 95% of employees used data for work, but over half struggled with SQL due to time constraints or difficulty translating business logic into queries. The solution leveraged RAG, LangChain, and GPT-4 to build a Slack-integrated assistant that automatically generates SQL queries from natural language, interprets queries, validates syntax, and explores tables. After winning first place at an internal hackathon in 2023, a dedicated task force spent six months developing the production system with comprehensive LLMOps practices including A/B testing, monitoring dashboards, API load balancing, GPT caching, and CI/CD deployment, conducting over 500 tests to optimize performance."
+link: "https://tech.deliveryhero.com/blog/introducing-the-ai-data-analyst-queryanswerbird-part-1-utilization-of-rag-and-text-to-sql/"
+year: 2024
+seo:
+  title: "Delivery Hero: Building QueryAnswerBird: An AI Data Analyst with Text-to-SQL and RAG - ZenML LLMOps Database"
+  description: "Woowa Brothers, part of Delivery Hero, developed QueryAnswerBird (QAB), an LLM-based AI data analyst to address employee challenges with SQL query generation and data literacy. Through a company-wide survey, they identified that 95% of employees used data for work, but over half struggled with SQL due to time constraints or difficulty translating business logic into queries. The solution leveraged RAG, LangChain, and GPT-4 to build a Slack-integrated assistant that automatically generates SQL queries from natural language, interprets queries, validates syntax, and explores tables. After winning first place at an internal hackathon in 2023, a dedicated task force spent six months developing the production system with comprehensive LLMOps practices including A/B testing, monitoring dashboards, API load balancing, GPT caching, and CI/CD deployment, conducting over 500 tests to optimize performance."
+  canonical: "https://www.zenml.io/llmops-database/building-queryanswerbird-an-ai-data-analyst-with-text-to-sql-and-rag"
+  ogTitle: "Delivery Hero: Building QueryAnswerBird: An AI Data Analyst with Text-to-SQL and RAG - ZenML LLMOps Database"
+  ogDescription: "Woowa Brothers, part of Delivery Hero, developed QueryAnswerBird (QAB), an LLM-based AI data analyst to address employee challenges with SQL query generation and data literacy. Through a company-wide survey, they identified that 95% of employees used data for work, but over half struggled with SQL due to time constraints or difficulty translating business logic into queries. The solution leveraged RAG, LangChain, and GPT-4 to build a Slack-integrated assistant that automatically generates SQL queries from natural language, interprets queries, validates syntax, and explores tables. After winning first place at an internal hackathon in 2023, a dedicated task force spent six months developing the production system with comprehensive LLMOps practices including A/B testing, monitoring dashboards, API load balancing, GPT caching, and CI/CD deployment, conducting over 500 tests to optimize performance."
+---
+
+## Overview
+
+Woowa Brothers, a subsidiary of Delivery Hero operating the Baemin food delivery service in South Korea, developed QueryAnswerBird (QAB), an AI-powered data analyst designed to enhance employee data literacy across the organization. The project originated from an internal hackathon in 2023 focused on generative AI, where the initial concept won first place. Following strong internal demand, the company established the Langineer Task Force in January 2024 to develop a production-grade system over six months. This case study represents a comprehensive example of building and deploying an LLM-based application with robust LLMOps practices.
+
+The BADA (Baemin Advanced Data Analytics) team conducted a company-wide survey that revealed a critical gap: while 95% of employees used data in their work, more than half faced challenges with SQL. Employees cited insufficient time to learn SQL, difficulty translating business logic and extraction conditions into queries, and concerns about data extraction reliability. The team recognized that solving these issues could enable employees to focus on their core work and facilitate data-driven decision-making and communication across the organization.
+
+## Product Design and Architecture Philosophy
+
+The team established four core pillars to guide product development: systemization through consistent data structures leveraging table metadata from data catalogs and verified data marts; efficiency by developing technology that understands the company's specific business context; accessibility through Slack integration rather than web-based interfaces; and automation to provide 24/7 service without requiring dedicated data personnel assistance. The long-term goal centered on enhancing data literacy, defined as the ability to extract and interpret meaningful information, verify reliability, draw insights, and make reasonable decisions.
+
+The initial hackathon version used simple prompts with Microsoft Azure OpenAI's GPT-3.5 API, but the team redesigned the architecture completely to achieve their systemization, efficiency, accessibility, and automation goals. The new architecture comprises several sophisticated components working in concert to deliver high-quality responses consistently.
+
+## Technical Foundation and Data Pipeline
+
+QAB's foundation rests on four core technologies: LLMs (specifically OpenAI's GPT-4), RAG for augmenting responses with internal company data, LangChain as the orchestration framework, and comprehensive LLMOps practices for deployment and operation. The team recognized early that while GPT-4 can generate high-quality SQL queries in general contexts, it lacks the domain-specific knowledge and understanding of company data policies necessary for production use in a business environment.
+
+The team established an unstructured data pipeline based on vector stores to address this knowledge gap. This pipeline automatically collects unstructured data including business terminology, table metadata, and data extraction code to capture the company's vast domain knowledge. The data undergoes vectorization through embedding and storage in vector databases to enable vector similarity searches. Critically, the team applied embedding indexes by data area to enable efficient data updates, allowing the system to automatically collect the latest data policies daily through their established data catalog APIs.
+
+The data augmentation strategy represents a key differentiator in their approach. Drawing inspiration from the NeurIPS 2023 paper "Data Ambiguity Strikes Back: How Documentation Improves GPT's Text-to-SQL," the team enriched table metadata beyond standard structured information. While existing metadata was well-structured, they added detailed descriptions of table purpose and characteristics, comprehensive column descriptions, key values, keywords, commonly used services, and example questions related to each table. This enriched metadata feeds into DDL data generation that provides much richer context than standard table schemas.
+
+## Business Terminology and Few-Shot Learning
+
+Recognizing that user questions contain business-specific terminology that only employees understand, the team leveraged their existing data governance organization to create a business terminology glossary dedicated to Text-to-SQL. This standardization prevents miscommunication arising from terms being used differently across services and organizations. The glossary integrates into the retrieval pipeline to ensure proper interpretation of domain-specific language.
+
+The team also built few-shot SQL example data, a critical component for feeding domain knowledge into query generation. They collected high-quality queries generated by data analysts and additional queries addressing key business questions, then created a question-query dataset mapping natural language questions to their corresponding SQL. The quality of these examples directly impacts response quality, so the team designed a management system where data analysts specializing in each domain maintain and update examples as business logic and data extraction criteria evolve. This represents an important operational consideration—the system requires ongoing human expertise to maintain accuracy as the business changes.
+
+## Multi-Chain Architecture and Routing
+
+The team developed a RAG-based multi-chain structure to provide various data literacy features beyond simple query generation. When users ask questions, a Router Supervisor chain identifies the question's purpose and categorizes it into appropriate question types in real-time. Questions then map to specialized chains including query generation, query interpretation, query syntax validation, table interpretation, log table utilization guides, and column/table utilization guides. Each chain can provide the best possible answer for its specific question type.
+
+During multi-chain execution, the system utilizes search algorithms customized for each chain, enabling the retriever to selectively extract necessary data. This sophisticated routing and retrieval approach represents a more mature architecture than simple RAG implementations, allowing the system to handle diverse question types with specialized processing pipelines.
+
+## Search Algorithm Development
+
+The team invested significant effort in developing search algorithms appropriate for different user questions and processing stages. When user questions are ambiguous, short, or unclear, the system first refines the question. Understanding business terms is essential during this refinement stage, so the system extracts appropriate terms relevant to the question's purpose while avoiding similar but irrelevant terms that could lead to incorrect question reformulation.
+
+For extracting information necessary for query generation, the system combines various information types including table and column metadata, table DDL, and few-shot SQL examples. The key challenge involves extracting the most relevant information from vast amounts of data—this requires understanding the user question's context and combining various search algorithms such as relevance extraction and keyword filtering. The system dynamically selects and combines these algorithms based on question characteristics.
+
+For few-shot SQL examples specifically, the algorithm selects the most similar examples to the user's question and adds related examples when appropriate. These combined inputs from each processing stage feed into GPT to generate high-quality queries with reduced hallucination risks.
+
+## Prompt Engineering Strategy
+
+The team applied sophisticated prompt engineering techniques, dividing prompts into question refinement and query generation categories while sharing common elements. Both prompt types assign GPT the persona of a data analyst, though the team emphasizes this requires thorough discussion about desired roles and results since response quality varies significantly based on persona definition.
+
+Drawing inspiration from the ICLR 2023 paper "ReAct: Synergizing Reasoning and Acting in Language Models," the team implemented a prompt structure combining sequential reasoning (chain-of-thought) with tools or actions for specific tasks. The ReAct method demonstrated superior performance over imitative learning and reinforcement learning across various benchmarks. The team adapted this approach for QAB's query generation prompt, implementing step-by-step reasoning processes to generate appropriate queries while dynamically searching and selecting appropriate data for each question. This combined reasoning and searching process creates more sophisticated responses than simple reasoning alone.
+
+## Testing, Evaluation, and Internal Leaderboards
+
+The team recognized that while public leaderboards like YALE Spider, Alibaba BIRD, and metrics frameworks like RAGAS Score provide valuable evaluation approaches, they have limitations for solving company-specific business problems. Public metrics struggle with domain-specific issues and cannot adapt to business-specific priorities. To address this, the team developed custom evaluation metrics and datasets serving as the foundation for measuring internal Text-to-SQL performance, benchmarking existing leaderboards while adapting to their specific context.
+
+The evaluation approach progresses through multiple stages, from evaluating understanding of query syntax to assessing accuracy of query execution results incorporating complex domain knowledge. Current testing focuses on how well the system understands complex domains and the accuracy of query execution results, incorporating actual user questions to drive improvements.
+
+The team built an automated testing and evaluation system enabling anyone to easily evaluate performance. Users can select various elements including evaluation data, prompts, retrievers, and chains to conduct tests. The system includes dozens of metrics to measure detailed performance aspects comprehensively.
+
+Critically, the team established an internal leaderboard and conducted over 500 A/B tests to iterate on various ideas. The ranking of individual results added a gamification element that increased participation and engagement. The highest-performing results received approval during weekly sync-ups before deployment to production, creating a systematic process for gradually enhancing service performance. The team also leveraged LangServe Playground to quickly verify prompt modifications or chain performance changes during development.
+
+## LLMOps Infrastructure and Production Considerations
+
+The team established comprehensive LLMOps infrastructure covering development, deployment, and operation of their LLM service. They built an experiment environment for A/B testing with leaderboard support to deploy the best-performing chains to production. This represents a mature approach to model selection and deployment, treating different prompts, retrievers, and chain configurations as experiments that compete for production deployment based on quantitative performance metrics.
+
+For production operations, the team implemented several critical features to ensure response stability, speed, and error handling. API load balancing distributes traffic across multiple API endpoints to manage rate limits and ensure availability. GPT caching stores and reuses responses for common or similar queries, reducing latency and API costs while improving consistency. The caching system integrates with user feedback—when users evaluate answers as satisfactory or unsatisfactory, this feedback influences the cache, expanding standardized data knowledge to other users and creating a virtuous cycle of improvement.
+
+The team built operation monitoring dashboards providing visibility into system performance, error rates, response times, and other key metrics. This monitoring infrastructure enables proactive identification and resolution of issues before they significantly impact users. The entire service deploys automatically through CI/CD pipelines, enabling rapid iteration and reducing the operational burden of manual deployments.
+
+## User Experience and Slack Integration
+
+Rather than building a separate web application, the team integrated QAB directly into Slack, their existing workplace messaging platform. This accessibility choice reduces friction for adoption—employees can ask questions and receive answers anytime within their existing workflow without switching contexts. The Slack integration includes response evaluation functionality where users can mark answers as satisfied or unsatisfied, creating a feedback loop that improves the system over time.
+
+For query generation specifically, responses include validation of whether the generated query executes correctly or contains errors, providing users with confidence about query quality before using them in their work. The system typically provides responses within 30 seconds to 1 minute, offering high-quality queries that employees can reference for their work.
+
+The team also invested in character design for QAB, creating a cute nerdy image combining a computer folder with a pelican. While this might seem superficial, the team recognized its importance for user experience—they wanted users to feel connected to QAB rather than repulsed by interacting with a robot. The character design helps frame inaccurate responses as collaborative problem-solving with a friend rather than system failures, reducing user frustration and encouraging continued engagement.
+
+## Development Methodology and Team Dynamics
+
+The task force operated using short sprint cycles, dividing their development roadmap into three steps with two-week sprints for each. Recognizing that no team member had prior experience developing LLM-based products, they implemented a task rotation strategy where tasks were separated into components and rotated across sprints, with team members free to choose which tasks to work on.
+
+While this approach created initial slowness due to overlapping tasks, work speed increased as sprints progressed. Through task cycles, each member discovered their areas of interest and naturally gravitated toward tasks matching their strengths. This rotation strategy helped maintain motivation despite the energy-intensive nature of task force work while enabling members to obtain broad skill sets and better understand each other's work, naturally building stronger teamwork.
+
+## Performance Results and User Feedback
+
+The team successfully developed query generation and interpretation features within two months through their architecture and Text-to-SQL implementation. Employees newly joining the company or handling different service domains reported that QAB's features greatly helped them understand their work. However, feedback indicated room for improvement in accuracy of business logic understanding and question interpretation. The team continues working to improve QAB's performance through various methods and tests, incorporating feedback and analyzing question histories.
+
+As the team gradually increased test participants and target organizations, they discovered that a significant proportion of questions concerned data discovery—exploring and understanding table columns, structures, and types to derive insights for business intelligence reports—rather than just query generation. This insight drove expansion of QAB's features beyond Text-to-SQL to encompass broader data discovery capabilities.
+
+## Critical Assessment and LLMOps Maturity
+
+This case study demonstrates a relatively mature approach to LLMOps, though with some important caveats. The team implemented many production best practices including comprehensive testing and evaluation, A/B testing infrastructure, monitoring and observability, caching and performance optimization, CI/CD automation, and systematic feedback loops. The internal leaderboard approach with over 500 experiments represents genuine commitment to empirical performance optimization rather than ad-hoc development.
+
+However, the case study is written as promotional content for both recruiting and showcasing technical capabilities, so claims should be interpreted with appropriate skepticism. The document doesn't discuss failure modes, edge cases, or limitations in detail. While the team mentions that responses have "room to improve in terms of accuracy of business logic and understanding," they don't quantify error rates, false positive/negative rates, or provide detailed metrics on actual production performance versus their evaluation datasets.
+
+The dependency on ongoing maintenance by domain-specific data analysts to update few-shot examples and business terminology represents an important operational consideration that requires sustained organizational commitment. The system's accuracy fundamentally depends on these human-curated knowledge bases remaining current and comprehensive, which could become a bottleneck as the organization scales or business domains proliferate.
+
+The claim of 30-60 second response times is reasonable for the architecture described but may vary significantly based on question complexity, required retrievals, and API response times. The reliance on external LLM APIs (Microsoft Azure OpenAI) introduces dependencies on third-party availability and rate limits that could impact reliability.
+
+Overall, this represents a thoughtful implementation of LLMOps practices for a Text-to-SQL system, demonstrating how organizations can move from hackathon prototypes to production systems through systematic engineering, comprehensive evaluation, and operational infrastructure. The emphasis on domain-specific knowledge through enriched metadata, business terminology, and few-shot examples addresses real limitations of foundation models for enterprise applications. The testing and evaluation infrastructure with internal leaderboards represents a scalable approach to continuous improvement that other organizations could emulate.

@@ -1,0 +1,123 @@
+---
+title: "Context Engineering and Tool Design for Background Coding Agents at Scale"
+slug: "context-engineering-and-tool-design-for-background-coding-agents-at-scale"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "695244beefce95fe4040ff2c"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2026-01-07T09:40:39.763Z"
+  lastUpdated: "2025-12-29T10:36:15.779Z"
+  createdOn: "2025-12-29T09:07:10.703Z"
+llmopsTags:
+  - "code-generation"
+  - "code-interpretation"
+  - "prompt-engineering"
+  - "agent-based"
+  - "mcp"
+  - "evals"
+  - "few-shot"
+  - "error-handling"
+  - "human-in-the-loop"
+  - "cicd"
+  - "continuous-integration"
+  - "continuous-deployment"
+  - "open-source"
+  - "documentation"
+  - "anthropic"
+company: "Spotify"
+summary: "Spotify deployed a background coding agent to automate large-scale software maintenance across thousands of repositories, initially experimenting with open-source tools like Goose and Aider before building a custom agentic loop, and ultimately adopting Claude Code with the Anthropic Agent SDK. The primary challenge shifted from building the agent to effective context engineering—crafting prompts that produce reliable, mergeable pull requests at scale. Through extensive experimentation, Spotify developed prompt engineering principles (tailoring to the agent, stating preconditions, using examples, defining end states through tests) and designed a constrained tool ecosystem (limited bash commands, custom verify tool, git tool) to maintain predictability. The system has successfully merged approximately 50 migrations with thousands of AI-generated pull requests into production, demonstrating that careful prompt design and strategic tool limitation are critical for production LLM deployments in code generation scenarios."
+link: "https://engineering.atspotify.com/2025/11/context-engineering-background-coding-agents-part-2"
+year: 2025
+seo:
+  title: "Spotify: Context Engineering and Tool Design for Background Coding Agents at Scale - ZenML LLMOps Database"
+  description: "Spotify deployed a background coding agent to automate large-scale software maintenance across thousands of repositories, initially experimenting with open-source tools like Goose and Aider before building a custom agentic loop, and ultimately adopting Claude Code with the Anthropic Agent SDK. The primary challenge shifted from building the agent to effective context engineering—crafting prompts that produce reliable, mergeable pull requests at scale. Through extensive experimentation, Spotify developed prompt engineering principles (tailoring to the agent, stating preconditions, using examples, defining end states through tests) and designed a constrained tool ecosystem (limited bash commands, custom verify tool, git tool) to maintain predictability. The system has successfully merged approximately 50 migrations with thousands of AI-generated pull requests into production, demonstrating that careful prompt design and strategic tool limitation are critical for production LLM deployments in code generation scenarios."
+  canonical: "https://www.zenml.io/llmops-database/context-engineering-and-tool-design-for-background-coding-agents-at-scale"
+  ogTitle: "Spotify: Context Engineering and Tool Design for Background Coding Agents at Scale - ZenML LLMOps Database"
+  ogDescription: "Spotify deployed a background coding agent to automate large-scale software maintenance across thousands of repositories, initially experimenting with open-source tools like Goose and Aider before building a custom agentic loop, and ultimately adopting Claude Code with the Anthropic Agent SDK. The primary challenge shifted from building the agent to effective context engineering—crafting prompts that produce reliable, mergeable pull requests at scale. Through extensive experimentation, Spotify developed prompt engineering principles (tailoring to the agent, stating preconditions, using examples, defining end states through tests) and designed a constrained tool ecosystem (limited bash commands, custom verify tool, git tool) to maintain predictability. The system has successfully merged approximately 50 migrations with thousands of AI-generated pull requests into production, demonstrating that careful prompt design and strategic tool limitation are critical for production LLM deployments in code generation scenarios."
+---
+
+## Overview
+
+Spotify's case study on background coding agents represents a sophisticated real-world deployment of LLMs for automated software maintenance at enterprise scale. This is the second installment in a series documenting Spotify's journey with background coding agents that extend their Fleet Management system. The agent operates autonomously to edit code, run builds and tests, and open pull requests across thousands of repositories. The case study published in November 2025 focuses specifically on the operational challenges of context engineering—the craft of designing effective prompts and tool ecosystems to ensure reliable, production-quality code changes.
+
+The initiative has resulted in approximately 50 completed migrations with the majority of background agent pull requests successfully merged into production. This deployment demonstrates mature LLMOps practices, particularly around prompt engineering, tool design, evaluation methodologies, and the tension between agent capability and predictability in production systems.
+
+## Problem and Evolution
+
+Spotify's journey through different agent architectures reveals important lessons about production LLM deployments. The team initially experimented with open-source agents including Goose and Aider, which impressed with their ability to explore codebases, identify changes, and edit code from simple prompts. However, these tools failed to scale to Spotify's migration use case—they couldn't reliably produce mergeable pull requests when applied across thousands of repositories. The unpredictability became a blocker: writing effective prompts and verifying correct agent behavior proved extremely difficult at scale.
+
+This led to building a custom "agentic loop" on top of LLM APIs. The architecture consisted of three phases: users provided a prompt and file list, the agent took multiple turns editing files while incorporating build system feedback, and the task completed once tests passed or limits were exceeded (10 turns per session, three session retries total). While this worked for simple changes like editing deployment manifests or changing single lines of code, it quickly encountered limitations. Users had to manually specify exact files through git-grep commands, creating a difficult balancing act—too broad overwhelmed the context window, too narrow starved the agent of necessary context. The system also struggled with complex multi-file changes requiring cascading updates (like modifying a public method and updating all call sites), often running out of turns or losing track of the original task as the context window filled.
+
+## Adopting Claude Code
+
+Spotify ultimately migrated to Claude Code with the Anthropic Agent SDK, which addressed several key limitations. Claude Code allowed more natural, task-oriented prompts rather than rigid step-by-step instructions. It brought built-in capabilities for managing todo lists and spawning subagents efficiently, which helped with complex multi-step operations. The system could handle longer operations without running into the same context window management issues that plagued the homegrown solution. As of the publication date, Claude Code became Spotify's top-performing agent, handling about 50 migrations and the majority of merged background agent PRs.
+
+The endorsement from Boris Cherny at Anthropic highlighted that Spotify's implementation represents "the leading edge of how sophisticated engineering organizations are thinking about autonomous coding," noting that the team merged thousands of PRs across hundreds of repositories using the Claude Agent SDK. However, readers should note this is coming from the vendor and may represent optimistic framing of what remains an experimental and evolving system.
+
+## Prompt Engineering Principles
+
+Spotify's experience yielded hard-won lessons about prompt engineering for coding agents at production scale. The team identified two major anti-patterns: overly generic prompts that expect the agent to guess intent telepathically, and overly specific prompts that attempt to cover every case but fall apart when encountering unexpected situations.
+
+Through considerable experimentation, several principles emerged for effective prompt design. First, prompts must be tailored to the specific agent—their homegrown agent did best with strict step-by-step instructions, while Claude Code performs better with prompts describing desired end states and allowing the agent flexibility in execution. Stating preconditions explicitly proved critical because agents are "eager to act to a fault"; in migration scenarios across multiple repositories, this eagerness causes problems when the agent attempts impossible tasks (like using language features unavailable in a particular codebase version). Clear preconditions help the agent know when not to act.
+
+Using concrete code examples heavily influences outcomes, providing the agent with clear patterns to follow. Defining desired end states ideally through tests gives the agent a verifiable goal for iteration. The principle of "do one change at a time" emerged from experience—while combining related changes into elaborate prompts seems convenient, it more often exhausts context windows or delivers partial results. Finally, asking the agent itself for feedback on the prompt after a session provides surprisingly valuable insights for refinement, as the agent is well-positioned to identify what information was missing.
+
+The case study includes an example prompt for migrating from AutoValue to Java records, which demonstrates the elaborate nature of production prompts. These prompts can be quite lengthy and detailed, reflecting Spotify's preference for larger static prompts over dynamic context fetching. This design choice prioritizes predictability and testability—static prompts can be version-controlled, tested, and evaluated systematically.
+
+## Tool Design and Context Management
+
+Spotify's approach to tool design reflects a deliberate tradeoff between capability and predictability. The team keeps the background coding agent intentionally limited in terms of tools and hooks so it can focus on generating correct code changes from prompts. This design philosophy contrasts with approaches that provide agents with extensive tool access through the Model Context Protocol (MCP).
+
+While simpler prompts connected to many MCP tools allow agents to dynamically fetch context as they work, Spotify found this approach introduces unpredictability along multiple dimensions. Each additional tool represents a potential source of unexpected failure, making the agent less testable and predictable. For a production system merging thousands of PRs, predictability trumps maximal capability.
+
+The current tool ecosystem includes three carefully designed components. A custom "verify" tool runs formatters, linters, and tests. Spotify chose to encode build system invocation logic in an MCP tool rather than relying on AGENTS.md-style files because the agent operates across thousands of repositories with diverse build configurations. The tool also reduces noise by summarizing logs into digestible information for the agent. A custom Git tool provides limited and standardized access, selectively exposing certain git subcommands (never allowing push or origin changes) while standardizing others (setting committers and using standardized commit message formats). Finally, the built-in Bash tool is available but with a strict allowlist of commands, providing access to utilities like ripgrep where needed.
+
+Notably absent are code search or documentation tools directly exposed to the agent. Instead, Spotify asks users to condense relevant context into prompts upfront, either by including information directly or through separate workflow agents that produce prompts for the coding agent from various sources. The team also recommends guiding agents through the code itself where possible—setting up tests, linters, or API documentation in target repositories benefits all prompts and agents operating on that code moving forward.
+
+This architectural decision represents mature LLMOps thinking: rather than maximizing agent autonomy, Spotify constrains the agent's degrees of freedom to maintain production reliability. The tradeoff is that prompts must be more elaborate and context-rich, but in return the system is more testable, debuggable, and predictable.
+
+## Production Deployment Characteristics
+
+The deployment reflects several important LLMOps considerations. The system operates as a background process rather than interactive tool, automating fleet-wide migrations and maintenance tasks. It integrates deeply with Spotify's existing infrastructure including their build systems, testing frameworks, version control, and code review processes. The agent opens pull requests that flow through normal review processes rather than automatically merging code.
+
+The scale of deployment is significant—operating across thousands of repositories with diverse configurations, languages, and build systems. The system has completed approximately 50 migrations with thousands of merged PRs, representing substantial production impact. However, the case study is candid about remaining challenges: "in practice, we are still flying mostly by intuition. Our prompts evolve by trial and error. We don't yet have structured ways to evaluate which prompts or models perform best." 
+
+This admission is valuable for understanding the maturity level of production coding agents even at sophisticated organizations. While the system produces merged code at scale, the process of optimizing prompts and evaluating performance remains somewhat ad-hoc. The team acknowledges they don't yet have systematic ways to determine if merged PRs actually solved the original problem, a topic they promise to address in future posts about feedback loops.
+
+## LLMOps Maturity and Tradeoffs
+
+The case study demonstrates several hallmarks of mature LLMOps practice while also revealing the limitations of current approaches. On the mature side, Spotify has moved through multiple iterations of agent architecture, learning from each. They've developed systematic prompt engineering principles based on real production experience. They've made conscious architectural decisions about tool access and context management prioritizing reliability over capability. They version control prompts, enabling testing and evaluation even if those processes remain somewhat informal.
+
+The integration with existing development infrastructure is sophisticated—custom MCP tools wrap internal build systems, git operations are standardized and restricted, and the agent operates within existing code review workflows rather than bypassing them. The willingness to constrain agent capabilities for predictability reflects mature thinking about production AI systems.
+
+However, the candid acknowledgment of limitations is equally important. Prompt development remains trial-and-error rather than systematic. Evaluation methodologies for comparing prompts and models are not yet structured. The team cannot yet definitively measure whether merged PRs solved the intended problems. These gaps represent frontier challenges in LLMOps—even sophisticated organizations are still developing methodologies for systematic evaluation and improvement of production LLM systems.
+
+## Context Engineering as Core Competency
+
+The case study's title focus on "context engineering" signals an important framing: getting production value from coding agents is less about model capabilities and more about carefully designing the context and constraints within which they operate. The humbling comparison to writing clear instructions for making a peanut butter and jelly sandwich underscores that prompt writing is genuinely difficult and most engineers lack experience with it.
+
+Spotify's approach of giving engineers access to the background coding agent "without much training or guidance" initially led to the two anti-patterns described earlier. Over time, some teams invested considerable effort learning Claude Code's specific characteristics and how to prompt it effectively. This suggests that successfully deploying coding agents at scale requires developing organizational expertise in prompt engineering, not just providing access to capable models.
+
+The preference for large static prompts over dynamic context fetching reflects this philosophy. While less flexible, static prompts are "easier to reason about" and can be version-controlled, tested, and evaluated. This makes prompt engineering itself a more manageable discipline—prompts become artifacts that can be reviewed, refined, and maintained using software engineering practices.
+
+## Evaluation and Feedback Loops
+
+The case study concludes by acknowledging a critical gap: the lack of structured evaluation methodologies. While the team can measure whether PRs merge successfully and tests pass, they acknowledge not knowing definitively whether merged changes solved the original problems. The promise of a future post on "feedback loops to achieve more predictable results" suggests this remains an active area of development.
+
+This gap is significant from an LLMOps perspective. In traditional software deployment, monitoring and evaluation are well-established practices with mature tooling. For LLM-generated code, the evaluation challenge is more subtle—syntactic correctness and test passage are necessary but potentially insufficient signals of success. Did the migration actually eliminate the deprecated dependency? Did it introduce subtle behavioral changes? Are there edge cases where the automated change was inappropriate?
+
+The absence of systematic evaluation represents a common challenge across production LLM deployments: establishing ground truth and measuring success in domains where correctness is multifaceted and potentially subjective. Spotify's acknowledgment of this gap and commitment to addressing it in future work reflects honest engagement with the real challenges of production LLMOps.
+
+## Critical Assessment
+
+While this case study provides valuable insights into production coding agents, readers should consider several factors when assessing the lessons. The close partnership with Anthropic and prominent quote from an Anthropic employee suggests this represents a success story for Claude Code specifically. The comparison table showing Claude Code as superior to the homegrown solution and open-source agents may reflect genuine performance differences but also the vendor relationship.
+
+The scale of deployment—50 migrations and thousands of merged PRs—is impressive but lacks some important context. What percentage of attempted PRs merged successfully? How much human review and correction was required? What types of migrations work well versus struggle? The case study focuses on successes while noting challenges in passing, which is typical for vendor case studies but means readers should approach performance claims carefully.
+
+The admission that prompt development remains intuitive and evaluation methodologies are immature is valuable honesty, suggesting the team is being relatively candid about limitations rather than overselling capabilities. However, this also means the specific prompt engineering principles, while based on real experience, may not generalize perfectly to other contexts or represent fully validated best practices.
+
+The architectural decision to constrain tool access for predictability is well-reasoned but represents one point in the capability-reliability tradeoff space. Other organizations might make different choices based on their specific requirements, risk tolerance, and use cases. Spotify's approach works for their background migration scenario where predictability is paramount, but interactive development tools might benefit from the opposite tradeoff.
+
+Overall, this case study represents valuable documentation of real-world LLMOps practices at significant scale, with unusual candor about remaining challenges. The technical details about prompt engineering, tool design, and architectural evolution provide actionable insights for practitioners building similar systems. However, readers should recognize this as a snapshot of an evolving system at a specific point in time, in a particular organizational context, with a specific vendor relationship—not a definitive blueprint for all coding agent deployments.

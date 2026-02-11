@@ -1,0 +1,172 @@
+---
+title: "LLM-Based Agents for User Story Quality Enhancement in Agile Development"
+slug: "llm-based-agents-for-user-story-quality-enhancement-in-agile-development"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f3bb5a6afe867c6811f03"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:37:02.788Z"
+  createdOn: "2024-11-21T13:55:01.823Z"
+llmopsTags:
+  - "crewai"
+  - "document-processing"
+  - "documentation"
+  - "guardrails"
+  - "monitoring"
+  - "multi-agent-systems"
+  - "openai"
+  - "poc"
+  - "prompt-engineering"
+  - "reliability"
+  - "system-prompts"
+company: "Austrian Post Group"
+summary: "Austrian Post Group IT explored the use of LLM-based agents to automatically improve user story quality in their agile development teams. They developed and implemented an Autonomous LLM-based Agent System (ALAS) with specialized agent profiles for Product Owner and Requirements Engineer roles. Using GPT-3.5-turbo-16k and GPT-4 models, the system demonstrated significant improvements in user story clarity and comprehensibility, though with some challenges around story length and context alignment. The effectiveness was validated through evaluations by 11 professionals across six agile teams."
+link: "https://arxiv.org/html/2403.09442v1"
+year: 2024
+seo:
+  title: "Austrian Post Group: LLM-Based Agents for User Story Quality Enhancement in Agile Development - ZenML LLMOps Database"
+  description: "Austrian Post Group IT explored the use of LLM-based agents to automatically improve user story quality in their agile development teams. They developed and implemented an Autonomous LLM-based Agent System (ALAS) with specialized agent profiles for Product Owner and Requirements Engineer roles. Using GPT-3.5-turbo-16k and GPT-4 models, the system demonstrated significant improvements in user story clarity and comprehensibility, though with some challenges around story length and context alignment. The effectiveness was validated through evaluations by 11 professionals across six agile teams."
+  canonical: "https://www.zenml.io/llmops-database/llm-based-agents-for-user-story-quality-enhancement-in-agile-development"
+  ogTitle: "Austrian Post Group: LLM-Based Agents for User Story Quality Enhancement in Agile Development - ZenML LLMOps Database"
+  ogDescription: "Austrian Post Group IT explored the use of LLM-based agents to automatically improve user story quality in their agile development teams. They developed and implemented an Autonomous LLM-based Agent System (ALAS) with specialized agent profiles for Product Owner and Requirements Engineer roles. Using GPT-3.5-turbo-16k and GPT-4 models, the system demonstrated significant improvements in user story clarity and comprehensibility, though with some challenges around story length and context alignment. The effectiveness was validated through evaluations by 11 professionals across six agile teams."
+---
+
+## Overview
+
+This case study presents research conducted at Austrian Post Group IT, a logistics and postal services company with robust agile software development practices. The company operates multiple teams working synchronously across numerous systems and applications orchestrated within Agile Release Trains. The research team, in collaboration with Tampere University, developed and evaluated an Autonomous LLM-based Agent System (ALAS) designed to automatically enhance the quality of user stories in agile development environments.
+
+User stories are fundamental to agile software projects, serving as brief descriptions of functionalities from the user's perspective. Maintaining high-quality user stories is crucial but challenging, as they must be complete, consistent, unambiguous, and testable. The research explores whether LLM-based agents can assist in automating and improving this quality assurance process.
+
+## The Reference Model Architecture
+
+The researchers proposed a reference model for LLM-based agent systems that conceptualizes how multiple AI agents can collaborate to complete tasks. The model comprises four basic constructs: tasks, agents, a shared knowledge base, and responses.
+
+The **task** initiates the interaction and contains inputs defining the work scope and objectives. It includes a comprehensive description, contextual information for understanding and execution, and the expected outcome. The task may also prescribe procedural steps for agents to follow.
+
+Each **agent** represents an instance of an LLM model with a unique profile and role. In this implementation, two agents were defined: Agent PO (Product Owner) focused on product vision, backlog management, and business value alignment, while Agent RE (Requirements Engineer) specialized in quality aspects like unambiguity and measurable acceptance criteria.
+
+The **shared knowledge base** is a repository containing task information and conversation history. It provides a dynamic resource that informs subsequent agents of context and next steps, enabling coherent dialogue across the multi-agent interaction.
+
+**Responses** are outputs generated by each agent based on task descriptions, which are then added to the shared knowledge base for subsequent agents to reference.
+
+## Implementation Details
+
+The ALAS implementation operates through two distinct phases: task preparation and task conduction.
+
+### Task Preparation Phase
+
+This phase establishes the groundwork for agent interaction through careful prompt engineering. The researchers employed several sophisticated prompting techniques:
+
+The **persona pattern** creates detailed profiles for each agent, guiding them to adopt specific characters or roles. The profile construction includes role definition with high expectations (described as "level 250 knowledge" compared to a human's "level 10"), key responsibilities, practical tips, and tone specifications. For instance, the RE agent profile instructs: "Use clear and unambiguous language when documenting requirements to avoid any misunderstandings."
+
+The **k-shot prompting** technique provides explicit instructions or examples of desired output, particularly useful when formulating task descriptions and context. For generating product vision statements, prompts might include example elements or templates from other products.
+
+**AI planning** helps decompose the overall task into smaller, manageable subtasks and assigns responsible agents to each. The researchers used this pattern to generate a comprehensive list of key steps, which was then reviewed and refined by a Scrum master and Product Owner.
+
+The **fact check list pattern** verifies and validates LLM outputs by instructing the model to create key facts that can be checked for errors or inconsistencies.
+
+**Chain of Thought (CoT)** prompting guides LLMs through step-by-step reasoning processes to enhance performance on complex tasks.
+
+### Prompt Structure
+
+The system uses two categories of prompts. Initial prompts prepare participating agents for their responsibilities:
+
+```
+Prompti = Profilei + Task + Context of task + Subtaski (for 1 ≤ i ≤ k agents)
+```
+
+Follow-up prompts guide agents through the interaction steps:
+
+```
+Prompti = Subtaski + Responsei-1 (for i > k)
+```
+
+This structure ensures each agent builds upon previous work while maintaining coherent dialogue flow.
+
+### Task Conduction Phase
+
+In this phase, agents dynamically interact to execute subtasks. The process is iterative and incremental, mirroring actual agile team practices. Each agent sequentially engages with subtasks following the structured prompt, with previous responses informing current prompts to ensure relevance and continuity.
+
+## Technical Configuration
+
+The researchers faced significant challenges with token limits when agents engaged in response exchanges across subtasks. After adjustments, they selected two GPT models:
+
+- **GPT-3.5-Turbo-16K**: Optimized for quicker responses with a 16,000 token context window, suitable for extended conversations
+- **GPT-4-1106-Preview**: Advanced capabilities with 128,000 token context window and 4,096 maximum output tokens
+
+The Temperature parameter was set to 1 (medium value), though this still posed challenges for maintaining factual accuracy due to increased risk of AI hallucination.
+
+## Experimental Setup
+
+The evaluation focused on 25 synthetic user stories for Austrian Post's mobile delivery application, a tool helping postal workers prepare and deliver parcels. The task description included two supporting documents:
+
+- A Minimum Viable Product (MVP) document detailing basic features of the mobile delivery application
+- A product vision statement structured using the NABC (Needs, Approach, Benefit, Competition) value proposition template
+
+These documents provided agents with comprehensive background for executing tasks with sufficient understanding of both technical and strategic objectives.
+
+## Evaluation Methodology
+
+The study surveyed 11 participants from six agile teams, including Product Owners, developers, a test manager, a Scrum master, requirements analysts, testers, and a train coach. Notably, 10 of 11 participants had been with the company over two years, and 9 had more than five years of agile project experience.
+
+The questionnaire assessed user story quality based on the INVEST framework characteristics:
+- Simplicity and ease of understanding
+- Appropriate size (not too long)
+- Suitable level of detail
+- Inclusion of task description and goal
+- Technical achievability
+- Measurable acceptance criteria elements
+- Sufficient acceptance criteria for validation
+
+Participants rated user stories on a 1-5 Likert scale and answered open-ended questions about improvements, concerns, and suggestions.
+
+## Results and Findings
+
+The evaluation compared original user stories against improved versions from both GPT-3.5-Turbo and GPT-4 models.
+
+**Original User Stories (US1, US2)**: Criticized for ambiguity, lack of essential details, vague business value descriptions, and inadequate error handling scenarios in acceptance criteria.
+
+**GPT-3.5-Turbo Improvements (v.1)**: Showed significant improvements in clarity and comprehensibility, with enhanced narrative flow and clearer acceptance criteria. However, participants noted overly creative titles and insufficient detail in some acceptance criteria.
+
+**GPT-4 Improvements (v.2)**: Recognized for comprehensive content and clearer business value expression. Acceptance criteria addressed previously ambiguous scenarios like printer connection problems. However, the increased detail led to significantly longer stories, with six participants expressing concerns about excessive length.
+
+Quantitative results showed:
+- US1(v.1) and US1(v.2) both achieved average satisfaction ratings of 4.0
+- US2(v.2) scored 3.71, higher than US2(v.1)'s 3.54
+- GPT-4 versions scored lower on simplicity, brevity, and appropriate detail level
+- US2(v.2) received the most disagreements regarding size, with 5 participants marking "Disagree"
+
+## Key LLMOps Insights and Challenges
+
+### Context Alignment Gap
+Despite improvements, the agents' ability to learn from context revealed gaps in aligning with project-specific requirements. One developer noted that US1(v.2) included an authentication process that, while relevant, "seems to be out of scope." This highlights the need for careful prompt preparation and human expert review during task preparation.
+
+### Human Oversight Requirements
+The study emphasizes that ALAS outputs require manual validation by Product Owners to align with project goals and stakeholder expectations. Automated generation has limitations that necessitate human intervention to preserve practical utility.
+
+### Temperature Parameter Trade-offs
+The Temperature setting at 1 represented a balance between creativity and accuracy. While it enabled novel content generation, it also increased AI hallucination risks, leading to plausible but potentially inaccurate or irrelevant outputs.
+
+### Future Improvements Identified
+The researchers suggest incorporating additional specialized agents, such as:
+- A tester agent to verify factual information and refine acceptance criteria
+- A quality analyst agent to monitor scope, detail level, and relevance
+
+### Prompt Engineering Importance
+The iterative process of prompt formulation and optimization proved crucial for system effectiveness. Engaging domain experts (Product Owners, Scrum masters) during task preparation helped optimize prompts for desired outputs.
+
+## Conclusions for LLMOps Practice
+
+This case study demonstrates both the potential and limitations of deploying LLM-based multi-agent systems in production software development environments. The research provides a foundational framework for AI-assisted requirements engineering while highlighting that successful deployment requires:
+
+- Careful agent profile design with explicit role definitions and expectations
+- Structured prompt engineering using established patterns
+- Iterative refinement of prompts with domain expert involvement
+- Human-in-the-loop validation to ensure contextual accuracy
+- Parameter tuning to balance creativity with factual accuracy
+- Consideration of output length and complexity for practical applicability
+
+The study represents an early-stage exploration rather than a fully productionized system, but offers valuable insights for organizations considering similar LLMOps implementations in software engineering contexts.

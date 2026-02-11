@@ -1,0 +1,117 @@
+---
+title: "Refining Input Guardrails for Safer LLM Applications Through Chain-of-Thought Fine-Tuning"
+slug: "refining-input-guardrails-for-safer-llm-applications-through-chain-of-thought-fine-tuning"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "6859024bef5a6165520b8723"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:12:14.158Z"
+  createdOn: "2025-06-23T07:29:15.302Z"
+llmopsTags:
+  - "fraud-detection"
+  - "customer-support"
+  - "chatbot"
+  - "high-stakes-application"
+  - "regulatory-compliance"
+  - "fine-tuning"
+  - "prompt-engineering"
+  - "few-shot"
+  - "human-in-the-loop"
+  - "instruction-tuning"
+  - "error-handling"
+  - "fallback-strategies"
+  - "system-prompts"
+  - "pytorch"
+  - "mistral"
+  - "open-source"
+  - "security"
+  - "compliance"
+  - "guardrails"
+  - "reliability"
+  - "meta"
+  - "openai"
+  - "hugging-face"
+company: "Capital One"
+summary: "Capital One developed enhanced input guardrails to protect LLM-powered conversational assistants from adversarial attacks and malicious inputs. The company used chain-of-thought prompting combined with supervised fine-tuning (SFT) and alignment techniques like Direct Preference Optimization (DPO) and Kahneman-Tversky Optimization (KTO) to improve the accuracy of LLM-as-a-Judge moderation systems. Testing on four open-source models (Mistral 7B, Mixtral 8x7B, Llama2 13B, and Llama3 8B) showed significant improvements in F1 scores and attack detection rates of over 50%, while maintaining low false positive rates, demonstrating that effective guardrails can be achieved with small training datasets and minimal computational resources."
+link: "https://medium.com/capital-one-tech/refining-input-guardrails-for-safer-llm-applications-capital-one-715c1c440e6b"
+year: 2025
+seo:
+  title: "Capital One: Refining Input Guardrails for Safer LLM Applications Through Chain-of-Thought Fine-Tuning - ZenML LLMOps Database"
+  description: "Capital One developed enhanced input guardrails to protect LLM-powered conversational assistants from adversarial attacks and malicious inputs. The company used chain-of-thought prompting combined with supervised fine-tuning (SFT) and alignment techniques like Direct Preference Optimization (DPO) and Kahneman-Tversky Optimization (KTO) to improve the accuracy of LLM-as-a-Judge moderation systems. Testing on four open-source models (Mistral 7B, Mixtral 8x7B, Llama2 13B, and Llama3 8B) showed significant improvements in F1 scores and attack detection rates of over 50%, while maintaining low false positive rates, demonstrating that effective guardrails can be achieved with small training datasets and minimal computational resources."
+  canonical: "https://www.zenml.io/llmops-database/refining-input-guardrails-for-safer-llm-applications-through-chain-of-thought-fine-tuning"
+  ogTitle: "Capital One: Refining Input Guardrails for Safer LLM Applications Through Chain-of-Thought Fine-Tuning - ZenML LLMOps Database"
+  ogDescription: "Capital One developed enhanced input guardrails to protect LLM-powered conversational assistants from adversarial attacks and malicious inputs. The company used chain-of-thought prompting combined with supervised fine-tuning (SFT) and alignment techniques like Direct Preference Optimization (DPO) and Kahneman-Tversky Optimization (KTO) to improve the accuracy of LLM-as-a-Judge moderation systems. Testing on four open-source models (Mistral 7B, Mixtral 8x7B, Llama2 13B, and Llama3 8B) showed significant improvements in F1 scores and attack detection rates of over 50%, while maintaining low false positive rates, demonstrating that effective guardrails can be achieved with small training datasets and minimal computational resources."
+---
+
+Capital One's Enterprise AI team conducted comprehensive research into developing robust input guardrails for LLM-powered applications, addressing critical safety and security challenges that arise when deploying large language models in production environments. This case study represents a sophisticated approach to LLMOps that goes beyond basic deployment to tackle the nuanced challenges of ensuring AI safety at scale in a financial services context.
+
+## Overview and Context
+
+Capital One's AI Foundations team recognized that while LLMs offer powerful capabilities for instruction-following, reasoning, and agentic behavior, they also introduce novel vulnerabilities that can pose significant risks to user-facing applications. The team's research, published at the AAAI 2025 conference and awarded the Outstanding Paper Award, focuses on developing enterprise-grade input moderation guardrails that can effectively detect and prevent adversarial attacks while maintaining operational efficiency.
+
+The challenge addressed is particularly relevant in the financial services industry, where the consequences of AI systems generating harmful, biased, or misleading outputs can result in substantial reputational and regulatory risks. Capital One's approach demonstrates a mature understanding of the LLMOps landscape, acknowledging that post-training alignment techniques like RLHF, while important, are insufficient on their own to protect against sophisticated adversarial attacks.
+
+## Technical Architecture and Approach
+
+The team implemented a "proxy defense" approach, where an additional moderation component acts as a firewall to filter unsafe user utterances before they reach the main conversation-driving LLM. This architectural decision reflects sound LLMOps principles by creating multiple layers of protection rather than relying solely on the primary model's built-in safety measures.
+
+The core innovation lies in their LLM-as-a-Judge approach, which leverages the reasoning capabilities of LLMs themselves to identify policy violations rather than relying on traditional BERT-based classifiers. This design choice offers greater versatility and can handle multiple types of rail violations simultaneously, functioning as a multiclass classifier aligned with policies such as OpenAI's usage guidelines.
+
+## Chain-of-Thought Integration
+
+A key technical contribution is the integration of chain-of-thought (CoT) prompting to enhance the reasoning capabilities of the judge LLM. The CoT approach instructs the LLM to generate logical explanations of its thought process before arriving at a final safety verdict. This technique serves dual purposes: improving classification accuracy and providing interpretable explanations that can inform downstream decision-making by the conversational agent.
+
+The evaluation of CoT prompting across four different models (Mistral 7B Instruct v2, Mixtral 8x7B Instruct v1, Llama2 13B Chat, and Llama3 8B Instruct) revealed consistent improvements in F1 scores and recall rates for most models, while significantly reducing invalid response ratios. However, the team observed that even with CoT prompting, base model performance remained below 80% F1 score, validating the need for additional fine-tuning approaches.
+
+## Fine-Tuning and Alignment Strategies
+
+Capital One implemented three distinct fine-tuning techniques in conjunction with CoT prompting, demonstrating a comprehensive approach to model optimization that balances performance gains with computational efficiency:
+
+**Supervised Fine-Tuning (SFT)** was used to encode knowledge about various types of malicious and adversarial queries by updating model weights using high-quality desired outputs. This approach proved most effective in achieving significant performance lifts.
+
+**Direct Preference Optimization (DPO)** was employed as an alignment technique that avoids the computational complexity of fitting separate reward models, offering more stability than traditional reinforcement learning approaches like PPO while requiring fewer data points.
+
+**Kahneman-Tversky Optimization (KTO)** leveraged principles from behavioral economics, specifically prospect theory, to maximize utility through a novel loss function. KTO's advantage lies in requiring only binary signals rather than paired preference data, making it more practical for real-world implementation.
+
+All experiments utilized Parameter-Efficient Low-Rank Adaptation (LoRA), demonstrating the team's focus on computational efficiency—a critical consideration for production LLMOps environments where resource optimization directly impacts operational costs and scalability.
+
+## Training Data and Methodology
+
+The team's approach to training data curation reflects practical LLMOps considerations, utilizing a combination of public benchmarks containing malicious content and synthetically generated safe data. With only 400 accepted responses (equally distributed between malicious and safe categories) and three rejected responses per query, the methodology demonstrates that effective guardrails can be achieved with relatively small training datasets—a crucial finding for organizations with limited labeled data.
+
+The synthetic generation of both ideal and rejected responses shows sophisticated data engineering practices, with careful attention to ensuring that rejected responses capture unique types of misalignment. This approach addresses a common challenge in LLMOps where obtaining high-quality negative examples can be more difficult than positive examples.
+
+## Performance Results and Model Comparison
+
+The evaluation results demonstrate substantial improvements across all tested models and techniques. SFT achieved the most significant lifts, with F1 scores and attack detection rates improving by over 50%, while DPO and KTO provided additional marginal improvements. The relatively small increase in false positive rates (maximum 1.5%) compared to the substantial gains in attack detection represents an acceptable trade-off for most production applications, particularly in financial services where failing to detect malicious inputs carries higher risk than occasional false positives.
+
+The team's comparison against existing public guardrail models, including LlamaGuard-2, ProtectAI's DeBERTaV3, and Meta's PromptGuard, showed significant performance advantages across all metrics. This benchmarking approach demonstrates thorough evaluation practices essential for production LLMOps implementations.
+
+Particularly noteworthy is the model's improved performance against standalone jailbreak prompts, which showed the largest gains through fine-tuning. This addresses a critical vulnerability in LLM systems where sophisticated attack techniques can bypass standard safety measures.
+
+## Production Considerations and Scalability
+
+Several aspects of Capital One's approach reflect mature LLMOps thinking around production deployment. The finding that smaller models achieve similar performance gains to larger models with less data and training time has significant implications for production scalability and cost management. This insight helps organizations make informed decisions about model selection based on their specific operational constraints.
+
+The dramatic reduction in invalid response ratios across all fine-tuning strategies addresses a practical production concern where unparseable outputs can cause system failures. The improvement in CoT explanation quality also enhances system interpretability, which is crucial for regulatory compliance in financial services.
+
+## Limitations and Balanced Assessment
+
+While Capital One's research demonstrates clear technical achievements, several limitations should be considered. The training and evaluation datasets, while effective for demonstrating proof-of-concept, do not provide comprehensive coverage of all possible attack types. The dynamic nature of adversarial attacks means that new vulnerabilities may emerge that weren't represented in the training data.
+
+The marginal improvements from DPO and KTO over SFT suggest that these alignment techniques may require larger or more diverse sets of rejected responses to achieve their full potential. This finding indicates that while the approaches are promising, further research may be needed to optimize their effectiveness in production environments.
+
+The research also doesn't fully address the computational costs of implementing these guardrails at scale, particularly the latency implications of adding an additional inference step before the main conversational model. In production environments, this additional latency could impact user experience and system throughput.
+
+## Industry Impact and Future Directions
+
+Capital One's work represents a significant contribution to the field of safe AI deployment in production environments. The combination of practical considerations (small training datasets, computational efficiency) with rigorous evaluation methodology provides a template that other organizations can follow when implementing their own guardrail systems.
+
+The research addresses real-world LLMOps challenges by demonstrating that effective safety measures don't require massive computational resources or extensive training datasets. This accessibility is crucial for broader adoption of safe AI practices across the industry.
+
+The focus on interpretability through CoT explanations also addresses growing regulatory and business requirements for explainable AI systems, particularly relevant in financial services where decisions must often be justified to regulators and customers.
+
+This case study exemplifies mature LLMOps practices by addressing the full lifecycle of model development, from problem identification through evaluation and comparison with existing solutions, while maintaining focus on practical deployment considerations that affect real-world implementation success.

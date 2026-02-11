@@ -1,0 +1,255 @@
+---
+title: "Navigating the MLOps Galaxy: ZenML meets Neptune for advanced Experiment Tracking"
+slug: "zenml-meets-neptune-for-advanced-experiment-tracking"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "66ed5210a333a0bb0e80b628"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2026-02-03T15:19:04.226Z"
+  lastUpdated: "2026-02-03T10:53:46.111Z"
+  createdOn: "2024-09-20T10:44:32.019Z"
+author: "hamza-tahir"
+category: "tutorials"
+tags:
+  - "zenml"
+  - "mlops"
+  - "neptune"
+date: "2024-09-21T00:00:00.000Z"
+readingTime: 6 mins
+mainImage:
+  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/feece98a/6981d362e92aa039b696ad09_6981d2b20c8a808a04e6eef3_Blog_Post_-_with_image_-_Light.avif"
+seo:
+  title: "Navigating the MLOps Galaxy: ZenML meets Neptune for advanced Experiment Tracking - ZenML Blog"
+  description: "The combination of ZenML and Neptune can streamline machine learning workflows and provide unprecedented visibility into experiments. ZenML is an extensible framework for creating production-ready pipelines, while Neptune is a metadata store for MLOps. When combined, these tools offer a robust solution for managing the entire ML lifecycle, from experimentation to production. The combination of these tools can significantly accelerate the development process, especially when working with complex tasks like language model fine-tuning. This integration offers the ability to focus more on innovating and less on managing the intricacies of your ML pipelines."
+  canonical: "https://www.zenml.io/blog/zenml-meets-neptune-for-advanced-experiment-tracking"
+  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/feece98a/6981d362e92aa039b696ad09_6981d2b20c8a808a04e6eef3_Blog_Post_-_with_image_-_Light.avif"
+  ogTitle: "Navigating the MLOps Galaxy: ZenML meets Neptune for advanced Experiment Tracking - ZenML Blog"
+  ogDescription: "The combination of ZenML and Neptune can streamline machine learning workflows and provide unprecedented visibility into experiments. ZenML is an extensible framework for creating production-ready pipelines, while Neptune is a metadata store for MLOps. When combined, these tools offer a robust solution for managing the entire ML lifecycle, from experimentation to production. The combination of these tools can significantly accelerate the development process, especially when working with complex tasks like language model fine-tuning. This integration offers the ability to focus more on innovating and less on managing the intricacies of your ML pipelines."
+---
+
+Let's start with a reality check that might feel uncomfortably familiar. In 2024, where does 90% of your model iteration history actually live?
+
+<ul id=""><li id="">Jupyter notebooks named "final_v3_REALLY_FINAL.ipynb"</li><li id="">Random experiment runs with commit hashes that don't exist anymore</li><li id="">That one CSV your colleague sent over Slack last month</li><li id="">Your browser history because you forgot to save the tensorboard URL</li></ul>
+
+Sound familiar? You're not alone. While the MLOps ecosystem offers countless tools for experiment tracking, many teams still struggle with these basic challenges. Here's why: **We've been treating experiment tracking as a tooling problem when it's fundamentally a workflow problem.**
+
+# The Three Deadly Sins of ML Experiment Tracking
+
+Before we dive into solutions, let's acknowledge the workflow mistakes that plague even well-equipped teams:
+
+<ol id=""><li id=""><strong id="">Running Experiments Before Defining What We're Measuring</strong><ul id=""><li id="">We jump into training without clear success criteria</li><li id="">Metrics get added as afterthoughts</li><li id="">Different team members track different metrics</li></ul></li><li id=""><strong id="">Not Versioning the Data</strong><ul id=""><li id="">Test sets evolve without documentation</li><li id="">Benchmark datasets change between experiments</li><li id="">No clear record of data preprocessing steps</li></ul></li><li id=""><strong id="">Assuming We'll "Remember the Important Details"</strong><ul id=""><li id="">Critical hyperparameters go unlogged</li><li id="">Environment configurations are lost</li><li id="">Model architecture decisions remain undocumented</li></ul></li></ol>
+
+# A Workflow-First Approach to ML Experiment Tracking
+
+## Pre-Experiment Documentation
+
+Before any code is written or models are trained, teams must complete an experiment definition document that includes:
+
+<ul id=""><li id="">Primary and secondary metrics with specific thresholds</li><li id="">Clear definition of what constitutes a "better" model</li><li id="">Required comparison metrics for A/B testing</li><li id="">Stakeholder sign-off on success criteria</li></ul>
+
+The key is making this documentation a required gateway - no training runs begin without it. This can be as simple as a shared template that must be filled out, or as robust as a formal approval process.
+
+## Data Versioning Protocol
+
+Establish a systematic approach to data management:
+
+<ul id=""><li id="">Create a data registry that tracks every version of training and evaluation datasets</li><li id="">Document all preprocessing steps in a versioned configuration file</li><li id="">Maintain a changelog for data modifications</li><li id="">Store fixed evaluation sets with unique identifiers</li><li id="">Create automated checks that prevent training without data versioning information</li></ul>
+
+The focus here is on making data versioning automatic and mandatory rather than optional.
+
+## Experiment Metadata System
+
+Implement a structured logging system that requires:
+
+<ul id=""><li id="">Mandatory recording of environment details before experiments start</li><li id="">Standard templates for hyperparameter documentation</li><li id="">Automated capture of all model architecture decisions</li><li id="">Regular experiment summary reports</li><li id="">Team review sessions to ensure important context is captured</li></ul>
+
+The key innovation here is shifting from "remember to log" to "unable to proceed without logging."
+
+This workflow creates natural stopping points where teams must properly document and version before proceeding, making good practices the path of least resistance rather than an afterthought.
+
+# Building a Better Workflow: Using ZenML and Neptune
+
+A practical implementation to the above can be seen with the powerful combination of ZenML and Neptune comes in. We'll explore how integrating these two tools can streamline your ML workflows and provide increased visibility into your experiments.
+
+[ZenML](https://zenml.io/) is an extensible, open-source MLOps framework designed to create production-ready machine learning pipelines. It offers a simple, intuitive API that allows you to define your ML workflows as a series of steps, making it easy to manage complex pipelines.
+
+[Neptune](https://neptune.ai/) is an experiment tracker built for large-scale model training. It allows AI researchers to monitor their model training in real-time, visualize and compare experiments, and collaborate on them with a team.
+
+When combined, these tools offer a robust solution for managing your entire ML lifecycle, from experimentation to production.
+
+## A Real-World Example: Fine-Tuning a Language Model
+
+Let's dive into a practical example of how ZenML and Neptune can work together to enhance your ML workflows. We'll create a pipeline for fine-tuning a language model, tracking the entire process with Neptune.
+
+### Setting the Stage: Environment Setup
+
+First, let's get our environment ready:
+
+<div data-rt-embed-type="true"><pre><code fs-codehighlight-element="code" class="language-shell">pip install "zenml[server]"
+zenml integration install neptune huggingface -y
+</code></pre></div>
+
+Next, we'll configure our Neptune credentials using ZenML secrets:
+
+<div data-rt-embed-type="true"><pre><code fs-codehighlight-element="code" class="language-shell">zenml secret create neptune_secret --api_token=&lt;YOUR_NEPTUNE_API_TOKEN&gt;
+</code></pre></div>
+
+Now, let's register the Neptune experiment tracker in our ZenML stack:
+
+<div data-rt-embed-type="true"><pre><code fs-codehighlight-element="code" class="language-shell">zenml experiment-tracker register neptune_tracker \\
+ &nbsp; &nbsp;--flavor=neptune \\
+ &nbsp; &nbsp;--project=&lt;YOUR_NEPTUNE_PROJECT&gt; \\
+ &nbsp; &nbsp;--api_token={{neptune_secret.api_token}}
+
+zenml stack register neptune_stack -e neptune_tracker ... --set
+</code></pre></div>
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/3c8feaa1/66ed520fa333a0bb0e80b590_66ed50617483c897468708ee_image_20_21_.png" alt="ZenML stack description output showing a Stack Configuration table. It lists EXPERIMENT_TRACKER as neptune_experiment_tracker, ORCHESTRATOR as default, and ARTIFACT_STORE as default. The stack is named &#039;neptune_stack&#039; and is active. No labels are set for this stack." />
+  <figcaption>Tip: Use zenml stack describe to see the active stacks contents</figcaption>
+</figure>
+
+‍
+
+### Architecting the Pipeline
+
+Here's our ZenML pipeline for fine-tuning a DistilBERT model:
+
+<div data-rt-embed-type="true"><pre><code fs-codehighlight-element="code" class="language-python">from typing import Tuple
+from zenml import pipeline, step
+from zenml.integrations.neptune.experiment_trackers import NeptuneExperimentTracker
+from transformers import (
+ &nbsp; &nbsp;AutoModelForSequenceClassification,
+ &nbsp; &nbsp;AutoTokenizer,
+ &nbsp; &nbsp;Trainer,
+ &nbsp; &nbsp;TrainingArguments,
+ &nbsp; &nbsp;DistilBertForSequenceClassification,
+)
+import os
+from datasets import load_dataset, Dataset
+import numpy as np
+from sklearn.metrics import accuracy_score, precision_recall_fscore_support
+from zenml.client import Client
+from zenml.integrations.neptune.experiment_trackers import NeptuneExperimentTracker
+
+# Get the experiment tracker from the active stack
+experiment_tracker: NeptuneExperimentTracker = Client().active_stack.experiment_tracker
+
+# Set the environment variables for Neptune
+os.environ["WANDB_DISABLED"] = "true"
+
+
+@step
+def prepare_data() -&gt; Tuple[Dataset, Dataset]:
+ &nbsp; &nbsp;dataset = load_dataset("imdb")
+ &nbsp; &nbsp;tokenizer = AutoTokenizer.from_pretrained("distilbert-base-uncased")
+
+ &nbsp; &nbsp;def tokenize_function(examples):
+ &nbsp; &nbsp; &nbsp; &nbsp;return tokenizer(examples["text"], padding="max_length", truncation=True)
+
+ &nbsp; &nbsp;tokenized_datasets = dataset.map(tokenize_function, batched=True)
+ &nbsp; &nbsp;return (
+ &nbsp; &nbsp; &nbsp; &nbsp;tokenized_datasets["train"].shuffle(seed=42).select(range(1000)),
+ &nbsp; &nbsp; &nbsp; &nbsp;tokenized_datasets["test"].shuffle(seed=42).select(range(100)),
+ &nbsp; &nbsp;)
+
+
+@step(experiment_tracker="neptune_experiment_tracker", enable_cache=False)
+def train_model(
+ &nbsp; &nbsp;train_dataset: Dataset, eval_dataset: Dataset
+) -&gt; DistilBertForSequenceClassification:
+ &nbsp; &nbsp;model = AutoModelForSequenceClassification.from_pretrained(
+ &nbsp; &nbsp; &nbsp; &nbsp;"distilbert-base-uncased", num_labels=2
+ &nbsp; &nbsp;)
+
+ &nbsp; &nbsp;training_args = TrainingArguments(
+ &nbsp; &nbsp; &nbsp; &nbsp;output_dir="./results",
+ &nbsp; &nbsp; &nbsp; &nbsp;num_train_epochs=3,
+ &nbsp; &nbsp; &nbsp; &nbsp;per_device_train_batch_size=16,
+ &nbsp; &nbsp; &nbsp; &nbsp;per_device_eval_batch_size=16,
+ &nbsp; &nbsp; &nbsp; &nbsp;warmup_steps=500,
+ &nbsp; &nbsp; &nbsp; &nbsp;weight_decay=0.01,
+ &nbsp; &nbsp; &nbsp; &nbsp;logging_dir="./logs",
+ &nbsp; &nbsp; &nbsp; &nbsp;report_to=["neptune"],
+ &nbsp; &nbsp;)
+
+ &nbsp; &nbsp;def compute_metrics(eval_pred):
+ &nbsp; &nbsp; &nbsp; &nbsp;logits, labels = eval_pred
+ &nbsp; &nbsp; &nbsp; &nbsp;predictions = np.argmax(logits, axis=-1)
+ &nbsp; &nbsp; &nbsp; &nbsp;precision, recall, f1, _ = precision_recall_fscore_support(
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;labels, predictions, average="binary"
+ &nbsp; &nbsp; &nbsp; &nbsp;)
+ &nbsp; &nbsp; &nbsp; &nbsp;acc = accuracy_score(labels, predictions)
+ &nbsp; &nbsp; &nbsp; &nbsp;return {"accuracy": acc, "f1": f1, "precision": precision, "recall": recall}
+
+ &nbsp; &nbsp;# Get the Neptune run and log it to the Trainer
+ &nbsp; &nbsp;trainer = Trainer(
+ &nbsp; &nbsp; &nbsp; &nbsp;model=model,
+ &nbsp; &nbsp; &nbsp; &nbsp;args=training_args,
+ &nbsp; &nbsp; &nbsp; &nbsp;train_dataset=train_dataset,
+ &nbsp; &nbsp; &nbsp; &nbsp;eval_dataset=eval_dataset,
+ &nbsp; &nbsp; &nbsp; &nbsp;compute_metrics=compute_metrics,
+ &nbsp; &nbsp;)
+
+ &nbsp; &nbsp;trainer.train()
+
+ &nbsp; &nbsp;return model
+
+
+@pipeline
+def fine_tuning_pipeline():
+ &nbsp; &nbsp;train_dataset, eval_dataset = prepare_data()
+ &nbsp; &nbsp;model = train_model(train_dataset, eval_dataset)
+
+
+if __name__ == "__main__":
+ &nbsp; &nbsp;# Run the pipeline
+ &nbsp; &nbsp;fine_tuning_pipeline()
+</code></pre></div>
+
+This pipeline accomplishes the following:
+
+<ol id=""><li id="">Prepares a subset of the IMDB dataset for sentiment analysis.</li><li id="">Fine-tunes a DistilBERT model on this dataset.</li><li id="">Evaluates the model and logs the metrics to Neptune.</li></ol>
+
+### Launching the Pipeline and Exploring Results
+
+Now, let's set our pipeline in motion:
+
+<div data-rt-embed-type="true"><pre><code fs-codehighlight-element="code" class="language-python">fine_tuning_pipeline()
+</code></pre></div>
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/099944b9/66ed520fa333a0bb0e80b58d_66ed5100a85248944570cc69_image_20_22_.png" alt="ZenML pipeline visualization showing a workflow with three steps: &#039;prepare_data&#039; feeding into two &#039;datasets.arrow_dataset.Dataset&#039; outputs, which then feed into &#039;train_model&#039;, resulting in a &#039;transformers.models.distilbert.modeling&#039; output. The pipeline is named &#039;fine_tuning_pipeline-2024_09_20-08_56_05_145452&#039;. The interface shows tabs for Overview, Code, Logs, Configuration, and Metadata, with Metadata selected. The Metadata pane displays an experiment tracker URL." />
+</figure>
+
+As the pipeline runs, ZenML automatically creates Neptune experiments for each step where tracking is enabled. You can view these experiments in the Neptune UI by visiting https://app.neptune.ai/YOUR_WORKSPACE/YOUR_PROJECT/experiments.
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e1500dee/66ed520fa333a0bb0e80b59e_66ed51508ea6edd97d09f5ea_image_20_23_.png" alt="neptune.ai experiment tracking interface showing a side-by-side comparison of 5 runs (ZEN-59 to ZEN-63). The left panel lists runs, with ZEN-63, ZEN-62, and ZEN-61 selected. The right panel displays a detailed comparison table of run attributes including Creation Time, Owner (htahir1), Name, Tags, Group Tags, Custom Run Id, and Description. A toolbar at the top offers various view options and a &#039;Create a new run&#039; button." />
+</figure>
+
+In the Neptune UI, you'll have access to a wealth of information:
+
+<ol id=""><li id="">Detailed metrics for your fine-tuning run, including accuracy, F1 score, precision, and recall.</li><li id="">Comparisons between different runs of your pipeline to identify improvements or regressions.</li><li id="">Training curves to visualize how your model's performance evolved during training.</li><li id="">Collaboration tools to share results with team members for joint analysis and decision-making.</li></ol>
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/2ac60e94/66ed520fa333a0bb0e80b5ae_66ed517ab4c26193b769aa12_image_20_24_.png" alt="Neptune.ai experiment tracking interface showing a parallel coordinates plot of 63 runs. The left panel lists runs, while the right panel displays the plot with axes for sys/id, sys/name, and sys/tags. Lines represent individual runs, connecting their values across these dimensions. The plot shows clustering of runs into &#039;sklearn_regression&#039; and &#039;regression_sklearn&#039; groups. Interface includes options to Restore, Keep, Exclude, Export, and Download as PNG. 50 runs are currently selected." />
+</figure>
+
+## Beyond Tools: Building a Culture of Experiment Tracking
+
+Remember:
+
+<ul id=""><li id="">Tools enable good practices; they don't create them</li><li id="">Start with workflow design, then choose supporting tools</li><li id="">Create processes that make good practices the path of least resistance</li></ul>
+
+## Conclusion: Fix Your Workflow First
+
+While tools like ZenML and Neptune are powerful allies in ML development, they're most effective when supporting well-designed workflows. Before diving into tool selection:
+
+<ol id=""><li id="">Define clear tracking requirements</li><li id="">Establish data versioning protocols</li><li id="">Create explicit documentation requirements</li><li id="">Build processes that enforce good practices</li></ol>
+
+The best experiment tracking setup is the one your team will actually use consistently. Start with workflow, and let the tools serve your process - not the other way around.
+
+Ready to improve your ML experiment tracking? Start by examining your workflow, then let tools like ZenML and [Neptune ](https://neptune.ai/)help you implement and enforce good practices.

@@ -1,0 +1,165 @@
+---
+title: "Dynamic LLM Selection and Prompt Optimization Through Automated Evaluation and User Feedback"
+slug: "dynamic-llm-selection-and-prompt-optimization-through-automated-evaluation-and-user-feedback"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "6964c51f50b0157abf76ab92"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2026-02-03T15:19:04.226Z"
+  lastUpdated: "2026-01-12T10:12:54.772Z"
+  createdOn: "2026-01-12T09:55:43.150Z"
+llmopsTags:
+  - "customer-support"
+  - "chatbot"
+  - "summarization"
+  - "high-stakes-application"
+  - "prompt-engineering"
+  - "embeddings"
+  - "semantic-search"
+  - "human-in-the-loop"
+  - "cost-optimization"
+  - "latency-optimization"
+  - "evals"
+  - "few-shot"
+  - "kubernetes"
+  - "serverless"
+  - "monitoring"
+  - "databases"
+  - "orchestration"
+  - "mistral"
+  - "postgresql"
+  - "amazon-aws"
+  - "anthropic"
+  - "meta"
+  - "microsoft-azure"
+company: "Beekeeper"
+summary: "Beekeeper, a digital workplace platform for frontline workers, faced the challenge of selecting and optimizing LLMs and prompts across rapidly evolving models while personalizing responses for different users and use cases. They built an Amazon Bedrock-powered system that continuously evaluates multiple model/prompt combinations using synthetic test data and real user feedback, ranks them on a live leaderboard based on quality, cost, and speed metrics, and automatically routes requests to the best-performing option. The system also mutates prompts based on user feedback to create personalized variations while using drift detection to ensure quality standards are maintained. This approach resulted in 13-24% better ratings on responses when aggregated per tenant, reduced manual labor in model selection, and enabled rapid adaptation to new models and user preferences."
+link: "https://aws.amazon.com/blogs/machine-learning/how-beekeeper-optimized-user-personalization-with-amazon-bedrock?tag=soumet-20"
+year: 2026
+seo:
+  title: "Beekeeper: Dynamic LLM Selection and Prompt Optimization Through Automated Evaluation and User Feedback - ZenML LLMOps Database"
+  description: "Beekeeper, a digital workplace platform for frontline workers, faced the challenge of selecting and optimizing LLMs and prompts across rapidly evolving models while personalizing responses for different users and use cases. They built an Amazon Bedrock-powered system that continuously evaluates multiple model/prompt combinations using synthetic test data and real user feedback, ranks them on a live leaderboard based on quality, cost, and speed metrics, and automatically routes requests to the best-performing option. The system also mutates prompts based on user feedback to create personalized variations while using drift detection to ensure quality standards are maintained. This approach resulted in 13-24% better ratings on responses when aggregated per tenant, reduced manual labor in model selection, and enabled rapid adaptation to new models and user preferences."
+  canonical: "https://www.zenml.io/llmops-database/dynamic-llm-selection-and-prompt-optimization-through-automated-evaluation-and-user-feedback"
+  ogTitle: "Beekeeper: Dynamic LLM Selection and Prompt Optimization Through Automated Evaluation and User Feedback - ZenML LLMOps Database"
+  ogDescription: "Beekeeper, a digital workplace platform for frontline workers, faced the challenge of selecting and optimizing LLMs and prompts across rapidly evolving models while personalizing responses for different users and use cases. They built an Amazon Bedrock-powered system that continuously evaluates multiple model/prompt combinations using synthetic test data and real user feedback, ranks them on a live leaderboard based on quality, cost, and speed metrics, and automatically routes requests to the best-performing option. The system also mutates prompts based on user feedback to create personalized variations while using drift detection to ensure quality standards are maintained. This approach resulted in 13-24% better ratings on responses when aggregated per tenant, reduced manual labor in model selection, and enabled rapid adaptation to new models and user preferences."
+---
+
+## Overview
+
+Beekeeper provides a mobile-first digital workplace platform specifically designed for frontline, deskless workers across industries like hospitality, manufacturing, retail, healthcare, and transportation. The company connects non-desk employees with each other and headquarters through communication tools, task management, and integrations with existing business systems. This case study focuses on how Beekeeper developed a sophisticated LLMOps system to address one of the most pressing challenges in production LLM deployment: continuously selecting optimal model and prompt combinations as the landscape rapidly evolves, while also personalizing responses for different users and tenants.
+
+The specific use case highlighted is chat summarization for frontline workers. When employees return to their shifts, they often face numerous unread messages in group chats. Rather than reading through everything, they can request an AI-generated summary with relevant action items. This feature must understand conversation context, identify important points, recognize action items, and present information concisely—all while adapting to individual user preferences and communication styles.
+
+## The Core Challenge
+
+The case study identifies several interconnected challenges that make LLM operations particularly complex. First, the rapid evolution of LLMs makes it difficult to select the best model for each specific use case. What performs optimally today may be surpassed by a new model or version tomorrow. Second, system prompts are becoming larger and more complex, requiring substantial resources to evaluate and improve effectively—resources that many mid-sized companies lack. Third, optimizing prompts for quality and cost is not a one-time decision but rather an ongoing process as models, pricing structures, and business requirements change. Fourth, personalization adds another layer of complexity, as different users and tenants may prefer different communication styles and levels of detail.
+
+## Solution Architecture
+
+Beekeeper's solution consists of a two-phase system built on AWS infrastructure. The architecture leverages Amazon EventBridge for scheduling evaluation cycles, Amazon Elastic Kubernetes Service (EKS) for orchestration of evaluation workloads, AWS Lambda for lightweight evaluation functions, Amazon RDS for storing evaluation results and leaderboard data, and Amazon Mechanical Turk for manual validation of a statistically significant sample of outputs.
+
+The first phase focuses on building a baseline leaderboard. A scheduler triggers a coordinator component, which fetches synthetic test data representing real-world use cases. The coordinator sends this test data to multiple evaluators, each testing a different model/prompt pair. These evaluators return results across multiple dimensions: quality metrics, latency measurements, and cost calculations. A portion of evaluations—7% based on statistical sampling using Cochran's formula—is sent to Amazon Mechanical Turk for manual validation to ensure the automated evaluation system is working correctly.
+
+The system then performs prompt mutation on the most promising candidates, creating variations that are evaluated again using the same pipeline. The best performers are saved to the leaderboard, which continuously ranks all model/prompt pairs. Importantly, Beekeeper uses multiple models in production simultaneously based on their leaderboard positions, with traffic distributed as follows: the top performer receives 50% of requests, the second receives 30%, and the third receives 20%. This approach provides both optimization and hedging against model-specific failures.
+
+The second phase incorporates user feedback for personalization. When users provide feedback (thumbs up/down and comments), the system fetches the current top-ranked model/prompt pairs from the leaderboard and sends them along with the feedback to a mutator component. The mutator uses an LLM to generate personalized prompt variations that incorporate the user's preferences. These personalized prompts are then evaluated through a drift detector, which compares their outputs against the baseline to ensure they haven't strayed too far from quality standards. Validated personalized prompts are saved and associated with specific users or tenants, allowing for tailored experiences without affecting other users.
+
+## Evaluation Methodology
+
+The evaluation system is particularly sophisticated, combining multiple metrics to create a holistic assessment of each model/prompt pair. This multi-faceted approach is critical because no single metric captures all dimensions of quality, and different use cases may prioritize different aspects.
+
+The **compression ratio** metric evaluates whether summaries achieve the target length while maintaining information density. The implementation uses a programmatic scoring function that rewards compression ratios close to a target (1/5 of original text length) and penalizes deviations. The scoring also incorporates a penalty for exceeding a maximum length threshold of 650 characters. The algorithm calculates an actual compression ratio, compares it to an acceptable range defined by the target ratio plus/minus a 5% margin, assigns a base score from 0-100 based on adherence to this range, applies length penalty if applicable, and ensures the final score doesn't go below zero.
+
+The **presence of action items** metric ensures that summaries correctly identify tasks relevant to specific users. This is evaluated by comparing generated summaries to ground truth data. The system uses regular expressions to extract bullet-pointed action items from a designated "Action items:" section in the output. These extracted items are then sent to an LLM with instructions to verify correctness. The scoring assigns +1 for each correctly identified action item and -1 for false positives, with normalization applied to avoid unfairly penalizing or rewarding summaries with more or fewer total action items.
+
+**Hallucination detection** employs both automated and manual approaches. For automated detection, Beekeeper uses cross-LLM evaluation: a summary generated by one model family (say, Mistral Large) is evaluated by a different model family (such as Anthropic's Claude) to check whether facts in the summary match the original context. The use of Amazon Bedrock's Converse API makes this particularly straightforward, as switching between models requires only changing the model identifier string. This cross-family approach helps mitigate the risk of consistent hallucinations across models from the same family. Additionally, manual verification on a small sample (7%) guards against "double hallucination" scenarios where both the generating model and the evaluating model make the same mistake. The scoring is binary: 1 for no hallucination detected, -1 if any hallucination is found.
+
+**Vector-based semantic similarity** provides an additional quality dimension when ground truth data is available. Beekeeper selects embedding models from the MTEB Leaderboard, prioritizing large vector dimensionality to maximize information capture. Their baseline uses Qwen3, which provides 4096-dimensional embeddings with 16-bit quantization for efficient computation. They also leverage embedding models directly from Amazon Bedrock. After computing embeddings for both the ground truth answer and the generated summary, cosine similarity measures the semantic alignment between them, providing a quantitative measure of how well the generated summary captures the meaning of the ideal summary.
+
+The baseline evaluation process uses a fixed set of predefined queries that are manually annotated with ground truth outputs representing ideal summaries. These queries combine examples from public datasets and hand-crafted cases that better represent customer-specific domains. This hybrid approach ensures both generalizability and domain relevance.
+
+## Manual Validation with Amazon Mechanical Turk
+
+An important aspect of Beekeeper's evaluation pipeline is the incorporation of human validation through Amazon Mechanical Turk. Rather than evaluating every output manually (which would be prohibitively expensive and slow), they use statistical sampling based on Cochran's formula to determine the minimum sample size needed for significance. Based on their calculations, they review 7% of all evaluations manually.
+
+This manual validation serves multiple purposes. First, it provides a ground truth check on the automated LLM-based evaluation system. If the automated system is working correctly, the percentage of responses identified as containing hallucinations should match prior expectations within a two-percentage-point margin. Divergence beyond this threshold signals that the automated evaluation needs revision. Second, manual validation catches edge cases and failure modes that automated systems might miss. Third, it provides qualitative insights into user experience aspects that are difficult to quantify.
+
+## Prompt Mutation Process
+
+The prompt mutation mechanism represents one of the most innovative aspects of Beekeeper's system. Rather than relying solely on human prompt engineers to iteratively refine prompts, the system uses LLMs to generate prompt variations automatically. This creates an "organic system that evolves over time," as the case study describes it.
+
+The mutation process works as follows. After baseline evaluation, the four best-performing model/prompt pairs are selected for mutation. The system enriches the original prompt with several elements: a mutation instruction (such as "Add hints which would help LLM solve this problem" or "Modify instructions to be simpler"), any received user feedback, a thinking style (a cognitive approach like "Make it creative" or "Think in steps" that guides the mutation), and relevant user context. This enriched prompt is sent to an LLM, which generates a mutated version.
+
+Example mutation prompts include:
+- "Add hints which would help LLM solve this problem"
+- "Modify Instructions to be simpler"
+- "Repeat that instruction in another way"
+- "What additional instructions would you give someone to include this feedback {feedback} into that instructions"
+
+The mutated prompts are added to the evaluation pool, scored using the same metrics, and their results incorporated into the leaderboard. Beekeeper typically performs two mutation cycles, creating 10 new prompts in each cycle. This iterative mutation approach allows the system to explore the prompt space more thoroughly than would be practical with purely manual prompt engineering.
+
+## Personalization and Drift Detection
+
+When incorporating user feedback for personalization, Beekeeper faces a critical challenge: how to adapt prompts to individual preferences without allowing user input to completely change model behavior through prompt injection or drift that undermines core functionality. Their solution uses drift detection to maintain quality guardrails.
+
+After a personalized prompt is generated based on user feedback, it goes through drift detection, which compares its outputs to the baseline established during the initial evaluation phase. The drift detector checks whether the personalized version still performs adequately across the core evaluation metrics. If the personalized prompt deviates too much from quality standards—for instance, if it starts producing significantly less accurate summaries or increases hallucinations—it is rejected. Only prompts that pass drift detection are saved and associated with specific users or tenants.
+
+This approach ensures that feedback given by one user doesn't negatively impact others while still allowing meaningful personalization. The system aims to create user- or tenant-specific improvements that enhance experience without compromising core quality. Preliminary results suggest that personalized prompts deliver 13-24% better ratings on responses when aggregated per tenant, indicating that users prefer communication styles tailored to their preferences.
+
+An interesting observation from Beekeeper is that certain groups of people prefer different styles of communication. By mapping evaluation results to customer interactions, they can present more tailored experiences. For example, some tenants might prefer concise, bullet-pointed summaries, while others might prefer more narrative formats with additional context.
+
+## Production Implementation Example
+
+The case study provides concrete numbers illustrating the scale and cost of their evaluation pipeline. Starting with eight model/prompt pairs (four base prompts tested across two models, with models including Amazon Nova, Anthropic Claude 3.5 Sonnet, Meta Llama 3, and Mistral 8x7B), the baseline evaluation requires generating 20 summaries per pair, totaling 160 summaries. Each summary undergoes three static checks (compression ratio, action items, vector comparison) and two LLM-based checks (hallucination detection via cross-LLM evaluation and action item validation), creating 320 additional LLM calls. The baseline evaluation thus involves 480 total LLM calls.
+
+After selecting the top two pairs, the system generates 10 mutations for each, creating 20 new model/prompt pairs. Each of these undergoes the same evaluation process: 20 summaries plus checks, resulting in 600 LLM calls per mutation cycle. With two mutation cycles, this adds 1,200 LLM calls. In total, the system evaluates (8 + 10 + 10) × 2 model/prompt pairs.
+
+The entire process consumes approximately 8,352,000 input tokens and 1,620,000 output tokens, costing around $48 per complete evaluation cycle. While this might seem significant, it represents a relatively modest investment considering it automates a process that would otherwise require substantial manual effort from engineers and data scientists. Moreover, this cost is incurred periodically (scheduled via EventBridge) rather than continuously, and it optimizes production performance that serves many thousands of user requests.
+
+For incorporating user feedback into personalization, the cost is much lower. Creating three personalized prompts and running them through drift detection requires only four LLM calls, consuming approximately 4,800 input tokens and 500 output tokens—a negligible cost compared to the value of personalized user experiences.
+
+## Technology Stack and AWS Integration
+
+Beekeeper's solution heavily leverages AWS services, demonstrating how cloud infrastructure can support sophisticated LLMOps workflows. Amazon Bedrock serves as the foundation, providing access to multiple model families through a unified API. The Converse API specifically makes it simple to switch between models by changing just the model identifier, which is essential for their cross-LLM evaluation approach and for testing new models as they become available.
+
+Amazon EKS orchestrates the evaluation workloads, providing scalability and reliability for the computationally intensive evaluation cycles. AWS Lambda handles lightweight evaluation functions, offering serverless execution for components that don't require persistent infrastructure. Amazon RDS stores evaluation results, leaderboard rankings, and metadata about model/prompt pairs, providing queryable structured storage for time-series performance data. Amazon EventBridge schedules periodic evaluation cycles, ensuring the leaderboard stays current without manual intervention. Amazon Mechanical Turk integrates for human validation, enabling cost-effective manual review at scale.
+
+This architecture is designed for continuous operation with minimal manual intervention. Models are automatically updated as newer versions become available via Amazon Bedrock, and the evaluation pipeline automatically incorporates them into the leaderboard. This "set it and forget it" approach allows engineering teams to focus on defining good evaluation metrics and mutation strategies rather than constantly monitoring and manually updating model selections.
+
+## Benefits and Business Impact
+
+The case study claims several tangible benefits, though as with any vendor-published case study, these should be interpreted with appropriate skepticism and recognition that results may vary across different contexts.
+
+The most quantifiable benefit is the 13-24% improvement in user ratings on responses when aggregated per tenant. This improvement is attributed to the personalization capabilities that allow different tenants to receive summaries in their preferred communication styles. However, the case study doesn't provide details on how this was measured, what the baseline was, or whether this was a controlled experiment or observational data from production.
+
+Other claimed benefits include reduced manual labor through automation of LLM and prompt selection processes, shortened feedback cycles between identifying issues and deploying improvements, capacity to create user- or tenant-specific improvements without affecting other users, and seamless integration and performance estimation for new models as they become available.
+
+From an operational perspective, the solution addresses real pain points in LLM operations. The continuous evaluation approach means teams don't need to manually re-benchmark models when new versions are released. The automated prompt mutation reduces dependency on scarce prompt engineering expertise. The multi-model deployment strategy (50/30/20 traffic split) provides resilience against model-specific failures or degradations. The drift detection prevents personalization from undermining core functionality.
+
+## Critical Assessment and Considerations
+
+While Beekeeper's approach is sophisticated and addresses real LLMOps challenges, there are several considerations worth noting. First, the solution assumes access to ground truth data for evaluation, which may not be available for all use cases. Beekeeper addresses this by combining public datasets with hand-crafted examples, but creating high-quality ground truth data requires significant upfront investment.
+
+Second, the reliance on LLM-based evaluation introduces the risk of systematic biases. If the evaluating LLM consistently misjudges certain types of errors, the entire leaderboard could be skewed. The manual validation through Mechanical Turk helps mitigate this, but only samples 7% of evaluations. There's an implicit assumption that the 7% sample is representative of the full distribution.
+
+Third, the cost calculations provided ($48 per full evaluation cycle) assume specific token volumes and pricing. As prompt complexity increases or evaluation frequency rises, costs could become more significant. Organizations would need to balance evaluation frequency against cost constraints.
+
+Fourth, the case study doesn't discuss failure modes or how the system handles degraded performance. For example, what happens if all models in the leaderboard perform poorly on a new type of input? How quickly can human operators intervene if automated evaluations miss a critical quality issue?
+
+Fifth, the compression ratio metric's specific parameters (target ratio of 1/5, margin of 5%, maximum length of 650 characters) appear to be hand-tuned for their specific use case. Organizations adopting this approach would need to determine appropriate values for their contexts.
+
+Sixth, while the personalization approach is innovative, there's limited discussion of how user feedback is validated. If a user consistently gives negative feedback despite receiving accurate summaries, should the system continue adapting to their preferences? How does the system distinguish between legitimate style preferences and unreasonable expectations?
+
+Finally, the case study is published by AWS and focuses heavily on AWS services, which naturally positions AWS Bedrock as the solution. While Amazon Bedrock does offer genuine advantages for multi-model access, organizations should consider whether they want to be tightly coupled to AWS infrastructure or whether a more provider-agnostic approach might offer better long-term flexibility.
+
+## Broader Implications for LLMOps
+
+Despite these considerations, Beekeeper's approach demonstrates several important principles for production LLM systems. The emphasis on continuous evaluation rather than one-time model selection acknowledges the dynamic nature of the LLM landscape. The combination of automated and manual evaluation recognizes that no single evaluation approach is sufficient. The multi-metric evaluation framework captures different quality dimensions that matter for real users. The prompt mutation strategy represents an interesting middle ground between fully manual prompt engineering and completely automated prompt optimization.
+
+The personalization approach with drift detection shows how to balance customization with quality control—a challenge many organizations face as they try to serve diverse user populations with LLM-powered features. The traffic splitting strategy (50/30/20 across top three model/prompt pairs) provides both optimization and risk management, ensuring that even if the top performer has issues, most users still receive good experiences from the other candidates.
+
+For organizations considering similar approaches, Beekeeper's solution suggests starting small with a limited set of models and prompts, defining clear evaluation metrics that align with business objectives, building automated evaluation infrastructure before scaling to many model/prompt combinations, incorporating both synthetic and real user data for evaluation, and planning for continuous operation rather than periodic manual interventions.
+
+The chat summarization use case also highlights how even seemingly simple features can benefit from sophisticated LLMOps. Summarization is a well-understood task, yet optimizing it for diverse users across multiple dimensions (accuracy, conciseness, action item identification, personalization) requires substantial infrastructure and methodology.

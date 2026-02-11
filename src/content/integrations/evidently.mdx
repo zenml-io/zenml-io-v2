@@ -1,0 +1,139 @@
+---
+title: "Evidently"
+slug: "evidently"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "6527b8a9742b8bf1e7823972"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2024-10-22T12:54:05.951Z"
+  lastUpdated: "2024-10-15T11:17:23.809Z"
+  createdOn: "2023-10-12T09:13:13.481Z"
+integrationType: "data-validator"
+logo:
+  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/30001cf5/66d868feae26c1d6b7e42f24_evidently.png"
+shortDescription: "Ensure data quality and guard against drift with Evidently profiling in ZenML"
+docsUrl: "https://docs.zenml.io/stack-components/data-validators/evidently"
+mainImage:
+  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/b8f413a4/66e02ec6c735595e832d5d8b_image__3_.png"
+relatedBlogPosts:
+  - "10-reasons-zenml-evidently-ais-monitoring-tool"
+seo:
+  title: "Integrate Evidently with ZenML - Data Validator Integrations"
+  description: "Ensure data quality and guard against drift with Evidently profiling in ZenML"
+  canonical: "https://www.zenml.io/integrations/evidently"
+  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/b8f413a4/66e02ec6c735595e832d5d8b_image__3_.png"
+  ogTitle: "Integrate Evidently with ZenML - Data Validator Integrations"
+  ogDescription: "Ensure data quality and guard against drift with Evidently profiling in ZenML"
+---
+
+<ul id=""><li id="">Seamless integration of Evidently data profiling and validation steps into ZenML pipelines</li><li id="">Automated data quality checks and data drift detection for improved ML reliability</li><li id="">Comprehensive model performance analysis and comparison within ZenML workflows</li><li id="">Easy configuration and customization of Evidently metrics and tests using ZenML utilities</li><li id="">Direct visualization of Evidently reports and test results in the ZenML dashboard</li></ul>
+
+‍<ul id=""><li id="">Comprehensive data quality analysis and reporting</li><li id="">Automated data drift and model drift detection</li><li id="">Flexible configuration of custom metrics and validation tests</li><li id="">Support for both classification and regression tasks</li><li id="">Detailed insights into feature behavior and distributions</li></ul>
+
+‍<div data-rt-embed-type="true"><pre><code fs-codehighlight-element="code" class="language-python">
+import pandas as pd
+
+from zenml import pipeline, step
+
+from typing_extensions import Tuple, Annotated
+
+from zenml.artifacts.artifact_config import ArtifactConfig
+
+import pandas as pd
+from sklearn import datasets
+
+@step
+def data_loader() -&gt; pd.DataFrame:
+ &nbsp; &nbsp;"""Load the OpenML women's e-commerce clothing reviews dataset."""
+ &nbsp; &nbsp;reviews_data = datasets.fetch_openml(
+ &nbsp; &nbsp; &nbsp; &nbsp;name="Womens-E-Commerce-Clothing-Reviews", version=2, as_frame="auto"
+ &nbsp; &nbsp;)
+ &nbsp; &nbsp;reviews = reviews_data.frame
+ &nbsp; &nbsp;return reviews
+ &nbsp; &nbsp;
+@step
+def data_splitter(
+ &nbsp; &nbsp;reviews: pd.DataFrame,
+) -&gt; Tuple[Annotated[pd.DataFrame, ArtifactConfig(name="reference_dataset")], Annotated[pd.DataFrame, ArtifactConfig(name="comparison_dataset")]]:
+ &nbsp; &nbsp;"""Splits the dataset into two subsets, the reference dataset and the
+ &nbsp; &nbsp;comparison dataset.
+ &nbsp; &nbsp;"""
+ &nbsp; &nbsp;ref_df = reviews[reviews.Rating &gt; 3].sample(
+ &nbsp; &nbsp; &nbsp; &nbsp;n=5000, replace=True, ignore_index=True, random_state=42
+ &nbsp; &nbsp;)
+ &nbsp; &nbsp;comp_df = reviews[reviews.Rating &lt; 3].sample(
+ &nbsp; &nbsp; &nbsp; &nbsp;n=5000, replace=True, ignore_index=True, random_state=42
+ &nbsp; &nbsp;)
+ &nbsp; &nbsp;return ref_df, comp_df
+
+
+from zenml.integrations.evidently.metrics import EvidentlyMetricConfig
+from zenml.integrations.evidently.steps import (
+ &nbsp; &nbsp;EvidentlyColumnMapping,
+ &nbsp; &nbsp;evidently_report_step,
+)
+
+text_data_report = evidently_report_step.with_options(
+ &nbsp; &nbsp;parameters=dict(
+ &nbsp; &nbsp; &nbsp; &nbsp;column_mapping=EvidentlyColumnMapping(
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;target="Rating",
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;numerical_features=["Age", "Positive_Feedback_Count"],
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;categorical_features=[
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;"Division_Name",
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;"Department_Name",
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;"Class_Name",
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;],
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;text_features=["Review_Text", "Title"],
+ &nbsp; &nbsp; &nbsp; &nbsp;),
+ &nbsp; &nbsp; &nbsp; &nbsp;metrics=[
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;EvidentlyMetricConfig.metric("DataQualityPreset"),
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;EvidentlyMetricConfig.metric(
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;"TextOverviewPreset", column_name="Review_Text"
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;),
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;EvidentlyMetricConfig.metric_generator(
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;"ColumnRegExpMetric",
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;columns=["Review_Text", "Title"],
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;reg_exp=r"[A-Z][A-Za-z0-9 ]*",
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;),
+ &nbsp; &nbsp; &nbsp; &nbsp;],
+ &nbsp; &nbsp; &nbsp; &nbsp;# We need to download the NLTK data for the TextOverviewPreset
+ &nbsp; &nbsp; &nbsp; &nbsp;download_nltk_data=True,
+ &nbsp; &nbsp;),
+)
+
+
+import json
+
+@step
+def text_analyzer(
+ &nbsp; &nbsp;report: str,
+) -&gt; Tuple[Annotated[int, ArtifactConfig(name="missing_values_current")], Annotated[int, ArtifactConfig(name="missing_values_reference")]]:
+ &nbsp; &nbsp;"""Analyze the Evidently text Report and return the number of missing
+ &nbsp; &nbsp;values in the reference and comparison datasets.
+ &nbsp; &nbsp;"""
+ &nbsp; &nbsp;result = json.loads(report)["metrics"][0]["result"]
+ &nbsp; &nbsp;return (
+ &nbsp; &nbsp; &nbsp; &nbsp;result["current"]["number_of_missing_values"],
+ &nbsp; &nbsp; &nbsp; &nbsp;result["reference"]["number_of_missing_values"],
+ &nbsp; &nbsp;)
+
+
+@pipeline(enable_cache=False)
+def text_data_report_test_pipeline():
+ &nbsp; &nbsp;"""Links all the steps together in a pipeline."""
+ &nbsp; &nbsp;data = data_loader()
+ &nbsp; &nbsp;reference_dataset, comparison_dataset = data_splitter(data)
+ &nbsp; &nbsp;report, _ = text_data_report(
+ &nbsp; &nbsp; &nbsp; &nbsp;reference_dataset=reference_dataset,
+ &nbsp; &nbsp; &nbsp; &nbsp;comparison_dataset=comparison_dataset,
+ &nbsp; &nbsp;)
+ &nbsp; &nbsp;text_analyzer(report)
+
+
+if __name__ == "__main__":
+ &nbsp; &nbsp;# Run the pipeline
+ &nbsp; &nbsp;text_data_report_test_pipeline()
+
+</code></pre></div>In the code above, Evidently is used within a ZenML pipeline to monitor and validate data quality and text data characteristics. The **EvidentlyColumnMapping** is configured to specify targets, numerical features, categorical features, and text features, helping Evidently understand the data structure. The **evidently_report_step** generates a report with various metrics, including **DataQualityPreset** for data quality overview, **TextOverviewPreset** for text data overview, and **ColumnRegExpMetric** to check for specific patterns in text columns. The **text_analyzer** step then analyzes this report to extract the number of missing values in the reference and comparison datasets. The pipeline links these steps, loading the data, splitting it into reference and comparison datasets, generating the Evidently report, and analyzing it for missing values. This setup integrates Evidently’s capabilities into a ZenML pipeline for comprehensive data validation.

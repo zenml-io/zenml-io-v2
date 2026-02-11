@@ -1,0 +1,109 @@
+---
+title: "RAG-Powered Terraform Support Slackbot"
+slug: "rag-powered-terraform-support-slackbot"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "67ac989827f37c842a917e0d"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:00:22.063Z"
+  createdOn: "2025-02-12T12:48:24.565Z"
+llmopsTags:
+  - "chatbot"
+  - "question-answering"
+  - "rag"
+  - "embeddings"
+  - "semantic-search"
+  - "vector-search"
+  - "prompt-engineering"
+  - "chunking"
+  - "fastapi"
+  - "elasticsearch"
+  - "api-gateway"
+  - "serverless"
+  - "documentation"
+  - "amazon-aws"
+  - "anthropic"
+company: "Benchling"
+summary: "Benchling developed a Slackbot to help engineers navigate their complex Terraform Cloud infrastructure by implementing a RAG-based system using Amazon Bedrock. The solution combines documentation from Confluence, public Terraform docs, and past Slack conversations to provide instant, relevant answers to infrastructure questions, eliminating the need to search through lengthy FAQs or old Slack threads. The system successfully demonstrates a practical application of LLMs in production for internal developer support."
+link: "https://benchling.engineering/building-an-llm-powered-slackbot-557a6241e993"
+year: 2024
+seo:
+  title: "Benchling: RAG-Powered Terraform Support Slackbot - ZenML LLMOps Database"
+  description: "Benchling developed a Slackbot to help engineers navigate their complex Terraform Cloud infrastructure by implementing a RAG-based system using Amazon Bedrock. The solution combines documentation from Confluence, public Terraform docs, and past Slack conversations to provide instant, relevant answers to infrastructure questions, eliminating the need to search through lengthy FAQs or old Slack threads. The system successfully demonstrates a practical application of LLMs in production for internal developer support."
+  canonical: "https://www.zenml.io/llmops-database/rag-powered-terraform-support-slackbot"
+  ogTitle: "Benchling: RAG-Powered Terraform Support Slackbot - ZenML LLMOps Database"
+  ogDescription: "Benchling developed a Slackbot to help engineers navigate their complex Terraform Cloud infrastructure by implementing a RAG-based system using Amazon Bedrock. The solution combines documentation from Confluence, public Terraform docs, and past Slack conversations to provide instant, relevant answers to infrastructure questions, eliminating the need to search through lengthy FAQs or old Slack threads. The system successfully demonstrates a practical application of LLMs in production for internal developer support."
+---
+
+## Overview
+
+Benchling, a life sciences software company, operates cloud infrastructure across multiple regions and environments, managing approximately 160,000 Terraform resources across five data centers using a self-hosted Terraform Cloud implementation. With around 50 engineers—ranging from infrastructure specialists to application engineers new to Terraform—making infrastructure changes monthly, the team faced a common enterprise challenge: knowledge was scattered across a 20-page Confluence FAQ and numerous Slack threads, making it difficult and time-consuming for engineers to find answers to their questions.
+
+The team built a RAG (Retrieval-Augmented Generation) powered Slackbot that allows engineers to ask natural language questions and receive contextual answers drawn from their internal knowledge base. This project serves both as a practical solution to their immediate documentation problem and as a reference implementation for future LLM-powered tools at Benchling.
+
+## Technical Architecture
+
+The architecture is intentionally simple and leverages AWS managed services to minimize operational overhead. The core components include a Slack App as the user interface, AWS API Gateway to handle incoming webhook requests, AWS Lambda running a stateless Python 3.12 function, Amazon Bedrock for the LLM orchestration, and AWS OpenSearch Serverless as the vector database.
+
+The system uses two distinct models for different purposes. Amazon Titan Text Embeddings v2 handles the embedding of documents and queries into vector representations, while Claude 3.5 Sonnet v2 (anthropic.claude-3-5-sonnet-20241022-v2:0) performs the actual inference and response generation. This separation of concerns between embedding and inference models is a common and recommended pattern in production RAG systems.
+
+The Lambda function is configured with 128MB of memory and a 60-second timeout, running on ARM64 architecture. The function retrieves Slack credentials from AWS Secrets Manager and communicates with Bedrock using the RetrieveAndGenerate and Retrieve API actions. CloudWatch logs are retained for 90 days, providing observability into the system's behavior.
+
+## Data Sources and Knowledge Base Configuration
+
+The knowledge base ingests four distinct data sources, demonstrating how disparate information can be unified into a single queryable system:
+
+- **Confluence Documentation**: The team's 20-page Terraform Cloud FAQ was exported to PDF and stored in S3. The team noted that PDF parsing was surprisingly robust, working on the first attempt despite losing images.
+
+- **Public Web Documentation**: Selected pages from Hashicorp's public Terraform Cloud and Terraform language documentation were crawled and ingested.
+
+- **Slack Conversation History**: Historical Slack threads documenting Terraform Cloud issues and their solutions were manually copied into text files and stored in S3. This was a manual process for the proof of concept, with plans to automate thread capture in the future.
+
+Amazon Bedrock's knowledge base setup wizard automates much of the infrastructure provisioning, including creating the OpenSearch Serverless database, configuring IAM roles and policies, and establishing data source connections. The team notes this reduced what would have been a multi-day setup project to a matter of minutes.
+
+## Key Learnings and Optimizations
+
+One of the most significant learnings relates to chunking strategies for vector embeddings. The team initially used Bedrock's default chunking of 300 tokens (approximately one paragraph), which led to substandard results because their FAQ answers often span multiple paragraphs with ordered steps. Search results were being cut off mid-answer, providing incomplete context to the LLM prompt.
+
+After experimentation, they found that hierarchical chunking with a parent token size of 1500 tokens (approximately 5 paragraphs) worked best for their use case. The key insight is that token size should be near the upper limit of your longest answers, but not larger than necessary to avoid feeding irrelevant context to the LLM which could confuse responses. This highlights an important LLMOps principle: chunking strategy must be tuned to the specific characteristics of your source documents.
+
+The team shares the full Terraform code for their infrastructure (excluding the Bedrock resources which aren't yet supported by the Terraform AWS provider). The code demonstrates proper IAM policy scoping, secrets management integration, and modular infrastructure patterns using community Terraform modules (terraform-aws-modules/apigateway-v2/aws and terraform-aws-modules/lambda/aws).
+
+## Limitations and Technical Debt
+
+The team is transparent about several limitations of their current implementation:
+
+**Image Processing**: The knowledge base cannot process images in queries or include images from documentation in responses. This is particularly limiting given that infrastructure documentation typically includes architecture diagrams, UI screenshots, and error message examples.
+
+**Terraform Provider Support**: At the time of writing, the AWS Terraform provider doesn't support the Bedrock knowledge base resources they used, forcing manual creation through the AWS console. This creates infrastructure management technical debt.
+
+**Manual Data Synchronization**: Data sources require manual sync operations. The team plans to implement CloudWatch event cron triggers for at least weekly automated synchronization.
+
+**Stateless Conversations**: The Lambda function is stateless, meaning each message is processed independently without conversation context. Multi-turn conversations where users can build on previous answers are not currently supported.
+
+**No Citation Links**: While the Bedrock UI shows answer citations during testing, these aren't currently passed through to Slack responses, reducing transparency about source material.
+
+## Future Enhancement Plans
+
+The team has identified several improvements for production maturity:
+
+- Implementing citation links in Slack responses to show source documents
+- Creating a mechanism to save relevant Slack threads to the knowledge base via Slack commands (e.g., "@help-terraform-cloud remember this thread")
+- Connecting to Confluence via API instead of manual PDF exports
+- Adding multi-turn conversation support with session context preservation
+- Automating data source synchronization on a regular schedule
+
+## Production Considerations and Risk Assessment
+
+Before development, the team conducted a security and privacy risk assessment, asking critical questions about data sensitivity, the downside risk of incorrect results or hallucinations, and which models were already approved for use at Benchling. This pre-work is essential for any LLMOps project, particularly when dealing with internal systems and documentation.
+
+The team suggests that the ease of deployment could enable numerous targeted help bots across an organization—for HR questions, customer issue resolution, software error code explanation, and more. They note that using more tightly-scoped datasets reduces hallucination risk and improves the relevance of vector database results.
+
+## Replicability and Broader Applicability
+
+The case study positions this as a reference implementation for future LLM-powered tools at Benchling. The team emphasizes that good candidates for this pattern have two characteristics: situations where LLM access with company-specific knowledge would be valuable (information lookup, answering common questions), and availability of high-quality text-based datasets (FAQ docs, public web documentation, fact-checked conversation histories).
+
+The shared Terraform code and architectural patterns provide a template for other organizations to build similar systems, though teams should note that this is presented as a prototype rather than a production-hardened system. The transparency about limitations and future enhancement plans suggests a pragmatic approach to LLMOps, balancing rapid experimentation with acknowledgment of production requirements that still need to be addressed.

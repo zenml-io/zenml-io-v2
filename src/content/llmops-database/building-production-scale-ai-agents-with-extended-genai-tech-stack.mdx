@@ -1,0 +1,125 @@
+---
+title: "Building Production-Scale AI Agents with Extended GenAI Tech Stack"
+slug: "building-production-scale-ai-agents-with-extended-genai-tech-stack"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "68c7b63a6e294a9c547ea53f"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:21:07.726Z"
+  createdOn: "2025-09-15T06:46:18.286Z"
+llmopsTags:
+  - "customer-support"
+  - "chatbot"
+  - "structured-output"
+  - "realtime-application"
+  - "high-stakes-application"
+  - "multi-agent-systems"
+  - "agent-based"
+  - "human-in-the-loop"
+  - "rag"
+  - "prompt-engineering"
+  - "system-prompts"
+  - "mcp"
+  - "a2a"
+  - "evals"
+  - "kubernetes"
+  - "docker"
+  - "monitoring"
+  - "api-gateway"
+  - "microservices"
+  - "cicd"
+  - "scaling"
+  - "devops"
+  - "orchestration"
+  - "open-source"
+  - "security"
+  - "guardrails"
+  - "reliability"
+  - "scalability"
+  - "fastapi"
+  - "postgresql"
+  - "redis"
+  - "cache"
+  - "langchain"
+  - "wandb"
+  - "openai"
+  - "anthropic"
+  - "microsoft-azure"
+company: "LinkedIn"
+summary: "LinkedIn extended their generative AI application tech stack to support building complex AI agents that can reason, plan, and act autonomously while maintaining human oversight. The evolution from their original GenAI stack to support multi-agent orchestration involved leveraging existing infrastructure like gRPC for agent definitions, messaging systems for multi-agent coordination, and comprehensive observability through OpenTelemetry and LangSmith. The platform enables agents to work both synchronously and asynchronously, supports background processing, and includes features like experiential memory, human-in-the-loop controls, and cross-device state synchronization, ultimately powering products like LinkedIn's Hiring Assistant which became globally available."
+link: "https://www.linkedin.com/blog/engineering/generative-ai/the-linkedin-generative-ai-application-tech-stack-extending-to-build-ai-agents"
+year: 2025
+seo:
+  title: "LinkedIn: Building Production-Scale AI Agents with Extended GenAI Tech Stack - ZenML LLMOps Database"
+  description: "LinkedIn extended their generative AI application tech stack to support building complex AI agents that can reason, plan, and act autonomously while maintaining human oversight. The evolution from their original GenAI stack to support multi-agent orchestration involved leveraging existing infrastructure like gRPC for agent definitions, messaging systems for multi-agent coordination, and comprehensive observability through OpenTelemetry and LangSmith. The platform enables agents to work both synchronously and asynchronously, supports background processing, and includes features like experiential memory, human-in-the-loop controls, and cross-device state synchronization, ultimately powering products like LinkedIn's Hiring Assistant which became globally available."
+  canonical: "https://www.zenml.io/llmops-database/building-production-scale-ai-agents-with-extended-genai-tech-stack"
+  ogTitle: "LinkedIn: Building Production-Scale AI Agents with Extended GenAI Tech Stack - ZenML LLMOps Database"
+  ogDescription: "LinkedIn extended their generative AI application tech stack to support building complex AI agents that can reason, plan, and act autonomously while maintaining human oversight. The evolution from their original GenAI stack to support multi-agent orchestration involved leveraging existing infrastructure like gRPC for agent definitions, messaging systems for multi-agent coordination, and comprehensive observability through OpenTelemetry and LangSmith. The platform enables agents to work both synchronously and asynchronously, supports background processing, and includes features like experiential memory, human-in-the-loop controls, and cross-device state synchronization, ultimately powering products like LinkedIn's Hiring Assistant which became globally available."
+---
+
+LinkedIn's evolution from their initial generative AI application tech stack to supporting complex AI agents represents a significant advancement in production-scale LLMOps implementation. This case study details how LinkedIn extended their existing GenAI platform to handle autonomous and semi-autonomous AI agents that can perform complex, long-running tasks while maintaining human oversight and control.
+
+## Platform Architecture and Design Philosophy
+
+LinkedIn's approach to building AI agents centers around modularity and reuse of existing infrastructure. Rather than building a completely new system, they strategically extended their current GenAI tech stack to support agentic workflows. The core philosophy involves treating agents not as single monolithic applications but as facades over multiple specialized agentic applications, providing benefits in modularity, scalability, resilience, and flexibility.
+
+The platform architecture leverages LinkedIn's existing service-to-service communication patterns using gRPC for agent definitions. Developers annotate standard gRPC service schema definitions with platform-specific proto3 options that describe agent metadata, then register these through a build plugin into a central skill registry. This registry tracks available agents, their metadata, and invocation methods, creating a discoverable ecosystem of agent capabilities.
+
+## Multi-Agent Orchestration Through Messaging
+
+One of the most significant technical decisions was using LinkedIn's existing messaging system as the foundation for multi-agent orchestration. This choice addresses the classic distributed systems challenges of consistency, availability, and partitioning while handling the additional complexity of highly non-deterministic GenAI workloads. The messaging system provides guaranteed first-in-first-out (FIFO) delivery, seamless message history lookup, horizontal scaling across multiple regions, and built-in resilience constructs for persistent retries and eventual delivery.
+
+The messaging-based approach enables various execution modalities. Agents can respond in single chunks, incrementally through synchronous streaming, or split responses across multiple asynchronous messages. This flexibility allows modeling a wide range of execution patterns from quick interactive responses to complex background processing tasks.
+
+To abstract the messaging complexity from developers, LinkedIn built adapter libraries that handle messaging-to-RPC translations through a central agent lifecycle service. This service creates, updates, and retrieves messages while invoking the appropriate agent RPC endpoints, maintaining clean separation between the messaging infrastructure and agent business logic.
+
+## Client Integration and User Experience
+
+Supporting seamless user experiences across web and mobile applications required sophisticated client integration capabilities. Since agent interactions can be asynchronous and span multiple user sessions, LinkedIn developed libraries that handle server-to-client push notifications for long-running task completion, cross-device state synchronization for consistent application state, incremental streaming for optimizing large LLM response delivery, and robust error handling with fallbacks.
+
+The human-in-the-loop (HITL) design ensures that agents seek clarification, feedback, or approvals at key decision points, balancing autonomy with user control. This approach addresses the cognitive limitations of current LLMs while maintaining user trust through transparency and control mechanisms.
+
+## Advanced Observability Strategy
+
+LinkedIn implemented a sophisticated observability strategy tailored to the distinct phases of agent development. In pre-production environments, they focus on rich introspection and iteration using LangSmith for tracing and evaluation. Since many agent components are built on LangGraph and LangChain, LangSmith provides seamless developer experience with detailed execution traces including LLM calls, tool usage, and control flow across chains and agents.
+
+Production observability relies on OpenTelemetry (OTel) as the foundation, instrumenting key agent lifecycle events such as LLM calls, tool invocation, and memory usage into structured, privacy-safe OTel spans. This enables correlation of agent behavior with upstream requests, downstream calls, and platform performance at scale. While production traces are leaner than pre-production ones, they're optimized for debugging, reliability monitoring, and compliance requirements.
+
+The observability stack tightly integrates with LinkedIn's holistic evaluation platform. Execution traces are persisted and aggregated into datasets that power offline evaluations, model regression tests, and prompt tuning experiments, creating a continuous improvement feedback loop.
+
+## Memory and Context Engineering
+
+The platform includes sophisticated memory management through experiential memory systems that allow agents to remember facts, preferences, and learned information across interactions. This enables personalized, adaptive experiences that feel responsive to individual user needs and contexts. LinkedIn leverages data-intensive big data offline jobs to curate and refine long-term agent memories, ensuring the quality and relevance of retained information.
+
+Context engineering has become a critical practice, involving the strategic feeding of LLMs with appropriate data and memory aligned with specific goals. This approach unlocks new levels of responsiveness and intelligence by making the right information available at the right time within agent workflows.
+
+## Developer Tooling and Experimentation
+
+LinkedIn built a comprehensive Playground environment that serves as a testing ground for developers to enable rapid prototyping and experimentation. The Playground includes agent experimentation capabilities for two-way communication testing, skill exploration tools for searching registered skills and inspecting metadata, memory inspection features for examining contents and historical revisions, identity management tools for testing varied authorization scenarios, and integrated observability providing traces for quick failure insight during development.
+
+This experimentation platform allows developers to validate concepts without extensive integration efforts, supporting a fail-fast, learn-quickly approach to agent development.
+
+## Framework Integration and Open Standards
+
+LinkedIn has embraced LangGraph as their primary agentic framework, adapting it to work with LinkedIn's messaging and memory infrastructure through custom-built providers. This allows developers to use popular, well-supported frameworks while leveraging LinkedIn's specialized platform capabilities.
+
+The platform is incrementally adopting open protocols like Model Context Protocol (MCP) and Agent-to-Agent (A2A) communication standards. MCP enables agents to explore and interact through standardized tool-based interfaces, while A2A facilitates seamless collaboration among agents. This move toward open protocols supports interoperability and helps avoid fragmentation as agent ecosystems grow.
+
+## Performance and Scalability Considerations
+
+The platform supports both synchronous and asynchronous agent invocation modes. Synchronous delivery bypasses async queues and directly invokes agents with sideways message creation, significantly speeding up delivery for user-facing interactive experiences. Asynchronous delivery provides strong consistency through queued processing, allowing developers to choose the appropriate trade-offs between consistency and performance.
+
+Background agents represent another significant capability, enabling longer autonomous tasks that can be performed behind the scenes with finished work presented for review. This approach optimizes GPU compute usage during idle or off-peak times while handling complex workflows that don't require immediate user interaction.
+
+## Security and Privacy Architecture
+
+The platform implements strict data boundaries to support privacy, security, and user control. Components like Experiential Memory, Conversation Memory, and other data stores are siloed by design with privacy-preserving methods governing information flow. All sharing between domains happens through explicit, policy-driven interfaces with strong authentication and authorization checks for every cross-component call. This compartmentalized approach ensures that only permitted agents can access specific data, with all access logged and auditable.
+
+## Production Lessons and Challenges
+
+LinkedIn emphasizes that there is no single correct path for building successfully with agents, but several key lessons emerge from their experience. Reusing existing infrastructure and providing strong developer abstractions are critical for scaling complex AI systems efficiently. Designing for human-in-the-loop control ensures trust and safety while enabling appropriate autonomy. Observability and context engineering have become essential for debugging, continuous improvement, and delivering adaptive experiences. Finally, adopting open protocols is crucial for enabling interoperability and avoiding fragmentation.
+
+The platform's evolution represents a mature approach to production LLMOps for agentic systems, demonstrating how established technology companies can extend existing infrastructure to support next-generation AI capabilities while maintaining reliability, security, and scalability requirements. LinkedIn's experience provides valuable insights for organizations looking to move beyond simple GenAI applications toward more sophisticated agent-based systems that can handle complex, multi-step workflows in production environments.

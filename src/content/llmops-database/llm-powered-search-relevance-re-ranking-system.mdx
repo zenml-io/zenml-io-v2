@@ -1,0 +1,130 @@
+---
+title: "LLM-Powered Search Relevance Re-Ranking System"
+slug: "llm-powered-search-relevance-re-ranking-system"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f3cd5cecffc9578808efa"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:38:17.474Z"
+  createdOn: "2024-11-21T13:59:49.529Z"
+llmopsTags:
+  - "databases"
+  - "elasticsearch"
+  - "embeddings"
+  - "high-stakes-application"
+  - "hugging-face"
+  - "knowledge-distillation"
+  - "latency-optimization"
+  - "model-optimization"
+  - "monitoring"
+  - "multi-modality"
+  - "realtime-application"
+  - "reliability"
+  - "scalability"
+  - "scaling"
+  - "semantic-search"
+  - "unstructured-data"
+  - "vector-search"
+company: "LeBonCoin"
+summary: "leboncoin, France's largest second-hand marketplace, implemented a neural re-ranking system using large language models to improve search relevance across their 60 million classified ads. The system uses a two-tower architecture with separate Ad and Query encoders based on fine-tuned LLMs, achieving up to 5% improvement in click and contact rates and 10% improvement in user experience KPIs while maintaining strict latency requirements for their high-throughput search system."
+link: "https://medium.com/leboncoin-tech-blog/serving-large-language-models-to-improve-search-relevance-at-leboncoin-2a364e5b6f76"
+year: 2023
+seo:
+  title: "LeBonCoin: LLM-Powered Search Relevance Re-Ranking System - ZenML LLMOps Database"
+  description: "leboncoin, France's largest second-hand marketplace, implemented a neural re-ranking system using large language models to improve search relevance across their 60 million classified ads. The system uses a two-tower architecture with separate Ad and Query encoders based on fine-tuned LLMs, achieving up to 5% improvement in click and contact rates and 10% improvement in user experience KPIs while maintaining strict latency requirements for their high-throughput search system."
+  canonical: "https://www.zenml.io/llmops-database/llm-powered-search-relevance-re-ranking-system"
+  ogTitle: "LeBonCoin: LLM-Powered Search Relevance Re-Ranking System - ZenML LLMOps Database"
+  ogDescription: "leboncoin, France's largest second-hand marketplace, implemented a neural re-ranking system using large language models to improve search relevance across their 60 million classified ads. The system uses a two-tower architecture with separate Ad and Query encoders based on fine-tuned LLMs, achieving up to 5% improvement in click and contact rates and 10% improvement in user experience KPIs while maintaining strict latency requirements for their high-throughput search system."
+---
+
+## Overview
+
+LeBonCoin is the largest second-hand marketplace in France, serving nearly 30 million unique monthly active users and hosting over 60 million classified ads. The fundamental challenge they faced was search relevance: with such a vast and volatile catalogue where each ad is described by users in their own words, delivering relevant search results is critical for user satisfaction and business success. Poor search results lead to user frustration and churn, while good results drive more contacts between buyers and sellers and increase trust in the platform.
+
+The Search team at LeBonCoin decided to tackle this challenge by building a neural Re-Ranker whose purpose is to sort ads in the optimal order given a user's query. This case study represents an interesting production deployment of large language models in a high-throughput, low-latency environment characteristic of e-commerce search systems.
+
+## The Dataset and Learning Approach
+
+Before diving into the model architecture, it's worth noting the team's approach to building training data. They leveraged click models, which use implicit user feedback (clicks) to infer relevance signals. This is a common approach in search ranking but comes with known biases—users tend to click on items positioned higher regardless of true relevance (position bias), and the displayed results influence what can be clicked (selection bias).
+
+To address these issues, the team employed statistical filtering and example weighting approaches referenced from academic literature on unbiased learning-to-rank. The resulting dataset was structured for contrastive learning, essentially teaching the model to distinguish between good ads and bad ads for a given query. This approach is pragmatic for production systems where explicit relevance labels are expensive to obtain at scale.
+
+## Model Architecture: The Bi-Encoder Approach
+
+The core of the Re-Ranker is a bi-encoder (also known as two-tower) architecture. This design choice has significant implications for production serving:
+
+The model consists of two main encoder components—an Ad Encoder and a Query Encoder—that are jointly trained but can be used independently at inference time. Each encoder takes multimodal inputs including text, numerical, and categorical data. The text components are processed by a large language model (specifically DistilBERT, a distilled version of BERT that is smaller, faster, and cheaper to run while retaining most of the performance), while categorical and numerical features go through custom MLP layers.
+
+The LLMs are fine-tuned in a Siamese manner, meaning they share weights during training. Text representations are extracted using CLS pooling from the transformer output. The text and tabular representations are then concatenated and projected into a lower-dimensional space—an important optimization for both storage efficiency and computational performance at serving time.
+
+Finally, a Scorer component takes the concatenated Ad and Query representations and outputs a probability score representing the likelihood that the ad will be clicked given the query.
+
+The choice of a bi-encoder over a cross-encoder is crucial for production feasibility. A cross-encoder would need to jointly process each query-ad pair at inference time, which would be computationally prohibitive when you need to score potentially thousands of ads for each query in milliseconds. The bi-encoder allows for a key optimization: pre-computing ad embeddings offline.
+
+## Production Serving Architecture
+
+The serving architecture is designed around the strict latency and throughput requirements of a search engine at scale. LeBonCoin faces peak loads of up to thousands of requests per second, with an allowed latency budget of only a few dozen milliseconds per request.
+
+### Offline Ad Embedding
+
+The first phase of serving happens offline. The Ad Encoder portion of the Re-Ranker is triggered via an embed_ad entrypoint to compute vector representations for all ads in the catalogue. These embeddings are stored in a vector database. This pre-computation is essential—it would be impossible to compute ad embeddings in real-time given the latency constraints.
+
+This design choice means that when an ad is created or updated, there needs to be a process to update its embedding in the vector database. While the case study doesn't detail this process, it's a common operational challenge in production embedding systems—managing the freshness of embeddings for dynamic catalogues.
+
+### Real-Time Re-Ranking
+
+The real-time re-ranking flow is a multi-stage process that integrates with the existing ElasticSearch-based retrieval system:
+
+First, the user's query is sent to ElasticSearch, which performs initial retrieval and ranking using TF-IDF-like algorithms and custom scoring functions. This produces a pool of candidate ads with initial scores.
+
+Only the top-k ads (those with the highest ElasticSearch scores) are selected for re-ranking. This is another important production optimization—applying the neural model to the entire result set would be too expensive, so they focus compute on the most promising candidates.
+
+The top-k ad vectors are retrieved from the vector database, and along with the query, they are sent to the Re-Ranker's rank_ads entrypoint. This triggers the Query Encoder and the Scorer components. The Query Encoder computes the query embedding in real-time, and the Scorer produces new relevance scores by combining the query embedding with each of the pre-computed ad embeddings.
+
+The new neural scores are then combined with the original ElasticSearch scores. This ensemble approach is sensible—it leverages both the lexical matching strengths of traditional search and the semantic understanding of the neural model.
+
+Finally, the re-ranked top-k ads are placed at the front of the results, with the remaining ads (those not selected for re-ranking) appended afterward. This preserves a complete result set for the user while focusing the neural ranking improvements on the most visible positions.
+
+## Data Preprocessing Considerations
+
+An interesting detail mentioned in the case study is that data preprocessing is embedded within the model itself, in both the Query and Ad encoders. This ensures consistency between training and serving—a critical concern in production ML systems. Preprocessing skew (where the preprocessing at inference differs from training) is a common source of model degradation in production, and embedding it in the model graph is a sound engineering practice.
+
+## Results and Business Impact
+
+The team reports meaningful improvements from this first iteration:
+
+- Click and contact rates improved by up to +5%
+- User experience KPIs including nDCG (Normalized Discounted Cumulative Gain) and average clicked/contacted positions improved by up to +10%
+
+These are significant metrics for an e-commerce search system. The nDCG improvement indicates that relevant results are being surfaced higher in the rankings, while the position improvements for clicked and contacted ads mean users are finding what they want faster.
+
+It's worth noting that these are reported improvements from the company itself, and the exact experimental methodology (A/B testing details, statistical significance, duration of experiments) is not disclosed. However, the magnitude of improvement is reasonable and consistent with what other companies have reported when adding neural re-ranking to their search systems.
+
+## Technical Trade-offs and Considerations
+
+Several implicit trade-offs are worth highlighting:
+
+The bi-encoder architecture trades off some accuracy for serving efficiency. Cross-encoders, which jointly process query-ad pairs, can capture more nuanced interactions but are prohibitively expensive at serving time. The bi-encoder approach is a pragmatic choice for production constraints.
+
+The top-k re-ranking approach means that if ElasticSearch fails to retrieve a relevant ad in the initial pool, the neural re-ranker cannot rescue it. The system is only as good as the recall of the first-stage retriever.
+
+Using DistilBERT instead of a larger model like BERT-base or BERT-large is another latency-accuracy trade-off. DistilBERT provides substantial speedups while retaining most of the representational power.
+
+The team mentions projecting embeddings to a lower-dimensional space for storage and compute efficiency. This dimensionality reduction likely trades off some information for practical benefits.
+
+## Infrastructure Implications
+
+While not explicitly detailed, this deployment implies several infrastructure components:
+
+- A model serving infrastructure capable of handling high-throughput, low-latency inference (likely using optimized frameworks like TensorRT or ONNX)
+- A vector database for storing and retrieving pre-computed ad embeddings
+- A pipeline for computing and updating ad embeddings as the catalogue changes
+- Integration with the existing ElasticSearch-based search infrastructure
+- Monitoring and observability for model performance in production
+
+## Conclusion
+
+This case study from LeBonCoin demonstrates a practical, well-engineered approach to deploying LLMs for search relevance at production scale. The bi-encoder architecture, offline embedding computation, and staged re-ranking approach are all sound engineering decisions that balance model capability against operational constraints. The reported results suggest meaningful business impact, and the team indicates this is just the first iteration with more improvements planned.

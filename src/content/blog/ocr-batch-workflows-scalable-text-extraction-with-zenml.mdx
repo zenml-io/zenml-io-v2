@@ -1,0 +1,138 @@
+---
+title: "OCR Batch Workflows: Scalable Text Extraction with ZenML"
+slug: "ocr-batch-workflows-scalable-text-extraction-with-zenml"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "67f674dc2786fa738ff410d7"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2026-02-03T15:19:04.226Z"
+  lastUpdated: "2026-02-03T10:53:46.095Z"
+  createdOn: "2025-04-09T13:23:40.292Z"
+author: "marwan-zaarab"
+category: "llmops"
+tags:
+  - "ocr"
+  - "batch-processing"
+  - "llmops"
+date: "2025-04-09T00:00:00.000Z"
+readingTime: 8 mins
+mainImage:
+  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/2737e611/6981d37a71c3040935dbc353_6981d2adacfcb44f002ee1a3_blog_cover.avif"
+seo:
+  title: "OCR Batch Workflows: Scalable Text Extraction with ZenML - ZenML Blog"
+  description: "How do you reliably process thousands of diverse documents with GenAI OCR at scale? Explore why robust workflow orchestration is critical for achieving reliability in production. See how ZenML was used to build a scalable, multi-model batch processing system that maintains comprehensive visibility into accuracy metrics. Learn how this approach enables systematic benchmarking to select optimal OCR models for your specific document processing needs."
+  canonical: "https://www.zenml.io/blog/ocr-batch-workflows-scalable-text-extraction-with-zenml"
+  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/2737e611/6981d37a71c3040935dbc353_6981d2adacfcb44f002ee1a3_blog_cover.avif"
+  ogTitle: "OCR Batch Workflows: Scalable Text Extraction with ZenML - ZenML Blog"
+  ogDescription: "How do you reliably process thousands of diverse documents with GenAI OCR at scale? Explore why robust workflow orchestration is critical for achieving reliability in production. See how ZenML was used to build a scalable, multi-model batch processing system that maintains comprehensive visibility into accuracy metrics. Learn how this approach enables systematic benchmarking to select optimal OCR models for your specific document processing needs."
+---
+
+Generative AI makes building an initial OCR proof-of-concept seem deceptively simple. Slap together a Python script, call an API or model, extract some text – done, right? While exciting, this initial step barely scratches the surface of [what enterprises actually  need](https://www.itemize.com/the-evolution-from-ocr-and-generative-ai-to-agentic-ai-in-finance/): processing potentially millions of unstructured documents—invoices, contracts, IDs—reliably and at scale. This is where simple scripts shatter.
+
+Beyond applying the AI model itself, [the true hurdle lies in productionization](https://aws.amazon.com/blogs/enterprise-strategy/generative-ai-getting-proofs-of-concept-to-production/). How do you handle batch processing efficiently? How do you version your data, models, *and* code together? What about automatic retries on failure, smart caching to save compute, or tracking every artifact and metric for reproducibility and compliance? [Facing this harsh reality of scaling GenAI](https://gcore.com/blog/real-time-ai-processing) demands robust **workflow orchestration**.
+
+While everyone talks about agents, high-value enterprise applications often lie in mastering these automated **workflows**. This is precisely where ZenML excels. As a platform built from the ground up to automate, manage, and scale complex data pipelines, ZenML provides the necessary structure for demanding tasks like GenAI-powered batch OCR. This includes built-in support for [versioning](https://docs.zenml.io/api-reference/oss-api/oss-api/artifact-versions), [automatic retries](https://docs.zenml.io/concepts/steps_and_pipelines/advanced_features#automatic-step-retries), [smart caching](https://docs.zenml.io/user-guides/starter-guide/cache-previous-executions#configuring-the-caching-behavior-of-your-pipelines), [artifact tracking](https://docs.zenml.io/stacks/artifact-stores), and seamless [integration with various tools](https://docs.zenml.io/stacks/integrations).
+
+‍
+
+## A Modular Framework for Multi-Model OCR
+
+To demonstrate how ZenML transforms a promising OCR concept into a production-ready asset, I developed OmniReader: a flexible, scalable multi-model OCR workflow that orchestrates document processing pipelines, integrates various vision-language models, and tracks performance metrics to ensure reliable text extraction at scale.
+
+The framework revolves around two core pipelines:
+
+- [Batch Processing Pipeline](https://github.com/zenml-io/zenml-projects/blob/main/omni-reader/pipelines/batch_pipeline.py): Designed to efficiently process large document volumes, gathering outputs in a structured format while tracking key performance metrics.- [Evaluation Pipeline](https://github.com/zenml-io/zenml-projects/blob/main/omni-reader/pipelines/evaluation_pipeline.py): Compares outputs from different models against ground truth data using metrics like `CER`, `WER`, and Levenshtein similarity to identify the most effective approach for specific needs.
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e70e6629/67f673756bef06dbe8c14ad0_pipeline_dags.png" alt="__wf_reserved_inherit" />
+  <figcaption>Batch and Evaluation Pipeline DAGs</figcaption>
+</figure>
+
+Let’s explore how these pipelines come together to create a resilient document processing system.
+
+## Batch OCR at Scale
+
+The first core component is the batch processing pipeline, designed to handle the ingestion and processing of documents in large volumes. It systematically feeds images into the selected OCR models and organizes the extracted text into a consistent, structured format. This enables high-throughput document processing compatible with various models and forms the foundation for subsequent evaluation steps.
+
+<pre></pre>
+
+By integrating this workflow within ZenML, we gain critical production capabilities often missing from simple scripts:
+
+- **Automatic Retry Logic** (via [step options](https://docs.zenml.io/how-to/pipeline-development/build-pipelines/retry-steps)): Steps can be configured to automatically retry failed document processing attempts.- **Smart Caching** ([via ZenML's pipeline/step caching](https://docs.zenml.io/user-guides/starter-guide/cache-previous-executions#configuring-the-caching-behavior-of-your-pipelines)): Previously processed documents are skipped unless inputs have changed.- **Error Isolation** ([step-level execution](https://docs.zenml.io/how-to/pipeline-development/build-pipelines/use-failure-success-hooks)): Failures in individual pipeline steps or document batches can be isolated to avoid interrupting the entire job.- **Artifact Versioning** *(*[via ZenML's artifact tracking system](https://docs.zenml.io/how-to/data-artifact-management/handle-data-artifacts/artifact-versioning)*)*: Outputs of each pipeline step are tracked and versioned across runs.- **Resource Optimization** *(via *[orchestrator-level configuration](https://docs.zenml.io/how-to/pipeline-development/use-configuration-files/runtime-configuration)* or *[step operators](https://docs.zenml.io/how-to/pipeline-development/use-configuration-files/runtime-configuration)*)*: Computing resources (e.g., CPU, memory, GPU) can be specified at the pipeline or step level when using orchestrators.
+
+Following each pipeline run, summary reports (generated by the `generate_summary_report` step) are automatically captured and stored within ZenML's artifact store. This provides immediate visibility into the extraction results and overall process execution.
+
+## Developing a Unified Interface for Multi-Model OCR
+
+A key requirement was enabling the OCR pipeline to seamlessly utilize various types of models—ranging from cloud-based APIs (like OpenAI) to locally hosted instances (via Ollama)—without altering the core workflow logic. These different model deployment patterns necessitate distinct interaction methods (e.g., specific SDK calls with API keys vs. direct HTTP requests to a local server).
+
+Initially, I aimed to leverage the `litellm` library in conjunction with `instructor` to standardize API calls across various models. However, certain local Ollama models, particularly Gemma-3, weren't fully supported yet. For quicker iteration with these specific models, I opted to interact directly with a locally running Ollama server instead.
+
+I implemented a unified `process_image` function, which serves as a central routing mechanism to direct incoming requests to the appropriate model-specific handler based on the provided configuration:
+
+<pre></pre>
+
+This model-agnostic approach allowed new vision-language models to be integrated with minimal changes to the core pipeline structure. The `run_ocr` function further abstracts this logic, offering a consistent API that optimizes execution for various input scenarios (single/multiple images, single/multiple models) by leveraging parallel processing and batching when it’s advantageous:
+
+<pre></pre>
+
+Ultimately, this unified interface simplified the process of working with multiple models and enabled more efficient handling of large document volumes.
+
+## Evaluating OCR Model Performance
+
+Once text has been extracted, the next step is to evaluate how different models perform. Our evaluation pipeline compares model outputs against ground truth and generates visualizations and metrics.
+
+After extracting text using the batch processing pipeline, the second pipeline focuses on evaluating and comparing the performance of multiple models. It systematically assesses model outputs against ground truth data, and generates quantitative metrics and comparative visualizations.
+
+<pre></pre>
+
+This evaluation pipeline facilitated our transition from ad-hoc model selection to a more structured, data-driven approach. Its modular design separates the workflow into distinct steps, each focused on a specific evaluation task. This structure enhances flexibility, allowing for straightforward customization of evaluation criteria tailored to different document types or project requirements.
+
+ZenML's inherent capabilities were instrumental here. Its built-in tracking of artifacts and parameters provided clear traceability, making it easy to understand how results were generated. Furthermore, ZenML's support for [custom visualizations](https://docs.zenml.io/how-to/data-artifact-management/visualize-artifacts/creating-custom-visualizations) proved highly valuable. By casting HTML content (such as the `html_string` produced in the pipeline) as `zenml.types.HTMLString`, we could embed rich, interactive visualizations directly within the pipeline run's artifacts, readily accessible through the ZenML dashboard.
+
+For instance, the pipeline generates an HTML report that visually compares the overall performance across the evaluated models, serving as one such embedded artifact:
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/a5b26ff5/67f67952d8f019dd5e65794b_visualization.png" alt="__wf_reserved_inherit" />
+  <figcaption>HTML report (1 of 2) comparing overall performance across models</figcaption>
+</figure>
+
+Beyond the overall comparison, the evaluation pipeline calculates detailed performance metrics for each model individually, including:
+
+- **Character Error Rate (CER)**: Quantifies accuracy at the character level.- **Word Error Rate (WER)**: Measures accuracy based on word-level differences.- **Ground Truth Similarity**: Leverages the Levenshtein ratio to assess the overall alignment between the model's output and the ground truth text.- **Cross-Model Similarity**: Compares the outputs of different models against each other to identify potential outliers or systemic inconsistencies.
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/ad0e1ab4/67f679bc4ca410fa31f95678_metrics.png" alt="__wf_reserved_inherit" />
+  <figcaption>HTML Report (2 of 2) showing model outputs and key metrics</figcaption>
+</figure>
+
+The intention of this framework is not to dictate a fixed set of metrics but rather to provide a reproducible and extensible foundation for model evaluation. Users can easily integrate new metrics, incorporate domain-specific validation rules, or adapt the evaluation logic entirely based on their unique needs.
+
+## Key Learnings
+
+Developing and utilizing this multi-model OCR framework highlighted several practical considerations relevant to similar projects:
+
+- **Performance is Context-Dependent**: OCR model performance varies considerably depending on the type, quality, and domain of the input documents. It is essential to test multiple models directly on representative content rather than assuming one model will universally outperform others.- **Prompt Engineering Offers Value**: Experimenting with and refining prompts, particularly tailoring them to specific document types or expected structures, can significantly improve extraction quality. Domain-specific context within prompts often leads to better results.- **Objective Metrics Aid Selection**: Quantitative metrics like `CER` and `WER` provide a valuable, objective basis for comparing model performance, effectively complementing subjective visual assessments of the output quality.
+
+## Try It Yourself
+
+You can explore the OmniReader project and experiment with it by following these steps:
+
+1. Clone the [project](https://github.com/zenml-io/zenml-projects/tree/main/omni-reader).2. Follow the setup and installation instructions detailed in the project's `README` file.3. Run pipelines or launch the demo application:
+
+<pre></pre>
+
+The included Streamlit app provides an interactive UI for uploading documents, comparing the extraction results from different models side-by-side, and testing the impact of custom prompts on performance.
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/8e59b93b/67f67a78dab85b07345d5360_streamlit.png" alt="__wf_reserved_inherit" />
+  <figcaption>Streamlit UI</figcaption>
+</figure>
+
+## Final Thoughts
+
+The OmniReader project demonstrates a practical approach to evolving from potentially fragmented OCR scripts towards a reliable and scalable pipeline architecture. By utilizing ZenML as the operational backbone, we gained crucial benefits in reproducibility, modularity, and visibility into model performance. Whether tackling document processing challenges in healthcare, finance, logistics, or other operational areas, we hope this framework serves as a useful reference for building and adapting robust, production-ready OCR solutions with greater confidence.
+
+‍

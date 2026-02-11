@@ -1,0 +1,139 @@
+---
+title: "Panel Discussion on LLM Evaluation and Production Deployment Best Practices"
+slug: "panel-discussion-on-llm-evaluation-and-production-deployment-best-practices"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f40606659471f4bf186d9"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:40:42.304Z"
+  createdOn: "2024-11-21T14:14:56.014Z"
+llmopsTags:
+  - "chatbot"
+  - "compliance"
+  - "continuous-deployment"
+  - "devops"
+  - "error-handling"
+  - "fallback-strategies"
+  - "guardrails"
+  - "human-in-the-loop"
+  - "monitoring"
+  - "nvidia"
+  - "prompt-engineering"
+  - "question-answering"
+  - "reliability"
+  - "scalability"
+  - "security"
+  - "structured-output"
+  - "system-prompts"
+company: "Various"
+summary: "Industry experts from Gantry, Structured.ie, and NVIDIA discuss the challenges and approaches to evaluating LLMs in production. They cover the transition from traditional ML evaluation to LLM evaluation, emphasizing the importance of domain-specific benchmarks, continuous monitoring, and balancing automated and human evaluation methods. The discussion highlights how LLMs have lowered barriers to entry while creating new challenges in ensuring accuracy and reliability in production deployments."
+link: "https://www.youtube.com/watch?v=e0ZLqfus_TY"
+year: 2023
+seo:
+  title: "Various: Panel Discussion on LLM Evaluation and Production Deployment Best Practices - ZenML LLMOps Database"
+  description: "Industry experts from Gantry, Structured.ie, and NVIDIA discuss the challenges and approaches to evaluating LLMs in production. They cover the transition from traditional ML evaluation to LLM evaluation, emphasizing the importance of domain-specific benchmarks, continuous monitoring, and balancing automated and human evaluation methods. The discussion highlights how LLMs have lowered barriers to entry while creating new challenges in ensuring accuracy and reliability in production deployments."
+  canonical: "https://www.zenml.io/llmops-database/panel-discussion-on-llm-evaluation-and-production-deployment-best-practices"
+  ogTitle: "Various: Panel Discussion on LLM Evaluation and Production Deployment Best Practices - ZenML LLMOps Database"
+  ogDescription: "Industry experts from Gantry, Structured.ie, and NVIDIA discuss the challenges and approaches to evaluating LLMs in production. They cover the transition from traditional ML evaluation to LLM evaluation, emphasizing the importance of domain-specific benchmarks, continuous monitoring, and balancing automated and human evaluation methods. The discussion highlights how LLMs have lowered barriers to entry while creating new challenges in ensuring accuracy and reliability in production deployments."
+---
+
+## Overview
+
+This panel discussion from an LLM-focused conference features insights from multiple industry experts discussing the challenges and strategies for evaluating large language models in production environments. The panelists include Josh Tobin, founder and CEO of Gantry (a company building tools to analyze, explore, and visualize model performance), Amrutha from Structured.io (building engineering tools for LLM workflows including injection and RAG processing pipelines), and Sohini Roy, a senior developer relations manager at NVIDIA who focuses on the Nemo Guardrails open-source toolkit for LLM-based conversational systems. The discussion provides a practitioner-focused view on how enterprises are approaching LLM evaluation, deployment, and maintenance.
+
+## The Fundamental Challenge: LLM Evaluation vs Traditional ML Evaluation
+
+Josh Tobin opened the discussion by articulating a critical insight that forms the foundation of LLM evaluation challenges. In traditional machine learning, projects typically start by building a dataset and have a clear objective function to optimize against. This makes naive passive evaluation straightforward—you hold out data from your training set and use the same metric you trained on. However, with LLMs, these assumptions are violated in significant ways.
+
+First, LLM projects typically don't start by building a dataset. Instead, practitioners begin by thinking about what they want the system to do and then crafting prompts to encourage that behavior. This means one of the key challenges is determining what data to evaluate these models on—what is the right dataset to test against?
+
+Second, there often isn't a clear objective function for generative AI tasks. As Josh noted, for a summarization model, how do you measure whether one summary is better than another, or whether a summary is adequate? This is a non-obvious question that doesn't have the clear ground truth that exists in classification tasks.
+
+Amrutha reinforced this point by noting that even person-to-person definitions of what constitutes a "good answer" vary significantly. Attributes like expected length, conciseness, and tone are subjective, suggesting an opportunity to build evaluation mechanisms that are highly personalized. The primitives for building such personalized evaluation systems remain an open challenge in the industry.
+
+## Key Evaluation Dimensions
+
+The panelists outlined several dimensions for evaluating LLM performance in production:
+
+**Accuracy and Speed**: Sohini emphasized that evaluation ultimately comes down to accuracy and speed, but accuracy is highly dependent on the specific goals of the application. This includes multiple sub-dimensions:
+
+- Whether the model does what it was instructed to do
+- Whether responses are coherent
+- Whether the model produces hallucinations or fabricates information
+- Whether the model maintains context and stays on topic
+- Safety considerations: avoiding malicious code execution, preventing external application exploits, maintaining privacy (especially for healthcare and similar domains)
+- Toxicity and bias assessment
+
+**Outcome-Based Metrics**: Josh described a pyramid of usefulness versus ease of measurement. At the top (most useful but hardest to measure) are outcomes—whether the ML-powered system actually solves problems for end users. In the middle are proxies like accuracy metrics or using another LLM to evaluate outputs. At the bottom (easiest but least useful) are public benchmarks.
+
+## The Limitations of Public Benchmarks
+
+A significant theme throughout the discussion was skepticism about the value of public benchmarks for production applications. Josh made a particularly strong statement: if your job is building an application with language models (rather than doing research), public benchmarks are "basically almost equivalent of useless." The reason is straightforward—public benchmarks don't evaluate models on the data that your users care about, and they don't measure the outcomes your users care about.
+
+The panelists acknowledged that public benchmarks (particularly Elo-based benchmarks) can be helpful for researchers or when in early prototyping stages deciding which model to choose. However, for production applications, custom evaluation frameworks tailored to specific use cases are essential.
+
+## The ChatGPT Effect on Development and Evaluation
+
+Josh highlighted a major industry shift in the six months prior to the discussion—what he called "the ChatGPT effect." Traditional deep learning projects typically took six months to over a year to complete. In contrast, many ChatGPT-powered features have been built in just three to four weeks. The key insight is that many of these products were built by software engineers rather than ML specialists, because the barrier to entry and the intimidation factor have been dramatically reduced.
+
+This has positive implications for evaluation. Non-technical stakeholders are now much more involved in building LLM applications, and they can be evolved into the process in ways that help progressively evaluate model quality. Josh sees non-technical stakeholders as "producers of evaluations" while technical folks become "consumers" of those evaluations—a notable shift in the division of labor.
+
+## Domain-Specific Evaluation Examples
+
+The panelists discussed several compelling examples of domain-specific evaluation:
+
+**Google's Med-PaLM**: Sohini highlighted Med-PaLM 2 as an excellent case study for domain-specific development. Google used Q&A-formatted datasets with long and short answer forms, with inputs from biomedical scientific literature and robust medical knowledge. They evaluated against U.S. medical licensing questions and gathered human feedback from both clinicians (for accuracy) and non-clinicians from diverse backgrounds and countries (for accessibility and reasonableness of information).
+
+**Bloomberg GPT**: Mentioned as another strong example of domain-specific benchmarking for financial questions, though not confirmed to be in production.
+
+**Customer Success and Support**: Amrutha identified customer response and success as particularly compelling use cases because they have built-in evaluation mechanisms—you can ask users if the response solved their problem, track how often they return, and measure how many messages it takes to resolve issues.
+
+## Production Use Case Categories
+
+Josh outlined three main categories of production LLM use cases:
+
+- **Information Retrieval**: Search, document question answering
+- **Chat**: Chatbots for customer support, product features
+- **Text Generation**: Marketing copy, content creation
+
+When asked which is most robust, Josh emphasized that the answer depends heavily on the product context. He cautioned against thinking about ML use cases grouped by technical categories—instead, practitioners should think about product use cases because that determines difficulty and challenges more than what model or techniques are being used. The fundamental issue is that ML models don't always get answers right, so the key question is how to build products that work around this limitation.
+
+## The "No Training Until Product Market Fit" Rule
+
+Josh offered a strong opinion that most practitioners should not be thinking about training their own models. He stated that there's a very low likelihood of getting better performance on an NLP task by training a model compared to prompting GPT-4. Many companies with ongoing six-month to year-long NLP projects have been able to beat their performance by switching to LLM APIs with prompt engineering and few-shot in-context learning in a matter of weeks. His rule of thumb: "No training models until product market fit."
+
+## Observability and Monitoring
+
+The panelists discussed the importance of standardized monitoring and observability systems for production LLMs. Amrutha noted that even the same input to GPT-3.5 Turbo can produce different answers an hour apart, making consistent evaluation challenging. She recommended:
+
+- Keeping a set of prompts to test against on a continuous basis
+- Doing qualitative evaluation with stable inputs
+- Implementing sampling and ongoing measurement of system health
+- Setting up alerts when quality drops below thresholds
+- Treating this as an observability problem
+
+Sohini mentioned various tools in this space including Fiddler, Arise, and Hugging Face's custom evaluation metrics.
+
+## NVIDIA Nemo Guardrails
+
+Sohini introduced NVIDIA's Nemo Guardrails, an open-source framework for building guardrails into LLM applications. The framework addresses several production concerns:
+
+- Keeping conversations on topic (e.g., preventing a product chatbot from discussing competitors)
+- Managing secrets and preventing malicious code execution
+- Controlling external application access
+- Preventing misinformation, toxic responses, and inappropriate content
+
+## Gantry's Approach
+
+Josh described Gantry's thesis: training models is no longer the hard part. The hard part begins after deployment—knowing if the model is working, if it's solving user problems, and how to maintain it as the ratio of models per ML engineer grows. Gantry provides an infrastructure layer with opinionated workflows for teams to collaborate on using production data to maintain and improve models over time, making this process cheaper, easier, and more effective.
+
+## The Importance of Human-Automated Evaluation Balance
+
+A recurring theme was finding the right balance between automated and human-based evaluation. The panelists agreed this is not a one-time activity but an iterative process that must evolve with the product. Having domain experts with 20-25 years of industry experience collaborating with software engineers and ML engineers to layer in domain-specific knowledge was described as a delicate but necessary balance.
+
+## Key Takeaways for Practitioners
+
+The discussion emphasized several practical takeaways for teams deploying LLMs in production: focus on outcome-based rather than proxy metrics, build custom evaluation frameworks rather than relying on public benchmarks, involve non-technical stakeholders in evaluation, treat evaluation as an observability problem with continuous monitoring, and consider guardrails frameworks to ensure safety and appropriateness of outputs. The shift from long ML development cycles to rapid LLM-powered feature development requires new approaches to evaluation and maintenance that the tooling ecosystem is still evolving to address.

@@ -1,0 +1,151 @@
+---
+title: "Building a Secure and Scalable LLM Gateway for Financial Services"
+slug: "building-a-secure-and-scalable-llm-gateway-for-financial-services"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "68091ea52fda1019cbf4ce88"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:06:31.362Z"
+  createdOn: "2025-04-23T17:08:53.937Z"
+llmopsTags:
+  - "chatbot"
+  - "data-analysis"
+  - "regulatory-compliance"
+  - "high-stakes-application"
+  - "structured-output"
+  - "multi-modality"
+  - "speech-recognition"
+  - "rag"
+  - "embeddings"
+  - "prompt-engineering"
+  - "semantic-search"
+  - "vector-search"
+  - "error-handling"
+  - "fallback-strategies"
+  - "chunking"
+  - "system-prompts"
+  - "langchain"
+  - "elasticsearch"
+  - "fastapi"
+  - "mistral"
+  - "redis"
+  - "postgresql"
+  - "cicd"
+  - "monitoring"
+  - "databases"
+  - "api-gateway"
+  - "security"
+  - "compliance"
+  - "guardrails"
+  - "reliability"
+  - "openai"
+  - "amazon-aws"
+  - "microsoft-azure"
+  - "cohere"
+  - "anthropic"
+company: "Wealthsimple"
+summary: "Wealthsimple, a Canadian FinTech company, developed a comprehensive LLM platform to securely leverage generative AI while protecting sensitive financial data. They built an LLM gateway with built-in security features, PII redaction, and audit trails, eventually expanding to include self-hosted models, RAG capabilities, and multi-modal inputs. The platform achieved widespread adoption with over 50% of employees using it monthly, leading to improved productivity and operational efficiencies in client service workflows."
+link: "https://www.infoq.com/presentations/genai-productivity"
+year: 2023
+seo:
+  title: "Wealthsimple: Building a Secure and Scalable LLM Gateway for Financial Services - ZenML LLMOps Database"
+  description: "Wealthsimple, a Canadian FinTech company, developed a comprehensive LLM platform to securely leverage generative AI while protecting sensitive financial data. They built an LLM gateway with built-in security features, PII redaction, and audit trails, eventually expanding to include self-hosted models, RAG capabilities, and multi-modal inputs. The platform achieved widespread adoption with over 50% of employees using it monthly, leading to improved productivity and operational efficiencies in client service workflows."
+  canonical: "https://www.zenml.io/llmops-database/building-a-secure-and-scalable-llm-gateway-for-financial-services"
+  ogTitle: "Wealthsimple: Building a Secure and Scalable LLM Gateway for Financial Services - ZenML LLMOps Database"
+  ogDescription: "Wealthsimple, a Canadian FinTech company, developed a comprehensive LLM platform to securely leverage generative AI while protecting sensitive financial data. They built an LLM gateway with built-in security features, PII redaction, and audit trails, eventually expanding to include self-hosted models, RAG capabilities, and multi-modal inputs. The platform achieved widespread adoption with over 50% of employees using it monthly, leading to improved productivity and operational efficiencies in client service workflows."
+---
+
+# Wealthsimple's LLM Platform Journey: From Gateway to Production Operations
+
+## Overview
+
+Wealthsimple is a Canadian FinTech company focused on helping Canadians achieve financial independence through a unified app for investing, saving, and spending. Their generative AI efforts are organized into three streams: employee productivity (the original focus), optimizing operations for clients, and the underlying LLM platform that powers both. This case study documents approximately two years of LLM journey from late 2022 through 2024, covering the technical implementations, organizational learnings, and strategic pivots that characterized their experience bringing LLMs into production.
+
+The company's approach represents a pragmatic evolution from initial excitement through a "trough of disillusionment" to more deliberate, business-aligned applications. Their key wins include an open-sourced LLM gateway used by over half the company, an in-house PII redaction model, self-hosted open-source LLMs, platform support for fine-tuning with hardware acceleration, and production LLM systems optimizing client operations.
+
+## The LLM Gateway: Security-First Foundation
+
+When ChatGPT launched in November 2022, Wealthsimple recognized both the potential and the security risks. Many companies, including Samsung, had to ban ChatGPT due to inadvertent data sharing with third parties. Rather than banning the technology, Wealthsimple built an LLM gateway to address security concerns while enabling exploration.
+
+The first version of the gateway was relatively simple: it maintained an audit trail tracking what data was sent externally, where it was sent, and who sent it. The gateway was deployed behind a VPN, gated by Okta for authentication, and proxied conversations to various LLM providers like OpenAI. Users could select different models from a dropdown, and production systems could interact programmatically through an API endpoint that included retry and fallback mechanisms for reliability. Early features included the ability to export and import conversations across platforms.
+
+A significant challenge was adoption. Many employees viewed the gateway as a "bootleg version of ChatGPT" with little incentive to use it. Wealthsimple applied their philosophy of making "the right way the easy way" through a combination of carrots and soft sticks. The carrots included free usage (company-paid costs), optionality across multiple LLM providers, improved reliability through retry mechanisms, negotiated rate limit increases with OpenAI, and integrated APIs with staging and production environments. The soft sticks included "nudge mechanisms" - gentle Slack reminders when employees visited ChatGPT directly. Interestingly, the nudges were later removed in 2024 because they proved ineffective; people became conditioned to ignore them, and platform improvements proved to be stronger drivers of behavioral change.
+
+## PII Redaction: Closing Security Gaps
+
+In June 2023, Wealthsimple shipped their own PII redaction model, leveraging Microsoft's Presidio framework along with an internally-developed Named Entity Recognition (NER) model. This system detected and redacted potentially sensitive information before sending to external LLM providers.
+
+However, closing the security gap introduced a user experience gap. The PII redaction model wasn't always accurate, interfering with answer relevance. More fundamentally, many employees needed to work with PII data as part of their jobs. This friction led to the next major investment: self-hosted open-source LLMs.
+
+## Self-Hosted LLMs: Data Sovereignty
+
+To address the PII challenge, Wealthsimple built a framework using llama.cpp, a quantized framework for self-hosting open-source LLMs within their own VPCs. The first three models self-hosted were Llama 2, Mistral models, and Whisper (OpenAI's open-source voice transcription model, included in their LLM platform umbrella for simplicity). By hosting within their cloud environment, they eliminated the need for PII redaction since data never left their infrastructure.
+
+## RAG Implementation and Vector Database
+
+Following self-hosted LLMs, Wealthsimple introduced retrieval-augmented generation (RAG) as an API. They deliberately chose Elasticsearch (later AWS's managed OpenSearch) as their vector database because it was already part of their stack, making it an easy initial choice. They built pipelines and DAGs in Airflow, their orchestration framework, to update and index common knowledge bases. The initial RAG offering was a simple semantic search API.
+
+Despite demand for grounding capabilities and the intuitive value proposition, engagement and adoption were low. People weren't expanding knowledge bases or extending APIs as expected. The team realized there was still too much friction in experimentation and feedback loops.
+
+## Data Applications Platform: Enabling Experimentation
+
+To address the experimentation gap, Wealthsimple built an internal Data Applications Platform running on Python and Streamlit—technologies familiar to their data scientists. Behind Okta and VPN, this platform made it easy to build and iterate on applications with fast feedback loops. Stakeholders could quickly see proof-of-concept applications and provide input.
+
+Within two weeks of launch, seven applications were running on the platform, and two eventually made it to production, optimizing operations and improving client experience. This represented a key insight: reducing friction in the experimentation-to-production pipeline was crucial for adoption.
+
+## Platform Architecture
+
+The mature LLM platform architecture included several layers:
+
+- **Data ingestion**: Contextual data and knowledge bases ingested through Airflow DAGs to embedding models, then indexed in Elasticsearch/OpenSearch
+- **Orchestration**: LangChain for orchestrating data applications, tightly integrated with both the data applications platform and LLM service
+- **API layer**: LLM gateway API through the LLM service, integrated with production environments
+- **Model layer**: Both external providers (OpenAI, Cohere, Gemini, Anthropic via Bedrock) and self-hosted models (Llama, Mistral, Whisper)
+
+## Boosterpack: Internal Knowledge Assistant
+
+At the end of 2023, Wealthsimple built "Boosterpack," a personal assistant grounded against company context. It featured three types of knowledge bases: public (accessible to everyone with source code, help articles, financial newsletters), private (personal documents for each employee), and limited (shared with specific coworkers by role and project). Built on the data applications platform, it included question-answering with source attribution for fact-checking.
+
+Despite initial excitement, Boosterpack didn't achieve the transformative adoption expected. The team learned that bifurcating tools created friction—even when intuitively valuable, user behavior often surprised them.
+
+## 2024: Strategic Evolution
+
+2024 marked a significant shift in strategy. After the "peak of inflated expectations" in 2023, the team became more deliberate about business alignment. There was less appetite for speculative bets and more focus on concrete value creation.
+
+Key 2024 developments included:
+
+**Removing nudge mechanisms**: The gentle Slack reminders were abandoned because they weren't changing behavior—the same people kept getting nudged and conditioned to ignore them.
+
+**Expanding LLM providers**: Starting with Gemini (attracted by the 1M+ token context window), followed by other providers. The focus shifted from chasing state-of-the-art models (which changed weekly) to tracking higher-level trends.
+
+**Multi-modal inputs**: Leveraging Gemini's capabilities, they added image and PDF upload features. Within weeks, nearly a third of users leveraged multi-modal features at least weekly. A common use case was sharing screenshots of error messages for debugging help—LLMs embraced this antipattern that frustrated human developers.
+
+**Adopting Bedrock**: This marked a shift in build-versus-buy strategy. Bedrock (AWS's managed service for foundational LLMs) overlapped significantly with internal capabilities, but 2024's more deliberate strategy led to reevaluation. Key considerations included baseline security requirements, time-to-market and cost, and opportunity cost of building versus buying. External vendors had improved security practices (zero-day data retention, cloud integration), and the team recognized their leverage was in business-specific applications rather than recreating marketplace tools.
+
+**API standardization**: The initial API structure didn't mirror OpenAI's specs, causing integration headaches with LangChain and other frameworks requiring monkey patching. In September 2024, they shipped v2 with OpenAI-compatible API specs—an important lesson about adopting emerging industry standards.
+
+## Production Use Case: Client Experience Triaging
+
+A concrete production success was optimizing client experience triaging. Previously, a dedicated team manually read tickets and phone calls to route them appropriately—an unenjoyable and inefficient workflow. They developed a transformer-based classification model for email tickets.
+
+With the LLM platform, two improvements were made: Whisper transcribed phone calls to text, extending triaging beyond emails, and self-hosted LLM generations enriched the classification. This resulted in significant performance improvements, translating to hours saved for both agents and clients.
+
+## Usage Patterns and Learnings
+
+Internal analysis revealed several patterns:
+
+- Almost all users reported significant productivity improvements
+- Adoption was uniform across tenure and level (IC vs. people leaders)
+- Top use cases: programming support (~50%), content generation/augmentation, and information retrieval
+- Approximately 80% of LLM traffic came through the gateway rather than direct provider access
+
+Key behavioral insight: tools are most valuable when injected where work happens, and context-switching between platforms is a major detractor. Even as tools proliferated, most users stuck to a single tool. The Boosterpack experience reinforced that centralizing tools matters more than adding features.
+
+## Current State and Future Direction
+
+As of late 2024, Wealthsimple's LLM platform sees over 2,200 daily messages, with approximately one-third of the company as weekly active users and over half as monthly active users. The foundations built for employee productivity have paved the way for production systems optimizing client operations.
+
+The team positions themselves as ascending the "slope of enlightenment" after the sobering experience of 2024's trough of disillusionment. The emphasis on security guardrails, platform investments, and business alignment—rather than chasing the latest models—appears to be paying off in sustainable adoption and genuine productivity gains. For 2025, they're evaluating deeper Bedrock integration and continuing to refine their build-versus-buy strategy as the vendor landscape evolves.

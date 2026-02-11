@@ -1,0 +1,121 @@
+---
+title: "Production Lessons from Building and Deploying AI Agents"
+slug: "production-lessons-from-building-and-deploying-ai-agents"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f3ed41c34367dbf302e45"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:44:21.164Z"
+  createdOn: "2024-11-21T14:08:20.097Z"
+llmopsTags:
+  - "data-analysis"
+  - "data-integration"
+  - "databases"
+  - "error-handling"
+  - "fine-tuning"
+  - "langchain"
+  - "llama-index"
+  - "monitoring"
+  - "multi-agent-systems"
+  - "openai"
+  - "prompt-engineering"
+  - "rag"
+  - "reliability"
+  - "scaling"
+  - "security"
+  - "system-prompts"
+  - "token-optimization"
+  - "vector-search"
+company: "Rasgo"
+summary: "Rasgo's journey in building and deploying AI agents for data analysis reveals key insights about production LLM systems. The company developed a platform enabling customers to use standard data analysis agents and build custom agents for specific tasks, with focus on database connectivity and security. Their experience highlights the importance of agent-computer interface design, the critical role of underlying model selection, and the significance of production-ready infrastructure over raw agent capabilities."
+link: "https://medium.com/@cpdough/building-ai-agents-lessons-learned-over-the-past-year-41dc4725d8e5"
+year: 2024
+seo:
+  title: "Rasgo: Production Lessons from Building and Deploying AI Agents - ZenML LLMOps Database"
+  description: "Rasgo's journey in building and deploying AI agents for data analysis reveals key insights about production LLM systems. The company developed a platform enabling customers to use standard data analysis agents and build custom agents for specific tasks, with focus on database connectivity and security. Their experience highlights the importance of agent-computer interface design, the critical role of underlying model selection, and the significance of production-ready infrastructure over raw agent capabilities."
+  canonical: "https://www.zenml.io/llmops-database/production-lessons-from-building-and-deploying-ai-agents"
+  ogTitle: "Rasgo: Production Lessons from Building and Deploying AI Agents - ZenML LLMOps Database"
+  ogDescription: "Rasgo's journey in building and deploying AI agents for data analysis reveals key insights about production LLM systems. The company developed a platform enabling customers to use standard data analysis agents and build custom agents for specific tasks, with focus on database connectivity and security. Their experience highlights the importance of agent-computer interface design, the critical role of underlying model selection, and the significance of production-ready infrastructure over raw agent capabilities."
+---
+
+## Overview
+
+This case study documents Rasgo's experience building and deploying AI agents in production over the course of approximately one year. Rasgo has developed a data analysis platform that allows Fortune 500 enterprise customers to query and analyze their internal data using natural language, leveraging AI agents powered by large language models. The platform connects to enterprise data warehouses such as Snowflake and BigQuery, providing a metadata layer for RAG (Retrieval-Augmented Generation) and enabling data analysis through SQL, Python, and data visualization capabilities.
+
+The author, Patrick Dougherty, provides a candid and practical perspective on the challenges of productionizing AI agents, describing the emotional journey from initial excitement through frustration with real-world generalization issues, ultimately achieving stability across diverse data sources and enterprise customers. This transparency about both successes and failures makes this a valuable case study for understanding the operational realities of deploying LLM-powered agents.
+
+## Agent Architecture and Definition
+
+Rasgo defines an AI agent as a system that can take action (tool calls) and reason about outcomes to make subsequent decisions. This aligns with OpenAI's Assistants API conceptually, though the implementation is model-agnostic and supports providers including OpenAI (GPT-4, GPT-4o), Anthropic (Claude), and Cohere (Command R+).
+
+The agent architecture follows a straightforward loop pattern: starting a conversation with an objective and system prompt, calling a model for completion, handling any tool calls the model requests, iterating in a loop, and stopping when the task is complete. The system prompt example provided reveals a structured approach with clear sections for the agent's process and rules, emphasizing autonomous problem-solving while maintaining guardrails around data access and user interaction.
+
+Key architectural principles emphasized include that agents should not be scripted (they choose their own tool sequences), they are not black boxes (they should show their work), and they require the ability to interface with external data and systems through well-designed tool calls.
+
+## Critical LLMOps Lessons
+
+### Reasoning Over Knowledge
+
+A central insight from Rasgo's experience is that agent performance depends more on reasoning capability than on what the model "knows." The author references Sam Altman's observation that too much processing power goes into using models as databases rather than reasoning engines. In practice, this means designing agents to retrieve context and think through problems rather than expecting correct answers on the first attempt.
+
+For SQL query generation specifically—a core use case for Rasgo—the team acknowledges that even on benchmarks, text-to-SQL accuracy caps around 80%. Rather than fighting this limitation, they designed their agent to handle failures gracefully by returning detailed SQL errors with context, enabling the agent to iterate and self-correct. They also provide tool calls for the agent to explore database schemas and profile data distributions before writing queries, mimicking how a human data analyst would approach an unfamiliar dataset.
+
+### Agent-Computer Interface (ACI) Design
+
+Perhaps the most operationally significant lesson concerns the Agent-Computer Interface—the exact syntax, structure, and semantics of tool calls including both inputs and outputs. The term comes from recent Princeton research, but Rasgo has been iterating on this concept throughout their development.
+
+The ACI is described as requiring "as much art as science," more akin to UX design than traditional software development. Small changes can have cascading effects on agent behavior, and what works for one model may fail for another. Rasgo reports iterating on their ACI "hundreds of times" and observing significant performance fluctuations from seemingly minor tweaks to tool names, quantities, abstraction levels, input formats, and output responses.
+
+A specific example illustrates this sensitivity: when testing on GPT-4-turbo shortly after release, the agent would ignore certain columns in tool call responses. The information was formatted in markdown per OpenAI documentation and had worked with GPT-4-32k. After multiple failed adjustments, they overhauled the response format to JSON, which despite requiring more tokens for syntax characters, resolved the issue and improved agent comprehension significantly. This highlights how model-specific the optimal ACI can be and the importance of continuous testing across model versions.
+
+### Model Selection and Limitations
+
+Model capability is described as the fundamental constraint on agent performance—"the brain to your agent's body." Rasgo conducted comparative testing between GPT-3.5-turbo and GPT-4-32k that revealed stark differences in reasoning quality.
+
+On GPT-3.5, agents would frequently hallucinate table and column names, write failing queries, then belatedly use search tools to find correct schema information—only to repeat the same pattern for subsequent data sources. GPT-4, by contrast, would first create a plan with proper tool call sequencing and then execute that plan systematically. The performance gap widened further on complex tasks. Despite the speed advantages of GPT-3.5, users strongly preferred GPT-4's superior decision-making.
+
+The team developed a practice of paying close attention to how agents fail, treating hallucinations and failures as signals about what the agent wants the ACI to be. They note that agents are "lazy" and will skip tool calls they don't think are necessary, or take shortcuts when they don't understand argument instructions. When possible, adapting the ACI to work with the agent's natural tendencies is easier than fighting against them through prompt engineering.
+
+### Fine-Tuning Limitations
+
+Rasgo's experience with fine-tuning for agents was notably negative. They found that fine-tuned models actually exhibited worse reasoning because the agent would "cheat"—assuming examples from fine-tuning always represent the correct approach rather than reasoning independently about novel situations. Current fine-tuning methods are described as useful for teaching specific tasks in specific ways but not for improving general reasoning.
+
+However, they identify a valid pattern: using fine-tuned models as specialized components within tool calls rather than as the agent's primary reasoning engine. For example, a fine-tuned SQL model could handle the actual query generation when the main reasoning agent (running on a non-fine-tuned model) makes a SQL execution tool call.
+
+### Avoiding Abstractions in Production
+
+The author strongly advises against using frameworks like LangChain and LlamaIndex for production agent systems. The reasoning is that full ownership of model calls—including all inputs and outputs—is essential for onboarding users, debugging issues, scaling, logging agent activity, upgrading versions, and explaining agent behavior. These abstractions may be acceptable for rapid prototyping but become liabilities in production.
+
+This represents a significant operational choice that prioritizes observability and control over development speed, reflecting the challenges of maintaining and troubleshooting LLM-based systems at scale.
+
+## Production Infrastructure Requirements
+
+The case study emphasizes that the agent itself is not the competitive moat—the surrounding production infrastructure is where differentiation occurs. Several critical components are identified:
+
+**Security** requires implementing OAuth integrations, SSO providers, and token management to ensure agents operate only with appropriate user permissions. This is described as a feature in itself, not merely a compliance checkbox.
+
+**Data Connectors** require building and maintaining integrations with APIs and connection protocols for both internal and third-party systems. These require ongoing maintenance and updates.
+
+**User Interface** design is critical for user trust. Users need to follow and audit agent work, especially during initial interactions. Each tool call should have a dedicated, interactive interface allowing users to inspect results (e.g., browsing semantic search results) to build confidence in the agent's reasoning.
+
+**Long-term Memory** presents challenges because agents only naturally remember the current workflow up to token limits. Cross-session memory requires explicit mechanisms for committing and retrieving information. Notably, agents are described as poor at deciding what to commit to memory, typically requiring human confirmation.
+
+**Evaluation** is described as "frustratingly manual" and never complete. The inherent nondeterminism of agents—choosing different tool sequences for the same objective—complicates assessment. Rasgo's approach involves creating objective/completion pairs (initial direction and expected final tool call) and capturing intermediate tool calls for debugging. Evaluation operates at two levels: overall workflow success and individual tool call accuracy.
+
+## Technical Recommendations
+
+The case study concludes with practical technical guidance:
+
+- For vector similarity search, start with pgvector in PostgreSQL and only migrate to dedicated vector databases when absolutely necessary
+- Open-source models do not yet reason well enough for production agents
+- The OpenAI Assistants API is criticized for awkwardly bundling features (flat-file RAG, token limits, code interpreter) that should remain independent
+- Avoid premature cost optimization
+- Token streaming provides an effective UX compromise for managing AI latency
+- Model improvements will continue, so avoid over-adapting agents to current model limitations—the author deployed GPT-4o in production within 15 minutes of API availability, demonstrating the value of model-agnostic architecture
+
+## Assessment
+
+This case study provides valuable practitioner insights from real production experience rather than theoretical recommendations. The emphasis on ACI design, the negative results with fine-tuning, and the warning against framework abstractions represent hard-won lessons. The honest acknowledgment of ongoing challenges (evaluation is never complete, agents are limited by models, failures are learning opportunities) adds credibility. However, specific metrics on accuracy improvements, user satisfaction, or system reliability would strengthen the operational claims. The lessons are likely generalizable to other agentic LLM applications, particularly those involving tool use, structured data access, and enterprise deployments.

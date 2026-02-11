@@ -1,0 +1,143 @@
+---
+title: "Building a Custom Vision LLM for Document Processing at Scale"
+slug: "building-a-custom-vision-llm-for-document-processing-at-scale"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "694addd9328ed577857a3878"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2026-01-07T09:40:39.763Z"
+  lastUpdated: "2025-12-23T20:11:50.201Z"
+  createdOn: "2025-12-23T18:22:17.831Z"
+llmopsTags:
+  - "document-processing"
+  - "multi-modality"
+  - "regulatory-compliance"
+  - "fine-tuning"
+  - "model-optimization"
+  - "latency-optimization"
+  - "instruction-tuning"
+  - "human-in-the-loop"
+  - "pytorch"
+  - "open-source"
+  - "hugging-face"
+company: "Grab"
+summary: "Grab developed a custom lightweight vision LLM to address the challenges of extracting information from diverse user-submitted documents like ID cards and driver's licenses across Southeast Asia. Traditional OCR systems struggled with the variety of document templates and languages, while proprietary LLMs had high latency and poor SEA language support. The team fine-tuned and ultimately built a custom ~1B parameter vision LLM from scratch, achieving performance comparable to larger 2B models while significantly reducing latency. The solution involved a four-stage training process using synthetic OCR datasets, an auto-labeling framework called Documint, and full-parameter fine-tuning, resulting in dramatic accuracy improvements (+70pp for Thai, +40pp for Vietnamese) and establishing a unified model to replace traditional OCR pipelines."
+link: "https://engineering.grab.com/custom-vision-llm-at-grab"
+year: 2025
+seo:
+  title: "Grab: Building a Custom Vision LLM for Document Processing at Scale - ZenML LLMOps Database"
+  description: "Grab developed a custom lightweight vision LLM to address the challenges of extracting information from diverse user-submitted documents like ID cards and driver's licenses across Southeast Asia. Traditional OCR systems struggled with the variety of document templates and languages, while proprietary LLMs had high latency and poor SEA language support. The team fine-tuned and ultimately built a custom ~1B parameter vision LLM from scratch, achieving performance comparable to larger 2B models while significantly reducing latency. The solution involved a four-stage training process using synthetic OCR datasets, an auto-labeling framework called Documint, and full-parameter fine-tuning, resulting in dramatic accuracy improvements (+70pp for Thai, +40pp for Vietnamese) and establishing a unified model to replace traditional OCR pipelines."
+  canonical: "https://www.zenml.io/llmops-database/building-a-custom-vision-llm-for-document-processing-at-scale"
+  ogTitle: "Grab: Building a Custom Vision LLM for Document Processing at Scale - ZenML LLMOps Database"
+  ogDescription: "Grab developed a custom lightweight vision LLM to address the challenges of extracting information from diverse user-submitted documents like ID cards and driver's licenses across Southeast Asia. Traditional OCR systems struggled with the variety of document templates and languages, while proprietary LLMs had high latency and poor SEA language support. The team fine-tuned and ultimately built a custom ~1B parameter vision LLM from scratch, achieving performance comparable to larger 2B models while significantly reducing latency. The solution involved a four-stage training process using synthetic OCR datasets, an auto-labeling framework called Documint, and full-parameter fine-tuning, resulting in dramatic accuracy improvements (+70pp for Thai, +40pp for Vietnamese) and establishing a unified model to replace traditional OCR pipelines."
+---
+
+## Overview
+
+Grab, a leading Southeast Asian superapp operating across mobility, deliveries, and digital financial services, developed a custom vision LLM to solve critical document processing challenges in their eKYC (electronic know-your-customer) workflows. The use case centers on accurately extracting information from user-submitted documents such as identification cards, driver's licenses, and registration certificates across eight Southeast Asian countries with diverse languages and document formats.
+
+This case study is particularly noteworthy from an LLMOps perspective because it demonstrates the complete lifecycle of taking a vision LLM from experimentation to production at scale, including model selection, iterative fine-tuning approaches, custom model development, and deployment optimization. The team progressed through multiple phases—from LoRA fine-tuning to full-parameter training to ultimately building a lightweight custom model from scratch—each addressing specific production requirements around accuracy, latency, and resource efficiency.
+
+## Problem Context and Business Requirements
+
+The business problem was rooted in the limitations of traditional OCR systems when faced with Southeast Asian language diversity and document format variety. Traditional OCR struggled with the wide range of document templates encountered in production. The team evaluated proprietary LLMs but found them inadequate for production deployment due to several critical issues: poor understanding of SEA languages, frequent hallucinations, and unacceptable latency—particularly at the P99 level where external APIs like ChatGPT or Gemini exhibited latency 3-4x higher than P50, which would be problematic for Grab's large-scale rollouts.
+
+Open-source vision LLMs offered better efficiency but lacked the accuracy required for production use cases where document processing errors could have significant compliance and user experience implications. This gap between efficiency and accuracy requirements drove the team toward a custom solution optimized specifically for their production constraints.
+
+## Technical Foundation and Model Selection
+
+The team's approach to model selection demonstrates sound LLMOps practices in evaluating base models against specific production criteria. They evaluated multiple open-source options including Qwen2VL, miniCPM, Llama3.2 Vision, Pixtral 12B, GOT-OCR2.0, and NVLM 1.0. Their selection of Qwen2-VL 2B as the base model was driven by three production-critical factors: efficient size enabling full fine-tuning on GPUs with limited VRAM, SEA language support with efficient tokenization for Thai and Vietnamese, and dynamic resolution capability that preserves text integrity by processing images in native resolution rather than requiring fixed-size inputs.
+
+The architecture of their vision LLM follows standard patterns with three key components: an image encoder that converts images to numerical vectors, a vision-language projector that translates image representations into formats the language model can process, and a language model decoder that generates text outputs. However, their implementation choices and training methodology represent sophisticated production engineering tailored to their specific deployment constraints.
+
+Initial benchmarking of Qwen2VL and miniCPM on Grab's internal datasets revealed low accuracy primarily due to limited SEA language coverage, which validated their decision to pursue custom training. This benchmarking phase is crucial from an LLMOps perspective—establishing baseline performance on production-representative data before investing in fine-tuning.
+
+## Data Generation and Labeling Infrastructure
+
+A critical component of this LLMOps implementation is the data infrastructure built to support model training. The team recognized that training effectiveness would be constrained by data availability and quality, leading them to develop two key data generation systems.
+
+For synthetic OCR data, they extracted SEA language text content from Common Crawl and used an in-house synthetic data pipeline to generate training images by rendering text in various fonts, backgrounds, and augmentations. This synthetic dataset covered Bahasa Indonesia, Thai, Vietnamese, and English, with each image containing random sentence paragraphs. The use of synthetic data addresses a common LLMOps challenge—obtaining sufficient training data for specialized domains while maintaining diversity and avoiding overfitting to limited real-world examples.
+
+More significantly, they developed Documint, an internal AI-powered auto-labeling framework specifically designed for document understanding tasks. Documint represents sophisticated production infrastructure that creates high-quality labeled datasets through four main modules: detection (identifying document regions), orientation correction (determining rotation angle), OCR (extracting unstructured text), and KIE (key information extraction, returning structured JSON from unstructured text). The framework processed large volumes of Grab-collected cards and documents to extract training labels, with human review for quality assurance. This automated labeling pipeline is essential for LLMOps at scale—enabling continuous data generation and model improvement without proportionally scaling human annotation efforts.
+
+## Phase 1: LoRA Fine-Tuning Experiments
+
+The team's first production attempt involved fine-tuning Qwen2VL using Low-Rank Adaptation (LoRA), a parameter-efficient fine-tuning technique that enables lightweight model updates with minimal computational resources. From an LLMOps perspective, LoRA represents a pragmatic starting point—it reduces infrastructure requirements and training time, making it faster to iterate and validate the approach.
+
+The LoRA fine-tuned Qwen2VL-2B achieved high field-level accuracy for Indonesian documents with Latin scripts, demonstrating that the approach could work for certain document types. However, production testing revealed critical limitations: the model struggled with non-Latin scripts like Thai and Vietnamese, and performed poorly on unstructured layouts with small, dense text. These failure modes are particularly important in production contexts where model reliability across all supported document types is essential—partial success isn't sufficient when the system must handle the full diversity of real-world inputs.
+
+This phase demonstrates mature LLMOps practices in incrementally validating approaches before committing to more expensive training methods. The team gained valuable insights about where lightweight fine-tuning was sufficient and where more aggressive training would be necessary.
+
+## Phase 2: Full-Parameter Fine-Tuning
+
+Analysis of the LoRA limitations led to a key insight: while open-source vision LLMs often have extensive multilingual corpus coverage for pre-training the language decoder, they lack visual text in SEA languages during vision encoder and joint training. This gap between textual language understanding and visual character recognition represented the core bottleneck for production accuracy.
+
+This insight drove the decision to pursue full-parameter fine-tuning, accepting the increased computational cost in exchange for the ability to adapt the vision components to SEA scripts. The team implemented a two-stage training process inspired by the LLAVA methodology:
+
+In Stage 1 (continual pre-training), they trained the vision components using their synthetic OCR datasets covering Bahasa Indonesia, Thai, Vietnamese, and English. This stage specifically addresses the visual pattern recognition gap, teaching the model to recognize the unique visual characteristics of SEA scripts. From an LLMOps perspective, this stage represents domain adaptation at the visual encoding level—ensuring the model's fundamental perception capabilities align with the production data distribution.
+
+In Stage 2 (full-parameter fine-tuning), they fine-tuned the entire model—vision encoder, projector, and language decoder—using task-specific document data from their Documint pipeline. This end-to-end fine-tuning allows all components to co-adapt to the specific task requirements.
+
+The production results were dramatic: Thai document accuracy increased by 70 percentage points from baseline, and Vietnamese document accuracy rose by 40 percentage points. These improvements validate the full fine-tuning approach and demonstrate that the investment in computational resources was justified by the production performance gains.
+
+However, the team notes that full fine-tuning "pushed the limits of GPUs," indicating infrastructure constraints that would affect production scalability. This tension between model performance and resource requirements is a classic LLMOps tradeoff that motivated the next phase.
+
+## Phase 3: Custom Lightweight Model Architecture
+
+To optimize resource utilization while maintaining production accuracy, the team made the sophisticated decision to build a custom lightweight vision LLM (~1B parameters) from scratch. This represents advanced LLMOps engineering—moving beyond fine-tuning existing models to custom architecture design tailored specifically to production constraints.
+
+Their architecture strategy combined components from different models: the powerful vision encoder from Qwen2-VL 2B, the compact language decoder from Qwen2.5 0.5B, and an adjusted projector layer to enable seamless communication between them. This component-mixing approach demonstrates deep technical sophistication—rather than treating models as monolithic units, they identified which components contributed most to their specific task requirements and assembled an optimized architecture.
+
+The training process for this custom model involved four comprehensive stages:
+
+Stage 1 (projector alignment) trained the new projector layer to ensure the vision encoder and language decoder could communicate effectively. This initialization stage is critical when combining components from different model families that weren't originally designed to work together.
+
+Stage 2 (vision tower enhancement) trained the vision encoder on diverse public multimodal datasets covering visual Q&A, general OCR, and image captioning. This broad training maintains the encoder's general visual understanding capabilities, preventing overfitting to the narrow document processing task. The team notes this stage is essential—without it, they observed accuracy drops of up to 10% on non-Latin documents.
+
+Stage 3 (language-specific visual training) focused specifically on synthetic OCR data for SEA languages, building on the insights from Phase 2 about the importance of visual script recognition for non-Latin characters.
+
+Stage 4 (task-centric fine-tuning) performed full-parameter fine-tuning on their curated document dataset, specializing the model for production use cases.
+
+This four-stage training process represents sophisticated LLMOps methodology—balancing general capabilities, domain-specific adaptation, and task specialization in a structured progression that maximizes production performance while maintaining efficient resource utilization.
+
+## Production Performance and Deployment Considerations
+
+The custom 1B model achieved production performance comparable to the larger 2B model, staying within a 3 percentage point accuracy gap across most document types. More importantly for production deployment, the model demonstrated significantly better latency characteristics than both the 2B model and external API options. The team specifically emphasizes that external APIs exhibited problematic P99 latency that was 3-4x the P50 latency, which would be unacceptable for Grab's large-scale rollouts where tail latency directly impacts user experience.
+
+This latency focus demonstrates mature production thinking—understanding that average-case performance isn't sufficient when operating at scale where tail latency affects real users. The custom lightweight model addresses both throughput (via smaller size and faster inference) and latency consistency, which are critical for production deployment.
+
+The model also maintained strong generalization when trained on quality-augmented datasets, indicating robustness to variations in production data—another essential characteristic for real-world deployment where input data may differ from training distributions.
+
+## Key Production Insights and LLMOps Lessons
+
+The case study concludes with several critical insights that reflect mature LLMOps understanding:
+
+Full fine-tuning proved superior to LoRA for specialized, non-Latin script domains. This challenges the common assumption that parameter-efficient methods are always preferable—sometimes the task requirements demand full model adaptation despite the computational cost.
+
+Lightweight custom models built from scratch can achieve near state-of-the-art results when trained comprehensively. This validates the investment in custom architecture development for production use cases with specific constraints.
+
+Base model selection matters critically—starting with a model that has native support for target languages provides essential foundation capabilities that are difficult to add later through fine-tuning alone.
+
+Data quality and preprocessing are paramount. The team emphasizes that meticulous dataset preparation and augmentation played a critical role in achieving consistent production accuracy.
+
+Native resolution processing is a game-changer for OCR tasks. The ability to handle dynamic image resolutions without distortion dramatically improves text recognition accuracy compared to models requiring fixed-size inputs.
+
+## Future Directions and Production Evolution
+
+The team indicates ongoing development in several directions that reflect continuous production improvement practices. They're developing Chain of Thought-based OCR and KIE models to strengthen generalization capabilities and handle more diverse document scenarios. This represents an evolution toward more robust reasoning capabilities that could improve performance on edge cases.
+
+They're also expanding support to additional Grab markets including Myanmar and Cambodia, which will require extending their language coverage and potentially retraining or adapting models for new scripts and document formats. This geographic expansion demonstrates the scalability challenges in production LLM systems—each new market may introduce novel requirements that necessitate model updates.
+
+## Critical Assessment and LLMOps Maturity
+
+This case study demonstrates sophisticated LLMOps practices across multiple dimensions. The team shows strong understanding of the tradeoffs between different fine-tuning approaches, makes evidence-based decisions through systematic benchmarking, and ultimately commits to custom model development when existing solutions don't meet production requirements. Their investment in data infrastructure (Documint) and synthetic data generation reflects understanding that model performance depends fundamentally on training data quality and availability.
+
+However, as with any case study from a company blog, certain aspects warrant balanced assessment. The reported accuracy improvements are impressive but lack detailed information about evaluation methodology, dataset sizes, or statistical significance testing. The comparison table shows their custom 1B model outperforming various alternatives, but without standardized benchmark datasets or independent validation, it's difficult to fully assess the claims. The team mentions "quality-augmented datasets" for generalization testing but doesn't provide specifics about the augmentation techniques or the distribution shift between training and evaluation data.
+
+The latency comparisons are qualitative rather than quantitative—they state their model "far outperforms" alternatives and mention the P99 latency issues with external APIs, but don't provide specific numbers that would enable readers to assess the actual performance differences or reproduce the comparisons.
+
+From a production deployment perspective, the case study focuses heavily on model development but provides limited detail about serving infrastructure, monitoring systems, model versioning, A/B testing methodology, or failure handling—all critical components of production LLMOps. There's no discussion of how model updates are rolled out, how performance is monitored in production, or how the system handles edge cases and errors.
+
+Despite these limitations in disclosure (which are typical for company blog posts), the case study demonstrates genuine technical depth and represents a valuable example of taking vision LLMs from experimentation through multiple iterations to production deployment at scale. The multi-phase approach, willingness to invest in custom architecture development, and focus on production constraints like latency and resource efficiency all indicate mature LLMOps practices.

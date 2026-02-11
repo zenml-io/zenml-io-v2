@@ -1,0 +1,140 @@
+---
+title: "Generating Production-Ready MCP Servers from OpenAPI Specifications"
+slug: "generating-production-ready-mcp-servers-from-openapi-specifications"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "6908a0b65c84ee1cf29c31d2"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:24:44.561Z"
+  createdOn: "2025-11-03T12:31:50.063Z"
+llmopsTags:
+  - "code-generation"
+  - "structured-output"
+  - "poc"
+  - "prompt-engineering"
+  - "agent-based"
+  - "token-optimization"
+  - "error-handling"
+  - "cost-optimization"
+  - "fastapi"
+  - "postgresql"
+  - "sqlite"
+  - "redis"
+  - "langchain"
+  - "llama-index"
+  - "documentation"
+  - "api-gateway"
+  - "open-source"
+  - "security"
+  - "anthropic"
+  - "openai"
+  - "meta"
+  - "google-gcp"
+  - "amazon-aws"
+  - "microsoft-azure"
+company: "SpeakEasy"
+summary: "SpeakEasy tackled the challenge of enabling AI agents to interact with existing APIs by developing a tool that automatically generates Model Context Protocol (MCP) servers from OpenAPI documents. The company identified critical issues when generating over 50 production MCP servers for customers, including tool explosion (too many exposed operations), verbose descriptions consuming excessive tokens, complex data formats confusing LLMs, and inadequate access controls. Their solution involved a three-layer optimization approach: pruning OpenAPI documents with custom extensions, building intelligence into the generator to handle complex formats and streaming responses, and providing customization files for precise tool control. The result is production-ready MCP servers that balance LLM context window constraints with functional completeness, using techniques like scope-based access control, automatic data transformation, and optimized descriptions."
+link: "https://www.speakeasy.com/blog/generating-mcp-from-openapi-lessons-from-50-production-servers"
+year: 2025
+seo:
+  title: "SpeakEasy: Generating Production-Ready MCP Servers from OpenAPI Specifications - ZenML LLMOps Database"
+  description: "SpeakEasy tackled the challenge of enabling AI agents to interact with existing APIs by developing a tool that automatically generates Model Context Protocol (MCP) servers from OpenAPI documents. The company identified critical issues when generating over 50 production MCP servers for customers, including tool explosion (too many exposed operations), verbose descriptions consuming excessive tokens, complex data formats confusing LLMs, and inadequate access controls. Their solution involved a three-layer optimization approach: pruning OpenAPI documents with custom extensions, building intelligence into the generator to handle complex formats and streaming responses, and providing customization files for precise tool control. The result is production-ready MCP servers that balance LLM context window constraints with functional completeness, using techniques like scope-based access control, automatic data transformation, and optimized descriptions."
+  canonical: "https://www.zenml.io/llmops-database/generating-production-ready-mcp-servers-from-openapi-specifications"
+  ogTitle: "SpeakEasy: Generating Production-Ready MCP Servers from OpenAPI Specifications - ZenML LLMOps Database"
+  ogDescription: "SpeakEasy tackled the challenge of enabling AI agents to interact with existing APIs by developing a tool that automatically generates Model Context Protocol (MCP) servers from OpenAPI documents. The company identified critical issues when generating over 50 production MCP servers for customers, including tool explosion (too many exposed operations), verbose descriptions consuming excessive tokens, complex data formats confusing LLMs, and inadequate access controls. Their solution involved a three-layer optimization approach: pruning OpenAPI documents with custom extensions, building intelligence into the generator to handle complex formats and streaming responses, and providing customization files for precise tool control. The result is production-ready MCP servers that balance LLM context window constraints with functional completeness, using techniques like scope-based access control, automatic data transformation, and optimized descriptions."
+---
+
+## Overview and Context
+
+SpeakEasy developed an automated approach to generating Model Context Protocol (MCP) servers from OpenAPI specifications, building over 50 production MCP servers for customers. This case study provides valuable insights into the practical challenges of deploying LLMs in production environments where they need to interact with existing APIs. The company, which previously focused on generating SDKs and documentation from OpenAPI specs, extended their generator to create MCP servers that enable AI agents to call API endpoints as tools.
+
+The core problem SpeakEasy addressed is the sudden need for businesses to make their existing APIs accessible to AI agents. While these APIs were originally designed for human developers to consume through SDKs and documentation, the rise of agentic AI created demand for machine-consumable interfaces. The naive approach of simply translating every OpenAPI endpoint into an MCP tool proved problematic in production, revealing fundamental mismatches between how APIs are documented for humans versus how LLMs need to interact with them.
+
+## Architecture and Technical Approach
+
+SpeakEasy's solution involves a three-layer optimization architecture rather than directly modifying generated MCP servers, which would lose customizations on regeneration:
+
+**The OpenAPI Document Layer** serves as the single source of truth and receives modifications that don't compromise its utility for SDK generation and human-readable documentation. SpeakEasy introduced custom extensions like `x-speakeasy-mcp` that allow developers to specify MCP-specific configurations including tool descriptions, scopes, and whether specific operations should be exposed as tools.
+
+**The Generator Layer** handles common API behaviors that don't translate well to agent interactions. This includes automatic detection and transformation of complex data formats, handling streaming responses by buffering complete streams before passing to clients, and Base64 encoding of binary data like images and audio files. The generator makes intelligent decisions about data formatting based on detected types in the OpenAPI specification.
+
+**The Custom Function File Layer** sits alongside the generated MCP server and provides precise control over specific tool behaviors without modifying the generated code directly. This enables advanced customizations like SDK hooks that transform data post-request but pre-response, such as converting CSV responses to JSON for better LLM consumption.
+
+## Tool Explosion Challenge
+
+One of the most significant production challenges identified was "tool explosion" - when APIs with hundreds of endpoints generate equally numerous MCP tools. SpeakEasy observed that APIs with 200+ endpoints would create 200+ tools, overwhelming LLM context windows and causing models to struggle with tool selection. This problem intensifies when users employ multiple MCP servers simultaneously or rely on smaller models with limited context windows.
+
+The solution involves aggressive pruning at the OpenAPI document level before generation. SpeakEasy's generator looks for a custom `disabled` key (defaulting to false) in the OpenAPI document. When set to true via the `x-speakeasy-mcp` extension, no tool is generated for that operation. Developers are encouraged to exclude non-essential endpoints like health checks and operations outside the specific use case scope. For example, an e-commerce MCP server focused on ordering might exclude user authentication, user management, and payment endpoints while retaining only product browsing, cart creation, and address setting operations.
+
+This approach differs from client-side disabling (like toggling tools off in Claude Desktop), which becomes impractical with large tool counts and doesn't scale across multiple clients or environments.
+
+## Description Optimization for LLM Consumption
+
+SpeakEasy identified a fundamental mismatch between OpenAPI descriptions written for humans and what LLMs need. Human-oriented descriptions tend to be verbose, multi-paragraph explanations that repeat information across contexts. While this helps human readers understand endpoints without jumping around the document, it creates problems for LLMs by consuming excessive tokens and adding noise that can lead to incorrect tool selection or hallucinations.
+
+Conversely, overly terse or vague descriptions cause different problems. When multiple similar endpoints have unclear descriptions, LLMs cannot distinguish between them. The case study provides an example of three user-related endpoints (`/user/profile`, `/user/details`, `/user/info`) with vague descriptions like "Returns the user profile," "Fetches user details," and "Get user info." These similarities confuse LLMs about which tool to invoke.
+
+The solution requires clear, precise descriptions that explain exactly what each operation does and when to use it. The improved versions specify "Retrieves the profile of the authenticated user, including display name, bio, and profile picture" versus "Retrieves detailed internal data for a specific user by ID, including email, role assignments, and account status. Requires admin access" versus "Returns limited public-facing information for a specific user by ID, such as username and signup date. Useful for displaying user data in public or shared contexts."
+
+However, API providers often need lengthy descriptions for human-facing documentation. SpeakEasy addresses this by supporting the `x-speakeasy-mcp` extension with LLM-optimized descriptions separate from the standard OpenAPI description field. Alternatively, developers can use overlays - separate documents that modify the OpenAPI spec without directly editing the original, avoiding pollution of the source document with MCP-specific terminology.
+
+## Complex Data Format Handling
+
+Production APIs frequently return complex payloads that agents struggle to process. SpeakEasy encountered this particularly with APIs based on specifications like TM Forum OpenAPI, which define large and complicated payload structures. Common problematic formats include streaming responses requiring open connections until complete, binary responses like images or audio files, unnecessary metadata cluttering responses, and complex nested structures like content wrapped in envelope patterns.
+
+SpeakEasy's generator automatically transforms data before sending to the MCP server. Binary files are Base64-encoded before passing to the LLM. For streaming data, the generator produces code that buffers the entire stream and only passes complete responses to the client, rather than requiring the agent to handle incremental chunks.
+
+The system also supports custom transformations through SDK hooks. For instance, if an API returns CSV data that needs conversion to JSON for LLM consumption, developers can write hooks that execute after successful requests but before responses proceed through the SDK lifecycle. This hook mechanism provides extensibility for format transformations beyond what the generator handles automatically.
+
+## Access Control and Security Considerations
+
+A critical production concern highlighted in the case study involves the security implications of exposing API capabilities to AI agents. The example of a Salesforce MCP server connected to Claude Desktop illustrates the risk: even with restricted controls, users are "one tool call away from leaking sensitive identity information or modifying accounts in unintended ways" due to hallucinations, missing context, or the various issues already discussed.
+
+Traditional MCP server architectures expose all capabilities directly to clients, with access control delegated to client-side configurations. While Claude Desktop allows toggling individual tools, this becomes impractical with large tool counts and doesn't scale across multiple clients or deployment environments.
+
+SpeakEasy's solution introduces scope-based access control configured at the server level rather than the client. Scopes are annotations applied to specific endpoints in the OpenAPI document. A common pattern associates all GET requests with a "read" scope and POST/PUT/DELETE/PATCH methods with a "write" scope. This can be implemented via overlay that targets specific HTTP methods and adds scope annotations.
+
+When starting the MCP server, administrators can specify which scopes to enable, exposing only corresponding operations. Scopes aren't limited to read/write paradigms - custom scopes can control access by domain or functionality. For example, a "product" scope can limit the server to only product-related operations, configured in the MCP client settings with command-line arguments like `--scope product`.
+
+This server-side configuration provides built-in protection regardless of which client users employ, shifting security controls from client UIs to declarative server configuration.
+
+## OpenAPI as an Appropriate Abstraction
+
+The case study includes a notable defense of OpenAPI as a specification format for AI-tool integration, countering general discourse that sometimes portrays OpenAPI-to-MCP conversion as inherently ineffective. SpeakEasy argues that OpenAPI is fundamentally "a specification for describing APIs" with "no bearing on the quality or expansiveness of the API it describes."
+
+The maturity leap, according to SpeakEasy, is that developers should build APIs suited for AI tools while still describing them with OpenAPI. The format remains highly compatible with MCP because both use JSON Schema, and OpenAPI continues to power documentation sites, SDKs, and other developer tools beyond MCP servers.
+
+SpeakEasy draws a parallel to Backend-For-Frontend (BFF) patterns in web development, where teams compose multiple backend services into more focused APIs optimized for frontend consumption. This avoids costly waterfall API calls that heavily normalized REST APIs or disjoint microservices would require. Similarly, APIs designed with AI agent consumption in mind should be more focused and well-documented, naturally generating better MCP servers while remaining fully describable in OpenAPI.
+
+## Production Best Practices
+
+Based on generating 50+ production MCP servers, SpeakEasy distilled several critical best practices for LLMOps practitioners:
+
+**Avoid tool explosion** through aggressive pruning. Limit generated tools to only what's genuinely useful for the target use case, excluding administrative endpoints, health checks, and operations outside the scope of agent capabilities. The goal is focused functionality rather than comprehensive API coverage.
+
+**Write clear, concise descriptions** optimized for LLM reasoning rather than human browsing. Each tool description should precisely explain what the operation does and when to use it, distinguishing it from similar operations. Leverage MCP-specific description fields separate from human-facing documentation where needed.
+
+**Transform complex data** proactively. Binary files, deeply nested JSON, streaming responses, and other complex formats should be converted to simpler structures before reaching the client. This prevents LLMs from struggling with formats they're not designed to handle.
+
+**Use scope-based access control** to restrict tool exposure at the server level rather than relying on client configurations. Define scopes by access patterns (read/write) or domains (products, users, orders) and configure which scopes are active when starting the server.
+
+**Leverage overlays** to separate MCP-specific configurations from the canonical OpenAPI document. This maintains a clean source of truth while enabling optimization for agent consumption without compromising SDK generation or human-readable documentation.
+
+## Tradeoffs and Considerations
+
+While SpeakEasy's approach addresses many production challenges, the case study implicitly reveals several tradeoffs:
+
+**Maintenance Complexity**: The three-layer architecture (OpenAPI document, generator, custom functions) adds complexity compared to hand-crafted MCP servers. Teams must understand which layer should handle each concern and maintain consistency across all three.
+
+**OpenAPI Pollution vs. Overlay Management**: Teams face a choice between adding MCP-specific extensions directly to OpenAPI documents (simpler but pollutes the spec) or managing separate overlay documents (cleaner separation but additional artifacts to maintain).
+
+**Pruning Decisions**: Determining which endpoints to expose requires understanding both the API capabilities and likely agent use cases. Over-pruning limits agent utility while under-pruning risks tool explosion. This judgment call requires domain expertise and may need iteration based on production usage patterns.
+
+**Scope Granularity**: While scope-based access control improves security, defining appropriate scope boundaries requires careful API design. Too coarse-grained scopes limit flexibility while too fine-grained scopes reintroduce complexity similar to tool explosion.
+
+**Description Optimization**: Writing descriptions that work well for both LLMs and humans is challenging. Even with separate description fields, maintaining two versions increases documentation burden and risks inconsistency.
+
+The case study represents a practical, battle-tested approach to operationalizing LLMs through automated MCP server generation rather than purely theoretical recommendations. SpeakEasy's experience with 50+ production servers provides empirical grounding for their design decisions and best practices, though the text originates from a vendor blog and should be read with appropriate awareness of potential bias toward their specific implementation approach.

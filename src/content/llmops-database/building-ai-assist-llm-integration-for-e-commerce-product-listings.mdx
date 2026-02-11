@@ -1,0 +1,115 @@
+---
+title: "Building AI Assist: LLM Integration for E-commerce Product Listings"
+slug: "building-ai-assist-llm-integration-for-e-commerce-product-listings"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f3deb60f3e4d993289e2e"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:35:20.594Z"
+  createdOn: "2024-11-21T14:04:27.372Z"
+llmopsTags:
+  - "content-moderation"
+  - "devops"
+  - "error-handling"
+  - "guardrails"
+  - "human-in-the-loop"
+  - "monitoring"
+  - "openai"
+  - "prompt-engineering"
+  - "rag"
+  - "reliability"
+  - "scalability"
+  - "scaling"
+  - "structured-output"
+  - "token-optimization"
+  - "unstructured-data"
+company: "Mercari"
+summary: "Mercari developed an AI Assist feature to help sellers create better product listings using LLMs. They implemented a two-part system using GPT-4 for offline attribute extraction and GPT-3.5-turbo for real-time title suggestions, conducting both offline and online evaluations to ensure quality. The team focused on practical implementation challenges including prompt engineering, error handling, and addressing LLM output inconsistencies in a production environment."
+link: "https://engineering.mercari.com/en/blog/entry/20231219-leveraging-llms-in-production-looking-back-going-forward/"
+year: 2023
+seo:
+  title: "Mercari: Building AI Assist: LLM Integration for E-commerce Product Listings - ZenML LLMOps Database"
+  description: "Mercari developed an AI Assist feature to help sellers create better product listings using LLMs. They implemented a two-part system using GPT-4 for offline attribute extraction and GPT-3.5-turbo for real-time title suggestions, conducting both offline and online evaluations to ensure quality. The team focused on practical implementation challenges including prompt engineering, error handling, and addressing LLM output inconsistencies in a production environment."
+  canonical: "https://www.zenml.io/llmops-database/building-ai-assist-llm-integration-for-e-commerce-product-listings"
+  ogTitle: "Mercari: Building AI Assist: LLM Integration for E-commerce Product Listings - ZenML LLMOps Database"
+  ogDescription: "Mercari developed an AI Assist feature to help sellers create better product listings using LLMs. They implemented a two-part system using GPT-4 for offline attribute extraction and GPT-3.5-turbo for real-time title suggestions, conducting both offline and online evaluations to ensure quality. The team focused on practical implementation challenges including prompt engineering, error handling, and addressing LLM output inconsistencies in a production environment."
+---
+
+## Overview
+
+Mercari, a major Japanese e-commerce marketplace, developed Mercari AI Assist (メルカリAIアシスト) through their dedicated Generative AI/LLM team. This feature assists sellers by offering AI-powered suggestions to enhance their listing information, specifically focusing on title suggestions. The case study, published in December 2023, provides a transparent and practical look at deploying LLMs in a production environment for a consumer-facing application with substantial traffic.
+
+The team's mission is twofold: building products that improve user experience and enabling other teams within Mercari to understand and implement LLMs in production environments. This dual focus on shipping and knowledge sharing reflects a mature approach to organizational LLM adoption.
+
+## Team Structure and Communication
+
+Mercari emphasizes the importance of a relatively small, cross-functional team structure when working with LLMs in production. The team includes product managers, designers, and engineers who maintain close and frequent communication. Given that LLM capabilities and limitations are not well understood by many stakeholders, constant dialogue about what is achievable versus what lies beyond current scope is crucial for setting realistic expectations.
+
+Engineers conduct regular experiments to assess technical feasibility, staying current with the rapidly evolving field through social media, news outlets, and research papers. The team was notably a sponsor at EMNLP 2023, demonstrating their commitment to staying connected with the academic research community.
+
+## Technical Architecture and Model Selection
+
+The team made deliberate choices about models and techniques. They explicitly note that not every problem requires LLMs—a refreshingly pragmatic perspective. The primary challenge they identified was processing and understanding unstructured data from user-generated text in listings. Item titles and descriptions contain valuable information, but distilling key insights from varied writing styles has historically been difficult. They hypothesized that LLMs, given their pre-training on broad data, would be well-suited to this task.
+
+Rather than fine-tuning or training custom models, Mercari opted for prompt engineering combined with simple retrieval-augmented generation (RAG), leveraging commercially available APIs from OpenAI (GPT-4 and GPT-3.5-turbo). This decision was driven by the objective of designing an optimal user experience while establishing a sustainable workflow for incorporating LLMs into production.
+
+The architecture is split into two distinct parts with different performance and cost characteristics:
+
+- **Offline Processing (GPT-4)**: Working with domain experts from other teams to define what constitutes a "good title" for Mercari listings, the team collected existing title data aligned with their criteria. GPT-4 was used to distill key attributes of effective titles, which were then stored in a database. This more expensive and higher-quality model was appropriate for this batch, one-time extraction task.
+
+- **Real-time Processing (GPT-3.5-turbo)**: For the online, real-time component, GPT-3.5-turbo identifies key attributes (defined in the offline step) from listings as they are created and generates suggestions for improving titles. The faster and cheaper model was chosen for this high-volume, latency-sensitive operation.
+
+This hybrid approach demonstrates practical cost-quality tradeoffs that are essential in production LLM systems.
+
+## Evaluation Strategy
+
+Mercari implemented a comprehensive evaluation strategy consisting of both offline and online components, conducted before release and continuously thereafter.
+
+**Offline Evaluation** focuses on determining the most effective prompts, balancing token usage (length) with response quality. Through a combination of manual review and automated evaluation, the team ensures model responses meet requirements and estimates total deployment costs at scale.
+
+**Online Evaluation** is particularly significant because the system handles user-generated content with substantial real-time traffic. The team conducted partial releases—deploying only a small segment of the feature that calls the LLM API—to assess performance before full rollout. In one preliminary test, they tasked GPT with extracting a single key attribute and responding with "YES" or "NO."
+
+This partial release strategy is explicitly recommended for teams unfamiliar with LLMs in production, especially when using third-party commercial APIs.
+
+## Output Inconsistency Challenges
+
+One of the most valuable contributions of this case study is the transparent reporting of output inconsistencies encountered at scale. Even with a simple YES/NO task, the team observed significant format variations as request volume increased. Their sampled results revealed:
+
+- Expected outputs: "NO" (311,813), "No" (22,948), "Yes" (17,236)
+- Unexpected refusals: "Sorry, but I can't provide the answer you're looking for," "Sorry, but I can't assist with that request"
+- Completely unexpected formats: Multi-line responses with multiple YES/NO values
+
+These findings underscore the critical importance of robust pre- and post-processing in production LLM systems. While simple inconsistencies (like "NO" vs "No") can be handled with regular expressions, detecting issues becomes increasingly challenging as output complexity grows—particularly when dealing with hallucinations, which the team acknowledges as a well-known issue with LLMs.
+
+The team emphasizes that preprocessing prompts containing user-generated content is essential to minimize incorrect responses, and post-processing logic must ensure only expected output formats reach the client application.
+
+## API and Third-Party Service Considerations
+
+Using LLMs via third-party APIs introduces specific operational concerns that the team highlights:
+
+- **Content Violation Errors**: Third-party API filtering policies may differ from Mercari's own content moderation system. Some API calls may inadvertently trigger content violation errors, requiring careful prompt preparation.
+
+- **Token Count Variability**: Token usage varies by language. Research presented at EMNLP 2023 indicated that Japanese prompts and generated tokens can cost more than double compared to English when using ChatGPT. This is particularly relevant for Mercari as a Japanese marketplace.
+
+- **Standard API Errors**: Authentication and timeout errors require standard handling, but LLM-specific error types demand additional attention.
+
+## Lessons Learned and Future Directions
+
+The team reflects on several key lessons:
+
+- Clear and frequent communication across roles is critical for aligning expectations and enabling rapid progress
+- Beginning with simple prompt engineering and commercial APIs is a pragmatic starting point
+- Rigorous pre- and post-processing are essential to address LLM output inconsistencies
+- Closely following academic and industrial updates helps navigate the rapidly changing field
+- Having team members with ML and NLP backgrounds accelerates research and experimentation, enabling quick determination of LLM suitability for specific tasks and appropriate evaluation metrics
+
+Looking forward, Mercari is focusing on improvements in LLM operations and automated workflows. They are exploring LLMs for more complex and specialized tasks, which may require parameter-efficient fine-tuning techniques. The team acknowledges their implementation is "far from perfect" and commits to continuous learning and experimentation—a humble and realistic assessment that reflects the current state of the field.
+
+## Critical Assessment
+
+This case study provides valuable practical insights but should be read with appropriate context. As a company blog post, it naturally emphasizes successes while briefly mentioning challenges. The actual quantitative results of the feature (e.g., improvement in listing quality, seller adoption rates, conversion impacts) are not disclosed. Additionally, the cost figures and latency improvements from using GPT-3.5-turbo versus GPT-4 are mentioned conceptually but not quantified.
+
+That said, the transparency about output inconsistencies and the practical guidance around partial releases, evaluation strategies, and handling third-party API quirks makes this a genuinely useful reference for teams building similar production LLM systems. The acknowledgment that "not everything requires LLMs" and the emphasis on right-sizing solutions to problems demonstrates a mature engineering approach that goes beyond the hype often associated with LLM applications.

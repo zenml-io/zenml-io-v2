@@ -1,0 +1,135 @@
+---
+title: "Building a Horizontal Enterprise Agent Platform with Infrastructure-First Approach"
+slug: "building-a-horizontal-enterprise-agent-platform-with-infrastructure-first-approach"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f3baa6d0bcce674f1efdb"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:40:49.505Z"
+  createdOn: "2024-11-21T13:54:50.169Z"
+llmopsTags:
+  - "compliance"
+  - "data-integration"
+  - "error-handling"
+  - "langchain"
+  - "legacy-system-integration"
+  - "microservices"
+  - "monitoring"
+  - "multi-agent-systems"
+  - "open-source"
+  - "openai"
+  - "orchestration"
+  - "prompt-engineering"
+  - "reliability"
+  - "scalability"
+  - "security"
+  - "structured-output"
+  - "unstructured-data"
+company: "Dust.tt"
+summary: "Dust.tt evolved from a developer framework competitor to LangChain into a horizontal enterprise platform for deploying AI agents, achieving remarkable 88% daily active user rates in some deployments. The company focuses on building robust infrastructure for agent deployment, maintaining its own integrations with enterprise systems like Notion and Slack, while making agent creation accessible to non-technical users through careful UX design and abstraction of technical complexities."
+link: "https://www.latent.space/p/dust"
+year: 2024
+seo:
+  title: "Dust.tt: Building a Horizontal Enterprise Agent Platform with Infrastructure-First Approach - ZenML LLMOps Database"
+  description: "Dust.tt evolved from a developer framework competitor to LangChain into a horizontal enterprise platform for deploying AI agents, achieving remarkable 88% daily active user rates in some deployments. The company focuses on building robust infrastructure for agent deployment, maintaining its own integrations with enterprise systems like Notion and Slack, while making agent creation accessible to non-technical users through careful UX design and abstraction of technical complexities."
+  canonical: "https://www.zenml.io/llmops-database/building-a-horizontal-enterprise-agent-platform-with-infrastructure-first-approach"
+  ogTitle: "Dust.tt: Building a Horizontal Enterprise Agent Platform with Infrastructure-First Approach - ZenML LLMOps Database"
+  ogDescription: "Dust.tt evolved from a developer framework competitor to LangChain into a horizontal enterprise platform for deploying AI agents, achieving remarkable 88% daily active user rates in some deployments. The company focuses on building robust infrastructure for agent deployment, maintaining its own integrations with enterprise systems like Notion and Slack, while making agent creation accessible to non-technical users through careful UX design and abstraction of technical complexities."
+---
+
+## Overview
+
+Dust.tt represents an interesting case study in building LLM-powered agent infrastructure for enterprise deployment. Founded by Stanislas Polu, a former OpenAI research engineer who worked on mathematical reasoning capabilities, the company has evolved through multiple product iterations before arriving at its current form as a horizontal agent platform. The company's journey from a developer framework (competing with LangChain in 2022) to a browser extension (XP1 in early 2023) to an enterprise agent infrastructure platform provides valuable lessons about productizing LLM capabilities.
+
+The core thesis behind Dust is that there is significant product work needed to unlock the usage of LLM capabilities in organizations. Despite having seen GPT-4 internally at OpenAI before leaving, Stanislas recognized that the deployment and productization of these capabilities was the real challenge, not the model capabilities themselves.
+
+## Architectural Decisions and Infrastructure
+
+### Integration Infrastructure
+
+A central part of Dust's value proposition is maintaining its own integrations to enterprise data sources rather than relying on third-party integration providers. The rationale is that LLM-specific requirements for data processing differ substantially from general data movement patterns. For example, when connecting to Notion, the platform needs to understand page structure, chunk information appropriately respecting that structure, and distinguish between databases that contain tabular data versus those with primarily text content for quantitative versus qualitative processing.
+
+Stanislas explicitly noted that using tools like AirByte (a general-purpose data integration platform) would not work for their use case because the data format that works for data scientists and analytics differs from what works for LLM context windows. The investment in owned integrations is positioned similarly to Stripe's value in maintaining payment infrastructure—boring but extremely valuable infrastructure work.
+
+### Workflow Orchestration with Temporal
+
+Dust uses Temporal (cloud-hosted, not self-hosted) for workflow orchestration. This handles the semi-real-time ingestion of updates from connected sources like Slack, Notion, and GitHub, as well as triggering agent workflows when relevant information flows through the system. The choice to buy rather than build for orchestration reflects the buy-vs-build calculus for high-growth companies where speed to market matters more than owning every component.
+
+The Temporal implementation enables the asynchronous work patterns required for agent systems—cron job scheduling, waiting for task execution to proceed to next steps, and managing complex multi-step workflows.
+
+### Multi-Model Support and Model Selection
+
+Dust takes a model-agnostic approach, providing a unified interface to multiple model providers including OpenAI (GPT-4, GPT-4 Turbo, GPT-4o) and Anthropic (Claude 3.5 Sonnet). Users can select their preferred model when creating an agent, though there are sensible defaults for non-technical users. The model selection interface is intentionally hidden in "advanced" settings to avoid overwhelming non-technical users while still providing flexibility for those who need it.
+
+The platform particularly focuses on function calling quality as a key model evaluation criterion since incorrect function call parameters can derail entire agent interactions. Interestingly, the team observes that GPT-4 Turbo may still outperform GPT-4o on function calling despite being an older model. Claude 3.5 Sonnet is noted for an innovative but not widely publicized chain-of-thought step that occurs during function calling that improves accuracy.
+
+### Technology Stack
+
+The platform is built with TypeScript (with explicit regret about starting with plain JavaScript initially), Next.js for the frontend, and Rust for internal services rather than Python. This is notable given the Python dominance in the LLM tooling space, reflecting the founder's background as an engineer from Stripe rather than a typical ML/research background.
+
+The entire platform is open source, though not as a go-to-market strategy. The open source approach is positioned as useful for security discussions (transparency), customer communication (pointing to issues and pull requests), and bug bounty programs. The team explicitly rejects the notion that code itself has value—the value is in the people building on the codebase and the go-to-market execution.
+
+## Agent Design Philosophy
+
+### Horizontal vs. Vertical Agent Strategy
+
+Dust deliberately chose a horizontal platform approach over vertical agent solutions, which comes with significant tradeoffs. The advantages include:
+
+- Maximum penetration within organizations (60-70% weekly active users across entire companies)
+- Emergent use cases driven by actual business needs rather than prescribed solutions
+- Infrastructure value through maintained integrations
+
+The tradeoffs include a harder go-to-market (vertical solutions can target specific buyers like "lawyer tools" or "support tools"), complex infrastructure requirements for diverse data types, and product surface complexity in making powerful tooling accessible to non-technical users.
+
+### Non-Technical User Focus
+
+A conscious product decision was made to avoid technical terminology. The term "instructions" is used instead of "system prompt" to make the interface less intimidating. The company's designer pushed for this approach, recognizing that LLM technology felt scary to end users even if it didn't feel scary to AI practitioners.
+
+The goal is enabling "thinkers" rather than developers to create agents—people who are curious and understand their operational needs but don't have technical backgrounds.
+
+### Agent Capabilities and Limitations
+
+The current focus is on relatively simple agents with scripted workflows rather than fully autonomous auto-GPT style systems. Users describe workflows in natural language (e.g., "when I give you command X, do this; when I give you command Y, do this") with tools like semantic search, structured database queries, and web search available.
+
+The platform explicitly avoids relying on sophisticated model-driven tool selection for most use cases. If instructions are precise, the model follows the script and tool selection is straightforward. The more auto-GPT-like approach with 16 tools and high-level instructions results in more errors.
+
+The vision includes building hierarchies of agents—meta-agents that invoke simpler agents as tools—to achieve complex automation without requiring each agent to be sophisticated.
+
+### Practical Agent Examples
+
+Specific examples from Dust's internal usage include:
+
+- An agent that pulls incident and ship notifications from specific Slack channels and generates formatted tables for weekly meetings
+- Agents that generate financial reporting graphs for meetings
+- A future goal of a "weekly meeting assistant" that orchestrates these smaller agents to produce complete meeting preparation documents automatically
+
+Each individual agent is simple and reliable; the ambition is that composing them enables complex workflows while maintaining reliability.
+
+## Production Considerations
+
+### Evaluation and Observability
+
+Despite the founder's research background (including fine-tuning over 10,000 models using 10 million A100 hours at OpenAI), formal evaluation processes are not currently a priority for the product. The rationale is that with such high penetration rates, there are many product improvements that yield 80% gains while model selection and evaluation might yield 5% improvements.
+
+The challenge with evaluating agent interactions is fundamental: even for humans, it's extremely difficult to determine whether an interaction was productive or unsuccessful. You don't know why users left or whether they were satisfied. The product solution being developed is building feedback mechanisms so builders can iterate on their agents.
+
+### API vs. Browser Automation
+
+The platform deliberately focuses on API-based integrations rather than browser automation (RPA-style approaches). The argument is that for the target ICP (tech companies with 500-5000 employees), most SaaS tools have APIs. Browser automation is viewed as primarily valuable for legacy systems without APIs, which is a diminishing problem.
+
+There is excitement about emerging work on rendering web pages in model-compatible formats while maintaining action selectors, but this is positioned as complementary to the API-first approach rather than a replacement.
+
+### Web Integration Challenges
+
+Current web integration is described as "really, really broken" across the industry. The typical approach of headless browsing with body.innerText extraction loses too much structure and context. Better approaches would preserve page structure, maintain action selectors, and present information in formats optimized for LLM consumption.
+
+## Market Position and Future Vision
+
+The company positions itself in the emerging space between vertical AI solutions (which have easier go-to-market but limited company-wide impact) and general-purpose AI assistants. The thesis is that many company operations are too specific to be served by vertical products but too valuable to ignore—these require a platform that enables internal builders.
+
+There's also a perspective on the future of SaaS more broadly: as AI products reduce the need for human interaction with SaaS UIs, the underlying value of many SaaS products is exposed as expensive databases. Post-hyper-growth tech companies with engineering capabilities may increasingly build their own solutions, as evidenced by companies removing Zendesk and Salesforce. However, this primarily affects tech companies with the capability to build internally; the broader market still needs SaaS products.
+
+The original prediction was for a billion-dollar single-person company by 2023, but the updated vision is billion-dollar companies with engineering teams of 20 people—small teams with significant AI assistance achieving outsized impact.

@@ -1,0 +1,154 @@
+---
+title: "Production AI Systems for News Personalization and Journalistic Workflows"
+slug: "production-ai-systems-for-news-personalization-and-journalistic-workflows"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "690890f7109445af35468366"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:24:24.751Z"
+  createdOn: "2025-11-03T11:24:39.424Z"
+llmopsTags:
+  - "content-moderation"
+  - "summarization"
+  - "question-answering"
+  - "classification"
+  - "healthcare"
+  - "data-analysis"
+  - "poc"
+  - "rag"
+  - "embeddings"
+  - "fine-tuning"
+  - "prompt-engineering"
+  - "reranking"
+  - "semantic-search"
+  - "vector-search"
+  - "few-shot"
+  - "instruction-tuning"
+  - "knowledge-distillation"
+  - "agent-based"
+  - "multi-agent-systems"
+  - "evals"
+  - "llama-index"
+  - "langchain"
+  - "chromadb"
+  - "pinecone"
+  - "qdrant"
+  - "pytorch"
+  - "fastapi"
+  - "postgresql"
+  - "redis"
+  - "cache"
+  - "docker"
+  - "kubernetes"
+  - "monitoring"
+  - "cicd"
+  - "microservices"
+  - "open-source"
+  - "openai"
+  - "meta"
+  - "anthropic"
+  - "google-gcp"
+company: "Bonnier News"
+summary: "Bonnier News, a major Swedish media publisher with over 200 brands including Expressen and local newspapers, has deployed AI and machine learning systems in production to solve content personalization and newsroom automation challenges. The company's data science team, led by product manager Hans Yell (PhD in computational linguistics) and head of architecture Magnus Engster, has built white-label personalization engines using embedding-based recommendation systems that outperform manual content curation while scaling across multiple brands. They leverage vector similarity and user reading patterns rather than traditional metadata, achieving significant engagement lifts. Additionally, they're developing LLM-powered tools for journalists including headline generation, news aggregation summaries, and trigger questions for articles. Through a WASP-funded PhD collaboration, they're working on domain-adapted Swedish language models via continued pre-training of Llama models with Bonnier's extensive text corpus, focusing on capturing brand tone and improving journalistic workflows while maintaining data sovereignty."
+link: "https://www.youtube.com/watch?v=NjtFWEGervo"
+year: 2025
+seo:
+  title: "Bonnier News: Production AI Systems for News Personalization and Journalistic Workflows - ZenML LLMOps Database"
+  description: "Bonnier News, a major Swedish media publisher with over 200 brands including Expressen and local newspapers, has deployed AI and machine learning systems in production to solve content personalization and newsroom automation challenges. The company's data science team, led by product manager Hans Yell (PhD in computational linguistics) and head of architecture Magnus Engster, has built white-label personalization engines using embedding-based recommendation systems that outperform manual content curation while scaling across multiple brands. They leverage vector similarity and user reading patterns rather than traditional metadata, achieving significant engagement lifts. Additionally, they're developing LLM-powered tools for journalists including headline generation, news aggregation summaries, and trigger questions for articles. Through a WASP-funded PhD collaboration, they're working on domain-adapted Swedish language models via continued pre-training of Llama models with Bonnier's extensive text corpus, focusing on capturing brand tone and improving journalistic workflows while maintaining data sovereignty."
+  canonical: "https://www.zenml.io/llmops-database/production-ai-systems-for-news-personalization-and-journalistic-workflows"
+  ogTitle: "Bonnier News: Production AI Systems for News Personalization and Journalistic Workflows - ZenML LLMOps Database"
+  ogDescription: "Bonnier News, a major Swedish media publisher with over 200 brands including Expressen and local newspapers, has deployed AI and machine learning systems in production to solve content personalization and newsroom automation challenges. The company's data science team, led by product manager Hans Yell (PhD in computational linguistics) and head of architecture Magnus Engster, has built white-label personalization engines using embedding-based recommendation systems that outperform manual content curation while scaling across multiple brands. They leverage vector similarity and user reading patterns rather than traditional metadata, achieving significant engagement lifts. Additionally, they're developing LLM-powered tools for journalists including headline generation, news aggregation summaries, and trigger questions for articles. Through a WASP-funded PhD collaboration, they're working on domain-adapted Swedish language models via continued pre-training of Llama models with Bonnier's extensive text corpus, focusing on capturing brand tone and improving journalistic workflows while maintaining data sovereignty."
+---
+
+## Overview
+
+Bonnier News represents a comprehensive case study in deploying AI and LLM systems at scale within the media industry. As Sweden's largest publisher with over 200 brands spanning news, lifestyle, and digital publications (including major outlets like Expressen, Dagens Industri, and numerous local newspapers), Bonnier News faces unique challenges in personalizing content, automating journalistic workflows, and maintaining editorial quality across diverse audiences. The company has implemented production AI systems through a central data science team that operates across the organization, working with advertising, content delivery, and editorial departments.
+
+The case study reveals several sophisticated LLMOps implementations, from embedding-based personalization engines deployed at scale to experimental LLM applications for journalism, as well as ambitious research into domain-adapted Swedish language models. The discussion features Hans Yell, product owner of the data science team with a PhD in computational linguistics, and Magnus Engster, head of architecture and data, who provide detailed technical insights into their production systems and strategic thinking around AI deployment.
+
+## Content Personalization Systems in Production
+
+Bonnier News's primary production AI system is a content personalization engine designed as a white-label solution deployable across all brands. The fundamental problem addressed is that with over 200 brands, readers need help discovering relevant content without requiring manual curation at each brand level. The personalization system must work equally well for major national publications like Expressen and small local newspapers, while respecting brand identity and editorial priorities.
+
+The technical architecture relies heavily on embeddings and vector similarity rather than traditional metadata-based approaches. This represents a deliberate architectural decision based on discovering that metadata, despite considerable investment in manual tagging and taxonomies across brands, provides less signal than content-based representations. The team generates embeddings for articles and uses reading pattern data to create user representations. They analyze which articles users engage with most deeply by combining heuristics around dwell time, article length, and other behavioral signals to infer genuine interest rather than casual browsing.
+
+The system faces interesting technical challenges in representing user preferences. A naive approach of creating a single centroid vector representing a user's interests can fail when users have diverse, distinct interests (sports, technology, politics) because averaging these vectors can land in embedding space that represents none of the user's actual interests. The team experiments with alternative approaches including using multiple top articles per user and performing reranking operations. Specifically, they retrieve nearest neighbors for each of the user's top articles in vector space, then rerank the combined results to produce personalized recommendations.
+
+From a production deployment perspective, the system demonstrates measurable lift over simpler baseline algorithms like "most trending" or "most popular in 24 hours." Importantly, the team applies a pragmatic framework for success: the AI system doesn't need to outperform human curation, it merely needs to match it. This philosophy acknowledges that achieving parity eliminates manual labor costs and enables infinite scaling across brands, turning the difference into pure margin. Any performance beyond parity represents additional value, but the business case closes at equivalence.
+
+## LLM Applications for Journalism
+
+Bonnier News has deployed several LLM-powered features for both readers and journalists, though with varying degrees of production maturity. For readers, they've implemented "trigger questions" - automatically generated questions based on article content that suggest related topics users might want to explore, similar to Perplexity's approach. This feature demonstrates production LLM use where the generated content is user-facing but operates within constrained domains (question generation) where quality control is manageable.
+
+For news aggregation, Bonnier operates a subscription package allowing access to approximately 50 brands. The challenge is helping users navigate this overwhelming content volume. The team built an LLM-powered aggregator that identifies stories covered by multiple brands, combines them into unified story representations, and generates summaries. This represents more complex LLM orchestration involving deduplication, clustering, and generation tasks in a production pipeline.
+
+On the journalistic side, they've experimented with headline generation, asking LLMs to produce five alternative headlines for articles. The feedback revealed a critical challenge: the models fail to capture brand-specific tone and voice. This isn't a generic LLM capability problem but rather a domain adaptation challenge - the models lack sufficient exposure to each brand's particular editorial style, voice, and conventions. This insight directly motivated their research collaboration on Swedish domain-adapted models.
+
+The team emphasizes that AI applications for journalism must be framed as accessibility and augmentation tools rather than replacement technologies. They argue that making AI features optional tools that journalists can invoke (or not) maintains agency and editorial control while providing efficiency gains. This contrasts with forcing all content through AI pipelines, which would undermine journalistic autonomy and potentially degrade trust.
+
+## Domain-Adapted Swedish Language Models Research
+
+Perhaps the most ambitious LLMOps initiative is Bonnier's collaboration with WASP (Wallenberg AI, Autonomous Systems and Software Program), a 6.5 billion SEK Swedish research program. Through this partnership, Bonnier is funding a PhD student (Lucas Borgan, formerly on their data science team) to research domain adaptation of LLMs for Swedish media applications. The research takes place at Linköping University but maintains strong industrial collaboration.
+
+The technical approach involves continued pre-training of open-source Llama models using Bonnier's extensive Swedish text corpus spanning potentially 100+ years of publications. The goal isn't training from scratch (which would be prohibitively expensive and scientifically unnecessary) but rather adapting existing strong foundation models to Swedish media domain specifics. This represents a pragmatic LLMOps strategy: leverage frontier model capabilities while adding domain expertise through targeted training.
+
+A key research challenge is instruction tuning after domain pre-training. The standard Llama models are instruction-tuned, but continued pre-training on domain data produces a base model that loses instruction-following capabilities. The research must determine how to re-apply or maintain instruction tuning on domain-adapted models without degrading the specialized knowledge gained through domain pre-training. This represents a genuine research contribution rather than straightforward engineering, as the interaction between continued pre-training and instruction tuning remains an open problem.
+
+The motivation extends beyond immediate product needs to strategic capabilities: hosting LLMs internally for sensitive journalistic work where content cannot leave organizational boundaries. Many journalists work on confidential stories (investigations, embargoed announcements, sensitive political coverage) where sending text to external API providers is unacceptable. A domain-adapted model deployed within Bonnier's infrastructure would enable AI assistance for these workflows while maintaining data sovereignty.
+
+From an LLMOps maturity perspective, this represents investment in foundational capabilities before specific product applications are fully defined. The team expects the research to crystallize around evaluation methodologies - how to measure whether domain adaptation improves journalistic utility. They're considering creating Swedish media-specific benchmarks since existing English benchmarks may not transfer well. The evaluation challenge is particularly acute because "usefulness for journalists" involves subjective dimensions like tone, voice, and editorial judgment that resist simple quantification.
+
+## Production Engineering Philosophy
+
+The case study reveals several important principles for production LLMOps that extend beyond specific technical implementations. First, Bonnier deliberately avoids "AI projects" in favor of identifying existing processes or previously infeasible product ideas that AI now enables. Magnus Engster emphasizes they don't create AI products but rather use AI to solve business problems or implement long-standing ideas that were previously too resource-intensive. This frames AI as a tool for product development rather than an end in itself.
+
+Second, the team prioritizes optimization of existing processes over inventing new ones for short-term value capture. Changing organizational processes is slow and difficult; applying AI to automate or enhance existing workflows delivers faster ROI and faces less organizational friction. Longer-term transformational changes that require new processes represent bigger opportunities but take longer to realize.
+
+Third, they maintain a clear distinction between engineering (building products that deliver user value) and science (building knowledge). While both are important and overlap in practice, the distinction clarifies objectives. The WASP collaboration represents a deliberate investment in science - building knowledge about domain adaptation for Swedish - that will eventually enable better engineering. Most production work focuses on engineering, but strategic science investment creates future capabilities.
+
+The team also demonstrates sophisticated thinking about AI's role in product design, captured in Magnus's provocative statement that "all applied machine learning is UX." The argument is that AI without interfaces to users or systems is inert - value only emerges through interaction design. For news products, this means either embedding AI into the user experience (making articles shorter, translating, personalizing) or users will employ external tools (ChatGPT) to access content, moving the publisher's role to data provider rather than product owner. This framing elevates interface and interaction design to strategic importance in AI product development.
+
+## Technical Architecture and Infrastructure
+
+While the transcript doesn't provide extensive infrastructure details, several architectural patterns emerge. The personalization system operates as a centralized service that brands can integrate, suggesting API-based deployment with brand-specific configuration. The embedding-based approach implies batch processing pipelines to vectorize new content and potentially incremental updates to user representations based on recent behavior.
+
+The discussion of internal LLM hosting for sensitive workflows indicates Bonnier is building or planning private deployment infrastructure, likely involving model serving infrastructure that can host multi-billion parameter models with acceptable latency. The emphasis on domain adaptation through continued pre-training suggests GPU training infrastructure or external training partnerships, as training even from checkpoints requires significant compute.
+
+For LLM-powered features like trigger questions and news aggregation, the architecture likely involves prompt engineering, retrieval augmentation for article content, and generation APIs, possibly with caching and quality filtering layers. The headline generation experiments suggest experimentation infrastructure where journalists can optionally invoke AI features and provide feedback, creating evaluation datasets.
+
+## Evaluation and Quality Control
+
+Evaluation emerges as a central challenge, particularly for domain-adapted models. The team acknowledges that traditional benchmarks may not capture media-specific quality dimensions. For personalization, they use engagement metrics (clicks, dwell time) compared against baselines, which provides clear quantitative feedback. For generative features, evaluation becomes more subjective and difficult.
+
+The headline generation feedback - that models fail to capture brand tone - illustrates the challenge of evaluating nuanced quality attributes. Simple metrics like perplexity or BLEU scores wouldn't capture tone misalignment. Human evaluation from journalists provides ground truth but doesn't scale. The research project explicitly identifies evaluation methodology as a probable research contribution area, suggesting they may develop new benchmarks or evaluation frameworks for Swedish media AI.
+
+This evaluation challenge reflects broader LLMOps maturity questions: as AI systems move from simple retrieval/ranking tasks with clear metrics to generation tasks requiring editorial judgment, evaluation infrastructure becomes more complex and central to production deployment. Bonnier's approach of starting with simpler, more measurable systems (personalization) while investing in research for harder problems (domain adaptation, tone matching) represents pragmatic prioritization.
+
+## Organizational Structure and Team Composition
+
+The data science team of five developers plus product management operates centrally but serves multiple domains across Bonnier's organizational structure, which includes business units (individual brands), areas, and domains. This creates interesting coordination challenges as the team has dependencies across the organization. Recently, they formed a new domain grouping the data science team, an "atom team" working on agent layers, and the "bonai team" developing journalistic tools, recognizing that strong interdependencies between these functions justify organizational proximity.
+
+This structure reflects a hub-and-spoke model where central platform teams provide capabilities (personalization engines, embeddings infrastructure, LLM access) while individual brands or business units can customize and integrate these services. Some brands develop bespoke AI features independently when needs diverge from white-label solutions, creating a spectrum from centralized to distributed AI development.
+
+The team composition includes deep academic expertise (PhDs in computational linguistics) combined with engineering talent and product management, enabling both research collaborations and production deployment. This hybrid profile enables the WASP partnership while maintaining focus on business value delivery. The presence of a product owner (Hans) rather than pure research or engineering leadership emphasizes prioritization and stakeholder management as critical functions.
+
+## Strategic Context and Future Directions
+
+The discussion situates Bonnier's AI work within broader strategic questions about media's future. With social media having disrupted traditional distribution, and now AI agents potentially mediating content access, publishers face fundamental questions about their role in the value chain. Will users interact directly with publisher content, or will AI agents aggregate and transform content before presenting it to users?
+
+Magnus proposes a future where users employ sophisticated agents with clear objectives ("find me relevant news on topic X") and publishers must serve these agents rather than human readers directly. This would shift publishing from user experience design to API design for agent consumption. The implication is that publishers maintaining direct user relationships need AI features embedded in their products (personalization, summarization, translation) - otherwise users will employ external tools, reducing publishers to commodity content providers.
+
+This strategic framing motivates the LLMOps investments: personalization keeps users engaged within Bonnier products rather than consuming aggregated content elsewhere; domain-adapted models enable AI features that competitors can't easily replicate; internal hosting maintains control over sensitive content and enables proprietary capabilities. The technical work on embeddings, continued pre-training, and production deployment represents execution against this strategic vision.
+
+The team also emphasizes the societal importance of quality journalism and trusted information sources, particularly as generative AI makes producing plausible but potentially misleading content trivial. They position investment in AI-enhanced journalism as part of Bonnier's democratic mission, ensuring legitimate news organizations can compete with AI-generated content while maintaining editorial standards. This framing elevates the LLMOps work beyond business value to societal infrastructure, which may justify longer-term, more speculative investments like the WASP research collaboration.
+
+## Lessons and Challenges
+
+Several key lessons emerge for practitioners. First, vector-based representations often outperform hand-crafted metadata even when substantial investment has gone into metadata systems - the data science team found embeddings superior despite organizational investment in manual tagging. Second, pragmatic success criteria (matching human performance rather than exceeding it) can justify AI deployment and clarify prioritization. Third, domain adaptation through continued pre-training represents a viable strategy for organizations with substantial proprietary corpora, though challenges around instruction tuning and evaluation remain open research problems.
+
+Challenges include maintaining quality and tone across diverse brands with a single system, evaluating subjective quality dimensions like editorial voice, and balancing centralized platform development with brand-specific needs. The tension between white-label solutions that scale economically and bespoke systems that serve specific brand requirements appears throughout the discussion. Organizations must navigate this tradeoff based on use case characteristics and maturity of central capabilities.
+
+Finally, the case study illustrates the importance of long-term capability building (the WASP collaboration) alongside immediate product delivery. Organizations that only optimize existing processes may miss transformational opportunities that require research investment. Bonnier's balanced portfolio - production personalization systems delivering current value plus research into domain adaptation creating future capabilities - provides a model for sustainable AI strategy in media and potentially other industries.

@@ -1,0 +1,158 @@
+---
+title: "Deploying Agentic AI in Financial Services at Scale"
+slug: "deploying-agentic-ai-in-financial-services-at-scale"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "693be054173fdc88746a688d"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:35:41.258Z"
+  createdOn: "2025-12-12T09:28:52.455Z"
+llmopsTags:
+  - "fraud-detection"
+  - "customer-support"
+  - "chatbot"
+  - "question-answering"
+  - "summarization"
+  - "document-processing"
+  - "classification"
+  - "high-stakes-application"
+  - "regulatory-compliance"
+  - "rag"
+  - "embeddings"
+  - "fine-tuning"
+  - "multi-agent-systems"
+  - "agent-based"
+  - "model-optimization"
+  - "instruction-tuning"
+  - "semantic-search"
+  - "vector-search"
+  - "latency-optimization"
+  - "cost-optimization"
+  - "pytorch"
+  - "tensorflow"
+  - "open-source"
+  - "monitoring"
+  - "orchestration"
+  - "scalability"
+  - "reliability"
+  - "security"
+  - "compliance"
+  - "guardrails"
+  - "nvidia"
+  - "meta"
+  - "microsoft-azure"
+  - "hugging-face"
+company: "Nvidia"
+summary: "Financial institutions including Capital One, Royal Bank of Canada (RBC), and Visa are deploying agentic AI systems in production to handle real-time financial transactions and complex workflows. These multi-agent systems go beyond simple generative AI by reasoning through problems and taking action autonomously, requiring 100-200x more computational resources than traditional single-shot inference. The implementations focus on use cases like automotive purchasing assistance, investment research automation, and fraud detection, with organizations building proprietary models using open-source foundations (like Llama or Mistral) combined with bank-specific data to achieve 60-70% accuracy improvements. The results include 60% cycle time improvements in report generation, 10x more data analysis capacity, and enhanced fraud detection capabilities, though these gains require substantial investment in AI infrastructure and talent development."
+link: "https://www.youtube.com/watch?v=pSFJ3ukgJ9Y"
+year: 2025
+seo:
+  title: "Nvidia: Deploying Agentic AI in Financial Services at Scale - ZenML LLMOps Database"
+  description: "Financial institutions including Capital One, Royal Bank of Canada (RBC), and Visa are deploying agentic AI systems in production to handle real-time financial transactions and complex workflows. These multi-agent systems go beyond simple generative AI by reasoning through problems and taking action autonomously, requiring 100-200x more computational resources than traditional single-shot inference. The implementations focus on use cases like automotive purchasing assistance, investment research automation, and fraud detection, with organizations building proprietary models using open-source foundations (like Llama or Mistral) combined with bank-specific data to achieve 60-70% accuracy improvements. The results include 60% cycle time improvements in report generation, 10x more data analysis capacity, and enhanced fraud detection capabilities, though these gains require substantial investment in AI infrastructure and talent development."
+  canonical: "https://www.zenml.io/llmops-database/deploying-agentic-ai-in-financial-services-at-scale"
+  ogTitle: "Nvidia: Deploying Agentic AI in Financial Services at Scale - ZenML LLMOps Database"
+  ogDescription: "Financial institutions including Capital One, Royal Bank of Canada (RBC), and Visa are deploying agentic AI systems in production to handle real-time financial transactions and complex workflows. These multi-agent systems go beyond simple generative AI by reasoning through problems and taking action autonomously, requiring 100-200x more computational resources than traditional single-shot inference. The implementations focus on use cases like automotive purchasing assistance, investment research automation, and fraud detection, with organizations building proprietary models using open-source foundations (like Llama or Mistral) combined with bank-specific data to achieve 60-70% accuracy improvements. The results include 60% cycle time improvements in report generation, 10x more data analysis capacity, and enhanced fraud detection capabilities, though these gains require substantial investment in AI infrastructure and talent development."
+---
+
+## Overview
+
+This case study, presented as an interview between Tearsheet editor-in-chief Zach Miller and Kevin Levitt of Nvidia, explores how major financial institutions are deploying agentic AI systems in production environments. The discussion covers three primary case studies—Capital One, Royal Bank of Canada, and Visa—alongside broader insights into the infrastructure, operational, and strategic considerations for running LLMs in production within the financial services sector. The context is critical: these are not pilot programs but live production systems handling real customer transactions and financial decisions, often operating autonomously at scale.
+
+The fundamental shift discussed is the evolution from generative AI as an assistive tool to agentic AI as an autonomous actor. While generative AI provided single-shot responses to prompts, agentic AI systems understand problems, reason through multiple pathways, and take action—often through multi-agent architectures where specialized agents handle different aspects of complex workflows. This architectural shift has profound implications for LLMOps, particularly around computational demands, model accuracy requirements, and infrastructure scaling.
+
+## Capital One: Multi-Agent Automotive Buying Assistant
+
+Capital One has deployed a multi-agent conversational AI system within their Auto Navigator platform as a chat concierge service. This production system assists consumers through the complex automotive purchasing journey by employing multiple specialized agents working in coordination. The system helps consumers research vehicles based on their preferences, autonomously reaches out to dealerships to schedule test drives and visits on behalf of the consumer, and provides detailed information about auto loan products including pricing and rates.
+
+From an LLMOps perspective, this represents a sophisticated orchestration challenge. The multi-agent architecture requires coordination between agents that handle different domains—vehicle research, dealership communication, and financial product explanation. The system must maintain context across these interactions while ensuring that each agent has access to the appropriate data and tools to complete its specific tasks. The production deployment means these agents are initiating real communications with external parties (dealerships) and providing financial information that must be accurate and compliant with regulations.
+
+The computational demands of such multi-agent systems are substantially higher than single-agent or traditional generative AI implementations. According to the discussion, agentic AI systems require 100-200x more compute than anticipated compared to simple generative AI applications. This is because agents don't just generate a single response—they think, reason through problems using prior frameworks and tools, evaluate multiple approaches, and then act. Each step in this reasoning process generates inference calls, and the multi-agent nature means multiple such processes may be running in parallel or sequence.
+
+## Royal Bank of Canada: Investment Research Automation
+
+RBC has built a generative AI platform supporting their research and investment banking divisions through their "Aiden" research program—a suite of specialized AI agents designed to augment the work of equity research analysts and investment bankers. The agents handle tasks such as generating earnings-related content, summarizing earnings calls, and producing updated research reports based on new market information.
+
+The production impact is quantifiable: the system has improved cycle time to report generation by over 60% and can analyze 10x more data than human analysts. This represents a classic LLMOps challenge of scaling inference while maintaining accuracy and reliability. Investment research demands high accuracy because incorrect or misleading information in research reports can lead to poor investment decisions, regulatory issues, and reputational damage.
+
+From a technical LLMOps perspective, the Aiden system must integrate with hundreds or thousands of data streams related to publicly traded companies—earnings calls, SEC filings, news articles, market data, and more. The agents need to continuously monitor these streams, identify relevant updates, synthesize the information, and produce coherent research updates. This requires a robust data pipeline architecture that can handle real-time data ingestion, a reasoning system that can prioritize which information is most relevant, and a generation system that can produce outputs matching the bank's research standards and voice.
+
+The multi-agent architecture here likely includes specialized agents for different tasks: data collection agents monitoring various streams, summarization agents processing earnings calls and filings, analysis agents comparing new data against existing models and predictions, and writing agents that generate the final reports. Coordinating these agents, managing their state, and ensuring consistency across the workflow represents a significant LLMOps challenge in production.
+
+## Build vs. Buy: The Shift to Proprietary Models
+
+A critical theme throughout the discussion is the industry-wide trend away from managed AI services and toward building proprietary models using open-source foundations. This represents a fundamental LLMOps decision point that financial institutions are navigating based on accuracy, cost, and control considerations.
+
+The typical journey described follows this pattern: institutions initially rush to deploy generative AI capabilities using managed services to meet pressure from boards and executives. However, they quickly discover that generic models achieve only about 50% accuracy for bank-specific questions and tasks. This drives a migration to building custom models using open-source foundations like Llama or Mistral.
+
+The model improvement pathway involves multiple stages of training and fine-tuning. Starting with an open-source foundation model at roughly 50% accuracy, institutions layer in proprietary bank data through post-training techniques, improving accuracy by 10-20 percentage points to reach 60-70%. They then apply supervised fine-tuning to enable the model to perform specific functions—wealth management assistance, anti-money laundering, customer onboarding, etc. Finally, they implement RAG (retrieval-augmented generation) databases that collect new policies and customer information since the model was last trained, feeding into a continuous training flywheel where models are retrained monthly or quarterly.
+
+This approach presents several LLMOps advantages. Cost control becomes more predictable and typically lower than managed services at scale. The institution maintains control over the model, its training data, and its deployment. Most importantly, accuracy improves dramatically, and when accuracy improves, utilization skyrockets—creating a virtuous cycle where better models drive more usage, justifying further investment.
+
+However, this approach also introduces significant LLMOps complexity. The institution must build and maintain the entire infrastructure stack for model training, fine-tuning, evaluation, and deployment. They need expertise in post-training techniques, supervised fine-tuning, and RAG architecture. They must implement model versioning and management systems to handle the continuous retraining cycle. They need robust evaluation frameworks to measure accuracy improvements and production monitoring to ensure models perform as expected under real-world conditions.
+
+## The AI Factory Architecture
+
+Levitt describes Nvidia's concept of "AI factories" as the foundational infrastructure for production LLM deployment at scale. The architecture comprises three layers that together enable enterprise AI operations.
+
+The infrastructure layer includes GPUs for computation and high-speed networking (like Nvidia's InfiniBand) that allows servers to be interconnected and function as a single data center unit. This is critical for training large language models and handling the massive inference demands of agentic AI systems. The discussion emphasizes that inference at scale has become a major challenge as agentic AI deployments generate far more inference calls than originally modeled in financial projections.
+
+The platform software layer focuses on maximizing infrastructure utilization and includes Nvidia AI Enterprise—a software suite with toolkits, application frameworks, and blueprints. This layer is essentially the LLMOps platform that sits between raw infrastructure and applications, handling concerns like resource scheduling, model serving, and operational management.
+
+The application layer includes SDKs and frameworks that enable developers to build and deploy AI applications faster. Nvidia provides blueprints for common use cases like fraud detection that institutions can adapt to their specific needs, accelerating time to production.
+
+From an LLMOps perspective, this three-layer architecture addresses the full stack of concerns: raw computational capacity, operational management and efficiency, and developer productivity. The emphasis on utilization is particularly notable—AI infrastructure is expensive, and maximizing its productive use is critical for ROI.
+
+## Operational Challenges in Production Deployment
+
+The discussion touches on several operational barriers financial institutions face when moving from pilots to production. Compliance and governance are paramount in the regulated financial services environment. Models must go through model risk management frameworks, data governance reviews, and privacy assessments before production deployment.
+
+However, Levitt notes that institutions are better prepared than commonly assumed because these patterns, processes, and committees already exist for governing machine learning and other technologies. The challenge is adapting existing frameworks rather than building entirely new ones. This represents an advantage of the financial services sector—robust governance infrastructure already exists, though it can also slow deployment velocity.
+
+The human capital dimension is also critical. The largest banks have hundreds or thousands of developers, machine learning engineers, and data scientists actively building AI applications. However, there's a spectrum—some fintechs have talent but lack data, while medium-sized institutions have data but lack talent. Upskilling is a major focus, with Nvidia running daily workshops and deep learning institutes at customer sites.
+
+The discussion also addresses the challenge of AI agents needing to operate autonomously, potentially at 2 a.m. with no human in the loop. This requires robust monitoring, reliability engineering, and graceful failure handling. When agents are initiating financial transactions or external communications, the stakes are high for ensuring correct behavior.
+
+## Fraud Detection and Security
+
+Fraud detection represents a major LLMOps use case where AI is being deployed at scale in production. Financial institutions reportedly spend 70-80% of their IT budgets on security and keeping threats at bay, making this a high-priority area for AI investment.
+
+Nvidia has released a fraud detection blueprint on build.nvidia.com that enables organizations to quickly build and deploy AI-powered fraud detection systems. The technical approach leverages graph neural networks to create feature embeddings—multi-dimensional vectors that capture relationships between entities like accounts, transactions, and merchants. These embeddings are then integrated into machine learning models that can detect fraudulent activities with greater accuracy than traditional rule-based systems.
+
+The advantage of this approach is that graph neural networks can capture complex patterns of relationships that indicate fraud, while maintaining explainability paths that are critical for production deployment in regulated environments. Institutions need to understand why a transaction was flagged as fraudulent, both for regulatory compliance and for improving the models over time.
+
+Beyond transaction fraud, agentic AI is being deployed for anti-money laundering (AML) and know-your-customer (KYC) compliance. AI agents can process suspicious activity reports and handle routine compliance tasks, freeing human analysts to focus on complex investigations. Given that financial institutions face consent decrees and billions in fines for AML/KYC failures, this represents a high-value use case where accuracy and reliability are critical.
+
+From an LLMOps perspective, fraud detection systems must handle real-time inference at massive scale (evaluating every transaction as it occurs), maintain extremely low latency (to avoid impacting customer experience), and achieve high accuracy (both in detecting fraud and minimizing false positives). They also need to adapt continuously as fraud patterns evolve, requiring frequent model updates and A/B testing frameworks to validate improvements before full deployment.
+
+## Emerging Capabilities: Tabular Transformers
+
+Looking forward, Levitt identifies tabular transformers as an emerging capability that's not yet widely deployed but will likely see widespread adoption within 18-24 months. This represents applying transformer architectures (which power large language models and predict the next word) to structured tabular data like transaction records, account information, and payment data.
+
+The concept involves vectorizing tabular data similar to how text is vectorized for language models, then building "payments foundation models" that can predict the next transaction rather than the next word. When a payment foundation model can predict what a customer's next transaction should be, it can compare that prediction against actual transactions to detect anomalies indicating fraud. But the applications extend beyond fraud detection to personalized recommendations and hyperpersonalization of financial services.
+
+From an LLMOps perspective, this represents a new class of models with different data pipelines, training requirements, and inference patterns than language models. Building and deploying these models at scale will require adapting existing LLMOps infrastructure to handle structured data workflows, implementing specialized evaluation metrics for prediction accuracy on numerical and categorical data, and building serving infrastructure that can handle high-throughput, low-latency predictions on transaction streams.
+
+## ROI and Business Metrics
+
+The discussion addresses the question of ROI, which has been a topic of debate in the industry. Levitt asserts that there is absolutely a return on investment across industries, not just financial services. The primary metrics institutions track are cost takeout (operational efficiency) and revenue generation (new capabilities that drive business growth).
+
+However, other factors also drive ROI calculations. Employee retention is significant—data science teams are among the most expensive talent, and providing them with proper tools and infrastructure to be productive is critical for retention. When talented teams lack the infrastructure to deliver on their potential, they leave, creating both recruitment costs and lost opportunity costs.
+
+The accuracy-utilization-investment cycle is also important for understanding ROI dynamics. When models are more accurate, utilization increases dramatically because users trust and rely on them more. This creates demand that exceeds original financial models, driving further infrastructure investment. But higher utilization also generates more value, improving ROI and justifying the investment cycle.
+
+A notable point is that many banks underestimated the inference demand that accurate agentic AI systems would generate. Original financial models didn't anticipate the 100-200x compute increase from reasoning-based agents, nor the utilization spike from highly accurate models. This has caused institutions to re-evaluate their infrastructure strategies and scale up their AI factories more aggressively than initially planned.
+
+## Critical Assessment and Balanced Perspective
+
+While the case studies presented show impressive results, it's important to note that this interview is from an infrastructure vendor (Nvidia) with a commercial interest in promoting AI adoption and infrastructure investment. The quantitative results mentioned (60% cycle time improvement, 10x data analysis capacity) should be viewed with appropriate skepticism absent independent verification or published case study details.
+
+The discussion focuses heavily on the largest financial institutions that have substantial resources to invest in AI infrastructure and talent. The experiences of Capital One, RBC, and Visa may not be representative of the broader financial services industry, particularly smaller institutions, community banks, and emerging fintechs. While Levitt mentions that smaller organizations can leverage ISVs and managed services, the detailed technical approaches discussed (building proprietary models, implementing continuous training flywheels, deploying multi-agent systems) require resources that many institutions lack.
+
+The claim that existing governance frameworks are sufficient for agentic AI deployment may be overly optimistic. While it's true that model risk management processes exist, autonomous agents that take action without human oversight present novel risks that traditional machine learning governance may not fully address. Questions around agent behavior in edge cases, coordination failures in multi-agent systems, and liability when agents make mistakes are still being worked out across the industry.
+
+The discussion also doesn't deeply address the costs and challenges of the continuous training and fine-tuning approach described. Building and maintaining these "AI factories" requires enormous capital expenditure and ongoing operational costs. The economics work for the largest institutions but may not be viable for the majority of financial services firms.
+
+Finally, while the technical approaches described (RAG, fine-tuning, multi-agent orchestration) are certainly being deployed in production, the maturity of LLMOps tooling and best practices for these patterns is still evolving. Organizations implementing these systems are often building substantial custom infrastructure and learning through trial and error what works at scale.

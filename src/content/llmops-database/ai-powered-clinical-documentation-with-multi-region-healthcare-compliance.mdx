@@ -1,0 +1,151 @@
+---
+title: "AI-Powered Clinical Documentation with Multi-Region Healthcare Compliance"
+slug: "ai-powered-clinical-documentation-with-multi-region-healthcare-compliance"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "69510928e2ac17a6ef77f245"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2026-01-07T09:40:39.763Z"
+  lastUpdated: "2025-12-28T10:51:50.709Z"
+  createdOn: "2025-12-28T10:40:40.908Z"
+llmopsTags:
+  - "healthcare"
+  - "speech-recognition"
+  - "summarization"
+  - "regulatory-compliance"
+  - "prompt-engineering"
+  - "human-in-the-loop"
+  - "few-shot"
+  - "model-optimization"
+  - "latency-optimization"
+  - "error-handling"
+  - "kubernetes"
+  - "docker"
+  - "monitoring"
+  - "databases"
+  - "microservices"
+  - "cicd"
+  - "scaling"
+  - "devops"
+  - "orchestration"
+  - "continuous-deployment"
+  - "continuous-integration"
+  - "open-source"
+  - "documentation"
+  - "security"
+  - "compliance"
+  - "guardrails"
+  - "reliability"
+  - "scalability"
+  - "amazon-aws"
+company: "Heidi Health"
+summary: "Heidi Health developed an ambient AI scribe to reduce the administrative burden on healthcare clinicians by automatically generating clinical notes from patient consultations. The company faced significant LLMOps challenges including building confidence in non-deterministic AI outputs through \"clinicians in the loop\" evaluation processes, scaling clinical validation beyond small teams using synthetic data generation and LLM-as-judge approaches, and managing global expansion across regions with different data sovereignty requirements, model availability constraints, and regulatory compliance needs. Their solution involved standardizing infrastructure-as-code deployments across AWS regions, using a hybrid approach of Amazon Bedrock for immediate availability and EKS for self-hosted model control, and integrating clinical ambassadors in each region to validate medical accuracy and local practice patterns. The platform now serves over 370,000 clinicians processing 10 million consultations per month globally."
+link: "https://www.youtube.com/watch?v=fboYXjGSWJI"
+year: 2025
+seo:
+  title: "Heidi Health: AI-Powered Clinical Documentation with Multi-Region Healthcare Compliance - ZenML LLMOps Database"
+  description: "Heidi Health developed an ambient AI scribe to reduce the administrative burden on healthcare clinicians by automatically generating clinical notes from patient consultations. The company faced significant LLMOps challenges including building confidence in non-deterministic AI outputs through \"clinicians in the loop\" evaluation processes, scaling clinical validation beyond small teams using synthetic data generation and LLM-as-judge approaches, and managing global expansion across regions with different data sovereignty requirements, model availability constraints, and regulatory compliance needs. Their solution involved standardizing infrastructure-as-code deployments across AWS regions, using a hybrid approach of Amazon Bedrock for immediate availability and EKS for self-hosted model control, and integrating clinical ambassadors in each region to validate medical accuracy and local practice patterns. The platform now serves over 370,000 clinicians processing 10 million consultations per month globally."
+  canonical: "https://www.zenml.io/llmops-database/ai-powered-clinical-documentation-with-multi-region-healthcare-compliance"
+  ogTitle: "Heidi Health: AI-Powered Clinical Documentation with Multi-Region Healthcare Compliance - ZenML LLMOps Database"
+  ogDescription: "Heidi Health developed an ambient AI scribe to reduce the administrative burden on healthcare clinicians by automatically generating clinical notes from patient consultations. The company faced significant LLMOps challenges including building confidence in non-deterministic AI outputs through \"clinicians in the loop\" evaluation processes, scaling clinical validation beyond small teams using synthetic data generation and LLM-as-judge approaches, and managing global expansion across regions with different data sovereignty requirements, model availability constraints, and regulatory compliance needs. Their solution involved standardizing infrastructure-as-code deployments across AWS regions, using a hybrid approach of Amazon Bedrock for immediate availability and EKS for self-hosted model control, and integrating clinical ambassadors in each region to validate medical accuracy and local practice patterns. The platform now serves over 370,000 clinicians processing 10 million consultations per month globally."
+---
+
+## Overview
+
+Heidi Health built one of the world's largest AI scribe platforms to address a widespread problem in healthcare: clinicians spending excessive time on administrative documentation instead of focusing on patient care. The presentation, delivered by Ocha at AWS re:Invent, provides a detailed account of their journey from a small startup in Australia to a global platform serving over 370,000 clinicians and processing 10 million consultations per month. Their evolution reflects critical LLMOps challenges around validating non-deterministic outputs in high-stakes environments, scaling evaluation processes with domain experts, and managing multi-region infrastructure with complex compliance requirements.
+
+The company's founder, Tom Kelly, was a practicing doctor who initially built a chatbot tool named Oscer using early transformer models to help medical students master clinical examinations. The company evolved through several phases: first expanding to a broader healthcare care platform, then pivoting with the emergence of generative AI to focus specifically on one workflow—clinical note generation—which became Heidi, their ambient AI scribe. This strategic narrowing of focus proved crucial to their success, demonstrating an important lesson in product development: solving one painful problem perfectly rather than trying to address everything at once.
+
+## Core Product Functionality and Workflow
+
+Heidi's core functionality centers on real-time transcription and clinical note generation during patient consultations. When a doctor starts a consultation session, Heidi automatically transcribes the conversation and generates clinical notes without requiring modification or further action from the clinician. The system goes beyond basic transcription by supporting customizable templates that doctors create to match their personal documentation style and specialty requirements.
+
+From the generated notes, doctors can create patient explainer documents, perform clinical research queries through an AI assistant, and receive suggestions on follow-up tasks needed after the consultation. This comprehensive workflow allows clinicians to maintain focus on the patient while delegating administrative tasks to the AI system. The emphasis on template customization became a huge success factor, as it allowed the system to write notes in a way that matched each individual clinician's style, building the necessary confidence for adoption.
+
+## The Challenge of Building Confidence in Non-Deterministic AI
+
+One of the most significant LLMOps challenges Heidi faced was establishing confidence in AI-generated clinical documentation. While engineers initially focused on typical technical concerns like latency optimization and context window management, they quickly realized that the real challenge was validating non-deterministic outputs at scale in a domain requiring clinical accuracy. As Ocha emphasized, "You can't just write unit tests for clinical empathy or diagnostic nuance, we needed doctors."
+
+The company encountered increasingly unique cases as more clinicians across different specialties adopted the platform. Getting the tone and specificity of note summaries correct for each doctor became critical—not just for user satisfaction, but for building the trust necessary for clinicians to rely on the system in their practice. This insight led to a fundamental shift in their approach: healthcare requires clinical accuracy, and achieving that with non-deterministic LLM outputs demands domain experts in the evaluation loop.
+
+## Evolution of Evaluation Infrastructure
+
+Heidi's evaluation approach evolved significantly as they scaled. In the early stages with only a handful of doctors, they provided clinicians with Jupyter Notebooks—tools typically used by data scientists—where doctors could experiment by connecting to LLMs, adjusting prompts, modifying transcriptions, changing temperature settings, and observing results. However, this approach had a critical flaw: doctors had to manually aggregate and summarize testing results individually.
+
+To address the collaboration and aggregation problem, the team deployed JupyterHub hosted on EC2 as a shared environment where multiple doctors could work together and consolidate findings more easily. While this represented an improvement, it clearly wouldn't scale to support dozens or hundreds of clinical evaluators, since not every clinician would be comfortable writing code or working in such technical environments.
+
+The need for scalable evaluation infrastructure became pressing as Heidi expanded its clinical team. This drove the development of more sophisticated tooling approaches that would enable "clinicians in the loop" evaluation at scale while reducing the technical burden on medical professionals.
+
+## Synthetic Data Generation and Scaled Evaluation
+
+A critical LLMOps innovation for Heidi was addressing the data availability challenge for evaluation. Testing in production environments was impossible due to patient privacy constraints and the inability to use real user data in testing environments. The team employed several strategies to generate evaluation datasets:
+
+First, they conducted mock consultations and developed case studies with Heidi users to create realistic scenarios. More significantly, they implemented synthetic data generation using LLMs to create realistic consultation data in both audio and text formats. This technique enabled them to build sufficient data volumes for comprehensive evaluation without compromising patient privacy or requiring constant manual data creation.
+
+With adequate synthetic datasets, clinicians could evaluate multiple dimensions of system performance including word error rate for transcription quality, template adherence checks to ensure the customizable templates were being followed correctly and remained medically safe, and hallucination rate checks to detect when the model might be generating medically inaccurate or fabricated information. This comprehensive evaluation process became known as their "clinicians in the loop" methodology.
+
+As Heidi hired more clinical staff, engineers developed internal tooling to make the evaluation process more accessible and scalable. This included specialized interfaces for evaluating flagged sessions in testing environments, systems to connect consultation sessions with the underlying LLM context for better debugging and understanding, and implementation of "LLM as a judge" approaches to evaluate outputs at scale. The LLM-as-judge technique allowed automated preliminary evaluation of many outputs, with human clinicians reviewing flagged cases or performing spot checks rather than manually reviewing every single output.
+
+Critically, all of these evaluation processes fed back into a continuous improvement loop, informing refinements to the underlying models, adjustments to prompts, and enhancements to medical safety protocols. This feedback loop shaped not just technical decisions but also product direction, engineering priorities, hiring strategies, and go-to-market approaches.
+
+## Multi-Region Expansion Challenges
+
+When Heidi expanded beyond Australia to become a global platform, they encountered what Ocha described as "four distinct layers of complexity that we have to solve simultaneously." These challenges highlight the real-world constraints that LLMOps practitioners face when deploying AI systems across jurisdictions, particularly in regulated industries.
+
+The first layer was data sovereignty, which extended beyond simple storage considerations to encompass strict data locality requirements and network architecture design. In Australia, Heidi must exclusively use the ap-southeast-2 (Sydney) or ap-southeast-4 (Melbourne) AWS regions, while in the US they might utilize us-east-1 or us-west-2. The challenge wasn't merely where data is stored but how it moves through the system, requiring well-architected VPC networks to control system communication within specific geographic borders and ensure workloads remain private within those boundaries.
+
+The second layer was model availability, which often goes underappreciated by teams building exclusively in well-served regions like the US. As Ocha noted, "If you're building solely for US, it's a lot easier because models are available everywhere. Here in the US you can pick almost every provider, but the moment you try to expand to new regions, that luxury disappears." The models Heidi wanted to use were simply not available or not compliant in some local zones, requiring alternative strategies.
+
+The third layer represented the medical reality itself: healthcare practices vary significantly across regions and countries. A GP appointment in Australia looks very different from a primary care visit in New York—not just in accent, but in training approaches, consultation flow, and medical terminology. Heidi had to adapt to these nuances to accurately capture consultations in different healthcare contexts.
+
+The fourth layer involved the rapidly evolving regulatory landscape around generative AI. Since Gen AI represents a new frontier actively influencing regulatory frameworks, navigating different regions means managing different compliance requirements simultaneously. This isn't merely a legal concern; it directly affects product roadmaps and engineering decisions on a daily basis.
+
+## Technical Architecture for Global Scale
+
+To address these multi-layered challenges, Heidi adopted a standardization strategy centered on infrastructure-as-code. They ensured all AWS infrastructure is standardized across every region, using IaC tools to guarantee consistent deployments. This created a flexible architecture treating new regions as "plug-and-play templates," enabling deployment into new geographic areas without reinventing the wheel each time.
+
+Central to their technical strategy is Amazon EKS (Elastic Kubernetes Service), which Ocha highlighted with a detailed architecture diagram during the presentation. Their approach to model availability employs a hybrid strategy addressing both immediate and long-term needs.
+
+For immediate availability when entering new regions, Heidi uses LLM providers already available and compliant in the designated region, specifically Amazon Bedrock. This solves the "cold start problem" of launching in a new geography without waiting for their preferred models to become available or going through lengthy compliance processes with multiple vendors.
+
+However, for long-term operations, the company recognized the imperative of having infrastructure capable of supporting self-hosted models. This is where EKS shines: since AWS EKS is available in most global regions, once infrastructure templates are ready, Heidi can serve their own inference models everywhere. This hybrid approach—Bedrock for speed, EKS for control—effectively solved the model availability challenge across their global footprint.
+
+The infrastructure-as-code approach provides several critical benefits for LLMOps at scale. It ensures consistency across environments, reducing the likelihood of configuration drift causing different behaviors in different regions. It enables rapid deployment to new regions when business needs or regulatory requirements demand expansion. It also facilitates disaster recovery and business continuity, since infrastructure can be quickly reproduced in alternative regions if necessary.
+
+## Building Trust Through Human Expertise
+
+While technical infrastructure formed the foundation of global expansion, Heidi recognized that "healthcare isn't just code, it's people." Building trust required addressing the human dimension of healthcare delivery. Once technical pipes were laid, the company still faced massive non-technical hurdles.
+
+Trust begins with "speaking the language"—not just French or Spanish, but medicine itself. Heidi hires clinician ambassadors in every region they operate in: doctors who believe in the mission and provide specific on-the-ground support. These aren't consultants brought in occasionally; they're integral to ensuring Heidi speaks the local medical dialect.
+
+These clinical ambassadors validate that the system doesn't just translate words but understands local practice patterns, ensuring outputs feel natural to a GP in New York or a specialist in Sydney. They serve as the bridge between the technical system and medical reality, catching cultural and practical nuances that might not be apparent to engineers or even to clinicians from other regions.
+
+Finally, Heidi tackles complex regulatory requirements through a rigorous compliance network. They established a dedicated internal legal and compliance team that manages the shifting landscape of international laws, while also working with external partners focused specifically on medical safety. This dual approach—internal governance and external validation—allows the company to move fast on infrastructure while never compromising on safety.
+
+## Key Lessons and Takeaways
+
+Ocha articulated three primary lessons from Heidi's journey that offer valuable insights for LLMOps practitioners:
+
+First, technology alone isn't the product. While the release of foundational models created the opportunity, Heidi's success came from their strategic pivot from a broad care platform trying to do everything to focusing on a single workflow bringing immediate, tangible value. The advice is clear: "Don't try to boil the ocean, just solve one painful problem perfectly." This lesson resonates across LLMOps implementations—the temptation to leverage LLMs for every possible use case often dilutes impact and complicates deployment.
+
+Second, in a world of generative AI, humans are more important than ever. Doctors and clinicians are core to Heidi's product, not just end users. The company learned to treat subject matter experts not merely as testers but as their biggest asset—the guardians of quality. This "clinicians in the loop" approach represents a mature understanding that in high-stakes domains, human expertise must be deeply integrated into the evaluation and improvement cycle, not treated as an afterthought or external validation step.
+
+Third, flexible architecture from day one isn't just about code quality—it's about business survival. The standardized, infrastructure-as-code approach enabled Heidi to respond to changing regulatory environments and expand into regions with completely different requirements. Architecture should be an enabler of expansion, not a bottleneck. This lesson is particularly relevant for startups and teams that might be tempted to take shortcuts in infrastructure for speed, not realizing that rigidity in architecture can become an existential constraint as the business grows.
+
+## Critical Assessment
+
+While Heidi's presentation provides valuable insights into production LLMOps challenges, several claims and approaches warrant balanced consideration. The company reports impressive scale metrics—370,000+ clinicians and 10 million consultations per month—and claims to be "the most used AI scribe globally" and "number one AI scribe by adoption in Canada." However, the presentation doesn't provide independent verification of these figures or comparative metrics against competitors. These should be understood as company-reported statistics in what is likely a growing but competitive market.
+
+The effectiveness of synthetic data generation for evaluation deserves scrutiny. While using LLMs to create synthetic consultation data addresses the very real problem of privacy constraints in healthcare, there's an inherent limitation: synthetic data generated by LLMs may not capture the full range of real-world edge cases, unusual presentations, or communication patterns that occur in actual clinical practice. The evaluation loop could potentially miss failure modes that aren't represented in synthetically generated conversations. Heidi's approach of combining synthetic data with mock consultations and case studies with real users helps mitigate this risk, but it remains a consideration.
+
+The "LLM as a judge" approach, while practical for scaling evaluation, introduces its own challenges. Using LLMs to evaluate LLM outputs can potentially perpetuate biases or blind spots present in the judging model. If the judge model has similar limitations or biases to the production model, problematic outputs might pass evaluation. This technique works best when combined with robust human review processes, which Heidi appears to do through their clinical team, but the balance between automated and human evaluation isn't fully detailed.
+
+The presentation emphasizes the hybrid model approach (Bedrock for speed, EKS for control) as solving availability challenges, but doesn't deeply explore the operational complexity this introduces. Managing multiple model providers and self-hosted infrastructure simultaneously requires sophisticated MLOps capabilities including model versioning across providers, consistent monitoring and observability across different serving platforms, and careful management of prompt engineering and output formatting that may differ between providers. While this complexity is likely manageable for a well-funded, technically sophisticated team, it represents real operational overhead.
+
+The data sovereignty approach, while compliant and architecturally sound, potentially limits the ability to leverage centralized learning and improvement. If data must remain strictly within regional boundaries, insights from one region may not easily transfer to improve performance in others without careful privacy-preserving techniques. This is a fundamental tension in multi-region healthcare AI that Heidi must navigate.
+
+Finally, while the focus on solving "one painful problem perfectly" rather than building a broad platform makes strategic sense, it also represents a narrowing of scope from the company's earlier vision. The transition from Oscer to a broader care platform to the focused Heidi scribe suggests multiple pivots. While presented as strategic wisdom learned through experience, it also reflects the challenge of finding product-market fit in healthcare AI—a journey that not all startups successfully navigate.
+
+Despite these considerations, Heidi's case demonstrates sophisticated thinking about production LLMOps challenges in a highly regulated, high-stakes domain. Their approach to integrating clinical expertise throughout the development and evaluation lifecycle, their architectural flexibility enabling global expansion, and their realistic assessment of the human-AI collaboration required for success offer valuable lessons for practitioners deploying LLMs in production environments, particularly in specialized or regulated domains.

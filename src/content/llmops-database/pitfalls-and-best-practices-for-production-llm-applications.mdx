@@ -1,0 +1,128 @@
+---
+title: "Pitfalls and Best Practices for Production LLM Applications"
+slug: "pitfalls-and-best-practices-for-production-llm-applications"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f3d1168e9a3a6d28f9614"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:39:30.451Z"
+  createdOn: "2024-11-21T14:00:49.737Z"
+llmopsTags:
+  - "anthropic"
+  - "cicd"
+  - "code-generation"
+  - "continuous-deployment"
+  - "continuous-integration"
+  - "documentation"
+  - "error-handling"
+  - "fine-tuning"
+  - "guardrails"
+  - "human-in-the-loop"
+  - "monitoring"
+  - "open-source"
+  - "openai"
+  - "poc"
+  - "prompt-engineering"
+  - "reliability"
+  - "scalability"
+company: "Humanloop"
+summary: "A comprehensive overview from Human Loop's experience helping hundreds of companies deploy LLMs in production. The talk covers key challenges and solutions around evaluation, prompt management, optimization strategies, and fine-tuning. Major lessons include the importance of objective evaluation, proper prompt management infrastructure, avoiding premature optimization with agents/chains, and leveraging fine-tuning effectively. The presentation emphasizes taking lessons from traditional software engineering while acknowledging the unique needs of LLM applications."
+link: "https://www.youtube.com/watch?v=TRAUNcPj8KU&t=1534s"
+year: 2023
+seo:
+  title: "Humanloop: Pitfalls and Best Practices for Production LLM Applications - ZenML LLMOps Database"
+  description: "A comprehensive overview from Human Loop's experience helping hundreds of companies deploy LLMs in production. The talk covers key challenges and solutions around evaluation, prompt management, optimization strategies, and fine-tuning. Major lessons include the importance of objective evaluation, proper prompt management infrastructure, avoiding premature optimization with agents/chains, and leveraging fine-tuning effectively. The presentation emphasizes taking lessons from traditional software engineering while acknowledging the unique needs of LLM applications."
+  canonical: "https://www.zenml.io/llmops-database/pitfalls-and-best-practices-for-production-llm-applications"
+  ogTitle: "Humanloop: Pitfalls and Best Practices for Production LLM Applications - ZenML LLMOps Database"
+  ogDescription: "A comprehensive overview from Human Loop's experience helping hundreds of companies deploy LLMs in production. The talk covers key challenges and solutions around evaluation, prompt management, optimization strategies, and fine-tuning. Major lessons include the importance of objective evaluation, proper prompt management infrastructure, avoiding premature optimization with agents/chains, and leveraging fine-tuning effectively. The presentation emphasizes taking lessons from traditional software engineering while acknowledging the unique needs of LLM applications."
+---
+
+## Overview
+
+This case study is derived from a conference presentation by Raza from Humanloop, a developer platform focused on making it easier to build reliable applications on top of large language models. Humanloop has been operating in this space for over a year (predating the ChatGPT release), giving them visibility into several hundred projects that have either succeeded or failed in production. The presentation distills key lessons learned into actionable pitfalls to avoid and best practices to follow.
+
+The speaker frames LLM applications as composed of traditional software combined with what he calls "LLM blocks" — a combination of a base model (from providers like Anthropic or OpenAI, or custom fine-tuned open source models), a prompt template (instructions or templates into which data is fed), and a selection strategy for retrieving relevant data to include in the context. Getting all three components right is essential for production success.
+
+## Core Challenges in LLMOps
+
+The presentation identifies several fundamental challenges that make building production LLM applications difficult:
+
+Prompt engineering has an outsized impact on model performance, where small changes can lead to large differences in outcomes, but predicting which changes will be beneficial requires extensive experimentation. Hallucinations remain a persistent problem, with models confidently producing incorrect answers. Evaluation is inherently more difficult than traditional software because outcomes are often subjective and non-deterministic. Cost and latency constraints may make the largest models impractical for certain use cases.
+
+## Pitfall 1: Lack of Objective Evaluation
+
+One of the most common problems observed is that teams approaching LLM applications often fail to implement systematic evaluation processes comparable to what they would use for traditional software. The typical pattern is to start in the OpenAI playground, eyeballing a few examples and trying things out, without structured measurement.
+
+Even when teams do have evaluation systems, they often fail to evaluate individual components separately — for example, measuring retrieval quality independently from prompt effectiveness in a RAG system. Teams frequently don't plan ahead for production monitoring, ending up either dumping logs to databases with the intention of analyzing them later (but never doing so) or trying to shoehorn LLM-specific metrics into traditional analytics tools like Mixpanel.
+
+The consequences are severe: teams either give up prematurely, incorrectly concluding that LLMs can't solve their problem, or they thrash between different approaches (switching retrieval systems, trying chains, experimenting with agents) without any clear sense of whether they're making progress.
+
+The speaker emphasizes that evaluation matters at multiple stages: during prompt engineering and iteration (where it's most often missing), in production for monitoring user outcomes, and when making changes to avoid regressions.
+
+### GitHub Copilot as an Evaluation Success Story
+
+GitHub Copilot is presented as an exemplar of getting evaluation right. With over a million users serving the critical audience of software engineers, they rely heavily on end-user feedback in production. Their evaluation goes beyond simple acceptance rates to measure whether suggested code remains in the codebase at various time intervals after acceptance — a much stronger signal of actual utility.
+
+The best applications capture three types of feedback:
+- Explicit votes (thumbs up/down)
+- Implicit actions (signals of what is and isn't working based on user behavior)
+- Corrections (when users edit generated content, capturing the edited text is extremely valuable)
+
+This multi-signal approach enables both real-time monitoring and data collection for future improvements.
+
+## Pitfall 2: Inadequate Prompt Management Infrastructure
+
+Teams commonly underestimate the importance of proper infrastructure for managing prompts. The typical pattern starts with experimentation in the OpenAI playground, moves to Jupyter notebooks for more structured work, and often ends with prompt templates stored in Excel or Google Docs when collaboration with non-technical team members is needed.
+
+This leads to lost experimentation history, duplicate efforts across teams (the speaker mentions companies that have run the same evaluations with external annotators on identical prompts multiple times because teams weren't aware of each other's work), and failure to accumulate learnings systematically.
+
+The intuitive solution of keeping everything in code and using Git for versioning has its own problems. Unlike traditional software, LLM applications typically involve much more collaboration between domain experts and software engineers. Domain experts often have valuable contributions to make to prompt engineering but may not be comfortable with Git workflows. This creates friction that slows down iteration.
+
+The speaker recommends prompt management systems that record complete experimentation history, store the history alongside model configurations in an easily accessible way, and are accessible to both technical and non-technical team members. Humanloop offers such a platform, though the speaker acknowledges other options exist.
+
+## Pitfall 3: Premature Optimization with Chains and Agents
+
+The presentation addresses the hype around AI agents with some skepticism, noting that many customers have tried to build with complex chains or agents early in their projects and later had to remove these components. The phrase "my friends on Twitter are gaslighting me with how good these AI agents work" was quoted approvingly.
+
+The problems with complex chains and agents include:
+- Combinatorial complexity in evaluation (when you have five different prompts in a chain, which one is affecting outcomes?)
+- Increased maintenance burden as changes in one place affect downstream components
+- Harder overall evaluation
+
+The recommended approach is to start with the best available model (typically GPT-4 or Claude), avoid over-optimizing for cost and latency early on, and push prompt engineering as far as possible before adding complexity. The speaker makes exceptions for simple chat interfaces and basic RAG (retrieval followed by generation into a prompt template), but recommends avoiding more complex chains unless simpler approaches have been thoroughly explored.
+
+## Pitfall 4: Underestimating Fine-Tuning
+
+Teams have become so accustomed to the power of large general-purpose models that they often assume fine-tuning smaller models requires more data than they have access to, or that smaller models won't be effective enough to be worth the effort.
+
+The speaker presents this as a common misconception based on Humanloop's observations. Customers regularly succeed at fine-tuning smaller models with surprisingly limited data — sometimes hundreds of annotated data points are enough to get started, with thousands yielding good performance.
+
+Fine-tuning offers benefits beyond cost and latency: it creates defensibility through a data flywheel where feedback from production can continuously improve model performance in ways specific to your use case, faster than competitors can match.
+
+### Phind as a Fine-Tuning Success Story
+
+Phind, described as an LLM-based search engine for developers, is presented as a concrete example of successful fine-tuning. They started with GPT-4, gathered extensive user feedback in production (the speaker notes their comprehensive feedback collection UI), and used this data to fine-tune a custom open source model.
+
+The result is that their fine-tuned model now outperforms GPT-4 for their specific niche (developer-focused search and code questions), while offering lower costs and latency. When asked for recommendations, Phind suggested the Flan-T5 and Flan-UL2 family of models from Google as particularly effective, while also exploring Falcon.
+
+The common pattern for successful fine-tuning involves generating data from an existing model, filtering that data based on success criteria (which could be explicit user feedback or another LLM scoring the outputs), and then fine-tuning on the filtered data. This cycle can be repeated multiple times for continued improvement.
+
+## Drawing the Right Lessons from Traditional Software
+
+The presentation concludes with a nuanced argument about how to apply lessons from traditional software development to LLMOps. While rigor and systematic processes are essential, the tools and approaches need to be designed from first principles with LLMs in mind rather than simply copied from traditional software development.
+
+Key differences include:
+- Prompt management requires more collaboration between technical and non-technical team members than traditional code, and iteration happens much faster
+- Evaluation must handle non-deterministic outcomes and subjective success criteria where there often isn't a single "correct" answer
+- CI/CD needs to accommodate faster iteration cycles, learning from production data, and the difficulty of writing unit tests for generative outputs
+
+The speaker advocates for LLM-specific tooling that acknowledges these differences while maintaining the rigor expected of production software systems.
+
+## Ethical Considerations
+
+When asked about the ethics of GitHub Copilot sending telemetry data back to Microsoft, the speaker draws a clear line: as long as users know upfront what they're signing up for and give permission willingly, capturing feedback data is acceptable and benefits everyone. The ethical violation would be capturing data without permission.
+
+On the question of data privacy in fine-tuned models (specifically, whether employees without access to certain training data could prompt inject to extract that information), the speaker acknowledges this as an unsolved problem. Potential mitigations include training separate models for different access levels or using adapters (LoRA-style lightweight modifications that can be swapped out), but there's no clear-cut solution yet.

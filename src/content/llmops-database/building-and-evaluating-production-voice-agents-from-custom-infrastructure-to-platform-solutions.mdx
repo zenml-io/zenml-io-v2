@@ -1,0 +1,90 @@
+---
+title: "Building and Evaluating Production Voice Agents: From Custom Infrastructure to Platform Solutions"
+slug: "building-and-evaluating-production-voice-agents-from-custom-infrastructure-to-platform-solutions"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "679c8bde40daa4aa13311764"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:59:17.392Z"
+  createdOn: "2025-01-31T08:37:50.275Z"
+llmopsTags:
+  - "healthcare"
+  - "speech-recognition"
+  - "customer-support"
+  - "realtime-application"
+  - "prompt-engineering"
+  - "error-handling"
+  - "human-in-the-loop"
+  - "latency-optimization"
+  - "fallback-strategies"
+  - "fastapi"
+  - "monitoring"
+  - "reliability"
+  - "documentation"
+  - "openai"
+  - "microsoft-azure"
+  - "amazon-aws"
+company: "Nomore Engineering"
+summary: "A team explored building a phone agent system for handling doctor appointments in Polish primary care, initially attempting to build their own infrastructure before evaluating existing platforms. They implemented a complex system involving speech-to-text, LLMs, text-to-speech, and conversation orchestration, along with comprehensive testing approaches. After building the complete system, they ultimately decided to use a third-party platform (Vapi.ai) due to the complexities of maintaining their own infrastructure, while gaining valuable insights into voice agent architecture and testing methodologies."
+link: "https://nomore.engineering/blog/voice-agents"
+year: 2023
+seo:
+  title: "Nomore Engineering: Building and Evaluating Production Voice Agents: From Custom Infrastructure to Platform Solutions - ZenML LLMOps Database"
+  description: "A team explored building a phone agent system for handling doctor appointments in Polish primary care, initially attempting to build their own infrastructure before evaluating existing platforms. They implemented a complex system involving speech-to-text, LLMs, text-to-speech, and conversation orchestration, along with comprehensive testing approaches. After building the complete system, they ultimately decided to use a third-party platform (Vapi.ai) due to the complexities of maintaining their own infrastructure, while gaining valuable insights into voice agent architecture and testing methodologies."
+  canonical: "https://www.zenml.io/llmops-database/building-and-evaluating-production-voice-agents-from-custom-infrastructure-to-platform-solutions"
+  ogTitle: "Nomore Engineering: Building and Evaluating Production Voice Agents: From Custom Infrastructure to Platform Solutions - ZenML LLMOps Database"
+  ogDescription: "A team explored building a phone agent system for handling doctor appointments in Polish primary care, initially attempting to build their own infrastructure before evaluating existing platforms. They implemented a complex system involving speech-to-text, LLMs, text-to-speech, and conversation orchestration, along with comprehensive testing approaches. After building the complete system, they ultimately decided to use a third-party platform (Vapi.ai) due to the complexities of maintaining their own infrastructure, while gaining valuable insights into voice agent architecture and testing methodologies."
+---
+
+This case study provides a comprehensive look at the challenges and considerations involved in deploying LLM-powered voice agents in production, specifically in the context of healthcare appointment scheduling in Poland. The study is particularly valuable as it presents both the journey of building a custom solution and the eventual pragmatic decision to use a platform solution, offering insights into both approaches.
+
+The team initially identified a critical problem in Polish primary care where phone-based appointment scheduling was causing significant bottlenecks, with patients often unable to reach receptionists, especially during peak seasons. Their journey began with evaluating off-the-shelf solutions, specifically bland.ai, which while impressive in its quick setup, presented limitations in terms of model intelligence, costs, and Polish language support.
+
+The technical architecture they developed consisted of four main components:
+
+* Speech-to-Text (STT) for converting user speech to text
+* Language Model (LLM) for processing and generating responses
+* Text-to-Speech (TTS) for converting responses to audio
+* Voice Activity Detector (VAD) for managing conversation flow
+
+One of the most significant challenges they encountered was building a robust conversation orchestrator. This component needed to handle real-world conversation complexities such as interruptions, mid-sentence pauses, and backchannel communications ("mhm," "uh-huh"). The team implemented sophisticated logic to manage these scenarios, demonstrating the complexity of deploying LLMs in real-world voice applications.
+
+The testing approach they developed is particularly noteworthy from an LLMOps perspective. They implemented both manual and automated testing strategies, focusing on two key areas: agent quality and conversation quality. The automated testing infrastructure they built included:
+
+* Prerecorded speech segments for consistent testing
+* Timing-based assertions for response handling
+* Comprehensive test scenarios simulating real-world conversation patterns
+
+The team's experience with the telephony layer, primarily using Twilio's Media Streams API, highlights the importance of considering infrastructure components when deploying LLMs in production. They built a simulation environment to test their voice agent locally without incurring Twilio costs, showing pragmatic development practices.
+
+After completing their custom solution, they performed a critical evaluation of whether maintaining their own platform made sense. They identified three scenarios where building a custom platform would be justified:
+* Selling the platform itself
+* Operating at a scale where custom solutions are cost-effective
+* Having unique requirements not met by existing platforms
+
+Their evaluation of existing platforms (bland.ai, vapi.ai, and retell.ai) provides valuable insights into the current state of voice agent platforms. They compared these solutions across several critical metrics:
+* Conversation flow naturalness
+* Response latency (targeting sub-2-second responses)
+* Agent quality and script adherence
+* Platform availability
+* Language support quality
+
+The case study reveals interesting architectural differences between platforms. Bland.ai's self-hosted approach achieved better latency (1.5s vs 2.5s+) and availability but sacrificed flexibility in agent logic and evaluation capabilities. Vapi.ai and Retell.ai offered more control over the LLM component but faced challenges with latency and availability due to their multi-provider architecture.
+
+From an LLMOps perspective, their final decision to use Vapi.ai instead of maintaining their custom solution highlights important considerations for production deployments:
+* The importance of being able to evaluate and control agent logic
+* The trade-off between maintaining custom infrastructure and using platforms
+* The critical role of testing and evaluation in production voice agents
+* The impact of language support on model selection
+* The significance of latency and availability in production systems
+
+Their insights into the future of AI voice agents suggest several important trends for LLMOps practitioners to consider:
+* The movement toward abstracted speech-to-text and text-to-speech components
+* The need for improved conversation management without extensive tuning
+* The balance between self-hosted models for latency/availability and platform solutions for ease of maintenance
+* The emergence of simulation-based evaluation frameworks as a standard practice
+
+This case study effectively demonstrates the complexity of deploying LLMs in production voice applications and the importance of carefully evaluating build-versus-buy decisions in LLMOps projects. It also highlights the critical role of testing and evaluation in ensuring production-ready AI systems.

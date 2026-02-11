@@ -1,0 +1,134 @@
+---
+title: "Leveraging NLP and LLMs for Music Industry Royalty Recovery"
+slug: "leveraging-nlp-and-llms-for-music-industry-royalty-recovery"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "67e153072b58e05e0f76091d"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:04:35.442Z"
+  createdOn: "2025-03-24T12:41:43.524Z"
+llmopsTags:
+  - "document-processing"
+  - "data-cleaning"
+  - "data-integration"
+  - "structured-output"
+  - "regulatory-compliance"
+  - "rag"
+  - "embeddings"
+  - "semantic-search"
+  - "error-handling"
+  - "chunking"
+  - "spacy"
+  - "fastapi"
+  - "postgresql"
+  - "monitoring"
+  - "reliability"
+  - "microsoft-azure"
+company: "Love Without Sound"
+summary: "Love Without Sound developed an AI-powered system to help the music industry recover lost royalties due to incorrect metadata and unauthorized usage. The solution combines NLP pipelines for metadata standardization, legal document processing, and is now expanding to include RAG-based querying and audio embedding models. The system processes billions of tracks, operates in real-time, and runs in a fully data-private environment, helping recover millions in revenue for artists."
+link: "https://explosion.ai/blog/love-without-sound-nlp-music-industry"
+year: 2025
+seo:
+  title: "Love Without Sound: Leveraging NLP and LLMs for Music Industry Royalty Recovery - ZenML LLMOps Database"
+  description: "Love Without Sound developed an AI-powered system to help the music industry recover lost royalties due to incorrect metadata and unauthorized usage. The solution combines NLP pipelines for metadata standardization, legal document processing, and is now expanding to include RAG-based querying and audio embedding models. The system processes billions of tracks, operates in real-time, and runs in a fully data-private environment, helping recover millions in revenue for artists."
+  canonical: "https://www.zenml.io/llmops-database/leveraging-nlp-and-llms-for-music-industry-royalty-recovery"
+  ogTitle: "Love Without Sound: Leveraging NLP and LLMs for Music Industry Royalty Recovery - ZenML LLMOps Database"
+  ogDescription: "Love Without Sound developed an AI-powered system to help the music industry recover lost royalties due to incorrect metadata and unauthorized usage. The solution combines NLP pipelines for metadata standardization, legal document processing, and is now expanding to include RAG-based querying and audio embedding models. The system processes billions of tracks, operates in real-time, and runs in a fully data-private environment, helping recover millions in revenue for artists."
+---
+
+## Overview
+
+Love Without Sound is a company founded in 2023 by Jordan Davis, a former sound engineer and producer with 17 years of experience in the music industry. The company addresses a significant and often overlooked problem in the music industry: incorrect metadata leading to lost royalties for artists. Estimates suggest $2.5 billion in royalties remained unallocated in the U.S. alone between 2016 and 2018 due to metadata issues. The company has built a comprehensive NLP-powered solution that helps labels recover royalties for music used without appropriate licenses and assists law firms in streamlining legal negotiations.
+
+While this case study primarily focuses on traditional NLP techniques using spaCy and Prodigy rather than large language models, it provides valuable insights into production machine learning operations and includes emerging LLM-related work that makes it relevant to the LLMOps landscape. The case demonstrates how a small team can build highly effective, modular AI systems that run in production environments with strict data privacy requirements.
+
+## The Business Problem
+
+The music industry faces a systemic metadata problem. With approximately 40,000 new tracks being added to Spotify daily and 15% containing incorrect metadata, the scale of the issue is enormous. There's no standardized format for how featured artists, live versions, or remixes are noted in track information. Common issues include auto-formatting in programs like Excel converting track titles like "4:44" or "7/11" to decimals or datetime objects.
+
+Beyond simple metadata errors, large corporations often use music for commercials and promotional content across fragmented social media platforms and channels for different countries, frequently publishing music in contexts that weren't originally licensed. This results in millions of lost royalties that artists are powerless to monitor and claim. The solution involves extensive legal correspondence and negotiations, with thousands of emails being sent per day.
+
+## Technical Architecture and Components
+
+Love Without Sound developed a modular suite of NLP components that can be combined freely by applications. This modular approach allows each component to be developed, improved, and evaluated separately. The architecture consists of several key systems:
+
+### Music Metadata Standardization
+
+At the core of the solution is a spaCy pipeline with named entity recognition (NER) and text classification components that normalize and standardize song and artist information across a 2 billion-row database. The models extract components like song titles, featured artists, and modifiers (live versions, remixes, etc.), then classify these modifiers and create hierarchical IDs to group related versions of songs.
+
+The metadata extraction models achieve strong performance metrics:
+- Songs NER: 0.94 F-score at 6,217 words per second
+- Artists NER: 0.93 F-score at 1,696 words per second
+- Modifiers text classification: 0.99 AUC score at an impressive 447,493 words per second
+
+### Legal Document Processing
+
+The legal processing pipeline addresses the challenge of extracting structured information from thousands of daily emails and their attachments. The system includes:
+
+- **Email Body Extraction**: An NER component that detects the start and end of messages, separating substantive content from disclaimer blocks. Achieves 0.90 F-score at 13,923 words per second.
+
+- **Correspondence Classification**: A binary classifier distinguishing substantive business communications from non-essential emails like newsletters. Achieves 0.98 AUC at 587,907 words per second.
+
+- **Attachment Classification**: Classifies documents across 9 categories including settlement agreements, tolling agreements, letters, copyright registrations, and licenses. Achieves 0.98 AUC at 2,831 words per second.
+
+- **Legal Agreement Processing**: Multiple components handle section classification (38 labels, 0.92 AUC), span extraction (3 labels, 0.94 F-score), and entity extraction (5 labels, 0.92 F-score).
+
+- **Legal Citation Extraction**: Identifies case citations and maps them to specific arguments they support. Achieves 0.98 F-score at 14,809 words per second.
+
+For PDF contracts and agreements, the system includes a signature detection component that finds signature blocks and classifies them as signed or unsigned. The solution uses spacy-layout for processing PDFs, Word documents, and other formats into clean, structured text data.
+
+### Case Citation and Argument Recommendation
+
+The citation detection system leverages a database of cases and arguments to recommend appropriate counter-arguments and predict the direction a case is heading based on the arguments used and historical negotiation data. This has reduced legal research time by nearly 50%, representing significant operational efficiency gains.
+
+## Model Training and Data Development
+
+The data development workflow centers on Prodigy, an annotation tool that enables iterative model development. Jordan started by annotating small samples using Prodigy's `ner.manual` recipe to train preliminary models. As new data comes in, he uses `ner.correct` with model-in-the-loop functionality to review predictions and make corrections efficiently. Models are then retrained using Prodigy's `train` command.
+
+This iterative approach is crucial for production systems that need to adapt to evolving requirements. When new client requests or additions to the music catalog arrive, the process involves spinning up Prodigy, creating new datasets with additional examples and edge cases, and updating the models. This keeps results current and provides a consistent, continuous improvement process.
+
+The case study highlights an important insight about model development: engaging with the data through annotation often reveals that initial label schemes or definitions aren't sufficiently clear. Prodigy's workflow allows iteration on schemas and definitions, leading to better models. The example given is email content detection, which initially seemed like a "silly idea" but worked exceptionally well once implemented.
+
+## Production Deployment Considerations
+
+Several production requirements shaped the architecture:
+
+**Data Privacy**: Legal documents and financial information are highly confidential, requiring all models and applications to run locally in a data-private environment. This rules out cloud-based LLM APIs for most use cases.
+
+**Real-time Processing**: The pipelines must process emails and attachments in real-time while handling music catalogs with millions of tracks. The speed benchmarks (ranging from 306 to 587,907 words per second depending on the component) demonstrate that the system meets these requirements.
+
+**Scalability**: For training models and processing data at scale, the solution uses Modal, a serverless cloud platform providing high-performance computing for AI models and large batch jobs. Modal offers cost-effective access to CPU and GPU resources on demand without infrastructure setup, and integrates smoothly with Python-based workflows.
+
+## LLM-Related Work and Future Direction
+
+While the current production system relies primarily on transformer and CNN-based spaCy components rather than large language models, Love Without Sound is actively developing LLM-powered capabilities:
+
+### RAG Pipeline Development
+
+Jordan is building a custom Retrieval-Augmented Generation (RAG) pipeline for querying case history and artist information using both SQL and natural language. The LLM's primary role is translating natural language questions into appropriate SQL queries—a clearly defined, constrained task that enables the use of smaller models that can run privately on-premise. This approach maintains data privacy while leveraging LLM capabilities for query understanding.
+
+### Audio Embeddings
+
+Work is underway on a musical audio embedding model that structures audio data based on sonic properties rather than metadata. This can map related tracks (including remixes, samples, and songs with production similarities) to proximate vector positions. The system will identify metadata inconsistencies, verify rights management claims, and enable content-based recommendations.
+
+## Evaluation and Results
+
+The case study provides detailed performance metrics for all components, demonstrating that the modular approach achieves high accuracy while maintaining the speed necessary for real-time processing. The combination of traditional NLP techniques with emerging LLM capabilities (particularly the planned RAG system) represents a pragmatic approach to production ML that prioritizes reliability, speed, and data privacy over using the latest models for every task.
+
+The business results are substantial: Love Without Sound has helped publishers recover hundreds of millions of dollars in lost revenue for artists. The legal document processing has reduced research time by nearly 50%. These outcomes demonstrate that carefully designed NLP systems, even without heavy LLM usage, can deliver significant value in specialized domains.
+
+## Key Takeaways for LLMOps
+
+This case study illustrates several important principles:
+
+- **Modular architecture** enables independent development, improvement, and evaluation of components
+- **Data privacy requirements** often necessitate on-premise or self-hosted solutions, influencing the choice between cloud LLM APIs and local models
+- **Iterative data development** with tools like Prodigy is essential for building accurate, domain-specific models
+- **Smaller, specialized models** can outperform general-purpose LLMs for well-defined tasks while being faster and more cost-effective
+- **RAG approaches** with constrained LLM tasks (like SQL generation) can provide LLM benefits while maintaining data privacy
+- **Serverless platforms** like Modal enable scaling without infrastructure management
+
+The case demonstrates that production AI systems often benefit from combining traditional NLP with strategic LLM usage, rather than defaulting to LLMs for every task.

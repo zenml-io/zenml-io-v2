@@ -1,0 +1,174 @@
+---
+title: "MLOps Platform for Airline Operations with LLM Integration"
+slug: "mlops-platform-for-airline-operations-with-llm-integration"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "6791ffaec3426760e04e5f16"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:57:03.301Z"
+  createdOn: "2025-01-23T08:37:02.284Z"
+llmopsTags:
+  - "realtime-application"
+  - "regulatory-compliance"
+  - "structured-output"
+  - "data-analysis"
+  - "data-cleaning"
+  - "data-integration"
+  - "prompt-engineering"
+  - "semantic-search"
+  - "model-optimization"
+  - "cost-optimization"
+  - "latency-optimization"
+  - "cicd"
+  - "monitoring"
+  - "microservices"
+  - "devops"
+  - "orchestration"
+  - "continuous-deployment"
+  - "continuous-integration"
+  - "documentation"
+  - "security"
+  - "compliance"
+  - "reliability"
+  - "scalability"
+  - "fastapi"
+  - "postgresql"
+  - "google-gcp"
+company: "LATAM Airlines"
+summary: "LATAM Airlines developed Cosmos, a vendor-agnostic MLOps framework that enables both traditional ML and LLM deployments across their business operations. The framework reduced model deployment time from 3-4 months to less than a week, supporting use cases from fuel efficiency optimization to personalized travel recommendations. The platform demonstrates how a traditional airline can transform into a data-driven organization through effective MLOps practices and careful integration of AI technologies."
+link: "https://www.youtube.com/watch?v=h6X7Cbo_-ho&list=PLlcxuf1qTrwBGJBE0nVbAs0fbNLHidJaN&index=3"
+year: 2024
+seo:
+  title: "LATAM Airlines: MLOps Platform for Airline Operations with LLM Integration - ZenML LLMOps Database"
+  description: "LATAM Airlines developed Cosmos, a vendor-agnostic MLOps framework that enables both traditional ML and LLM deployments across their business operations. The framework reduced model deployment time from 3-4 months to less than a week, supporting use cases from fuel efficiency optimization to personalized travel recommendations. The platform demonstrates how a traditional airline can transform into a data-driven organization through effective MLOps practices and careful integration of AI technologies."
+  canonical: "https://www.zenml.io/llmops-database/mlops-platform-for-airline-operations-with-llm-integration"
+  ogTitle: "LATAM Airlines: MLOps Platform for Airline Operations with LLM Integration - ZenML LLMOps Database"
+  ogDescription: "LATAM Airlines developed Cosmos, a vendor-agnostic MLOps framework that enables both traditional ML and LLM deployments across their business operations. The framework reduced model deployment time from 3-4 months to less than a week, supporting use cases from fuel efficiency optimization to personalized travel recommendations. The platform demonstrates how a traditional airline can transform into a data-driven organization through effective MLOps practices and careful integration of AI technologies."
+---
+
+## Overview
+
+LATAM Airlines is South America's largest airline, operating approximately 350 aircraft across 150 destinations with over 1,600 daily departures (roughly one every 51 seconds). The company employs over 60,000 people and achieved $4 million in profit in the first half of 2024. This presentation, delivered by Michelle Hacker (MLOps Lead) and Diego Castillo (Staff Machine Learning Engineer), describes how LATAM transformed from a traditional legacy airline into a data-driven organization through their in-house MLOps framework called Cosmos.
+
+The central thesis presented by LATAM's CEO Roberto Alvo is that in the next 10 years, competitive advantage in aviation won't come from revolutionary aircraft or fuel innovations, but from data. For a non-native tech company operating in a traditionally non-digital sector, this represents a significant cultural and technical shift.
+
+## Organizational Structure and MLOps Strategy
+
+LATAM employs a hybrid centralized-decentralized approach to their data and ML strategy. The organization is divided into "chapters" - business units that each maintain their own data ecosystem within their specific domain (maintenance, operational performance, finance, web, etc.). These decentralized teams have deep domain expertise and are responsible for understanding business problems specific to their area.
+
+A centralized MLOps team standardizes tools and development practices through the unified Cosmos framework. This team works alongside other centralized units including a GenAI team and ETL team. The architecture features a specific role called "analytics translator" who serves as a bridge between technical and non-technical stakeholders, responsible for explaining model behavior and handling user feedback.
+
+Staff machine learning engineers serve as bridges between the centralized MLOps team and the domain-specific chapters, implementing new framework features across all domains and ensuring consistent adoption of best practices.
+
+## The Cosmos Framework
+
+Cosmos is described as a "developer-centric in-house framework" designed to prioritize speed while minimizing bureaucracy. Key characteristics include:
+
+**Vendor Agnosticism**: While heavily integrated with Google Cloud Platform (GCP), the framework uses custom wrappers around GCP services to maintain technology independence. For example, if they needed to switch from Vertex Pipelines to another Kubeflow pipeline service, they would only need to modify the wrapper, not the underlying implementation used by end users.
+
+**Environment Isolation**: The framework manages three distinct environments - development, integration, and production - with strict isolation between them to prevent unintended cross-interactions. Models are trained in development and then promoted to production with deterministic behavior guaranteed between environments.
+
+**Data Access and Security**: The approach requires data access in development stages, which is managed through data policies where sensitive data is hashed or treated according to its sensitivity level.
+
+**Rapid Development**: The framework reduced the time from model creation to first production deployment from 3-4 months to less than one week, including exploration phases. This represents a significant acceleration in innovation velocity.
+
+## Technical Architecture
+
+The simplified ML Cosmos path follows this flow:
+
+- **Data Ingestion**: New data sources are connected and stored in BigQuery (their data warehouse)
+- **Data Transformation**: Data is cleaned and transformed using "Curator," their own implementation of Dataform (a GCP product)
+- **Model Training**: Training is performed using their implementation of Vertex AI Pipelines
+- **Serving**: Outputs are served through batch processing, dashboards, real-time prediction APIs, and chatbots
+- **Monitoring**: Data drift monitoring, data quality checks, and SRE practices are applied throughout
+
+The framework has four main lines of development:
+- DataOps: Everything about data processing
+- MLOps: Machine learning operations
+- GenAI: Generative AI capabilities
+- DataViz: Data visualization and front-end
+
+For CI/CD, all production deployments are handled exclusively through Cloud Build (GCP), with no direct manual access to production environments.
+
+## LLM and Generative AI Integration
+
+One of the notable aspects of the Cosmos framework is its integration of traditional machine learning with generative AI capabilities. The presentation specifically highlights the "Home Recommender" use case which demonstrates this fusion.
+
+### Home Recommender: LLM-Augmented Personalization
+
+The problem: LATAM's website was showing the same recommendations to all users, with no personalization based on individual preferences or interests.
+
+The solution involved two distinct phases:
+
+**Phase 1 - LLM-Generated Features**: The team recognized that destinations have qualitative characteristics that are difficult to capture through traditional data sources. They invented categories including beach quality, nightlife, safety, nature, sports life, etc. Using a large language model, they generated scores for each destination across these categories. For example, London and Rio de Janeiro would receive very different scores across these dimensions. These LLM-generated features provide qualitative data about how destinations are perceived by clients.
+
+**Phase 2 - Traditional ML Model**: Using historical passenger preference data combined with quantitative features (price, travel time, connections, time of year) AND the LLM-generated qualitative features, they trained a standard machine learning model for recommendations.
+
+This approach demonstrates a practical pattern for combining generative AI with traditional ML: using LLMs to generate features or embeddings that enrich training data for downstream models rather than relying solely on LLMs for inference.
+
+The framework also supports:
+- Chatbots using LLM capabilities
+- Classification tasks
+- Parsers
+- All available as real-time APIs with low latency suitable for website integration
+
+## Production Use Cases
+
+### Extra Fuel Optimization
+
+This operational use case addresses the decision of how much extra fuel to load for holding patterns (circling above airports during bad weather or heavy traffic). Previously, this decision relied on dispatcher experience of 30+ years.
+
+**Inputs**: Traffic conditions at arrival airports and weather predictions, all stored in BigQuery
+**Processing**: Data cleaned in BigQuery, training and prediction via Vertex Pipelines
+**Output**: Served on a dedicated page for dispatchers, with supervisors able to override predictions
+
+The model serves as a suggestion system - final decision and responsibility remain with human dispatchers. This human-in-the-loop approach is critical for safety-sensitive applications.
+
+**Results**: Already deployed for flights in Colombia and Brazil, generating millions of dollars in savings and reducing CO2 emissions by 4 kilotons per year.
+
+### Inventory/Parts Forecasting (Magic Chain)
+
+This use case predicts demand for aircraft parts needed for unscheduled maintenance at every airport.
+
+**Challenge**: Lead times for aircraft parts can be several months, making accurate forecasting crucial. If parts aren't available, planes can't fly, leading to cancelled flights and increased costs.
+
+**Inputs**: Scheduled operations (more usage = more wear) and historical parts usage
+**Scale**: Approximately 60,000 individual models are maintained
+**Output**: Dashboard for end users showing forecasted demand
+
+The solution uses a mix of statistical models (~50%) and machine learning models (~50%), implemented in Python.
+
+**Results**: Cost savings in millions of dollars, reduced aircraft-on-ground incidents, and fewer cancelled flights.
+
+## Monitoring and Observability
+
+The presentation mentions several approaches to monitoring:
+- Data drift monitoring for production models
+- Data quality monitoring
+- Integration with Backstage (Spotify's open-source developer portal) to centralize information about all data products
+- A separate measurement team using causal inference to determine model impact
+- A/B testing for web-based implementations with event tracking for user behavior analysis
+
+Each chapter (business unit) has their own environment and monitoring ecosystem, but the information is centralized through Backstage for visibility across the organization.
+
+## Organizational and Cultural Considerations
+
+A strong theme throughout the presentation is the importance of change management for a non-native tech company. Key principles include:
+
+- No model development starts unless a group inside the company in a specific domain is responsible for using, promoting, and giving feedback on the model outputs
+- Definition of outcomes and change management must be established before any coding begins
+- The analytics translator role bridges technical and business stakeholders
+- Leadership alignment is critical - the CEO's vision that "data will change the company" provides top-down support for these initiatives
+
+## Key Takeaways
+
+The presenters emphasized three main conclusions:
+
+- They built an entire self-maintained data ecosystem focused on MLOps despite being a non-native tech company, representing a paradigm shift in how traditional companies approach digital transformation
+- The combination of traditional ML and generative models together maximizes efficiency - the framework enables using both approaches together or alone depending on the problem
+- Technology independence through flexible, scalable solutions - the framework architecture reflects understanding of vendor lock-in risks in the rapidly evolving AI landscape
+
+The overall impact claims include affecting a significant portion of company revenue, demonstrating that even a large legacy company can change direction with a clear strategic vision.

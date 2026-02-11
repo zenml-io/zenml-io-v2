@@ -1,0 +1,141 @@
+---
+title: "Automating Translation Workflows with LLMs for Post-Editing and Transcreation"
+slug: "automating-translation-workflows-with-llms-for-post-editing-and-transcreation"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "67fbc7354d5c6aa03a730f74"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:06:04.969Z"
+  createdOn: "2025-04-13T14:16:21.741Z"
+llmopsTags:
+  - "translation"
+  - "regulatory-compliance"
+  - "high-stakes-application"
+  - "prompt-engineering"
+  - "error-handling"
+  - "human-in-the-loop"
+  - "latency-optimization"
+  - "cost-optimization"
+  - "guardrails"
+  - "security"
+  - "compliance"
+  - "amazon-aws"
+  - "anthropic"
+company: "TransPerfect"
+summary: "TransPerfect integrated Amazon Bedrock into their GlobalLink translation management system to automate and improve translation workflows. The solution addressed two key challenges: automating post-editing of machine translations and enabling AI-assisted transcreation of creative content. By implementing LLM-powered workflows, they achieved up to 50% cost savings in translation post-editing, 60% productivity gains in transcreation, and up to 80% reduction in project turnaround times while maintaining high quality standards."
+link: "https://aws.amazon.com/blogs/machine-learning/how-transperfect-improved-translation-quality-and-efficiency-using-amazon-bedrock?tag=soumet-20"
+year: 2025
+seo:
+  title: "TransPerfect: Automating Translation Workflows with LLMs for Post-Editing and Transcreation - ZenML LLMOps Database"
+  description: "TransPerfect integrated Amazon Bedrock into their GlobalLink translation management system to automate and improve translation workflows. The solution addressed two key challenges: automating post-editing of machine translations and enabling AI-assisted transcreation of creative content. By implementing LLM-powered workflows, they achieved up to 50% cost savings in translation post-editing, 60% productivity gains in transcreation, and up to 80% reduction in project turnaround times while maintaining high quality standards."
+  canonical: "https://www.zenml.io/llmops-database/automating-translation-workflows-with-llms-for-post-editing-and-transcreation"
+  ogTitle: "TransPerfect: Automating Translation Workflows with LLMs for Post-Editing and Transcreation - ZenML LLMOps Database"
+  ogDescription: "TransPerfect integrated Amazon Bedrock into their GlobalLink translation management system to automate and improve translation workflows. The solution addressed two key challenges: automating post-editing of machine translations and enabling AI-assisted transcreation of creative content. By implementing LLM-powered workflows, they achieved up to 50% cost savings in translation post-editing, 60% productivity gains in transcreation, and up to 80% reduction in project turnaround times while maintaining high quality standards."
+---
+
+## Overview
+
+TransPerfect is a global leader in language and technology solutions, founded in 1992 with over 10,000 employees across 140 cities on six continents. The company offers translation, localization, interpretation, and various language services, with a proprietary translation management system called GlobalLink. This case study describes how TransPerfect partnered with the AWS Customer Channel Technology – Localization Team to integrate Amazon Bedrock LLMs into GlobalLink to improve translation quality and efficiency.
+
+The AWS Localization Team is itself a major TransPerfect customer, managing end-to-end localization of AWS digital content including webpages, technical documentation, ebooks, banners, and videos—handling billions of words across multiple languages. The growing demand for multilingual content and increasing workloads necessitated automation improvements in the translation pipeline.
+
+## The Challenge
+
+Content localization traditionally involves multiple manual steps: asset handoff, preprocessing, machine translation, post-editing, quality review cycles, and handback. These processes are described as costly and time-consuming. The team identified two specific areas for improvement:
+
+- **Post-editing efficiency**: After machine translation (using Amazon Translate), human linguists typically review and refine translations to ensure they correctly convey meaning and adhere to style guides and glossaries. This process adds days to the translation timeline.
+
+- **Transcreation automation**: Creative content that relies on nuance, humor, cultural references, and subtlety has historically resisted automation. Machine translation often produces stiff or unnatural results for creative content. Transcreation—adapting messages while maintaining intent, style, tone, and context—traditionally required highly skilled human linguists with no automation assistance, resulting in higher costs and longer turnaround times.
+
+## Technical Architecture and Workflow
+
+The solution integrates LLMs into the existing translation workflow within GlobalLink. The workflow consists of four components in sequence:
+
+- **Translation Memory (TM)**: A client-specific repository of previously translated and approved content, always applied first to maximize reuse of existing translations.
+
+- **Machine Translation (MT)**: New content that cannot be recycled from translation memory is processed through Amazon Translate.
+
+- **Automated Post-Edit (APE)**: An LLM from Amazon Bedrock is employed to edit, improve, and correct machine-translated content.
+
+- **Human Post-Edit (HPE)**: A subject matter expert linguist revises and perfects the content—though this step may be lighter or eliminated entirely depending on the workflow.
+
+The case study provides a concrete example showing a source English segment being translated to French through MT, then refined by APE (with subtle improvements like changing "au moment de créer" to "lorsque vous créez"), and finally reviewed by HPE.
+
+## LLM Integration Details
+
+TransPerfect chose Amazon Bedrock for several key reasons related to production deployment concerns:
+
+### Data Security and Compliance
+Amazon Bedrock ensures that data is neither shared with foundation model providers nor used to improve base models. This is described as critical for TransPerfect's clients in sensitive industries such as life sciences and banking. The service adheres to major compliance standards including ISO, SOC, and FedRAMP authorization, making it suitable for government contracts. Extensive monitoring and logging capabilities support auditability requirements.
+
+### Responsible AI and Hallucination Prevention
+The case study highlights Amazon Bedrock Guardrails as enabling TransPerfect to build and customize truthfulness protections for the automatic post-edit offering. This is particularly important because LLMs can generate incorrect information through hallucinations. For translation workflows that require precision and accuracy, Amazon Bedrock's contextual grounding checks detect and filter hallucinations when responses are factually incorrect or inconsistent with the source content.
+
+### Model Selection
+The solution uses Anthropic's Claude and Amazon Nova Pro models available through Amazon Bedrock. For transcreation specifically, the LLMs are prompted to create multiple candidate translations with variations, from which human linguists can choose the most suitable adaptation rather than composing from scratch.
+
+### Prompt Engineering Approach
+For automatic post-editing, the LLM prompts incorporate:
+- Style guides specific to the client (AWS in this case)
+- Relevant examples of approved translations
+- Examples of errors to avoid
+
+This allows the LLM to improve existing machine translations based on established quality standards and preferences.
+
+## Workflow Configurations
+
+The solution supports different workflow configurations based on content type and requirements:
+
+- **Machine translation-only workflows**: Content is translated and published with no human touch. The APE step provides a quality boost to these fully automated outputs.
+
+- **Machine translation post-edit workflows**: Content goes through human review, but the lighter post-edit task (due to APE improvements) allows linguists to focus on higher-value edits.
+
+- **Expert-in-the-loop models**: The case study notes that localization workflows have largely shifted toward this model, with aspirations toward "no human touch" for appropriate content types.
+
+## Production Results
+
+The case study reports the following outcomes, though readers should note these are self-reported figures from a vendor partnership announcement:
+
+- Over 95% of edits suggested by Amazon Bedrock LLMs showed markedly improved translation quality
+- Up to 50% overall cost savings for translations
+- Up to 60% linguist productivity gains for transcreation
+- Up to 40% cost savings within translation workflows across various industries (life sciences, finance, manufacturing)
+- Up to 80% reduction in project turnaround times
+
+These are significant claims, particularly the 95% improvement rate. While the results sound impressive, it's worth noting that the definition of "markedly improved translation quality" and the methodology for measuring these improvements are not detailed in the case study.
+
+## LLMOps Considerations
+
+Several aspects of this case study are relevant to LLMOps best practices:
+
+### Integration with Existing Systems
+Rather than building a standalone AI solution, the LLM capabilities were integrated into TransPerfect's existing GlobalLink translation management system. This approach leverages established workflows and tooling while adding AI capabilities at specific points in the pipeline.
+
+### Human-in-the-Loop Design
+The solution maintains human oversight at various stages. For transcreation, linguists choose from multiple LLM-generated candidates. For post-editing, content can still route to human reviewers when needed. This graduated approach allows for quality assurance while gaining efficiency benefits.
+
+### Guardrails and Safety
+The explicit use of Amazon Bedrock Guardrails for contextual grounding checks demonstrates attention to output quality control in production. Translation is a domain where accuracy is paramount, and hallucinations or inaccuracies could have significant consequences for clients.
+
+### Scalability
+Amazon Bedrock as a fully managed service provides scalability benefits, which is important given the stated volumes (billions of words across multiple languages).
+
+### Compliance Requirements
+The case study emphasizes compliance certifications (ISO, SOC, FedRAMP) as decision factors, reflecting the reality that enterprise AI deployments must meet regulatory and security requirements.
+
+## Critical Assessment
+
+While this case study presents compelling results, some caveats merit consideration:
+
+- The case study is published on the AWS blog and co-authored by AWS and TransPerfect staff, creating potential bias in how results are presented.
+
+- Specific methodologies for measuring quality improvements and cost savings are not detailed, making it difficult to independently evaluate the claims.
+
+- The "up to" framing for many statistics (up to 50%, up to 80%, etc.) suggests these are best-case scenarios rather than typical results.
+
+- Long-term maintenance, prompt tuning, and ongoing operations costs are not discussed.
+
+Despite these limitations, the case study provides a useful example of how LLMs can be integrated into established enterprise workflows for incremental automation rather than wholesale replacement of existing systems.

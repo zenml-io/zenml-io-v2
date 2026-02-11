@@ -1,0 +1,129 @@
+---
+title: "Building a Voice Assistant with Open Source LLMs: From Demo to Production"
+slug: "building-a-voice-assistant-with-open-source-llms-from-demo-to-production"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f414e1e9f45903998c9cd"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:43:50.983Z"
+  createdOn: "2024-11-21T14:18:54.418Z"
+llmopsTags:
+  - "cicd"
+  - "continuous-deployment"
+  - "continuous-integration"
+  - "documentation"
+  - "fine-tuning"
+  - "hugging-face"
+  - "latency-optimization"
+  - "model-optimization"
+  - "monitoring"
+  - "open-source"
+  - "poc"
+  - "prompt-engineering"
+  - "reliability"
+  - "scalability"
+  - "speech-recognition"
+  - "wandb"
+company: "Weights & Biases"
+summary: "A case study of building an open-source Alexa alternative using LLMs, demonstrating the journey from prototype to production. The project used Llama 2 and Mistral models running on affordable hardware, combined with Whisper for speech recognition. Through iterative improvements including prompt engineering and fine-tuning with QLoRA, the system's accuracy improved from 0% to 98%, while maintaining real-time performance requirements."
+link: "https://www.youtube.com/watch?v=uiq95JYpBGY"
+year: 2023
+seo:
+  title: "Weights & Biases: Building a Voice Assistant with Open Source LLMs: From Demo to Production - ZenML LLMOps Database"
+  description: "A case study of building an open-source Alexa alternative using LLMs, demonstrating the journey from prototype to production. The project used Llama 2 and Mistral models running on affordable hardware, combined with Whisper for speech recognition. Through iterative improvements including prompt engineering and fine-tuning with QLoRA, the system's accuracy improved from 0% to 98%, while maintaining real-time performance requirements."
+  canonical: "https://www.zenml.io/llmops-database/building-a-voice-assistant-with-open-source-llms-from-demo-to-production"
+  ogTitle: "Weights & Biases: Building a Voice Assistant with Open Source LLMs: From Demo to Production - ZenML LLMOps Database"
+  ogDescription: "A case study of building an open-source Alexa alternative using LLMs, demonstrating the journey from prototype to production. The project used Llama 2 and Mistral models running on affordable hardware, combined with Whisper for speech recognition. Through iterative improvements including prompt engineering and fine-tuning with QLoRA, the system's accuracy improved from 0% to 98%, while maintaining real-time performance requirements."
+---
+
+## Overview
+
+This case study is derived from a conference presentation by the founder of Weights & Biases, an AI developer platform company that has built tools to help ML engineers and AI engineers develop and productionize AI applications. The presentation addresses a fundamental challenge in the LLM space: while AI applications are remarkably easy to demo, they are extraordinarily difficult to productionize. The speaker uses a personal project—building a custom voice assistant as an alternative to Amazon Alexa—to illustrate the practical challenges and solutions involved in taking LLM applications from prototype to production.
+
+The presentation opens with an informal audience survey revealing that approximately 70% of attendees already have LLM applications in production, with about 30% using custom solutions rather than purchased ones. This sets the stage for a discussion focused on the practical realities of LLMOps rather than theoretical considerations.
+
+## The Democratization of AI and the Demo-to-Production Gap
+
+The speaker argues that the democratization of AI has arrived, but in an unexpected form. Rather than through AutoML or graphical user interfaces as many predicted, it has come through conversational interfaces and LLMs. This has led to AI being present in nearly every company, with Fortune 500 organizations investing heavily in custom AI solutions. However, this democratization comes with a significant challenge: there is something about AI that makes stakeholders and executives overlook fundamental quality issues because demos are so compelling.
+
+The fundamental insight offered is that software development is a linear process where adding features and code generally improves things over time. In contrast, AI development is experimental and fundamentally non-deterministic. You cannot create CI/CD tests that meaningfully pass 100% of the time. This creates a fundamentally different workflow where the IP is not the code or even the final model, but rather the learnings accumulated through experimentation—all the prompts, workflows, and approaches that were tried, including the failures.
+
+## The Voice Assistant Project: A Practical LLMOps Journey
+
+The speaker presents a personal project to build a custom voice assistant after his daughter expressed frustration that Amazon Alexa could not remember her favorite song despite her requesting "Baby Shark" multiple times daily. This project serves as a microcosm of the challenges enterprise customers face when productionizing LLM applications.
+
+### Architecture and Technical Stack
+
+The architecture involves:
+- A library of skills (weather, music, math problems, news) implemented as simple API calls
+- On-device speech recognition using Whisper
+- Local LLM inference using Llama CPP running on consumer hardware (initially a Rock Pi for ~$200, later a MacBook)
+- The LLM translates natural language into structured function calls that invoke the appropriate skills
+
+The technical choice to run models locally was driven by latency requirements. For a voice assistant, responses need to come within a few hundred milliseconds, making API calls to cloud-hosted models impractical. This forced the use of smaller, locally-runnable models.
+
+### The Iteration Journey: From 0% to 98% Accuracy
+
+The project began with Llama 2 (7B parameters) using a default prompt, which yielded 0% accuracy for generating correctly formatted function calls. The speaker then documented the iterative improvement process:
+
+**Prompt Engineering Phase:** Basic prompt engineering—laying out available functions, structuring the expected output format—improved the model's behavior. The model began producing outputs closer to the desired format (e.g., "call: weather location equals Boston") but still not in an executable format. This is a common pattern where initial improvements come quickly but plateau.
+
+**Model Selection:** Switching to Llama 2 Chat, which was specifically trained on conversational data, improved accuracy to 11%. While still far from usable, this demonstrated the importance of matching model training to use case.
+
+**Error Analysis and Feedback Incorporation:** Examining specific failure cases and incorporating fixes into prompts raised accuracy to 75%. This represents a typical "demo-able" state—impressive in controlled demonstrations but frustrating in actual use.
+
+**Model Upgrade to Mistral:** When Mistral was released during the project, switching to it with the same prompts immediately improved accuracy to 79%. This illustrates the value of maintaining flexible architectures that can swap models easily as the field evolves rapidly.
+
+**Fine-Tuning with QLoRA:** The final leap to 98% accuracy came through fine-tuning. The speaker used QLoRA (Quantized Low-Rank Adaptation) running on a consumer-grade GPU (RTX 4080) in his basement. The training data was generated by:
+- Manually creating a small number of examples
+- Using a larger model (ChatGPT) to generate more examples based on a schema
+- Approximately 95% of generated examples were usable, with manual filtering of the remainder
+- The entire dataset creation took about 15 minutes for a few thousand examples
+
+An unexpected benefit of this approach was that the fine-tuned model worked well in other languages (tested with Japanese and French), leveraging Whisper's multilingual capabilities.
+
+## Key LLMOps Lessons and Best Practices
+
+### Evaluation Frameworks Are Foundational
+
+The speaker emphasizes that building an evaluation framework is the single most critical step for productionizing LLM applications. He recounts interviewing a prominent CEO who admitted to "testing by vibes"—a common but ultimately limiting approach. While vibe-testing might catch egregious failures, it cannot distinguish between 75% and 79% accuracy, making it impossible to validate whether changes (like switching from Llama 2 to Mistral) are actually improvements.
+
+The speaker notes that when he followed up with this CEO a year later, they had implemented substantial evaluation systems because they discovered they could not ship V2 of their product without knowing whether it was better or worse than V1.
+
+Best practices for evaluation include:
+- Maintaining multiple evaluation sets and techniques
+- Creating "never fail" test sets for critical functionality that must pass 100%
+- Building quick-running evaluations (20-30 seconds) for rapid iteration feedback
+- Implementing comprehensive nightly evaluation runs for deeper analysis
+- Correlating metrics with actual user experience and business value
+
+The speaker notes that production-grade applications often track thousands or even tens of thousands of metrics, reflecting the many ways applications can fail. Some customers have so many metrics they need regex search to find specific ones.
+
+### Reproducibility and Experiment Tracking
+
+Because AI development is experimental, reproducibility becomes critical IP protection. The speaker argues that when an engineer who figured something out leaves the company, the IP walks out with them if experiments are not tracked—because no one can iterate further from where that person was.
+
+Tracking must be passive and automatic; relying on humans to manually document everything will fail because people forget. The speaker's project tracked all experiments in Weights & Biases, including the many failures, allowing others to learn from the complete journey rather than just the successful endpoints.
+
+### Lightweight Prototypes and End User Feedback
+
+The speaker identifies a common enterprise anti-pattern: teams try to perfect each step before moving to the next, never getting a working prototype into users' hands. This violates basic agile product development principles, but somehow people forget this with GenAI projects. Getting something into production quickly—even with limitations—enables the feedback loops necessary for meaningful improvement.
+
+### Combining Techniques
+
+A key insight is that successful production applications typically combine multiple techniques rather than choosing between them. The question "Should I use RAG or fine-tuning or prompt engineering?" reveals a lack of evaluation infrastructure, because with proper evaluation, you can quickly determine empirically what works for your specific application. Most production applications end up using a combination of prompt engineering, fine-tuning, and RAG, each contributing iterative improvements.
+
+## The Broader Context: AI Tools and the Market
+
+The speaker provides context about Weights & Biases' customer base, which includes foundation model builders (GPT, Mistral, Llama were built using their platform), a larger group of AI engineers doing both ML and GenAI applications, and a growing segment of software developers new to AI. The proliferation of software developers capable of building AI applications—far more numerous than traditional ML engineers—represents a significant market expansion and explains the explosion of LLMOps tools.
+
+The speaker questions why traditional software tools (observability, CI/CD, code versioning) with "AI versions" do not adequately serve this market. His answer is that the experimental, non-deterministic nature of AI development creates fundamentally different workflow requirements that traditional linear development tools cannot address.
+
+## Honest Assessment
+
+The presentation comes from the founder of an LLMOps tools company, so there is inherent commercial interest in emphasizing the challenges that his products address. However, the technical content is practical and grounded in a real project with specific, reproducible results. The accuracy progression (0% → 11% → 75% → 79% → 98%) provides concrete evidence of the iteration process, and the acknowledgment that most experiments failed adds credibility.
+
+The voice assistant project, while personal and small-scale, genuinely represents patterns seen in enterprise deployments. The emphasis on evaluation frameworks, experiment tracking, and reproducibility reflects genuine industry needs rather than pure product marketing. The speaker's willingness to share that even a "successful" CEO was testing by vibes, and his honest acknowledgment that 75% accuracy is "incredibly annoying" in practice, demonstrates a grounded perspective on the current state of LLM productionization.

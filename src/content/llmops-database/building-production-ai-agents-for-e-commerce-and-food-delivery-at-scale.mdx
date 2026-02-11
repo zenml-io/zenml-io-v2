@@ -1,0 +1,353 @@
+---
+title: "Building Production AI Agents for E-commerce and Food Delivery at Scale"
+slug: "building-production-ai-agents-for-e-commerce-and-food-delivery-at-scale"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "69510aca3530614965b859d1"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2026-01-07T09:40:39.763Z"
+  lastUpdated: "2025-12-28T10:51:50.680Z"
+  createdOn: "2025-12-28T10:47:38.212Z"
+llmopsTags:
+  - "chatbot"
+  - "question-answering"
+  - "classification"
+  - "summarization"
+  - "customer-support"
+  - "poc"
+  - "realtime-application"
+  - "rag"
+  - "embeddings"
+  - "prompt-engineering"
+  - "reranking"
+  - "few-shot"
+  - "semantic-search"
+  - "vector-search"
+  - "agent-based"
+  - "human-in-the-loop"
+  - "chunking"
+  - "system-prompts"
+  - "evals"
+  - "multi-agent-systems"
+  - "langchain"
+  - "fastapi"
+  - "postgresql"
+  - "redis"
+  - "cache"
+  - "elasticsearch"
+  - "pinecone"
+  - "qdrant"
+  - "chromadb"
+  - "open-source"
+  - "documentation"
+  - "monitoring"
+  - "databases"
+  - "openai"
+  - "meta"
+  - "google-gcp"
+  - "amazon-aws"
+  - "microsoft-azure"
+company: "Prosus"
+summary: "This case study explores how Prosus builds and deploys AI agents across e-commerce and food delivery businesses serving two billion customers globally. The discussion covers critical lessons learned from deploying conversational agents in production, with a particular focus on context engineering as the most important factor for success—more so than model selection or prompt engineering alone. The team found that successful production deployments require hybrid approaches combining semantic and keyword search, generative UI experiences that mix chat with dynamic visual components, and sophisticated evaluation frameworks. They emphasize that technology has advanced faster than user adoption, leading to failures when pure chatbot interfaces were tested, and success only came through careful UI/UX design, contextual interventions, and extensive testing with both synthetic and real user data."
+link: "https://www.youtube.com/watch?v=Z74Ok22wLeE"
+year: 2025
+seo:
+  title: "Prosus: Building Production AI Agents for E-commerce and Food Delivery at Scale - ZenML LLMOps Database"
+  description: "This case study explores how Prosus builds and deploys AI agents across e-commerce and food delivery businesses serving two billion customers globally. The discussion covers critical lessons learned from deploying conversational agents in production, with a particular focus on context engineering as the most important factor for success—more so than model selection or prompt engineering alone. The team found that successful production deployments require hybrid approaches combining semantic and keyword search, generative UI experiences that mix chat with dynamic visual components, and sophisticated evaluation frameworks. They emphasize that technology has advanced faster than user adoption, leading to failures when pure chatbot interfaces were tested, and success only came through careful UI/UX design, contextual interventions, and extensive testing with both synthetic and real user data."
+  canonical: "https://www.zenml.io/llmops-database/building-production-ai-agents-for-e-commerce-and-food-delivery-at-scale"
+  ogTitle: "Prosus: Building Production AI Agents for E-commerce and Food Delivery at Scale - ZenML LLMOps Database"
+  ogDescription: "This case study explores how Prosus builds and deploys AI agents across e-commerce and food delivery businesses serving two billion customers globally. The discussion covers critical lessons learned from deploying conversational agents in production, with a particular focus on context engineering as the most important factor for success—more so than model selection or prompt engineering alone. The team found that successful production deployments require hybrid approaches combining semantic and keyword search, generative UI experiences that mix chat with dynamic visual components, and sophisticated evaluation frameworks. They emphasize that technology has advanced faster than user adoption, leading to failures when pure chatbot interfaces were tested, and success only came through careful UI/UX design, contextual interventions, and extensive testing with both synthetic and real user data."
+---
+
+## Overview
+
+This case study presents insights from an AI practitioner at Prosus, a global investment firm and technology operator, who has been building production AI agents across multiple verticals including e-commerce and food delivery platforms serving approximately two billion customers worldwide. The discussion focuses on two main classes of agents: productivity tools (like an internal tool called Tokan used by 15,000 employees across finance, design, product management, and engineering) and customer-facing e-commerce agents for online shopping and food ordering.
+
+The speaker works with portfolio companies including OLX (shopping assistant) and food delivery businesses, building agents that help users with complex, ambiguous queries like "I want the latest headphone," "I'm going for a hiking trip and don't know what to buy," or "I want to have a romantic dinner with my wife." These agents must understand broad user intent, connect to product catalogs, and handle the complexity of real-world e-commerce scenarios. The team is currently reimagining food ordering experiences for the next one to two years, moving beyond simple keyword search to conversational experiences.
+
+## Context Engineering: The Core Principle
+
+The most significant and recurring theme throughout this case study is the emphasis on **context engineering** over traditional prompt engineering or model selection. The speaker references Andrej Karpathy's viral tweet advocating for the term "context engineering" and relates it to how data engineering was the unglamorous but essential work underlying data science success—"garbage in, garbage out."
+
+The practitioner observes that while discussions in the community focus heavily on system prompts, model selection, and tools like MCP (Model Context Protocol), their hard-earned lesson is that **context engineering makes the difference between success and failure in production**. When comparing two state-of-the-art models (Model A vs Model B), the model with proper context dramatically outperforms the one without, regardless of which specific model is used.
+
+### Four Components of Context
+
+The speaker breaks down context into four essential components:
+
+**1. System Prompt**: The foundational instructions that everyone discusses, though the speaker notes this gets disproportionate attention relative to its impact.
+
+**2. User Message**: The dynamic message sent by the user in each interaction.
+
+**3. Enterprise Context (The Dirty Data Pipeline)**: This is described as the most challenging and important component. In real-world e-commerce scenarios, users care about multiple dimensions beyond just product search:
+- Promotions and discounts (different users prioritize price, deals, coupons differently)
+- Payment methods accepted by merchants
+- Restaurant/merchant opening and closing hours
+- Real-time availability and inventory
+- Live promotional campaigns (e.g., a restaurant running a lunch-only sushi promotion from 12-3pm)
+
+The core challenge is that enterprise data is messy and scattered across multiple databases. There is no single source of truth that can answer "show me everything on promotion." The data is distributed, real-time, and difficult to consolidate. The speaker emphasizes that data engineers spend significant time building pipelines to connect these disparate data sources and bring the right context into the prompt at query time. When a user asks "show me sushi on promotion," the system must kick in data pipelines to retrieve current promotional information and incorporate it into the LLM's context.
+
+**4. User History and Memory**: This component is critical for creating product stickiness and competitive differentiation. In a crowded market where many companies are building shopping assistants and food ordering agents, the speaker notes they personally have no loyalty to any particular product and switch between ChatGPT and other tools freely. The key differentiator that creates high switching costs is when a product knows the user deeply—their preferences, past orders, browsing history, and conversational context.
+
+### Memory Implementation and Cold Start Solutions
+
+The discussion touches on various memory architectures (long-term, short-term, episodic) but emphasizes a pragmatic cold-start solution: leverage existing user data from the current application. For companies like OLX or food delivery platforms, there is already rich data about what users have ordered, browsed, and preferred before any conversational interaction begins. The speaker advises that when launching a new agent, teams should not over-engineer memory systems from day one but should instead use existing behavioral data as initial context. This simple approach "does wonders" and provides a three-month runway while the system begins collecting conversational data and dynamic memory.
+
+The speaker notes that many teams overcomplicate memory from the start when there's a simpler solution available that allows focus on product-market fit rather than technical optimization.
+
+## Search: The Fundamental Challenge in E-commerce Agents
+
+Search is described as the most fundamental tool for e-commerce and food delivery agents, though it doesn't apply to all agent types (like agents for suppliers, car dealers, or restaurants). For consumer-facing e-commerce agents, **search is the start of the user journey—if search fails, trust is broken immediately**, and users will never proceed further in the experience regardless of how good other capabilities are.
+
+### Limitations of Keyword Search
+
+Most enterprise search is still keyword-based, which works well for straightforward queries ("burger" → show burger taxonomy results). However, when users interact with conversational agents, especially voice-enabled ones, their queries become fundamentally different and more complex:
+- "I want to have a romantic dinner with my wife"
+- "I'm going for a hiking trip, I'm a beginner, help me"
+- "Help me furnish my house"
+
+These broad, ambiguous queries cannot be effectively handled by keyword search alone. The speaker notes they are "vegetarian," and when searching for "vegetarian pizza," keyword search only returns items with "vegetarian" explicitly mentioned in titles or descriptions—missing obvious matches like "pizza margherita" that are vegetarian by nature but not labeled as such.
+
+### Semantic Search and Hybrid Approaches
+
+To address these limitations, the team implements **semantic search using embeddings**, which can understand that pizza margherita is semantically close to vegetarian even without explicit labeling. However, semantic search also has limitations—it cannot solve inherently ambiguous queries like "romantic dinner" because "romantic" means different things to different people and contexts.
+
+The production solution is a **hybrid search system** that attempts keyword search first and falls back to semantic search when needed. But this still doesn't fully solve the problem for the most challenging queries.
+
+### Multi-Stage Search Pipeline
+
+The team has developed a sophisticated multi-stage search pipeline:
+
+**Query Understanding/Personalization/Expansion (Pre-Search)**: Before search execution, an LLM analyzes the query to understand intent. For "romantic dinner," the LLM considers user profile data and breaks down the abstract concept into concrete search terms. The speaker humorously notes suggesting "cupcake" as romantic (which drew mockback), but the principle is that the LLM decomposes ambiguous queries into multiple searchable sub-queries that can be executed against the catalog.
+
+**Search Execution**: The system runs hybrid keyword and semantic search across the processed queries to retrieve candidate results—potentially thousands of items.
+
+**Re-ranking (Post-Search)**: This step uses another LLM call to re-rank results. While traditional machine learning approaches like LTR (Learning to Rank) are still valuable, the team found they fail on novel query types with rich user context. The LLM-based re-ranking takes the original user query, the thousands of candidate results, and user context to produce a refined set of top results (typically 3-10 items) to present to the user.
+
+The speaker emphasizes that **search is difficult, messy, and has "haunted" them in every project**. This multi-stage pipeline represents the state of the art in their production systems, and they stress that few people publicly discuss these search challenges despite them being fundamental to e-commerce agent success.
+
+## User Interface and Adoption Challenges
+
+One of the most candid and valuable parts of this case study is the discussion of **repeated failures in user adoption** and the lessons learned about UI/UX design for AI agents.
+
+### The Failed Chatbot Launch
+
+The team built what they believed was an excellent shopping assistant—thoroughly tested internally, connected to catalogs, capable of handling complex queries like "furnish my house" with intelligent product recommendations organized by category. The team was excited and confident. They launched it with A/B testing.
+
+**The result: "It fell flat on our face. It was terrible."**
+
+The conversion metrics in the A/B test showed the new chatbot experience significantly underperformed the existing UI. Initially, the team thought there must be a data error because the agent was still performing well functionally. The realization was that the problem wasn't technical capability but user adoption and interface design.
+
+### Root Causes of User Adoption Failure
+
+Through extensive user research (the speaker gained "newfound respect for designers and user researchers"), the team identified several key issues:
+
+**Friction of New Interfaces**: Users are familiar with existing UIs and use them daily. Introducing a completely new interface creates inherent friction. Users will only adopt a new interface if it solves a fundamental problem they've struggled with significantly—not for incremental improvements. The value proposition must be immediately obvious within the first 30 seconds.
+
+**Lack of Guidance**: A blank chatbot interface is inviting but also intimidating. With tools like Alexa, the speaker notes that 8 out of 10 interactions fail because users don't know the capabilities. When an agent has 20 tools connected behind the scenes, users have no way of discovering what's possible. Traditional design patterns like onboarding flows, suggested prompts, and tooltips become essential.
+
+**Visual Nature of E-commerce**: Buying decisions, especially for food and shopping, are highly visual. Users want to scroll, click, swipe, and make decisions based on images. Pure conversation is limiting—an image of food can trigger hunger and purchase intent in ways text cannot.
+
+### The Solution: Generative UI
+
+The most successful approach the team has found is **"generative UI"**—a hybrid experience that combines conversational interaction with dynamically generated visual interface components.
+
+In this paradigm:
+- Users can chat with the agent, but responses don't come purely as text
+- The agent dynamically generates appropriate UI components based on context:
+  - Product carousels when showing search results
+  - Related item suggestions
+  - Comparison tables
+  - Visual grids for browsing
+- The agent decides which UI component to render based on the user's request and journey stage
+- Users can both converse and interact with visual elements (clicking, swiping)
+
+The system is **multimodal in input**: it tracks both conversational input and user actions on screen (clicks, scrolls, items added to cart). The speaker references the "Jarvis" assistant from Iron Man as the ideal—an agent that watches what you're doing in the environment and responds naturally.
+
+While this creates potential privacy concerns (users worrying about being "watched"), the speaker personally embraces the tradeoff, stating their philosophy is "take my data if you can give me value." They acknowledge different users have different comfort levels with this approach.
+
+### Contextual Interventions Over Full Chatbots
+
+Rather than presenting a chatbot as the universal interface, the team found **much better success with contextual, micro-task interventions**:
+
+- Keep the regular UI familiar to users
+- Deploy a floating button or contextual popup that appears at the right moment
+- When a user spends 5 minutes looking at headphones, pop up with: "Do you want to compare this headphone with the latest Apple headphone?"
+- When a user has items in their cart, suggest: "I know you like vanilla milkshakes, this restaurant makes an incredible vanilla milkshake—add to basket?"
+
+These contextual interventions:
+- Target very specific, narrow tasks
+- Appear at the right time in the user journey
+- Create clear "aha moments" where the value is immediately obvious
+- Don't require full conversational capability—often just a simple LLM call with tool integration
+
+The speaker compares this to traditional push notifications, noting that if the first few notifications are bad, users silence them or mentally ignore them. The key is to not overdo it (don't send 10 messages) and to make each intervention highly personalized using available user data.
+
+## Evaluation: The Real Moat
+
+The speaker makes a striking claim: **"If I were a founder, if my system prompt leaks I would not be worried, but if my eval leaks I believe so much in evals. Eval is the real moat of your product, not your system prompt."**
+
+This reflects a deep conviction that systematic evaluation is the differentiator between products that work in production versus those that fail, drawing parallels to the mature software development lifecycle with QA, testing in production, and regression testing.
+
+### Two Phases of Evaluation
+
+**Pre-Launch (Offline) Evaluation**: How do you know the system is good enough before launching?
+
+**Post-Launch (Online) Evaluation**: Continuous monitoring to detect degradation and handle unexpected user queries.
+
+### Common Mistakes and Pragmatic Solutions
+
+**Mistake #1: Waiting for Real User Data**: Many teams wait until after launch to build evaluations because they want real user queries. This is too late—the product may already be failing in production.
+
+**Solution: Synthetic Data and Simulation**: Start with simple approaches:
+- Team members manually interact with the chatbot and create test cases
+- Use an LLM to generate synthetic queries from 10 seed examples to create 100 test cases
+- Provide the LLM with different personas to generate diverse query patterns
+- Build an initial evaluation dataset of 20-100 examples before launch
+
+This allows early identification of failure scenarios and informs thinking about what metrics matter and how to structure LLM-as-judge evaluations.
+
+**Mistake #2: Immediately Jumping to LLM-as-Judge**: While LLM-as-judge is popular and relatively easy to implement (get input, get agent output, ask LLM if it satisfied user intent), there are often lower-hanging fruit.
+
+**Solution: Deterministic Metrics First**: Look for objective, deterministic signals:
+- **Conversion metrics**: Did the user complete a purchase?
+- **Cart addition**: Did items get added to cart?
+- **Funnel progression**: Did the conversation progress through expected stages (search → browse → cart → order)?
+
+These deterministic metrics are more reliable than LLM judgments, which can make mistakes. Only after exhausting deterministic metrics should teams move to LLM-as-judge.
+
+### Hierarchical Evaluation Approach
+
+The speaker advocates for a **hierarchical evaluation strategy** rather than immediately diving into complex, multi-dimensional analysis:
+
+**Level 1 - High-Level Business Metrics**:
+- Take the entire conversation (potentially 10+ message exchanges)
+- Feed it to an LLM-as-judge
+- Ask simple, business-relevant questions:
+  - Did this satisfy the user intent?
+  - Did the conversation move toward closing a sale?
+  - Was the experience positive from a user perspective?
+
+This first level provides "so much information" and identifies "so many things to fix" that teams often never need to proceed to deeper analysis. It resonates with business stakeholders who can understand these metrics without technical knowledge.
+
+**Level 2 - Tool-Level Analysis** (often unnecessary):
+- Turn-by-turn conversation analysis
+- Tool calling accuracy: Did the agent call the right tools?
+- Parameter accuracy: Were tools called with correct parameters?
+- State management: For multi-tool sequences, where did errors occur?
+
+The speaker notes they rarely reach Level 2 because Level 1 already reveals enough actionable insights. This reflects an **80/20 principle** (Pareto principle) where two simple evaluations provide 80% of the important information.
+
+### The Labeling Party Method
+
+One of the most practical and actionable patterns described is the **"labeling party"**—a recipe the team has used successfully multiple times:
+
+**Setup**:
+- Invite 15 people including team members, stakeholders, and importantly, business folks
+- Order pizza (it's a party!)
+- Book 1.5 hours
+- Prepare real conversation examples from the system
+
+**Process**:
+- Present conversations and agent responses
+- Ask participants to imagine they are the user
+- Have them answer 2-3 simple, business-relevant questions (not technical questions about tool calling):
+  - Did the conversation go in the right direction?
+  - Did it try to close the order?
+  - Did it break any guardrails?
+- Each person labels 10 data points
+- Result: 150 human-labeled examples in 90 minutes
+
+**Iteration**:
+- Run the same 150 examples through the existing LLM-as-judge prompt
+- Compare human labels with LLM labels
+- Identify discrepancies (LLM might be too lenient or too strict depending on use case)
+- Use the discrepancy examples to improve the LLM-as-judge prompt via few-shot learning
+- Add examples to the prompt: "When you see this type of query, judge it this way"
+- Re-run and measure: if mismatch was 30%, it might drop to 15%
+- Repeat labeling parties every two weeks
+
+This approach has multiple benefits:
+- Grounds evaluation in real human judgment
+- Creates team alignment and shared understanding
+- Educates business stakeholders on system behavior
+- Discovers unexpected issues beyond the original evaluation scope
+- Systematically improves LLM-as-judge reliability
+
+### Custom Annotation Tools
+
+The speaker emphasizes that **how you present conversations for evaluation matters significantly**. Tools like LangFuse and LangTrace are excellent for observability but user-unfriendly for non-technical evaluators—they display complex JSONs and nested tool calls that overwhelm business users.
+
+**Solution**: Build custom annotation tools tailored to each use case using rapid prototyping tools like v0 from Vercel. These custom tools can be built in half a day and dramatically improve the labeling party experience by:
+- Showing conversations in user-friendly formats
+- Displaying visual product information (items shown, restaurant details, opening hours)
+- Providing relevant context that evaluators need to make informed judgments
+- Making the evaluation process accessible to non-technical stakeholders
+
+The speaker notes that "every use case is different" and requires different visualization approaches. For food/shopping conversations, evaluators need to see product images, restaurant availability, and timing context to properly assess whether the agent's responses were appropriate.
+
+## Technology Evolution and Organizational Learnings
+
+The speaker reflects on how the technology has evolved dramatically over the three years since they started building Tokan (the internal productivity tool). Initially, significant engineering effort went into intent detection and other scaffolding to make LLMs work. Now, "it blows my mind that you now don't need [these things]—the model itself is so much better."
+
+This observation highlights that **technology has advanced faster than use cases and user adoption**. Four years ago, the practitioner felt their ambitions exceeded technological capabilities. Today, they feel "technology is a few steps ahead" and the challenge is figuring out how to apply it effectively.
+
+### Cross-Functional Collaboration
+
+A recurring theme is the critical importance of **designers and user researchers** in production AI systems. The speaker gained "newfound respect" for these disciplines after experiencing failures and now considers them essential team members from day one. They emphasize that while technology is one side, "in the end you want to solve user problems," which requires understanding human behavior, adoption patterns, and interface design.
+
+When putting together projects, the speaker now insists on having designers and user researchers as core team members, not afterthoughts.
+
+### The Role of Traditional ML
+
+Despite the focus on LLMs, the case study acknowledges that **traditional machine learning and recommender systems remain relevant**. When discussing generative UI and user click behavior, the speaker notes this is "a recommender system problem" and that "the traditional world still applies." The example of TikTok's feed and swipe behavior improving recommendations through traditional algorithms illustrates that LLMs augment rather than replace existing ML infrastructure.
+
+Similarly, in search, traditional Learning to Rank (LTR) algorithms are still important, though they now work alongside LLM-based query understanding and re-ranking.
+
+## Practical Recommendations and Anti-Patterns
+
+Throughout the discussion, several clear recommendations emerge:
+
+**What Works**:
+- Invest heavily in context engineering, especially enterprise data integration
+- Use hybrid search combining keyword and semantic approaches
+- Implement multi-stage search pipelines with LLM-based query understanding and re-ranking
+- Start with simple memory solutions using existing user data rather than complex architectures
+- Design generative UI experiences that mix conversation with dynamic visual components
+- Deploy contextual interventions at the right moments rather than universal chatbot interfaces
+- Begin evaluation with synthetic data and simple business metrics
+- Run regular labeling parties to ground LLM-as-judge in human judgment
+- Build custom annotation tools for each use case
+- Include designers and user researchers from the start
+
+**What Doesn't Work (Anti-Patterns)**:
+- Relying solely on prompt engineering or model selection without proper context
+- Pure chatbot interfaces without visual elements or guidance
+- Changing familiar UIs without demonstrating clear, immediate value
+- Waiting for production data before building evaluations
+- Jumping directly to LLM-as-judge without exploring deterministic metrics
+- Over-complicating evaluation with multi-dimensional analysis before validating basics
+- Using generic observability tools for non-technical stakeholder evaluation
+- Building products in isolation from user research and design expertise
+
+## Observability and Production Monitoring
+
+While not extensively detailed, the discussion mentions using **observability tools like LangFuse** to capture interactions in production. These tools track the full agent execution flow including tool calls and provide the raw data needed for evaluation. However, as noted, the raw JSON output requires transformation into user-friendly formats for effective human evaluation.
+
+The implication is that production LLM systems at this scale require:
+- Comprehensive tracing of all agent interactions
+- Capture of user actions alongside conversational inputs
+- Storage and retrieval systems for conversation histories
+- Infrastructure to support A/B testing and metric comparison
+- Real-time monitoring to detect degradation
+
+## Conclusion
+
+This case study provides an unusually candid view into the challenges of deploying LLM-based agents at scale in e-commerce and food delivery contexts. The central insight that **context engineering is more important than model selection or prompt engineering** challenges much of the public discourse around LLM applications.
+
+The repeated emphasis on failures, user adoption challenges, and the gap between technological capability and practical utility offers a valuable counterbalance to the hype often surrounding AI agents. The team's journey from failed pure-chatbot launches to successful generative UI and contextual interventions illustrates that production success requires deep integration of traditional UX principles, business understanding, and technical sophistication.
+
+The evaluation practices, particularly the labeling party methodology and hierarchical approach starting with business metrics, provide actionable patterns that other teams can adopt. The overarching message is that **building production LLM systems is messy, requires cross-functional collaboration, and succeeds through iteration and learning from failures** rather than through purely technical optimization.

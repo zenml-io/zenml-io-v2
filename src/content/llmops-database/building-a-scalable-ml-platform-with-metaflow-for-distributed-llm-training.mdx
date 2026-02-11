@@ -1,0 +1,143 @@
+---
+title: "Building a Scalable ML Platform with Metaflow for Distributed LLM Training"
+slug: "building-a-scalable-ml-platform-with-metaflow-for-distributed-llm-training"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "6792a003552d8b939e3d5366"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:57:26.747Z"
+  createdOn: "2025-01-23T20:01:07.112Z"
+llmopsTags:
+  - "high-stakes-application"
+  - "fine-tuning"
+  - "model-optimization"
+  - "latency-optimization"
+  - "cost-optimization"
+  - "docker"
+  - "cicd"
+  - "monitoring"
+  - "databases"
+  - "microservices"
+  - "devops"
+  - "orchestration"
+  - "continuous-deployment"
+  - "continuous-integration"
+  - "documentation"
+  - "security"
+  - "compliance"
+  - "reliability"
+  - "scalability"
+  - "pytorch"
+  - "fastapi"
+  - "microsoft-azure"
+  - "amazon-aws"
+  - "hugging-face"
+company: "Autodesk"
+summary: "Autodesk built a machine learning platform from scratch using Metaflow as the foundation for their managed training infrastructure. The platform enables data scientists to construct end-to-end ML pipelines, with particular focus on distributed training of large language models. They successfully integrated AWS services, implemented security measures, and created a user-friendly interface that supported both experimental and production workflows. The platform has been rolled out to 50 users and demonstrated successful fine-tuning of large language models, including a 6B parameter model in 50 minutes using 16 A10 GPUs."
+link: "https://www.youtube.com/watch?v=qK-EPLkgOP0"
+seo:
+  title: "Autodesk: Building a Scalable ML Platform with Metaflow for Distributed LLM Training - ZenML LLMOps Database"
+  description: "Autodesk built a machine learning platform from scratch using Metaflow as the foundation for their managed training infrastructure. The platform enables data scientists to construct end-to-end ML pipelines, with particular focus on distributed training of large language models. They successfully integrated AWS services, implemented security measures, and created a user-friendly interface that supported both experimental and production workflows. The platform has been rolled out to 50 users and demonstrated successful fine-tuning of large language models, including a 6B parameter model in 50 minutes using 16 A10 GPUs."
+  canonical: "https://www.zenml.io/llmops-database/building-a-scalable-ml-platform-with-metaflow-for-distributed-llm-training"
+  ogTitle: "Autodesk: Building a Scalable ML Platform with Metaflow for Distributed LLM Training - ZenML LLMOps Database"
+  ogDescription: "Autodesk built a machine learning platform from scratch using Metaflow as the foundation for their managed training infrastructure. The platform enables data scientists to construct end-to-end ML pipelines, with particular focus on distributed training of large language models. They successfully integrated AWS services, implemented security measures, and created a user-friendly interface that supported both experimental and production workflows. The platform has been rolled out to 50 users and demonstrated successful fine-tuning of large language models, including a 6B parameter model in 50 minutes using 16 A10 GPUs."
+---
+
+# Autodesk Machine Learning Platform: Building Enterprise-Grade LLMOps Infrastructure
+
+## Overview
+
+This case study presents Autodesk's journey in building a unified machine learning platform (AMP - Autodesk Machine Learning Platform) from scratch, with a particular focus on enabling large language model fine-tuning and distributed training at scale. The presentation was given by Riley, a senior software engineer on the ML Platform team, who is part of the founding core of engineers building this infrastructure. The platform leverages Metaflow as its primary orchestration backbone, integrated with various AWS managed services to provide a comprehensive, security-hardened environment for production ML workloads.
+
+The Autodesk team faced a common enterprise challenge: existing tech debt with various teams running their own bespoke ML platforms. The goal was to create a unified platform with strong enough user experience to motivate teams to migrate from their existing solutions. This human-centric UX approach was described as one of the biggest deciding factors in their technology choices.
+
+## Technology Selection and Rationale
+
+The team evaluated multiple orchestration tools before settling on Metaflow, citing several key factors in their decision:
+
+Metaflow's versatility was a primary consideration, as it could be used for a variety of applications including data compute orchestration and versioning, providing significant value consolidation. The tool's ability to construct end-to-end ML pipelines—from data preparation to model training and evaluation—was essential for their use case.
+
+Given that Autodesk is "boxed into using AWS," Metaflow's native integration with AWS managed services was particularly attractive. The platform provides clean abstractions for running AWS Batch jobs for scaling out workflows, simplifying the process of building and training models at scale.
+
+Reproducible experiments were highlighted as "the bread and butter of Metaflow." The team values that Metaflow versions "pretty much everything" including flow runs, data snapshots, and artifacts, maintaining comprehensive tracking of all flows and experiments. This capability was important for data lineage requirements and doubles as an experiment tracker.
+
+## Architecture and Integration with SageMaker Studio
+
+The platform is built around SageMaker Studio as the managed IDE (called "AMP Studio"), serving as the productivity suite for developing and training models. The architecture involves several key components:
+
+Users interact with a custom-built UI that handles authentication and authorization before spinning up personal Studio instances. This UI was built separately from SageMaker Studio and works by connecting to an endpoint that creates pre-signed URLs to launch Studio instances. The login is controlled via SSO, and users are directed to a studio launcher page upon authentication.
+
+A notable aspect of their multi-tenancy approach is that each team has their own AWS account—described as "a little orthodox" compared to conventional approaches. The team provisions both Studio and Metaflow into each stakeholder team's accounts, with dedicated production accounts that also contain Metaflow backends.
+
+The team created custom security-hardened images that have everything users need to run Metaflow jobs from Studio notebooks. When creating notebooks, users select a Metaflow kernel image and startup script. This kernel has Metaflow and Mamba pre-installed and configures the Metaflow home directory to point to the appropriate configuration file. Users can then execute Metaflow runs directly from notebook cells using bash magic commands.
+
+The Studio interface was customized to include a launcher button that opens the Metaflow UI directly. This was achieved through lifecycle configuration in Studio that configures Jupyter server proxy and Nginx, allowing users to view the Metaflow UI from within their Studio notebook environment.
+
+## Security-Hardened Infrastructure
+
+Security was described as "the bulk of the work" in building the platform. Every component underwent formal architectural security review and approval from the security team. Key security measures include:
+
+Docker images for the UI, metadata service, Batch default image, and Studio kernel are all based on in-house images provided by the security team. A patching pipeline runs on a regular cadence to refresh and patch these images, ensuring no security vulnerabilities are detected by Orca (their security scanning tool).
+
+The infrastructure leverages inner-sourced security-hardened Terraform modules for provisioning. AMIs used for EC2 instances provisioned through Batch are all security-hardened versions.
+
+## Production Deployment and GitOps Workflow
+
+The team implemented a GitOps pattern for production workflows using a combination of Metaflow, GitHub, Jenkins, and AWS Lambda. The workflow operates as follows:
+
+Users perform model evaluation and select the Metaflow run that produces the best configuration. They tag their designated run with a "ready for prod" tag. Users then commit their code from Studio, push to the repository, and create a pull request in Enterprise GitHub.
+
+The push event triggers testing in Jenkins, which runs unit tests for individual modules using pytest and optionally runs the flow itself. Jenkins invokes a Lambda function that retrieves the Metaflow config from Secrets Manager and runs the flow in Step Functions.
+
+Upon successful PR testing and review, merging to main triggers another Jenkins pipeline that performs unit testing and flow validation. The Lambda function uses the Metaflow client API to verify that the corresponding flow has the appropriate tags. It pulls in code artifacts from the flow run and uses the Git hash to download the Git repository, comparing that the code is the same between the two sources.
+
+Finally, Lambda compiles the flow and maps it to the Step Functions orchestrator, adding the Git hash as a tag in the designated flow run. Failed Step Functions executions trigger alerts to a Slack channel for monitoring.
+
+To support this workflow, the team created a cookie cutter template that users can use to initialize ML projects structured for Metaflow. This template enables consistent and strict naming conventions for flows, projects, and tags. It includes unit test scaffolding, Jenkinsfiles, and shell scripts for running Step Functions deployments.
+
+## LLM Fine-Tuning and Distributed Training
+
+A significant portion of the platform's capabilities focuses on distributed training for large language models. The team makes heavy use of Metaflow's parallel decorator, which runs AWS Batch multi-node parallel jobs for distributed training.
+
+They have battle-tested AWS Batch multi-node distributed training using various distributed computing frameworks including Hugging Face Accelerate, PyTorch Lightning, DeepSpeed, and TensorFlow Distributed. Curated examples of each framework are available in their Metaflow demos repository.
+
+The team created an extensive examples repository that has received positive feedback from users. Examples include fine-tuning LLMs using DeepSpeed, Fully Sharded Data Parallel, Distributed Data Parallel within Metaflow, auto-tuning Sparman tracking with managed TensorBoard, and Parameter-Efficient Fine-Tuning (PEFT) using Hugging Face's PEFT library.
+
+GPU and CPU utilization of distributed training jobs is monitored using the Metaflow GPU profiler decorator and displayed in the Metaflow UI. The team also provides out-of-the-box CloudWatch dashboards and is experimenting with TensorBoard profiler integration in their managed TensorBoard instance.
+
+Several Batch queues are configured with different instance families. Users specify the Batch queue along with requested GPUs, CPUs, and other resources, and Metaflow selects the best instance type for the training job. Spot instance queues are also supported for cost optimization.
+
+## Ray Integration for Distributed Training
+
+One data science research team was heavily invested in using Ray for model training, which initially presented a challenge for platform adoption. The team discovered that Ray and Metaflow are complementary rather than competing—the more apt comparison would be Ray's VM launcher versus AWS Batch.
+
+Working with Outerbounds (the company behind Metaflow), the team introduced a Ray parallel decorator that can decorate a step and set up the necessary hardware using AWS Batch multi-node. Users insert their Ray code in the decorated step, and during execution, Metaflow starts a transient Ray cluster, runs the Ray application, and shuts down the cluster upon completion.
+
+The Ray parallel decorator has been battle-tested for fine-tuning a 6 billion parameter model using DeepSpeed and Ray Train. The fine-tuning job completed in approximately 50 minutes using 16 A10 GPU nodes. Ray logs are displayed in the Metaflow UI for seamless monitoring.
+
+Caveats exist with this integration: it doesn't support heterogeneous clusters because AWS Batch multi-node doesn't support heterogeneous configurations. All node groups in a multi-node parallel job must use the same instance type, and it doesn't yet support specifications of different instance types and availability zones for Ray cluster autoscaling.
+
+## Benchmarking Results
+
+The team shared benchmarking results from distributed fine-tuning jobs. Using 2-4 nodes with 4 A10 GPUs each, running PyTorch Lightning with DeepSpeed, activation checkpointing enabled, and optimizer offloading to CPU for reduced GPU memory footprint, they tested on a T5 3 billion parameter transformer model. Results showed that four nodes with 16 GPUs total was more efficient and cost-effective.
+
+Separate testing with Ray Train plus DeepSpeed on a 6 billion parameter GPT-J model demonstrated the viability of their Ray integration for large-scale LLM fine-tuning.
+
+## High-Performance Computing Enhancements
+
+The team continues enhancing distributed training infrastructure with two key HPC features:
+
+Elastic Fabric Adapter (EFA) is a networking feature attached to EC2 instances to improve inter-node communication. When working with larger models and enormous amounts of data, inter-node communication becomes a major bottleneck due to the need for nodes to communicate, transmit data, and synchronize model updates. EFA provides a path to scale to hundreds or thousands of nodes with low-latency communication.
+
+The team security-hardened the AWS Deep Learning AMI that includes the EFA driver and configured it for Batch. Since the Deep Learning AMI isn't compatible with Batch out of the box, they installed the ECS agent using Chef/ChefLine. With A100 GPUs, users can attach up to four EFA network devices. This integration has been open-sourced in Metaflow, allowing users to specify the number of EFA devices in the Batch decorator.
+
+FSx for Lustre provides low-latency access to data with throughput levels of hundreds of gigabytes per second. This is particularly useful for working with terabytes of training data—instead of reading directly from S3 and saving to memory or disk, users can sync FSx with S3 and pull data from the file system directly. As a parallel file system, it handles simultaneous access from multiple nodes of the HPC cluster. Integration with Metaflow was achieved using the host volume mounting feature in the Batch decorator.
+
+## User Adoption and Documentation
+
+The platform had recently rolled out to 50 users at the time of the presentation. The team emphasized the importance of documentation and examples for user adoption, noting that their Metaflow demos repository received "rave reviews" despite being "something really simple." Providing templates and examples for common use cases—including LLM fine-tuning with various frameworks—helps users discover relevant patterns and provides guiding templates for building custom flows.
+
+The work on HPC integration plus the Metal-Ray integration has been documented in internal tech blogs, demonstrating the team's commitment to knowledge sharing and enabling broader adoption within the organization.

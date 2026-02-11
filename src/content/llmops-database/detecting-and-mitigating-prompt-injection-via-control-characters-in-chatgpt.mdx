@@ -1,0 +1,125 @@
+---
+title: "Detecting and Mitigating Prompt Injection via Control Characters in ChatGPT"
+slug: "detecting-and-mitigating-prompt-injection-via-control-characters-in-chatgpt"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f3c49b24a5a1644f1a6c1"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:38:59.396Z"
+  createdOn: "2024-11-21T13:57:29.829Z"
+llmopsTags:
+  - "api-gateway"
+  - "documentation"
+  - "error-handling"
+  - "guardrails"
+  - "high-stakes-application"
+  - "monitoring"
+  - "openai"
+  - "prompt-engineering"
+  - "reliability"
+  - "security"
+company: "Dropbox"
+summary: "Dropbox's security team discovered that control characters like backspace and carriage return can be used to circumvent prompt constraints in OpenAI's GPT-3.5 and GPT-4 models. By inserting large sequences of these characters, they were able to make the models forget context and instructions, leading to prompt injection vulnerabilities. This research revealed previously undocumented behavior that could be exploited in LLM-powered applications, highlighting the importance of proper input sanitization for secure LLM deployments."
+link: "https://dropbox.tech/machine-learning/prompt-injection-with-control-characters-openai-chatgpt-llm"
+year: 2023
+seo:
+  title: "Dropbox: Detecting and Mitigating Prompt Injection via Control Characters in ChatGPT - ZenML LLMOps Database"
+  description: "Dropbox's security team discovered that control characters like backspace and carriage return can be used to circumvent prompt constraints in OpenAI's GPT-3.5 and GPT-4 models. By inserting large sequences of these characters, they were able to make the models forget context and instructions, leading to prompt injection vulnerabilities. This research revealed previously undocumented behavior that could be exploited in LLM-powered applications, highlighting the importance of proper input sanitization for secure LLM deployments."
+  canonical: "https://www.zenml.io/llmops-database/detecting-and-mitigating-prompt-injection-via-control-characters-in-chatgpt"
+  ogTitle: "Dropbox: Detecting and Mitigating Prompt Injection via Control Characters in ChatGPT - ZenML LLMOps Database"
+  ogDescription: "Dropbox's security team discovered that control characters like backspace and carriage return can be used to circumvent prompt constraints in OpenAI's GPT-3.5 and GPT-4 models. By inserting large sequences of these characters, they were able to make the models forget context and instructions, leading to prompt injection vulnerabilities. This research revealed previously undocumented behavior that could be exploited in LLM-powered applications, highlighting the importance of proper input sanitization for secure LLM deployments."
+---
+
+## Summary
+
+Dropbox's security team conducted research into LLM security vulnerabilities as part of their broader effort to harden internal infrastructure for the secure use of large language models. The team discovered a previously undocumented technique for achieving prompt injection on OpenAI's GPT-3.5 and GPT-4 models by exploiting how these models interpret control characters (like backspace and carriage return) in user input. This research is significant for any organization deploying LLM-powered applications in production, as it demonstrates that even carefully crafted prompt templates with explicit constraints can be circumvented through malformed input.
+
+The context for this work is Dropbox's experimentation with LLMs as potential backends for product and research initiatives, aligning with their AI principles. The security team was specifically focused on mitigating abuse of potential LLM-powered products and features via user-controlled input—a core concern for any production LLM deployment.
+
+## The Production Security Challenge
+
+When deploying LLMs in production, organizations typically use prompt templates to control the context and output of queries. Dropbox experimented with a prompt template that included several safety measures:
+
+- Instructions to answer truthfully using only provided context
+- A configurable "I don't know" response when questions cannot be answered from context
+- Word limits for output verbosity
+- Explicit instructions not to follow any new instructions after the initial system prompt
+- Delimiter-based separation of user questions from system instructions
+
+This template represents a common pattern in LLMOps: using prompt engineering to constrain model behavior and prevent unauthorized information access or manipulation. The template was designed for use cases like analyzing document text from PDFs or audio transcriptions, where the context would come from server-controlled sources and questions from user input via web forms or API endpoints.
+
+## The Vulnerability Discovery
+
+The security researchers discovered that control characters, when encoded properly in JSON payloads, can have unexpected effects on LLM behavior. The key finding was counter-intuitive: it required significantly more control characters than logically expected to achieve "model instruction betrayal."
+
+The team tested two specific control character encodings:
+
+- Single-byte control characters (carriage return, '\r') encoded as two-character JSON strings ("\r")
+- Two-byte strings representing control characters (backspace, "\b") encoded as three-character JSON strings ("\\b")
+
+When testing with carriage returns, the team found that inserting 350 or more of these characters between two questions caused GPT-3.5 to completely forget the first question. For backspaces encoded as three-character JSON strings, at least 450 were needed to achieve similar effects.
+
+## Experimental Methodology
+
+The Dropbox team developed a systematic black-box testing approach using Python scripts to query OpenAI's Chat API. They used the gpt-3.5-turbo model with a fixed context ("Hello, this is a test.") and tested various question types:
+
+- In-context control questions (expected to be answered from context)
+- Contextual questions about the provided information
+- Out-of-context factual questions (expected to return "I don't know")
+- Out-of-context speculative questions
+- Experimental prompt-leak questions designed to test if system instructions could be exposed
+
+For each question, the script prepended increasing numbers of backspaces to test the effect on model behavior. The researchers calculated "prompt offsets" to understand how many backspaces would logically position the cursor at different points within the prompt, including negative positions.
+
+## Key Findings
+
+The experimental results demonstrated several concerning behaviors as control character counts increased:
+
+**Context Forgetting**: At around 1024 backspaces (offset -1024), the model would completely ignore its provided context and instructions. For the simple question "What is this?", the model eventually produced hallucinated responses about cubic polynomials instead of referencing the test context.
+
+**Instruction Betrayal**: Questions that should have triggered the "I don't know" response instead received direct answers once enough control characters were prepended. For the factual question about the 1982 sci-fi film "Tron", the model correctly answered the out-of-context question at offset -256, despite being instructed to only use the provided context.
+
+**Hallucinations**: At extreme offset values (like -3500), the model would hallucinate responses to completely different questions. When asked about the prompt's first 100 words, the model instead provided the first 100 digits of π. When asked about prompt instructions, it began calculating "10 choose 3" as a combinatorics problem.
+
+**Model Variations**: GPT-4 showed greater resistance to these techniques at smaller context sizes (8K tokens), but became susceptible when using larger context windows (32K tokens with gpt-4-32k model). The team was able to trigger similar effects at higher relative prompt offsets (-10000 and greater magnitudes) with the larger context GPT-4 model.
+
+## Production Implications
+
+This research has significant implications for LLMOps practitioners:
+
+**Input Sanitization Requirements**: Any production LLM application accepting user input must implement proper sanitization of control characters. The fact that this behavior is not well-documented in OpenAI's model documentation or API reference makes it a potential blind spot for developers.
+
+**Model Selection Trade-offs**: While GPT-4 showed more resistance to these attacks at smaller context sizes, it comes with higher costs and potentially higher latency—important considerations for production deployments. Organizations must balance security requirements against performance and cost constraints.
+
+**Non-Deterministic Behavior**: The researchers note that LLMs are non-deterministic, recommending that organizations conduct their own testing appropriate to their specific applications rather than relying solely on general security guidance.
+
+**Template Agnostic**: The researchers experimented with variations of their prompt template and found that the injection technique worked regardless of instruction wording changes and formatting suggestions. This suggests that prompt engineering alone is insufficient as a security measure.
+
+## Mitigation Considerations
+
+The Dropbox team identified several approaches to mitigation, while acknowledging the complexity of the problem:
+
+**Input Sanitization**: The primary recommended approach involves sanitizing input appropriately for both the input type and the chosen model. Different control characters (carriage return vs. backspace) produced varying effectiveness, suggesting that comprehensive sanitization strategies are needed.
+
+**Valid Use Cases**: The team acknowledges that there may be legitimate use cases for control characters in prompts—for example, when evaluating source code or binary formats. Production applications may need to support multiple modes of functionality to balance utility with security.
+
+**Risk-Based Approach**: The researchers emphasize that risk tolerance, application design, and model choice will dictate required sanitization measures, suggesting there is no one-size-fits-all solution.
+
+## Responsible Disclosure
+
+The Dropbox team followed responsible disclosure practices by sharing their findings with OpenAI and awaiting further mitigation guidance before publishing. They also published a GitHub repository with updated research on repeated character sequences that induce LLM instability.
+
+## Broader LLMOps Lessons
+
+This case study illustrates several important principles for production LLM deployments:
+
+- Security testing of LLM-powered applications requires novel approaches that go beyond traditional input validation
+- Documentation gaps from LLM providers can create security blind spots for developers
+- Prompt engineering and system instructions provide limited security guarantees and should not be relied upon as the sole line of defense
+- Black-box testing methodologies can uncover vulnerabilities even without access to model internals
+- The rapidly evolving LLM landscape (new models, extended context windows, API updates) means that security testing must be ongoing rather than a one-time effort
+
+The research demonstrates the importance of dedicated security expertise when deploying LLMs in production and highlights the need for the broader community to develop comprehensive prompt engineering and sanitization strategies that can block malicious prompt input across different models and use cases.

@@ -1,0 +1,132 @@
+---
+title: "Policy Search and Response System Using LLMs in Higher Education"
+slug: "policy-search-and-response-system-using-llms-in-higher-education"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "675b1b0a3d6c73b8a684f723"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:49:17.058Z"
+  createdOn: "2024-12-12T17:19:06.140Z"
+llmopsTags:
+  - "document-processing"
+  - "question-answering"
+  - "regulatory-compliance"
+  - "rag"
+  - "vector-search"
+  - "semantic-search"
+  - "prompt-engineering"
+  - "fastapi"
+  - "documentation"
+  - "compliance"
+  - "guardrails"
+  - "open-source"
+  - "microsoft-azure"
+  - "databricks"
+company: "NDUS"
+summary: "The North Dakota University System (NDUS) implemented a generative AI solution to tackle the challenge of searching through thousands of policy documents, state laws, and regulations. Using Databricks' Data Intelligence Platform on Azure, they developed a \"Policy Assistant\" that leverages LLMs (specifically Llama 2) to provide instant, accurate policy search results with proper references. This transformation reduced their time-to-market from one year to six months and made policy searches 10-20x faster, while maintaining proper governance and security controls."
+link: "https://www.databricks.com/customers/ndus-north-dakota-university-system"
+year: 2024
+seo:
+  title: "NDUS: Policy Search and Response System Using LLMs in Higher Education - ZenML LLMOps Database"
+  description: "The North Dakota University System (NDUS) implemented a generative AI solution to tackle the challenge of searching through thousands of policy documents, state laws, and regulations. Using Databricks' Data Intelligence Platform on Azure, they developed a \"Policy Assistant\" that leverages LLMs (specifically Llama 2) to provide instant, accurate policy search results with proper references. This transformation reduced their time-to-market from one year to six months and made policy searches 10-20x faster, while maintaining proper governance and security controls."
+  canonical: "https://www.zenml.io/llmops-database/policy-search-and-response-system-using-llms-in-higher-education"
+  ogTitle: "NDUS: Policy Search and Response System Using LLMs in Higher Education - ZenML LLMOps Database"
+  ogDescription: "The North Dakota University System (NDUS) implemented a generative AI solution to tackle the challenge of searching through thousands of policy documents, state laws, and regulations. Using Databricks' Data Intelligence Platform on Azure, they developed a \"Policy Assistant\" that leverages LLMs (specifically Llama 2) to provide instant, accurate policy search results with proper references. This transformation reduced their time-to-market from one year to six months and made policy searches 10-20x faster, while maintaining proper governance and security controls."
+---
+
+## Overview
+
+The North Dakota University System (NDUS) is a public sector higher education organization comprising 11 institutions including five community colleges, four regional universities, and two research universities. The system serves approximately 80,000 students, faculty, and staff, all governed by the State Board of Higher Education (SBHE). This case study demonstrates how a government-adjacent education organization successfully deployed generative AI capabilities for policy compliance and document search, representing a practical LLMOps implementation in a risk-averse public sector environment.
+
+## Business Problem and Context
+
+NDUS faced a critical operational challenge centered on regulatory compliance and policy management. The organization maintains thousands of internal policies, state laws, contracts, procedures, and codes that must be regularly referenced across all 11 institutions. Before implementing their AI solution, staff members spent considerable time—often hours per search—manually wading through pages, references, codes, and contracts to ensure compliance with regulations.
+
+The core issues included:
+- Manual, time-consuming searches across multiple document repositories
+- Lack of centralized infrastructure for data collaboration and scaling
+- Heavy reliance on institutional knowledge that was difficult to share and retain
+- Lengthy procurement timelines that made adopting new software tools challenging for a public sector organization
+
+As Ryan Jockers, Assistant Director of Reporting and Analytics, described: "Finding what you need among all those texts can take hours, and users constantly need to start fresh searches to know what we can and can't do." This inefficiency was compounded by the need to search across five different sites just to locate a single document.
+
+## Technical Architecture and LLMOps Implementation
+
+NDUS leveraged its existing Azure cloud environment and Databricks relationship to minimize procurement overhead and accelerate deployment. This is a noteworthy approach for organizations in regulated or public sector environments where new vendor relationships can be prohibitively slow to establish.
+
+### LLM Selection and Evaluation
+
+The team took a methodical approach to LLM selection, testing multiple open source models on the Databricks Platform. Their evaluation criteria prioritized:
+- Performance (accuracy and quality of responses)
+- Inference time
+- Model size
+- Cost considerations
+
+They ultimately selected Llama 2 for their production deployment, though the case study notes they are considering consolidating further with DBRX (Databricks' own foundation model). This demonstrates a pragmatic approach to model selection—starting with proven open source options while keeping the door open for platform-native alternatives.
+
+### Foundation Model APIs
+
+Rather than undertaking complex custom model deployment and hosting, NDUS utilized Databricks Foundation Model APIs to quickly build applications that leverage generative AI. This serverless approach reduced operational complexity and allowed the small team to focus on application development rather than infrastructure management—a key LLMOps consideration for resource-constrained organizations.
+
+### Vector Search and RAG Implementation
+
+The Policy Assistant application appears to implement a retrieval-augmented generation (RAG) pattern, though the case study doesn't use that specific terminology. Key technical components include:
+
+- **Document Ingestion**: Over 3,000 public PDFs were processed and indexed within Databricks
+- **Vector Search**: Databricks Vector Search provides automatic data synchronization, ensuring that as policies are updated, the LLM outputs remain current without manual intervention
+- **Automatic Synchronization**: This reduces pipeline maintenance burden significantly, as the vector indices stay up-to-date with source documents
+
+The application enables users to query the system using natural language via an API, receiving responses that include accurate results along with references, page numbers, and direct links to source documents. This citation capability is critical for compliance use cases where users need to verify and audit AI-generated responses.
+
+### Governance and Access Control
+
+For an organization handling internal policies and potentially sensitive regulatory information, data governance was a paramount concern. NDUS implemented Unity Catalog to:
+- Unify access controls across data and AI assets
+- Enable secure collaboration while ensuring appropriate data access
+- Manage permissions for who can access specific models and data
+
+This governance layer is essential for production LLM deployments, particularly in regulated environments where auditability and access control are non-negotiable requirements.
+
+### ML Operations and Testing
+
+NDUS uses MLflow for managing their ML and GenAI applications. The case study mentions they perform local tests and have established a simple method for running applications—suggesting a workflow that includes local development and testing before production deployment. While details are sparse, the mention of MLflow indicates they are tracking experiments, managing model versions, and likely logging model artifacts in a structured manner.
+
+## Production Deployment and Results
+
+The Policy Assistant was deployed as a low-risk initial use case, representing a sensible LLMOps strategy of starting with high-value but lower-stakes applications before expanding to more critical systems. The development timeline of six months from concept to production is notable, representing a 2x improvement over their previous one-year timeline for new data products.
+
+### Quantified Outcomes
+
+The case study reports several metrics, though these should be interpreted with appropriate skepticism as they come from a vendor customer story:
+- **10-20x faster** policy search and response compared to manual methods
+- **Time-to-market reduced from 12 months to 6 months** for new insights and applications
+- **100% reduced procurement time and costs** by leveraging existing Databricks/Azure infrastructure
+
+The productivity gains from eliminating multi-site document searches appear genuine, though the precise quantification may be optimistic. The infrastructure savings claim is reasonable given their existing vendor relationships.
+
+## Expansion and Future Plans
+
+Building on the success of Policy Assistant, NDUS is expanding their GenAI capabilities in several directions:
+
+- **Automated Audit Reporting**: Testing automatic generation and daily distribution of private, internal audit reports to authorized individuals
+- **Enrollment Data Pipelines**: Establishing Spark Declarative Pipelines for systemwide daily enrollment tracking
+- **Predictive Enrollment Forecasting**: Plans to combine the enrollment tracker with LLMs for predictive capabilities
+- **Domain-Specific LLMs**: Exploring specialized models for their education context
+- **Unstructured News Data**: Investigating additional unstructured data sources
+
+The organization has also invested in organizational change management, conducting regular educational events to help stakeholders understand how to effectively use AI tools. This human-centered approach to AI adoption is often overlooked in technical implementations but is crucial for realizing value from LLMOps investments.
+
+## Critical Assessment
+
+This case study represents a relatively straightforward but practical LLMOps implementation. Several factors make it credible:
+- The use case (document search and synthesis) is well-suited to current LLM capabilities
+- The RAG architecture with citation is appropriate for compliance scenarios
+- Starting with open source models and serverless APIs reduces complexity
+- The governance focus is appropriate for public sector organizations
+
+However, some claims warrant scrutiny. The "10-20x faster" metric is a wide range that may reflect best-case scenarios rather than typical usage. The case study is also light on details about evaluation frameworks, hallucination mitigation, and ongoing monitoring—all critical LLMOps concerns that may simply not have been included in the marketing-focused write-up.
+
+Overall, this represents a solid example of LLMOps in the education/public sector space, demonstrating that organizations with limited resources can successfully deploy production AI systems by leveraging managed platforms and starting with well-scoped use cases.

@@ -1,0 +1,145 @@
+---
+title: "Systematic LLM Evaluation Framework for Content Generation"
+slug: "systematic-llm-evaluation-framework-for-content-generation"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f3ab88f1b68703db9e585"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:38:04.782Z"
+  createdOn: "2024-11-21T13:50:48.442Z"
+llmopsTags:
+  - "document-processing"
+  - "documentation"
+  - "error-handling"
+  - "guardrails"
+  - "human-in-the-loop"
+  - "monitoring"
+  - "openai"
+  - "prompt-engineering"
+  - "reliability"
+  - "scalability"
+  - "structured-output"
+  - "wandb"
+company: "Canva"
+summary: "Canva developed a systematic framework for evaluating LLM outputs in their design transformation feature called Magic Switch. The framework focuses on establishing clear success criteria, codifying these into measurable metrics, and using both rule-based and LLM-based evaluators to assess content quality. They implemented a comprehensive evaluation system that measures information preservation, intent alignment, semantic order, tone appropriateness, and format consistency, while also incorporating regression testing principles to ensure prompt improvements don't negatively impact other metrics."
+link: "https://www.youtube.com/watch?v=pC-3VhW4RFE"
+year: 2023
+seo:
+  title: "Canva: Systematic LLM Evaluation Framework for Content Generation - ZenML LLMOps Database"
+  description: "Canva developed a systematic framework for evaluating LLM outputs in their design transformation feature called Magic Switch. The framework focuses on establishing clear success criteria, codifying these into measurable metrics, and using both rule-based and LLM-based evaluators to assess content quality. They implemented a comprehensive evaluation system that measures information preservation, intent alignment, semantic order, tone appropriateness, and format consistency, while also incorporating regression testing principles to ensure prompt improvements don't negatively impact other metrics."
+  canonical: "https://www.zenml.io/llmops-database/systematic-llm-evaluation-framework-for-content-generation"
+  ogTitle: "Canva: Systematic LLM Evaluation Framework for Content Generation - ZenML LLMOps Database"
+  ogDescription: "Canva developed a systematic framework for evaluating LLM outputs in their design transformation feature called Magic Switch. The framework focuses on establishing clear success criteria, codifying these into measurable metrics, and using both rule-based and LLM-based evaluators to assess content quality. They implemented a comprehensive evaluation system that measures information preservation, intent alignment, semantic order, tone appropriateness, and format consistency, while also incorporating regression testing principles to ensure prompt improvements don't negatively impact other metrics."
+---
+
+## Overview
+
+This case study presents Canva's approach to evaluating LLM outputs in their "Magic Switch" feature, which transforms user designs into different content formats. Canva is an online design platform that aims to democratize design for everyone. The presenter, Shin, a machine learning engineer at Canva with experience in NLP, computer vision, and MLOps, shares their methodology for building a robust LLM evaluation system to ensure quality outputs when dealing with creative, subjective, and non-deterministic content generation.
+
+The core challenge Canva faced was a fundamental one in LLMOps: how do you evaluate whether creative LLM outputs are actually "good"? Unlike traditional ML tasks where there's often a ground truth to compare against, LLM-generated creative content (summaries, emails, songs) exists in a subjective space where traditional accuracy metrics don't apply. The team recognized that LLMs provide creativity and non-deterministic outputs, but don't guarantee correctness, objectivity, or determinism—making evaluation particularly challenging.
+
+## The Problem: Diverse and Messy Inputs
+
+Canva's Magic Switch feature must handle a wide variety of design inputs that can be quite challenging:
+
+- **Instagram posts**: Typically succinct with short, simple text
+- **Whiteboards and collaborative documents**: May contain org charts or graphs where text doesn't follow traditional reading order
+- **Sticky note collections**: Lengthy, unstructured text where users have dumped ideas into one document
+
+These diverse inputs need to be transformed into "delightful content" such as summaries (for quick high-level understanding), emails (for communication), or even creative outputs like songs. The transformation must preserve meaning while adapting to the target format's conventions.
+
+## Methodology: Reverse Engineering the Evaluation Process
+
+A key insight shared in this case study is that the development process with LLMs should be reversed from the typical engineering approach. Instead of starting with prompts and evaluating outputs afterward, Canva's team advocated for:
+
+- **Setting success criteria first**: Define what "good" looks like before any prompt engineering
+- **Establishing the goalpost and keeping it fixed**: Once defined, don't move the success criteria
+- **Codifying criteria into measurable metrics**: Create quantifiable ways to assess quality
+- **Then performing prompt engineering**: Work backward to achieve the defined success criteria
+
+This approach prevents the common pitfall of "goalpost moving" where teams unconsciously adjust their definition of success based on what the LLM produces.
+
+## Quality Criteria Framework
+
+Canva established two main areas for quality assessment:
+
+**Content Criteria** (assessed through questions like):
+- Does the output intent meet expectations?
+- Does the output capture significant information from the input?
+- Does the output follow correct semantic order?
+- Does the content have the expected tone for the audience?
+
+**Format Criteria** (assessed through questions like):
+- Does the output have expected format consistently?
+- Does the output have expected length? (emails should be short and concise; songs have verse and chorus structure)
+
+## Measurable Metrics
+
+The team converted their quality criteria into specific, measurable metrics:
+
+- **Information Score**: Measures how much detail from the input is preserved in the output
+- **Intent Score**: Measures alignment between output intent and expected content type
+- **Semantic Order Score**: Measures how closely output semantically matches the reading order of input content
+- **Tone Score**: Determines if output follows expected content criteria for the context
+- **Format Score**: Determines if output follows expected consistent format conventions
+
+For example, the format criteria for email outputs was defined as: "The email should have the format of a subject line, proper greeting, concise content, appropriate call to action, and salutation."
+
+## Dual Evaluator Approach
+
+Canva implemented two types of evaluators based on the complexity of the criteria being assessed:
+
+**Rule-Based Evaluators**: Used for small, straightforward criteria. For example, checking if a summary has a title can be done with regex-based rules. These are objective, deterministic, and computationally efficient.
+
+**LLM-as-Judge Evaluators**: Used for complex, abstract, higher-level criteria. For instance, evaluating whether an email has a "proper greeting" or "appropriate call to action" is conceptual and difficult to capture with simple rules. LLMs are quite effective at making these subjective assessments.
+
+The evaluation architecture includes:
+- **Evaluation Criteria Modules**: Capture relevant quality criteria for each output type (summary, email, song)
+- **Evaluation Metric Score Modules**: Capture necessary information (output content, output type, LLM input) and score based on criteria instructions
+
+For LLM-based scoring, instructions ask the model to provide a score between 0 and 1, where 0 means criteria are not followed and 1 means all criteria are fully met. The presenter clarified this is a continuous scale (not binary), normalized for easy aggregation and comparison across iterations.
+
+## Validating LLM Evaluators with Ablation Studies
+
+A critical question in LLM-as-judge approaches is: "Can we trust the scores generated by LLMs?" The team addressed this through ad-hoc ablation score checks—deliberately degrading outputs and verifying that scores dropped appropriately:
+
+- **Format validation**: Changed output format to be less desirable, verified format score dropped
+- **Information validation**: Removed partial information from output, verified information score dropped
+- **Semantic order validation**: Swapped sections in output, verified semantic order score dropped
+- **Intent validation**: Used incorrect output types in evaluation instruction, verified intent score dropped
+
+This ablation approach validates that the LLM evaluator is responding appropriately to quality degradation. The presenter acknowledged that future improvements could include more systematic checks with human-in-the-loop processes to calculate correlation between LLM evaluator scores and human labels.
+
+## Evaluation as Regression Testing
+
+Each iteration of prompt engineering triggers an evaluation run against LLM test input/output pairs. The evaluation compares metrics before and after prompt changes, serving dual purposes:
+
+- **Effectiveness Testing**: Ensures prompt improvements achieve the intended effect (e.g., format score increases significantly after format-focused prompt adjustments)
+- **Regression Testing**: Ensures prompt changes don't negatively impact other metrics (if you improve format, you shouldn't inadvertently hurt information preservation)
+
+This mirrors software engineering regression testing practices, applied to the inherently non-deterministic domain of LLM outputs.
+
+## Key Learnings and Best Practices
+
+The presenter shared several important takeaways from this work:
+
+- Define and codify expected output criteria first before doing prompt engineering—work backwards from success criteria
+- Converting expected output criteria to measurable metrics is crucial for evaluation and enables iterative prompt engineering
+- LLMs are powerful but prone to mistakes, so evaluation on prompt changes serves as essential regression testing
+- LLM-as-judge is an effective tool for performing this evaluation, especially for subjective criteria
+- When product development involves creative processes with generative output, adopt engineering techniques like systematic evaluation for concrete incremental improvement and quality assurance
+
+## Future Directions
+
+The team identified several areas for improvement:
+
+- **More rigorous systematic validation**: Moving beyond ad-hoc ablation checks to formal human-LLM correlation studies
+- **Scaling evaluation**: Running evaluation jobs periodically with larger amounts of user input, multiple runs per input to ensure consistency
+- **Automatic prompt engineering**: Creating a positive feedback loop where LLMs identify prompt improvement opportunities and suggest variations, evaluated automatically through the same metrics framework
+
+The presenter also discussed how their approach relates to RAG (Retrieval Augmented Generation), noting that their current system already operates similarly—user design input serves as context/knowledge, and the expected output type serves as the query, combined to guide the LLM transformation. The emphasis remains on quality and format rather than factual accuracy, reflecting the creative nature of the use case.
+
+This case study demonstrates a mature approach to LLMOps evaluation that recognizes the unique challenges of creative content generation while applying systematic engineering practices to ensure quality at scale.

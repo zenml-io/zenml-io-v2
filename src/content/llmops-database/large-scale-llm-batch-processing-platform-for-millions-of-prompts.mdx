@@ -1,0 +1,110 @@
+---
+title: "Large-Scale LLM Batch Processing Platform for Millions of Prompts"
+slug: "large-scale-llm-batch-processing-platform-for-millions-of-prompts"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "68b5c6c99a68ccc947fa495f"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:20:18.642Z"
+  createdOn: "2025-09-01T16:16:09.929Z"
+llmopsTags:
+  - "data-cleaning"
+  - "data-integration"
+  - "classification"
+  - "structured-output"
+  - "high-stakes-application"
+  - "prompt-engineering"
+  - "cost-optimization"
+  - "latency-optimization"
+  - "error-handling"
+  - "fallback-strategies"
+  - "chunking"
+  - "monitoring"
+  - "api-gateway"
+  - "load-balancing"
+  - "microservices"
+  - "scaling"
+  - "serverless"
+  - "devops"
+  - "orchestration"
+  - "open-source"
+  - "reliability"
+  - "scalability"
+  - "fastapi"
+  - "redis"
+  - "cache"
+  - "amazon-aws"
+company: "Instacart"
+summary: "Instacart faced challenges processing millions of LLM calls required by various teams for tasks like catalog data cleaning, item enrichment, fulfillment routing, and search relevance improvements. Real-time LLM APIs couldn't handle this scale effectively, leading to rate limiting issues and high costs. To solve this, Instacart built Maple, a centralized service that automates large-scale LLM batch processing by handling batching, encoding/decoding, file management, retries, and cost tracking. Maple integrates with external LLM providers through batch APIs and an internal AI Gateway, achieving up to 50% cost savings compared to real-time calls while enabling teams to process millions of prompts reliably without building custom infrastructure."
+link: "https://tech.instacart.com/simplifying-large-scale-llm-processing-across-instacart-with-maple-63df4508d5be"
+year: 2025
+seo:
+  title: "Instacart: Large-Scale LLM Batch Processing Platform for Millions of Prompts - ZenML LLMOps Database"
+  description: "Instacart faced challenges processing millions of LLM calls required by various teams for tasks like catalog data cleaning, item enrichment, fulfillment routing, and search relevance improvements. Real-time LLM APIs couldn't handle this scale effectively, leading to rate limiting issues and high costs. To solve this, Instacart built Maple, a centralized service that automates large-scale LLM batch processing by handling batching, encoding/decoding, file management, retries, and cost tracking. Maple integrates with external LLM providers through batch APIs and an internal AI Gateway, achieving up to 50% cost savings compared to real-time calls while enabling teams to process millions of prompts reliably without building custom infrastructure."
+  canonical: "https://www.zenml.io/llmops-database/large-scale-llm-batch-processing-platform-for-millions-of-prompts"
+  ogTitle: "Instacart: Large-Scale LLM Batch Processing Platform for Millions of Prompts - ZenML LLMOps Database"
+  ogDescription: "Instacart faced challenges processing millions of LLM calls required by various teams for tasks like catalog data cleaning, item enrichment, fulfillment routing, and search relevance improvements. Real-time LLM APIs couldn't handle this scale effectively, leading to rate limiting issues and high costs. To solve this, Instacart built Maple, a centralized service that automates large-scale LLM batch processing by handling batching, encoding/decoding, file management, retries, and cost tracking. Maple integrates with external LLM providers through batch APIs and an internal AI Gateway, achieving up to 50% cost savings compared to real-time calls while enabling teams to process millions of prompts reliably without building custom infrastructure."
+---
+
+## Company and Use Case Overview
+
+Instacart operates a large-scale grocery platform serving millions of customers with extensive product catalogs and delivery operations. The company has strategically integrated LLMs across multiple critical business domains to enhance their operations. The Catalog team leverages LLMs to detect and correct data errors in product information, such as inaccurate sizes that could cause tax and pricing discrepancies, while also enriching item listings with detailed attributes to improve customer decision-making. The Fulfillment team uses LLMs to identify perishable items requiring special handling during the delivery process. Meanwhile, the Search team employs LLMs to train advanced ranking models, improving search relevance through better query understanding and personalization for more accurate item matching.
+
+The challenge Instacart faced was the sheer scale of LLM operations required - many workflows demanded millions of LLM calls, which real-time APIs simply couldn't accommodate efficiently. This led to frequent rate limiting, throttling requirements, high costs, and significant operational complexity as multiple teams independently developed similar infrastructure solutions.
+
+## Technical Architecture and Infrastructure
+
+Instacart's solution was Maple, a centralized service designed to handle large-scale LLM batch processing across the organization. The architecture positions Maple as an orchestration layer between internal teams and external model providers. Multiple Instacart applications send prompt data to Maple, which then manages all aspects of batching, job coordination, retries, and result aggregation.
+
+The system routes requests through Instacart's AI Gateway, which serves as a centralized abstraction layer for communicating with multiple LLM providers. This AI Gateway also integrates with a Cost Tracker service, providing detailed usage monitoring and spend tracking per job and team. From there, prompt batches are dispatched to external LLM providers, with results flowing back through the same architectural path.
+
+The core technology stack includes Temporal for durable execution and fault tolerance, ensuring that long-running tasks can complete reliably even when exceptions occur. Maple provides an RPC API for job submission and progress tracking, while using S3 for efficient storage of inputs and outputs, avoiding costly database operations for large datasets.
+
+## Data Processing and Format Optimization
+
+Maple's data processing pipeline demonstrates sophisticated optimization for large-scale operations. The system accepts CSV or Parquet files as input and outputs merged results with AI responses. Large CSV files are split into smaller Parquet batch files and stored on S3. The choice of Parquet format is particularly strategic, as it provides up to 25x compression compared to CSV files and enables non-linear access patterns for extremely fast data retrieval.
+
+The system respects LLM provider constraints, with each batch limited to 50,000 prompts or 200MB. For jobs requiring millions of prompts, Maple automatically splits these into at least 20 separate batches. The service handles the complex workflow of encoding requests in provider-specific formats, uploading files, monitoring job status, downloading results, parsing responses, and automatically retrying failed prompts in new batches.
+
+## Performance Characteristics and Real-World Results
+
+Instacart provides concrete performance data based on approximately 580 batches containing 40,000-50,000 tasks each. The system achieves an average processing speed of 2.6 prompts per second, with most batches clustered between 1-4 prompts per second. Processing speed varies based on prompt complexity, particularly when including images, which is a common use case for Instacart's operations.
+
+Batch completion times show that most jobs finish within 12 hours, though occasional batches may take up to 24 hours. The relationship between job size and completion time follows expected patterns, with larger batches taking proportionally longer to complete. These performance characteristics are important for teams planning their workflows and understanding the trade-offs between batch and real-time processing.
+
+## Scaling Challenges and Solutions
+
+Building a system capable of handling tens of millions of prompts required significant iteration and optimization. Instacart encountered several scaling bottlenecks that required architectural changes. Initially, task data was stored in databases, but this approach became inefficient at scale. The team migrated to S3-based storage using Parquet files, which improved both load/save performance and reduced operational costs.
+
+Memory consumption became a critical concern with large files, leading to the adoption of stream-based processing techniques to minimize resource usage during file handling. The team also replaced standard Python libraries with more efficient alternatives, such as switching from the built-in 'json' library to 'orjson', which offers superior speed and memory efficiency for large-scale operations.
+
+## Error Handling and Fault Tolerance
+
+The system implements comprehensive error handling for the various failure modes encountered in large-scale LLM processing. LLM providers return different types of task-level failures, each requiring tailored handling strategies. Expired tasks, where providers fail to return results within 24 hours, are automatically retried by constructing new batches with the failed tasks. Rate limiting errors receive similar treatment with infinite retry logic by default.
+
+Refused tasks, where providers reject requests due to bad parameters or content filtering, are retried a maximum of two times since they typically produce consistent results. Invalid image URLs present a particular challenge, where Maple can optionally check image existence before retrying, though this adds overhead to large batches.
+
+The integration of Temporal as the durable execution engine ensures that jobs can resume exactly where they left off without losing work, protecting against data loss and avoiding wasted costs on partially completed jobs. This level of fault tolerance is crucial for operations at Instacart's scale.
+
+## Multi-Provider Support and API Abstraction
+
+Recognizing that not all LLM providers offer batch interfaces, Instacart extended Maple to handle real-time APIs while maintaining the same simple CSV input/output interface for users. This extension required implementing automatic parallelization, exponential backoff for rate-limited requests, intelligent retry policies, and comprehensive failure tracking - applying the same operational maturity developed for batch workflows.
+
+This abstraction allows teams to use providers that only offer real-time APIs without changing their workflow, while the platform handles the complexities of scaling real-time calls. The system can seamlessly switch providers from real-time to batch interfaces when they become available, without requiring user changes. This approach also benefits smaller batches that can complete more quickly through real-time processing, which is valuable for operational tasks requiring rapid iteration.
+
+## Cost Optimization and Business Impact
+
+Maple has achieved significant cost reductions, with the company reporting up to 50% savings on LLM costs compared to standard real-time calls. More dramatically, some processes that previously cost hundreds of thousands of dollars annually have been reduced to thousands of dollars per year. This cost optimization comes not just from more efficient API usage, but from automation of previously manual tasks that required significant human resources.
+
+The democratization of access to bulk LLM processing has enabled teams across Instacart to explore new ideas and automate repetitive work without becoming LLM infrastructure experts. This has accelerated innovation timelines and allowed teams to ship features faster while maintaining cost controls and operational consistency across the organization.
+
+## Operational Lessons and Best Practices
+
+The development of Maple reveals several important lessons for implementing large-scale LLM operations. The importance of abstracting complexity cannot be overstated - by providing a simple interface while handling the intricate details of batch processing, file management, and error handling, Maple enables widespread adoption without requiring specialized expertise from each team.
+
+The choice of storage and processing formats significantly impacts performance and cost at scale. Parquet's compression and access characteristics make it particularly well-suited for large-scale AI workloads compared to traditional CSV formats. Stream-based processing and careful library selection become critical optimizations when dealing with massive datasets.
+
+Perhaps most importantly, the case study demonstrates the value of building reusable infrastructure rather than allowing teams to develop independent solutions. The consolidation of LLM processing through Maple eliminated duplicated effort, reduced maintenance overhead, and enabled consistent cost tracking and operational monitoring across all AI workloads at Instacart.

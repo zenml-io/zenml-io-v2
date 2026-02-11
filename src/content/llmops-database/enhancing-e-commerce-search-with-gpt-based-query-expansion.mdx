@@ -1,0 +1,110 @@
+---
+title: "Enhancing E-commerce Search with GPT-based Query Expansion"
+slug: "enhancing-e-commerce-search-with-gpt-based-query-expansion"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f414b507bd63721a36774"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:38:33.973Z"
+  createdOn: "2024-11-21T14:18:51.509Z"
+llmopsTags:
+  - "cache"
+  - "chunking"
+  - "cost-optimization"
+  - "databases"
+  - "latency-optimization"
+  - "monitoring"
+  - "openai"
+  - "prompt-engineering"
+  - "question-answering"
+  - "realtime-application"
+  - "reliability"
+  - "scalability"
+  - "scaling"
+  - "semantic-search"
+  - "structured-output"
+  - "token-optimization"
+  - "vector-search"
+company: "Whatnot"
+summary: "Whatnot improved their e-commerce search functionality by implementing a GPT-based query expansion system to handle misspellings and abbreviations. The system processes search queries offline through data collection, tokenization, and GPT-based correction, storing expansions in a production cache for low-latency serving. This approach reduced irrelevant content by more than 50% compared to their previous method when handling misspelled queries and abbreviations."
+link: "https://medium.com/whatnot-engineering/enhancing-search-using-large-language-models-f9dcb988bdb9"
+year: 2023
+seo:
+  title: "Whatnot: Enhancing E-commerce Search with GPT-based Query Expansion - ZenML LLMOps Database"
+  description: "Whatnot improved their e-commerce search functionality by implementing a GPT-based query expansion system to handle misspellings and abbreviations. The system processes search queries offline through data collection, tokenization, and GPT-based correction, storing expansions in a production cache for low-latency serving. This approach reduced irrelevant content by more than 50% compared to their previous method when handling misspelled queries and abbreviations."
+  canonical: "https://www.zenml.io/llmops-database/enhancing-e-commerce-search-with-gpt-based-query-expansion"
+  ogTitle: "Whatnot: Enhancing E-commerce Search with GPT-based Query Expansion - ZenML LLMOps Database"
+  ogDescription: "Whatnot improved their e-commerce search functionality by implementing a GPT-based query expansion system to handle misspellings and abbreviations. The system processes search queries offline through data collection, tokenization, and GPT-based correction, storing expansions in a production cache for low-latency serving. This approach reduced irrelevant content by more than 50% compared to their previous method when handling misspelled queries and abbreviations."
+---
+
+## Overview
+
+Whatnot is a livestream shopping platform and marketplace focused on enabling social commerce. Their engineering team identified a significant problem with their search functionality: misspelled queries and abbreviations were leading to poor search results, causing users to mistakenly believe the platform lacked relevant content. For example, users searching for "jewlery" instead of "jewelry" would see nearly empty results pages, potentially abandoning the platform. Similarly, abbreviations like "lv" for "louis vuitton" or "nyfw" for "new york fashion week" resulted in low result counts and poor engagement rates.
+
+To address this challenge, Whatnot implemented a GPT-based query expansion system. This case study provides a practical example of how LLMs can be integrated into production search systems while carefully managing the latency constraints that are critical to user experience.
+
+## Architecture and Design Decisions
+
+The most notable architectural decision in this implementation is the deliberate separation of LLM inference from the real-time request path. Search functionality is heavily predicated on low latency, with Whatnot targeting sub-250ms response times. Making GPT API calls during search requests would be prohibitive from a latency perspective, so the team designed an offline batch processing approach instead.
+
+The system consists of two main components: an offline query expansion generation pipeline and a real-time serving layer that uses cached results.
+
+## Offline Query Expansion Pipeline
+
+The offline pipeline follows a multi-stage process:
+
+**Data Collection**: The system ingests search queries from logging infrastructure. They capture not just the raw query text but also contextual information including filters applied and which search result page tab (Products, Shows, Users, etc.) the user engaged with. They structure this logging to enable analysis at three levels: SERP tab session (actions on a specific tab without changing query), query session (actions across multiple tabs for one query), and search session (continuous search engagement including re-querying).
+
+**Tokenization and Normalization**: Queries undergo text processing to create normalized tokens. This includes converting to lowercase, standardizing punctuation and emoji handling, and splitting by whitespace into individual tokens. The normalization ensures variants like "Ipad Air," "iPad air," and "ipad Air" all map to "ipad air."
+
+**Frequency Filtering**: Rather than processing every token through GPT, they apply a frequency threshold. Tokens must appear in search queries at least 3 times over a 14-day rolling window to be considered for GPT processing. This optimization reduces costs and focuses processing on tokens that actually impact user experience.
+
+**GPT Processing**: Frequently occurring tokens are sent to GPT with a crafted prompt designed to identify potential misspellings and suggest expansions for abbreviations. The article shows an example prompt structure that asks the model to analyze tokens and provide corrections or expansions along with confidence levels. One key advantage highlighted is that GPT's broad training data gives it knowledge of real-world entities like brand names (e.g., "Xero" shoes, "MSCHF") that might otherwise appear to be misspellings. This effectively provides knowledge graph-like functionality without requiring explicit knowledge graph construction and maintenance.
+
+**Post-processing and Caching**: The GPT outputs are stored in a production-level key-value store that maps original query tokens to lists of potential corrections/expansions along with associated confidence levels. This cache serves as the bridge between the offline processing and real-time serving.
+
+## Real-time Serving
+
+When a user executes a search, the serving layer performs the following steps:
+
+- **Query Tokenization**: The user's query is processed into tokens using the same normalization approach as the offline pipeline.
+- **Cache Lookup**: Each token is looked up in the query expansion cache to retrieve potential corrections and expansions.
+- **Query Augmentation**: The search query S-expression is augmented with the expanded terms, so a user searching for "sdcc" will also receive results matching "san diego comic con."
+- **Result Generation**: The search results page is generated from the combination of original and expanded queries, weighted by confidence levels from the cache.
+
+## LLMOps Considerations and Trade-offs
+
+This implementation demonstrates several important LLMOps patterns:
+
+**Latency Management**: By moving LLM inference entirely offline, the team avoided the latency penalty that would make real-time GPT calls impractical for search. The trade-off is that new misspellings or abbreviations won't be handled until the next batch processing run. For most e-commerce use cases, this is an acceptable compromise since query patterns tend to be relatively stable.
+
+**Cost Optimization**: The frequency filtering (only processing tokens with 3+ occurrences in 14 days) significantly reduces the volume of GPT API calls needed. This is a practical cost control mechanism that acknowledges not every query variant warrants the expense of LLM processing.
+
+**Caching Strategy**: Using a key-value store as an intermediary between batch processing and real-time serving is a common pattern for production LLM systems. It provides reliability and consistent latency that would be impossible with synchronous LLM calls.
+
+**Prompt Engineering**: While the article doesn't go into extensive detail about prompt iteration, they do show the structure of prompts used to elicit corrections and expansions with confidence scores. The prompt design enables structured outputs that can be programmatically consumed.
+
+## Results and Limitations
+
+The team reports that for queries containing misspellings or abbreviations, they reduced irrelevant content by more than 50% compared to their previous method. They also note that the approach streamlined their query expansion generation and serving process.
+
+However, the article transparently acknowledges a limitation of their current implementation: the token-specific approach means that while searching "sdcc" will return "san diego comic con" results, the reverse is not true. A user searching "san diego comic con" won't get results tagged with "sdcc." They identify two potential solutions: applying equivalent query expansion at indexing time, or performing GPT processing on n-grams rather than single tokens.
+
+## Future Directions
+
+The team outlines several planned enhancements that would extend their LLM usage:
+
+- **Semantic Query Expansion**: Moving toward semantic search capabilities without requiring real-time model inference, enabling searches like "star wars little green alien" to return Yoda results.
+- **Entity and Attribute Extraction**: Using LLMs to extract structured information from product descriptions and queries to improve relevance. The goal is that searching "nike men's sneakers size 11" would return the same results as "sneakers" with brand, gender, and size filters applied.
+- **Image and Video Understanding**: Applying content understanding models to automatically populate and validate product attributes, which would improve both filtering precision and enable eventual semantic search.
+
+## Assessment
+
+This case study provides a pragmatic example of LLM integration for a specific, bounded problem. Rather than attempting to use LLMs for end-to-end search (which would be challenging from both latency and cost perspectives), Whatnot identified a narrow application where GPT's broad knowledge base provides clear value: identifying misspellings and expanding abbreviations.
+
+The architecture demonstrates mature thinking about production constraints. The batch processing approach, frequency-based filtering, and caching layer all reflect practical engineering decisions that balance capability against cost and latency requirements. The 50%+ reduction in irrelevant content is a meaningful improvement, though it's worth noting this metric specifically applies to queries that contained misspellings or abbreviations, which may represent a subset of total search traffic.
+
+The transparency about current limitations (the uni-directional nature of abbreviation expansion) and planned improvements adds credibility to the case study. This is presented as an initial step in leveraging LLMs for search rather than a complete solution, which is a realistic framing for organizations at similar stages of LLM adoption.

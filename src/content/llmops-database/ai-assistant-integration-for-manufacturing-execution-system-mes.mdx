@@ -1,0 +1,166 @@
+---
+title: "AI Assistant Integration for Manufacturing Execution System (MES)"
+slug: "ai-assistant-integration-for-manufacturing-execution-system-mes"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "68270f117556985a0788829b"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:08:17.216Z"
+  createdOn: "2025-05-16T10:10:25.559Z"
+llmopsTags:
+  - "chatbot"
+  - "question-answering"
+  - "structured-output"
+  - "regulatory-compliance"
+  - "legacy-system-integration"
+  - "rag"
+  - "prompt-engineering"
+  - "semantic-search"
+  - "error-handling"
+  - "human-in-the-loop"
+  - "system-prompts"
+  - "fastapi"
+  - "api-gateway"
+  - "guardrails"
+  - "serverless"
+  - "databases"
+  - "amazon-aws"
+  - "anthropic"
+company: "42Q"
+summary: "42Q, a cloud-based Manufacturing Execution System (MES) provider, implemented an intelligent chatbot named Arthur to address the complexity of their system and improve user experience. The solution uses RAG and AWS Bedrock to combine documentation, training videos, and live production data, enabling users to query system functionality and real-time manufacturing data in natural language. The implementation showed significant improvements in user response times and system understanding, while maintaining data security within AWS infrastructure."
+link: "https://www.youtube.com/watch?v=8aLtXesNYJY"
+year: 2025
+seo:
+  title: "42Q: AI Assistant Integration for Manufacturing Execution System (MES) - ZenML LLMOps Database"
+  description: "42Q, a cloud-based Manufacturing Execution System (MES) provider, implemented an intelligent chatbot named Arthur to address the complexity of their system and improve user experience. The solution uses RAG and AWS Bedrock to combine documentation, training videos, and live production data, enabling users to query system functionality and real-time manufacturing data in natural language. The implementation showed significant improvements in user response times and system understanding, while maintaining data security within AWS infrastructure."
+  canonical: "https://www.zenml.io/llmops-database/ai-assistant-integration-for-manufacturing-execution-system-mes"
+  ogTitle: "42Q: AI Assistant Integration for Manufacturing Execution System (MES) - ZenML LLMOps Database"
+  ogDescription: "42Q, a cloud-based Manufacturing Execution System (MES) provider, implemented an intelligent chatbot named Arthur to address the complexity of their system and improve user experience. The solution uses RAG and AWS Bedrock to combine documentation, training videos, and live production data, enabling users to query system functionality and real-time manufacturing data in natural language. The implementation showed significant improvements in user response times and system understanding, while maintaining data security within AWS infrastructure."
+---
+
+## Overview
+
+42Q is a cloud-based Manufacturing Execution System (MES) provider that developed an AI-powered expert chatbot called "Arthur" to help users navigate their complex software platform. The presentation, given by Claus Müller (Solutions Architect at 42Q) and Kristoff from AWS, details the phased approach to building and deploying this LLM-powered assistant, the technical architecture leveraging AWS services, and the ongoing considerations around expanding the chatbot's capabilities.
+
+The name "Arthur" is a reference to Douglas Adams' "The Hitchhiker's Guide to the Galaxy," where 42 is famously the "answer to the ultimate question of life, the universe, and everything" - hence the company name 42Q. Arthur Dent, the main character who spends much of the book seeking answers, inspired the chatbot's name.
+
+## The Problem
+
+MES systems like 42Q present several challenges for users:
+
+- **Complexity**: As a full-featured cloud MES with many modules and configurations, the system becomes increasingly complex over time, requiring expert knowledge to navigate effectively
+- **Constant updates**: With new versions released every two months, users struggle to keep up with new functionalities and changes
+- **Language and terminology barriers**: Beyond multilingual support (42Q offers 7-8 languages), there's the challenge of contextual understanding - different users may refer to the same concept differently (e.g., "product," "part number," "material number")
+- **Limited access to experts**: MES administrators who possess the knowledge are typically very busy and not always available to answer questions
+
+These challenges created a clear use case for an intelligent assistant that could serve as an always-available expert on the 42Q system.
+
+## Phase 1: Interactive Helper Chatbot
+
+The first phase focused on creating a documentation-aware chatbot. The team took the following approach:
+
+**Data Ingestion**: All existing documentation was loaded into the system. Critically, they also transcribed all training videos where experts explain how 42Q works, providing tips and guidance. This transcription proved particularly valuable as it captured not just the "how" but also the "why" behind various system configurations.
+
+**Integration**: The chatbot was embedded directly into the 42Q portal, making it immediately available upon login without requiring separate authentication.
+
+**Multilingual Support**: By design, the chatbot understands almost any language, leveraging the LLM's inherent multilingual capabilities.
+
+**Context Retention**: The system maintains conversation context, allowing users to ask follow-up questions without repeating earlier context.
+
+**Source Attribution**: Every answer includes references to the original sources (documentation or training videos), building trust and enabling deeper exploration.
+
+## Phase 2: Data-Aware Chatbot
+
+The second phase extended Arthur's capabilities to understand not just the software but also the live production data. This was achieved by:
+
+**Database Connectivity**: Arthur was connected to the 42Q MES database, enabling live queries against the instance the user is connected to.
+
+**API Integration**: The chatbot uses APIs to retrieve current data including shop orders, part numbers, routes, defects, and other production information.
+
+**Dynamic Presentation**: Users can request data in various formats - tables for easy copy-paste, flowcharts, summaries, or aggregations - all handled by the LLM's output formatting capabilities.
+
+A particularly interesting discovery emerged during Phase 2 development. When the team first connected Arthur to the database and received JSON responses, the chatbot immediately began explaining the data, interpreting status codes, suggesting missing information, and providing context. This was not explicitly programmed but emerged from the combination of the LLM's reasoning capabilities and the training video content, which contained examples and guidance that the model could apply to interpret real data. For instance, when asked about defective components and whether they had been replaced, Arthur correctly interpreted that a "removed zero" indicator meant the component was repaired in place rather than replaced - knowledge it derived from training video examples.
+
+## Technical Architecture
+
+The solution is built entirely on AWS services, which was a deliberate choice for data security and operational simplicity:
+
+**Amazon Bedrock**: The core service for building the AI solution, providing access to foundation models, agents, and guardrails. The team specifically highlighted Bedrock's model flexibility - they experimented with different models and found Anthropic's Claude to provide the best results for their use case.
+
+**RAG (Retrieval Augmented Generation)**: All documentation and transcribed content is stored in S3 buckets and used to augment the LLM's responses with domain-specific knowledge.
+
+**AWS Transcription Service**: Used to convert training videos into text for ingestion into the RAG system.
+
+**Bedrock Agents**: Enable the chatbot to call Lambda functions that interact with 42Q APIs, allowing live data queries.
+
+**API Gateway**: Controls access to APIs and manages the integration between the chatbot and backend systems.
+
+**Lambda Functions**: Serve as the bridge between Bedrock Agents and 42Q's APIs, executing queries and returning data to the chatbot.
+
+**Data Security**: A key architectural decision was ensuring all data stays within the customer's AWS account. This addresses growing concerns about data privacy and prevents training data from being used to improve third-party models. The team emphasized this is "as secure as the data itself" since the chatbot infrastructure is co-located with the production data.
+
+## Model Selection and Flexibility
+
+The team highlighted Bedrock's model marketplace as a significant advantage. They can easily switch between models to optimize for:
+
+- Cost
+- Latency
+- Accuracy
+- Specific capabilities
+
+Currently, Anthropic's Claude provides the best results for their use case. The ability to run newer models like DeepSeek within their own AWS account, with guarantees that data won't leave the account or be used for retraining, was noted as particularly valuable for manufacturing customers with strict data governance requirements.
+
+## Guardrails and Responsible AI
+
+The presentation touched on AWS Bedrock's guardrails capabilities, which allow implementing responsible AI checks. The team can:
+
+- Monitor responses for unwanted content
+- Restrict certain types of questions
+- Trace the chain of reasoning to understand how the model arrived at answers
+- Modify prompts to improve response quality
+
+## User Feedback and Results
+
+The deployment has generated positive feedback:
+
+- **Speed**: Users get responses much faster compared to reading documentation manually
+- **Comprehensiveness**: Unlike asking human experts who may only share partial knowledge, Arthur provides complete information about capabilities and configurations
+- **Internal adoption**: Even 42Q's internal teams increasingly use Arthur to discover alternative ways to accomplish tasks within the system
+- **Training applications**: Customers use Arthur as a training tool, directing new users to ask the chatbot when they don't know something
+- **Night shift support**: Production managers highlighted the value of having Arthur available during night shifts when production control staff is unavailable
+
+## Phase 3: Autonomous Actions (Under Consideration)
+
+The presentation candidly discussed the next logical step: allowing Arthur to not just query and explain, but to take actions within the MES. Examples mentioned include releasing shop orders, manipulating production data, or stopping production lines.
+
+However, the team is deliberately pausing before implementing this capability, raising important questions:
+
+- Should AI be allowed to operate production systems?
+- Can manufacturing tolerate the inherent imperfection of AI responses?
+- How many guardrails would be needed?
+- Is the manufacturing industry ready for this level of automation?
+
+The speakers noted that while the technical capability exists, the organizational and safety considerations require careful deliberation. This represents a mature approach to LLMOps - recognizing that what is technically possible isn't always what should be deployed immediately.
+
+## LLMOps Considerations
+
+Several LLMOps best practices emerge from this case study:
+
+**Phased Deployment**: Rolling out capabilities incrementally (documentation first, then data access, then potentially actions) allows for learning and adjustment at each stage.
+
+**Authentication Integration**: Leveraging existing portal authentication rather than requiring separate chatbot credentials reduces friction and maintains security boundaries.
+
+**Single Unified Interface**: Despite multiple data sources (documentation, videos, live data), maintaining a single chatbot interface simplifies the user experience.
+
+**Source Attribution**: Always linking answers to original sources builds trust and enables verification.
+
+**Model Experimentation**: The architecture allows easy model switching to optimize performance as new models become available.
+
+**Data Locality**: Keeping all data within customer AWS accounts addresses enterprise security requirements.
+
+**Deliberate Capability Expansion**: The team's hesitation around Phase 3 demonstrates thoughtful consideration of AI's appropriate role in critical production systems.
+
+The case study demonstrates a pragmatic approach to deploying LLMs in an industrial context, balancing innovation with the reliability requirements of manufacturing environments.

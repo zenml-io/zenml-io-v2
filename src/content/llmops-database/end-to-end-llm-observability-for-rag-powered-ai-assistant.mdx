@@ -1,0 +1,160 @@
+---
+title: "End-to-End LLM Observability for RAG-Powered AI Assistant"
+slug: "end-to-end-llm-observability-for-rag-powered-ai-assistant"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "690888c8bfe83ff17134d689"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:22:55.606Z"
+  createdOn: "2025-11-03T10:49:44.649Z"
+llmopsTags:
+  - "question-answering"
+  - "chatbot"
+  - "content-moderation"
+  - "fraud-detection"
+  - "high-stakes-application"
+  - "rag"
+  - "embeddings"
+  - "prompt-engineering"
+  - "semantic-search"
+  - "vector-search"
+  - "error-handling"
+  - "human-in-the-loop"
+  - "latency-optimization"
+  - "cost-optimization"
+  - "evals"
+  - "kubernetes"
+  - "docker"
+  - "monitoring"
+  - "databases"
+  - "microservices"
+  - "devops"
+  - "orchestration"
+  - "documentation"
+  - "security"
+  - "guardrails"
+  - "reliability"
+  - "scalability"
+  - "fastapi"
+  - "cache"
+  - "elasticsearch"
+  - "langchain"
+  - "microsoft-azure"
+  - "google-gcp"
+  - "amazon-aws"
+company: "Splunk"
+summary: "Splunk built an AI Assistant leveraging Retrieval-Augmented Generation (RAG) to answer FAQs using curated public content from .conf24 materials. The system was developed in a hackathon-style sprint using their internal CIRCUIT platform. To operationalize this LLM-powered application at scale, Splunk integrated comprehensive observability across the entire RAG pipeline—from prompt handling and document retrieval to LLM generation and output evaluation. By instrumenting structured logs, creating unified dashboards in Splunk Observability Cloud, and establishing proactive alerts for quality degradation, hallucinations, and cost overruns, they achieved full visibility into response quality, latency, source document reliability, and operational health. This approach enabled rapid iteration, reduced mean time to resolution for quality issues, and established reproducible governance practices for production LLM deployments."
+link: "https://www.splunk.com/en_us/blog/artificial-intelligence/how-we-built-end-to-end-llm-observability-with-splunk-and-rag.html"
+year: 2025
+seo:
+  title: "Splunk: End-to-End LLM Observability for RAG-Powered AI Assistant - ZenML LLMOps Database"
+  description: "Splunk built an AI Assistant leveraging Retrieval-Augmented Generation (RAG) to answer FAQs using curated public content from .conf24 materials. The system was developed in a hackathon-style sprint using their internal CIRCUIT platform. To operationalize this LLM-powered application at scale, Splunk integrated comprehensive observability across the entire RAG pipeline—from prompt handling and document retrieval to LLM generation and output evaluation. By instrumenting structured logs, creating unified dashboards in Splunk Observability Cloud, and establishing proactive alerts for quality degradation, hallucinations, and cost overruns, they achieved full visibility into response quality, latency, source document reliability, and operational health. This approach enabled rapid iteration, reduced mean time to resolution for quality issues, and established reproducible governance practices for production LLM deployments."
+  canonical: "https://www.zenml.io/llmops-database/end-to-end-llm-observability-for-rag-powered-ai-assistant"
+  ogTitle: "Splunk: End-to-End LLM Observability for RAG-Powered AI Assistant - ZenML LLMOps Database"
+  ogDescription: "Splunk built an AI Assistant leveraging Retrieval-Augmented Generation (RAG) to answer FAQs using curated public content from .conf24 materials. The system was developed in a hackathon-style sprint using their internal CIRCUIT platform. To operationalize this LLM-powered application at scale, Splunk integrated comprehensive observability across the entire RAG pipeline—from prompt handling and document retrieval to LLM generation and output evaluation. By instrumenting structured logs, creating unified dashboards in Splunk Observability Cloud, and establishing proactive alerts for quality degradation, hallucinations, and cost overruns, they achieved full visibility into response quality, latency, source document reliability, and operational health. This approach enabled rapid iteration, reduced mean time to resolution for quality issues, and established reproducible governance practices for production LLM deployments."
+---
+
+## Overview
+
+Splunk developed an AI Assistant powered by a Retrieval-Augmented Generation (RAG) system to provide instant, accurate answers to frequently asked questions using curated public content. The specific use case centered on .conf24 event materials, including session lists, event policies, tips and tricks, global broadcast schedules, and curated content matrices. This case study provides a detailed exploration of how Splunk approached the operational challenges of running LLM-powered applications at scale, with particular emphasis on establishing comprehensive observability across the entire RAG pipeline. The initiative was developed through their internal CIRCUIT platform in a hackathon-style sprint, demonstrating both the rapid development potential and the critical need for robust monitoring infrastructure from day one.
+
+The fundamental challenge addressed by this case study is that running LLM-powered applications in production brings unique operational complexities beyond traditional software systems. These challenges span accuracy and reliability of responses, cost control for token usage and inference, user trust in AI-generated answers, and the ability to rapidly diagnose and resolve issues when the system produces poor outputs. The case study emphasizes that LLM observability is not merely a nice-to-have feature but rather "the bridge between experimentation and operational excellence," transforming what would otherwise be black-box AI behavior into measurable, actionable insights.
+
+## Technical Architecture and RAG Implementation
+
+The AI Assistant was built using a Retrieval-Augmented Generation architecture accessed via an API through Splunk's internal CIRCUIT platform. The RAG approach combines information retrieval from a curated knowledge base with large language model generation capabilities. The data scope for this implementation was strictly limited to Cisco public materials from .conf24, with explicit governance controls to ensure no personal data was included in prompts, RAG processes, testing, or logs. This data minimization approach was a conscious design decision to meet governance and compliance requirements while demonstrating the viability of RAG systems for enterprise use cases.
+
+The system leverages Splunk Search capabilities for retrieval operations and Splunk Observability Cloud for monitoring and alerting. The architecture includes multiple services orchestrated via Kubernetes, with the primary AI orchestration handled by the bridget-ai-svc service and supporting infrastructure running in a web-eks cluster. The deployment follows a hybrid model with global reach designed to serve .conf attendees while respecting embargoed regions, demonstrating consideration for both scale and compliance constraints.
+
+A key architectural decision highlighted in the case study is the emphasis on building observability into the system from day one across all three major components: prompts, retrieval, and generation. This end-to-end instrumentation approach was positioned as essential for accelerating iteration during development and de-risking the production launch. The system employs BridgeIT RAG-as-a-Service for managing retrieval, index versioning, and model version control with rollback capabilities, providing the operational controls necessary for maintaining system reliability over time.
+
+## Comprehensive Observability Strategy
+
+The heart of this case study is Splunk's approach to LLM observability, which they frame as requiring visibility into not just performance metrics like latency, but also the quality and trustworthiness of responses. Their observability strategy is built around several core principles that differentiate LLM monitoring from traditional application monitoring.
+
+The first principle is establishing a single pane of glass that correlates key metrics across the entire RAG pipeline. Their custom Splunk dashboard brings together LLM output quality, source documents used, latency measurements, reliability scores, and cost metrics in one unified view. This integration allows operations teams, ML engineers, and content owners to investigate performance and answer quality without context-switching between multiple tools or log sources. The dashboard design explicitly supports the operational workflow of moving from a high-level quality signal to detailed root cause analysis.
+
+Document transparency forms the second pillar of their observability approach. The "Documents in context" section of their dashboard makes explicit exactly which source documents were retrieved and passed to the LLM for any given user query. This transparency is positioned as essential for auditing RAG system behavior and debugging issues like hallucinations, as teams can trace a poor response back to the specific documents that informed it. The system also implements source reliability classification, tagging documents into reliability tiers (green/yellow/red) based on predefined quality criteria. This distribution helps teams identify whether bad outputs stem from poor source curation and enables prioritization of which documents to clean, reindex, or remove from the knowledge base.
+
+The third key aspect is support for comprehensive root cause analysis workflows. When a response is flagged as low quality, the dashboard enables end-to-end investigation from the original user question, through the retrieved documents, the constructed LLM prompt, response latency, token usage and associated costs, and even which model version handled the request. This capability is framed as critical for reducing mean time to resolution (MTTR) when LLM failures occur in production. The case study emphasizes that this level of observability allows teams to reduce hallucinations, optimize prompt and retrieval configurations, monitor system performance holistically, and continuously improve source document health.
+
+## Structured Logging and Instrumentation
+
+A crucial technical implementation detail highlighted in the case study is the use of highly structured application logs to enable precise observability. The example log payload shown for a successful RAG answer demonstrates the level of detail captured for each interaction. These structured logs include event type and status information (event=RAG_ANSWER_DEBUG, status=success, isAnswerUnknown=false, errorCode=0), the complete user query and rendered answer for verification, comprehensive retrieval transparency data including sources retrieved, initial sources considered, references used, and URL category classifications for reliability analysis.
+
+The logs also capture grounding signals such as memory_facts_probability_category to correlate with factuality assessments, full tracing context including trace_id, span_id, and trace_flags to enable joining logs with distributed traces in Splunk Observability Cloud, and runtime metadata such as hostName, processName, and container context for fleet-wide comparisons. This level of structured instrumentation transforms what could be opaque application behavior into data that can be queried, aggregated, visualized, and alerted upon using standard observability tools.
+
+The case study provides an example SPL (Splunk Processing Language) query demonstrating how these structured logs are converted into actionable metrics. The query extracts answerStatus fields from the message payload, computes distributions and percentages, and transforms the data into business-meaningful categories like "NOT_FOUND" versus "ANSWER_FOUND." This transformation supports SLA monitoring, enables alerts when "NOT_FOUND" responses exceed acceptable thresholds over time windows, and facilitates trend analysis segmented by model version, API route, or source reliability tier. The approach exemplifies how proper instrumentation at the application layer enables powerful analytics and operational intelligence at the platform layer.
+
+## Quality Monitoring and Hallucination Detection
+
+The case study provides concrete examples of quality monitoring in practice, including a particularly instructive case of mild hallucination detection. Two similar user queries about .conf registration hours produced different outcomes based on subtle prompt differences. In the first query, the user asked about registration hours for a Sunday night arrival without explicitly instructing the system to consult the agenda. The LLM failed to prioritize the most relevant document (the detailed agenda), instead likely relying on a "Know Before You Go" document that contained partial registration information but lacked specific weekday schedules. This resulted in an incomplete answer representing a mild hallucination.
+
+When the user rephrased the query to explicitly state "Can you take a look at the agenda and re-answer this question," the LLM successfully retrieved the detailed agenda document and provided a precise, complete answer. This example underscores several critical observability needs. Input monitoring that tracks prompt quality and structure would reveal that the second query contained an explicit directive absent in the first. RAG pipeline monitoring observing context content processing and quality of sources would show which documents were retrieved for each query, revealing that the agenda document was not prioritized for the first query despite containing the precise answer needed. Output monitoring using LLM scoring or human-in-the-loop feedback could flag the first answer as incomplete or less relevant, triggering investigation and refinement of retrieval logic or prompt templates.
+
+The case study positions this type of observability with human-in-the-loop feedback as essential for revealing when incomplete context causes mild hallucinations and for guiding iterative improvements to both prompt engineering and retrieval configurations. This example demonstrates how comprehensive observability enables not just detecting failures but understanding their root causes and systematically improving system behavior over time.
+
+## Metrics, Dashboards, and Alerting
+
+The observability implementation includes real-time monitoring of several categories of key performance indicators. Quality metrics include groundedness (how well responses are supported by retrieved documents) and relevance (how well responses address the user's actual question). Performance metrics track latency at various points in the pipeline, overall error rates, and detailed breakdowns of where time is spent. Cost metrics monitor token budgets and cost-per-request to prevent runaway inference expenses. The case study emphasizes the importance of tracking not just point-in-time values but also drift over time and staleness of source documents.
+
+The alerting strategy extends beyond traditional error-based alerts to include quality-focused triggers. Alerts are configured for groundedness score dips that might indicate retrieval issues or model drift, source document staleness that could lead to outdated information in responses, and prompt-injection or jailbreak pattern detection using anomaly detection algorithms. This multi-dimensional alerting approach reflects the unique risk profile of LLM systems where technical success (the system returns a response without error) does not guarantee business success (the response is accurate and helpful).
+
+The case study also highlights the integration of application performance monitoring (APM) and distributed tracing for RAG applications. Screenshots from Splunk Observability Cloud show monitoring of the ai-deployment and bridget-ai-svc services with visibility into pod lifecycle phases, pod restarts, container readiness, CPU utilization, and memory utilization. For LLM applications specifically, memory monitoring is noted as particularly critical due to the resource demands of embeddings, model inference, and in-memory caching strategies.
+
+APM dashboards track success rates (99.982% in the example shown, indicating stable retrieval and generation workflows), service request volumes to identify traffic patterns and detect scaling or release events, service error rates to identify occasional failures worth investigating, latency percentiles (p99 particularly critical for user experience in chatbot scenarios), and dependency latency to reveal slowness in underlying services. The service map visualization helps track service-to-service performance across the distributed architecture. The case study notes that APM surfaces success rates, latency distributions, and dependency relationships that directly impact generative AI monitoring and user experience.
+
+## Distributed Tracing and Root Cause Analysis
+
+A particularly powerful capability highlighted in the case study is the use of distributed tracing for "needle in a haystack" problem detection. In RAG systems, a single user request can span several internal services including authentication, input validation, embedding generation, vector search, document retrieval, prompt construction, LLM inference, and response formatting. Finding exactly what went wrong for one problematic request among thousands of successful ones represents a classic observability challenge.
+
+The traces overview from Splunk APM provides insights into several RAG-specific patterns. Fast-fail traces with very short durations often point to issues in authentication, input validation, or null checks before the expensive retrieval and generation operations begin. Slow traces with long durations identify bottlenecks in vector search, embedding generation, or LLM inference. Temporal correlation of error clusters and latency spikes with periods of high load helps identify capacity or resource contention issues. Each trace ID serves as a breadcrumb for detailed root-cause analysis, allowing engineers to drill into the specific sequence of operations and identify where the failure or performance degradation occurred.
+
+The span breakdown capability visualizes each stage of the RAG lifecycle, making explicit the time spent in token processing, POST requests, retrieval operations, and generation. This granular visibility enables engineers to compare expected execution paths with failing ones, identifying exactly where behavior diverges. The case study notes that this trace-driven root cause analysis capability pinpoints rare failures across the RAG lifecycle and significantly accelerates the time to identify and implement fixes.
+
+## Kubernetes and Infrastructure Monitoring
+
+Beyond application-level observability, the case study demonstrates monitoring of the underlying Kubernetes infrastructure that hosts the RAG services. Pod lifecycle monitoring detects deployment or scaling issues, with the example showing healthy pod states. Pod restart tracking monitors service stability and crash loops, with zero restarts indicating stable operation. Container readiness monitoring ensures service availability to handle traffic.
+
+Resource utilization monitoring takes on particular importance for LLM applications. CPU utilization monitoring highlights potential processing bottlenecks, though the example shows fairly low usage suggesting possible over-provisioning. Memory utilization is described as critical for LLMs, embeddings, and caches, with the example showing a steady increase that the case study recommends monitoring for potential memory leaks. These infrastructure metrics complement the application-level quality and performance metrics to provide a complete picture of system health.
+
+The case study presents a table summarizing Kubernetes metrics and their importance for RAG applications, noting that pod lifecycle phases detect deployment or scaling issues, pod restarts track service stability and crash loops, unready containers monitor service availability, CPU utilization highlights processing bottlenecks, and memory utilization is critical for LLMs, embeddings, and caches with particular attention needed for potential leaks.
+
+## Governance, Reproducibility, and Version Control
+
+Beyond the technical monitoring capabilities, the case study addresses operational governance considerations essential for production LLM deployments. The scope and data minimization approach restricted the system to Cisco public data only, with no personal data in prompts, RAG processes, testing, or logs. This design decision addresses privacy and compliance concerns while demonstrating that valuable RAG applications can be built on appropriately scoped data.
+
+The deployment and access controls implement a hybrid deployment model with global reach for .conf attendees while respecting embargoed regions, balancing accessibility with regulatory compliance. The monitoring and maintenance plan includes provisions for drift monitoring to detect when model or retrieval behavior degrades over time, regular testing to ensure continued quality as data and models evolve, and incident response procedures for handling quality or availability issues.
+
+Versioning and reproducibility are managed through the BridgeIT RAG-as-a-Service platform, which provides version control and rollback capabilities for retrieval indices and model versions. This capability is crucial for production systems where being able to identify when a change was introduced and quickly revert to a known-good configuration can dramatically reduce incident impact. The case study positions rigorous versioning as a key governance practice alongside data minimization and drift monitoring.
+
+## Lessons Learned and Best Practices
+
+The case study concludes with several key takeaways positioned as lessons learned from the implementation. The first is that LLM observability should be built in from day one across prompts, retrieval, and generation to accelerate iteration and de-risk launch. This suggests that attempting to add observability after the fact is significantly more challenging than instrumenting from the beginning.
+
+The second key lesson is to combine retrieval quality, output quality, and latency monitoring to see cause and effect relationships rather than just point-in-time metrics. This systems-thinking approach recognizes that problems in one part of the pipeline (e.g., poor retrieval) manifest as symptoms in another part (e.g., low-quality generation), and understanding these relationships is essential for effective troubleshooting.
+
+The case study emphasizes that structured logs including prompts, sources, and trace IDs enable precise dashboards, alerting, and root-cause analysis. This technical implementation detail is elevated to a best practice because it directly enables all the higher-level observability capabilities described throughout the case study.
+
+Another key practice is using SPL or similar query languages to convert raw logs into actionable metrics and alerting aligned with business SLAs. This bridges the gap between technical instrumentation and business outcomes, ensuring that monitoring serves the actual needs of the organization rather than just producing technical telemetry.
+
+The alerting strategy best practice is to alert on groundedness dips, source document staleness, and prompt-injection patterns rather than just traditional errors. This reflects the unique risk profile of LLM systems and ensures that monitoring covers the most important failure modes rather than just the most obvious ones.
+
+For root cause analysis, the recommendation is that trace-driven RCA pinpoints rare failures across the RAG lifecycle and accelerates fixes. This positions distributed tracing as essential infrastructure for production LLM systems rather than an optional nice-to-have capability.
+
+Finally, the governance best practices emphasize minimizing data scope, versioning rigorously, and planning proactively for drift monitoring to meet both governance and reliability needs. This reflects the reality that successful production LLM systems must address not only technical functionality but also regulatory compliance, risk management, and long-term operational sustainability.
+
+## Critical Assessment and Balanced Perspective
+
+While this case study provides valuable technical detail about implementing observability for RAG systems, it is important to note that it is presented by Splunk to showcase their observability platform capabilities. The case study naturally emphasizes successful aspects and capabilities of their tooling without discussing potential limitations, challenges encountered, or comparison with alternative approaches.
+
+The case study does not provide specific quantitative results beyond the APM metrics shown in screenshots, such as concrete improvements in time to detect quality issues, reduction in hallucination rates over time, or cost savings achieved through the monitoring approach. The success rate of 99.982% shown in APM dashboards is impressive but lacks context about what types of failures the remaining 0.018% represent and whether these are acceptable for the use case.
+
+The mild hallucination example is instructive but represents a relatively benign failure mode where the system provided incomplete information rather than actively incorrect information. The case study does not address how the observability approach handles more severe quality failures or what percentage of issues are detected through automated monitoring versus user reports.
+
+The governance approach of restricting data to public Cisco materials is conservative and appropriate for a demonstration system, but may not reflect the full complexity of production enterprise deployments where proprietary or sensitive information must be included in RAG systems. The case study does not address how observability practices would need to adapt for those more complex data governance scenarios.
+
+Despite these caveats, the case study provides substantial value in demonstrating concrete implementation patterns for LLM observability, including specific log structures, SPL queries, dashboard designs, and alerting strategies that organizations can adapt for their own RAG deployments. The emphasis on end-to-end instrumentation from day one, structured logging with tracing context, and quality-focused monitoring beyond traditional performance metrics represents sound engineering practice for production LLM systems regardless of the specific observability platform chosen.

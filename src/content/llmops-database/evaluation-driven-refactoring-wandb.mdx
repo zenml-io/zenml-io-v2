@@ -1,0 +1,140 @@
+---
+title: "Evaluation-Driven Refactoring: How W&B Improved Their LLM Documentation Assistant Through Systematic Testing"
+slug: "evaluation-driven-refactoring-wandb"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f414ea0bdd6540ca5758e"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:08:04.010Z"
+  createdOn: "2024-11-21T14:18:54.597Z"
+llmopsTags:
+  - "chatbot"
+  - "chromadb"
+  - "chunking"
+  - "documentation"
+  - "langchain"
+  - "latency-optimization"
+  - "model-optimization"
+  - "monitoring"
+  - "question-answering"
+  - "rag"
+  - "reliability"
+  - "scalability"
+  - "semantic-search"
+  - "vector-search"
+  - "wandb"
+company: "Weights & Biases"
+summary: "Weights & Biases documented their journey refactoring Wandbot, their LLM-powered documentation assistant, achieving significant improvements in both accuracy (72% to 81%) and latency (84% reduction). The team initially attempted a \"refactor-first, evaluate-later\" approach but discovered the necessity of systematic evaluation throughout the process. Through methodical testing and iterative improvements, they replaced multiple components including switching from FAISS to ChromaDB for vector storage, transitioning to LangChain Expression Language (LCEL) for better async operations, and optimizing their RAG pipeline. Their experience highlighted the importance of continuous evaluation in LLM system development, with the team conducting over 50 unique evaluations costing approximately $2,500 to debug and optimize their refactored system."
+link: "https://wandb.ai/wandbot/wandbot_public/reports/Refactoring-Wandbot-our-LLM-powered-document-assistant-for-improved-efficiency-and-speed--Vmlldzo3NzgyMzY4"
+year: 2024
+seo:
+  title: "Weights & Biases: Evaluation-Driven Refactoring: How W&B Improved Their LLM Documentation Assistant Through Systematic Testing - ZenML LLMOps Database"
+  description: "Weights & Biases documented their journey refactoring Wandbot, their LLM-powered documentation assistant, achieving significant improvements in both accuracy (72% to 81%) and latency (84% reduction). The team initially attempted a \"refactor-first, evaluate-later\" approach but discovered the necessity of systematic evaluation throughout the process. Through methodical testing and iterative improvements, they replaced multiple components including switching from FAISS to ChromaDB for vector storage, transitioning to LangChain Expression Language (LCEL) for better async operations, and optimizing their RAG pipeline. Their experience highlighted the importance of continuous evaluation in LLM system development, with the team conducting over 50 unique evaluations costing approximately $2,500 to debug and optimize their refactored system."
+  canonical: "https://www.zenml.io/llmops-database/evaluation-driven-refactoring-wandb"
+  ogTitle: "Weights & Biases: Evaluation-Driven Refactoring: How W&B Improved Their LLM Documentation Assistant Through Systematic Testing - ZenML LLMOps Database"
+  ogDescription: "Weights & Biases documented their journey refactoring Wandbot, their LLM-powered documentation assistant, achieving significant improvements in both accuracy (72% to 81%) and latency (84% reduction). The team initially attempted a \"refactor-first, evaluate-later\" approach but discovered the necessity of systematic evaluation throughout the process. Through methodical testing and iterative improvements, they replaced multiple components including switching from FAISS to ChromaDB for vector storage, transitioning to LangChain Expression Language (LCEL) for better async operations, and optimizing their RAG pipeline. Their experience highlighted the importance of continuous evaluation in LLM system development, with the team conducting over 50 unique evaluations costing approximately $2,500 to debug and optimize their refactored system."
+---
+
+## Overview
+
+Weights & Biases developed Wandbot, an LLM-powered documentation assistant designed to help users navigate their technical documentation. This case study documents a significant refactoring effort that aimed to address performance inefficiencies while maintaining or improving accuracy. The team's journey provides valuable insights into the challenges of maintaining and improving production LLM systems, particularly around the importance of systematic evaluation and the hidden complexities of seemingly straightforward refactoring work.
+
+The Wandbot system is a Retrieval Augmented Generation (RAG) pipeline that ingests documentation, stores it in a vector database, and uses LLM-based response synthesis to answer user queries. The system was deployed across multiple client applications including Slack, Discord, and Zendesk, making performance and reliability critical production concerns.
+
+## The Problem
+
+Before the refactoring effort, the team identified several key inefficiencies in their production system:
+
+- Document parsing issues in the data ingestion pipeline were causing quality problems
+- Retrieval speeds were slower than desired for a production application
+- Iterative and redundant LLM calls were increasing system latency significantly
+- The original response time was approximately 491 seconds per query on their deployed system, which is clearly unacceptable for a user-facing application
+
+The team initially assumed that refactoring would not significantly impact system performance, planning to evaluate at the end of the refactor and address any performance degradation. This assumption proved to be dangerously incorrect, as they discovered when initial evaluations showed accuracy dropping from ~70% to ~23% after the refactor.
+
+## Technical Architecture Changes
+
+### Vector Store Migration
+
+One of the most impactful changes was replacing FAISS (Facebook AI Similarity Search) with ChromaDB as the vector store. This migration delivered approximately 69% reduction in retrieval latency and enabled document-level metadata storage and filtering capabilities. The metadata filtering proved particularly valuable for improving retrieval relevance. Interestingly, the team found that their embedding model choice interacted with the vector store selection—`text-embedding-small` worked better with ChromaDB than `text-embedding-ada-002`, although this wasn't initially apparent and required extensive evaluation to discover.
+
+### Ingestion Pipeline Improvements
+
+The team made substantial improvements to the data ingestion pipeline:
+
+- Implemented multiprocessing to significantly speed up the ingestion process
+- Developed custom Markdown and SourceCode parsers to improve parsing logic
+- Added parent-child document chunks to the vector store, enabling a parent document retrieval step that enhanced the context provided to the LLM
+- Included metadata in ingested document chunks to enable metadata-based filtering during retrieval
+
+### RAG Pipeline Modularization
+
+The team split the RAG pipeline into three major components: query enhancement, retrieval, and response synthesis. This modular architecture made it easier to tune each component independently and measure the impact of changes on evaluation metrics. The query enhancement stage was consolidated from multiple sequential LLM calls to a single call, improving both speed and performance.
+
+A notable addition was the sub-query answering step in the response synthesis module. By breaking down complex queries into sub-queries and generating responses for each, then synthesizing a final answer, the system achieved improved completeness and relevance of generated responses.
+
+### Transition to LangChain Expression Language (LECL)
+
+The original implementation used a combination of Instructor and llama-index, which created coordination challenges with asynchronous API calls and multiple potential points of failure. The team transitioned to LangChain Expression Language (LECL), which natively supports asynchronous API calls, optimized parallel execution, retries, and fallbacks.
+
+This transition was not straightforward. LECL did not directly replicate all functionality from the previous libraries. For example, Instructor featured Pydantic validators for running validations on function outputs with the ability to re-ask an LLM with validation errors—functionality not natively supported by LECL. The team developed a custom re-ask loop within the LangChain framework to address this gap.
+
+The team also faced implementation challenges with LECL primitives like RunnableAssign and RunnableParallel, which were initially applied inconsistently, leading to errors and performance issues. As their understanding of these primitives improved, they were able to correct their approach and optimize performance.
+
+## The Evaluation Journey
+
+### Initial Disaster
+
+When the team first evaluated their refactored branch with LiteLLM (added to make the system more configurable across vendors), they scored only ~23% accuracy compared to the deployed v1.1 system's ~70% accuracy. Even attempting to reproduce v1.1 results with the refactored branch yielded only ~25% accuracy.
+
+### Systematic Debugging
+
+The team adopted a systematic cherry-picking approach, taking individual commits from the refactored branch and evaluating each one. When accuracy dropped, they either reverted the change or experimented with alternatives. This process was described as "tedious and time-consuming" but ultimately successful.
+
+Key discoveries during this process included:
+
+- The query enhancer was using a higher temperature; reducing it to 0.0 improved performance by approximately 3%
+- Few-shot examples had been accidentally removed from the system prompt; adding them back improved accuracy to ~50%
+- Chunk size of 512 outperformed 384 for their use case
+- The choice between GPT-4 model versions (gpt-4-1106-preview vs gpt-4-0125-preview) had significant and non-linear effects—the newer model initially degraded performance but ultimately enabled the final jump from 70-75% to above 80% accuracy when combined with the more sophisticated system
+
+### Evaluation Pipeline Optimization
+
+A critical operational insight was the importance of evaluation speed. Initial evaluations took an average of 2 hours and 17 minutes each, severely limiting iteration speed. By making the evaluation script purely asynchronous, they reduced evaluation time to below 10 minutes, enabling many more experiments per day.
+
+The team ran nearly 50 unique evaluations at a cost of approximately $2,500 in LLM API calls to debug the refactored system. This investment ultimately paid off with a final accuracy of 81.63%, representing approximately 9% improvement over the baseline.
+
+## Observability and Tracing
+
+The team utilized W&B Weave for tracing and observability, using the lightweight `weave.op()` decorator to automatically trace functions and class methods. This enabled them to examine complex data transfer in intermediate steps and better debug the LLM-based system. The ability to observe intermediate steps and LLM calls was described as essential for debugging their complex pipeline.
+
+## Results
+
+The final results of the refactoring effort were impressive:
+
+- Answer correctness improved from 72% to 81%
+- Response latency decreased by 84%, from ~492 seconds to ~80 seconds per response on the deployed system
+- Local response generation took 64 seconds compared to 79.72 seconds when deployed
+
+The team deployed the system on Replit, and the improvements enabled practical use across their integration channels (Slack, Discord, Zendesk).
+
+## Key Lessons and Recommendations
+
+The team's experience yielded several important LLMOps lessons:
+
+**Evaluation as a Core Practice**: The team learned the hard way that assuming refactoring won't impact performance is dangerous. They strongly recommend making evaluation central to the development process and ensuring changes lead to measurable enhancements.
+
+**Evaluation Pipeline Performance**: A slow evaluation pipeline becomes a bottleneck for experimentation. Investing time in optimizing the evaluation infrastructure paid significant dividends in iteration speed.
+
+**Non-Deterministic Evaluation**: When evaluating LLM-based systems with an LLM as a judge, scores are not deterministic. The team recommends averaging across multiple evaluations while considering the costs of doing so.
+
+**Component Interactions**: Changes to one component (like embedding models or LLM versions) can have non-linear and unexpected interactions with other components. What doesn't work initially might work well later in combination with other changes, and vice versa.
+
+**Retaining Critical Components**: During refactoring, it's easy to accidentally remove critical components like few-shot prompts. Documenting and carefully tracking such configurations is essential to avoid unintentional performance degradation.
+
+**Iterative, Systematic Approach**: The team recommends approaching refactoring iteratively with systematic testing and evaluation at each step to identify and address issues promptly rather than discovering major problems at the end.
+
+This case study serves as a cautionary tale about the hidden complexity of LLM system refactoring while also demonstrating that systematic, evaluation-driven approaches can yield significant improvements in both accuracy and performance.

@@ -1,0 +1,117 @@
+---
+title: "AI Agent for Self-Service Business Intelligence with Text-to-SQL"
+slug: "ai-agent-for-self-service-business-intelligence-with-text-to-sql"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "6983374fb5c421b9b5891bbd"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2026-02-05T09:20:17.895Z"
+  lastUpdated: "2026-02-04T12:35:10.867Z"
+  createdOn: "2026-02-04T12:10:55.312Z"
+llmopsTags:
+  - "data-analysis"
+  - "question-answering"
+  - "code-generation"
+  - "regulatory-compliance"
+  - "structured-output"
+  - "prompt-engineering"
+  - "agent-based"
+  - "human-in-the-loop"
+  - "error-handling"
+  - "semantic-search"
+  - "langchain"
+  - "postgresql"
+  - "fastapi"
+  - "docker"
+  - "orchestration"
+  - "security"
+  - "compliance"
+  - "guardrails"
+  - "scalability"
+  - "databases"
+  - "microservices"
+  - "anthropic"
+  - "amazon-aws"
+company: "BGL"
+summary: "BGL, a provider of self-managed superannuation fund administration solutions serving over 12,700 businesses, faced challenges with data analysis where business users relied on data teams for queries, creating bottlenecks, and traditional text-to-SQL solutions produced inconsistent results. BGL built a production-ready AI agent using Claude Agent SDK hosted on Amazon Bedrock AgentCore that allows business users to retrieve analytics insights through natural language queries. The solution combines a strong data foundation using Amazon Athena and dbt for data transformation with an AI agent that interprets natural language, generates SQL queries, and processes results using code execution. The implementation uses modular knowledge architecture with CLAUDE.md for project context and SKILL.md files for product-specific domain expertise, while AgentCore provides stateful execution sessions with security isolation. This democratized data access for over 200 employees, enabling product managers, compliance teams, and customer success managers to self-serve analytics without SQL knowledge or data team dependencies."
+link: "https://aws.amazon.com/blogs/machine-learning/democratizing-business-intelligence-bgls-journey-with-claude-agent-sdk-and-amazon-bedrock-agentcore?tag=soumet-20"
+year: 2026
+seo:
+  title: "BGL: AI Agent for Self-Service Business Intelligence with Text-to-SQL - ZenML LLMOps Database"
+  description: "BGL, a provider of self-managed superannuation fund administration solutions serving over 12,700 businesses, faced challenges with data analysis where business users relied on data teams for queries, creating bottlenecks, and traditional text-to-SQL solutions produced inconsistent results. BGL built a production-ready AI agent using Claude Agent SDK hosted on Amazon Bedrock AgentCore that allows business users to retrieve analytics insights through natural language queries. The solution combines a strong data foundation using Amazon Athena and dbt for data transformation with an AI agent that interprets natural language, generates SQL queries, and processes results using code execution. The implementation uses modular knowledge architecture with CLAUDE.md for project context and SKILL.md files for product-specific domain expertise, while AgentCore provides stateful execution sessions with security isolation. This democratized data access for over 200 employees, enabling product managers, compliance teams, and customer success managers to self-serve analytics without SQL knowledge or data team dependencies."
+  canonical: "https://www.zenml.io/llmops-database/ai-agent-for-self-service-business-intelligence-with-text-to-sql"
+  ogTitle: "BGL: AI Agent for Self-Service Business Intelligence with Text-to-SQL - ZenML LLMOps Database"
+  ogDescription: "BGL, a provider of self-managed superannuation fund administration solutions serving over 12,700 businesses, faced challenges with data analysis where business users relied on data teams for queries, creating bottlenecks, and traditional text-to-SQL solutions produced inconsistent results. BGL built a production-ready AI agent using Claude Agent SDK hosted on Amazon Bedrock AgentCore that allows business users to retrieve analytics insights through natural language queries. The solution combines a strong data foundation using Amazon Athena and dbt for data transformation with an AI agent that interprets natural language, generates SQL queries, and processes results using code execution. The implementation uses modular knowledge architecture with CLAUDE.md for project context and SKILL.md files for product-specific domain expertise, while AgentCore provides stateful execution sessions with security isolation. This democratized data access for over 200 employees, enabling product managers, compliance teams, and customer success managers to self-serve analytics without SQL knowledge or data team dependencies."
+---
+
+## Overview
+
+BGL is a leading provider of self-managed superannuation fund (SMSF) administration solutions operating across 15 countries and serving over 12,700 businesses. The company helps individuals manage complex compliance and reporting requirements for retirement savings. BGL's data infrastructure processes complex compliance and financial data through over 400 analytics tables, each representing specific business domains including aggregated customer feedback, investment performance, compliance tracking, and financial reporting.
+
+The company faced two primary challenges common to many organizations deploying LLMs for data analytics. First, business users without technical knowledge were dependent on data teams for queries, creating significant bottlenecks and slowing down decision-making processes. Second, traditional text-to-SQL solutions failed to provide consistent and accurate results, which is particularly problematic in the highly regulated financial services industry where data accuracy and compliance are paramount. Working with AWS, BGL developed a production AI agent solution using Claude Agent SDK hosted on Amazon Bedrock AgentCore that enables business users to retrieve analytical insights through natural language while maintaining the security and compliance requirements essential for financial services, including session isolation and identity-based access controls.
+
+## Data Foundation Architecture
+
+One of the most critical insights from BGL's implementation is the recognition that successful AI agent-based text-to-SQL solutions require a strong data foundation rather than expecting the agent to handle everything. The case study highlights a common anti-pattern where engineering teams implement AI agents to handle database schema understanding, complex dataset transformation, business logic for analyses, and result interpretation all at once. This approach typically produces inconsistent results through incorrect table joins, missed edge cases, and faulty aggregations.
+
+BGL leveraged its existing mature big data solution powered by Amazon Athena and dbt Labs to process and transform terabytes of raw data across various business sources. The ETL process builds analytic tables where each table is designed to answer a specific category of business questions. These tables are aggregated, denormalized datasets containing metrics and summaries that serve as a business-ready single source of truth for BI tools, AI agents, and applications. This architectural decision represents a critical separation of concerns: the data system handles complex data transformation in a deterministic way, while the AI agent focuses on interpreting natural language questions and generating SQL SELECT queries against well-structured analytic tables.
+
+The benefits of this approach are substantial. For consistency, the data system handles complex business logic including joins, aggregations, and business rules that are validated by the data team ahead of time, making the AI agent's task straightforward. For performance, analytic tables are pre-aggregated and optimized with proper indexes, allowing the agent to perform basic queries rather than complex joins across raw tables, resulting in faster response times even for large datasets. For maintainability and governance, business logic resides in the data system rather than the AI's context window, ensuring the AI agent relies on the same single source of truth as other consumers like BI tools. When business rules change, the data team updates the data transformation logic in dbt, and the AI agent automatically consumes the updated analytic tables reflecting those changes.
+
+As James Luo, BGL's Head of Data and AI, notes in the case study: "Many people think the AI agent is so powerful that they can skip building the data platform; they want the agent to do everything. But you can't achieve consistent and accurate results that way. Each layer should solve complexity at the appropriate level."
+
+## Claude Agent SDK Implementation
+
+BGL's development team had been using Claude Code powered by Amazon Bedrock as an AI coding assistant with temporary, session-based access to mitigate credential exposure and integration with existing identity providers to align with financial services compliance requirements. Through daily use of Claude Code, BGL recognized that its core capabilities extended beyond coding to include reasoning through complex problems, writing and executing code, and interacting with files and systems autonomously.
+
+Claude Agent SDK packages these agentic capabilities into a Python and TypeScript SDK, enabling developers to build custom AI agents on top of Claude Code. For BGL, this provided several critical capabilities including code execution where the agent writes and runs Python code to process datasets returned from analytic tables and generate visualizations, automatic context management for long-running sessions that don't overwhelm token limits, sandboxed execution with production-grade isolation and permission controls, and modular memory and knowledge through CLAUDE.md files for project context and Agent Skills for product line domain-specific expertise.
+
+### Code Execution for Data Processing
+
+The code execution capability is particularly important for data analytics use cases. Analytics queries often return thousands of rows and sometimes beyond megabytes of data. Standard tool-use, function calling, and Model Context Protocol (MCP) patterns typically pass retrieved data directly into the context window, which quickly reaches model context window limits. BGL implemented a different approach where the agent writes SQL to query Athena, then writes Python code to process the CSV file results directly in its file system. This enables the agent to handle large result sets, perform complex aggregations, and generate charts without reaching context window limits. This pattern represents an important LLMOps consideration about when to use the LLM's context window versus when to delegate to code execution.
+
+### Modular Knowledge Architecture
+
+To handle BGL's diverse product lines and complex domain knowledge, the implementation uses a modular approach with two key configuration types that work together seamlessly.
+
+The CLAUDE.md file provides the agent with global context including the project structure, environment configuration (test, production, etc.), and critically, how to execute SQL queries. It defines which folders store intermediate results and final outputs, ensuring files land in defined file paths that users can access. This represents project-wide standards that apply across all agent interactions.
+
+BGL organizes agent domain knowledge by product lines using SKILL.md configuration files. Each skill acts as a specialized data analyst for a specific product. For example, the BGL CAS 360 product has a skill called "CAS360 Data Analyst agent" which handles company and trust management with ASIC compliance alignment, while BGL's Simple Fund 360 product has a skill called "Simple Fund 360 Data Analyst agent" equipped with SMSF administration and compliance-related domain skills.
+
+A SKILL.md file defines three key components: when to trigger (what types of questions should activate this skill), which tables to use or map (references to relevant analytic tables in the data folder), and how to handle complex scenarios with step-by-step guidance for multi-table queries or specific business questions if required.
+
+The skill-based architecture provides several important benefits for production LLM systems. For unified context, when a skill is triggered, Claude Agent SDK dynamically merges its specialized instructions with the global CLAUDE.md file into a single prompt, allowing the agent to simultaneously apply project-wide standards while using domain-specific knowledge. For progressive discovery, not all skills need to be loaded into the context window at once; the agent first reads the query to determine which skill needs to be triggered, loads the skill body and references to understand which analytic table's metadata is required, then further explores corresponding data folders. This keeps context usage efficient while providing comprehensive coverage. For iterative refinement, if the AI agent is unable to handle some business knowledge due to lack of new domain knowledge, the team gathers feedback from users, identifies gaps, and adds new knowledge to existing skills using a human-in-the-loop process so skills are updated and refined iteratively.
+
+## Production Architecture with Amazon Bedrock AgentCore
+
+The high-level solution architecture combines BGL's existing data infrastructure with the new AI agent capabilities. Analytic tables are pre-built daily using Athena and dbt, serving as the single source of truth. A typical user interaction flows through several stages: users ask business questions using Slack, the agent identifies relevant tables using skills and writes SQL queries, a security layer validates SQL to allow only SELECT queries while blocking DELETE, UPDATE, and DROP operations to prevent unintended data modification, Athena executes the query and stores results into Amazon S3, the agent downloads the resulting CSV file to the file system on AgentCore (completely bypassing the context window to avoid token limits), the agent writes Python code to analyze the CSV file and generate visualizations or refined datasets depending on the business question, and final insights and visualizations are formatted and returned to the user in Slack.
+
+Deploying an AI agent that executes arbitrary Python code requires significant infrastructure considerations, particularly around isolation to ensure there's no cross-session access to data or credentials. Amazon Bedrock AgentCore provides fully-managed, stateful execution sessions where each session has its own isolated microVM with separate CPU, memory, and file system. When a session ends, the microVM terminates fully and sanitizes memory, ensuring no remnants persist for future sessions.
+
+BGL found AgentCore especially valuable for several reasons. For stateful execution sessions, AgentCore maintains session state for up to 8 hours, allowing users to have ongoing conversations with the agent and refer back to previous queries without losing context. For framework flexibility, it's framework-agnostic and supports deployment of AI agents including Strands Agents SDK, Claude Agent SDK, LangGraph, and CrewAI with minimal code changes. For alignment with security best practices, it provides session isolation, VPC support, and IAM or OAuth-based identity to facilitate governed, compliance-aligned agent operations at scale. For system integration, AgentCore is part of a broader ecosystem including Gateway, Memory, and Browser tools, allowing BGL to plan for future integrations such as AgentCore Memory for storing user preferences and query patterns.
+
+As James Luo notes: "There's Gateway, Memory, Browser tools, a whole ecosystem built around it. I know AWS is investing in this direction, so everything we build now can integrate with these services in the future."
+
+## SQL Security Validation
+
+An important production consideration highlighted in the architecture is the SQL security validation layer. Before queries are executed against Athena, a security layer validates that only SELECT queries are allowed while blocking DELETE, UPDATE, and DROP operations. This represents a critical safeguard when deploying LLM-based systems that generate and execute code, preventing potential data modification or loss through prompt injection or agent errors. This validation step is essential for maintaining data integrity and meeting compliance requirements in the financial services industry.
+
+## Results and Business Impact
+
+For BGL's more than 200 employees, this implementation represents a significant shift in how they extract business intelligence. Product managers can now validate hypotheses instantly without waiting for the data team. Compliance teams can spot risk trends without learning SQL. Customer success managers can pull account-specific analytics in real-time during client calls. This democratization of data access transforms analytics from a bottleneck into a competitive advantage, enabling faster decision-making across the organization while freeing the data team to focus on strategic initiatives rather than one-time query requests.
+
+## Key Takeaways and Best Practices
+
+The case study provides several important lessons for organizations deploying LLMs in production for analytics use cases. First, invest in a strong data foundation where accuracy starts with having the data system and pipeline handle complex business logic including joins and aggregations, allowing the agent to focus on basic, reliable logic. Second, organize knowledge by domain using Agent Skills to encapsulate domain-specific expertise, keeping the context window clean and manageable while establishing a feedback loop to continuously monitor user queries, identify gaps, and iteratively update skills. Third, use code execution for data processing rather than having agents process large datasets using the LLM context, instead instructing the agent to write and execute code to filter, aggregate, and visualize data. Fourth, choose stateful, session-based infrastructure to host the agent since conversational analytics requires persistent context, with Amazon Bedrock AgentCore simplifying this by providing built-in state persistence up to 8-hour sessions.
+
+## Critical Assessment
+
+While the case study presents a compelling implementation, it's important to note that this is published as an AWS blog post co-written with BGL, which means it serves partly as promotional content for AWS services. The actual quantitative business metrics are limited - the case study mentions 200+ employees benefiting but doesn't provide specific measurements of time saved, query accuracy rates, user adoption metrics, or cost comparisons with the previous approach. The statement about democratizing data access and transforming analytics into a competitive advantage is qualitative rather than backed by concrete performance data.
+
+The architecture does represent sound engineering principles, particularly the separation of concerns between data transformation (handled by Athena and dbt) and natural language interpretation (handled by the AI agent). This approach is more likely to produce reliable results than attempting to have an LLM handle all aspects of the data pipeline. The use of skill-based modular knowledge architecture is a practical pattern for managing domain complexity and context window limitations.
+
+The security considerations around session isolation, SQL validation to prevent data modification, and identity-based access controls are appropriate for financial services, though the case study doesn't detail specific compliance certifications or audit processes. The human-in-the-loop approach for iteratively refining skills based on user feedback is a pragmatic acknowledgment that AI agents require ongoing maintenance and improvement rather than being set-and-forget solutions.
+
+Overall, while promotional in nature, the case study describes a production implementation that addresses real LLMOps challenges around context management, code execution, domain knowledge organization, security isolation, and the critical importance of data quality foundations underlying AI agent applications.

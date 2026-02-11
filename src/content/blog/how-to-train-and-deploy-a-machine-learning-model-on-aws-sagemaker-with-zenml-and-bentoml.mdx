@@ -1,0 +1,287 @@
+---
+title: "How to train and deploy a machine learning model on AWS Sagemaker with ZenML and BentoML"
+slug: "how-to-train-and-deploy-a-machine-learning-model-on-aws-sagemaker-with-zenml-and-bentoml"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "6530103415c72542abdeb3a5"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2023-10-19T09:13:46.292Z"
+  lastUpdated: "2023-10-18T17:15:33.618Z"
+  createdOn: "2023-10-18T17:04:52.237Z"
+author: "safoine-el-khabich"
+category: "zenml"
+tags:
+  - "bentoml"
+  - "deployment"
+  - "evergreen"
+  - "integrations"
+  - "tooling"
+date: "2022-12-14T00:00:00.000Z"
+readingTime: 11 Mins Read
+mainImage:
+  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/f0717468/65300f5b14bb84cd42d75c12_zenml-bentoml.png"
+seo:
+  title: "How to train and deploy a machine learning model on AWS Sagemaker with ZenML and BentoML - ZenML Blog"
+  description: "Learn how to use ZenML pipelines and BentoML to easily deploy machine learning models, be it on local or cloud environments. We will show you how to train a model using ZenML, package it with BentoML, and deploy it to a local machine or cloud provider. By the end of this post, you will have a better understanding of how to streamline the deployment of your machine learning models using ZenML and BentoML."
+  canonical: "https://www.zenml.io/blog/how-to-train-and-deploy-a-machine-learning-model-on-aws-sagemaker-with-zenml-and-bentoml"
+  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/c0418beb/65300f5b14bb84cd42d75c12_zenml-bentoml.png"
+  ogTitle: "How to train and deploy a machine learning model on AWS Sagemaker with ZenML and BentoML - ZenML Blog"
+  ogDescription: "Learn how to use ZenML pipelines and BentoML to easily deploy machine learning models, be it on local or cloud environments. We will show you how to train a model using ZenML, package it with BentoML, and deploy it to a local machine or cloud provider. By the end of this post, you will have a better understanding of how to streamline the deployment of your machine learning models using ZenML and BentoML."
+---
+
+**Last updated:** December 14, 2022.
+
+It can be hard to deploy a machine learning model. There are several factors that need to be considered, such as how the model will be integrated into the existing infrastructure, whether it will be deployed ‘on premises’ or in the cloud, and how to handle potential issues such as data privacy and security. Additionally, the performance of the model in production can often differ from its performance during training, so careful monitoring and testing are necessary to ensure that it is working as expected. It is also important to have a plan in place for maintaining and updating the model over time, as the data and requirements for the model may change.
+
+One way to make the deployment of machine learning models easier is to use pipelines. A pipeline is a series of steps that are performed on the data in order to train and deploy the model. This can include tasks such as preprocessing the data, training the model, and evaluating its performance. Using a pipeline can streamline the deployment process and make it more efficient. Tools such as ZenML and BentoML can be used to build and manage pipelines, and to package and deploy machine learning models, making the process even easier.
+
+By using ZenML pipelines and the deployment integrations, the deployment of machine learning models can be made more efficient and less challenging. Are you ready to take your machine learning models to the next level? Model serving and deployment is where the rubber meets the road, allowing your trained models to make predictions in real-time and drive business decisions. Get ready to unleash the power of your ML models on the world with ZenML and BentoML!
+
+In this article, you will learn how to:
+
+<ol id=""><li id="">Setup ZenML and BentoML as an integration</li><li id="">Define a pipeline to train and deploy model locally</li><li id="">Switch from a local deployed model to a Sagemaker (cloud) endpoint</li></ol>
+
+## Setup
+
+**ZenML:** is an extensible, open-source MLOps framework for creating portable, production-ready MLOps pipelines. It’s built for data scientists, ML engineers, and MLOps developers to collaborate as they develop to production. ZenML has simple, flexible syntax, is cloud- and tool-agnostic, and has interfaces/abstractions that are catered towards ML workflows. ZenML brings together all your favorite tools in one place so you can tailor your workflow to cater to your needs.
+
+ZenML consists of three core concepts that allow the framework to be data-centric and also cloud-tool-agnostic. These are steps, pipelines, and stacks:
+
+**Pipelines**: A pipeline consists of a series of steps, organized in any order that makes sense for your use case. These pipelines and steps are defined in code using Python decorators or classes.
+
+**Stacks**: A stack is the configuration of the underlying infrastructure and choices around how your pipeline will be run. For example, you can choose to run your pipeline locally or on the cloud by changing the stack you use.
+
+We will learn more about these concepts below. But first, let’s install ZenML. All we have to do is run:
+
+<div data-rt-embed-type="true"><pre><code class="language-bash" fs-codehighlight-element="code">
+pip install zenml["server"]
+# ZenML comes with a dashboard that we can lunch using:
+zenml up
+</code></pre></div>
+
+‍
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/b4e3c14a/65300ff42053717e42576a82_zenml-dashboard.png" alt="ZenML Dashboard" />
+</figure>
+
+**BentoML:** is an open-source framework for machine learning model serving. It can be used to serve and deploy models locally, in a cloud environment, or on a Kubernetes cluster. BentoML standardizes the way that models are deployed to production within an organization, making it easier to manage and maintain them.
+
+To install BentoML we use ZenML’ CLI integration command which handles this for us:
+
+<div data-rt-embed-type="true"><pre><code class="language-bash" fs-codehighlight-element="code">
+zenml integration install bentoml
+</code></pre></div>
+
+
+
+Now that we have both tools installed we want to create a ZenML stack that will define how the pipeline will be run. A stack in ZenML consists of multiple stack components and these can be configured as follows:
+
+<div data-rt-embed-type="true"><pre><code class="language-bash" fs-codehighlight-element="code">
+zenml model-deployer register bentoml_deployer --flavor=bentoml
+zenml stack register local_bentoml_stack \
+ &nbsp;-a default \ # refers to the artifact-store stack component
+ &nbsp;-o default \ # refers to the orchestrator stack component
+ &nbsp;-d bentoml_deployer \ # refers to the model-deployer stack component
+ &nbsp;--set # sets the stack as the active stack
+</code></pre></div>
+
+‍*‍*
+
+In order to understand how we can deploy models with ZenML and BentoML we will PyTorch to train a classifier on the fashion-mnist dataset.
+
+The full example can be found in ZenML’s core repository [here](https://github.com/zenml-io/zenml/tree/main/examples/bentoml_deployment)
+
+For more detailed information about stack components, integrations and ZenML in general you can find it in the docs [here](https://docs.zenml.io/)
+
+## Training Deployment Pipeline
+
+To make this more easily understandable and cleaner we will be splitting the code into two different pipelines. The first one will be the training pipeline, which consists of the following six steps:
+
+<ol id=""><li id=""><strong id="">Load the Fashion-MNIST dataset</strong>: This step loads the Fashion-MNIST dataset, which is a popular toy dataset for training image classification models.</li><li id=""><strong id="">Train a classifier</strong>: In this step, we train a classifier on the Fashion-MNIST dataset using a machine learning algorithm of our choice. This could be a simple model like logistic regression or a more complex model like a convolutional neural network (CNN).</li><li id=""><strong id="">Evaluator</strong>: After training the classifier, we use the Evaluator step to evaluate the performance of the model on a held-out test set. This allows us to assess the accuracy, precision, and other metrics of our model and helps us determine whether it is ready for deployment.</li><li id=""><strong id="">Deployment_trigger</strong>: The deployment_trigger step is used to specify when and how the model should be deployed. This step allows us to set certain conditions, such as the performance of the model on the test set, that must be met before the model is deployed.</li><li id=""><strong id="">Bento Builder</strong>: The bento_builder step converts the trained model and packages it into a format that can be easily deployed and served. This step is important because it allows us to easily share and deploy our trained model to different environments, such as a local machine or the cloud.</li><li id=""><strong id="">Deployer</strong>: The deployer step takes the packaged model from the previous step and deploys it to a local server.</li></ol>
+
+The pipeline can be defined like this:
+
+<div data-rt-embed-type="true"><pre><code class="language-bash" fs-codehighlight-element="code">
+@pipeline(enable_cache=False, settings={"docker": docker_settings})
+def training_fashion_mnist(
+ &nbsp; &nbsp;importer,
+ &nbsp; &nbsp;trainer,
+ &nbsp; &nbsp;evaluator,
+ &nbsp; &nbsp;deployment_trigger,
+ &nbsp; &nbsp;bento_builder,
+ &nbsp; &nbsp;deployer,
+):
+ &nbsp; &nbsp;"""Link all the steps and artifacts together"""
+ &nbsp; &nbsp;train_dataloader, test_dataloader = importer()
+ &nbsp; &nbsp;model = trainer(train_dataloader)
+ &nbsp; &nbsp;accuracy = evaluator(test_dataloader=test_dataloader, model=model)
+ &nbsp; &nbsp;decision = deployment_trigger(accuracy=accuracy)
+ &nbsp; &nbsp;bento = bento_builder(model=model)
+ &nbsp; &nbsp;deployer(deploy_decision=decision, bento=bento)
+</code></pre></div>
+
+‍
+
+Then each of these steps can be defined on their own. Let’s take a look at how the trainer step is defined, for example:
+
+<div data-rt-embed-type="true"><pre><code class="language-bash" fs-codehighlight-element="code">
+import torch
+from torch import nn
+from torch.utils.data import DataLoader
+from neuralnetwork import NeuralNetwork 
+from zenml.steps import step
+
+@step(enable_cache=True)
+def trainer(train_dataloader: DataLoader) -&gt; nn.Module:
+ &nbsp; &nbsp;"""Trains on the train dataloader"""
+ &nbsp; &nbsp;model = NeuralNetwork().to(DEVICE)
+ &nbsp; &nbsp;loss_fn = nn.CrossEntropyLoss()
+ &nbsp; &nbsp;optimizer = torch.optim.SGD(model.parameters(), lr=1e-3)
+ &nbsp; &nbsp;size = len(train_dataloader.dataset)
+ &nbsp; &nbsp;model.train()
+ &nbsp; &nbsp;for batch, (X, y) in enumerate(train_dataloader):
+ &nbsp; &nbsp; &nbsp; &nbsp;X, y = X.to(DEVICE), y.to(DEVICE)
+
+ &nbsp; &nbsp; &nbsp; &nbsp;# Compute prediction error
+ &nbsp; &nbsp; &nbsp; &nbsp;pred = model(X)
+ &nbsp; &nbsp; &nbsp; &nbsp;loss = loss_fn(pred, y)
+
+ &nbsp; &nbsp; &nbsp; &nbsp;# Backpropagation
+ &nbsp; &nbsp; &nbsp; &nbsp;optimizer.zero_grad()
+ &nbsp; &nbsp; &nbsp; &nbsp;loss.backward()
+ &nbsp; &nbsp; &nbsp; &nbsp;optimizer.step()
+
+ &nbsp; &nbsp; &nbsp; &nbsp;if batch % 100 == 0:
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;loss, current = loss.item(), batch * len(X)
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;print(f"loss: {loss:&gt;7f} &nbsp;[{current:&gt;5d}/{size:&gt;5d}]")
+ &nbsp; &nbsp;return model
+</code></pre></div>
+
+‍
+
+Once the model is trained, the next step is the bento_builder step, which is a built-in ZenML step that makes it easier to prepare your model for deployment with BentoML. This step builds a Bento, which is an artifact that packages the model, requirements, and custom pre- and post-processing code in one file that can be used to deploy the model anywhere. The bento_builder step can be referenced as follows:
+
+<div data-rt-embed-type="true"><pre><code class="language-bash" fs-codehighlight-element="code">
+from zenml.integrations.bentoml.steps import (
+ &nbsp; &nbsp;BentoMLBuilderParameters,
+ &nbsp; &nbsp;bento_builder_step,
+)
+
+bento_builder = bento_builder_step(
+ &nbsp; &nbsp;params=BentoMLBuilderParameters(
+ &nbsp; &nbsp; &nbsp; &nbsp;model_name=MODEL_NAME,
+ &nbsp; &nbsp; &nbsp; &nbsp;model_type="pytorch",
+ &nbsp; &nbsp; &nbsp; &nbsp;service="service.py:svc",
+ &nbsp; &nbsp; &nbsp; &nbsp;labels={
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;"framework": "pytorch",
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;"dataset": "mnist",
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;"zenml_version": "0.21.1",
+ &nbsp; &nbsp; &nbsp; &nbsp;},
+ &nbsp; &nbsp; &nbsp; &nbsp;exclude=["data"],
+ &nbsp; &nbsp; &nbsp; &nbsp;python={
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;"packages": ["zenml", "torch", "torchvision"],
+ &nbsp; &nbsp; &nbsp; &nbsp;},
+ &nbsp; &nbsp;)
+)
+</code></pre></div>
+
+‍
+
+This step takes the trained model and creates a Bento artifact that can be used for deployment. This is an important step because it allows us to easily share and deploy our trained model to different environments.
+
+The last step in our pipeline is the deployment step, which deploys the packaged file called the Bento that contains everything we need to deploy the trained model. The deployment step is also a built-in ZenML step that can be easily referenced to deploy the model to a local machine:
+
+<div data-rt-embed-type="true"><pre><code class="language-bash" fs-codehighlight-element="code">
+from zenml.integrations.bentoml.steps import (
+ &nbsp; &nbsp;BentoMLDeployerParameters,
+ &nbsp; &nbsp;bentoml_model_deployer_step,
+)
+
+bentoml_model_deployer = bentoml_model_deployer_step(
+ &nbsp; &nbsp;params=BentoMLDeployerParameters(
+ &nbsp; &nbsp; &nbsp; &nbsp;model_name=MODEL_NAME,
+ &nbsp; &nbsp; &nbsp; &nbsp;port=3001,
+ &nbsp; &nbsp; &nbsp; &nbsp;production=False,
+ &nbsp; &nbsp;)
+)
+</code></pre></div>
+
+‍
+
+After defining all these steps and the pipeline we can run the pipeline which will give us the following:
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/2404a7e1/65300ff7b7b5d1193ed23b8f_pipeline-terminal-logs.png" alt="Pipeline terminal logs" />
+</figure>
+
+In the ZenML dashboard we can see the pipeline DAG:
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/85927bd0/65300ff6b7b5d1193ed23b2b_pipeline-dag.png" alt="Pipeline dag" />
+</figure>
+
+In the Swagger UI, we can see more details about the deployed Bento:
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e4169e1f/65300ff7ff5787df85e6169b_swagger-ui.png" alt="Swagger UI" />
+</figure>
+
+## Inference Pipeline:
+
+To make use of our deployed model the example comes with an inference pipeline which is a set of steps that use some image samples to run predictions on. You can find the code of this pipeline and more in the [bentoml_deployment example](https://github.com/zenml-io/zenml/tree/main/examples/bentoml_deployment).
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/eda40921/65300ff733d73ed6541f7296_inference-pipeline.png" alt="Inference pipeline" />
+</figure>
+
+## From Local to Cloud:
+
+Once a model server has been deployed and tested locally, it can be deployed to a cloud provider using bentoctl, a command-line interface (CLI) tool for managing BentoML deployments on cloud providers. Bentoctl currently supports AWS, GCP, and Azure, and requires that you have an account with one of these providers as well as the corresponding CLI tools and Docker and Terraform installed on your machine.
+
+To use bentoctl, you will need to first install it using the following command:
+
+<div data-rt-embed-type="true"><pre><code class="language-bash" fs-codehighlight-element="code">
+pip install bentoctl
+</code></pre></div>
+
+
+
+In this example, we will deploy the BentoML model that we built using ZenML to AWS Sagemaker. To do this, we first need to install the necessary dependencies:
+
+<div data-rt-embed-type="true"><pre><code class="language-bash" fs-codehighlight-element="code">
+zenml integration install aws s3
+bentoctl operator install aws-sagemaker
+</code></pre></div>
+
+‍
+
+Once these dependencies are installed, we can initialize our BentoML deployment by running the following command:
+
+<div data-rt-embed-type="true"><pre><code class="language-bash" fs-codehighlight-element="code">
+bentoctl init
+</code></pre></div>
+
+
+
+Next, we will build a Docker image using the BentoML model that we built in the training pipeline. This can be done with the following command:
+
+<div data-rt-embed-type="true"><pre><code class="language-bash" fs-codehighlight-element="code">
+bentoctl build -b $BENTO_TAG -f $DEPLOYMENT_CONFIG_FILE
+</code></pre></div>
+
+‍
+
+Finally, we can deploy our model to AWS Sagemaker by running the apply command:
+
+<div data-rt-embed-type="true"><pre><code class="language-bash" fs-codehighlight-element="code">
+bentoctl apply
+</code></pre></div>
+
+
+
+The full code for this example is available on [GitHub](https://github.com/zenml-io/zenml/tree/main/examples/bentoml_deployment).
+
+In conclusion, training and deploying a machine learning model can be a complex and time-consuming process. By using the ZenML pipeline and BentoML integration, we were able to streamline this process and easily deploy our model both locally and in the cloud. This allowed us to quickly and easily test and deploy our model, saving us valuable time and resources. Overall, the use of ZenML and BentoML proved to be a valuable tool in our machine learning workflow.

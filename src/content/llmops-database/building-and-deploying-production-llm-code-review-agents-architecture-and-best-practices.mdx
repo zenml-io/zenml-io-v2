@@ -1,0 +1,159 @@
+---
+title: "Building and Deploying Production LLM Code Review Agents: Architecture and Best Practices"
+slug: "building-and-deploying-production-llm-code-review-agents-architecture-and-best-practices"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "679c8c10ffbdbab028c1ed1c"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:59:10.545Z"
+  createdOn: "2025-01-31T08:38:40.628Z"
+llmopsTags:
+  - "code-generation"
+  - "code-interpretation"
+  - "rag"
+  - "embeddings"
+  - "prompt-engineering"
+  - "semantic-search"
+  - "vector-search"
+  - "error-handling"
+  - "multi-agent-systems"
+  - "agent-based"
+  - "latency-optimization"
+  - "chunking"
+  - "system-prompts"
+  - "fastapi"
+  - "monitoring"
+  - "databases"
+  - "cicd"
+  - "documentation"
+  - "security"
+  - "compliance"
+  - "guardrails"
+  - "reliability"
+  - "openai"
+  - "anthropic"
+company: "Ellipsis"
+summary: "Ellipsis developed an AI-powered code review system that uses multiple specialized LLM agents to analyze pull requests and provide feedback. The system employs parallel comment generators, sophisticated filtering pipelines, and advanced code search capabilities backed by vector stores. Their approach emphasizes accuracy over latency, uses extensive evaluation frameworks including LLM-as-judge, and implements robust error handling. The system successfully processes GitHub webhooks and provides automated code reviews with high accuracy and low false positive rates."
+link: "https://www.ellipsis.dev/blog/how-we-built-ellipsis"
+year: 2024
+seo:
+  title: "Ellipsis: Building and Deploying Production LLM Code Review Agents: Architecture and Best Practices - ZenML LLMOps Database"
+  description: "Ellipsis developed an AI-powered code review system that uses multiple specialized LLM agents to analyze pull requests and provide feedback. The system employs parallel comment generators, sophisticated filtering pipelines, and advanced code search capabilities backed by vector stores. Their approach emphasizes accuracy over latency, uses extensive evaluation frameworks including LLM-as-judge, and implements robust error handling. The system successfully processes GitHub webhooks and provides automated code reviews with high accuracy and low false positive rates."
+  canonical: "https://www.zenml.io/llmops-database/building-and-deploying-production-llm-code-review-agents-architecture-and-best-practices"
+  ogTitle: "Ellipsis: Building and Deploying Production LLM Code Review Agents: Architecture and Best Practices - ZenML LLMOps Database"
+  ogDescription: "Ellipsis developed an AI-powered code review system that uses multiple specialized LLM agents to analyze pull requests and provide feedback. The system employs parallel comment generators, sophisticated filtering pipelines, and advanced code search capabilities backed by vector stores. Their approach emphasizes accuracy over latency, uses extensive evaluation frameworks including LLM-as-judge, and implements robust error handling. The system successfully processes GitHub webhooks and provides automated code reviews with high accuracy and low false positive rates."
+---
+
+## Overview
+
+Ellipsis is an AI software engineering tool that automates code review, bug fixing, and other developer tasks through integration with GitHub. This case study provides a detailed technical deep dive into how their production LLM system is architected, evaluated, and maintained. The company, which is Y Combinator-backed and SOC II Type I certified, has developed a sophisticated multi-agent architecture specifically designed to handle the challenges of automated code review at scale.
+
+The case study is particularly valuable because it comes directly from the founder who has been working on coding agents since before ChatGPT, offering insights that span the evolution of LLM-based development tools. While the content is promotional in nature, it provides substantial technical detail that makes the architectural decisions and trade-offs tangible for practitioners.
+
+## System Architecture and Production Infrastructure
+
+The production system begins when users install a GitHub App into their repositories. Webhook events from GitHub are routed through Hookdeck for reliability guarantees, then forwarded to a FastAPI web application. Events are immediately placed onto a workflow queue managed by Hatchet, enabling asynchronous processing.
+
+A critical design insight highlighted is that **asynchronous workflows fundamentally change the optimization priorities** - latency becomes less critical than accuracy. This is an important consideration for LLMOps practitioners, as it allows for more comprehensive processing, multiple agent passes, and sophisticated filtering without the real-time constraints that plague many LLM applications.
+
+When a PR is opened or marked ready for review, the workflow clones the repository and runs the review agent. The system also responds to tags like "@ellipsis-dev review this", allowing users to request specific actions such as making changes, answering questions, or logging issues to GitHub/Linear.
+
+## Multi-Agent Architecture for Code Review
+
+The core architectural principle employed is decomposition: rather than building one large agent with a massive prompt, Ellipsis uses dozens of smaller agents that can be independently benchmarked and optimized. This follows the prompt engineering principle that "to increase performance, make the problem easier for the LLM to solve."
+
+The review system operates in two main phases. First, multiple **Comment Generators** run in parallel to identify different types of issues. One generator might look for violations of customer-defined rules, another searches for duplicated code, and so forth. This parallel architecture also enables model mixing - the system can leverage both GPT-4o and Claude Sonnet simultaneously, taking advantage of each model's strengths without having to choose between them. Each generator can attach **Evidence** (links to code snippets) to their comments, which becomes useful in later filtering stages.
+
+Second, a multistage **Filtering Pipeline** processes the raw comments to significantly reduce false positive rates - identified as developers' most common complaint about AI code review tools. The pipeline includes several filter types:
+
+- **Deduplication Filter**: Removes similar comments, especially important given generator overlap
+- **Confidence Filter**: Applies threshold-based filtering on comment confidence scores
+- **Logical Correctness/Hallucination Filter**: Detects straight-up hallucinations from generators by leveraging the attached Evidence
+- **Comment Editing**: Makes small adjustments to line numbers and inline code suggestions
+
+Notably, the system includes filtered comments and reasoning in its final output, providing transparency about what Ellipsis found suspicious and why certain comments weren't posted. This is an excellent practice for production AI systems where explainability matters.
+
+## Feedback Integration and Continuous Improvement
+
+The system incorporates user feedback directly into the filtering process rather than relying on per-customer fine-tuned models. Thumbs up/down reactions are used through embedding search over similar past comments, allowing the system to learn from historical reactions. Users can also respond to comments with explanations, making it easier for the LLM to understand why a comment was inappropriate.
+
+This approach has several advantages over fine-tuning: more consistent behavior, near-immediate reflection of feedback in agent behavior (no retraining delay), and easier maintenance. This is a pragmatic production decision that trades theoretical optimality for operational simplicity.
+
+## Code Search Subagent and RAG Implementation
+
+A modular **Code Search subagent** underpins both comment generation and filtering, demonstrating good software engineering principles applied to LLM systems. This same subagent is reused across code review, code generation, and codebase chat features, allowing independent benchmarking and improvement.
+
+The Code Search agent implements a **multi-step RAG+ approach** combining keyword and vector search. For code indexing, two complementary methods are used:
+
+- **Chunking-based indexing**: Uses tree-sitter to parse the AST into high-level pieces (functions, classes). Better for finding specific code and functionality.
+- **File-based indexing**: Embeds LLM-generated summaries per file. Better for higher-level architectural questions.
+
+The team notes that GraphRAG is on their horizon but not yet implemented.
+
+A significant insight relates to limiting context due to LLM performance degradation at large context sizes. Traditional RAG approaches use rerankers and cosine similarity thresholds to limit results, but for code search, relative ranking is less important than whether retrieved code is actually useful. To address this, they run an LLM-based binary classifier after vector search, using additional context from the agent trajectory to select truly relevant pieces. This keeps the top-level search agent's context uncluttered across multiple passes.
+
+## Efficient Vector Database Management
+
+Despite latency not being the primary concern, blocking PR review on slow repository indexing was unacceptable. Ellipsis uses Turbopuffer as their vector store and implements an efficient incremental indexing approach. The key insight is **avoiding re-embedding the entire repository on every commit**.
+
+Their process for updating on new commits involves chunking the repo and using SHA hashes as chunk IDs, adding obfuscated metadata for later retrieval (no customer code stored), fetching existing IDs from the vector DB namespace, comparing new versus existing IDs, deleting obsolete IDs, and only embedding/upserting chunks with new IDs. In practice, since most commits affect only a small percentage of chunks, synchronization takes only a couple of seconds.
+
+## Language Server Integration
+
+To provide IDE-like capabilities (go-to-definition, find-all-references) to agents, Ellipsis sidecars an Lsproxy container from Agentic Labs using Modal. This provides a high-level API for various language servers while maintaining separation of concerns.
+
+The implementation accounts for LLM limitations: since LLMs are notoriously bad at correctly identifying column numbers and often off-by-one on line numbers, tools allow the agent to specify symbol names and then fuzzy match to the closest symbol of that name. This is a practical workaround for a well-known LLM weakness.
+
+## Developer Workflow and Evaluation Systems
+
+The team's approach to development has evolved significantly. Their earlier philosophy emphasized extensive CI tests, request caching (custom-built with DynamoDB for speed, cost, and determinism), keeping prompts in code rather than third-party services, rolling custom code instead of using frameworks like LangChain, and heavy reliance on snapshot testing with manual human reviews.
+
+The major evolution has been **significant investment in automated evals**, reducing reliance on snapshot testing. Their developer workflow for adding new agents follows an iterative pattern: writing initial prompts and tools, sanity checking examples, finding correctness measures, building mini-benchmarks with around 30 examples (often using LLM augmentation for "fuzz testing"), measuring accuracy, diagnosing failure classes with LLM auditors, updating agents through prompt tweaks and few-shot examples, generating more data, and repeating until plateau. They occasionally sample public production data to identify new edge cases.
+
+Notably, they have not found fine-tuning very applicable due to slower iteration speed and lack of fine-tuning availability on the latest models.
+
+## LLM-as-Judge Implementation
+
+For evaluation, deterministic assessment is preferred where possible (e.g., comparing file edits to expected outputs with fuzzy whitespace handling). For more subjective domains, LLM-as-judge compares results to ground truth, removing the need for manual human review. The case study includes an example prompt for judging Code Search results, demonstrating Chain of Thought reasoning and structured output with Pydantic models.
+
+Even GPT-4o is reported to reliably handle simpler judgment tasks like codebase chat, though more complex evaluations like entire PR generation remain challenging.
+
+## Agent Trajectory Auditing
+
+An **Auditor agent** runs on failed test cases to diagnose where in the trajectory things went wrong. This receives the agent trajectory and correct answer, identifying whether failures stem from poor vector search, hallucination, laziness, or other issues. The case study notes that o1 models excel at this kind of complicated analysis task.
+
+## Production Reliability Patterns
+
+The case study emphasizes that LLMs' probabilistic nature requires building in graceful error handling from the beginning, regardless of how well tasks perform in testing. Error handling operates at multiple levels:
+
+- Simple retries and timeouts on LLM calls
+- Model fallbacks (e.g., Sonnet-3.6 to GPT-4o if one goes down)
+- Feeding tool call errors back into the agent for correction
+- Extensive logical validation with error feedback
+- Tool-level isolation (if Vector DB fails, keyword search still works)
+- Agent-level isolation (if one Comment Generator fails, others continue)
+- Graceful agent exits on unexpected errors (telling the agent to submit based on what it's learned so far)
+- Descriptive user messaging if all LLM providers are down
+
+## Managing Long Context
+
+Despite longer context lengths, LLMs still suffer performance degradation as context increases. The general rule of thumb reported is that hallucinations become noticeably more frequent when more than half the context is filled, though with high variance.
+
+Mitigation strategies include hard and soft token cutoffs, truncating early messages, priority-based message inclusion, self-summarization, and tool-specific summaries. For example, large shell command outputs are summarized using GPT-4o with predictive outputs.
+
+## Model Selection and Performance Optimization
+
+The team primarily uses Claude 3.5 Sonnet (specifically `claude-3-5-sonnet-20241022`, which they consider distinct enough to informally call "Sonnet-3.6") and GPT-4o, finding Sonnet slightly better at most tasks. An interesting observation is that Claude and GPT models, which used to require very different prompting approaches, now seem to be converging - prompts tuned for 4o can often be swapped to Sonnet without changes while still seeing performance benefits.
+
+For o1, while qualitatively better results are seen on harder problems, the model must be prompted very differently - it makes different types of mistakes and is not a drop-in replacement.
+
+Two "big hammers" for performance plateaus are described: splitting complicated agents into simpler subagents (enabling independent benchmarking) and running agents in parallel with a judge selecting the best candidate (with variations from temperature, prompts, few-shot examples, or models). The trade-off is increased system complexity and maintenance burden.
+
+## Critical Assessment
+
+While this case study provides excellent technical depth, it's important to note some limitations. No quantitative results are provided - claims about "significantly reduced false positive rates" and accuracy improvements are not backed by specific numbers. The case study is promotional in nature, originating from a company blog post, so some claims should be taken with appropriate skepticism. Additionally, customer-specific results or testimonials are not included, making it difficult to assess real-world performance across different codebases and use cases.
+
+Nevertheless, the architectural patterns, evaluation frameworks, and production reliability strategies described represent solid engineering practices that are broadly applicable to LLMOps implementations beyond code review.

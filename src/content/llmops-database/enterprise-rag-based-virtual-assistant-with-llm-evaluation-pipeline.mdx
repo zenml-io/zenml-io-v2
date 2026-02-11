@@ -1,0 +1,120 @@
+---
+title: "Enterprise RAG-Based Virtual Assistant with LLM Evaluation Pipeline"
+slug: "enterprise-rag-based-virtual-assistant-with-llm-evaluation-pipeline"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "675b1bce3af385454edfe30a"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:48:04.105Z"
+  createdOn: "2024-12-12T17:22:22.902Z"
+llmopsTags:
+  - "customer-support"
+  - "question-answering"
+  - "chatbot"
+  - "regulatory-compliance"
+  - "rag"
+  - "embeddings"
+  - "prompt-engineering"
+  - "semantic-search"
+  - "vector-search"
+  - "error-handling"
+  - "cicd"
+  - "monitoring"
+  - "fastapi"
+  - "guardrails"
+  - "reliability"
+  - "wandb"
+  - "microsoft-azure"
+  - "databricks"
+  - "openai"
+company: "Santalucía Seguros"
+summary: "Santalucía Seguros implemented a GenAI-based Virtual Assistant to improve customer service and agent productivity in their insurance operations. The solution uses a RAG framework powered by Databricks and Microsoft Azure, incorporating MLflow for LLMOps and Mosaic AI Model Serving for LLM deployment. They developed a sophisticated LLM-based evaluation system that acts as a judge for quality assessment before new releases, ensuring consistent performance and reliability of the virtual assistant."
+link: "https://www.databricks.com/blog/santalucia-seguros-enterprise-level-rag"
+year: 2024
+seo:
+  title: "Santalucía Seguros: Enterprise RAG-Based Virtual Assistant with LLM Evaluation Pipeline - ZenML LLMOps Database"
+  description: "Santalucía Seguros implemented a GenAI-based Virtual Assistant to improve customer service and agent productivity in their insurance operations. The solution uses a RAG framework powered by Databricks and Microsoft Azure, incorporating MLflow for LLMOps and Mosaic AI Model Serving for LLM deployment. They developed a sophisticated LLM-based evaluation system that acts as a judge for quality assessment before new releases, ensuring consistent performance and reliability of the virtual assistant."
+  canonical: "https://www.zenml.io/llmops-database/enterprise-rag-based-virtual-assistant-with-llm-evaluation-pipeline"
+  ogTitle: "Santalucía Seguros: Enterprise RAG-Based Virtual Assistant with LLM Evaluation Pipeline - ZenML LLMOps Database"
+  ogDescription: "Santalucía Seguros implemented a GenAI-based Virtual Assistant to improve customer service and agent productivity in their insurance operations. The solution uses a RAG framework powered by Databricks and Microsoft Azure, incorporating MLflow for LLMOps and Mosaic AI Model Serving for LLM deployment. They developed a sophisticated LLM-based evaluation system that acts as a judge for quality assessment before new releases, ensuring consistent performance and reliability of the virtual assistant."
+---
+
+## Overview
+
+Santalucía Seguros is a Spanish insurance company that has been serving families for over 100 years. The company faced a common challenge in the insurance industry: agents needed to access vast amounts of documentation from multiple locations and in different formats to answer customer queries about products, coverages, and procedures. This created friction in customer service interactions and slowed down the sales process.
+
+To address this, Santalucía implemented a GenAI-based Virtual Assistant (VA) using a Retrieval Augmented Generation (RAG) framework. The VA enables insurance agents to get instant, natural language answers to their questions through Microsoft Teams, accessible on mobile devices, tablets, or computers with 24/7 availability. The stated benefits include faster customer response times, improved customer satisfaction, and accelerated sales cycles by providing immediate and accurate answers about coverage and products.
+
+## Architecture and Technical Implementation
+
+The solution architecture is built on what Santalucía calls their "Advanced Analytics Platform," which is powered by Databricks and Microsoft Azure. This combination was chosen to provide flexibility, privacy, security, and scalability. Several key architectural decisions are worth noting:
+
+The RAG system enables continuous ingestion of up-to-date documentation into embedding-based vector stores. These vector stores provide the ability to index information for rapid search and retrieval, which is essential for answering agent queries in real-time. The architecture supports ongoing updates as new documentation becomes available, which is a critical requirement for an insurance company that regularly updates its product offerings and coverage details.
+
+The RAG system itself is set up as a pyfunc model in MLflow, the open-source LLMOps framework that originated from Databricks. This approach allows the team to version, track, and deploy the RAG pipeline as a cohesive model artifact. Using pyfunc provides flexibility in how the model logic is implemented while still benefiting from MLflow's model registry and deployment capabilities.
+
+For LLM inference, the team uses Databricks Mosaic AI Model Serving endpoints to host all LLM models used for queries. This centralized approach to model serving provides several operational benefits that are discussed in detail below.
+
+## Mosaic AI Model Serving for LLM Integration
+
+One of the key LLMOps practices highlighted in this case study is the use of Mosaic AI Model Serving to integrate external LLMs such as GPT-4 and other models available in the Databricks Marketplace. The Model Serving layer manages configuration, credentials, and permissions for these third-party models, exposing them through a unified REST API.
+
+This abstraction layer offers several advantages from an operational perspective. First, it ensures that any application or service consumes the LLM capabilities in a standardized way, reducing integration complexity. Second, it simplifies the work of development teams when adding new models by eliminating the need to build custom integrations with third-party APIs. Third, and perhaps most importantly for enterprise use cases, it enables centralized management of token consumption, credentials, and security access.
+
+The team has built a streamlined deployment process where new endpoints can be created on request using a git repository with a CI/CD process. This process deploys the endpoint configuration to the appropriate Databricks workspace automatically. The configuration is defined in JSON files that parameterize credentials and endpoints, with sensitive credentials stored securely in Azure Key Vault. MLflow is then used to deploy models in Databricks through the CI/CD pipelines.
+
+This approach demonstrates a mature LLMOps practice where model serving infrastructure is treated as code, version controlled, and deployed through automated pipelines rather than manual configuration.
+
+## LLM-as-a-Judge Evaluation System
+
+Perhaps the most interesting LLMOps practice described in this case study is the implementation of an LLM-as-a-judge evaluation system integrated directly into the CI/CD pipeline. The business context here is critical: Santalucía cannot afford to release updates to the VA that degrade response quality for previously working scenarios.
+
+The challenge is that each time new documents are ingested into the VA, the team must verify the assistant's performance before releasing the updated version. Traditional approaches that rely on user feedback are too slow and reactive for this use case. Instead, the system must be able to assess quality automatically before scaling to production.
+
+The solution uses a high-capacity LLM as an automated evaluator within the CI/CD pipeline. The process works as follows:
+
+First, the team creates a ground truth set of questions that have been validated by domain experts. When new product documentation is added to the VA, the team (either manually or with LLM assistance) develops a set of questions about the documentation along with expected answers. Importantly, this ground truth dataset grows with each release, building an increasingly robust regression test suite.
+
+Second, the LLM-as-a-judge is configured with natural-language-based criteria for measuring accuracy, relevance, and coherence between expected answers and those provided by the VA. These criteria are designed to assess whether the VA's responses match the intent and content of the ground truth answers, even if the exact wording differs.
+
+Third, during the CI/CD pipeline execution, the VA answers each question from the ground truth set, and the judge LLM assigns a score by comparing the expected answer with the VA's response. This creates a quantitative quality assessment that can be used to gate releases.
+
+The benefits of this approach are significant. It eliminates the wait for user reports about malfunctioning retrieval or generation. It also enables the team to make incremental changes to components like prompts while ensuring these changes don't negatively impact quality for previously delivered releases. This is a form of regression testing specifically designed for the probabilistic nature of LLM outputs.
+
+## Continuous Delivery Challenges and Best Practices
+
+The case study explicitly acknowledges that supporting continuous delivery of new releases while maintaining good LLMOps practices and response quality is challenging. The seamless integration of newly ingested documents into the RAG system requires careful orchestration of multiple components: the document ingestion pipeline, the vector store updates, the RAG model, and the evaluation system.
+
+The team emphasizes that ensuring response quality is critical for the business, and they cannot modify any part of the solution's code without guaranteeing it won't negatively impact previously delivered releases. This requires thorough testing and validation processes, which the LLM-as-a-judge approach addresses.
+
+The reliance on "RAG tools available in the Databricks Data Intelligence Platform" suggests the team is leveraging platform-native capabilities for ensuring releases have the latest data with appropriate governance and guardrails around their output. This includes centralized model management through MLflow and secure credential handling through Azure Key Vault.
+
+## Critical Assessment
+
+While the case study presents a compelling architecture, there are some areas where additional details would be valuable. The text does not provide specific metrics on response quality improvements, agent productivity gains, or customer satisfaction increases. Claims that the Virtual Assistant "exceeded user expectations" are not quantified with benchmarks or survey data.
+
+The LLM-as-a-judge approach, while innovative, has known limitations. The quality of evaluation depends heavily on the comprehensiveness of the ground truth dataset and the ability of the judge LLM to accurately assess semantic similarity and correctness. The case study acknowledges that creating ground truth requires manual validation by professionals, which can be a bottleneck for rapidly evolving documentation.
+
+Additionally, the reliance on external LLM services like GPT-4 through Model Serving introduces dependencies on third-party availability and pricing, though the abstraction layer does provide some flexibility to switch providers.
+
+## Platform and Technology Stack
+
+The complete technology stack includes:
+
+- Cloud Infrastructure: Microsoft Azure
+- Data and Analytics Platform: Databricks
+- Model Management and MLOps: MLflow (pyfunc models)
+- Model Serving: Databricks Mosaic AI Model Serving
+- External LLMs: GPT-4 and Databricks Marketplace models
+- Secret Management: Azure Key Vault
+- User Interface: Microsoft Teams integration
+- Deployment: Git-based CI/CD pipelines
+
+This architecture demonstrates a pattern increasingly common in enterprise GenAI deployments: using a managed platform like Databricks for the core data and model infrastructure while integrating with enterprise collaboration tools like Microsoft Teams for the user-facing application layer.
+
+## Conclusion
+
+The Santalucía Seguros case study represents a well-documented example of enterprise RAG deployment with mature LLMOps practices. The key innovations are the centralized model serving layer for managing LLM access and the LLM-as-a-judge evaluation system integrated into CI/CD. These practices address real operational challenges around credential management, security, and quality assurance in a production GenAI system. While quantitative results are not provided, the architectural patterns and processes described offer valuable guidance for organizations implementing similar solutions in regulated industries like insurance.

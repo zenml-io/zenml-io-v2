@@ -1,0 +1,123 @@
+---
+title: "Building Fair Housing Guardrails for Real Estate LLMs: Zillow's Multi-Strategy Approach to Preventing Discrimination"
+slug: "building-fair-housing-guardrails-for-real-estate-llms-zillow-s-multi-strategy-approach-to-preventing-discrimination"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f414b1c34367dbf334d57"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:38:03.708Z"
+  createdOn: "2024-11-21T14:18:51.531Z"
+llmopsTags:
+  - "classification"
+  - "compliance"
+  - "error-handling"
+  - "guardrails"
+  - "high-stakes-application"
+  - "microsoft-azure"
+  - "open-source"
+  - "prompt-engineering"
+  - "regulatory-compliance"
+  - "reliability"
+  - "security"
+  - "semantic-search"
+  - "system-prompts"
+company: "Zillow"
+summary: "Zillow developed a comprehensive Fair Housing compliance system for LLMs in real estate applications, combining three distinct strategies to prevent discriminatory responses: prompt engineering, stop lists, and a custom classifier model. The system addresses critical Fair Housing Act requirements by detecting and preventing responses that could enable steering or discrimination based on protected characteristics. Using a BERT-based classifier trained on carefully curated and augmented datasets, combined with explicit stop lists and prompt engineering, Zillow created a dual-layer protection system that validates both user inputs and model outputs. The approach achieved high recall in detecting non-compliant content while maintaining reasonable precision, demonstrating how domain-specific guardrails can be successfully implemented for LLMs in regulated industries."
+link: "https://www.zillow.com/tech/navigating-fair-housing-guardrails-in-llms/"
+year: 2024
+seo:
+  title: "Zillow: Building Fair Housing Guardrails for Real Estate LLMs: Zillow's Multi-Strategy Approach to Preventing Discrimination - ZenML LLMOps Database"
+  description: "Zillow developed a comprehensive Fair Housing compliance system for LLMs in real estate applications, combining three distinct strategies to prevent discriminatory responses: prompt engineering, stop lists, and a custom classifier model. The system addresses critical Fair Housing Act requirements by detecting and preventing responses that could enable steering or discrimination based on protected characteristics. Using a BERT-based classifier trained on carefully curated and augmented datasets, combined with explicit stop lists and prompt engineering, Zillow created a dual-layer protection system that validates both user inputs and model outputs. The approach achieved high recall in detecting non-compliant content while maintaining reasonable precision, demonstrating how domain-specific guardrails can be successfully implemented for LLMs in regulated industries."
+  canonical: "https://www.zenml.io/llmops-database/building-fair-housing-guardrails-for-real-estate-llms-zillow-s-multi-strategy-approach-to-preventing-discrimination"
+  ogTitle: "Zillow: Building Fair Housing Guardrails for Real Estate LLMs: Zillow's Multi-Strategy Approach to Preventing Discrimination - ZenML LLMOps Database"
+  ogDescription: "Zillow developed a comprehensive Fair Housing compliance system for LLMs in real estate applications, combining three distinct strategies to prevent discriminatory responses: prompt engineering, stop lists, and a custom classifier model. The system addresses critical Fair Housing Act requirements by detecting and preventing responses that could enable steering or discrimination based on protected characteristics. Using a BERT-based classifier trained on carefully curated and augmented datasets, combined with explicit stop lists and prompt engineering, Zillow created a dual-layer protection system that validates both user inputs and model outputs. The approach achieved high recall in detecting non-compliant content while maintaining reasonable precision, demonstrating how domain-specific guardrails can be successfully implemented for LLMs in regulated industries."
+---
+
+## Overview
+
+Zillow, a major online real estate marketplace, has been applying AI in the real estate domain since 2006 with their Zestimate model. As LLMs emerged and the company began exploring conversational AI experiences for home buyers, sellers, and renters, they encountered a significant challenge: ensuring that LLM-powered features comply with fair housing regulations. This case study documents their approach to building guardrails that prevent discriminatory outputs while maintaining a useful product experience.
+
+The core problem is that generic LLMs are trained on vast amounts of internet text and lack domain-specific awareness of fair housing laws. When deployed in real estate contexts, these models can inadvertently engage in "steering"—a practice where recommendations are influenced by protected demographic characteristics such as race, national origin, familial status, religion, disability, and others. Such behavior could violate the Fair Housing Act (FHA), the Equal Credit Opportunity Act (ECOA), and various state and local anti-discrimination laws.
+
+## The Compliance Challenge
+
+Zillow identified that deploying LLMs for real estate applications requires careful consideration of legally protected classes including race/color, national origin, sex (including sexual orientation and gender identity), familial status, religion, disability, age, marital status, source of income/receipt of public assistance, criminal background, and military status.
+
+The fundamental question they use as a guiding principle is: "Is it illegal if a real estate agent or loan officer does it?" This framing helps translate traditional fair housing compliance into the LLM context. For example, if a user asks "what is a good neighborhood for Latino families in Seattle," an LLM outputting predominantly Latino neighborhoods would constitute steering—the same violation that would occur if a human agent did the same thing.
+
+## Three-Strategy Approach
+
+Zillow developed and evaluated three distinct strategies for fair housing compliance, ultimately combining all three into a comprehensive guardrails system.
+
+### Strategy 1: Prompt Engineering
+
+The simplest approach involves adding fair housing compliance instructions directly to the system prompt. Sample guidance includes instructing the LLM to "answer the given real-estate related questions without breaking fair housing laws or being discriminatory" and to "politely refuse to provide information for queries that include references to protected classes."
+
+The advantage of this approach is its simplicity—no additional infrastructure or models are required. However, Zillow found significant limitations. The prompt-based approach achieved high recall (catching most potential violations) but suffered from poor precision. The system became overly cautious, refusing to respond even to legitimate queries that happened to mention terms related to protected classes. For instance, a user searching for "homes with accessibility features for disabilities" would be incorrectly flagged as non-compliant, even though such a query is perfectly legitimate for someone who needs accessible housing.
+
+Additionally, LLMs are inherently non-deterministic, meaning the same input could produce different outputs, introducing variance that cannot be fully controlled through prompting alone.
+
+### Strategy 2: Stop List
+
+To address cases requiring 100% deterministic handling, Zillow implemented a stop list approach—a database of words and phrases that, when matched in user input, trigger a predefined compliance response. This provides explicit control over the most severe and offensive fair housing violations.
+
+The stop list uses syntactic matching to parse input queries, looking for terms that would be expected to produce non-compliant outputs. When a match is found, the system outputs a predefined message citing its duty to follow fair housing guidance.
+
+However, the stop list approach has significant shortcomings due to its reliance on strict lexical matching without considering context. The word "Indian" might appear in a discriminatory query asking about neighborhoods with certain ethnic demographics, but it also appears legitimately in place names like "Indian Wells, CA" or points of interest like the "National Museum of the American Indian." Similarly, "disabilities" could be used appropriately by someone seeking accessible housing or inappropriately by someone seeking to avoid neighbors with disabilities.
+
+Zillow concluded that stop lists should be used sparingly—only for the most unambiguous and offensive terms—and must work alongside other methods that can handle semantic nuance.
+
+### Strategy 3: Fine-Tuned Classifier Model
+
+The most sophisticated approach involved training a dedicated machine learning classifier to detect potential FHA violations. The requirements for this classifier were fast inference (since it needs to operate as part of the LLM reasoning flow) and flexible decision making (allowing the precision-recall tradeoff to be tuned).
+
+Zillow implemented a BERT-based sequence classification model fine-tuned with binary cross-entropy loss on labeled examples from their domain. This approach enables the model to understand context and make nuanced decisions about whether a query is compliant or not.
+
+## Data Collection and Labeling
+
+Since no existing labeled dataset existed for fair housing classification, Zillow had to build one from scratch. Their data collection process involved several steps:
+
+- **Query Data**: They collected real estate-specific queries from various sources including search engine queries and customer interactions. Since most naturally occurring data was compliant, they augmented non-compliant examples by sampling protected attribute values and discriminatory phrases, then modifying compliant queries to include them. Legal and domain experts contributed hand-crafted examples.
+
+- **Response Data**: To enable the classifier to work on both inputs and outputs, they generated response data by passing sampled queries through an LLM using a real-estate-specific prompt.
+
+- **Data Labeling**: For responses to non-compliant queries, they performed sentence-level labeling using guidelines from legal experts. This granularity was important because longer responses might contain only one non-compliant sentence, and full-response labels could make it difficult for the model to learn which specific content was problematic. They used few-shot prompting to generate weak labels for the remaining data, followed by human expert review.
+
+- **Augmentation**: To expand the training set, they applied data augmentation techniques including back-translation, paraphrasing, word embedding swap, and neighboring character swap.
+
+The final dataset included 820 unique queries and 16,800 responses, with a roughly balanced distribution between compliant and non-compliant examples across both categories.
+
+Zillow found that including sentence-level response data in training produced meaningful precision improvements, with precision lift maximized at around 0.6 recall.
+
+## Comprehensive Guardrails System Architecture
+
+Rather than choosing one strategy, Zillow combined all three into a unified Fair Housing Guardrails system with the following components:
+
+- A standalone service combining both a stop list with fast lexical matching and the Fair Housing Compliance classifier for nuanced detection
+- A service API designed for integration with LLM applications, capable of processing both user input and system responses
+- FHA Compliance instructions to be included in LLM prompts to increase the likelihood of compliant outputs
+
+The system operates at two points in the LLM pipeline. As a pre-processing component, it analyzes and categorizes user input before it reaches the LLM, enabling early detection and filtering of potentially non-compliant requests. As a post-processing component, it reviews LLM outputs before they are displayed to users, flagging content that might violate fair housing regulations. For flagged content, a predefined message is displayed instead of the LLM output. This dual-layer approach creates a robust safety net.
+
+## Iterative Improvement and Feedback Loops
+
+Zillow emphasizes the importance of continuous improvement for their guardrails system. User feedback provides real-world examples and exposes phrasings, contexts, and nuances not encountered during initial training. Periodic sampling for human review helps identify false positives and false negatives, allowing updates to the stop list component and providing additional training examples for the classifier that are closer to the decision boundary.
+
+## Precision-Recall Tradeoffs
+
+A significant theme throughout this case study is the tension between precision and recall. High recall is critical because fair housing violations must never occur—the system must catch all potential issues. However, low precision (high false positive rate) degrades the user experience by refusing to respond to legitimate queries, potentially alienating users who already face barriers.
+
+The classifier approach offers flexibility in tuning this tradeoff, while the stop list provides deterministic handling of unambiguous cases, and the prompt engineering provides a baseline layer of compliance awareness.
+
+## Future Directions
+
+Zillow outlines several planned improvements: enhancing model features through more advanced transformer architectures and additional contextual features, expanding training data through partnerships and simulated data generation to handle subtle and complex cases, and potentially open-sourcing their classifier and supporting data to foster collaboration and encourage industry-wide adoption of fair housing compliance tools.
+
+## Broader Applicability
+
+Zillow notes that the standalone guardrails service can also be applied to non-LLM applications requiring natural language processing, such as call transcript analytics—demonstrating that the investment in fair housing compliance infrastructure has value beyond their immediate LLM use cases.
+
+This case study represents an important example of how companies in regulated industries must think carefully about deploying LLMs in production, developing specialized guardrails that go far beyond simple content moderation to address domain-specific legal and ethical requirements.

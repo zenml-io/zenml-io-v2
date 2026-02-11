@@ -1,0 +1,221 @@
+---
+title: "Real-Time AI Chief of Staff for Product Teams"
+slug: "real-time-ai-chief-of-staff-for-product-teams"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "6985c4873139d7275e6ef1fb"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2026-02-06T14:52:36.545Z"
+  lastUpdated: "2026-02-06T10:42:21.694Z"
+  createdOn: "2026-02-06T10:37:59.833Z"
+llmopsTags:
+  - "document-processing"
+  - "summarization"
+  - "chatbot"
+  - "realtime-application"
+  - "speech-recognition"
+  - "unstructured-data"
+  - "customer-support"
+  - "prompt-engineering"
+  - "multi-agent-systems"
+  - "agent-based"
+  - "rag"
+  - "embeddings"
+  - "vector-search"
+  - "semantic-search"
+  - "few-shot"
+  - "token-optimization"
+  - "cost-optimization"
+  - "latency-optimization"
+  - "error-handling"
+  - "chunking"
+  - "system-prompts"
+  - "evals"
+  - "langchain"
+  - "pinecone"
+  - "chromadb"
+  - "qdrant"
+  - "postgresql"
+  - "cache"
+  - "monitoring"
+  - "openai"
+  - "anthropic"
+company: "Earmark"
+summary: "Earmark built a productivity suite for product teams that transforms meeting conversations into finished work in real-time, addressing the problem of endless context-switching and manual follow-up work that plagues modern product development. Founded by Mark Barb and Sandon, who both came from the product management SaaS space, Earmark uses live transcription and multiple parallel AI agents to generate product specs, tickets, summaries, and other artifacts during meetings rather than after them. The company pivoted from an Apple Vision Pro communication training tool to a web-based real-time meeting assistant after discovering through 60 customer interviews that few people actually prepare for presentations. With 78% of survey respondents saying they'd be \"super bummed\" if the product disappeared, Earmark has achieved strong product-market fit by focusing specifically on product managers, engineering leaders, and adjacent roles who spend most of their time in back-to-back meetings with different audiences and deliverables."
+link: "https://www.youtube.com/watch?v=VQ_MLRCfcYE"
+year: 2026
+seo:
+  title: "Earmark: Real-Time AI Chief of Staff for Product Teams - ZenML LLMOps Database"
+  description: "Earmark built a productivity suite for product teams that transforms meeting conversations into finished work in real-time, addressing the problem of endless context-switching and manual follow-up work that plagues modern product development. Founded by Mark Barb and Sandon, who both came from the product management SaaS space, Earmark uses live transcription and multiple parallel AI agents to generate product specs, tickets, summaries, and other artifacts during meetings rather than after them. The company pivoted from an Apple Vision Pro communication training tool to a web-based real-time meeting assistant after discovering through 60 customer interviews that few people actually prepare for presentations. With 78% of survey respondents saying they'd be \"super bummed\" if the product disappeared, Earmark has achieved strong product-market fit by focusing specifically on product managers, engineering leaders, and adjacent roles who spend most of their time in back-to-back meetings with different audiences and deliverables."
+  canonical: "https://www.zenml.io/llmops-database/real-time-ai-chief-of-staff-for-product-teams"
+  ogTitle: "Earmark: Real-Time AI Chief of Staff for Product Teams - ZenML LLMOps Database"
+  ogDescription: "Earmark built a productivity suite for product teams that transforms meeting conversations into finished work in real-time, addressing the problem of endless context-switching and manual follow-up work that plagues modern product development. Founded by Mark Barb and Sandon, who both came from the product management SaaS space, Earmark uses live transcription and multiple parallel AI agents to generate product specs, tickets, summaries, and other artifacts during meetings rather than after them. The company pivoted from an Apple Vision Pro communication training tool to a web-based real-time meeting assistant after discovering through 60 customer interviews that few people actually prepare for presentations. With 78% of survey respondents saying they'd be \"super bummed\" if the product disappeared, Earmark has achieved strong product-market fit by focusing specifically on product managers, engineering leaders, and adjacent roles who spend most of their time in back-to-back meetings with different audiences and deliverables."
+---
+
+## Overview
+
+Earmark represents an interesting case study in building LLM-powered tools for a highly specific target audience: product teams navigating what Microsoft research terms the "infinite workday" of back-to-back meetings with constant context-switching. Founded by two product management veterans from ProductPlan and MindBody, the company has evolved through multiple pivots to arrive at a real-time meeting intelligence platform that generates finished work artifacts during conversations rather than generic summaries afterward.
+
+The founding team's deep domain expertise in product management proved crucial to their approach. Rather than building a generic meeting tool, they identified specific pain points that resonate with their target users: imposter syndrome when technical discussions exceed understanding, the need to give thoughtful feedback while facilitating meetings, organizational acronyms that newcomers struggle with, and the constant pressure to produce documentation, tickets, and updates from every conversation. This specificity allowed them to design prompts and user experiences that directly address real workflows.
+
+## Product Evolution and Pivot Journey
+
+The company's origin story illustrates how LLM product development often requires significant pivoting based on user research. Earmark initially launched as an immersive AR/VR experience for Apple Vision Pro, focused on helping product and engineering leaders rehearse presentations and improve communication skills. The tool would model conference rooms and auditoriums, allow users to cycle through slides, and provide real-time feedback on breathing, speaking up, and articulation. However, after conducting 60 customer interviews with product managers and communication coaches, the team discovered that few people actually prepare for presentations, meaning they had built a preparatory tool for users unwilling to prepare. Additionally, the Vision Pro's addressable market was extremely limited. The team jokes that if they had executed perfectly on that product, they would have made about $500.
+
+The pivot maintained one core thread: real-time feedback and insights during conversations. They ported the concept to a web-based solution for broader reach, then went through five major product iterations in what they describe as the "idea maze." Through daily customer conversations in Slack and constant engagement with prospects, they refined the experience until arriving at something they describe as "the product we always wished we had" in their previous roles. This aligns with the Y Combinator principle that the best pivots take you back home.
+
+## Technical Architecture and Real-Time Processing
+
+Earmark's technical architecture centers on real-time speech-to-text transcription feeding multiple parallel AI agents that generate different artifacts simultaneously. The system uses Assembly AI for transcription, which occurs in real-time during meetings. Every 30 seconds or at variable intervals, the system batches the delta in the transcript since the last interval and sends it to OpenAI's language models.
+
+### Prompt Caching and Cost Optimization
+
+A critical technical decision that made Earmark economically viable was the implementation of prompt caching. In early versions without caching, a single hour-long meeting could cost $70 in API calls. With prompt caching, this dropped to under $1 per meeting. The team discovered that transcription costs are now actually higher than LLM inference costs, a significant reversal from earlier generations of the technology.
+
+Earmark uses OpenAI's prompt caching implementation, which differs from Anthropic's approach by automatically determining cache breakpoints on the server side rather than requiring manual specification. The only requirement is that the message history sent to the API must be identical to previous requests, otherwise the cache is invalidated and the full history is charged.
+
+The architecture maintains a single agent responsible for sending the full transcript history to OpenAI and getting cached responses, then passing along summaries or lighter versions to other specialized agents. This prevents multiple agents from each sending the entire transcript and multiplying costs. The transcript represents the bulk of tokens—a one-hour meeting transcript averages about 16,000 tokens—and this number compounds if sent repeatedly without caching.
+
+### Context Management and Avoiding Bias
+
+An important technical learning concerned how much context to include in agent prompts. The team initially experimented with passing previous agent outputs into the conversation history, but discovered this created bias problems. For example, if a user requested a summary 15 minutes into a 60-minute meeting and that summary was added to the history, the final summary at meeting end would be oddly condensed because the model focused heavily on keywords from the early summary rather than synthesizing the full transcript. 
+
+To solve this, Earmark keeps agent outputs separate from the conversation history. As far as OpenAI's models see, the history contains only the transcript and the current card or template request. Each request gets a fresh response based purely on the transcript content, not influenced by previous agent outputs. This approach both maintains prompt caching effectiveness and produces better quality results throughout the meeting lifecycle.
+
+The team also found that giving models too much context produces worse results than providing specific, targeted content. This principle guides their entire information architecture approach.
+
+### Model Selection and Writing Style
+
+Earmark primarily uses GPT-4.1, which is now considered a legacy model given the availability of GPT-4o and later versions. This seemingly counterintuitive choice stems from output quality preferences. The team found that GPT-4o and later models tend to generate bullet-pointed outlines and nested list formats, while GPT-4.1 produces prose that their customers prefer when reading summaries and artifacts in real-time. They extensively tested GPT-4o.2 upon release and initially deployed it, but quickly pulled it back after customer feedback about the bullet-heavy formatting.
+
+The team's future architecture envisions mapping different models to different artifact types, allowing them to optimize for each use case while maintaining flexibility to swap models as new releases become available. This multi-model approach recognizes that no single model excels at all tasks.
+
+### Speaker Attribution Challenges
+
+An interesting technical decision involves speaker diarization. Because Earmark runs as a local application using internal audio rather than joining calls as a bot, they cannot reliably perform speaker attribution. The team discovered that passing incorrect speaker names to the LLM produces worse results than passing no names at all, because seeded misinformation compounds through subsequent generation steps. The LLM can actually infer conversational structure and different speakers from context, but providing wrong names degrades this capability. They can pull correct names from calendar invitations but deliberately avoid diarization algorithms whose accuracy limitations would harm output quality.
+
+## Template System and Agent Design
+
+Earmark's user experience centers on templates that function as what the founders call "clean sheet solutions" to the blank page problem. Each template represents a specific use case encountered during meetings. Examples include:
+
+- Engineering translator: Proactively identifies technical topics and explains them in accessible language, helping non-technical team members follow along without interrupting to ask clarifying questions
+- Acronym explainer: Particularly valuable for new hires, maintains organizational definitions of company-specific acronyms and explains them as they appear in conversation
+- Make me look smart: Suggests relevant questions to ask if attention has wandered or context was missed
+- Pointed compliments assistant: Helps meeting facilitators craft specific, thoughtful recognition for teammates while managing meeting flow
+- Persona agents: Represent stakeholders who cannot attend, such as security architects, accessibility specialists, or legal reviewers, asking questions those personas would likely raise
+
+Templates also include standard features like real-time meeting minutes and action items, but the differentiation lies in the product management-specific use cases and the ability to generate work artifacts like product specifications, Jira tickets, or Linear issues.
+
+Users can also bypass templates entirely and prompt directly for what they need. The team observed an interesting usage pattern where new users rely heavily on templates for the first two weeks to a month, then gradually migrate to more experimental custom prompting. Advanced users might request things like "generate a presentation from these three conversations, sprinkle in some emojis" and the system will create slide content that can be exported to tools like Gamma.
+
+The concept of unlimited task agents removes pressure to get any single request perfect. Users can iterate rapidly, "vibing with" a document until it matches their needs through repeated prompting.
+
+## User Experience Learnings
+
+Early product iterations included the transcript taking up roughly 50% of the screen real estate. This design decision led to an unexpected problem: users fixated on transcript accuracy rather than the insights being generated. They would notice misspelled names or want to edit and clip portions of the transcript. By minimizing the transcript to a subtitle-style field at the bottom of the interface where users could see it was working but it didn't dominate attention, this feedback disappeared entirely. The LLMs are quite capable of inferring intended meaning despite transcription errors, so hiding imperfections in the transcript from prominent display improved perceived product quality.
+
+This illustrates a broader principle: exposing system internals opens them to scrutiny even when they don't materially impact the outcome. Speaker attribution faced similar dynamics—not showing speaker names avoids user frustration with misattribution while still enabling the LLM to understand conversational flow.
+
+## Storage Architecture and Privacy Focus
+
+Earmark launched with a completely ephemeral solution with no database whatsoever. The product existed entirely in-session, with users manually exporting artifacts and transcripts if they wanted to preserve them. Remarkably, people used the product extensively despite this severe limitation. When the team ran a Superhuman-style product-market fit survey asking how users would feel if the product disappeared tomorrow, 78% said they'd be "super bummed," indicating strong PMF even with an incomplete offering.
+
+The lack of storage, initially viewed as a limitation, actually helped with enterprise sales. Prospects saw the ephemeral nature as a security feature, making it easier to begin evaluations without extensive privacy reviews. The team couldn't train on customer data or retain information even if they wanted to, which accelerated sales cycles.
+
+As the product matures, storage is being added but privacy remains architectural. Users can enable temporary mode for any meeting, which completely bypasses Earmark's servers—there's no record the meeting even occurred. Unlike some competitors who still write data to their servers and retain it for 30 days before deletion, Earmark's temporary mode keeps everything local, requiring manual export to save. Organizations can enforce temporary mode for all users, preventing anyone from disabling it.
+
+This privacy-first architecture isn't just philosophical; it's contractual. The team has sold enterprise contracts with security considerations already incorporated into the language, creating obligations they must maintain as the product evolves.
+
+## Advanced Features: Search, Retrieval, and Agentic Architecture
+
+The team's most challenging technical problem, currently in development, involves search and retrieval across accumulated meeting transcripts. As one founder noted, "RAG is just not enough" for the types of questions product managers want to ask. This statement requires clarification: they specifically mean vector search alone is insufficient, though they acknowledge RAG as a broader concept encompasses their entire solution.
+
+The distinction matters because different queries require different retrieval strategies. A question like "What day did we agree to ship the mobile app?" works well with vector search because it seeks specific information that exists verbatim in transcripts. Semantic similarity and keyword matching can reliably locate the answer. However, analysis questions like "How can I improve my discovery calls over the last month?" don't have answers that exist in any transcript. No one explicitly discussed improving discovery calls; the insight must be synthesized from observing patterns across multiple conversations.
+
+Reasoning models excel at this synthesis when provided with relevant transcripts, but context windows limit how many meetings can be included. With 10 or 20 meetings, everything fits in context, but for teams using the product for a year or across multiple people, transcripts quickly exceed available context. The challenge becomes finding the right transcripts to include so reasoning models can perform their analysis.
+
+### Multi-Strategy Search Architecture
+
+Earmark's solution draws inspiration from what Dan Shipper described as "agent-native architecture," where features are prompts rather than hard-coded workflows, and agents use tools in loops to accomplish tasks. This is the approach taken by Claude Code and similar tools, which primarily use search rather than vector similarity to find relevant files and functions.
+
+Earmark is implementing a multi-tool agent system that leverages different search strategies depending on query characteristics:
+
+- Vector search for cases where specific keywords or phrases exist in transcripts
+- BM25 keyword search for finding precise term matches
+- Metadata queries for temporal constraints like "meetings over the last month"
+- Database queries generated by agents to filter meetings by participants, project, or other structured attributes
+- Bespoke summaries generated at ingest time that anticipate likely questions based on user role
+
+This last approach is particularly interesting from an LLMOps perspective. Rather than treating transcripts as the only searchable artifact, Earmark generates role-specific summaries as meetings conclude. For product managers, this might include status updates, decisions made, blockers identified, and delivery timeline changes. These summaries become part of the searchable corpus, providing a higher-level layer that agents can query first before drilling down to full transcripts if needed.
+
+This creates a data pyramid architecture similar to approaches discussed in other LLMOps case studies. Zen City, for example, processes millions of city resident feedback points by building layers of insights, theories, and summaries on top of raw data, allowing LLMs to search a much smaller space while retaining the ability to trace findings back to source material. Incident.io uses similar layering for incident analysis. Earmark's transcript-at-the-bottom, summaries-at-the-top approach follows this pattern: agents search higher-level abstractions first and only access full transcripts when necessary.
+
+### Asynchronous Processing and Expectations
+
+The team recognizes that their multi-strategy agentic search will take considerable time to return results. Rather than treating this as a limitation, they're designing the user experience around asynchronous task completion. Users submit queries, continue their normal work, and receive high-quality drafted responses when ready. This shifts expectations away from chatbot-like instant responses toward "the work completes itself" automation.
+
+This approach only became viable recently as user expectations for AI products have evolved. The team explicitly noted they're glad speed is no longer paramount, because it enables more sophisticated processing architectures that would be impossible to execute in under a second.
+
+## Hallucination Mitigation
+
+Earmark employs several strategies to reduce hallucinations, though the team acknowledges that model improvements have significantly reduced this problem over time. Their primary technique is providing explicit escape hatches in prompts: instructions that if the answer isn't known or doesn't exist in the transcript, the model should say so rather than fabricating a response. This seemingly basic approach proves highly effective because forcing a model to provide an answer when it lacks information virtually guarantees hallucination.
+
+During the discussion, an additional technique was suggested that the team found valuable: requiring models to provide proof of work by citing line numbers or timestamps from source transcripts. This serves dual purposes. First, it forces models to verify that information actually exists at specific locations, significantly grounding their responses. Second, it enables downstream validation through a separate checker agent if needed, though in practice simply requiring citation seems sufficient to prevent most fabrication.
+
+The citation approach also provides excellent user experience benefits. When users can see attribution—which meetings and which moments within those meetings contributed to a response—trust in the system increases dramatically. The team drew parallels to Claude Code, which shows which files it's pulling from as it works. This transparency helps users gauge confidence in results and understand the system's reasoning process.
+
+## Evaluation Strategy
+
+Earmark's evaluation approach is pragmatic and resource-constrained given their small team size. They don't currently run production evaluations using customer data, partly because they can't (privacy architecture) and partly because they view it as unnecessary at their stage. The primary evaluation method is customer feedback augmented by usage analytics.
+
+Specifically, they track whether users copy artifacts out of the system. Since the product lacks persistent storage in its current form, this copy action represents strong signal that users found value in the generated content. If this metric regresses after a change, it indicates a quality problem worth investigating.
+
+As the team develops stored evaluations, they'll exist only in development environments with synthetic data, never touching production customer conversations. This maintains their privacy commitments while still enabling systematic quality assessment.
+
+The founders expressed that their bandwidth constraints have forced prioritization: nail the user experience and habit formation first, then backfill with robust evaluation frameworks. They view evaluations almost as firefighting tools—not something to implement comprehensively upfront, but something to deploy when specific stubborn problems emerge that can't be easily fixed through prompt adjustments.
+
+This perspective aligns with emerging best practices in LLMOps where evaluation efforts focus on high-value, high-risk areas rather than attempting comprehensive coverage from day one. One founder noted that early in learning about evaluations, they had a naive assumption that it would be like unit testing requiring coverage across everything, but quickly learned that's prohibitively expensive and focuses effort on low-value areas. Instead, evaluations should target the most important things with persistent issues that require measurement to experiment toward solutions.
+
+## Integration Strategy and Future Vision
+
+Earmark's current feature set includes integration points like "build with Cursor" and "build with V0" buttons that can push engineering specifications directly into prototyping tools during meetings. This enables teams to see working prototypes while still in the conversation, dramatically reducing cycle time from concept to feedback.
+
+The broader vision extends beyond meeting automation to what they describe as an "AI chief of staff for delivery teams." This includes several ambitious capabilities:
+
+- Proactive task identification that spawns work items automatically as relevant conversations occur across the team
+- Cross-meeting project tracking that groups related discussions and provides rollup status views
+- Asynchronous awareness for distributed teams, where project owners receive notifications about blockers or delays mentioned in meetings they didn't attend
+- Strategic research support that can generate competitive analyses or other just-in-time outputs based on conversation context
+- Portfolio reporting that makes the question "where are we today?" instantly answerable through prompts rather than requiring weekly sync meetings with delivery leads
+
+The multiplayer mode becomes increasingly valuable as team adoption grows. When multiple team members use Earmark, the system can observe conversations across the organization and surface relevant information to people who need it but weren't present. This creates network effects where the product's value increases with the number of users.
+
+Integrations are planned for Slack, email, and document systems, extending beyond meetings as the primary input source to encompass asynchronous communication channels. The goal is truly comprehensive conversational context across all work modes.
+
+## Product Development Philosophy
+
+Throughout the discussion, the founders referenced several product development principles that guided their work. They described their approach as similar to industrial design methodology: starting with extremes to ensure the solution works for the middle. Using the analogy of designing a potato peeler for both arthritic hands and children's hands, if you solve for those boundaries, you'll solve for everyone in between. By focusing intensely on product managers, engineering leaders, and adjacent roles—understanding their specific pain points and workflows—they believe the solution will generalize to broader audiences.
+
+This specificity permeates their template design, prompt engineering, and feature prioritization. Rather than building a horizontal meeting tool for everyone, they've built something highly vertical that deeply understands product team dynamics.
+
+The team also embraces the Stewart Butterfield philosophy from his essay "We Don't Sell Saddles Here" about creating daily essential tools that achieve true behavioral change. Multiple early customers reported they "can't imagine not having unlimited task agents in the background doing the work as conversations take place." This represents the kind of habit formation they're pursuing.
+
+Evidence of product-market fit emerged even through technically incomplete offerings. Users continued with the product when it didn't support headphones, changing their normal headphone usage patterns. They used it when it had no storage, manually exporting everything. They embraced the ephemerality that enterprise prospects saw as a security feature. These signals gave the team confidence they were solving real problems despite obvious limitations in their early iterations.
+
+## Cost Structure and Economic Model
+
+The evolution of Earmark's cost structure illustrates how rapidly LLM economics are changing. Early versions without prompt caching cost $70 per hour-long meeting in API calls, making the product economically impossible. Prompt caching dropped this to under $1 per meeting—a 70x improvement. Interestingly, transcription costs are now higher than LLM inference costs, representing a complete reversal from expectations.
+
+This cost structure enables the unlimited task agent model where users can spin up as many artifact generation requests as they want without worrying about quotas or throttling. The economic model works because each incremental request only pays for the new tokens (the specific template or prompt), not the full transcript that's already cached.
+
+As model capabilities increase and prices continue declining, the founders note they're almost "building into the future," creating products whose economics improve and capabilities expand without architecture changes.
+
+## Conclusion and Takeaways
+
+Earmark's journey from Apple Vision Pro communication training tool to real-time meeting intelligence platform demonstrates the importance of customer discovery, rapid iteration, and focus on specific user pain points. Their technical architecture showcases sophisticated prompt caching strategies, multi-agent coordination, careful context management, and emerging agentic search patterns that represent the current state of LLMOps practice.
+
+Key technical lessons include the importance of not showing imperfect intermediate outputs to users, giving models escape hatches to avoid hallucinations, managing context carefully to prevent bias, and treating evaluation as targeted firefighting rather than comprehensive coverage. Their privacy-first architecture proves that constraints can become features, and their product development philosophy emphasizes solving for extremes to capture the middle while maintaining intense focus on specific user archetypes.
+
+As Earmark develops more sophisticated retrieval systems with multi-strategy search and data pyramids, they're implementing patterns that other LLM products have found essential for operating at scale across large knowledge bases. The shift toward asynchronous processing with reasoning models represents an emerging pattern in LLMOps where thoroughness and quality trump response speed for complex analytical tasks.

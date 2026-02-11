@@ -1,0 +1,165 @@
+---
+title: "Panel Discussion: Real-World LLM Production Use Cases"
+slug: "panel-discussion-real-world-llm-production-use-cases"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f3fd53d06d8d679ddbb6a"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:42:05.301Z"
+  createdOn: "2024-11-21T14:12:37.858Z"
+llmopsTags:
+  - "chromadb"
+  - "customer-support"
+  - "data-integration"
+  - "databases"
+  - "documentation"
+  - "human-in-the-loop"
+  - "monitoring"
+  - "openai"
+  - "pinecone"
+  - "prompt-engineering"
+  - "qdrant"
+  - "rag"
+  - "reliability"
+  - "scalability"
+  - "semantic-search"
+  - "structured-output"
+  - "unstructured-data"
+  - "vector-search"
+company: "Various"
+summary: "A panel discussion featuring multiple companies and consultants sharing their experiences with LLMs in production. Key highlights include Resides using LLMs to improve property management customer service (achieving 95-99% question answering rates), applications in sales optimization with 30% improvement in sales through argument analysis, and insights on structured outputs and validation for executive coaching use cases."
+link: "https://www.youtube.com/watch?v=w3Ew2tTDGwo"
+year: 2024
+seo:
+  title: "Various: Panel Discussion: Real-World LLM Production Use Cases - ZenML LLMOps Database"
+  description: "A panel discussion featuring multiple companies and consultants sharing their experiences with LLMs in production. Key highlights include Resides using LLMs to improve property management customer service (achieving 95-99% question answering rates), applications in sales optimization with 30% improvement in sales through argument analysis, and insights on structured outputs and validation for executive coaching use cases."
+  canonical: "https://www.zenml.io/llmops-database/panel-discussion-real-world-llm-production-use-cases"
+  ogTitle: "Various: Panel Discussion: Real-World LLM Production Use Cases - ZenML LLMOps Database"
+  ogDescription: "A panel discussion featuring multiple companies and consultants sharing their experiences with LLMs in production. Key highlights include Resides using LLMs to improve property management customer service (achieving 95-99% question answering rates), applications in sales optimization with 30% improvement in sales through argument analysis, and insights on structured outputs and validation for executive coaching use cases."
+---
+
+## Overview
+
+This case study is drawn from a panel discussion featuring multiple practitioners sharing their experiences deploying LLMs in production across different industries and use cases. The panelists include Jason Liu (creator of the Instructor library and independent consultant working with companies like Trunk Tools, Narrow, and Rewind AI), Arjent (co-founder of Resides, a customer service company for rental buildings), and Agneska (a PhD in machine learning with experience in voice AI and currently working on an LLM assistant at Chapter). The discussion, moderated by Greg, focuses on real-world LLM implementations, lessons learned, and practical advice for teams building AI products.
+
+## Primary Use Case: RAG-Based Property Knowledge System at Resides
+
+Resides operates as a frontline customer service platform for residential property management. Their core business involves answering questions from residents about property amenities, emergency contacts, booking procedures, and other building-specific information. Prior to implementing LLMs, this knowledge was scattered across various unstructured sources—random PDFs, posters, handwritten notes, and often just in the heads of property staff.
+
+The fundamental problem was that answering resident questions required manual processes: receiving a question, going back to the property to find the answer, returning with the response, and then failing to systematically capture that knowledge for future use. This resulted in roughly 50% question resolution rates.
+
+The LLM-based solution involves ingesting all available unstructured property documentation—manuals, posters, email replies, and other materials—into a vector database. When residents ask questions, the system retrieves relevant context and generates accurate responses. This RAG (Retrieval-Augmented Generation) approach transformed their operations in several measurable ways:
+
+- Question resolution rates increased from approximately 50% to 95-99%
+- Training time for new customer accounts was reduced to essentially nothing (previously required extensive questionnaire completion)
+- Associate productivity doubled: previously one person supported 7,000-8,000 apartments, now they support approximately 20,000
+- Expected headcount requirements were cut by half
+
+The key insight from Arjent's team is that LLMs enable the creation of useful knowledge repositories from "really weird, really unstructured, bespoke knowledge that was just in people's heads" in ways that weren't possible before.
+
+## Use Case: Structured Extraction for Executive Coaching
+
+Jason Liu shared a compelling example of the disconnect between capability and value. The technical capability—extracting quotes from transcripts—is relatively simple and could be a free GPT wrapper application. However, when applied to the specific domain of executive coaching, the value proposition transforms entirely.
+
+Executive coaches charge $800-$1,000 per hour to help boards of directors manage their organizations. A significant portion of their work involves manually extracting relevant quotes from meeting transcripts to prepare presentations—a process that takes approximately two hours. The LLM-based extraction system costs roughly 50 cents per API call but generates thousands of dollars in downstream value for users.
+
+The technical approach involves:
+- Defining clear metrics for what constitutes a "good quote"
+- Fine-tuning models against those specific quality metrics
+- Charging $100-$200 per API call because the value justifies it
+
+This illustrates a critical LLMOps principle: the same underlying capability (summarization, extraction) can have vastly different value propositions depending on the target audience and specific workflow it augments.
+
+## Use Case: Sales Argument Analysis and Optimization
+
+Agneska described a project involving the analysis of thousands of hours of sales call transcripts to detect arguments and objections. The system identified which arguments worked best for specific customer objections—for example, whether saying "we are the leader in the market" or "our price is the best on the market" was more effective in overcoming resistance.
+
+The discovered insights were incorporated into sales training programs, resulting in a reported 30% increase in sales. This case demonstrates using LLMs not just for automation but for knowledge extraction and pattern discovery that enables human performance improvement.
+
+## Key LLMOps Anti-Patterns and Lessons Learned
+
+### Over-Engineering Before Shipping
+
+Arjent emphasized that his team's biggest early mistake was "over-optimizing and over-engineering"—treating LLM development as an engineering problem rather than a product problem. They spent too much time optimizing for the perfect prompt and lowest latency, resulting in lead times of weeks instead of hours or days.
+
+A concrete example: when building a conversation scoring system, they spent months trying to define exact scoring segments upfront. The better approach (which they now follow) is to:
+- Start with a simple prompt ("score it, tell me anything worth noting")
+- Collect 1,000 examples
+- Use those examples to develop proper categories
+- Score the next 1,000 examples with refined criteria
+- Iterate continuously
+
+This reflects a fundamental shift toward continuous evaluation in production rather than attempting to perfect systems before deployment.
+
+### Planning vs. Experimentation
+
+Jason noted that engineers transitioning to AI work often spend too much time "guessing outcomes" rather than building fast experimentation pipelines. The traditional engineering approach of breaking problems into 20 discrete tickets and anticipating edge cases doesn't work well for LLM development, which is more science than engineering.
+
+The recommended approach emphasizes:
+- Building metrics, hypotheses, and experiments
+- Creating tests that run in minutes rather than hours
+- Looking at data to build intuition about performance patterns
+- Focusing on evaluations and understanding available metrics and evaluation tools
+
+### Human-Feeling AI vs. Magic AI
+
+An interesting insight from Arjent: while many AI companies showcase "magic" experiences, Resides found that their customers actually prefer when AI interactions feel more human and less obviously AI-powered. This suggests that the optimal UX for production LLM systems may vary significantly by domain and user expectations.
+
+## Evaluation and Continuous Improvement
+
+A recurring theme across panelists was the importance of using LLMs to evaluate LLM outputs—what one panelist called "the meta aspect of using LLMs." This approach enables:
+- Running 100 automated evaluations per hour
+- Continuous workflow improvement
+- Better efficiency and output quality
+- More sustainable revenue through improved performance
+
+When asked about quality validation workflows, panelists mentioned open frameworks like LangSmith, while also emphasizing that revenue itself is an important validation metric—if customers are paying, the system is delivering value.
+
+## Prioritization Frameworks
+
+The panelists discussed various approaches to project prioritization:
+
+**Value Equation Framework (from Alex Hormozi)**: Jason applies this framework where value = (dream outcome × likelihood of success) / (time to achieve × sacrifice required). This helps prioritize projects that truly improve outcomes rather than just demonstrating capabilities.
+
+**Customer-Driven Prioritization**: Arjent noted that LLMs haven't fundamentally changed how Resides prioritizes business initiatives—the goals remain growing top line and bottom line revenue. What has changed is the cost of experimentation: they can now run 10 experiments instead of 2 with the same team size.
+
+**Impact/Effort Deprioritized**: Interestingly, Arjent mentioned that traditional impact/effort frameworks became less useful because the "effort" denominator became so small that everything seemed like a good priority. They now focus more on what customers would actually pay for different capabilities.
+
+## Advice for Practitioners
+
+The panelists offered several pieces of advice for those building LLM systems:
+
+**For Junior Engineers Moving into AI**:
+- Understand evaluation methodologies deeply
+- Know what metrics and evaluation tools are available
+- Focus on building experiments that run quickly
+- Build intuition by looking at high-performing and low-performing examples
+
+**General Lessons**:
+- Focus on user value rather than exciting research
+- Don't blindly follow what flashy AI products are doing—understand your specific users
+- Start with a clear headline or press release before building
+- Ship quickly and iterate based on production feedback
+- Use LLMs to continuously evaluate and improve your LLM workflows
+
+## Technical Tools and Approaches Mentioned
+
+- **Instructor library**: Created by Jason Liu for structured outputs and validation with language models
+- **Vector databases**: Used for RAG implementations
+- **LangSmith**: Mentioned as an open framework for LLM quality validation
+- **Fine-tuning**: Applied when clear metrics exist for what constitutes good output
+- **GPT-5**: Referenced as the underlying model for some extraction tasks
+- **arXiv**: Recommended as a source for staying current with LLM research
+
+## Measuring Success
+
+The panelists emphasized different success metrics depending on context:
+- Resolution rates and productivity multiples (Resides)
+- Revenue and customer willingness to pay
+- Downstream business outcomes (30% sales increase)
+- Time savings quantified against hourly rates
+
+This panel discussion provides valuable practitioner perspectives on what actually works when deploying LLMs in production, moving beyond theoretical capabilities to focus on delivering measurable business and user value.

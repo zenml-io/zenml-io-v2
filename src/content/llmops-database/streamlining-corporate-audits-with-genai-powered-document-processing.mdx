@@ -1,0 +1,129 @@
+---
+title: "Streamlining Corporate Audits with GenAI-Powered Document Processing"
+slug: "streamlining-corporate-audits-with-genai-powered-document-processing"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "675b22085f612b3b4738ba8f"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:49:58.611Z"
+  createdOn: "2024-12-12T17:48:56.013Z"
+llmopsTags:
+  - "document-processing"
+  - "regulatory-compliance"
+  - "structured-output"
+  - "rag"
+  - "fine-tuning"
+  - "prompt-engineering"
+  - "model-optimization"
+  - "fastapi"
+  - "wandb"
+  - "monitoring"
+  - "databricks"
+  - "microsoft-azure"
+  - "amazon-aws"
+company: "Hapag-Lloyd"
+summary: "Hapag-Lloyd faced challenges with time-consuming manual corporate audit processes. They implemented a GenAI solution using Databricks Mosaic AI to automate audit finding generation and executive summary creation. By fine-tuning the DBRX model and implementing a RAG-based chatbot, they achieved a 66% decrease in time spent creating new findings and a 77% reduction in executive summary review time, significantly improving their audit efficiency."
+link: "https://www.databricks.com/customers/hapag-lloyd"
+year: 2024
+seo:
+  title: "Hapag-Lloyd: Streamlining Corporate Audits with GenAI-Powered Document Processing - ZenML LLMOps Database"
+  description: "Hapag-Lloyd faced challenges with time-consuming manual corporate audit processes. They implemented a GenAI solution using Databricks Mosaic AI to automate audit finding generation and executive summary creation. By fine-tuning the DBRX model and implementing a RAG-based chatbot, they achieved a 66% decrease in time spent creating new findings and a 77% reduction in executive summary review time, significantly improving their audit efficiency."
+  canonical: "https://www.zenml.io/llmops-database/streamlining-corporate-audits-with-genai-powered-document-processing"
+  ogTitle: "Hapag-Lloyd: Streamlining Corporate Audits with GenAI-Powered Document Processing - ZenML LLMOps Database"
+  ogDescription: "Hapag-Lloyd faced challenges with time-consuming manual corporate audit processes. They implemented a GenAI solution using Databricks Mosaic AI to automate audit finding generation and executive summary creation. By fine-tuning the DBRX model and implementing a RAG-based chatbot, they achieved a 66% decrease in time spent creating new findings and a 77% reduction in executive summary review time, significantly improving their audit efficiency."
+---
+
+## Overview
+
+Hapag-Lloyd is a leading global liner shipping company with operations spanning over 400 offices in 140 countries and a fleet of 280 modern ships transporting 11.9 million TEUs annually. While the company is technically in the maritime shipping/logistics sector (classified as Manufacturing in the original source), their LLMOps case study focuses specifically on internal corporate audit processes rather than core shipping operations.
+
+The company identified corporate audit documentation and report writing as a key area for optimization. Their audit teams were spending significant time on manual tasks including generating written findings from bullet points, creating executive summaries, and searching through extensive process documentation. The goal was to reduce this administrative burden while maintaining high quality standards.
+
+## Problem Context
+
+Before implementing GenAI solutions, Hapag-Lloyd's audit process suffered from several challenges. The traditional methods of generating audit reports were time-consuming and involved numerous manual steps. This led to inefficiencies in how auditors spent their time—they were dedicating substantial effort to documentation rather than critical analysis and decision-making. There were also potential inconsistencies in documentation quality across different auditors and reports.
+
+From an infrastructure perspective, Hapag-Lloyd faced technical obstacles. Their existing setup, including vector databases and AWS SysOps accounts, did not support the rapid setup and deployment of AI models required for their audit optimization efforts. Setting up instances in a fast manner proved difficult, which would have significantly delayed any GenAI initiatives if pursued independently.
+
+## Technical Solution Architecture
+
+Hapag-Lloyd deployed their GenAI initiatives using the Databricks Data Intelligence Platform, specifically leveraging Mosaic AI capabilities. The technical implementation involved several key components:
+
+### Model Selection and Evaluation
+
+The team went through an iterative process of evaluating different large language models for their use case. They initially tested models including Llama 2 70b and Mixtral before ultimately selecting Databricks' DBRX model. According to the case study, DBRX returned significantly better results than the previously tried models. DBRX is described as a transformer-based decoder-only LLM that was pretrained on extensive datasets, making it suitable for generating high-quality audit findings and summaries.
+
+This model evaluation process highlights an important LLMOps practice: rather than committing to a single model upfront, the team used Mosaic AI's capabilities to compare multiple models based on price/performance characteristics specific to their use case. This approach allows organizations to make data-driven decisions about model selection rather than relying on generic benchmarks.
+
+### Fine-Tuning Approach
+
+The engineering team fine-tuned the open source DBRX model on 12 trillion tokens of carefully curated data. This fine-tuning step was crucial for adapting the general-purpose model to the specific domain of audit documentation and corporate terminology. Fine-tuning on domain-specific data typically improves model performance for specialized tasks and can help ensure outputs align with organizational standards and conventions.
+
+### Solution Architecture Components
+
+The overall architecture followed a structured pipeline approach:
+
+- **Data Ingestion**: Bringing in relevant audit data and documentation
+- **Data Preparation**: Processing and structuring data for model consumption
+- **Prompt Engineering**: Developing effective prompts for the specific audit use cases
+- **Model Evaluation**: Using Databricks MLflow to automate the evaluation of prompts and models
+- **Model Deployment**: Deploying models for production use
+- **Storage**: Storing generated findings and summaries in Delta tables for easy access and retrieval
+
+The architecture was designed to enable seamless integration with existing data pipelines and provide a framework for continuous improvement.
+
+### Finding Generation Interface
+
+One of the two main prototypes developed was the Finding Generation Interface. This system takes bullet points from auditors as input and generates fully written audit findings. This addresses a common pain point where auditors have identified issues but must spend considerable time converting their notes into formal written documentation. By automating this text generation, auditors can maintain their analytical focus while the system handles the prose composition.
+
+### RAG-Powered Chatbot
+
+The second prototype was a chatbot interface developed using Gradio and integrated with Mosaic AI Model Serving. This chatbot allows auditors to query specific information from documents using natural language queries. The system uses Retrieval Augmented Generation (RAG) to provide accurate and contextually relevant responses.
+
+RAG is particularly well-suited for audit use cases where precise, source-grounded answers are essential. Unlike pure generation approaches, RAG retrieves relevant context from the document corpus before generating responses, which helps reduce hallucinations and ensures answers are traceable to source documents. For audit work, where accuracy and auditability are paramount, this approach provides important guardrails.
+
+The natural language interface significantly reduces the time auditors spend searching for data across numerous files, enabling them to quickly query specific information without needing to know exactly where it is stored.
+
+## MLOps and LLMOps Practices
+
+Databricks MLflow played a central role in managing the full ML lifecycle. The platform enabled the team to automate the evaluation of prompts and models, reducing what would otherwise be a time-consuming manual process. MLflow's capabilities span from data ingestion through model deployment, providing a unified framework for managing the entire lifecycle.
+
+The case study mentions that Hapag-Lloyd plans to improve and automate their evaluation process further using the Mosaic AI Agent Evaluation framework. This indicates an ongoing commitment to systematic evaluation as a core LLMOps practice, recognizing that evaluation must be continuous rather than a one-time activity.
+
+## Results and Impact
+
+The quantified results demonstrate significant efficiency gains:
+
+- **66% decrease in time spent creating new written findings**: Time reduced from 15 minutes to 5 minutes per finding. Given an average of seven findings per audit, this translates to meaningful time savings across the audit portfolio.
+- **77% decrease in review time per executive summary**: Time reduced from 30 minutes to just 7 minutes per summary.
+
+These efficiency gains allow auditors to redirect their time toward critical analysis and decision-making rather than administrative documentation tasks. The case study suggests this transformation enables Hapag-Lloyd to provide more accurate and timely audit reports, which enhances overall decision-making within the organization.
+
+## Infrastructure and Deployment Considerations
+
+From an infrastructure perspective, the case study highlights that Databricks solved several challenges that the team faced with their previous AWS SysOps setup. The ability to set up instances in a "far leaner" manner was noted, along with improving cost-effectiveness over time. This underscores how managed platforms can accelerate GenAI initiatives by reducing infrastructure friction.
+
+The solution runs on AWS infrastructure, with model serving handled through Mosaic AI Model Serving. This managed serving approach abstracts away many operational concerns around scaling, availability, and model versioning.
+
+## Future Roadmap
+
+Hapag-Lloyd has outlined plans for extending their GenAI capabilities in audit automation:
+
+- Expanding the current solution to cover more aspects of the audit process
+- Fine-tuning large language models to better structure and organize audit reports
+- Further reducing time and effort required from auditors
+- Implementing the Mosaic AI Agent Evaluation framework for improved automated evaluation
+- Ensuring consistent quality across all reports through better evaluation processes
+
+These planned extensions suggest an iterative approach to LLMOps, where initial prototypes are refined and expanded based on real-world usage and feedback.
+
+## Critical Assessment
+
+While the case study presents compelling efficiency gains, a few considerations are worth noting. The metrics focus on time savings, but quality improvements are mentioned more qualitatively. For audit functions, ensuring that AI-generated content meets accuracy and compliance standards is critical, and the case study doesn't detail the quality assurance processes in place.
+
+Additionally, the case study is presented by Databricks about their own platform, so readers should consider that it represents a vendor success story. That said, the specific metrics and technical details provided lend credibility to the claims.
+
+The use of fine-tuned DBRX and RAG represents a sound technical approach for enterprise document generation and retrieval use cases, balancing generation quality with grounding in source materials. The choice to evaluate multiple models before selecting DBRX also demonstrates mature LLMOps practices.

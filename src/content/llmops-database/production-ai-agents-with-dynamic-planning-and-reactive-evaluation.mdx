@@ -1,0 +1,138 @@
+---
+title: "Production AI Agents with Dynamic Planning and Reactive Evaluation"
+slug: "production-ai-agents-with-dynamic-planning-and-reactive-evaluation"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "6793486adcf330b8d80c32b0"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:58:08.352Z"
+  createdOn: "2025-01-24T07:59:38.352Z"
+llmopsTags:
+  - "data-analysis"
+  - "data-cleaning"
+  - "data-integration"
+  - "prompt-engineering"
+  - "rag"
+  - "agent-based"
+  - "multi-agent-systems"
+  - "error-handling"
+  - "system-prompts"
+  - "latency-optimization"
+  - "fastapi"
+  - "postgresql"
+  - "wandb"
+  - "documentation"
+  - "openai"
+company: "Hex"
+summary: "Hex successfully implemented AI agents in production for data science notebooks by developing a unique approach to agent orchestration. They solved key challenges around planning, tool usage, and latency by constraining agent capabilities, building a reactive DAG structure, and optimizing context windows. Their success came from iteratively developing individual capabilities before combining them into agents, keeping humans in the loop, and maintaining tight feedback cycles with users."
+link: "https://www.youtube.com/watch?v=-kdl04xqasY"
+year: 2023
+seo:
+  title: "Hex: Production AI Agents with Dynamic Planning and Reactive Evaluation - ZenML LLMOps Database"
+  description: "Hex successfully implemented AI agents in production for data science notebooks by developing a unique approach to agent orchestration. They solved key challenges around planning, tool usage, and latency by constraining agent capabilities, building a reactive DAG structure, and optimizing context windows. Their success came from iteratively developing individual capabilities before combining them into agents, keeping humans in the loop, and maintaining tight feedback cycles with users."
+  canonical: "https://www.zenml.io/llmops-database/production-ai-agents-with-dynamic-planning-and-reactive-evaluation"
+  ogTitle: "Hex: Production AI Agents with Dynamic Planning and Reactive Evaluation - ZenML LLMOps Database"
+  ogDescription: "Hex successfully implemented AI agents in production for data science notebooks by developing a unique approach to agent orchestration. They solved key challenges around planning, tool usage, and latency by constraining agent capabilities, building a reactive DAG structure, and optimizing context windows. Their success came from iteratively developing individual capabilities before combining them into agents, keeping humans in the loop, and maintaining tight feedback cycles with users."
+---
+
+## Overview
+
+This case study comes from a podcast interview with Brian Bishoff, who leads AI at Hex, a data science notebook platform. Hex has built a product called "Magic" that uses AI agents to help data scientists and analysts perform multi-step data analysis tasks. The interview provides valuable insights into the practical challenges of deploying AI agents in production and the specific solutions the Hex team developed to overcome them.
+
+Brian brings a background as a physicist with a PhD in mathematics and prior data science experience at companies like Stitch Fix and Blue Bottle Coffee. This background informs his pragmatic, data-driven approach to LLMOps challenges. The conversation covers agent architecture, prompt engineering, latency optimization, evaluation strategies, and the broader philosophy of building AI-powered products.
+
+## The Agent Architecture Challenge
+
+Hex's initial approach to agents followed what has become a common pattern: having one agent generate a plan, then dispatching sub-agents to execute individual steps of that plan. However, their first attempt did not go well. The team encountered what Brian describes as "too high entropy" - not quite the death loops that plague some agent applications, but unexpected behaviors that made the system unreliable.
+
+The core problem was that they allowed for high diversity in the planning stage. The agent could decide how to structure its plan and orchestrate sub-agents with essentially "anything goes" flexibility. While this initially produced exciting results, it proved unsustainable for production use.
+
+The solution came from being more prescriptive about the types of plans that could be generated. Crucially, this didn't mean reducing the agent's planning capabilities, but rather constraining the specific types of steps that could be executed within a plan. Brian uses the weather API example to illustrate: instead of building an ever-expanding library of narrow tools (get_user_location, get_weather, get_precipitation, get_humidity), they built more general but still bounded tools that represent core capabilities.
+
+The key insight is that there's an inherent tension between tool generality and reliability. Tools that are too general allow the agent to go off the rails; tools that are too narrow require exponentially more tooling and create a rigid, limited interface. Hex found their sweet spot by asking: "What are the core ways the agent should be able to respond and interface with our product?"
+
+## Bootstrapping from Human Workflows
+
+One of the most valuable insights from this case study is how Hex bootstrapped their agent capabilities from existing human-facing features. Before building a sub-agent that generates SQL as part of answering a question, they first built the standalone capability for users to generate SQL. This approach provided several advantages:
+
+- The team learned how users actually interact with the feature
+- They understood the connection between display UX and generation
+- They discovered what context is needed to produce great results
+- They refined the capability based on real usage patterns
+
+When it came time to make these capabilities available to a supervising agent, they could leverage all these learnings. This mirrors an argument that incumbents with existing workflow tooling may have an advantage in building AI agents - they already have the APIs and abstractions that work for humans, which can then be exposed to AI agents.
+
+## The DAG-Based Reactive Architecture
+
+Hex's agent system constructs a directed acyclic graph (DAG) under the hood based on the inferred plan. This DAG structure serves multiple purposes:
+
+The system infers which steps in the plan require upstream response values, allowing for proper dependency management. Some prompts for downstream agent requests need information from the original user prompt or from upstream agent responses. By understanding these dependencies, the system can execute independent steps in parallel while properly sequencing dependent ones.
+
+The reactive aspect is particularly interesting: if a user makes a change to an upstream agent's response, the system knows which downstream agents need to be re-run. This reactivity allows users to intervene and correct agent behavior without having to restart the entire pipeline.
+
+## Latency Optimization Through Context Minimization
+
+One of the most striking aspects of Hex's implementation is the speed of their agent system. When the interviewer expressed surprise at how fast the system responds despite calling multiple models, Brian revealed their approach is fundamentally about context minimization rather than model fine-tuning or using smaller models.
+
+The team uses GPT-4 Turbo as their primary model, falling back to GPT-3.5 only when they've identified it's capable enough for specific tasks. The speed comes from aggressive pruning of what goes into the context window.
+
+Brian describes a Michelangelo-like approach to prompt engineering: "I'm trying to get rid of all the stone that shouldn't be there." This contrasts with what he observed at AI meetups in summer 2023, where the focus was on jamming more and more into expanding context windows.
+
+Their process typically starts big and goes small:
+- Identify all possible context that could be available for a given query
+- Explore the universe of possibilities (variables in scope, imported packages, previously written code, historical queries)
+- Systematically whittle down to determine what's actually needed
+- Iterate extensively to find the minimal context that doesn't break correctness
+
+## The Text-to-SQL Challenge
+
+Brian provides an illuminating walkthrough of why text-to-SQL products fail, which has broader implications for any RAG or context-augmented LLM system. He describes a progression of challenges:
+
+The naive approach assumes the model knows SQL. Even if it's perfect at SQL, it doesn't know your schema. Adding RAG over the schema gets you to "level zero." But then there's institutional knowledge: before 2020, customers were in a different table due to a data warehouse migration. The data team knows this, some GTM team members know it, but it's not documented anywhere.
+
+This leads to the need for a data dictionary with "meta-metadata" - not just table schemas but all the caveats and institutional knowledge about the data. Brian jokes that "every table has a caveat."
+
+The takeaway for LLMOps practitioners is that AI systems can't do things that humans can't do without context. A new colleague joining the team would get this tacit knowledge from conversations with colleagues - it's not all documented. Unless an AI system can somehow acquire this tacit information, it will hit the same walls.
+
+Hex's solution involves making documentation easy (through their Data Manager), using existing known context about how people query the data, leveraging latent representations of data relationships, and applying sophisticated search and retrieval methods from RAG and recommendation systems.
+
+## Keeping Humans in the Loop
+
+A common critique of agents is that unreliable steps compound exponentially - if each step is 95% reliable and you chain 10 of them, overall reliability drops dramatically. Brian's response is instructive: keep the chain short.
+
+For a data science workflow, the core components are: get data, transform data, make a chart. A surprising percentage of analytics questions can be answered with just this set of agent responses. Rather than building Devon-style "click go, come back in two days" systems, Hex focuses on keeping the user close to the agent pipeline.
+
+The agents handle doing more things simultaneously and reactively, but everything comes from an interactivity paradigm. Users are right there to observe and reflect. This reduces death loops and increases productive iteration.
+
+The UX lesson generalizes: the shift from completion to chat paradigms changed user expectations. In a chat paradigm, users expect to take turns and correct things. Similarly, keeping humans close to agent actions gives more opportunities to steer the system back on course.
+
+## Evaluation Philosophy
+
+Brian's perspective on evaluation comes from his background in recommendation systems (fashion recommendations at Stitch Fix, coffee recommendations), where there's no easy ground truth. His claim is that current LLM evaluation challenges aren't fundamentally new - "you oversimplified or you worked downstream of the hard work."
+
+The approach at Hex involves building a family of evaluators where each tests one specific thing they care about. Using a hypothetical children's education product as an example, he describes:
+- Toxicity guardrails
+- Extractive evaluation of statistics against reference sources
+- Vocabulary level assessment using traditional NLP models
+- Domain-specific assertions
+
+At Hex, many evaluators aren't broadly reusable across hundreds of test cases. Instead, each evaluation case comes with its own set of assertions. Some are reusable (did it generate a data frame?), but there's significant nuance in determining correctness.
+
+Execution evaluation is particularly valuable for code generation: executing the result and comparing the environment before and after provides rich information about correctness. The team simulates environments and compares target code outputs against agent predictions.
+
+Brian sees the new version of feature specs for AI features as: "these are the evals I want to pass." It sounds like an unusual form of test-driven development, but provides a concrete target: what the user asks, what the user gets in an ideal case, distilled down to important aspects.
+
+## Adapting Research to Production
+
+A key insight is that research results rarely translate directly to production applications. Hex uses a variant of Chain of Thought that's crucial for their planning stage performance, but it's not the precise version from papers. The same applies to other techniques - they've had to take existing knowledge and resources and reframe them for their specific paradigm.
+
+This translation work is important enough that Hex has a research part of their organization focused specifically on adapting techniques for applied use. The lesson for LLMOps practitioners is that research papers provide inspiration and direction, but the specific implementation will always need customization.
+
+## The Data-Driven Mindset
+
+Brian's parting advice emphasizes the importance of constantly examining data. Engineers from software backgrounds focus on systems and reliability; those from data science backgrounds focus obsessively on the data - inputs, outputs, understanding what's happening.
+
+His friend Eugene spends hours every week just looking at application data. Hex has a weekly "evals party" inspired by conversations with AI managers at Notion - dedicated time to immerse in the data of what their system is producing. This is presented as the key "alpha" for AI practitioners: you will answer most hard product questions by looking at the data generated by users and agents.

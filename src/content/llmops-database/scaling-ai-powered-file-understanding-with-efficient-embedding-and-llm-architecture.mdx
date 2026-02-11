@@ -1,0 +1,121 @@
+---
+title: "Scaling AI-Powered File Understanding with Efficient Embedding and LLM Architecture"
+slug: "scaling-ai-powered-file-understanding-with-efficient-embedding-and-llm-architecture"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f3bc2ea1d2f0018729df8"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:34:58.304Z"
+  createdOn: "2024-11-21T13:55:14.715Z"
+llmopsTags:
+  - "cache"
+  - "chunking"
+  - "cost-optimization"
+  - "docker"
+  - "document-processing"
+  - "embeddings"
+  - "latency-optimization"
+  - "monitoring"
+  - "openai"
+  - "question-answering"
+  - "realtime-application"
+  - "reliability"
+  - "scalability"
+  - "scaling"
+  - "security"
+  - "semantic-search"
+  - "summarization"
+  - "unstructured-data"
+company: "Dropbox"
+summary: "Dropbox implemented AI-powered file understanding capabilities for previews on the web, enabling summarization and Q&A features across multiple file types. They built a scalable architecture using their Riviera framework for text extraction and embeddings, implemented k-means clustering for efficient summarization, and developed an intelligent chunk selection system for Q&A. The system achieved significant improvements with a 93% reduction in cost-per-summary, 64% reduction in cost-per-query, and latency improvements from 115s to 4s for summaries and 25s to 5s for queries."
+link: "https://dropbox.tech/machine-learning/bringing-ai-powered-answers-and-summaries-to-file-previews-on-the-web"
+year: 2024
+seo:
+  title: "Dropbox: Scaling AI-Powered File Understanding with Efficient Embedding and LLM Architecture - ZenML LLMOps Database"
+  description: "Dropbox implemented AI-powered file understanding capabilities for previews on the web, enabling summarization and Q&A features across multiple file types. They built a scalable architecture using their Riviera framework for text extraction and embeddings, implemented k-means clustering for efficient summarization, and developed an intelligent chunk selection system for Q&A. The system achieved significant improvements with a 93% reduction in cost-per-summary, 64% reduction in cost-per-query, and latency improvements from 115s to 4s for summaries and 25s to 5s for queries."
+  canonical: "https://www.zenml.io/llmops-database/scaling-ai-powered-file-understanding-with-efficient-embedding-and-llm-architecture"
+  ogTitle: "Dropbox: Scaling AI-Powered File Understanding with Efficient Embedding and LLM Architecture - ZenML LLMOps Database"
+  ogDescription: "Dropbox implemented AI-powered file understanding capabilities for previews on the web, enabling summarization and Q&A features across multiple file types. They built a scalable architecture using their Riviera framework for text extraction and embeddings, implemented k-means clustering for efficient summarization, and developed an intelligent chunk selection system for Q&A. The system achieved significant improvements with a 93% reduction in cost-per-summary, 64% reduction in cost-per-query, and latency improvements from 115s to 4s for summaries and 25s to 5s for queries."
+---
+
+## Overview
+
+Dropbox, the cloud storage and file synchronization company, built AI-powered summarization and question-answering (Q&A) features directly into their web file preview experience. The goal was to help knowledge workers suffering from information overload by enabling them to quickly understand file contents without reading entire documents, watching full videos, or remembering exactly where specific information was stored. The system can summarize files of any length and format, answer questions about file contents, and even work across multiple files simultaneously.
+
+This case study offers a comprehensive look at how a large-scale production system integrates LLM capabilities into an existing infrastructure, with particular attention to performance optimization, cost management, and architectural decisions that enable scale.
+
+## The Riviera Framework: Foundation for LLM Integration
+
+The foundation of Dropbox's LLM features is their existing file conversion framework called **Riviera**. This system was originally designed to convert complex file types (like CAD drawings) into web-consumable formats (like PDF) for file previews. Riviera operates at enormous scale, processing approximately 2.5 billion requests per day—totaling nearly an exabyte of data—across roughly 300 file types.
+
+The architecture consists of a frontend that routes requests through plugins, with each plugin running in a "jail" (an isolated container designed for safe execution of third-party code). Riviera maintains a graph of possible conversions and can chain multiple plugins together to perform complex multi-step transformations. For example, extracting text from a video might follow the pipeline: `Video (.mp4) -> Audio (.aac) -> Transcript (.txt)`.
+
+A crucial architectural decision was treating embeddings as just another file conversion type within Riviera. This allowed the team to leverage existing infrastructure features, particularly the sophisticated caching layer. The pipeline becomes: `Video (.mp4) -> Audio (.aac) -> Transcript (.txt) -> AIEmbedding`. By separating embedding generation from summary/Q&A generation, the system can reuse embeddings across multiple requests—if a user summarizes a video and then asks follow-up questions, the embeddings only need to be generated once.
+
+## Embedding Generation Strategy
+
+The embeddings plugin takes text data extracted from various file types and converts it into vector representations. A key design decision was to chunk the text into paragraph-sized segments and calculate an embedding for each chunk, rather than generating a single embedding for the entire file. This approach increases the granularity of stored information, capturing more detailed and nuanced semantic meaning.
+
+The same chunking and embedding method is applied for both summarization and Q&A features, allowing them to share the same embedding cache within Riviera. This design choice significantly reduces redundant computation and API calls.
+
+## Summarization: K-Means Clustering Approach
+
+For summarization, Dropbox needed to define what constitutes a "good summary"—one that identifies all the different ideas or concepts in a document and provides the gist of each. The solution uses k-means clustering to group text chunks based on their embeddings in multi-dimensional vector space.
+
+The process works as follows: chunks with similar semantic content are grouped into clusters, major clusters are identified (representing the main ideas of the file), and a representative chunk from each cluster is concatenated to form the context. This context is then sent to an LLM for final summary generation.
+
+The team explicitly compared this approach to alternatives like the map-reduce "summary of summaries" approach and found k-means clustering superior in two key ways:
+
+- **Higher diversity of topics**: The k-means approach covered approximately 50% more topics than map-reduce. This is because map-reduce summaries often repeat similar information, resulting in content loss when combined. K-means specifically selects chunks that are semantically dissimilar to one another.
+
+- **Lower chance of hallucinations**: By sending consolidated context to the LLM in a single call rather than multiple calls, the likelihood of hallucination decreases significantly. Each LLM call presents a chance for hallucination, and summarizing summaries compounds this problem exponentially. The single-call approach also makes it much easier to pinpoint errors when comparing between LLMs or models.
+
+## Q&A: Similarity-Based Retrieval
+
+The Q&A plugin operates in a conceptually opposite manner to summarization. While summarization selects chunks for dissimilarity (to capture diverse topics), Q&A selects chunks for similarity to the user's query.
+
+The process generates an embedding for the user's question, then computes the distance between this query embedding and each text chunk embedding. The closest chunks are selected as context and sent to the LLM along with the query. The relevant chunk locations are returned to users as sources, allowing them to reference specific parts of the file that contributed to the answer.
+
+Both summarization and Q&A features also request context-relevant follow-up questions from the LLM using function calling and structured outputs. Testing showed that follow-up questions help users more naturally explore file contents and topics of interest.
+
+## Multi-File Support: Power Law Dynamics
+
+Expanding from single-file to multi-file processing required significant evolution of infrastructure, UI, and algorithms. A key challenge was determining how many relevant chunks or files to send to the LLM for any given query—direct questions might need only a few chunks, while broad questions require more context.
+
+The team discovered that this cannot be determined from the question alone; it also depends on the context. The question "What is Dropbox?" could be direct (if asked about a list of tech companies) or broad (if asked about the Dropbox Wikipedia page).
+
+The solution uses power law dynamics: the system takes the top 50 text chunks by relevance score and cuts off the bottom 20% of the score spread between max and min. Direct questions have steeper power law curves, meaning fewer chunks pass the threshold (more are discarded). Broad questions have flatter curves, allowing more chunks to be included.
+
+For example, if the most relevant chunk scores 0.9 and the least scores 0.2, everything below 0.34 is discarded, leaving about 15 chunks. If scores range from 0.5 to 0.2, the threshold drops to 0.26, leaving about 40 chunks. This approach allows direct questions to get less but more relevant context, while broad questions receive more context for expanded answers.
+
+## Critical LLMOps Decisions
+
+Several strategic decisions shaped the production system:
+
+**Real-time vs. Pre-computation**: The team chose real-time processing over pre-computing embeddings and responses. While pre-computation would offer lower latency, real-time processing allows users to choose exactly which files to share with the LLM—and only those files. Privacy and security were the primary drivers, though avoiding the cost of pre-computing requests that users might never make was an additional benefit.
+
+**Chunk Priority Calculation**: To optimize token usage, the system calculates priority tiers for chunks. The first two chunks chronologically receive top priority, followed by clustering-based selection. This maximizes topic breadth for summaries and relevancy for answers.
+
+**Caching Strategy**: The initial version did not cache embeddings, resulting in redundant LLM calls for the same document. The optimized version caches embeddings, reducing API calls and enabling summaries and Q&A to share the same chunks and embeddings.
+
+**Segmentation Benefits**: By sending only the most relevant parts of a file to the LLM in a single request, the system achieves lower latency, lower cost, and better quality results. The team explicitly notes that "sending garbage into the LLM means garbage out from the LLM."
+
+## Results and Performance Improvements
+
+The optimizations yielded substantial improvements:
+
+- Cost-per-summary dropped by 93%
+- Cost-per-query dropped by 64%
+- p75 latency for summaries decreased from 115 seconds to 4 seconds
+- p75 latency for queries decreased from 25 seconds to 5 seconds
+
+These metrics demonstrate significant success in both cost management and user experience improvement.
+
+## Considerations and Limitations
+
+The article notes that these features are still in early access and not yet available to all users. They are also optional and can be turned on or off for individual users or teams. Dropbox mentions adhering to a set of AI principles as part of their commitment to responsible AI use.
+
+The case study represents a well-documented example of integrating LLM capabilities into existing infrastructure at scale, with particular emphasis on architectural decisions that enable efficient caching, cost optimization, and quality improvements through clustering-based content selection rather than naive full-document processing.

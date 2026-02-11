@@ -1,0 +1,244 @@
+---
+title: "Multi-Agent Customer Support Automation Platform for Fintech"
+slug: "multi-agent-customer-support-automation-platform-for-fintech"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "694af5b0825f5464d3c500b7"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2026-01-07T09:40:39.763Z"
+  lastUpdated: "2025-12-23T20:11:49.892Z"
+  createdOn: "2025-12-23T20:04:00.400Z"
+llmopsTags:
+  - "customer-support"
+  - "fraud-detection"
+  - "regulatory-compliance"
+  - "chatbot"
+  - "multi-agent-systems"
+  - "agent-based"
+  - "prompt-engineering"
+  - "human-in-the-loop"
+  - "error-handling"
+  - "evals"
+  - "latency-optimization"
+  - "orchestration"
+  - "guardrails"
+  - "monitoring"
+  - "databases"
+  - "api-gateway"
+  - "fastapi"
+  - "openai"
+company: "Gradient Labs"
+summary: "Gradient Labs, an AI-native startup founded after ChatGPT's release, built a comprehensive customer support automation platform for fintech companies featuring three coordinated AI agents: inbound, outbound, and back office. The company addresses the challenge that traditional customer support automation only handles the \"tip of the iceberg\" - frontline queries - while missing the complex back-office tasks like fraud disputes and KYC compliance that consume most human agent time. Their solution uses a modular agent architecture with natural language procedures, deterministic skill-based orchestration, multi-layer guardrails for regulatory compliance, and sophisticated state management to handle complex, multi-turn conversations across email, chat, and voice channels. This approach enables end-to-end automation where agents coordinate seamlessly, such as an inbound agent receiving a dispute claim, triggering a back-office agent to process it, and an outbound agent proactively following up with customers for additional information."
+link: "https://www.youtube.com/watch?v=ZUvfDiDLD08"
+year: 2025
+seo:
+  title: "Gradient Labs: Multi-Agent Customer Support Automation Platform for Fintech - ZenML LLMOps Database"
+  description: "Gradient Labs, an AI-native startup founded after ChatGPT's release, built a comprehensive customer support automation platform for fintech companies featuring three coordinated AI agents: inbound, outbound, and back office. The company addresses the challenge that traditional customer support automation only handles the \"tip of the iceberg\" - frontline queries - while missing the complex back-office tasks like fraud disputes and KYC compliance that consume most human agent time. Their solution uses a modular agent architecture with natural language procedures, deterministic skill-based orchestration, multi-layer guardrails for regulatory compliance, and sophisticated state management to handle complex, multi-turn conversations across email, chat, and voice channels. This approach enables end-to-end automation where agents coordinate seamlessly, such as an inbound agent receiving a dispute claim, triggering a back-office agent to process it, and an outbound agent proactively following up with customers for additional information."
+  canonical: "https://www.zenml.io/llmops-database/multi-agent-customer-support-automation-platform-for-fintech"
+  ogTitle: "Gradient Labs: Multi-Agent Customer Support Automation Platform for Fintech - ZenML LLMOps Database"
+  ogDescription: "Gradient Labs, an AI-native startup founded after ChatGPT's release, built a comprehensive customer support automation platform for fintech companies featuring three coordinated AI agents: inbound, outbound, and back office. The company addresses the challenge that traditional customer support automation only handles the \"tip of the iceberg\" - frontline queries - while missing the complex back-office tasks like fraud disputes and KYC compliance that consume most human agent time. Their solution uses a modular agent architecture with natural language procedures, deterministic skill-based orchestration, multi-layer guardrails for regulatory compliance, and sophisticated state management to handle complex, multi-turn conversations across email, chat, and voice channels. This approach enables end-to-end automation where agents coordinate seamlessly, such as an inbound agent receiving a dispute claim, triggering a back-office agent to process it, and an outbound agent proactively following up with customers for additional information."
+---
+
+## Company Overview and Context
+
+Gradient Labs is an AI-native startup that was founded specifically in response to the capabilities demonstrated by ChatGPT and similar large language models. The company operates in the fintech customer support space and raised their Series A in 2025. The founding team recognized that LLMs could fundamentally change customer service automation, particularly for regulated industries like financial services. The company employs a lean team structure with product engineers and AI engineers working collaboratively without traditional product managers, reflecting a small, hands-on startup culture where everyone maintains a product mindset.
+
+The interview features Jack, a product engineer with approximately 18 months at the company working on the customer-facing web application, and Ibraim, an AI engineer with about one year at Gradient Labs who focuses on building agent logic and reasoning capabilities. The company operates with flexible "strike teams" that reassemble based on current priorities, allowing engineers to work across multiple agent types and features.
+
+## The Core Problem and Agent Architecture
+
+Gradient Labs identified that existing customer support automation solutions only address what their CEO calls the "tip of the iceberg" - the visible frontline customer support interactions like simple question answering. However, the bulk of actual work in fintech customer support occurs below the surface: back-office tasks such as fraud dispute management, fraud investigations, KYC compliance checks, and other regulatory requirements. These hidden tasks often consume more human agent time than frontline support but are rarely automated.
+
+To address this comprehensive challenge, Gradient Labs built three distinct but coordinated agent types:
+
+**The Inbound Agent** handles traditional customer-initiated support requests through channels like chat and email. This agent can answer questions but, critically, can also take actions by calling APIs to freeze cards, update account information, or trigger downstream processes.
+
+**The Back Office Agent** manages internal processes that occur behind the scenes, such as processing disputes with merchants, conducting fraud investigations, and handling regulatory compliance tasks. These processes often involve interactions with internal systems and can span days or weeks.
+
+**The Outbound Agent** proactively reaches out to customers when information is needed or actions are required. This might include KYC updates, gathering additional information for disputes, or mass communication campaigns. The outbound agent represents a significant innovation because it inverts the traditional support model where agents only respond to customer-initiated contact.
+
+The power of this three-agent system emerges when they coordinate on complex workflows. A typical example: a customer contacts support reporting a fraudulent transaction. The inbound agent receives the complaint and immediately freezes the card via API call. It then triggers the back office agent to initiate a dispute with the merchant. Days later, when the merchant responds requesting additional information, the outbound agent proactively contacts the customer to gather the needed details. Finally, once resolved, the system notifies the customer of the outcome. This represents true end-to-end automation of a complex, multi-day, multi-party process.
+
+## Natural Language Procedures as the Foundation
+
+A critical early architectural decision was how to encode business logic and workflows that agents should follow. Traditional approaches might use rigid state machines, decision trees, or complex code. Gradient Labs chose a different path: natural language procedures that look like Notion documents.
+
+This decision emerged from recognizing that the knowledge of how to handle customer support scenarios resides in the heads of subject matter experts who are typically not technical. Creating barriers for these experts to transfer their knowledge would slow deployment and introduce translation errors. By allowing procedures to be written in plain natural language, Gradient Labs enables fintech companies to essentially train their AI agents the same way they would train human agents - through written instructions.
+
+Procedures consist of step-by-step instructions written in natural language. For example, a card replacement procedure might read: "Step 1: Figure out why the customer needs a card replacement - is it lost, stolen, or expired? Step 2: If stolen, freeze the card using the freeze_card tool. Step 3: Order the replacement card and confirm the delivery address." The agent reads these procedures and follows them while handling conversations.
+
+Critically, procedures can include tool calls embedded within the natural language instructions. This allows non-technical users to specify when the agent should interact with backend systems. The company found that most customers already had procedure documentation for training human agents, so translating these into the Gradient Labs format proved straightforward.
+
+To further lower the barrier to entry, Gradient Labs can bootstrap procedures from historical conversation data. By analyzing how human agents previously handled specific scenario types, the system generates draft procedures that subject matter experts can then refine. This prevents the "blank page problem" and accelerates time-to-production.
+
+## Orchestration: The State Machine and Turn-Based Architecture
+
+While procedures provide the content of what agents should do, the orchestration layer manages how conversations flow over time. Gradient Labs uses what they call a "state machine" as the central orchestrator. This is not an AI component - it's deterministic code responsible for managing conversation state and history.
+
+The fundamental unit of work is a "turn." Turns are triggered by three types of events:
+
+- **Customer messages**: When a customer sends a message, this triggers a turn where the agent must decide how to respond
+- **Tool call results**: When an API call completes and returns data, this triggers a turn to process that result
+- **Customer silence**: When a customer doesn't respond for a period, this can trigger a turn to send a follow-up
+
+Each turn invokes the agent logic to determine what action to take next. The orchestrator maintains the full conversation state across turns, which is essential because conversations - especially outbound ones - can span days or weeks. This is not a real-time loop where an agent waits for the next input; rather, it's an event-driven system where the orchestrator wakes up, processes a turn, takes an action, and goes dormant until the next triggering event.
+
+Within each turn, the agent doesn't run as a monolithic reasoning system. Instead, it's composed of modular "skills" - specialized sub-workflows that handle specific reasoning tasks. Examples of skills include:
+
+- **Procedure following**: The core skill that reads and executes the natural language procedures
+- **Guardrails**: Multiple skills that check for regulatory violations, prompt injection, complaints, financial difficulties, and other sensitive scenarios
+- **Clarification**: A skill that determines if customer messages are unclear and need follow-up
+- **Language detection and handling**: Skills to detect non-supported languages and route appropriately
+- **Completion detection**: For outbound conversations, a skill that determines if the procedure's goal has been achieved
+
+The architecture allows skills to be run in parallel where appropriate (for latency optimization) or in sequence when dependencies exist. Importantly, which skills are available on any given turn is determined deterministically based on the conversation context. For example, the first turn of an outbound conversation only has access to the greeting skill, while subsequent turns triggered by customer messages have access to a broader set of skills including procedure following, clarification, and various guardrails.
+
+This deterministic scoping of available skills serves multiple purposes: it prevents the agent from making nonsensical decisions (like trying to greet a customer mid-conversation), improves safety by limiting capabilities in certain contexts, and helps manage the complexity that would arise from giving the agent unrestricted access to all skills at all times.
+
+The agent can also navigate between skills dynamically. If it initially believes clarification is needed but then determines that's incorrect, it can back out of the clarification skill and proceed to procedure execution instead. This provides flexibility while maintaining structure.
+
+## Guardrails: Regulatory Compliance and Safety
+
+Given the highly regulated fintech environment, guardrails are non-optional components of the system. Gradient Labs implements a sophisticated multi-layer guardrail system that operates on both customer inputs and agent outputs.
+
+**Input guardrails** scan customer messages for:
+- Prompt injection attempts and jailbreaking
+- Financial difficulty indicators that require special handling
+- Customer vulnerability signals that mandate regulatory protections (particularly important in UK financial regulations)
+- Complaints, which are regulated and require specific response procedures
+- Language detection for unsupported languages
+
+**Output guardrails** scan draft agent responses before they're sent to customers for:
+- Unsubstantiated financial promises (e.g., "We'll refund your money" without proper authority)
+- Financial advice that the company isn't licensed to provide
+- Regulatory violations specific to financial services
+- Tone and policy violations defined by the customer
+
+Technically, guardrails are implemented as binary classification tasks using LLMs. Each guardrail consists of a carefully crafted prompt that describes the violation pattern and asks the LLM to classify whether a given message (input or output) violates that specific guardrail. The prompts are sent to LLM providers particularly effective at classification tasks.
+
+Critically, Gradient Labs treats guardrails as traditional ML classification problems when it comes to evaluation. They maintain labeled datasets for each important guardrail, where labels come from manual human review - never from LLM outputs themselves. They compute standard classification metrics (precision, recall, flag rate) and make explicit trade-offs. For high-stakes guardrails like unsubstantiated financial promises, they optimize for very high recall even at the cost of lower precision, accepting that the agent might be overly cautious in those areas.
+
+The labeled datasets are curated through multiple channels:
+- Early customers and domain experts provide initial labels
+- Team members with fintech backgrounds contribute expertise
+- An "auto-eval" system (described below) flags potentially interesting conversations for human review
+- Production monitoring identifies anomalies when guardrail trigger rates deviate from historical norms
+
+The team emphasized that while guardrails use LLMs for inference, they explicitly do NOT treat LLM outputs as ground truth for labeling purposes. If a guardrail flags a conversation in production, that flag is logged but not stored as a label. Only human-reviewed examples enter the labeled dataset. This prevents the system from reinforcing its own errors.
+
+Some guardrails are universal across all Gradient Labs customers due to baseline regulatory requirements, while others can be toggled per customer based on their specific regulatory environment and risk tolerance. Less regulated fintech companies might disable certain restrictive guardrails to improve agent flexibility.
+
+## Tool Calling and the "Ask a Human" Pattern
+
+Gradient Labs agents can call tools to interact with customer backend systems - freezing cards, updating addresses, processing refunds, initiating disputes, and more. This tool-calling capability is what elevates the agents beyond simple question-answering chatbots to systems that can actually take action and resolve issues end-to-end.
+
+The company recognized that requiring customers to have production-ready APIs for all actions would create a significant barrier to adoption. They address this through two mechanisms:
+
+**Placeholder tools** allow customers to write procedures that reference tools that don't yet exist. During testing and iteration, these placeholders allow the full procedure to be developed and evaluated without being blocked on engineering work to build actual APIs. This separates the business logic development (done by subject matter experts) from the technical integration work (done by engineering teams).
+
+**"Ask a Human" tool** is an elegant solution to two problems: companies without APIs and actions that require human authorization. When a procedure calls the "ask a human" tool, it creates a task that appears in a Slack channel or the Gradient Labs web app. A human reviews the conversation context and the specific request, then approves or rejects it. The agent receives this decision and continues execution.
+
+This pattern essentially treats humans as API endpoints from the agent's perspective. The interface is identical whether calling a tool that hits an automated API or one that routes through human review. According to the team, this has enabled significant cost and time savings for customers even when full automation isn't possible, because the human only handles a small approval decision rather than the entire conversation and context-gathering process that preceded it.
+
+Most fintech companies already had internal tools and back-office systems that human agents used, so exposing these as APIs for agent consumption was often straightforward. The barrier wasn't primarily technical but rather organizational and prioritization-related, which is exactly what the placeholder and ask-a-human patterns address.
+
+## The Outbound Agent Challenge: Determining "Done"
+
+The outbound agent presented unique challenges compared to inbound support. When a customer initiates contact, the signal for completion is clear: the customer either says "thank you" or stops responding once satisfied. But when the company initiates contact, the agent must determine completion itself.
+
+This becomes complex because there are multiple ways an outbound procedure can end:
+
+- **Successful completion with goal achieved**: The customer provided the needed information or took the required action
+- **Successful completion without goal achieved**: The agent properly completed all steps but the customer declined or didn't comply
+- **Premature termination**: The agent incorrectly thinks it's done when work remains
+- **Conversation derailment**: The customer raises unrelated issues that must be handled
+
+Gradient Labs addresses this through a specialized "completion detection" skill that runs only in outbound contexts. This skill evaluates whether the procedure's defined goal has been met. Importantly, the goal definition is part of the procedure itself, written by the customer. For example, a KYC update procedure might define success as "customer has updated their information in the app, confirmed via checking the updated_at timestamp in the customer resource" - a deterministic, verifiable outcome.
+
+The completion detection skill can override the procedure-following agent. If the procedure agent thinks it's done but the completion skill disagrees, the system can force the agent back into the procedure or trigger alternative handling. This separation of concerns - procedure execution versus goal validation - prevents the goal-directed procedure agent from prematurely declaring success.
+
+## Handling Conversation Complexity and Non-Happy Paths
+
+A major challenge in production LLM systems is that users don't follow the happy path. In Gradient Labs' case, customers can:
+
+- Answer questions but include unrelated requests in the same message
+- Suddenly switch languages
+- Raise complaints or report vulnerabilities mid-conversation
+- Provide unclear or incomplete information requiring clarification
+- Go completely off-topic
+
+The skill-based architecture addresses this through a hierarchy of decision-making. Before the procedure-following skill executes, other skills evaluate whether procedure execution is even appropriate for this turn. These include:
+
+- **Language detection**: If the customer switched to an unsupported language, route to language handling instead of procedure
+- **Complaint detection**: If a complaint was raised, regulatory requirements may demand immediate human handoff
+- **Clarification detection**: If the customer's last message was unclear, clarify before proceeding with procedure
+- **Input guardrails**: If the customer's message triggers safety concerns, handle those first
+
+This creates an implicit priority system where certain concerns (safety, regulatory, clarity) take precedence over procedure execution. The agent can navigate into these alternative paths, and potentially back out if it determines they weren't necessary after all.
+
+The team also mentioned that "resources" - contextual information about the customer's account sent along with conversations - help the agent make informed decisions. For example, if a customer reports a stolen card, the agent can check the resource to see if the card is already frozen, take action to freeze it if needed, and then verify the action succeeded by checking the resource again.
+
+## Evaluation: Auto-Eval and Manual Review Loop
+
+Gradient Labs implements a post-conversation auto-evaluation system that runs once conversations complete. This "auto-eval agent" scans entire conversation transcripts looking for patterns indicating quality issues:
+
+- Missed guardrails that should have triggered
+- Excessive repetition by the agent
+- Negative customer sentiment
+- Signs of poor customer experience
+- Edge cases worth examining
+
+When the auto-eval flags a conversation, it creates a review task in the web app. Human reviewers then examine these flagged conversations and provide granular labels: Was this a false positive from auto-eval? Was a specific guardrail actually violated? Did the conversation genuinely provide a poor experience?
+
+This creates a virtuous cycle: the auto-eval system samples conversations likely to be interesting (much more efficiently than random sampling), humans review and label them, and these labels flow into the guardrail and agent evaluation datasets. Over time, this accumulates a rich corpus of labeled edge cases that improve both guardrail performance and overall agent quality.
+
+The team emphasized that human review remains the source of ground truth. The auto-eval is a sampling mechanism, not a labeling mechanism. This discipline prevents the system from bootstrapping itself into reinforcing its own errors.
+
+For guardrails specifically, they track key metrics over time and monitor for anomalies. If a guardrail that typically flags 0.1% of conversations suddenly flags 1%, this triggers investigation. This statistical process control approach, borrowed from traditional ML operations, helps the team focus attention where problems are emerging rather than constantly checking everything.
+
+## Multi-Channel Support: Voice Agents
+
+The company recently shipped voice agent capabilities, extending their architecture to support real-time phone conversations in addition to asynchronous email and chat. Voice introduced significant new constraints, particularly around latency.
+
+Many skills that worked for text conversations needed to be re-architected for voice due to latency requirements. The team creates separate voice-optimized versions of skills where needed, while sharing other skills across modalities where appropriate. For example, guardrails for text conversations can often be shared with voice (since they're analyzing similar content), but the execution flow and prompt engineering differs significantly due to the real-time nature of voice.
+
+This multi-channel support demonstrates the flexibility of their core architecture: the state machine orchestration, natural language procedures, and skill-based composition patterns apply across modalities, while implementation details adapt to each channel's unique constraints.
+
+## Production Operations and Customer Onboarding
+
+The company employs an "AI delivery team" that works hands-on with customers during onboarding to write initial procedures and configure guardrails. As they gain experience, they productize common patterns so subsequent customers can self-serve more effectively. This reflects a common pattern in enterprise AI: early stages require high-touch service, but patterns emerge that can be automated.
+
+Customers can test agents with placeholder tools before building real integrations, can configure tone-of-voice instructions to control agent personality, can toggle guardrails based on their regulatory environment, and can define their own triggers for when outbound conversations should initiate. This combination of opinionated architecture with customer-specific customization points represents a mature approach to LLMOps in enterprise contexts.
+
+## Technical Stack and Architecture Patterns
+
+While specific model providers and infrastructure details weren't discussed extensively, several technical patterns emerge:
+
+- **Event-driven architecture**: Conversations aren't constantly running loops but rather event-driven workflows triggered by specific events
+- **Modular skill composition**: Skills are independent subworkflows that can be composed, run in parallel or sequence, and versioned independently
+- **Deterministic orchestration**: The core state machine uses deterministic logic, not LLM reasoning, for reliability
+- **Separation of concerns**: Procedure content, orchestration logic, guardrails, and specialized skills are architecturally separated
+- **Resource-based context**: Customer account information flows alongside conversations as structured "resources" that agents can query
+- **Classification as the safety primitive**: Safety and compliance reduce to classification problems that can be evaluated with standard ML metrics
+
+## Critical Evaluation and Tradeoffs
+
+From an LLMOps perspective, several tradeoffs and considerations emerge:
+
+**Complexity vs. Capability**: The multi-skill, multi-agent architecture is sophisticated and likely requires significant engineering investment to maintain. The team's comfort with this complexity suggests strong engineering culture, but other teams might struggle with similar architectures. The deterministic scoping of skills to turn contexts is clever but adds conceptual overhead.
+
+**Natural Language Procedures**: While empowering for non-technical users, natural language procedures introduce ambiguity. The agent must interpret these instructions, which could lead to inconsistent behavior. The team doesn't discuss how they handle procedure ambiguity or conflicts between procedure steps and other agent behaviors.
+
+**Guardrail Coverage**: The binary classification approach to guardrails is sound, but maintaining dozens of guardrails with adequate labeled data is resource-intensive. The team acknowledges some guardrails receive less attention than others, which means coverage may be uneven. The auto-eval sampling strategy helps but doesn't guarantee comprehensive coverage.
+
+**Human Review Dependency**: The system's quality depends on ongoing human review for labeling and quality assurance. This is appropriate but creates operational overhead and limits how much the system can improve autonomously.
+
+**Latency Considerations**: The text conversation architecture with multiple skills running on each turn could introduce significant latency, though the team mentions parallel execution to mitigate this. Voice applications required re-architecture specifically for latency, suggesting this is a real constraint.
+
+**Scalability of Approach**: The fintech focus provides natural boundaries (common use cases, shared regulatory requirements) that make the approach tractable. It's unclear how well this architecture would scale to more diverse domains where procedure standardization is harder.
+
+**Promise vs. Reality**: As an early-stage company, many claims about automation rates, customer savings, and system reliability should be viewed as promising but unproven at scale. The interview doesn't provide specific metrics on accuracy, containment rates, or customer satisfaction scores.
+
+Overall, Gradient Labs demonstrates sophisticated LLMOps practices well-suited to their regulated industry context. Their architectural choices reflect mature thinking about production AI systems: deterministic orchestration, explicit safety layers, human-in-the-loop patterns, systematic evaluation, and separation of business logic from technical implementation. The multi-agent coordination represents genuine innovation beyond simple chatbots. However, the complexity of their system and the early stage of the company mean real-world performance at scale remains to be proven.

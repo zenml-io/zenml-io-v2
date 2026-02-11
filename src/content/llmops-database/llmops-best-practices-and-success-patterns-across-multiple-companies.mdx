@@ -1,0 +1,164 @@
+---
+title: "LLMOps Best Practices and Success Patterns Across Multiple Companies"
+slug: "llmops-best-practices-and-success-patterns-across-multiple-companies"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "677b9fad0a2935b4bc5c0d51"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:53:39.398Z"
+  createdOn: "2025-01-06T09:17:33.157Z"
+llmopsTags:
+  - "code-generation"
+  - "regulatory-compliance"
+  - "high-stakes-application"
+  - "prompt-engineering"
+  - "fine-tuning"
+  - "human-in-the-loop"
+  - "error-handling"
+  - "system-prompts"
+  - "latency-optimization"
+  - "cost-optimization"
+  - "monitoring"
+  - "documentation"
+  - "reliability"
+  - "guardrails"
+  - "cicd"
+  - "openai"
+  - "microsoft-azure"
+company: "HumanLoop"
+summary: "A comprehensive analysis of successful LLM implementations across multiple companies including Duolingo, GitHub, Fathom, and others, highlighting key patterns in team composition, evaluation strategies, and tooling requirements. The study emphasizes the importance of domain experts in LLMOps, proper evaluation frameworks, and the need for comprehensive logging and debugging tools, showcasing concrete examples of companies achieving significant ROI through proper LLMOps implementation."
+link: "https://www.youtube.com/watch?v=khcMErjUB8k"
+seo:
+  title: "HumanLoop: LLMOps Best Practices and Success Patterns Across Multiple Companies - ZenML LLMOps Database"
+  description: "A comprehensive analysis of successful LLM implementations across multiple companies including Duolingo, GitHub, Fathom, and others, highlighting key patterns in team composition, evaluation strategies, and tooling requirements. The study emphasizes the importance of domain experts in LLMOps, proper evaluation frameworks, and the need for comprehensive logging and debugging tools, showcasing concrete examples of companies achieving significant ROI through proper LLMOps implementation."
+  canonical: "https://www.zenml.io/llmops-database/llmops-best-practices-and-success-patterns-across-multiple-companies"
+  ogTitle: "HumanLoop: LLMOps Best Practices and Success Patterns Across Multiple Companies - ZenML LLMOps Database"
+  ogDescription: "A comprehensive analysis of successful LLM implementations across multiple companies including Duolingo, GitHub, Fathom, and others, highlighting key patterns in team composition, evaluation strategies, and tooling requirements. The study emphasizes the importance of domain experts in LLMOps, proper evaluation frameworks, and the need for comprehensive logging and debugging tools, showcasing concrete examples of companies achieving significant ROI through proper LLMOps implementation."
+---
+
+## Overview
+
+This case study is derived from a conference talk by a representative of HumanLoop, which describes itself as "probably the first LLMOps platform." The talk synthesizes lessons learned from working with hundreds of companies—both startups and enterprises—to help them deploy LLM-based applications in production. Rather than focusing on a single deployment, the speaker draws patterns from multiple successful (and unsuccessful) implementations to identify what separates teams that succeed from those that fail.
+
+The overarching thesis is that we have moved past the experimentation phase of LLM adoption. Real revenue and cost savings are being generated now, not in some hypothetical future. The speaker cites Filevine, a legal tech company and HumanLoop customer, as a concrete example: they launched six AI products in a year and roughly doubled their revenue—a significant achievement for a late-stage, fast-growing startup operating in a regulated industry.
+
+## LLM Application Architecture Philosophy
+
+The speaker presents a simplified view of LLM application architecture, arguing that most applications consist of just four key components chained together in various ways:
+
+- **Base model**: Could be a large model from a provider like OpenAI or a smaller fine-tuned model
+- **Prompt template**: Natural language instructions to the model
+- **Data selection strategy**: Whether using RAG, API population, or other context injection methods
+- **Function calling/tools**: Optional augmentation for agent-like behavior
+
+The speaker emphasizes that what makes LLM applications difficult is not the architectural complexity but rather making each of these components actually good. This is where most of the work lies. Interestingly, the speaker predicts that as models improve, systems will become simpler rather than more complex—much of the current chaining and complexity is a workaround for model limitations in areas like tool selection.
+
+GitHub Copilot is cited as an example of this architecture in action: it uses a fine-tuned base model (for latency), a data selection strategy that looks at the previous code behind the cursor and the most similar code from the last 10 files touched, and rigorous evaluation—all following this same fundamental structure.
+
+## Team Composition: The "People, Ideas, Machines" Framework
+
+Borrowing from Kel Boyd's Pentagon adage of "people, ideas, machines in that order," the speaker argues that team composition is the first and most critical factor in LLMOps success.
+
+### Less ML Expertise Than Expected
+
+The teams that succeed tend to be staffed more by generalist full-stack product engineers rather than traditional machine learning specialists. The term "AI engineer" is beginning to capture this shift—these are people who care about products, understand prompting, and know about models, but they are not fundamentally focused on model training. The expertise needed is more about understanding the API layer and above, not the model internals below.
+
+### Domain Experts Are Critical
+
+The most underappreciated insight is how important domain experts are to success. Traditionally in software, product managers or domain experts produce specifications that engineers implement. LLMs have fundamentally changed this dynamic by enabling domain experts to contribute directly to the building of applications—they can help create prompts, define evaluations, and provide feedback that directly shapes the product.
+
+Several examples illustrate this point:
+
+- **Duolingo**: Linguists do all the prompt engineering. The speaker mentions that (as of about six months before the talk) engineers were not allowed to edit prompts—there was a one-way direction of travel from linguist-authored prompts into production code. This makes sense because linguists fundamentally know what good language instruction looks like.
+
+- **Filevine**: Legal professionals with domain expertise are directly involved in prompting the models and producing what is effectively production code, just written in natural language.
+
+- **Ironclad**: Uses legal expertise heavily in their process, though in a different way than Filevine.
+
+- **Fathom**: This meeting note summarizer provides a compelling mental model for why domain expertise matters. Their product manager did the majority of prompting for different meeting summary types—salespeople get different summaries than product managers in one-on-ones or engineers. An engineer couldn't possibly have the domain knowledge to understand what makes a good summary for each of these contexts.
+
+### The Right Mix
+
+The ideal team composition appears to be: lots of generalist engineers, lots of subject matter experts, and a smaller amount of machine learning expertise. The ML expertise is still valuable—someone needs to understand concepts like building representative test sets and thinking about evaluation—but they don't need to be doing hardcore model training. A good data science background is sufficient; PhDs with extensive training experience are not necessary.
+
+## Evaluation as the Core Discipline
+
+The speaker argues that evaluation must be central to LLMOps practice from day one. Without good evaluation, teams spin their wheels making changes and eyeballing outputs, never trusting results enough to put them in production. Critically, defining evaluation criteria is essentially defining the spec—you're articulating what "good" looks like.
+
+### Evaluation at Every Stage
+
+The best teams incorporate evaluation throughout the entire development lifecycle:
+
+- **During prototyping**: Lightweight evaluation that evolves alongside the application. Teams often ship rough internal prototypes quickly, sometimes without full UI, just to get a sense of what good looks like. From this, evaluation criteria emerge and are iteratively refined.
+
+- **In production**: Monitoring for how systems behave in the wild, with the ability to drill down and understand failures.
+
+- **For regression testing**: When changing prompts or switching models, teams need confidence that they're not introducing accidental regressions. If evaluation is built well from the start, these problems largely solve themselves.
+
+### End User Feedback is Invaluable
+
+The ultimate ground truth for evaluation is user feedback, especially for subjective tasks like summarization or question answering. The speaker emphasizes that end user feedback is "priceless."
+
+GitHub Copilot exemplifies sophisticated feedback collection: they track not just whether suggestions are accepted, but whether the suggested code stays in the codebase and for how long, at various intervals. This creates a rich signal about actual value delivered.
+
+Common feedback mechanisms include:
+- Thumbs up/down
+- Copy/paste actions
+- Regenerate requests
+- Corrections and edits (particularly valuable—logging what users change in generated summaries or emails provides rich data for improvement)
+
+The challenge is that end user feedback tends to be lower volume than desired and isn't available during development, so it can't be the only evaluation approach.
+
+### Building Evaluation Scorecards
+
+Successful teams build scorecards with multiple evaluator types. The key differentiator between high-performing teams and others is the extent to which they break down subjective criteria into small, independently testable components.
+
+LLM-as-judge can work well or poorly depending on how it's used. Asking a model "is this good writing?" produces noisy, ambiguous results. But asking specific questions like "is the tone appropriate for a child?" or "does this text contain these five required points?" works much better.
+
+Teams should expect to use a mix of:
+- LLM-based evaluators (for specific, well-defined questions)
+- Traditional code-based metrics (precision, recall, latency)
+- Human evaluation (almost universally still needed, even by the best teams)
+
+The speaker notes that you're optimizing on a Pareto frontier rather than a single metric. Unlike traditional ML where you might optimize a single number, product experience is multifaceted—one system might be more expensive but significantly better in helpfulness, and that trade-off is a product decision.
+
+**Hex** is cited as an example: their head of AI described breaking down evaluation criteria into small, essentially binary pieces that can be scored independently and then aggregated. He explicitly warned against seeking a "single god metric."
+
+**Vant** operates in a regulated space and relies on a mixture of automated evaluation and substantial human feedback because the stakes are too high to rely solely on automation.
+
+## Tooling and Infrastructure
+
+Once team composition and evaluation strategy are in place, teams need to think about tooling. Three requirements emerge as critical:
+
+### Optimize for Team Collaboration
+
+Prompts are natural language artifacts that act like code, but if you store them in a codebase and treat them as normal code, you alienate the domain experts who should be deeply involved. Systems should be designed so domain experts can participate in both prompt engineering and evaluation. They may not drive the technical process of building test sets, but they know what good looks like.
+
+### Evaluation at Every Stage
+
+Tooling should support lightweight evaluation during prototyping, production monitoring, and regression testing—not just one or the other.
+
+### Comprehensive Logging
+
+Ideally, teams should capture inputs and outputs at every stage with the ability to replay runs and promote data points from production logs into test sets of edge cases. This creates a virtuous cycle where production issues become regression tests.
+
+### The Ironclad/Rivet Example
+
+The speaker shares a compelling story about Ironclad, which built an open-source library called Rivet. Their CTO reportedly said they almost gave up on agents before having proper tooling. They started building agents with function calls—it worked with one, worked with two, but when they added a third and fourth, the system started failing catastrophically.
+
+An engineer built logging and rerun infrastructure as a "secret weekend project." Only after having the ability to debug traces did they realize they could achieve production-grade performance. Now, for their biggest customers, roughly 50% of contracts are auto-negotiated—a capability that wouldn't exist without that debugging infrastructure.
+
+### Notion's Approach
+
+The speaker references Lonus from Notion, who gave a separate talk about their logging practices—particularly the ability to find any AI run from production and replay it with modifications.
+
+## Key Takeaways and Caveats
+
+It's worth noting that this talk comes from a vendor (HumanLoop) selling LLMOps tooling, so the emphasis on tooling should be taken with appropriate skepticism. That said, the examples cited are from real companies, some of which built tooling themselves (like Ironclad's Rivet, which is open source), suggesting the lessons transcend any particular product.
+
+The central message—that LLM applications are now generating real ROI—is supported by specific claims (Filevine doubling revenue, Ironclad auto-negotiating 50% of contracts) but these should be understood as self-reported outcomes from HumanLoop customers, not independently verified results.
+
+The framework of "people, ideas, machines" provides a useful mental model: get team composition right first (center domain experts, don't over-hire ML specialists), then focus on evaluation criteria and feedback loops, and finally invest in tooling that supports collaboration and debugging. Teams that succeed appear to follow this sequence, while teams that fail often jump straight to tooling or over-invest in ML expertise at the expense of domain knowledge.

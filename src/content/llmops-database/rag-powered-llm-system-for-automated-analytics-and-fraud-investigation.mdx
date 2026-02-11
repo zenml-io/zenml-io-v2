@@ -1,0 +1,106 @@
+---
+title: "RAG-Powered LLM System for Automated Analytics and Fraud Investigation"
+slug: "rag-powered-llm-system-for-automated-analytics-and-fraud-investigation"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f3df0ff1f4649143f2431"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:36:50.127Z"
+  createdOn: "2024-11-21T14:04:32.358Z"
+llmopsTags:
+  - "api-gateway"
+  - "continuous-integration"
+  - "data-analysis"
+  - "data-integration"
+  - "fraud-detection"
+  - "microservices"
+  - "openai"
+  - "prompt-engineering"
+  - "rag"
+  - "reliability"
+  - "scalability"
+  - "scaling"
+  - "security"
+  - "semantic-search"
+company: "Grab"
+summary: "Grab's Integrity Analytics team developed a comprehensive LLM-based solution to automate routine analytical tasks and fraud investigations. The system combines an internal LLM tool (Spellvault) with a custom data middleware (Data-Arks) to enable automated report generation and fraud investigation assistance. By implementing RAG instead of fine-tuning, they created a scalable, cost-effective solution that reduced report generation time by 3-4 hours per report and streamlined fraud investigations to minutes."
+link: "https://engineering.grab.com/transforming-the-analytics-landscape-with-RAG-powered-LLM"
+year: 2024
+seo:
+  title: "Grab: RAG-Powered LLM System for Automated Analytics and Fraud Investigation - ZenML LLMOps Database"
+  description: "Grab's Integrity Analytics team developed a comprehensive LLM-based solution to automate routine analytical tasks and fraud investigations. The system combines an internal LLM tool (Spellvault) with a custom data middleware (Data-Arks) to enable automated report generation and fraud investigation assistance. By implementing RAG instead of fine-tuning, they created a scalable, cost-effective solution that reduced report generation time by 3-4 hours per report and streamlined fraud investigations to minutes."
+  canonical: "https://www.zenml.io/llmops-database/rag-powered-llm-system-for-automated-analytics-and-fraud-investigation"
+  ogTitle: "Grab: RAG-Powered LLM System for Automated Analytics and Fraud Investigation - ZenML LLMOps Database"
+  ogDescription: "Grab's Integrity Analytics team developed a comprehensive LLM-based solution to automate routine analytical tasks and fraud investigations. The system combines an internal LLM tool (Spellvault) with a custom data middleware (Data-Arks) to enable automated report generation and fraud investigation assistance. By implementing RAG instead of fine-tuning, they created a scalable, cost-effective solution that reduced report generation time by 3-4 hours per report and streamlined fraud investigations to minutes."
+---
+
+## Overview
+
+Grab, the leading superapp platform in Southeast Asia, developed a RAG-powered LLM solution through its Integrity Analytics team to address the growing burden of repetitive analytical tasks faced by Data Analysts. The company operates across mobility, food delivery, package delivery, grocery services, mobile payments, and financial services in over 700 cities across eight countries. This case study focuses on how they built production LLM applications to automate report generation and streamline fraud investigations.
+
+The core problem addressed was that Data Analysts were struggling with an increasing volume of data queries from stakeholders, with the conventional approach of manually writing and running similar queries being time-consuming and inefficient. The solution leverages Retrieval-Augmented Generation (RAG) to integrate direct function calling with LLMs, enabling more efficient query answering by retrieving relevant information from internal databases.
+
+## Architecture and Components
+
+The production LLM system at Grab consists of several integrated components that work together to deliver analytical insights:
+
+**Spellvault** serves as the internally facing LLM tool—a platform within Grab that stores, shares, and refines LLM prompts. It features low/no-code RAG capabilities that lower the barrier of entry for employees to create LLM applications. This democratization of LLM tooling is significant from an LLMOps perspective as it allows non-technical users to build and deploy LLM-powered solutions without extensive coding knowledge.
+
+**Data-Arks** is the data middleware layer—an in-house Python-based API platform that hosts frequently used SQL queries and Python functions packaged as individual APIs. This component is crucial for ensuring that LLMs receive accurate, properly formatted data. Data-Arks is also integrated with Slack, Wiki, and JIRA APIs, enabling the system to parse and fetch information from these collaboration tools. The platform allows any employee across different teams and functions at Grab to self-serve and upload SQL queries, making the tool versatile and extensible across use cases.
+
+The architecture emphasizes the importance of data quality and latency—the system requires real-time or close to real-time data in a standardized format to ensure accuracy of LLM outputs. This is a practical acknowledgment that LLM performance is heavily dependent on the quality and timeliness of the data it processes.
+
+**Scheduler** functionality enables running LLM applications at regular intervals, which is essential for automating routine reporting tasks. This scheduling capability is a key LLMOps consideration for production systems that need to deliver consistent, timely outputs.
+
+**Slack integration** provides the user interface where users interact with the LLM by entering commands to receive reports and insights. This integration into existing communication workflows reduces friction for end users and makes the LLM capabilities more accessible.
+
+## Production Use Cases
+
+### Automated Report Generation
+
+The Report Summarizer is one of the primary production applications. It calls Data-Arks APIs to generate data in tabular format, and then the LLM summarizes this data and generates a short paragraph of key insights. The workflow involves multiple tools: Data-Arks retrieves and formats the data, Spellvault processes it through the LLM, and the results are delivered through Slack.
+
+The team reports that this automated report generation saves an estimated 3-4 hours per report. While this is a significant productivity gain, it's worth noting that this is a self-reported metric and the actual time savings may vary depending on the complexity of individual reports.
+
+### Fraud Investigation Bot (A* Bot)
+
+The A* Bot is described as the team's LLM-powered fraud investigation helper. A set of frequently used queries for fraud investigation is made available as Data-Arks APIs. When a user submits a query through Slack, Spellvault uses RAG to select the most relevant queries, executes them via Data-Arks, and provides a summarized response to users.
+
+The key value proposition here is that the LLM can contextualize multiple different data points and information simultaneously, deriving useful insights that would otherwise require an analyst to manually compile and interpret. The system can provide all necessary information for a fraud investigation simultaneously, reducing what was previously a time-consuming process to "a matter of minutes."
+
+## RAG vs Fine-Tuning Decision
+
+The team explicitly chose RAG over fine-tuning for several practical LLMOps reasons:
+
+**Cost and Effort**: Fine-tuning requires significant computational cost as it involves training a base model with domain-specific data. RAG is computationally less expensive since it only retrieves relevant data and context to augment responses. The same base model can be used across different use cases, providing flexibility and cost efficiency.
+
+**Real-time Data Access**: Fine-tuning would require model retraining with each information update, whereas RAG retrieves current context and data from a knowledge base. This allows the LLM to answer questions using the most current information from production databases without the need for model retraining—a critical capability for fraud investigation and analytics use cases where data freshness matters.
+
+**Speed and Scalability**: Without the burden of model retraining, the team can rapidly scale and build new LLM applications by expanding and managing the knowledge base. This is an important operational consideration for teams that need to iterate quickly and support multiple use cases.
+
+This decision reflects a pragmatic approach to LLMOps—choosing the architecture that best fits the team's operational constraints and use case requirements rather than defaulting to the most technically sophisticated approach.
+
+## Future Directions
+
+The team plans to extend the system's capabilities by leveraging GPT-4o's multimodal vision capabilities through Data-Arks. This would allow the LLM to process and analyze images alongside structured data, potentially opening new use cases in fraud detection and analytics.
+
+The team acknowledges that "the potential of using RAG-powered LLM can be limitless as the ability of GPT is correlated with the tools it equips." This reflects an understanding that the LLM's value in production is directly tied to the quality and breadth of integrations available to it.
+
+## LLMOps Considerations and Observations
+
+Several aspects of this implementation are notable from an LLMOps perspective:
+
+**Data Pipeline Integration**: The Data-Arks middleware layer represents a thoughtful approach to connecting LLMs with production data systems. By packaging SQL queries as APIs, the team created a reusable, maintainable layer between raw data and LLM consumption. This separation of concerns is good practice for production LLM systems.
+
+**Democratization of LLM Access**: The low/no-code capabilities of Spellvault lower barriers for non-technical users to create LLM applications. This approach can accelerate adoption across an organization but also raises questions about governance, quality control, and potential misuse that aren't explicitly addressed in the case study.
+
+**Workflow Integration**: Delivering results through Slack integrates the LLM capabilities into existing workflows, reducing friction for end users. This is a practical consideration that affects adoption and value realization.
+
+**Metrics and Evaluation**: The case study mentions time savings (3-4 hours per report) but doesn't detail how LLM output quality is evaluated or monitored. For fraud investigation use cases in particular, the accuracy and reliability of LLM outputs would be critical, and robust evaluation frameworks would be important.
+
+**Human-in-the-Loop Considerations**: The case study doesn't explicitly discuss how human oversight is maintained in fraud investigation workflows, which would be an important consideration given the potential consequences of incorrect conclusions in such contexts.
+
+Overall, this case study presents a practical example of building production LLM systems that integrate with existing data infrastructure and workflows. The choice of RAG over fine-tuning is well-reasoned for the use cases described, and the modular architecture with Data-Arks and Spellvault provides a foundation for scaling to additional use cases. However, the case study would benefit from more discussion of evaluation, monitoring, and governance practices that are essential for production LLM deployments.

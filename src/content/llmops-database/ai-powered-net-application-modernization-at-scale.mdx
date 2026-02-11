@@ -1,0 +1,130 @@
+---
+title: "AI-Powered .NET Application Modernization at Scale"
+slug: "ai-powered-net-application-modernization-at-scale"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "6930572e520e83fccaf6301d"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:31:07.969Z"
+  createdOn: "2025-12-03T15:28:46.039Z"
+llmopsTags:
+  - "code-generation"
+  - "legacy-system-integration"
+  - "poc"
+  - "agent-based"
+  - "human-in-the-loop"
+  - "prompt-engineering"
+  - "error-handling"
+  - "cost-optimization"
+  - "latency-optimization"
+  - "docker"
+  - "kubernetes"
+  - "monitoring"
+  - "databases"
+  - "cicd"
+  - "devops"
+  - "security"
+  - "compliance"
+  - "guardrails"
+  - "postgresql"
+  - "fastapi"
+  - "amazon-aws"
+  - "microsoft-azure"
+company: "Thomson Reuters"
+summary: "Thomson Reuters faced the challenge of modernizing over 400 legacy .NET Framework applications comprising more than 500 million lines of code, which were running on costly Windows servers and slowing down innovation. By adopting AWS Transform for .NET during its beta phase, the company leveraged agentic AI capabilities powered by Amazon Bedrock LLMs with deep .NET expertise to automate the analysis, dependency mapping, code transformation, and validation process. This approach accelerated their modernization from months of planning to weeks of execution, enabling them to transform over 1.5 million lines of code per month while running 10 parallel modernization projects. The solution not only promised substantial cost savings by migrating to Linux containers and Graviton instances but also freed developers from maintaining legacy systems to focus on delivering customer value."
+link: "https://www.youtube.com/watch?v=L5oam0A1CDw"
+year: 2024
+seo:
+  title: "Thomson Reuters: AI-Powered .NET Application Modernization at Scale - ZenML LLMOps Database"
+  description: "Thomson Reuters faced the challenge of modernizing over 400 legacy .NET Framework applications comprising more than 500 million lines of code, which were running on costly Windows servers and slowing down innovation. By adopting AWS Transform for .NET during its beta phase, the company leveraged agentic AI capabilities powered by Amazon Bedrock LLMs with deep .NET expertise to automate the analysis, dependency mapping, code transformation, and validation process. This approach accelerated their modernization from months of planning to weeks of execution, enabling them to transform over 1.5 million lines of code per month while running 10 parallel modernization projects. The solution not only promised substantial cost savings by migrating to Linux containers and Graviton instances but also freed developers from maintaining legacy systems to focus on delivering customer value."
+  canonical: "https://www.zenml.io/llmops-database/ai-powered-net-application-modernization-at-scale"
+  ogTitle: "Thomson Reuters: AI-Powered .NET Application Modernization at Scale - ZenML LLMOps Database"
+  ogDescription: "Thomson Reuters faced the challenge of modernizing over 400 legacy .NET Framework applications comprising more than 500 million lines of code, which were running on costly Windows servers and slowing down innovation. By adopting AWS Transform for .NET during its beta phase, the company leveraged agentic AI capabilities powered by Amazon Bedrock LLMs with deep .NET expertise to automate the analysis, dependency mapping, code transformation, and validation process. This approach accelerated their modernization from months of planning to weeks of execution, enabling them to transform over 1.5 million lines of code per month while running 10 parallel modernization projects. The solution not only promised substantial cost savings by migrating to Linux containers and Graviton instances but also freed developers from maintaining legacy systems to focus on delivering customer value."
+---
+
+## Overview
+
+Thomson Reuters embarked on a comprehensive application modernization journey to transform their extensive portfolio of legacy .NET Framework applications to modern .NET Core and eventually .NET 8/10. The company operates over 400 .NET applications running on Windows servers, representing more than 500 million lines of code. This case study demonstrates how Thomson Reuters leveraged AWS Transform for .NET, an AI-powered agentic system built on Amazon Bedrock LLMs, to scale their modernization efforts from a manual, labor-intensive process to an automated, parallel transformation pipeline capable of processing over 1.5 million lines of code per month.
+
+The business context is crucial: Thomson Reuters has committed to becoming "the world's leading content-driven AI technology company," delivering AI products like Co-Counsel to their legal, tax, compliance, and advisory customers. To deliver professional-grade AI externally, they recognized the need to modernize internally. Having recently completed 95% of their cloud migration, they still faced the burden of legacy .NET Framework code that was competing with innovation efforts and consuming developer time on maintenance rather than new feature development.
+
+## The Problem Space
+
+The modernization challenge at Thomson Reuters was multifaceted. From a technical perspective, their .NET applications exhibited extreme complexity with intricate webs of dependencies between various components and package dependencies. The presentation included visual representations of dependency maps that looked like "walking paths in Vegas" - highlighting the deeply nested, interconnected nature of these systems. The applications included monolithic architectures with internal dependencies across multiple solutions, external dependencies across different repositories, and reliance on third-party libraries and deprecated APIs that behaved differently or didn't exist in .NET Core.
+
+From a business perspective, the motivations were clear: Windows licensing costs represented approximately 40% higher operating expenses compared to Linux servers, and the company estimated potential savings in the millions of dollars by migrating to Linux, adopting Graviton processors, and containerizing workloads. Beyond cost, the performance improvements of .NET Core (cited as up to 600 times faster than .NET Framework 4.7 in some Microsoft case studies) and the ability to access a larger pool of modern developers familiar with current technologies provided strong business justification.
+
+The traditional modernization approach proved inadequate at Thomson Reuters' scale. Manual and semi-automated processes were slow, error-prone, and required sequential execution where entire teams had to wait for steps to complete before proceeding. For a geographically distributed organization, this created collaboration bottlenecks and delayed decision-making. Project planning alone took months, with implementation taking even longer.
+
+## The AI-Powered Solution: AWS Transform for .NET
+
+Thomson Reuters adopted AWS Transform for .NET as an early beta partner, implementing an agentic AI approach to code modernization. The system is built on Amazon Bedrock large language models that have been specifically trained with deep .NET expertise and incorporate thousands of predefined code conversion patterns. This represents a true production deployment of LLMs for code transformation at enterprise scale.
+
+AWS Transform operates through two primary interfaces to accommodate different user personas and workflows. The IDE experience integrates directly with Visual Studio, allowing developers to transform individual solution files locally with side-by-side code comparison and intelligent differential highlighting. This proved ideal for Thomson Reuters' initial proof-of-concept work and for detailed examination of specific transformation patterns. The web experience provides a React-based SPA frontend for enterprise-scale operations, offering centralized management for transforming entire repositories and supporting batch processing of up to 50 applications at a time.
+
+The transformation process follows what AWS calls a "tri-state loop" consisting of analyze-transform-validate cycles that iterate until finding the optimal solution. In the discovery stage, AWS Transform determines the number of lines of code, application types (Windows Forms, Web Forms, WPF, MVC, etc.), and creates an inventory of the portfolio. The analysis phase performs comprehensive dependency mapping, identifying internal dependencies within and across solutions, external dependencies to other repositories, and third-party library compatibility (supporting 250 NuGet packages). This phase generates detailed assessment reports automatically.
+
+The planning phase creates transformation strategies, timelines, and resource estimates - essentially automating the project management work that previously took months. The execution phase performs the actual code transformation using pre-trained patterns, converting XML-based web.config files to code-based program.cs files, updating authentication and security configurations, splitting configuration from logic into separate files (appsettings.json and program.cs), and maintaining functional equivalence while modernizing to more secure-by-default patterns. Throughout execution, human-in-the-loop approval gates ensure oversight at critical decision points.
+
+The validation phase is particularly noteworthy from an LLMOps perspective. AWS Transform validates performance metrics before and after transformation to ensure the ported code meets or exceeds original performance requirements. It executes unit tests if provided, and generates a Linux readiness report that identifies any gaps preventing deployment to Linux containers along with remediation steps. This comprehensive validation represents sophisticated quality assurance for AI-generated code at production scale.
+
+## Technical Architecture and LLMOps Practices
+
+The architecture of AWS Transform demonstrates several LLMOps best practices for production AI systems. The service is built with security as a foundational principle. All requests use TLS 1.3 encryption, pass through AWS API Gateway with Web Application Firewall protection for rate limiting and request filtering, and employ IAM authentication (recently expanded to support Okta and Microsoft Entra ID for broader enterprise integration). Processing occurs in temporary environments - either locally for IDE experience or in ephemeral EC2 instances within customer VPCs for web experience, with all data purged after transformation completion. Temporary storage uses Amazon S3 with AWS KMS encryption, supporting both AWS-managed and customer-managed keys.
+
+The system maintains comprehensive observability through AWS CloudTrail for API and audit logging and Amazon CloudWatch for detailed monitoring. Recent updates have made CloudWatch logs accessible to customers for transparency into transformation operations - a response to customer feedback demonstrating the product team's commitment to iterative improvement based on real-world usage.
+
+Multi-regional deployment expanded from initial availability in US East and Frankfurt to eight total regions including Canada Central, addressing data sovereignty requirements for government and regulated industry customers. The system now supports source versions from .NET Framework 3.5 through .NET Core 3.1 and .NET Standard 2, with destination support for .NET 8 and the newly released .NET 10 LTS version.
+
+A particularly sophisticated recent addition is multi-user collaboration functionality. Different roles (administrator, contributor, read-only) can work simultaneously on the same workspace with clearly defined responsibilities. This extends to partners working with customers on modernization projects, enabling cross-organizational collaboration within the same AWS Transform environment. The system maintains detailed work logs with timestamps for audit trails and provides dashboards with transformation summaries including lines of code, number of projects, and transformation status.
+
+## Integration with Development Workflows
+
+Thomson Reuters' implementation demonstrates thoughtful integration of AI-powered transformation with existing development practices. AWS Transform commits transformed code to new branches in GitHub repositories and creates pull requests automatically. The Thomson Reuters team pulls this transformed code locally and uses Amazon Q Developer, another AI-assisted coding tool, to address the remaining delta - portions of code that couldn't be automatically transformed due to factors like C++ graphical components, Windows Forms/Web Forms, unsupported libraries (Win32 DLLs), or VB.NET code.
+
+This hybrid approach exemplifies practical LLMOps: leveraging AI for the bulk of transformation work while maintaining human expertise for edge cases and complex scenarios. The transformation logs and summaries from AWS Transform serve as guides for subsequent transformations, enabling continuous improvement and learning. This represents an effective human-in-the-loop pattern where AI handles routine transformation patterns at scale while humans focus on unique challenges requiring contextual understanding and judgment.
+
+The workflow also demonstrates version control integration as a first-class citizen. By supporting GitHub, Bitbucket, GitLab, and Azure DevOps, AWS Transform integrates seamlessly into existing CI/CD pipelines. Customers can select specific projects within repositories for transformation and customize transformations using over 300 different parameters, including uploading custom NuGet packages for proprietary dependencies.
+
+## Production Results and Scale
+
+Thomson Reuters' production deployment demonstrates the real-world effectiveness of this LLMOps approach. The company reduced transformation timelines from months of planning to weeks of execution, currently modernizing over 1.5 million lines of code per month while running 10 parallel modernization projects. This represents genuine production scale for AI-powered code transformation, not just proof-of-concept work.
+
+The practical impact extends beyond raw throughput. As Lalit Kumar, AI Solutions Architect at Thomson Reuters, emphasized: "It gives our developers the time to build the future and not maintain the past." This articulates the strategic value of effective LLMOps - freeing skilled engineers from toil to focus on innovation and customer value delivery. The Platform Engineering Enablement team can now work in synergy with Product Engineering teams, with initial POCs informing proper planning for complete end-to-end transformations.
+
+The case study is refreshingly honest about limitations and challenges, which provides valuable insights for LLMOps practitioners. AWS Transform does not achieve 100% transformation success - "partially successful" transformations might be 50%, 70%, or 90% complete depending on application complexity and specific technical factors. Post-transformation challenges include maintaining compatibility with external third-party dependencies, handling internally developed components written in other languages (C++), and addressing unsupported legacy patterns like certain Windows Forms, Win32 DLLs, or VB.NET code.
+
+## Recent Enhancements and Future Direction
+
+The presentation announced several significant capabilities released during AWS re:Invent 2024, demonstrating active product evolution based on customer feedback. The ability to restart failed jobs and continue from where they left off addresses a major pain point in previous versions where failures required complete restarts. Enhanced transparency through customer-accessible CloudWatch logs provides better observability into transformation operations. Expanded authentication support for Okta and Microsoft Entra ID beyond just IAM and Identity Center enables broader enterprise adoption.
+
+Perhaps most significant is the announcement of Windows Full Stack Modernization capability, extending AWS Transform beyond .NET applications to include SQL Server database modernization. This addresses the common reality that applications don't exist in isolation - they depend on databases, and database modernization represents a distinct technical challenge. The new capability converts SQL Server schemas to Amazon Aurora PostgreSQL, handles T-SQL to PL/pgSQL conversion, migrates data, and transforms application code that contains SQL Server-specific syntax to work with Aurora PostgreSQL. This represents a sophisticated multi-domain AI transformation capability addressing schema conversion, transaction semantic differences, query optimization patterns, indexing approaches, and security configurations - all areas where SQL Server and PostgreSQL differ substantially.
+
+## LLMOps Insights and Best Practices
+
+This case study illustrates several important LLMOps principles for production AI systems. Domain-specific fine-tuning and pre-training prove essential for high-quality results in specialized tasks like code transformation. AWS Transform's effectiveness stems from LLMs trained specifically on .NET patterns with thousands of predefined conversion patterns, not general-purpose models. Iterative validation loops (the tri-state analyze-transform-validate cycle) ensure quality through continuous refinement rather than single-pass generation. Human-in-the-loop approval gates at critical decision points maintain governance while enabling automation at scale.
+
+The hybrid approach of AI for routine patterns plus human expertise for edge cases represents practical production deployment rather than pursuing impossible 100% automation. Comprehensive observability through logging, monitoring, and detailed reporting enables operational confidence and continuous improvement. Multi-regional deployment with data residency controls addresses real-world enterprise requirements beyond pure technical capability. Integration with existing tools and workflows (version control, IDEs, CI/CD) ensures adoption rather than forcing workflow disruption.
+
+Starting small with IDE-based POCs before scaling with web-based enterprise deployments follows a sensible adoption path that builds organizational confidence and expertise. The platform engineering team serving product engineering teams through this capability exemplifies effective internal platform models for AI adoption. Continuous product evolution based on customer feedback (restart capabilities, enhanced logging, expanded authentication) demonstrates responsive product development aligned with real usage patterns.
+
+## Critical Assessment
+
+While this case study demonstrates impressive capabilities and results, several considerations warrant balanced assessment. The case study is presented at an AWS conference by AWS employees and a customer with close partnership, which may emphasize positive aspects. The claim of "up to 600 times faster" performance for .NET Core versus Framework 4.7 comes from Microsoft case studies, not Thomson Reuters' specific results, and likely represents best-case scenarios rather than typical improvements.
+
+The acknowledgment that transformations achieve 50-90% success requiring human intervention for the remainder is honest but highlights that this remains a human-AI collaborative process, not full automation. The cost savings "in the millions" are described as estimates based on consumption reports rather than realized savings from completed migrations. The "free of cost" positioning refers to AWS Transform itself being free, but doesn't account for compute resources consumed during transformation, staff time for validation and remediation, or broader migration costs.
+
+The scale of "over 1.5 million lines of code per month" is impressive but represents throughput through the transformation tool, not necessarily fully deployed and production-validated code. The timeline improvement from "months to weeks" is qualitative rather than providing specific metrics (e.g., "6 months to 2 weeks" would be more concrete). Most announced capabilities are very recent (released during the conference), so long-term production experience with these features is limited.
+
+Despite these caveats, the fundamental approach appears sound and the results credible. Thomson Reuters is a major enterprise with stringent requirements, and their continued investment in expanding usage suggests genuine value realization. The honest acknowledgment of limitations and the hybrid AI-human approach demonstrate realistic expectations rather than overhyped claims.
+
+## Broader Implications for LLMOps
+
+This case study provides valuable insights for LLMOps practitioners beyond code modernization specifically. It demonstrates that production LLM systems for specialized technical tasks require deep domain expertise encoded through fine-tuning and pattern libraries, not just general-purpose models. Validation and quality assurance processes must be sophisticated and multi-faceted, including functional testing, performance validation, and domain-specific readiness checks. Security, data residency, and compliance requirements are first-class concerns that must be addressed architecturally from the start. Integration with existing tools and workflows is essential for adoption at enterprise scale. Multi-user collaboration with role-based access control enables organizational rather than just individual usage patterns.
+
+The human-in-the-loop pattern proves effective when AI handles high-volume routine work while humans focus on edge cases and complex judgment calls. Iterative product development based on customer feedback creates better alignment with real-world needs than trying to achieve perfection before launch. Starting with focused use cases (single application transformation) before scaling to enterprise operations (repository-level batch processing) provides a sensible adoption path. Finally, platform engineering teams can effectively serve product engineering teams by abstracting AI capabilities into consumable services rather than requiring every team to become AI experts.
+
+Thomson Reuters' journey from early beta adoption to processing 1.5 million lines of code monthly across 10 parallel projects demonstrates that sophisticated AI-powered code transformation can operate at genuine production scale when built with appropriate LLMOps practices. The combination of domain-specific LLMs, comprehensive validation, security and compliance controls, workflow integration, and human-in-the-loop governance creates a practical model for enterprise AI deployment beyond the hype.

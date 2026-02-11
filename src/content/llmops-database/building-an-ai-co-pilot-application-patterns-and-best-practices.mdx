@@ -1,0 +1,163 @@
+---
+title: "Building an AI Co-Pilot Application: Patterns and Best Practices"
+slug: "building-an-ai-co-pilot-application-patterns-and-best-practices"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f3fd77564eb5b14741227"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2024-11-25T08:52:03.558Z"
+  lastUpdated: "2024-11-22T17:14:49.434Z"
+  createdOn: "2024-11-21T14:12:39.462Z"
+llmopsTags:
+  - "caption-generation"
+  - "chatbot"
+  - "chunking"
+  - "code-generation"
+  - "databases"
+  - "embeddings"
+  - "error-handling"
+  - "langchain"
+  - "openai"
+  - "prompt-engineering"
+  - "rag"
+  - "realtime-application"
+  - "reliability"
+  - "scalability"
+  - "scaling"
+  - "semantic-search"
+  - "structured-output"
+  - "system-prompts"
+  - "token-optimization"
+  - "unstructured-data"
+  - "vector-search"
+company: "Thoughtworks"
+summary: "Thoughtworks built Boba, an experimental AI co-pilot for product strategy and ideation, to learn about building generative AI experiences beyond chat interfaces. The team implemented several key patterns including templated prompts, structured responses, real-time progress streaming, context management, and external knowledge integration. The case study provides detailed insights into practical LLMOps patterns for building production LLM applications with enhanced user experiences."
+link: "https://martinfowler.com/articles/building-boba.html"
+year: 2023
+seo:
+  title: "Thoughtworks: Building an AI Co-Pilot Application: Patterns and Best Practices - ZenML LLMOps Database"
+  description: "Thoughtworks built Boba, an experimental AI co-pilot for product strategy and ideation, to learn about building generative AI experiences beyond chat interfaces. The team implemented several key patterns including templated prompts, structured responses, real-time progress streaming, context management, and external knowledge integration. The case study provides detailed insights into practical LLMOps patterns for building production LLM applications with enhanced user experiences."
+  canonical: "https://www.zenml.io/llmops-database/building-an-ai-co-pilot-application-patterns-and-best-practices"
+  ogTitle: "Thoughtworks: Building an AI Co-Pilot Application: Patterns and Best Practices - ZenML LLMOps Database"
+  ogDescription: "Thoughtworks built Boba, an experimental AI co-pilot for product strategy and ideation, to learn about building generative AI experiences beyond chat interfaces. The team implemented several key patterns including templated prompts, structured responses, real-time progress streaming, context management, and external knowledge integration. The case study provides detailed insights into practical LLMOps patterns for building production LLM applications with enhanced user experiences."
+---
+
+# Building Boba: An AI Co-Pilot Application Case Study
+
+## Overview
+
+Thoughtworks developed Boba, an experimental AI co-pilot application focused on product strategy and generative ideation. The case study provides valuable insights into building production-grade LLM applications with sophisticated user experiences beyond simple chat interfaces.
+
+## Core Application Features
+
+- Research signals and trends analysis
+- Creative matrix generation for ideation
+- Scenario building and exploration
+- Strategy ideation using Playing to Win framework
+- Concept generation for products/features
+- Visual storyboarding with integrated image generation
+## LLMOps Patterns and Implementation Details
+
+### Prompt Engineering & Management
+
+- Used Langchain for prompt template management
+- Implemented persona-based prompting (e.g., "visionary futurist")
+- Maintained simple, non-conditional prompt templates
+- Conducted iterative prompt testing via ChatGPT before implementation
+### Structured Output Handling
+
+- Enforced JSON response formats for consistent data structures
+- Successfully handled complex nested JSON schemas
+- Used pseudo-code schema descriptions in prompts
+- Integrated with OpenAI's Function Calling API
+- Implemented response validation and parsing
+### Real-Time User Experience
+
+- Implemented streaming responses using OpenAI and Langchain APIs
+- Built progress monitoring capabilities
+- Added ability to stop generation mid-completion
+- Managed state during streaming JSON parsing
+- Integrated with Vercel AI SDK for edge-ready streaming
+### Context Management
+
+- Implemented selection-based context carrying
+- Used tag delimiters for context specification
+- Managed multi-message chat conversations
+- Integrated vector stores for handling large contexts
+- Built contextual conversation capabilities within specific scenarios
+### External Tool Integration
+
+- Implemented Google SERP API integration
+- Used Extract API for content retrieval
+- Built vector store based knowledge base using HNSWLib
+- Integrated OpenAI embeddings
+- Created search result summarization pipeline
+### Technical Implementation Details
+
+- Used RecursiveCharacterTextSplitter for text chunking
+- Implemented VectorDBQAChain for question-answering
+- Built in-memory vector store with HNSW graphs
+- Created streaming callback handlers
+- Managed JSON parsing during stream processing
+### User Experience Considerations
+
+- Implemented context-aware UI elements
+- Built feedback mechanisms for response iteration
+- Created template-based conversation starters
+- Added visibility toggles for reasoning chains
+- Implemented image generation refinement capabilities
+## Production Challenges & Solutions
+
+### Performance Optimization
+
+- Implemented streaming to handle long-running generations
+- Used chunking for large text processing
+- Optimized vector search for quick retrievals
+- Managed context window limitations
+### Error Handling
+
+- Built robust JSON parsing for streaming responses
+- Implemented generation interruption capabilities
+- Added fallback conversation channels
+- Created feedback loops for response quality
+### Integration Architecture
+
+- Combined multiple AI services (GPT, Stable Diffusion)
+- Integrated search and content extraction services
+- Built vector store infrastructure
+- Implemented web UI with real-time updates
+## Best Practices & Recommendations
+
+### Prompt Engineering
+
+- Test prompts in ChatGPT before implementation
+- Keep templates simple and maintainable
+- Use explicit schema definitions
+- Implement chain-of-thought prompting
+### User Experience
+
+- Show real-time progress for long operations
+- Provide context selection mechanisms
+- Enable iterative refinement
+- Include fallback conversation options
+### Architecture
+
+- Use structured response formats
+- Implement streaming where appropriate
+- Consider vector stores for large contexts
+- Build modular prompt templates
+### Development Process
+
+- Focus on UI/UX (80% of effort)
+- Iterate on prompt engineering (20% of effort)
+- Test with real users
+- Build feedback mechanisms
+## Future Considerations
+
+- Implementing long-term memory systems
+- Enhancing feedback loops
+- Expanding external tool integration
+- Improving response quality through reinforcement learning
+- Scaling vector store implementations

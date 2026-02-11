@@ -1,0 +1,102 @@
+---
+title: "Insurance Policy Review Automation Using Retrieval-Augmented Generation and Prompt Engineering"
+slug: "insurance-policy-review-automation-using-retrieval-augmented-generation-and-prompt-engineering"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "67cd5274043d7f76726c3123"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:02:43.311Z"
+  createdOn: "2025-03-09T08:33:56.898Z"
+llmopsTags:
+  - "document-processing"
+  - "regulatory-compliance"
+  - "high-stakes-application"
+  - "rag"
+  - "embeddings"
+  - "prompt-engineering"
+  - "semantic-search"
+  - "vector-search"
+  - "few-shot"
+  - "chunking"
+  - "fastapi"
+  - "langchain"
+  - "elasticsearch"
+  - "serverless"
+  - "documentation"
+  - "amazon-aws"
+  - "anthropic"
+company: "Verisk"
+summary: "Verisk developed a generative AI companion for their Mozart platform to automate insurance policy document comparison and change detection. Using Amazon Bedrock, OpenSearch, and Anthropic's Claude 3 Sonnet model, they built a system that reduces policy review time from days to minutes. The solution combines embedding-based retrieval, sophisticated prompt engineering, and document chunking strategies to achieve over 90% accuracy in change summaries while maintaining cost efficiency and security compliance."
+link: "https://aws.amazon.com/blogs/machine-learning/accelerating-insurance-policy-reviews-with-generative-ai-verisks-mozart-companion?tag=soumet-20"
+year: 2025
+seo:
+  title: "Verisk: Insurance Policy Review Automation Using Retrieval-Augmented Generation and Prompt Engineering - ZenML LLMOps Database"
+  description: "Verisk developed a generative AI companion for their Mozart platform to automate insurance policy document comparison and change detection. Using Amazon Bedrock, OpenSearch, and Anthropic's Claude 3 Sonnet model, they built a system that reduces policy review time from days to minutes. The solution combines embedding-based retrieval, sophisticated prompt engineering, and document chunking strategies to achieve over 90% accuracy in change summaries while maintaining cost efficiency and security compliance."
+  canonical: "https://www.zenml.io/llmops-database/insurance-policy-review-automation-using-retrieval-augmented-generation-and-prompt-engineering"
+  ogTitle: "Verisk: Insurance Policy Review Automation Using Retrieval-Augmented Generation and Prompt Engineering - ZenML LLMOps Database"
+  ogDescription: "Verisk developed a generative AI companion for their Mozart platform to automate insurance policy document comparison and change detection. Using Amazon Bedrock, OpenSearch, and Anthropic's Claude 3 Sonnet model, they built a system that reduces policy review time from days to minutes. The solution combines embedding-based retrieval, sophisticated prompt engineering, and document chunking strategies to achieve over 90% accuracy in change summaries while maintaining cost efficiency and security compliance."
+---
+
+## Overview
+
+Verisk, a leading data analytics and technology partner to the global insurance industry (Nasdaq: VRSK), developed Mozart companion—a generative AI-powered feature for their Mozart platform. Mozart is Verisk's leading platform for creating and updating insurance forms. The companion feature addresses a significant pain point in the insurance industry: the time-consuming process of reviewing changes between policy document versions. Insurance professionals previously spent days or even weeks reviewing policy form changes; the Mozart companion reduces this to minutes by using LLMs to compare documents and generate structured summaries of material changes.
+
+This case study is notable because it demonstrates a production-grade LLMOps implementation that emphasizes iterative improvement, hybrid architectures (combining FM and non-FM solutions), rigorous human evaluation, and strong governance practices.
+
+## Technical Architecture
+
+The solution architecture follows a classic RAG (Retrieval Augmented Generation) pattern with several AWS services forming the backbone:
+
+**Data Ingestion and Embedding Pipeline**: Policy documents are stored in Amazon S3. An AWS Batch job handles the periodic processing of documents—reading them, chunking them into smaller slices, and creating embeddings using Amazon Titan Text Embeddings through Amazon Bedrock. The embeddings are stored in an Amazon OpenSearch Service vector database. Importantly, metadata about each document (type, jurisdiction, version number, effective dates) is also stored via an internal Metadata API. This periodic job architecture ensures the vector database remains synchronized with new documents as they are added to the system.
+
+**Document Splitting Strategy**: Verisk tested multiple document splitting strategies before settling on a recursive character text splitter with a 500-character chunk size and 15% overlap. This splitter comes from the LangChain framework and is described as a semantic splitter that considers semantic similarities in text. They also evaluated the NLTK splitter but found the recursive character approach provided better results for their use case.
+
+**Inference Pipeline**: When a user selects two documents for comparison, an AWS Lambda function retrieves the relevant document embeddings from OpenSearch Service and presents them to Anthropic's Claude 3 Sonnet (accessed through Amazon Bedrock). The results are structured as JSON and delivered to the frontend via an API service. The output includes change summaries, locations, excerpts from both document versions, and a tracked-change (redline) format.
+
+**Hybrid FM/Non-FM Architecture**: A key LLMOps insight from this case study is that Verisk deliberately reduced FM load by identifying sections with differences first (using non-FM methods), then passing only those sections to the FM for summary generation. The tracked-difference format with redlines uses a completely non-FM-based solution. This architectural choice improved both accuracy and cost-efficiency.
+
+## Evaluation and Quality Assurance
+
+Verisk's approach to evaluation is particularly instructive for LLMOps practitioners. They designed human evaluation metrics with in-house insurance domain experts and assessed results across four key criteria:
+
+- **Accuracy**: How correct were the generated summaries?
+- **Consistency**: Did the model produce reliable results across similar inputs?
+- **Adherence to Context**: Did the output stay relevant to the insurance domain context?
+- **Speed and Cost**: Performance and economic considerations
+
+The evaluation process was explicitly iterative—domain experts graded results on a manual 1-10 scale, and feedback from each round was incorporated into subsequent development cycles. The case study honestly acknowledges that initial results "were good but not close to the desired level of accuracy and consistency," highlighting the realistic challenges of productionizing LLM solutions.
+
+Notably, Verisk recognized that "FM solutions are improving rapidly, but to achieve the desired level of accuracy, Verisk's generative AI software solution needed to contain more components than just FMs." This reflects a mature understanding that production LLM systems require complementary engineering beyond simply calling a foundation model.
+
+## Prompt Engineering and Optimization
+
+The case study emphasizes that meaningful change summaries differ from simple text diffs—the system needs to describe material changes while ignoring non-meaningful textual differences. Verisk created prompts leveraging their in-house domain expertise and refined them iteratively based on testing rounds. Key prompt engineering techniques mentioned include:
+
+- **Few-shot prompting**: Providing examples to guide model behavior
+- **Chain of thought prompting**: Encouraging step-by-step reasoning
+- **Needle in a haystack approach**: Techniques for finding specific relevant information in large documents
+- **Role definition**: Instructing the model on its role along with definitions of common insurance terms and exclusions
+- **FM-specific prompt tuning**: Adjusting prompts based on the specific foundation model used, recognizing that different FMs respond differently to the same prompts
+
+## Governance and Security
+
+The case study highlights Verisk's governance framework, which is particularly relevant for enterprise LLMOps deployments in regulated industries like insurance. Verisk has a governance council that reviews generative AI solutions against standards for security, compliance, and data use. Legal review covers IP protection and contractual compliance. Key security concerns addressed include ensuring data is transmitted securely, confirming the FM doesn't retain Verisk's data, and verifying the FM doesn't use their data for its own training. These considerations reportedly influenced Verisk's choice of Amazon Bedrock and Claude Sonnet.
+
+## Cost Optimization
+
+Verisk employed several strategies to manage costs in their production LLM system. They regularly evaluated various FM options and switched models as new options with better price-performance became available. By redesigning the solution to reduce FM calls and using non-FM solutions where possible (such as for redline generation), they improved both cost efficiency and accuracy. The hybrid approach—identifying changed sections with non-FM methods before sending to the FM—is a practical cost optimization pattern applicable to many document processing use cases.
+
+## Software Engineering Practices
+
+The case study emphasizes that "good software development practices apply to the development of generative AI solutions too." Verisk built a decoupled architecture with reusable components: the Mozart companion is exposed as an API (decoupled from frontend development), and the API itself consists of reusable components including common prompts, common definitions, retrieval service, embedding creation, and persistence service. This modularity enables both maintainability and potential reuse across other applications.
+
+## Results and Business Impact
+
+According to Verisk's evaluation, the solution generates over 90% "good or acceptable" summaries based on expert grading. The business impact is described as reducing policy change adoption time from days or weeks to minutes. While these are vendor-reported metrics and should be interpreted with appropriate caution, the iterative evaluation methodology with domain experts provides some credibility to the accuracy claims.
+
+## Considerations and Limitations
+
+It's worth noting that this case study originates from an AWS blog post and naturally emphasizes AWS services. The 90%+ success rate is based on internal evaluation criteria that are not fully disclosed, and "good or acceptable" represents a relatively broad quality threshold. The case study also doesn't discuss failure modes, edge cases, or how the system handles documents outside its training distribution. Additionally, while Verisk mentions planning to use Amazon Titan Embeddings V2 in the future, the current implementation details may already reflect older model choices. Future users should evaluate whether newer embedding and foundation models might provide improved performance for similar use cases.

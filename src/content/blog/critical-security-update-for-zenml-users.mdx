@@ -1,0 +1,58 @@
+---
+title: "CVE-2024-25723: Critical Security Update for ZenML users"
+slug: "critical-security-update-for-zenml-users"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "65c9f63593f6c5597a10d490"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2024-02-12T10:59:01.595Z"
+  lastUpdated: "2024-02-12T10:58:54.082Z"
+  createdOn: "2024-02-12T10:43:01.709Z"
+author: "zenml-team"
+category: "zenml"
+tags:
+  - "security"
+  - "zenml"
+  - "news"
+date: "2024-02-01T00:00:00.000Z"
+readingTime: 1 min
+mainImage:
+  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/5eb6bca2/65c9f71ef81c034b070e8b97_02_-_Logo__2___1_.png"
+seo:
+  title: "CVE-2024-25723: Critical Security Update for ZenML users - ZenML Blog"
+  description: "A critical security vulnerability has been identified in ZenML versions prior to 0.46.7. This vulnerability potentially allows unauthorized users to take ownership of ZenML accounts through the user activation feature."
+  canonical: "https://www.zenml.io/blog/critical-security-update-for-zenml-users"
+  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/aecb7ae5/65c9f71ef81c034b070e8b97_02_-_Logo__2___1_.png"
+  ogTitle: "CVE-2024-25723: Critical Security Update for ZenML users - ZenML Blog"
+  ogDescription: "A critical security vulnerability has been identified in ZenML versions prior to 0.46.7. This vulnerability potentially allows unauthorized users to take ownership of ZenML accounts through the user activation feature."
+---
+
+We have identified a critical security vulnerability in ZenML versions prior to 0.46.7 which has been assigned the following CVE ID: CVE-2024-25723. This vulnerability potentially allows unauthorized users to take ownership of ZenML accounts through the user activation feature.
+
+## Affected Versions:
+
+All ZenML versions below 0.46.7 are vulnerable, with the exception of the following patch versions: (0.44.4, 0.43.1, 0.42.2).
+
+## Vulnerability Details:
+
+The issue lies in the `/api/v1/users/{user_name_or_id}/activate` REST API endpoint. An existing username, along with a new password provided in the request body, can be misused to gain unauthorized access.
+
+## Immediate Action Required:
+
+We strongly urge all ZenML users to immediately upgrade to the latest version (0.46.7 or above) or one of the patched versions (0.44.4, 0.43.1, 0.42.2) to mitigate this risk.
+
+**How to Upgrade**:
+
+<ul id=""><li id="">For direct installations, use pip install "zenml==0.46.7" (or the respective patched version). (Note that the current latest version is 0.55.2, released last week.)</li><li id="">For containerized or orchestrated environments, update your ZenML container image or deployment configuration to use the new version.</li><li id="">Ensure that any automated deployment pipelines are also updated accordingly.</li></ul>
+
+## ZenML Cloud Users:
+
+We have already patched ZenML Cloud versions to address this vulnerability. No action is required for ZenML Cloud users.
+
+## Further Assistance:
+
+If you need help with the upgrade process or have any concerns, please don't hesitate to reach out to us on this Slack channel or via our support email at [security@zenml.io](mailto:security@zenml.io). Our team is here to assist you.
+
+‍

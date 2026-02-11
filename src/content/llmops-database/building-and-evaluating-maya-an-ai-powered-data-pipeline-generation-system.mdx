@@ -1,0 +1,142 @@
+---
+title: "Building and Evaluating Maya: An AI-Powered Data Pipeline Generation System"
+slug: "building-and-evaluating-maya-an-ai-powered-data-pipeline-generation-system"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "6925a0abc39dc906c9e19d0e"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:28:58.832Z"
+  createdOn: "2025-11-25T12:27:23.320Z"
+llmopsTags:
+  - "data-integration"
+  - "data-analysis"
+  - "code-generation"
+  - "data-cleaning"
+  - "poc"
+  - "structured-output"
+  - "rag"
+  - "prompt-engineering"
+  - "agent-based"
+  - "multi-agent-systems"
+  - "human-in-the-loop"
+  - "semantic-search"
+  - "few-shot"
+  - "evals"
+  - "langchain"
+  - "fastapi"
+  - "monitoring"
+  - "cicd"
+  - "documentation"
+  - "security"
+  - "compliance"
+  - "guardrails"
+  - "anthropic"
+  - "amazon-aws"
+company: "Maia"
+summary: "Matillion developed Maya, a digital data engineer product that uses LLMs to help data engineers build data pipelines more productively. Starting as a simple chatbot co-pilot in mid-2022, Maya evolved into a core interface for the Data Productivity Cloud (DPC), generating data pipelines through natural language prompts. The company faced challenges transitioning from informal \"vibes-based\" evaluation to rigorous testing frameworks required for enterprise deployment. They implemented a multi-phase approach: starting with simple certification exam tests, progressing to LLM-as-judge evaluation with human-in-the-loop validation, and finally building automated testing harnesses integrated with Langfuse for observability. This evolution enabled them to confidently upgrade models (like moving to Claude Sonnet 3.5 within 24 hours) and successfully launch Maya to enterprise customers in June 2024, while navigating challenges around PII handling in trace data and integrating MLOps skillsets into traditional software engineering teams."
+link: "https://www.youtube.com/watch?v=oYZhyL7uA0M"
+year: 2025
+seo:
+  title: "Maia: Building and Evaluating Maya: An AI-Powered Data Pipeline Generation System - ZenML LLMOps Database"
+  description: "Matillion developed Maya, a digital data engineer product that uses LLMs to help data engineers build data pipelines more productively. Starting as a simple chatbot co-pilot in mid-2022, Maya evolved into a core interface for the Data Productivity Cloud (DPC), generating data pipelines through natural language prompts. The company faced challenges transitioning from informal \"vibes-based\" evaluation to rigorous testing frameworks required for enterprise deployment. They implemented a multi-phase approach: starting with simple certification exam tests, progressing to LLM-as-judge evaluation with human-in-the-loop validation, and finally building automated testing harnesses integrated with Langfuse for observability. This evolution enabled them to confidently upgrade models (like moving to Claude Sonnet 3.5 within 24 hours) and successfully launch Maya to enterprise customers in June 2024, while navigating challenges around PII handling in trace data and integrating MLOps skillsets into traditional software engineering teams."
+  canonical: "https://www.zenml.io/llmops-database/building-and-evaluating-maya-an-ai-powered-data-pipeline-generation-system"
+  ogTitle: "Maia: Building and Evaluating Maya: An AI-Powered Data Pipeline Generation System - ZenML LLMOps Database"
+  ogDescription: "Matillion developed Maya, a digital data engineer product that uses LLMs to help data engineers build data pipelines more productively. Starting as a simple chatbot co-pilot in mid-2022, Maya evolved into a core interface for the Data Productivity Cloud (DPC), generating data pipelines through natural language prompts. The company faced challenges transitioning from informal \"vibes-based\" evaluation to rigorous testing frameworks required for enterprise deployment. They implemented a multi-phase approach: starting with simple certification exam tests, progressing to LLM-as-judge evaluation with human-in-the-loop validation, and finally building automated testing harnesses integrated with Langfuse for observability. This evolution enabled them to confidently upgrade models (like moving to Claude Sonnet 3.5 within 24 hours) and successfully launch Maya to enterprise customers in June 2024, while navigating challenges around PII handling in trace data and integrating MLOps skillsets into traditional software engineering teams."
+---
+
+## Overview and Context
+
+Matillion, a data management platform company, developed Maya as an AI-powered "digital data engineer" designed to make data engineers more productive. The presentation was delivered by Liam Stent, who worked alongside Matillion's Chief of AI (Julian) from day one on building Maya. The talk focuses on how Matillion evolved their evaluation and measurement practices from informal methods to structured LLMOps processes as Maya transitioned from demo to enterprise production deployment.
+
+Maya represents Matillion's strategic bet on AI as the future interface for their Data Productivity Cloud (DPC). The product aims to enable both power users to become more productive and lower the barrier to entry for AI-native professionals working with data. Maya runs on top of Matillion's existing data management platform and has evolved from a simple chatbot co-pilot into a comprehensive agentic system capable of building data pipelines, creating connectors, performing root cause analysis, and generating documentation.
+
+## Technical Architecture and LLM Infrastructure
+
+Maya's technical foundation is built on Spring AI as the underlying framework, developed by a core team of four software engineers. The system architecture integrates with AWS Bedrock and employs multiple models for different tasks, including Claude Sonnet 3.5 as the primary model, with Claude Haiku and AWS Nova deployed for specific simpler tasks. This multi-model approach reflects a pragmatic optimization strategy where different models are selected based on task complexity and cost considerations.
+
+The system's core innovation centers around generating DPL (Data Pipeline Language), a YAML-based file format that Matillion developed as their internal representation for data pipelines. This proved serendipitous from an LLM perspective because DPL didn't exist when early mainstream LLMs were trained, meaning models had no preconceived notions about it. This allowed Matillion to focus their efforts on educating models about what constitutes a great data pipeline in their specific context, rather than fighting against existing learned patterns.
+
+Maya operates as an agentic system with multiple specialized agents for different personas and tasks. The system processes natural language prompts from users, leverages a semantic layer (essentially a knowledge graph), and produces DPL code that then renders as visual low-code pipeline representations in Matillion's traditional GUI. This abstraction layer is considered crucial for making the output understandable to less technical users while maintaining the technical precision needed for data engineering work.
+
+An important technical capability Maya possesses is access to the same tools human data engineers use, including component validation (which verifies that pipelines "compile" correctly) and data sampling during pipeline construction. Maya uses this sampled data to validate decisions and determine next steps in its agentic loop, though this later created significant challenges around PII handling that required additional mitigation strategies.
+
+## Evolution of Evaluation Practices
+
+The presentation provides remarkable transparency about Matillion's journey from informal to structured evaluation, which unfolded in three distinct phases. Initially, evaluation was essentially "vibes-based," with one engineer famously stating they felt confident upgrading from Claude 3.7 to Claude 4 "based on my vibes." While humorous, this approach was clearly inadequate for enterprise customers paying hundreds of thousands of dollars for the product.
+
+### Phase 1: Simple Constrained Testing
+
+The first structured evaluation approach involved using Matillion's own certification exam as a benchmark. They fed exam questions to various models using their AI prompt component (a tool for building AI integrations into data pipelines) and discovered that while some models failed, others passed. This simple experiment yielded valuable insights about RAG implementation, specifically how to effectively provide context to models that had no prior knowledge of DPL, the Data Productivity Cloud, or even Matillion itself. The team learned how to leverage internal documentation and public content to educate models about their domain-specific requirements.
+
+### Phase 2: LLM-as-Judge with Human-in-the-Loop
+
+As Maya matured, Matillion implemented a more sophisticated evaluation approach using LLM-as-judge methodology. This proved challenging because even in traditional software engineering, multiple valid approaches exist for building pipelines—a Python script might produce identical output to a well-structured pipeline built with many components. The team had to teach an AI judge what constituted a "good" pipeline using reference data from thousands of existing pipelines in their system.
+
+The initial implementation included significant human-in-the-loop validation. Human evaluators would rate outputs, provide counterpoints, and assess the confidence level they had in the LLM judge's assessments. This helped calibrate the evaluation system and identify which models performed best as judges. Critically, the team discovered bias when using models from the same family for both generation and evaluation, leading them to adopt different model families for judging versus generation.
+
+This phase enabled Matillion to systematically test which models worked better for their specific use case and to understand how prompt changes, different context files, and various reference examples impacted Maya's output quality. The approach marked a significant maturation in their evaluation practices and coincided with hiring dedicated data scientists and MLOps engineers.
+
+### Phase 3: Automated Testing and Observability
+
+The third phase involved building proper test automation infrastructure. Matillion created a test framework that interfaces with Maya through APIs rather than the UI, allowing tests to run automatically across different builds and deployments. They developed a bank of questions and prompts to validate how changes—such as prompt modifications, context file updates, or reference data adjustments—impacted Maya's output quality.
+
+This automated approach delivered a concrete success story: when Claude Sonnet 3.5 became available on AWS Bedrock, Matillion was able to upgrade with high confidence within 24 hours. This represented a dramatic improvement from the previous "vibes-based" approach to model upgrades and provided stakeholders with concrete evidence of testing rigor and results comparison between model versions.
+
+## Observability and Production Monitoring
+
+Matillion integrated Langfuse as their central LLM observability platform, representing a significant step in treating Maya as production infrastructure requiring proper monitoring. Langfuse captures automated test outputs across builds and test cycles, tracking metrics including scores, latency, token usage, and cost. Beyond aggregate metrics, Langfuse provides detailed trace-level inspection capabilities, allowing engineers to examine individual tool calls within the agentic system.
+
+The team uses Langfuse similarly to traditional debugging tools. When scores drop significantly or performance varies unexpectedly, software engineers dive into traces to understand what happened and how code changes impacted Maya's behavior. The presenter noted that engineers particularly value investigating failures because that's when they learn most effectively. Matillion consciously positioned Langfuse as equivalent to other testing tools in their existing engineering toolkit—comparable to Cypress dashboards or Postman tests—to normalize LLM evaluation practices within their traditional software engineering culture.
+
+## PII and Security Challenges
+
+The implementation of comprehensive tracing exposed significant privacy and security concerns. Initially, the team stored prompt information without major issues, but when they began capturing sampled data that Maya uses during pipeline construction, their application security team became alarmed. The sample data often contained PII from customer pipelines, creating serious compliance risks.
+
+While redacting sample data directly was straightforward, the team discovered a more subtle problem: Maya was inferring information from sampled data and referencing it later in its reasoning chain when explaining tool call decisions. Even with initial sample data redacted, Maya's explanations would inadvertently expose PII through these indirect references.
+
+To address this, Matillion implemented AWS Comprehend to detect and redact PII not just from sample data itself but from subsequent references throughout traces. This represents an important lesson about the challenge of securing LLM systems where the model's internal reasoning might propagate sensitive information in unexpected ways throughout execution traces.
+
+## Organizational Integration and Team Structure
+
+The presentation concludes with valuable insights about integrating MLOps practices and skillsets into traditional software engineering organizations. Matillion took a deliberately pragmatic approach, treating data scientists and MLOps engineers as just another engineering discipline within cross-functional teams that already included backend engineers, frontend engineers, UX designers, testers, and SREs.
+
+Rather than creating separate teams or special processes, they simply added MLOps work to the backlog alongside feature development. This required some stakeholder education about why engineering cycles needed to be spent on improving consistency and reliability without adding new functionality—a concept unfamiliar to many at Matillion. However, once stakeholders understood this work as "making Maya better" with measurable outcomes for enterprise customers, it was normalized as standard engineering investment.
+
+The team maintains one backlog, one roadmap, and one standup, prioritizing work based on importance rather than discipline. If important work requires collaboration between software engineers and MLOps engineers, that's what happens. Matillion found that great engineers wanted to learn from colleagues with different skillsets, leading to organic cross-skilling. Software engineers working on Maya became interested in MLOps practices, and the company encouraged T-shaped skill development where engineers could handle routine tasks in adjacent disciplines, freeing specialists for deeper value-add work.
+
+## RAG Implementation and Knowledge Management
+
+Maya's effectiveness depends heavily on RAG implementation to provide models with context about Matillion's proprietary technologies. The semantic layer functions as a knowledge graph that helps Maya understand the Data Productivity Cloud architecture and DPL syntax. The team leverages both internal documentation and public-facing content to educate models, with the certification exam experiments providing early validation of their RAG approach.
+
+The fact that DPL was novel to LLMs actually simplified the RAG challenge in some ways—rather than correcting misconceptions or overriding existing training, Matillion could focus on teaching models their specific conventions and best practices for data pipeline construction. The human-readable nature of DPL, combined with its rendering as visual low-code pipelines, creates multiple levels of abstraction that serve both the LLM (which works with DPL directly) and less technical users (who interact with visual representations).
+
+## Product Evolution and Market Success
+
+Maya began development in mid-2022, relatively early in the generative AI timeline, initially as a basic chatbot co-pilot for the Data Productivity Cloud. Over approximately 12 months, it evolved into the core interface for the DPC and Matillion's vision for how data engineers will work in the future. The product officially launched in June 2024 at Snowflake Summit (their partner in the data ecosystem) and was described as the best product launch the presenter had experienced.
+
+The launch generated "Maya moments"—instances where customers expressed genuine surprise at how well it worked, exceeded expectations, or demonstrated potential to fundamentally change data engineering workflows. These moments provided qualitative validation but needed to translate into enterprise sales, which required the evaluation rigor discussed throughout the presentation.
+
+At the time of the talk, Matillion was partnering with Snowflake Intelligence to enable agents to interact with Maya, representing a shift toward agent-to-agent interaction rather than just human-to-AI interfaces. This partnership required the Chief of AI to be in San Francisco rather than presenting at this Manchester event, indicating the strategic importance of these enterprise relationships.
+
+## Technical Tradeoffs and Honest Assessment
+
+The presentation demonstrates notable transparency about limitations and ongoing challenges. The team explicitly acknowledges they haven't "cracked" evaluation and are "at a very early stage of the journey." The terrible diagram showing their phase evolution, admitted multiple times to look worse on the big screen, reflects the messy reality of developing these practices in real-time rather than following a predetermined playbook.
+
+The acknowledgment that engineers would sometimes adopt a "give it three months and hope the models catch up" approach when facing difficult problems reveals both the rapid pace of model improvement and the calculated risk-taking involved in building on LLM foundations. This has generally worked well for Matillion—timing aligned favorably with model capabilities expanding to meet their needs—but represents a bet that might not always pay off.
+
+The multi-model strategy (Sonnet, Haiku, Nova) suggests pragmatic optimization but also adds complexity in terms of evaluation (needing to validate each model for its specific tasks) and operational management. The discovery of family bias in evaluation required using entirely different model families for judging versus generation, adding further complexity.
+
+## Key LLMOps Lessons and Takeaways
+
+Several important LLMOps patterns emerge from Matillion's experience. First, the progression from manual informal evaluation to automated structured testing mirrors many organizations' journeys but provides a concrete roadmap. Starting simple with constrained tests, adding AI judges with human validation, then automating at scale represents a sensible evolution that builds confidence progressively.
+
+Second, the importance of proper observability infrastructure cannot be overstated. Langfuse integration enabled Matillion to treat Maya like production software with proper debugging capabilities, making the transition from "vibes" to data-driven decision-making possible. The ability to upgrade models confidently within 24 hours demonstrates the value of this investment.
+
+Third, security and privacy considerations in LLM systems extend beyond obvious data handling. The indirect PII leakage through reasoning traces represents a subtle failure mode that requires sophisticated detection and remediation. Organizations implementing similar systems need to consider not just what data goes into prompts but how models might propagate sensitive information through their reasoning chains.
+
+Fourth, organizational integration matters as much as technical implementation. Matillion's decision to treat MLOps as just another engineering discipline rather than creating separate siloed teams appears to have facilitated adoption and normalized the unfamiliar work of improving model consistency and reliability.
+
+Finally, the value of domain-specific formats like DPL suggests that organizations might benefit from designing intermediate representations optimized for LLM interaction rather than forcing models to work with legacy formats designed for human consumption or traditional parsing.

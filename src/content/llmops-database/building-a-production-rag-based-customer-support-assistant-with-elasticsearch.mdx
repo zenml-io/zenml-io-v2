@@ -1,0 +1,139 @@
+---
+title: "Building a Production RAG-based Customer Support Assistant with Elasticsearch"
+slug: "building-a-production-rag-based-customer-support-assistant-with-elasticsearch"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "67e566f2bb0d5ef140e4ca39"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:04:58.027Z"
+  createdOn: "2025-03-27T14:55:46.282Z"
+llmopsTags:
+  - "customer-support"
+  - "chatbot"
+  - "document-processing"
+  - "question-answering"
+  - "rag"
+  - "embeddings"
+  - "prompt-engineering"
+  - "semantic-search"
+  - "vector-search"
+  - "error-handling"
+  - "chunking"
+  - "elasticsearch"
+  - "fastapi"
+  - "docker"
+  - "monitoring"
+  - "cicd"
+  - "scaling"
+  - "documentation"
+  - "openai"
+  - "microsoft-azure"
+  - "google-gcp"
+company: "Elastic"
+summary: "Elastic's Field Engineering team developed a customer support chatbot using RAG instead of fine-tuning, leveraging Elasticsearch for document storage and retrieval. They created a knowledge library of over 300,000 documents from technical support articles, product documentation, and blogs, enriched with AI-generated summaries and embeddings using ELSER. The system uses hybrid search combining semantic and BM25 approaches to provide relevant context to the LLM, resulting in more accurate and trustworthy responses."
+link: "https://www.elastic.co/search-labs/blog/genai-customer-support-building-a-knowledge-library"
+year: 2024
+seo:
+  title: "Elastic: Building a Production RAG-based Customer Support Assistant with Elasticsearch - ZenML LLMOps Database"
+  description: "Elastic's Field Engineering team developed a customer support chatbot using RAG instead of fine-tuning, leveraging Elasticsearch for document storage and retrieval. They created a knowledge library of over 300,000 documents from technical support articles, product documentation, and blogs, enriched with AI-generated summaries and embeddings using ELSER. The system uses hybrid search combining semantic and BM25 approaches to provide relevant context to the LLM, resulting in more accurate and trustworthy responses."
+  canonical: "https://www.zenml.io/llmops-database/building-a-production-rag-based-customer-support-assistant-with-elasticsearch"
+  ogTitle: "Elastic: Building a Production RAG-based Customer Support Assistant with Elasticsearch - ZenML LLMOps Database"
+  ogDescription: "Elastic's Field Engineering team developed a customer support chatbot using RAG instead of fine-tuning, leveraging Elasticsearch for document storage and retrieval. They created a knowledge library of over 300,000 documents from technical support articles, product documentation, and blogs, enriched with AI-generated summaries and embeddings using ELSER. The system uses hybrid search combining semantic and BM25 approaches to provide relevant context to the LLM, resulting in more accurate and trustworthy responses."
+---
+
+## Overview
+
+Elastic's Field Engineering team developed an internal customer support chatbot called the "Support Assistant" to help users find answers to technical questions about Elastic products. This case study, published in July 2024, focuses specifically on Part 2 of a multi-part series detailing how they built the knowledge library that powers their RAG-based approach. The project represents a practical example of deploying LLMs in a production customer support environment, with particular emphasis on the data infrastructure and retrieval mechanisms that underpin the system.
+
+## The Decision to Use RAG Over Fine-Tuning
+
+The team explicitly chose a Retrieval-Augmented Generation approach over fine-tuning a custom model. Their initial proof of concept demonstrated that foundational LLM training was insufficient for the technical depth and breadth of Elastic's product ecosystem. They evaluated fine-tuning but identified several operational advantages of RAG:
+
+The first consideration was data compatibility. Fine-tuning required question-answer pairing that did not match their existing data set and would have been challenging to produce at scale. Their knowledge base consisted largely of unstructured documentation and support articles, which aligned better with RAG's document retrieval paradigm.
+
+Real-time updates were another critical factor. RAG allows the system to immediately incorporate new information by accessing up-to-date documents, ensuring responses remain current and relevant without model retraining. This is particularly important for a rapidly evolving product like Elasticsearch where new features and versions are released frequently.
+
+Role-Based Access Control (RBAC) was a significant consideration for an enterprise support context. RAG enables document-level security where the retrieval layer can filter documents based on user permissions, allowing a single user experience across different roles while restricting access to appropriate content.
+
+Finally, infrastructure efficiency played a role. Search on the Support Hub and the Support Assistant share underlying infrastructure, meaning improvements to search relevancy benefit both experiences simultaneously, reducing maintenance burden and duplication of effort.
+
+## Core Hypothesis and Search-First Approach
+
+The team framed their development around a specific hypothesis: providing more concise and relevant search results as context for the LLM would lead to stronger positive user sentiment by minimizing the chance of the model using unrelated information. This reframed the chatbot challenge as fundamentally a search problem.
+
+They used an effective analogy comparing the system to a librarian with access to an extensive library. The librarian (LLM) has broad general knowledge but needs to find the right books (documents) for deep domain expertise. Elasticsearch with Lucene enables finding key passages within documents across the entire knowledge library and synthesizing answers, typically in under a minute. The scalability benefit is clear: adding more documents increases the probability of having the knowledge required to answer any given question.
+
+## Knowledge Library Architecture
+
+The knowledge library draws from three primary sources: technical support articles authored by Support Engineers, ingested product documentation and blogs, and an enrichment service that increases search relevancy for hybrid search.
+
+### Technical Support Articles
+
+Elastic Support follows a knowledge-centered service approach where engineers document solutions and insights from support cases. This creates organic daily growth of the knowledge base. The implementation runs entirely on Elasticsearch with the EUI Markdown Editor for the front end.
+
+A significant portion of the work involved enabling semantic search with ELSER (Elastic Learned Sparse Embedding Retrieval). The team had to address technical debt from a prior architecture that used two separate storage methods: a Swiftype instance for customer-facing articles and Elastic AppSearch for internal team articles. They migrated to a unified architecture using document-level security to enable role-based access from a single index source.
+
+For internal annotations on external articles, they developed an EUI plugin called "private context" that uses regex parsing to find private context blocks within article markdown and processes them as AST nodes. This allows Support team members to have additional context not visible to customers.
+
+The resulting document structure contains four broad categories of fields, with metadata and article content stored in the same JSON document for efficient field-level querying. For hybrid search, they use the title and summary fields for semantic search with BM25 on the larger content field, balancing speed with high relevance.
+
+### Product Documentation and Blog Ingestion
+
+Despite having over 2,800 technical support articles, the team recognized gaps for certain question types, such as feature comparisons across product versions. They expanded coverage to include product documentation across all versions, Elastic blogs, Search/Security/Observability Labs content, and onboarding guides.
+
+The ingestion process handles several hundred thousand documents across complex site maps. They used Crawlee, a scraping and automation library, to manage scale and frequency requirements. Four crawler jobs execute on Google Cloud Run, chosen for its 24-hour timeout capability and built-in scheduling without requiring Cloud Tasks or PubSub.
+
+Each job targets a specific base URL to avoid duplicate ingestion while ensuring comprehensive coverage. For example, they crawl `https://elastic.com/blog` and `https://www.elastic.co/search-labs/blog` rather than the root domain to focus on technical content.
+
+A particularly challenging aspect was handling 114 unique product documentation versions across major and minor releases. The crawler builds and caches tables of contents for product pages, enqueuing all versions for crawling if not already cached.
+
+### Request Handlers for Document Parsing
+
+Given the wide structural variation across crawled documents, the team created request handlers for each document type that specify which CSS selectors to parse for document body content. This ensures consistency in stored documents and captures only relevant text, which is crucial for RAG since any filler text becomes searchable and could incorrectly appear as context sent to the LLM.
+
+The blog request handler is straightforward, specifying a div element to ingest as content. The product documentation handler supports multiple CSS selectors with fallback options, allowing flexibility across different page structures. Authorization headers are configured to access all product documentation versions, and duplicate handling relies on search query tuning to default to the most current docs unless specified otherwise.
+
+## Document Enrichment Pipeline
+
+With over 300,000 documents varying widely in metadata quality, the team needed automated enrichment for search relevancy. The enrichment process needed to be simple, automated, capable of backfilling existing documents, and able to run on-demand for new documents.
+
+### ELSER Embeddings
+
+ELSER transforms documents into sparse embeddings that enhance search relevance and accuracy through machine learning-based understanding of contextual relationships. The team found ELSER setup straightforward: download and deploy the model, create an ingest pipeline, and reindex data.
+
+For hybrid search, ELSER computed embeddings for both title and summary fields. The embeddings are stored as keyword-vector pairs in an `ml` field within each document. At query time, the search query is also converted to an embedding, and documents with embeddings close to the query embedding are retrieved and ranked accordingly.
+
+### AI-Generated Summaries and Questions
+
+Semantic search effectiveness depends heavily on summary quality. Technical support articles had human-written summaries, but ingested content did not. The team initially tried using the first 280 characters as summaries but found this led to poor search relevancy.
+
+The solution was to use OpenAI GPT-3.5 Turbo to backfill summaries for all documents lacking them. They used a private GPT-3.5 Turbo instance to control costs at scale. The enrichment service runs as a Cloud Run job that loops through documents, sending API calls with the prompt and content, waiting for responses, updating summary and questions fields, and proceeding to the next document.
+
+The prompt engineering is sophisticated, including overall directions and specific instructions for each task. For summary generation, the prompt asks the LLM to take multiple passes at text generation and check for accuracy against the source. The team also generates a second summary type focused on extracting key sentences for passage-level retrieval, plus a set of relevant questions for each document to support semantic search suggestions and potentially hybrid search inclusion.
+
+Cloud Run's concurrency controls prevent exhausting LLM instance thread allocations, which would cause timeouts for Support Assistant users. The backfill was intentionally spread over weeks, prioritizing the most current product documentation.
+
+## Production Results and Key Learnings
+
+At time of publication, the system included vector embeddings for over 300,000 documents, over 128,000 AI-generated summaries, and an average of 8 questions per document. Given only approximately 8,000 technical support articles had human-written summaries, this represented a 10x improvement for semantic search capability.
+
+The team documented several important learnings from production operation:
+
+Smaller, more precise context makes LLM responses significantly more deterministic. Initially passing larger text passages as context decreased accuracy because the LLM would overlook key sentences. This shifted the search problem to finding not just the right documents but specifically how document passages align with user questions.
+
+RBAC strategy proved essential for managing data access across personas. Document-level security reduced infrastructure duplication, lowered deployment costs, and simplified query complexity.
+
+A single search query cannot cover the range of potential user questions. Understanding user intent through analysis of search patterns and sentiment measurement became crucial for improving the system over time.
+
+Understanding user search behavior informs data enrichment priorities. Even with hundreds of thousands of documents, knowledge gaps exist, and analyzing user trends helps determine when to add new source types or enhance existing document enrichment.
+
+## Production Architecture Choices
+
+The case study reveals several production-oriented architectural decisions. Google Cloud Run was selected for crawler jobs due to its 24-hour timeout limits and built-in scheduling. The team used Typescript with Node.js and Elastic's EUI for front-end components. The migration away from legacy Swiftype and AppSearch implementations toward native Elasticsearch features with document-level security represents a significant reduction in technical debt.
+
+The choice to use a private GPT-3.5 Turbo instance for enrichment demonstrates cost consciousness at scale, though the team notes intentions to test other models for potential quality improvements. The iterative deployment approach—pushing code frequently to production and measuring impact—reflects modern DevOps practices applied to LLMOps, preferring small failures over large feature-level ones.
+
+While this case study comes from Elastic promoting their own products, the technical details and lessons learned provide genuine insight into RAG system construction at enterprise scale. The emphasis on search quality as the foundation for RAG effectiveness, the practical challenges of document enrichment at scale, and the importance of RBAC in enterprise contexts represent broadly applicable LLMOps considerations.

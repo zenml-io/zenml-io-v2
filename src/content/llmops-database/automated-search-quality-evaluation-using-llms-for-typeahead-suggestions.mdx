@@ -1,0 +1,130 @@
+---
+title: "Automated Search Quality Evaluation Using LLMs for Typeahead Suggestions"
+slug: "automated-search-quality-evaluation-using-llms-for-typeahead-suggestions"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "6790aa7127696ae509b7f472"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:56:27.965Z"
+  createdOn: "2025-01-22T08:21:05.991Z"
+llmopsTags:
+  - "question-answering"
+  - "structured-output"
+  - "prompt-engineering"
+  - "few-shot"
+  - "system-prompts"
+  - "error-handling"
+  - "monitoring"
+  - "documentation"
+  - "openai"
+  - "microsoft-azure"
+company: "LinkedIn"
+summary: "LinkedIn developed an automated evaluation system using GPT models served through Azure to assess the quality of their typeahead search suggestions at scale. The system replaced manual human evaluation with automated LLM-based assessment, using carefully engineered prompts and a golden test set. The implementation resulted in faster evaluation cycles (hours instead of weeks) and demonstrated significant improvements in suggestion quality, with one experiment showing a 6.8% absolute improvement in typeahead quality scores."
+link: "https://www.linkedin.com/blog/engineering/ai/automated-genai-driven-search-quality-evaluation"
+year: 2024
+seo:
+  title: "LinkedIn: Automated Search Quality Evaluation Using LLMs for Typeahead Suggestions - ZenML LLMOps Database"
+  description: "LinkedIn developed an automated evaluation system using GPT models served through Azure to assess the quality of their typeahead search suggestions at scale. The system replaced manual human evaluation with automated LLM-based assessment, using carefully engineered prompts and a golden test set. The implementation resulted in faster evaluation cycles (hours instead of weeks) and demonstrated significant improvements in suggestion quality, with one experiment showing a 6.8% absolute improvement in typeahead quality scores."
+  canonical: "https://www.zenml.io/llmops-database/automated-search-quality-evaluation-using-llms-for-typeahead-suggestions"
+  ogTitle: "LinkedIn: Automated Search Quality Evaluation Using LLMs for Typeahead Suggestions - ZenML LLMOps Database"
+  ogDescription: "LinkedIn developed an automated evaluation system using GPT models served through Azure to assess the quality of their typeahead search suggestions at scale. The system replaced manual human evaluation with automated LLM-based assessment, using carefully engineered prompts and a golden test set. The implementation resulted in faster evaluation cycles (hours instead of weeks) and demonstrated significant improvements in suggestion quality, with one experiment showing a 6.8% absolute improvement in typeahead quality scores."
+---
+
+## Overview
+
+LinkedIn, the world's largest professional networking platform with over 1 billion members, implemented an automated GenAI-driven quality evaluation system for their flagship search typeahead feature. The typeahead system presents auto-completed suggestions as users type in the global search bar, blending various result types including company entities, people entities, job suggestions, LinkedIn Learning courses, and plain text suggestions. Given the massive scale of the platform and the critical role that search quality plays in member experience, LinkedIn needed to move beyond traditional human evaluation methods that could not scale effectively.
+
+The case study demonstrates a practical application of LLMs in production for quality evaluation purposes—specifically using an OpenAI GPT model served through Azure to assess whether typeahead suggestions are high-quality or low-quality. This represents an interesting LLMOps pattern where the LLM is not directly serving end users but rather acts as an automated quality assurance mechanism within the development and experimentation pipeline.
+
+## The Problem
+
+Search quality assessment at LinkedIn had historically relied on human evaluation to maintain their high standards. However, this approach faced significant scalability challenges given the growth of the platform and the inherent complexity of typeahead suggestions. The typeahead system has unique characteristics that make evaluation particularly challenging:
+
+The suggestions exhibit vertical intent diversity, meaning typeahead displays varied types of results such as People entities, Company entities, Job suggestions, and plain text suggestions. Each of these result types requires different evaluation criteria and domain expertise.
+
+Additionally, typeahead suggestions are highly personalized for different users. The same query, such as "Andrew," will yield different suggestions for different users based on their connections, interests, and professional context. This personalization introduces subjectivity into the evaluation process, making it difficult to establish universal quality standards.
+
+Traditional manual search quality evaluations involving multiple human evaluators could take days or even weeks to complete, creating bottlenecks in the experimentation and iteration cycle.
+
+## Solution Architecture
+
+LinkedIn's solution involved building a comprehensive GenAI Typeahead Quality Evaluator with several key components working together in a structured pipeline.
+
+### Quality Measurement Guidelines
+
+Before leveraging LLMs, the team established clear measurement guidelines that serve as the foundation for the entire evaluation system. These guidelines provide a consistent framework for assessing suggestion quality and help align automated evaluations with desired outcomes. To handle the complexity of different suggestion types, they crafted specific guidance and examples for each type. They also simplified the evaluation to a binary classification (high-quality or low-quality) to reduce ambiguity and subjective judgment. The evaluation is designed to perform once the member is done typing, ensuring sufficient query context is available.
+
+### Golden Test Set Construction
+
+The team created a golden test set—a pre-defined query set sampled from platform traffic—to replicate the overall quality of the typeahead search experience. Since typeahead suggestions are personalized, the golden test set comprises query-member ID pairs. The sampling strategy follows several principles to ensure representativeness:
+
+The test set includes comprehensive coverage of search intents by sampling 200 queries from each intent category covering People, Company, Product, Job, Skill Queries, Trending Topics, and Knowledge-Oriented questions. Intent is identified using click signals on typeahead results.
+
+The team recognized that bypass and abandoned sessions (where users press Enter without selecting a suggestion or leave the platform entirely) are crucial for assessing quality, so they sampled 200 queries from both bypass and random sessions.
+
+For member sampling, they focused on weekly-active and daily-active members using LinkedIn's Member Life Cycle (MLC) data, ensuring the test set represents engaged users.
+
+### Prompt Engineering Strategy
+
+The prompt engineering approach follows a structured template with distinct sections: IDENTITY, TASK GUIDELINES, (optional) EXAMPLES, INPUT, and OUTPUT. The prompts are specialized for each result type to align with specific quality guidelines and data structures.
+
+The IDENTITY section establishes the evaluator role. The TASK GUIDELINES section explains the input format (partial search query, user information, suggestions, and suggestion information) and the expected output format (binary score with reasoning). The EXAMPLES section provides few-shot examples to improve accuracy for complicated use cases—for instance, examples where search queries follow patterns like "name + job title" or "name + geo location."
+
+A notable technique employed is asking the model to generate reasoning before providing its score, implementing a simple chain-of-thought approach that was shown to improve GPT performance. This approach yields both explainability (understanding why a suggestion was rated a certain way) and improved accuracy.
+
+### Evaluation Metrics
+
+Since typeahead is a ranked surface where top suggestions have greater visibility and importance, the team defined multiple quality metrics:
+
+- TyahQuality1: Quality score of the top suggestion
+- TyahQuality3: Average quality score of the top three suggestions
+- TyahQuality5: Average quality score of the top five suggestions
+- TyahQuality10: Average quality scores of all (maximum 10) typeahead suggestions
+
+For each suggestion, GPT scores it as either 1 (high) or 0 (low). The per-session quality score is calculated by averaging individual suggestion scores, and the overall typeahead quality score is derived by averaging across all sessions in the golden test set.
+
+### Evaluation Pipeline
+
+The complete pipeline for evaluating a new typeahead experiment follows these steps:
+
+- Generate requests with experiment configs on the Golden Test Set and call the Typeahead backend
+- Collect typeahead responses on the golden test set
+- Generate prompts for GPT 3.5 Turbo based on the response suggestions
+- Batch call the GPT API to perform quality evaluations
+- Post-process GPT responses to calculate TypeaheadQuality scores
+
+The pipeline uses GPT-3.5 Turbo through Azure OpenAI, representing a pragmatic choice that balances cost, speed, and capability for this evaluation task.
+
+## Results and Impact
+
+The case study presents a concrete experiment where the team expanded typeahead plain text suggestions inventory with short phrases summarized from high-quality User Generated Content on LinkedIn Posts. Using the GenAI evaluator, they measured significant improvements:
+
+- TyahQuality10 improved from 66.70% to 73.50% (6.8% absolute improvement)
+- TyahQuality5 improved from 69.20% to 75.00%
+- TyahQuality3 improved from 70.60% to 75.70%
+- TyahQuality1 improved from 73.20% to 77.20%
+
+The 6.8% absolute improvement in TyahQuality10 corresponds to a 20% reduction in low-quality suggestions. More importantly from an operational perspective, the automated evaluation reduced the turnaround time from days or weeks (for traditional human evaluation) to just a few hours.
+
+## Key LLMOps Learnings
+
+The case study highlights several important lessons for LLMOps practitioners:
+
+Prompt engineering is inherently iterative. The team went through several cycles of cross-evaluation comparing GPT outputs with human evaluations, learning from discrepancies, and refining prompts accordingly. This iterative refinement was essential to achieving acceptable accuracy levels.
+
+Defining clear and unambiguous evaluation criteria before implementing LLM-based evaluation is critical, especially when dealing with diverse result types. The inherent complexity and diversity of typeahead results required high precision in eliminating ambiguities across different suggestion types and entities.
+
+The approach of using LLMs as evaluators rather than direct end-user-facing systems represents a valuable pattern in LLMOps. This usage pattern has different risk profiles—errors in evaluation may slow iteration rather than directly impacting users—and can accelerate development velocity significantly.
+
+The choice to use a binary classification (high/low quality) rather than a more granular scale was pragmatic, reducing the complexity of both prompt engineering and the evaluation task itself while still providing actionable insights.
+
+## Limitations and Considerations
+
+While the case study presents positive results, it's worth noting some aspects that deserve consideration. The comparison to human evaluation in terms of speed is compelling, but the text doesn't provide detailed information about how closely the LLM evaluations correlate with human judgments beyond mentions of "cross-evaluation" during development. Production systems using this approach would benefit from ongoing human validation to ensure the automated evaluations remain aligned with actual quality standards over time.
+
+The specific choice of GPT-3.5 Turbo suggests a cost-conscious approach, though newer models might offer different accuracy-cost tradeoffs. The reliance on Azure-hosted OpenAI models creates a dependency on external services that organizations should factor into their operational planning.
+
+Overall, this case study presents a well-documented example of using LLMs as automated quality evaluators in a production search system, demonstrating practical prompt engineering techniques, thoughtful test set design, and measurable operational benefits.

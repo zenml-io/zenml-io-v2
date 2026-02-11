@@ -1,0 +1,98 @@
+---
+title: "Semantic Product Matching Using Retrieval-Rerank Architecture"
+slug: "semantic-product-matching-using-retrieval-rerank-architecture"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f3aa00a1bd895cb73d2ae"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:39:38.979Z"
+  createdOn: "2024-11-21T13:50:24.443Z"
+llmopsTags:
+  - "data-integration"
+  - "devops"
+  - "embeddings"
+  - "fine-tuning"
+  - "hugging-face"
+  - "monitoring"
+  - "reliability"
+  - "reranking"
+  - "scalability"
+  - "scaling"
+  - "semantic-search"
+  - "structured-output"
+company: "Delivery Hero"
+summary: "Delivery Hero implemented a sophisticated product matching system to identify similar products across their own inventory and competitor offerings. They developed a three-stage approach combining lexical matching, semantic encoding using SBERT, and a retrieval-rerank architecture with transformer-based cross-encoders. The system efficiently processes large product catalogs while maintaining high accuracy through hard negative sampling and fine-tuning techniques."
+link: "https://tech.deliveryhero.com/semantic-product-matching/"
+year: 2024
+seo:
+  title: "Delivery Hero: Semantic Product Matching Using Retrieval-Rerank Architecture - ZenML LLMOps Database"
+  description: "Delivery Hero implemented a sophisticated product matching system to identify similar products across their own inventory and competitor offerings. They developed a three-stage approach combining lexical matching, semantic encoding using SBERT, and a retrieval-rerank architecture with transformer-based cross-encoders. The system efficiently processes large product catalogs while maintaining high accuracy through hard negative sampling and fine-tuning techniques."
+  canonical: "https://www.zenml.io/llmops-database/semantic-product-matching-using-retrieval-rerank-architecture"
+  ogTitle: "Delivery Hero: Semantic Product Matching Using Retrieval-Rerank Architecture - ZenML LLMOps Database"
+  ogDescription: "Delivery Hero implemented a sophisticated product matching system to identify similar products across their own inventory and competitor offerings. They developed a three-stage approach combining lexical matching, semantic encoding using SBERT, and a retrieval-rerank architecture with transformer-based cross-encoders. The system efficiently processes large product catalogs while maintaining high accuracy through hard negative sampling and fine-tuning techniques."
+---
+
+## Overview
+
+Delivery Hero, a major player in the online food and grocery delivery space, developed a semantic product matching system to address several business-critical needs in their e-commerce operations. The primary use cases include competitive pricing intelligence (understanding how their products compare to competitors), assortment gap analysis (identifying products competitors offer that they do not), and internal duplicate detection (finding redundant items in their own catalog). This case study provides a detailed technical walkthrough of their iterative approach to solving the product matching problem, demonstrating how they progressed from simple lexical methods to sophisticated LLM-based solutions deployed in production.
+
+The core challenge is straightforward to state but difficult to solve at scale: given a product title, find the matching or most similar product from a potentially large set of candidate titles. This is complicated by the natural variation in how products are described—differences in units (1000ml vs 1L), spelling variations (Coca-Cola vs CocaCola), and missing or additional descriptive words. The solution must handle these variations while remaining computationally efficient enough to process large product catalogs.
+
+## Technical Approach: Three Evolutionary Stages
+
+### Lexical Matching as a Baseline
+
+The first approach employed classical information retrieval techniques using lexical matching. This method treats product titles as bags of words and calculates similarity using Intersection over Union (IoU), enhanced with Term Frequency-Inverse Document Frequency (TF-IDF) weighting and BM25 scoring. The team leveraged inverted index structures, noting that tools like Apache Lucene facilitate efficient implementation of this approach.
+
+The advantages here are clear: lexical matching is computationally efficient, well-understood, and supported by mature tooling. For large-scale product catalogs, the ability to use inverted indices for rapid word-based lookup is crucial for maintaining acceptable query latencies. However, the fundamental limitation is the requirement for exact word matches, which fails when products are described using synonyms, abbreviations, or slightly different terminology.
+
+### Semantic Encoder with SBERT
+
+To overcome the limitations of lexical matching, the team moved to a semantic encoding approach using SBERT (Sentence-BERT). This represents a significant shift toward LLM-based solutions, using pre-trained transformer models that have been fine-tuned with a Siamese Network architecture to produce embeddings that capture semantic similarity.
+
+Critically, Delivery Hero did not simply use off-the-shelf SBERT models. They fine-tuned the model on their own internal dataset consisting of labeled product title pairs marked as "matched" or "not-matched." This domain-specific fine-tuning is essential for production LLM deployments, as general-purpose models often struggle with the specific terminology, formatting, and nuances of product titles in the grocery and retail domain.
+
+The semantic encoder approach allows the system to understand that "fast USB charger" and "quick charging USB adapter" are semantically similar despite minimal word overlap. However, the team identified important limitations that affect production use: independent encoding of titles means the model may miss nuanced interplay between text pairs, and the fixed-size embedding representation may fail to capture important keywords like brand names that are critical for accurate matching.
+
+### Retrieval-Rerank: The Production Architecture
+
+The final and most sophisticated approach combines the strengths of both previous methods in a two-stage Retrieval-Rerank architecture. This pattern is well-established in modern information retrieval and represents a pragmatic approach to balancing computational cost with accuracy—a key consideration for any production LLM system.
+
+**Stage 1: Retrieval** uses the computationally efficient lexical matching approach to generate a candidate set of k potential matches. This stage prioritizes speed and recall, accepting that some precision will be sacrificed. The choice of lexical matching over semantic encoding for this stage was driven by cost-effectiveness considerations, demonstrating the kind of pragmatic trade-offs that characterize production LLMOps decisions.
+
+**Stage 2: Reranking** applies a transformer-based cross-encoder to the reduced candidate set. Unlike the encoder-only SBERT model that processes inputs independently, the cross-encoder examines pairs of inputs together, allowing it to capture interactions and subtle relationships between the texts. This joint processing yields significantly higher accuracy but at greater computational cost—hence its application only to the pre-filtered candidate set.
+
+The architecture diagram mentioned in the article distinguishes between training-time and inference-time data flows (dotted vs solid lines), suggesting a well-thought-out ML pipeline that separates training and serving infrastructure.
+
+## Hard Negative Sampling for Model Improvement
+
+A particularly noteworthy aspect of this case study is the use of hard negative sampling to improve model performance. Hard negatives are pairs that are not matches according to ground truth labels but have embeddings that are surprisingly similar (above a predefined similarity threshold). These challenging examples force the model to learn more discriminative features.
+
+The team used their encoder-based approach as a mining tool to identify these hard negatives, then used them to fine-tune the cross-encoder models. This iterative improvement process—using one model's outputs to generate training data for another—is a sophisticated technique that demonstrates mature ML engineering practices. It also highlights the importance of having quality labeled data and the ability to continuously improve models in production through active learning-like approaches.
+
+## LLMOps Considerations and Production Implications
+
+Several aspects of this case study are relevant to LLMOps practitioners:
+
+**Model Selection and Trade-offs**: The progression from lexical matching to semantic encoders to retrieval-rerank demonstrates thoughtful consideration of the accuracy-latency-cost trade-off triangle. Each approach represents a different balance point, with the final architecture explicitly designed to get the best of both worlds.
+
+**Domain-Specific Fine-Tuning**: The decision to fine-tune SBERT on internal product pair data rather than relying on pre-trained models is crucial. Product matching in e-commerce has domain-specific challenges (unit conversions, brand name variations, multilingual products) that general-purpose models may not handle well.
+
+**Scalability Architecture**: The two-stage architecture is designed with production scale in mind. By using cheap, fast retrieval to filter candidates before applying expensive reranking, the system can handle large product catalogs without prohibitive computational costs.
+
+**Data Pipeline for Training**: The mention of labeled "matched/not-matched" pairs and hard negative mining implies a substantial investment in data labeling and curation infrastructure. This is often the unglamorous but critical foundation of successful production ML systems.
+
+**Extensibility**: The article notes that while the focus is on product titles, the technique can be extended to images and enhanced with additional attributes like price and size. This suggests the architecture is designed for future evolution, which is important for production systems that must adapt to changing business requirements.
+
+## Limitations and Honest Assessment
+
+The article is relatively balanced in acknowledging limitations of each approach. The contextual limitation of encoder-only models (missing nuanced interplay between texts) and the tendency to miss important keywords are real issues that practitioners should be aware of. The hard negative sampling approach is presented as a mitigation strategy rather than a complete solution.
+
+It's worth noting that the article does not provide quantitative results or metrics comparing the approaches, which makes it difficult to assess the actual production impact. Additionally, details about serving infrastructure, latency requirements, and operational challenges are not covered. The focus is primarily on the algorithmic approach rather than the full MLOps lifecycle including monitoring, A/B testing, and model updates.
+
+## Conclusion
+
+This case study from Delivery Hero represents a solid example of applying modern NLP and LLM techniques to a practical e-commerce problem. The iterative approach—starting simple and adding complexity only where needed—combined with domain-specific fine-tuning and sophisticated training techniques like hard negative sampling, demonstrates mature ML engineering practices. The Retrieval-Rerank architecture in particular is a pattern that has broad applicability beyond product matching, making this a useful reference for practitioners building similar systems.

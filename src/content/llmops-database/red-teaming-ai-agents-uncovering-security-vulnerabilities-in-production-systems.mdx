@@ -1,0 +1,140 @@
+---
+title: "Red Teaming AI Agents: Uncovering Security Vulnerabilities in Production Systems"
+slug: "red-teaming-ai-agents-uncovering-security-vulnerabilities-in-production-systems"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "6964c67c4ba7cd9d7a669fff"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2026-02-03T15:19:04.226Z"
+  lastUpdated: "2026-01-12T10:13:23.249Z"
+  createdOn: "2026-01-12T10:01:32.827Z"
+llmopsTags:
+  - "code-generation"
+  - "code-interpretation"
+  - "high-stakes-application"
+  - "poc"
+  - "agent-based"
+  - "multi-agent-systems"
+  - "prompt-engineering"
+  - "system-prompts"
+  - "docker"
+  - "kubernetes"
+  - "security"
+  - "guardrails"
+  - "fastapi"
+  - "postgresql"
+  - "redis"
+  - "open-source"
+  - "anthropic"
+  - "amazon-aws"
+  - "microsoft-azure"
+  - "hugging-face"
+company: "Casco"
+summary: "Casco, a Y Combinator company specializing in red teaming AI agents and applications, conducted a security assessment of 16 live production AI agents, successfully compromising 7 of them within 30 minutes each. The research identified three critical security vulnerabilities common across production AI agents: cross-user data access through insecure direct object references (IDOR), arbitrary code execution through improperly secured code sandboxes leading to lateral movement across infrastructure, and server-side request forgery (SSRF) enabling credential theft from private repositories. The findings demonstrate that agent security extends far beyond LLM-specific concerns like prompt injection, requiring developers to apply traditional web application security principles including proper authentication and authorization, input/output sanitization, and use of enterprise-grade code sandboxes rather than custom implementations."
+link: "https://www.youtube.com/watch?v=kv-QAuKWllQ"
+year: 2025
+seo:
+  title: "Casco: Red Teaming AI Agents: Uncovering Security Vulnerabilities in Production Systems - ZenML LLMOps Database"
+  description: "Casco, a Y Combinator company specializing in red teaming AI agents and applications, conducted a security assessment of 16 live production AI agents, successfully compromising 7 of them within 30 minutes each. The research identified three critical security vulnerabilities common across production AI agents: cross-user data access through insecure direct object references (IDOR), arbitrary code execution through improperly secured code sandboxes leading to lateral movement across infrastructure, and server-side request forgery (SSRF) enabling credential theft from private repositories. The findings demonstrate that agent security extends far beyond LLM-specific concerns like prompt injection, requiring developers to apply traditional web application security principles including proper authentication and authorization, input/output sanitization, and use of enterprise-grade code sandboxes rather than custom implementations."
+  canonical: "https://www.zenml.io/llmops-database/red-teaming-ai-agents-uncovering-security-vulnerabilities-in-production-systems"
+  ogTitle: "Casco: Red Teaming AI Agents: Uncovering Security Vulnerabilities in Production Systems - ZenML LLMOps Database"
+  ogDescription: "Casco, a Y Combinator company specializing in red teaming AI agents and applications, conducted a security assessment of 16 live production AI agents, successfully compromising 7 of them within 30 minutes each. The research identified three critical security vulnerabilities common across production AI agents: cross-user data access through insecure direct object references (IDOR), arbitrary code execution through improperly secured code sandboxes leading to lateral movement across infrastructure, and server-side request forgery (SSRF) enabling credential theft from private repositories. The findings demonstrate that agent security extends far beyond LLM-specific concerns like prompt injection, requiring developers to apply traditional web application security principles including proper authentication and authorization, input/output sanitization, and use of enterprise-grade code sandboxes rather than custom implementations."
+---
+
+## Overview and Company Context
+
+Casco is a Y Combinator-backed startup founded by Renee, who previously worked at AWS on AI agents. The company specializes in red teaming AI agents and applications, offering automated security assessments where an AI agent actively attacks other AI agents to identify vulnerabilities. The company launched with significant success at Y Combinator, achieving the second-highest upvoted launch post of all time within the accelerator. The founding story reflects broader industry trends, with the CEO having experimented with voice-to-code systems a decade ago using IBM Watson and Microsoft LUIS, demonstrating early vision for what generative AI would enable.
+
+The company emerged from recognition that while the AI agent technology stack has normalized significantly compared to earlier experimental systems, security considerations have not kept pace with deployment velocity. Modern agent stacks typically consist of a server frontend, API server, LLM connection, tool integrations, and various data sources. This normalization makes security patterns more predictable but also means vulnerabilities are often replicated across multiple production systems.
+
+## Research Methodology and Scope
+
+To validate their product offering and generate attention for their Y Combinator launch, Casco conducted a targeted red teaming exercise against live production AI agents. The methodology was deliberately constrained: they selected 16 agents already deployed in production environments and allocated exactly 30 minutes per agent for exploitation attempts. This time-boxed approach was designed to simulate realistic attack scenarios where bad actors perform reconnaissance and exploitation within limited windows.
+
+The assessment process followed a systematic pattern. First, they extracted system prompts to understand the agent's intended behavior, constraints, and capabilities. Second, they analyzed tool definitions to identify what functions the agent could execute, what data it could access, and what code it could run. Third, they attempted to exploit identified weaknesses by inverting the constraints specified in system prompts, reasoning that security controls defined in natural language prompts represent exactly what developers wanted to prevent but may not have enforced through proper technical controls.
+
+The results were striking: out of 16 agents tested, 7 were successfully compromised within the 30-minute window. This 44% success rate reveals systemic security issues in how production AI agents are being deployed. The research identified three major vulnerability classes that appeared repeatedly across different implementations.
+
+## Vulnerability Category One: Cross-User Data Access (IDOR)
+
+The first critical vulnerability involved insecure direct object references, a classic web application security issue that has migrated into AI agent architectures. In one compromised agent, the team extracted the system prompt and discovered multiple tools including functions to look up user information by ID, retrieve documents by ID, and access other resources through direct identifiers.
+
+The vulnerability manifested because the agent's API endpoints performed authentication (validating that the token was legitimate) but failed to implement proper authorization checks (validating that the authenticated entity had permission to access the specific resource). The implementation relied on the assumption that resource identifiers would be difficult to guess or discover, which proved false.
+
+The exploitation path was straightforward. The team located a product demo video posted by the target company and observed user IDs visible in the URL bar. By submitting these IDs through the agent's tool interfaces, they successfully retrieved personal information including emails and nicknames for users other than themselves. The problem compounded because resources were interconnected: user IDs linked to chat IDs, which linked to document IDs, creating traversal paths that allowed comprehensive access across the entire data model.
+
+This vulnerability class reveals a fundamental misunderstanding about how AI agents should be architected from a security perspective. Many developers instinctively treat agents as service-level components running on servers and grant them corresponding service-level permissions. However, agents actually function as users, executing actions on behalf of specific individuals or entities. This distinction is critical: agents need per-request authorization checks just like traditional user interfaces, not blanket service credentials.
+
+The recommended fix follows standard web application security patterns but requires deliberate implementation. Systems must perform two distinct validation steps: authentication to verify the request token is valid, and authorization to verify the authenticated entity has permission to access the specific resource being requested. Modern backend-as-a-service platforms like Supabase implement this through row-level security (RLS) policies that define access control matrices at the database layer, ensuring authorization checks cannot be bypassed even if application logic fails.
+
+The broader lesson is that LLMs should never determine authorization patterns through prompt engineering alone. Security controls must be implemented in code and infrastructure, not delegated to the language model's interpretation of natural language instructions. Additionally, agents should not operate with service-level permissions that exceed what an individual user could access through conventional interfaces.
+
+## Vulnerability Category Two: Arbitrary Code Execution and Lateral Movement
+
+The second major vulnerability class involved code execution sandboxes, which are increasingly common in AI agent architectures. Research from Anthropic reveals that developers and technical users represent only 3.4% of the general population but account for 37% of Claude usage, largely because they discovered immediate value in AI agents with coding capabilities. However, code execution tools are not limited to developer-focused agents. Many general-purpose agents generate code on demand to perform calculations, data transformations, or other tasks, creating widespread attack surface.
+
+In the compromised system, the agent had access to a code execution environment with what appeared to be limited, safe permissions: the ability to write Python files and read certain files. The system prompt explicitly stated that code should not be output to users and should run at most once, signaling defensive measures the developers had attempted. However, these constraints existed only in natural language instructions to the LLM, not as technical enforcement mechanisms.
+
+The exploitation strategy involved inverting the system prompt's restrictions. If the prompt said "don't output code to users," the attacker prompted the agent to output code. If it said "run at most once," they prompted it to run repeatedly. This inversion technique is how adversarial actors approach prompt-based security controls: they identify what the system is instructed not to do and attempt exactly those actions.
+
+The agent's legitimate permissions to write Python files and read from the filesystem provided sufficient access for escalation. The team prompted the agent to create a directory tree functionality that mapped the entire filesystem, revealing an app.py file that contained the code execution sandbox's security controls. By using the write permission to overwrite app.py with empty strings in place of security checks, they effectively disabled all protections and gained arbitrary code execution.
+
+With unrestricted code execution inside a container, the attack expanded through service endpoint discovery and metadata extraction. Cloud environments expose metadata endpoints that containers can query to discover network topology, retrieve service tokens, and identify connected resources. The team accessed the service token associated with the code execution environment and enumerated its scopes, discovering broad permissions that had not been properly scoped down.
+
+The lateral movement culminated in access to the company's BigQuery data warehouse containing all customer data. This escalation from "write Python files" to "access entire customer database" illustrates why code execution sandboxes represent critical infrastructure components that require enterprise-grade security, not custom implementations.
+
+During Q&A, a revealing exchange occurred when only one audience member raised their hand to indicate they consistently configure service-level tokens with granular permissions and never make mistakes. This highlights a systemic challenge: proper cloud identity and access management is difficult, time-consuming, and error-prone even for security-conscious teams. When combined with arbitrary code execution environments, these configuration challenges become critical vulnerabilities.
+
+The recommended mitigation is unequivocal: do not implement custom code sandboxes. The security challenges involved in properly isolating code execution, preventing network access to internal resources, limiting filesystem access, and enforcing resource constraints are substantial. Multiple enterprise-grade solutions exist, including E2B (a popular option) and other YC-backed companies offering code sandboxes with built-in observability, fast boot times, and Model Context Protocol (MCP) server integration for easy agent connectivity.
+
+The presentation drew an explicit parallel to authentication systems: just as the web development community learned "don't roll your own auth," the AI agent community must internalize "don't roll your own code sandbox." The security implications are too severe and the implementation challenges too complex for one-off solutions.
+
+During the Q&A, questions addressed client-side versus server-side code execution safety. The speaker noted that client-side approaches typically involve either "full YOLO mode" where code runs without review or prompting users before each execution. Server-side implementations should always use proper code sandboxes, which typically leverage Firecracker (a lightweight virtualization technology) for isolation rather than containers alone, since containers do not provide adequate security boundaries.
+
+## Vulnerability Category Three: Server-Side Request Forgery (SSRF)
+
+The third vulnerability class involved server-side request forgery, where attackers coerce an agent's tool into making requests to endpoints the system designers did not intend. This attack vector exploits the trust boundary between an agent and external services it accesses, particularly when those services require credentials.
+
+In the compromised system, the agent had a tool to create database schemas by pulling configuration from a private GitHub repository. The system prompt explicitly described this functionality, revealing that the agent would make authenticated requests to GitHub to retrieve schema definitions. This design pattern requires the service to possess Git credentials with read access to private repositories.
+
+The exploitation was elegant in its simplicity. The tool accepted a repository URL as a string parameter without proper validation. The attacker provided a URL pointing to a domain under their control (badactor.com/test.git) and instructed the agent to retrieve a schema from this "repository." The agent's tool dutifully made the request using its stored Git credentials, which were transmitted to the attacker-controlled server where they could be captured in access logs.
+
+With valid Git credentials, the attacker could clone the entire private codebase, gaining access to proprietary algorithms, additional credentials embedded in code, infrastructure configurations, and other sensitive intellectual property. This vulnerability class demonstrates how agents can become conduits for credential exfiltration when they operate with powerful service identities but lack proper input validation.
+
+The mitigation follows fundamental web application security principles: sanitize all inputs and outputs. Input validation should include URL whitelisting, ensuring that repository URLs point only to expected domains or organizational repositories. Output validation should prevent sensitive information like credentials, internal URLs, or system details from being exposed through agent responses. Additionally, credentials should be scoped to minimum necessary permissions and rotated regularly to limit exposure windows.
+
+## Broader LLMOps and Production Deployment Implications
+
+The research reveals a critical gap between how the industry discusses LLM security and how production AI agents actually fail. Public discourse tends to focus on prompt injection, jailbreaking, and harmful content generation—important concerns, but insufficient for securing production systems. Real-world agent compromises occur through traditional attack vectors in the surrounding infrastructure: broken authentication and authorization, insecure code execution, lack of input validation, and overprivileged service identities.
+
+The presentation emphasized that agent security is fundamentally systems security, not just LLM security. Agents exist within complex architectures involving API servers, databases, code execution environments, external services, and network infrastructure. Each connection represents a potential attack vector that must be secured using established security engineering principles. The normalized agent stack architecture means these attack vectors are consistent across implementations, but also means best practices can be systematically applied.
+
+A core principle emerging from the research is that agents must be treated as users, not services. This mental model shift has profound implications for how permissions are granted, how requests are authorized, and how system boundaries are enforced. When developers think of agents as users, they naturally apply security controls like per-request authorization, principle of least privilege, and input validation that might be overlooked when agents are conceptualized as backend services.
+
+The role of system prompts in security deserves particular attention. All three vulnerability classes involved security controls specified in system prompts that were not enforced through technical mechanisms. System prompts are valuable for guiding agent behavior and establishing intended constraints, but they cannot function as security boundaries. Adversarial actors specifically target the inverse of prompt-based restrictions, knowing that LLMs can be manipulated to ignore instructions through various techniques.
+
+The recommended security architecture separates behavioral guidance (implemented through prompts) from security enforcement (implemented through code, infrastructure, and access controls). Prompts can instruct an agent not to access certain data, but authorization middleware must actually prevent such access. Prompts can suggest code should not run with certain permissions, but the sandbox must technically enforce those restrictions.
+
+The Casco product itself represents an interesting LLMOps pattern: using AI agents to test AI agents. Their automated red teaming platform employs an AI agent that actively attacks target systems to identify vulnerabilities, essentially automating the process demonstrated in the presentation. This meta-application of LLMs for LLM security testing reflects broader trends toward AI-native tooling for AI operations.
+
+From a deployment and operations perspective, the case study highlights the importance of security assessments before production launch and continuous monitoring after deployment. The fact that 44% of tested agents had critical vulnerabilities suggests that security is often treated as an afterthought in the rush to deploy AI capabilities. Organizations need processes for security review, automated vulnerability scanning, and penetration testing specifically designed for AI agent architectures.
+
+The observability requirements for secure AI agents extend beyond traditional application monitoring. Teams need visibility into what tools agents are invoking, what data they're accessing, what code they're executing, and what external services they're contacting. Code sandbox solutions with built-in observability (mentioned in the presentation) provide this visibility, but teams using custom implementations often lack adequate logging and monitoring.
+
+The research also underscores the importance of threat modeling specific to AI agent architectures. Traditional web application threat models must be extended to account for LLM-specific attack vectors like prompt injection and jailbreaking while maintaining focus on infrastructure security. Teams should map data flows, identify trust boundaries, enumerate privileged operations, and systematically analyze each connection in their agent stack for potential vulnerabilities.
+
+## Practical Recommendations and Industry Impact
+
+The presentation concluded with three core takeaways that synthesize the research findings into actionable guidance. First, agent security is bigger than LLM security—teams must analyze their entire system architecture, not just the language model component. Second, treat agents as users in terms of permissions, authorization, and input handling. Third, never implement custom code sandboxes given the complexity and risk involved.
+
+The broader impact of this research has likely been substantial within the Y Combinator network and beyond. The fact that compromised companies immediately patched vulnerabilities upon notification suggests responsible disclosure practices and industry responsiveness to security findings. The high engagement with the launch post indicates strong interest in agent security tools, likely driven by growing awareness that traditional security approaches are insufficient for AI systems.
+
+For organizations deploying production AI agents, the case study provides a roadmap for security assessment. Teams should extract and review their system prompts to understand intended constraints, enumerate all tools and permissions granted to agents, verify that authorization checks are implemented in code rather than prompts, audit service-level credentials for minimum necessary privileges, ensure code execution uses enterprise-grade sandboxes with network isolation, and validate that all inputs from agents to downstream services are properly sanitized.
+
+The normalization of agent architectures creates both opportunities and challenges. On one hand, standardized patterns make it easier to develop security best practices, build specialized security tools, and train developers on proper implementation. On the other hand, widespread adoption of similar architectures means vulnerabilities discovered in one system likely exist in many others, creating systemic risk.
+
+Looking forward, the agent security field will likely mature through a combination of specialized tooling (like Casco's automated red teaming), framework-level security controls built into popular agent development platforms, and industry standards for secure agent deployment. The parallels to web application security evolution are instructive: after years of repeated vulnerabilities, frameworks incorporated security controls by default, automated scanners became standard practice, and security became integrated into development workflows rather than treated as a separate concern.
+
+The presentation's effectiveness stemmed from concrete examples of real vulnerabilities in production systems, demonstrating that these are not theoretical concerns but actual attack vectors being exploited today. The time-boxed methodology (30 minutes per agent) proves that these vulnerabilities are readily discoverable by moderately skilled attackers, not just nation-state actors with unlimited resources. This accessibility of attack techniques increases urgency for implementing proper security controls across the AI agent ecosystem.

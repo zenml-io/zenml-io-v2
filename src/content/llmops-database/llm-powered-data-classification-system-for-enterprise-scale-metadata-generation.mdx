@@ -1,0 +1,123 @@
+---
+title: "LLM-Powered Data Classification System for Enterprise-Scale Metadata Generation"
+slug: "llm-powered-data-classification-system-for-enterprise-scale-metadata-generation"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f3dce82ee34553829089a"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:37:46.379Z"
+  createdOn: "2024-11-21T14:03:58.250Z"
+llmopsTags:
+  - "compliance"
+  - "cost-optimization"
+  - "data-cleaning"
+  - "data-integration"
+  - "databases"
+  - "error-handling"
+  - "guardrails"
+  - "latency-optimization"
+  - "monitoring"
+  - "openai"
+  - "orchestration"
+  - "prompt-engineering"
+  - "regulatory-compliance"
+  - "reliability"
+  - "scalability"
+  - "scaling"
+  - "security"
+  - "structured-output"
+  - "system-prompts"
+company: "Grab"
+summary: "Grab developed an automated data classification system using LLMs to replace manual tagging of sensitive data across their PetaByte-scale data infrastructure. They built an orchestration service called Gemini that integrates GPT-3.5 to classify database columns and generate metadata tags, significantly reducing manual effort in data governance. The system successfully processed over 20,000 data entities within a month of deployment, with 80% user satisfaction and minimal need for tag corrections."
+link: "https://engineering.grab.com/llm-powered-data-classification"
+year: 2023
+seo:
+  title: "Grab: LLM-Powered Data Classification System for Enterprise-Scale Metadata Generation - ZenML LLMOps Database"
+  description: "Grab developed an automated data classification system using LLMs to replace manual tagging of sensitive data across their PetaByte-scale data infrastructure. They built an orchestration service called Gemini that integrates GPT-3.5 to classify database columns and generate metadata tags, significantly reducing manual effort in data governance. The system successfully processed over 20,000 data entities within a month of deployment, with 80% user satisfaction and minimal need for tag corrections."
+  canonical: "https://www.zenml.io/llmops-database/llm-powered-data-classification-system-for-enterprise-scale-metadata-generation"
+  ogTitle: "Grab: LLM-Powered Data Classification System for Enterprise-Scale Metadata Generation - ZenML LLMOps Database"
+  ogDescription: "Grab developed an automated data classification system using LLMs to replace manual tagging of sensitive data across their PetaByte-scale data infrastructure. They built an orchestration service called Gemini that integrates GPT-3.5 to classify database columns and generate metadata tags, significantly reducing manual effort in data governance. The system successfully processed over 20,000 data entities within a month of deployment, with 80% user satisfaction and minimal need for tag corrections."
+---
+
+## Overview
+
+Grab, Southeast Asia's leading superapp platform providing ride-hailing, delivery, and financial services across 428 cities in eight countries, faced a significant challenge in managing and classifying their petabyte-level data. The company needed to understand the sensitivity of countless data entities—including database tables and Kafka message schemas—to both protect user, driver, and merchant-partner data and enable efficient data discovery for analysts and scientists.
+
+This case study documents how Grab transitioned from manual, campaign-based data classification to an LLM-powered automated system, demonstrating a practical production deployment of large language models for enterprise data governance at scale.
+
+## The Problem
+
+Grab's initial approach to protecting sensitive data relied on manual processes where data producers tagged schemas with sensitivity tiers (Tier 1 being most sensitive, Tier 4 indicating no sensitive information). This approach led to over-classification: half of all schemas were marked as Tier 1, enforcing the strictest access controls even when only a single highly sensitive table existed within an otherwise non-sensitive schema.
+
+Shifting to table-level access controls was not feasible due to the lack of granular classification. Manual classification campaigns at the table level were impractical for two key reasons: the explosive growth in data volume, velocity, and variety made manual efforts unsustainable, and inconsistent interpretation of data classification policies across app developers led to unreliable results.
+
+The team initially built an orchestration service called Gemini (named before Google's model of the same name) that used a third-party classification service with regex classifiers. However, this approach had limitations: the third-party tool's ML classifiers couldn't be customized, regex patterns produced too many false positives, and building in-house classifiers would require a dedicated data science team with significant time investment for understanding governance rules and preparing labeled training data.
+
+## LLM Integration Solution
+
+The advent of ChatGPT and the broader LLM ecosystem presented a solution to these pain points. The team identified that LLMs provide a natural language interface that allows data governance personnel to express requirements through text prompts, enabling customization without code or model training.
+
+### Architecture and Orchestration
+
+The production system architecture consists of three main components working together:
+
+- **Data Platforms**: Responsible for managing data entities and initiating classification requests
+- **Gemini Orchestration Service**: Communicates with data platforms, schedules, and groups classification requests using message queues
+- **Classification Engines**: Both a third-party classification service and GPT-3.5 run concurrently during evaluation
+
+The orchestration layer handles several critical LLMOps concerns. Request aggregation is achieved through message queues at fixed intervals to create reasonable mini-batches. A rate limiter is attached at the workflow level to prevent throttling from cloud provider APIs.
+
+Two specific LLM-related limits required careful management: the context length (4000 tokens for GPT-3.5 at development time, approximately 3000 words) and the overall token limit (240K tokens per minute shared across all Azure OpenAI model deployments under one account). These constraints directly influenced the batch sizing and request scheduling strategies.
+
+### Prompt Engineering Approach
+
+The classification task is defined as: given a data entity with a defined schema, tag each field with metadata classifications following an internal governance scheme. Tags include categories like `<Personal.ID>` for government-issued identification numbers, `<Personal.Name>` for names and usernames, `<Personal.Contact_Info>` for contact information, and `<Geo.Geohash>` for geographic data.
+
+The team developed and refined their prompts using several key techniques:
+
+- **Clear Articulation of Requirements**: The prompt explicitly describes the context (a company providing ride-hailing, delivery, and financial services) and the precise task requirements
+- **Few-shot Learning**: Example interactions demonstrate the expected input/output format, helping the model understand response patterns
+- **Schema Enforcement**: Leveraging LLMs' code understanding capabilities, they provide explicit DTO (Data Transfer Object) schemas that outputs must conform to, ensuring downstream processing compatibility
+- **Allowing for Confusion**: A default `<None>` tag is specified for cases where the LLM cannot make a confident decision, reducing forced incorrect classifications
+
+The prompt design also includes explicit negative instructions to prevent common misclassifications. For example, the `<Personal.ID>` tag definition explicitly states it "should absolutely not be assigned to columns named 'id', 'merchant id', 'passenger id', 'driver id' or similar since these are not government-provided identification numbers."
+
+### Output Processing and Verification
+
+Since LLM outputs are typically free text, the system requires structured JSON responses for downstream processing. The prompt specifies the exact JSON format expected, and the system processes these structured predictions for publication.
+
+Predictions are published to a Kafka queue for downstream data platforms to consume. A human verification workflow notifies data owners weekly to review classified tags. This verification serves dual purposes: improving model correctness and enabling iterative prompt improvement based on user corrections. The team plans to remove mandatory verification once accuracy reaches acceptable thresholds.
+
+## Production Results and Metrics
+
+The system demonstrated impressive production performance:
+
+- **Scale**: Over 20,000 data entities scanned within the first month of rollout
+- **Throughput**: 300-400 entities classified per day on average
+- **Accuracy**: Users on average changed less than one tag per acknowledged table
+- **User Satisfaction**: 80% of data owners in an internal September 2023 survey reported the new tagging process helped them
+- **Time Savings**: Estimated 360 man-days per year saved, assuming 2 minutes per manual entity classification
+- **Cost**: Described as "extremely affordable contrary to common intuition" at current load, enabling broader scaling
+
+The classified tags enable downstream applications including determining sensitivity tiers for data entities, enforcing Attribute-based Access Control (ABAC) policies, and implementing Dynamic Data Masking for downstream queries.
+
+## Future Development and Lessons
+
+The team identified several areas for ongoing improvement:
+
+- **Prompt Enhancement**: Exploring feeding sample data and user feedback to increase accuracy, and experimenting with LLM-generated confidence levels to only require human verification when the model is uncertain
+- **Prompt Evaluation**: Building analytical pipelines to calculate metrics for each prompt version, enabling better quantification of prompt effectiveness and faster iteration cycles
+- **Scaling**: Plans to extend the solution to more data platforms and develop downstream applications in security, data discovery, and other domains
+
+The project was validated through Grab's participation in Singapore's Privacy Enhancing Technology Sandbox run by the Infocomm Media Development Authority, which concluded in March 2024. This regulatory sandbox demonstrated how LLMs can efficiently perform data classification while safeguarding sensitive information.
+
+## Critical Assessment
+
+While the results are impressive, several aspects warrant balanced consideration. The 80% user satisfaction metric, while positive, means 20% of users found the process less helpful, and the context of the survey (during initial rollout) may influence responses. The accuracy claim that users change "less than one tag" on average for acknowledged tables is promising but leaves questions about edge cases and the distribution of corrections.
+
+The concurrent operation of the third-party tool and GPT-3.5 suggests the team is still evaluating the LLM approach against traditional methods, indicating the solution may not yet be fully proven for all use cases. The cost efficiency claims are relative to current load and may change with scaling.
+
+Nevertheless, this case study represents a well-documented, practical application of LLMs in production for an enterprise data governance use case, with clear architectural decisions, prompt engineering strategies, and measurable business outcomes.

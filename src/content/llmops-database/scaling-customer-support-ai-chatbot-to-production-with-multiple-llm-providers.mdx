@@ -1,0 +1,135 @@
+---
+title: "Scaling Customer Support AI Chatbot to Production with Multiple LLM Providers"
+slug: "scaling-customer-support-ai-chatbot-to-production-with-multiple-llm-providers"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "67f51358249ea44edf313626"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:05:53.063Z"
+  createdOn: "2025-04-08T12:15:20.844Z"
+llmopsTags:
+  - "customer-support"
+  - "chatbot"
+  - "regulatory-compliance"
+  - "realtime-application"
+  - "rag"
+  - "prompt-engineering"
+  - "semantic-search"
+  - "error-handling"
+  - "cost-optimization"
+  - "latency-optimization"
+  - "fallback-strategies"
+  - "chunking"
+  - "monitoring"
+  - "redis"
+  - "cache"
+  - "elasticsearch"
+  - "guardrails"
+  - "reliability"
+  - "scalability"
+  - "amazon-aws"
+  - "anthropic"
+company: "Intercom"
+summary: "Intercom developed Fin, an AI customer support chatbot that resolves up to 86% of conversations instantly. They faced challenges scaling from proof-of-concept to production, particularly around reliability and cost management. The team successfully improved their system from 99% to 99.9%+ reliability by implementing cross-region inference, strategic use of streaming, and multiple model fallbacks while using Amazon Bedrock and other LLM providers. The solution has processed over 13 million conversations for 4,000+ customers with most achieving over 50% automated resolution rates."
+link: "https://www.youtube.com/watch?v=g29qCdQ5Jqg"
+year: 2023
+seo:
+  title: "Intercom: Scaling Customer Support AI Chatbot to Production with Multiple LLM Providers - ZenML LLMOps Database"
+  description: "Intercom developed Fin, an AI customer support chatbot that resolves up to 86% of conversations instantly. They faced challenges scaling from proof-of-concept to production, particularly around reliability and cost management. The team successfully improved their system from 99% to 99.9%+ reliability by implementing cross-region inference, strategic use of streaming, and multiple model fallbacks while using Amazon Bedrock and other LLM providers. The solution has processed over 13 million conversations for 4,000+ customers with most achieving over 50% automated resolution rates."
+  canonical: "https://www.zenml.io/llmops-database/scaling-customer-support-ai-chatbot-to-production-with-multiple-llm-providers"
+  ogTitle: "Intercom: Scaling Customer Support AI Chatbot to Production with Multiple LLM Providers - ZenML LLMOps Database"
+  ogDescription: "Intercom developed Fin, an AI customer support chatbot that resolves up to 86% of conversations instantly. They faced challenges scaling from proof-of-concept to production, particularly around reliability and cost management. The team successfully improved their system from 99% to 99.9%+ reliability by implementing cross-region inference, strategic use of streaming, and multiple model fallbacks while using Amazon Bedrock and other LLM providers. The solution has processed over 13 million conversations for 4,000+ customers with most achieving over 50% automated resolution rates."
+---
+
+## Overview
+
+This case study presents Intercom's journey in building and scaling Finn, their AI-powered customer support chatbot, on Amazon Bedrock. The presentation was delivered by three speakers: Damian (covering foundational LLMOps concepts), Ben (discussing AWS Bedrock infrastructure), and Mario (sharing Intercom's production experience). Intercom, traditionally a Ruby on Rails shop, built a Python-based AI infrastructure to support Finn, which has become their most successful product ever, resolving over 13 million conversations for more than 4,000 customers with most achieving over 50% resolution rates without human intervention.
+
+## The Business Context and Unique Constraints
+
+What makes Intercom's case particularly interesting from an LLMOps perspective is their pricing model: they only charge customers when Finn successfully resolves a conversation. This means that every failed LLM request directly impacts revenue—the company incurs the LLM inference costs but receives no payment when requests fail. This created an unusually strong alignment between engineering reliability metrics and business outcomes, making every percentage point of error rate reduction a direct financial concern.
+
+## Five Pillars of Production LLM Workloads
+
+The presentation outlined five essential aspects for running production LLM workloads:
+
+**Model Choice**: The speakers emphasized that model selection should be based on multiple factors including intelligence requirements (complex reasoning vs. simple summarization), latency constraints (live chatbots vs. internal tools), cost considerations (revenue-driving features vs. internal productivity), and customization needs. Amazon Bedrock's marketplace with 100+ models and custom model import capabilities allows organizations to use multiple models for different use cases within the same infrastructure.
+
+**Data Integration**: RAG (Retrieval-Augmented Generation) emerged as the primary pattern, offering a balance between zero-shot prompting and full model retraining. For production workloads, the speakers highlighted important considerations beyond POC implementations: semantic chunking strategies to preserve meaning in tables and paragraphs, multiple indexes for different data types with varying retrieval patterns, and reranking or scoring mechanisms to be more selective about retrieved content rather than just using top-k results. Amazon Bedrock now offers RAG evaluations in preview to test different chunking strategies and evaluate answer quality.
+
+**Scalability and Resilience**: This encompasses inference strategy selection (on-demand, provision throughput, or batch inference), prompt caching to avoid reprocessing documents, managing concurrent requests with proper retry logic, understanding traffic patterns through TPM (tokens per minute) and RPM (requests per minute) metrics, and leveraging cross-region inference for capacity and availability.
+
+**Observability**: Key metrics to track include invocation counts, input/output token consumption, request rates, and traffic patterns. The speakers recommended using CloudWatch dashboards which can be set up quickly and provide pre-built visualizations. Cost tracking through inference profiles with tagging by department or use case enables budget management at a granular level.
+
+**Security and Guardrails**: While data never leaves AWS when using Bedrock (neither Amazon nor third-party providers access customer data), organizations should implement Bedrock guardrails for hallucination detection, topic avoidance, and harmful content prevention.
+
+## Intercom's Technical Architecture and Evolution
+
+Intercom's AI infrastructure runs on Python (a departure from their traditional Ruby on Rails stack) with a technology stack that includes standard libraries and tools. However, the speaker emphasized that the specific libraries matter less than the operational practices.
+
+### Version 1: Building on Intuition
+
+When Finn was first developed, the previous generation of chatbots had produced data that was essentially useless for training. The first version was built entirely on "vibes"—product intuition rather than data. Today's teams have more options including synthetic data generation and user simulation, but early LLM capacity constraints meant LLMs could only be used for the most critical tasks.
+
+### Critical Infrastructure Decisions
+
+Two infrastructure decisions made early on proved foundational:
+
+**LLM Monitoring**: Beyond basic CloudWatch metrics, Intercom tracks two custom metrics that aren't available out of the box:
+- Time to First Token (TTFT): Measures how long until the first token is generated
+- Time to Sample Token: Measures the time to generate each subsequent token
+
+These metrics are crucial because the unit of work for an LLM is not the whole prompt—each token takes roughly the same time to generate except the first one. Without these metrics, aggregate latency measurements become meaningless when dealing with prompts of varying complexity, similar to trying to aggregate CQL queries of different complexities.
+
+**LLM and Transaction Logging**: Intercom logs all HTTP requests and responses for services with LLM calls. Critically, they log at the prompt template level rather than the materialized prompt level. Instead of logging "Translate to Croatian: user said X," they log the template separately from the variables (target_language: "HR", user_text: "something"). This approach enables powerful offline evaluation capabilities.
+
+The logging pipeline is simple: Python processes log to files, Kinesis agent picks them up, and they flow to Snowflake. While Bedrock offers invocation logging, the speakers argue this is the wrong abstraction layer—you need template-level logging for meaningful evaluation.
+
+### Iteration Loop: From V1 to Production
+
+Given the revenue implications of changes (broken features mean incurred costs without payment), Intercom developed a rigorous two-stage iteration process:
+
+**Stage 1: Offline Backtesting**
+Using saved prompt inputs (not full prompts), engineers merge them with new prompt templates and run thousands of parallel queries against the LLM. The outputs are evaluated using LLM-as-judge approaches—prompts designed to predict whether a response would resolve a user query. This produces proxy metrics that, after validation, correlate well with real product outcomes.
+
+**Stage 2: A/B Testing in Production**
+Changes that pass backtesting go to 50/50 production A/B tests tracking real product metrics. While backtesting occasionally produces false positives, it provides a reliable signal for most changes.
+
+This iteration loop applies to all changes, including model selection. When an engineer discovered that Anthropic models performed better for certain components, Bedrock became the solution: the data never leaves AWS, eliminating the need to modify customer contracts or subprocessor lists.
+
+## Journey from 1% to Near-Zero Error Rate
+
+When Intercom began migrating to Bedrock, they experienced a 1% error rate—unacceptable for production systems. The high error rate stemmed from the nature of their RAG architecture: Finn makes many chained LLM calls, and any single failure results in no response (and no revenue).
+
+### Optimization 1: Streaming Considerations
+
+While streaming became the default UX paradigm post-ChatGPT (users expect streaming responses), enabling streaming everywhere created problems: most streaming clients don't implement retries. Disabling streaming for non-user-facing calls allowed retries at multiple levels (boto3 client retries, potential Bedrock-internal retries), significantly improving reliability. The recommendation is to be explicit and deliberate about where streaming is truly needed.
+
+### Optimization 2: Cross-Region Inference
+
+Initially, all calls went to us-east-1, a busy region with capacity constraints. Cross-region inference provides two benefits: higher availability (if one region fails, traffic routes to another) and higher quotas for heavy users. There's a ~52ms overhead, but different regions may run different hardware, potentially offering faster per-token generation that offsets the routing latency for longer responses.
+
+### Optimization 3: Provision Throughput
+
+Intercom started with on-demand inference (pay-as-you-go, shared capacity pool). However, shared pools can run out of capacity, causing throttles even before hitting quotas. Provision throughput provides guaranteed capacity with remarkably stable performance. Their data showed provision throughput saving approximately 20ms per token compared to on-demand, with significantly lower variance—translating to several seconds of savings for long responses. The caveat is that model units are large, making it expensive for low-throughput use cases.
+
+### Optimization 4: Multi-Model and Multi-Region Fallbacks
+
+Model availabilities are relatively uncorrelated—if one model experiences issues, others are typically fine. Intercom implemented fallback strategies using multiple models (though prompts require adaptation between model families), multiple regions, and potentially multiple vendors. This requires explicit management but provides an additional reliability layer.
+
+### Capacity Management
+
+The speakers noted that GPU compute scarcity is a new paradigm for many engineers accustomed to abundant EC2 capacity. Quota management is now essential—tracking traffic patterns (TPM, RPM) enables planning for required quotas with recommended 15% buffers for peak times.
+
+## Results and Current State
+
+Starting from a 1% error rate, Intercom now experiences near-zero errors during most hours. More importantly, the operational mode transformed: instead of investigating a constant stream of ambiguous errors (code bugs vs. LLM failures), the team now confidently attributes remaining errors to code bugs. Retries and multi-provider strategies ensure requests always find successful routes.
+
+## Key Takeaways
+
+The speakers emphasized that the LLM serving industry remains nascent and less stable than other cloud services. This reality demands investment in fundamentals: comprehensive measurement, proper timeouts and retries, and good engineering practices that may matter more here than with other APIs. Different use cases require different solutions—provision throughput is expensive and should be applied deliberately to critical workloads.
+
+The case study demonstrates that scaling generative AI from proof-of-concept to millions of production requests requires systematic attention to model selection, data integration patterns, inference strategies, observability, and security—all while maintaining the engineering discipline to iterate safely when business outcomes are directly tied to system reliability.

@@ -1,0 +1,132 @@
+---
+title: "Building Production-Grade AI Agents with Distributed Architecture and Error Recovery"
+slug: "building-production-grade-ai-agents-with-distributed-architecture-and-error-recovery"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f3eb61c34367dbf300a22"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:35:55.642Z"
+  createdOn: "2024-11-21T14:07:50.641Z"
+llmopsTags:
+  - "api-gateway"
+  - "cache"
+  - "chunking"
+  - "compliance"
+  - "document-processing"
+  - "error-handling"
+  - "langchain"
+  - "microservices"
+  - "multi-agent-systems"
+  - "openai"
+  - "orchestration"
+  - "prompt-engineering"
+  - "realtime-application"
+  - "redis"
+  - "regulatory-compliance"
+  - "reliability"
+  - "scalability"
+  - "semantic-search"
+  - "structured-output"
+  - "token-optimization"
+company: "Parcha"
+summary: "Parcha's journey in building enterprise-grade AI Agents for automating compliance and operations workflows, evolving from a simple Langchain-based implementation to a sophisticated distributed system. They overcame challenges in reliability, context management, and error handling by implementing async processing, coordinator-worker patterns, and robust error recovery mechanisms, while maintaining clean context windows and efficient memory management."
+link: "https://resources.parcha.com/building-ai-agents-in-production/"
+year: 2023
+seo:
+  title: "Parcha: Building Production-Grade AI Agents with Distributed Architecture and Error Recovery - ZenML LLMOps Database"
+  description: "Parcha's journey in building enterprise-grade AI Agents for automating compliance and operations workflows, evolving from a simple Langchain-based implementation to a sophisticated distributed system. They overcame challenges in reliability, context management, and error handling by implementing async processing, coordinator-worker patterns, and robust error recovery mechanisms, while maintaining clean context windows and efficient memory management."
+  canonical: "https://www.zenml.io/llmops-database/building-production-grade-ai-agents-with-distributed-architecture-and-error-recovery"
+  ogTitle: "Parcha: Building Production-Grade AI Agents with Distributed Architecture and Error Recovery - ZenML LLMOps Database"
+  ogDescription: "Parcha's journey in building enterprise-grade AI Agents for automating compliance and operations workflows, evolving from a simple Langchain-based implementation to a sophisticated distributed system. They overcame challenges in reliability, context management, and error handling by implementing async processing, coordinator-worker patterns, and robust error recovery mechanisms, while maintaining clean context windows and efficient memory management."
+---
+
+## Overview
+
+Parcha is a startup focused on building enterprise-grade AI agents that automate manual workflows in compliance and operations. Their primary use case centers on Know Your Business (KYB) and Know Your Customer (KYC) processes in the financial services sector, where they help companies verify business registrations, addresses, watchlist status, and document authenticity. This case study provides valuable insights into the journey from prototype to production-ready AI agents, documenting the challenges encountered and solutions developed over approximately six months of development.
+
+The case study is particularly valuable because it presents an honest reflection on what did not work initially, making it a useful resource for teams looking to deploy LLM-based agents in production environments. While the content comes from Parcha's own blog and naturally presents their solutions favorably, the technical details and lessons learned appear genuine and instructive.
+
+## Initial Architecture and Its Limitations
+
+Parcha's initial approach was intentionally simple, designed to validate the concept quickly with design partners. They used LangChain Agents with Standard Operating Procedures (SOPs) embedded directly in the agent's scratchpad. The architecture featured custom-built API integrations wrapped as tools, with agents triggered from a web frontend through websocket connections that remained open until task completion.
+
+This naive approach revealed several significant production challenges that are common to many teams deploying LLM agents:
+
+**Communication Layer Issues**: Websocket connections caused numerous reliability problems. The team initially envisioned bi-directional agent-operator conversations, but in practice, interactions were mostly unidirectional—operators would request a task, and agents would provide updates until completion. The insight that "customers didn't need a chatbot; they needed an agent to complete a job" led them to reconsider their communication architecture entirely.
+
+**Context Window Pollution**: As agents worked through complex SOPs, the scratchpad accumulated results from tool executions. This created a noisy context window that made it difficult for the LLM to parse relevant information. Agents would confuse tools, skip tasks, or fail to extract the right information from previous steps. This is a common challenge with LLM agents—maintaining relevant context while avoiding information overload.
+
+**Memory Management Problems**: The scratchpad served as a crude memory mechanism, but agents frequently failed to retrieve the correct information from it. This led to redundant tool executions, significantly slowing down workflows and wasting resources.
+
+**Lack of Recovery Mechanisms**: Complex tasks could take several minutes, involving OCR on multi-page documents, web crawling, and multiple API calls. Without recovery mechanisms, a failure at minute three or four would require restarting the entire process—a poor user experience and operational inefficiency.
+
+**LLM Stochasticity and Hallucinations**: The inherent stochastic nature of LLMs meant agents would sometimes select non-existent tools or provide incorrect inputs, causing workflow failures before task completion.
+
+**Poor Reusability**: Tools were tightly coupled with specific agents, requiring substantial new development for each new workflow or customer requirement.
+
+## Evolved Architecture and Solutions
+
+### Asynchronous, Long-Running Task Model
+
+The team transitioned from synchronous websocket communication to running agents as asynchronous, long-running processes. Instead of maintaining persistent connections, agents now post updates using pub/sub messaging patterns. This architectural shift brought multiple benefits:
+
+The agents became more versatile, capable of being triggered through APIs, followed via Slack channels (where they create threads and post updates as replies), or evaluated at scale as headless processes. Server-sent events (SSE) still enable real-time status updates when needed. By exposing agents through REST interfaces with polling and SSE support, customers can integrate them into existing workflows without depending on a specific web interface.
+
+### Coordinator-Worker Agent Model
+
+Perhaps the most significant architectural evolution was the move from single monolithic agents to a coordinator-worker pattern. After analyzing real-world SOPs through shadow sessions with design partners, the team recognized that complex instructions could be decomposed into smaller, more manageable sub-tasks.
+
+In this model, a coordinator agent develops an initial execution plan from the master SOP and delegates subsets to specialized worker agents. Each worker gathers evidence, makes conclusions on its local task set, and reports back to the coordinator. The coordinator then synthesizes all evidence to produce a final recommendation.
+
+For example, in a KYB process, separate workers might handle identity verification, certificate of incorporation validation, and watchlist checking. Each task involves multiple steps—the certificate check requires OCR, validation, information extraction, and comparison with applicant-provided data. By giving each agent its own scratchpad, context windows remain focused and less noisy, improving task completion accuracy.
+
+This divide-and-conquer approach addresses the context window pollution problem directly by ensuring that each agent only needs to manage information relevant to its specific subtask.
+
+### Separation of Extraction and Judgment
+
+The team discovered that combining document extraction and verification judgment in a single LLM call produced poor results. Documents are lengthy and contain substantial irrelevant information, making it difficult for the model to accurately extract and verify simultaneously.
+
+Their solution was to split these into separate LLM calls. The first call extracts relevant information from the document (validity, company name, incorporation state/country), while the second call compares the extracted information against self-attested data. This approach improved accuracy without significantly increasing token count or execution time, since the second call operates on a much smaller, cleaner context.
+
+This pattern of decomposing complex reasoning tasks into simpler, sequential steps is a valuable technique for improving LLM reliability in production systems.
+
+### Redis-Based Memory Management
+
+The coordinator-worker model introduced a challenge: how to share information between agents without duplicating tool executions or polluting scratchpads? Rather than implementing complex vector database solutions, the team leveraged Redis, which they were already using for communication.
+
+Agents are informed of available information via Redis keys, and the tool interface supports pulling inputs from this in-memory store. By injecting only relevant memory into prompts as needed, they save tokens, maintain clean context windows, and ensure worker agents access correct information consistently. The example in the case study shows how memory keys like 'identity_verification_api_full_name' and 'data_loader_tool_application_documents' are made available to agents, which then reference them when constructing tool calls.
+
+### Robust Error Handling and Self-Correction
+
+The team implemented multiple failover mechanisms to handle the inevitable failures in complex multi-service workflows. Using RQ (Redis Queue) for job processing, they queue and execute agents via worker processes with alerting on failures.
+
+More importantly, they developed well-typed exceptions that feed back to the agent. When a tool fails, the exception name and message are returned to the agent, which can then attempt recovery independently. The example shows a validation error for missing input being fed back to the agent with the prompt "The tool returned an error. If the error was your fault, take a deep breath and try again. If not, escalate the issue and move on."
+
+This self-correction capability significantly reduced catastrophic failures and improved overall system resilience.
+
+### Composable Building Blocks
+
+After experiencing weeks-long development cycles for initial agents, the team invested in reusability. They developed standardized agent and tool interfaces focused on composability and extensibility. Common capabilities like document extraction were abstracted into reusable tools that can be applied across multiple workflows with minimal adaptation—the same document extractor tool can validate incorporation documents or calculate income from pay stubs.
+
+## Agent Design Components
+
+The case study provides a detailed breakdown of agent components that offers a useful reference architecture:
+
+**Agent Specifications and Directives**: This includes the agent's profile (expertise, role, capabilities), constraints (thought process sharing, avoiding fabrication, asking clarification questions), and available tools/commands with their descriptions and argument schemas.
+
+**Scratchpad**: A prompt space where agents accumulate tool results and observations during execution, used to guide subsequent planning and final assessment.
+
+**Standard Operating Procedure (SOP)**: Step-by-step instructions the agent follows, used to construct execution plans and determine information requirements. The example KYB SOP includes steps for gathering company information, verifying business registration via Secretary of State, confirming business addresses, checking watchlists and sanctions, validating business descriptions, and reviewing card issuer rule compliance.
+
+**Final Assessment Instructions**: Specific output directives for the agent, such as generating detailed reports with pass/fail status for each check and recommendations for approval, denial, or escalation.
+
+## Future Directions
+
+The team outlined several planned improvements: webhook triggers for end-to-end automation, in-house agent benchmarking using a "PEAR" framework (Plan, Execute, Accuracy, Reasoning), and deploying agents and tools as microservices with DAG-based orchestration for improved composability and language-agnostic tool compatibility.
+
+## Assessment
+
+This case study provides a candid look at the challenges of moving from LLM agent prototypes to production systems. The lessons around context window management, task decomposition, separation of concerns in LLM calls, practical memory solutions, and error recovery are broadly applicable. While the specific compliance automation use case is narrow, the architectural patterns and problem-solving approaches offer valuable guidance for any team building production LLM agents. The evolution from a "demo" to production-grade system, with its emphasis on reliability, recoverability, and operational observability, exemplifies the practical concerns that distinguish deployed LLMOps from experimentation.

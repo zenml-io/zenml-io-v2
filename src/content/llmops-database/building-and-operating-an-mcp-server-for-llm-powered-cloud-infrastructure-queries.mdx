@@ -1,0 +1,132 @@
+---
+title: "Building and Operating an MCP Server for LLM-Powered Cloud Infrastructure Queries"
+slug: "building-and-operating-an-mcp-server-for-llm-powered-cloud-infrastructure-queries"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "69089e157d728da6ead97db5"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:23:10.642Z"
+  createdOn: "2025-11-03T12:20:37.385Z"
+llmopsTags:
+  - "data-integration"
+  - "code-interpretation"
+  - "data-analysis"
+  - "regulatory-compliance"
+  - "structured-output"
+  - "prompt-engineering"
+  - "token-optimization"
+  - "mcp"
+  - "agent-based"
+  - "error-handling"
+  - "latency-optimization"
+  - "docker"
+  - "kubernetes"
+  - "databases"
+  - "api-gateway"
+  - "documentation"
+  - "postgresql"
+  - "sqlite"
+  - "fastapi"
+  - "devops"
+  - "orchestration"
+  - "anthropic"
+  - "openai"
+  - "microsoft-azure"
+company: "CloudQuery"
+summary: "CloudQuery built a Model Context Protocol (MCP) server in Go to enable Claude and Cursor to directly query their cloud infrastructure database. They encountered significant challenges with LLM tool selection, context window limitations, and non-deterministic behavior. By rewriting tool descriptions to be longer and more domain-specific, renaming tools to better match user intent, implementing schema filtering to reduce token usage by 90%, and embedding recommended multi-tool workflows, they dramatically improved how the LLM engaged with their system. The solution transformed Claude's interaction from hallucinating queries to systematically following a discovery-to-execution pipeline."
+link: "https://www.cloudquery.io/blog/mcp-server-gotchas-we-learned-the-hard-way"
+year: 2025
+seo:
+  title: "CloudQuery: Building and Operating an MCP Server for LLM-Powered Cloud Infrastructure Queries - ZenML LLMOps Database"
+  description: "CloudQuery built a Model Context Protocol (MCP) server in Go to enable Claude and Cursor to directly query their cloud infrastructure database. They encountered significant challenges with LLM tool selection, context window limitations, and non-deterministic behavior. By rewriting tool descriptions to be longer and more domain-specific, renaming tools to better match user intent, implementing schema filtering to reduce token usage by 90%, and embedding recommended multi-tool workflows, they dramatically improved how the LLM engaged with their system. The solution transformed Claude's interaction from hallucinating queries to systematically following a discovery-to-execution pipeline."
+  canonical: "https://www.zenml.io/llmops-database/building-and-operating-an-mcp-server-for-llm-powered-cloud-infrastructure-queries"
+  ogTitle: "CloudQuery: Building and Operating an MCP Server for LLM-Powered Cloud Infrastructure Queries - ZenML LLMOps Database"
+  ogDescription: "CloudQuery built a Model Context Protocol (MCP) server in Go to enable Claude and Cursor to directly query their cloud infrastructure database. They encountered significant challenges with LLM tool selection, context window limitations, and non-deterministic behavior. By rewriting tool descriptions to be longer and more domain-specific, renaming tools to better match user intent, implementing schema filtering to reduce token usage by 90%, and embedding recommended multi-tool workflows, they dramatically improved how the LLM engaged with their system. The solution transformed Claude's interaction from hallucinating queries to systematically following a discovery-to-execution pipeline."
+---
+
+## Overview
+
+CloudQuery, a cloud infrastructure data management company, built a production Model Context Protocol (MCP) server written in Go that allows LLMs like Claude and Cursor to directly query their cloud infrastructure database. The entire CloudQuery stack runs on Go, and this MCP implementation represents their foray into enabling natural language access to complex cloud asset data. The case study documents their learnings from deploying this system in production, focusing on the practical challenges of making LLMs reliably interact with external tools and databases.
+
+The original goal was straightforward: wire an LLM directly into their cloud infrastructure database to surface data faster. However, the implementation revealed fundamental challenges around how LLMs select and use tools, manage limited context windows, and exhibit non-deterministic behavior even in seemingly deterministic configurations. This case study is particularly valuable because it documents real production issues and quantifiable solutions rather than theoretical approaches.
+
+## The Tool Description Challenge
+
+The first major issue CloudQuery encountered was that LLMs were simply not using the tools they had carefully built. Their initial approach to tool descriptions followed typical software engineering practices: concise, clear documentation that another engineer would understand. For example, their `list_plugins` tool was initially described as "Lists installed plugins" in approximately 50 characters.
+
+This minimalist approach had multiple problems in production. Claude would either ignore the tool entirely, misinterpret its purpose, or hallucinate alternative approaches rather than calling the available function. Instead of exploring CloudQuery's actual data structures, the LLM would invent nonexistent tables or query against schemas that didn't exist. This wasn't a sporadic issue but a systematic failure of tool discovery and selection.
+
+The root cause relates to how LLMs rank and select tools during inference. Models like Claude and GPT rely heavily on semantic similarity between the user query and the tool description to determine which function to invoke. Research cited in the case study indicates that sparse descriptions lead to ambiguous or absent tool calls, with Microsoft Research showing that increasing semantic richness in function descriptions improves tool selection accuracy by approximately 30% on average.
+
+CloudQuery's solution was to completely rewrite their tool descriptions to be much longer and more contextually rich. The `list_plugins` description expanded from ~50 to ~400 characters, now reading: "Discover available data sources in this CloudQuery deployment. Each plugin represents a cloud provider (aws, gcp, azure) or service (github, kubernetes) with dozens of tables containing structured resource data. Use this first to understand what data sources are available before searching for specific tables. Returns plugin names, versions, and resource counts to help you navigate the available data."
+
+The new descriptions incorporated several key elements that proved critical for production reliability. They explained the broader purpose of the tool beyond just its mechanical function. They included specific domain terminology relevant to CloudQuery's use case, such as AWS, GCP, and Kubernetes. They provided guidance on when and why the tool should be used in the context of a larger workflow. Finally, they clarified what the return payload would contain, helping the LLM understand how to use the information.
+
+This change had dramatic effects on system behavior. Rather than guessing or hallucinating, Claude began systematically querying tools to understand the data structure before proceeding with user requests. The insight here is that LLMs compute embeddings of tool descriptions and compare them against the user query intent. When descriptions lack domain-specific or task-relevant terms, they lose out in this similarity ranking to hallucinations or irrelevant alternatives. Longer, richer descriptions compensate for the model's lack of world knowledge about proprietary domains like cloud asset inventories.
+
+## Multi-Tool Workflow Orchestration
+
+Even with detailed descriptions, CloudQuery discovered another production challenge: LLMs struggled to understand when and how to use tools in sequence. A user query like "show me all AWS security groups with open ports" requires multiple coordinated tool calls in a specific order, but Claude would frequently skip steps, call tools in the wrong sequence, or make incorrect assumptions about data structure.
+
+The breakthrough came from embedding recommended workflows directly into tool descriptions. For their `execute-query` tool, they added an explicit workflow section that reads: "RECOMMENDED WORKFLOW (use these tools in sequence before executing queries): 1. First, use 'list-installed-plugins' to see what data sources are available (aws, gcp, azure, github, kubernetes, etc.) 2. Then, use 'table-search-regex' to find specific tables within those plugins that contain the data you need 3. Use 'table-schemas' to get detailed column information for the tables you've identified 4. Use 'column-search' to find specific columns across all tables if you need to locate particular data fields 5. Optionally, use 'known-good-queries' to find similar query examples and learn the data structure patterns 6. Finally, use this tool to execute your crafted ClickHouse SQL query."
+
+This explicit sequencing instruction transformed system behavior from random tool calls and hallucinated table structures to systematically following a discovery-to-execution pipeline. The lesson here is that LLMs benefit from explicit procedural guidance embedded in tool metadata, not just functional descriptions. This represents a form of in-context learning where the tool description itself becomes instructional material that guides the model's reasoning process.
+
+## Tool Naming and Semantic Disambiguation
+
+CloudQuery built a tool specifically to help users write SQL queries by providing example queries, initially named `example_queries` with the description "Shows example queries for CloudQuery." Despite this seemingly clear purpose, the tool sat completely unused during two weeks of testing. Claude would ask for help writing queries while completely ignoring this available resource.
+
+The issue wasn't that the tool was broken or that the LLM couldn't technically call it. The problem was semantic ambiguity. LLMs don't "understand" tools in the way humans do; they make probabilistic predictions about which tool to invoke based on how well the name and description match the current token context. When names are vague and descriptions lack strong semantic cues, models often prefer to hallucinate responses rather than risk calling an ambiguous tool. Research cited indicates that ambiguous names lower invocation frequency by more than 40% compared to explicit, task-oriented names.
+
+CloudQuery made two specific changes. They renamed the tool from `example_queries` to `known_good_queries`, and they expanded the description to: "Get proven, working SQL queries for common CloudQuery analysis tasks. Use this tool when you need query examples or want to see patterns for writing queries against cloud infrastructure data."
+
+The new name aligned much better with user intent by explicitly signaling that the tool contains vetted, high-quality SQL—a stronger semantic match for prompts like "give me a working query." By using both intent signals ("known good") and domain signals ("SQL queries for CloudQuery"), they reduced the cognitive gap between the model's understanding and the tool's purpose. This change moved the tool from completely ignored to frequently used, demonstrating how critical naming and description are for production LLM tool use.
+
+## Context Window Management and Schema Filtering
+
+The third major production challenge involved the fundamental constraint of limited context windows. Every LLM has a maximum number of tokens it can process in a single session, ranging from approximately 8,000 to 200,000 tokens depending on the model variant. CloudQuery learned this constraint the hard way when they discovered that a single raw CloudQuery schema dump could easily exceed 50,000 tokens.
+
+Some of their more complex database tables contain hundreds of columns with extensive metadata including foreign keys, data types, constraints, and descriptions. Feeding even a few of these complete table schemas into Claude consumed nearly the entire context window, leaving insufficient space for user queries, instructions, intermediate reasoning, or additional tool calls. Research shows that when context windows saturate, models selectively forget earlier tokens rather than gracefully degrading, meaning the model would arbitrarily ignore parts of the schema.
+
+CloudQuery's solution was to build a filtering mechanism directly into the MCP server that strategically trims schema output before sending it to the LLM. They implemented this in Go using regular expressions and column ranking heuristics with the following priorities: always keep primary keys, prioritize common business-critical columns, drop low-signal or duplicated columns, and cap the total number of columns returned per table.
+
+This filtering approach achieved approximately 90% reduction in token usage on average, enabling Claude to handle over 20 table schemas simultaneously rather than choking after 3-4 tables. The filtering works because it preserves salient structural information—primary keys and frequent columns—while eliminating noise. LLMs don't need to see every column to infer table purpose; they need the minimal set of high-signal fields that convey the essential structure and semantics.
+
+This represents an important production pattern: preprocessing and curating the information sent to LLMs rather than assuming they can handle raw data dumps. By explicitly managing what enters the context window, CloudQuery freed up space for queries, instructions, and additional tables, making the system usable at production scale.
+
+## Handling LLM Non-Determinism and Quirks
+
+Even after solving tool descriptions, naming, and context window issues, CloudQuery encountered behaviors that challenged conventional software engineering assumptions. The first was non-determinism: sending the exact same input to the model twice would still produce slightly different outputs, even with `temperature=0`.
+
+Temperature is a parameter that controls output randomness, with higher values making the model more creative and lower values making it more deterministic. At `temperature=0`, the model theoretically always picks the most probable next token, which should make outputs repeatable. However, CloudQuery found this wasn't sufficient to guarantee determinism in production.
+
+Multiple factors contribute to this residual non-determinism. Live database queries may return results in different orders due to caching or batching. Timing differences in query execution can affect which information is available when the LLM makes decisions. Hidden system prompts injected by the API provider can vary. Even small differences in the hardware running the model can introduce variation. Together, these factors make it impossible to guarantee identical outputs for identical inputs, even at zero temperature.
+
+The second quirk was selective attention. When presented with a list of 20 tables to analyze, Claude would confidently select 2-3 while ignoring the rest. This isn't laziness or malfunction; it's how transformer architectures prioritize information. Models tend to focus on items at the beginning of inputs (primacy bias) or items that appear most salient based on embedding similarity. When overwhelmed with many options, the model latches onto the first few and deprioritizes the rest.
+
+CloudQuery doesn't provide specific mitigation strategies in the text for these issues beyond acknowledging them as operational realities. The implication is that production LLM systems must be designed with these quirks in mind: building in redundancy, rerunning queries when results seem incomplete, reordering inputs to test for position bias, and adding explicit instructions to "consider all options" when presenting lists.
+
+## Technical Architecture and Stack
+
+The MCP server was built entirely in Go, consistent with CloudQuery's broader technology stack. Tools are registered with the MCP server using an OpenAI-style tool schema that includes name, description, parameters, and a handler function. The server exposes these tools to LLM clients like Claude and Cursor, which can then invoke them explicitly during sessions.
+
+The underlying database is ClickHouse, a column-oriented database designed for analytical queries. The MCP server generates SQL queries against this ClickHouse instance based on natural language requests processed by the LLM. The architecture involves the LLM reading tool descriptions, deciding which tools to invoke, executing those tools via the MCP server, receiving structured data responses, and then using that information to construct and execute SQL queries.
+
+CloudQuery has made their MCP server publicly available with documentation, release binaries, and an announcement blog post, indicating their intention to share this technology with the broader community.
+
+## Production Lessons and Tradeoffs
+
+This case study offers several important insights for deploying LLMs in production, particularly for tool-calling and database query generation scenarios. The first lesson is that verbose, domain-specific tool descriptions dramatically outperform concise documentation, contrary to typical software engineering practices. This requires accepting higher token costs and longer context windows in exchange for more reliable tool selection.
+
+The second lesson is that explicit workflow orchestration embedded in tool descriptions can guide LLMs through complex multi-step processes. This represents a form of prompt engineering at the tool level rather than the query level, treating tool metadata as instructional scaffolding.
+
+The third lesson concerns the tradeoff between comprehensive schema information and context window constraints. CloudQuery chose to filter schemas aggressively, accepting that the LLM would have incomplete information in exchange for being able to process multiple tables simultaneously. This requires careful curation to ensure the filtered information remains sufficient for accurate query generation.
+
+The fourth lesson is that production LLM systems must be designed around inherent non-determinism and selective attention, even when using seemingly deterministic settings. This challenges traditional software reliability assumptions and requires different testing, validation, and error-handling approaches.
+
+Throughout the case study, CloudQuery grounds their insights in cited research including work on tool selection accuracy, semantic disambiguation, context window saturation effects, and transformer attention patterns. This grounding adds credibility while acknowledging that some of their findings come from empirical experimentation in their specific production environment.
+
+The overall narrative is one of iterative refinement driven by production observations rather than theoretical design. CloudQuery's experience suggests that successfully deploying LLMs with tool-calling capabilities requires careful attention to semantic signals, explicit guidance, resource management, and acceptance of probabilistic rather than deterministic behavior. These lessons are particularly relevant as more organizations attempt to integrate LLMs with existing databases and infrastructure systems.

@@ -1,0 +1,108 @@
+---
+title: "Building and Deploying Production AI Agents for Enterprise Data Analysis"
+slug: "building-and-deploying-production-ai-agents-for-enterprise-data-analysis"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "67ba2bdf5cadde4652fcf9b0"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:01:01.174Z"
+  createdOn: "2025-02-22T19:56:15.105Z"
+llmopsTags:
+  - "data-analysis"
+  - "structured-output"
+  - "data-integration"
+  - "multi-agent-systems"
+  - "prompt-engineering"
+  - "fine-tuning"
+  - "system-prompts"
+  - "postgresql"
+  - "databases"
+  - "security"
+  - "openai"
+  - "anthropic"
+company: "Asterrave"
+summary: "Rosco's CTO shares their two-year journey of rebuilding their product around AI agents for enterprise data analysis. They focused on enabling agents to reason rather than rely on static knowledge, developing discrete tool calls for data warehouse queries, and creating effective agent-computer interfaces. The team discovered key insights about model selection, response formatting, and multi-agent architectures while avoiding fine-tuning and third-party frameworks. Their solution successfully enabled AI agents to query enterprise data warehouses with proper security credentials and user permissions."
+link: "https://www.youtube.com/watch?v=7MiFIhlkBoE"
+year: 2024
+seo:
+  title: "Asterrave: Building and Deploying Production AI Agents for Enterprise Data Analysis - ZenML LLMOps Database"
+  description: "Rosco's CTO shares their two-year journey of rebuilding their product around AI agents for enterprise data analysis. They focused on enabling agents to reason rather than rely on static knowledge, developing discrete tool calls for data warehouse queries, and creating effective agent-computer interfaces. The team discovered key insights about model selection, response formatting, and multi-agent architectures while avoiding fine-tuning and third-party frameworks. Their solution successfully enabled AI agents to query enterprise data warehouses with proper security credentials and user permissions."
+  canonical: "https://www.zenml.io/llmops-database/building-and-deploying-production-ai-agents-for-enterprise-data-analysis"
+  ogTitle: "Asterrave: Building and Deploying Production AI Agents for Enterprise Data Analysis - ZenML LLMOps Database"
+  ogDescription: "Rosco's CTO shares their two-year journey of rebuilding their product around AI agents for enterprise data analysis. They focused on enabling agents to reason rather than rely on static knowledge, developing discrete tool calls for data warehouse queries, and creating effective agent-computer interfaces. The team discovered key insights about model selection, response formatting, and multi-agent architectures while avoiding fine-tuning and third-party frameworks. Their solution successfully enabled AI agents to query enterprise data warehouses with proper security credentials and user permissions."
+---
+
+## Overview
+
+Patrick, co-founder and CTO of Asterrave (formerly Rosco), shares extensive lessons learned from a two-year journey of rebuilding their entire product around AI agents. The product enables AI agents to search and query enterprise data warehouses on behalf of users, essentially allowing natural language interaction with complex SQL databases. This case study provides valuable insights into the practical challenges of deploying AI agents in production enterprise environments.
+
+## Agent Definition and Architecture
+
+Patrick establishes a precise definition for what constitutes an AI agent, requiring three specific criteria: the ability to take directions (human or AI-provided) toward a specific objective, access to at least one tool with response capability, and autonomous reasoning about how and when to use tools. Critically, he emphasizes that predefined sequences of tool calls in a prompt-chained setup do not qualify as true agents—the system must demonstrate autonomous reasoning capabilities.
+
+This definition has significant implications for production systems because it means the agent architecture must support dynamic decision-making rather than fixed workflows. The team found this flexibility essential for handling the diverse and unpredictable nature of enterprise data queries.
+
+## Reasoning Over Knowledge: A Core Architectural Decision
+
+One of the most significant lessons from Asterrave's experience was the importance of enabling agents to think rather than relying on what the underlying model knows. This insight led to a fundamental shift away from traditional RAG (Retrieval Augmented Generation) approaches where content is inserted into system prompts. Instead, the team focused on discrete tool calls that allowed agents to perform retrieval and gather relevant context dynamically during task execution.
+
+The SQL generation use case perfectly illustrates this principle. When agents were given comprehensive table schemas with all columns upfront, they frequently failed to reason correctly about which tables and columns to use. The models became overwhelmed by the token count in the prompt and either chose incorrect options or wrote queries that failed to execute. The solution was to implement simpler building blocks of tool calls such as "search tables," "get table detail," or "profile a column." The agent then used these iteratively to find the right columns for the right query.
+
+## Model Selection and Behavior Differences
+
+The case study provides valuable comparative insights across different LLM models in production agent scenarios. Patrick contrasts GPT-4o's behavior with reasoning models like o1, using a practical example involving Salesforce data schemas (accounts, contacts, opportunities tables).
+
+When asked to write a query calculating customer churn, GPT-4o was heavily incentivized to produce SQL regardless of whether the underlying data could support the query. It made assumptions and wrote SQL with poor definitions for calculating churn, potentially leading analysts to incorrect conclusions. The model showed no inclination to push back or consider whether the task was actually possible given the schema.
+
+In contrast, o1 reasoned through the various aspects of the question and accurately concluded that there was no way to calculate churn status given the schema provided. This demonstrates the critical importance of model selection for agent orchestration tasks where stopping to reason before acting is essential.
+
+Patrick notes that Claude 3.5 Sonnet remains his preferred model for agent orchestration, citing its balance between speed, cost, and decision quality. However, he acknowledges that cheaper models can be appropriate for specific tool calls or sub-prompts, as long as the core decision-making about which tool to call next runs on a generally intelligent model.
+
+## Agent Computer Interface (ACI) Optimization
+
+A substantial portion of the lessons learned relates to what Patrick calls the Agent Computer Interface—the exact syntax and structure of tool calls, including both input arguments and response formats. The team found that seemingly trivial tweaks to the ACI could have massive impacts on agent accuracy and performance.
+
+Specific examples include format optimization for different models. With GPT-4o, the team initially formatted search result payloads as markdown. However, they observed cases where the agent would claim a column did not exist even when it was clearly visible in the tool response. This was particularly problematic for customers with large tables (500-1000 columns) producing responses of 30,000+ tokens. Switching the response format from markdown to JSON immediately resolved this issue for GPT-4o.
+
+Interestingly, when working with Claude, the team discovered that XML formatting was significantly more effective than JSON. This model-specific behavior likely correlates to training data differences and highlights the importance of format experimentation in production deployments.
+
+## Learning from Agent Failure Modes
+
+Patrick shares a valuable debugging technique: observing how agents hallucinate can reveal what the model expects from tool calls. If an agent consistently ignores the provided JSON schema and provides arguments in a different format, this indicates the model's native expectations. Adapting tool definitions to match these expectations—rather than forcing the model into a different format—generally improves agent performance by aligning with training data patterns.
+
+## Fine-Tuning: A Cautionary Tale
+
+The team concluded that fine-tuning models was largely a waste of time for agent applications. If the premise is that agents should focus on reasoning over inherent knowledge, then fine-tuning provides little benefit for reasoning improvement. In Asterrave's experience, fine-tuning actually decreased reasoning capabilities in many cases because it overfit the model to perform specific sequences of tasks rather than stopping to evaluate whether it was making the right decision.
+
+Patrick recommends investing time in ACI iteration rather than building fine-tuned models for agent applications. This represents a significant departure from common assumptions about LLM optimization and has important implications for LLMOps resource allocation.
+
+## Framework Selection and Custom Implementation
+
+When asked about framework choices, the team ultimately decided against using abstraction libraries like LangGraph or CrewAI for two reasons. First, when development started two years ago, these frameworks weren't publicly available. Second, and more importantly, production requirements created significant blockers that made framework adoption impractical.
+
+A key example was the need for end-user security credentials to cascade down to agents. When users query their Snowflake accounts through an agent, they may have granular permissions controlling what data they can access. The agent needed to run with those user-specific permissions using OAuth integration. Managing the authentication process and underlying service keys within a third-party framework proved extremely difficult to build and scale.
+
+The lesson for LLMOps practitioners is to consider end goals before becoming dependent on frameworks. Patrick notes that building an agent or even a multi-agent system requires less code than commonly assumed. While abstractions can accelerate prototyping and validation, production deployments often benefit from custom implementation that provides full control over security, authentication, and integration requirements.
+
+## System Prompts and Competitive Moats
+
+Patrick challenges the common assumption that system prompts represent significant intellectual property. He argues that the most valuable and defensible aspects of agent products are the ecosystem around the agent—including user experience design for agent interaction and the security protocols and connections the agent must follow. These elements constitute the most time-consuming aspects of building production-quality agents and represent the true competitive differentiation.
+
+## Multi-Agent System Design
+
+Approximately one year into their agent transition, Asterrave introduced multi-agent concepts as customers became comfortable with single agents. Several key principles emerged from this experience.
+
+The team found that implementing a manager agent within a hierarchy was essential. The manager agent owns the final outcome but delegates subtasks to specialized worker agents with more specific instructions and tool calls. Giving all information to a single manager agent caused it to become overwhelmed and make poor decisions.
+
+A "two pizza rule" similar to Amazon's team design philosophy applied to agent teams. Limiting multi-agent systems to approximately 5-8 agents produced the best results. Systems with 25 or 50 agents strongly decreased the likelihood of achieving desired outcomes due to infinite loops and unrecoverable paths.
+
+Incentivization proved more effective than forcing worker agents through discrete steps. The goal should be to describe and "reward" the manager agent for accomplishing the overall objective while relying on it to manage underlying worker agents and validate that their output contributes to the broader outcome.
+
+## Production Deployment Considerations
+
+Throughout the case study, several production-specific concerns emerge that distinguish this from experimental or prototype work. Security credential management and OAuth integration for enterprise data sources represent significant engineering challenges. Performance optimization through format selection and ACI tuning directly impacts user experience and system reliability. The choice of orchestration model affects both cost and quality in ways that require careful balancing. Multi-agent coordination at scale introduces failure modes (infinite loops, lost context) that don't appear in single-agent prototypes.
+
+These lessons represent hard-won knowledge from two years of production deployment and iteration, providing practical guidance for teams building similar enterprise AI agent systems.

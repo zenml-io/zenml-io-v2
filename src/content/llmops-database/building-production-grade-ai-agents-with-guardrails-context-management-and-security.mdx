@@ -1,0 +1,148 @@
+---
+title: "Building Production-Grade AI Agents with Guardrails, Context Management, and Security"
+slug: "building-production-grade-ai-agents-with-guardrails-context-management-and-security"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "693be5af020996a0d0ce04ee"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:36:26.249Z"
+  createdOn: "2025-12-12T09:51:43.870Z"
+llmopsTags:
+  - "code-generation"
+  - "chatbot"
+  - "document-processing"
+  - "poc"
+  - "high-stakes-application"
+  - "customer-support"
+  - "data-analysis"
+  - "rag"
+  - "prompt-engineering"
+  - "multi-agent-systems"
+  - "agent-based"
+  - "human-in-the-loop"
+  - "latency-optimization"
+  - "few-shot"
+  - "error-handling"
+  - "chunking"
+  - "system-prompts"
+  - "fastapi"
+  - "langchain"
+  - "open-source"
+  - "documentation"
+  - "security"
+  - "guardrails"
+  - "databases"
+  - "api-gateway"
+  - "cicd"
+  - "orchestration"
+  - "microservices"
+  - "openai"
+  - "anthropic"
+  - "meta"
+  - "google-gcp"
+company: "Portia / Riff / Okta"
+summary: "This panel discussion features founders from Portia AI and Rift.ai (formerly Databutton) discussing the challenges of moving AI agents from proof-of-concept to production. The speakers address critical production concerns including guardrails for agent reliability, context engineering strategies, security and access control challenges, human-in-the-loop patterns, and identity management. They share real-world customer examples ranging from custom furniture makers to enterprise CRM enrichment, emphasizing that while approximately 40% of companies experimenting with AI have agents in production, the journey requires careful attention to trust, security, and supportability. Key solutions include conditional example-based prompting, sandboxed execution environments, role-based access controls, and keeping context windows smaller for better precision rather than utilizing maximum context lengths."
+link: "https://www.youtube.com/watch?v=Wyj1LyHCR3c"
+year: 2025
+seo:
+  title: "Portia / Riff / Okta: Building Production-Grade AI Agents with Guardrails, Context Management, and Security - ZenML LLMOps Database"
+  description: "This panel discussion features founders from Portia AI and Rift.ai (formerly Databutton) discussing the challenges of moving AI agents from proof-of-concept to production. The speakers address critical production concerns including guardrails for agent reliability, context engineering strategies, security and access control challenges, human-in-the-loop patterns, and identity management. They share real-world customer examples ranging from custom furniture makers to enterprise CRM enrichment, emphasizing that while approximately 40% of companies experimenting with AI have agents in production, the journey requires careful attention to trust, security, and supportability. Key solutions include conditional example-based prompting, sandboxed execution environments, role-based access controls, and keeping context windows smaller for better precision rather than utilizing maximum context lengths."
+  canonical: "https://www.zenml.io/llmops-database/building-production-grade-ai-agents-with-guardrails-context-management-and-security"
+  ogTitle: "Portia / Riff / Okta: Building Production-Grade AI Agents with Guardrails, Context Management, and Security - ZenML LLMOps Database"
+  ogDescription: "This panel discussion features founders from Portia AI and Rift.ai (formerly Databutton) discussing the challenges of moving AI agents from proof-of-concept to production. The speakers address critical production concerns including guardrails for agent reliability, context engineering strategies, security and access control challenges, human-in-the-loop patterns, and identity management. They share real-world customer examples ranging from custom furniture makers to enterprise CRM enrichment, emphasizing that while approximately 40% of companies experimenting with AI have agents in production, the journey requires careful attention to trust, security, and supportability. Key solutions include conditional example-based prompting, sandboxed execution environments, role-based access controls, and keeping context windows smaller for better precision rather than utilizing maximum context lengths."
+---
+
+## Overview
+
+This case study captures a panel discussion featuring Emma (founder of Portia AI) and Tiger (co-founder and CEO of Rift.ai, formerly Databutton), moderated by a representative from Okta. The discussion provides extensive insights into the operational challenges of deploying AI agents in production environments. The session opened with a revealing poll showing that while many attendees were building AI applications and agents, only about 40% had deployed them to production systems—highlighting the significant gap between experimentation and productionization that this conversation aims to address.
+
+Both companies represent different approaches to production AI agent deployment. Portia AI has developed an open-source framework for building production-grade agents and recently launched a product called Resonant (released the day before this talk, still behind a waitlist) that transforms documents into well-specified chunks for linear, Jira, or coding agents. Rift.ai operates an AI agent that generates complete applications—React frontends and Python FastAPI backends—handling the full lifecycle from ideation through deployment and hosting, with approximately 150,000 users building apps throughout the year.
+
+## Product-Centric Approach and Structured Processes
+
+Both companies deliberately adopted product-centric approaches that structure the agent workflow through familiar product management tools and processes. For Portia, this choice emerged from combining two complementary needs: solving the immediate pain point of writing tickets (which everyone hates and finds tedious) and addressing the technical reality that agents perform significantly better with well-specified tickets and chunks. This represents a form of "vibe engineering" where structuring the problem space correctly creates better agent outcomes.
+
+Rift.ai similarly guides non-technical users into a development flow centered on task generation, where the agent works on well-specified tasks. According to Tiger, this task-based structure provides crucial "guardrails" that keep the agent on track—particularly important as models evolve and context can be lost over extended interactions. The analogy used was working with someone with Alzheimer's disease; without proper anchoring through tasks, agents lose context and direction. The tasks serve as anchors that steer the agent in the right direction throughout the development process.
+
+## Guardrails and Reliability Patterns
+
+The discussion revealed several sophisticated approaches to implementing guardrails beyond simple input validation. Emma described a particularly effective design pattern built into the Portia open-source framework: when an agent generates tasks from natural language, there's always a risk of producing nonsensical tasks while still maintaining the ability to accept any prompt. Their solution involves a RAG-based system where plans and task lists are fed back into the agent along with conditional lists of example tasks. This pattern allows the system to always have relevant example tasks as context, and the reliability can be tuned by adjusting the scope and specificity of the examples fed back conditionally based on the specific agentic application.
+
+For Rift.ai, the advantage lies in owning the entire development environment—the runtime, development tools, and execution context. This enables extensive sandboxing of the development experience, making that particular workflow relatively safe. However, the real challenge emerges when these systems need read and write access to core production systems. Tiger highlighted the example of CRM enrichment agents that go to external APIs and services like Perplexity to gather information and then write back to the CRM. The critical question becomes: how do you ensure an agent can only write to the specific parts it should access and nothing more? Agents fundamentally cannot be trusted to make these security decisions autonomously, necessitating explicit access controls.
+
+## Security, Trust, and Human-in-the-Loop
+
+Security emerged as a multifaceted concern encompassing both technical access controls and the human factors of trust. The conversation touched on role-based access control (RBAC) as a mechanism for safely allowing non-technical users like UX designers to ship code to production. The question was framed as: what does it mean to safely enable this, and what are the appropriate constraints?
+
+Both speakers emphasized the critical importance of human-in-the-loop patterns at multiple points in agent workflows. Emma noted that people should always take responsibility for what gets shipped or put into systems—even Jira is considered production data requiring human oversight. An interesting observation was how lazy people can be in their expectations, with customers asking if outputs would be 100% correct. Emma's response was honest: no, the target is around 95%, and these tools should be understood as communication and drafting aids that still require human review. Some customers embrace this model enthusiastically, while others are more comfortable with minor inaccuracies, representing a spectrum of trust relationships with AI systems.
+
+The conversation also explored the variability in how people interact with AI agents. With 150,000 users building apps through Rift.ai, Tiger observed an enormous spread in how people chat with AI. One striking example involved a non-technical person building a cryptocurrency wallet transfer feature—arguing with the AI in confusing ways that led to actual fund transfers. This underscored that you cannot assume any particular user behavior when dealing with open text boxes and chat interfaces; there are countless ways to confuse an AI agent. This unpredictability necessitates robust guardrails regardless of user sophistication.
+
+Looking forward, there was discussion about approval patterns that mirror human processes. Just as you wouldn't fully trust a human travel agent to book without your approval, agents should prompt users with "do you want to pay for this?" or "do you want to delete this file?" Rift.ai already implements this for file operations because of auditability concerns—understanding who did what, who approved what, and where responsibility lies for agent actions. For certain use cases like fund transfers or trading, approval processes become absolutely essential.
+
+An intriguing prediction from the Okta moderator suggested that in some scenarios, agents might actually be more reliable than humans. The example given was enterprise approval processes for invoices and purchase orders, where sophisticated phishing campaigns exploit human vulnerabilities (the CEO urgently needs gift cards). Agents, being less susceptible to social engineering and capable of performing deterministic checks and diagnostics, might prove more trustworthy for certain well-defined tasks.
+
+## Context Engineering as Core to Agent Engineering
+
+Both speakers agreed that context engineering is fundamentally what agent engineering really is—the most important aspect of building reliable agent systems. However, their approaches revealed important nuances about context window usage that challenge common assumptions about larger being better.
+
+For Portia's Resonant product, the most critical factor is latency, with a target of keeping end-to-end job completion under 30 seconds—the threshold where users will stay at their screens before losing interest. Achieving this requires carefully balancing gathering context on the fly versus using offline cached context that's kept up to date. They built a context generation system specifically to manage this tradeoff. Looking forward, Emma sees the challenge as working out how to blend human context, LLM context, and context relevant to specific teams and roles.
+
+Remarkably, both companies reported that they have never found a way to effectively use very long context windows. Tiger stated bluntly that they use much smaller context windows than models support because it maintains better precision. Even when million-token context windows became available, they found that precision degrades with extremely long contexts. Instead of cramming entire codebases into context on every call (which was necessary in earlier iterations), modern tool calling capabilities allow agents to search codebases and pull relevant pieces into context on demand. The shift to parallel tool calling fundamentally changed their architecture—their agent now has access to 120 different tools that it can invoke to retrieve precisely the context it needs.
+
+Emma echoed this perspective, noting that while long-running tasks and processes might theoretically benefit from very long context windows, in practice, both of their applications start relatively fresh each time with more limited context. For Portia's refinement process, memory from previous runs can be ingested automatically, but they deliberately keep context quite short. Over time, the vision is to make context dependent on the person, their role, and their place in the codebase, but still not utilizing the full million-token windows available.
+
+The agent-driven approach to context management was described as similar to human memory—when you need to recall something, you search it up rather than holding everything in active memory simultaneously. The agent creates a checklist of learnings as it works, effectively building episodic memory, but retrieves information through search and tool calls rather than attempting to maintain everything in context.
+
+## Documentation and Code as Source of Truth
+
+The discussion revealed evolving perspectives on documentation in agent-driven development. For Rift.ai users, the agent simply has a tool to generate documentation, so documentation is created on demand. Most users don't even know which open-source frameworks, npm packages, or pip packages the agent is using on their behalf—the agent simply installs and uses whatever is needed. This raised an interesting question for the future: what does this mean for the quality and discoverability of open-source software when agents are the primary consumers?
+
+Emma expressed being "in two minds" about documentation because agents face the same problems humans do—documentation gets out of date quickly. While Resonant customers ask to upload Confluence documentation and other materials, it's not their highest priority feature because flooding the agent with documentation doesn't always help. Documentation represents human interpretation of systems, but for agents, the best input is often getting as close to the actual source code as possible. Emma actively guides customers to push documentation into the codebase itself, where it's maintained properly and accessed by agents at every point in the workflow, not just in specific tools. The agent generates API documentation and similar artifacts, but the source code remains the primary source of truth.
+
+## Real-World Customer Use Cases
+
+The customer examples provided concrete illustrations of agents in production across vastly different domains. Tiger's favorite example was a custom furniture maker using CNC machines to create cupboards. Previously, half the owner's time was spent communicating with clients and exchanging 3D models. The first application eliminated 30% of this overhead by allowing clients to chat with an AI that generates drawings. The workflow then extended to production: converting 3D CAD models to CNC machine instructions (previously tedious and time-consuming) was automated through chat interfaces. Finally, the manufacturer built apps to track their manufacturing process. This single customer journey illustrated progressive automation across customer communication, design-to-manufacturing conversion, and process tracking.
+
+At enterprise scale, Rift.ai customers commonly use agents for sales team CRM enrichment and building simpler interfaces to systems like Salesforce, which many users apparently dislike. The pattern emerged of employees creating custom applications to solve their everyday problems through conversational interfaces with the agent.
+
+For Portia's SDK work, which involved extensive horizontal consultative sales (Emma candidly noted this approach is "not fun" and she doesn't recommend building a company that way), two main categories emerged. First, anywhere a group of people is trained to read a policy and make a decision can be encoded in a multi-agent system—this represents low-hanging fruit for automation. Second, expert chat-based systems that combine a body of information with the ability to take actions. An example was a company providing metadata on surveys who wanted an agentic layer because with thousands of survey data points, finding the right information becomes difficult. Agents navigate to the right point and then perform access and authorization actions on that data.
+
+## Tool Calling and Agent Architecture Evolution
+
+The evolution of tool calling capabilities fundamentally transformed how both companies architect their agent systems. Tiger emphasized that tool calling being "good" and "parallel" has made coding agents dramatically easier compared to two years ago. Previously, they needed to somehow cram entire codebases into context on every call. Now, most context is something the agent asks for—it can search the codebase, find relevant pieces, and pull them into context. This architectural shift enabled scaling to 120 available tools while maintaining precision through selective context retrieval.
+
+The parallel nature of modern tool calling allows agents to make multiple information-gathering or action-taking calls simultaneously, significantly reducing latency. This represents a shift from monolithic context windows to dynamic, agent-driven context assembly where the agent orchestrates its own information needs.
+
+## Memory and Agent State Management
+
+When asked about memory in AI systems, both speakers challenged assumptions about the utility of very long-term memory. Tiger noted they haven't found effective ways to use very long context windows, preferring precision through smaller windows. The agent does write learnings as it works—creating a form of episodic memory—but retrieval works more like human memory, where you search for information when needed rather than maintaining everything in active memory.
+
+Emma agreed completely, noting that memory becomes extremely relevant for very long-running tasks and processes, but their applications start relatively fresh. For Portia's refinement process (which can be run multiple times), the system automatically ingests memory from previous runs, but they deliberately keep context quite short. The future direction involves making context dependent on the person, their role, and their place in the codebase, but still avoiding full utilization of million-token windows.
+
+This architectural choice reflects a pragmatic understanding that current LLM capabilities degrade with extremely long contexts, and that intelligent retrieval and context assembly provides better results than attempting to maintain comprehensive context continuously.
+
+## Identity, Authentication, and Authorization Challenges
+
+The discussion concluded with perhaps the most forward-looking topic: identity and permissions management as enterprises adopt AI applications. The Okta moderator framed this as addressing both sides of the spectrum, and the responses revealed this as an escalating concern rather than a new problem.
+
+The fundamental observation was that authentication and authorization are existing problems in current applications and architectures, but they get amplified at very high scale with agents. Today, when logging into an application, the application serves as a "front door" with only deterministic possible actions. With agents, that boundary disappears because agents have non-deterministic freedom—they can theoretically query databases, access pages, go out on the web, and perform a vast array of actions. This makes companies extremely nervous because if databases, APIs, documents, or wiki pages aren't properly secured, the risk exposure becomes massive.
+
+Emma posed an interesting question about whether we'll see an evolution of OAuth specifically designed for agent scenarios. The current problem with OAuth is that delegated OAuth is so common and easy that the path of least resistance is giving agents your full permissions. She asked whether we might see a more sophisticated OAuth variant that creates the right paradigm between agents that belong to a human. The response indicated that standards bodies are actively working on this, with many companies (not just Okta) pushing for solutions, and that the Anthropic MCP (Model Context Protocol) spec is being updated to address these challenges.
+
+Tiger's roadmap for the next 12 months centers directly on this problem: moving beyond the current state where users give their full OAuth permissions to agents (with restrictions based on group membership) to a more sophisticated model with proper agent-specific permissions. Emma's roadmap focuses on enabling product managers to do prototyping within their PRDs at the appropriate level of granularity, maintaining the PM's role as communication facilitator rather than attempting to produce full production-grade apps (though that has its place too).
+
+## Hallucinations and Error Rates
+
+When asked about the future of hallucinations and agent errors, Emma acknowledged this as a very hard prediction question where it would be easy to give the wrong answer that looks foolish in a year. However, she noted that hallucinations are fundamental to how the underlying technology works—something model companies will continue addressing. The challenge is that human language itself is fuzzy, creating inherent ambiguity. Obvious agent errors where anyone would recognize something is wrong will likely approach very close to zero. However, many envisioned agent use cases rely on a level of specification in human language that simply doesn't exist, and the answer to that fundamental limitation should be human-in-the-loop review.
+
+The conversation acknowledged that while model capabilities continue improving and certain error types will become vanishingly rare, the fundamental ambiguity of natural language and the creative nature of LLM generation means some level of uncertainty and review will remain necessary. The goal isn't perfect determinism but rather reliable drafting and assistance that empowers humans to work more effectively.
+
+## Broader Implications for LLMOps
+
+This discussion illuminated several crucial LLMOps principles that emerged from production experience. First, the gap between demos and production deployments remains significant, with infrastructure concerns around trust, security, and supportability representing the primary barriers. Second, product structure and workflow design serve as critical guardrails—both companies succeeded by embedding agents within familiar processes (tickets, tasks, approval workflows) rather than exposing open-ended capabilities. Third, context engineering trumps context size, with both companies finding that smaller, precisely managed context windows outperform attempts to use maximum available context lengths. Fourth, tool calling has emerged as an architectural primitive that enables agents to dynamically assemble the context they need rather than requiring comprehensive upfront context. Fifth, human-in-the-loop patterns remain essential not just for error correction but for establishing appropriate trust relationships and maintaining auditability. Finally, authentication and authorization represent escalating concerns as agent capabilities expand, with the industry actively working on new standards and patterns specifically for agent scenarios.
+
+The frank discussion of challenges, trade-offs, and unsolved problems—including Emma's admission that horizontal consultative sales "isn't fun" and Tiger's observation about users with vastly different interaction patterns—provides valuable counterbalance to common narratives about AI agents. These are production systems serving real users with real consequences, and the operational considerations reflect that reality.

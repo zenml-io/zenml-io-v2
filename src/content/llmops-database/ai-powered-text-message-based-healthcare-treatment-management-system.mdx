@@ -1,0 +1,122 @@
+---
+title: "AI-Powered Text Message-Based Healthcare Treatment Management System"
+slug: "ai-powered-text-message-based-healthcare-treatment-management-system"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "686fd76f8d8100c46687c608"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:12:23.889Z"
+  createdOn: "2025-07-10T15:08:31.892Z"
+llmopsTags:
+  - "healthcare"
+  - "chatbot"
+  - "structured-output"
+  - "high-stakes-application"
+  - "regulatory-compliance"
+  - "agent-based"
+  - "multi-agent-systems"
+  - "prompt-engineering"
+  - "human-in-the-loop"
+  - "system-prompts"
+  - "error-handling"
+  - "fallback-strategies"
+  - "langchain"
+  - "fastapi"
+  - "docker"
+  - "kubernetes"
+  - "monitoring"
+  - "databases"
+  - "cicd"
+  - "devops"
+  - "postgresql"
+  - "redis"
+  - "cache"
+  - "anthropic"
+  - "openai"
+  - "amazon-aws"
+company: "Stride"
+summary: "Stride developed an AI-powered text message-based healthcare treatment management system for Aila Science to assist patients through self-administered telemedicine regimens, particularly for early pregnancy loss treatment. The system replaced manual human operators with LLM-powered agents that can interpret patient responses, provide medically-approved guidance, schedule messages, and escalate complex situations to human reviewers. The solution achieved approximately 10x capacity improvement while maintaining treatment quality and safety through a hybrid human-in-the-loop approach."
+link: "https://www.youtube.com/watch?v=sn79oS4MZFI"
+year: 2025
+seo:
+  title: "Stride: AI-Powered Text Message-Based Healthcare Treatment Management System - ZenML LLMOps Database"
+  description: "Stride developed an AI-powered text message-based healthcare treatment management system for Aila Science to assist patients through self-administered telemedicine regimens, particularly for early pregnancy loss treatment. The system replaced manual human operators with LLM-powered agents that can interpret patient responses, provide medically-approved guidance, schedule messages, and escalate complex situations to human reviewers. The solution achieved approximately 10x capacity improvement while maintaining treatment quality and safety through a hybrid human-in-the-loop approach."
+  canonical: "https://www.zenml.io/llmops-database/ai-powered-text-message-based-healthcare-treatment-management-system"
+  ogTitle: "Stride: AI-Powered Text Message-Based Healthcare Treatment Management System - ZenML LLMOps Database"
+  ogDescription: "Stride developed an AI-powered text message-based healthcare treatment management system for Aila Science to assist patients through self-administered telemedicine regimens, particularly for early pregnancy loss treatment. The system replaced manual human operators with LLM-powered agents that can interpret patient responses, provide medically-approved guidance, schedule messages, and escalate complex situations to human reviewers. The solution achieved approximately 10x capacity improvement while maintaining treatment quality and safety through a hybrid human-in-the-loop approach."
+---
+
+## Case Study Overview
+
+Stride, a custom software consultancy, developed an innovative AI-powered healthcare treatment management system for Aila Science, a women's health institution focused on early pregnancy loss treatment. The project represents a sophisticated LLMOps implementation that transforms manual healthcare operations into an automated, scalable system while maintaining strict safety and compliance standards.
+
+The client, Aila Science, previously operated a system where human operators manually reviewed patient text messages and selected appropriate responses by clicking predefined buttons. This approach was labor-intensive and difficult to scale, requiring extensive human resources and limiting the ability to support new treatments without significant code changes. The manual system also struggled with the complexity of managing longitudinal treatments over multiple days, time zone handling, and the need for precisely worded medical advice.
+
+## Technical Architecture and Implementation
+
+The system architecture follows a hybrid approach with two main components: a Python-based LangGraph container handling the AI logic and a Node.js/React application managing the text message gateway, database, and dashboard. The entire system is deployed on AWS with strict VPC isolation to ensure HIPAA compliance and patient data protection.
+
+The core AI workflow is implemented using LangGraph and consists of two primary agents: a Virtual Operations Associate (Virtual OA) and an Evaluator. The Virtual OA assesses conversation state, determines appropriate responses, and maintains patient treatment state, while the Evaluator performs real-time quality assessment and complexity scoring to determine whether human review is required.
+
+The system processes patient interactions through a sophisticated state management approach. When a patient sends a text message, the system loads the complete conversation history and current treatment state, processes the message through the LLM agents, and outputs an updated state with any new messages to be sent. The state includes patient data, treatment phase, scheduled messages, and anchor points that track treatment progress.
+
+## LLM Selection and Optimization
+
+The team chose Claude (Anthropic) as their primary model for several key reasons. Claude provides excellent transparency and reasoning capabilities, which are crucial for healthcare applications where explainability is paramount. The model also offers robust caching mechanisms that help manage the extensive context windows required for maintaining conversation history and treatment protocols.
+
+The system includes comprehensive retry logic and error handling to manage common LLM issues such as malformed tool calls, premature conversation termination, and JSON formatting errors. When these issues occur, the system automatically detects them, removes the problematic messages, and prompts the LLM to retry the operation.
+
+## Prompt Engineering and Knowledge Management
+
+Rather than implementing a traditional RAG system, the team opted for a structured document approach using interconnected Markdown files. This decision was made because they needed the LLM to understand the complete context of treatments rather than just relevant snippets. The system maintains treatment blueprints, guidelines, and knowledge bases as structured documents that reference each other, allowing for comprehensive context loading while remaining human-readable and maintainable.
+
+The prompt engineering approach is extensive, with thousands of lines of carefully crafted prompts and guidelines. The system includes detailed instructions for handling time zones, medical terminology, patient privacy, and treatment protocols. The prompts are designed to be treatment-agnostic, allowing new treatments to be added without code changes by simply updating the blueprint documents.
+
+## Human-in-the-Loop and Confidence Scoring
+
+A critical aspect of the system is its sophisticated confidence scoring mechanism. The Evaluator agent assesses each interaction across multiple dimensions: understanding of patient intent, appropriateness of response, and complexity of the situation. The confidence score is calculated by evaluating factors such as whether the response uses approved medical language, if multiple state changes occur simultaneously, or if the patient's message is ambiguous.
+
+When confidence scores fall below a predetermined threshold (typically 75%), the system automatically escalates the interaction to human operators for review. This approach allows the system to handle routine interactions automatically while ensuring that complex or uncertain situations receive human oversight. The human reviewers can approve, modify, or provide feedback using natural language, which the system then incorporates into its response.
+
+## State Management and Treatment Progression
+
+The system maintains sophisticated state management through what they call "anchor points" - specific moments or events in the treatment timeline that the system tracks. These anchors allow patients to report their progress non-linearly, enabling the system to handle situations where patients may skip ahead or need to backtrack in their treatment.
+
+The state management approach compresses conversation history after each interaction, preserving only the essential information needed for future decisions while maintaining detailed logs in LangSmith for debugging and analysis. This compression strategy helps manage context window limits while ensuring continuity of care.
+
+## Evaluation and Quality Assurance
+
+The team implemented a comprehensive evaluation framework using a custom Python harness combined with PromptFu for LLM-as-a-judge evaluations. The evaluation system pulls data from LangSmith, preprocesses it to handle time-sensitive information, and runs automated assessments against predefined rubrics.
+
+The evaluation approach focuses on detecting completely broken behaviors rather than minor variations in wording or approach. The team acknowledges that perfect evaluation is challenging, but they prioritize catching significant errors while allowing for reasonable variation in responses. The system maintains separate evaluation datasets for happy path scenarios and edge cases.
+
+## Deployment and Scalability
+
+The system is containerized using LangGraph's built-in containerization with custom modifications and deployed using Terraform and GitHub Actions. The deployment strategy supports multiple regions to meet various compliance requirements, with the ability to deploy entirely within specific geographic boundaries when needed.
+
+The system demonstrates significant scalability improvements, with the team estimating approximately 10x capacity increase compared to the manual system. This improvement comes from automating routine interactions while elevating human operators to supervisory roles for complex cases.
+
+## Challenges and Trade-offs
+
+The implementation faced several significant challenges. Time zone handling proved particularly complex, requiring careful prompt engineering to ensure accurate scheduling of messages and reminders. The system also had to balance the need for medical accuracy with the flexibility to handle diverse patient responses and situations.
+
+Token costs represent a significant operational consideration, with individual message processing costing approximately 15-20 cents due to the extensive context and multiple agent interactions. The team implemented aggressive caching strategies to mitigate these costs while maintaining response quality.
+
+The confidence scoring system, while functional, remains more art than science. The team acknowledges that LLMs are generally poor at self-assessment, making the detection of their own errors challenging. The system compensates for this by focusing on complexity detection rather than pure accuracy assessment.
+
+## Results and Impact
+
+The system has been successfully deployed and is handling real patient interactions, demonstrating the viability of LLM-powered healthcare applications when properly implemented with appropriate safeguards. The 10x capacity improvement enables the client to serve significantly more patients while maintaining or improving care quality.
+
+The flexible blueprint system allows for rapid development of new treatments without code changes, as demonstrated by the team's creation of an Ozempic treatment protocol in a matter of hours using AI assistance. This capability represents a significant advancement in healthcare system adaptability.
+
+## Technical Lessons and Best Practices
+
+The case study highlights several important LLMOps best practices for healthcare applications. The importance of explainability and transparency in AI decision-making proved crucial for gaining stakeholder trust and meeting regulatory requirements. The hybrid human-in-the-loop approach successfully balances automation benefits with safety requirements.
+
+The team's approach to prompt engineering, focusing on treatment-agnostic guidelines rather than hard-coded logic, demonstrates how to build flexible systems that can adapt to new requirements without extensive redevelopment. The structured document approach for knowledge management provides a middle ground between fully automated RAG systems and rigid coded logic.
+
+The implementation also demonstrates the importance of comprehensive error handling and retry logic when deploying LLMs in production, particularly for critical applications like healthcare where system reliability is paramount.

@@ -1,0 +1,123 @@
+---
+title: "Implementing RAG for Enhanced Customer Care at Scale"
+slug: "implementing-rag-for-enhanced-customer-care-at-scale"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "678a850a710f9b4a06e1844c"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:55:41.624Z"
+  createdOn: "2025-01-17T16:27:54.429Z"
+llmopsTags:
+  - "customer-support"
+  - "healthcare"
+  - "classification"
+  - "question-answering"
+  - "rag"
+  - "embeddings"
+  - "reranking"
+  - "prompt-engineering"
+  - "semantic-search"
+  - "vector-search"
+  - "latency-optimization"
+  - "fastapi"
+  - "elasticsearch"
+  - "monitoring"
+  - "microsoft-azure"
+  - "openai"
+company: "Doctolib"
+summary: "Doctolib, a European e-health company, implemented a RAG-based system to improve their customer care services. Using GPT-4 hosted on Azure OpenAI, combined with OpenSearch as a vector database and a custom reranking system, they achieved a 20% reduction in customer care cases. The system includes comprehensive evaluation metrics through the Ragas framework, and overcame significant latency challenges to achieve response times under 5 seconds. While successful, they identified limitations with complex queries that led them to explore agentic frameworks as a next step."
+link: "https://medium.com/doctolib/part-1-from-retrieval-augmented-generation-rag-to-agents-doctolibs-journey-to-revolutionize-d34610eeb550"
+year: 2024
+seo:
+  title: "Doctolib: Implementing RAG for Enhanced Customer Care at Scale - ZenML LLMOps Database"
+  description: "Doctolib, a European e-health company, implemented a RAG-based system to improve their customer care services. Using GPT-4 hosted on Azure OpenAI, combined with OpenSearch as a vector database and a custom reranking system, they achieved a 20% reduction in customer care cases. The system includes comprehensive evaluation metrics through the Ragas framework, and overcame significant latency challenges to achieve response times under 5 seconds. While successful, they identified limitations with complex queries that led them to explore agentic frameworks as a next step."
+  canonical: "https://www.zenml.io/llmops-database/implementing-rag-for-enhanced-customer-care-at-scale"
+  ogTitle: "Doctolib: Implementing RAG for Enhanced Customer Care at Scale - ZenML LLMOps Database"
+  ogDescription: "Doctolib, a European e-health company, implemented a RAG-based system to improve their customer care services. Using GPT-4 hosted on Azure OpenAI, combined with OpenSearch as a vector database and a custom reranking system, they achieved a 20% reduction in customer care cases. The system includes comprehensive evaluation metrics through the Ragas framework, and overcame significant latency challenges to achieve response times under 5 seconds. While successful, they identified limitations with complex queries that led them to explore agentic frameworks as a next step."
+---
+
+## Overview
+
+Doctolib is a leading European e-health company founded in 2013 that provides services to healthcare professionals to improve organizational efficiency and patient experience. With a team of 40 data scientists, the company has been exploring how to leverage Large Language Models (LLMs) to enhance their internal processes, including customer care services. This case study documents their journey implementing a Retrieval-Augmented Generation (RAG) system for customer support, detailing both the technical implementation and the lessons learned along the way.
+
+The fundamental problem Doctolib faced was the limitation of traditional rule-based chatbots for customer care. These simplistic systems relied on pre-programmed scripts and couldn't adapt to users or their specific contexts, leading to suboptimal experiences. While LLMs represented a significant improvement in understanding user intent, they lacked access to Doctolib's proprietary and up-to-date information, which limited the accuracy of their responses for company-specific queries.
+
+## Technical Architecture
+
+The team implemented a RAG architecture that combines the language understanding capabilities of LLMs with dynamic access to external knowledge sources. The core components of their production system include:
+
+**LLM Selection and Hosting**: The team uses GPT-4o as their primary language model, hosted on Azure OpenAI service by Microsoft. This choice was explicitly made for security and confidentiality considerations, which is particularly important in the healthcare domain where data privacy is paramount. Using a managed service like Azure OpenAI provides enterprise-grade security controls while still leveraging state-of-the-art language model capabilities.
+
+**Vector Database**: OpenSearch serves as the vector database containing embeddings of chunked FAQ articles. The choice of OpenSearch provides both traditional search capabilities and vector similarity search, which is useful for implementing hybrid search strategies.
+
+**Knowledge Base Management**: The RAG system is grounded in FAQ articles that are updated daily. To maintain currency, the team implemented and deployed a data pipeline that retrieves up-to-date FAQ content and embeds it into the vector database on a daily basis. This automated pipeline ensures that the system's knowledge remains synchronized with the latest documentation.
+
+**Re-ranking**: The team implemented a re-ranking component to improve retrieval quality. Basic vector similarity search alone did not provide sufficient precision, so re-ranking helps filter and prioritize the most relevant documents from the initial retrieval set.
+
+## Evaluation Framework and Optimization
+
+A particularly noteworthy aspect of this case study is the rigorous approach to evaluation. The team built and deployed an evaluation tool based on the Ragas framework, which provides metrics specifically designed for RAG systems. The metrics they track include:
+
+- **Context Precision**: Measures the signal-to-noise ratio of retrieved context, helping identify whether the retrieval component is returning relevant versus irrelevant documents.
+- **Context Recall**: Assesses whether all relevant information required to answer a question was successfully retrieved.
+- **Faithfulness**: Evaluates the factual accuracy of generated answers, ensuring the LLM is grounding its responses in the retrieved context rather than hallucinating.
+- **Answer Relevancy**: Measures how relevant the generated answer is to the original question.
+
+The team explicitly notes that these RAG-specific metrics differ from classical NLP metrics like BLEU or ROUGE scores, which don't recognize semantic similarity, and even transformer-based metrics like BERTScore, which don't verify factual consistency with source documents. This demonstrates sophisticated thinking about what actually matters for production RAG systems.
+
+A critical component of their evaluation approach was the creation of annotated ground truth datasets—carefully curated "perfect answers" that serve as the benchmark for system performance. This investment in data annotation enabled systematic experimentation and optimization.
+
+The team tested multiple approaches to improve their baseline RAG system, including hybrid search strategies, various prompt engineering techniques, LLM parameter tuning, different chunking methods, embedding model selection and fine-tuning, and multiple reranking approaches. This systematic experimentation methodology is a hallmark of mature LLMOps practices.
+
+## Latency Optimization
+
+One of the most significant production challenges the team faced was latency. The initial system took approximately 1 minute to respond—far too slow for acceptable user experience in a customer support context. Through focused optimization efforts, they reduced this to under 5 seconds, a 12x improvement.
+
+The strategies employed for latency reduction included:
+- Code optimization at the application level
+- Implementation of Provisioned Throughput Units (PTUs) to guarantee consistent throughput from the Azure OpenAI service
+- Testing smaller models as alternatives
+- Implementing streaming for the generation phase, which provides progressive response delivery even when total generation time remains significant
+
+This journey from 1 minute to under 5 seconds illustrates a common challenge in production LLM deployments: the gap between what works in development versus what provides acceptable user experience in production.
+
+## User Experience Considerations
+
+The team collaborated closely with designers to refine the user experience, recognizing that UX is critical to AI product success and adoption. Through iterative design work, they identified two key insights:
+
+**Query Classification**: To reduce frustration from the system being unable to answer queries, the team developed a machine learning classifier to predict whether their RAG system could successfully answer a given user query. Queries predicted to be unanswerable could be routed directly to human agents instead of providing a poor automated response. While this reduced the system's reach, it significantly improved precision and user satisfaction—a classic precision-recall tradeoff applied thoughtfully.
+
+**Latency Awareness**: The UX iterations reinforced the importance of response speed, driving the latency optimization work described above.
+
+## Results and Impact
+
+The production RAG system achieved a 20% reduction in customer care case deflection. This means that one-fifth of cases that previously required human agent intervention could now be handled by the automated system, freeing customer care agents to focus on more complex issues that genuinely require human judgment and expertise.
+
+## Acknowledged Limitations and Future Directions
+
+The team is transparent about the limitations of their current RAG approach:
+
+- The system struggles with complex user queries that go beyond simple FAQ lookups
+- It cannot resolve issues that require actions beyond providing descriptive answers
+- The user experience doesn't support seamless, multi-turn conversations
+
+These limitations have led the team to explore agentic frameworks as a potential evolution. Agentic architectures add intelligence through LLM-based agents that can perform actions like fetching data, running functions, or executing API calls. They can better understand and enrich user questions while also enabling back-and-forth interaction with users. The team positions agents as potentially more reliable and scalable than rule-based systems while being more robust to natural language variation through their ability to understand unstructured data.
+
+## Key LLMOps Takeaways
+
+This case study offers several practical lessons for teams implementing production LLM systems:
+
+The importance of proper evaluation frameworks cannot be overstated. The team's investment in Ragas-based evaluation with ground truth annotations enabled systematic optimization rather than guesswork. Traditional NLP metrics are insufficient for RAG systems; purpose-built metrics that account for retrieval quality and factual grounding are essential.
+
+Data pipeline automation is critical for RAG systems grounded in dynamic content. The daily pipeline to refresh FAQ embeddings ensures the system doesn't become stale.
+
+Security and compliance considerations drove architectural decisions, particularly the choice of Azure OpenAI for model hosting. In healthcare and other regulated industries, these concerns cannot be afterthoughts.
+
+Latency optimization is often underestimated. A 12x improvement (from 60 seconds to under 5 seconds) was necessary to achieve acceptable UX, requiring multiple complementary strategies.
+
+Intelligent query routing through ML classification can dramatically improve user satisfaction by acknowledging system limitations rather than providing poor responses.
+
+Finally, this case study represents a realistic, iterative journey rather than a one-time implementation. The team has been transparent about starting with a basic RAG architecture and progressively adding components like re-ranking, classifiers, and optimizations as they encountered production challenges. This incremental approach to production ML/AI systems reflects mature engineering practices.

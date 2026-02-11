@@ -1,0 +1,152 @@
+---
+title: "Revenue Intelligence Platform with Ambient AI Agents"
+slug: "revenue-intelligence-platform-with-ambient-ai-agents"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "683d7b470588c42c22481e20"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:10:32.348Z"
+  createdOn: "2025-06-02T10:21:59.541Z"
+llmopsTags:
+  - "document-processing"
+  - "data-analysis"
+  - "structured-output"
+  - "unstructured-data"
+  - "high-stakes-application"
+  - "regulatory-compliance"
+  - "rag"
+  - "embeddings"
+  - "prompt-engineering"
+  - "semantic-search"
+  - "vector-search"
+  - "multi-agent-systems"
+  - "agent-based"
+  - "human-in-the-loop"
+  - "chunking"
+  - "system-prompts"
+  - "langchain"
+  - "postgresql"
+  - "sqlite"
+  - "redis"
+  - "cache"
+  - "elasticsearch"
+  - "fastapi"
+  - "monitoring"
+  - "api-gateway"
+  - "microservices"
+  - "cicd"
+  - "orchestration"
+  - "continuous-deployment"
+  - "continuous-integration"
+  - "open-source"
+  - "documentation"
+  - "security"
+  - "compliance"
+  - "guardrails"
+  - "reliability"
+  - "scalability"
+  - "openai"
+  - "anthropic"
+  - "google-gcp"
+  - "microsoft-azure"
+company: "Tabs"
+summary: "Tabs, a vertical AI company in the finance space, has built a revenue intelligence platform for B2B companies that uses ambient AI agents to automate financial workflows. The company extracts information from sales contracts to create a \"commercial graph\" and deploys AI agents that work autonomously in the background to handle billing, collections, and reporting tasks. Their approach moves beyond traditional guided AI experiences toward fully ambient agents that monitor communications and trigger actions automatically, with the goal of creating \"beautiful operational software that no one ever has to go into.\""
+link: "https://www.youtube.com/watch?v=oQM-8v-hJjA"
+year: 2025
+seo:
+  title: "Tabs: Revenue Intelligence Platform with Ambient AI Agents - ZenML LLMOps Database"
+  description: "Tabs, a vertical AI company in the finance space, has built a revenue intelligence platform for B2B companies that uses ambient AI agents to automate financial workflows. The company extracts information from sales contracts to create a \"commercial graph\" and deploys AI agents that work autonomously in the background to handle billing, collections, and reporting tasks. Their approach moves beyond traditional guided AI experiences toward fully ambient agents that monitor communications and trigger actions automatically, with the goal of creating \"beautiful operational software that no one ever has to go into.\""
+  canonical: "https://www.zenml.io/llmops-database/revenue-intelligence-platform-with-ambient-ai-agents"
+  ogTitle: "Tabs: Revenue Intelligence Platform with Ambient AI Agents - ZenML LLMOps Database"
+  ogDescription: "Tabs, a vertical AI company in the finance space, has built a revenue intelligence platform for B2B companies that uses ambient AI agents to automate financial workflows. The company extracts information from sales contracts to create a \"commercial graph\" and deploys AI agents that work autonomously in the background to handle billing, collections, and reporting tasks. Their approach moves beyond traditional guided AI experiences toward fully ambient agents that monitor communications and trigger actions automatically, with the goal of creating \"beautiful operational software that no one ever has to go into.\""
+---
+
+## Overview
+
+This case study emerges from a fireside chat between Harrison Chase (co-founder and CEO of LangChain) and Deepo (CTO and co-founder of Tabs). Tabs is a vertical AI company focused on revenue intelligence for B2B companies, specifically targeting the finance operations around billing, collections, and revenue reporting. The conversation provides insight into how Tabs is building and deploying LLM-powered agents in production for finance automation, with particular emphasis on the concept of "ambient agents" that operate in the background rather than through traditional chat interfaces.
+
+Tabs was founded in December 2022, coinciding with the ChatGPT release. The founding team initially spent three months conducting CFO interviews before writing any code, which led them to pivot toward a more general revenue intelligence platform. This customer discovery approach informed their understanding that document information extraction would become commoditized, leading them to focus on building domain-specific value on top of extraction capabilities.
+
+## The Commercial Graph Architecture
+
+A central concept in Tabs' approach is what they call the "commercial graph" - a structured representation of the merchant-customer relationship that can power intelligent workflows. This is analogous to Rippling's "employee graph" for HR or Ramp's "vendor graph" for expenses. The commercial graph is designed to be hydrated with all possible information around the merchant and customer relationship, including:
+
+- Contract data and terms
+- Customer sentiment analysis
+- Usage data
+- Historical communications
+- Changes and amendments to agreements
+- Behavioral patterns
+
+The company acknowledges that hydrating this graph with comprehensive data creates a significant information retrieval challenge. As Deepo notes, they are currently focused on gathering as much data as possible, even if some of it proves irrelevant in the long run, because the harder problem is figuring out what information is most relevant to retrieve for any given agent task.
+
+## Evolution of Agent Experiences
+
+Tabs describes a clear progression in their approach to building LLM-powered features:
+
+The first phase involved traditional software engineering for approximately a year and a half, building the operational software foundation. The second phase introduced what they call "guided AI experiences" - insight-driven features that operate as co-pilots where the human operator remains responsible for completing tasks. The third phase, which they are actively working toward, is fully agentic experiences where agents proactively take action or request permission to do so.
+
+This progression reflects a broader industry pattern where companies are attempting to "vault over" the guided experience step directly into agents, rather than building extensive analytics and insight layers first.
+
+## Ambient Agents vs. Background Agents
+
+The conversation distinguishes between "background agents" and "ambient agents." Background agents are asynchronous, long-running processes that a human explicitly kicks off (like OpenAI's Codex, Google's Jules, or Cursor's background features). Ambient agents, by contrast, are triggered by events rather than human commands - they listen to communication streams and take action based on what they observe.
+
+Tabs is specifically building toward ambient agents that monitor email communication between companies and their customers, automatically kicking off workflows based on incoming messages. As Deepo explains, the shift from background to ambient happens when "there will be some email communication from your customer and rather than you saying 'hey agent go process this' it will just do it automatically."
+
+Notably, Tabs has deliberately avoided building a chat interface for their agentic experiences. Everything is designed to work ambiently, with agents communicating through existing modes of communication like Slack or email. This design choice reflects their vision that the end state is "beautiful operational software that no one ever has to go into."
+
+## User Interface and Human-in-the-Loop Design
+
+The conversation reveals interesting decisions about how agents interface with humans in production:
+
+For communication and approval, agents send drafts and requests through Slack, mimicking how a human would ask a colleague to review an email before sending. This leverages familiar interaction patterns rather than requiring users to learn new interfaces.
+
+For audit trails and task management, Tabs is building toward a model similar to Linear's ticketing system, where agents can be assigned tasks and their work can be tracked through a collaborative interface. This moves away from traditional read-only audit logs toward more interactive environments where humans can leave comments and communicate with agents.
+
+The company is building what they call an "agent inbox" that serves both for task management and as an interaction point with agents. This reflects the broader industry discussion around whether agents need their own specialized interfaces or can operate within existing human communication tools.
+
+## Challenges in Production
+
+Several key challenges emerge from the discussion about running agents in production:
+
+**Information Retrieval**: The hardest problem identified is getting relevant information into the agent for each specific task. Even with a well-hydrated knowledge graph, determining what information is most important for a particular action remains difficult. This is described as inherently domain-specific - what matters for finance automation differs from other verticals.
+
+**Structuring Unstructured Data**: B2B enterprises contain vast amounts of unstructured data - customer communications, contracts, usage data, sentiment signals - that needs to be structured and made retrievable. The company acknowledges this is a significant ongoing effort.
+
+**Memory and Learning**: A key aspiration is enabling agents to learn from human feedback so they don't repeatedly make the same mistakes. Currently, memory is on the future roadmap rather than fully implemented. The approach being considered is to put learned information back into the graph and improve retrieval to surface it for future runs.
+
+The conversation notes that human-in-the-loop is important not just for trust and accuracy, but specifically because that's how agents learn. Without interaction points, there's no feedback mechanism for improvement.
+
+## Moats and Competitive Advantage
+
+The discussion suggests several potential moats for vertical AI companies:
+
+The commercial graph itself represents accumulated structured data about customer relationships that would be difficult for competitors to replicate. Domain-specific workflows built on top of this data add another layer of differentiation. Memory and learning over time - understanding how each enterprise's CFO wants emails written, for example - could become a significant advantage if properly implemented.
+
+There's some skepticism expressed about general-purpose memory (like ChatGPT's memory feature), with both speakers noting it hasn't significantly improved their personal experience. However, they agree that memory in a vertical, specific context with clear guardrails around what to remember is more likely to be valuable.
+
+## Production Philosophy
+
+Several principles emerge about deploying agents in finance contexts:
+
+Finance professionals face personal accountability when numbers are wrong, which means they need clear places to explicitly approve or reject agent actions. This drives the design toward explicit approval mechanisms rather than fully autonomous operation.
+
+The vision is for lean finance teams (a CFO, VP of Finance, and perhaps a few operators for large companies) supported by multiple parallel agent threads handling tactical work. Rather than prioritizing which tasks to tackle, the goal is to scale agents to handle everything in parallel, with gates only at points of genuine ambiguity or dependency.
+
+Month-end close processes represent an example of inherent dependencies where work must proceed in sequence - you can't close the books until invoices are resolved. These bottlenecks remain even with agentic assistance.
+
+## Current State and Future Direction
+
+Tabs acknowledges they are still in early stages of their agentic journey, focusing on:
+
+- Hydrating the commercial graph comprehensively
+- Building first versions of information retrieval for agents
+- Developing core functionality that demonstrates trending in the right direction for customers
+
+The memory and learning layer is explicitly on the future roadmap rather than currently implemented. The company is transparent that customers today are looking to see directional progress rather than fully autonomous systems.
+
+The end-state vision described is ambient agents that are onboarded similarly to offshore billing specialists, communicating primarily through Slack or Teams, handling all tactical operations while human experts focus on strategic decisions. A subsequent phase would move agents up the value chain to generate insights, board decks, and strategic reporting.

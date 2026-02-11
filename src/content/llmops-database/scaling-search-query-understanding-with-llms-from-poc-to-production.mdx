@@ -1,0 +1,104 @@
+---
+title: "Scaling Search Query Understanding with LLMs: From POC to Production"
+slug: "scaling-search-query-understanding-with-llms-from-poc-to-production"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "67a9aa9e739609784d266ebf"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:00:07.287Z"
+  createdOn: "2025-02-10T07:28:30.118Z"
+llmopsTags:
+  - "question-answering"
+  - "classification"
+  - "structured-output"
+  - "realtime-application"
+  - "rag"
+  - "fine-tuning"
+  - "prompt-engineering"
+  - "few-shot"
+  - "semantic-search"
+  - "latency-optimization"
+  - "cost-optimization"
+  - "chunking"
+  - "databases"
+  - "cache"
+  - "openai"
+  - "microsoft-azure"
+company: "Yelp"
+summary: "Yelp implemented LLMs to enhance their search query understanding capabilities, focusing on query segmentation and review highlights. They followed a systematic approach from ideation to production, using a combination of GPT-4 for initial development, creating fine-tuned smaller models for scale, and implementing caching strategies for head queries. The solution successfully improved search relevance and user engagement, while managing costs and latency through careful architectural decisions and gradual rollout strategies."
+link: "https://engineeringblog.yelp.com/2025/02/search-query-understanding-with-LLMs.html"
+year: 2025
+seo:
+  title: "Yelp: Scaling Search Query Understanding with LLMs: From POC to Production - ZenML LLMOps Database"
+  description: "Yelp implemented LLMs to enhance their search query understanding capabilities, focusing on query segmentation and review highlights. They followed a systematic approach from ideation to production, using a combination of GPT-4 for initial development, creating fine-tuned smaller models for scale, and implementing caching strategies for head queries. The solution successfully improved search relevance and user engagement, while managing costs and latency through careful architectural decisions and gradual rollout strategies."
+  canonical: "https://www.zenml.io/llmops-database/scaling-search-query-understanding-with-llms-from-poc-to-production"
+  ogTitle: "Yelp: Scaling Search Query Understanding with LLMs: From POC to Production - ZenML LLMOps Database"
+  ogDescription: "Yelp implemented LLMs to enhance their search query understanding capabilities, focusing on query segmentation and review highlights. They followed a systematic approach from ideation to production, using a combination of GPT-4 for initial development, creating fine-tuned smaller models for scale, and implementing caching strategies for head queries. The solution successfully improved search relevance and user engagement, while managing costs and latency through careful architectural decisions and gradual rollout strategies."
+---
+
+## Summary
+
+Yelp, the local business discovery platform processing millions of daily searches, undertook a comprehensive initiative to enhance their search query understanding capabilities using Large Language Models (LLMs). This case study details their journey from initial ideation through to full-scale production deployment, providing a practical framework for integrating LLM intelligence into high-volume search systems. The work represents one of Yelp's pioneering LLM projects and has become their most refined application, establishing patterns that have influenced other LLM initiatives across the company including business summaries and their Yelp Assistant feature.
+
+## Problem Context
+
+Understanding user intent in search queries is a multifaceted challenge that involves several NLU tasks: determining whether a user is searching for a business category, a specific dish, a particular business name, or some combination thereof. Additional complexities include parsing location information, handling misspellings, understanding temporal constraints (like "open now"), and dealing with unusual phrasings that may not align well with business data. Yelp's legacy systems for these tasks were fragmented—several different systems stitched together—and often lacked the intelligence needed to provide an exceptional user experience.
+
+The case study focuses on two primary use cases that serve as running examples throughout: Query Segmentation (parsing and labeling semantic parts of queries into categories like topic, name, location, time, question, and none) and Review Highlights (generating creative phrase expansions to find relevant review snippets for display).
+
+## Formulation Phase
+
+The first step in Yelp's approach involves determining whether an LLM is appropriate for the task, defining ideal scope and output format, and assessing the feasibility of combining multiple tasks into a single prompt. This phase typically involves rapid prototyping with the most powerful available model (such as GPT-4) and creating many prompt iterations.
+
+For Query Segmentation, they discovered that LLMs excel at this type of task with flexible class customization. After several iterations, they settled on six classes: topic, name, location, time, question, and none. An important insight emerged during this phase: spell correction is not only a prerequisite for segmentation but is conceptually related enough that a sufficiently powerful model can handle both tasks in a single prompt. They added a meta tag to mark spell-corrected sections, effectively combining two previously separate systems.
+
+For Review Highlights, the challenge was teaching the LLM to generate phrase expansions that require critical reasoning about subtleties such as understanding what queries mean in Yelp's context, expanding semantically (e.g., "seafood" to "fresh fish," "salmon roe," "shrimp"), generalizing when appropriate (e.g., "vegan burritos" to "vegan options"), generating natural multi-word phrases, and understanding which phrases are likely to produce meaningful matches in actual reviews.
+
+## RAG Integration
+
+A notable aspect of Yelp's approach is their use of Retrieval Augmented Generation to enhance model decision-making. For Query Segmentation, they augment the input query text with names of businesses that have been viewed for that query. This helps the model distinguish business names from common topics, locations, and misspellings—improving both segmentation and spell correction accuracy.
+
+For Review Highlights, they enhance the raw query text with the most relevant business categories from an in-house predictive model. This helps generate more relevant phrases, especially for searches with non-obvious topics (like specific restaurant names) or ambiguous searches (like "pool" which could mean swimming or billiards).
+
+## Proof of Concept Strategy
+
+A particularly pragmatic aspect of Yelp's approach is their POC strategy that exploits the power-law distribution of query frequencies. Since a small number of queries are very popular, they can effectively cover a substantial portion of traffic by caching (pre-computing) high-end LLM responses only for "head queries" above a certain frequency threshold. This allows running meaningful experiments without incurring significant cost or latency from real-time LLM calls.
+
+For Query Segmentation, offline evaluation compared LLM-provided segmentation accuracy against their status quo system using human-labeled datasets for name match and location intent. They demonstrated that leveraging token probabilities for name tags could improve their query-to-business name matching and ranking system, and achieved online metric wins with implicit location rewrite using location tags. A concrete example shows how the query "epcot restaurants" with segmentation "{location} epcot {topic} restaurant" enabled the system to narrow the search geobox from "Orlando, FL" to the specific Epcot theme park location.
+
+For Review Highlights, offline evaluation required strong human annotators with good product, qualitative, and engineering understanding—acknowledging the subjective nature of phrase quality assessment. Online A/B experiments showed that better intent understanding led to impactful metric wins, with increased Session/Search CTR across platforms. Notably, iteration from GPT-3 to GPT-4 improved Search CTR on top of previous gains, and impact was higher for less common tail queries.
+
+## Scaling Strategy
+
+Yelp developed a multi-step process for scaling from prototype to 100% traffic coverage that addresses both cost and infrastructure challenges. This represents a model distillation approach combined with strategic caching.
+
+The first step involves iterating on prompts using expensive models (GPT-4/o1), testing against real or contrived examples, identifying errors that become teachable moments, and augmenting examples in the prompt. They developed a method for finding problematic responses by tracking query-level metrics to identify queries with nontrivial traffic where metrics are obviously worse than status quo.
+
+Next, they create a golden dataset for fine-tuning smaller models by running the GPT-4 prompt on a representative sample of input queries. The sample must be large enough to be representative but manageable for quality control, covering a diverse distribution of inputs. For newer and more complex tasks requiring logical reasoning, they have begun using o1-mini and o1-preview depending on task difficulty.
+
+Dataset quality improvement prior to fine-tuning is crucial. They attempt to isolate sets of inputs likely to have been mislabeled and target these for human re-labeling or removal—acknowledging that even GPT-4's raw output can be improved upon with careful curation.
+
+The actual fine-tuning uses a smaller model (GPT-4o-mini) that can run offline at the scale of tens of millions of queries, serving as a pre-computed cache for the bulk of traffic. Because fine-tuned query understanding models only require very short inputs and outputs, they report up to 100x savings in cost compared to using a complex GPT-4 prompt directly.
+
+Optionally, they fine-tune an even smaller model (BERT or T5) that is less expensive and fast enough for real-time inference on long-tail queries. These models are optimized for speed and efficiency, enabling rapid processing during complete rollout. The case study notes that as LLM costs and latency improve (as seen with GPT-4o-mini), real-time calls to OpenAI's fine-tuned models might become achievable in the near future.
+
+## Production Architecture
+
+For Review Highlights, after fine-tuning and validating responses on a diverse test set, they scaled to 95% of traffic by pre-computing snippet expansions using OpenAI's batch calls. Generated outputs undergo quality checking before being uploaded to query understanding datastores. Cache-based systems such as key/value databases improve retrieval latency, taking advantage of the power-law distribution of search queries.
+
+Beyond the primary use case, they leveraged the "common sense" knowledge embedded in these outputs for downstream tasks. For instance, CTR signals for relevant expanded phrases help refine ranking models, and phrases averaged over business categories serve as heuristics for highlight phrases for the remaining 5% of traffic not covered by pre-computations.
+
+## Key LLMOps Insights
+
+Several practical LLMOps lessons emerge from this case study. First, the power-law distribution of queries is a crucial enabler—caching pre-computed responses for high-frequency queries provides excellent traffic coverage with manageable compute costs. Second, combining conceptually related tasks (like spell correction and segmentation) into a single prompt can be more effective than maintaining separate systems. Third, RAG integration with domain-specific data (business names, categories) significantly improves model outputs for specialized applications.
+
+The progressive distillation approach—from GPT-4 to GPT-4o-mini to BERT/T5—represents a practical pattern for moving from prototype to production while managing costs. The emphasis on golden dataset quality, including human curation to improve upon GPT-4 outputs, acknowledges that even powerful models benefit from domain expertise.
+
+The case study also highlights the importance of closing the feedback loop through query-level metric tracking to identify problematic responses for further prompt or model improvement. Their A/B testing framework allowed them to quantify the impact of each iteration, from GPT-3 to GPT-4, providing evidence for continued investment in more sophisticated models.
+
+## Future Directions
+
+Yelp notes ongoing adaptation to new LLM capabilities, particularly for search tasks requiring complex logical reasoning where reasoning models show large quality benefits compared to previous generative models. They remain committed to their multi-step validation and gradual scaling strategy while staying responsive to advancements in the field.

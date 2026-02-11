@@ -1,0 +1,131 @@
+---
+title: "Scaling Image Generation to 100M New Users in One Week"
+slug: "scaling-image-generation-to-100m-new-users-in-one-week"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "68244a8810befff39df60ca7"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:08:12.470Z"
+  createdOn: "2025-05-14T07:47:20.731Z"
+llmopsTags:
+  - "high-stakes-application"
+  - "realtime-application"
+  - "multi-modality"
+  - "latency-optimization"
+  - "cost-optimization"
+  - "error-handling"
+  - "fallback-strategies"
+  - "fastapi"
+  - "databases"
+  - "load-balancing"
+  - "scaling"
+  - "monitoring"
+  - "reliability"
+  - "scalability"
+  - "postgresql"
+  - "redis"
+  - "openai"
+  - "microsoft-azure"
+company: "OpenAI"
+summary: "OpenAI's launch of ChatGPT Images faced unprecedented scale, attracting 100 million new users generating 700 million images in the first week. The engineering team had to rapidly adapt their synchronous image generation system to an asynchronous one while handling production load, implementing system isolation, and managing resource constraints. Despite the massive scale and technical challenges, they maintained service availability by prioritizing access over latency and successfully scaled their infrastructure."
+link: "https://newsletter.pragmaticengineer.com/p/chatgpt-images?hide_intro_popup=true"
+year: 2025
+seo:
+  title: "OpenAI: Scaling Image Generation to 100M New Users in One Week - ZenML LLMOps Database"
+  description: "OpenAI's launch of ChatGPT Images faced unprecedented scale, attracting 100 million new users generating 700 million images in the first week. The engineering team had to rapidly adapt their synchronous image generation system to an asynchronous one while handling production load, implementing system isolation, and managing resource constraints. Despite the massive scale and technical challenges, they maintained service availability by prioritizing access over latency and successfully scaled their infrastructure."
+  canonical: "https://www.zenml.io/llmops-database/scaling-image-generation-to-100m-new-users-in-one-week"
+  ogTitle: "OpenAI: Scaling Image Generation to 100M New Users in One Week - ZenML LLMOps Database"
+  ogDescription: "OpenAI's launch of ChatGPT Images faced unprecedented scale, attracting 100 million new users generating 700 million images in the first week. The engineering team had to rapidly adapt their synchronous image generation system to an asynchronous one while handling production load, implementing system isolation, and managing resource constraints. Despite the massive scale and technical challenges, they maintained service availability by prioritizing access over latency and successfully scaled their infrastructure."
+---
+
+## Overview
+
+This case study documents OpenAI's experience launching and scaling ChatGPT Images, their image generation feature built on the GPT-4o model, released in late March 2025. The launch represents one of the most dramatic scaling events in consumer AI product history, with 100 million new users signing up in the first week and 700 million images generated. The engineering team had to make significant real-time architectural changes while maintaining service availability under crushing load—a textbook example of LLMOps challenges at extreme scale.
+
+## Background and Context
+
+OpenAI had been operating ChatGPT at massive scale since its original launch in November 2022, which took 12 months to reach 100 million weekly active users. By March 2025, the team had executed dozens of major feature launches and believed they were well-prepared for any traffic event. However, ChatGPT Images proved to be "orders of magnitude larger than anything we've seen so far," according to Sulman Choudhry, Head of Engineering for ChatGPT.
+
+The initial plan was to release to paying subscribers first, then extend to free users on the same day. This gradual rollout strategy is a common LLMOps pattern, but even with paid users only, demand exceeded expectations so significantly that the free user rollout had to be delayed. When the team eventually began gradual rollout to free users on March 27th, the feature went viral in India specifically, with celebrities and politicians sharing Ghibli-style image recreations. This created a cultural moment that drove unprecedented demand, including a peak of 1 million new user signups in a single hour on day six.
+
+## Technical Architecture
+
+The image generation pipeline involves several key stages that are important to understand from an LLMOps perspective:
+
+The process begins with **image tokens**, where the text description is converted into a grid of discrete tokens that encode image content natively. This tokenization approach is consistent with how modern multimodal LLMs handle different modalities through unified token representations. A **decoder** then progressively renders these image tokens into an image through multiple passes—initially producing a blurry output that gradually sharpens into a crisp final image. Throughout this rendering process, **integrity and safety checks** run to ensure content adheres to community standards, with the ability to abort rendering if violations are detected. This is a critical LLMOps consideration: safety guardrails must be integrated into the generation pipeline itself, not applied only as post-processing.
+
+The iterative refinement feature—where users can tweak existing images with new prompts—operates by taking the existing image tokens and applying new prompts on top. While this creates a more useful product, it has significant infrastructure implications: each "tweak" requires essentially the same compute resources as a full generation, meaning highly engaged users could consume dramatically more resources than single-image users.
+
+## Technology Stack
+
+The stack is notably pragmatic and relatively simple:
+
+- **Python** serves as the primary programming language for most product code, reflecting the AI/ML ecosystem's standardization on Python
+- **FastAPI** provides the framework for building APIs quickly using standard Python type hints, enabling rapid iteration while maintaining production-readiness
+- **C** is used for highly-optimized code paths where Python's overhead would be problematic
+- **Temporal** handles asynchronous workflows and operations, providing reliable multi-step workflow execution even when individual steps crash
+
+The choice of Temporal is particularly interesting from an LLMOps perspective. Image generation is a multi-step, long-running process that can fail at various stages. Temporal's workflow orchestration model provides exactly the kind of durability and restart capability that such processes require without heavy custom infrastructure investment.
+
+## Critical Architectural Pivot: Synchronous to Asynchronous
+
+The most significant LLMOps lesson from this case study is the team's rapid pivot from synchronous to asynchronous image generation under live production load. The original design was synchronous: once an image started rendering, it had to complete in one uninterrupted flow. If the process was interrupted, there was no way to restart, and resources remained consumed for the duration.
+
+This architecture could not handle peak load by leveraging excess capacity during non-peak times—a critical limitation when facing unpredictable viral demand. On the first or second night after launch, as demand exceeded expectations, the team made a pivotal decision to build an entirely asynchronous system in parallel with the existing synchronous one.
+
+Over several days and nights, engineers implemented the asynchronous version while others simultaneously worked to keep the live service running. Once ready, the asynchronous system allowed the team to "defer" load: requests from free users could be queued when load was too high, then processed when the system had spare capacity. This enabled an explicit tradeoff of latency for availability—free users might wait longer for their images, but the system remained accessible rather than failing entirely.
+
+This architectural change happening in real-time during a launch is a remarkable LLMOps achievement. It demonstrates both the importance of having a tech stack that enables rapid changes (Python, FastAPI) and a team structure capable of parallel workstreams under pressure.
+
+## System Isolation and Reliability Engineering
+
+The viral launch created cascading effects across OpenAI's infrastructure:
+
+- **File systems** storing images hit rate limits due to the volume of image writes
+- **Databases** became overloaded from the unexpected rapid growth
+- **Authentication and onboarding systems** came close to failure from the surge of new user signups
+
+OpenAI had already maintained strict reliability standards for their API (which serves paying developers and enterprises), and many systems were already isolated from ChatGPT consumer traffic. However, some shared components—including compute clusters and database instances—had isolation work planned but not yet completed. The Images launch accelerated this work dramatically.
+
+The team decoupled non-ChatGPT systems from ChatGPT infrastructure, ensuring that most OpenAI API endpoints remained stable during the spike. This system isolation pattern is a fundamental LLMOps best practice: consumer-facing viral products should not share critical infrastructure with enterprise or API customers, who have different reliability expectations and contractual obligations.
+
+## Performance Optimization Under Pressure
+
+When compute bottlenecks emerged, the team took a dual approach: optimizing existing code while simultaneously bringing up new capacity. One specific focus was database query optimization—under pressure, engineers examined queries that were consuming excessive resources and found that many were "doing unnecessary things."
+
+This spontaneous optimization workstream formed overnight, with engineers working through the night to improve efficiency. This highlights an important LLMOps reality: during rapid scaling events, performance optimization and capacity expansion must happen in parallel. Waiting for new capacity alone would have been too slow; the system needed to do more with what it had while waiting for additional resources.
+
+## Operational Philosophy: Availability Over Latency
+
+The team operated under a clear prioritization framework: access over latency. During unexpected growth, increasing response times was the first acceptable tradeoff to maintain platform accessibility. This manifested in several ways:
+
+- Rate limits were applied and adjusted dynamically
+- Compute allocations were increased to stabilize performance
+- Once peak load passed, rate limits returned to normal and latency was brought back to acceptable levels
+
+This explicit tradeoff framework is valuable for any LLMOps team: having pre-agreed priorities for degradation modes means faster decision-making during incidents. The team didn't need to debate whether longer response times were acceptable during a spike; they had already established that availability was the priority.
+
+## Capacity and Constraint Evolution
+
+An interesting meta-observation from the case study: a year prior to this launch, ChatGPT was described as "heavily GPU constrained"—the primary bottleneck was access to sufficient GPU compute. By the time of the Images launch, OpenAI had addressed that bottleneck to the point where the new constraint was characterized as "everything constrained"—databases, file systems, authentication systems, and other infrastructure components.
+
+This evolution is typical of fast-growing AI products: initial GPU constraints give way to more traditional infrastructure bottlenecks once compute capacity is addressed. LLMOps teams should anticipate this progression and invest in infrastructure capacity across multiple dimensions, not just GPU.
+
+## Organizational and Process Insights
+
+While partly behind a paywall, the case study hints at several organizational practices that enabled the rapid response:
+
+- Infrastructure teams have their #1 focus on shipping fast
+- Roles are blurred across engineers, researchers, product managers, and designers
+- The DRI (Directly Responsible Individual) role is heavily used
+
+The ability to form spontaneous workstreams—one team keeping the site running while another rebuilds the architecture—suggests a high degree of organizational flexibility and trust. This is essential for LLMOps at scale: rigid organizational structures can slow response times during critical incidents.
+
+## Key Takeaways for LLMOps Practitioners
+
+This case study offers several lessons for teams operating LLM-based products at scale. First, designing for async from the start is valuable—synchronous-only architectures limit options during high load. Building asynchronous capabilities into image and content generation pipelines from the beginning provides critical flexibility. Second, system isolation is not optional; shared infrastructure between viral consumer products and enterprise/API services creates unacceptable risk. Third, explicit tradeoff hierarchies matter—knowing in advance that availability trumps latency enables faster decisions during incidents. Fourth, parallel workstreams during incidents can be more effective than sequential approaches, with some engineers stabilizing while others build fixes. Fifth, performance optimization and capacity expansion should happen simultaneously since neither alone may be fast enough. Finally, monitoring and load testing investments paid off—the team avoided major outages partly due to "months spent isolating systems, doing regular load testing, and ongoing efforts to monitor and alert for reliability."
+
+The ChatGPT Images launch represents both the promise and the challenge of LLMOps at frontier scale: products can grow faster than any traditional application, and teams must be prepared to adapt their architectures in real-time while maintaining service for millions of users.

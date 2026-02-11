@@ -1,0 +1,141 @@
+---
+title: "State of Production Machine Learning and LLMOps in 2024"
+slug: "state-of-production-machine-learning-and-llmops-in-2024"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f414b58cd3167c1a5c1a2"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:42:09.912Z"
+  createdOn: "2024-11-21T14:18:51.627Z"
+llmopsTags:
+  - "amazon-aws"
+  - "compliance"
+  - "cost-optimization"
+  - "devops"
+  - "documentation"
+  - "error-handling"
+  - "google-gcp"
+  - "guardrails"
+  - "high-stakes-application"
+  - "human-in-the-loop"
+  - "latency-optimization"
+  - "microsoft-azure"
+  - "model-optimization"
+  - "monitoring"
+  - "orchestration"
+  - "realtime-application"
+  - "regulatory-compliance"
+  - "reliability"
+  - "scalability"
+  - "scaling"
+  - "security"
+company: "Zalando"
+summary: "A comprehensive overview of the current state and challenges of production machine learning and LLMOps, covering key areas including motivations, industry trends, technological developments, and organizational changes. The presentation highlights the evolution from model-centric to data-centric approaches, the importance of metadata management, and the growing focus on security and monitoring in ML systems."
+link: "https://www.youtube.com/watch?v=6s9Y5fgP3dg"
+year: 2024
+seo:
+  title: "Zalando: State of Production Machine Learning and LLMOps in 2024 - ZenML LLMOps Database"
+  description: "A comprehensive overview of the current state and challenges of production machine learning and LLMOps, covering key areas including motivations, industry trends, technological developments, and organizational changes. The presentation highlights the evolution from model-centric to data-centric approaches, the importance of metadata management, and the growing focus on security and monitoring in ML systems."
+  canonical: "https://www.zenml.io/llmops-database/state-of-production-machine-learning-and-llmops-in-2024"
+  ogTitle: "Zalando: State of Production Machine Learning and LLMOps in 2024 - ZenML LLMOps Database"
+  ogDescription: "A comprehensive overview of the current state and challenges of production machine learning and LLMOps, covering key areas including motivations, industry trends, technological developments, and organizational changes. The presentation highlights the evolution from model-centric to data-centric approaches, the importance of metadata management, and the growing focus on security and monitoring in ML systems."
+---
+
+## Overview
+
+This case study is derived from a keynote presentation by Alejandro Saucedo, who serves as Director of Engineering Science and Product at Zalando, scientific adviser at The Institute for Ethical AI, and member at large at the ACM. The presentation, titled "The State of Production Machine Learning in 2024," provides a broad industry-level perspective on how organizations are tackling the challenges of deploying and operating machine learning systems in production, with particular attention to how LLMs fit into this landscape.
+
+The talk is notable for its emphasis that LLMs have not fundamentally changed the challenges of production ML but rather have accelerated and made more visible the existing complexities. This is a valuable perspective that counters some of the hype around LLMs requiring entirely new operational paradigms. The speaker draws from his experience at Zalando and involvement in regulatory efforts (including contributions to UK AI regulation) to provide both practical and policy-oriented insights.
+
+## Core Challenges of Production Machine Learning
+
+The presentation begins by emphasizing a fundamental principle that resonates throughout: the lifecycle of a machine learning model begins once it is trained, not when training completes. This perspective shapes everything that follows about production considerations.
+
+The key challenges identified include specialized hardware requirements (particularly GPUs, which have become increasingly prominent), complex data flows that span both training and inference pipelines, compliance requirements that vary by use case, and the critical need for reproducibility of components. What makes production ML particularly challenging compared to traditional software infrastructure includes considerations around bias, traditional outages caused by ML-specific contexts, handling of personal or sensitive data (including data that might be exposed through models), and cybersecurity elements that span the entire ML pipeline.
+
+A crucial point made is that "the impact of a bad solution can be worse than no solution at all." This principle should guide practitioners when deciding whether to deploy ML systems and how much overhead is appropriate for different use cases.
+
+## The Role of LLMs in Understanding Production ML
+
+One of the most insightful observations in the presentation is that LLMs provide excellent intuition for understanding the challenges of production ML more broadly. The speaker argues that LLMs make visible the complex architectures, multiple component interactions, and sophisticated data flows that have always been part of production ML systems but were perhaps less obvious with simpler models.
+
+The example given is Facebook's search retrieval system, which contains both offline and online components with multiple different parts, each requiring its own monitoring considerations. This complexity is not unique to LLMs but is now more apparent because LLM-based systems often require similar architectural sophistication from the start.
+
+## Technological Trends
+
+### Frameworks and Tooling
+
+The presentation acknowledges the explosion of MLOps tools available today, noting that there are now more than a dozen tools to choose for any given area. To navigate this complexity, the speaker recommends resources like the "awesome MLOps" list, which has been curated for five years and covers tools across privacy engineering, feature engineering, visualization, and more.
+
+The anatomy of production ML is described as comprising training data, model artifacts, and inference data, with experimentation connecting training data to artifacts, and deployment/serving connecting artifacts to inference. Critical additions include monitoring (drift detection, explainability), and the feedback loop that connects inference data back to training.
+
+### Architecture Considerations
+
+A significant trend discussed is the transition from model-centric to data-centric thinking. The presentation introduces the concept of metadata interoperability as a key architectural challenge: as organizations move from productionizing individual models to productionizing ML systems (pipelines of multiple models deployed across different environments), traditional artifact stores become insufficient.
+
+The speaker references the "my mlops" project as a useful visualization tool that helps organizations reason about architectural blueprints by showing how different tools can be combined. Organizations must decide between heterogeneous best-of-breed open-source combinations versus end-to-end single-provider solutions.
+
+The relationship mapping has evolved from simple data-to-model relationships to complex multi-dimensional relationships where the same model artifact might be deployed to multiple environments, and systems might combine models from different contexts. This introduces a fundamentally new paradigm that requires thinking beyond traditional artifact stores.
+
+### Monitoring and Observability
+
+The monitoring section emphasizes that production ML monitoring goes beyond traditional software metrics. Key areas include:
+
+- Statistical performance metrics (accuracy, precision, recall)
+- Aggregate insights with the ability to slice and dice production model performance
+- Explainability techniques for understanding model decisions
+- Observability by design, introducing actionable insights through alerting
+- Automated SLOs covering request rates, throughput, GPU usage, and other metrics
+- Progressive rollouts that promote models once they meet SLO thresholds
+- Advanced techniques like drift detection and outlier detection
+
+The emphasis on "observability by design" rather than reactive dashboard monitoring is particularly relevant for LLM deployments, where understanding model behavior is crucial but challenging.
+
+### Security Considerations
+
+Security is identified as a growing area of importance, with vulnerabilities potentially existing throughout the entire ML pipeline: data processing, model training, model serving, and the metadata layer. The speaker mentions chairing a working group at the Linux Foundation focused on machine learning and MLOps security, indicating this is an area requiring active community attention.
+
+## Organizational Trends
+
+### From SDLC to MDLC (Machine Learning Development Lifecycle)
+
+A key organizational insight is that traditional software development lifecycle approaches cannot be directly copied to ML. While traditional SDLC has rigid steps (code, test, ops approval, deploy, monitor), ML requires more flexibility because different use cases have different requirements. Some may require risk assessments or ethics board approvals, while others may need rapid iteration for experiments. The governance and operations of production ML must be adapted rather than transplanted from software practices.
+
+### Convergence of MLOps and DataOps
+
+The presentation identifies an important trend: MLOps and DataOps are converging. DataOps, with concepts like data mesh architectures, enables business units to make nimble use of their datasets. This is now colliding with ML operationalization requirements, creating new frameworks needed for compliance at scale, not just for personal data but for tracing usage of different datasets across ML systems.
+
+### From Projects to Products
+
+A significant mindset shift is occurring from treating ML as projects (with defined endpoints) to treating ML as products (with ongoing lifecycles). Since models need maintenance, new versions, and capability extensions, product thinking methodologies are becoming more relevant. This includes adopting team structures like Spotify's squad model, bringing together not just ML practitioners but also UX researchers, full-stack engineers, and domain experts into cross-functional teams.
+
+Since the introduction of LLMs, the speaker has observed accelerated adoption of product team thinking, with increasing numbers of designers and UX researchers joining what were previously purely technical ML teams. This creative and design dimension is seen as driving innovation that marries cutting-edge technology with domain expertise.
+
+### Team Composition Evolution
+
+The presentation provides a framework for thinking about team evolution as ML maturity increases:
+
+- Early stages with few models may require only data scientists
+- As model count increases, machine learning engineers become necessary
+- At scale, MLOps engineers are needed to maintain the ecosystem
+
+Similarly, automation, standardization, control, security, and observability should increase proportionally with MLOps requirements. Organizations should not front-load all complexity but should scale governance with actual needs.
+
+## Risk Assessment and Deployment Decisions
+
+The Q&A portion reveals practical guidance on deployment decisions. The speaker emphasizes "proportionate risk" assessment: high-risk applications affecting users' finances, livelihoods, or organizational reputation require closer alignment with domain experts and more stringent SLO setting. Lower-risk applications can be sandboxed to smaller user groups or mitigated through human-in-the-loop approaches.
+
+Importantly, if the required overhead seems excessive for a particular use case, the conclusion may be that advanced AI simply isn't appropriate for that context. The speaker cites examples of banks and hedge funds still using linear models because explainability requirements or compliance demands make more complex models infeasible.
+
+## Regulatory and Ethical Considerations
+
+The speaker traces an evolution from AI ethics discussions (2018) to regulatory frameworks (2020 onward) to software frameworks and libraries that can actually enforce higher-level principles. The EU AI Act is mentioned as entering enforcement. A key insight is that without underlying infrastructure set up to enforce principles, high-level ethical discussions remain ineffective.
+
+The accountability framework extends from individual practitioners (using best practices and relevant tools) to team level (cross-functional skill sets, domain experts at touch points) to organizational level (governing structures, aligned objectives). Open-source frameworks like those from Hugging Face are becoming critical infrastructure for responsible ML development.
+
+## Conclusion
+
+The presentation concludes with a reminder that not everything needs to be solved with AI, and that practitioners have growing responsibility as critical infrastructure increasingly depends on ML systems. Regardless of abstractions or LLM capabilities, the impact of these systems is ultimately human, and this should remain central to how practitioners approach production ML challenges.

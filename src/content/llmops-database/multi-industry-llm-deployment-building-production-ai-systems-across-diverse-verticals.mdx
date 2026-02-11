@@ -1,0 +1,153 @@
+---
+title: "Multi-Industry LLM Deployment: Building Production AI Systems Across Diverse Verticals"
+slug: "multi-industry-llm-deployment-building-production-ai-systems-across-diverse-verticals"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "68811a9073473aca2f16c977"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:16:24.731Z"
+  createdOn: "2025-07-23T17:23:28.852Z"
+llmopsTags:
+  - "healthcare"
+  - "document-processing"
+  - "content-moderation"
+  - "classification"
+  - "chatbot"
+  - "data-analysis"
+  - "visualization"
+  - "caption-generation"
+  - "embeddings"
+  - "prompt-engineering"
+  - "semantic-search"
+  - "vector-search"
+  - "model-optimization"
+  - "cost-optimization"
+  - "chunking"
+  - "system-prompts"
+  - "evals"
+  - "kubernetes"
+  - "docker"
+  - "monitoring"
+  - "databases"
+  - "microservices"
+  - "scaling"
+  - "serverless"
+  - "devops"
+  - "orchestration"
+  - "open-source"
+  - "security"
+  - "guardrails"
+  - "reliability"
+  - "scalability"
+  - "fastapi"
+  - "postgresql"
+  - "redis"
+  - "cache"
+  - "elasticsearch"
+  - "anthropic"
+  - "openai"
+  - "meta"
+  - "amazon-aws"
+  - "microsoft-azure"
+company: "Caylent"
+summary: "Caylent, a development consultancy, shares their extensive experience building production LLM systems across multiple industries including environmental management, sports media, healthcare, and logistics. The presentation outlines their comprehensive approach to LLMOps, emphasizing the importance of proper evaluation frameworks, prompt engineering over fine-tuning, understanding user context, and managing inference economics. Through various client projects ranging from multimodal video search to intelligent document processing, they demonstrate key lessons learned about deploying reliable AI systems at scale, highlighting that generative AI is not a \"magical pill\" but requires careful engineering around inputs, outputs, evaluation, and user experience."
+link: "https://www.youtube.com/watch?v=vW8wLsb3Nnc"
+year: 2025
+seo:
+  title: "Caylent: Multi-Industry LLM Deployment: Building Production AI Systems Across Diverse Verticals - ZenML LLMOps Database"
+  description: "Caylent, a development consultancy, shares their extensive experience building production LLM systems across multiple industries including environmental management, sports media, healthcare, and logistics. The presentation outlines their comprehensive approach to LLMOps, emphasizing the importance of proper evaluation frameworks, prompt engineering over fine-tuning, understanding user context, and managing inference economics. Through various client projects ranging from multimodal video search to intelligent document processing, they demonstrate key lessons learned about deploying reliable AI systems at scale, highlighting that generative AI is not a \"magical pill\" but requires careful engineering around inputs, outputs, evaluation, and user experience."
+  canonical: "https://www.zenml.io/llmops-database/multi-industry-llm-deployment-building-production-ai-systems-across-diverse-verticals"
+  ogTitle: "Caylent: Multi-Industry LLM Deployment: Building Production AI Systems Across Diverse Verticals - ZenML LLMOps Database"
+  ogDescription: "Caylent, a development consultancy, shares their extensive experience building production LLM systems across multiple industries including environmental management, sports media, healthcare, and logistics. The presentation outlines their comprehensive approach to LLMOps, emphasizing the importance of proper evaluation frameworks, prompt engineering over fine-tuning, understanding user context, and managing inference economics. Through various client projects ranging from multimodal video search to intelligent document processing, they demonstrate key lessons learned about deploying reliable AI systems at scale, highlighting that generative AI is not a \"magical pill\" but requires careful engineering around inputs, outputs, evaluation, and user experience."
+---
+
+This case study presents insights from Caylent, a development consultancy that has built LLM-powered applications for hundreds of customers across various industries. The speaker, Randall (with background at NASA, MongoDB, SpaceX, and AWS), shares practical lessons learned from deploying generative AI systems in production environments.
+
+**Company Overview and Philosophy**
+
+Caylent positions itself as a company of "passionate autodidacts with a little bit of product ADHD" who build custom solutions for clients ranging from Fortune 500 companies to startups. Their experience spans multiple sectors, and they emphasize a pragmatic approach to AI implementation, cautioning that "generative AI is not the magical pill that solves everything." This realistic perspective sets the tone for their LLMOps approach, which focuses on understanding specific use cases rather than applying generic AI solutions.
+
+**Key Client Use Cases**
+
+The presentation highlights several significant production deployments that demonstrate different aspects of LLMOps:
+
+*Brainbox AI Environmental Management:* Caylent built an AI agent for managing HVAC systems across tens of thousands of buildings in North America. This system helps with decarbonization of the built environment and was recognized in Time's 100 best inventions for its greenhouse emission reduction capabilities. The project demonstrates how LLMs can be applied to environmental sustainability challenges at scale.
+
+*Nature Footage Multimodal Search System:* This project showcases advanced multimodal capabilities using AWS Nova Pro models for video understanding and Titan v2 multimodal embeddings. The system processes stock footage of wildlife, generating timestamps, captions, and searchable features. The technical architecture involves frame sampling, pooling embeddings across video frames, and storing results in Elasticsearch. This represents sophisticated multimodal LLMOps where visual and textual understanding must work together seamlessly.
+
+*Sports Analytics and Real-Time Processing:* For an unnamed sports client, Caylent built a system that processes both real-time and archival sports footage. The architecture splits data into audio and video streams, generates transcriptions, and creates embeddings from both modalities. An interesting technical insight shared is using audio amplitude spectrograms to detect audience cheering as a simple method for identifying highlights. The system identifies specific behaviors with confidence scores and sends real-time notifications to users about events like three-pointers.
+
+*Hospital Voice Bot Pivot:* Originally designed as a voice interface for nurses, this project required pivoting to a traditional chat interface after discovering that hospital environments are too noisy for effective voice transcription. This example illustrates the importance of understanding end-user contexts and environmental constraints in LLMOps deployments.
+
+*Logistics Document Processing:* Working with a large logistics management company, Caylent implemented intelligent document processing for receipts and bills of lading. The system uses a custom classifier before sending documents to generative AI models, achieving better performance than human annotators in processing speed and accuracy.
+
+**Technical Architecture and Infrastructure**
+
+The presentation outlines Caylent's preferred AWS-based architecture for LLMOps deployments. At the foundation, they utilize AWS Bedrock and SageMaker, though they note SageMaker comes with a compute premium and alternatives like EKS or EC2 can be used. They highlight AWS's custom silicon (Trainium and Inferentia) which provides approximately 60% price-performance improvement over NVIDIA GPUs, though with limitations in high-bandwidth memory compared to devices like H200s.
+
+For vector storage and search, they express a preference for PostgreSQL with pgvector, praising its balance of performance and cost-effectiveness. They also utilize OpenSearch and mention Redis MemoryDB for extremely fast but expensive in-memory vector search. The choice between these depends on specific performance requirements and budget constraints.
+
+**Prompt Engineering and Model Management**
+
+A significant emphasis is placed on prompt engineering over fine-tuning. The speaker notes that as models have improved (particularly citing the progression from Claude 3.5 to Claude 3.7 to Claude 4), prompt engineering has become "unreasonably effective." They observed zero regressions when moving from Claude 3.7 to Claude 4, describing it as a "drop-in replacement" that was "faster, better, cheaper" across virtually every use case.
+
+The presentation emphasizes the importance of proper prompt structure, including strategic placement of dynamic information (like current date) at the bottom of prompts to maintain effective caching. They criticize the common practice of creating tools for simple operations like "get current date" when this can be handled more efficiently through direct string formatting in prompts.
+
+**Evaluation and Testing Framework**
+
+Caylent advocates for a pragmatic approach to evaluation that begins with "vibe checks" - initial manual testing that forms the foundation for more formal evaluation sets. They emphasize that metrics don't need to be complex scoring systems; simple boolean success/failure evaluations can be more practical and easier to implement than attempting to assign numerical scores.
+
+The evaluation philosophy centers on proving system robustness rather than relying on one-off successes with particular prompts. This approach helps distinguish between systems that appear to work due to cherry-picked examples versus those that perform consistently across diverse inputs.
+
+**Context Management and Optimization**
+
+Context management is identified as a key differentiator in LLMOps implementations. The ability to inject relevant user context (browsing history, current page, user preferences) can provide significant competitive advantages over systems lacking such contextual awareness. However, this must be balanced with context optimization - determining the minimum viable context needed for correct inference while removing irrelevant information that could confuse the model.
+
+**Cost Management and Economics**
+
+The presentation emphasizes the critical importance of understanding inference economics. Various cost optimization strategies are discussed, including prompt caching, tool usage optimization, and batch processing. AWS Bedrock's batch processing is highlighted as providing 50% cost reduction across all model inferences.
+
+The speaker warns about the expense of using LLMs for mathematical calculations, describing it as "the most expensive possible way of doing math" and advocating for traditional computational approaches where appropriate.
+
+**User Experience and Performance Considerations**
+
+Speed is identified as crucial, but user experience design can mitigate slower inference times. The presentation suggests that being "slower and cheaper" can still be viable if the user interface effectively manages user expectations during processing time.
+
+An innovative example is provided through their work with CloudZero, where they implement "generative UI" - dynamically creating React components based on user queries and caching these components for future use. This approach allows the interface to evolve and personalize over time while maintaining performance through intelligent caching.
+
+**Practical Implementation Insights**
+
+Several practical insights emerge from their production experience:
+
+*Video Processing Optimization:* For sports analytics, they discovered that simple annotations (like marking three-point lines with blue lines) can dramatically improve model performance when processing video content. This suggests that modest preprocessing investments can yield significant accuracy improvements.
+
+*User Context Importance:* The hospital voice bot failure illustrates how environmental factors can override technical capabilities. Understanding the actual working conditions of end users is crucial for successful deployments.
+
+*Bandwidth Considerations:* For users in remote areas, they optimized PDF delivery by sending text summaries of full documents while providing only relevant page screenshots, reducing bandwidth requirements from 200MB to manageable sizes.
+
+**Technology Stack and Tools**
+
+The preferred technology stack includes:
+- AWS Bedrock and SageMaker for model hosting
+- PostgreSQL with pgvector for vector storage
+- OpenSearch for additional search capabilities
+- Elasticsearch for multimodal search indexing
+- Various AWS models including Claude, Nova Pro, and Titan v2
+- Custom silicon (Trainium/Inferentia) for cost optimization
+
+**Lessons Learned and Best Practices**
+
+The presentation concludes with several key insights from production deployments:
+
+- Evaluation and embeddings alone are insufficient; understanding access patterns and user behavior is crucial
+- Pure embedding-based search has limitations; hybrid approaches with traditional search capabilities (faceted search, filters) are often necessary
+- Speed matters, but user experience design can compensate for performance limitations
+- Deep understanding of end customers and their working environments is essential
+- Simple computational tasks should not be delegated to LLMs due to cost inefficiency
+- Prompt engineering has become increasingly effective as models improve
+- Economic considerations must be central to system design decisions
+
+This comprehensive case study demonstrates that successful LLMOps requires not just technical expertise but also deep understanding of user needs, careful attention to system economics, and pragmatic approaches to evaluation and optimization. Caylent's experience across diverse industries provides valuable insights into the real-world challenges and solutions in deploying production LLM systems at scale.

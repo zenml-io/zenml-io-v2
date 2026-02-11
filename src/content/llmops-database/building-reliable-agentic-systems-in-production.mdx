@@ -1,0 +1,101 @@
+---
+title: "Building Reliable Agentic Systems in Production"
+slug: "building-reliable-agentic-systems-in-production"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f3bad6d0bcce674f1f3a8"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:46:00.098Z"
+  createdOn: "2024-11-21T13:54:53.451Z"
+llmopsTags:
+  - "multi-agent-systems"
+  - "prompt-engineering"
+  - "cost-optimization"
+  - "fine-tuning"
+  - "fallback-strategies"
+company: "Factory.ai"
+summary: "Factory.ai shares their experience building reliable AI agent systems for software engineering automation. They tackle three key challenges: planning (keeping agents focused on goals), decision-making (improving accuracy and consistency), and environmental grounding (interfacing with real-world systems). Their approach combines techniques from robotics like model predictive control, consensus mechanisms for decision-making, and careful tool/interface design for production deployment."
+link: "https://www.youtube.com/watch?v=4jCkcNOQPmU"
+seo:
+  title: "Factory.ai: Building Reliable Agentic Systems in Production - ZenML LLMOps Database"
+  description: "Factory.ai shares their experience building reliable AI agent systems for software engineering automation. They tackle three key challenges: planning (keeping agents focused on goals), decision-making (improving accuracy and consistency), and environmental grounding (interfacing with real-world systems). Their approach combines techniques from robotics like model predictive control, consensus mechanisms for decision-making, and careful tool/interface design for production deployment."
+  canonical: "https://www.zenml.io/llmops-database/building-reliable-agentic-systems-in-production"
+  ogTitle: "Factory.ai: Building Reliable Agentic Systems in Production - ZenML LLMOps Database"
+  ogDescription: "Factory.ai shares their experience building reliable AI agent systems for software engineering automation. They tackle three key challenges: planning (keeping agents focused on goals), decision-making (improving accuracy and consistency), and environmental grounding (interfacing with real-world systems). Their approach combines techniques from robotics like model predictive control, consensus mechanisms for decision-making, and careful tool/interface design for production deployment."
+---
+
+## Overview
+
+This case study comes from a presentation by Eno Reyes, co-founder and CTO of Factory.ai, a company whose mission is to bring autonomy to software engineering. Factory.ai builds a platform that helps software engineers in organizations of all sizes collaborate with AI systems across the full spectrum of developer tasks—not just writing code in an IDE, but also documentation, code review, organizational practices, onboarding, and other overhead activities that come with being a software developer.
+
+The presentation is essentially a rapid-fire exploration of concepts and techniques that the Factory.ai team has developed and applied to raise the bar on reliability for their agentic product suite. It's worth noting that while the talk offers substantial architectural and design insights, it does not provide specific quantitative metrics or before/after comparisons—this is more of a conceptual and technical playbook than a traditional case study with measurable outcomes.
+
+## Defining Agentic Systems
+
+Reyes begins by addressing the overloaded term "agent" in the AI industry. Rather than drawing explicit boundaries, Factory.ai identifies three core characteristics that define agentic systems:
+
+- **Planning**: Agentic systems make plans that decide one or more future actions. This can range from simple single-action outputs to complex multi-state, multi-task plans coordinating multiple actors.
+- **Decision-making**: Agents evaluate multiple pieces of data and select their next action or state based on algorithms or selection processes. When sufficiently complex or seemingly unexplainable, this is sometimes called "reasoning."
+- **Environmental grounding**: Perhaps most importantly, agentic systems read and write information to an external environment, enabling them to achieve goals within that environment.
+
+This framing is useful for LLMOps practitioners because it establishes clear functional requirements that production agent systems must satisfy, regardless of the specific implementation.
+
+## Planning Techniques for Production Agents
+
+One of the biggest challenges with building long-term plans for agents is drift—the tendency for agents to stray from their core responsibility, especially in multi-step tasks. Factory.ai has developed several techniques to address this:
+
+**Kalman Filter-Inspired Context Passing**: Inspired by Kalman filters used in robotics and control theory, this approach passes intermediate context through the plan to ensure focus, reliability, and convergence. The tradeoff is that if the initial prediction or any step is incorrect, those errors can propagate through subsequent steps.
+
+**Subtask Decomposition**: Breaking complex plans into smaller, manageable tasks allows finer control over execution. However, this introduces risk—a single incorrect or misleading substep can derail the entire plan.
+
+**Model Predictive Control (MPC)**: Borrowed from self-driving car systems, this recognizes that plans should be dynamic. In complex tasks, agents need to constantly reevaluate their actions and adapt based on real-time feedback. The initial plan should evolve as execution progresses. The downside is a higher risk of straying from the correct trajectory, creating tension between consistency and adaptability.
+
+**Explicit Plan Criteria**: Defining clear success criteria and plan structure is fundamental to agent competence. This can be implemented through instruct prompting, few-shot examples, or static type checking of plans. The challenge is that open-ended problem spaces make it difficult to specify criteria in advance, as agents may encounter entirely different versions of the same problem.
+
+## Decision-Making Strategies
+
+Since LLMs are next-token predictors, their outputs are conditioned on all prior inputs, meaning each layer of response is influenced by initial reasoning. Factory.ai employs several strategies to improve decision quality:
+
+**Consensus Mechanisms**: These involve sampling multiple outputs to get a better sense of the correct answer. Approaches include:
+- Prompt ensembles: Using different prompts that address the same question, then aggregating answers
+- Cluster sampling: Generating many answers from the same prompt, clustering similar ones, and comparing across clusters
+- Self-consistency: Generating multiple outputs and selecting the most consistent answer
+
+All these methods improve accuracy but increase inference costs significantly.
+
+**Explicit and Analogical Reasoning**: This is one of the best-studied LLM confidence-boosting techniques. Methods like Chain of Thought, checklists, Chain of Density, and Tree of Thought explicitly outline reasoning strategies. By reducing decision-making complexity, these approaches yield more consistent responses. However, forcing a reasoning strategy can reduce creativity and may hurt performance if the strategy isn't general enough or is incorrect for a given problem.
+
+**Model Weight Modification**: For specific, known task distributions (like classification or tool use), fine-tuning open-source models can improve decision-making. The downsides are significant: it's expensive and locks in quality. Factory.ai has found that fine-tuning is rarely the actual solution—base models often perform better on broader task distributions because they're trained on larger, more diverse data.
+
+**Simulation-Based Decision Making**: This is described as the most interesting but also most advanced strategy. When operating in domains where decision paths can be simulated (like software development with executable tests), agents can sample and simulate forward multiple paths, then select the optimal choice based on reward criteria. This doesn't require full reinforcement learning—approaches like Monte Carlo Tree Search with LLMs can explore decision trees effectively. The benefits are improved quality, but the costs are substantial: slower execution, higher expense, and—most critically—difficulty in modeling and debugging. The assumptions baked into simulations can be hard to validate, and the scope of what you're trying to simulate significantly impacts both team time investment and output quality.
+
+## Environmental Grounding and Tool Design
+
+Reyes emphasizes that the interfaces between agentic systems and the external world are perhaps the most critical aspect—and potentially the key differentiator for companies building agents. His recommendation is clear: the AI-computer interfaces are where teams should invest heavily, as model providers are already building highly capable systems with planning and reasoning abilities baked in.
+
+**Dedicated Tool Interfaces**: Teams need to build dedicated tools for their agentic systems and carefully consider what abstraction layer the agent should operate on. A simple calculator enables basic math; a custom API wrapper around key platform actions makes the agent more fluent in that platform; a sandboxed Python environment for arbitrary code execution enables maximum breadth but decreases accuracy. The tradeoff between abstraction level and effectiveness is crucial for production systems.
+
+**Explicit Feedback Processing**: Agents in complex environments receive enormous amounts of feedback. For coding agents, this might include hundreds of thousands of lines of logs, standard output, and debug information. Unlike humans who naturally filter sensory input, agents require explicitly defined signal processing. Parsing through noise and providing agents with only critical data significantly improves problem-solving ability.
+
+**Bounded Exploration**: Agents need the ability to gather more information about the problem space rather than charging off immediately on a task. This becomes increasingly critical as systems become more general. However, retrieval is difficult, and there's risk of overloading context or straying from the key path.
+
+**Human Guidance and UX Design**: Perhaps controversially, Reyes argues against the mindset of "once reliability increases, we won't need human interaction." Even at 10-20% failure rates, at scale, that represents a significant volume of failed tasks. Careful UX design around when and how humans intervene is essential for production systems. This requires deep thinking about intervention points and interaction design, not just agent architecture.
+
+## Practical Guidance and Tradeoffs
+
+Throughout the presentation, Reyes emphasizes several recurring themes that are valuable for LLMOps practitioners:
+
+The tension between consistency and adaptability runs through many of these techniques. Agents need to both stay on track and respond to new information—finding the right balance is context-dependent and requires careful design.
+
+Most techniques come with significant cost tradeoffs, whether in inference costs (consensus mechanisms), engineering complexity (simulation systems), or maintenance burden (custom tool interfaces). Teams should select approaches based on their specific constraints and problem domains.
+
+The presentation explicitly avoids being prescriptive about implementations, acknowledging that different systems require different approaches. This flexibility is valuable but also means teams must develop their own judgment about which techniques to apply.
+
+Finally, for well-bounded problems (like code review), convergence and reliability are achievable with tighter guardrails. For more open-ended tasks (like general feature development), the full suite of techniques becomes necessary.
+
+## Assessment
+
+This presentation offers a valuable high-level framework for thinking about production agentic systems, drawing from control theory and robotics to inform LLM-based agent design. The lack of specific metrics or quantitative results makes it difficult to assess the actual production impact of these techniques, but the conceptual framework is well-reasoned and clearly battle-tested at Factory.ai. The emphasis on tool interfaces as the key differentiator, rather than model capabilities, is a particularly notable insight for teams building in this space.

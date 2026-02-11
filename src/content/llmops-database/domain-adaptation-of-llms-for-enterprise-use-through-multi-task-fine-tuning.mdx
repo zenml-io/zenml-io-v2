@@ -1,0 +1,114 @@
+---
+title: "Domain Adaptation of LLMs for Enterprise Use Through Multi-Task Fine-Tuning"
+slug: "domain-adaptation-of-llms-for-enterprise-use-through-multi-task-fine-tuning"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "6790aa0d7c02c4ba5c897331"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:56:37.849Z"
+  createdOn: "2025-01-22T08:19:25.604Z"
+llmopsTags:
+  - "question-answering"
+  - "classification"
+  - "customer-support"
+  - "content-moderation"
+  - "fine-tuning"
+  - "prompt-engineering"
+  - "few-shot"
+  - "knowledge-distillation"
+  - "instruction-tuning"
+  - "pytorch"
+  - "microsoft-azure"
+  - "amazon-aws"
+company: "Wix"
+summary: "Wix developed a customized LLM for their enterprise needs by applying multi-task supervised fine-tuning (SFT) and domain adaptation using full weights fine-tuning (DAPT). Despite having limited data and tokens, their smaller customized model outperformed GPT-3.5 on various Wix-specific tasks. The project focused on three key components: comprehensive evaluation benchmarks, extensive data collection methods, and advanced modeling processes to achieve full domain adaptation capabilities."
+link: "https://www.wix.engineering/post/customizing-llms-for-enterprise-data-using-domain-adaptation-the-wix-journey"
+year: 2024
+seo:
+  title: "Wix: Domain Adaptation of LLMs for Enterprise Use Through Multi-Task Fine-Tuning - ZenML LLMOps Database"
+  description: "Wix developed a customized LLM for their enterprise needs by applying multi-task supervised fine-tuning (SFT) and domain adaptation using full weights fine-tuning (DAPT). Despite having limited data and tokens, their smaller customized model outperformed GPT-3.5 on various Wix-specific tasks. The project focused on three key components: comprehensive evaluation benchmarks, extensive data collection methods, and advanced modeling processes to achieve full domain adaptation capabilities."
+  canonical: "https://www.zenml.io/llmops-database/domain-adaptation-of-llms-for-enterprise-use-through-multi-task-fine-tuning"
+  ogTitle: "Wix: Domain Adaptation of LLMs for Enterprise Use Through Multi-Task Fine-Tuning - ZenML LLMOps Database"
+  ogDescription: "Wix developed a customized LLM for their enterprise needs by applying multi-task supervised fine-tuning (SFT) and domain adaptation using full weights fine-tuning (DAPT). Despite having limited data and tokens, their smaller customized model outperformed GPT-3.5 on various Wix-specific tasks. The project focused on three key components: comprehensive evaluation benchmarks, extensive data collection methods, and advanced modeling processes to achieve full domain adaptation capabilities."
+---
+
+## Overview
+
+Wix, the cloud-based web development platform serving over 200 million users worldwide, embarked on a comprehensive journey to customize Large Language Models for their enterprise-specific use cases. The primary motivation was to achieve what they term "full domain adaptation" — the ability for a single model to tackle multiple domain-specific tasks simultaneously, rather than being limited to single-task optimization. Their target use cases included customer intent classification, sentiment detection, customer segmentation, domain-specific summarization, and question answering about the Wix platform.
+
+The project emerged from fundamental limitations they experienced with more common LLM customization approaches. While prompt engineering and Retrieval Augmented Generation (RAG) are widely adopted and relatively easy to implement, Wix identified several inherent problems: lack of multitasking capability (only one domain task handled at a time), training data that isn't domain-aware, excessive model sizes that reduce accuracy while increasing cost and latency, prompt complexity leading to higher token counts and potential overfitting, and the observation that vendor-provided prompt fine-tuning services often simply overfit to specific prompts rather than achieving genuine cross-domain capabilities.
+
+## Technical Approach
+
+### Evaluation-First Methodology
+
+Wix adopted a principle that every data science project should start with evaluation. They emphasized that understanding model goals drives better decisions in model building and dataset preparation. While open LLM benchmarks estimate general-purpose capabilities, custom models require custom benchmarks to assess domain knowledge and task performance.
+
+For knowledge estimation, they built a custom Question and Answer (Q&A) dataset using existing customer service live chats and FAQs. Since answers are free text rather than categorical labels, they implemented an LLM-as-a-judge approach. This involves a prompt that compares LLM-suggested answers against ground-truth answers. After evaluating several open-source LLMs as judges, they built their own judging prompt which outperformed open solutions due to their team's superior domain expertise. They stress that having a solid, reliable metric is essential — otherwise, optimization efforts are essentially "shooting in the air."
+
+For task capability estimation, they used domain-specific text-based learning tasks including customer intent classification, customer segmentation, custom domain summarization, and sentiment analysis. They also incorporated a technique from Microsoft that transforms Q&A from free-text to multiple choice format: using the correct answer to generate three alternatives (one similar but slightly wrong, two completely wrong). This allows simultaneous assessment of domain knowledge and instruction-following ability.
+
+A critical methodological note: for task evaluation, they fixed one simple prompt per task that hadn't been optimized for specific LLM model families, preventing evaluation bias toward particular architectures.
+
+### Training Data Strategy
+
+The training data component proved central to their approach. Wix acknowledges the challenge that LLMs can learn everything — including typos, inappropriate language, and confidential information — making data quality paramount alongside quantity.
+
+Industry best practice suggests billions of tokens for full LLM fine-tuning, but they recognized that pre-trained LLMs already contain relevant domain knowledge. For instance, all common LLMs already have some awareness of website building and Wix products. The goal of domain-specific fine-tuning is to increase domain knowledge ratio from essentially negligible (0.00000001% in pre-trained models) to approximately 2% of training data.
+
+Their data strategy included completion-based training data (raw free text such as articles, technical documentation, real-world dialogues) and instructive training data using labeled datasets from other Wix NLP projects like sentiment analysis and customer intent classification. Using internal unprocessed data posed challenges due to potential mistakes and confidential information.
+
+To address limited manually-created data, they implemented synthetic data generation using organizational sources: knowledge base articles, customer support chats, technical documentation, and internal reports. They generated Q&As and reading comprehension tasks synthetically, though specific methodologies for this generation process aren't detailed in the source material.
+
+A crucial hyperparameter mentioned is sampling between data sources. Additionally, to maintain performance on common knowledge while specializing on domain knowledge, models must continue training on public data alongside domain-specific content.
+
+### Modeling Decisions
+
+Wix explicitly avoided reinventing the wheel, leveraging existing optimized training recipes from established LLM families. Their selection criteria for base models included:
+
+- Choose LLMs already evaluated for domain adaptation with DAPT and SFT approaches (proprietary LLMs excluded due to unavailable training recipes)
+- Choose models performing well on custom benchmarks, as good performance may indicate existing domain information, potentially reducing required domain-specific training tokens
+- Consider Small Language Models (SLMs) like T5 if benchmark tasks don't require long context and output, as these are easier to train and serve
+
+They selected models that already demonstrated familiarity with Wix and website building concepts, eliminating the need for training from scratch.
+
+Key hyperparameters they identified include:
+
+- **Completion vs full-prompt training**: Fitting on next-word predictions after context only, versus including input prompt in training. Including prompts exposes the model to more domain tokens but can cause repetitive text generation.
+- **LoRA Rank**: For SFT using adapters, rank reflects complexity and knowledge amount. Smaller training datasets warrant lower adapter ranks.
+- **SFT-only option**: Without sufficient completion data or computational resources, avoiding DAPT on entire network weights is advisable; instead, use higher adapter rank for both completion and tasks.
+
+### Infrastructure
+
+Training was conducted on AWS P5 instances with high-power GPUs, enabling full-scale fine-tuning and high-rank LoRA experimentation on LLaMA2 7B. The decision to constrain to one powerful GPU suggests a practical approach to resource management while maintaining capability for substantial experiments.
+
+## Results and Outcomes
+
+The customized Wix LLM demonstrated better performance than GPT-3.5 on various Wix-specific tasks. This is a notable achievement given GPT-3.5's general capabilities, suggesting that domain adaptation provides genuine value for specialized enterprise use cases. The smaller model also addresses the cost and latency concerns that motivated the project.
+
+The team identified that knowledge-based tasks, particularly Q&A with or without context, truly require customization. This insight emerged because their most common benchmark was Q&A, and off-the-shelf LLMs and RAG solutions weren't meeting performance requirements.
+
+## Critical Assessment
+
+While Wix presents a compelling case for full domain adaptation, several aspects warrant balanced consideration:
+
+- **Quantitative results are limited**: The claim of outperforming GPT-3.5 lacks specific metrics, percentages, or detailed comparisons. The post functions partly as a teaser for subsequent detailed posts and meetup presentations.
+- **Resource requirements**: The approach requires significant investment in data curation, synthetic data generation, custom evaluation infrastructure, and GPU compute resources (AWS P5 instances), which may not be accessible to all organizations.
+- **Generalizability**: The techniques apply specifically to open-source model families (LLaMA mentioned explicitly) and exclude proprietary models, limiting options for organizations preferring commercial LLM providers.
+- **Maintenance burden**: The post doesn't address ongoing model maintenance, retraining frequency, or how to handle domain drift as Wix's products and customer service patterns evolve.
+- **Data sensitivity**: While they mention challenges with confidential information in training data, specific governance or privacy-preserving approaches aren't detailed.
+
+## Broader LLMOps Implications
+
+The Wix case study illustrates several mature LLMOps practices:
+
+- Evaluation-first methodology with custom benchmarks ensures optimization targets meaningful outcomes rather than general capabilities
+- The LLM-as-a-judge pattern for evaluating free-text outputs addresses a common challenge in production LLM systems
+- Synthetic data generation extends limited labeled datasets, a recurring theme in enterprise LLM deployments
+- The trade-off analysis between different customization techniques (prompt engineering, RAG, fine-tuning) provides a useful framework for architecture decisions
+- Recognition that smaller, specialized models can outperform larger general-purpose models on targeted tasks has implications for inference costs and latency in production
+
+The project demonstrates that achieving production-ready domain-adapted LLMs requires coordinated effort across evaluation design, data engineering, model training, and infrastructure — a genuinely cross-functional LLMOps undertaking requiring collaboration between AI researchers, engineers, and domain experts (AI curators in their terminology).

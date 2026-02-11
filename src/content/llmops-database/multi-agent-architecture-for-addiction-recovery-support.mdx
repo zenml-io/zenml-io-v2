@@ -1,0 +1,93 @@
+---
+title: "Multi-Agent Architecture for Addiction Recovery Support"
+slug: "multi-agent-architecture-for-addiction-recovery-support"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "677662a154176aad769b45b0"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:51:14.270Z"
+  createdOn: "2025-01-02T09:55:45.863Z"
+llmopsTags:
+  - "healthcare"
+  - "chatbot"
+  - "prompt-engineering"
+  - "human-in-the-loop"
+  - "few-shot"
+  - "multi-agent-systems"
+  - "langchain"
+  - "fastapi"
+  - "openai"
+company: "OpenRecovery"
+summary: "OpenRecovery developed an AI-powered assistant for addiction recovery support using a sophisticated multi-agent architecture built on LangGraph. The system provides personalized, 24/7 support via text and voice, bridging the gap between expensive inpatient care and generic self-help programs. By leveraging LangGraph Platform for deployment, LangSmith for observability, and implementing human-in-the-loop features, they created a scalable solution that maintains empathy and accuracy in addiction recovery guidance."
+link: "https://blog.langchain.dev/customers-openrecovery/"
+year: 2024
+seo:
+  title: "OpenRecovery: Multi-Agent Architecture for Addiction Recovery Support - ZenML LLMOps Database"
+  description: "OpenRecovery developed an AI-powered assistant for addiction recovery support using a sophisticated multi-agent architecture built on LangGraph. The system provides personalized, 24/7 support via text and voice, bridging the gap between expensive inpatient care and generic self-help programs. By leveraging LangGraph Platform for deployment, LangSmith for observability, and implementing human-in-the-loop features, they created a scalable solution that maintains empathy and accuracy in addiction recovery guidance."
+  canonical: "https://www.zenml.io/llmops-database/multi-agent-architecture-for-addiction-recovery-support"
+  ogTitle: "OpenRecovery: Multi-Agent Architecture for Addiction Recovery Support - ZenML LLMOps Database"
+  ogDescription: "OpenRecovery developed an AI-powered assistant for addiction recovery support using a sophisticated multi-agent architecture built on LangGraph. The system provides personalized, 24/7 support via text and voice, bridging the gap between expensive inpatient care and generic self-help programs. By leveraging LangGraph Platform for deployment, LangSmith for observability, and implementing human-in-the-loop features, they created a scalable solution that maintains empathy and accuracy in addiction recovery guidance."
+---
+
+## Overview
+
+OpenRecovery is a healthcare technology company focused on addiction recovery support. Their core offering is an AI-powered assistant that provides personalized, around-the-clock support to users via both text and voice interfaces. The company positions this solution as bridging the gap between expensive inpatient care facilities and generic self-help programs, aiming to make expert-level guidance more accessible to individuals struggling with addiction. The case study, published in October 2024, describes their technical implementation using LangChain's ecosystem of tools, particularly LangGraph for agent orchestration, LangSmith for observability and development, and LangGraph Platform for deployment.
+
+It's worth noting that this case study is published on LangChain's own blog, so there is an inherent promotional aspect to the content. While the technical details appear sound, readers should be aware that the challenges and trade-offs of implementing such a system may not be fully represented.
+
+## Multi-Agent Architecture with LangGraph
+
+The core technical innovation described in this case study is OpenRecovery's multi-agent architecture built on LangGraph. Rather than using a single monolithic LLM prompt or simple chain, the team designed a system with specialized nodes, each tailored to specific stages of the addiction recovery process. These specialized agents handle different workflows such as step work (referring to 12-step program methodology) and fear inventory exercises.
+
+The graph structure of LangGraph provides several architectural benefits according to the case study. First, it enables the reuse of key components across multiple agents. These shared components include state memory that persists across agent interactions, dynamic few-shot expert prompts that can be updated independently, and search tools that multiple agents can access. This modular approach maintains consistency across the system while allowing each agent to be optimized for its specific purpose.
+
+A particularly important capability mentioned is context switching between different agents within the same conversation. In practical terms, this means a user can transition from general chat to specific recovery work without disruption. This creates what the team describes as a more natural and guided experience, which is crucial for the sensitive nature of addiction recovery support. The ability to maintain conversation state while switching between specialized agents is a significant technical achievement in multi-agent systems.
+
+The architecture is described as highly scalable, with the ability to add new agents for various recovery stages and mental health support. The team specifically mentions plans to expand beyond 12-step programs, suggesting the agent architecture was designed with extensibility in mind. However, the case study does not provide specific metrics on current scale or performance benchmarks.
+
+## Deployment on LangGraph Platform
+
+OpenRecovery chose to deploy their application on LangGraph Platform, which handles the infrastructure requirements for running multi-agent systems in production. The platform integrates with their mobile app frontend, providing an API layer that manages agent conversations and state. The case study emphasizes that this reduced complexity for their lean engineering team, though specific team size or engineering resources are not disclosed.
+
+The deployment architecture appears to follow a pattern where LangGraph Platform serves as the backend for agent orchestration, while the mobile applications (available on iPhone and Android) provide the user interface. This separation of concerns allows the team to iterate on agent behavior independently from the mobile app releases.
+
+LangGraph Studio, which is part of LangGraph Platform, is highlighted as a key tool for development and debugging. The visual interface allows the team to inspect state in the graph and observe agent interactions in real-time. This visibility into the agent's decision-making process is crucial for understanding how the system behaves in various scenarios and identifying issues before they reach production users.
+
+The case study emphasizes rapid iteration as a key benefit of the platform. The team can debug agent interactions in the visual studio, then make updates and revisions to meet evolving user needs and incorporate new recovery methodologies. This agility is important in a healthcare context where best practices evolve and individual user needs vary significantly.
+
+## Human-in-the-Loop Features
+
+Given the sensitive nature of addiction recovery, OpenRecovery incorporated several human-in-the-loop mechanisms into their system. These features address both accuracy and trust, which are critical in healthcare applications where incorrect advice could have serious consequences.
+
+The first mechanism described is the AI's ability to prompt users for deeper introspection, mimicking the role of a sponsor or therapist. The system is designed to gauge when enough information has been collected and request human confirmation when needed. This suggests the agents have some form of uncertainty quantification or threshold-based logic to determine when to escalate to human verification.
+
+Users are also given the ability to edit AI-generated summaries and tables, allowing them to verify the accuracy of their personal information and maintain control over their data. This is an important trust-building feature, as it puts users in control of how their information is represented by the system. In the context of recovery, where personal narratives and accurate self-reflection are crucial, this capability seems particularly valuable.
+
+Additionally, users can provide natural language feedback to the agent, which the case study claims helps build trust throughout the recovery process. While the exact mechanism for incorporating this feedback into the system is not detailed, it suggests a feedback loop that allows the system to adapt to individual users over time.
+
+## Observability and Continuous Improvement with LangSmith
+
+LangSmith is described as providing observability capabilities that have accelerated OpenRecovery's development process and added robustness to their testing. The platform enables several key workflows that are essential for maintaining and improving LLM-based systems in production.
+
+One notable feature is collaborative prompt engineering. The non-technical content team and addiction recovery experts can modify prompts in the LangSmith prompt hub, test them in the playground, and deploy new revisions to LangGraph Platform. This democratization of prompt engineering is significant because it allows domain experts—people who understand addiction recovery—to directly influence the system's behavior without requiring engineering support for every change. This workflow bridges the gap between technical implementation and domain expertise, which is often a bottleneck in specialized LLM applications.
+
+The case study provides a specific example of the improvement workflow: when the team identifies an unsatisfactory response while debugging traces, they can add new few-shot examples to the dataset in LangSmith, re-index it, and test the same question to verify the improvement. This creates a cycle of continuous improvement that is essential for production LLM systems. The ability to quickly identify failure points—such as when the language model lacks the proper empathy needed for addiction recovery support—and make targeted corrections is a practical approach to the alignment challenges inherent in deploying LLMs for sensitive use cases.
+
+LangSmith's trace logging capabilities are also used in conjunction with LangGraph Studio to ensure changes function as expected before deployment. This suggests a testing workflow where developers can replay specific scenarios and verify that modifications improve behavior without introducing regressions.
+
+## Considerations and Limitations
+
+While the case study presents an optimistic view of the implementation, several considerations are worth noting. The case study does not provide quantitative metrics on user outcomes, system accuracy, or scale of deployment. Claims about expert-level guidance and effectiveness in addiction recovery are not substantiated with clinical evidence or user study results.
+
+The regulatory and compliance aspects of deploying an AI system for mental health support are not discussed. In healthcare contexts, there are typically significant considerations around patient data privacy (such as HIPAA in the United States), clinical validation, and appropriate disclaimers about the limitations of AI-based advice.
+
+The case study also does not address failure modes or edge cases, such as how the system handles users in crisis situations or when it should escalate to human professionals. For a healthcare application dealing with addiction, these considerations are critical.
+
+Despite these limitations in the case study's disclosure, the technical architecture described represents a thoughtful approach to deploying LLMs in a sensitive healthcare context. The combination of multi-agent orchestration, human-in-the-loop verification, and collaborative development workflows addresses many of the practical challenges in production LLM systems.
+
+## Future Directions
+
+The case study mentions plans to introduce new modalities like voice interactions and expand beyond 12-step programs. The scalable architecture built on LangGraph is positioned to accommodate these expansions by adding new specialized agents for various recovery stages and mental health support. A public launch was mentioned as forthcoming at the time of the case study's publication in October 2024, with beta versions available for testing on their website and mobile applications.

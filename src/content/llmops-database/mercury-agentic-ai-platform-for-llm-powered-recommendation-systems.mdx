@@ -1,0 +1,130 @@
+---
+title: "Mercury: Agentic AI Platform for LLM-Powered Recommendation Systems"
+slug: "mercury-agentic-ai-platform-for-llm-powered-recommendation-systems"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "690a113871c496236a2e3dd9"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:25:50.659Z"
+  createdOn: "2025-11-04T14:44:08.579Z"
+llmopsTags:
+  - "customer-support"
+  - "content-moderation"
+  - "realtime-application"
+  - "rag"
+  - "embeddings"
+  - "prompt-engineering"
+  - "semantic-search"
+  - "vector-search"
+  - "fine-tuning"
+  - "few-shot"
+  - "reranking"
+  - "multi-agent-systems"
+  - "agent-based"
+  - "latency-optimization"
+  - "cost-optimization"
+  - "chunking"
+  - "kubernetes"
+  - "docker"
+  - "monitoring"
+  - "databases"
+  - "microservices"
+  - "scaling"
+  - "serverless"
+  - "devops"
+  - "orchestration"
+  - "open-source"
+  - "documentation"
+  - "security"
+  - "guardrails"
+  - "reliability"
+  - "scalability"
+  - "pytorch"
+  - "langchain"
+  - "postgresql"
+  - "redis"
+  - "cache"
+  - "elasticsearch"
+  - "chromadb"
+  - "pinecone"
+  - "mistral"
+  - "openai"
+  - "google-gcp"
+  - "microsoft-azure"
+  - "meta"
+company: "eBay"
+summary: "eBay developed Mercury, an internal agentic framework designed to scale LLM-powered recommendation experiences across its massive marketplace of over two billion active listings. The platform addresses the challenge of transforming vast amounts of unstructured data into personalized product recommendations by integrating Retrieval-Augmented Generation (RAG) with a custom Listing Matching Engine that bridges the gap between LLM-generated text outputs and eBay's dynamic inventory. Mercury enables rapid development through reusable, plug-and-play components following object-oriented design principles, while its near-real-time distributed queue-based execution platform handles cost and latency requirements at industrial scale. The system combines multiple retrieval mechanisms, semantic search using embedding models, anomaly detection, and personalized ranking to deliver contextually relevant shopping experiences to hundreds of millions of users."
+link: "https://www.linkedin.com/pulse/mercury-agentic-ai-platform-llm-powered-experiences-ebay-chowdhury-kka8e/"
+year: 2025
+seo:
+  title: "eBay: Mercury: Agentic AI Platform for LLM-Powered Recommendation Systems - ZenML LLMOps Database"
+  description: "eBay developed Mercury, an internal agentic framework designed to scale LLM-powered recommendation experiences across its massive marketplace of over two billion active listings. The platform addresses the challenge of transforming vast amounts of unstructured data into personalized product recommendations by integrating Retrieval-Augmented Generation (RAG) with a custom Listing Matching Engine that bridges the gap between LLM-generated text outputs and eBay's dynamic inventory. Mercury enables rapid development through reusable, plug-and-play components following object-oriented design principles, while its near-real-time distributed queue-based execution platform handles cost and latency requirements at industrial scale. The system combines multiple retrieval mechanisms, semantic search using embedding models, anomaly detection, and personalized ranking to deliver contextually relevant shopping experiences to hundreds of millions of users."
+  canonical: "https://www.zenml.io/llmops-database/mercury-agentic-ai-platform-for-llm-powered-recommendation-systems"
+  ogTitle: "eBay: Mercury: Agentic AI Platform for LLM-Powered Recommendation Systems - ZenML LLMOps Database"
+  ogDescription: "eBay developed Mercury, an internal agentic framework designed to scale LLM-powered recommendation experiences across its massive marketplace of over two billion active listings. The platform addresses the challenge of transforming vast amounts of unstructured data into personalized product recommendations by integrating Retrieval-Augmented Generation (RAG) with a custom Listing Matching Engine that bridges the gap between LLM-generated text outputs and eBay's dynamic inventory. Mercury enables rapid development through reusable, plug-and-play components following object-oriented design principles, while its near-real-time distributed queue-based execution platform handles cost and latency requirements at industrial scale. The system combines multiple retrieval mechanisms, semantic search using embedding models, anomaly detection, and personalized ranking to deliver contextually relevant shopping experiences to hundreds of millions of users."
+---
+
+## Overview
+
+eBay's Mercury platform represents a comprehensive approach to deploying LLMs in production for recommendation systems at massive scale. Operating across a marketplace with over two billion active listings serving hundreds of millions of customers, eBay faced the challenge of making sense of vast amounts of unstructured data to provide personalized recommendations. The Mercury platform was developed concurrently with the rise of LLMs to meet eBay's unique industrial-level scalability needs, functioning as an agentic framework that facilitates the creation of LLM-powered experiences with autonomy, adaptability, and goal-oriented behavior.
+
+The core innovation lies in how Mercury structures LLM work as modular "Agents" that encapsulate prompts to generative models along with transformation layers for input and output processing. This abstraction enables multiple agents to honor the same contract while differing in complexity, models, or optimization trade-offs between quality and latency. The framework applies object-oriented programming principles to enable complex behaviors through "Chains" - sequences of steps that can be linked together while maintaining consistent interfaces. This design philosophy allows engineers to focus solely on inputs and outputs without concerning themselves with underlying implementations, promoting rapid development and robust solutions.
+
+## Platform Architecture and Design Principles
+
+Mercury is built around eight core principles that shape its production deployment capabilities. The "Built To Last" principle treats prompts as code, requiring all changes to go through pull requests, code reviews, unit testing, and functional testing - establishing rigorous engineering standards for LLM deployments. The platform emphasizes ease of use through simplified interfaces that drive complex behavior, making it accessible across eBay's organization. Scalability is addressed through a drop-in execution layer supporting both online and near-real-time message-based processing, with the design philosophy that if something works in a developer's local environment for a single instance, the platform can scale it to industrial needs within days rather than months.
+
+The framework prioritizes intercompatibility and reusability, with components designed to work together seamlessly and improve with each new use case, building a growing component library. Mercury connects to multiple generative model providers and supports onboarding custom fine-tuned models running on internal servers (including Llama, Mistral, and Lillium) or external platforms like GCP, Azure, and OpenAI. The platform integrates with numerous internal and external data sources for both structured and unstructured data, implements comprehensive monitoring and maintenance features for reliability and performance monitoring, and incorporates AI safety measures developed both externally and internally at eBay.
+
+## Near-Real-Time Execution Platform
+
+The NRT execution platform addresses critical cost and latency requirements at eBay, targeting response times as low as hundreds of milliseconds. Most solutions built on Mercury rely on caching and preprocessing strategies. The distributed queue-based message passing system decouples processing from user activity patterns, which typically exhibit peaks and valleys throughout the day. These fluctuations normally result in poor utilization of GPUs and allocated reserved capacity from external model providers. Mercury's NRT platform smooths out this demand curve to create consistent and controllable throughput in aggregate across all use cases or per individual use case through on-the-fly configuration mechanisms for priority adjustment.
+
+As typical with distributed queue-based systems, the platform is resilient, self-healing, and requires low maintenance. Failed tasks are automatically retried through an automated retry mechanism at later times. The throughput aperture of parallel processing can be controlled easily on-the-fly, and any major service disruption issues mean that processing will automatically resume when appropriate failures are recovered. This architecture addresses the fundamental challenge of efficiently managing GPU resources and external model capacity while maintaining consistent performance at scale.
+
+## Retrieval-Augmented Generation Implementation
+
+RAG is a well-supported paradigm in Mercury, enhancing language model capabilities by integrating domain-specific information. This approach leverages the advanced in-context learning abilities of language models to comprehend and utilize provided information effectively. RAG helps generate accurate and contextually appropriate responses that LLMs would otherwise be unable to produce independently due to training data cutoff dates - for example, the original ChatGPT only had world knowledge up to September 2021. This becomes particularly critical for an e-commerce platform where inventory, trends, and product information constantly change.
+
+Since RAG essentially functions as an "open book test" for the LLM, access to vast relevant and current information - both structured and unstructured - becomes the ultimate key and challenge. Mercury has integrated numerous relevant sources including user and listing information as well as vast amounts of scraped publicly available content from the internet updated periodically via Common Crawl. The platform can perform Google searches to incorporate real-time data from the web to react and produce relevant recommendations for trending topics, recent or upcoming releases, and has access to external partner data for additional context and signals for trends outside of eBay. Each data source presents trade-offs in terms of latency, relevancy, and costs, and each use case built with Mercury can make appropriate trade-offs for its specific needs.
+
+## Listing Matching Engine
+
+While the recommender system's goal is to generate item recommendations, LLMs produce text output, necessitating a mechanism to map text to items. Mercury's Listing Matching Engine was built specifically to work with LLMs and integrate seamlessly into eBay's ecosystem. Since LLMs lack access to specific current insights into eBay's dynamic inventory of over two billion live items, this engine bridges the gap between LLM outputs and the dynamic marketplace to support low latency retrieval needs. Whether users receive recommendations from personalized trends or based on current or previous shopping missions, the Listing Matching Engine connects LLM-generated product ideas to live eBay listings.
+
+## Text-to-Listing Retrieval
+
+The Listing Matching Engine's Text-to-Listing Retrieval phase dynamically matches each LLM-generated product name or search query with eBay's current listings, combining several retrieval approaches to ensure highly relevant results. A key pattern developed uses a query expansion mechanism that can turn any topic into an expanded set of queries and products recommended by the LLM via its learned knowledge or its understanding of a topic via a RAG-based approach. The LLM is trained and/or prompted to transform single topics into multiple specific queries and product suggestions.
+
+The output set of queries runs through a series of matching steps via various retrieval mechanisms and models available at eBay, including embedding models trained specifically for this task. The exact match retrieval approach calls eBay's search engine with queries based on LLM output, utilizing algorithms optimized for precision to ensure specific product requests like "Samsung Galaxy S22" yield listings closely matching those terms. The semantically similar items approach generates text embeddings based on LLM output and uses KNN search with vector databases to retrieve semantically similar items. This suite of embedding models ensures retrieved items closely meet the intent of the LLM's suggestions without necessarily matching exact text - for example, "apple 16" versus "iphone 16", or broad and exploratory suggestions such as "bohemian rugs" or "travel essentials". Multiple models are available within eBay built in-house for semantic search including BERT-based models and other custom deep learning models, making the engine responsive to different LLM recommendation contexts.
+
+## Anomaly Detection and Filtering
+
+The engine's next step maintains relevance and accuracy through anomaly detection and filtering. Given the large volume and diversity of eBay listings, this stage ensures quality by filtering out results that don't meet expected explicit or inferred parameters. Category and price range validation checks each listing for alignment so results match the user's search intent - for example, if a user searches for "budget-friendly headphones," the engine filters out items falling outside the anticipated price range. Title alignment removes listings with titles that significantly deviate from the LLM's generated query intent, ensuring consistency and relevance from eBay's vast and varied inventory in final displayed results. This component is optional and can be plugged in and customized depending on specific use cases and situations. Specific hard filters can be applied, including ones recommended by the LLM, defined in the use case (such as NSFW filtering or condition requirements), or to match user's known preferences like size or location.
+
+After filtering, remaining listings are ranked according to a personalized model that tailors results to each user. The ranking process considers the user's previous interactions, shopping behaviors, and preferences, ensuring listings align directly with their interests. The engine uses round-robin presentation to ensure fair visibility for each query, delivering a diverse mix of products tailored to user activity. Depending on the use case and quality versus latency requirements, the system includes components to optimize the quality of retrieved items and can run for N steps or until some scoring threshold has been achieved. Optimized queries can be saved in cache for future needs.
+
+## AI Safety and Security
+
+eBay takes AI safety seriously, and Mercury offers access to a range of content moderation models with options to integrate LLM safety mechanisms wherever possible. The platform includes internal models to detect and prevent prompt injection by malicious actors. This suite of tools empowers different use cases to select the most suitable solutions based on their specific needs, scale, and standards established by eBay's Responsible AI, Content, and Legal teams. This represents a crucial aspect of production LLM deployment - ensuring that systems cannot be exploited or produce inappropriate content at scale.
+
+## Operational Considerations and Trade-offs
+
+While the article presents Mercury as a successful platform, it's important to note that it originates from eBay's internal team and naturally emphasizes positive aspects. The claims about rapid scaling "in days and not months" and seamless plug-and-play functionality should be evaluated with appropriate skepticism, as production LLM deployments typically involve significant complexity and debugging. The article doesn't discuss failure modes, edge cases where the system might struggle, or specific performance metrics beyond latency targets.
+
+The distributed queue-based approach for handling variable load is sound engineering but introduces its own complexity in terms of managing queue backlogs, ensuring freshness of recommendations, and handling priority conflicts between different use cases. The reliance on multiple data sources including web scraping and Google searches introduces dependencies on external services and potential data quality issues. The system's use of multiple retrieval mechanisms and models creates a complex pipeline where debugging failures or unexpected behavior could be challenging.
+
+The emphasis on caching and preprocessing for cost management is pragmatic given the expense of LLM inference at scale, but this introduces staleness concerns for a platform where inventory changes constantly. The article doesn't detail how they balance freshness requirements with cost optimization, or what percentage of recommendations come from cached versus freshly generated results. The promise of future "self-assembling" networks of agents using AI for orchestration represents ambitious vision but should be viewed as aspirational rather than implemented functionality.
+
+## Production Deployment Insights
+
+Mercury demonstrates several best practices for LLM production deployment. Treating prompts as code with version control, code review, and testing represents mature software engineering practices applied to LLM systems. The modular agent architecture with well-defined contracts enables teams to work independently while maintaining system coherence. The platform's support for multiple model providers and custom fine-tuned models provides flexibility and helps avoid vendor lock-in while enabling optimization for specific use cases.
+
+The integration of comprehensive monitoring and observability is essential for production LLM systems where failure modes can be subtle and performance can degrade gradually. The automated retry mechanisms and self-healing properties of the distributed queue system address the reality that LLM inference can be unreliable, with occasional failures from external APIs or internal processing errors. The ability to adjust priorities and throughput on-the-fly reflects the operational reality of managing production systems where different use cases may have varying urgency and resource requirements.
+
+The combination of exact match retrieval and semantic search using embeddings represents a practical hybrid approach that balances precision and recall. The anomaly detection and filtering layer acknowledges that LLMs can produce outputs that are plausible but inappropriate for the specific context, requiring additional validation layers. The personalized ranking layer demonstrates recognition that LLM-generated recommendations need to be grounded in user-specific signals to be truly effective.
+
+Overall, Mercury represents a comprehensive attempt to build production infrastructure for LLM-powered recommendations at industrial scale, addressing key challenges around modularity, scalability, cost management, and safety. While the article presents an optimistic view, the architectural patterns and operational considerations described align with established best practices for deploying LLMs in production environments.

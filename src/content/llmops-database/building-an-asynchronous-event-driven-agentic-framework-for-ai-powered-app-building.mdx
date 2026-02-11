@@ -1,0 +1,130 @@
+---
+title: "Building an Asynchronous Event-Driven Agentic Framework for AI-Powered App Building"
+slug: "building-an-asynchronous-event-driven-agentic-framework-for-ai-powered-app-building"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "690a0dae4c2d28172b56a649"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:25:28.402Z"
+  createdOn: "2025-11-04T14:29:02.940Z"
+llmopsTags:
+  - "chatbot"
+  - "content-moderation"
+  - "data-analysis"
+  - "document-processing"
+  - "structured-output"
+  - "unstructured-data"
+  - "prompt-engineering"
+  - "error-handling"
+  - "agent-based"
+  - "multi-agent-systems"
+  - "human-in-the-loop"
+  - "token-optimization"
+  - "few-shot"
+  - "fastapi"
+  - "monitoring"
+  - "orchestration"
+  - "openai"
+  - "anthropic"
+company: "Airtable"
+summary: "Airtable built a custom agentic framework to power AI features including Omni (conversational app builder) and Field Agents (AI-powered fields). The problem was that early AI capabilities couldn't handle complex tasks requiring dynamic decision-making, data retrieval, or multi-step reasoning. The solution was an asynchronous event-driven state machine architecture with three core components: a context manager for maintaining information, a tool dispatcher for executing predefined actions, and a decision engine (LLM-powered) for autonomous planning. The framework enables agents to reason through complex tasks, self-correct errors, and handle large context windows through trimming and summarization strategies, resulting in production AI agents capable of automating thousands of hours of work."
+link: "https://medium.com/airtable-eng/how-we-built-ai-agents-at-airtable-70838d73cc43"
+year: 2025
+seo:
+  title: "Airtable: Building an Asynchronous Event-Driven Agentic Framework for AI-Powered App Building - ZenML LLMOps Database"
+  description: "Airtable built a custom agentic framework to power AI features including Omni (conversational app builder) and Field Agents (AI-powered fields). The problem was that early AI capabilities couldn't handle complex tasks requiring dynamic decision-making, data retrieval, or multi-step reasoning. The solution was an asynchronous event-driven state machine architecture with three core components: a context manager for maintaining information, a tool dispatcher for executing predefined actions, and a decision engine (LLM-powered) for autonomous planning. The framework enables agents to reason through complex tasks, self-correct errors, and handle large context windows through trimming and summarization strategies, resulting in production AI agents capable of automating thousands of hours of work."
+  canonical: "https://www.zenml.io/llmops-database/building-an-asynchronous-event-driven-agentic-framework-for-ai-powered-app-building"
+  ogTitle: "Airtable: Building an Asynchronous Event-Driven Agentic Framework for AI-Powered App Building - ZenML LLMOps Database"
+  ogDescription: "Airtable built a custom agentic framework to power AI features including Omni (conversational app builder) and Field Agents (AI-powered fields). The problem was that early AI capabilities couldn't handle complex tasks requiring dynamic decision-making, data retrieval, or multi-step reasoning. The solution was an asynchronous event-driven state machine architecture with three core components: a context manager for maintaining information, a tool dispatcher for executing predefined actions, and a decision engine (LLM-powered) for autonomous planning. The framework enables agents to reason through complex tasks, self-correct errors, and handle large context windows through trimming and summarization strategies, resulting in production AI agents capable of automating thousands of hours of work."
+---
+
+## Overview
+
+Airtable, a company building modular software toolkits and app platforms, developed a comprehensive agentic framework to power multiple AI features across their platform. This case study provides detailed insights into how they architected, deployed, and operationalized LLM-based agents in production. The framework powers Omni (a conversational app builder) and Field Agents (AI-powered fields that autonomously generate insights and content within Airtable bases). The evolution from simple AI features to sophisticated autonomous agents represents a significant LLMOps journey that required solving complex challenges around orchestration, context management, error handling, and scalability.
+
+The initial AI capabilities launched in 2024 included the AI field for dynamic content generation, AI in automations, AI-generated select options, and AI formula generation. While useful for simple use cases, these features lacked the ability to perform dynamic decision-making, retrieve additional data beyond initial inputs, fetch data from the internet or databases, analyze complex data structures, or build interfaces. The team recognized the need for a more sophisticated system that could ingest user requests, reason through problems, and autonomously take necessary actions to completion while maintaining a conversational interface for user engagement and feedback.
+
+## Core Architecture: Event-Driven State Machine
+
+Airtable's design choice to build an asynchronous event-driven state machine rather than adopt an existing agentic framework is noteworthy from an LLMOps perspective. The team explicitly states they could have used existing frameworks but chose to build custom infrastructure for greater control over abstractions, prompts, and observability. This decision reflects a mature LLMOps philosophy prioritizing iterability and deep system understanding over rapid prototyping with third-party abstractions.
+
+The architecture centers on three fundamental requirements: the agent must remember information across interactions, perform predefined actions through a tool system, and autonomously decide which actions are necessary to accomplish user requests. These requirements materialized into three primary components working in concert.
+
+The **context manager** serves as the agent's memory system, maintaining all information accessible for task completion. It manages three distinct context types: guidelines context containing instructions for tone and purpose, session context capturing the current Airtable environment (base, workspace, interface, or visible page), and event context maintaining a chronological list of all events in the interaction. This multi-layered context approach allows the agent to operate with full awareness of both the user's intent and the operational environment.
+
+The **tool dispatcher** exposes predefined actions to the agent and executes tools when requested by the decision engine. This component bridges the gap between the agent's reasoning capabilities and actual system actions, providing a controlled interface for the LLM to interact with Airtable's underlying platform capabilities.
+
+The **decision engine** functions as the agent's brain, consuming all context from the context manager and determining the next step in the agent loop. The control flow can be dictated by an LLM, human-in-the-loop interactions, or fixed workflows, providing flexibility in how autonomy is balanced with control. This component is backed by LLM providers like OpenAI and Anthropic.
+
+## Event System and Interaction Flow
+
+The event system represents the fundamental operational unit of the agent. The agent consumes events, writes them to the context manager, and triggers appropriate handlers, maintaining forward momentum through what they call the "agent loop." The complete cycle from initial user prompt to final response constitutes an "interaction."
+
+Four primary event types drive the system. **User message events** are produced when users send messages, triggering the decision engine to call the backing LLM for next-step determination. **Tool call events** are produced by the decision engine when the LLM decides to execute a tool, triggering the tool dispatcher. **Tool call output events** are produced by the tool dispatcher after tool execution completes, again triggering the decision engine. Finally, **LLM message events** are produced by the decision engine when the backing LLM generates a final output message, terminating the agent loop.
+
+This event-driven architecture provides several LLMOps advantages. It creates clear separation of concerns, enables asynchronous processing, facilitates observability through event logging, and allows for replay and debugging of interaction sequences. The state machine nature ensures predictable state transitions and helps prevent the agent from entering undefined states.
+
+## Context Management Strategy
+
+Context management emerges as a critical LLMOps challenge in this system. The agent's behavior is entirely driven by the context provided, which represents the "world" the agent can see, manipulate, and use in decision-making. Airtable's approach to structuring context demonstrates sophisticated thinking about what information LLMs need at different stages of operation.
+
+**Guidelines context** allows users to customize agent behavior through purpose definitions (e.g., "You are an agent that analyzes call transcripts"), tone specifications (e.g., "Be concise and to the point"), or operational restrictions (e.g., "Only respond in French"). This customization layer enables the same underlying agent architecture to serve diverse use cases while maintaining consistent operational characteristics.
+
+**Session context** contains information relevant to the current base and current user. Base context is relatively static and relevant to all users, including tables, columns in each table, and interfaces/pages. User context is specific to individual users, including their active view (page, selected column, timezone), name and email, and role and permissions. This distinction between shared and user-specific context enables the system to provide personalized responses while efficiently managing context that can be shared across users.
+
+The importance of session context becomes apparent in handling ambiguous user requests. When a user asks "Show me the projects at risk," the agent can only produce a valid response if it knows there's a "Projects" table with a "Status" column containing an "At Risk" select option. Without this environmental awareness, even sophisticated reasoning capabilities would fail to produce useful results.
+
+**Event context** maintains the chronological history of events, serving dual purposes: consumption by the agent for next-step decisions and maintenance of interaction history for user rendering. This approach to maintaining conversational state differs from simpler approaches that might only track messages, as it captures the full operational history including tool calls and their outputs.
+
+## Decision Engine Implementation
+
+The decision engine implements a three-step process on each invocation. First, it serializes context into LLM provider API objects compatible with OpenAI, Anthropic, or other providers. Second, it invokes the provider inference APIs. Third, it parses the response, emitting either tool call events if the LLM invokes tools or LLM message events containing final responses.
+
+The serialization step converts Airtable's internal context representation into the message formats expected by provider APIs. Most AI providers expose three message types: user messages triggered by end users, assistant messages produced by the provider, and system messages providing top-level directives. Airtable converts guidelines and session context into system messages, while event context serializes as user and assistant messages representing back-and-forth interactions.
+
+This serialization strategy demonstrates a key LLMOps pattern: maintaining an internal representation optimized for the application's needs while supporting multiple LLM providers through adapter layers. This provider-agnostic approach enables Airtable to switch between or experiment with different LLM providers without restructuring their core agent logic.
+
+## Tool System and Error Handling
+
+The tool dispatcher executes tools requested by the decision engine, sending tool call output events back to the agent upon completion. Different agent purposes expose different tool sets, allowing the system to constrain agent capabilities based on context and security requirements.
+
+Error handling receives explicit attention as essential for agent loop self-correction and user understanding. All tools at Airtable return errors including three critical pieces of information: whether the error is retriable, a helpful message for the decision engine (LLM) if retriable, and a user-visible error message. This structured error approach enables sophisticated recovery behaviors.
+
+When tool calls fail, the tool call output events trigger the decision engine with failure information passed back to the LLM. With descriptive error messages, the LLM can often self-correct, re-running the tool with different arguments or providing users with meaningful failure explanations. This self-correction capability significantly improves robustness in production, as the system can handle edge cases and transient failures without human intervention.
+
+The error handling design reflects mature LLMOps thinking about the gap between development and production environments. In development, failures might be acceptable or easily debugged, but production systems require graceful degradation and recovery mechanisms. Airtable's structured error system provides both immediate recovery capabilities and the information needed for longer-term system improvement.
+
+## Context Window Management
+
+One of the most significant LLMOps challenges Airtable addresses is ensuring all context fits within LLM context windows. These windows have finite limits, requiring selection of the most relevant context to forward to the LLM. Airtable employs multiple heuristics organized into trimming and summarization strategies.
+
+**Trimming strategies** remove content before forwarding to the LLM. Tool call outputs may be large (e.g., internet search results containing redundant information), so Airtable truncates these for older interactions, removing the middle portion because LLMs typically weigh beginning and end portions more heavily. This approach leverages known LLM attention patterns to preserve the most useful information.
+
+When conversations become too long and tool output truncation is insufficient, the system removes messages from earlier in the thread, as these are less likely to be relevant. While this may prevent accurate answers about earlier interactions, users typically reference recent interactions more frequently. This pragmatic trade-off accepts some capability loss to maintain core functionality.
+
+For large bases, the base schema consumes significant context. Airtable employs multiple schema reduction strategies: removing irrelevant IDs never referenced by the LLM, aliasing necessary IDs by shortening alphanumeric strings (achieving 15-30% reduction in tokens, inference latency, and cost), removing columns from tables users aren't currently interacting with while retaining primary and foreign linked columns, and iteratively removing tables except the one currently being viewed. These strategies demonstrate sophisticated understanding of what information LLMs actually need versus what might seem relevant.
+
+**Summarization strategies** use LLMs to minimize information loss during context reduction. For large bases, a request like "Analyze the sentiment across all the feedback" would require pulling all records into the LLM. Instead, Airtable divides records among many LLM calls, has each call perform the request on its data subset, and aggregates results using another LLM with a summarization prompt, producing a "summary of summaries."
+
+This approach parallelizes the user request across many calls, each with its own context window, mirroring MapReduce principles: dividing large tasks across parallel workers (LLM calls) and aggregating results into coherent summaries. This pattern represents sophisticated LLMOps thinking about scaling LLM capabilities beyond single-call limitations, treating the LLM as a distributable computational resource rather than a monolithic black box.
+
+## Provider and Framework Considerations
+
+Airtable's decision to build rather than buy their agentic framework provides valuable LLMOps insights. While existing frameworks offer quick starts with abstractions for tools, chaining, prompt serialization, and inference APIs, building custom infrastructure provided Airtable with avoidance of over-abstraction, finer control over prompts, and greater observability. These benefits significantly improved iteration speed, a critical factor in developing production AI systems.
+
+The team supports multiple LLM providers (explicitly mentioning OpenAI and Anthropic), implementing the provider-agnostic serialization layer mentioned earlier. This multi-provider support provides options for cost optimization, performance tuning, and risk mitigation if provider availability issues arise.
+
+## Future Directions and Operational Maturity
+
+Airtable indicates ongoing work in two areas: context engineering and transforming the agent from an LLM-driven state machine to a fully autonomous system that can create and run custom tools. The context engineering focus suggests continued refinement of what information agents need and how to provide it efficiently. The custom tool creation capability would represent a significant leap in agent autonomy, allowing agents to extend their own capabilities dynamically.
+
+The case study reflects several hallmarks of mature LLMOps practice. The architecture provides clear component separation enabling independent testing and improvement. The event-driven design facilitates observability and debugging. The multi-layered context management balances comprehensiveness with efficiency. The structured error handling enables self-correction and graceful degradation. The context window management strategies demonstrate deep understanding of LLM characteristics and constraints.
+
+However, the case study also reveals areas where claims should be evaluated carefully. The statement that agents can "automate thousands of hours of work in seconds" is marketing language that likely overstates current capabilities. While agents can certainly accelerate work, the actual time savings depend heavily on task complexity, data quality, and human verification requirements. The transition from "LLM-driven state machine" to "fully autonomous system" also raises questions about guardrails, safety mechanisms, and human oversight that the article doesn't address in detail.
+
+The production deployment details are somewhat limited. The case study doesn't discuss monitoring approaches, performance metrics, cost management, or how they handle LLM provider outages. Information about testing strategies, evaluation frameworks, or quality assurance processes is absent. These omissions suggest the article focuses on architecture rather than comprehensive operational details, which is understandable for a public blog post but means readers should recognize this represents one view of their LLMOps practice.
+
+Overall, Airtable's agentic framework represents sophisticated LLMOps implementation addressing real production challenges around orchestration, context management, error handling, and scalability. The decision to build custom infrastructure rather than adopt existing frameworks reflects mature thinking about long-term system control and iterability. The architectural patterns they've developed—particularly around event-driven orchestration, multi-layered context management, and context window optimization—provide valuable reference points for other organizations building production LLM systems.

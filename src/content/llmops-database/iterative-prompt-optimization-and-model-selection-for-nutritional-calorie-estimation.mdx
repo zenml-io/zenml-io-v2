@@ -1,0 +1,223 @@
+---
+title: "Iterative Prompt Optimization and Model Selection for Nutritional Calorie Estimation"
+slug: "iterative-prompt-optimization-and-model-selection-for-nutritional-calorie-estimation"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "695244cf3318711987262ae0"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2026-01-07T09:40:39.763Z"
+  lastUpdated: "2025-12-29T10:36:31.079Z"
+  createdOn: "2025-12-29T09:07:27.639Z"
+llmopsTags:
+  - "healthcare"
+  - "poc"
+  - "prompt-engineering"
+  - "few-shot"
+  - "rag"
+  - "fallback-strategies"
+  - "model-optimization"
+  - "error-handling"
+  - "evals"
+  - "fastapi"
+  - "pytorch"
+  - "open-source"
+  - "google-gcp"
+  - "openai"
+  - "meta"
+company: "Taralli"
+summary: "Taralli, a calorie tracking application, demonstrates systematic LLM improvement through rigorous evaluation and prompt optimization. The developer addressed the challenge of accurate nutritional estimation by creating a 107-example evaluation dataset, testing multiple prompt optimization techniques (vanilla, few-shot bootstrapping, MIPROv2, and GEPA) across several models (Gemini 2.5 Flash, Gemini 3 Flash, and DeepSeek v3.2). Through this methodical approach, they achieved a 15% accuracy improvement by switching from Gemini 2.5 Flash to Gemini 3 Flash while using a few-shot learning approach with 16 examples, reaching 60% accuracy within a 10% calorie prediction threshold. The system was deployed with fallback model configurations and extended to support fully offline on-device inference for iOS."
+link: "https://duarteocarmo.com/blog/from-nutribench-to-taralli-how-far-can-you-take-a-prompt"
+year: 2025
+seo:
+  title: "Taralli: Iterative Prompt Optimization and Model Selection for Nutritional Calorie Estimation - ZenML LLMOps Database"
+  description: "Taralli, a calorie tracking application, demonstrates systematic LLM improvement through rigorous evaluation and prompt optimization. The developer addressed the challenge of accurate nutritional estimation by creating a 107-example evaluation dataset, testing multiple prompt optimization techniques (vanilla, few-shot bootstrapping, MIPROv2, and GEPA) across several models (Gemini 2.5 Flash, Gemini 3 Flash, and DeepSeek v3.2). Through this methodical approach, they achieved a 15% accuracy improvement by switching from Gemini 2.5 Flash to Gemini 3 Flash while using a few-shot learning approach with 16 examples, reaching 60% accuracy within a 10% calorie prediction threshold. The system was deployed with fallback model configurations and extended to support fully offline on-device inference for iOS."
+  canonical: "https://www.zenml.io/llmops-database/iterative-prompt-optimization-and-model-selection-for-nutritional-calorie-estimation"
+  ogTitle: "Taralli: Iterative Prompt Optimization and Model Selection for Nutritional Calorie Estimation - ZenML LLMOps Database"
+  ogDescription: "Taralli, a calorie tracking application, demonstrates systematic LLM improvement through rigorous evaluation and prompt optimization. The developer addressed the challenge of accurate nutritional estimation by creating a 107-example evaluation dataset, testing multiple prompt optimization techniques (vanilla, few-shot bootstrapping, MIPROv2, and GEPA) across several models (Gemini 2.5 Flash, Gemini 3 Flash, and DeepSeek v3.2). Through this methodical approach, they achieved a 15% accuracy improvement by switching from Gemini 2.5 Flash to Gemini 3 Flash while using a few-shot learning approach with 16 examples, reaching 60% accuracy within a 10% calorie prediction threshold. The system was deployed with fallback model configurations and extended to support fully offline on-device inference for iOS."
+---
+
+## Overview
+
+Taralli is a calorie tracking mobile application that leverages large language models to estimate nutritional content from natural language food descriptions. This case study, documented in December 2025, provides a detailed account of systematic LLM improvement in a production environment. The developer demonstrates how to move beyond "vibe testing" to implement rigorous evaluation and optimization workflows for LLM-based systems. The core challenge addressed is improving the accuracy of calorie prediction from user-provided meal descriptions, with the broader goal of demonstrating reproducible improvement methodologies for LLM applications.
+
+## Problem Context and Motivation
+
+The case study begins by critiquing the common practice of "vibe testing" in machine learning—the informal approach of evaluating model performance based on subjective impressions rather than quantitative metrics. The author argues that without proper measurement, it's impossible to verify whether changes actually improve system performance. This philosophical stance drives the entire technical approach documented in the case study.
+
+The specific technical challenge is that LLMs must estimate total calories, along with macronutrient breakdowns (carbohydrates, protein, and fat), from free-text meal descriptions that may vary significantly in detail and specificity. This is a regression-like task where accuracy thresholds matter more than exact predictions, making it suitable for percentage-based evaluation metrics.
+
+## Research Foundation: NutriBench
+
+The developer leveraged NutriBench, a research project from the University of California, which provides a benchmark dataset of approximately 12,000 meal descriptions with corresponding nutritional data from WWEIA and FAO/WHO sources. NutriBench tested 12 different LLMs across 4 prompting techniques:
+
+- **Base prompting**: Simple prompts with few-shot examples
+- **Chain-of-Thought (CoT)**: Prompts designed to encourage reasoning steps
+- **Retrieval-Augmented Generation (RAG)**: Systems using a retrieval database (Retri-DB) to aid estimation
+- **RAG+CoT**: Combined approach using both retrieval and reasoning
+
+The benchmark results revealed that GPT-4o with Chain-of-Thought prompting achieved the best performance with approximately 66.82% accuracy at ±7.5g for carbohydrate prediction (Acc@7.5g), responding to 99% of prompts. The author notes this performance is "on par with a Human nutritionist with internet access," which provides important context for setting realistic expectations for LLM performance on this task.
+
+## Dataset Creation and Evaluation Metric Design
+
+A critical LLMOps practice demonstrated here is the creation of a domain-specific evaluation dataset. The developer constructed a golden dataset of 107 examples combining:
+
+- Examples from the NutriBench v2 dataset on Hugging Face
+- Previously collected examples from an earlier golden dataset
+- Each example includes the food description, total calories, food groups, and source attribution
+
+The evaluation metric chosen was Accuracy@10%—meaning predicted calories must fall within 10% of the ground truth value to be considered correct. This is implemented as a DSPy evaluation function that returns a score of 1 for correct predictions and 0 for incorrect ones, along with descriptive feedback text. The choice of a 10% threshold represents a practical balance between precision requirements and realistic model capabilities for this domain.
+
+The use of DSPy (a framework for programming with language models) is notable here, as it enforces explicit evaluation metric definition and enables programmatic prompt optimization. This represents a shift from ad-hoc prompt engineering to systematic, framework-driven development.
+
+## Prompt Optimization Experiments
+
+The developer tested five different prompt optimization approaches, demonstrating a methodical exploration of the solution space:
+
+**Vanilla approach**: This baseline used zero-shot prompting in DSPy format without optimization, establishing a performance floor.
+
+**Bootstrap few-shot with golden dataset only**: This was the production approach prior to the optimization work, using BootstrapFewShotWithRandomSearch with only manually curated examples. This represents a common pattern where teams start with hand-crafted examples before scaling to larger datasets.
+
+**Bootstrap few-shot with mixed dataset**: An enhanced version incorporating both the golden dataset and NutriBench examples, testing whether dataset diversity improves generalization.
+
+**MIPROv2 (Multiprompt Instruction Proposal Optimizer Version 2)**: This advanced optimizer can simultaneously optimize both the instruction text (the prompt) and the selection of few-shot examples. This represents the state-of-the-art in automated prompt optimization, attempting to find optimal combinations of instructions and demonstrations.
+
+**GEPA (a newer prompt optimizer)**: The distinguishing feature of GEPA is its ability to incorporate textual feedback on incorrect predictions, using that feedback to improve the prompt. This represents an interesting direction where optimization can learn from failure modes.
+
+The experimentation with multiple optimization techniques demonstrates a sophisticated understanding that different optimizers may perform differently depending on the task characteristics, data distribution, and target models.
+
+## Model Selection and Performance Results
+
+The developer tested multiple models representing different points on the cost-performance-speed trade-off curve:
+
+- **Gemini 2.5 Flash**: The incumbent production model
+- **Gemini 3 Flash**: Google's newer release
+- **DeepSeek v3.2**: An open-source alternative, tested both with and without "thinking" (presumably chain-of-thought reasoning)
+
+The best performing configuration was Gemini 3 Flash with a 16-example few-shot prompt, achieving approximately 60% accuracy at the 10% threshold. This is roughly comparable to NutriBench's best results, though the tasks differ slightly in scope (Taralli predicts total calories plus macronutrients, while NutriBench focused primarily on carbohydrate prediction).
+
+Several important findings emerged from the experiments:
+
+**GEPA overfitting**: The GEPA-optimized prompt performed well with Gemini 2.5 Flash but failed to produce correctly formatted outputs with other models. This demonstrates a critical challenge in prompt optimization—prompts can overfit to specific model behaviors and fail to generalize across model families. This finding has significant implications for organizations considering model switching or multi-model strategies.
+
+**Few-shot reliability**: Few-shot learning proved to be the most robust approach, working consistently across different models and producing outputs in the expected format. The author notes this has been a consistent pattern across multiple projects, not just Taralli. This suggests that despite the sophistication of more advanced optimization techniques, simple few-shot learning with well-chosen examples remains a reliable foundation for production systems.
+
+**Model performance variance**: Simply changing the model string from Gemini 2.5 Flash to Gemini 3 Flash—with no other changes—yielded a 15% relative improvement in accuracy. This highlights the rapid pace of model improvement and the importance of staying current with model releases, but also raises questions about stability and reproducibility in production systems.
+
+## Production Deployment Architecture
+
+The deployment architecture demonstrates several production-readiness considerations:
+
+**Fallback model configuration**: The system uses OpenRouter to specify a primary model (Gemini 3 Flash) with a secondary fallback model (DeepSeek v3.2). This is implemented through OpenRouter's API with the configuration:
+
+```python
+LM = dspy.LM(
+    "openrouter/google/gemini-3-flash-preview:nitro",
+    temperature=0.0,
+    extra_body={
+        "reasoning": {"enabled": False},
+        "models": ["deepseek/deepseek-v3.2:nitro"],
+    },
+)
+```
+
+This fallback strategy provides resilience against API failures or rate limiting on the primary model, which is a critical production pattern often overlooked in proof-of-concept implementations.
+
+**Temperature setting**: The temperature is set to 0.0 for deterministic outputs, which is appropriate for a task requiring consistent numerical estimations rather than creative generation.
+
+**Model routing through OpenRouter**: Using OpenRouter as an abstraction layer provides flexibility to switch between models without changing application code, though it does introduce a dependency on a third-party routing service.
+
+## On-Device Inference and Edge Deployment
+
+A particularly interesting aspect of this case study is the implementation of fully offline, on-device inference for iOS. This addresses privacy concerns, eliminates API costs for individual predictions, and enables functionality without internet connectivity.
+
+The technical approach involves converting the DSPy-optimized program into OpenAI-compatible message formats:
+
+```python
+@lru_cache(maxsize=1)
+def get_classifier_template() -> t.List[dict[str, str]]:
+    program = get_classifier()
+    adapter = dspy.ChatAdapter()
+    openai_messages_format = {
+        name: adapter.format(
+            p.signature,
+            demos=p.demos,
+            inputs={k: f"{{{k}}}" for k in p.signature.input_fields},
+        )
+        for name, p in program.named_predictors()
+    }["self"]
+    return openai_messages_format
+```
+
+This function transforms the DSPy program into a template of OpenAI-style messages with placeholder variables. The iOS app can then:
+
+- Call an API endpoint to receive the populated template with the optimized few-shot examples
+- Use this template with an on-device LLM for inference
+- As a backup, bundle the template directly in the app to eliminate even the template-fetching API call
+
+This architecture demonstrates an interesting hybrid approach where prompt optimization happens server-side (leveraging the DSPy framework and evaluation datasets), but inference can happen entirely on-device. The LRU cache decorator ensures the template is only generated once and reused, which is appropriate since the prompt template doesn't change frequently.
+
+The iOS app itself is described as lightweight (5 files, approximately 4.5 MB) using SwiftUI with Apple's Liquid Glass design for iOS 26 (presumably a design system available in iOS 16). The ability to set periodic reminders enhances user engagement without requiring constant online connectivity.
+
+## Evaluation Philosophy and Reproducibility
+
+A recurring theme throughout the case study is the emphasis on measurement and scientific methodology. The author explicitly rejects "vibe testing" and argues for:
+
+- Establishing baseline metrics before optimization
+- Defining explicit, numerical evaluation criteria
+- Testing multiple approaches systematically
+- Measuring improvements quantitatively
+- Ensuring reproducibility through frameworks like DSPy
+
+This philosophy is embodied in the evaluation metric function that returns both a numerical score and descriptive feedback text for each prediction. This feedback can be used by optimization algorithms like GEPA and also aids in debugging and understanding failure modes.
+
+The case study also demonstrates transparency about dataset size limitations—the developer notes using only 107 examples "to keep things fast" rather than claiming this is optimal. This kind of pragmatic honesty is valuable for practitioners trying to understand real-world tradeoffs.
+
+## Critical Assessment and Limitations
+
+While the case study provides valuable insights, several aspects warrant critical examination:
+
+**Dataset size**: With only 107 evaluation examples, there are legitimate questions about statistical significance and generalization. The author acknowledges this limitation, but practitioners should be cautious about over-interpreting small-sample results. The confidence intervals around the reported 60% accuracy figure could be quite wide.
+
+**Evaluation metric choice**: The 10% threshold for calorie prediction is pragmatic but somewhat arbitrary. For a 500-calorie meal, ±50 calories might be acceptable; for a 100-calorie snack, ±10 calories represents a much larger practical error. A more sophisticated evaluation might use scaled thresholds or multiple metrics.
+
+**Model switching risks**: While achieving a 15% improvement by changing one string is impressive, it also highlights the fragility of systems dependent on proprietary model APIs. Model behavior can change without notice, deprecations happen, and pricing structures evolve. The fallback strategy partially addresses this, but production systems need robust monitoring and alerting when model performance degrades.
+
+**GEPA overfitting**: The finding that GEPA-optimized prompts failed with other models is concerning and suggests that aggressive optimization techniques may reduce model portability. This tradeoff between optimization for a specific model versus generalization across models is under-explored in the LLM literature.
+
+**Comparison to NutriBench**: The author notes achieving "similar" performance to NutriBench's best results but acknowledges the tasks differ. Direct comparisons are challenging when evaluation metrics, thresholds, and prediction targets vary. More rigorous benchmarking would evaluate on the exact same dataset with the same metrics.
+
+**Production monitoring**: While the case study discusses evaluation during development, there's limited discussion of ongoing production monitoring. How is model performance tracked over time? What happens when accuracy degrades? Are there mechanisms to detect distribution shift as users' meal descriptions evolve?
+
+## Future Directions and Open Questions
+
+The author identifies several promising directions for future work:
+
+**Climbing NutriBench performance**: The 60% accuracy leaves substantial room for improvement. The author questions whether larger models, extended reasoning (chain-of-thought), or external knowledge access (web browsing, RAG) could push toward 90% accuracy. This represents a classic LLMOps question: where should you invest effort to improve performance?
+
+**Fine-tuning**: The case study focuses on prompt optimization with frozen models. Fine-tuning a model specifically on nutritional estimation could potentially yield significant improvements, though it would require more substantial datasets and training infrastructure. The author notes that even with fine-tuning, external knowledge access might be necessary for optimal performance, suggesting that pure learned approaches may be insufficient for this domain.
+
+**Knowledge augmentation**: The observation that human nutritionist performance (the benchmark NutriBench compares against) relies on internet access suggests that retrieval-augmented approaches might be promising. The NutriBench study included RAG experiments, but there's room to explore different retrieval strategies, database designs, and hybrid approaches.
+
+**Few-shot example selection**: While few-shot learning proved reliable, the case study doesn't deeply explore how to select the optimal examples. Are 16 examples optimal? How should examples be chosen to maximize coverage of meal types? Should example selection be dynamic based on the input query?
+
+## Key Takeaways for LLMOps Practitioners
+
+This case study offers several valuable lessons for practitioners building production LLM systems:
+
+**Measurement is foundational**: The emphasis on explicit evaluation metrics and quantitative testing provides a model for rigorous LLM development. "Vibes" are insufficient for production systems requiring reliability.
+
+**Few-shot learning remains competitive**: Despite sophisticated optimization techniques, simple few-shot learning with well-chosen examples often provides the best combination of performance, reliability, and generalizability across models.
+
+**Prompt overfitting is real**: Advanced optimization techniques can produce prompts that work exceptionally well with specific models but fail with others. Teams planning multi-model strategies or anticipating model switches should test prompt portability.
+
+**Model updates can be impactful**: Staying current with model releases can yield significant improvements with minimal engineering effort, but also introduces risks around behavioral changes and reproducibility.
+
+**Hybrid architectures enable flexibility**: The combination of server-side optimization with on-device inference demonstrates how different architectural patterns can address different requirements (optimization vs. privacy vs. cost vs. availability).
+
+**Frameworks accelerate development**: Using DSPy enabled rapid experimentation with different optimizers and facilitated the conversion to on-device templates. Framework choice can significantly impact development velocity.
+
+**Evaluation datasets are assets**: The investment in creating a curated evaluation dataset pays dividends across multiple experiments and provides a foundation for continuous improvement.
+
+The case study represents a pragmatic middle ground between academic research and production engineering, demonstrating how to apply systematic methodologies to improve real-world LLM applications while acknowledging practical constraints and tradeoffs.

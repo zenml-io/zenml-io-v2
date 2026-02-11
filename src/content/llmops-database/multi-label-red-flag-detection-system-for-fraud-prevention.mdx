@@ -1,0 +1,113 @@
+---
+title: "Multi-Label Red Flag Detection System for Fraud Prevention"
+slug: "multi-label-red-flag-detection-system-for-fraud-prevention"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "694adc02042ce598d81c1c9a"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2026-01-07T09:40:39.763Z"
+  lastUpdated: "2025-12-23T20:11:47.657Z"
+  createdOn: "2025-12-23T18:14:26.636Z"
+llmopsTags:
+  - "fraud-detection"
+  - "classification"
+  - "content-moderation"
+  - "prompt-engineering"
+  - "multi-agent-systems"
+  - "cost-optimization"
+  - "latency-optimization"
+  - "error-handling"
+  - "evals"
+  - "monitoring"
+  - "openai"
+  - "google-gcp"
+  - "anthropic"
+company: "Feedzai"
+summary: "Feedzai developed ScamAlert, a generative AI-based system that moves beyond traditional binary scam classification to identify specific red flags in suspected fraud attempts. The system addresses the limitations of binary classifiers that only output risk scores without explanation by using multimodal LLMs to analyze screenshots of suspected scams (emails, text messages, listings) and identify observable warning signs like suspicious links, urgency tactics, or unusual communication channels. The team created a comprehensive benchmarking framework to evaluate multiple commercial multimodal models across four dimensions: red flag detection accuracy (precision/recall/F1), instruction adherence, cost, and latency. Their results showed significant performance variations across models, with GPT-5, Gemini 3 Pro, and Gemini 2.5 Pro leading in accuracy, though with notable tradeoffs in cost and latency, while also revealing instruction-following issues in some models that generated hallucinated red flags not in the predefined taxonomy."
+link: "https://medium.com/feedzaitech/benchmarking-llms-in-real-world-applications-pitfalls-and-surprises-78e720d3bfa1"
+year: 2025
+seo:
+  title: "Feedzai: Multi-Label Red Flag Detection System for Fraud Prevention - ZenML LLMOps Database"
+  description: "Feedzai developed ScamAlert, a generative AI-based system that moves beyond traditional binary scam classification to identify specific red flags in suspected fraud attempts. The system addresses the limitations of binary classifiers that only output risk scores without explanation by using multimodal LLMs to analyze screenshots of suspected scams (emails, text messages, listings) and identify observable warning signs like suspicious links, urgency tactics, or unusual communication channels. The team created a comprehensive benchmarking framework to evaluate multiple commercial multimodal models across four dimensions: red flag detection accuracy (precision/recall/F1), instruction adherence, cost, and latency. Their results showed significant performance variations across models, with GPT-5, Gemini 3 Pro, and Gemini 2.5 Pro leading in accuracy, though with notable tradeoffs in cost and latency, while also revealing instruction-following issues in some models that generated hallucinated red flags not in the predefined taxonomy."
+  canonical: "https://www.zenml.io/llmops-database/multi-label-red-flag-detection-system-for-fraud-prevention"
+  ogTitle: "Feedzai: Multi-Label Red Flag Detection System for Fraud Prevention - ZenML LLMOps Database"
+  ogDescription: "Feedzai developed ScamAlert, a generative AI-based system that moves beyond traditional binary scam classification to identify specific red flags in suspected fraud attempts. The system addresses the limitations of binary classifiers that only output risk scores without explanation by using multimodal LLMs to analyze screenshots of suspected scams (emails, text messages, listings) and identify observable warning signs like suspicious links, urgency tactics, or unusual communication channels. The team created a comprehensive benchmarking framework to evaluate multiple commercial multimodal models across four dimensions: red flag detection accuracy (precision/recall/F1), instruction adherence, cost, and latency. Their results showed significant performance variations across models, with GPT-5, Gemini 3 Pro, and Gemini 2.5 Pro leading in accuracy, though with notable tradeoffs in cost and latency, while also revealing instruction-following issues in some models that generated hallucinated red flags not in the predefined taxonomy."
+---
+
+## Overview and Business Context
+
+Feedzai, a company focused on financial fraud prevention, developed ScamAlert, a production generative AI system that represents a significant departure from traditional binary classification approaches to fraud detection. The system addresses a fundamental limitation in conventional fraud detection: the inability to provide interpretable, actionable insights to end users. Rather than simply outputting a "scam likelihood" score, ScamAlert identifies specific observable red flags in suspected scam communications, empowering users with concrete information about why something appears suspicious.
+
+The motivation for this approach stems from the inherent ambiguity in fraud detection. Binary classifiers can suffer from lack of context—a payment request that appears suspicious in isolation might be legitimate given additional information the user possesses. By focusing on observable patterns rather than definitive judgments, ScamAlert positions itself as an assistive tool that enhances user awareness rather than making absolute determinations. This design philosophy reflects a mature understanding of LLM limitations and how to position AI systems in production environments where user trust and transparency are paramount.
+
+## Technical Architecture and System Design
+
+ScamAlert operates as a complete pipeline that processes user-submitted screenshots of suspected scams. The system workflow begins with users submitting images of text messages, emails, product listings, or other communications. The multimodal LLM then analyzes the screenshot with expert-level knowledge on current scam tactics, extracting key information and identifying which red flags from a predefined taxonomy are present.
+
+The system is designed to output structured responses with three components: a list of detected red flags using predefined nomenclature, short explanations for why each flag was identified, and recommendations for next steps. This structured output serves multiple purposes from an LLMOps perspective. The explanations function similarly to chain-of-thought prompting, potentially improving accuracy by having the model articulate its reasoning. They also provide a crucial interpretability layer that allows both users and system operators to verify that predictions are based on actual observable features rather than spurious correlations or hallucinations.
+
+The red flag taxonomy itself represents a key design decision. Rather than attempting to classify scams into discrete categories, the system performs multi-label classification where multiple red flags can be present simultaneously. Examples include "Unusual Communication Methods," "Unknown Sender," "Requests for Money," "Urgency Tactics and Pressure," "Suspicious URL Shortening," and "Suspicious Attachments." This modular approach provides flexibility as fraud tactics evolve—new flags can be added to the taxonomy without requiring fundamental system redesign.
+
+## Comprehensive Benchmarking Framework
+
+One of the most significant LLMOps contributions of this case study is the rigorous benchmarking methodology developed to evaluate ScamAlert across multiple dimensions. The team created a benchmark dataset composed of a diverse collection of screenshots spanning multiple languages and attack vectors, including cases with images unrelated to the use case. Each example was manually annotated to indicate presence or absence of specific red flags, creating ground truth labels for the multi-label classification task.
+
+The evaluation framework measures four critical dimensions for production deployment. First, detection accuracy is assessed through red flag recall (percentage of true flags identified), precision (percentage of predicted flags that are correct), and F1 score (harmonic mean of precision and recall). This provides visibility into which specific behavioral patterns are being consistently recognized versus missed, enabling targeted improvements.
+
+Second, the framework evaluates instruction adherence by treating formatting errors and invalid predictions as failures. Formatting errors occur when the model output cannot be parsed, while invalid predictions (hallucinations) occur when the model generates red flags not in the predefined taxonomy. This dimension proved crucial in differentiating models, as some otherwise capable models showed poor instruction following that undermined their practical utility.
+
+Third, operational cost per query is tracked, accounting for the token pricing of different model APIs. Fourth, latency is measured to understand response time implications for user experience. These latter two dimensions ensure that evaluation considers real-world deployment constraints rather than solely focusing on accuracy metrics.
+
+The team ran evaluations three times per screenshot to account for the inherent variability in generative models, demonstrating methodological rigor in handling non-deterministic behavior. They also tested models under realistic usage conditions by sending screenshots one at a time through the pipeline, rather than batch processing, to simulate actual production load patterns.
+
+## Model Comparison and Performance Results
+
+The benchmark results from November 2025 provide valuable insights into the state of commercial multimodal models for this specific task, though the authors appropriately caution against generalizing these findings to other use cases. The evaluation included models from OpenAI (GPT-4.1 and GPT-5 variants), Anthropic (Claude 3 and Claude 4 variants), and Google (Gemini 2.0, 2.5, and 3 series).
+
+A complicating factor emerged with "hybrid reasoning" capabilities introduced in recent models (Gemini 3 Pro, Gemini 2.5 Pro, GPT-5, Claude 4, Claude 3.7). These models allow users to set a "thinking budget" where the model generates intermediate reasoning steps, typically boosting performance at significantly greater cost and latency. To maintain fair comparisons, the team set thinking budgets to minimum levels, though some models (Gemini 2.5 Pro, Gemini 3 Pro, GPT-5) don't allow complete disabling of reasoning.
+
+The performance-cost analysis revealed several key findings. GPT-5 provided significant performance advantages but only at reasoning effort equal to or above the "Low" setting, incurring substantial cost increases. Gemini 3 Pro at its lowest reasoning budget performed better than GPT-5 at its lowest budget while being significantly cheaper. Notably, Claude Sonnet versions did not match the performance of similarly priced OpenAI or Gemini models. Gemini "Flash" and "Flash Lite" versions dominated competing GPT mini and GPT nano offerings.
+
+The performance-latency analysis heightened these differences. Higher reasoning levels produced substantial latency increases for Gemini 3 Pro and GPT-5. At lowest budgets, Gemini 2.5 Pro was significantly faster than Gemini 3 Pro and GPT-5. GPT-5 mini and nano, even at default effort, were slower than all other tested models. Surprisingly, Gemini Flash Lite versions took approximately the same time as their Flash counterparts, suggesting the "Lite" designation primarily reflects pricing rather than speed improvements.
+
+## Instruction Following as a Critical Production Requirement
+
+A particularly important finding for LLMOps practitioners concerns instruction following failures. The evaluation revealed that GPT-5 mini and especially GPT-5 nano frequently generated red flags not in the predefined taxonomy, sometimes at rates high enough to significantly impact their effective performance. While many hallucinated flags were semantically equivalent to correct options (e.g., "Suspicious Shortened Link" vs. "Suspicious URL Shortening"), the system rightfully treats these as errors.
+
+This represents a mature approach to LLMOps evaluation. In production systems requiring structured outputs for downstream processing, semantic similarity isn't sufficient—exact adherence to specified formats and vocabularies is necessary for reliable automation. The team's decision to prioritize instruction following alongside vision capabilities reflects real-world deployment requirements where even semantically correct but syntactically non-compliant outputs can break integration points.
+
+The instruction following issues created paradoxical results where GPT-5 nano outperformed GPT-5 mini despite being positioned as a lower-capability, lower-cost model. Similarly, GPT-5 mini and nano performed worse than their GPT-4.1 counterparts, suggesting that model version upgrades don't guarantee improvements on all dimensions. Other models exhibited the same hallucination pattern at lower rates, affecting relative rankings.
+
+## Robustness and Consistency Analysis
+
+To assess consistency of rankings across runs, the team executed the entire benchmark three times and demonstrated that considering either worst or best trials for each model would not significantly reorder results. This robustness check is essential for LLMOps, as production systems must perform reliably rather than showing high variability across invocations. The consistency of rankings provides confidence that model selection decisions based on these benchmarks will hold in production deployment.
+
+## Production Deployment Considerations and Tradeoffs
+
+The case study explicitly addresses the multidimensional tradeoffs inherent in production LLM deployment. Different models occupy different positions on the Pareto frontier of cost-performance tradeoffs, meaning no single model dominates across all dimensions. Organizations must make intentional choices based on their specific constraints—whether prioritizing accuracy, cost efficiency, low latency, or balanced tradeoffs.
+
+The ScamAlert architecture itself reflects production considerations. The validation layer that checks model responses ensures high-confidence, well-founded insights are delivered to users. This defensive programming approach guards against hallucinations and malformed outputs, representing best practices for production LLM systems. The structured output format enables programmatic validation and downstream processing, contrasting with free-form text outputs that would be difficult to reliably validate or integrate.
+
+The system's focus on empowering user judgment rather than making autonomous decisions also reflects deployment wisdom. By presenting observable red flags and explanations, ScamAlert positions itself as augmentation rather than automation. This reduces the risk exposure from model errors and aligns with responsible AI principles, particularly important in the sensitive domain of financial fraud.
+
+## Evaluation Philosophy and Limitations
+
+The authors demonstrate commendable humility and methodological awareness regarding their results. They explicitly disclaim that results are specific to their task, prompt, and dataset, cautioning against generalizing conclusions to other use cases. This acknowledges a fundamental challenge in LLMOps: model performance is highly task-dependent, and public benchmarks often don't predict performance on specific production workloads.
+
+The team's emphasis on task-specific evaluation represents a mature LLMOps practice. Rather than relying on vendor-provided benchmark scores or general-purpose evaluation datasets, they invested in creating a curated benchmark aligned with their actual production requirements. This approach, while resource-intensive, provides far more reliable guidance for model selection and system optimization than generic benchmarks.
+
+The benchmark's design as an ongoing evaluation asset also reflects production thinking. As new multimodal models are released, the benchmark enables rapid evaluation to determine whether they would improve ScamAlert's performance. This positions the team to continuously adopt improvements in model capabilities while maintaining disciplined, evidence-based decision-making about system updates.
+
+## Broader LLMOps Lessons
+
+This case study offers several valuable lessons for LLMOps practitioners. First, the shift from binary classification to multi-label red flag detection demonstrates how reframing problems can better leverage LLM capabilities while improving interpretability. Rather than forcing LLMs to make definitive judgments they may not be equipped to make reliably, the system asks them to identify observable patterns—a task better suited to their capabilities.
+
+Second, the comprehensive evaluation framework models good practice for production LLM evaluation. By measuring accuracy, instruction adherence, cost, and latency simultaneously, the team captures the full picture of deployment viability. Many LLMOps teams focus narrowly on accuracy while neglecting operational considerations, leading to systems that perform well in testing but prove impractical in production.
+
+Third, the instruction following dimension highlights an often-overlooked aspect of LLM reliability. Even capable models can fail in production if they don't consistently adhere to specified output formats and constraints. Evaluating this dimension separately from semantic correctness provides crucial insights for systems requiring structured outputs.
+
+Fourth, the case study demonstrates the value of rapid benchmarking capability as a strategic asset. With new models releasing frequently, organizations that can quickly evaluate them against production workloads gain competitive advantage in adopting improvements while managing risk.
+
+Finally, the transparency about tradeoffs and limitations reflects mature MLOps thinking. Rather than claiming one model as definitively "best," the analysis presents the performance landscape and acknowledges that optimal choices depend on specific deployment constraints and priorities. This nuanced perspective better serves practitioners making real-world deployment decisions.

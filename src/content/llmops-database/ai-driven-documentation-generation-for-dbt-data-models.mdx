@@ -1,0 +1,113 @@
+---
+title: "AI-Driven Documentation Generation for dbt Data Models"
+slug: "ai-driven-documentation-generation-for-dbt-data-models"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "694ad79e0779369f596b6b7b"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2026-01-07T09:40:39.763Z"
+  lastUpdated: "2025-12-23T20:12:18.973Z"
+  createdOn: "2025-12-23T17:55:42.230Z"
+llmopsTags:
+  - "document-processing"
+  - "data-analysis"
+  - "prompt-engineering"
+  - "open-source"
+  - "google-gcp"
+company: "Loblaw Digital"
+summary: "Loblaw Digital addressed the challenge of maintaining comprehensive documentation for over 3,000 dbt data models across their analytics engineering infrastructure. Manual documentation proved labor-intensive and often led to incomplete or outdated documentation that confused business users. The team implemented an LLM-based solution using the open-source dbt-documentor tool integrated with Google Cloud's Vertex AI platform, which automatically generates descriptions for models and their columns by ingesting dbt's manifest.json files without accessing actual data. This automation significantly improved documentation coverage and productivity while maintaining data security, enabling analysts to better understand model purposes and dependencies through the dbt documentation website."
+link: "https://medium.com/loblaw-digital/leveraging-llms-to-generate-ai-driven-dbt-documentation-c4735faa6ca5"
+year: 2023
+seo:
+  title: "Loblaw Digital: AI-Driven Documentation Generation for dbt Data Models - ZenML LLMOps Database"
+  description: "Loblaw Digital addressed the challenge of maintaining comprehensive documentation for over 3,000 dbt data models across their analytics engineering infrastructure. Manual documentation proved labor-intensive and often led to incomplete or outdated documentation that confused business users. The team implemented an LLM-based solution using the open-source dbt-documentor tool integrated with Google Cloud's Vertex AI platform, which automatically generates descriptions for models and their columns by ingesting dbt's manifest.json files without accessing actual data. This automation significantly improved documentation coverage and productivity while maintaining data security, enabling analysts to better understand model purposes and dependencies through the dbt documentation website."
+  canonical: "https://www.zenml.io/llmops-database/ai-driven-documentation-generation-for-dbt-data-models"
+  ogTitle: "Loblaw Digital: AI-Driven Documentation Generation for dbt Data Models - ZenML LLMOps Database"
+  ogDescription: "Loblaw Digital addressed the challenge of maintaining comprehensive documentation for over 3,000 dbt data models across their analytics engineering infrastructure. Manual documentation proved labor-intensive and often led to incomplete or outdated documentation that confused business users. The team implemented an LLM-based solution using the open-source dbt-documentor tool integrated with Google Cloud's Vertex AI platform, which automatically generates descriptions for models and their columns by ingesting dbt's manifest.json files without accessing actual data. This automation significantly improved documentation coverage and productivity while maintaining data security, enabling analysts to better understand model purposes and dependencies through the dbt documentation website."
+---
+
+## Overview and Business Context
+
+Loblaw Digital is the technology arm of a major retail organization that operates extensive data analytics infrastructure supporting multiple lines of business. The company uses dbt (data build tool), an open-source Extract-Load-Transform (ELT) framework, as their standard across the data organization. Their business intelligence dbt repository contains over 3,000 models spread across different teams and project-level folders, representing a substantial data transformation infrastructure that serves various business analytics needs.
+
+The case study, authored by Joseph Jing, Rohit Bathija, Michelle Qi, and Indrani Gorti, presents an interesting application of LLMs to solve a persistent challenge in data engineering: maintaining comprehensive and current documentation. While the article was published on Medium as part of Loblaw Digital's technology blog, it provides concrete implementation details about how they deployed LLMs in a production data engineering workflow.
+
+## The Documentation Problem
+
+The core problem addressed by this case study is one familiar to many data engineering teams: documentation debt. In dbt, each model consists of an SQL file containing data transformation logic and a corresponding YAML configuration file that should contain schema information including a brief description of the model's purpose, available columns, and data types. The authors candidly acknowledge that documentation is often viewed as a "necessary evil" in data engineering—crucial for data integrity, compliance, and collaboration, yet burdened by manual processes that are slow and error-prone.
+
+With thousands of models continuously evolving across different teams, the task of keeping documentation current became increasingly difficult. The description sections in the configuration files were often omitted entirely, creating confusion for business users who needed to understand and work with the data through dbt's documentation website. This documentation gap affected the usability of their data models and made it harder for teams to discover, understand, and trust the available data assets.
+
+The challenge was compounded by the manual effort required to cross-reference multiple files and metadata when writing documentation. Analytics engineers would need to examine SQL logic, trace dependencies, understand column transformations, and then articulate all of this in clear documentation—a time-consuming process that competed with their core responsibilities of building and maintaining data transformations.
+
+## Solution Architecture and LLMOps Implementation
+
+Loblaw Digital's solution centered on leveraging LLMs to automate the documentation generation process. They adopted and deployed the open-source dbt-documentor tool, originally developed by TextQL Labs, which integrates LLM capabilities specifically for dbt documentation. The architecture they implemented involves several key components working together in a production environment.
+
+The technical architecture leverages Google Cloud's Vertex AI platform as their machine learning infrastructure layer. Vertex AI serves as the hosting environment for the LLM capabilities, providing the computational resources and API access needed to generate documentation at scale. The choice of Vertex AI is notable as it represents a managed cloud ML platform, suggesting that Loblaw Digital opted for a cloud-native approach rather than self-hosting open-source models or using other LLM providers.
+
+The dbt-documentor tool itself is built using the .NET framework, specifically requiring .NET SDK version 6.0. This is an interesting technical choice, as most data engineering tools in the Python-dominated analytics ecosystem are Python-based. The tool can be compiled as a self-contained binary for different runtime environments including Linux, macOS (both x64 and ARM architectures), and Windows, providing flexibility in deployment environments.
+
+The workflow operates by ingesting dbt's manifest.json file, which is generated when dbt compiles models. This manifest contains comprehensive metadata about all models, including their SQL logic, dependencies, column information, and existing configuration. Critically, the system generates documentation without accessing actual data—it works purely from the SQL queries and metadata. This design choice addresses data security and privacy concerns, as sensitive information never passes through the LLM.
+
+The LLMs analyze the SQL transformation logic, understand the relationships between models and columns, trace dependencies, and generate natural language descriptions of what each model does and what each column represents. The generated documentation is then written back into the YAML configuration files with an [ai-gen] tag to indicate its automated origin.
+
+## Operational Deployment and Workflow
+
+The operational deployment follows a straightforward command-line workflow integrated into the standard dbt development process. Analytics engineers work in their dbt project directories as usual, and the documentation generation is invoked through simple commands. The basic workflow involves running "DbtHelper" with the working directory parameter pointing to the dbt project location, which identifies all undocumented models and generates descriptions for them.
+
+After the documentation is generated, engineers run the standard "dbt run" command to execute transformations and "dbt docs" to compile and serve the documentation website. This integration into existing workflows is important from an LLMOps perspective—the solution doesn't require analytics engineers to radically change how they work or learn entirely new tools. The automation slots into the existing development lifecycle.
+
+The case study provides before-and-after examples showing the impact of the automated documentation. For a model called "snowplow_analytics_user," the authors show how the initial documentation website displayed essentially empty description sections, making it difficult for analysts to understand the model's purpose. After running the LLM-based documentation generation, the same model gained comprehensive descriptions explaining that it tracks user analytics data from Snowplow, aggregates user behavior metrics, and provides specific details about what each column represents.
+
+## Production Considerations and LLMOps Practices
+
+While the case study is relatively light on certain operational details, it does reveal several important LLMOps considerations that Loblaw Digital likely needed to address in their deployment. The scale of the implementation—generating documentation for over 3,000 models—suggests they needed to consider throughput, cost, and consistency of the LLM outputs.
+
+The security-conscious design of working only with SQL and metadata rather than actual data demonstrates an important production consideration. This architectural choice means the system can operate without special access controls to sensitive customer or business data, simplifying security reviews and compliance requirements. The LLM only sees the structure and logic of transformations, not the actual values being transformed.
+
+The tagging of AI-generated documentation with [ai-gen] markers shows awareness of transparency and accountability concerns. This allows users of the documentation to understand its provenance and potentially apply appropriate skepticism or verification. It also makes it easy to identify which documentation might need human review or enhancement.
+
+From a maintenance perspective, the solution addresses the ongoing challenge of documentation drift. As models evolve, engineers can re-run the documentation generation to update descriptions based on current SQL logic. This creates a more sustainable documentation practice than purely manual approaches, though the article doesn't detail how they handle version control of documentation changes or what review process, if any, applies to generated documentation.
+
+## Critical Assessment and Limitations
+
+While the case study presents a practical application of LLMs in production, it's important to note several limitations in how it's presented and what can be definitively concluded about the effectiveness of the approach.
+
+The article provides no quantitative metrics on documentation quality, accuracy, or completeness. We see one before-and-after example for a single model, but there's no systematic evaluation of how well the LLM-generated documentation serves end users' actual needs. The generated text appears reasonable in the example shown, but without broader sampling or user feedback, it's difficult to assess whether the documentation is genuinely helpful or merely present.
+
+There's no discussion of error handling, failure modes, or quality control processes. What happens when the LLM generates incorrect or misleading descriptions? How are inaccuracies detected and corrected? The case study doesn't address these operational realities, which are crucial for a production system. In data engineering contexts, incorrect documentation can be worse than no documentation if it leads users to misunderstand data and make wrong decisions.
+
+The cost implications of running LLM inference for thousands of models aren't discussed. Depending on the specific models used through Vertex AI and the frequency of documentation regeneration, costs could be non-trivial. Similarly, there's no information about latency—how long does it take to generate documentation for their entire model catalog?
+
+The choice of LLM provider and specific models isn't disclosed. Vertex AI supports various models including Google's own PaLM/Gemini family and potentially others. Different models would have different capabilities, costs, and characteristics, but the article treats the LLM as a black box. This makes it difficult to assess whether their approach would transfer to other LLM providers or open-source models.
+
+The article also doesn't discuss how they handle edge cases or specialized domain knowledge. dbt models in retail and e-commerce likely include business-specific logic, metrics, and terminology. Can the LLM accurately describe domain-specific transformations without additional context? Are there mechanisms for injecting business glossaries or domain knowledge into the documentation generation process?
+
+## Technical Integration Details
+
+The dbt-documentor tool itself represents an interesting technical choice in the ecosystem. Being built on .NET rather than Python creates some friction in a typically Python-centric data engineering environment, though the command-line interface mitigates this to some degree. The tool can be compiled as self-contained binaries for different platforms, which avoids runtime dependency issues but may complicate updates and version management.
+
+The reliance on dbt's manifest.json as the input format is both a strength and a limitation. It's a strength because this is a standardized, structured format that dbt always generates, making integration reliable. It's a limitation because the approach is specifically tied to dbt and wouldn't directly transfer to other data transformation frameworks without significant adaptation.
+
+The workflow of modifying YAML files in place raises questions about version control integration. Modern data engineering practices emphasize treating data pipelines as code with proper version control, code review, and deployment processes. Automatically modifying configuration files needs to fit cleanly into git-based workflows, pull request processes, and potentially CI/CD pipelines. The article doesn't discuss how they manage these integration points.
+
+## Future Directions and Broader Implications
+
+The authors conclude by mentioning a future use case they're considering: enabling users to query large, complex datasets using natural language. This hints at broader ambitions for LLM integration beyond documentation, moving toward natural language interfaces for data exploration. This is a common aspiration in the industry, though it presents additional challenges around query accuracy, performance, and ensuring users get correct results.
+
+The case study represents a relatively conservative and practical application of LLMs—generating documentation from code—rather than more ambitious uses like generating code from requirements or autonomous decision-making. This measured approach is arguably appropriate for production systems where reliability and accuracy are critical. Documentation generation, while valuable, is a lower-risk use case than having LLMs directly manipulate data or make business decisions.
+
+The success of this implementation could inform other internal developer productivity use cases at Loblaw Digital and elsewhere. Automated code documentation, explanation of complex business logic, and generation of data dictionaries are all adjacent problems that could benefit from similar approaches. The pattern of using LLMs to bridge the gap between technical artifacts (SQL code) and human-readable explanations (documentation) is broadly applicable.
+
+## Conclusion and LLMOps Maturity
+
+This case study demonstrates a pragmatic, production deployment of LLMs addressing a real operational pain point in data engineering. Loblaw Digital appears to have taken a measured approach, leveraging existing open-source tooling, using managed cloud ML infrastructure, and integrating the solution into existing workflows rather than requiring radical process changes.
+
+However, the case study is presented more as a proof-of-concept or initial deployment rather than a mature, battle-tested LLMOps implementation. Key operational details around quality assurance, error handling, cost management, and long-term maintenance are not addressed. The lack of quantitative evaluation or user feedback makes it difficult to assess the actual business value delivered beyond the obvious benefit of having some documentation rather than none.
+
+From an LLMOps maturity perspective, this appears to be an early-stage deployment that successfully moves an LLM application into production use but may not yet have developed sophisticated practices around monitoring, evaluation, continuous improvement, or systematic quality control. The transparency provided by the [ai-gen] tagging is a positive practice, but represents only one aspect of responsible LLM deployment.
+
+For organizations considering similar applications of LLMs in data engineering contexts, this case study provides a useful reference point but should be viewed as a starting point rather than a complete blueprint. The core idea—using LLMs to generate documentation from code and metadata—is sound and applicable in various contexts. However, teams should plan for additional operational considerations beyond what's described here, including quality evaluation frameworks, human review processes, cost monitoring, and mechanisms for continuous improvement of generated documentation quality.

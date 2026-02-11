@@ -1,0 +1,144 @@
+---
+title: "Real-Time Generative AI for Immersive Theater Performance"
+slug: "real-time-generative-ai-for-immersive-theater-performance"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "6928172514993db61c067465"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:29:25.839Z"
+  createdOn: "2025-11-27T09:17:25.198Z"
+llmopsTags:
+  - "content-moderation"
+  - "multi-modality"
+  - "realtime-application"
+  - "high-stakes-application"
+  - "poc"
+  - "prompt-engineering"
+  - "multi-agent-systems"
+  - "human-in-the-loop"
+  - "latency-optimization"
+  - "cost-optimization"
+  - "error-handling"
+  - "serverless"
+  - "monitoring"
+  - "cicd"
+  - "scaling"
+  - "orchestration"
+  - "continuous-deployment"
+  - "pytorch"
+  - "fastapi"
+  - "redis"
+  - "cache"
+  - "amazon-aws"
+  - "anthropic"
+  - "hugging-face"
+company: "University of California Los Angeles"
+summary: "The University of California Los Angeles (UCLA) Office of Advanced Research Computing (OARC) partnered with UCLA's Center for Research and Engineering in Media and Performance (REMAP) to build an AI-powered system for an immersive production of the musical \"Xanadu.\" The system enabled up to 80 concurrent audience members and performers to create sketches on mobile phones, which were processed in near real-time (under 2 minutes) through AWS generative AI services to produce 2D images and 3D meshes displayed on large LED screens during live performances. Using a serverless-first architecture with Amazon SageMaker AI endpoints, Amazon Bedrock foundation models, and AWS Lambda orchestration, the system successfully supported 7 performances in May 2025 with approximately 500 total audience members, demonstrating that cloud-based generative AI can reliably power interactive live entertainment experiences."
+link: "https://aws.amazon.com/blogs/machine-learning/university-of-california-los-angeles-delivers-an-immersive-theater-experience-with-aws-generative-ai-services?tag=soumet-20"
+year: 2025
+seo:
+  title: "University of California Los Angeles: Real-Time Generative AI for Immersive Theater Performance - ZenML LLMOps Database"
+  description: "The University of California Los Angeles (UCLA) Office of Advanced Research Computing (OARC) partnered with UCLA's Center for Research and Engineering in Media and Performance (REMAP) to build an AI-powered system for an immersive production of the musical \"Xanadu.\" The system enabled up to 80 concurrent audience members and performers to create sketches on mobile phones, which were processed in near real-time (under 2 minutes) through AWS generative AI services to produce 2D images and 3D meshes displayed on large LED screens during live performances. Using a serverless-first architecture with Amazon SageMaker AI endpoints, Amazon Bedrock foundation models, and AWS Lambda orchestration, the system successfully supported 7 performances in May 2025 with approximately 500 total audience members, demonstrating that cloud-based generative AI can reliably power interactive live entertainment experiences."
+  canonical: "https://www.zenml.io/llmops-database/real-time-generative-ai-for-immersive-theater-performance"
+  ogTitle: "University of California Los Angeles: Real-Time Generative AI for Immersive Theater Performance - ZenML LLMOps Database"
+  ogDescription: "The University of California Los Angeles (UCLA) Office of Advanced Research Computing (OARC) partnered with UCLA's Center for Research and Engineering in Media and Performance (REMAP) to build an AI-powered system for an immersive production of the musical \"Xanadu.\" The system enabled up to 80 concurrent audience members and performers to create sketches on mobile phones, which were processed in near real-time (under 2 minutes) through AWS generative AI services to produce 2D images and 3D meshes displayed on large LED screens during live performances. Using a serverless-first architecture with Amazon SageMaker AI endpoints, Amazon Bedrock foundation models, and AWS Lambda orchestration, the system successfully supported 7 performances in May 2025 with approximately 500 total audience members, demonstrating that cloud-based generative AI can reliably power interactive live entertainment experiences."
+---
+
+## Overview
+
+The University of California Los Angeles deployed a sophisticated generative AI system to support an immersive theatrical production of the musical "Xanadu" in collaboration between the Office of Advanced Research Computing (OARC) and the Center for Research and Engineering in Media and Performance (REMAP). This case study represents a particularly challenging LLMOps scenario: deploying multiple generative AI models in a production environment with strict real-time constraints, high concurrency requirements, and zero tolerance for failure during live performances. The system ran successfully for 7 performances between May 15-23, 2025, supporting up to 65 audience members plus 12 performers simultaneously creating content that was processed and displayed during the show.
+
+The core use case involved audience members and performers drawing sketches on mobile phones, which were then processed through a complex AI pipeline to generate either 2D images or 3D mesh objects. These generated assets were displayed on thirteen 9-foot LED screens (called "shrines") as part of the show's digital scenery rendered in Unreal Engine. This represents a genuine production deployment of LLMs and generative AI models where system failures would directly impact the audience experience, making reliability and performance non-negotiable requirements.
+
+## Architecture and Infrastructure Decisions
+
+OARC adopted a serverless-first architecture approach that proved critical to meeting the project's constraints. The system needed to handle sudden surges of inference requests—up to 80 concurrent users—for approximately 15-minute windows during performances, making traditional always-on infrastructure both expensive and potentially unreliable. The team evaluated Amazon EC2, Amazon EKS, and Amazon SageMaker AI as deployment platforms for their models, ultimately selecting SageMaker AI for most workloads due to its straightforward configuration, reliable on-demand instance provisioning, integrated load balancing, and reduced maintenance burden compared to managing 20+ individual EC2 instances.
+
+The production deployment utilized 24 SageMaker AI endpoints running across 8 g6.12xlarge and 16 g6.4xlarge GPU instances from the Amazon EC2 G6 instance family. These 24 endpoints were organized to support three distinct processing pipelines, each tailored to different types of content generation (backgrounds, custom poses, and 3D objects). The choice of instance types reflected a balance between performance and cost—the g6.12xlarge instances achieved 20-30 second processing times from job initiation to asset return, while the smaller g6.4xlarge instances took 40-60 seconds. This represents a practical tradeoff where the team accepted longer processing times on some endpoints to control costs while ensuring the overall system still met the under-2-minute round-trip requirement from sketch submission to display.
+
+Complementing SageMaker AI, the team leveraged Amazon Bedrock for managed, serverless access to foundation models including Anthropic Claude 3.5 Sonnet, Amazon Nova Canvas, and Stable Diffusion 3.5. This hybrid approach demonstrates an emerging LLMOps pattern: using SageMaker AI for custom model deployments requiring fine-grained control over infrastructure and dependencies, while offloading appropriate workloads to Bedrock's fully managed service to reduce operational overhead. The text suggests this combination was effective, though it's worth noting that splitting inference workloads across two platforms does introduce additional architectural complexity in terms of orchestration and monitoring.
+
+## Orchestration and Event-Driven Processing
+
+The system's orchestration layer represents a sophisticated implementation of event-driven architecture using AWS serverless services. Audience sketches and metadata entered the system through a low-latency Firebase orchestration layer (managed outside AWS) and were routed to Amazon SQS queues. A Lambda helper function sorted incoming messages into sub-queues based on the type of inference processing required (2D-image, 3D-mesh, etc.). This sorting mechanism proved critical for handling variable workload patterns—it prevented busy pipelines from blocking new messages in other pipelines with available resources, essentially implementing a custom load distribution strategy at the application level.
+
+A more complex Lambda function consumed messages from these sorted sub-queues and provided the core orchestration logic. This function handled validation, error and success messaging, concurrency management, and coordination of pre-processing, inference, and post-processing steps. The modular design allowed multiple developers to work in parallel with minimal merge conflicts, an important consideration for a project with rapid iteration requirements leading up to performances. After inference completion, the function published results to an Amazon SNS topic that fanned out to multiple destinations: success notification emails, updates to Amazon DynamoDB for analytics, and messages to a final SQS queue polled by on-premises MacOS workstations that retrieved finished assets.
+
+One noteworthy technical challenge was managing Lambda function dependencies. The processing logic required large Python dependencies including PyTorch, growing to 5GB in size—far exceeding Lambda's layer size limits. The team's solution was to mount an Amazon EFS volume to the Lambda function at runtime to host these dependencies. While this approach worked, it introduced increased cold start latency, a known tradeoff when using EFS with Lambda. The team acknowledged they could have addressed this with Lambda cold start optimization techniques but chose not to implement them due to timing constraints late in the project. This represents a pragmatic engineering decision: accepting a performance compromise in a non-critical path (initial startup) to meet delivery timelines, knowing that subsequent invocations would perform adequately.
+
+## Multi-Model AI Workflows
+
+The system implemented three distinct AI workflows (modules) for different content generation tasks, each leveraging a carefully orchestrated combination of models deployed across SageMaker AI and Bedrock. This multi-model approach demonstrates the complexity of real production LLMOps deployments, where single models rarely suffice and orchestrating multiple specialized models becomes necessary.
+
+All three modules began with vision-language understanding to generate textual descriptions of user sketches and any accompanying reference images. The team used either DeepSeek VLM (deployed on SageMaker AI) or Anthropic Claude 3.5 Sonnet (via Bedrock) for this task. The choice between these models likely reflected experimentation to find the optimal balance of speed, quality, and cost for different scenarios. These textual descriptions, along with the original sketches and supplemental theatrical assets (poses, garments, etc.), then fed into the next stage of the pipeline.
+
+For image generation, the system employed multiple Stable Diffusion variants paired with ControlNet frameworks deployed on SageMaker AI. The models used included SDXL, Stable Diffusion 3.5, various ControlNet variants (for openpose, tile, canny edges), along with specialized models like Yamix-8, CSGO, IP Adapter, InstantID, and the antelopev2 model from InsightFace. ControlNet proved particularly valuable for this use case, as it enabled conditioning the generation process on user sketches and reference poses while maintaining artistic consistency.
+
+An interesting optimization pattern emerged in two of the modules: the team intentionally generated lower-resolution images first to reduce inference time, then upscaled these using either Amazon Nova Canvas in Bedrock or Stable Diffusion 3.5. For example, Nova Canvas's IMAGE_VARIATION task type generated 2048x512-pixel images from lower-resolution background sketches. This approach effectively split the computational workload, allowing the use of smaller (and less expensive) SageMaker AI instance types without sacrificing final output quality. This represents sophisticated LLMOps thinking—optimizing the entire pipeline rather than simply throwing larger instances at the problem.
+
+For 3D content generation, one module used the SPAR3D image-to-3D model to transform object sketches into 3D mesh objects. The workflows also included final processing routines specific to each output type: overlaying cast member images at varying positions on backgrounds, converting custom poses into texture objects, and preparing meshes for rendering in Unreal Engine. The orchestration of these multi-step, multi-model workflows through Lambda functions and SageMaker AI endpoints demonstrates the kind of complex inference pipeline management that characterizes production LLMOps deployments.
+
+## Reliability, Monitoring, and Human-in-the-Loop
+
+Given the zero-tolerance requirement for failures during live performances, the system design emphasized reliability and fault tolerance throughout. The architecture needed to support graceful operation without degradation—there was no acceptable failure mode where the system could limp along with reduced capacity. The serverless approach using managed services (SageMaker AI, Bedrock, Lambda, SQS, SNS, DynamoDB) inherently provided higher availability than self-managed alternatives, as these services come with AWS's built-in redundancy and fault tolerance.
+
+The team implemented a custom web dashboard for infrastructure management that allowed administrators to deploy "known-good" endpoint configurations, enabling rapid deployments, redeployments, and shutdowns of SageMaker AI endpoints. This dashboard also surfaced metrics from Amazon SQS and Amazon CloudWatch Logs, giving the crew visibility into job queues and the ability to purge messages from the pipeline if needed. This human-in-the-loop control system proved essential for managing a complex production environment where creative and technical teams needed to respond quickly to unexpected situations during rehearsals and performances.
+
+Interestingly, the system design explicitly relied on human-in-the-loop review rather than automated post-processing validation of generated images. The team stated they "did not perform automated post-processing on the images" and "could safely trust that issues would be caught before they were sent to the shrines." For future iterations, they plan to implement validation using Amazon Bedrock guardrails and object detection methods alongside human review. This represents a pragmatic initial approach: for a time-constrained project, building comprehensive automated quality assurance for generative AI outputs would have been complex, so they relied on human judgment. However, the acknowledgment of future automation plans shows awareness that this doesn't scale well and introduces potential points of failure if human reviewers miss issues.
+
+## Deployment and Development Practices
+
+The deployment pipeline demonstrates mature DevOps practices adapted for LLMOps. Code deployment to Lambda functions was automated through AWS CodeBuild, which listened for pull request merges on GitHub, updated Python dependencies in the EFS volume, and deployed updates to Lambda functions across development, staging, and production environments. This CI/CD approach reduced manual deployment errors and supported consistent updates across environments—critical when multiple developers are iterating rapidly on a system with hard performance deadlines.
+
+However, the team identified a gap in their infrastructure-as-code practices. Many AWS services were deployed and configured manually rather than through AWS CloudFormation or similar infrastructure-as-code tools. The post-mortem recommendations explicitly called out that automating service configuration would reduce errors compared to manual deployment, particularly when maintaining parallel development, staging, and production environments. This represents an honest assessment of a common challenge in fast-moving projects: teams often prioritize getting something working over building perfect automation, then must live with the technical debt that creates.
+
+The modular, event-driven architecture proved beneficial for rapid iteration. The separation of concerns—with different Lambda functions handling message sorting versus processing, and different SageMaker AI endpoints handling different model types—allowed developers to work on features in parallel with minimal conflicts. The serverless approach also meant the team could focus on system design rather than infrastructure maintenance, though this benefit needs to be weighed against the complexity of orchestrating many distributed components.
+
+## Cost Management and Optimization
+
+Cost management emerged as a significant concern, with SageMaker AI representing approximately 40% of total cloud spend for the project. This highlights a common LLMOps challenge: GPU-based inference infrastructure is expensive, particularly when models require significant compute resources. The team's initial deployment likely left endpoints running during development and rehearsal periods when they weren't actively needed, leading to cost overruns.
+
+To address this, OARC implemented automated cost controls using Amazon EventBridge scheduler and AWS Lambda to shut down SageMaker AI endpoints nightly. This simple automation prevented resources from being left running unintentionally, maintaining cost predictability without sacrificing performance during active use periods. This represents a critical LLMOps best practice: for workloads with predictable usage patterns (performances at specific times), scheduling infrastructure to run only when needed can dramatically reduce costs compared to always-on deployments.
+
+The team noted they're exploring additional cost reduction strategies for phase 2 of the project. Potential approaches might include: using SageMaker AI Serverless Inference for lower-volume endpoints, implementing more aggressive auto-scaling policies, further optimizing model selection to use smaller models where quality permits, or batching inference requests more aggressively. The acknowledgment that cost optimization is an ongoing concern reflects the reality that initial deployments often prioritize functionality over efficiency, with optimization coming in subsequent iterations.
+
+## Performance Characteristics and Constraints
+
+The system achieved its core performance requirement: mean round-trip time from mobile phone sketch submission to media presentation remained under 2 minutes. Breaking this down, the SageMaker AI inference portion (from job initiation to asset return) took 20-30 seconds on g6.12xlarge instances and 40-60 seconds on g6.4xlarge instances. The remaining time budget accommodated network transfer, queue processing, pre-processing, post-processing, human review, and delivery to the media servers.
+
+This performance profile demonstrates that real-time or near-real-time generative AI inference is achievable with current technology, though it requires careful engineering. The under-2-minute requirement represents what the team determined would provide "optimal audience experience"—fast enough that audience members could see their contributions appear during the performance, but not so demanding that it would require prohibitively expensive infrastructure. This kind of requirement negotiation—balancing technical feasibility, cost, and user experience—is characteristic of production LLMOps work.
+
+The system successfully handled minimum concurrency requirements of 80 mobile phone users (65 audience members plus 12 performers) per performance. The event-driven architecture with message queuing provided natural load leveling, allowing requests to be processed as resources became available rather than requiring 80 parallel inference pipelines running simultaneously. This demonstrates an important LLMOps pattern: asynchronous processing with queues can make systems both more reliable and more cost-effective than attempting to provision for peak synchronous load.
+
+## Challenges and Limitations
+
+While the case study presents a successful deployment, several challenges and limitations warrant discussion. The Lambda cold start issue with large EFS-mounted dependencies represents an ongoing performance consideration that the team acknowledged but didn't address. For future deployments, they could explore container-based Lambda functions, Lambda SnapStart, or pre-warming strategies to reduce initialization latency.
+
+The reliance on human-in-the-loop review for quality assurance, while pragmatic for the initial deployment, introduces potential bottlenecks and consistency issues. Automated validation using Bedrock guardrails (as planned for phase 2) would likely improve both throughput and consistency, though implementing effective automated quality checks for generated images and 3D meshes is non-trivial. This highlights a general challenge in LLMOps: generative models produce outputs that are difficult to validate programmatically, often requiring human judgment or sophisticated secondary models for quality assessment.
+
+The manual infrastructure deployment approach created technical debt that the team explicitly acknowledged. While they successfully managed multiple environments, the lack of infrastructure-as-code likely made it harder to reproduce configurations, roll back changes, or provision new environments quickly. This represents a common tension in research and academic projects: limited time and resources push teams toward manual processes, even when they recognize the long-term benefits of automation.
+
+The system's complexity—with dozens of models across two different platforms (SageMaker AI and Bedrock), multiple Lambda functions, various AWS services, and integration with on-premises systems—creates significant operational overhead. While AWS managed services reduced some burden, debugging issues across this distributed system during live performances would be challenging. The custom dashboard provided essential visibility, but comprehensive observability and troubleshooting capabilities would require additional instrumentation and monitoring.
+
+## Broader LLMOps Implications
+
+This case study demonstrates several important LLMOps patterns and considerations. First, it shows that hybrid approaches using both fully managed services (Bedrock) and custom deployments (SageMaker AI) can be effective, allowing teams to optimize different parts of their pipeline according to specific needs. Second, it illustrates that real-time or near-real-time generative AI inference is achievable but requires careful architectural choices around compute resources, model selection, and pipeline optimization.
+
+Third, the case study highlights that production LLMOps deployments often require orchestrating multiple specialized models rather than relying on a single general-purpose model. The combination of vision-language models, various Stable Diffusion variants with ControlNet, upscaling models, and 3D generation models represents the kind of complex pipeline that's increasingly common in production generative AI applications. Managing these multi-model workflows—ensuring models are deployed, scaled, monitored, and coordinated correctly—represents a significant operational challenge.
+
+Fourth, cost management emerges as a critical concern that requires ongoing attention. The team's experience that SageMaker AI consumed 40% of project costs, and their implementation of automated shutdown schedules, reflects a reality of LLMOps: GPU-based inference is expensive, and controlling costs requires active management rather than simply deploying infrastructure and forgetting about it.
+
+Finally, the case study demonstrates that academic and creative applications can drive interesting LLMOps requirements. The need to support live performances with zero tolerance for failure, handle bursty traffic patterns, and integrate with creative workflows (Unreal Engine, LED displays, mobile devices) represents a use case quite different from typical enterprise deployments. This diversity of applications is pushing the LLMOps field to develop more flexible and robust patterns and practices.
+
+## Critical Assessment
+
+While this case study comes from AWS and naturally presents their services favorably, the technical details appear credible and the challenges acknowledged honestly. The team's discussion of cold start issues, cost concerns, lack of infrastructure-as-code, and manual quality assurance represents a balanced view rather than pure marketing. The specific performance numbers, instance types, and architectural choices provide sufficient detail to assess the approach's reasonableness.
+
+Some claims warrant measured interpretation. The statement that "AWS Managed Services performed exceptionally well" during the performances is difficult to verify without detailed reliability metrics. Similarly, the assertion that the serverless approach was "fast and low-cost" for building out services is relative—the total costs aren't disclosed, though the note that SageMaker AI alone represented 40% of spend suggests the overall budget was substantial. The characterization of the system as supporting "new and dynamic forms of entertainment" is somewhat promotional, as integrating audience participation with technology has existed for decades, though the specific use of generative AI is indeed novel.
+
+The recommendation to use SageMaker AI over EC2 or EKS is presented as clearly superior for this use case, but the evaluation criteria and tradeoffs could have been explored more thoroughly. The difficulty obtaining on-demand EC2 instances suggests possible quota or capacity issues that might be specific to their account or region, and the maintenance burden comparison doesn't account for the operational complexity of managing 24 SageMaker AI endpoints with custom models.
+
+Overall, this represents a genuine production deployment of generative AI in a challenging real-time environment, with the technical details and lessons learned providing valuable insights for LLMOps practitioners. The combination of serverless orchestration, hybrid SageMaker AI/Bedrock deployment, multi-model workflows, and cost management strategies offers a realistic picture of what's required to deploy complex generative AI systems in production, warts and all.

@@ -1,0 +1,113 @@
+---
+title: "RAG-based Chatbot for Utility Operations and Customer Service"
+slug: "rag-based-chatbot-for-utility-operations-and-customer-service"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "675b1cd8a3aa770932858c1a"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:50:05.833Z"
+  createdOn: "2024-12-12T17:26:48.653Z"
+llmopsTags:
+  - "chatbot"
+  - "document-processing"
+  - "regulatory-compliance"
+  - "unstructured-data"
+  - "rag"
+  - "embeddings"
+  - "vector-search"
+  - "prompt-engineering"
+  - "semantic-search"
+  - "system-prompts"
+  - "monitoring"
+  - "fastapi"
+  - "postgresql"
+  - "langchain"
+  - "databricks"
+  - "anthropic"
+  - "amazon-aws"
+company: "Xcel Energy"
+summary: "Xcel Energy implemented a RAG-based chatbot system to streamline operations including rate case reviews, legal contract analysis, and earnings call report processing. Using Databricks' Data Intelligence Platform, they developed a production-grade GenAI system incorporating Vector Search, MLflow, and Foundation Model APIs. The solution reduced rate case review times from 6 months to 2 weeks while maintaining strict security and governance requirements for sensitive utility data."
+link: "https://www.databricks.com/blog/xcel-energy-rag"
+year: 2024
+seo:
+  title: "Xcel Energy: RAG-based Chatbot for Utility Operations and Customer Service - ZenML LLMOps Database"
+  description: "Xcel Energy implemented a RAG-based chatbot system to streamline operations including rate case reviews, legal contract analysis, and earnings call report processing. Using Databricks' Data Intelligence Platform, they developed a production-grade GenAI system incorporating Vector Search, MLflow, and Foundation Model APIs. The solution reduced rate case review times from 6 months to 2 weeks while maintaining strict security and governance requirements for sensitive utility data."
+  canonical: "https://www.zenml.io/llmops-database/rag-based-chatbot-for-utility-operations-and-customer-service"
+  ogTitle: "Xcel Energy: RAG-based Chatbot for Utility Operations and Customer Service - ZenML LLMOps Database"
+  ogDescription: "Xcel Energy implemented a RAG-based chatbot system to streamline operations including rate case reviews, legal contract analysis, and earnings call report processing. Using Databricks' Data Intelligence Platform, they developed a production-grade GenAI system incorporating Vector Search, MLflow, and Foundation Model APIs. The solution reduced rate case review times from 6 months to 2 weeks while maintaining strict security and governance requirements for sensitive utility data."
+---
+
+## Overview
+
+Xcel Energy is a leading electric and natural gas utility company serving approximately 3.4 million electricity customers and 1.9 million natural gas customers across eight U.S. states (Colorado, Michigan, Minnesota, New Mexico, North Dakota, South Dakota, Texas, and Wisconsin). The company embarked on a Generative AI initiative to build a Retrieval-Augmented Generation (RAG) architecture-based chatbot using Databricks Mosaic AI to streamline several key operational processes.
+
+The primary use cases targeted by the data science team included rate case reviews, legal contracts reviews, and analysis of earnings call reports. Rate cases are particularly significant for utility companies—as energy costs fluctuate, utilities must recalibrate their rates to align with market factors, a traditionally lengthy process that could take several months. Leadership also wanted faster access to insights from earnings call reports without manually searching through hundreds of pages of PDFs, while the legal team sought quick access to details from customer contracts.
+
+The stated result of the project was a dramatic reduction in rate case review time from up to 6 months to just 2 weeks. However, it's worth noting that this case study is co-authored by Databricks employees alongside Xcel Energy staff, so claims should be evaluated with that context in mind.
+
+## Data Management and Governance
+
+A critical foundation for the project was establishing robust data governance practices. As a utility provider handling both public documents (earnings reports) and sensitive materials (legal contracts), Xcel Energy faced strict requirements around data security and compliance. The team used Databricks Unity Catalog for centralized data management across both structured and unstructured data, including the document corpus that serves as the chatbot's knowledge base. Unity Catalog provided fine-grained access controls to ensure data remained secure and compliant—a particularly important consideration for projects involving proprietary or sensitive information.
+
+For data preparation and ingestion, the team leveraged Databricks Notebooks and Apache Spark for processing large datasets from diverse sources including government websites, legal documents, and internal invoices. Spark's distributed computing capabilities enabled rapid ingestion and preprocessing of documents into the data lake, allowing for efficient transfer of large data workflows into the Vector Store. The emphasis on keeping the Generative AI platform up-to-date with newly ingested data highlights an important LLMOps consideration: ensuring RAG systems have access to current information as soon as it becomes available.
+
+## Embedding Generation and Vector Storage
+
+The retrieval mechanism of the RAG architecture relied heavily on high-quality embeddings. The team utilized Databricks Foundation Model APIs to access state-of-the-art embedding models, specifically databricks-bge-large-en and databricks-gte-large-en. These models provided high-quality vector representations of the document corpus without requiring the team to deploy or manage model infrastructure manually—a significant operational simplification.
+
+The generated embeddings were stored in Databricks Vector Search, described as a serverless and highly scalable vector database integrated within the Databricks environment. This integration was crucial for enabling efficient similarity search, which forms the backbone of the retrieval component. The seamless integration of Vector Search within the broader Databricks ecosystem reportedly reduced infrastructure complexity significantly, allowing the team to focus on application logic rather than infrastructure management.
+
+## LLM Selection and Integration
+
+One of the more interesting aspects of this case study is the evolution of LLM choices. The team was able to test different LLMs using Databricks Foundation Model APIs, which provide access to pretrained models without the overhead of managing deployment or compute resources.
+
+Their initial deployment used Mixtral 8x7b-instruct with 32k token length context, after evaluating Llama 2 and DBRX models. Mixtral, a sparse mixture of experts (SMoE) model, was chosen because it reportedly matched or outperformed Llama 2 70B and GPT 3.5 on most benchmarks while being four times faster than Llama 70B on inference. This demonstrates a thoughtful approach to model selection that balances output quality with inference performance—a key LLMOps consideration for production deployments.
+
+Eventually, the team switched to Anthropic's Claude Sonnet 3.5 accessed via AWS Bedrock through the Databricks Mosaic AI Gateway. This ability to upgrade to more advanced LLMs without disrupting the entire architecture was highlighted as a key benefit of their approach. The AI Gateway component allowed centralized management of credentials and model access, enabling efficient switching between LLMs while also providing cost controls through rate limiting and caching.
+
+## RAG Pipeline Implementation
+
+The RAG pipeline was built using LangChain, a popular framework for building LLM applications that integrates with Databricks' components. The pipeline combines Databricks Vector Search for similarity search with LLM query generation to provide context-aware responses to user queries. The LangChain framework simplified the development process by providing abstractions for common RAG patterns.
+
+The architecture essentially works by retrieving relevant documents from the vector store based on query similarity, then passing that context to the LLM for response generation. This approach allows the chatbot to provide accurate, grounded responses based on the company's actual document corpus rather than relying solely on the LLM's parametric knowledge.
+
+## Experiment Tracking and Model Management
+
+The project leveraged MLflow, an open-source platform for experiment tracking and model management. Using MLflow's LangChain integration, the team logged various configurations and parameters of the RAG model during development. This enabled versioning and simplified the deployment of LLM applications, providing a clear path from experimentation to production.
+
+The team specifically mentioned exploring MLflow tracing capabilities for diagnosing performance issues and enhancing response quality for their Customer Call Support chatbot. This suggests ongoing investment in observability and debugging tools—critical components of mature LLMOps practices.
+
+## Deployment and Serving
+
+The chatbot was deployed using Databricks Model Serving, a serverless compute option that provided scalable and cost-effective hosting. The model was exposed as a REST API endpoint with minimal setup, which could then be easily integrated into front-end applications. This streamlined the transition from development to production significantly.
+
+Model Serving also enabled GPU-based scaling, which was important for reducing latency and operational costs. The scalability aspect was highlighted as crucial for handling increasing user loads without significant architectural changes—an important consideration for enterprise-grade deployments.
+
+## Monitoring and Continuous Improvement
+
+Post-deployment monitoring was implemented using Databricks SQL. The team created dashboards tracking essential metrics such as response times, query volumes, and user satisfaction scores. These insights enabled continuous improvement of chatbot performance and ensured long-term reliability.
+
+By integrating monitoring into the overall workflow, the team could proactively address potential issues and optimize system performance based on real-time feedback. This represents a mature approach to LLMOps that recognizes deployment is just the beginning—ongoing monitoring and optimization are essential for production AI systems.
+
+## Key LLMOps Considerations
+
+Several LLMOps best practices emerge from this case study:
+
+- **Infrastructure abstraction**: Using managed services (Foundation Model APIs, Vector Search, Model Serving) reduced the operational burden of managing AI infrastructure, allowing the data science team to focus on application quality.
+
+- **Model flexibility**: The architecture's ability to swap LLMs (from Mixtral to Claude) without major restructuring demonstrates good separation of concerns and future-proofing.
+
+- **Data governance integration**: Building on Unity Catalog ensured that security and compliance requirements were addressed from the start rather than retrofitted.
+
+- **End-to-end platform approach**: Using Databricks across the entire pipeline (data processing, embedding generation, vector storage, model serving, monitoring) reduced integration complexity.
+
+- **Experiment tracking**: MLflow integration enabled systematic experimentation and clear lineage from development to production.
+
+## Critical Assessment
+
+While the case study presents impressive results (6 months to 2 weeks for rate case reviews), readers should note that this is a vendor-authored blog post co-written by Databricks employees. The specific metrics around time savings are presented without detailed methodology. The case study primarily focuses on the technical architecture rather than providing detailed quantitative evidence of improvements.
+
+The future vision mentioned—making LLMs more accessible across Xcel for tasks like tagging, sentiment analysis, and other applications—suggests this is part of a broader enterprise AI strategy rather than an isolated project, which could indicate meaningful organizational commitment to operationalizing LLMs at scale.

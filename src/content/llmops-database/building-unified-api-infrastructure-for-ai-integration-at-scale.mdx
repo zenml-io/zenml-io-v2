@@ -1,0 +1,169 @@
+---
+title: "Building Unified API Infrastructure for AI Integration at Scale"
+slug: "building-unified-api-infrastructure-for-ai-integration-at-scale"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "695108c1da19c65b1b27c69a"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2026-01-07T09:40:39.763Z"
+  lastUpdated: "2025-12-28T10:51:50.803Z"
+  createdOn: "2025-12-28T10:38:57.417Z"
+llmopsTags:
+  - "customer-support"
+  - "data-integration"
+  - "chatbot"
+  - "question-answering"
+  - "code-generation"
+  - "data-analysis"
+  - "rag"
+  - "embeddings"
+  - "prompt-engineering"
+  - "semantic-search"
+  - "vector-search"
+  - "agent-based"
+  - "multi-agent-systems"
+  - "human-in-the-loop"
+  - "chunking"
+  - "mcp"
+  - "a2a"
+  - "kubernetes"
+  - "docker"
+  - "api-gateway"
+  - "microservices"
+  - "databases"
+  - "security"
+  - "guardrails"
+  - "chromadb"
+  - "pinecone"
+  - "qdrant"
+  - "langchain"
+  - "llama-index"
+  - "postgresql"
+  - "redis"
+  - "cache"
+  - "fastapi"
+  - "crewai"
+  - "documentation"
+  - "compliance"
+  - "monitoring"
+  - "anthropic"
+  - "openai"
+  - "google-gcp"
+  - "amazon-aws"
+company: "Merge"
+summary: "Merge, a unified API provider founded in 2020, helps companies offer native integrations across multiple platforms (HR, accounting, CRM, file storage, etc.) through a single API. As AI and LLMs emerged, Merge adapted by launching Agent Handler, an MCP-based product that enables live API calls for agentic workflows while maintaining their core synced data product for RAG-based use cases. The company serves major LLM providers including Mistral and Perplexity, enabling them to access customer data securely for both retrieval-augmented generation and real-time agent actions. Internally, Merge has adopted AI tools across engineering, support, recruiting, and operations, leading to increased output and efficiency while maintaining their core infrastructure focus on reliability and enterprise-grade security."
+link: "https://www.youtube.com/watch?v=dHgVCHTS41o"
+year: 2025
+seo:
+  title: "Merge: Building Unified API Infrastructure for AI Integration at Scale - ZenML LLMOps Database"
+  description: "Merge, a unified API provider founded in 2020, helps companies offer native integrations across multiple platforms (HR, accounting, CRM, file storage, etc.) through a single API. As AI and LLMs emerged, Merge adapted by launching Agent Handler, an MCP-based product that enables live API calls for agentic workflows while maintaining their core synced data product for RAG-based use cases. The company serves major LLM providers including Mistral and Perplexity, enabling them to access customer data securely for both retrieval-augmented generation and real-time agent actions. Internally, Merge has adopted AI tools across engineering, support, recruiting, and operations, leading to increased output and efficiency while maintaining their core infrastructure focus on reliability and enterprise-grade security."
+  canonical: "https://www.zenml.io/llmops-database/building-unified-api-infrastructure-for-ai-integration-at-scale"
+  ogTitle: "Merge: Building Unified API Infrastructure for AI Integration at Scale - ZenML LLMOps Database"
+  ogDescription: "Merge, a unified API provider founded in 2020, helps companies offer native integrations across multiple platforms (HR, accounting, CRM, file storage, etc.) through a single API. As AI and LLMs emerged, Merge adapted by launching Agent Handler, an MCP-based product that enables live API calls for agentic workflows while maintaining their core synced data product for RAG-based use cases. The company serves major LLM providers including Mistral and Perplexity, enabling them to access customer data securely for both retrieval-augmented generation and real-time agent actions. Internally, Merge has adopted AI tools across engineering, support, recruiting, and operations, leading to increased output and efficiency while maintaining their core infrastructure focus on reliability and enterprise-grade security."
+---
+
+## Overview
+
+Merge is a unified API platform founded in 2020 that provides companies with a single API to offer native integrations across multiple third-party platforms. The company serves various verticals including HR systems, accounting software, CRM, ticketing, file storage, and more. As the founder Gil explains, their core value proposition is eliminating the need for companies to build dozens of individual integrations by providing one standardized interface that connects to all major platforms in a given category.
+
+The emergence of LLMs and generative AI has fundamentally transformed Merge's business in multiple ways. The company now serves major LLM providers including Mistral and Perplexity, while also launching new AI-native products and adopting AI tools internally across their organization. This case study explores how Merge navigated the transition from pre-LLM integration infrastructure to becoming a critical component in the LLMOps stack for AI companies.
+
+## Product Evolution and LLMOps Architecture
+
+When LLMs emerged, Merge faced an interesting challenge. They had invested heavily in tooling that made it easy to set up the base infrastructure for new integrations. However, AI tools could now write the basic integration code from scratch relatively well, making some of their early infrastructure less valuable. Gil describes the difficult decision they made: "We need to ignore everything we've already heavily invested in. That's a sunk cost. We need to say what is if we were to start right now what would be the best decision for merge and that often comes to we should use AI to to build this or to assist with this."
+
+This led to a significant architectural shift where they began actively removing core infrastructure and moving toward AI-assisted integration development. The company now uses AI heavily across engineering teams for coding, with tools like Windsurf and Claude being prominently mentioned.
+
+The most significant product evolution came with the recognition that AI companies need two fundamentally different types of data access patterns:
+
+**Synced Data for RAG Applications**: Merge's classic unified API product creates complete copies of customer data sets, normalizing them to a single format. This data is then vectorized and embedded in vector stores, enabling semantic search and retrieval-augmented generation. This approach is essential for use cases requiring comprehensive search capabilities across large data sets. The trade-off is higher infrastructure costs, rate limiting challenges, and partnership constraints, but the benefit is superior retrieval quality.
+
+**Live API Calls for Agentic Workflows**: Recognizing the limitations of synced data for certain use cases, Merge launched Agent Handler, a product built on the Model Context Protocol (MCP). This enables agents to make real-time API calls to third-party platforms, selecting appropriate tools and executing actions dynamically. This approach is much cheaper and more flexible but doesn't provide the same retrieval capabilities since it's limited by the access patterns of underlying APIs.
+
+Gil provides a critical insight about the performance difference: "When you compare MCP, you know, something that's doing rag with MCP directly and ask it the same question on the side where it's doing rag with a local vector store, for example, that a vector store outperforms every single time hands. It doesn't even come close."
+
+## MCP Implementation and Production Challenges
+
+The Agent Handler product implements MCP through a standardized interface. When integrated into production environments, the system exposes two main functions:
+
+- **list_tools**: Returns all available functionalities that can be executed against third-party platforms in a standard format
+- **call_tool**: Allows the agent to invoke specific tools with arguments
+
+The implementation architecture is sophisticated. Agent Handler acts as a single MCP server backed by all of Merge's built-out connectors, security layers, and data loss prevention (DLP) systems. When customers make API calls to LLM providers, they pass available tools into the tools argument. The LLM responds either with a message or a tool call request with specific parameters.
+
+Merge has addressed several critical production challenges that many MCP implementations face:
+
+**Authentication and Authorization**: When an MCP server connection is established, the user's identity is passed as an ID. The system checks if credentials exist for that identity. If not, it returns a single "authenticate this user" tool. Merge provides a component that handles the authentication flow, including OAuth and other authentication methods. Only after successful authentication does the system expose other available tools. This approach works across all authentication schemes, though Gil notes that many legacy enterprise systems don't use OAuth, creating ongoing integration challenges.
+
+**Security and Data Loss Prevention**: Gil highlights serious security concerns with naive MCP implementations: "Imagine it reads from GitHub and GitHub's API also just happens to pass back you know a secret key for one of the repos from an endpoint because you hit a key endpoint or whatever it is and your agent has the ability to just send that data anywhere." Agent Handler includes a built-in DLP layer that scans for sensitive data and blocks agent calls if it detects secrets, API keys, or other confidential information. For enterprise customers, Merge has implemented approval workflows where new agent workflows must be reviewed by security teams before deployment.
+
+**Tool Search and Discovery**: As customers add more integrations, they face tool explosion—where thousands of tools overwhelm the agent's context window. Merge addresses this with a tool search endpoint that accepts an intent string and returns the appropriate tools to accomplish the task, reducing context window consumption.
+
+**Pagination and Context Management**: Gil identifies a critical limitation of MCP that many developers overlook: "Many times they are using the LLM as a man in the middle. So I call a tool get a result take this result and pipe it to the next tool." When iterating over large data sets (like thousands of repositories), traditional programming uses variables and iterators that don't consume memory proportional to data size. But with MCP, the entire result set passes through the LLM's context window, creating scalability problems. This is one reason why synced data with vector stores remains superior for certain use cases.
+
+## Customer Use Cases and LLM Provider Adoption
+
+Merge serves the largest LLM companies in the world (Gil mentions their logos provide credibility: "the largest LLM providers in the world use merge"). The use cases span both synced and live data access:
+
+**Perplexity** uses Agent Handler to build connectors for Linear (project management), CRM systems, and chat platforms, enabling their AI to access and search across user work tools.
+
+**Various LLM Companies** use synced unified APIs to create comprehensive searchable knowledge bases. The typical pattern is offering users the ability to "connect your work tools" to enable the AI to search across all their professional data sources.
+
+Gil provides a concrete example of typical enterprise usage: Corporate card providers like Ramp and Brex integrate with HR systems to automate card provisioning (send new employees a card with specific limits) and revocation (deactivate cards when employees leave). They simultaneously integrate with accounting systems to post transaction data for end-of-month reconciliation. These workflows increasingly incorporate AI for decision-making and anomaly detection.
+
+## Internal AI Adoption and LLMOps Practices
+
+Beyond their product, Merge has deeply adopted AI internally, providing insights into practical LLMOps implementation within a growing company (the company has offices in San Francisco, New York, and Berlin).
+
+**Change Management Strategy**: Rather than requiring every employee to become "transformative" with AI, Merge identified champions within each department—people genuinely excited about AI—and gave them budget and authority to drive adoption. As Gil explains: "Every department must have transformative representation who is doing that for their team." These champions were found in RevOps, engineering leadership, and recruiting.
+
+**Department-Specific Implementations**: 
+- RevOps uses AI agents for routine tasks including accounting and revenue collection
+- Recruiting adopted off-the-shelf AI tools that Gil describes as "scary" in their effectiveness at maintaining larger candidate pipelines without reducing candidate sentiment
+- Engineering uses Windsurf and Claude extensively for coding
+- Support teams leverage AI heavily for customer interactions
+- Finance and operations teams have implemented AI-driven workflows
+
+**Measuring Impact**: Gil acknowledges that tracking AI impact is difficult. Some ROI is clear and measurable, but much of the value is less tangible: "Someone doesn't have to do this Chrome work that they hate doing." He's skeptical of enterprise claims of 80% efficiency gains, noting that enterprises are typically the slowest to adopt technology. The real value often appears as increased output and capability expansion rather than pure time savings: "They are not improving that much, but then they are doing like many more things."
+
+**Cultural and Confidence Benefits**: Beyond measurable metrics, AI has increased team confidence in decision-making. Gil describes how product specs become more effective: "When someone goes and uses lovable or uses Figma make and just makes that mockup and then describes their decisions on on the live presentation every you get visceral buy in from the team."
+
+**Knowledge Sharing**: The company runs "lunch and learns" (brown bag lunches) to share AI practices across teams, particularly important given their multi-office setup.
+
+## Technical Tradeoffs and Architectural Decisions
+
+The conversation reveals sophisticated thinking about LLMOps tradeoffs that many companies overlook:
+
+**Determinism vs. Flexibility**: There's a fundamental tension in agentic systems. When agents call other agents (A2A), behavior becomes highly non-deterministic. Using MCP tools provides more deterministic outcomes because "the actual functionality of what's occurring is still statically defined" even though the agent decides which tools to call. This is why many production systems break workflows into smallest possible components and compose them deterministically rather than allowing free-form agent orchestration.
+
+**Synced vs. Live Data Access**: The choice between maintaining synced vector stores versus live API calls isn't either/or—sophisticated systems need both. Vector stores enable superior semantic search but incur infrastructure costs and partnership constraints. Live MCP calls are cheap and flexible but can't support complex retrieval patterns. Gil emphasizes that successful AI products combine both approaches based on use case requirements.
+
+**Tool Granularity**: Currently, MCP tools are highly granular (single operations like "list people in CRM" or "get last transactions"). Gil anticipates evolution toward higher-level abstractions where platforms provide more sophisticated endpoints that handle multi-step workflows internally, reducing the burden on agent orchestration layers.
+
+**Infrastructure and Reliability**: Gil emphasizes that the visible API is just "the tip of the iceberg." Merge had to build extensive infrastructure to handle scale, including managing situations where they became 20% of a major API provider's AWS bill. They worked with that provider to add a single endpoint that made syncs much more efficient, demonstrating the infrastructure engineering required for production LLMOps. The company maintains SOC 2 Type 2, ISO 27001, GDPR, and HIPAA compliance—essential for enterprise AI deployments.
+
+## Market Dynamics and Business Model
+
+The LLM era has paradoxically strengthened Merge's business rather than threatening it. Gil explains: "Everyone has access to the same LLMs. The only advantage that someone has is the underlying data that they're feeding to that model as context." As AI democratizes software development capabilities, competitive moats increasingly rely on data access and quality integrations. This has driven "a new curve" in Merge's revenue growth.
+
+**Pricing Strategy**: Agent Handler is priced per tool call, while the classic unified API is priced by number of connected customers. Gil articulates a clear philosophy: "You can't be the best and be the cheapest. So, we've never aimed to be the cheapest." They target standard SaaS margins based on their higher costs (from superior reliability, security, and support) and explicitly position as enterprise-grade infrastructure.
+
+**Competitive Positioning**: Rather than competing on price, Merge emphasizes quality, security, and comprehensive category coverage. When MCP was announced, many predicted Merge's demise, but the opposite occurred—MCP validated their approach and increased demand for both product lines. Gil's response to "AI will make integrations easy" is pragmatic: "Go for it. Do it. See why companies pay us millions a year to to build what we build."
+
+## Future Direction and Emerging Patterns
+
+Looking forward 12-18 months, Merge is investing in three main areas:
+
+**Agentic Security and Observability**: Building infrastructure for secure, authenticated agents with comprehensive logging and visibility, making agent behavior "mostly deterministic" for enterprise requirements.
+
+**Category Expansion**: Adding new integration categories including chat, email, and calendar in response to LLM provider requirements for broader data access.
+
+**Enterprise Infrastructure**: Continued focus on scalability, on-premises deployments for largest customers, and infrastructure reliability—the unglamorous work that enables production AI systems.
+
+**API Evolution**: Anticipating that as third-party APIs add their own search endpoints and more sophisticated access patterns, the balance between synced and live data access will shift, though Gil notes APIs may resist this due to cost concerns.
+
+The case study reveals a sophisticated understanding of production LLMOps challenges. Merge isn't just connecting APIs—they're solving authentication, authorization, security, scalability, rate limiting, pagination, error handling, and data normalization across hundreds of integrations. The emergence of LLMs hasn't eliminated these problems; it's made high-quality integration infrastructure more valuable as data access becomes the primary competitive differentiator in an age of democratized AI capabilities.
+
+Gil's final perspective on AI adoption captures the broader challenge: many people overcomplicate AI (it's ultimately just "inputs and outputs" of prompts) while simultaneously fearing it will replace them. The real opportunity lies in organizations and individuals embracing AI tools openly and honestly, integrating them into production systems with appropriate security and governance, and recognizing that quality infrastructure—whether for integrations, security, or reliability—remains the foundation of successful AI deployment at scale.

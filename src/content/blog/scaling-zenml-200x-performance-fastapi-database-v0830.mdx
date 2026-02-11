@@ -1,0 +1,1193 @@
+---
+title: "Scaling ZenML: 200x Performance Improvement Through Database and FastAPI Optimizations in v0.83.0"
+slug: "scaling-zenml-200x-performance-fastapi-database-v0830"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "683dbd03b2a617995d764540"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-07-23T16:30:14.772Z"
+  lastUpdated: "2025-07-17T08:54:50.923Z"
+  createdOn: "2025-06-02T15:02:27.373Z"
+author: "hamza-tahir"
+category: "zenml"
+tags:
+  - "release"
+  - "zenml"
+  - "release-notes"
+  - "latest-news"
+date: "2025-06-02T00:00:00.000Z"
+readingTime: 15 mins
+mainImage:
+  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/9c390371/683dbd8bf0ccd4062e136ba1_200x-performance-zenml-release-0.83.0__1_.png"
+seo:
+  title: "Scaling ZenML: 200x Performance Improvement Through Database and FastAPI Optimizations in v0.83.0 - ZenML Blog"
+  description: "A technical deep dive into the performance optimizations that improved ZenML's throughput by 200x"
+  canonical: "https://www.zenml.io/blog/scaling-zenml-200x-performance-fastapi-database-v0830"
+  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/9c390371/683dbd8bf0ccd4062e136ba1_200x-performance-zenml-release-0.83.0__1_.png"
+  ogTitle: "Scaling ZenML: 200x Performance Improvement Through Database and FastAPI Optimizations in v0.83.0 - ZenML Blog"
+  ogDescription: "A technical deep dive into the performance optimizations that improved ZenML's throughput by 200x"
+---
+
+ZenML's architecture has always prioritized simplicity and ease of deployment: a FastAPI server handling pipeline orchestration, backed by a SQL database for persistence. This design works well for most use cases, but as our users began running increasingly complex pipelines—particularly those with high parallelism and rich metadata—we identified several performance bottlenecks that needed systematic addressing.
+
+<div data-rt-embed-type="true"><style>
+.zenml-diagram {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    padding: 40px 20px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    border: 1px solid #e2e8f0;
+    margin: 20px 0;
+}
+
+.zenml-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.zenml-component {
+    background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%);
+    color: white;
+    padding: 30px 40px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 18px;
+    text-align: center;
+    box-shadow: 0 8px 25px rgba(139, 92, 246, 0.3);
+    min-width: 200px;
+}
+
+.zenml-arrow {
+    font-size: 32px;
+    color: #6b7280;
+    font-weight: bold;
+}
+
+.zenml-architecture {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+    padding: 40px;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+    .zenml-architecture {
+        flex-direction: column;
+        gap: 20px;
+    }
+    .zenml-component {
+        min-width: auto;
+        width: 100%;
+    }
+}
+</style>
+
+<div class="zenml-diagram">
+    <h2 class="zenml-title">ZenML's Simple Architecture</h2>
+    <div class="zenml-architecture">
+        <div class="zenml-component">
+            FastAPI Server
+        </div>
+        <div class="zenml-arrow">→</div>
+        <div class="zenml-component">
+            SQL Database
+        </div>
+    </div>
+</div></div>
+
+Some enterprise customers reported API response times occasionally **exceeding 30 seconds during peak loads**, particularly when running pipelines with complex step dependencies and extensive metadata. These timeouts were triggering HTTP client failures and, in some cases, causing parallel pipeline steps to fail during execution.
+
+Our [v0.83.0 release addresses](https://github.com/zenml-io/zenml/releases/tag/0.83.0) these performance issues through systematic database query optimization and FastAPI threading improvements. This post details our step-by-step investigation process, the specific bottlenecks we discovered, and the solutions we implemented to achieve significant performance improvements.
+
+We write this in hopes that other engineering teams facing similar scaling challenges can learn from our systematic approach to performance optimization. The techniques we used—realistic load testing, systematic instrumentation, iterative problem-solving—are broadly applicable beyond ZenML to any system dealing with database bottlenecks and concurrent request handling.
+
+## Stage 1: The "Too Simple" Problem
+
+Our performance investigation began with what seemed like a straightforward test: run 100 parallel pipeline steps and measure the results. We crafted a simple test pipeline where each step would perform minimal operations:
+
+<div data-rt-embed-type="true"><style>
+.zenml-code-block {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Roboto Mono', 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.5;
+    background-color: #f6f5ff;
+    color: #3e3a5d;
+    border-radius: 8px;
+    padding: 16px;
+    overflow-x: auto;
+    box-shadow: 0 2px 8px rgba(101, 96, 205, 0.15);
+    position: relative;
+    border-left: 4px solid #6560cd;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0 0 20px 0;
+}
+
+.zenml-language-label {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    font-size: 12px;
+    color: #6560cd;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.zenml-code-comment {
+    color: #8b88ac;
+    font-style: italic;
+}
+
+.zenml-code-keyword {
+    color: #6560cd;
+    font-weight: 600;
+}
+
+.zenml-code-string {
+    color: #7c63e6;
+}
+
+.zenml-code-number {
+    color: #9e73ef;
+}
+
+.zenml-code-function {
+    color: #584dc2;
+    font-weight: 600;
+}
+
+.zenml-code-variable {
+    color: #3c3452;
+    font-weight: 500;
+}
+
+.zenml-code-decorator {
+    color: #6560cd;
+    font-weight: 600;
+}
+
+.zenml-code-block pre {
+    margin: 0;
+    white-space: pre-wrap;
+    width: 100%;
+}
+</style>
+
+
+<div class="zenml-code-block">
+    <div class="zenml-language-label">Python</div>
+    <pre><span class="zenml-code-comment"># Initial simple test pipeline</span>
+<span class="zenml-code-decorator">@step</span>
+<span class="zenml-code-keyword">def</span> <span class="zenml-code-function">simple_step</span>() -&gt; <span class="zenml-code-keyword">None</span>:
+    <span class="zenml-code-variable">time</span>.<span class="zenml-code-function">sleep</span>(<span class="zenml-code-number">5</span>)  <span class="zenml-code-comment"># Just sleep, minimal metadata</span>
+
+<span class="zenml-code-decorator">@pipeline</span>
+<span class="zenml-code-keyword">def</span> <span class="zenml-code-function">simple_test_pipeline</span>():
+    <span class="zenml-code-keyword">for</span> <span class="zenml-code-variable">i</span> <span class="zenml-code-keyword">in</span> <span class="zenml-code-function">range</span>(<span class="zenml-code-number">100</span>):
+        <span class="zenml-code-function">simple_step</span>()</pre>
+</div></div>
+
+The results? Everything worked perfectly. But our users were still reporting problems.
+
+The disconnect was stark: our synthetic tests passed while real-world usage failed. We realized our test pipeline was too simple—**it didn't reflect the complexity of actual ML workflows.** Production pipelines involve significantly more complexity:
+
+<div data-rt-embed-type="true"><div class="zenml-code-block">
+    <div class="zenml-language-label">Python</div>
+    <pre><span class="zenml-code-comment"># Realistic test pipeline that exposed the issues</span>
+<span class="zenml-code-decorator">@step</span>
+<span class="zenml-code-keyword">def</span> <span class="zenml-code-function">complex_step</span>(
+    <span class="zenml-code-variable">input_1</span>: <span class="zenml-code-function">int</span>, <span class="zenml-code-variable">input_2</span>: <span class="zenml-code-function">str</span>, <span class="zenml-code-variable">input_3</span>: <span class="zenml-code-function">float</span>,
+    <span class="zenml-code-comment"># ... 20 total inputs</span>
+) -&gt; <span class="zenml-code-function">Tuple</span>[<span class="zenml-code-function">str</span>, <span class="zenml-code-function">int</span>, <span class="zenml-code-function">float</span>]:
+    <span class="zenml-code-comment"># Add realistic metadata and tags</span>
+    <span class="zenml-code-variable">step_context</span> = <span class="zenml-code-function">get_step_context</span>()
+    <span class="zenml-code-variable">step_context</span>.<span class="zenml-code-function">add_tags</span>([<span class="zenml-code-string">"env:production"</span>, <span class="zenml-code-string">"model:v2"</span>, <span class="zenml-code-string">"dataset:large"</span>])
+    
+    <span class="zenml-code-comment"># Simulate realistic API calls during execution</span>
+    <span class="zenml-code-variable">client</span> = <span class="zenml-code-function">Client</span>()
+    <span class="zenml-code-function">print</span>(<span class="zenml-code-string">"Starting API calls..."</span>)
+    <span class="zenml-code-keyword">while</span> <span class="zenml-code-variable">time</span>.<span class="zenml-code-function">time</span>() - <span class="zenml-code-variable">start_time</span> &lt; <span class="zenml-code-variable">duration</span>:
+        <span class="zenml-code-comment"># Perform various API operations</span>
+        <span class="zenml-code-function">print</span>(<span class="zenml-code-string">"Listing pipeline runs..."</span>)
+        <span class="zenml-code-variable">p</span> = <span class="zenml-code-variable">client</span>.<span class="zenml-code-function">list_pipeline_runs</span>()
+        <span class="zenml-code-keyword">if</span> <span class="zenml-code-variable">p</span>.<span class="zenml-code-variable">items</span>:
+            <span class="zenml-code-function">print</span>(<span class="zenml-code-string">"Fetching pipeline run..."</span>)
+            <span class="zenml-code-variable">client</span>.<span class="zenml-code-function">get_pipeline_run</span>(<span class="zenml-code-variable">p</span>.<span class="zenml-code-variable">items</span>[-<span class="zenml-code-number">1</span>].<span class="zenml-code-variable">id</span>)
+        <span class="zenml-code-function">print</span>(<span class="zenml-code-string">"Listing stacks..."</span>)
+        <span class="zenml-code-variable">s</span> = <span class="zenml-code-variable">client</span>.<span class="zenml-code-function">list_stacks</span>()
+        ...
+        <span class="zenml-code-keyword">if</span> <span class="zenml-code-variable">sleep_interval</span> &gt; <span class="zenml-code-number">0</span>:
+            <span class="zenml-code-function">print</span>(<span class="zenml-code-function">f</span><span class="zenml-code-string">"Sleeping for {sleep_interval} seconds..."</span>)
+            <span class="zenml-code-variable">time</span>.<span class="zenml-code-function">sleep</span>(<span class="zenml-code-variable">sleep_interval</span>)
+                
+    <span class="zenml-code-keyword">return</span> {
+        <span class="zenml-code-string">"operations"</span>: <span class="zenml-code-variable">operations</span>,
+        <span class="zenml-code-string">"duration"</span>: <span class="zenml-code-variable">duration</span>,
+    }
+
+<span class="zenml-code-decorator">@pipeline</span>
+<span class="zenml-code-keyword">def</span> <span class="zenml-code-function">load_test_pipeline</span>(
+    <span class="zenml-code-variable">num_parallel_steps</span>: <span class="zenml-code-function">int</span>, <span class="zenml-code-variable">duration</span>: <span class="zenml-code-function">int</span>, <span class="zenml-code-variable">sleep_interval</span>: <span class="zenml-code-function">float</span>
+) -&gt; <span class="zenml-code-keyword">None</span>:
+    <span class="zenml-code-variable">result</span> = <span class="zenml-code-function">init_step</span>()
+    <span class="zenml-code-keyword">for</span> <span class="zenml-code-variable">i</span> <span class="zenml-code-keyword">in</span> <span class="zenml-code-function">range</span>(<span class="zenml-code-variable">num_parallel_steps</span>):
+        <span class="zenml-code-function">load_step</span>(
+            <span class="zenml-code-variable">duration</span>,
+            <span class="zenml-code-variable">sleep_interval</span>,
+            *<span class="zenml-code-variable">result</span>,
+            <span class="zenml-code-variable">id</span>=<span class="zenml-code-function">f</span><span class="zenml-code-string">"load_step_{i}"</span>,
+        )</pre>
+</div></div>
+
+When we enhanced our test pipeline to include realistic complexity, performance issues became immediately apparent. Under load, some configurations experienced difficulties even with moderate parallelism (10+ concurrent steps), particularly when combined with rich metadata and frequent API interactions.
+
+<div data-rt-embed-type="true"><aside class="callout">
+  🎓 <strong>Key insight:</strong> Realistic load testing requires realistic complexity.
+</aside></div>
+
+## Stage 2: Enhanced Logging and Problem Identification
+
+With realistic test conditions reproducing the issues, we needed better visibility into what was happening. We instrumented the server with detailed logging to capture performance metrics at REST API level and database level:
+
+<div data-rt-embed-type="true"><div class="zenml-code-block">
+    <div class="zenml-language-label">Python</div>
+    <pre><span class="zenml-code-decorator">@app.middleware</span>(<span class="zenml-code-string">"http"</span>)
+<span class="zenml-code-keyword">async def</span> <span class="zenml-code-function">log_requests</span>(<span class="zenml-code-variable">request</span>: <span class="zenml-code-function">Request</span>, <span class="zenml-code-variable">call_next</span>: <span class="zenml-code-function">Any</span>) -&gt; <span class="zenml-code-function">Any</span>:
+    <span class="zenml-code-variable">client_ip</span> = <span class="zenml-code-variable">request</span>.<span class="zenml-code-variable">client</span>.<span class="zenml-code-variable">host</span> <span class="zenml-code-keyword">if</span> <span class="zenml-code-variable">request</span>.<span class="zenml-code-variable">client</span> <span class="zenml-code-keyword">else</span> <span class="zenml-code-string">"unknown"</span>
+    <span class="zenml-code-variable">method</span> = <span class="zenml-code-variable">request</span>.<span class="zenml-code-variable">method</span>
+    <span class="zenml-code-variable">url_path</span> = <span class="zenml-code-variable">request</span>.<span class="zenml-code-variable">url</span>.<span class="zenml-code-variable">path</span>
+    <span class="zenml-code-variable">logger</span>.<span class="zenml-code-function">debug</span>(
+        <span class="zenml-code-function">f</span><span class="zenml-code-string">"API STATS - {method} {url_path} from {client_ip} RECEIVED"</span>
+    )
+            
+    <span class="zenml-code-variable">start_time</span> = <span class="zenml-code-variable">time</span>.<span class="zenml-code-function">time</span>()
+    <span class="zenml-code-variable">response</span> = <span class="zenml-code-keyword">await</span> <span class="zenml-code-function">call_next</span>(<span class="zenml-code-variable">request</span>)
+    <span class="zenml-code-variable">duration</span> = (<span class="zenml-code-variable">time</span>.<span class="zenml-code-function">time</span>() - <span class="zenml-code-variable">start_time</span>) * <span class="zenml-code-number">1000</span>
+    <span class="zenml-code-variable">status_code</span> = <span class="zenml-code-variable">response</span>.<span class="zenml-code-variable">status_code</span>
+        
+    <span class="zenml-code-variable">logger</span>.<span class="zenml-code-function">debug</span>(
+        <span class="zenml-code-function">f</span><span class="zenml-code-string">"API STATS - {status_code} {method} {url_path} from "</span>
+        <span class="zenml-code-function">f</span><span class="zenml-code-string">"{client_ip} took {duration:.2f}ms"</span>
+    )
+    <span class="zenml-code-keyword">return</span> <span class="zenml-code-variable">response</span></pre>
+</div></div>
+
+<div data-rt-embed-type="true"><div class="zenml-code-block">
+    <div class="zenml-language-label">Python</div>
+    <pre><span class="zenml-code-comment"># Enhanced logging for performance debugging</span>
+<span class="zenml-code-keyword">import</span> <span class="zenml-code-variable">logging</span>
+<span class="zenml-code-keyword">from</span> <span class="zenml-code-variable">contextlib</span> <span class="zenml-code-keyword">import</span> <span class="zenml-code-variable">contextmanager</span>
+<span class="zenml-code-keyword">from</span> <span class="zenml-code-variable">sqlmodel</span> <span class="zenml-code-keyword">import</span> <span class="zenml-code-variable">Session</span> <span class="zenml-code-keyword">as</span> <span class="zenml-code-variable">SqlModelSession</span>
+
+<span class="zenml-code-keyword">class</span> <span class="zenml-code-function">Session</span>(<span class="zenml-code-variable">SqlModelSession</span>):
+    <span class="zenml-code-keyword">def</span> <span class="zenml-code-function">__enter__</span>(<span class="zenml-code-variable">self</span>) -&gt; <span class="zenml-code-string">"Session"</span>:
+        <span class="zenml-code-variable">self</span>.<span class="zenml-code-variable">start_time</span> = <span class="zenml-code-variable">time</span>.<span class="zenml-code-function">time</span>()
+        <span class="zenml-code-variable">active_connections</span> = <span class="zenml-code-variable">db_pool</span>.<span class="zenml-code-function">checkedout</span>()
+        <span class="zenml-code-variable">available_connections</span> = <span class="zenml-code-variable">db_pool</span>.<span class="zenml-code-function">size</span>() - <span class="zenml-code-variable">active_connections</span>
+        <span class="zenml-code-variable">self</span>.<span class="zenml-code-variable">caller_method</span> = <span class="zenml-code-string">"extract calling method from the stack trace"</span>
+        
+        <span class="zenml-code-variable">logger</span>.<span class="zenml-code-function">debug</span>(
+            <span class="zenml-code-function">f</span><span class="zenml-code-string">"SQL STATS - '{self.caller_method}' started [ conn(active): "</span>
+            <span class="zenml-code-function">f</span><span class="zenml-code-string">"{checked_out_connections} conn(idle): "</span>
+            <span class="zenml-code-function">f</span><span class="zenml-code-string">"{available_connections} ]"</span>
+        )
+    
+    <span class="zenml-code-keyword">def</span> <span class="zenml-code-function">__exit__</span>(
+        <span class="zenml-code-variable">self</span>,
+        <span class="zenml-code-variable">exc_type</span>: <span class="zenml-code-function">Optional</span>[<span class="zenml-code-function">Any</span>],
+        <span class="zenml-code-variable">exc_val</span>: <span class="zenml-code-function">Optional</span>[<span class="zenml-code-function">Any</span>],
+        <span class="zenml-code-variable">exc_tb</span>: <span class="zenml-code-function">Optional</span>[<span class="zenml-code-function">Any</span>],
+    ) -&gt; <span class="zenml-code-keyword">None</span>:
+        <span class="zenml-code-variable">duration</span> = <span class="zenml-code-variable">time</span>.<span class="zenml-code-function">time</span>() - <span class="zenml-code-variable">start_time</span>
+        <span class="zenml-code-variable">logger</span>.<span class="zenml-code-function">debug</span>(
+            <span class="zenml-code-function">f</span><span class="zenml-code-string">"SQL STATS - '{self.caller_method}' completed in "</span>
+            <span class="zenml-code-function">f</span><span class="zenml-code-string">"{duration:.2f}ms"</span>
+        )
+
+<span class="zenml-code-comment"># Usage in store methods</span>
+<span class="zenml-code-keyword">def</span> <span class="zenml-code-function">get_run</span>(<span class="zenml-code-variable">self</span>, <span class="zenml-code-variable">run_id</span>: <span class="zenml-code-function">UUID</span>) -&gt; <span class="zenml-code-function">PipelineRunResponse</span>:
+    <span class="zenml-code-keyword">with</span> <span class="zenml-code-function">Session</span>(<span class="zenml-code-variable">self</span>.<span class="zenml-code-variable">engine</span>) <span class="zenml-code-keyword">as</span> <span class="zenml-code-variable">session</span>:
+        <span class="zenml-code-comment"># ... database operations</span>
+        <span class="zenml-code-keyword">return</span> <span class="zenml-code-variable">run</span></pre>
+</div></div>
+
+The enhanced logging revealed the smoking gun. Database queries were the primary bottleneck:
+
+<div data-rt-embed-type="true"><div class="zenml-code-block">
+<div class="zenml-language-label">Shell</div>
+<pre><span class="zenml-code-comment"># API endpoint response times (anything &gt;30s causes client timeouts)</span>
+<span class="zenml-code-variable">$</span> <span class="zenml-code-function">grep</span> <span class="zenml-code-variable">-oE</span> <span class="zenml-code-string">'INFO.*took [0-9]{5,9}\..*ms'</span> <span class="zenml-code-variable">server-logs.txt</span> <span class="zenml-code-variable">|</span> <span class="zenml-code-function">head</span> <span class="zenml-code-variable">-n</span> <span class="zenml-code-number">5</span>
+<span class="zenml-code-number">76868.81</span><span class="zenml-code-variable">ms</span>: <span class="zenml-code-string">GET /api/v1/runs/26b0ea99-e608-4bb7-8734-67f9491e3773</span>
+<span class="zenml-code-number">71714.49</span><span class="zenml-code-variable">ms</span>: <span class="zenml-code-string">GET /api/v1/runs</span>
+<span class="zenml-code-number">70788.74</span><span class="zenml-code-variable">ms</span>: <span class="zenml-code-string">GET /api/v1/steps/e9080587-d74a-4c99-b9d9-022afa4d5756</span>
+<span class="zenml-code-number">63195.76</span><span class="zenml-code-variable">ms</span>: <span class="zenml-code-string">GET /api/v1/steps</span>
+<span class="zenml-code-number">55644.02</span><span class="zenml-code-variable">ms</span>: <span class="zenml-code-string">POST /api/v1/artifact_versions/batch</span>
+
+<span class="zenml-code-comment"># Database operation breakdown</span>
+<span class="zenml-code-variable">$</span> <span class="zenml-code-function">grep</span> <span class="zenml-code-variable">-oE</span> <span class="zenml-code-string">'INFO.*completed in [0-9]{2,9}.*seconds'</span> <span class="zenml-code-variable">server-logs.txt</span> <span class="zenml-code-variable">|</span> <span class="zenml-code-function">head</span> <span class="zenml-code-variable">-n</span> <span class="zenml-code-number">5</span>
+<span class="zenml-code-number">48.908</span><span class="zenml-code-variable">s</span>: <span class="zenml-code-string">'RBACSqlZenStore.get_run'</span>
+<span class="zenml-code-number">44.545</span><span class="zenml-code-variable">s</span>: <span class="zenml-code-string">'RBACSqlZenStore.get_run'</span>
+<span class="zenml-code-number">42.680</span><span class="zenml-code-variable">s</span>: <span class="zenml-code-string">'RBACSqlZenStore.get_run'</span>
+<span class="zenml-code-number">41.033</span><span class="zenml-code-variable">s</span>: <span class="zenml-code-string">'RBACSqlZenStore.get_run'</span>
+<span class="zenml-code-number">40.272</span><span class="zenml-code-variable">s</span>: <span class="zenml-code-string">'RBACSqlZenStore.list_runs'</span></pre>
+</div></div>
+
+We discovered that the expensive `get_run` operations were being called unnecessarily for authentication purposes, even when not explicitly requested by the client. Pipeline run fetching had become prohibitively expensive because it involved multiple SQLAlchemy queries to build complete objects with steps, artifacts, metadata, and relationships.
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/b595102b/683dbe4c4a1ebde1afd0e4ce_server-side-operation-durations-min-3s.png" alt="__wf_reserved_inherit" />
+</figure>
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/81b09073/683dbe55ef60d8116c5b066e_server-side-operation-durations-min-5s.png" alt="__wf_reserved_inherit" />
+</figure>
+
+## Stage 3: Database Query Optimization
+
+Armed with specific data about the bottlenecks, we implemented comprehensive database optimizations.
+
+### Response Structure Refactoring
+
+We analyzed which attributes were actually needed for different use cases and restructured our API responses:
+
+<div data-rt-embed-type="true"><div class="zenml-code-block">
+    <div class="zenml-language-label">JSON</div>
+    <pre><span class="zenml-code-comment"># Before: Heavy pipeline run response</span>
+{
+    <span class="zenml-code-string">"id"</span>: <span class="zenml-code-string">"26b0ea99-e608-4bb7-8734-67f9491e3773"</span>,
+    <span class="zenml-code-string">"body"</span>: {
+    <span class="zenml-code-string">"user"</span>: {...},  <span class="zenml-code-comment"># Full user object</span>
+    <span class="zenml-code-string">"status"</span>: <span class="zenml-code-string">"completed"</span>,
+    <span class="zenml-code-string">"pipeline"</span>: {...}
+    },
+    <span class="zenml-code-string">"metadata"</span>: {
+    <span class="zenml-code-string">"project"</span>: {...},  <span class="zenml-code-comment"># Full project object</span>
+    <span class="zenml-code-string">"steps"</span>: [
+        <span class="zenml-code-comment"># Unpaginated list of ALL steps</span>
+        {<span class="zenml-code-string">"id"</span>: <span class="zenml-code-string">"step1"</span>, <span class="zenml-code-string">"inputs"</span>: {...}, <span class="zenml-code-string">"outputs"</span>: {...}},
+        {<span class="zenml-code-string">"id"</span>: <span class="zenml-code-string">"step2"</span>, <span class="zenml-code-string">"inputs"</span>: {...}, <span class="zenml-code-string">"outputs"</span>: {...}},
+        <span class="zenml-code-comment"># ... potentially hundreds of steps</span>
+    ],
+    <span class="zenml-code-string">"step_substitutions"</span>: {...}  <span class="zenml-code-comment"># Substitutions for all steps</span>
+    }
+}</pre>
+</div></div>
+
+<div data-rt-embed-type="true"><!-- ZenML JSON Response Code Block - Properly Formatted -->
+<style>
+.zenml-code-block {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Roboto Mono', 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.5;
+    background-color: #f6f5ff;
+    color: #3e3a5d;
+    border-radius: 8px;
+    padding: 16px;
+    overflow-x: auto;
+    box-shadow: 0 2px 8px rgba(101, 96, 205, 0.15);
+    position: relative;
+    border-left: 4px solid #6560cd;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0 0 20px 0;
+}
+
+.zenml-language-label {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    font-size: 12px;
+    color: #6560cd;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.zenml-code-comment {
+    color: #8b88ac;
+    font-style: italic;
+}
+
+.zenml-code-keyword {
+    color: #6560cd;
+    font-weight: 600;
+}
+
+.zenml-code-string {
+    color: #7c63e6;
+}
+
+.zenml-code-number {
+    color: #9e73ef;
+}
+
+.zenml-code-function {
+    color: #584dc2;
+    font-weight: 600;
+}
+
+.zenml-code-variable {
+    color: #3c3452;
+    font-weight: 500;
+}
+
+.zenml-code-decorator {
+    color: #6560cd;
+    font-weight: 600;
+}
+
+.zenml-code-block pre {
+    margin: 0;
+    white-space: pre-wrap;
+    width: 100%;
+}
+</style>
+
+<div class="zenml-code-block">
+    <div class="zenml-language-label">JSON</div>
+    <pre><span class="zenml-code-comment"># After: Lightweight pipeline run response</span>
+{
+  <span class="zenml-code-string">"id"</span>: <span class="zenml-code-string">"26b0ea99-e608-4bb7-8734-67f9491e3773"</span>,
+  <span class="zenml-code-string">"body"</span>: {
+    <span class="zenml-code-string">"user_id"</span>: <span class="zenml-code-string">"user-uuid"</span>,      <span class="zenml-code-comment"># Just the ID</span>
+    <span class="zenml-code-string">"project_id"</span>: <span class="zenml-code-string">"project-uuid"</span>, <span class="zenml-code-comment"># Just the ID</span>
+    <span class="zenml-code-string">"status"</span>: <span class="zenml-code-string">"completed"</span>,
+    <span class="zenml-code-string">"pipeline"</span>: {...}
+  },
+  <span class="zenml-code-string">"resources"</span>: {
+    <span class="zenml-code-string">"user"</span>: {...},     <span class="zenml-code-comment"># Loaded only when hydrate=True</span>
+  }
+  <span class="zenml-code-comment"># Steps fetched separately via /runs/{id}/steps</span>
+  <span class="zenml-code-comment"># DAG visualization via /runs/{id}/dag</span>
+}</pre>
+</div></div>
+
+We eliminated N+1 query patterns and implemented intelligent joins:
+
+<div data-rt-embed-type="true"><!-- Clean Code Block with Fresh Styles -->
+<style>
+.code-container {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Roboto Mono', 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.5;
+    background-color: #f6f5ff;
+    color: #3e3a5d;
+    border-radius: 8px;
+    padding: 16px;
+    overflow-x: auto;
+    box-shadow: 0 2px 8px rgba(101, 96, 205, 0.15);
+    position: relative;
+    border-left: 4px solid #6560cd;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0 0 20px 0;
+}
+
+.lang-label {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    font-size: 12px;
+    color: #6560cd;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.comment {
+    color: #8b88ac;
+    font-style: italic;
+}
+
+.keyword {
+    color: #6560cd;
+    font-weight: 600;
+}
+
+.string {
+    color: #7c63e6;
+}
+
+.number {
+    color: #9e73ef;
+}
+
+.function {
+    color: #584dc2;
+    font-weight: 600;
+}
+
+.variable {
+    color: #3c3452;
+    font-weight: 500;
+}
+
+.decorator {
+    color: #6560cd;
+    font-weight: 600;
+}
+
+.code-container pre {
+    margin: 0;
+    padding: 0;
+    white-space: pre;
+    text-indent: 0;
+}
+</style>
+
+<div class="code-container">
+    <div class="lang-label">Python</div>
+    <pre><span class="comment"># Before: N+1 query pattern</span>
+<span class="keyword">def</span> <span class="function">get_pipeline_run</span>(<span class="variable">run_id</span>: <span class="function">UUID</span>) -&gt; <span class="function">PipelineRunResponse</span>:
+    <span class="variable">run</span> = <span class="variable">session</span>.<span class="function">get</span>(<span class="function">PipelineRunSchema</span>, <span class="variable">run_id</span>)
+    <span class="comment"># Separate query for each relationship - expensive!</span>
+    <span class="variable">steps</span> = <span class="variable">session</span>.<span class="function">query</span>(<span class="function">StepRunSchema</span>).<span class="function">filter_by</span>(<span class="variable">pipeline_run_id</span>=<span class="variable">run_id</span>).<span class="function">all</span>()
+    <span class="keyword">for</span> <span class="variable">step</span> <span class="keyword">in</span> <span class="variable">steps</span>:
+        <span class="variable">step</span>.<span class="variable">inputs</span> = <span class="variable">session</span>.<span class="function">query</span>(<span class="function">StepRunInputSchema</span>).<span class="function">filter_by</span>(<span class="variable">step_id</span>=<span class="variable">step</span>.<span class="variable">id</span>).<span class="function">all</span>()
+        <span class="variable">step</span>.<span class="variable">outputs</span> = <span class="variable">session</span>.<span class="function">query</span>(<span class="function">StepRunOutputSchema</span>).<span class="function">filter_by</span>(<span class="variable">step_id</span>=<span class="variable">step</span>.<span class="variable">id</span>).<span class="function">all</span>()
+    <span class="variable">run</span>.<span class="variable">user</span> = <span class="variable">session</span>.<span class="function">get</span>(<span class="function">UserSchema</span>, <span class="variable">run</span>.<span class="variable">user_id</span>)  <span class="comment"># Another query</span>
+    <span class="keyword">return</span> <span class="function">build_response</span>(<span class="variable">run</span>, <span class="variable">steps</span>)</pre>
+</div>
+
+<div class="code-container">
+    <div class="lang-label">Python</div>
+    <pre><span class="comment"># After: Optimized with joins and selective loading</span>
+<span class="keyword">def</span> <span class="function">get_pipeline_run</span>(<span class="variable">run_id</span>: <span class="function">UUID</span>, <span class="variable">hydrate</span>: <span class="function">bool</span> = <span class="keyword">False</span>) -&gt; <span class="function">PipelineRunResponse</span>:
+    <span class="variable">query</span> = <span class="variable">session</span>.<span class="function">query</span>(<span class="function">PipelineRunSchema</span>).<span class="function">filter_by</span>(<span class="variable">id</span>=<span class="variable">run_id</span>)
+    <span class="keyword">if</span> <span class="variable">hydrate</span>:
+        <span class="comment"># Use joinedload only when explicitly requested</span>
+        <span class="variable">query</span> = <span class="variable">query</span>.<span class="function">options</span>(
+            <span class="function">joinedload</span>(<span class="function">PipelineRunSchema</span>.<span class="variable">user</span>),
+            <span class="function">joinedload</span>(<span class="function">PipelineRunSchema</span>.<span class="variable">project</span>)
+        )
+    <span class="variable">run</span> = <span class="variable">query</span>.<span class="function">first</span>()
+    <span class="comment"># Steps are fetched separately only when needed</span>
+    <span class="keyword">return</span> <span class="function">build_lightweight_response</span>(<span class="variable">run</span>)</pre>
+</div></div>
+
+### Specialized Endpoints
+
+We created targeted endpoints for specific use cases:
+
+<div data-rt-embed-type="true"><div class="code-container">
+    <div class="lang-label">Python</div>
+    <pre><span class="comment"># New endpoint for DAG visualization - fetches minimal step data</span>
+<span class="decorator">@router.get</span>(<span class="string">"/runs/{run_id}/dag"</span>)
+<span class="keyword">async def</span> <span class="function">get_pipeline_run_dag</span>(<span class="variable">run_id</span>: <span class="function">UUID</span>) -&gt; <span class="function">DAGResponse</span>:
+    <span class="comment"># Only fetch step relationships, not full step details</span>
+    <span class="variable">steps</span> = <span class="function">zen_store</span>().<span class="function">list_run_steps</span>(
+        <span class="variable">run_id</span>=<span class="variable">run_id</span>,
+    )
+    ...
+    <span class="keyword">return</span> <span class="function">build_dag_response</span>(<span class="variable">steps</span>)</pre>
+</div></div>
+
+### Initial Results
+
+These optimizations brought significant improvements, but we weren't done yet. We were now able to handle more complex workloads, but still hit issues at higher parallelism levels.
+
+## Stage 4: The FastAPI Threading Discovery
+
+While our database optimizations helped, we still saw unexpected behavior under high load. To isolate remaining issues, we created a controlled experiment: a single server pod with one FastAPI thread, making 10 concurrent `get_run` calls to fetch the same pipeline run (measured baseline: ~2.5 seconds per query).
+
+The expected behavior would be linear scaling: each subsequent call waiting for the previous one to complete. However, the actual results showed a different pattern:`‍`
+
+<div data-rt-embed-type="true"><div class="zenml-code-block">
+<div class="zenml-language-label">Output</div>
+<pre><span class="zenml-code-variable">Request started</span> × <span class="zenml-code-number">10</span>  
+
+<span class="zenml-code-string">Total time:</span> <span class="zenml-code-number">2.75</span><span class="zenml-code-variable">seconds</span>
+<span class="zenml-code-string">Total time:</span> <span class="zenml-code-number">25.40</span> <span class="zenml-code-variable">seconds</span>  <span class="zenml-code-comment"># Everything waits for serialization queue</span>
+<span class="zenml-code-string">Total time:</span> <span class="zenml-code-number">25.41</span> <span class="zenml-code-variable">seconds</span>
+<span class="zenml-code-string">Total time:</span> <span class="zenml-code-number">25.42</span> <span class="zenml-code-variable">seconds</span>
+<span class="zenml-code-comment"># ... all remaining responses around 25 seconds</span></pre>
+</div></div>
+
+This was a revelation about FastAPI's internal behavior. When using synchronous endpoints, FastAPI [executes the handler function in a worker thread, but also queues response serialization in the same threadpool:](https://github.com/fastapi/fastapi/blob/ea7b1054762c72a79bc111e747e20d4c67721afc/fastapi/routing.py#L165-L170)
+
+<div data-rt-embed-type="true"><div class="code-container">
+    <div class="lang-label">Python</div>
+    <pre><span class="comment"># Before: Synchronous endpoint (problematic under load)</span>
+<span class="decorator">@router.get</span>(<span class="string">"/runs/{run_id}"</span>)
+<span class="keyword">def</span> <span class="function">get_pipeline_run</span>(<span class="variable">run_id</span>: <span class="function">UUID</span>) -&gt; <span class="function">PipelineRunResponse</span>:
+    <span class="comment"># This runs in a worker thread</span>
+    <span class="keyword">return</span> <span class="variable">zen_store</span>.<span class="function">get_run</span>(<span class="variable">run_id</span>, <span class="variable">hydrate</span>=<span class="keyword">True</span>)
+        
+    <span class="comment"># FastAPI queues response serialization in the same threadpool</span></pre>
+</div></div>
+
+With limited worker threads and many queued requests, response serialization tasks accumulate behind the handler tasks, creating a bottleneck.
+
+### FastAPI Threading Fix
+
+The solution was to convert synchronous endpoints to async endpoints that manually dispatch to the threadpool:
+
+<div data-rt-embed-type="true"><div class="code-container">
+    <div class="lang-label">Python</div>
+    <pre><span class="keyword">def</span> <span class="function">async_fastapi_endpoint_wrapper</span>(
+    <span class="variable">func</span>: <span class="function">Callable</span>[<span class="variable">P</span>, <span class="variable">R</span>],
+) -&gt; <span class="function">Callable</span>[<span class="variable">P</span>, <span class="function">Awaitable</span>[<span class="function">Any</span>]]:
+        
+    <span class="decorator">@wraps</span>(<span class="variable">func</span>)
+    <span class="keyword">async def</span> <span class="function">async_decorated</span>(*<span class="variable">args</span>: <span class="variable">P</span>.<span class="variable">args</span>, **<span class="variable">kwargs</span>: <span class="variable">P</span>.<span class="variable">kwargs</span>) -&gt; <span class="function">Any</span>:
+        <span class="keyword">from</span> <span class="variable">starlette</span>.<span class="variable">concurrency</span> <span class="keyword">import</span> <span class="variable">run_in_threadpool</span>
+        ...
+        <span class="keyword">return</span> <span class="keyword">await</span> <span class="function">run_in_threadpool</span>(<span class="variable">decorated</span>, *<span class="variable">args</span>, **<span class="variable">kwargs</span>)
+                
+        <span class="comment"># FastAPI processes response serialization in the main asyncIO event loop</span>
+            
+    <span class="keyword">return</span> <span class="variable">async_decorated</span>
+
+<span class="decorator">@router.get</span>(<span class="string">"/runs/{run_id}"</span>)
+<span class="comment"># After: The wrapper converts a synchronous endpoint into an asyncIO one</span>
+<span class="decorator">@async_fastapi_endpoint_wrapper</span>
+<span class="keyword">def</span> <span class="function">get_pipeline_run</span>(<span class="variable">run_id</span>: <span class="function">UUID</span>) -&gt; <span class="function">PipelineRunResponse</span>:
+    <span class="keyword">return</span> <span class="variable">zen_store</span>.<span class="function">get_run</span>(<span class="variable">run_id</span>, <span class="variable">hydrate</span>=<span class="keyword">True</span>)</pre>
+</div></div>
+
+This ensures response serialization happens on the event loop rather than competing for worker threads. The results after the fix showed perfect linear scaling:`‍`
+
+<div data-rt-embed-type="true"><div class="code-container">
+    <div class="lang-label">Output</div>
+    <pre><span class="comment"># After: Linear scaling as expected</span>
+<span class="string">Total time:</span> <span class="number">2.02</span> <span class="variable">seconds</span>
+<span class="string">Total time:</span> <span class="number">4.03</span> <span class="variable">seconds</span>  <span class="comment"># Proper queue progression</span>
+<span class="string">Total time:</span> <span class="number">6.03</span> <span class="variable">seconds</span>
+<span class="string">Total time:</span> <span class="number">8.04</span> <span class="variable">seconds</span>
+<span class="string">Total time:</span> <span class="number">10.04</span> <span class="variable">seconds</span>
+<span class="comment"># ... continues linearly</span></pre>
+</div></div>
+
+<div data-rt-embed-type="true"><style>
+.zenml-threading {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    padding: 20px;
+}
+
+.zenml-threading-section {
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 30px;
+    background: #fafafa;
+}
+
+.zenml-threading-section.sync {
+    border-color: #ef4444;
+    background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+}
+
+.zenml-threading-section.async {
+    border-color: #10b981;
+    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+}
+
+.zenml-section-title {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.sync .zenml-section-title {
+    color: #dc2626;
+}
+
+.async .zenml-section-title {
+    color: #059669;
+}
+
+.zenml-thread-pool {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 15px 0;
+    border: 1px solid #d1d5db;
+}
+
+.zenml-thread-item {
+    background: #8b5cf6;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 6px;
+    margin: 5px 0;
+    font-size: 14px;
+    text-align: center;
+}
+
+.zenml-queue {
+    background: #f59e0b;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 6px;
+    margin: 5px 0;
+    font-size: 14px;
+    text-align: center;
+}
+
+.zenml-event-loop {
+    background: #10b981;
+    color: white;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    margin-top: 15px;
+}
+
+.zenml-note {
+    text-align: center;
+    margin-top: 15px;
+    font-weight: 600;
+}
+
+.sync .zenml-note {
+    color: #dc2626;
+}
+
+.async .zenml-note {
+    color: #059669;
+}
+
+@media (max-width: 768px) {
+    .zenml-threading {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+
+<div class="zenml-diagram">
+    <h2 class="zenml-title">FastAPI Threading: Sync vs Async Endpoints</h2>
+    <div class="zenml-threading">
+        <div class="zenml-threading-section sync">
+            <div class="zenml-section-title">❌ Synchronous Endpoints (Problematic)</div>
+            <div class="zenml-thread-pool">
+                <strong>Worker Thread Pool</strong>
+                <div class="zenml-thread-item">Handler + Serialization</div>
+                <div class="zenml-thread-item">Handler + Serialization</div>
+                <div class="zenml-thread-item">Handler + Serialization</div>
+                <div class="zenml-queue">Queued Requests...</div>
+                <div class="zenml-queue">Queued Serialization...</div>
+            </div>
+            <div class="zenml-note">
+                ⚠️ Serialization competes for worker threads
+            </div>
+        </div>
+        
+        <div class="zenml-threading-section async">
+            <div class="zenml-section-title">✅ Async Endpoints (Optimized)</div>
+            <div class="zenml-thread-pool">
+                <strong>Worker Thread Pool</strong>
+                <div class="zenml-thread-item">Handler Only</div>
+                <div class="zenml-thread-item">Handler Only</div>
+                <div class="zenml-thread-item">Handler Only</div>
+            </div>
+            <div class="zenml-event-loop">
+                <strong>Event Loop</strong><br>
+                Response Serialization
+            </div>
+            <div class="zenml-note">
+                ✅ Perfect linear scaling
+            </div>
+        </div>
+    </div>
+</div></div>
+
+## Stage 5: Comprehensive Model Optimizations
+
+With both database queries and FastAPI threading optimized, we implemented the final round of model-level improvements. These focused on eliminating remaining inefficiencies:
+
+### Step Run Response Improvements
+
+<div data-rt-embed-type="true"><div class="zenml-code-block">
+  <div class="zenml-language-label">JSON</div>
+  <pre><span class="zenml-code-comment"># Before: Problematic step response structure</span>
+    {
+      <span class="zenml-code-string">"id"</span>: <span class="zenml-code-string">"step-uuid"</span>,
+      <span class="zenml-code-string">"body"</span>: {
+        <span class="zenml-code-string">"inputs"</span>: {
+          <span class="zenml-code-string">"data"</span>: <span class="zenml-code-string">"artifact-1-uuid"</span>  <span class="zenml-code-comment"># Only one input per name!</span>
+        },
+        <span class="zenml-code-string">"outputs"</span>: {
+          <span class="zenml-code-string">"processed_data"</span>: <span class="zenml-code-string">"artifact-2-uuid"</span>
+        }
+      }
+    }</pre>
+</div>
+
+<div class="zenml-code-block">
+  <div class="zenml-language-label">JSON</div>
+  <pre><span class="zenml-code-comment"># After: Improved step response with proper multi-input support</span>
+    {
+      <span class="zenml-code-string">"id"</span>: <span class="zenml-code-string">"step-uuid"</span>,
+      <span class="zenml-code-string">"body"</span>: {
+        <span class="zenml-code-string">"substitutions"</span>: {...}  <span class="zenml-code-comment"># Step-specific substitutions</span>
+      },
+      <span class="zenml-code-string">"resources"</span>: {
+        <span class="zenml-code-string">"inputs"</span>: {
+          <span class="zenml-code-string">"data"</span>: [
+            <span class="zenml-code-string">"artifact-1-uuid"</span>,
+            <span class="zenml-code-string">"artifact-2-uuid"</span>  <span class="zenml-code-comment"># Multiple inputs per name now supported</span>
+          ]
+        },
+        <span class="zenml-code-string">"outputs"</span>: {
+          <span class="zenml-code-string">"processed_data"</span>: <span class="zenml-code-string">"artifact-3-uuid"</span>
+        }
+      }
+    }</pre>
+</div></div>
+
+### Artifact Producer Query Optimization
+
+<div data-rt-embed-type="true"><div class="code-container">
+    <div class="lang-label">Python</div>
+    <pre><span class="comment"># Before: Inefficient producer run lookup</span>
+<span class="keyword">def</span> <span class="function">get_artifact_producer_run</span>(<span class="variable">artifact_version_id</span>: <span class="function">UUID</span>):
+    <span class="comment"># This would loop through ALL runs associated with the artifact</span>
+    <span class="variable">artifact</span> = <span class="variable">session</span>.<span class="function">get</span>(<span class="function">ArtifactVersionSchema</span>, <span class="variable">artifact_version_id</span>)
+    <span class="keyword">for</span> <span class="variable">run</span> <span class="keyword">in</span> <span class="variable">artifact</span>.<span class="variable">runs</span>:  <span class="comment"># Potentially hundreds of runs</span>
+        <span class="keyword">if</span> <span class="variable">run</span>.<span class="function">has_step_that_produced</span>(<span class="variable">artifact</span>):
+            <span class="keyword">return</span> <span class="variable">run</span></pre>
+</div>
+
+<div class="code-container">
+    <div class="lang-label">Python</div>
+    <pre><span class="comment"># After: Direct query optimization</span>
+<span class="keyword">def</span> <span class="function">get_artifact_producer_run</span>(<span class="variable">artifact_version_id</span>: <span class="function">UUID</span>):
+    <span class="comment"># Direct join to find the specific producer run</span>
+    <span class="keyword">return</span> <span class="variable">session</span>.<span class="function">query</span>(<span class="function">PipelineRunSchema</span>).<span class="function">join</span>(
+        <span class="function">StepRunSchema</span>
+    ).<span class="function">join</span>(
+        <span class="function">StepRunOutputSchema</span>
+    ).<span class="function">filter</span>(
+        <span class="function">StepRunOutputSchema</span>.<span class="variable">artifact_version_id</span> == <span class="variable">artifact_version_id</span>
+    ).<span class="function">first</span>()</pre>
+</div></div>
+
+## Stage 6: Retry Storm Prevention
+
+Our final optimization addressed an unexpected amplification effect. When ZenML clients experience timeouts, they retry requests up to 10 times. Under heavy server load, these retries can amplify the problem:
+
+<div data-rt-embed-type="true"><div class="code-container">
+    <div class="lang-label">Python</div>
+    <pre><span class="comment"># Problem: Client retry logic under load</span>
+<span class="keyword">class</span> <span class="function">RestZenStore</span>:
+    <span class="decorator">@property</span>
+    <span class="keyword">def</span> <span class="function">session</span>(<span class="variable">self</span>) -&gt; <span class="variable">requests</span>.<span class="function">Session</span>:
+        ...
+        <span class="variable">retries</span> = <span class="function">AugmentedRetry</span>(
+            <span class="variable">connect</span>=<span class="number">5</span>,
+            <span class="variable">read</span>=<span class="number">8</span>,
+            <span class="variable">redirect</span>=<span class="number">3</span>,
+            <span class="variable">status</span>=<span class="number">10</span>,
+            <span class="variable">allowed_methods</span>=[<span class="string">"HEAD"</span>, <span class="string">"GET"</span>, <span class="string">"PUT"</span>, <span class="string">"DELETE"</span>, <span class="string">"OPTIONS"</span>],
+            <span class="variable">status_forcelist</span>=[
+                <span class="number">408</span>,  <span class="comment"># Request Timeout</span>
+                <span class="number">429</span>,  <span class="comment"># Too Many Requests</span>
+                <span class="number">502</span>,  <span class="comment"># Bad Gateway</span>
+                <span class="number">503</span>,  <span class="comment"># Service Unavailable</span>
+                <span class="number">504</span>,  <span class="comment"># Gateway Timeout</span>
+            ],
+            <span class="variable">other</span>=<span class="number">3</span>,
+            <span class="variable">backoff_factor</span>=<span class="number">1</span>,
+        )
+        <span class="variable">self</span>.<span class="variable">_session</span>.<span class="function">mount</span>(<span class="string">"https://"</span>, <span class="function">HTTPAdapter</span>(<span class="variable">max_retries</span>=<span class="variable">retries</span>))
+        <span class="variable">self</span>.<span class="variable">_session</span>.<span class="function">mount</span>(<span class="string">"http://"</span>, <span class="function">HTTPAdapter</span>(<span class="variable">max_retries</span>=<span class="variable">retries</span>))
+        ...</pre>
+</div></div>
+
+We implemented server-side request queue monitoring to proactively reject requests that would likely timeout:
+
+<div data-rt-embed-type="true"><div class="code-container">
+    <div class="lang-label">Python</div>
+    <pre><span class="comment"># Solution: Proactive server-side queue management</span>
+<span class="keyword">from</span> <span class="variable">fastapi</span> <span class="keyword">import</span> <span class="function">HTTPException</span>
+<span class="keyword">import</span> <span class="variable">time</span>
+
+<span class="variable">request_semaphore</span> = <span class="function">Semaphore</span>(<span class="function">server_config</span>().<span class="variable">thread_pool_size</span>)
+
+<span class="decorator">@app.middleware</span>(<span class="string">"http"</span>)
+<span class="keyword">async def</span> <span class="function">prevent_read_timeout</span>(<span class="variable">request</span>: <span class="function">Request</span>, <span class="variable">call_next</span>: <span class="function">Any</span>) -&gt; <span class="function">Any</span>:
+    <span class="keyword">try</span>:
+        <span class="comment"># Here we wait until a worker thread is available to process the</span>
+        <span class="comment"># request with a timeout value that is set to be lower than the</span>
+        <span class="comment"># what the client is willing to wait for (i.e. lower than the</span>
+        <span class="comment"># client's HTTP request timeout). The rationale is that we want to</span>
+        <span class="comment"># respond to the client before it times out and decides to retry the</span>
+        <span class="comment"># request (which would overwhelm the server).</span>
+        <span class="keyword">await</span> <span class="function">wait_for</span>(
+            <span class="variable">request_semaphore</span>.<span class="function">acquire</span>(),
+            <span class="variable">timeout</span>=<span class="variable">server_request_timeout</span>,
+        )
+    <span class="keyword">except</span> <span class="function">TimeoutError</span>:
+        <span class="keyword">return</span> <span class="function">JSONResponse</span>(
+            {<span class="string">"error"</span>: <span class="string">"Server too busy. Please try again later."</span>},
+            <span class="variable">status_code</span>=<span class="number">429</span>,
+        )
+            
+    <span class="keyword">try</span>:
+        <span class="keyword">return</span> <span class="keyword">await</span> <span class="function">call_next</span>(<span class="variable">request</span>)
+    <span class="keyword">finally</span>:
+        <span class="variable">request_semaphore</span>.<span class="function">release</span>()</pre>
+</div></div>
+
+## Performance Results
+
+The combined optimizations produced dramatic improvements across all measured metrics:
+
+**Database Query Performance:**Post-optimization, our worst-performing database operations completed in **under 10 seconds**, compared to previous peaks exceeding 40 seconds:`‍`
+
+<div data-rt-embed-type="true"><div class="zenml-code-block">
+        <div class="zenml-language-label">Shell</div>
+        <pre><span class="zenml-code-variable">$</span> <span class="zenml-code-function">grep</span> <span class="zenml-code-variable">-oE</span> <span class="zenml-code-string">'DEBUG.*completed in [0-9]{4,9}.*ms'</span> <span class="zenml-code-variable">final-test-logs.txt</span> <span class="zenml-code-variable">|</span> <span class="zenml-code-function">head</span> <span class="zenml-code-variable">-n</span> <span class="zenml-code-number">5</span>
+<span class="zenml-code-number">8097.71</span><span class="zenml-code-variable">ms</span>: <span class="zenml-code-string">'RBACSqlZenStore.list_runs'</span>
+<span class="zenml-code-number">8097.06</span><span class="zenml-code-variable">ms</span>: <span class="zenml-code-string">'RBACSqlZenStore.list_runs'</span>
+<span class="zenml-code-number">8016.56</span><span class="zenml-code-variable">ms</span>: <span class="zenml-code-string">'RBACSqlZenStore.list_runs'</span>
+<span class="zenml-code-number">7921.81</span><span class="zenml-code-variable">ms</span>: <span class="zenml-code-string">'RBACSqlZenStore.list_runs'</span>
+<span class="zenml-code-number">7807.68</span><span class="zenml-code-variable">ms</span>: <span class="zenml-code-string">'RBACSqlZenStore.list_runs'</span></pre>
+</div></div>
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/befd3798/683dbe82c4c54d1afcd99e04_server-side-operation-durations-2s.png" alt="__wf_reserved_inherit" />
+</figure>
+
+**Throughput Improvements:**Our performance testing framework now successfully runs **100+ parallel pipeline steps** with complex metadata, compared to previous configurations that experienced difficulties with high-parallelism workloads under similar conditions. Our worse API call duration under load dropped **below 20 seconds** compared to the previous values exceeding 80 seconds.
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/958b47d5/683dbe8b3de33cdd85fc1c21_server-side-operation-durations-10s.png" alt="__wf_reserved_inherit" />
+</figure>
+
+**Resource Efficiency:**The optimizations also improved resource utilization, allowing the same workloads to run effectively with fewer server replicas. Our autoscaling configurations can now handle peak loads with reduced infrastructure requirements.
+
+**The Math:**Moving from struggling with some 10+ parallel step configurations to smoothly handling 100+ parallel steps, combined with 20x database performance improvements, r**esulted in an overall 200x performance improvement for complex pipeline workloads.**
+
+## Technical Insights
+
+### Iterative Problem-Solving Approach
+
+Our step-by-step methodology proved crucial. Each stage built on the previous discoveries:
+
+<ol id=""><li id="">Realistic testing exposed the problems</li><li id="">Enhanced logging identified specific bottlenecks</li><li id="">Database optimizations addressed the primary issues</li><li id="">Controlled experiments revealed secondary bottlenecks</li><li id="">Comprehensive optimizations eliminated remaining inefficiencies</li><li id="">Monitoring prevented amplification effects</li></ol>
+
+### Framework Behavior Understanding
+
+Understanding FastAPI's threading implementation details was crucial for optimization. Similar performance characteristics likely exist in other async frameworks, making this analysis broadly applicable.
+
+### Response Design Impact
+
+API response structure has direct performance implications. Separating heavyweight attributes into optional sections (`resources`) dramatically reduces default response times while maintaining flexibility.
+
+### Multi-Layer Performance Issues
+
+Database optimization, threading behavior, and client retry logic all contributed to overall performance characteristics. Addressing these issues required coordinated changes across multiple system layers.
+
+<div data-rt-embed-type="true"><style>
+.zenml-methodology {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    padding: 20px;
+}
+
+.zenml-stage {
+    background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%);
+    color: white;
+    padding: 25px;
+    border-radius: 12px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 8px 25px rgba(139, 92, 246, 0.3);
+}
+
+.zenml-stage-number {
+    background: rgba(255,255,255,0.2);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    margin: 0 auto 15px auto;
+    font-size: 18px;
+}
+
+.zenml-stage-title {
+    font-weight: 700;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.zenml-stage-desc {
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+.zenml-flow-arrow {
+    position: absolute;
+    right: -20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 24px;
+    color: #6b7280;
+}
+
+.zenml-stage:nth-child(3n) .zenml-flow-arrow {
+    display: none;
+}
+
+.zenml-methodology-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.zenml-stage.bottom {
+    grid-column: span 1;
+}
+
+.zenml-performance-metrics {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    padding: 30px;
+    border-radius: 12px;
+    color: white;
+    text-align: center;
+    margin-top: 30px;
+}
+
+.zenml-metric {
+    font-size: 32px;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.zenml-metric-label {
+    font-size: 16px;
+    opacity: 0.9;
+}
+
+.zenml-metric-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.zenml-metric-small {
+    font-size: 24px;
+}
+
+@media (max-width: 768px) {
+    .zenml-methodology {
+        grid-template-columns: 1fr;
+    }
+    .zenml-methodology-grid {
+        grid-template-columns: 1fr;
+    }
+    .zenml-metric-grid {
+        grid-template-columns: 1fr;
+    }
+    .zenml-flow-arrow {
+        display: none;
+    }
+}
+</style>
+
+<div class="zenml-diagram">
+    <h2 class="zenml-title">6-Stage Performance Optimization Methodology</h2>
+    <div class="zenml-methodology">
+        <div class="zenml-stage">
+            <div class="zenml-stage-number">1</div>
+            <div class="zenml-stage-title">The "Too Simple" Problem</div>
+            <div class="zenml-stage-desc">Realistic testing with complex pipelines</div>
+            <div class="zenml-flow-arrow">→</div>
+        </div>
+        
+        <div class="zenml-stage">
+            <div class="zenml-stage-number">2</div>
+            <div class="zenml-stage-title">Enhanced Logging</div>
+            <div class="zenml-stage-desc">Instrument API &amp; database performance</div>
+            <div class="zenml-flow-arrow">→</div>
+        </div>
+        
+        <div class="zenml-stage">
+            <div class="zenml-stage-number">3</div>
+            <div class="zenml-stage-title">Database Optimization</div>
+            <div class="zenml-stage-desc">Query optimization &amp; response refactoring</div>
+        </div>
+    </div>
+    
+    <div class="zenml-methodology-grid">
+        <div class="zenml-stage bottom">
+            <div class="zenml-stage-number">4</div>
+            <div class="zenml-stage-title">FastAPI Threading Fix</div>
+            <div class="zenml-stage-desc">Async endpoints &amp; threading discovery</div>
+        </div>
+        
+        <div class="zenml-stage bottom">
+            <div class="zenml-stage-number">5</div>
+            <div class="zenml-stage-title">Model Optimizations</div>
+            <div class="zenml-stage-desc">Step responses &amp; artifact queries</div>
+        </div>
+    </div>
+    
+    <div class="zenml-stage" style="margin-top: 20px;">
+        <div class="zenml-stage-number">6</div>
+        <div class="zenml-stage-title">Retry Storm Prevention</div>
+        <div class="zenml-stage-desc">Server-side queue management &amp; proactive rejection</div>
+    </div>
+    
+    <div class="zenml-performance-metrics">
+        <div class="zenml-metric">200x</div>
+        <div class="zenml-metric-label">Overall Performance Improvement</div>
+        <div class="zenml-metric-grid">
+            <div>
+                <div class="zenml-metric zenml-metric-small">20x</div>
+                <div class="zenml-metric-label">Database Queries</div>
+            </div>
+            <div>
+                <div class="zenml-metric zenml-metric-small">100+</div>
+                <div class="zenml-metric-label">Parallel Steps</div>
+            </div>
+            <div>
+                <div class="zenml-metric zenml-metric-small">&lt;20s</div>
+                <div class="zenml-metric-label">API Response Time</div>
+            </div>
+        </div>
+    </div>
+</div></div>
+
+## Conclusion
+
+The optimizations implemented in ZenML v0.83.0 address the core performance bottlenecks we identified through systematic testing and analysis. The database query improvements, FastAPI threading optimizations, and retry logic enhancements work together to provide a 200x improvement in throughput for complex, parallel pipeline workloads.
+
+Our iterative performance testing framework has become an integral part of our development process, enabling us to proactively identify performance regressions and validate optimizations under realistic load conditions.
+
+These improvements provide substantial headroom for larger-scale ML workloads while maintaining ZenML's ease of deployment and operation. For users running complex pipelines with high parallelism, extensive metadata, or frequent API interactions, these optimizations should significantly improve reliability and reduce timeout-related failures.
+
+## Get Started
+
+Ready to experience the performance improvements? Upgrade to ZenML v0.83.0 today:
+
+<div data-rt-embed-type="true"><div class="zenml-code-block">
+        <div class="zenml-language-label">Bash</div>
+        <pre><span class="zenml-code-function">pip</span> <span class="zenml-code-variable">install</span> <span class="zenml-code-variable">--upgrade</span> <span class="zenml-code-variable">zenml</span></pre>
+</div></div>
+
+… alongside updating your server image.
+
+The performance improvements are immediately available—no configuration changes required. Your existing pipelines will run faster, and you'll have the headroom to tackle much larger workloads.
+
+**Want to see the technical details?** Check out our [performance testing documentation](https://github.com/zenml-io/zenml) and the [optimization pull requests](https://github.com/zenml-io/zenml/pulls) that made this possible.
+
+*The ZenML team is constantly working to make MLOps more scalable and reliable. Follow our *[GitHub repository](https://github.com/zenml-io/zenml)* for the latest updates, and join our *[Slack community](https://zenml.io/slack)* to discuss performance optimization strategies with other ML engineers.*

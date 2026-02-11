@@ -1,0 +1,92 @@
+---
+title: "LLMs for Investigative Data Analysis in Journalism"
+slug: "llms-for-investigative-data-analysis-in-journalism"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "67d7f8e96fe939f171fb7264"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:03:31.305Z"
+  createdOn: "2025-03-17T10:26:49.084Z"
+llmopsTags:
+  - "data-analysis"
+  - "classification"
+  - "content-moderation"
+  - "high-stakes-application"
+  - "prompt-engineering"
+  - "error-handling"
+  - "documentation"
+  - "guardrails"
+  - "compliance"
+  - "openai"
+company: "ProPublica"
+summary: "ProPublica utilized LLMs to analyze a large database of National Science Foundation grants that were flagged as \"woke\" by Senator Ted Cruz's office. The AI helped journalists quickly identify patterns and assess why grants were flagged, while maintaining journalistic integrity through human verification. This approach demonstrated how AI can be used responsibly in journalism to accelerate data analysis while maintaining high standards of accuracy and accountability."
+link: "https://www.propublica.org/article/using-ai-responsibly-for-reporting"
+year: 2025
+seo:
+  title: "ProPublica: LLMs for Investigative Data Analysis in Journalism - ZenML LLMOps Database"
+  description: "ProPublica utilized LLMs to analyze a large database of National Science Foundation grants that were flagged as \"woke\" by Senator Ted Cruz's office. The AI helped journalists quickly identify patterns and assess why grants were flagged, while maintaining journalistic integrity through human verification. This approach demonstrated how AI can be used responsibly in journalism to accelerate data analysis while maintaining high standards of accuracy and accountability."
+  canonical: "https://www.zenml.io/llmops-database/llms-for-investigative-data-analysis-in-journalism"
+  ogTitle: "ProPublica: LLMs for Investigative Data Analysis in Journalism - ZenML LLMOps Database"
+  ogDescription: "ProPublica utilized LLMs to analyze a large database of National Science Foundation grants that were flagged as \"woke\" by Senator Ted Cruz's office. The AI helped journalists quickly identify patterns and assess why grants were flagged, while maintaining journalistic integrity through human verification. This approach demonstrated how AI can be used responsibly in journalism to accelerate data analysis while maintaining high standards of accuracy and accountability."
+---
+
+## Overview
+
+ProPublica is a nonprofit newsroom that focuses on investigative journalism in the public interest. This case study documents their approach to integrating large language models (LLMs) into their investigative reporting workflows, with a particular focus on analyzing large datasets and document collections. The organization has developed a thoughtful and responsible framework for using AI tools while maintaining rigorous journalistic standards and human oversight.
+
+The primary case study revolves around an investigation published in February 2025, where ProPublica reporters used an LLM to analyze a database of over 3,400 National Science Foundation grants that Senator Ted Cruz had labeled as promoting "woke" ideology, DEI, or "neo-Marxist class warfare propaganda." The investigation ultimately revealed that Cruz's methodology appeared to flag grants based on superficial keyword matching rather than substantive ideological content.
+
+## Technical Approach and Prompt Engineering
+
+The core of ProPublica's LLM integration for this investigation centered on carefully crafted prompt engineering. The team designed prompts that instructed the model to act as an investigative journalist analyzing each grant in the dataset. The prompt structure included several key elements that demonstrate sophisticated prompt engineering practices:
+
+The prompt provided clear background context, explaining that the grants had been targeted for cancellation based on claims of containing "woke" themes. This framing helped the model understand the analytical task at hand. The prompt then specified exact output fields the model should extract, including a `woke_description` field for explaining why a grant might be flagged, a `why_flagged` field that analyzed specific category fields from the source data, and a `citation_for_flag` field requiring direct quotes from the grant descriptions.
+
+A critical aspect of their prompt design was the explicit instruction to handle uncertainty appropriately. The team wrote: "Only extract information from the NSF grant if it contains the information requested" and instructed the model to "Leave this blank if it's unclear." This represents a crucial guardrail against LLM hallucination, which the article explicitly acknowledges as a known risk. Rather than allowing the model to speculate or generate plausible-sounding but potentially inaccurate content, the prompt design forced the model to acknowledge gaps in its analysis.
+
+The prompts also incorporated structured field references, asking the model to examine specific columns like "STATUS", "SOCIAL JUSTICE CATEGORY", "RACE CATEGORY", "GENDER CATEGORY" and "ENVIRONMENTAL JUSTICE CATEGORY" from the original dataset. This structured approach helped ensure consistent analysis across thousands of records while maintaining traceability to source data.
+
+## Human-in-the-Loop Verification
+
+ProPublica's approach emphasizes that AI outputs are starting points rather than finished products. The article explicitly states that "members of our staff reviewed and confirmed every detail before we published our story." This human-in-the-loop approach is central to their LLM operations framework. The organization treats AI as a tool for lead generation and initial analysis, not as a replacement for journalistic verification.
+
+One reporter quoted in the article, Agnel Philip, articulates this philosophy clearly: "The tech holds a ton of promise in lead generation and pointing us in the right direction. But in my experience, it still needs a lot of human supervision and vetting. If used correctly, it can both really speed up the process of understanding large sets of information, and if you're creative with your prompts and critically read the output, it can help uncover things that you may not have thought of."
+
+This represents a mature understanding of LLM capabilities and limitations. The organization positions AI as an analytical accelerator that can surface patterns and anomalies in large datasets, while maintaining that the final responsibility for accuracy and verification rests with human journalists.
+
+## Additional Use Cases and Infrastructure Decisions
+
+The article references two additional AI deployment cases that provide insight into ProPublica's broader LLMOps practices:
+
+For an investigation into sexual misconduct among mental health professionals in Utah (conducted in 2023 in partnership with The Salt Lake Tribune), ProPublica used AI to review a large collection of disciplinary reports and identify cases related to sexual misconduct. Their approach included few-shot learning principles, where they "gave it examples of confirmed cases of sexual misconduct that we were already familiar with and specific keywords to look for." Notably, they implemented a two-reporter verification process where each AI-flagged result was reviewed by two journalists who cross-referenced licensing records for confirmation.
+
+For their reporting on the 2022 Uvalde school shooting, ProPublica faced the challenge of processing hundreds of hours of audio and video recordings that were poorly organized and often disturbing for journalists to watch. In this case, they deployed "self-hosted open-source AI software to securely transcribe and help classify the material." This infrastructure decision is significant from an LLMOps perspective—rather than using cloud-based AI services, they opted for self-hosted solutions to handle sensitive investigative materials. This approach addresses data security and privacy concerns that would arise from sending graphic and sensitive content through third-party APIs.
+
+## Responsible AI Framework
+
+ProPublica's approach reflects several key principles of responsible AI deployment in production:
+
+The organization maintains clear boundaries around what AI should and should not do. The article explicitly states: "Our journalists write our stories, our newsletters, our headlines and the takeaways at the top of longer stories." AI is positioned as an analytical tool, not a content generation system for public-facing journalism.
+
+They acknowledge the need for ongoing scrutiny of AI systems themselves, noting that "there's a lot about AI that needs to be investigated, including the companies that market their products, how they train them and the risks they pose." This meta-awareness suggests the organization approaches AI adoption with appropriate skepticism rather than uncritical enthusiasm.
+
+The emphasis on human verification at every stage creates multiple checkpoints that can catch AI errors before they reach publication. The requirement to seek comment from named individuals and organizations mentioned in AI-analyzed content represents another layer of validation beyond pure technical verification.
+
+## Production Considerations and Scalability
+
+While the article does not provide extensive technical details about infrastructure, several production-relevant elements emerge from the case studies. The organization has experience processing large datasets (3,400+ grants in one case, hundreds of hours of media in another), suggesting their workflows can scale to substantial analytical tasks.
+
+The use of self-hosted open-source AI for the Uvalde investigation indicates awareness of the tradeoffs between cloud-based convenience and on-premises control. For sensitive materials, they opted for infrastructure that keeps data within their control rather than transmitting it to external providers.
+
+The structured output format requested in their prompts (specific named fields with particular formatting requirements) suggests integration with downstream analytical workflows. By having the LLM output structured data rather than free-form text, they can more easily process, validate, and aggregate results across large datasets.
+
+## Limitations and Balanced Assessment
+
+It's worth noting that while ProPublica presents a thoughtful framework for AI integration, the article serves partly as a promotional piece showcasing their responsible AI practices. The specific technical implementation details are relatively limited—we don't know which specific LLM they used beyond a reference to "one of those powering ChatGPT," what their exact infrastructure looks like, how they measure AI performance, or what their error rates have been.
+
+The organization's approach appears well-suited to their specific use case of document analysis and pattern identification in investigative journalism, but may not generalize to all LLMOps applications. Their heavy emphasis on human verification works in a context where the output is ultimately written journalism that undergoes editorial review, but may be less practical in applications requiring real-time or high-volume automated responses.
+
+Nevertheless, ProPublica's case study offers valuable insights into how a journalism organization can integrate LLMs into investigative workflows while maintaining editorial standards, implementing appropriate guardrails against hallucination, and preserving human judgment as the final arbiter of published content.

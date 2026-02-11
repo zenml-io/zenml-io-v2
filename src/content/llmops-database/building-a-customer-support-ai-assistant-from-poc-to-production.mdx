@@ -1,0 +1,107 @@
+---
+title: "Building a Customer Support AI Assistant: From PoC to Production"
+slug: "building-a-customer-support-ai-assistant-from-poc-to-production"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "67e5673eee6b3ff0c3fb0e0d"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:04:49.919Z"
+  createdOn: "2025-03-27T14:57:02.783Z"
+llmopsTags:
+  - "customer-support"
+  - "chatbot"
+  - "high-stakes-application"
+  - "rag"
+  - "prompt-engineering"
+  - "semantic-search"
+  - "vector-search"
+  - "elasticsearch"
+  - "fastapi"
+  - "monitoring"
+  - "databases"
+  - "google-gcp"
+  - "microsoft-azure"
+  - "openai"
+company: "Elastic"
+summary: "Elastic's Field Engineering team developed a generative AI solution to improve customer support operations by automating case summaries and drafting initial replies. Starting with a proof of concept using Google Cloud's Vertex AI, they achieved a 15.67% positive response rate, leading them to identify the need for better input refinement and knowledge integration. This resulted in a decision to develop a unified chat interface with RAG architecture leveraging Elasticsearch for improved accuracy and response relevance."
+link: "https://www.elastic.co/blog/genai-customer-support-building-proof-of-concept"
+year: 2025
+seo:
+  title: "Elastic: Building a Customer Support AI Assistant: From PoC to Production - ZenML LLMOps Database"
+  description: "Elastic's Field Engineering team developed a generative AI solution to improve customer support operations by automating case summaries and drafting initial replies. Starting with a proof of concept using Google Cloud's Vertex AI, they achieved a 15.67% positive response rate, leading them to identify the need for better input refinement and knowledge integration. This resulted in a decision to develop a unified chat interface with RAG architecture leveraging Elasticsearch for improved accuracy and response relevance."
+  canonical: "https://www.zenml.io/llmops-database/building-a-customer-support-ai-assistant-from-poc-to-production"
+  ogTitle: "Elastic: Building a Customer Support AI Assistant: From PoC to Production - ZenML LLMOps Database"
+  ogDescription: "Elastic's Field Engineering team developed a generative AI solution to improve customer support operations by automating case summaries and drafting initial replies. Starting with a proof of concept using Google Cloud's Vertex AI, they achieved a 15.67% positive response rate, leading them to identify the need for better input refinement and knowledge integration. This resulted in a decision to develop a unified chat interface with RAG architecture leveraging Elasticsearch for improved accuracy and response relevance."
+---
+
+## Overview
+
+Elastic, the company behind Elasticsearch, embarked on a journey to integrate generative AI into their customer success and support operations. This case study documents their approach to building a proof of concept (PoC) for AI-assisted customer support, highlighting both the technical implementation and the crucial evaluation methodology that informed their subsequent development decisions. The case study is particularly valuable because it demonstrates an honest, data-driven approach to LLM deployment, including acknowledging when initial results fell short of expectations.
+
+The initiative was driven by business questions from leadership about how generative AI could improve support efficiency, enhance customer experience, integrate with existing systems, and automate repetitive tasks. Rather than diving directly into a full production system, the Field Engineering team took a measured approach: building a scalable proof of concept with built-in feedback mechanisms to validate assumptions before committing to a larger project.
+
+## Technical Architecture
+
+The PoC was built on Elastic's existing infrastructure, which runs on Google Cloud Platform with Salesforce Service Cloud handling case management. This existing setup made Vertex AI a natural choice for the LLM component, as it was already enabled internally and compliant with security and privacy policies. The decision to use Vertex AI was pragmatic—they knew LLM accuracy would be a challenge to address, but the ease of integration with existing infrastructure accelerated development significantly.
+
+### Use Case 1: Automated Case Summaries
+
+The first workflow targeted automating case summaries, which support engineers spend significant time creating for escalations or case transitions. The implementation was intentionally simple:
+
+A custom button was added to Salesforce cases that called an external Google Cloud Function endpoint. This function accepted the Salesforce case ID, retrieved case details as text, and sent that text to Vertex AI with an engineered prompt. The prompt instructed the model to write a summary paragraph and identify pending actions, returning the output in a structured dictionary format. The AI-generated response was then posted back to the case via a Salesforce Chatter Post.
+
+For long-running cases with extensive text, they implemented a "summaries of summaries" approach to handle the content length limitations. The entire implementation took approximately one week to complete.
+
+### Use Case 2: Draft Initial Reply
+
+The second use case was automating draft responses for support engineers to review. This was slightly more complex and leveraged an existing automation for newly created cases. The architecture introduced a Google Pub/Sub queue to handle incoming requests asynchronously. The Pub/Sub stored the Case ID until resources were available, then passed it to a Cloud Function that extracted only the customer's initial request. This text was sent to Vertex AI with a prompt positioning the model as "an expert Elastic Support Engineer" instructed to provide a resolution using only Elastic products.
+
+This implementation took approximately two weeks, including modifications to existing code and the new Pub/Sub functionality.
+
+## Prompt Engineering Approach
+
+The prompt engineering approach was straightforward but effective for a PoC stage. For case summaries, the prompt requested both a summary and pending actions in a specific dictionary format, constraining the model to use only information from the provided conversation. For draft replies, the prompt established a persona ("expert Elastic Support Engineer") and constrained responses to Elastic products only. While these prompts were relatively basic, they served the purpose of initial validation and highlighted where improvements would be needed.
+
+## Feedback Collection and Evaluation
+
+A critical component of the PoC was the feedback mechanism. By delivering AI-generated content through Salesforce Chatter, the team could leverage standard Chatter features for evaluation. "Likes" indicated positive sentiment, while threaded responses captured subjective feedback. This approach reduced friction in the feedback loop since users could provide feedback within their normal operational workflow.
+
+The team explicitly chose not to implement more sophisticated LLM evaluation techniques at this stage. The data population was manageable enough that they could review every comment manually, which provided richer qualitative insights than automated metrics alone would have provided.
+
+## Results and Honest Assessment
+
+The quantitative results were sobering but valuable:
+
+- Duration: 44 days of operation
+- Generated content: 940 pieces
+- Feedback received: 217 responses
+- Positive sentiment: Only 15.67%
+
+The ~16% positive response rate was lower than expected and clearly indicated issues that needed addressing. Qualitative analysis of subjective feedback revealed the core problem: the LLM lacked in-depth knowledge of Elastic's products, which hindered its ability to address technical support queries. The model performed reasonably well for generic summaries and responses that didn't require specific product knowledge, but this was insufficient for a technical support context.
+
+This highlighted a fundamental content gap—the LLM was trained on public data and lacked access to key data sources like product documentation and internal knowledge base articles. This is a common challenge in enterprise LLM deployments and led directly to their next architectural decisions.
+
+## Design Principles and Next Steps
+
+Based on the evaluation data, the team established two new design principles:
+
+The first was to refine input data quality. They recognized that a more explicit input experience would provide clearer, more direct questions to the LLM, improving response quality. This aligns with the well-known "garbage in, garbage out" principle in data engineering and applies equally to LLM interactions.
+
+The second was to set a higher accuracy threshold. Given that technical support requires high accuracy, they aimed for a greater than 80% positive sentiment benchmark and committed to developing systems to measure and enhance accuracy at various stages of the pipeline.
+
+These principles led to two key architectural decisions for the next phase: consolidating all functions into a unified chat interface (to better curate inputs) and integrating Elasticsearch for retrieval augmented generation (RAG) to improve response accuracy by grounding the LLM in relevant documentation and knowledge articles.
+
+## Business Alignment
+
+The team revisited their original business questions with data-backed insights. They concluded that a self-service chatbot could speed up support engineer analysis, reduce mean time to resolution, and accelerate onboarding for new team members. They cited TSIA research indicating customer preference for self-service over assisted support. The integration approach leveraged their existing Support Portal and Elasticsearch capabilities, while the efficiency gains from natural language search were expected to free support agents for more strategic activities.
+
+## LLMOps Lessons
+
+This case study offers several valuable LLMOps lessons. First, it demonstrates the importance of building evaluation and feedback mechanisms into PoCs from the start. The team's ability to collect structured feedback within the operational workflow provided the data needed to make informed decisions. Second, it shows the value of being honest about results—a 16% positive sentiment rate clearly indicated the need for changes, and the team responded appropriately rather than forcing a flawed solution into production.
+
+Third, it highlights the common challenge of domain-specific knowledge. Base LLMs trained on public data often lack the specialized knowledge needed for technical domains, making RAG or fine-tuning essential for production deployments. Finally, it demonstrates an appropriate phased approach: validate assumptions with a PoC before committing to a full implementation, and let data drive architectural decisions.
+
+The team's commitment to transparency—publishing this case study while still building the solution—provides valuable insights for other organizations considering similar deployments. The honest acknowledgment of initial shortcomings and the iterative, data-driven approach represent LLMOps best practices.

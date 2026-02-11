@@ -1,0 +1,145 @@
+---
+title: "Enterprise-Wide Virtual Assistant for Employee Knowledge Access"
+slug: "enterprise-wide-virtual-assistant-for-employee-knowledge-access"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f3abae3cd9ea9ffd31230"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:43:13.169Z"
+  createdOn: "2024-11-21T13:50:50.551Z"
+llmopsTags:
+  - "chatbot"
+  - "chunking"
+  - "compliance"
+  - "databases"
+  - "document-processing"
+  - "documentation"
+  - "google-gcp"
+  - "guardrails"
+  - "monitoring"
+  - "prompt-engineering"
+  - "question-answering"
+  - "rag"
+  - "regulatory-compliance"
+  - "reliability"
+  - "scalability"
+  - "security"
+  - "semantic-search"
+company: "BNY Mellon"
+summary: "BNY Mellon implemented an LLM-based virtual assistant to help their 50,000 employees efficiently access internal information and policies across the organization. Starting with small pilot deployments in specific departments, they scaled the solution enterprise-wide using Google's Vertex AI platform, while addressing challenges in document processing, chunking strategies, and context-awareness for location-specific policies."
+link: "https://www.youtube.com/watch?v=C2CNa85CAak"
+year: 2024
+seo:
+  title: "BNY Mellon: Enterprise-Wide Virtual Assistant for Employee Knowledge Access - ZenML LLMOps Database"
+  description: "BNY Mellon implemented an LLM-based virtual assistant to help their 50,000 employees efficiently access internal information and policies across the organization. Starting with small pilot deployments in specific departments, they scaled the solution enterprise-wide using Google's Vertex AI platform, while addressing challenges in document processing, chunking strategies, and context-awareness for location-specific policies."
+  canonical: "https://www.zenml.io/llmops-database/enterprise-wide-virtual-assistant-for-employee-knowledge-access"
+  ogTitle: "BNY Mellon: Enterprise-Wide Virtual Assistant for Employee Knowledge Access - ZenML LLMOps Database"
+  ogDescription: "BNY Mellon implemented an LLM-based virtual assistant to help their 50,000 employees efficiently access internal information and policies across the organization. Starting with small pilot deployments in specific departments, they scaled the solution enterprise-wide using Google's Vertex AI platform, while addressing challenges in document processing, chunking strategies, and context-awareness for location-specific policies."
+---
+
+## Overview
+
+BNY Mellon (Bank of New York Mellon) is one of the largest global financial institutions, with a 250-year history of helping clients manage, move, and safeguard money. The bank employs approximately 50,000 people across multiple countries and serves as a critical infrastructure player in the financial services industry. This case study, presented as a conversation between Boris Tarka (Google Cloud Customer Engineer and Technical Lead for AI/ML in Financial Services) and Anil Valala (Head of Intelligent Automation at BNY Mellon), details the bank's journey in deploying an LLM-based virtual assistant at enterprise scale.
+
+The initiative was rooted in one of BNY Mellon's three pillars: "powering the culture." Recognizing that employees were using advanced AI tools in their personal lives, the bank wanted to bring a similar experience to the workplace to help employees find information more efficiently.
+
+## The Problem
+
+Like many large organizations, BNY Mellon faced significant challenges with information discovery. The bank maintains a vast repository of knowledge spanning policies, procedures, compliance documentation, and operational guidelines across multiple countries and departments. When employees needed to find specific information—such as per diem policies for travel—they would traditionally receive search results pointing to 100-page documents, requiring them to manually locate the relevant section.
+
+The complexity was compounded by the bank's multinational presence. Employees in different countries (India, UK, US) needed access to region-specific policies, but traditional search mechanisms didn't inherently understand the context of who was asking the question. Additionally, as a public company, BNY Mellon must maintain extensive compliance and procedural documentation, making information retrieval even more critical.
+
+## The Solution Architecture
+
+BNY Mellon built an LLM-based virtual assistant leveraging Google Cloud's Vertex AI ecosystem. The bank already had experience with conversational AI for traditional use cases like password resets, laptop ordering, and incident status checks. The generative AI initiative represented a significant leap forward, tapping into the full breadth of organizational knowledge.
+
+### Technology Selection and Initial Development
+
+The team faced fundamental questions when starting: which LLM to use, which cloud provider, whether to deploy on-premises or in the cloud. Having existing experience with the Vertex AI ecosystem proved valuable, as it allowed the team to rapidly experiment with different models and approaches. This ability to quickly prototype and iterate was cited as a key advantage in getting a "jump start" on the project.
+
+### Scaling Strategy
+
+The bank adopted a phased rollout approach rather than attempting a big-bang deployment:
+
+- Started with a small pilot in one department (People Experience team)
+- Expanded to the Risk Department for policy information
+- Gradually added more departments and knowledge sources
+- Eventually rolled out to all 50,000 employees
+
+This iterative approach allowed the team to learn and adapt their technical strategies as they encountered new challenges with different types of content and use cases.
+
+## Key Technical Challenges and Solutions
+
+### Chunking Strategy Evolution
+
+One of the most significant learnings was that a one-size-fits-all chunking strategy doesn't work for diverse enterprise content. The team initially assumed that ingesting data and applying standard chunking would be sufficient. However, as they onboarded different types of documents, they discovered that their chunking approach needed to be adapted for different content types and structures.
+
+### Complex Document Processing
+
+The team encountered particularly challenging documents, such as cafeteria menus, where regular LLM parsing struggled. To address this, they integrated Google's Document AI capabilities, which provided more sophisticated document understanding and extraction. This highlights an important LLMOps consideration: production RAG systems often require specialized document processing pipelines for different content types.
+
+### Metadata and Content Curation
+
+A significant backward learning from the project was that existing content wasn't curated in a way that was optimal for LLM-based retrieval. The team had to work with knowledge management and content owner teams to improve how information was stored and tagged. Key improvements included:
+
+- Adding more comprehensive metadata to documents
+- Implementing better tagging strategies
+- Restructuring content to include contextual information (like regional applicability)
+
+For example, a policy document needs to contain information that allows the LLM to understand which geographic region it applies to. Previously, human users understood context implicitly (go to the India website for India policies), but the LLM system required this context to be explicitly encoded in the data.
+
+### Context-Aware Responses
+
+Through these content improvements, the virtual assistant became capable of understanding user context. When Anil (based in New York) asks for policy information, the system understands he likely needs New York-applicable policies. When a UK-based employee asks the same question, the system knows to provide UK-specific information. This required both technical implementation and organizational change in how content was structured.
+
+## Current State and Operational Considerations
+
+The virtual assistant is now deployed across all 50,000 employees. However, the team acknowledges that significant operational work remains. Currently, the feedback loop for evaluating assistant performance is largely manual, with team members reviewing questions and responses to assess quality.
+
+### Evaluation and Monitoring
+
+The team identified several areas where they need to improve their operational capabilities:
+
+- Automated evaluation of whether the assistant is answering correctly
+- Assessment of whether responses are contextually appropriate
+- Detection of potential bias in responses
+- Understanding which knowledge sources are performing well versus poorly
+- Identifying areas for improvement in the underlying models and content
+
+The goal is to apply AI itself to evaluate the virtual assistant's performance, reducing the manual review burden and enabling more systematic quality assurance.
+
+### Metrics and Visibility
+
+Building comprehensive metrics dashboards is a priority. The team wants visibility into:
+
+- Knowledge source performance (which sources work well, which don't)
+- Areas requiring improvement
+- Model tuning requirements
+
+This reflects mature LLMOps thinking—that production LLM systems require robust observability and measurement frameworks to operate effectively at scale.
+
+## Future Directions
+
+BNY Mellon is planning several enhancements to the system:
+
+- Extending beyond unstructured data to incorporate structured data sources
+- Implementing automated AI-based evaluation of assistant responses
+- Building more comprehensive metrics and monitoring capabilities
+- Continuing to expand knowledge coverage across remaining content in the bank
+
+## Key Takeaways for LLMOps Practitioners
+
+This case study offers several valuable lessons for organizations deploying LLM-based systems at enterprise scale:
+
+The importance of iterative deployment cannot be overstated. Starting with a pilot, learning from real-world usage, and gradually expanding allowed BNY Mellon to discover and address challenges before they became enterprise-wide problems. The chunking strategy issues, for example, were identified and resolved during the phased rollout rather than after a full deployment.
+
+Content quality is a prerequisite for RAG success. The team discovered that existing knowledge bases weren't structured optimally for LLM retrieval. This required organizational change—working with content owners to restructure how information is stored and tagged. Organizations planning RAG deployments should assess content quality early and plan for remediation.
+
+Specialized document processing is often necessary. Generic LLM parsing may not work for all document types. BNY Mellon's experience with cafeteria menus demonstrates that production systems may need specialized processing pipelines (like Document AI) for particular content types.
+
+Manual evaluation doesn't scale. While manual review of assistant responses was acceptable during initial deployment, the team recognizes this approach won't scale to 50,000 users. Automated evaluation and quality monitoring are essential for sustainable operation.
+
+Finally, the case study demonstrates that successful LLM deployments require both technical and organizational alignment. The improvements to content tagging and metadata required cooperation from knowledge management teams, not just technical implementation. Production LLMOps is as much about organizational change as it is about technology.

@@ -1,0 +1,199 @@
+---
+title: "Semantic Data Processing at Scale with AI-Powered Query Optimization"
+slug: "semantic-data-processing-at-scale-with-ai-powered-query-optimization"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "6942b8740b2ffe7ce32602d0"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:37:01.911Z"
+  createdOn: "2025-12-17T14:04:36.511Z"
+llmopsTags:
+  - "document-processing"
+  - "unstructured-data"
+  - "data-analysis"
+  - "data-cleaning"
+  - "data-integration"
+  - "healthcare"
+  - "classification"
+  - "summarization"
+  - "prompt-engineering"
+  - "rag"
+  - "semantic-search"
+  - "model-optimization"
+  - "cost-optimization"
+  - "few-shot"
+  - "human-in-the-loop"
+  - "latency-optimization"
+  - "agent-based"
+  - "multi-agent-systems"
+  - "chunking"
+  - "system-prompts"
+  - "evals"
+  - "reranking"
+  - "langchain"
+  - "llama-index"
+  - "spacy"
+  - "postgresql"
+  - "sqlite"
+  - "fastapi"
+  - "documentation"
+  - "open-source"
+  - "databases"
+  - "orchestration"
+  - "openai"
+  - "google-gcp"
+  - "databricks"
+  - "anthropic"
+  - "meta"
+company: "DocETL"
+summary: "Shreyaa Shankar presents DocETL, an open-source system for semantic data processing that addresses the challenges of running LLM-powered operators at scale over unstructured data. The system tackles two major problems: how to make semantic operator pipelines scalable and cost-effective through novel query optimization techniques, and how to make them steerable through specialized user interfaces. DocETL introduces rewrite directives that decompose complex tasks and data to improve accuracy and reduce costs, achieving up to 86% cost reduction while maintaining target accuracy. The companion tool Doc Wrangler provides an interactive interface for iteratively authoring and debugging these pipelines. Real-world applications include public defenders analyzing court transcripts for racial bias and medical analysts extracting information from doctor-patient conversations, demonstrating significant accuracy improvements (2x in some cases) compared to baseline approaches."
+link: "https://www.youtube.com/watch?v=t6r4U0SlnPc"
+year: 2025
+seo:
+  title: "DocETL: Semantic Data Processing at Scale with AI-Powered Query Optimization - ZenML LLMOps Database"
+  description: "Shreyaa Shankar presents DocETL, an open-source system for semantic data processing that addresses the challenges of running LLM-powered operators at scale over unstructured data. The system tackles two major problems: how to make semantic operator pipelines scalable and cost-effective through novel query optimization techniques, and how to make them steerable through specialized user interfaces. DocETL introduces rewrite directives that decompose complex tasks and data to improve accuracy and reduce costs, achieving up to 86% cost reduction while maintaining target accuracy. The companion tool Doc Wrangler provides an interactive interface for iteratively authoring and debugging these pipelines. Real-world applications include public defenders analyzing court transcripts for racial bias and medical analysts extracting information from doctor-patient conversations, demonstrating significant accuracy improvements (2x in some cases) compared to baseline approaches."
+  canonical: "https://www.zenml.io/llmops-database/semantic-data-processing-at-scale-with-ai-powered-query-optimization"
+  ogTitle: "DocETL: Semantic Data Processing at Scale with AI-Powered Query Optimization - ZenML LLMOps Database"
+  ogDescription: "Shreyaa Shankar presents DocETL, an open-source system for semantic data processing that addresses the challenges of running LLM-powered operators at scale over unstructured data. The system tackles two major problems: how to make semantic operator pipelines scalable and cost-effective through novel query optimization techniques, and how to make them steerable through specialized user interfaces. DocETL introduces rewrite directives that decompose complex tasks and data to improve accuracy and reduce costs, achieving up to 86% cost reduction while maintaining target accuracy. The companion tool Doc Wrangler provides an interactive interface for iteratively authoring and debugging these pipelines. Real-world applications include public defenders analyzing court transcripts for racial bias and medical analysts extracting information from doctor-patient conversations, demonstrating significant accuracy improvements (2x in some cases) compared to baseline approaches."
+---
+
+## Overview
+
+This case study presents DocETL, a comprehensive research project led by Shreyaa Shankar that addresses the fundamental challenges of deploying LLMs in production for large-scale data processing tasks. The work emerges from the database and data systems community and represents a systematic approach to making AI-powered data processing both scalable and controllable. The presentation covers multiple interconnected research contributions including the DocETL system for query optimization, the Doc Wrangler interface for pipeline authoring, and the EvalGen system for creating evaluators.
+
+The core motivation stems from recognizing that while traditional data systems excel at processing structured/relational data, there exists vast amounts of unstructured data (documents, transcripts, images, videos) that organizations need to query but cannot effectively process with existing systems. The solution introduces "semantic data processing" - a paradigm where traditional data processing operators (map, reduce, filter, join) are expressed in natural language and executed by LLMs, with outputs that can be open-ended rather than strictly typed.
+
+Real-world use cases drive the research, particularly from public defenders analyzing court transcripts for racial bias mentions and medical analysts extracting medication information from doctor-patient conversation transcripts. These represent production scenarios where accuracy, cost, and scale are critical constraints that simple LLM application cannot satisfy.
+
+## Technical Architecture and LLMOps Challenges
+
+DocETL operates on datasets conceptualized as collections of JSON objects (dictionaries), where each attribute functions like a column in a traditional database. The system supports three primary semantic operators that form the building blocks of data processing pipelines:
+
+**Semantic Map Operator**: Performs one-to-one transformations where each input document produces one output document with new attributes. For example, extracting "statements made by the judge indicating implicit bias" from court transcripts. The operator definition includes the operation type, natural language prompt/description, and output schema specifying new attributes to be created.
+
+**Semantic Filter Operator**: Functions as a yes/no decision task that keeps only documents satisfying natural language conditions. Essentially a semantic map with filter semantics that reduces the dataset size by dropping non-matching documents.
+
+**Semantic Reduce Operator**: Performs aggregation over groups of documents, creating summaries or consolidated outputs. Users specify a reduce key (grouping attribute) and a prompt describing the aggregation task. This produces a different shaped output with fewer documents corresponding to groups.
+
+The power of this paradigm emerges from composing these operators into pipelines. A typical workflow might extract judge names from transcripts (map), group by judge name (reduce), then summarize per judge. However, running such pipelines at production scale presents severe challenges around accuracy, cost, and execution strategy.
+
+## Query Optimization Framework
+
+DocETL's most significant contribution is adapting traditional database query optimization principles to the semantic operator context. The system considers three components: plan space, cost modeling, and search algorithms.
+
+### Plan Space and Rewrite Directives
+
+Unlike traditional databases where different join algorithms or scan strategies constitute the plan space, semantic pipelines can vary across LLM choices, prompting strategies, ensemble approaches, and algorithmic implementations. The breakthrough insight is that simply choosing different models or prompts for operators as-is proves insufficient - pipelines must be rewritten into different logical forms.
+
+DocETL introduces "rewrite directives" - templates describing how to transform subsequences of operators to improve accuracy or reduce cost. The system currently implements 30+ such directives, with key categories including:
+
+**Data Decomposition Rewrites**: When documents are too long for accurate LLM processing (e.g., hundreds of pages), a split-map-reduce pattern breaks documents into chunks, processes each chunk independently, then aggregates results. This dramatically improves recall - if hundreds of bias statements exist in a transcript, processing it atomically causes the LLM to miss many, but chunk-wise processing captures more comprehensively. The system uses LLM agents to determine appropriate chunk sizes (e.g., 1500 words) and rewrite prompts to be chunk-specific.
+
+**Task Complexity Decomposition**: Complex prompts asking LLMs to extract multiple attributes simultaneously often fail on some attributes. DocETL can decompose a single operator into multiple specialized operators, each handling one aspect of the original task, followed by a unification step. This addresses the reality that real-world prompts are detailed and comprehensive, not simple one-sentence instructions.
+
+**Cost Reduction Rewrites**: Operator fusion combines two operators into one to eliminate an LLM pass. Code synthesis replaces semantic operators with agent-generated Python functions when tasks are deterministic (e.g., concatenating lists). Projection pushdown identifies relevant document portions early using cheap methods (keyword search, embeddings) and pushes this filtering down in the query plan so downstream operators process smaller inputs.
+
+The system employs LLM agents to instantiate rewrite directives, meaning the agents generate prompts, output schemas, chunk sizes, and other parameters specific to the user's data and task. This enables highly tailored optimizations that couldn't be achieved with static rules.
+
+DocETL also introduces new operator types to enable these rewrites. The **gather operator** addresses the context problem when splitting documents - individual chunks lack surrounding context making them difficult for LLMs to interpret. Gather augments each chunk with useful context through windowing (including previous chunks), progressive summarization (summary of all prior chunks), or metadata inclusion (table of contents). The **resolve operator** elevates entity resolution to first-class status, recognizing that LLM-extracted attributes often have inconsistent representations that must be normalized before grouping operations.
+
+### Cost Modeling and Task Cascades
+
+Traditional databases estimate query plan costs using IO and CPU models with cardinality estimates. Semantic pipelines face a different challenge: cost encompasses not just latency but also dollar costs (paying API providers) and critically, accuracy. There's no value in a cheap, fast plan with 30% accuracy.
+
+Estimating accuracy typically requires executing candidate plans on labeled samples, which is expensive and time-consuming when exploring many plans. DocETL's solution draws from the ML model cascade literature but extends it significantly. 
+
+**Model Cascades** route inputs through a sequence of models with varying costs. A cheap proxy model processes inputs first, and only low-confidence predictions route to expensive oracle models. This works when most queries can be resolved by the proxy, and confidence thresholds can be tuned (via log probabilities) to meet target oracle accuracy.
+
+**Task Cascades** generalize this by recognizing that models aren't the only cost lever. You can also vary the amount of data processed (document slices vs. full documents) and task complexity (simpler prompts correlated with the original task). For example, when checking if a court opinion overturns a lower court, proxy tasks might include: "Is any lower court mentioned?" (simpler question) or "Does the document contain keywords like 'overturned' or 'reversed'?" (even cheaper keyword check). These proxies run on document samples rather than full text, and the system assembles them in sequence to resolve as many documents early as possible before expensive oracle processing.
+
+The formalization proves constructing optimal task cascades is computationally hard, motivating a greedy algorithm. Crucially, task cascade rewrites can guarantee accuracy probabilistically by construction, eliminating the need to execute them on samples for cost estimation. This dramatically reduces optimization overhead. Experiments show 86% cost reduction on average while staying within 90% target accuracy.
+
+### Search Algorithm
+
+Traditional database optimizers use dynamic programming to find single optimal plans by optimizing subexpressions independently. Semantic pipelines require different approaches for two reasons:
+
+First, there's no single optimal plan - users have different budget constraints and accuracy requirements, so the system should present multiple Pareto-optimal options along the accuracy-cost tradeoff curve.
+
+Second, local optimization of subexpressions is suboptimal. The accuracy of one operator depends on how other operators in the pipeline interpret or correct its results. Decomposing a complex extraction into three separate map operators might individually optimize each, but a different decomposition considering the full pipeline context could yield better end-to-end accuracy.
+
+DocETL employs a Monte Carlo tree search (MCTS) inspired algorithm treating optimization as graph search. Each node represents a complete pipeline, each edge an instantiated rewrite directive. The system explores plans until a budget exhausts, using a UCB-based selection strategy to prioritize rewriting pipelines that show high accuracy themselves and lead to children on the Pareto frontier.
+
+LLM agents instantiate rewrites by selecting from the 30+ directive registry based on reading sample data and execution history, then generating the necessary prompts and parameters. The system executes candidates on samples to record cost and accuracy, updating estimates and continuing exploration.
+
+In comparative evaluations against Lotus (Stanford) and Abacus/Palynest (MIT) - systems that choose among 11 different models (GPT variants, Gemini variants) - DocETL consistently produces the most accurate plans, often 2x better accuracy. When constrained to match baseline accuracy, DocETL finds plans at a small fraction of the cost, demonstrating the value of intelligent Pareto frontier search.
+
+A particularly striking example: public defenders authored a pipeline using GPT-4o achieving 47% F1 score (unusable for production). DocETL's optimizer found significantly more accurate alternatives at lower cost through strategic rewrites.
+
+## User-Facing Steerable AI: Doc Wrangler
+
+While query optimization addresses scalability, production LLM systems also require controllability. The Doc Wrangler project tackles the challenge that "AI never works off the shelf" - semantic operator pipelines need iterative refinement to work accurately.
+
+The research identifies a fundamental problem: expressing fuzzy concepts precisely in natural language prompts is extremely difficult. Users must capture edge cases in their data that they haven't yet seen. A prompt like "extract racially charged statements" proves inadequate without extensive detail about what constitutes racial charging and how to handle various manifestations.
+
+Doc Wrangler provides a specialized IDE with two components: a pipeline editor (notebook-style interface) and an input/output inspector for richly examining semantic operator outputs. The theoretical contribution is a **three-gulf framework** identifying the complete class of challenges users face:
+
+**Gulf of Comprehension**: Users don't know what's in their unstructured data. Unlike relational databases with summary statistics and outlier detection, documents lack good visualization tools. Doc Wrangler addresses this by enabling users to expand outputs row-by-row, comparing extracted results with source documents, and providing feedback mechanisms. Users discover patterns like "medications also have dosages that should be extracted" or decide "over-the-counter medications shouldn't be included, only prescriptions" by examining examples.
+
+**Gulf of Specification**: Even knowing what they want, users struggle to specify precise semantic operators. Doc Wrangler implements assisted specification by collecting user notes as they review outputs (open coding style), then using AI to transform those notes into improved prompts. The interface shows suggested rewrites with diffs (green/red highlighting), allowing iterative refinement through direct editing or additional feedback.
+
+**Gulf of Generalization**: Operations that work on samples may fail at scale due to LLM imperfections. Doc Wrangler runs expensive LLM judges in the background on samples to detect when operations are inaccurate, then suggests decomposition rewrites (connecting back to the DocETL optimizer). For example, if extracting three attributes in one call and one attribute shows low accuracy, the system proposes splitting into separate operations.
+
+User studies revealed fascinating organic strategies for bridging these gulfs. Users invented "throwaway pipelines" (summarizations, key idea extraction) purely to learn about their data before actual analysis. They repurposed operations for validation, adding boolean or numerical attributes to leverage histograms for quick sanity checks on LLM behavior.
+
+The deployment saw adoption across multiple organizations, with users reporting that the feedback-driven workflow felt applicable beyond document processing to any AI system requiring prompt iteration against diverse examples.
+
+## Evaluation and the Criteria Drift Problem
+
+The EvalGen system ("Who Validates the Validators" paper, most cited at NeurIPS 2024 workshops) addresses a meta-problem in LLMOps: how to evaluate batch LLM pipelines when users lack labeled data and evaluation criteria are complex rather than verifiable (unlike "does code run" metrics common in RL benchmarks).
+
+The insight is that batch pipeline execution involves significant waiting time while processing thousands of documents. EvalGen exploits this by soliciting labels on outputs as they generate, creating evaluators based on those labels, then reporting alignment at completion. The system integrates with ChainForge and provides a report card interface showing created LLM judges.
+
+The surprising empirical finding that motivates the evaluation course Shankar co-teaches with Hamel Husain: **evaluation criteria drift during labeling**. In an entity extraction task from tweets (extracting entities while excluding hashtags), users initially marked hashtag-entities as incorrect. But after seeing "#ColinKaepernick" repeatedly, they revised their criteria: "no hashtags as entities unless they're notable entities in hashtag form." This revelation emerged only by observing LLM behavior across many outputs.
+
+Users wanted to add new criteria as they discovered failure modes, and they reinterpreted existing criteria to better fit LLM behavior patterns. This cannot be captured by static predefined rubrics. The workflow necessitates iterative coding processes where criteria stabilize gradually through continued observation.
+
+This work has influenced LLMOps practices broadly, seeding the OpenAI cookbook's evaluation workflow and the popular evaluation course teaching qualitative coding adaptation for eval tasks.
+
+## Production Adoption and Industry Impact
+
+The research transcends academic contributions through concrete industry adoption. While Shankar emphasizes she's an academic at heart rather than product-focused, the work's applied nature and grounding in real user problems drives natural productization. The ideas (not necessarily the exact tools) have been adopted by:
+
+- Major database vendors: Databricks introduced semantic operators, Google BigQuery has AI-SQL, Snowflake's Cortex AI (recently partnered with Anthropic), and DuckDB all ship semantic operator functionality influenced by this research direction
+- LLMOps platform companies have incorporated Doc Wrangler and EvalGen concepts
+- Public defenders use these systems for analyzing case files at scale to ensure fair representation
+- Medical analysts process doctor-patient conversation transcripts for medication extraction and analysis
+
+The research demonstrates that 5+ decades of database systems foundations remain relevant - not by throwing them out but by significantly adapting them for LLM realities. Query optimization, indexing strategies, and data processing paradigms translate when carefully reconsidered for fuzzy natural language operations and probabilistic model execution.
+
+## Operational Considerations and Limitations
+
+The presentation acknowledges several important practical considerations for production deployment:
+
+**Multimodal Data**: Current DocETL focuses on text due to abundant immediate text workloads and tractable problem scope. Stanford's Lotus and MIT's Palynest support multimodal data (images, video, audio). Extension requires understanding what new errors arise and what semantic operator compositions make sense - e.g., "What does it mean to join images with text?" needs use case exploration before architectural decisions.
+
+**Chunk Size Selection**: For large documents like contracts, determining appropriate chunk sizes proves challenging when different document sections vary dramatically. DocETL's optimizer searches over chunk sizes selecting for highest accuracy, with the gather operator providing cross-chunk context. However, tuning remains somewhat empirical.
+
+**Confidence Assessment in Task Cascades**: The system uses log probabilities converted to probabilistic confidence scores, comparing proxy labels to oracle labels to iterate through thresholds meeting target accuracy. This requires careful calibration and the paper details specific techniques.
+
+**Graph Databases**: A frequent question reveals common misconception. Most users reaching for graph databases for LLM applications would be better served by simpler ETL workflows. Unless specific graph queries are needed (and users often cannot articulate what), representing data as graphs creates unnecessary complexity. Many "graph" desires are actually groupby operations on extracted entities or entity summaries, not true graph relationship queries.
+
+**Evaluation and Labeling**: The optimizer requires users to specify accuracy functions run on samples, typically labeling 40 documents in experiments. LLM judges serve as fallback when labeled data is unavailable, though Shankar expresses reservations about judge reliability. Future work should connect iterative eval labeling workflows directly into the query optimizer.
+
+**Cost-Accuracy Tradeoffs**: The system presents multiple Pareto-optimal plans rather than single recommendations, acknowledging different user contexts. Organizations with large budgets prioritize accuracy; constrained budgets seek maximum accuracy within budget. This requires operational discipline around understanding business constraints before execution.
+
+## Future Research Directions
+
+The presentation outlines several open problems ripe for further work:
+
+- Extending optimizations to multimodal data with empirical understanding of new error modes
+- Deeper integration between eval labeling workflows and query optimization
+- Better solutions than LLM judges for accuracy estimation when labeled data is scarce
+- Unstructured data exploration (EDA), business intelligence (BI), and visualization - how do these traditional data system capabilities translate to documents, images, and video?
+- Life cycle tooling covering the full spectrum from initial data understanding through production deployment and monitoring
+- Educational content teaching semantic data processing thinking to broader audiences beyond the small data management research community
+
+The work represents a maturing understanding that LLM production deployment requires systematic engineering approaches adapted from decades of systems building experience, rather than treating each application as a bespoke chatbot implementation. The semantic operator paradigm and associated optimization frameworks provide a principled foundation for scaling AI-powered data processing to real-world organizational needs.

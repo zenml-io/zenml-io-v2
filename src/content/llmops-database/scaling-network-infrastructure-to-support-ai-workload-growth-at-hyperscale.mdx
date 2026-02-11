@@ -1,0 +1,117 @@
+---
+title: "Scaling Network Infrastructure to Support AI Workload Growth at Hyperscale"
+slug: "scaling-network-infrastructure-to-support-ai-workload-growth-at-hyperscale"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "68a6cfbef226807cb36d1353"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:19:09.743Z"
+  createdOn: "2025-08-21T07:50:22.277Z"
+llmopsTags:
+  - "high-stakes-application"
+  - "realtime-application"
+  - "model-optimization"
+  - "latency-optimization"
+  - "cost-optimization"
+  - "kubernetes"
+  - "docker"
+  - "monitoring"
+  - "databases"
+  - "load-balancing"
+  - "microservices"
+  - "scaling"
+  - "devops"
+  - "orchestration"
+  - "meta"
+company: "Meta"
+summary: "Meta's network engineering team faced an unprecedented challenge when AI workload demands required accelerating their backbone network scaling plans from 2028 to 2024-2025, necessitating a 10x capacity increase. They addressed this through three key techniques: pre-building scalable data center metro architectures with ring topologies, platform scaling through both vendor-dependent improvements (larger chassis, faster interfaces) and internal innovations (adding backbone planes, multiple devices per plane), and IP-optical integration using coherent transceiver technology that reduced power consumption by 80-90% while dramatically improving space efficiency. Additionally, they developed specialized AI backbone solutions for connecting geographically distributed clusters within 3-100km ranges using different fiber and optical technologies based on distance requirements."
+link: "https://www.youtube.com/watch?v=hiKNpZ_kEEU"
+year: 2025
+seo:
+  title: "Meta: Scaling Network Infrastructure to Support AI Workload Growth at Hyperscale - ZenML LLMOps Database"
+  description: "Meta's network engineering team faced an unprecedented challenge when AI workload demands required accelerating their backbone network scaling plans from 2028 to 2024-2025, necessitating a 10x capacity increase. They addressed this through three key techniques: pre-building scalable data center metro architectures with ring topologies, platform scaling through both vendor-dependent improvements (larger chassis, faster interfaces) and internal innovations (adding backbone planes, multiple devices per plane), and IP-optical integration using coherent transceiver technology that reduced power consumption by 80-90% while dramatically improving space efficiency. Additionally, they developed specialized AI backbone solutions for connecting geographically distributed clusters within 3-100km ranges using different fiber and optical technologies based on distance requirements."
+  canonical: "https://www.zenml.io/llmops-database/scaling-network-infrastructure-to-support-ai-workload-growth-at-hyperscale"
+  ogTitle: "Meta: Scaling Network Infrastructure to Support AI Workload Growth at Hyperscale - ZenML LLMOps Database"
+  ogDescription: "Meta's network engineering team faced an unprecedented challenge when AI workload demands required accelerating their backbone network scaling plans from 2028 to 2024-2025, necessitating a 10x capacity increase. They addressed this through three key techniques: pre-building scalable data center metro architectures with ring topologies, platform scaling through both vendor-dependent improvements (larger chassis, faster interfaces) and internal innovations (adding backbone planes, multiple devices per plane), and IP-optical integration using coherent transceiver technology that reduced power consumption by 80-90% while dramatically improving space efficiency. Additionally, they developed specialized AI backbone solutions for connecting geographically distributed clusters within 3-100km ranges using different fiber and optical technologies based on distance requirements."
+---
+
+Meta's backbone network engineering team presented a comprehensive case study on scaling network infrastructure to support the exponential growth in AI workloads, representing one of the most significant infrastructure challenges in supporting large-scale AI/LLM deployments in production. While this case study doesn't directly discuss LLMs or traditional LLMOps practices like model deployment, monitoring, or prompt engineering, it provides crucial insights into the foundational infrastructure requirements that enable hyperscale AI operations.
+
+## Background and Scale Challenge
+
+Meta operates two distinct backbone networks: the Classic Backbone (CBB) for data center to point-of-presence (POP) traffic serving external users, and the Express Backbone (EBB) for data center-to-data center traffic that handles internal AI workloads. The EBB network, which began in 2015-2016, uses proprietary routing protocols and traffic engineering stacks with centralized controllers - a critical infrastructure layer for distributed AI training and inference workloads.
+
+The core challenge emerged when Meta's megawatt compute forecasts, which help internal teams prepare for future scale demands, underwent massive upward revisions throughout 2024. Original plans that were designed to scale through 2030 suddenly needed to be accelerated by multiple years, with implementation required by 2024-2025. This dramatic acceleration was driven specifically by the increase in AI workloads, which create fundamentally different traffic patterns and capacity requirements compared to traditional web services.
+
+The scale implications are staggering: a single AI backbone site pair connection represents double the capacity of Meta's entire backbone network built over the previous decade. This reflects the massive infrastructure requirements for training and serving large language models and other AI systems at Meta's scale, including projects like their large language model initiatives.
+
+## Technical Solutions for 10x Backbone Scaling
+
+Meta's approach to achieving 10x backbone scaling relied on three primary technical strategies, each addressing different aspects of the infrastructure challenge.
+
+### Pre-built Metro Architecture
+
+The first technique involves pre-building scalable data center metro architectures to accelerate connectivity to new data centers. This approach recognizes that network connectivity often becomes the bottleneck in data center deployments, particularly for AI workloads that require high-bandwidth, low-latency connections between distributed training clusters.
+
+The architecture consists of building two fiber rings within metropolitan areas that provide scalable capacity, connecting long-haul fibers to these rings, establishing two POPs for remote connectivity, and then connecting data centers to the rings. This modular approach allows Meta to more rapidly provision network connectivity for new AI infrastructure deployments, reducing the time-to-deployment for large-scale training clusters.
+
+### Platform Scaling Through Scaling Up and Scaling Out
+
+Platform scaling represents the second major technique, implemented through both vendor-dependent "scaling up" and internally-controlled "scaling out" approaches. Scaling up leverages larger chassis (12-slot vs 8-slot providing 50% more capacity) and faster interfaces, particularly the transition from 400Gbps to 800Gbps platforms that doubles capacity when combined with modern coherent transceivers.
+
+Scaling out, which Meta has more direct control over, involves adding more backbone planes (expanding from four to eight planes doubles capacity) and implementing multiple devices per plane. The backbone plane expansion is particularly disruptive, requiring extensive fiber restriping across all backbone sites, but provides global capacity increases essential for AI workloads that span multiple data centers.
+
+One remarkable example of this scaling approach shows a single site that doubled platform capacity every year for seven consecutive years from 2017, achieving 192x the original capacity through combined scaling techniques. This exponential growth pattern directly correlates with Meta's expanding AI infrastructure needs.
+
+### IP and Optical Integration
+
+The third technique, IP and optical integration using coherent receiver (CR) technology, represents perhaps the most significant innovation from both technical and operational perspectives. Traditional network architectures maintain clear demarcation between IP routing and optical transport layers, with separate transponders consuming up to 2 kilowatts each.
+
+CR technology integrates these functions directly into routers, with each CR plug consuming only 10-15 watts additional power while eliminating standalone transponders. The aggregate result is 80-90% reduction in power consumption, a critical consideration given the massive power requirements of AI training infrastructure.
+
+The space efficiency gains are equally dramatic. In a scenario with 80 rack positions supporting 1 petabit of backbone capacity across 50 rails, traditional architecture would require 50 racks for optical equipment and 8 for routers (58 total). With 400Gbps CR technology, optical requirements drop to just 13 racks with the same 8 router racks (21 total). At 800Gbps CR, the configuration requires only 6 optical racks and 8 router racks (14 total), representing a nearly 75% reduction in space requirements.
+
+## AI-Specific Infrastructure: Prometheus Project
+
+The emergence of AI workloads created entirely new infrastructure challenges that Meta addressed through the Prometheus project, focused on building larger, geographically distributed training clusters. Traditional data centers were reaching power and space limitations for the largest AI training runs, necessitating the connection of multiple nearby facilities into unified training clusters.
+
+### Short-Range Connectivity (3km and 10km)
+
+For connections within 3-10km ranges, Meta employs direct fiber connections with distance-appropriate transceivers. While technologically straightforward, the physical infrastructure requirements are massive. Each fiber pair can carry only a single connection (400Gbps or 800Gbps), requiring hundreds of thousands of fiber pairs for full connectivity between major sites.
+
+The construction implications are substantial, involving 6-inch conduits containing 14 864-fiber trunks each, totaling 12,000 fibers per conduit. Multiple conduits result in hundreds of thousands of fiber pairs laid between locations, requiring extensive permitting, road closures, and construction coordination. Maintenance vaults are installed every 300 meters, enabling access for repairs but causing significant urban disruption during installation.
+
+### Long-Range Connectivity (Beyond 10km)
+
+For longer distances, Meta employs DWDM (Dense Wavelength Division Multiplexing) optical systems that can multiplex 64 connections onto a single fiber pair, providing a 64x reduction in fiber requirements compared to direct connections. This approach becomes essential for longer distances where extensive trenching and permitting would be prohibitively complex and time-consuming.
+
+The system uses optical protection switching, which introduces some complexity in IP-optical layer transparency but significantly reduces the number of IP interfaces required on routers. Each system handles 64 × 800Gbps (51.2Tbps), with horizontal scaling providing the capacity needed for AI backbone connections up to approximately 100km without intermediate amplification.
+
+## Operational Challenges and LLMOps Implications
+
+While not traditional LLMOps in the sense of model lifecycle management, Meta's infrastructure scaling efforts reveal several operational patterns relevant to production AI systems. The need to accelerate infrastructure plans by multiple years highlights the challenge of capacity planning for AI workloads, which can exhibit exponential growth patterns that exceed traditional forecasting models.
+
+The integration of multiple technology domains - IP routing, optical transport, data center operations, and AI cluster management - requires sophisticated operational coordination. Meta mentions the need to align terminology and operational practices between different teams, particularly when optical and backbone teams collaborate with data center teams who may have different assumptions about network operations.
+
+The scale of deployment presents significant challenges in provisioning and installation, particularly for coherent transceiver technology that requires much cleaner fiber handling than traditional transceivers. This operational complexity directly impacts the speed at which AI infrastructure can be deployed and scaled.
+
+## Future Architecture Evolution
+
+Looking forward, Meta is evolving toward leaf-and-spine architectures for their backbone networks, providing less disruptive scaling compared to current approaches. Adding new leaf switches is operationally simpler than the complex fiber restriping required for backbone plane expansion. This architectural evolution reflects lessons learned from rapid AI-driven scaling demands.
+
+The company plans to continue iterating on AI backbone deployments across more sites, with ongoing learning about how AI traffic patterns interact with optical networks. This iterative approach suggests a recognition that AI workload characteristics may require ongoing infrastructure optimization as models and training techniques evolve.
+
+## Critical Assessment and Limitations
+
+While Meta's infrastructure scaling achievements are impressive, several aspects warrant balanced consideration. The solutions presented are highly capital-intensive, requiring massive investments in fiber infrastructure, advanced optical equipment, and specialized engineering expertise that may not be accessible to smaller organizations developing AI systems.
+
+The geographic concentration of these solutions within Meta's existing data center footprint may limit applicability to organizations with different geographic requirements or regulatory constraints. The reliance on cutting-edge optical technology also introduces vendor dependencies and potential supply chain constraints, particularly given the mention of 800Gbps coherent receiver technology being new with ramping production scales.
+
+The operational complexity of these solutions requires sophisticated internal expertise and tooling that represents a significant organizational investment beyond the hardware costs. The need for coordination between multiple specialized teams suggests organizational overhead that could impact deployment velocity despite the technical capabilities.
+
+From an environmental perspective, while the power efficiency improvements through CR technology are significant, the overall power consumption of AI infrastructure continues to grow exponentially. The infrastructure enables more AI capability but doesn't fundamentally address the energy intensity of large-scale AI training and inference operations.
+
+This case study ultimately demonstrates that hyperscale AI operations require fundamental rethinking of network infrastructure, with solutions that may not be directly applicable to smaller-scale AI deployments but provide important insights into the infrastructure foundations that enable the largest AI systems in production today.

@@ -1,0 +1,123 @@
+---
+title: "From MVP to Production: LLM Application Evaluation and Deployment Challenges"
+slug: "from-mvp-to-production-llm-application-evaluation-and-deployment-challenges"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f3fd67d54a83699d6208e"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:40:44.611Z"
+  createdOn: "2024-11-21T14:12:38.301Z"
+llmopsTags:
+  - "cicd"
+  - "compliance"
+  - "databases"
+  - "databricks"
+  - "devops"
+  - "documentation"
+  - "guardrails"
+  - "high-stakes-application"
+  - "human-in-the-loop"
+  - "monitoring"
+  - "prompt-engineering"
+  - "rag"
+  - "regulatory-compliance"
+  - "reliability"
+  - "scalability"
+  - "scaling"
+  - "security"
+  - "semantic-search"
+  - "translation"
+  - "vector-search"
+  - "wandb"
+company: "Various"
+summary: "A panel discussion featuring experts from Databricks, Last Mile AI, Honeycomb, and other companies discussing the challenges of moving LLM applications from MVP to production. The discussion focuses on key challenges around user feedback collection, evaluation methodologies, handling domain-specific requirements, and maintaining up-to-date knowledge in production LLM systems. The experts share experiences on implementing evaluation pipelines, dealing with non-deterministic outputs, and establishing robust observability practices."
+link: "https://www.youtube.com/watch?v=Smq3Q9r-9cg"
+year: 2023
+seo:
+  title: "Various: From MVP to Production: LLM Application Evaluation and Deployment Challenges - ZenML LLMOps Database"
+  description: "A panel discussion featuring experts from Databricks, Last Mile AI, Honeycomb, and other companies discussing the challenges of moving LLM applications from MVP to production. The discussion focuses on key challenges around user feedback collection, evaluation methodologies, handling domain-specific requirements, and maintaining up-to-date knowledge in production LLM systems. The experts share experiences on implementing evaluation pipelines, dealing with non-deterministic outputs, and establishing robust observability practices."
+  canonical: "https://www.zenml.io/llmops-database/from-mvp-to-production-llm-application-evaluation-and-deployment-challenges"
+  ogTitle: "Various: From MVP to Production: LLM Application Evaluation and Deployment Challenges - ZenML LLMOps Database"
+  ogDescription: "A panel discussion featuring experts from Databricks, Last Mile AI, Honeycomb, and other companies discussing the challenges of moving LLM applications from MVP to production. The discussion focuses on key challenges around user feedback collection, evaluation methodologies, handling domain-specific requirements, and maintaining up-to-date knowledge in production LLM systems. The experts share experiences on implementing evaluation pipelines, dealing with non-deterministic outputs, and establishing robust observability practices."
+---
+
+## Overview
+
+This case study is derived from a panel discussion titled "From MVP to Production" featuring practitioners from multiple companies including Databricks, Honeycomb, Last Mile AI, and a venture capital firm focused on AI applications. The panel was hosted by Alex Volkov, an AI evangelist at Weights and Biases and host of the Thursday AI podcast. The discussion provides valuable cross-industry perspectives on the practical challenges of deploying LLM applications in production environments.
+
+The panelists included Eric Peter (PM lead for AI platform at Databricks focusing on model training and RAG), Phillip (from Honeycomb's product team working on AI observability), Andrew (co-founder and CPO of Last Mile AI, formerly GPM for AI Platform at Facebook AI), and Donnie (ML engineer at a venture capital firm building AI assistants for portfolio companies).
+
+## The Reality Gap Between Demo and Production
+
+A central theme throughout the discussion was the significant gap between how LLM applications perform in controlled testing versus real-world production use. Phillip from Honeycomb articulated this challenge particularly well, noting that anyone who believes they can predict what users will do with their deployed LLM applications is "quite arrogant." The panelists agreed that while getting something to a "good enough to go to production" state is relatively straightforward, the hard work truly begins once real users interact with the system.
+
+The fundamental challenge stems from the nature of LLM interfaces themselves. When users are given a more natural input mechanism closer to their mental model (rather than learning specific UI gestures), they approach the product differently than anticipated. This essentially resets all expectations about user behavior and creates a continuous learning requirement for the development team.
+
+Donnie highlighted how this problem is exacerbated by the disconnect between problem definers and actual users. Development teams often design with stakeholders who defined the problem but not necessarily the end users who will interact with the system daily. Users treat LLM systems as black boxes, and "black boxes are magic" in the user's mind, leading to unpredictable usage patterns.
+
+## Evaluation Strategies and Frameworks
+
+The panel devoted substantial attention to evaluation methodologies, which Andrew from Last Mile AI broke down into three primary approaches:
+
+**Human Annotation and Loop-Based Evaluation**: This involves audit logs, manual experimentation, and human annotators reviewing outputs. The challenge here has evolved significantly compared to traditional ML annotation tasks. As Andrew noted, annotation is no longer something you can crowdsource easily. For complex tasks like document summarization, you need specialized experts who can process 100 pages of material and properly evaluate whether a summary is correct—a far cry from simple image labeling tasks.
+
+**Heuristic-Based Evaluation**: These are classic NLP and information retrieval algorithms for assessing output correctness. They remain useful but have limitations in capturing the nuanced quality requirements of generative AI outputs.
+
+**LLM-as-Judge Evaluation**: This approach feeds outputs back into another LLM (often GPT-4) to evaluate quality. Eric from Databricks shared a telling example from their coding assistant development: when they simply asked GPT-4 to evaluate whether answers were "helpful," it rated nearly 100% of responses as helpful. Only when they provided specific guidelines and few-shot examples of what "helpful" actually means did they get meaningful discrimination between good and bad outputs.
+
+Andrew emphasized that his team has found success using encoder-based classification models rather than full LLMs for evaluation tasks, which can be 500 times cheaper while still providing robust results since evaluators are fundamentally classification problems.
+
+## Industry-Specific Evaluation Challenges
+
+The panelists shared several examples of how evaluation requirements vary dramatically by industry and context:
+
+- **Sales Context**: Andrew mentioned that "NASA" in a sales context means "North America South America" regions, not the space agency. Any evaluation system needs to understand domain-specific terminology and acronyms.
+
+- **Translation Systems**: Alex noted that brand names should not be translated—"Weights and Biases" in Spanish should remain "Weights and Biases," creating special handling requirements.
+
+- **Financial Applications**: Donnie highlighted how "safety" in financial contexts means something entirely different from typical AI safety discussions about inappropriate language. In finance, safety concerns center on factually incorrect information that could lead to bad trading decisions.
+
+- **SQL Generation**: Donnie discussed challenges with SQL assistants where users have implied knowledge that isn't available in their queries. The challenge becomes getting models to recognize what they don't know and ask for clarification rather than confidently providing incorrect answers.
+
+- **Observability Queries**: Phillip from Honeycomb described how seemingly simple questions like "what is my error rate?" can be surprisingly challenging because the underlying data model may not support straightforward answers. The evaluation challenge becomes determining whether an output sets users on the right path or leads them astray.
+
+## Staged Rollout Approaches
+
+A key pattern that emerged was the importance of staged rollouts rather than going directly from internal testing to general availability. Donnie described their approach of releasing to intermediate user groups who have some expectation of what the system should do but also understand how it's being built. This allows for deeper evaluation on smaller user groups before scaling to hundreds of users simultaneously.
+
+Eric from Databricks echoed this pattern, describing the concept of "expert stakeholders" or "internal stakeholders"—typically four or five domain experts who can properly evaluate outputs. He noted that data scientists building bots for HR or customer support teams often cannot evaluate answer correctness themselves because they lack domain expertise. Having rapid feedback cycles with these small expert groups is critical.
+
+## Tooling for Feedback Capture
+
+The panel discussed the importance of proper tooling for capturing user feedback. Eric identified the spectrum from "just go play with it and tell me if it's working" (least helpful) to structured systems that automatically log every interaction, enable thumbs up/down ratings with rationale, allow users to edit responses, and show what was retrieved alongside the response.
+
+Phillip mentioned that Honeycomb builds their feedback capture in-house, leveraging their observability platform where user feedback becomes a column on events that can be sliced and analyzed. He cautioned about using tools that don't handle high-cardinality data well, noting that certain observability platforms could lead to exploding bills with this kind of instrumentation.
+
+## Data Freshness and Version Control
+
+The discussion addressed the challenge of keeping knowledge bases current, particularly for RAG systems. Andrew described this as "a massive version control problem" that feels familiar to anyone who has worked on recommendation systems. The challenges are two-fold: unexpected changes to underlying data or models can cause performance distribution shifts, and intentional updates require careful re-evaluation.
+
+The solution pattern that emerged involves version controlling everything—the retrieval infrastructure, data sources, processing pipelines, and the underlying LLM versions. When A/B testing, all components should be pinned to specific versions. Andrew acknowledged this is "so gnarly" that rollback becomes extremely painful, yet it's necessary for maintaining system reliability.
+
+Eric emphasized that keeping retrieval systems in sync with source systems is why many customers build their generative AI systems on top of their data platforms. Robust data pipeline infrastructure becomes even more critical in the LLM era.
+
+## The MLOps-LLMOps Continuity
+
+A recurring theme was the recognition that many LLMOps challenges are fundamentally similar to traditional MLOps problems. Eric observed that paradigms that have existed for years in ML practice—curating ground truth evaluation sets, defining metrics to optimize—are now being discovered by practitioners new to generative AI.
+
+However, the panelists acknowledged that while the patterns are similar, the problems are harder. Hill-climbing on a regression model with a ground truth set is relatively straightforward, but hill-climbing on non-deterministic English language inputs and outputs presents a much more complex optimization challenge. As Alex summarized, the new slogan might be "LLMOps: same problems, new name, but it hurts a lot more."
+
+## Practical Recommendations
+
+The panel's collective wisdom suggests several practical recommendations for teams moving LLM applications to production:
+
+The importance of comprehensive logging cannot be overstated. Every interaction should be captured with full context, enabling both qualitative review and quantitative analysis. Feedback mechanisms should be lightweight for users but information-rich for developers.
+
+Evaluation should be treated as a first-class concern from the beginning, not an afterthought. This includes defining what success metrics actually mean in your specific context, as generic concepts like "helpful" or "safe" have very different interpretations across domains.
+
+Teams should expect to build custom evaluation approaches for their specific use cases. While generic tools and frameworks exist, the domain-specificity of evaluation requirements means significant customization is typically necessary.
+
+Finally, the panel emphasized that production is where learning truly begins. The controlled environment of internal testing will never fully prepare a system for the creative (and sometimes chaotic) ways real users will interact with it. Building systems that facilitate rapid iteration based on production feedback is essential for long-term success.

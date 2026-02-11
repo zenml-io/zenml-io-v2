@@ -1,0 +1,141 @@
+---
+title: "Building and Testing a Production LLM-Powered Quiz Application"
+slug: "building-and-testing-a-production-llm-powered-quiz-application"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f3dec8f1b68703dbdf3c4"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:37:46.216Z"
+  createdOn: "2024-11-21T14:04:28.908Z"
+llmopsTags:
+  - "cache"
+  - "cost-optimization"
+  - "databases"
+  - "error-handling"
+  - "fallback-strategies"
+  - "google-gcp"
+  - "guardrails"
+  - "latency-optimization"
+  - "monitoring"
+  - "multi-modality"
+  - "prompt-engineering"
+  - "question-answering"
+  - "realtime-application"
+  - "reliability"
+  - "scalability"
+  - "security"
+  - "serverless"
+  - "structured-output"
+company: "Google"
+summary: "A case study of transforming a traditional trivia quiz application into an LLM-powered system using Google's Vertex AI platform. The team evolved from using static quiz data to leveraging PaLM and later Gemini models for dynamic quiz generation, addressing challenges in prompt engineering, validation, and testing. They achieved significant improvements in quiz accuracy from 70% with Gemini Pro to 91% with Gemini Ultra, while implementing robust validation methods using LLMs themselves to evaluate quiz quality."
+link: "https://www.youtube.com/watch?v=RJKLb8DagJw"
+year: 2023
+seo:
+  title: "Google: Building and Testing a Production LLM-Powered Quiz Application - ZenML LLMOps Database"
+  description: "A case study of transforming a traditional trivia quiz application into an LLM-powered system using Google's Vertex AI platform. The team evolved from using static quiz data to leveraging PaLM and later Gemini models for dynamic quiz generation, addressing challenges in prompt engineering, validation, and testing. They achieved significant improvements in quiz accuracy from 70% with Gemini Pro to 91% with Gemini Ultra, while implementing robust validation methods using LLMs themselves to evaluate quiz quality."
+  canonical: "https://www.zenml.io/llmops-database/building-and-testing-a-production-llm-powered-quiz-application"
+  ogTitle: "Google: Building and Testing a Production LLM-Powered Quiz Application - ZenML LLMOps Database"
+  ogDescription: "A case study of transforming a traditional trivia quiz application into an LLM-powered system using Google's Vertex AI platform. The team evolved from using static quiz data to leveraging PaLM and later Gemini models for dynamic quiz generation, addressing challenges in prompt engineering, validation, and testing. They achieved significant improvements in quiz accuracy from 70% with Gemini Pro to 91% with Gemini Ultra, while implementing robust validation methods using LLMs themselves to evaluate quiz quality."
+---
+
+## Overview
+
+This case study, presented by Mete (a Developer Advocate at Google) and Mark Hian at a conference, chronicles the development of "Quizaic," a trivia quiz application that transitioned from a static, limited prototype to a dynamic, generative AI-powered production system. The presentation offers valuable lessons for practitioners building LLM-powered applications, covering both the technical architecture and the operational challenges encountered when deploying generative AI in real-world scenarios.
+
+The application originated as Mark's weekend project in 2016, initially designed to showcase Progressive Web App (PWA) capabilities in Chrome. The original version relied on the Open Trivia Database, a public API providing pre-curated trivia questions. While functional, this approach suffered from significant limitations: only 25-30 fixed categories, a few thousand questions, English-only content, multiple-choice format exclusively, no imagery, and—most critically—expanding the content required tedious manual curation.
+
+The March 2023 explosion of large language models fundamentally changed the project's possibilities. Mark immediately recognized that LLMs could solve the content generation bottleneck, enabling unlimited topics, questions, languages, and formats on demand.
+
+## Architecture and Technology Stack
+
+The production system employs a two-tier architecture:
+
+**Frontend:** The UI is built with Flutter, Google's cross-platform framework using the Dart language. This choice enables both mobile and web applications from a single codebase. The presenters noted that Dart's strong typing provides reliability benefits for client-side development.
+
+**Backend Services:** The API server is a Python Flask application running on Google Cloud Run. Cloud Run was selected for its container flexibility, ease of deployment (supporting source-to-service deployment without Dockerfiles), and built-in autoscaling, monitoring, and logging capabilities.
+
+**Database:** Firestore serves as the NoSQL backend, chosen because its document-oriented structure naturally maps to quiz data structures. A particularly valuable feature is Firestore's real-time update capability, which automatically propagates state changes to connected browsers without additional code—essential for the synchronous quiz hosting experience demonstrated.
+
+**LLM Integration:** The application uses Google's Vertex AI platform for generative capabilities. Gemini models handle quiz generation, while Imagen (specifically version 2) generates topic-relevant images. The progression through models—Palm to Gemini Pro to Gemini Ultra—demonstrated measurable quality improvements with each generation.
+
+## Prompt Engineering Challenges
+
+The presenters devoted significant attention to prompt engineering, emphasizing that getting prompts right requires substantial iteration. Their final quiz generation prompt includes explicit instructions:
+
+- Role assignment ("you are a trivia expert")
+- Structured output format (JSON)
+- Specific parameters (category, difficulty, question count, responses per question, language)
+- Explicit rules about accuracy and avoiding ambiguous questions
+
+A counterintuitive lesson emerged: more detailed prompts don't always yield better results. Mete specifically noted that adding more rules sometimes degraded output quality. The recommended approach is finding the minimal effective prompt and only adding constraints that demonstrably improve results—which requires measurement infrastructure.
+
+The multilingual capability exemplifies both the power and fragility of prompt engineering. Adding "in Swedish" to a prompt enabled Swedish quiz generation, but placing those words in the wrong position caused the model to misinterpret the instruction entirely. The presenters emphasized that LLMs are "very finicky and very literal"—precise prompt construction is essential.
+
+## Production Challenges and Defensive Coding
+
+The transition from prototype to production revealed numerous operational challenges that the presenters characterized as "new problems" introduced by generative AI:
+
+**Inconsistent Outputs:** Unlike traditional APIs where identical inputs produce identical outputs, LLMs can return different responses for the same prompt. This fundamental unpredictability requires a mindset shift for developers accustomed to deterministic systems.
+
+**Malformed Responses:** Even with explicit JSON output instructions, the model sometimes returns markdown-wrapped JSON or adds conversational prefixes like "Here's your JSON." The solution involves post-processing to strip extraneous content and robust parsing with fallback handling.
+
+**Empty or Failed Results:** LLM calls can fail outright or return empty results. The presenters recommend distinguishing between critical failures (no quiz generated) and non-critical failures (no image generated), implementing retry logic for transient failures, and providing user-friendly feedback during long operations.
+
+**Response Latency:** LLM calls are significantly slower than traditional API calls. The application addresses this through placeholder UIs that condition users to expect delays, progress indicators, and parallel processing (starting quiz and image generation simultaneously rather than sequentially).
+
+**Safety Filter Overcaution:** Commercial LLMs implement safety guardrails that can reject legitimate requests. The presenters recommend reviewing safety settings and understanding when models are being too cautious versus appropriately careful.
+
+**Model Version Volatility:** Models receive updates that can change behavior unexpectedly. The presenters strongly advocate pinning to specific model versions and treating model upgrades like any other software dependency—test thoroughly before adoption.
+
+## Abstraction Layers and Library Choices
+
+An interesting perspective emerged regarding abstraction layers like LangChain. Mete initially preferred using native Vertex AI libraries directly, avoiding additional abstraction layers. However, experiencing the proliferation of different APIs—separate libraries for Palm versus Gemini, plus entirely different interfaces for other providers—changed that view.
+
+The presenters now lean toward LangChain for its standardized abstractions across multiple LLM providers, though they acknowledge the classic trade-off: abstraction layers reduce control over low-level behavior. The choice depends on use case requirements, and neither approach is universally correct.
+
+## Validation and Quality Measurement
+
+Perhaps the most operationally significant portion of the presentation addressed quality measurement—what the presenters called "the biggest and most difficult problem." Syntactic validation (is it parseable JSON? does it have the expected structure?) is straightforward. Semantic validation (is this actually a good quiz about the requested topic? are the answers correct?) is much harder.
+
+The solution involves using an LLM to validate LLM output—an approach that initially seems circular but proves effective in practice. The methodology works as follows:
+
+**Validator Accuracy Assessment:** First, establish that the validator model can reliably judge quiz accuracy by testing it against known-good data (Open Trivia Database questions). Their testing showed Gemini Ultra achieves approximately 94% accuracy when assessing quiz correctness, compared to 80% for Palm.
+
+**Generated Content Validation:** For generated quizzes, decompose each multiple-choice question into four boolean assertions (only one true, three false), batch these assertions, shuffle them to avoid locality bias, and ask the validator to assess each. Comparing the validator's assessments against expected values yields a confidence score.
+
+**Results:** Quizzes generated by Gemini Pro achieved only 70% accuracy when validated, while Gemini Ultra-generated quizzes reached 91% accuracy. These numbers illustrate both the quality improvement between models and the value of systematic measurement.
+
+The presenters propose operationalizing this into two workflows: background validation of individual quizzes (fire-and-forget after generation, attaching confidence scores when complete) and regression testing suites that generate thousands of quizzes across model/version changes to produce quality reports.
+
+## Grounding Experiments
+
+The presentation briefly covered grounding—using external data sources to improve LLM accuracy. Vertex AI supports grounding against Google Search or private document stores via tools passed to the model. However, for their trivia use case, Google Search grounding didn't measurably improve accuracy, likely because Open Trivia content already exists in the model's training data. The presenters note that grounding becomes valuable for real-time data (today's stock prices, current events) or proprietary information not in training data.
+
+## Knowing When Not to Use LLMs
+
+A valuable lesson concerned recognizing when LLMs are inappropriate. Examples included:
+
+- **Answer grading for free-form quizzes:** Initially considered using the LLM, but traditional fuzzy matching libraries (Levenshtein distance) are faster, cheaper, and sufficient.
+- **Image editing:** Weeks spent trying to generate a logo with specific colored letters failed; traditional image editing tools solved it immediately.
+- **Profanity filtering:** The initial instinct to ask the LLM was wrong; standard profanity filter libraries are more appropriate.
+
+The principle: don't use expensive, slow LLM calls when simpler tools suffice.
+
+## Traditional Software Engineering Practices
+
+The presenters emphasized that established software engineering practices remain essential:
+
+- **Batching:** Minimize round trips to slow LLM endpoints by batching prompts
+- **Parallelization:** Start independent operations (quiz generation, image generation) simultaneously
+- **Caching:** Cache common responses where applicable
+- **Version control:** Treat prompts as code, versioning them alongside the parsing logic they pair with
+- **Defensive coding:** Handle all failure modes, with recovery strategies and user communication
+
+## Summary and Impact
+
+The presenters concluded with a somewhat hyperbolic but illustrative framing: what would have taken seven years took seven weeks. The underlying truth is that LLMs enabled functionality previously considered too painful or impossible to implement. The multilingual feature that would have required significant localization effort came from adding two words to a prompt.
+
+However, this capability comes with significant operational costs. Developers must adapt to non-deterministic systems, invest in measurement infrastructure, code defensively against inconsistent outputs, and maintain vigilance as models evolve. The "lessons learned" structure of the presentation reflects hard-won experience deploying generative AI in production, offering a practical roadmap for practitioners following similar paths.

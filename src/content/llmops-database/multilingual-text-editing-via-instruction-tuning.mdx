@@ -1,0 +1,119 @@
+---
+title: "Multilingual Text Editing via Instruction Tuning"
+slug: "multilingual-text-editing-via-instruction-tuning"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "694adc298b07a7de222d1c0f"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2026-01-07T09:40:39.763Z"
+  lastUpdated: "2025-12-23T20:11:48.553Z"
+  createdOn: "2025-12-23T18:15:05.539Z"
+llmopsTags:
+  - "content-moderation"
+  - "translation"
+  - "document-processing"
+  - "chatbot"
+  - "fine-tuning"
+  - "instruction-tuning"
+  - "few-shot"
+  - "human-in-the-loop"
+  - "evals"
+  - "pytorch"
+  - "tensorflow"
+  - "open-source"
+  - "documentation"
+  - "openai"
+  - "hugging-face"
+  - "google-gcp"
+  - "meta"
+company: "Grammarly"
+summary: "Grammarly's Strategic Research team developed mEdIT, a multilingual extension of their CoEdIT text editing model, to support intelligent writing assistance across seven languages and three editing tasks (grammatical error correction, text simplification, and paraphrasing). The problem addressed was that foundational LLMs produce low-quality outputs for text editing tasks, and prior specialized models only supported either multiple tasks in one language or single tasks across multiple languages. By fine-tuning multilingual LLMs (including mT5, mT0, BLOOMZ, PolyLM, and Bactrian-X) on over 200,000 carefully curated instruction-output pairs across Arabic, Chinese, English, German, Japanese, Korean, and Spanish, mEdIT achieved strong performance across tasks and languages, even when instructions were given in a different language than the text being edited. The models demonstrated generalization to unseen languages, with causal language models performing best, and received high ratings from human evaluators, though the work has not yet been integrated into Grammarly's production systems."
+link: "https://www.grammarly.com/blog/engineering/advancing-intelligent-writing/"
+year: 2024
+seo:
+  title: "Grammarly: Multilingual Text Editing via Instruction Tuning - ZenML LLMOps Database"
+  description: "Grammarly's Strategic Research team developed mEdIT, a multilingual extension of their CoEdIT text editing model, to support intelligent writing assistance across seven languages and three editing tasks (grammatical error correction, text simplification, and paraphrasing). The problem addressed was that foundational LLMs produce low-quality outputs for text editing tasks, and prior specialized models only supported either multiple tasks in one language or single tasks across multiple languages. By fine-tuning multilingual LLMs (including mT5, mT0, BLOOMZ, PolyLM, and Bactrian-X) on over 200,000 carefully curated instruction-output pairs across Arabic, Chinese, English, German, Japanese, Korean, and Spanish, mEdIT achieved strong performance across tasks and languages, even when instructions were given in a different language than the text being edited. The models demonstrated generalization to unseen languages, with causal language models performing best, and received high ratings from human evaluators, though the work has not yet been integrated into Grammarly's production systems."
+  canonical: "https://www.zenml.io/llmops-database/multilingual-text-editing-via-instruction-tuning"
+  ogTitle: "Grammarly: Multilingual Text Editing via Instruction Tuning - ZenML LLMOps Database"
+  ogDescription: "Grammarly's Strategic Research team developed mEdIT, a multilingual extension of their CoEdIT text editing model, to support intelligent writing assistance across seven languages and three editing tasks (grammatical error correction, text simplification, and paraphrasing). The problem addressed was that foundational LLMs produce low-quality outputs for text editing tasks, and prior specialized models only supported either multiple tasks in one language or single tasks across multiple languages. By fine-tuning multilingual LLMs (including mT5, mT0, BLOOMZ, PolyLM, and Bactrian-X) on over 200,000 carefully curated instruction-output pairs across Arabic, Chinese, English, German, Japanese, Korean, and Spanish, mEdIT achieved strong performance across tasks and languages, even when instructions were given in a different language than the text being edited. The models demonstrated generalization to unseen languages, with causal language models performing best, and received high ratings from human evaluators, though the work has not yet been integrated into Grammarly's production systems."
+---
+
+## Overview
+
+Grammarly's Strategic Research team developed mEdIT as a multilingual extension to their earlier CoEdIT work, focusing on bringing text editing capabilities powered by fine-tuned LLMs to production across multiple languages. This case study represents a comprehensive exploration of LLMOps practices for multilingual natural language processing, though notably the research has not yet been deployed to Grammarly's production systems. The work was published at NAACL 2024 and demonstrates several key LLMOps considerations including model selection, training data curation, evaluation strategies, and human feedback integration.
+
+The fundamental problem Grammarly aimed to solve was the poor quality of foundational LLMs when performing text editing tasks, particularly across multiple languages. Their earlier CoEdIT work had shown that LLMs specifically trained for editing tasks could achieve higher quality and better performance, but that work focused exclusively on English. With the emergence of multilingual foundational models in 2024, the team sought to extend these capabilities to support seven languages across six language families: Arabic, Chinese, English, German, Japanese, Korean, and Spanish. The strategic choice of these languages balanced broad linguistic diversity with the availability of high-quality human-annotated training data.
+
+## Data Engineering and Curation
+
+The data engineering approach represents a critical LLMOps consideration for this project. The team curated over 200,000 instruction-output pairs from publicly available datasets covering three editing tasks: grammatical error correction (GEC), text simplification, and paraphrasing. These tasks were selected because they have relatively well-defined evaluation metrics and sufficient publicly available training data across multiple languages. However, data availability was highly uneven—for instance, Spanish GEC only had 398 data points available, while other language-task combinations had much larger datasets.
+
+The team made a deliberate choice to randomly sample 10,000 samples from each dataset where available, a decision informed by their previous CoEdIT work and follow-up experiments showing that quality improvements correlate more strongly with data quality than data quantity. This represents an important LLMOps insight about the diminishing returns of larger training sets beyond a certain threshold, allowing them to optimize computational costs without sacrificing performance. The exception was Spanish GEC, where all 398 available samples were used.
+
+For instruction generation, they created 21 combinations supporting all three editing tasks across the seven training languages. To ensure accuracy and cultural appropriateness, native language speakers reviewed and corrected automatically translated instructions from English versions. This human-in-the-loop approach to data preparation represents a best practice in multilingual LLMOps, addressing potential issues with automated translation that could degrade model performance.
+
+## Model Architecture and Training Infrastructure
+
+The team's approach to model selection demonstrates sophisticated thinking about architecture tradeoffs in production LLM systems. They fine-tuned two distinct architectural families: encoder-decoder/sequence-to-sequence models (Seq2Seq) and decoder-only/causal language models (CLM). For Seq2Seq, they used mT5 and mT0 with parameter sizes between 1.3B and 13B. For CLM, they employed BLOOMZ, PolyLM, and Bactrian-X models ranging from 2B to 13B parameters. This comprehensive evaluation across architectures and scales provides valuable insights for production deployment decisions.
+
+All models were fine-tuned on 8xA100 80GB GPU instances, representing significant computational infrastructure. The choice of A100 GPUs with 80GB memory enables training of models up to 13B parameters, positioning the work in the "small to medium-sized LLM" category that can be more practically deployed than massive models like GPT-4. This infrastructure choice reflects a pragmatic LLMOps consideration: balancing model capability with deployment feasibility and cost.
+
+The training process leveraged the multilingual pre-training that all base models had received, which proved crucial for the models' ability to handle cross-lingual scenarios where instruction language differs from text language. This represents an important LLMOps principle: building on strong foundation models rather than training from scratch, then specializing through targeted fine-tuning.
+
+## Evaluation Framework and Metrics
+
+The evaluation strategy demonstrates mature LLMOps practices with task-specific metrics chosen to align with established research standards. For GEC, they used language-appropriate metrics including MaxMatch (M2) Scorer, ERRANT, and GLEU, with F0.5 measure for M2 and ERRANT evaluations. For simplification, they employed SARI (which correlates with human judgments of simplicity) and BLEU (as a proxy for fluency and meaning preservation). For paraphrasing, they used Self-BLEU to evaluate diversity and mUSE for semantic similarity. They explicitly rejected other popular metrics like Multilingual-SBERT and LaBSE as unsuitable for their purposes, showing critical evaluation of metric selection.
+
+However, the authors themselves acknowledge limitations in their metrics, particularly noting that GLEU relies heavily on overlap with reference material, which may disadvantage models like GPT-4 that use RLHF and can produce excellent results without reference overlap. They also note that paraphrasing metrics rely mostly on n-gram overlap, which they consider a weakness. This honest assessment of evaluation limitations is important for understanding the true production readiness of the models.
+
+The team conducted multiple evaluation experiments to assess different aspects of model performance. They compared against three zero-shot baselines: copying input to output, GPT-3.5, and GPT-4. They tested both models trained only on English instructions and models trained on full multilingual instruction sets. Performance was aggregated across tasks using the harmonic mean of task-specific scores, providing a balanced view of multi-task capability.
+
+## Cross-Lingual and Multilingual Performance
+
+A key contribution of this work from an LLMOps perspective is demonstrating that models can handle instructions in different languages than the text being edited. They tested four scenarios: no-edits baseline, English-only instructions, native language instructions (matching the text), and random language instructions. Performance remained stable across all these conditions, suggesting that the multilingual instructional pre-training of base models enables effective adaptation during fine-tuning. This has significant implications for production deployment, as it means a single model can serve users regardless of their preferred instruction language.
+
+The performance across different edited languages correlated strongly with available training data quantity and quality. German, with only 1.1K data points, showed large improvement with fine-tuning but also high variance. Paraphrasing showed steady performance across languages, which the team attributes to a combination of weak evaluation metrics (n-gram based), large model size reducing the tendency to make changes, and strong multilingual pre-training. This insight about data availability as a key driver of performance is crucial for production planning—expanding to new languages requires securing adequate high-quality training data.
+
+## Generalization and Transfer Learning
+
+The models demonstrated generalization to unseen languages, a particularly valuable property for production systems. For each task, they tested on one language related to their six covered language families and one unrelated language, both of which the base LLMs had seen during pre-training. When compared to monolingual state-of-the-art systems, mEdIT was competitive on multiple language-task combinations, especially for Italian simplification and Hindi GEC and paraphrasing. This cross-lingual transfer capability suggests that the models learn generalizable editing behaviors rather than language-specific patterns.
+
+The team also discovered that training on one task could improve performance on others. For example, increased GEC training translated into improved simplification and paraphrasing performance, and vice versa. This task transfer learning has important implications for LLMOps resource allocation—training data investments in one area may yield benefits across multiple tasks.
+
+## Architecture and Scaling Insights
+
+The experimental results revealed that CLMs either matched or exceeded Seq2Seq performance across most metrics, with Seq2Seq models only showing slightly higher BLEU scores on simplification (attributed to producing shorter sequences). This finding favors decoder-only architectures for production deployment, aligning with broader industry trends toward unified decoder-only models.
+
+Surprisingly, both GPT-3.5 and GPT-4 performed poorly relative to the fine-tuned models, with GPT-3.5 performing worst of all. The authors suggest this may result from metric artifacts, particularly GLEU's reliance on reference overlap, which disadvantages RLHF-trained models that can produce high-quality outputs differing from references. This finding raises important questions about evaluation methodology and suggests that specialized fine-tuned models can outperform general-purpose frontier models for specific tasks, at least by certain metrics. From a production perspective, this supports the value of task-specific fine-tuning over relying solely on prompting large general models.
+
+Model size proved crucial, with larger models showing significantly improved performance across all tasks, especially for GEC and paraphrasing. This finding creates a tension for production deployment: larger models perform better but require more computational resources and have higher latency. The team's focus on models between 1B and 13B parameters represents a sweet spot for production deployment—large enough for strong performance but small enough for practical serving infrastructure.
+
+## Human Evaluation and Production Readiness
+
+The team collected feedback from expert annotators using a process similar to their CoEdIT work. Model outputs received high ratings across all languages, with English, German, Chinese, and Spanish receiving the most positive feedback. Quality was lower for Arabic, which they attribute to lower-quality training data for that language—another indication of data quality's central role in model performance. Accuracy suffered for Chinese, Japanese, Korean, and Spanish, indicating areas requiring further work before production deployment.
+
+This human evaluation component represents best practice in LLMOps, validating automated metrics with actual user assessment. The mixed results across languages provide clear guidance for production rollout prioritization and areas requiring additional investment.
+
+## Production Status and Open Source Contribution
+
+Critically, the article explicitly states that "Grammarly does not incorporate this research into its product today," noting that while Grammarly primarily focuses on English writing help, they recently launched a translation feature for other languages. This distinction between research capability and production deployment is important—the case study demonstrates advanced LLMOps research practices but not actual production LLMOps implementation.
+
+However, the team made their data and models publicly available on GitHub and Hugging Face, contributing to the broader community's ability to build multilingual writing assistants. This open-source approach extends the impact of their LLMOps work beyond Grammarly's immediate product needs and enables reproducibility and further research.
+
+## Critical Assessment
+
+While this case study demonstrates sophisticated LLMOps research practices, several caveats warrant attention. The evaluation metrics have acknowledged limitations, particularly for paraphrasing (n-gram overlap focus) and when comparing against RLHF-trained models like GPT-4. The poor performance of GPT-3.5 and GPT-4 may reflect evaluation methodology issues rather than true capability differences, suggesting the metrics may not fully capture production-relevant quality dimensions like fluency, coherence, and meaning preservation.
+
+The data availability constraints significantly limited coverage, particularly affecting Spanish (398 GEC samples) and German (1.1K samples). The resulting performance variance and quality differences across languages mean that production deployment would need to be language-specific rather than uniform. The lower quality for Arabic and accuracy issues for Chinese, Japanese, Korean, and Spanish indicate these languages would require additional work before production readiness.
+
+The computational requirements—8xA100 80GB GPU instances for training—represent substantial infrastructure investment. While the team positions their work on small-to-medium LLMs (1-15B parameters) as more practical than massive models, serving even 13B parameter models in production at scale requires significant infrastructure. The case study doesn't address serving infrastructure, latency requirements, or cost-per-request considerations that would be central to actual production deployment.
+
+The fact that this research hasn't been integrated into Grammarly's products suggests potential gaps between research demonstration and production requirements—possibly related to quality thresholds, business case considerations, engineering integration challenges, or strategic prioritization. The mention of a separate translation feature rather than integrated multilingual editing capabilities may indicate different approaches to multilingual support in production systems.
+
+## Future Directions and Implications
+
+The team outlines several areas for future work: supporting more languages and language families (contingent on high-quality training data availability), deeper study of cross-lingual generalization mechanisms, and broader and deeper evaluation including fluency, coherence, and meaning preservation metrics. These directions indicate the work is foundational research rather than production-ready deployment.
+
+From an LLMOps perspective, this case study demonstrates excellence in research-phase practices including systematic architecture evaluation, careful data curation, comprehensive evaluation design, and human feedback integration. However, it also illustrates the gap between research capabilities and production deployment, highlighting the additional work required to move from published models to customer-facing features. The open-source release of models and data represents a valuable contribution to the community and demonstrates how research organizations can advance the field beyond their immediate product needs.

@@ -1,0 +1,168 @@
+---
+title: "Building a Scalable Retriever-Ranker Architecture: Malt's Journey with Vector Databases and LLM-Powered Freelancer Matching"
+slug: "building-a-scalable-retriever-ranker-architecture-malt-s-journey-with-vector-databases-and-llm-powered-freelancer-matching"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f3cd83bf14d773fc3c691"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:34:20.562Z"
+  createdOn: "2024-11-21T13:59:52.408Z"
+llmopsTags:
+  - "devops"
+  - "elasticsearch"
+  - "embeddings"
+  - "hugging-face"
+  - "kubernetes"
+  - "latency-optimization"
+  - "model-optimization"
+  - "monitoring"
+  - "orchestration"
+  - "qdrant"
+  - "realtime-application"
+  - "reliability"
+  - "scalability"
+  - "scaling"
+  - "semantic-search"
+  - "structured-output"
+  - "vector-search"
+company: "Malt"
+summary: "Malt's implementation of a retriever-ranker architecture for their freelancer recommendation system, leveraging a vector database (Qdrant) to improve matching speed and scalability. The case study highlights the importance of carefully selecting and integrating vector databases in LLM-powered systems, emphasizing performance benchmarking, filtering capabilities, and deployment considerations to achieve significant improvements in response times and recommendation quality."
+link: "https://blog.malt.engineering/super-powering-our-freelancer-recommendation-system-using-a-vector-database-add643fcfd23"
+year: 2024
+seo:
+  title: "Malt: Building a Scalable Retriever-Ranker Architecture: Malt's Journey with Vector Databases and LLM-Powered Freelancer Matching - ZenML LLMOps Database"
+  description: "Malt's implementation of a retriever-ranker architecture for their freelancer recommendation system, leveraging a vector database (Qdrant) to improve matching speed and scalability. The case study highlights the importance of carefully selecting and integrating vector databases in LLM-powered systems, emphasizing performance benchmarking, filtering capabilities, and deployment considerations to achieve significant improvements in response times and recommendation quality."
+  canonical: "https://www.zenml.io/llmops-database/building-a-scalable-retriever-ranker-architecture-malt-s-journey-with-vector-databases-and-llm-powered-freelancer-matching"
+  ogTitle: "Malt: Building a Scalable Retriever-Ranker Architecture: Malt's Journey with Vector Databases and LLM-Powered Freelancer Matching - ZenML LLMOps Database"
+  ogDescription: "Malt's implementation of a retriever-ranker architecture for their freelancer recommendation system, leveraging a vector database (Qdrant) to improve matching speed and scalability. The case study highlights the importance of carefully selecting and integrating vector databases in LLM-powered systems, emphasizing performance benchmarking, filtering capabilities, and deployment considerations to achieve significant improvements in response times and recommendation quality."
+---
+
+## Overview
+
+Malt is a freelancer marketplace platform connecting freelancers with projects. Their data team continuously works on improving the recommendation system that powers these connections. In 2023, they undertook a significant architectural overhaul of their matching system to address fundamental limitations in their existing approach. This case study documents their journey from a slow, monolithic matching model to a modern retriever-ranker architecture backed by a vector database, demonstrating practical considerations for deploying transformer-based models at scale in production.
+
+## The Problem
+
+Malt's original matching system, released in 2021, relied on a single monolithic model. While they had incrementally added capabilities like multilingual support, the architecture had fundamental limitations:
+
+- Response times were unacceptably slow, sometimes reaching up to one minute per query
+- The system was inflexible and difficult to adapt for future needs
+- Integration with newer large language models for handling complex matching cases in real-time was impractical
+- With over 700,000 freelancers in their database, the computational requirements for matching were substantial
+
+These limitations prompted the team to explore alternative architectures in 2023 that could balance accuracy with production-grade performance.
+
+## Technical Approach: Retriever-Ranker Architecture
+
+The team evaluated multiple neural architectures before settling on their solution. Understanding their decision-making process provides valuable insight into the tradeoffs inherent in deploying ML systems at scale.
+
+### Cross-Encoder Evaluation
+
+Cross-encoders process two input texts jointly to produce a single relevance score. For Malt's use case, this would mean encoding a freelancer profile and project description together. While cross-encoders achieve high precision because they can capture complex relationships between entities, they have a fundamental scalability problem: for each incoming project, the system would need to create and process over 700,000 pairs (one for each freelancer). This approach simply doesn't scale for real-time production use.
+
+### Bi-Encoder Approach
+
+Bi-encoders encode each entity independently into embedding vectors in a shared semantic space. Similarity can then be measured using metrics like cosine similarity. The critical advantage is that freelancer embeddings can be precomputed and stored. At inference time, only the project embedding needs to be computed in real-time, followed by an Approximate Nearest Neighbor (ANN) search to find similar profiles. While this approach is much faster, it sacrifices some accuracy because the model cannot capture the complex interactions between specific freelancer-project pairs.
+
+### The Hybrid Solution
+
+Malt implemented a two-stage retriever-ranker architecture that leverages both approaches:
+
+- **Retriever Stage**: Uses a bi-encoder to quickly narrow down the 700,000+ freelancers to a manageable subset (e.g., 1,000 candidates). This stage optimizes for recall, ensuring potentially relevant matches aren't missed.
+
+- **Ranker Stage**: Applies a cross-encoder to the smaller candidate set to precisely score and rank matches. This stage optimizes for precision, ensuring the most suitable freelancers appear at the top of recommendations.
+
+The team made a pragmatic deployment decision: they rolled out the retriever first, placing it before their existing matching model (which served as the ranker). This allowed them to validate the scalability and performance of the retriever component independently before developing a more sophisticated ranker.
+
+## Embedding Model Development
+
+The team built custom transformer-based encoder models rather than using off-the-shelf solutions. Key characteristics include:
+
+- Built on transformer architectures, leveraging the same foundational technology behind BERT and GPT models
+- Models go beyond keyword matching to understand context, synonyms, and related concepts
+- Two separate models were developed: one for freelancer profiles and one for projects
+- Training objective was to project freelancers and projects into a semantic space where:
+  - Freelancers with similar skills and experiences cluster together
+  - Projects requiring specific skills are positioned near freelancers possessing those skills
+
+The team explicitly noted that training their own specialized model provided better results than using generic embedding models like those from Sentence-Transformers. This is an important operational insight—domain-specific training data often leads to superior results for specialized use cases.
+
+## Vector Database Selection
+
+The team identified three core requirements for their vector database:
+
+- **Performance**: Fast query processing for real-time recommendations
+- **ANN Quality**: High-precision approximate nearest neighbor algorithms
+- **Filtering Capabilities**: Support for business filters including geo-spatial data for location-based matching
+
+### Filtering Considerations
+
+The team provided thoughtful analysis on why filtering within the vector database is necessary rather than as a pre or post-processing step:
+
+- Pre-filtering requires sending binary masks of excluded freelancers, creating large payloads and potentially degrading ANN quality, especially with HNSW algorithms where deactivating too many nodes can create sparse, non-navigable graphs
+
+- Post-filtering requires retrieving many more candidates than needed to account for filtered results, impacting performance proportionally to candidate count
+
+### Benchmark Results
+
+The team conducted rigorous benchmarking using the GIST1M Texmex corpus (1 million vectors, 960 dimensions each):
+
+- **Elasticsearch**: 3 queries per second, 0.97 ANN precision
+- **PGVector**: 14 queries per second, 0.40 ANN precision  
+- **Qdrant**: 90 queries per second, 0.84 ANN precision
+- **Pinecone**: Excluded due to lack of geo-spatial filtering
+
+Qdrant emerged as the winner, offering the best balance of speed (30x faster than Elasticsearch), reasonable precision, and critical geo-spatial filtering capabilities. The team noted that Pinecone, despite being a well-known player, had to be excluded due to missing filtering requirements—a reminder that feature completeness matters as much as raw performance.
+
+## Production Deployment
+
+### Kubernetes-Based Infrastructure
+
+The team self-hosted Qdrant on their existing Kubernetes clusters rather than using a managed service. Key deployment decisions included:
+
+- **Docker containerization**: Using official Qdrant Docker images for consistency across environments
+- **Helm charts**: Leveraging Qdrant's official Helm chart for reproducible, scalable deployments
+- **Cluster configuration**: Multiple Qdrant nodes for high availability
+
+### Sharding and Replication
+
+The deployment used distributed data architecture:
+
+- **Sharding**: Data divided across multiple shards for parallel processing and faster retrieval
+- **Replication**: Each shard replicated across different nodes for redundancy, ensuring system availability even if individual nodes fail
+
+### Monitoring
+
+The team implemented comprehensive observability using:
+
+- **Prometheus/OpenMetrics**: Qdrant's native metrics format for collection
+- **Grafana**: Dashboards providing real-time insights into cluster health, performance, and availability
+
+## Results
+
+The production deployment achieved significant improvements:
+
+- **Latency**: p95 latency dropped from tens of seconds (sometimes over one minute) to 3 seconds maximum—roughly a 10-20x improvement
+- **Quality**: Recommendation quality was maintained, with AB testing showing increased project conversion rates
+- **New Capabilities**: Near real-time freelancer recommendations became possible, opening new product possibilities
+
+## Key Learnings and Operational Insights
+
+The team shared valuable lessons from their implementation:
+
+- **Custom embeddings matter**: Specialized, domain-trained models outperformed generic embedding models
+- **Vector database maturity**: The technology is young and evolving rapidly; the team designed their code for quick vendor swaps
+- **Filtering is underrated**: This critical feature is often overlooked but can be essential for production use cases
+- **Hybrid search is emerging**: The team anticipates combining semantic and keyword search will become essential, with Elasticsearch well-positioned due to their traditional search expertise
+
+## Future Work
+
+The team outlined planned extensions:
+
+- Expanding retriever applications beyond matching to profile-to-profile recommendations
+- Development of a next-generation ranker to replace the current matching model, expected to further improve quality
+
+This case study represents a practical example of scaling transformer-based models for production recommendation systems, with careful attention to the engineering tradeoffs between model accuracy and operational requirements.

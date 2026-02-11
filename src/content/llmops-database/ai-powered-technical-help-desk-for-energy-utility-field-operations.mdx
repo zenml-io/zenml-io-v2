@@ -1,0 +1,102 @@
+---
+title: "AI-Powered Technical Help Desk for Energy Utility Field Operations"
+slug: "ai-powered-technical-help-desk-for-energy-utility-field-operations"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "68a9894890cebb6291ec99e4"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:19:49.784Z"
+  createdOn: "2025-08-23T09:26:32.415Z"
+llmopsTags:
+  - "customer-support"
+  - "classification"
+  - "summarization"
+  - "chatbot"
+  - "rag"
+  - "embeddings"
+  - "prompt-engineering"
+  - "chunking"
+  - "semantic-search"
+  - "vector-search"
+  - "few-shot"
+  - "serverless"
+  - "databases"
+  - "api-gateway"
+  - "monitoring"
+  - "cache"
+  - "fastapi"
+  - "postgresql"
+  - "anthropic"
+  - "amazon-aws"
+company: "Infosys Topaz"
+summary: "A large energy supplier faced challenges with technical help desk operations supporting 5,000 weekly calls from meter technicians in the field, with average handling times exceeding 5 minutes for the top 10 issue categories representing 60% of calls. Infosys Topaz partnered with AWS to build a generative AI solution using Amazon Bedrock's Claude Sonnet model to create a knowledge base from call transcripts, implement retrieval-augmented generation (RAG), and deploy an AI assistant with role-based access control. The solution reduced average handling time by 60% (from over 5 minutes to under 2 minutes), enabled the AI assistant to handle 70% of previously human-managed calls, and increased customer satisfaction scores by 30%."
+link: "https://aws.amazon.com/blogs/machine-learning/how-infosys-topaz-leverages-amazon-bedrock-to-transform-technical-help-desk-operations?tag=soumet-20"
+year: 2025
+seo:
+  title: "Infosys Topaz: AI-Powered Technical Help Desk for Energy Utility Field Operations - ZenML LLMOps Database"
+  description: "A large energy supplier faced challenges with technical help desk operations supporting 5,000 weekly calls from meter technicians in the field, with average handling times exceeding 5 minutes for the top 10 issue categories representing 60% of calls. Infosys Topaz partnered with AWS to build a generative AI solution using Amazon Bedrock's Claude Sonnet model to create a knowledge base from call transcripts, implement retrieval-augmented generation (RAG), and deploy an AI assistant with role-based access control. The solution reduced average handling time by 60% (from over 5 minutes to under 2 minutes), enabled the AI assistant to handle 70% of previously human-managed calls, and increased customer satisfaction scores by 30%."
+  canonical: "https://www.zenml.io/llmops-database/ai-powered-technical-help-desk-for-energy-utility-field-operations"
+  ogTitle: "Infosys Topaz: AI-Powered Technical Help Desk for Energy Utility Field Operations - ZenML LLMOps Database"
+  ogDescription: "A large energy supplier faced challenges with technical help desk operations supporting 5,000 weekly calls from meter technicians in the field, with average handling times exceeding 5 minutes for the top 10 issue categories representing 60% of calls. Infosys Topaz partnered with AWS to build a generative AI solution using Amazon Bedrock's Claude Sonnet model to create a knowledge base from call transcripts, implement retrieval-augmented generation (RAG), and deploy an AI assistant with role-based access control. The solution reduced average handling time by 60% (from over 5 minutes to under 2 minutes), enabled the AI assistant to handle 70% of previously human-managed calls, and increased customer satisfaction scores by 30%."
+---
+
+## Case Study Overview
+
+This case study documents how Infosys Topaz leveraged Amazon Bedrock and AWS services to transform technical help desk operations for a large energy supplier. The energy company operates meter installation, exchange, service, and repair operations where field technicians frequently call technical support agents for guidance on issues they cannot resolve independently. The volume of approximately 5,000 calls per week (20,000 monthly) presented significant operational challenges and costs.
+
+The implementation represents a comprehensive LLMOps solution that addresses the full machine learning operations lifecycle, from data ingestion and preprocessing to model deployment, monitoring, and continuous improvement. The solution demonstrates enterprise-scale deployment of generative AI with proper security controls, access management, and performance optimization.
+
+## Technical Architecture and LLMOps Implementation
+
+The solution architecture implements a sophisticated LLMOps pipeline centered around Amazon Bedrock's Claude Sonnet model. The system processes call transcripts stored in JSON format in Amazon S3, utilizing an event-driven architecture where AWS Lambda functions are triggered when new transcripts are uploaded. This automated ingestion pipeline represents a critical component of the MLOps workflow, ensuring continuous model improvement through fresh training data.
+
+The preprocessing pipeline employs AWS Step Functions to orchestrate a multi-stage workflow. Raw CSV files containing contact IDs, participant roles (agent or customer), and conversation content are processed through several Lambda functions. A key innovation in the LLMOps approach is the automated conversation classification system, where Claude Sonnet performs zero-shot chain-of-thought prompting to determine conversation relevance. This classification step filters out disconnected or meaningless conversations, ensuring only high-quality training data enters the knowledge base.
+
+The knowledge base construction process demonstrates sophisticated prompt engineering techniques. Rather than simple summarization, the system generates structured outputs including conversation summaries, problem identification, and resolution steps. This structured approach to knowledge extraction enables more effective retrieval and response generation in production scenarios.
+
+## Vector Database and Retrieval Architecture
+
+The solution implements a production-ready retrieval-augmented generation (RAG) system using Amazon OpenSearch Serverless as the vector database. The choice of OpenSearch Serverless provides scalable, high-performing vector storage with real-time capabilities for adding, updating, and deleting embeddings without impacting query performance. This represents a crucial LLMOps consideration for maintaining system availability during model updates and knowledge base expansion.
+
+Embedding generation utilizes Amazon Titan Text Embeddings model, optimized specifically for text retrieval tasks. The chunking strategy employs a chunk size of 1,000 tokens with overlapping windows of 150-200 tokens, representing a carefully tuned approach to balance context preservation with retrieval accuracy. The implementation includes sentence window retrieval techniques to improve result precision.
+
+The knowledge base schema demonstrates thoughtful data modeling for production LLM applications. Each record contains conversation history, summaries, problem descriptions, resolution steps, and vector embeddings, enabling both semantic search and structured query capabilities. This dual-mode access pattern supports different user interaction patterns and improves overall system flexibility.
+
+## Production Deployment and Monitoring
+
+The LLMOps implementation includes comprehensive production deployment considerations. The user interface, built with Streamlit, incorporates role-based access control through integration with DynamoDB for user management. Three distinct personas (administrator, technical desk analyst, technical agent) have different access levels to conversation transcripts, implemented through separate OpenSearch Serverless collections.
+
+Performance optimization includes sophisticated caching mechanisms using Streamlit's `st.cache_data()` function for storing valid results across user sessions. The FAQ system demonstrates intelligent query frequency tracking, where user queries are stored in DynamoDB with counter columns to identify the most common questions. This data-driven approach to user experience optimization represents a key aspect of production LLMOps.
+
+User feedback collection is systematically implemented through like/dislike buttons for each response, with feedback data persisted in DynamoDB. This continuous feedback loop enables model performance monitoring and provides data for future model fine-tuning efforts. The system tracks multiple metrics including query volume, transcript processing rates, helpful responses, user satisfaction, and miss rates.
+
+## Security and Compliance Considerations
+
+The LLMOps implementation addresses enterprise security requirements through multiple layers of protection. AWS Secrets Manager securely stores API keys and database credentials with automatic rotation policies. S3 buckets utilize AWS KMS encryption with AES-256, and versioning is enabled for audit trails. Personally identifiable information (PII) handling includes encryption and strict access controls through IAM policies and AWS KMS.
+
+OpenSearch Serverless implementation ensures data encryption both at rest using AWS KMS and in transit using TLS 1.2. Session management includes timeout controls for inactive sessions, requiring re-authentication for continued access. The system maintains end-to-end encryption across the entire infrastructure with regular auditing through AWS CloudTrail.
+
+## Model Performance and Business Impact
+
+The production deployment demonstrates significant operational improvements that validate the LLMOps approach. The AI assistant now handles 70% of previously human-managed calls, representing a substantial automation achievement. Average handling time for the top 10 issue categories decreased from over 5 minutes to under 2 minutes, representing a 60% improvement in operational efficiency.
+
+The continuous learning aspect of the LLMOps implementation shows measurable improvement over time. Within the first 6 months after deployment, the percentage of issues requiring human intervention decreased from 30-40% to 20%, demonstrating the effectiveness of the knowledge base expansion and model improvement processes. Customer satisfaction scores increased by 30%, indicating improved service quality alongside operational efficiency gains.
+
+## Prompt Engineering and Model Optimization
+
+The solution demonstrates sophisticated prompt engineering techniques throughout the pipeline. Classification prompts for conversation relevance use expanded, descriptive language rather than simple keywords. For example, instead of "guidelines for smart meter installation," the system uses "instructions, procedures, regulations, and best practices along with agent experiences for installation of a smart meter." This approach to prompt optimization represents a key LLMOps practice for improving model performance in production.
+
+The zero-shot chain-of-thought prompting approach for conversation classification enables the model to first summarize conversations before determining relevance, improving classification accuracy. The structured output generation for problem identification and resolution steps demonstrates how prompt engineering can enforce consistent, useful formats for downstream applications.
+
+## Scalability and Operational Considerations
+
+The serverless architecture using Lambda functions and Step Functions provides automatic scaling capabilities to handle varying transcript volumes. The event-driven processing model ensures efficient resource utilization while maintaining responsive processing of new call transcripts. OpenSearch Serverless collections enable horizontal scaling of vector search capabilities as the knowledge base grows.
+
+The role-based access control implementation using multiple OpenSearch collections provides both security isolation and performance optimization. Different user roles access different subsets of the knowledge base, reducing query complexity and improving response times. This approach demonstrates how LLMOps considerations must balance functionality, security, and performance in production deployments.
+
+The caching strategy includes both in-memory and persistent storage options with configurable data persistence duration and invalidation policies. Cache updates can occur based on data changes or time intervals, providing flexibility to balance data freshness with performance requirements. This represents a mature approach to production LLM system optimization.
+
+Overall, this case study demonstrates a comprehensive LLMOps implementation that addresses the full lifecycle of generative AI deployment in enterprise environments, from data pipeline automation to production monitoring and continuous improvement. The measurable business impact validates the technical approach and provides a model for similar enterprise AI implementations.

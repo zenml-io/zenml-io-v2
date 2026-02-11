@@ -1,0 +1,163 @@
+---
+title: "AI SRE Agents for Production System Diagnostics"
+slug: "ai-sre-agents-for-production-system-diagnostics"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "67adb491da05a9f0373cfcf5"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:00:33.065Z"
+  createdOn: "2025-02-13T09:00:01.856Z"
+llmopsTags:
+  - "high-stakes-application"
+  - "regulatory-compliance"
+  - "rag"
+  - "prompt-engineering"
+  - "error-handling"
+  - "multi-agent-systems"
+  - "agent-based"
+  - "human-in-the-loop"
+  - "latency-optimization"
+  - "cost-optimization"
+  - "fallback-strategies"
+  - "kubernetes"
+  - "monitoring"
+  - "databases"
+  - "load-balancing"
+  - "devops"
+  - "orchestration"
+  - "security"
+  - "compliance"
+  - "guardrails"
+  - "reliability"
+  - "scalability"
+  - "fastapi"
+  - "redis"
+  - "elasticsearch"
+  - "langchain"
+  - "wandb"
+  - "openai"
+  - "databricks"
+company: "Cleric"
+summary: "Cleric is developing an AI Site Reliability Engineering (SRE) agent system that helps diagnose and troubleshoot production system issues. The system uses knowledge graphs to map relationships between system components, background scanning to maintain system awareness, and confidence scoring to minimize alert fatigue. The solution aims to reduce the burden on human engineers by efficiently narrowing down problem spaces and providing actionable insights, while maintaining strict security controls and read-only access to production systems."
+link: "https://www.youtube.com/watch?v=24Ow2HnnoRc"
+year: 2023
+seo:
+  title: "Cleric: AI SRE Agents for Production System Diagnostics - ZenML LLMOps Database"
+  description: "Cleric is developing an AI Site Reliability Engineering (SRE) agent system that helps diagnose and troubleshoot production system issues. The system uses knowledge graphs to map relationships between system components, background scanning to maintain system awareness, and confidence scoring to minimize alert fatigue. The solution aims to reduce the burden on human engineers by efficiently narrowing down problem spaces and providing actionable insights, while maintaining strict security controls and read-only access to production systems."
+  canonical: "https://www.zenml.io/llmops-database/ai-sre-agents-for-production-system-diagnostics"
+  ogTitle: "Cleric: AI SRE Agents for Production System Diagnostics - ZenML LLMOps Database"
+  ogDescription: "Cleric is developing an AI Site Reliability Engineering (SRE) agent system that helps diagnose and troubleshoot production system issues. The system uses knowledge graphs to map relationships between system components, background scanning to maintain system awareness, and confidence scoring to minimize alert fatigue. The solution aims to reduce the burden on human engineers by efficiently narrowing down problem spaces and providing actionable insights, while maintaining strict security controls and read-only access to production systems."
+---
+
+## Overview
+
+Cleric is a San Francisco-based startup building an AI SRE (Site Reliability Engineering) agent. The company was founded by William (who previously built the open-source feature store Feast) and Pinar. This case study comes from a podcast conversation where William discusses the technical challenges and approaches involved in deploying LLM-based agents for production incident diagnosis and resolution.
+
+The core problem Cleric addresses is that traditional observability tools (dashboards, alerts, kubectl commands) don't actually solve the operational burden on engineers. Senior engineers still must get into the production environment, reason about complex systems, and apply tribal knowledge to diagnose issues. Cleric's AI SRE agent aims to automate this diagnostic process, progressively working toward end-to-end incident resolution.
+
+## The Unique Challenges of Production Environment Agents
+
+William emphasizes that building agents for production environments is fundamentally different from building coding agents or other AI assistants. The development environment has tests, IDEs, tight feedback cycles, and ground truth (you can see if tests pass). In contrast, production environments at enterprise companies lack permissionless datasets—you can't simply find a dataset of all problems a company has had and their solutions.
+
+This is described as an "unsupervised problem" because you can't just take a production environment, spin it up in a Docker container, and reproduce it at a specific point in time. At many companies, you can't even do load testing across services due to complexity. Different teams own different components, everything is interrelated, and there's no ground truth to definitively say whether you're right or wrong.
+
+The comparison to self-driving cars is apt: lives (or at least businesses) are on the line. Production environments are "sacred" to companies—if they go down or there's a data breach, the business is at risk. The bar for reliability is therefore very high.
+
+## Knowledge Graph Architecture
+
+A central technical component is Cleric's knowledge graph that maps production environments. Even for a small demo stack (the OpenTelemetry reference architecture with roughly 12-13 services), the graph is enormous—William mentions that what he showed publicly represents only about 10% of the relations, and only at the infrastructure layer.
+
+The knowledge graph captures a tree structure: cloud projects contain networks and regions, which contain Kubernetes clusters, which contain nodes, which contain containers, which contain pods (potentially with multiple containers), which contain processes, which contain code with variables. But beyond this tree structure, there are also inter-relations: a piece of code might reference an IP address that belongs to some cloud service elsewhere, which connects to other systems.
+
+The graph is built in two ways:
+- Background jobs that continuously scan infrastructure and update the graph
+- Real-time updates during agent investigations (when the agent discovers new information, it throws it back into the graph)
+
+A key challenge is staleness—the graph becomes outdated almost instantly as systems change, IP addresses roll, pod names change, and deployments happen. Despite this, having the graph allows the agent to efficiently navigate to root causes rather than exploring from first principles.
+
+Cleric uses a layered approach with multiple graph layers rather than one monolithic knowledge graph. Some layers have higher confidence and durability and can be updated quickly using deterministic methods (like walking a Kubernetes cluster with kubectl). More "fuzzy" layers are built on top, capturing things like when a config map mentions something seen elsewhere, or when there's a reference between containers that isn't explicitly documented.
+
+## Memory Architecture
+
+The system implements three types of memory:
+
+- **System State Memory (Knowledge Graph)**: Captures the current state of the production environment and relations between components
+- **Procedural Memory**: "How to ride a bicycle" knowledge—runbooks, guides, processes for how the team does things
+- **Episodic Memory**: Specific instances of what happened and what was done—"we had a black Friday incident, the cluster fell over, we scaled it up, we saw it was working"
+
+Particularly valuable are episodes extracted from Slack threads, which serve as "contextual containers" showing how engineers go from problem to solution. These threads often contain tribal knowledge (how the company connects to VPNs, which systems are most important, shorthand notations for key services) and frequently link to PRs that resolved issues.
+
+For feedback and learning, Cleric uses several mechanisms:
+- Monitoring system health post-change to see if changes were effective
+- Looking at whether humans accept agent recommendations and make similar changes in code
+- Implicit feedback from interactions (if an engineer says "this is dumb, try something else," that's negative signal)
+- When engineers approve findings and share them with the team or generate pull requests, that's positive signal
+
+William acknowledges this creates a lopsided dataset with many negative examples, which is why their evaluation bench (external from customers) with hand-crafted labeling is crucial.
+
+## Confidence Scoring and Alert Fatigue
+
+A major UX challenge is avoiding alert fatigue. Engineers don't want more noise from AI that spams them with low-quality findings. Cleric implements a confidence score that determines whether to surface findings to humans.
+
+The confidence scoring is described as "a big part of our IP" and is driven by:
+- Self-assessment using an LLM
+- Grounding in existing experiences (both positive and negative outcomes)
+- Understanding where the system is good and where it's bad based on similar historical issues
+
+The workflow is asynchronous by default: an alert fires, the agent investigates, and only if confidence is high enough does it respond. Otherwise, it remains quiet. Engineers can configure thresholds for how confident findings need to be before surfacing.
+
+However, when engineers engage synchronously (asking follow-up questions, steering the investigation), the interaction becomes more interactive with lower latency, and the confidence threshold becomes less important since the user is actively refining the answer.
+
+## Tool Usage and Observability Integration
+
+The agent needs access to the same tools engineers use—if data is stored in Datadog, the agent needs Datadog access. Cleric builds a complete abstraction layer to the production environment where tools are grounding actions.
+
+An interesting insight is that LLMs are good at certain types of information (semantic content like code, config, logs) but struggle with others (metrics, time series). Vision models looking at metric graphs is described as "witchcraft" for finding root causes.
+
+William predicts that as AI agents become dominant for diagnosis, the observability landscape may shift. The trace-based approach (like Honeycomb's high-cardinality events) is positioned as potentially winning because it provides richer, more queryable information that agents can work with effectively, compared to time series that require pattern matching humans excel at but LLMs don't.
+
+## Evaluation and Chaos Engineering
+
+Cleric invests heavily in an evaluation bench that is external from customer environments. This involves:
+- Hand-crafted labeling of scenarios
+- A "transferability layer" that lets agents move between real production environments and eval environments seamlessly (the agent doesn't know it's in an eval environment)
+- Chaos engineering to introduce problems and test whether agents can find root causes
+
+The eval bench maintains the same tool abstractions as production, so experience gained there transfers to real environments.
+
+## Budget Management and Pricing
+
+For background scanning and graph building, Cleric uses more efficient (cheaper) models due to data volume, with daily budgets set for this work. For investigations, there's a per-investigation cap (e.g., 10 cents or a dollar), and humans can say "go further" or "stop here."
+
+On pricing philosophy, Cleric wants the tool to be a "toothbrush"—something engineers reach for regularly instead of going to their observability platform. Usage-based pricing with committed compute amounts (similar to Devin's model) is the direction, with the goal being that engineers shouldn't think "this investigation will cost me X" but rather just use it and see value.
+
+## Progressive Trust Building Toward Resolution
+
+Currently, Cleric operates in read-only mode in customer environments—agents cannot make changes, only suggestions. The path to end-to-end resolution is described as a "progressive trust building exercise":
+
+- Start with search space reduction (narrowing down which of 400 services might have the problem)
+- Progress to diagnosis (here's what the problem likely is)
+- Eventually move toward resolution (actually making changes)
+
+Engineers are surprisingly open to this progression when shown that the agent literally cannot make unauthorized changes (read-only API keys) and that changes would go through existing processes (pull requests with guard rails).
+
+The near-term focus for resolution is on lower-risk areas: internal Airflow deployments, CI/CD systems, GitLab deployments—places where changes have zero customer impact. As agents prove themselves there, engineers will introduce them to more critical systems.
+
+## Prompt Engineering Challenges
+
+The discussion acknowledges the universal frustration with prompt engineering: "You don't know if you're one prompt change away or 20, and they're very good at making it seem like you're getting closer and closer but you may not be."
+
+The solution is building frameworks and evaluations so you can extract samples and ground truth, either from production or evaluation environments. Without this, you can "go forever just tweaking things and never getting there."
+
+## Key Takeaways for LLMOps Practitioners
+
+The case study highlights several important patterns for production LLM deployments:
+- Memory management and tool usage are the two biggest areas agent teams should focus on
+- Confidence scoring is essential for avoiding alert fatigue and building trust
+- Evaluation infrastructure with transferability to production is critical
+- The unsupervised nature of many real-world problems means feedback loops and implicit learning from user interactions matter enormously
+- Different model tiers should be used for different tasks (efficient models for background scanning, expensive models for accurate reasoning)
+- Progressive deployment with increasing scope and trust is more effective than trying to do everything from day one

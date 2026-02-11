@@ -1,0 +1,155 @@
+---
+title: "Linguistic-Informed Approach to Production LLM Systems"
+slug: "linguistic-informed-approach-to-production-llm-systems"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f3de2167c975ba3d2a96d"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:39:02.729Z"
+  createdOn: "2024-11-21T14:04:18.044Z"
+llmopsTags:
+  - "databases"
+  - "documentation"
+  - "embeddings"
+  - "langchain"
+  - "monitoring"
+  - "openai"
+  - "prompt-engineering"
+  - "question-answering"
+  - "regulatory-compliance"
+  - "reliability"
+  - "scalability"
+  - "semantic-search"
+  - "speech-recognition"
+  - "system-prompts"
+  - "token-optimization"
+  - "translation"
+company: "Mastercard"
+summary: "A lead data scientist at Mastercard presents a comprehensive approach to implementing LLMs in production by focusing on linguistic features rather than just metrics. The case study demonstrates how understanding and implementing linguistic principles (syntax, morphology, semantics, pragmatics, and phonetics) can significantly improve LLM performance. A practical example showed how using pragmatic instruction with Falcon 7B and the guidance framework improved biology question answering accuracy from 35% to 85% while drastically reducing inference time compared to vanilla ChatGPT."
+link: "https://www.youtube.com/watch?v=7Hvy8j3j-9s"
+year: 2023
+seo:
+  title: "Mastercard: Linguistic-Informed Approach to Production LLM Systems - ZenML LLMOps Database"
+  description: "A lead data scientist at Mastercard presents a comprehensive approach to implementing LLMs in production by focusing on linguistic features rather than just metrics. The case study demonstrates how understanding and implementing linguistic principles (syntax, morphology, semantics, pragmatics, and phonetics) can significantly improve LLM performance. A practical example showed how using pragmatic instruction with Falcon 7B and the guidance framework improved biology question answering accuracy from 35% to 85% while drastically reducing inference time compared to vanilla ChatGPT."
+  canonical: "https://www.zenml.io/llmops-database/linguistic-informed-approach-to-production-llm-systems"
+  ogTitle: "Mastercard: Linguistic-Informed Approach to Production LLM Systems - ZenML LLMOps Database"
+  ogDescription: "A lead data scientist at Mastercard presents a comprehensive approach to implementing LLMs in production by focusing on linguistic features rather than just metrics. The case study demonstrates how understanding and implementing linguistic principles (syntax, morphology, semantics, pragmatics, and phonetics) can significantly improve LLM performance. A practical example showed how using pragmatic instruction with Falcon 7B and the guidance framework improved biology question answering accuracy from 35% to 85% while drastically reducing inference time compared to vanilla ChatGPT."
+---
+
+## Overview
+
+This case study is derived from a conference presentation by Chris Brousseau, a lead data scientist at Mastercard, discussing "linguistically informed LLMs." The presentation offers a unique perspective on improving LLM performance by grounding model development and deployment in linguistic theory. Brousseau frames this as practical guidance for teams working with LLMs in production, drawing from insights he is developing in a co-authored book with Matthew Sharp on clean code for data scientists and the intersection of LLMOps and MLOps.
+
+The core thesis is that LLMs are solving for language (not just mathematics or statistics), and therefore practitioners should leverage linguistic knowledge across five key dimensions: syntax, morphology, semantics, pragmatics, and phonetics. Brousseau uses an extended metaphor comparing LLM development to growing and maintaining a beard—emphasizing the importance of having clear goals, understanding growth phases, and potentially seeking expert guidance rather than just optimizing for metrics blindly.
+
+## The Problem: Metric-Driven Development Without Goals
+
+Brousseau identifies a common mistake in LLM development: teams optimizing for metrics (precision, recall, F1 scores) without having clear goals in mind. He argues that if your KPIs are your goals, you are either in a late stage of development (which is fine) or you don't actually know where you're going. This is particularly problematic with LLMs because, unlike hairstyles, it's much harder to "trim back" and course-correct once you've gone in the wrong direction.
+
+For production LLM systems, this insight has significant implications. Teams need to define what success looks like for their specific use case before diving into model selection, training, or fine-tuning. At Mastercard, for example, the team works with financial language that "doesn't really change all that fast," which affects their considerations for model longevity and maintenance cadence.
+
+## Linguistic Framework for LLM Development
+
+### Syntax
+
+Brousseau expresses the opinion that LLMs have essentially "solved" syntax through their implementation of transformational generative grammar (referencing Chomsky's work). Modern LLMs can generate infinitely varied combinations while maintaining grammatical structure. This is considered a relatively solved problem in the context of LLM capabilities.
+
+### Morphology and Tokenization
+
+This area is estimated to be about 75-80% solved but still presents significant challenges. The presentation highlights several tokenization problems that affect production LLM systems:
+
+**The Yeet Problem**: Statistical tokenization methodologies like Byte Pair Encoding (BPE), SentencePiece, or the ChatGPT encoding determine token boundaries based on frequency rather than linguistic morpheme boundaries. This creates issues particularly with numbers and arithmetic. Brousseau cites the example of Goat 7B outperforming GPT-4 (1.7 trillion parameters) on arithmetic tasks precisely because GPT-4's statistical tokenization groups commonly co-occurring numbers together, making it difficult for the model to "see" mathematical problems correctly.
+
+The word "yeet" (popularized on Vine in 2014) illustrates how new words emerge. English has predictable sets of sounds and letters that can appear together, and these phonotactic constraints change much more slowly than vocabulary. Understanding these constraints can improve tokenization strategies.
+
+**The Kimono Problem**: When tokenizing borrowed words, models may incorrectly identify morpheme boundaries. "Kimono" might be split into "ki" and "mono" because "mono" is a recognizable morpheme in English (meaning "one"), but this is linguistically incorrect as kimono is a borrowed Japanese word with different morpheme structure. This highlights how tokenization that treats language as existing in a vacuum can lead to problems.
+
+Brousseau notes that multilingual models consistently outperform monolingual models on the same tasks, attributing this to better tokenization that comes from exposure to multiple languages and their different morphological patterns.
+
+### Semantics: The Dictionary Problem
+
+The presentation addresses a fundamental challenge with semantic meaning and model maintenance over time. Dictionaries are not authorities on word meaning but rather "snapshots in time of popular usage." Major dictionaries (Dictionary.com, Merriam-Webster, Oxford English Dictionary) all have weekly updates to their corpora and yearly hard updates to represent current language usage.
+
+For LLMOps, this raises critical questions about model longevity:
+- Is your LLM going to be a "period piece for 2023" or will it remain relevant over time?
+- How do you maintain semantic accuracy as language evolves?
+- Can you make a model last 20-30 years, and how?
+- Do you even need that level of longevity?
+
+For specialized domains like Mastercard's financial applications, the language may change more slowly, potentially reducing the urgency of continuous semantic updates. This is an important consideration for production deployment strategies and maintenance schedules.
+
+### Pragmatics: The Socratic Problem
+
+This section provides the most concrete production results in the presentation. Pragmatics refers to meaning derived from context rather than literal word definitions. Brousseau demonstrates the power of pragmatic instruction using a biology question-answering benchmark.
+
+**Baseline (Vanilla ChatGPT)**:
+- Task: Answer 20 college-level biology questions
+- Accuracy: 7 out of 20 correct
+- Speed: ~1 minute (after API warm-up; initial run took ~4 minutes)
+
+**Optimized Approach (Falcon 7B Instruct with Guidance)**:
+- Used the Guidance library for pragmatic instruction
+- Implemented Chain of Thought prompting
+- Allowed the model to prompt itself multiple times
+- Used system prompts to coax knowledge from the model
+- Accuracy: 17 out of 20 correct (10-point improvement, 50% increase)
+- Speed: ~2 seconds
+
+This represents a dramatic improvement in both accuracy and speed while using a much smaller model (7B parameters vs. GPT-4's 1.7T parameters). The key insight is that pragmatic context—providing the model with rules, structure, and guidance for interpretation—can unlock knowledge that may already exist in the model but isn't easily accessible through naive prompting.
+
+Brousseau recommends that teams should be using tools like:
+- Guidance (for structured prompting and Chain of Thought)
+- LangChain (for orchestration)
+- Vector databases (for document retrieval/RAG)
+
+He expresses the opinion that pragmatic instruction at inference time is "one of the things that I'm really looking to explode in the next little while" and strongly recommends adoption if teams aren't already using these techniques.
+
+### Phonetics
+
+While the video demonstrations didn't play during the presentation, Brousseau discussed the challenges of preserving phonetic information in language models. He uses the sentence "I never said I loved you" to illustrate how emphasis on different words completely changes meaning—information that is lost when reducing speech to text.
+
+The presentation compared different approaches:
+- **Text-to-Speech models (Tortoise, 11 Labs)**: Lose phonetic information because they work from text. Results included incorrect accents and missing melodic qualities.
+- **Speech-to-Speech models (SVC)**: Work purely with phonetics but may introduce artifacts.
+- **Phonetic-plus models**: Ingest both text (in International Phonetic Alphabet format) and audio reference clips, producing superior results.
+
+This has implications for multimodal LLM applications and suggests that production systems dealing with speech should consider architectures that preserve phonetic information rather than reducing everything to text.
+
+## Production Considerations and LLMOps Implications
+
+### Goal-Setting Before Metric Optimization
+
+The overarching message is that teams should have clear, linguistically-informed goals before optimizing for standard ML metrics. Understanding what linguistic capabilities your application requires (heavy syntax manipulation? semantic precision? pragmatic reasoning?) should drive architecture and model selection decisions.
+
+### Model Maintenance and Longevity
+
+The dictionary problem highlights that language is constantly evolving, and production LLM systems need maintenance strategies. For some domains (like Mastercard's financial language), change may be slow enough that less frequent updates suffice. For others, continuous updating may be necessary. This should be factored into operational planning and budgets.
+
+### Tokenization Strategy
+
+The tokenization problems discussed suggest that off-the-shelf tokenization may not be optimal for all use cases. Teams should consider:
+- Whether their domain includes specialized vocabulary, borrowed words, or numeric content
+- Whether multilingual tokenization might improve performance even for monolingual applications
+- Custom tokenization strategies for specific problem domains
+
+### Inference Optimization Through Pragmatic Instruction
+
+The dramatic improvements demonstrated with Guidance and Chain of Thought prompting suggest significant untapped potential in inference-time optimization. This is particularly relevant for LLMOps because:
+- Smaller models with good prompting may outperform larger models with naive prompting
+- This has cost implications (smaller models are cheaper to run)
+- Speed improvements (2 seconds vs. 1 minute) directly impact user experience and throughput
+
+### Multimodal Considerations
+
+For applications involving speech or audio, the discussion of phonetic preservation suggests that text-only pipelines may lose important information. Production systems should consider whether speech-to-speech or phonetic-aware architectures are more appropriate than pure text-based approaches.
+
+## Limitations and Balance
+
+It's worth noting that this presentation is primarily conceptual and educational rather than a detailed production case study. While Brousseau works at Mastercard, specific details about their production LLM deployments are not provided. The biology question example appears to be a demonstration rather than a Mastercard production system. The claims about performance improvements (7/20 to 17/20) are impressive but would benefit from more rigorous benchmarking across multiple runs and datasets.
+
+The linguistic framework presented is valuable for thinking about LLM capabilities, but the degree to which teams can operationalize these insights in practice will vary. Some suggestions (like custom tokenization or multilingual training) may be out of reach for teams using commercial APIs or pre-trained models.
+
+Nevertheless, the presentation offers useful heuristics for LLMOps practitioners: think about what linguistic capabilities you need, set goals beyond metrics, leverage pragmatic instruction at inference time, and consider the long-term maintenance implications of your model choices.

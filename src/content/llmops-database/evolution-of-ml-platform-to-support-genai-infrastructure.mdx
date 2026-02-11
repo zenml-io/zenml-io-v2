@@ -1,0 +1,131 @@
+---
+title: "Evolution of ML Platform to Support GenAI Infrastructure"
+slug: "evolution-of-ml-platform-to-support-genai-infrastructure"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "6791ffd9c3426760e04e9279"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:57:37.912Z"
+  createdOn: "2025-01-23T08:37:45.074Z"
+llmopsTags:
+  - "customer-support"
+  - "fraud-detection"
+  - "translation"
+  - "structured-output"
+  - "regulatory-compliance"
+  - "rag"
+  - "prompt-engineering"
+  - "few-shot"
+  - "error-handling"
+  - "system-prompts"
+  - "monitoring"
+  - "databases"
+  - "api-gateway"
+  - "microservices"
+  - "documentation"
+  - "security"
+  - "compliance"
+  - "guardrails"
+  - "reliability"
+  - "fastapi"
+  - "openai"
+  - "anthropic"
+  - "databricks"
+  - "microsoft-azure"
+company: "Lyft"
+summary: "Lyft's journey of evolving their ML platform to support GenAI infrastructure, focusing on how they adapted their existing ML serving infrastructure to handle LLMs and built new components for AI operations. The company transitioned from self-hosted models to vendor APIs, implemented comprehensive evaluation frameworks, and developed an AI assistants interface, while maintaining their established ML lifecycle principles. This evolution enabled various use cases including customer support automation and internal productivity tools."
+link: "https://www.youtube.com/watch?v=KMrMnll64og&list=PLlcxuf1qTrwBpYSlNtp1snVfFCiCgRJMf&index=3"
+year: 2024
+seo:
+  title: "Lyft: Evolution of ML Platform to Support GenAI Infrastructure - ZenML LLMOps Database"
+  description: "Lyft's journey of evolving their ML platform to support GenAI infrastructure, focusing on how they adapted their existing ML serving infrastructure to handle LLMs and built new components for AI operations. The company transitioned from self-hosted models to vendor APIs, implemented comprehensive evaluation frameworks, and developed an AI assistants interface, while maintaining their established ML lifecycle principles. This evolution enabled various use cases including customer support automation and internal productivity tools."
+  canonical: "https://www.zenml.io/llmops-database/evolution-of-ml-platform-to-support-genai-infrastructure"
+  ogTitle: "Lyft: Evolution of ML Platform to Support GenAI Infrastructure - ZenML LLMOps Database"
+  ogDescription: "Lyft's journey of evolving their ML platform to support GenAI infrastructure, focusing on how they adapted their existing ML serving infrastructure to handle LLMs and built new components for AI operations. The company transitioned from self-hosted models to vendor APIs, implemented comprehensive evaluation frameworks, and developed an AI assistants interface, while maintaining their established ML lifecycle principles. This evolution enabled various use cases including customer support automation and internal productivity tools."
+---
+
+# Lyft's Generative AI Infrastructure: Evolving from ML Platform to AI Platform
+
+## Overview
+
+This case study comes from a conference talk by Constantine, an engineer at Lyft who has worked on ML platform and its applications for over four and a half years. The presentation provides a detailed look at how Lyft approached integrating generative AI capabilities into their existing ML infrastructure, treating it as an evolution of their platform rather than building something entirely new. Lyft operates a substantial ML infrastructure with more than 50 engineering teams using models, over 100 GitHub repositories, and more than 1,000 unique models, some handling 10,000+ requests per second. This breadth of ML adoption, which Constantine notes is more liberal than many companies of similar size, provided both challenges and opportunities when LLMs gained popularity in 2023.
+
+## ML Platform Foundation and Lifecycle Philosophy
+
+Lyft's approach to AI infrastructure was heavily informed by their existing ML platform philosophy. They don't think of models as something trained once and forgotten, but as entities that exist indefinitely throughout a lifecycle. This lifecycle includes: prototyping in Jupyter notebooks, registering reproducible training jobs, running training in compute environments, deploying trained models, serving in standardized environments, and then monitoring, understanding performance, iterating, and retraining. This same lifecycle thinking became the lens through which they approached AI/LLM infrastructure.
+
+A key design principle that enabled their AI evolution was the concept of a unified Lyft ML model interface. Early on, they recognized that supporting diverse frameworks required a common wrapper interface, which made it much easier to deploy models into unified serving infrastructure. Around 2021, they found that building wrappers for every framework wasn't scalable, so they adopted a pattern inspired by projects like AWS SageMaker, Seldon, and KServe, allowing developers to bring their own pre- and post-processing code that would run between the company's ML interface and the trained model.
+
+## Transition to LLM Support
+
+When LLMs gained popularity in 2023, Lyft's flexible serving platform enabled them to quickly experiment with self-hosted models. One of their first deployments was Databricks' Dolly model. However, they quickly discovered that self-hosting wasn't what most users wanted, and it became clear that Lyft would rely on vendors via API for the bulk of their LLM usage in the foreseeable future.
+
+This led to an interesting architectural decision: Constantine built a prototype where the Lyft ML model interface wrapped a proxy to the OpenAI API, deployed within their model serving system as just another type of Lyft ML model. The key difference was that there was no underlying model binary—the "model" was essentially arbitrary code that proxied requests to external APIs. As Constantine notes somewhat humorously, their previous optimization allowed their platform to run models with arbitrary code around them, but this new optimization discarded the model portion entirely while keeping the code wrapper.
+
+From a platform standpoint, this proxy approach delivered significant benefits including: standardized observability and operational metrics, security and network infrastructure consistency, simplified model management, and the ability to reason about LLM usage just like any other model in their system.
+
+## LLM Client Libraries and Proxy Architecture
+
+One of Lyft's key design decisions was to utilize open-source LLM clients (like the OpenAI Python package) but modify them to interface with their internal proxy. They created wrapper packages that maintained the same interface for constructing requests as the public packages, but overwrote the transport layer to route HTTP requests to their ML serving system, which in turn hosted their proxy.
+
+This dual control over both client-side and server-side code provided significant advantages for building platform features. Concrete benefits included: clients operating without API keys (injected server-side), granular insights about traffic sources (whether from notebooks, laptops, or servers), capturing usernames, service names, and environments, and the flexibility to build additional AI products by modifying either end of the stack. They applied this playbook to more than half a dozen LLM vendors including OpenAI and Anthropic.
+
+## Evaluation Framework
+
+By early 2024, Lyft was seeing explosive growth in LLM usage. With 100% of traffic going through their proxy, they could see who was using LLMs but lacked tooling to understand how they were being used and whether usage was meaningful. This led to developing an evaluations framework.
+
+Rather than adopting external vendor tooling, Lyft decided to build a lightweight internal evaluation framework that could meet their immediate requirements. They identified three categories of evaluations:
+
+- **Online input evaluations**: Running checks before prompts are sent to LLMs
+- **Online output evaluations**: Running checks on responses before they're returned to applications
+- **Offline evaluations**: Analyzing input-output pairs for quality assessment
+
+Specific use cases driving these requirements included:
+
+For **PII filtering** (online input), their security team preferred filtering out personally identifiable information before sending prompts to vendors. In their implementation, when a prompt like "Hello I am Constantine Garski" is received, it gets routed to an internal PII filtering model hosted in Lyft's infrastructure, which removes PII before the prompt reaches the LLM vendor. The response can optionally have PII reinserted on the return path.
+
+For **output guard rails** (online output), product teams wanted to ban certain topics or apply response filters.
+
+For **quality analysis** (offline), product teams deploying LLMs needed to analyze the quality of their applications. The common pattern here was using LLM-as-judge, where another LLM with a tailored prompt evaluates request-response pairs against specific criteria. Examples mentioned include checking whether responses are unhelpful to users or lack information to fully answer inquiries.
+
+## AI Assistants and Higher-Level Abstractions
+
+Looking forward, Lyft's roadmap involves building higher-level interfaces for AI assistants. Their design decision is to create another Lyft ML interface (similar to their model interface) that allows declarative definition of AI applications. This wraps their core LLM functionality, evaluations, proxy, and clients, while adding two key capabilities: knowledge bases and tools.
+
+The assistant architecture involves prompts being augmented with relevant knowledge (RAG pattern) to create augmented prompts, along with tool registration that enables LLMs to call tools in a loop. Constantine notes that almost every LLM vendor supports this pattern, as do higher-level libraries like LangChain.
+
+## Lifecycle Comparison: ML vs AI
+
+Constantine draws interesting parallels between traditional ML model lifecycles and AI assistant lifecycles. Several components become different or less relevant:
+
+- **Feature definitions and feature stores** → Knowledge bases (conceptually similar as things computed about the world offline and stored for model use)
+- **Traditional monitoring** → Evaluations (conceptually similar as understanding how models operate)
+
+This perspective led to the insight that AI assistants don't look fundamentally different from ML models when viewed through the right lens, which validated their approach of treating AI as an evolution of their existing platform rather than something entirely separate.
+
+## Production Use Cases
+
+Lyft has deployed LLMs across several use cases, though some details were noted as sensitive and couldn't be fully shared:
+
+**Slack AI Bot**: An internal bot that can search over company data. One example discussed was using few-shot prompting to help generate incident reports. When Lyft has incidents (service outages, data drops), they create Slack channels to discuss them and must complete administrative paperwork with sections like initial detection, root cause, remediation, and action items. By providing the Slack bot with examples of well-structured reports, they can generate good first drafts of these documents, expediting the process for developers.
+
+**Customer Support (Flagship Use Case)**: When a customer support session starts, the first attempt to answer questions uses a RAG-based document search—an LLM plus knowledge base finding relevant documents. If the issue isn't resolved quickly, human support agents join with better context from the initial AI interaction. This has resulted in faster time to first response and better agent context when human handoff occurs.
+
+**Other mentioned use cases** include fraud detection and prevention, performance review self-reflection iteration, and translation services. The speaker noted more user-facing products are coming in 2025 but couldn't share details.
+
+## Key Takeaways and Design Philosophy
+
+Constantine distilled the evolution of Lyft's ML platform to AI platform into three steps:
+
+- Consider AI models and assistants as a special case of ML models
+- Adapt the ML lifecycle (their product North Star) to support AI through its entire lifecycle
+- Build components necessary to fill the gaps
+
+The theme of expanding model capabilities over time is also relevant—from simple regression models to distributed deep learning to image/text inputs to LLM API proxies to full assistants. The approach suggests a long-term roadmap of supporting more capabilities within their AI container abstraction.
+
+## Balanced Assessment
+
+While the presentation provides valuable insights into building LLM infrastructure at scale, some caveats should be noted. The speaker acknowledges that LLM usage growth "tapered off throughout the year" after initial exponential growth in early 2024, suggesting the initial excitement may have exceeded practical adoption. The decision to build custom evaluation tooling rather than use vendors was framed as meeting immediate requirements, but may require ongoing investment to keep pace with rapidly evolving vendor offerings. Additionally, specific metrics around cost savings, latency impacts, or quantified improvements from the customer support use case were not provided, making it difficult to assess the concrete business impact. However, the architectural patterns and lifecycle thinking presented offer practical templates for organizations looking to integrate LLMs into existing ML infrastructure.

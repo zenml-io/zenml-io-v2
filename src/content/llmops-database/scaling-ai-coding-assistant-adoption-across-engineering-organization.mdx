@@ -1,0 +1,173 @@
+---
+title: "Scaling AI Coding Assistant Adoption Across Engineering Organization"
+slug: "scaling-ai-coding-assistant-adoption-across-engineering-organization"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "694ad849eddfbde4340eea31"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2026-01-07T09:40:39.763Z"
+  lastUpdated: "2025-12-23T20:12:18.742Z"
+  createdOn: "2025-12-23T17:58:33.116Z"
+llmopsTags:
+  - "code-generation"
+  - "poc"
+  - "prompt-engineering"
+  - "agent-based"
+  - "human-in-the-loop"
+  - "mcp"
+  - "evals"
+  - "documentation"
+  - "crewai"
+  - "monitoring"
+  - "openai"
+  - "anthropic"
+  - "microsoft-azure"
+company: "Hubspot"
+summary: "HubSpot scaled AI coding assistant adoption from experimental use to near-universal deployment (over 90%) across their engineering organization over a two-year period starting in summer 2023. The company began with a GitHub Copilot proof of concept backed by executive support, ran a large-scale pilot with comprehensive measurement, and progressively removed adoption barriers while establishing a dedicated Developer Experience AI team in October 2024. Through strategic enablement, data-driven validation showing no correlation between AI adoption and production incidents, peer validation mechanisms, and infrastructure investments including local MCP servers with curated configurations, HubSpot achieved widespread adoption while maintaining code quality and ultimately made AI fluency a baseline hiring expectation for engineers."
+link: "https://product.hubspot.com/blog/context-is-key-how-hubspot-scaled-ai-adoption"
+year: 2025
+seo:
+  title: "Hubspot: Scaling AI Coding Assistant Adoption Across Engineering Organization - ZenML LLMOps Database"
+  description: "HubSpot scaled AI coding assistant adoption from experimental use to near-universal deployment (over 90%) across their engineering organization over a two-year period starting in summer 2023. The company began with a GitHub Copilot proof of concept backed by executive support, ran a large-scale pilot with comprehensive measurement, and progressively removed adoption barriers while establishing a dedicated Developer Experience AI team in October 2024. Through strategic enablement, data-driven validation showing no correlation between AI adoption and production incidents, peer validation mechanisms, and infrastructure investments including local MCP servers with curated configurations, HubSpot achieved widespread adoption while maintaining code quality and ultimately made AI fluency a baseline hiring expectation for engineers."
+  canonical: "https://www.zenml.io/llmops-database/scaling-ai-coding-assistant-adoption-across-engineering-organization"
+  ogTitle: "Hubspot: Scaling AI Coding Assistant Adoption Across Engineering Organization - ZenML LLMOps Database"
+  ogDescription: "HubSpot scaled AI coding assistant adoption from experimental use to near-universal deployment (over 90%) across their engineering organization over a two-year period starting in summer 2023. The company began with a GitHub Copilot proof of concept backed by executive support, ran a large-scale pilot with comprehensive measurement, and progressively removed adoption barriers while establishing a dedicated Developer Experience AI team in October 2024. Through strategic enablement, data-driven validation showing no correlation between AI adoption and production incidents, peer validation mechanisms, and infrastructure investments including local MCP servers with curated configurations, HubSpot achieved widespread adoption while maintaining code quality and ultimately made AI fluency a baseline hiring expectation for engineers."
+---
+
+## Overview
+
+HubSpot's case study describes a comprehensive organizational transformation centered on deploying and scaling AI coding assistants across their entire engineering organization. This journey began in summer 2023 with GitHub Copilot experimentation and culminated in achieving over 90% adoption rates by 2025, representing a mature LLMOps deployment focused on developer tooling. The case demonstrates how a large software company navigated the full lifecycle of AI adoption—from proof of concept through production deployment to organizational standardization—while building internal capabilities to maximize the value of AI coding tools.
+
+The narrative is particularly valuable from an LLMOps perspective because it addresses the often-overlooked operational aspects of deploying AI tools at scale: procurement adaptation, measurement frameworks, change management, infrastructure standardization, and ongoing optimization. Rather than focusing solely on technical capabilities, HubSpot's experience highlights the organizational, cultural, and process changes required to successfully operationalize AI tools in production engineering environments.
+
+## Initial Experimentation and Validation Phase
+
+HubSpot's AI adoption journey was catalyzed by executive sponsorship, specifically from co-founders Dharmesh Shah and Brian Halligan. Dharmesh had successfully used GitHub Copilot to build ChatSpot, providing internal proof points that legitimized the technology. This executive push proved crucial in accelerating cross-functional alignment between legal, security, and engineering teams—a common bottleneck in enterprise AI adoption.
+
+The initial proof of concept phase demonstrated several LLMOps best practices. HubSpot ran a sufficiently large pilot that included entire teams rather than individual developers, ensuring that adoption could be evaluated in realistic collaborative contexts. The pilot lasted over two months, providing adequate time for developers to move past initial novelty and develop genuine workflows. The company invested in enablement through setup and training sessions, and critically, established feedback channels where engineers could share experiences about what worked and what didn't.
+
+From a measurement perspective, HubSpot applied existing engineering velocity measurement methods to the pilot rather than inventing new metrics. This pragmatic approach allowed them to leverage established baselines and reduce bias in evaluation. The team acknowledges they were initially skeptical, but empirical data showing measurable productivity improvements—even if modest compared to extraordinary market claims—helped overcome internal resistance. The cost-benefit analysis at $19 per user per month made even modest time savings economically justifiable, establishing a foundation for continued investment.
+
+The initial results were characterized as "encouraging: positive qualitative feedback and measurable but modest productivity improvements, across engineers of different tenure and seniority." This honest assessment reflects a balanced perspective often missing from vendor case studies. HubSpot didn't expect transformative overnight results but rather viewed the technology as evolving, justifying patience and continued investment based on the expectation that capabilities would improve over time.
+
+## Organizational Infrastructure and the Developer Experience AI Team
+
+A pivotal moment in HubSpot's LLMOps maturity came with the creation of a dedicated Developer Experience AI team in October 2024. This decision reflects a sophisticated understanding of how central infrastructure teams create organizational leverage—a principle HubSpot had long applied to platform engineering. Initially, AI adoption was managed by teams adjacent to relevant infrastructure (specifically GitHub management), but as demand exploded, this approach proved insufficient.
+
+The Developer Experience AI team was chartered with five key responsibilities that map directly to LLMOps concerns:
+
+**Driving adoption** became critical once impact data validated the tools' value. The team recognized that passive availability wasn't sufficient and that active promotion, enablement, and barrier removal were necessary to achieve organization-wide adoption. This represents a crucial LLMOps insight: deployment isn't just technical provisioning but requires dedicated change management.
+
+**Increasing AI tool impact** focused on customization and context injection. HubSpot has an opinionated technology stack, and the team wanted generated code to reflect architectural patterns, library choices, and best practices specific to their environment. This began simply with sharing Cursor rules files but evolved into "more complex tools that gave agents deep context about our architecture, libraries, and best practices." This progression from simple prompt engineering to sophisticated context management is characteristic of maturing LLMOps practices. The team recognized that generic AI assistants needed to be tuned to their specific development environment to maximize value.
+
+**Advocacy and community building** addressed the cultural and knowledge-sharing dimensions of adoption. The team created open forums for engineers to discuss AI usage, seeded content to drive engagement, and cultivated a "vibrant community" around AI tools. This community approach helped distribute knowledge about effective usage patterns and created social proof that accelerated adoption among skeptics.
+
+**Adapting procurement for speed** tackled a common enterprise challenge: traditional purchasing processes designed for long-term negotiated agreements couldn't accommodate the rapid pace of AI tool innovation. The team wanted month-to-month contracts and fast onboarding for new tools, requiring changes to organizational procurement practices. This represents a real operational challenge in LLMOps: the tooling landscape evolves rapidly, and organizations need procurement flexibility to experiment and evaluate new offerings.
+
+**Building evaluation capabilities** ensured decisions were grounded in empirical data rather than qualitative impressions or vendor claims. The team developed methodologies to run pilots and compare tools objectively, recognizing from experience how data could "combat preconceptions and skepticism." This evaluation infrastructure is foundational to mature LLMOps practices, enabling evidence-based tool selection and configuration decisions.
+
+The team started small with just two engineers who had infrastructure experience and high engagement with AI, then grew as use cases expanded. This lean initial investment reduced risk while establishing capabilities that would eventually support 400+ tools across internal, OpenAI, and Anthropic MCP servers—representing significant infrastructure scale.
+
+## Data-Driven Risk Mitigation and Policy Evolution
+
+HubSpot's approach to risk management and policy evolution demonstrates sophisticated LLMOps thinking. Initially, the company maintained conservative usage rules due to "limited experience and cost concerns." Users had to request licenses and agree to strict guardrails, representing a cautious deployment posture appropriate for early-stage AI tool adoption.
+
+As adoption scaled and data accumulated, HubSpot systematically collected metrics across multiple dimensions: code review burden, cycle time, velocity comparisons before and after adoption, and critically, production incident rates. The case study presents a scatter plot showing no correlation between AI adoption and production incidents—a key concern for any organization deploying AI coding assistants. This absence of negative impact on production quality provided empirical evidence that addressed one of the primary risks associated with AI-generated code.
+
+The consistent pattern across metrics was that "AI adoption wasn't creating the problems we were initially worried about." This finding enabled a significant policy shift in May 2024: HubSpot removed usage restrictions and proactively provisioned seats for all engineers, making adoption as frictionless as possible. This represents a crucial inflection point in their LLMOps maturity—the transition from cautious experimentation to confident standardization based on production evidence. Adoption immediately jumped above 50% once barriers were removed, demonstrating that conservative policies had been constraining organic demand.
+
+This data-driven approach to policy evolution is a hallmark of mature LLMOps. Rather than making decisions based on theoretical risks or vendor promises, HubSpot systematically measured actual outcomes in their production environment and adjusted policies accordingly. The willingness to start conservative, measure rigorously, and liberalize based on evidence reflects sound operational risk management.
+
+## Addressing the Late Majority and Achieving Universal Adoption
+
+Reaching adoption levels beyond 60% required different strategies than those that worked for early adopters and the early majority. HubSpot encountered predictable challenges: skeptics, better understanding of current tool limitations, and higher change/risk aversion among later adopters. The company's response involved five complementary tactics that offer insights for other organizations pursuing high adoption rates:
+
+**Peer validation** leveraged social proof by capturing and amplifying success stories. Whenever someone accomplished something interesting with AI, the team requested video recordings for sharing. Additionally, the Developer Experience AI team began producing weekly videos showcasing new features and real usage patterns. This approach addresses a common adoption barrier: lack of concrete examples showing how tools fit into real workflows. Videos from peers carry more credibility than marketing materials and help later adopters visualize how they might use the tools.
+
+**Quantitative proof** involved sharing high-level adoption and success metrics to demonstrate that "most people were already using these tools successfully and safely." Interestingly, HubSpot deliberately kept numbers broad rather than precise, focusing on clear trends rather than exact figures. This decision reflects practical wisdom about data communication: while precision matters for decision-making, it can also invite unproductive debates that distract from the fundamental message. The goal was to establish that the tools were working organization-wide, not to defend specific percentage improvements.
+
+**Providing better tools** meant expanding beyond a single AI assistant to offer multiple options through proof-of-concept evaluations. This recognition that "different tools work better for different workflows and preferences" demonstrates maturity in understanding that there's no one-size-fits-all solution. By the time of writing, HubSpot's infrastructure supported interactions with OpenAI, Anthropic, and internal MCP servers, giving developers flexibility to choose tools matching their needs.
+
+**Curated experience** involved standardizing and optimizing the out-of-box experience through infrastructure. HubSpot transparently deployed local MCP servers on every machine with default rules and configurations "optimized for our development environment." This gave every engineer an experience tailored to HubSpot's specific stack and best practices immediately, reducing the friction of learning generic tools and adapting them to local context. The company continues to revise this setup based on learning about effective usage patterns, representing ongoing operational optimization—a key LLMOps practice.
+
+**Making AI fluency a baseline expectation** represented the culmination of the adoption journey. Once 90% adoption was reached, HubSpot added AI fluency to job descriptions and hiring expectations. This decision reflects confidence that AI coding assistants have become fundamental to how software development works at the company, similar to version control or testing frameworks. The company frames this not just as an organizational requirement but as a career investment for engineers navigating industry transformation. This shift from optional tool to baseline expectation represents full operationalization—these tools are now part of the standard production environment rather than experimental additions.
+
+## Infrastructure and Context Management
+
+The case study reveals significant infrastructure investment supporting AI adoption, though technical details are limited. HubSpot mentions establishing local MCP (Model Context Protocol) servers on every development machine, with default rules and configurations optimized for their environment. By the time of writing, this infrastructure had expanded to support "400+ tools that our agents can leverage across our internal, OpenAI, and Anthropic MCP servers."
+
+This infrastructure approach addresses a fundamental LLMOps challenge: how to provide AI assistants with the context they need to generate code that aligns with organizational standards, architectural patterns, and best practices. Generic AI coding assistants trained on public repositories may suggest patterns that don't fit a company's specific technology choices or conventions. HubSpot's investment in curated configurations and context servers represents sophisticated prompt engineering and context management at organizational scale.
+
+The evolution from "sharing of Cursor rules files" to "more complex tools that gave agents deep context about our architecture, libraries, and best practices" suggests a progression in context management sophistication. Simple rules files might encode style guidelines or common patterns, while more complex context tools could potentially include documentation about internal frameworks, API specifications, architectural decision records, or examples of idiomatic code in HubSpot's environment.
+
+The deployment of local MCP servers on every machine indicates a hybrid architecture approach—rather than routing all AI interactions through centralized infrastructure, HubSpot pushes context and tooling to the edge where developers work. This design likely reduces latency, provides offline capabilities, and may address data governance concerns by keeping certain context local rather than transmitted to external services.
+
+The mention of supporting multiple providers (OpenAI, Anthropic, and internal servers) suggests HubSpot isn't locked into a single LLM vendor but rather maintains flexibility to leverage different models for different use cases. This multi-provider strategy is increasingly common in production LLMOps as organizations recognize that different models have different strengths and that vendor lock-in carries risks in a rapidly evolving market.
+
+## Measurement and Evaluation Capabilities
+
+Throughout the case study, measurement emerges as a consistent theme and critical success factor. HubSpot's approach to measurement demonstrates several LLMOps best practices:
+
+They applied existing engineering velocity measurement methods rather than inventing new AI-specific metrics. This pragmatic approach leverages established baselines and familiar frameworks, making it easier to interpret results and compare AI-assisted work with historical performance. Inventing new metrics can make it difficult to assess whether observed changes represent genuine improvements or measurement artifacts.
+
+The company measured multiple dimensions of impact: qualitative feedback, productivity improvements, code review burden, cycle time, velocity, and production incident rates. This multi-dimensional approach guards against over-indexing on any single metric that might be gamed or misinterpreted. For example, productivity gains that came at the cost of increased incidents would represent a poor tradeoff, but measuring both allows for balanced assessment.
+
+HubSpot explicitly notes using measurement to "check our biases" and acknowledges they were "skeptical at the outset but seeing measured impact chipped away at our skepticism." This self-awareness about bias and willingness to let data inform opinions rather than cherry-picking data to support preconceptions reflects mature experimental practice.
+
+When sharing data to drive adoption, the team deliberately kept metrics broad rather than precise, focusing on trends rather than specific figures. This pragmatic choice recognizes that data serves different purposes at different stages: precise metrics inform decisions, but broad trends are often more effective for change management and communication.
+
+The development of capabilities to "run pilots and compare tools on merit" suggests HubSpot built reproducible evaluation frameworks that could be applied across different AI coding assistants. This evaluation infrastructure enables evidence-based tool selection as the market evolves and new offerings emerge. Given the pace of innovation in AI coding tools, having systematic evaluation capabilities is crucial for maintaining optimal tooling choices over time.
+
+## Balanced Assessment and Limitations
+
+While the case study demonstrates successful AI adoption at scale, several aspects warrant balanced consideration:
+
+The text is explicitly promotional in nature, intended to position HubSpot as a leader in AI adoption and potentially attract engineering talent. Claims should be interpreted accordingly, though the acknowledgment of modest initial gains and ongoing challenges lends some credibility.
+
+Specific quantitative results are largely absent or sanitized in charts. While understandable from a competitive standpoint, this makes it difficult to assess the magnitude of productivity improvements or compare results with other organizations' experiences. The statement that initial gains "fell short of some extraordinary claims we were hearing in the market, but they were still significant" is honest but imprecise.
+
+The case study doesn't address several important concerns that other organizations face with AI coding assistants:
+
+- **Intellectual property and licensing risks** associated with AI-generated code potentially trained on code with various licenses
+- **Security vulnerabilities** that might be introduced by AI-suggested code, and how code review practices adapted
+- **Accuracy and correctness** of generated code, and how bugs or errors are caught
+- **Skill development** for junior engineers who may rely heavily on AI assistance without developing deep understanding
+- **Cost analysis** at scale—while $19/user/month for Copilot is mentioned for initial rollout, total costs with multiple tools and infrastructure would be higher
+
+The mention that adoption "slowed again as it increased beyond 60%" and required new strategies to reach later adopters suggests that achieving universal adoption required sustained effort and that resistance persisted even with demonstrable benefits. This honest acknowledgment is valuable, as it reflects the reality that organizational change is difficult even with good tools and data.
+
+The text mentions that the Developer Experience AI team enabled future capabilities including "coding agents, creating Sidekick (our AI assistant that answers platform questions, creates issues, implements changes, and reviews PRs), developing a way to rapidly prototype UIs with our design system," but these are referenced as teasers for future posts rather than detailed in this article. These represent more advanced LLMOps use cases beyond simple coding assistance.
+
+## Lessons for LLMOps Practitioners
+
+HubSpot's experience offers several transferable lessons for organizations deploying AI tools in production:
+
+**Executive sponsorship matters significantly** for accelerating cross-functional alignment and overcoming organizational inertia. Having founders push for rapid evaluation helped legal, security, and engineering teams coordinate with urgency.
+
+**Start with sufficiently large pilots** that reflect realistic usage contexts. Piloting with entire teams rather than individuals better captures collaborative dynamics and provides more representative data.
+
+**Invest in enablement and community** from the outset. Providing training, creating feedback channels, and cultivating communities of practice accelerate adoption and help identify effective usage patterns.
+
+**Measure rigorously and apply existing frameworks** where possible. Data is crucial for overcoming skepticism and making evidence-based decisions about policy and tool selection.
+
+**Create dedicated teams** to own AI developer experience once demand justifies it. Central infrastructure teams create leverage by standardizing, optimizing, and maintaining AI tooling so product teams can focus on feature development.
+
+**Adapt organizational processes** including procurement to accommodate the pace of AI innovation. Traditional enterprise purchasing cycles may be too slow for a rapidly evolving tooling landscape.
+
+**Customize and contextualize** generic AI tools with organization-specific knowledge, patterns, and best practices. The progression from simple prompt engineering to sophisticated context management significantly increases tool value.
+
+**Be willing to liberalize policies** based on production evidence. Starting conservative is reasonable, but maintaining unnecessary restrictions once data shows tools are safe and effective constrains value realization.
+
+**Use different strategies for different adoption phases**. What works for early adopters (novel technology, promises of productivity) differs from what convinces skeptics (peer validation, quantitative proof, reduced friction).
+
+**Make expectations explicit** once adoption reaches critical mass. Making AI fluency a baseline expectation for engineers signals organizational commitment and helps new hires understand cultural norms.
+
+## Looking Forward
+
+The case study positions itself as the first in a series about empowering product, UX, and engineering teams with AI, with promised future content about the transition to agentic coding and other advanced use cases. The infrastructure supporting 400+ tools across multiple MCP servers and the development of Sidekick (an AI assistant handling multiple engineering workflow tasks) suggest HubSpot has progressed beyond basic coding assistance to more sophisticated AI integration.
+
+The overall trajectory described—from cautious experimentation to universal adoption to building advanced capabilities on top of a mature AI platform—represents a blueprint for organizational AI transformation in engineering contexts. While specific to HubSpot's context and resources, the general pattern and lessons learned offer valuable guidance for other organizations navigating similar journeys.
+
+The case demonstrates that successful LLMOps in developer tooling contexts requires attention to technology, organization, process, and culture simultaneously. Technical capabilities matter, but organizational readiness, change management, infrastructure investment, measurement frameworks, and cultural evolution are equally crucial to realizing value from AI tools in production engineering environments.

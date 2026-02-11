@@ -1,0 +1,181 @@
+---
+title: "Building and Scaling Enterprise LLMOps Platforms: From Team Topology to Production"
+slug: "building-and-scaling-enterprise-llmops-platforms-from-team-topology-to-production"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "677b9fdb235c7da93eb36ed2"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:54:20.514Z"
+  createdOn: "2025-01-06T09:18:19.533Z"
+llmopsTags:
+  - "code-generation"
+  - "high-stakes-application"
+  - "regulatory-compliance"
+  - "legacy-system-integration"
+  - "prompt-engineering"
+  - "rag"
+  - "error-handling"
+  - "human-in-the-loop"
+  - "latency-optimization"
+  - "cost-optimization"
+  - "fallback-strategies"
+  - "system-prompts"
+  - "kubernetes"
+  - "monitoring"
+  - "databases"
+  - "api-gateway"
+  - "load-balancing"
+  - "microservices"
+  - "cicd"
+  - "scaling"
+  - "devops"
+  - "orchestration"
+  - "continuous-deployment"
+  - "continuous-integration"
+  - "documentation"
+  - "security"
+  - "compliance"
+  - "guardrails"
+  - "reliability"
+  - "scalability"
+  - "redis"
+  - "cache"
+  - "elasticsearch"
+  - "openai"
+  - "microsoft-azure"
+company: "Various"
+summary: "A comprehensive overview of how enterprises are implementing LLMOps platforms, drawing from DevOps principles and experiences. The case study explores the evolution from initial AI adoption to scaling across teams, emphasizing the importance of platform teams, enablement, and governance. It highlights the challenges of testing, model management, and developer experience while providing practical insights into building robust AI infrastructure that can support multiple teams within an organization."
+link: "https://www.youtube.com/watch?v=5qNXdLbEdew"
+year: 2023
+seo:
+  title: "Various: Building and Scaling Enterprise LLMOps Platforms: From Team Topology to Production - ZenML LLMOps Database"
+  description: "A comprehensive overview of how enterprises are implementing LLMOps platforms, drawing from DevOps principles and experiences. The case study explores the evolution from initial AI adoption to scaling across teams, emphasizing the importance of platform teams, enablement, and governance. It highlights the challenges of testing, model management, and developer experience while providing practical insights into building robust AI infrastructure that can support multiple teams within an organization."
+  canonical: "https://www.zenml.io/llmops-database/building-and-scaling-enterprise-llmops-platforms-from-team-topology-to-production"
+  ogTitle: "Various: Building and Scaling Enterprise LLMOps Platforms: From Team Topology to Production - ZenML LLMOps Database"
+  ogDescription: "A comprehensive overview of how enterprises are implementing LLMOps platforms, drawing from DevOps principles and experiences. The case study explores the evolution from initial AI adoption to scaling across teams, emphasizing the importance of platform teams, enablement, and governance. It highlights the challenges of testing, model management, and developer experience while providing practical insights into building robust AI infrastructure that can support multiple teams within an organization."
+---
+
+## Summary
+
+This presentation was delivered by Patrick Debois, widely known as the founder of DevOps Days (the 2009 conference where the term "DevOps" was coined). Drawing on 15 years of experience watching enterprise transformations and two years of hands-on experience building generative AI applications, Debois presents a comprehensive framework for how enterprises should approach scaling LLM-based applications. The talk is notable for its practitioner perspective, applying lessons learned from the DevOps movement to the emerging discipline of AI engineering and LLMOps.
+
+Debois openly acknowledges his bias, noting that he's applying old paradigms (DevOps, platform engineering, team topologies) to the new world of GenAI, which could either be correct or completely wrong. This self-awareness lends credibility to his observations while appropriately cautioning listeners that the field is still evolving.
+
+## Organizational Patterns and Team Dynamics
+
+One of the most valuable aspects of this presentation is its focus on the organizational challenges of scaling GenAI, not just the technical ones. Debois describes a pattern he witnessed firsthand: when generative AI first emerged, it naturally landed with data science teams. However, these teams immediately faced friction because they weren't accustomed to running things in production. This created a gap that needed bridging.
+
+The solution his organization adopted involved gradually moving engineers into data science teams. Over time, the composition shifted—as GenAI work turned out to be more about integration than pure data science, the ratio of traditional engineers to data scientists increased. Eventually, this capability was scaled out to feature teams and abstracted into a platform.
+
+Debois references the Team Topologies framework (originally called "DevOps Topologies") to explain how organizations can structure this work. The model involves platform teams that abstract away complexity and provide services to feature teams (the "you build it, you run it" teams). The platform team can interact with feature teams in different modes: pure API/service provision, collaborative product development, or facilitation when teams need help. This is a known pattern for dealing with new technology abstractions in enterprises.
+
+The key insight is that GenAI shouldn't remain siloed in data science—it needs to be brought to traditional application developers so they can integrate it into their domains. This requires both platform infrastructure and enablement programs.
+
+## AI Platform Components
+
+Debois provides a comprehensive overview of what services should compose an enterprise AI platform. While he explicitly notes he has no vendor affiliations, he outlines several critical components:
+
+**Model Access**: Rather than having every team independently figure out which models to use and how to access them, a central team curates and provides access to appropriate models for the company. This is typically related to cloud vendor relationships.
+
+**Vector Databases and RAG Infrastructure**: While vector databases were initially specialized products, Debois notes they're now being incorporated into traditional database vendors, making them "not that special anymore." However, teams still need to understand embeddings, vectors, and how to use them effectively. Some organizations are calling this "RAG Ops"—yet another ops discipline to manage.
+
+**Data Connectors**: The platform team builds and exposes connectors to various data sources across the company, so individual teams don't have to figure this out repeatedly. This enables secure experimentation with company data.
+
+**Model Registry and Version Control**: Similar to code version control, organizations need version control for models. A centralized repository allows teams to reuse models and makes them visible like a library.
+
+**Model Provider Abstraction**: Larger enterprises often want to be model-provider agnostic, similar to how they've sought cloud agnosticism. Debois speculates that the OpenAI protocol might become the S3-equivalent standard for model access. This layer also handles access control through proxies, preventing unrestricted model usage.
+
+**Observability and Tracing**: The platform needs to capture prompts running in production, similar to traditional observability but with important differences. One user prompt often leads to five or six iterations/sub-calls, requiring different tracing approaches. This shouldn't be something every team builds independently.
+
+**Production Monitoring and Evals**: Traditional monitoring and metrics aren't sufficient for LLM applications. Instead of simple health checks for API calls, organizations need "health checks for evals running all the time in production." This enables detection of model changes, unusual end-user behavior, and data quality issues.
+
+**Caching and Feedback Services**: Centralized caching reduces costs, while feedback services go beyond simple thumbs up/down to include inline editing of responses, providing richer training signals. These are expensive to build and should be centrally managed.
+
+Debois compares this emerging ecosystem to the Kubernetes ecosystem landscape, predicting rapid expansion in the number of solutions and vendors.
+
+## Enablement and Developer Experience
+
+Infrastructure alone isn't sufficient—teams need enablement to use it effectively. The enablement function includes:
+
+**Prototyping Tools**: Making experimentation easy, including for product owners who want to explore use cases. Simple tools get people excited and help identify the right applications.
+
+**Frameworks**: Tools like LangChain (mentioned implicitly through references to Microsoft stack preferences) help teams learn how things work. Debois notes he learned a lot through frameworks, though he also observes that many teams get "bitten" by frameworks that change too fast and retreat to lower-level APIs. He expresses hope that the ecosystem will mature rather than everyone doing DIY implementations.
+
+**Local Development Environments**: Engineers value being able to work locally, especially when traveling. With quality models increasingly runnable on laptops, this supports faster iteration.
+
+**Education and Documentation**: Frameworks serve as learning tools as much as production tools.
+
+## Common Pitfalls
+
+Debois identifies several anti-patterns he's observed:
+
+- **Forced GenAI integration**: Companies mandating GenAI in every product without clear use cases, essentially "running on the marketing budget"
+- **Over-focus on model training and fine-tuning**: Organizations led by data science tend to spend too long before getting anything to production
+- **Premature cost optimization**: Excessive focus on running local or using cheaper models when model costs are rapidly decreasing—better to focus on the business case first
+- **Feedback handling gaps**: Engineers don't know what to do with end-user feedback because only product owners understand the domain
+
+## Testing and Evaluation Challenges
+
+One of the most honest and valuable sections of the talk addresses the challenges of testing LLM outputs. Debois describes the typical developer reaction: "How do I write tests for this?"
+
+He outlines a spectrum of testing approaches:
+- **Exact testing**: Simple checks like character length or regex patterns
+- **Sentiment analysis**: Requires running a helper model
+- **Semantic similarity**: Checking if questions relate to answers
+- **LLM-as-judge**: Using another LLM to evaluate outputs—which Debois finds mind-bending ("if the AI doesn't work just use more AI")
+- **Human feedback**: The ultimate ground truth
+
+He acknowledges this isn't a solved problem but notes "it's the best thing we got."
+
+A specific pain point Debois experienced: over two years, his organization went through eight different LLM models. Each model change required reworking all application prompts—and this was done manually without guarantee it would work. This underscores the need for evaluation frameworks before undertaking such refactoring.
+
+## The Ironies of Automation
+
+Debois references an influential DevOps paper called "The Ironies of Automation" and notes there's now a corresponding "Ironies of GenAI Automation" paper. The core insight is that automation shifts human roles from production to management and review. 
+
+He shares data showing that while coding copilots increased code output, review times went up and PR sizes increased. The efficiency gains may be partially offset by increased review burden. Additionally, as humans produce less and review more, they risk losing situational awareness and domain expertise, potentially leading to uncritical acceptance of AI suggestions. He mentions anecdotal evidence of higher AI suggestion acceptance rates on weekends "because developers are like whatever."
+
+This connects to broader DevOps lessons: the 20% automation promise spawned an entire industry focused on preparing for failure—CI/CD, monitoring, observability, chaos engineering. The same evolution may happen with GenAI.
+
+## Governance and Security
+
+Governance considerations include:
+
+- **Personal awareness programs**: Educating employees about data leakage risks, especially with tools that record screens
+- **Training data opt-outs**: Understanding when and how to opt out of model training
+- **License checking**: Restricting models centrally rather than expecting teams to verify licenses
+- **Understanding model origins**: Just because something has "open" in the name doesn't mean it's truly open
+- **EU AI Act compliance**: Risk level assessments for different workflows
+- **Prompt injection mitigation**: Acknowledged as unsolved but requiring some defense
+- **Guardrails**: Debois draws a parallel to web application firewalls—the logs can become overwhelming, leading to neglect. The tooling needs improvement.
+- **PII monitoring**: Increased text transmission requires greater scrutiny
+
+On guardrails specifically, an audience question revealed a nuanced approach: central governance teams set generic rules, while individual teams layer use-case-specific rules on top in a self-service model.
+
+## Organizational Structure Recommendations
+
+Debois proposes consolidating related platform functions:
+- CloudOps
+- SecOps  
+- Developer Experience
+- Data Platform
+- AI Platform Infrastructure
+- AI Experiences (cross-team consistency)
+
+He references the "Unfix Model" and its concept of an "Experience Crew" that ensures AI looks consistent across products by working with feature teams on UX.
+
+This consolidated structure enables cross-collaboration: SecOps helps with access control and governance, CloudOps knows the cloud vendors and how to provision resources. He cautions against premature optimization for small companies—this pattern makes sense when scaling to 10+ teams.
+
+## Critical Assessment
+
+While Debois provides valuable practical insights, some caveats are warranted:
+
+- The presentation is based primarily on one organization's experience (two years of building GenAI applications), though informed by broader DevOps industry observation
+- Some recommendations may be enterprise-specific and not applicable to smaller organizations
+- The rapid evolution of the field means some specific technical guidance may become outdated quickly
+- The talk sometimes conflates what "should" happen with what has been proven to work at scale
+
+Nonetheless, the presentation offers a thoughtful, practitioner-grounded perspective on LLMOps that acknowledges uncertainty while providing actionable frameworks for enterprise adoption.

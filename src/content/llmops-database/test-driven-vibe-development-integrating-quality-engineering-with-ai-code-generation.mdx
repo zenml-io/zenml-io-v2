@@ -1,0 +1,130 @@
+---
+title: "Test-Driven Vibe Development: Integrating Quality Engineering with AI Code Generation"
+slug: "test-driven-vibe-development-integrating-quality-engineering-with-ai-code-generation"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "694adc3a91ce3499084e4aff"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2026-01-07T09:40:39.763Z"
+  lastUpdated: "2025-12-23T20:11:48.729Z"
+  createdOn: "2025-12-23T18:15:22.946Z"
+llmopsTags:
+  - "code-generation"
+  - "data-analysis"
+  - "prompt-engineering"
+  - "agent-based"
+  - "error-handling"
+  - "evals"
+  - "fastapi"
+  - "documentation"
+  - "guardrails"
+  - "microsoft-azure"
+  - "google-gcp"
+company: "Asos"
+summary: "ASOS, a major e-commerce retailer, developed Test-Driven Vibe Development (TDVD), a novel methodology that combines test-first quality engineering practices with LLM-driven code generation to address the quality and reliability challenges of \"vibe coding.\" The company applied this approach to build an internal stock discrepancy reporting system, using AI agents to generate both tests and code in a structured workflow that prioritizes acceptance test-driven development (ATDD), behavior-driven development (BDD), and test-driven development (TDD). With a team of effectively 2.5 people working part-time, they delivered a full-stack MVP (backend API, Azure Functions, React frontend) in 4 weeks—representing a 7-10x acceleration compared to traditional development estimates—while maintaining quality through continuous validation against predefined test requirements and catching hallucinations early in the development cycle."
+link: "https://medium.com/asos-techblog/introducing-test-driven-vibe-development-0effe6430691"
+year: 2025
+seo:
+  title: "Asos: Test-Driven Vibe Development: Integrating Quality Engineering with AI Code Generation - ZenML LLMOps Database"
+  description: "ASOS, a major e-commerce retailer, developed Test-Driven Vibe Development (TDVD), a novel methodology that combines test-first quality engineering practices with LLM-driven code generation to address the quality and reliability challenges of \"vibe coding.\" The company applied this approach to build an internal stock discrepancy reporting system, using AI agents to generate both tests and code in a structured workflow that prioritizes acceptance test-driven development (ATDD), behavior-driven development (BDD), and test-driven development (TDD). With a team of effectively 2.5 people working part-time, they delivered a full-stack MVP (backend API, Azure Functions, React frontend) in 4 weeks—representing a 7-10x acceleration compared to traditional development estimates—while maintaining quality through continuous validation against predefined test requirements and catching hallucinations early in the development cycle."
+  canonical: "https://www.zenml.io/llmops-database/test-driven-vibe-development-integrating-quality-engineering-with-ai-code-generation"
+  ogTitle: "Asos: Test-Driven Vibe Development: Integrating Quality Engineering with AI Code Generation - ZenML LLMOps Database"
+  ogDescription: "ASOS, a major e-commerce retailer, developed Test-Driven Vibe Development (TDVD), a novel methodology that combines test-first quality engineering practices with LLM-driven code generation to address the quality and reliability challenges of \"vibe coding.\" The company applied this approach to build an internal stock discrepancy reporting system, using AI agents to generate both tests and code in a structured workflow that prioritizes acceptance test-driven development (ATDD), behavior-driven development (BDD), and test-driven development (TDD). With a team of effectively 2.5 people working part-time, they delivered a full-stack MVP (backend API, Azure Functions, React frontend) in 4 weeks—representing a 7-10x acceleration compared to traditional development estimates—while maintaining quality through continuous validation against predefined test requirements and catching hallucinations early in the development cycle."
+---
+
+## Overall Summary
+
+ASOS, a prominent e-commerce fashion retailer, embarked on an experimental journey to harness LLM-driven code generation while mitigating the well-documented risks of hallucinations, security vulnerabilities, and quality degradation. The result was Test-Driven Vibe Development (TDVD), a reimagined software development lifecycle that inverts the typical "vibe coding" approach by placing test definition and quality engineering practices at the forefront of AI-assisted development. The case study centers on a real-world trial where a small, resource-constrained team built an internal stock discrepancy reporting system—a full-stack solution comprising backend services, Azure Functions, data stores, and a React frontend—in just four weeks with approximately 42 hours of active development time. While ASOS claims 7-10x acceleration compared to traditional estimates, it's important to note that the baseline estimate reflected the team's unfamiliarity with the technology stack, which may inflate the comparative advantage. Nevertheless, the case demonstrates a thoughtful approach to integrating LLMs into production software development with explicit attention to architectural constraints of transformer models, quality gates, and iterative refinement.
+
+## The Problem Context and Motivation
+
+ASOS faced a common enterprise challenge: their existing stock discrepancy reporting system could identify misalignments between physical warehouse stock and system records but couldn't pinpoint what was missing or explain why. This limitation forced manual investigations that consumed significant time and delayed resolution of stock accuracy issues—a critical concern for an e-commerce operation dependent on accurate inventory management. The team tasked with addressing this problem operated under severe constraints: an engineering lead juggling multiple responsibilities, a single part-time senior developer, no frontend expertise, and no dedicated product manager.
+
+Beyond this specific business problem, ASOS was grappling with a broader strategic question facing the entire software development industry in 2025: how to productively harness the rapid emergence of LLM-driven development capabilities while avoiding the well-publicized pitfalls. The author, Irfan M, a Principal Engineer specializing in "agentic delivery," identified common challenges with what AI researcher Andrej Karpathy termed "vibe coding"—the practice of using natural language prompts to instruct AI tools to generate, refine, and debug code. These challenges included managing code quality due to hallucinations, missing defects buried deep in generated code, security vulnerabilities, and a general lack of rigor in the development process.
+
+## Understanding LLM Architectural Constraints
+
+Rather than simply attempting to force LLMs into existing development workflows, the ASOS team took a step back to understand the fundamental architectural limitations of large language models. This analysis proved crucial to their approach. At their core, LLMs built on the transformer architecture are probabilistic pattern-recognition engines that predict the next token by assigning probabilities to word sequences. A major challenge inherent to this architecture is attention management—specifically how the model decides which parts of the input deserve focus when generating output.
+
+The probability function used in this process (softmax) has inherent limitations when handling large, complex contexts, as attention becomes "too thinly spread." This means accuracy declines as context increases and attention diffuses across more tokens. While agentic systems employ various strategies to mitigate this limitation (such as summarizing conversations for later reference), the key insight was clear: to maintain AI agent accuracy, it makes sense to employ fewer, more atomic tasks for each instruction prompt. This understanding of the underlying architecture directly informed the design of TDVD, emphasizing smaller, focused prompts rather than complex, multi-faceted instructions.
+
+## Test-Driven Vibe Development (TDVD) Methodology
+
+TDVD represents a fusion of mature test-first quality engineering practices with the flexibility and speed of vibe coding. The methodology restructures the development lifecycle into a flow from intent → specification → test → code → validation → deployment. Rather than generating functional code first and testing afterward (as in typical vibe coding), TDVD inverts this sequence by using natural language prompts to drive the definition of expected behavior upfront through acceptance criteria or tests.
+
+The TDVD lifecycle integrates several established quality engineering practices:
+
+- **Architecture Driven Testing (ADT)** to form a highly relevant test strategy based on architecture diagrams—a model the author developed specifically for this purpose
+- **Acceptance Test-Driven Development (ATDD)** to establish quality-refined acceptance criteria and test scenarios before implementation
+- **Behavior-Driven Development (BDD)** for consistent domain language expression across the team and AI agent
+- **Test-Driven Development (TDD)** to front-load tests in the implementation phase, ensuring code is continuously validated
+
+The activities within TDVD fall into three broad categories. The **Plan** phase focuses on defining intent in a test-first manner, establishing clear requirements and test scenarios before any code generation. The **Implement** phase develops the solution by first generating tests and then generating code that satisfies those tests, maintaining continuous validation. The **Harden** phase adds a final layer of deepening both functional and non-functional test coverage.
+
+This test-first, intent-driven approach offers several advantages for LLM-based development. Clear testable requirements as code are generated before functional implementation, ensuring alignment between what's intended and what's built. Code generation is continuously validated against predefined requirements, creating an automated quality gate. Bugs and hallucinations are caught early before they become costly to fix. Security and quality risks can be managed proactively rather than discovered late in the cycle. Critically, this approach works with rather than against the LLM's architectural constraints by breaking work into smaller, more focused tasks that maintain context and attention.
+
+## The Trial Implementation
+
+The team selected an internal stock discrepancy reporting solution as a low-risk candidate for testing TDVD in a real-world scenario. The required solution needed to precisely identify and report missing or mismatched stock transactions by automatically comparing physical stock positions in warehouse management systems against stock reconciliation records. The benefits would include earlier discrepancy detection, proactive alerting, reduced manual investigation, faster resolution, better accountability, and improved stock accuracy for downstream consumers.
+
+The MVP scope was substantial for such a small team: a backend comprising an API, Azure Functions for data handling with timed triggers, discrepancy calculation logic, and two data stores; a React-based frontend with three views supporting search and dynamic filtering plus a notes modal; and standard essentials like authorization, authentication, and logging. Traditional estimates for a full development team to build this MVP ranged between 4-6 months (3-4 months for backend, 2-3 for frontend).
+
+The TDVD team consisted of Caroline Perryman (Engineering Lead juggling multiple commitments), Cian Moloney (Senior Developer at 50% availability), and Irfan M (the methodology designer). Working with TDVD and AI agents, they delivered the MVP plus additional nice-to-have features (a File Detail View for comprehensive drill-down into file-level metadata and SKU-level discrepancy data, plus a report export feature) in 4 weeks. During this period, they rebuilt approximately 80% of the MVP twice to refine prompts for higher-quality outputs. Excluding the two teardowns and combining Planning and Implement phases, total active development time was 42 hours or 11 workdays, including 32 hours of mob programming sessions and approximately 10 hours of individual work.
+
+## LLMOps Considerations and Lessons Learned
+
+The case study reveals several important insights for operationalizing LLMs in software development that go beyond the headline speed metrics. The team encountered multiple challenges that required iterative refinement of their approach, demonstrating that even with a well-conceived methodology, LLMOps remains an experimental practice requiring continuous learning.
+
+**Context Management and Prompt Engineering**: One of the most significant challenges was maintaining LLM context across development phases. The team initially failed to keep features small enough and iterations short enough, resulting in context loss between lengthy prompt phases. This led to two complete teardowns and rebuilds despite having working code. The solution was to revise the Product Requirements Document (PRD) by breaking capability features down into much smaller user stories and rebuilding implementation step guides so each cycle focused on no more than two features. They also introduced custom implementation summaries using their own prompts to provide continuity for subsequent phases. This reflects a core LLMOps challenge: balancing task granularity against the overhead of context management and handoffs between prompts.
+
+**Test Execution and Technical Debt**: The AI agent sometimes built out tests and associated code but didn't actually execute the tests, resulting in mounting technical debt. At other times, the agent confidently claimed completion of a revision or fix but left failing tests unresolved. The team addressed this by explicitly prompting the AI to never proceed to the next task step until all tests passed—essentially hardcoding a quality gate into the prompt instructions. This highlights the importance of explicit, enforceable validation steps in LLM-based development workflows rather than trusting the agent's self-assessment of completion.
+
+**Instruction Specificity Trade-offs**: The team discovered a curious trade-off in prompt specificity. Slightly vaguer instructions gave the AI room for creative assumptions and initiative—for example, when asked to "add a page," the agent not only built the page but proactively updated the navigation bar. Overly precise instructions killed that initiative; when they sharpened the prompt to specify exactly how to add the page, the agent did so but didn't update the navigation bar. This represents a fundamental tension in LLMOps: balancing control and predictability against leveraging the model's capability for reasonable inference and holistic problem-solving. Finding the right level of prompt granularity remains more art than science.
+
+**Dependency Management**: Planning dependencies upfront proved critical for efficient token usage. The team learned that before starting the Implement phase, it's essential to ensure the skeleton solution includes all prerequisites and installations. Failing to guide the agent on handling missing dependencies resulted in token-draining technical debt and costly rework. This suggests that LLM-based development workflows benefit from more extensive scaffolding and environmental setup compared to human developers who can more easily navigate and resolve dependency issues on the fly.
+
+**Infrastructure as the Bottleneck**: Perhaps the most telling observation about production LLMOps was that code generation wasn't the biggest time sink—infrastructure plumbing was. Chasing down people for access permissions and configuration approvals cost several days of development time. The team identified this as an area ripe for increased automation and potentially "agentic" attention. This reveals a broader truth about LLMOps: accelerating code generation may simply shift bottlenecks elsewhere in the delivery chain, particularly to infrastructure provisioning, access management, and deployment pipelines. True end-to-end acceleration requires addressing these operational concerns, not just the coding phase.
+
+## Critical Assessment and Balanced Perspective
+
+While the case study presents impressive results, several factors warrant careful consideration when evaluating the claims and applicability to other contexts:
+
+**Baseline Comparison Validity**: The 7-10x acceleration is calculated against an estimate based on the team's lack of experience with the technology stack. The author acknowledges "another team might have quoted something leaner," which is a significant caveat. A more experienced team using the same technology without AI assistance might have delivered in 1-2 months rather than 4-6, which would reduce the acceleration factor considerably. The comparison is somewhat apples-to-oranges, and organizations should be cautious about extrapolating these speed gains to scenarios where developers already have relevant expertise.
+
+**Selection Bias**: This was an internal reporting tool, not a customer-facing product with strict regulatory, security, or compliance requirements. The risk tolerance for such internal tools is typically higher, which may have influenced both the aggressive timeline and the acceptability of the approach. Additionally, the team chose this project specifically as a "low-risk candidate," suggesting some degree of selection bias in demonstrating the methodology's viability.
+
+**Hidden Costs**: The case study mentions rebuilding 80% of the solution twice to refine prompts. While these rebuilds are excluded from the 42-hour development time metric, they represent significant learning overhead and refinement effort. For organizations adopting TDVD, the initial investment in developing effective prompts, understanding optimal task granularity, and establishing workflow patterns could be substantial. The methodology may not deliver comparable acceleration on the first project using this approach.
+
+**Team Dynamics and Skills**: The team members were clearly high-caliber professionals with diverse skills—the author notes they dynamically shifted between product manager, systems specialist, solutions architect, tech lead, solution architect, platform engineer, and full-stack developer roles. This fluid role-switching and "mobbing" approach may be as responsible for the acceleration as the TDVD methodology itself. Organizations with more rigid role definitions or less cross-functional capability might not achieve similar results even with the same AI-assisted approach.
+
+**Long-term Maintenance Considerations**: The case study focuses on MVP delivery but doesn't address long-term maintenance, debugging by other team members, code comprehension, or evolution of the AI-generated codebase. Code generated by AI agents may have characteristics that make it harder to maintain—unusual patterns, inconsistent style, or non-idiomatic implementations that human developers might not choose. The true cost of AI-generated code can only be evaluated over a longer operational timeframe.
+
+**Generalizability**: The solution was built on relatively well-established technologies (Azure Functions, React) for which LLMs have extensive training data. Performance might differ significantly for newer frameworks, proprietary technologies, or highly specialized domains where training data is scarce. The approach's effectiveness likely correlates with how well-represented the target technology stack is in the LLM's training corpus.
+
+## Novel Contributions and Forward-Looking Insights
+
+Despite these caveats, the case study makes several valuable contributions to the emerging field of LLMOps:
+
+**Architectural Awareness**: The explicit consideration of LLM architectural constraints (attention management, softmax limitations, context window challenges) when designing the development workflow is sophisticated and relatively rare in practitioner accounts. Most discussions of AI-assisted development ignore these fundamental limitations or treat them as black-box problems. ASOS's approach of designing workflows that accommodate rather than fight against these constraints represents mature thinking about LLMOps.
+
+**Quality-First Integration**: Rather than bolting testing onto an AI code generation process as an afterthought, TDVD genuinely integrates test-first practices into the core workflow. This represents a more thoughtful approach than simply using AI to generate code faster and hoping tests catch the problems. The methodology attempts to structurally prevent common AI coding failures rather than relying solely on post-hoc detection.
+
+**Practical Workflow Innovation**: The three-phase structure (Plan → Implement → Harden) with explicit handoffs and continuity mechanisms (implementation summaries, context maintenance strategies) provides a concrete framework that other organizations could adapt. This is more actionable than vague recommendations to "use AI carefully" or "always review AI output."
+
+**Honest Failure Analysis**: The candid discussion of what didn't work—the two complete rebuilds, the challenges with instruction specificity, the test execution gaps—makes this case study more credible and useful than typical vendor-driven success stories. The willingness to acknowledge failures and iterations reflects genuine learning rather than marketing.
+
+**Role Fluidity Observations**: The insight that TDVD naturally led to dynamic role-switching and boundary-blurring is intriguing and potentially significant. If AI-assisted development truly enables individuals to work effectively across more of the stack and lifecycle, this could have profound implications for team structures, hiring, and skill development. However, this observation also raises questions about whether the approach scales beyond small, highly skilled teams.
+
+## Academic and Industry Context
+
+The article references emerging academic work examining why AI agents struggle with real-world software development tasks, specifically citing research on GitHub issue resolution that recommends "improving the workflow of software development agents" through "early, proactive measures that pre-empt common yet pervasive errors." This grounding in academic literature lends credibility to the TDVD approach as aligned with broader research directions rather than purely anecdotal experimentation.
+
+The timing is also noteworthy—published in October 2025 but drafted in August 2025, referencing Andrej Karpathy's coining of "vibe coding" in early 2025. This places the work at the cutting edge of rapidly evolving practices around LLM-based software development, though the author acknowledges that "some of the processes and challenges mentioned in this article have been refined since" the draft, suggesting ongoing iteration.
+
+## Conclusion for LLMOps Practitioners
+
+For organizations considering similar approaches, ASOS's TDVD experiment offers several practical takeaways. First, thoughtfully designed workflows that account for LLM limitations can potentially deliver significant acceleration, though the magnitude likely depends heavily on context, team skills, and problem domain. Second, test-first approaches provide valuable guardrails for AI-generated code, catching hallucinations and errors early. Third, the real bottlenecks to AI-assisted development may lie in infrastructure, access management, and operational processes rather than code generation itself. Fourth, effective prompt engineering requires substantial iteration and learning—the "magic prompts" that work well emerge from experience and failure rather than first attempts.
+
+Organizations should approach TDVD-style methodologies as experiments requiring investment in learning, refinement, and cultural adaptation rather than drop-in productivity multipliers. The approach appears most promising for internal tools, prototypes, or scenarios where speed is highly valued and the team has latitude to iterate on both the methodology and the solution. For production systems with stringent requirements, the jury is still out on whether AI-assisted development can consistently deliver the combination of speed, quality, security, and maintainability that enterprises require. ASOS's experience suggests the potential is real, but realizing it demands careful methodology design, continuous learning, and realistic expectations about where AI assistance provides the most value.

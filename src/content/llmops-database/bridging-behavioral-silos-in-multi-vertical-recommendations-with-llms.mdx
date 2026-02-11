@@ -1,0 +1,124 @@
+---
+title: "Bridging Behavioral Silos in Multi-Vertical Recommendations with LLMs"
+slug: "bridging-behavioral-silos-in-multi-vertical-recommendations-with-llms"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "69315b9265d3a85021978440"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:32:37.778Z"
+  createdOn: "2025-12-04T09:59:46.686Z"
+llmopsTags:
+  - "customer-support"
+  - "classification"
+  - "structured-output"
+  - "poc"
+  - "rag"
+  - "embeddings"
+  - "prompt-engineering"
+  - "few-shot"
+  - "semantic-search"
+  - "cost-optimization"
+  - "multi-agent-systems"
+  - "evals"
+  - "pytorch"
+  - "tensorflow"
+  - "fastapi"
+  - "cache"
+  - "monitoring"
+  - "openai"
+company: "Doordash"
+summary: "DoorDash addressed the challenge of behavioral silos in their multi-vertical marketplace, where customers have deep interaction history in some categories (like restaurants) but sparse data in others (like grocery or retail). They built an LLM-powered framework using hierarchical RAG to translate restaurant orders and search queries into cross-vertical affinity features aligned with their product taxonomy. These semantic features were integrated into their production multi-task ranking models. The approach delivered consistent improvements both offline and online: approximately 4.4% improvement in AUC-ROC and 4.8% in MRR offline, with similar gains in production (+4.3% AUC-ROC, +3.2% MRR). The solution proved particularly effective for cold-start scenarios while maintaining practical inference costs through prompt optimization, caching strategies, and use of smaller language models like GPT-4o-mini."
+link: "https://careersatdoordash.com/blog/doordash-llms-bridge-behavioral-silos-in-multi-vertical-recommendations/"
+year: 2025
+seo:
+  title: "Doordash: Bridging Behavioral Silos in Multi-Vertical Recommendations with LLMs - ZenML LLMOps Database"
+  description: "DoorDash addressed the challenge of behavioral silos in their multi-vertical marketplace, where customers have deep interaction history in some categories (like restaurants) but sparse data in others (like grocery or retail). They built an LLM-powered framework using hierarchical RAG to translate restaurant orders and search queries into cross-vertical affinity features aligned with their product taxonomy. These semantic features were integrated into their production multi-task ranking models. The approach delivered consistent improvements both offline and online: approximately 4.4% improvement in AUC-ROC and 4.8% in MRR offline, with similar gains in production (+4.3% AUC-ROC, +3.2% MRR). The solution proved particularly effective for cold-start scenarios while maintaining practical inference costs through prompt optimization, caching strategies, and use of smaller language models like GPT-4o-mini."
+  canonical: "https://www.zenml.io/llmops-database/bridging-behavioral-silos-in-multi-vertical-recommendations-with-llms"
+  ogTitle: "Doordash: Bridging Behavioral Silos in Multi-Vertical Recommendations with LLMs - ZenML LLMOps Database"
+  ogDescription: "DoorDash addressed the challenge of behavioral silos in their multi-vertical marketplace, where customers have deep interaction history in some categories (like restaurants) but sparse data in others (like grocery or retail). They built an LLM-powered framework using hierarchical RAG to translate restaurant orders and search queries into cross-vertical affinity features aligned with their product taxonomy. These semantic features were integrated into their production multi-task ranking models. The approach delivered consistent improvements both offline and online: approximately 4.4% improvement in AUC-ROC and 4.8% in MRR offline, with similar gains in production (+4.3% AUC-ROC, +3.2% MRR). The solution proved particularly effective for cold-start scenarios while maintaining practical inference costs through prompt optimization, caching strategies, and use of smaller language models like GPT-4o-mini."
+---
+
+## Overview and Business Context
+
+DoorDash, operating as a multi-vertical marketplace spanning restaurants, grocery, retail, and convenience stores, faced a fundamental challenge in recommendation systems: behavioral silos. The company's research, presented at RecSys 2025, addressed how different verticals generate vastly different quality and density of user interaction data. Restaurants, with compact menus and high reorder frequency, produce dense and clean behavioral signals. In contrast, categories like grocery and retail have tens to hundreds of thousands of SKUs, resulting in user behavior that spreads thinly across enormous catalogs. A customer might have rich interaction history in restaurants but effectively be a cold-start user in other verticals.
+
+This asymmetry creates significant modeling challenges. Standard recommender systems struggle with sparse data per SKU, and popularity-based baselines tend to overexpose a small set of head products while pushing aside relevant long-tail items, ultimately weakening personalization. DoorDash's hypothesis was that consumer behavior across verticals contains hidden patterns—preferences for cuisine types, dietary patterns, price anchors—that can be abstracted into cross-domain semantic features. If these patterns could be captured as structured, catalog-aligned signals, they could be reused in categories where interaction data is sparse, enabling personalization from day one rather than waiting for user history to accumulate.
+
+## LLM Architecture and Technical Implementation
+
+The core innovation involves using LLMs as a semantic bridge to translate noisy user activity into high-fidelity, generalizable representations. DoorDash developed a hierarchical Retrieval Augmented Generation (H-RAG) pipeline that processes user behavior logs and generates structured affinity features aligned with their four-level product taxonomy (L1 through L4). For example, the taxonomy hierarchy might progress from L1: "Dairy & Eggs" → L2: "Cheese" → L3: "Hard Cheeses" → L4: "Cheddar."
+
+The H-RAG pipeline operates in three stages. First, the model predicts broad category affinities at higher taxonomy levels (L1 and L2). These high-confidence predictions then constrain the search space at deeper levels (L3 and L4), with the model iteratively refining predictions to avoid plausible but incorrect subcategories. For their multi-task learning ranking system, they focus primarily on L2 and L3 features, as L1 proves too generic for meaningful signals and L4 is often too sparse in real-world data. This top-down strategy demonstrates careful consideration of the tradeoff between granularity and data density.
+
+The system processes a 20% sample of three months of consumer data, translating unstructured behaviors like restaurant orders and search queries into taxonomic affinities. These inferred affinities then become features fed into their production recommendation models. The choice to use sampling rather than the full dataset represents a pragmatic cost-quality tradeoff, though the text doesn't discuss whether this sampling introduces any bias or coverage gaps.
+
+## Prompt Engineering and Model Control
+
+DoorDash implemented sophisticated prompt design to maximize reliability and relevance. User histories are presented chronologically with recent actions first, helping the model capture evolving tastes. Both restaurant orders (concatenated names and ordered items) and search queries follow this temporal ordering. The prompts include rich context such as the complete taxonomy structure and anonymized profile attributes, explicitly defining which categories the model can use.
+
+To ensure deterministic and high-quality outputs, they set temperature to 0.1 and instructed the model to assign confidence scores [0,1] to each inferred category, keeping only those with confidence ≥ 0.80. This built-in filtering mechanism removes low-confidence or spurious associations. The impact of these prompt refinements was substantial: before optimization, a user ordering Indian food might be tagged with generic categories like "Sandwiches," while after refinements, the model surfaces more relevant categories such as "Specialty Breads (Naan)" that better reflect true cuisine preferences.
+
+This progression illustrates both the power and brittleness of LLM-based feature generation. While the improvements are clear, the need for such careful prompt engineering raises questions about robustness and maintenance burden as the taxonomy evolves or new verticals are added.
+
+## Model Selection and Cost Optimization
+
+DoorDash benchmarked several models including GPT-4o and GPT-4o-mini. They found that GPT-4o-mini delivered similar output quality at substantially lower cost, making it their production choice. This represents a pragmatic decision favoring operational efficiency over potential marginal quality gains from larger models. However, the case study doesn't provide detailed metrics comparing the models' performance, making it difficult to assess whether any quality was sacrificed.
+
+To reduce inference costs further, they implemented several optimization strategies. They cache the static portion of prompts (instructions plus taxonomy structure) and append only the dynamic user history for each request. This prompt caching is a standard but effective technique for reducing token usage. Additionally, they employ just-in-time feature materialization, recomputing affinities only when users perform new actions rather than on a fixed schedule. These optimizations collectively cut total computation costs by approximately 80% while preserving feature fidelity. The 80% reduction is impressive, though the text doesn't specify the baseline cost or absolute costs involved, making it difficult to assess whether the system is truly cost-effective at DoorDash's scale.
+
+## Feature Quality Evaluation
+
+DoorDash employed two parallel evaluation approaches: human evaluation and LLM-as-a-judge. Both used a 3-point scale to score personalization relevance on 1000 samples per signal type. The results showed that features derived from search queries achieved higher personalization scores than those from order history. This aligns with intuition: search reflects explicit intent while orders provide more implicit preference signals. Human evaluators rated search-derived features higher (the exact scores aren't provided in tables shown), and GPT-4o as judge concurred with this assessment.
+
+The dual evaluation approach is methodologically sound, providing both human ground truth and scalable automated assessment. However, using an LLM (GPT-4o) to judge features generated by another LLM (GPT-4o-mini) raises potential concerns about systematic biases or alignment that might inflate agreement. The case study doesn't discuss inter-rater reliability or whether the LLM-as-judge correlates well with downstream task performance, which would strengthen confidence in this evaluation methodology.
+
+## Integration with Production Ranking Systems
+
+The LLM-generated features integrate into DoorDash's existing multi-task learning (MTL) ranking architecture. This ranker jointly optimizes multiple objectives including click-through rate, add-to-cart, and purchase using weighted task-specific losses. The total loss is a weighted sum across tasks, with predictions and labels for each objective.
+
+Feature augmentation works by concatenating LLM-derived user affinities (u_LLM) with existing features including user engagement features (u_eng) and item engagement features (i_eng) covering category, brand, and price. Variable-length categorical fields, such as lists of taxonomy IDs in the LLM features, are handled through shared embedding tables with mean pooling to yield fixed-size representations. This approach enables efficient parameter sharing.
+
+The concatenated features pass through a shared MLP trunk followed by task-specific heads that produce predictions for each objective. This architecture demonstrates thoughtful integration of LLM features into an existing production system rather than requiring wholesale replacement. The shared trunk allows the model to learn joint representations across tasks while task-specific heads enable specialization. This is a well-established pattern in recommendation systems, and the LLM features simply become another input signal.
+
+## Offline Evaluation Results
+
+Offline evaluation assessed performance on the full user base and two cohorts: cold-start consumers (new to non-restaurant verticals) and power consumers (highly active). For the overall population, the proposed model achieved 4.4% relative improvement in AUC-ROC and 4.8% relative improvement in Mean Reciprocal Rank (MRR) over baseline. These gains are meaningful at scale, though the baseline performance levels aren't disclosed, making it hard to assess absolute performance.
+
+For cold-start consumers, the combined signals, especially from restaurant orders, yielded 4.0% lift in AUC-ROC and 1.1% lift in MRR. This supports their core hypothesis that historical taste preferences from restaurants can transfer effectively to other verticals. The smaller MRR improvement compared to AUC-ROC suggests that while ranking quality improved, getting the most relevant item at the top position proved more challenging for cold-start users.
+
+For power consumers, search query signals drove the largest gains: 5.2% lift in AUC-ROC and 2.2% lift in MRR. This indicates the model adapts well to recent, high-intent behavior captured in searches. The differential impact across cohorts is encouraging, showing the approach works for both sparse-data and rich-data scenarios, though through different signal types.
+
+## Online Deployment and Production Results
+
+Online validation in production showed improvements of +4.3% in AUC-ROC and +3.2% in MRR versus baseline, closely matching offline analysis. This alignment between offline and online metrics is notable and suggests good experimental rigor and minimal distribution shift between training and production. Many LLM-based systems show degraded performance when deployed, so this consistency is a positive signal about the robustness of their approach.
+
+The case study describes these as "shadow traffic" metrics, suggesting they ran the new model in parallel with the production system, computing metrics on the same requests without serving results to users initially. This is a standard safe deployment practice. However, the text doesn't discuss whether they eventually conducted A/B tests with actual user-facing traffic, which would be the gold standard for validation. Additionally, no discussion of business metrics (conversion rate, revenue, user retention) is provided, only model quality metrics. While AUC-ROC and MRR are important, the ultimate validation would be impact on business outcomes.
+
+## LLMOps Considerations and Tradeoffs
+
+From an LLMOps perspective, this case study demonstrates several important practices and tradeoffs. The use of smaller models (GPT-4o-mini vs GPT-4o) represents a practical cost-quality tradeoff that proved successful. Prompt caching and just-in-time feature generation show awareness of inference cost challenges. The high confidence threshold (≥0.80) acts as a quality gate, preferring precision over recall in feature generation.
+
+However, several operational concerns aren't fully addressed. The system depends on OpenAI's API, creating vendor lock-in and exposure to pricing changes, rate limits, or service disruptions. The case study mentions exploring "smaller open weights models" as future work, suggesting awareness of this dependency. There's no discussion of monitoring and alerting for LLM feature quality in production, handling of API failures or timeouts, or latency impacts on the overall recommendation pipeline. The sampling approach (20% of users over three months) raises questions about freshness and coverage that aren't addressed.
+
+The evaluation methodology is relatively sophisticated with both human and automated assessment, but lacks discussion of ongoing monitoring. How do they detect when LLM-generated features degrade in quality? How often do they refresh the taxonomy or update prompts? These operational questions are critical for long-term production success but remain unexplored in the case study.
+
+## Future Directions and Limitations
+
+DoorDash outlines several next steps that reveal both opportunities and current limitations. They plan to extend LLM features earlier in the stack to candidate retrieval (e.g., Two-Tower models) rather than just final ranking. This suggests the current implementation only affects the final ranking stage, potentially leaving gains on the table in retrieval. They also want to experiment with richer prompting techniques like chain-of-thought or self-correction, and explore fine-tuned lightweight LLMs to reduce costs further while improving quality. The interest in open-source models suggests concerns about their current dependency on proprietary APIs.
+
+Modeling temporal dynamics explicitly is mentioned as a future direction, with interest in tracking how affinities decay or evolve over time through session-aware or time-weighted features. The current system's chronological ordering of histories provides some temporal signal, but more sophisticated temporal modeling could capture shifting user intent. Finally, they're interested in semantic IDs that capture stable, meaning-based representations of products and categories as a common layer across retrieval and ranking, suggesting movement toward a more unified semantic representation framework.
+
+These future directions implicitly acknowledge current limitations: the system operates primarily at ranking rather than retrieval, temporal dynamics are handled simplistically, and there's room for cost reduction and quality improvement through model optimization.
+
+## Critical Assessment
+
+While the case study presents impressive results, several claims should be viewed with balanced perspective. The 4-5% relative improvements in offline metrics are meaningful, but without knowing baseline performance or business impact, it's difficult to assess true significance. The close alignment between offline and online metrics is encouraging but shadow traffic metrics don't fully validate user-facing impact. The cost reduction claims (80%) are substantial but lack absolute cost context.
+
+The reliance on proprietary LLM APIs (OpenAI) creates operational dependencies and cost uncertainties that could affect long-term viability. The evaluation methodology, while more sophisticated than many industry case studies, uses LLM-as-judge with potential circular validation concerns. The sampling approach (20% of users) may introduce coverage gaps or freshness issues not discussed.
+
+The prompt engineering required to achieve good results highlights brittleness in the approach. While the improvements from better prompts are clear, this suggests the system may require ongoing prompt maintenance and could be sensitive to taxonomy changes or new verticals. The case study is also positioned as a success story from DoorDash's perspective, naturally emphasizing positive results while potentially downplaying challenges, failed experiments, or ongoing issues.
+
+Despite these caveats, the work represents a thoughtful application of LLMs to a real production problem, with clear problem formulation, reasonable technical choices, and validated results. The focus on practical concerns like cost optimization, deterministic outputs, and integration with existing systems shows mature engineering thinking rather than purely research-oriented exploration.

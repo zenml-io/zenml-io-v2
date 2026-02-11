@@ -1,0 +1,151 @@
+---
+title: "Newsletter Edition #12 - Why Top Teams Are Replacing AI Agents (and What They're Choosing Instead)"
+slug: "newsletter-edition-12---why-top-teams-are-replacing-ai-agents-and-what-theyre-choosing-instead"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "67caa09ebc7d433c937990e4"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-03-26T10:56:12.210Z"
+  lastUpdated: "2025-03-26T10:56:12.210Z"
+  createdOn: "2025-03-07T07:30:38.073Z"
+author: "hamza-tahir"
+category: "zenml-updates"
+tags:
+  - "newsletter"
+  - "news"
+  - "zenml"
+  - "llmops"
+date: "2025-03-07T00:00:00.000Z"
+readingTime: 7 mins
+mainImage:
+  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/9b3fcf3b/67caa04e963f2a8f9892eee4_Hackathon_Winners_Newsletter__1_.jpeg"
+seo:
+  title: "Newsletter Edition #12 - Why Top Teams Are Replacing AI Agents (and What They're Choosing Instead) - ZenML Blog"
+  description: "Our monthly roundup: Hamza visits the US, a new course built on ZenML and why workflows are better than autonomous agents!"
+  canonical: "https://www.zenml.io/blog/newsletter-edition-12---why-top-teams-are-replacing-ai-agents-and-what-theyre-choosing-instead"
+  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/9b3fcf3b/67caa04e963f2a8f9892eee4_Hackathon_Winners_Newsletter__1_.jpeg"
+  ogTitle: "Newsletter Edition #12 - Why Top Teams Are Replacing AI Agents (and What They're Choosing Instead) - ZenML Blog"
+  ogDescription: "Our monthly roundup: Hamza visits the US, a new course built on ZenML and why workflows are better than autonomous agents!"
+---
+
+Hey ZenML community! 👋
+
+After a 15-month visa saga, I finally spent two weeks in the US for the first time in 10 years. Beyond the Golden Gate views and Waymo's surprisingly aggressive self-driving, what blew me away was the sheer energy of the AI ecosystem. At a weekend hackathon we sponsored, I watched 200 senior engineers work through the night with unwavering focus. During events, I met teams casually investing $70K on OpenAI API calls. The scale of experimentation and willingness to push boundaries was truly inspiring – a stark reminder of how quickly this space is evolving.
+
+What became crystal clear at the [AI Engineer Summit in NYC](https://www.ai.engineer/summit/2025) is that the conversation around agents isn't binary but exists on a spectrum. While fully autonomous agents grab headlines, I discovered that tremendous enterprise value comes from well-structured workflows. The real challenge everyone's wrestling with? Making these systems reliable. When [Sam Stowers](https://www.linkedin.com/in/samuelstowers/) built a quick voice bot demo and challenged people to "jailbreak" it, many succeeded – a stark reminder of the production challenges we all face. The pattern I saw everywhere: reliability engineering trumps "vibe engineering" every time.
+
+The most transformative realization was seeing how a blend of engineering rigor with ambitious vision creates a unique kind of pragmatism. Teams are ripping out agent frameworks because they need deeper control over their LLM interactions, focusing instead on reliability, system-level evals, and production-grade workflows. The tools that win aren't the most sophisticated – they're the most reliable. Every coffee shop conversation felt like a glimpse into tomorrow's possibilities, and I'm excited to bring these insights back to our work at ZenML as we continue building bridges across the global AI community.
+
+## Product Updates
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/1cdba83a/67c0652ebc6a88f864605a66_ScreenRecording2025-02-27at14.07.03-ezgif.com-crop.gif" alt="Screen recording of a user registering components on the ZenML dashboard using the UI" />
+</figure>
+
+We've been hard at work expanding ZenML's capabilities with our recent 0.74.0 and 0.75.0 releases, bringing several major features to enhance your ML workflows.
+
+One of the most exciting additions is [SageMaker pipeline scheduling capabilities](https://github.com/zenml-io/zenml/pull/3271), allowing you to automate your workflows on AWS with time-based triggers. For Azure users, we've implemented [implicit authentication support for Azure Container Registry and Storage Accounts](https://github.com/zenml-io/zenml/pull/3274), eliminating the need for explicit credential management. Google Cloud users will appreciate the new [Vertex AI persistent resource handling](https://github.com/zenml-io/zenml/pull/3304) for step operators, which significantly speeds up development cycles.
+
+The dashboard experience has been enhanced too – you can now create and update stack components directly from the UI, and we've added [API Token support](https://github.com/zenml-io/zenml/pull/3351) for time-boxed API authentication. For developers seeking more control, we've added support for [custom log formats](https://github.com/zenml-io/zenml/pull/3288).
+
+Under the hood, we've significantly improved performance with [run metadata and tag indices](https://github.com/zenml-io/zenml/pull/3310), and comprehensive [timezone handling improvements](https://github.com/zenml-io/zenml/pull/3314) across the platform. We've also made it possible to [retrieve model artifacts by creation date](https://github.com/zenml-io/zenml/pull/3343) instead of version name, making it easier to access your latest models.
+
+Of course, we've also made dozens of smaller improvements and bug fixes. For the complete details, check out our [release notes for v0.74.0](https://github.com/zenml-io/zenml/compare/0.73.0...0.74.0) and [v0.75.0](https://github.com/zenml-io/zenml/compare/0.74.0...0.75.0).
+
+**⚠️ Important: Upcoming v0.80.0 Changes**
+
+*On March 18th, we'll be releasing ZenML v0.80.0 with significant structural improvements. "Tenants" will become "Workspaces" and we're introducing a new "Projects" feature for better team collaboration. While your existing pipelines and artifacts will be automatically migrated to a default project, we recommend planning for this upgrade. More detailed information will follow soon.*
+
+## Featured Course: Build Your Second Brain AI Assistant (Free, OSS)
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/43d20682/67ca9ff766f7870e79ee119e_Second_Brain_AI_Newsletter.png" alt="Architecture diagram of Paul Iusztin&#039;s free course &#039;Build your Second Brain&#039;" />
+</figure>
+
+We're excited to highlight an outstanding new open-source course that's generating significant buzz in the AI community. Paul Iusztin recently released "[Building Your Second Brain AI Assistant Using Agents, LLMs and RAG](https://decodingml.substack.com/p/build-your-second-brain-ai-assistant)" - a comprehensive, production-focused course that teaches you how to build AI systems that connect to your personal knowledge base.
+
+What sets this course apart is its pragmatic, no-nonsense approach to building real-world AI systems. Unlike many tutorials that focus on toy examples, Paul's course walks through the complete development of a production-grade AI assistant that can chat with your personal knowledge stored in tools like Notion. The course covers everything from data pipelines and preprocessing to fine-tuning LLMs, implementing advanced RAG techniques, and deploying agents with proper observability.
+
+We're particularly proud that ZenML was chosen as the core MLOps framework for orchestrating the pipelines in this course. [Paul leverages ZenML](https://github.com/decodingml/second-brain-ai-assistant-course) to manage the entire workflow - from data collection and ETL to feature engineering, model training, and evaluation. The course provides a perfect entry point for anyone looking to implement LLMOps pipelines with our framework.
+
+With six comprehensive modules and minimal cloud costs (you can complete it for as little as $5), this is an exceptional resource for anyone looking to bridge the gap between theoretical knowledge and real-world implementation. [The project](https://github.com/decodingml/second-brain-ai-assistant-course) has already garnered over 275 GitHub stars and continues to grow in popularity.
+
+## Bay Area Hackathon Winners
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/9b3fcf3b/67caa04e963f2a8f9892eee4_Hackathon_Winners_Newsletter__1_.jpeg" alt="__wf_reserved_inherit" />
+</figure>
+
+We recently co-sponsored a Bay Area hackathon where [Team Emoguardian took first place](https://www.linkedin.com/posts/harshrajjeripothula_ai-agents-llm-activity-7297418292149768193-Izze/?utm_source=share&utm_medium=member_desktop&rcm=ACoAABAwdVYB4B-i23zv5Gqmvs7qL8f07PBgg_o), winning a year of ZenML Pro Teams plan valued at $7,000 and $500 in cash. Harsh Jeripothula, Sai Naveen Chanumolu, and Sai Anuraghav Savadam built a multi-AI agent application using ZenML, Together AI, Agno, and HappyRobot. Their standout achievement was developing a custom Speech Emotion Recognition model trained on the RAVDESS dataset using ZenML pipelines, achieving state-of-the-art performance. The team plans to extend their architecture to train on multimodal data and leverage their ZenML Pro subscription to advance their work.
+
+SchematiX, comprising Arka Serezh, Aaliya Jakir, Suraj Singireddy, and Bart van Marum, created a voice-activated copilot for electronics development, focusing on fine-tuning a segmentation model to assist with PCB development. Their approach highlighted the potential for ML to streamline specialized technical workflows in electronics engineering. They also won a year of ZenML Pro Teams which they can use to continue working on their implementation.
+
+## New Blogs: AI Act, Multimodal Finetuning and adopting llms.txt
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/b6c2e339/67caa05fab61d233ebded891_February_March_2025_Newsletter__1_.png" alt="__wf_reserved_inherit" />
+</figure>
+
+Alex [explored the EU's landmark AI Act](https://www.zenml.io/blog/understanding-the-ai-act-february-2025-updates-and-implications) which is now partially in effect, breaking down the key provisions based on risk categories. The article outlined prohibited AI practices, requirements for high-risk systems, and practical compliance steps including model versioning and data governance. With penalties reaching up to €35 million or 7% of global turnover, the guide helped teams prepare for upcoming deadlines through 2027, highlighting how ZenML's tracking capabilities support regulatory requirements.
+
+[Haziqa Sajid demonstrated](https://www.zenml.io/blog/multimodal-llm-pipelines-from-data-ingestion-to-real-time-inference) the complete process of fine-tuning and deploying a multimodal vision language model using ZenML. The tutorial showed how to streamline everything from data preprocessing to deployment on Hugging Face inference endpoints. By breaking complex tasks into modular, reproducible pipeline steps, the article illustrated ZenML's ability to maintain proper tracking while handling multimodal data efficiently, allowing teams to focus on experimentation rather than infrastructure when working with advanced AI models.
+
+Jayesh detailed [ZenML's adoption of the llms.txt standard](https://www.zenml.io/blog/llms-txt) to make documentation more accessible to both humans and AI assistants. The post described the modular approach with specialized documentation files of varying sizes to accommodate different context windows and query complexity. Through practical examples with tools like Cursor, Vertex AI Studio, and NotebookLM, the article demonstrated how this structured, markdown-based format improves context understanding and enables more accurate code suggestions when using AI development tools.
+
+## 580+ entries in the LLMOps Database and growing
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/2d812536/67caa06c0a41149a189731cc_CleanShot_Mar_5_Newsletter_from_TinyPNG.png" alt="__wf_reserved_inherit" />
+</figure>
+
+Our [LLMOps Database](https://www.zenml.io/llmops-database) continues to expand with practical implementations across different sectors. In the government sector, Propel built an [evaluation](https://www.zenml.io/llmops-database/building-a-systematic-snap-benefits-llm-evaluation-framework) [framework](https://www.zenml.io/llmops-database/building-and-automating-comprehensive-llm-evaluation-framework-for-snap-benefits) for LLMs handling SNAP benefit inquiries, using Promptfoo for automated testing and implementing a system where models evaluate other models' responses for quality and accessibility. In e-commerce, [Pattern](https://www.zenml.io/llmops-database/ai-powered-ecommerce-content-optimization-platform) developed a content optimization tool that processes marketplace data points to improve product listings, with one client reporting a 21% month-over-month revenue increase after implementation.
+
+For media applications, [ByteDance](https://www.zenml.io/llmops-database/large-scale-video-content-processing-with-multimodal-llms-on-aws-inferentia2) deployed multimodal LLMs for large-scale video processing, using AWS Inferentia2 chips combined with tensor parallelism, static batching, and model quantization to reduce costs by 50% compared to standard EC2 instances. [Rogo](https://www.zenml.io/llmops-database/scaling-financial-research-and-analysis-with-multi-model-llm-architecture) addressed financial research challenges by implementing a multi-model architecture that combines GPT-4 with specialized models and financial datasets, reducing time spent on market research tasks. For handling unreliable outputs, [Gusto](https://www.zenml.io/llmops-database/using-token-log-probabilities-to-detect-and-filter-llm-hallucinations-in-customer-support) developed a method using token log-probabilities as a confidence metric, measuring a 69% difference in accuracy between high and low confidence responses.
+
+These cases demonstrate how organizations are implementing LLMs with practical engineering approaches. [QuantumBlack's data quality framework](https://www.zenml.io/llmops-database/data-quality-assessment-and-enhancement-framework-for-genai-applications) for unstructured data includes document clustering, labeling, and de-duplication workflows, which improved their RAG pipeline accuracy by 20%. [Deutsche Telekom](https://www.zenml.io/llmops-database/building-a-multi-agent-llm-platform-for-customer-service-automation) built their own agent computing platform to manage deployment and routing, handling over 1 million customer queries and outperforming vendor solutions by 38% in testing. [Our database](https://www.zenml.io/llmops-database) contains additional technical details on these implementations for teams looking to apply similar approaches.
+
+*If you have your own technical report, talk or blog you’d like us to consider for inclusion in the database, please *[submit your use case here](https://docs.google.com/forms/d/e/1FAIpQLSfrRC0_k3LrrHRBCjtxULmER1-RJgtt1lveyezMY98Li_5lWw/viewform)*.*
+
+## Rant's Corner: The Agent Hype Cycle
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/2b3cf96d/67caa07e9e7c183c26ee18be_Latest_Newsletter_Image_from_TinyPNG.png" alt="__wf_reserved_inherit" />
+</figure>
+
+Most "agents" in enterprise today are just DAGs (Directed Acyclic Graphs) wearing fancy clothing - predetermined paths with minimal actual agency and worse predictability. They follow predefined steps but with more marketing hype and less reliability than traditional workflow systems. This rebranding doesn't change the underlying reality of what these systems actually do.
+
+For mission-critical processes, the reliability of structured workflows consistently outperforms the unpredictability of autonomous agents, especially when compliance and governance are non-negotiable. Enterprise environments demand predictable outcomes, auditable processes, clear failure modes, and the ability to scale without surprises - all strengths of workflow-based approaches.
+
+Your CIO isn't losing sleep over lack of agent "creativity" - they're concerned about reliability, security, and governance. At ZenML, we're seeing practical approaches win: start with deterministic workflows, design for observability, and add narrow agency only where the value clearly exceeds the risk. The most successful AI implementations aren't the most "intelligent" - they're the most reliable.
+
+## AI World Roundup: February-March 2025
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/2dcc3489/67caa0907687fb38f6db3476_AI_World_Roundup_Feb-Mar_2025__1___1_.png" alt="__wf_reserved_inherit" />
+</figure>
+
+### Foundation Models Advancing Rapidly
+
+The past month has seen several significant model releases across the industry. Anthropic launched [Claude 3.7 Sonnet](https://www.anthropic.com/news/claude-3-7-sonnet) featuring hybrid reasoning capabilities and the [Claude Code](https://www.anthropic.com/news/claude-3-7-sonnet) CLI tool, enhancing both complex reasoning and coding workflows. OpenAI countered with [GPT-4.5](https://openai.com/index/introducing-gpt-4-5/), focusing on improved chat capabilities and reduced hallucinations. In the speech domain, [Sesame's CSM](https://www.sesame.com/research/crossing_the_uncanny_valley_of_voice) voice model has drawn attention for its uncanny realism, while the compact [Kokoro](https://huggingface.co/hexgrad/Kokoro-82M) (82M parameters) delivers impressive audiobook-quality TTS. Microsoft's [phi-4-multimodal](https://huggingface.co/microsoft/Phi-4-multimodal-instruct) (5.6B parameters) integrates text, vision, and speech in a single architecture, while Mistral AI released [Saba](https://mistral.ai/en/news/mistral-saba), specifically optimized for Arabic and South Asian languages.
+
+### Infrastructure Innovations Accelerating Development
+
+On the infrastructure front, two major releases are reshaping how AI systems are deployed and scaled. [DeepSeek's "Open-Source Week"](https://github.com/deepseek-ai/open-infra-index) unleashed five key technologies including **FlashMLA** (MLA decoding for Hopper GPUs), **DeepEP** (communication library for MoE models), and **3FS** (a parallel file system). Meanwhile, ByteDance released [AIBrix](https://github.com/vllm-project/aibrix), a comprehensive solution for deploying LLMs on Kubernetes with features like high-density LoRA management and distributed KV cache. These infrastructure improvements, coupled with new scaling playbooks from Hugging Face ([Ultra-Scale Playbook](https://huggingface.co/spaces/nanotron/ultrascale-playbook)) and DeepMind ([How to Scale Your Model](https://jax-ml.github.io/scaling-book/)), are democratizing knowledge about efficiently scaling AI systems.
+
+### Research Agents Transforming Information Access
+
+Following Google's lead with Gemini Deep Research, OpenAI has launched its own [Deep Research](https://openai.com/index/introducing-deep-research/) feature, triggering a wave of similar implementations. This approach, which employs iterative searching, reading, and reasoning until finding optimal answers, represents a significant shift beyond traditional RAG systems. The concept has proven so compelling that major players like [Hugging Face](https://huggingface.co/blog/open-deep-research) and [Jina AI](https://jina.ai/news/a-practical-guide-to-implementing-deepsearch-deepresearch/) are developing open-source alternatives, while Chinese tech giants like Baidu and Tencent have integrated DeepSeek-r1 into their search engines. This proliferation of research agents suggests a fundamental evolution in how AI systems will help humans access and synthesize complex information in the future.
+
+## Closing Thoughts
+
+My US trip reinforced what many of us already know: reliability trumps novelty in production AI. The gap between demos and deployed systems is narrowing, with the most successful teams prioritizing systematic evaluation and controlled workflows rather than flashy features.
+
+At ZenML, we're focused on providing a framework and service to use for this reliability-first approach. The case studies in our LLMOps database confirm that organizations succeeding with AI aren't necessarily those with the largest budgets, but those approaching the technology with engineering discipline and clear metrics.
+
+I'm returning to work with renewed appreciation for what this community is building – systems that make AI more reliable, accountable, and valuable each day. If you're tackling similar challenges, I'd love to hear about your experiences or see your case study in our database.
+
+Until next time,
+
+Hamza

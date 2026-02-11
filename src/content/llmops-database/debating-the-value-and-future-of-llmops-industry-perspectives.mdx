@@ -1,0 +1,123 @@
+---
+title: "Debating the Value and Future of LLMOps: Industry Perspectives"
+slug: "debating-the-value-and-future-of-llmops-industry-perspectives"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f4060c1da6f4b4429b908"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:41:57.550Z"
+  createdOn: "2024-11-21T14:14:56.282Z"
+llmopsTags:
+  - "devops"
+  - "documentation"
+  - "fine-tuning"
+  - "guardrails"
+  - "high-stakes-application"
+  - "monitoring"
+  - "multi-agent-systems"
+  - "openai"
+  - "poc"
+  - "prompt-engineering"
+  - "reliability"
+  - "scalability"
+  - "scaling"
+  - "security"
+company: "Various"
+summary: "A detailed discussion between Patrick Barker (CTO of Guaros) and Farud (ML Engineer from Iran) about the relevance and future of LLMOps, with Patrick arguing that LLMOps represents a distinct field from traditional MLOps due to different user profiles and tooling needs, while Farud contends that LLMOps may be overhyped and should be viewed as an extension of existing MLOps practices rather than a separate discipline."
+link: "https://www.youtube.com/watch?v=A0tWDRBh5RI"
+year: 2024
+seo:
+  title: "Various: Debating the Value and Future of LLMOps: Industry Perspectives - ZenML LLMOps Database"
+  description: "A detailed discussion between Patrick Barker (CTO of Guaros) and Farud (ML Engineer from Iran) about the relevance and future of LLMOps, with Patrick arguing that LLMOps represents a distinct field from traditional MLOps due to different user profiles and tooling needs, while Farud contends that LLMOps may be overhyped and should be viewed as an extension of existing MLOps practices rather than a separate discipline."
+  canonical: "https://www.zenml.io/llmops-database/debating-the-value-and-future-of-llmops-industry-perspectives"
+  ogTitle: "Various: Debating the Value and Future of LLMOps: Industry Perspectives - ZenML LLMOps Database"
+  ogDescription: "A detailed discussion between Patrick Barker (CTO of Guaros) and Farud (ML Engineer from Iran) about the relevance and future of LLMOps, with Patrick arguing that LLMOps represents a distinct field from traditional MLOps due to different user profiles and tooling needs, while Farud contends that LLMOps may be overhyped and should be viewed as an extension of existing MLOps practices rather than a separate discipline."
+---
+
+## Overview
+
+This case study captures a spirited debate from an MLOps Community podcast featuring two practitioners with distinctly different perspectives on whether "LLMOps" constitutes a genuinely new discipline or represents marketing hype built atop existing MLOps foundations. The discussion is particularly valuable for understanding the evolving landscape of production ML systems and how the introduction of large language models has potentially shifted the required skillsets, tooling, and operational paradigms.
+
+The two main voices in this debate are:
+
+- **Patrick Barker**: CTO of Kentos, a company building AI agents. Previously worked as an ML engineer at One Medical handling traditional MLOps workflows including NLP classification, anomaly detection, and tabular ML models.
+- **Farood**: A data engineer/MLOps engineer working at Yonet, an advertising company in Iran, who approaches the field from a more traditional software engineering perspective.
+
+## The Core Debate: Is LLMOps a Distinct Discipline?
+
+### Patrick's Position: LLMOps is Fundamentally Different
+
+Patrick makes a strong case that his experience transitioning from traditional MLOps at One Medical to building LLM-based applications revealed almost no overlap in required skills. At One Medical, his daily work involved setting up the standard ML 1.0 tool stack on Kubernetes, using MLflow for experiment tracking, training early transformer models for text classification using SageMaker training, and serving models on platforms like Seldon or KServe. He was building multiclass classification models for detecting things in text—classic NLP work.
+
+When he moved to working with LLMs and building agent-based applications, Patrick found that "there's hardly any crossover." Even fine-tuning LLMs is different, he argues, because of the scale involved and the specific techniques like LoRA (Low-Rank Adaptation) that require entirely different tooling than what was used with earlier transformers.
+
+Patrick's most compelling argument centers on the user persona shift. The "biggest use case with LLMs," he notes, is "JavaScript developer with an OpenAI key"—developers who were previously outside the ML ecosystem entirely. These frontend and application developers now need tools specifically designed for their workflows, not repurposed MLOps infrastructure. He points to Vercel AI as a perfect example of tooling built specifically for TypeScript developers working with LLMs.
+
+### Farood's Position: Same Paradigm, Different Technology Stack
+
+Farood takes a more skeptical stance, viewing LLMOps as part of a pattern of tech industry hype cycles. He draws parallels to the cloud computing bubble around 2012 and expresses concern about "over promising and under delivering" that hinders actual technical practitioners working toward realistic goals.
+
+His core argument is that MLOps represents a mindset and paradigm rather than a specific technology stack. The fundamental problems MLOps tries to solve—delivering data transparently, securely, and reproducibly—don't change whether you're training an LLM or a simple logistic regression model. "This NeverEnding cycle from data to production" remains constant regardless of the underlying model architecture.
+
+Farood is particularly concerned about the fragmentation of the field into "very small specific surgical tools" that may not scale well as a discipline. He advocates for extending current tools and tooling rather than creating entirely separate ecosystems for each new paradigm.
+
+## Areas of Agreement and Common Ground
+
+Despite their disagreements, both practitioners find common ground on several important points:
+
+**Data Engineering Remains Central**: Both agree that the data pipeline and data engineering aspects of MLOps and LLMOps are "almost identical." The problems of data quality, reproducibility, and governance don't disappear just because you're working with foundation models. Patrick acknowledges that data engineering is "probably the hardest part to automate" in any ML workflow.
+
+**The MLOps Term Itself is Immature**: Both note that even the term "MLOps" hasn't fully established itself. DevOps practitioners are often dismissive of the term, and what MLOps means at Microsoft, Google, or Facebook doesn't map to what a medium-sized company needs. This existing ambiguity makes the addition of yet another term ("LLMOps") even more problematic.
+
+**Bubbles Have Value**: Interestingly, Patrick embraces the idea of hype and bubbles as productive forces that encourage exploration. He cites economic research suggesting that bubble economies actually perform better than gradual growth because they enable exploration of many directions before finding what works. Farood doesn't necessarily disagree but expresses concern about the impact on working practitioners.
+
+## Technical Considerations for Production LLM Systems
+
+### The Skill Set Question
+
+Patrick explicitly addresses the question of whether understanding MLOps provides a "power-up" when working with LLMs. His answer is nuanced: if you're fine-tuning with LoRA, your MLOps background will be "incredibly beneficial" for understanding base concepts. But if you're a JavaScript developer building applications on top of API calls, that deep ML knowledge is "a lot lesser" in its utility.
+
+This raises important questions about team composition and hiring for LLMOps roles. The traditional path of DevOps → MLOps → LLMOps may not be the most efficient for all use cases.
+
+### Agents and the Future of ML 1.0
+
+Patrick makes a bold prediction: "Gen AI will eat ML 1.0 in less than three years"—possibly even sooner. His reasoning centers on agents becoming increasingly capable of using tools, citing research like "Agent Tuning" that shows models can approach GPT-4 capacity for tool use when specifically trained for it.
+
+He envisions a future similar to how the brain works, with a "higher level brain" (LLMs) that can construct and orchestrate "lower level algorithms" optimized for specific tasks like processing audio, visual, or tabular data. XGBoost isn't going to be replaced by LLMs directly because it's "so efficient and so small and so effective at what it does," but agents could potentially train XGBoost models on tabular data with increasing autonomy.
+
+Companies like Abacus AI are already approaching this "generative AI for MLOps" space, though Patrick acknowledges uncertainty about how well it currently works.
+
+### Environmental and Sustainability Concerns
+
+Farood raises an important concern that often gets overlooked in LLMOps discussions: the carbon footprint and energy consumption of training and running large models. He notes that when OpenAI trains a new GPT model, they're essentially training from scratch—a brute-force approach that may not be sustainable as the field scales.
+
+Patrick acknowledges this as "a huge problem" and notes that there's a company out of MIT focused specifically on environmental efficiency for LLMs. He also points to the Mamba paper as a potentially promising development, offering "wildly more efficient" computation than transformers with linear context scaling.
+
+### Production Deployment Challenges
+
+A recurring theme in the discussion is that "it's really really hard to get an AI application on LLMs out to production." Patrick notes that when he started working with LLM applications, there weren't really any tools to help with this challenge. This gap has spurred the development of new LLMOps tooling, though there's significant noise alongside genuinely useful tools.
+
+The discussion touches on the need for evaluation tooling specifically designed for LLM outputs, which differs substantially from traditional ML model evaluation. The stochastic nature of LLM outputs, the importance of context engineering (over prompt engineering, which Patrick sees as a potentially temporary artifact), and the challenges of testing generative systems all require new approaches.
+
+## Implications for Practitioners
+
+The debate surfaces several practical considerations for those working in or entering the field:
+
+- **Role Definition**: MLOps is already a role that Farood describes as requiring "five different engineers"—data engineering, data science, DevOps, backend development, and BI knowledge. Adding LLM-specific skills to this already broad requirement set creates questions about specialization versus generalization.
+
+- **Tool Selection**: The discussion highlights a tension between building specialized tools for specific use cases (the approach many LLMOps startups are taking) versus extending existing MLOps tools with LLM capabilities (which MLflow and others are doing). Neither approach has clearly won.
+
+- **Foundation Model Dependency**: Many current LLMOps use cases are essentially thin wrappers around API calls to models like GPT-4. This creates questions about long-term defensibility and value creation that wouldn't arise with traditional ML where you're training and owning your models.
+
+- **The Persona Shift**: The emergence of frontend and application developers as primary LLM users represents a significant market expansion. Tooling and education need to adapt to serve this new audience, which may mean creating genuinely new tools rather than adapting existing MLOps infrastructure.
+
+## Critical Assessment
+
+It's worth noting that this discussion, while insightful, represents opinions from two practitioners at a specific moment in time. The field is evolving rapidly, and claims made—particularly Patrick's prediction about agents eating ML 1.0—should be viewed skeptically. As noted in the discussion, many research papers don't hold up when reproduced at industry scale, and VC funding doesn't guarantee technical progress.
+
+The debate also reflects the speakers' specific contexts: Patrick is building an agent startup and has clear incentives to view LLMOps as a distinct, important field; Farood is implementing MLOps at a more traditional company and sees continuity with existing practices. Both perspectives have validity, but neither represents a complete picture.
+
+What emerges most clearly from this discussion is that the LLMOps space is genuinely in flux, with legitimate debates about fundamentals that won't be resolved by theoretical argument alone but by practical experience deploying LLM systems at scale across diverse use cases.

@@ -1,0 +1,141 @@
+---
+title: "Fine-Tuning Transaction Foundation Models with Joint Fusion"
+slug: "fine-tuning-transaction-foundation-models-with-joint-fusion"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "694ad9723dfc30a1e786fc2f"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2026-01-07T09:40:39.763Z"
+  lastUpdated: "2025-12-23T20:12:20.130Z"
+  createdOn: "2025-12-23T18:03:30.379Z"
+llmopsTags:
+  - "fraud-detection"
+  - "classification"
+  - "customer-support"
+  - "fine-tuning"
+  - "embeddings"
+  - "few-shot"
+  - "model-optimization"
+  - "pytorch"
+  - "tensorflow"
+  - "monitoring"
+  - "hugging-face"
+company: "Nubank"
+summary: "Nubank developed a sophisticated approach to customer behavior modeling by combining transformer-based transaction embeddings with tabular data through supervised fine-tuning and joint fusion training. Starting with self-supervised pre-trained foundation models for transaction data, they implemented a DCNv2-based architecture that incorporates numerical and categorical feature embeddings to blend sequential transaction data with traditional tabular features. This joint fusion approach, which simultaneously optimizes the transformer and blending model during fine-tuning, outperforms both late fusion methods and standalone LightGBM models, achieving measurable improvements in AUC across multiple benchmark tasks while eliminating the need for manual feature engineering from sequential transaction data."
+link: "https://building.nubank.com/fine-tuning-transaction-user-models/"
+year: 2025
+seo:
+  title: "Nubank: Fine-Tuning Transaction Foundation Models with Joint Fusion - ZenML LLMOps Database"
+  description: "Nubank developed a sophisticated approach to customer behavior modeling by combining transformer-based transaction embeddings with tabular data through supervised fine-tuning and joint fusion training. Starting with self-supervised pre-trained foundation models for transaction data, they implemented a DCNv2-based architecture that incorporates numerical and categorical feature embeddings to blend sequential transaction data with traditional tabular features. This joint fusion approach, which simultaneously optimizes the transformer and blending model during fine-tuning, outperforms both late fusion methods and standalone LightGBM models, achieving measurable improvements in AUC across multiple benchmark tasks while eliminating the need for manual feature engineering from sequential transaction data."
+  canonical: "https://www.zenml.io/llmops-database/fine-tuning-transaction-foundation-models-with-joint-fusion"
+  ogTitle: "Nubank: Fine-Tuning Transaction Foundation Models with Joint Fusion - ZenML LLMOps Database"
+  ogDescription: "Nubank developed a sophisticated approach to customer behavior modeling by combining transformer-based transaction embeddings with tabular data through supervised fine-tuning and joint fusion training. Starting with self-supervised pre-trained foundation models for transaction data, they implemented a DCNv2-based architecture that incorporates numerical and categorical feature embeddings to blend sequential transaction data with traditional tabular features. This joint fusion approach, which simultaneously optimizes the transformer and blending model during fine-tuning, outperforms both late fusion methods and standalone LightGBM models, achieving measurable improvements in AUC across multiple benchmark tasks while eliminating the need for manual feature engineering from sequential transaction data."
+---
+
+## Overview and Context
+
+Nubank, a leading fintech company, has developed a comprehensive approach to modeling customer financial behavior through foundation models built on transaction data. This case study represents the third installment in their series on transaction-based customer foundation models and focuses specifically on the production deployment challenges of moving from general-purpose embeddings to task-specific models that can effectively compete with traditional machine learning approaches in real-world financial applications.
+
+The core challenge that Nubank addresses in this work is how to operationalize transformer-based foundation models for transaction data in production environments where both sequential transaction history and traditional tabular features (such as bureau information) need to be combined to make optimal predictions. While their previous work demonstrated that self-supervised learning could produce general embeddings representing customer behavior, this case study tackles the practical problem of fine-tuning these models for specific downstream tasks while incorporating the rich signal from non-sequential tabular data sources.
+
+## Technical Architecture and Approach
+
+### Foundation: Pre-trained Transaction Models
+
+Nubank's approach begins with pre-trained transformer models that use self-supervised learning on transaction sequences to generate general-purpose customer embeddings. These foundation models are trained using causal transformers on historical transaction data, producing embeddings that capture broad patterns of customer financial behavior without being optimized for any specific task. This pre-training phase creates a general representation that can be adapted to multiple downstream applications.
+
+### Supervised Fine-Tuning Process
+
+The supervised fine-tuning process extends the pre-trained model by adding a prediction head—a linear layer that takes the final token embedding (termed the "user embedding") from the transformer output and maps it to task-specific predictions such as binary classification, multi-class classification, or regression targets. During fine-tuning, both the transformer weights and the prediction head are optimized simultaneously to minimize task-specific loss functions like cross-entropy or mean squared error. This approach yielded a 1.68% relative improvement in AUC across several benchmark tasks compared to the pre-trained embeddings alone.
+
+The motivation for this architecture is twofold: first, to capture richer signal from transaction data through learned encodings rather than manual feature engineering; and second, to create a scalable approach where increasing model size, transaction history length, and training data should continue to improve performance—a characteristic behavior of foundation models observed in other domains.
+
+### The Fusion Challenge
+
+A critical production challenge that Nubank identified is that not all valuable predictive information exists in sequential form. Traditional tabular features—such as credit bureau data, demographic information, and other structured attributes—provide complementary signal that cannot be easily encoded in transaction sequences. This necessitated developing a fusion strategy to combine transformer-based embeddings with tabular features.
+
+### Late Fusion vs Joint Fusion
+
+Nubank evaluated two fundamental approaches to combining embeddings with tabular data:
+
+**Late Fusion**: The traditional approach involves training the transformer and obtaining fine-tuned embeddings separately, then passing these embeddings alongside tabular features into a gradient-boosted tree model (such as XGBoost or LightGBM) for final predictions. While this approach leverages the strong performance of GBT models on tabular data, it has a significant limitation: the embeddings are learned independently of the tabular features, meaning the transformer cannot adapt to capture information that complements rather than duplicates the tabular features.
+
+**Joint Fusion**: This approach simultaneously optimizes the transformer and the feature blending model in an end-to-end training procedure. This enables the transformer to specialize in capturing signal not already present in the tabular features, leading to more efficient use of model capacity and better overall performance. However, joint fusion requires a differentiable blending architecture, which rules out traditional GBT models.
+
+## Achieving DNN-Tabular Parity
+
+A major challenge in implementing joint fusion was that gradient-boosted trees, while generally considered state-of-the-art for tabular data, are not differentiable and therefore incompatible with end-to-end gradient-based optimization. This forced Nubank to invest in developing deep neural network architectures that could match or exceed GBT performance on tabular features alone—a notoriously difficult problem in machine learning.
+
+### The Variability Challenge
+
+Nubank notes that achieving competitive DNN performance on tabular data is highly problem-dependent. They cite research showing that across 176 datasets and 19 different models, each model performed best on at least one dataset and worst on another, making it difficult to adopt a one-size-fits-all approach. This variability presents significant challenges for production systems that need reliable performance across multiple tasks.
+
+### DCNv2 Architecture Selection
+
+Nubank selected the Deep & Cross Network v2 (DCNv2) architecture as their foundation, motivated by its successful deployment at scale by organizations like Google for recommendation and ranking problems. However, initial results showed the DNN-based DCNv2 models underperformed LightGBM by 0.40% in their evaluation metrics.
+
+### Numerical and Categorical Embeddings
+
+The breakthrough in achieving parity came from incorporating specialized embedding strategies for both numerical and categorical features, inspired by recent research. For numerical attributes, they implemented embeddings constructed using periodic activations at different learned frequencies, which has been shown to significantly improve how DNNs model continuous tabular features. For categorical features, they used trainable embedding tables. This combination of embedding strategies within the DCNv2 architecture allowed Nubank to achieve parity with GBT models across many internal problems.
+
+### Integration with Transformer Embeddings
+
+Even after achieving parity on tabular features alone, integrating transformer-based user embeddings while maintaining or exceeding GBT performance required addressing three critical factors:
+
+- **Architecture design**: The DCNv2 processes embedded tabular features and projects the result into a low-dimensional embedding. This feature embedding is then concatenated with the transformer-based user embedding, and a multi-layer perceptron makes the final prediction. This design allows the model to learn how to best combine information from both sources.
+
+- **Regularization**: Adding weight decay and dropout specifically to the DCNv2 cross layers was essential for reducing overfitting, which became more pronounced when combining multiple embedding sources.
+
+- **Normalization**: Adding normalization to the transformer-based embeddings improved the consistency and stability of the DCNv2 training, which was critical for achieving reliable improvements over the GBT baseline.
+
+Only when combining all these elements—DCNv2 architecture, numerical embeddings, categorical embeddings, appropriate regularization, and normalization—did the DNN model consistently outperform the GBT baseline across their benchmark tasks.
+
+## Production Results and Evaluation
+
+Nubank evaluated their approach on multiple internal benchmark tasks, measuring relative improvements in AUC (Area Under the ROC Curve) compared to LightGBM baselines trained solely on tabular features. Their results demonstrate clear advantages for the joint fusion approach:
+
+- Fine-tuning alone (without tabular features) provided a 1.68% relative improvement in AUC
+- Joint fusion (simultaneously training transformer and DCNv2 blending model) consistently outperformed late fusion approaches
+- The improvements were achieved not by adding new information sources, but by automatically learning more informative feature representations through the fine-tuning process
+
+Critically, Nubank emphasizes that their visualization of relative AUC gains shows that joint fusion provides lift specifically because it allows the transformer to adapt during training to capture complementary signal not already present in the tabular features. This adaptive learning is impossible in late fusion architectures where the embedding model is frozen before blending.
+
+## LLMOps and Production Considerations
+
+From an LLMOps perspective, this case study illustrates several important considerations for deploying foundation models in production financial applications:
+
+**Model Architecture Flexibility**: The need to support both pre-training (self-supervised on transaction sequences), fine-tuning (supervised with task-specific labels), and fusion (combining with tabular features) requires sophisticated model serving infrastructure that can handle multiple training paradigms and compose different model components.
+
+**Training Pipeline Complexity**: The joint fusion approach requires end-to-end differentiable training pipelines that can backpropagate gradients through both the transformer and the feature blending network. This is more complex than traditional two-stage approaches but provides measurable performance benefits.
+
+**Feature Engineering Trade-offs**: While the transformer-based approach reduces the need for manual feature engineering on sequential transaction data, it doesn't eliminate the need to carefully engineer tabular features. The production system must maintain both pipelines.
+
+**Model Selection and Validation**: The high variability in DNN performance on tabular data across different problems means that production systems need robust validation frameworks to ensure that the chosen architecture (DCNv2 in this case) performs well across all intended tasks, not just average performance.
+
+**Scalability Assumptions**: Nubank's approach is predicated on the hypothesis that as they scale these models (more transaction history, larger models, more training data), performance will continue to improve. This scaling behavior needs to be monitored and validated in production to ensure the investment in foundation models pays off over time.
+
+**Baseline Comparison**: The emphasis on comparing against LightGBM baselines reflects the practical reality that in production finance applications, new approaches must demonstrably outperform established methods to justify the added complexity of deployment and maintenance.
+
+## Balanced Assessment
+
+While Nubank presents compelling evidence for their approach, several considerations should be noted from a balanced LLMOps perspective:
+
+**Complexity vs. Benefit Trade-off**: The joint fusion approach with DCNv2 is significantly more complex than late fusion with GBT models. The reported improvements, while positive, are relatively modest (on the order of a few percentage points in relative AUC). Organizations considering this approach need to carefully weigh whether these improvements justify the increased infrastructure complexity, longer training times, and higher computational costs.
+
+**Generalization Concerns**: The case study acknowledges that DNN performance on tabular data is highly problem-dependent, with different models performing best on different datasets. While they found success with DCNv2 for their current tasks, there's no guarantee this will extend to all future problems they encounter. Production systems may need to maintain multiple model architectures or fallback options.
+
+**Resource Requirements**: Training transformer models end-to-end with deep neural networks for feature fusion is computationally expensive compared to the two-stage late fusion approach. The case study doesn't discuss the production costs (training time, compute resources, energy consumption) associated with their approach, which are important considerations for real-world deployment.
+
+**Reproducibility and Tuning**: The success of their approach depended on careful attention to multiple details: specific embedding strategies, regularization techniques, normalization schemes, and architectural choices. This suggests that successfully deploying this approach requires significant expertise and experimentation, which may limit its accessibility to organizations with fewer resources.
+
+**Limited Scope**: The case study focuses on relative improvements over specific baselines but doesn't provide absolute performance numbers, details about the specific prediction tasks, or information about how the models perform on different customer segments or edge cases—all important considerations for production risk management in financial applications.
+
+## Series Context and Foundation Model Vision
+
+This work represents the third part of Nubank's broader vision for transaction-based foundation models. The progression from self-supervised pre-training (part one) to transformer architecture details (part two) to supervised fine-tuning and fusion (part three) demonstrates a comprehensive approach to building production-ready foundation models for financial data. The underlying thesis is that foundation models—pre-trained on large amounts of transaction data and then adapted to specific tasks—will eventually outperform task-specific models as they scale, similar to what has been observed with language models in NLP.
+
+The joint fusion approach is critical to this vision because it allows the foundation model to remain adaptable: rather than learning a fixed representation that must work for all tasks, the transformer can specialize during fine-tuning to capture signal complementary to whatever tabular features are available for each specific task. This flexibility is essential for production systems that need to support multiple prediction objectives with varying feature availability.
+
+Overall, Nubank's work represents a sophisticated and production-focused approach to deploying transformer-based foundation models for financial customer modeling, with careful attention to the practical challenges of combining sequential and tabular data in real-world systems.

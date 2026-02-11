@@ -1,0 +1,150 @@
+---
+title: "Production LLM Systems at Scale - Lessons from Financial Services, Legal Tech, and ML Infrastructure"
+slug: "production-llm-systems-at-scale---lessons-from-financial-services-legal-tech-and-ml-infrastructure"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "6780e2052d2999ac1edf9fe7"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:54:58.114Z"
+  createdOn: "2025-01-10T09:01:57.801Z"
+llmopsTags:
+  - "high-stakes-application"
+  - "regulatory-compliance"
+  - "chatbot"
+  - "question-answering"
+  - "structured-output"
+  - "fine-tuning"
+  - "prompt-engineering"
+  - "rag"
+  - "few-shot"
+  - "human-in-the-loop"
+  - "latency-optimization"
+  - "cost-optimization"
+  - "error-handling"
+  - "model-optimization"
+  - "token-optimization"
+  - "monitoring"
+  - "databases"
+  - "documentation"
+  - "reliability"
+  - "scalability"
+  - "fastapi"
+  - "wandb"
+  - "postgresql"
+  - "openai"
+  - "microsoft-azure"
+  - "google-gcp"
+  - "amazon-aws"
+company: "Nubank, Harvey AI, Galileo and Convirza"
+summary: "A panel discussion featuring leaders from Nubank, Harvey AI, Galileo, and Convirza discussing their experiences implementing LLMs in production. The discussion covered key challenges and solutions around model evaluation, cost optimization, latency requirements, and the transition from large proprietary models to smaller fine-tuned models. Participants shared insights on modularizing LLM applications, implementing human feedback loops, and balancing the tradeoffs between model size, cost, and performance in production environments."
+link: "https://youtu.be/GE8WShfrvak?si=HpAJpliIBqUxZIC2"
+year: 2024
+seo:
+  title: "Nubank, Harvey AI, Galileo and Convirza: Production LLM Systems at Scale - Lessons from Financial Services, Legal Tech, and ML Infrastructure - ZenML LLMOps Database"
+  description: "A panel discussion featuring leaders from Nubank, Harvey AI, Galileo, and Convirza discussing their experiences implementing LLMs in production. The discussion covered key challenges and solutions around model evaluation, cost optimization, latency requirements, and the transition from large proprietary models to smaller fine-tuned models. Participants shared insights on modularizing LLM applications, implementing human feedback loops, and balancing the tradeoffs between model size, cost, and performance in production environments."
+  canonical: "https://www.zenml.io/llmops-database/production-llm-systems-at-scale---lessons-from-financial-services-legal-tech-and-ml-infrastructure"
+  ogTitle: "Nubank, Harvey AI, Galileo and Convirza: Production LLM Systems at Scale - Lessons from Financial Services, Legal Tech, and ML Infrastructure - ZenML LLMOps Database"
+  ogDescription: "A panel discussion featuring leaders from Nubank, Harvey AI, Galileo, and Convirza discussing their experiences implementing LLMs in production. The discussion covered key challenges and solutions around model evaluation, cost optimization, latency requirements, and the transition from large proprietary models to smaller fine-tuned models. Participants shared insights on modularizing LLM applications, implementing human feedback loops, and balancing the tradeoffs between model size, cost, and performance in production environments."
+---
+
+## Overview
+
+This panel discussion, part of "Small Con," features ML engineering leaders from four organizations discussing their experiences productionizing LLMs and small language models (SLMs). The panelists include Daniel Hunter (former Head of AI Engineering at Harvey AI), Mo (CTO of Convirza), Atin Sela (CTO and Co-founder of Galileo), and Abhishek Panera (Senior Staff ML Engineer at Nubank). The conversation provides a rich cross-section of LLMOps practices across different industries and use cases.
+
+The panel opens with the observation that 2024 marked a significant shift in the LLM landscape—from experimentation to building production-grade systems. The focus has evolved from simple question-answering prototypes to application-level integrations that take real-world actions.
+
+## Convirza: From LLM Threat to SLM Opportunity
+
+Mo from Convirza shares an interesting origin story: they initially viewed LLMs as a competitive threat, as their existing AI capabilities seemed at risk of commoditization. However, upon evaluation, they quickly discovered significant limitations in the LLM approach for their use case.
+
+Their primary challenge was processing unstructured data from human conversations at scale—specifically millions of phone calls. The cost dynamics of LLMs proved prohibitive; even with decreasing token costs, the prompt sizes required to achieve desired results were economically unfeasible for their customers. Fine-tuning large language models wasn't a practical option, leaving prompting as the only viable approach—which itself was costly and limiting.
+
+This led Convirza to explore small language models. Their approach involved breaking down complex analysis questions (initially 5-10 high-level questions) into smaller, more tractable questions: yes/no responses, 1-10 scale ratings, and simple classifications. Each SLM serves a single, narrow purpose—acting as an adapter that answers one specific question with high accuracy.
+
+A key advantage they mention is having existing datasets from their previous traditional ML models. The fine-tuning process was remarkably straightforward: "it was literally just clicking the big red button and sitting there for 10 minutes." The fine-tuned SLMs outperformed their best-crafted prompts for LLMs.
+
+Their current architecture combines these specialized SLMs into structured outputs that can be consumed by both humans and machines—displayed on dashboards and serving as foundations for reports. They're now experimenting with feeding this structured data back into LLMs to generate executive-level documents, leveraging the LLM's creative capabilities while relying on the precise, accurate outputs from their SLMs.
+
+## Nubank: Rapid PMF, Then Optimize
+
+Abhishek from Nubank describes a different but complementary approach. At Nubank, AI serves as a customer experience enhancer with two primary functions: helping customers ask questions about products and shortcircuiting steps required for actions (like transfers).
+
+A key example is their Pix transfer feature, where instead of filling out forms, customers can simply say "transfer 20 Brazilian reals to someone" and the AI handles the execution. Their methodology follows a clear pattern: rapidly reach product-market fit (PMF) with larger models like OpenAI, then systematically optimize for latency and cost once the workflow is proven.
+
+They operate under strict internal SLAs—responses must complete within specified timeframes, and the LLM cost must be less than the transaction cost itself. This economic constraint drives their interest in smaller models. Abhishek notes that production AI assistants naturally decompose into "a lot of small narrow things," making them prime candidates for fine-tuning or even just using SLMs with prompting.
+
+Nubank benefits from a mature ML infrastructure legacy. Because credit card decisioning has been core to their business for years, they have extensive tooling for ML telemetry and metrics. This infrastructure has been ported over to LLM systems—everything routes through centralized proxies providing detailed metrics on every step of their workflows.
+
+Their model selection philosophy is purely pragmatic: they don't care about whether a model is proprietary vs. open source, or small vs. large. Instead, they evaluate on four dimensions: quality, throughput, latency, and cost. For any given module in their pipeline, they'll experiment with everything from GPT-4o mini to non-fine-tuned open source models to fine-tuned variants, combined with various inference engines. Predibase (the conference host) is mentioned as a partner precisely because they implement the latest inference optimizations.
+
+Abhishek emphasizes that many production use cases are "very very simple" and don't require sophisticated techniques like chain-of-thought reasoning. Few-shot prompting, especially now that prompt caching has become common, works remarkably well for many narrow tasks.
+
+## Harvey AI: Legal-Grade Confidence in Complex Workflows
+
+Daniel from Harvey AI brings the perspective of building AI for legal professionals—a domain where mistakes are extremely costly and workflows are inherently complex. Users don't want single question-answer interactions; they need to perform complicated, multi-step processes.
+
+Harvey's approach centers on modularization. They break complex workflows into sub-components with clearly defined inputs and outputs, treating language model systems as strict APIs with defined types and guarantees. This might involve simple classification, comparison tasks, or free-form text generation—each with appropriate evaluation approaches.
+
+For evaluation, they've found that classical NLP metrics (ROUGE, BLEU) provide essentially no signal for their use cases. For long-form text generation, human evaluation remains the gold standard. Daniel notes that even Google uses human evaluators alongside automated metrics when shipping new search algorithm versions.
+
+The human element manifests in multiple ways in Harvey's systems:
+
+- **Internal dog-fooding**: Engineers and internal users provide initial feedback
+- **User-facing transparency**: Providing citations, links to underlying documents, and confidence indicators
+- **Expectation setting**: Being explicit that this is a tool with specific capabilities and limitations
+- **Real-time work-checking**: Giving users tooling to dig into results and verify outputs
+
+For complex, long-running workflows, Daniel emphasizes the importance of human-in-the-loop orchestration panels—allowing humans to intervene when the system encounters issues, with progress and confidence indicators throughout.
+
+Their release process is gradual: internal metrics must be nominal, user feedback (thumbs up/down) is monitored, external evaluation systems are consulted, and beta testers provide real-world validation. All this data is aggregated for potential fine-tuning or prompt tuning based on observed issues.
+
+## Galileo: The Evaluation Challenge at Scale
+
+Atin from Galileo provides the evaluation platform perspective. They've observed a consistent pattern: prototypes work in controlled environments but behave differently when they meet real-world data. The discrepancy between prototype and production performance has underlined the critical need for robust evaluation tooling.
+
+The evolution of evaluation approaches has been notable:
+
+- **2023**: Simple "vibe checks" or legacy NLP metrics (BLEU, ROUGE) that don't work for generative models
+- **2023 (later)**: LLM-as-judge approaches showed promise—using similar or larger models to evaluate outputs
+- **2024**: Challenges emerged around the scale and cost of LLM-as-judge techniques
+
+Galileo's Luna project represents their response to these challenges. They've innovated on using smaller models (down to 1 billion parameters or even BERT-style models) for evaluation tasks like RAG hallucination detection. The motivation is the same as for application development: the cost of intelligence has decreased dramatically.
+
+A customer anecdote illustrates the scale challenge: one organization with 10 million queries per day saw evaluation costs exceed seven figures within eight months simply because they had an LLM-as-judge in the loop—essentially doubling every LLM call.
+
+Galileo's approach spans a spectrum:
+
+- **Small end**: 500 million parameter DeBERTa models that reframe RAG hallucination detection as an entailment problem
+- **Mid-range**: 2-8 billion parameter models that can output single token probabilities instead of relying on chain-of-thought reasoning, achieving comparable accuracy for many RAG use cases
+
+A key insight is that many industry use cases don't require deep reasoning. By not relying on chain-of-thought and instead using token-level probabilities, they achieve high accuracy with dramatically lower compute costs.
+
+Galileo has also introduced "continuous learning with human feedback" in their platform. Users author baseline metrics with criteria, but these evolve through feedback on false positives. This creates a feedback loop where metrics evolve alongside changing data and compounding systems (new agents, evolving RAG). These feedback mechanisms are powered by small, fine-tunable language models.
+
+## Cross-Cutting Themes
+
+Several themes emerge across all four perspectives:
+
+**Modularity as a core design principle**: Every organization emphasizes breaking monolithic systems into narrow, specialized components. This enables targeted optimization, clearer evaluation, and easier maintenance.
+
+**The quality-latency-cost tradeoff**: This fundamental triangle appears in every discussion. Different use cases demand different trade-offs—real-time user interactions prioritize latency, batch processing can trade time for quality, and high-volume systems are cost-sensitive.
+
+**Human feedback as a critical signal**: Whether for evaluation, fine-tuning, or quality assurance, human feedback loops appear essential across all implementations.
+
+**Small models exceeding expectations**: Multiple panelists express surprise at how well small models perform when fine-tuned for narrow tasks. The "delta between small language models and large language models is not as big as everyone thinks."
+
+**Technical debt awareness**: Abhishek specifically mentions being "very very careful about technical debt"—a reminder that LLMOps involves the same engineering discipline as traditional software development.
+
+## Future Predictions
+
+The panel concludes with predictions for 2025:
+
+- **Mo**: Training small language models will become the main method versus prompt engineering
+- **Abhishek**: A revolution in B2C applications enabled by on-device SLMs—air-gapped models for security, intelligent NPCs in games, IoT integration ("think LLM-powered IoT")
+- **Atin**: Continued progress across the spectrum—frontier models like o1 pushing ceilings, smaller models improving, and infrastructure/orchestration maturing
+- **Daniel**: Exciting intersection of easily fine-tunable small models with inference-time compute for tasks where time isn't critical but accuracy is paramount
+
+The discussion reflects an industry maturing from experimentation to production, with shared lessons emerging around architecture, evaluation, and the strategic use of model sizes appropriate to specific tasks.

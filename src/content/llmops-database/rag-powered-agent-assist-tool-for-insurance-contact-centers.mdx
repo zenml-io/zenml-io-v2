@@ -1,0 +1,85 @@
+---
+title: "RAG-Powered Agent Assist Tool for Insurance Contact Centers"
+slug: "rag-powered-agent-assist-tool-for-insurance-contact-centers"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "675b1ddb2f58ec705458b7e5"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:48:34.230Z"
+  createdOn: "2024-12-12T17:31:07.982Z"
+llmopsTags:
+  - "customer-support"
+  - "question-answering"
+  - "regulatory-compliance"
+  - "rag"
+  - "prompt-engineering"
+  - "semantic-search"
+  - "langchain"
+  - "databases"
+  - "databricks"
+  - "microsoft-azure"
+  - "amazon-aws"
+company: "Allianz Direct"
+summary: "Allianz Direct implemented a GenAI-powered agent assist tool using RAG to help contact center agents quickly and accurately answer customer questions about insurance policies. Built on the Databricks Data Intelligence Platform using Mosaic AI tools, the solution improved answer accuracy by 10-15% compared to their previous system, while allowing agents to focus more on customer relationships rather than searching through documentation."
+link: "https://www.databricks.com/customers/allianz-direct"
+year: 2024
+seo:
+  title: "Allianz Direct: RAG-Powered Agent Assist Tool for Insurance Contact Centers - ZenML LLMOps Database"
+  description: "Allianz Direct implemented a GenAI-powered agent assist tool using RAG to help contact center agents quickly and accurately answer customer questions about insurance policies. Built on the Databricks Data Intelligence Platform using Mosaic AI tools, the solution improved answer accuracy by 10-15% compared to their previous system, while allowing agents to focus more on customer relationships rather than searching through documentation."
+  canonical: "https://www.zenml.io/llmops-database/rag-powered-agent-assist-tool-for-insurance-contact-centers"
+  ogTitle: "Allianz Direct: RAG-Powered Agent Assist Tool for Insurance Contact Centers - ZenML LLMOps Database"
+  ogDescription: "Allianz Direct implemented a GenAI-powered agent assist tool using RAG to help contact center agents quickly and accurately answer customer questions about insurance policies. Built on the Databricks Data Intelligence Platform using Mosaic AI tools, the solution improved answer accuracy by 10-15% compared to their previous system, while allowing agents to focus more on customer relationships rather than searching through documentation."
+---
+
+## Overview
+
+Allianz Direct is a Munich-based online insurance company operating as a subsidiary of the global insurance leader Allianz Group. With a strategic mission to become "digitally unbeatable," the company embarked on a generative AI journey to enhance customer touchpoints and improve the efficiency of their contact center operations. This case study examines their implementation of a RAG-based agent assist tool, which represents their first production GenAI use case built on the Databricks Data Intelligence Platform.
+
+The fundamental business problem Allianz Direct aimed to solve was not about reducing call times or replacing human agents with automation. Instead, their CTO Des Field Corbett emphasized that the goal was to eliminate mundane back-office tasks that agents dislike, freeing them to spend more time in meaningful conversations with customers. This human-centric approach to AI deployment is notable and reflects a thoughtful strategy for technology adoption in customer service environments.
+
+## Technical Implementation and Architecture
+
+The solution leverages Databricks Mosaic AI Agent Framework to build a RAG (Retrieval-Augmented Generation) based agent assist application. The system ingests all of Allianz Direct's product terms and conditions documents and intelligently delivers the right information to contact center agents at the right time when customers call with policy questions. Common queries include questions like "Can my brother drive my car?" which require agents to quickly navigate complex policy documentation.
+
+From an infrastructure perspective, Allianz Direct benefits from their existing Databricks foundation. According to Field Corbett, it was "pretty much zero effort" to get started since they already had Databricks as their data platform. The company uses AWS as their cloud provider and leverages Unity Catalog for unified governance of all data, analytics, and AI assets. This pre-existing infrastructure meant the team could focus on the GenAI application logic rather than building foundational data infrastructure from scratch.
+
+The development workflow utilized Databricks Notebooks, which Field Corbett noted made it "very simple for our developers to make workflow changes." This approach streamlined both the development and implementation process compared to their previous GenAI solution, though the case study does not provide specific details about what that prior solution entailed or how it was architecturally different.
+
+## Human-in-the-Loop Design and Compliance Considerations
+
+A particularly noteworthy aspect of this implementation is the human-in-the-loop design pattern. Rather than having the GenAI system respond directly to customers, the tool provides answers to human agents who then relay the information during customer calls. This architectural decision provided multiple benefits from a compliance and governance perspective.
+
+First, using publicly available terms and conditions as the knowledge base meant there were no concerns about exposing sensitive customer data or proprietary information. Second, having a human agent as the intermediary between the AI system and the customer provided an additional layer of verification and quality control. This approach gave Allianz Direct confidence to proceed with deployment while their understanding of GenAI governance and compliance continues to mature.
+
+The Allianz Group established an AI Data Council to address questions around governance and ethics. Field Corbett acknowledged that "there's quite a bit of learning still to be done for GenAI governance and compliance," but they are making sufficient progress that it is not preventing them from pursuing opportunities. This candid assessment reflects the reality many enterprises face when deploying generative AI—the need to balance innovation velocity with appropriate risk management.
+
+## Development Process and Vendor Collaboration
+
+The case study highlights the collaborative relationship between Allianz Direct and Databricks during implementation. The Databricks team was embedded in Allianz Direct's Slack channels, engaging directly with their engineers and helping resolve issues quickly. This close partnership accelerated the proof of concept timeline, though specific metrics on development duration are not provided.
+
+Field Corbett credited the working relationship with Databricks as a key factor in their platform decision, noting that the team "helped point us in the right direction with GenAI." This suggests that vendor support and expertise played a significant role in the success of the implementation, which is an important consideration for organizations evaluating GenAI platforms.
+
+## Results and Measured Outcomes
+
+The proof of concept demonstrated a 10-15% improvement in answer accuracy compared to the previous GenAI application. While this quantitative metric is valuable, Field Corbett emphasized that the more significant outcome was the trust the tool engendered among contact center agents. Instead of having to search multiple systems and second-guess their answers, agents could rely on the GenAI tool to quickly deliver accurate information.
+
+This trust led to increased adoption and, importantly, to agents suggesting additional use cases where GenAI could help them work more effectively and spend more time with customers. This organic adoption pattern represents a positive indicator for the long-term success of the initiative, as agent buy-in is often cited as a critical success factor for contact center technology implementations.
+
+## Future Vision and Scalability
+
+Looking ahead, Field Corbett's team envisions expanding GenAI capabilities significantly. One specific future use case mentioned is providing agents with contextual information about a customer before they even begin the conversation. When a customer calls, the agent would already see why they are likely calling, understand the context, and be able to assist more quickly.
+
+The broader strategic vision is not focused on one or two large use cases but rather on enabling "a flood of ways GenAI can impact the business." Databricks is positioned to support this by enabling multiple GenAI projects with short timelines and low costs, allowing Allianz Direct to select the right models for different use cases.
+
+The scalability of the Databricks lakehouse architecture was cited as an original reason for platform selection, and this scalability now extends to GenAI workloads. Field Corbett's goal is to empower more business users across the company to adopt GenAI capabilities, leveraging Unity Catalog to ensure everyone has secure access to the data they need.
+
+## Critical Assessment
+
+While the case study presents positive results, it is important to note several limitations in the available information. The 10-15% accuracy improvement is mentioned without details on how accuracy was measured or what the baseline performance was. The case study also does not provide information on cost considerations, latency metrics, or the scale of deployment in terms of number of agents or queries processed.
+
+Additionally, this is a Databricks customer story, so it naturally emphasizes the positive aspects of the platform. The comparison to the "previous GenAI solution" lacks specificity, making it difficult to assess whether the improvements are attributable to the platform choice or other factors such as better prompt engineering, different model selection, or refined RAG implementation.
+
+Despite these limitations, the case study offers a useful example of a thoughtful, compliance-aware approach to deploying GenAI in a regulated industry. The human-in-the-loop architecture, focus on agent empowerment rather than replacement, and iterative expansion strategy represent practices that other organizations in similar industries might consider emulating.

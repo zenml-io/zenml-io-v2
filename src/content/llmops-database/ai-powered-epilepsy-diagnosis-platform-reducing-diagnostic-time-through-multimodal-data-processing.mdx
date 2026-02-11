@@ -1,0 +1,143 @@
+---
+title: "AI-Powered Epilepsy Diagnosis Platform Reducing Diagnostic Time Through Multimodal Data Processing"
+slug: "ai-powered-epilepsy-diagnosis-platform-reducing-diagnostic-time-through-multimodal-data-processing"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "69146b19328be3db9774b06f"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:27:17.229Z"
+  createdOn: "2025-11-12T11:10:17.910Z"
+llmopsTags:
+  - "healthcare"
+  - "classification"
+  - "question-answering"
+  - "summarization"
+  - "document-processing"
+  - "multi-modality"
+  - "high-stakes-application"
+  - "regulatory-compliance"
+  - "rag"
+  - "embeddings"
+  - "prompt-engineering"
+  - "model-optimization"
+  - "error-handling"
+  - "chunking"
+  - "docker"
+  - "databases"
+  - "serverless"
+  - "orchestration"
+  - "postgresql"
+  - "fastapi"
+  - "mistral"
+  - "langchain"
+  - "redis"
+  - "elasticsearch"
+  - "amazon-aws"
+  - "meta"
+  - "microsoft-azure"
+company: "Australian Epilepsy Project"
+summary: "The Australian Epilepsy Project (AEP) developed a cloud-based precision medicine platform on AWS that integrates multimodal patient data (MRI scans, neuropsychological assessments, genetic data, and medical histories) to support epilepsy diagnosis and treatment planning. The platform leverages various AI/ML techniques including machine learning models for automated brain region analysis, large language models for medical text processing through RAG approaches, and generative AI for patient summaries. This resulted in a 70% reduction in diagnosis time for language area mapping prior to surgery, 10% higher lesion detection rates, and improved patient outcomes including 9% better work productivity and 8% reduction in seizures over two years."
+link: "https://www.youtube.com/watch?v=MuYf52p6big"
+year: 2025
+seo:
+  title: "Australian Epilepsy Project: AI-Powered Epilepsy Diagnosis Platform Reducing Diagnostic Time Through Multimodal Data Processing - ZenML LLMOps Database"
+  description: "The Australian Epilepsy Project (AEP) developed a cloud-based precision medicine platform on AWS that integrates multimodal patient data (MRI scans, neuropsychological assessments, genetic data, and medical histories) to support epilepsy diagnosis and treatment planning. The platform leverages various AI/ML techniques including machine learning models for automated brain region analysis, large language models for medical text processing through RAG approaches, and generative AI for patient summaries. This resulted in a 70% reduction in diagnosis time for language area mapping prior to surgery, 10% higher lesion detection rates, and improved patient outcomes including 9% better work productivity and 8% reduction in seizures over two years."
+  canonical: "https://www.zenml.io/llmops-database/ai-powered-epilepsy-diagnosis-platform-reducing-diagnostic-time-through-multimodal-data-processing"
+  ogTitle: "Australian Epilepsy Project: AI-Powered Epilepsy Diagnosis Platform Reducing Diagnostic Time Through Multimodal Data Processing - ZenML LLMOps Database"
+  ogDescription: "The Australian Epilepsy Project (AEP) developed a cloud-based precision medicine platform on AWS that integrates multimodal patient data (MRI scans, neuropsychological assessments, genetic data, and medical histories) to support epilepsy diagnosis and treatment planning. The platform leverages various AI/ML techniques including machine learning models for automated brain region analysis, large language models for medical text processing through RAG approaches, and generative AI for patient summaries. This resulted in a 70% reduction in diagnosis time for language area mapping prior to surgery, 10% higher lesion detection rates, and improved patient outcomes including 9% better work productivity and 8% reduction in seizures over two years."
+---
+
+## Overview
+
+The Australian Epilepsy Project (AEP) represents a comprehensive production deployment of AI and machine learning technologies in a healthcare context, specifically addressing the challenges of epilepsy diagnosis and treatment planning. The project fundamentally transforms the traditional model of epilepsy care by taking specialist expertise that typically resides only in hospital centers and making it accessible through a cloud-based platform to neurologists across Australia. The case study demonstrates a mature approach to LLMOps in healthcare, with particular attention to data foundations, regulatory compliance, model governance, and production deployment of multiple AI use cases.
+
+Epilepsy affects approximately one in ten people during their lifetime, with roughly half going on to be diagnosed with the condition. The AEP addresses critical challenges in epilepsy care including lengthy diagnosis times, siloed diagnostic approaches, and limited access to specialist expertise. The project follows patients over two years, enabling measurement of concrete outcomes including 9% improvement in work productivity, 8% improvement in quality of life, and 8% reduction in seizure rates.
+
+## Data Foundation and Architecture
+
+The success of the AEP's AI implementation fundamentally rests on a robust data foundation that took significant time to build before any AI models were deployed. This aligns with broader industry challenges - the presentation notes that while 89% of organizations express willingness to adopt AI and generative AI, less than half report having adequate data foundations in place. In healthcare particularly, regulatory compliance and policy requirements create additional barriers to AI adoption that must be carefully navigated.
+
+The AEP collects a standardized fixed protocol of data from every patient and healthy control participant, ensuring consistency across the dataset. The four main data modalities include MRI images (using identical scanning protocols for all participants), a custom two-hour neuropsychological assessment, genetic data from saliva samples, and individual medical histories. This multimodal approach generates approximately 8 gigabytes of raw data per participant, which is then processed into 13 gigabytes of analysis results.
+
+The storage layer leverages multiple AWS services tailored to different data types. Amazon S3 provides virtually unlimited storage for unstructured data including MRI scans and PDF files containing medical histories. Amazon RDS handles structured data from surveys and assessments collected from patients and clinicians, providing scalability without infrastructure management overhead. The project also uses Orthanc (an open-source DICOM server) for storing raw medical imaging data, and Amazon EFS for network-attached storage supporting container orchestration workflows.
+
+The ingestion and pre-processing layer uses AWS Lambda functions extensively to transform and shape data for database storage. For larger computational tasks, the platform employs container images orchestrated through AWS Step Functions. A particularly notable component is the use of Amazon Textract for optical character recognition, enabling the platform to ingest everything from structured PDFs to handwritten clinical notes and convert them into machine-readable text.
+
+At the core of the architecture sits what the AEP calls the "data nexus" - a data warehouse implemented on Amazon RDS that serves as the central orchestration point for model versioning, process management, and maintaining data currency across all components. This centralized approach to metadata management and workflow orchestration is critical for maintaining consistency across multiple AI models and data pipelines running in production.
+
+## LLM Applications and Use Cases
+
+The Australian Epilepsy Project has implemented multiple production LLM use cases, each addressing specific clinical workflows and demonstrating different approaches to deploying language models in healthcare settings.
+
+### Free Text to Structured Data Conversion
+
+One foundational LLM application involves converting free-text responses from patient surveys into structured numerical data suitable for database storage and analysis. The platform uses Amazon Bedrock with the Mistral model for this task. For example, when patients respond to questions about out-of-pocket healthcare spending in free text format, the Mistral model extracts and converts this information into numeric fields in the structured database. 
+
+The choice of Mistral over other models like Llama reflects a deliberate model selection process based on benchmarking performance on healthcare-specific tasks. This demonstrates an important LLMOps practice of evaluating multiple model options against real use case requirements rather than defaulting to the most popular or largest models. The use of Amazon Bedrock provides access to multiple model families through a consistent API, facilitating this kind of comparative evaluation.
+
+### Medical History Explorer with RAG
+
+The most sophisticated LLM implementation in the platform is the Medical History Explorer, which uses a retrieval-augmented generation (RAG) architecture to enable natural language querying of patient medical histories. The implementation pipeline begins with Amazon Textract extracting text from PDF documents containing medical records. Each sentence from these documents is then processed through a specialized language model called "Len AI Research LLM" - a relatively small large language model specifically trained on medical research papers and clinical text.
+
+The choice of a domain-specific, smaller model rather than a general-purpose large model is noteworthy from an LLMOps perspective. This reflects a pragmatic understanding that model size and general capabilities don't always translate to better performance on specialized tasks, and that purpose-built medical models can offer advantages in accuracy, reduced hallucination risk, and potentially lower computational costs.
+
+The resulting embeddings are stored in PGVector, an open-source vector database extension for PostgreSQL. The selection of PGVector over standalone vector databases like Pinecone or Weaviate was driven by its seamless integration with the existing Amazon RDS PostgreSQL infrastructure. This decision highlights an important LLMOps consideration: the operational overhead and architectural complexity of introducing new specialized components must be weighed against their specific benefits. By extending existing database infrastructure rather than adding separate vector storage systems, the AEP reduced operational complexity while maintaining the RAG capabilities needed for semantic search.
+
+The Medical History Explorer supports both free-text natural language queries from clinicians and a collection of frequently asked questions that can be selected with a single click. Questions like "Does this patient have a family history of epilepsy?" can be answered by the system, which provides not just the answer but also shows the source PDF page and paragraph where the information was found. This source attribution is critical for clinical use cases where trust and verifiability are paramount - clinicians need to be able to verify AI-generated answers against original source material.
+
+### Patient Summary Generation
+
+The third major LLM use case generates comprehensive patient summaries from baseline data collected during patient intake. A Lambda function aggregates all baseline patient data and formats it into a prompt structure, which is then sent to an OpenChat 3.6 model hosted on Amazon SageMaker AI. The choice of OpenChat 3.6 over other available models was based on empirical observation of reduced hallucination rates in medical contexts compared to alternatives the team evaluated.
+
+The implementation includes custom guardrails specifically designed to prevent hallucinations - a critical safety consideration when deploying LLMs in clinical decision support contexts. While the presentation doesn't detail the specific guardrail mechanisms, this represents sound LLMOps practice: implementing multiple layers of validation and safety checks rather than relying solely on the base model's capabilities.
+
+The generated summaries are displayed in the clinician portal under an "insights" tab, providing neurologists with AI-synthesized overviews of patient information. This use case demonstrates the value of generative AI for information synthesis and cognitive load reduction - helping clinicians quickly understand complex patient profiles without manually reviewing all source data.
+
+## Machine Learning for Medical Imaging
+
+While not strictly LLM-based, the platform's most impactful AI use case involves automated analysis of functional MRI scans for language laterality mapping - the identification of brain regions responsible for language processing. This is critical for surgical planning, as surgeons must avoid damaging language areas during epilepsy surgery.
+
+Patients undergo MRI scans while performing word-rhyming tasks, causing language processing regions to "light up" or show increased activation. Traditionally, neurologists manually review these 4D scans (3D images over time, essentially videos) to identify activated regions. The AEP's ML pipeline processes these 4D scans through time series models to generate 3D activation maps, which are then clustered by brain region into individual activation scores. These scores are compared against healthy controls to determine if activation is above or below normal levels.
+
+The automated system successfully classifies language areas in 70% of cases without manual intervention, while the remaining 30% still require review by in-house neurologists. Importantly, neurologists also perform quality checks on the automated results in all cases, using the enriched dataset combining original scans with ML-generated activation maps. This human-in-the-loop approach balances automation efficiency with clinical safety requirements.
+
+The 70% reduction in diagnosis time referenced in the presentation's title specifically refers to this language laterality mapping use case - automated analysis dramatically accelerates the pre-surgical diagnostic process compared to fully manual review.
+
+## Model Deployment and Operations
+
+The AEP platform demonstrates several mature LLMOps practices in its production deployment approach. Container images are used extensively for larger ML workloads, with AWS Step Functions providing orchestration for multi-step processing pipelines. This containerized approach enables consistent environments across development and production, facilitates model versioning, and supports scalability.
+
+Lambda functions handle lighter-weight processing tasks, including data transformations, prompt construction, and post-processing of model outputs. This serverless approach reduces operational overhead for components that don't require persistent compute resources. The architecture demonstrates appropriate matching of AWS compute services to workload characteristics - containers for heavy ML processing, Lambda for event-driven transformations, and managed database services for data storage.
+
+Model versioning is managed through the central data nexus, ensuring that different versions of analysis pipelines can be tracked and that results can be associated with specific model versions. This is critical for regulatory compliance in healthcare contexts, where the ability to audit which model version produced which clinical output may be required.
+
+The platform serves over 100 clinicians across Australia through a secure web portal, demonstrating production scale and the successful abstraction of complex AI/ML processing behind user-friendly clinical interfaces. Clinicians can refer patients, view analysis results, access MRI imaging through the portal's viewer, and interact with AI-generated insights without needing to understand the underlying technical implementation.
+
+## Governance and Compliance
+
+A critical aspect of the AEP's LLMOps approach is its attention to regulatory compliance and clinical governance. All AI processes in the platform are registered with the Therapeutic Goods Administration (TGA), Australia's regulatory body for therapeutic goods, and operate under strict clinical trials ethics frameworks. This regulatory oversight is essential for any AI system used in clinical decision support contexts.
+
+The platform implements feedback loops where clinicians report whether the AI-generated reports influenced their diagnostic decisions. This closed-loop feedback mechanism serves multiple purposes: validating the clinical utility of AI outputs, identifying areas for improvement, and potentially collecting data that could support future regulatory submissions or clinical validation studies.
+
+The presentation emphasizes that the platform functions as a "decision support tool" rather than an autonomous diagnostic system. This framing is important both from regulatory and practical perspectives - the AI augments rather than replaces clinical judgment, with neurologists retaining final decision-making authority.
+
+## Technical Considerations and Tradeoffs
+
+The case study reveals several important tradeoffs and considerations in the AEP's LLMOps approach. The choice of specialized, smaller models (Len AI Research LLM for medical text, OpenChat 3.6 for summaries) over large general-purpose models reflects prioritization of task-specific performance and hallucination reduction over raw capability. This pragmatic approach may sacrifice some versatility but gains reliability and potentially reduces inference costs.
+
+The selection of PGVector for vector storage prioritizes operational simplicity and integration with existing infrastructure over potentially superior performance from specialized vector databases. This represents a mature understanding that the "best" technology in isolation may not be the best choice when considering the full operational context.
+
+The platform's multimodal approach - combining MRI imaging, genetic data, neuropsychological assessments, and medical histories - creates significant data engineering complexity but enables more comprehensive analysis than any single data modality could provide. The 8GB of raw data growing to 13GB of analysis results suggests substantial computational processing, with the infrastructure designed to handle this scale across hundreds of patients.
+
+The 70% automation rate for language laterality mapping, while substantial, means 30% of cases still require manual review. Rather than viewing this as a limitation, the implementation treats it as an appropriate balance - automating the cases where ML confidence is high while routing uncertain cases to human experts. This reflects realistic expectations about AI capabilities and appropriate risk management in clinical contexts.
+
+## Patient Outcomes and Business Value
+
+The platform has demonstrated measurable improvements across multiple dimensions. The 10% higher lesion detection rate compared to standard approaches suggests that the advanced MRI imaging protocols and AI-assisted analysis are identifying abnormalities that might otherwise be missed. The identification of 50% of patients at risk for depression or anxiety enables neurologists to make more informed medication decisions, as antiepileptic drugs can significantly impact mental health.
+
+The two-year patient follow-up data showing 9% improvement in work productivity, 8% improvement in quality of life, and 8% reduction in seizure rates validates the clinical value of the AI-augmented approach. These outcomes reflect not just the direct impact of AI but the comprehensive model of care that AI enables - bringing specialist-level analysis to patients regardless of geographic location, reducing time to diagnosis and treatment, and supporting more informed clinical decision-making.
+
+From an LLMOps perspective, the case study demonstrates that successful AI deployment in healthcare requires much more than just implementing models - it requires building robust data foundations, navigating regulatory requirements, integrating multiple AI technologies appropriately, maintaining human oversight, and measuring real-world clinical outcomes. The Australian Epilepsy Project's multi-year journey from data foundation building to production AI deployment with measurable patient impact represents a mature and responsible approach to AI in healthcare.

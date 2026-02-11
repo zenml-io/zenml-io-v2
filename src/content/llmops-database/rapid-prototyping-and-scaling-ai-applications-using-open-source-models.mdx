@@ -1,0 +1,81 @@
+---
+title: "Rapid Prototyping and Scaling AI Applications Using Open Source Models"
+slug: "rapid-prototyping-and-scaling-ai-applications-using-open-source-models"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "687e020cd185e8e70aa3d109"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:15:45.958Z"
+  createdOn: "2025-07-21T09:02:04.225Z"
+llmopsTags:
+  - "code-generation"
+  - "content-moderation"
+  - "caption-generation"
+  - "chatbot"
+  - "summarization"
+  - "classification"
+  - "question-answering"
+  - "poc"
+  - "prompt-engineering"
+  - "few-shot"
+  - "model-optimization"
+  - "cost-optimization"
+  - "latency-optimization"
+  - "multi-agent-systems"
+  - "postgresql"
+  - "serverless"
+  - "fastapi"
+  - "docker"
+  - "monitoring"
+  - "databases"
+  - "api-gateway"
+  - "scaling"
+  - "devops"
+  - "open-source"
+  - "documentation"
+  - "security"
+  - "meta"
+  - "openai"
+  - "hugging-face"
+company: "Hassan El Mghari"
+summary: "Hassan El Mghari, a developer relations leader at Together AI, demonstrates how to build and scale AI applications to millions of users using open source models and a simplified architecture. Through building approximately 40 AI apps over four years (averaging one per month), he developed a streamlined approach that emphasizes simplicity, rapid iteration, and leveraging the latest open source models. His applications, including commit message generators, text-to-app builders, and real-time image generators, have collectively served millions of users and generated tens of millions of outputs, proving that simple architectures with single API calls can achieve significant scale when combined with good UI design and viral sharing mechanics."
+link: "https://www.youtube.com/watch?v=gcseUQJ6Gbg"
+year: 2025
+seo:
+  title: "Hassan El Mghari: Rapid Prototyping and Scaling AI Applications Using Open Source Models - ZenML LLMOps Database"
+  description: "Hassan El Mghari, a developer relations leader at Together AI, demonstrates how to build and scale AI applications to millions of users using open source models and a simplified architecture. Through building approximately 40 AI apps over four years (averaging one per month), he developed a streamlined approach that emphasizes simplicity, rapid iteration, and leveraging the latest open source models. His applications, including commit message generators, text-to-app builders, and real-time image generators, have collectively served millions of users and generated tens of millions of outputs, proving that simple architectures with single API calls can achieve significant scale when combined with good UI design and viral sharing mechanics."
+  canonical: "https://www.zenml.io/llmops-database/rapid-prototyping-and-scaling-ai-applications-using-open-source-models"
+  ogTitle: "Hassan El Mghari: Rapid Prototyping and Scaling AI Applications Using Open Source Models - ZenML LLMOps Database"
+  ogDescription: "Hassan El Mghari, a developer relations leader at Together AI, demonstrates how to build and scale AI applications to millions of users using open source models and a simplified architecture. Through building approximately 40 AI apps over four years (averaging one per month), he developed a streamlined approach that emphasizes simplicity, rapid iteration, and leveraging the latest open source models. His applications, including commit message generators, text-to-app builders, and real-time image generators, have collectively served millions of users and generated tens of millions of outputs, proving that simple architectures with single API calls can achieve significant scale when combined with good UI design and viral sharing mechanics."
+---
+
+Hassan El Mghari's presentation provides a comprehensive case study in rapidly prototyping and scaling AI applications using open source models, representing a practical approach to LLMOps that emphasizes speed, simplicity, and iterative development. As the developer relations leader at Together AI, Hassan has built approximately 40 AI applications over four years, with some achieving over one million users and generating tens of millions of outputs.
+
+The core philosophy behind Hassan's approach centers on extreme simplification of the LLMOps pipeline. Rather than building complex, multi-step AI workflows, he advocates for architectures that typically involve just a single API call to an AI model. This approach consists of four fundamental steps: user input (text or image upload), sending the input to an AI model via API, storing the result in a database, and presenting the output to the user. This streamlined architecture enables rapid development cycles and quick validation of ideas, which is crucial for the iterative approach Hassan employs.
+
+Hassan's technical stack represents a modern, serverless-first approach to LLMOps deployment. He uses Together AI as his primary model inference platform, which provides access to a wide range of open source models including chat models like Qwen, reasoning models like DeepSeek, image models like Flux, and various vision and audio models. The application layer is built using Next.js and TypeScript as a full-stack framework, with Neon providing serverless PostgreSQL hosting for data persistence. Authentication is handled through Clerk, while Prisma serves as the ORM for database interactions. The UI layer utilizes ShadCN and Tailwind CSS for styling, with S3 handling image uploads. Monitoring and analytics are implemented through Plausible for web analytics and Helone for LLM-specific analytics, allowing detailed tracking of model requests and troubleshooting. The entire stack is deployed on Vercel, creating a fully serverless architecture that can scale automatically.
+
+One of the most interesting aspects of Hassan's LLMOps approach is his strategy for model selection and updating. He emphasizes incorporating the latest AI models as they become available, often building applications within days of new model releases. For example, his Blinkshot real-time image generation app was built using the Flux model just two days after its release. This strategy of riding the wave of new model capabilities has proven effective for achieving viral distribution and user adoption. The architecture's simplicity enables easy model swapping, often requiring just a single line change to upgrade an application to use a newer, more capable model.
+
+The case study reveals several important insights about scaling AI applications in production. Hassan notes that mobile usage represents a significant portion of traffic across his applications, emphasizing the importance of mobile-optimized experiences in AI application design. His analytics show that user behavior patterns vary significantly across different types of AI applications, with some achieving sustained usage while others serve more as viral one-time experiences.
+
+From a cost management perspective, Hassan's approach to LLMOps economics is particularly noteworthy. Rather than traditional monetization, he leverages partnerships with AI infrastructure companies and other service providers to cover operational costs. Together AI sponsors the AI model compute costs, while companies like Neon, Clerk, and others provide free services in exchange for being featured in open source projects. This model demonstrates how open source AI applications can achieve sustainability through strategic partnerships rather than direct user monetization.
+
+The production deployment strategy emphasizes rapid iteration and early launching. Hassan's philosophy is to build the simplest possible working version of an application and launch it quickly to validate user interest. This approach reduces the risk of investing significant time in applications that may not resonate with users. He tracks success through multiple metrics including user adoption, GitHub stars for open source projects, and viral sharing patterns.
+
+Hassan's applications demonstrate various LLMOps patterns in action. His commit message generator processes git diffs and generates appropriate commit messages, representing a classic text-to-text transformation pattern. The text-to-app builder implements a multi-step generation process where user prompts are first processed to create project plans, then fed to code generation models to create React applications. His image generation applications showcase real-time inference patterns, generating millions of images through direct model API calls.
+
+The case study also highlights the importance of viral mechanics in AI application success. Hassan has learned that applications where users can easily share their generated content tend to perform significantly better than those without built-in sharing capabilities. This insight has led him to design viral loops into his applications, making it easy for users to share their generated images, code, or other outputs with appealing preview images and metadata.
+
+From an operational monitoring perspective, Hassan uses Helone specifically for LLM analytics, which allows him to dig into individual model requests, track performance metrics, and troubleshoot issues. This specialized LLM observability tooling complements traditional web analytics and provides insights specific to AI model performance and usage patterns.
+
+The scalability of Hassan's approach is demonstrated through concrete metrics: his text-to-app builder has processed over 5 million requests and generated over 1 million applications, while his image generation app has created over 48 million images. These numbers represent significant production loads handled through relatively simple architectures, suggesting that complex MLOps pipelines may not always be necessary for achieving scale.
+
+Hassan's experience also reveals the unpredictable nature of AI application success. Despite his extensive experience, he admits to having little ability to predict which applications will achieve viral success versus those that will see modest adoption. This uncertainty reinforces his strategy of rapid prototyping and early launching, allowing market feedback to guide further investment in particular applications.
+
+The presentation provides valuable insights into the current state of AI application development tools and their impact on development velocity. Hassan notes that modern AI-assisted development tools like Cursor and Windsurf, combined with AI-powered application builders like Bolt and Lovable, have significantly lowered the barriers to building AI applications. This democratization of AI development capabilities, combined with the regular release of new open source models, creates what he describes as a "historic time for building."
+
+Overall, Hassan's approach to LLMOps emphasizes pragmatism over complexity, rapid iteration over perfect planning, and leveraging the latest model capabilities over building complex custom solutions. His success in scaling multiple applications to millions of users through simple architectures and strategic use of open source models provides a compelling alternative to more traditional MLOps approaches that often emphasize complex pipelines and extensive infrastructure.

@@ -1,0 +1,125 @@
+---
+title: "Building a Knowledge Base Chatbot for Data Team Support Using RAG"
+slug: "building-a-knowledge-base-chatbot-for-data-team-support-using-rag"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "675b224b4eafd85f186b274a"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:48:27.261Z"
+  createdOn: "2024-12-12T17:50:03.237Z"
+llmopsTags:
+  - "chatbot"
+  - "question-answering"
+  - "data-analysis"
+  - "data-integration"
+  - "rag"
+  - "semantic-search"
+  - "vector-search"
+  - "prompt-engineering"
+  - "databases"
+  - "fastapi"
+  - "redis"
+  - "elasticsearch"
+  - "databricks"
+  - "amazon-aws"
+company: "HP"
+summary: "HP's data engineering teams were spending 20-30% of their time handling support requests and SQL queries, creating a significant productivity bottleneck. Using Databricks Mosaic AI, they implemented a RAG-based knowledge base chatbot that could answer user queries about data models, platform features, and access requests in real-time. The solution, which included a web crawler for knowledge ingestion and vector search capabilities, was built in just three weeks and led to substantial productivity gains while reducing operational costs by 20-30% compared to their previous data warehouse solution."
+link: "https://www.databricks.com/customers/hp/gen-ai"
+year: 2024
+seo:
+  title: "HP: Building a Knowledge Base Chatbot for Data Team Support Using RAG - ZenML LLMOps Database"
+  description: "HP's data engineering teams were spending 20-30% of their time handling support requests and SQL queries, creating a significant productivity bottleneck. Using Databricks Mosaic AI, they implemented a RAG-based knowledge base chatbot that could answer user queries about data models, platform features, and access requests in real-time. The solution, which included a web crawler for knowledge ingestion and vector search capabilities, was built in just three weeks and led to substantial productivity gains while reducing operational costs by 20-30% compared to their previous data warehouse solution."
+  canonical: "https://www.zenml.io/llmops-database/building-a-knowledge-base-chatbot-for-data-team-support-using-rag"
+  ogTitle: "HP: Building a Knowledge Base Chatbot for Data Team Support Using RAG - ZenML LLMOps Database"
+  ogDescription: "HP's data engineering teams were spending 20-30% of their time handling support requests and SQL queries, creating a significant productivity bottleneck. Using Databricks Mosaic AI, they implemented a RAG-based knowledge base chatbot that could answer user queries about data models, platform features, and access requests in real-time. The solution, which included a web crawler for knowledge ingestion and vector search capabilities, was built in just three weeks and led to substantial productivity gains while reducing operational costs by 20-30% compared to their previous data warehouse solution."
+---
+
+## Overview
+
+HP, a global technology company known for computing and printing solutions supporting over 200 million printers worldwide, faced significant operational challenges within their Big Data Platform and Solutions organization. This team is responsible for data ingestion, platform support, and customer data products across all HP business units. The core problem was that nontechnical users struggled to discover, access, and gain insights from HP's vast data repositories, which span PCs, printers, web applications, and mobile apps. This created bottlenecks that consumed substantial engineering resources and slowed decision-making across the organization.
+
+The case study demonstrates how HP leveraged generative AI, specifically through the Databricks ecosystem, to build a production knowledge base chatbot that addresses internal support challenges. While this case study is presented by Databricks (a vendor with clear commercial interest), the technical details and quantified outcomes provide useful insights into LLMOps practices for enterprise knowledge management.
+
+## The Problem
+
+HP's data engineering teams were overwhelmed with support requests from internal users and partners. These requests ranged from questions about specific data models, access to restricted data, platform feature usage, and new employee onboarding. According to William Ma, Data Science Manager at HP, the teams spent approximately 20-30% of their time crafting SQL queries, investigating data issues, and cross-referencing information across multiple systems. For a five-person team, this overhead effectively represented the productivity loss equivalent to one full-time employee.
+
+Additionally, data teams were tasked with building usage dashboards, cost analysis reports, and budget tracking tools for leadership decision-making. The manual nature of accessing and exploring data created latency that impeded real-time strategic decisions. Data movement between warehouses and AI workspaces also introduced security, privacy, and governance complexities, particularly around Data Subject Requests (DSRs) that required data deletion when customers submitted such requests.
+
+## Technical Architecture and LLMOps Implementation
+
+### Platform Migration and Infrastructure
+
+HP migrated from AWS Redshift to the Databricks Data Intelligence Platform running on AWS, adopting a lakehouse architecture that unifies data, analytics, and AI capabilities. The key infrastructure components include:
+
+- **Serverless Databricks SQL**: Enables on-demand provisioning of ephemeral compute clusters, reducing infrastructure management overhead and allowing cost-effective scaling.
+- **Unity Catalog**: Provides centralized data management and governance with fine-grained access control for over 600 Databricks users. It also delivers data lineage and auditing capabilities essential for enterprise governance requirements.
+- **Databricks Mosaic AI**: The AI development platform used to build and deploy the GenAI solutions, including model experimentation and agent development.
+
+### Model Selection Process
+
+HP used the Mosaic AI Playground to experiment with different large language models before settling on DBRX as their production model. The selection criteria focused on appropriateness for chatbot use cases and cost-effectiveness. This experimentation phase represents a critical LLMOps practice—evaluating multiple models against specific use case requirements before committing to a production deployment.
+
+### RAG Architecture
+
+The core GenAI solution implements a Retrieval Augmented Generation (RAG) pattern with the following components:
+
+- **Web Crawler**: A component that crawls internal information sources including wiki pages, SharePoint files, and team support channels. The crawler tokenizes content and populates it into the vector database.
+- **Vector Search Database**: Serves as the backend for storing embeddings of all relevant internal documentation. This enables semantic search capabilities for retrieving contextually relevant information.
+- **AI Agent Backend**: Parses user input, performs similarity search against the vector database to retrieve relevant context, and sends the augmented prompt to the GenAI endpoint for answer generation.
+- **Web Frontend**: User-facing interface for the chatbot interaction.
+- **Reference URLs**: Generated answers include source URLs, allowing users to validate responses or explore topics further—an important transparency feature for enterprise AI applications.
+
+### Development Velocity
+
+A notable aspect of this implementation is the development timeline. An intern on the data team implemented the end-to-end solution in less than three weeks using Databricks Mosaic AI. The case study contrasts this with other teams who reportedly spent months building similar solutions on different platforms with experienced staff engineers. While this comparison should be viewed with appropriate skepticism given the promotional nature of the source, it does suggest that modern LLMOps platforms can significantly accelerate GenAI application development when the tooling is well-integrated.
+
+## Governance and Security Considerations
+
+The implementation addresses several enterprise governance requirements through Unity Catalog integration:
+
+- **Fine-grained access control**: Critical for an organization with 600+ users accessing data through the platform.
+- **Data lineage tracking**: Provides visibility into how data flows through the system.
+- **Auditing capabilities**: Essential for compliance and security monitoring.
+- **DSR compliance**: The architecture addresses the complexity of handling data deletion requests, which becomes more challenging when data is copied to multiple workspaces.
+
+By keeping AI tooling within the same platform as the data (rather than moving data to external AI workspaces), HP reduced the governance complexity and associated costs.
+
+## Expanding Use Cases: AI/BI Genie
+
+Beyond the knowledge base chatbot, HP is exploring AI/BI Genie for natural language data querying. This tool enables nontechnical users to query data conversationally and receive immediate responses, potentially reducing the manual SQL support burden on data engineers. The implementation involves:
+
+- Creating shared Genie workspaces with pre-configured queries for frequently asked questions
+- Enabling natural language interfaces for data exploration
+- Automatic data visualization generation
+
+This represents an evolution from document-based RAG to structured data querying, expanding the GenAI footprint within the organization.
+
+## Results and Outcomes
+
+The quantified results from the case study include:
+
+- **20-30% operational cost savings** compared to the previous AWS Redshift data warehouse
+- **Three-week development timeline** for the initial chatbot implementation
+- **Projected productivity gains** by reducing manual partner support demands on data practitioners
+
+The cost savings appear to be primarily from the platform migration rather than the GenAI implementation specifically. The productivity gains from the chatbot are described as "forecasted" rather than measured, suggesting the solution may still be relatively new or that concrete metrics weren't available at the time of publication.
+
+## Future Roadmap
+
+HP plans to expand GenAI solutions to external customers to improve troubleshooting and query resolution processes. This suggests a progression from internal productivity tools to customer-facing AI applications, which typically involves more rigorous requirements around reliability, accuracy, and response quality.
+
+## Critical Assessment
+
+While this case study provides useful insights into enterprise LLMOps practices, several points warrant consideration:
+
+- The source is a Databricks customer story, inherently promotional in nature
+- Some claimed benefits (like the speed advantage compared to other platforms) lack independent verification
+- Productivity gains are projected rather than measured post-implementation
+- The three-week development timeline, while impressive, was achieved by an intern—suggesting the scope may have been relatively limited or the individual was exceptionally capable
+- The 20-30% cost savings are attributed to platform migration broadly, not specifically to the GenAI components
+
+That said, the technical architecture described follows established LLMOps best practices: using RAG to ground LLM responses in proprietary data, implementing proper governance controls, selecting models based on experimentation, and building referenceable outputs for user verification. The emphasis on keeping data and AI tooling unified to reduce governance complexity is a practical consideration for enterprise deployments.

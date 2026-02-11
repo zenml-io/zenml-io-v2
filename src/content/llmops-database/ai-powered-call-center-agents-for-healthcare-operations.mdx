@@ -1,0 +1,154 @@
+---
+title: "AI-Powered Call Center Agents for Healthcare Operations"
+slug: "ai-powered-call-center-agents-for-healthcare-operations"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "674f207b6dd14b395f67ff4d"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:46:38.785Z"
+  createdOn: "2024-12-03T15:15:07.691Z"
+llmopsTags:
+  - "healthcare"
+  - "customer-support"
+  - "speech-recognition"
+  - "regulatory-compliance"
+  - "realtime-application"
+  - "error-handling"
+  - "human-in-the-loop"
+  - "latency-optimization"
+  - "fallback-strategies"
+  - "monitoring"
+  - "guardrails"
+  - "reliability"
+  - "compliance"
+  - "google-gcp"
+  - "openai"
+company: "HeyRevia"
+summary: "HeyRevia has developed an AI call center solution specifically for healthcare operations, where over 30% of operations run on phone calls. Their system uses AI agents to handle complex healthcare-related calls, including insurance verifications, prior authorizations, and claims processing. The solution incorporates real-time audio processing, context understanding, and sophisticated planning capabilities to achieve performance that reportedly exceeds human operators while maintaining compliance with healthcare regulations."
+link: "https://www.youtube.com/watch?v=GhJZrq1GycM"
+year: 2023
+seo:
+  title: "HeyRevia: AI-Powered Call Center Agents for Healthcare Operations - ZenML LLMOps Database"
+  description: "HeyRevia has developed an AI call center solution specifically for healthcare operations, where over 30% of operations run on phone calls. Their system uses AI agents to handle complex healthcare-related calls, including insurance verifications, prior authorizations, and claims processing. The solution incorporates real-time audio processing, context understanding, and sophisticated planning capabilities to achieve performance that reportedly exceeds human operators while maintaining compliance with healthcare regulations."
+  canonical: "https://www.zenml.io/llmops-database/ai-powered-call-center-agents-for-healthcare-operations"
+  ogTitle: "HeyRevia: AI-Powered Call Center Agents for Healthcare Operations - ZenML LLMOps Database"
+  ogDescription: "HeyRevia has developed an AI call center solution specifically for healthcare operations, where over 30% of operations run on phone calls. Their system uses AI agents to handle complex healthcare-related calls, including insurance verifications, prior authorizations, and claims processing. The solution incorporates real-time audio processing, context understanding, and sophisticated planning capabilities to achieve performance that reportedly exceeds human operators while maintaining compliance with healthcare regulations."
+---
+
+## Overview
+
+HeyRevia is building AI-powered call center agents specifically designed for the healthcare industry. The presentation was given by Sean, the company's CEO, who brings a decade of AI experience including work on Google Assistant (notably the 2018 AI calling demonstration for restaurants and salons) and autonomous vehicle development at Waymo. This background in both conversational AI and autonomous systems heavily influences their approach to healthcare call center automation.
+
+The core problem HeyRevia addresses is that more than 30% of healthcare operations still run through phone calls. These calls span a wide range of activities from simple appointment scheduling to complex negotiations with insurance companies regarding credential verification, prior authorizations, referrals, claims denials, and benefits inquiries. The current industry solution involves Business Process Outsourcing (BPO) providers where human agents in call centers often end up calling each other, sometimes sitting in adjacent rooms but still required to communicate via phone. This represents a significant inefficiency that HeyRevia aims to solve with AI agents.
+
+## Voice Agent Landscape and Technical Challenges
+
+Sean provides valuable context on the current state of voice agent technology. Over the past two years, speech-to-text (STT) and text-to-speech (TTS) capabilities have improved dramatically, and large language models have evolved from text-only inputs to handling audio directly, as demonstrated by OpenAI's real-time API. However, significant production challenges remain.
+
+The typical voice agent architecture follows a pipeline approach used by platforms like VAPI, Retell, and Bland. This pipeline flows from telephony systems (like Twilio or 10x) through streaming input handling via WebSocket and WebRTC, to ASR solutions (Assembly AI, Deepgram, Whisper) for speech-to-text conversion, then to the LLM for understanding and response generation, and finally back through TTS to produce audio output.
+
+The key limitations of this pipeline approach include:
+
+- **Latency sensitivity**: Voice agents process information in 20-millisecond increments. Any delay beyond 500 milliseconds becomes noticeable to users and degrades the experience. System crashes or performance issues at any pipeline stage directly impact call quality.
+
+- **Hallucination risks**: In healthcare, hallucinations can be "deadly" - if an AI incorrectly communicates prescription dosages or medication volumes, it could cause serious patient harm. This makes error prevention critical rather than optional.
+
+- **Task completion complexity**: Maintaining natural conversation while completing complex tasks over 10+ minute calls is extremely difficult for current voice agents, often requiring multiple retry attempts.
+
+## HeyRevia's Architecture: Perception-Prediction-Planning-Control
+
+HeyRevia's architecture draws significant inspiration from autonomous vehicle systems, which is unsurprising given Sean's background at Waymo. Rather than treating voice interaction as a simple pipeline, they model it as an autonomous agent operating in an environment with multiple states and required behaviors.
+
+### Perception Layer
+
+The perception layer continuously processes incoming audio to understand the current state of the call. It can distinguish between:
+- Music playing (hold music)
+- IVR (Interactive Voice Response) system interactions
+- Live human conversation
+
+This real-time perception allows the system to adapt its behavior appropriately rather than processing all audio uniformly.
+
+### Prediction Layer
+
+The prediction layer anticipates what should happen next. A critical optimization mentioned is hold handling: when the system detects that a call is on hold (through the perception layer), it pauses all processing and LLM inference for that call. The agent "sits silently" and waits for a human to join. This saves significant token costs during what could be 30-minute hold times while ensuring the system is ready to respond immediately when a human representative joins.
+
+### Planning Layer
+
+The planning layer addresses what Sean identifies as the primary difference between voice agents and humans: the ability to think ahead. With simple prompt-based approaches, there's no mechanism to provide the AI with sequenced, contextual information about what needs to happen at specific points in the call. The planning layer enables the agent to:
+- Anticipate upcoming steps in the call flow
+- Think ahead about information requirements
+- Self-correct when calls deviate from expected paths
+- Adjust course when unexpected situations arise
+
+### Control Layer
+
+The control layer provides guardrails to prevent the agent from going off-track. This is explicitly designed to prevent hallucination and scope creep. For example, when working with pharmaceutical companies, the control layer ensures the AI stays focused on medical information and doesn't drift into irrelevant topics like discussing meals or lunch.
+
+## Operational Features
+
+### Human-in-the-Loop Capability
+
+A distinctive feature of HeyRevia is the ability for human supervisors to take over calls in real-time. When monitoring multiple simultaneous calls (the presentation shows 10-15 concurrent calls), a supervisor can:
+- Jump into any individual call
+- Take control from the AI mid-conversation
+- Speak directly with the human representative on the other end
+- Return control to the AI to continue the call
+
+This provides both quality assurance and a recovery mechanism for edge cases the AI cannot handle.
+
+### Call Center API vs. UI
+
+HeyRevia offers two integration patterns:
+
+**Work API (Call Center API)**: This treats the AI as a task executor. Users submit call work items, and the AI handles them autonomously. Importantly, the system has self-correction capabilities - if a call fails due to missing or incorrect information (like an invalid provider ID or NPI number), the AI can identify the issue and request the correct information before retrying. This represents the AI "learning from its mistakes."
+
+**Call Center UI**: Provides a visual interface for monitoring and intervening in calls, enabling the human-in-the-loop functionality described above.
+
+## Evaluation and Benchmarking
+
+HeyRevia's evaluation philosophy is "if you're trying to ask AI agent to do similar human work, you have to evaluate it like a human." They benchmark AI performance against human agents on the same scenarios by analyzing transcripts and comparing outcomes. According to their data, the AI outperforms humans in many scenarios.
+
+A concrete example provided: for insurance claims where the initial claim was denied, human agents typically require two to three phone calls to identify the actual denial reason, while their AI can achieve this in one to two calls by more effectively negotiating with and pushing back on human representatives.
+
+However, Sean acknowledges that LLMs "do make simple and stupid mistakes" - the challenge is catching and handling these during live calls, which is addressed through the control layer and human intervention capabilities.
+
+## Healthcare Compliance and Production Considerations
+
+Operating in healthcare requires extensive compliance measures:
+
+- **Self-hosted LLMs**: HeyRevia hosts their own large language models rather than using third-party APIs, giving them complete control over data handling and retention
+- **Data isolation**: Client data and any AI training derived from it is never shared across different providers, patients, or business entities
+- **HIPAA and SOC 2**: These are described as "mandatory" for operating in the healthcare space
+- **Vendor compliance**: All service providers in the stack (STT, TTS vendors, etc.) must also maintain HIPAA compliance
+- **Security patching**: Continuous updates to address security vulnerabilities, particularly given potential government oversight
+
+### EHR Integration
+
+Currently, HeyRevia does not directly integrate with Electronic Health Record (EHR) systems. They operate as a layer on top, functioning as an AI call center that works on behalf of customers. Direct EHR integration may come as the company matures and demonstrates "proof of work."
+
+## Real-World Use Cases
+
+The system handles common healthcare phone-based workflows including:
+- Credential verification (credentialing/licensing)
+- Prior authorizations
+- Referrals
+- Consulting requests
+- Benefits eligibility inquiries
+- Claims negotiations following denials
+
+Each call type involves navigating IVR systems, providing repeated identifying information (NPI numbers, member IDs, etc.), waiting on hold, and then negotiating with human representatives - all of which the AI can handle while humans previously had to dedicate significant time to these tedious processes.
+
+## Production Insights and Lessons
+
+Several practical insights emerge from this case study:
+
+- **Token cost optimization matters**: Pausing LLM processing during hold periods can save substantial costs over 30-minute calls
+- **Multi-state awareness**: Voice agents need to handle fundamentally different call states (IVR, hold, live conversation) with different strategies
+- **Error criticality varies by domain**: Healthcare's zero-tolerance for certain errors (medication dosages) requires different guardrails than consumer applications
+- **Hybrid human-AI workflows**: The ability to seamlessly transfer between AI and human control provides both safety and flexibility
+- **Evaluation against realistic baselines**: Comparing AI to actual human agent performance rather than synthetic benchmarks provides more meaningful metrics
+
+The case study represents an interesting application of autonomous agent principles to a highly regulated, high-stakes domain where the consequences of errors are severe but the potential for efficiency gains is substantial.

@@ -1,0 +1,123 @@
+---
+title: "Building an On-Premise Health Insurance Appeals Generation System"
+slug: "building-an-on-premise-health-insurance-appeals-generation-system"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f3de4d87d2c0220a22996"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:40:35.871Z"
+  createdOn: "2024-11-21T14:04:20.270Z"
+llmopsTags:
+  - "devops"
+  - "fine-tuning"
+  - "healthcare"
+  - "high-stakes-application"
+  - "kubernetes"
+  - "latency-optimization"
+  - "model-optimization"
+  - "monitoring"
+  - "openai"
+  - "prompt-engineering"
+  - "regulatory-compliance"
+  - "reliability"
+  - "scalability"
+  - "scaling"
+company: "HealthInsuranceLLM"
+summary: "Development of an LLM-based system to help generate health insurance appeals, deployed on-premise with limited resources. The system uses fine-tuned models trained on publicly available medical review board data to generate appeals for insurance claim denials. The implementation includes Kubernetes deployment, GPU inference, and a Django frontend, all running on personal hardware with multiple internet providers for reliability."
+link: "https://www.youtube.com/watch?v=lfoZPp6tLm4"
+year: 2023
+seo:
+  title: "HealthInsuranceLLM: Building an On-Premise Health Insurance Appeals Generation System - ZenML LLMOps Database"
+  description: "Development of an LLM-based system to help generate health insurance appeals, deployed on-premise with limited resources. The system uses fine-tuned models trained on publicly available medical review board data to generate appeals for insurance claim denials. The implementation includes Kubernetes deployment, GPU inference, and a Django frontend, all running on personal hardware with multiple internet providers for reliability."
+  canonical: "https://www.zenml.io/llmops-database/building-an-on-premise-health-insurance-appeals-generation-system"
+  ogTitle: "HealthInsuranceLLM: Building an On-Premise Health Insurance Appeals Generation System - ZenML LLMOps Database"
+  ogDescription: "Development of an LLM-based system to help generate health insurance appeals, deployed on-premise with limited resources. The system uses fine-tuned models trained on publicly available medical review board data to generate appeals for insurance claim denials. The implementation includes Kubernetes deployment, GPU inference, and a Django frontend, all running on personal hardware with multiple internet providers for reliability."
+---
+
+## Overview
+
+This case study comes from a talk by Holden Karau, a member of the Apache Spark PMC who works at Netflix but pursued this project independently as a personal endeavor. The project addresses a deeply personal problem: navigating the American health insurance system, which frequently denies medical claims. According to the presentation, Anthem Blue Cross denied approximately 20% of claims in 2019, and there are allegations that some insurers use AI to automate claim denials. The speaker's motivation stems from personal experience being hit by a car in 2019 and undergoing various medical procedures as a trans person, both of which resulted in significant battles with insurance companies.
+
+The project aims to build an LLM that takes health insurance denial letters as input and generates appeal letters as output. The speaker is refreshingly honest about the limitations, describing this as a "flex tape slap-on approach" to what is fundamentally a societal problem, acknowledging that technology alone cannot fix structural issues in American healthcare.
+
+## Data Acquisition and Synthetic Data Generation
+
+One of the most interesting aspects of this project is the creative approach to obtaining training data. The speaker identifies several potential data sources and their limitations:
+
+- Insurance companies possess the data but have no incentive to help since the project's goal is to make their lives harder
+- Doctor's offices have data but face HIPAA and other legal constraints that would require extensive manual redaction
+- Internet sources where people post their denials and appeals exist but don't provide enough volume to fine-tune a model
+
+The solution was to leverage independent medical review board data from California, which is publicly available and open for download. Other states like Washington have similar data but with restrictions around commercial use, so the project sticks to California data to avoid legal complications. The beauty of this data source is its volume—California is large enough to provide substantial records—and that patient names and identifying information are not included in the published results.
+
+To expand this dataset, the project uses LLMs to generate synthetic data. The approach involves taking the independent medical review records and asking LLMs to generate what the original denial letters might have looked like, as well as corresponding appeals. This synthetic data generation approach has notable trade-offs: it costs money (though less than human annotation), the generated data quality varies requiring filtering, and careful attention must be paid to the licenses of the models used for generation.
+
+## Model Fine-Tuning Infrastructure
+
+For fine-tuning, the project uses Axolotl (the speaker admits uncertainty about pronunciation), which abstracts away many of the shell scripts that were previously required when using earlier approaches like Dolly. The speaker notes that fine-tuning has become significantly easier over time.
+
+The compute for fine-tuning comes from Lambda Labs cloud GPUs, since while the speaker owns an RTX 4090, it's insufficient for the fine-tuning workload—though it can handle inference. The configuration involves relatively simple YAML files specifying the base model, data location, sequence lengths, sliding windows, and special tokens.
+
+A notable cost point: the entire fine-tuning process cost approximately $12, which the speaker describes as not trivial but certainly within personal budget constraints. This represents an interesting data point for anyone considering similar personal or small-scale LLM projects.
+
+## Model Serving Architecture
+
+The serving infrastructure is where the "on-prem" aspect becomes particularly interesting. The speaker has a personal server rack with various hardware, including ARM-based Nvidia devices (likely Jetson or similar) and traditional x86 servers. However, they discovered several challenges:
+
+- ARM GPU devices don't work well with most LLM tooling
+- An RTX 3090 physically doesn't fit well in the available server chassis
+- A desktop computer ended up being used and placed at the bottom of the rack
+- Power consumption was higher than expected, requiring shuffling of equipment within a 15-amp power budget
+
+The actual serving uses vLLM, deployed via Kubernetes. The speaker shares their deployment configuration, which includes:
+
+- Limiting to amd64 hosts since ARM nodes don't work well with the current tooling
+- Setting the runtime class to Nvidia to access GPUs from containers
+- Specifying the model and network listening configuration
+- Allocating significant ephemeral storage for model downloads
+
+An important production lesson emerges here: the speaker initially pulled from "latest" container tags, which caused breakage when upstream projects (like Mistral) updated their containers in ways that changed prompt generation before releasing corresponding source code. The recommendation is to pin to specific versions.
+
+The RTX 3090 cost $748, which while more expensive than the training process, is significantly cheaper than renting cloud GPU capacity for a year of inference.
+
+## Frontend and Infrastructure
+
+The frontend is built with Django, chosen because the speaker works in Python and Scala, and LLMs generate better Python code than Scala code. Django deployments can run on any of the available machines, including the power-efficient ARM nodes.
+
+The networking setup is admittedly overkill for the project—the speaker operates an autonomous system (pigs can fly labs) with three upstream internet providers. This is acknowledged as perhaps excessive but reflects the speaker's background and interests.
+
+## Production Readiness and Honest Assessment
+
+One of the most valuable aspects of this case study is the speaker's honesty about the project's current state. They explicitly warn viewers: "please don't use this right now in real life... it is not super ready for production usage." This transparency is refreshing in a field where demos often oversell capabilities.
+
+The live demo itself failed due to the head node (named "Jumba," after a Lilo and Stitch character) being down, requiring a physical reboot that couldn't happen during the talk. The speaker notes this as a real limitation of on-premise infrastructure: "downsides of on Prem is it takes real time to reboot computers instead of fake time."
+
+## GPU Utilization and Optimization Considerations
+
+During Q&A, several interesting LLMOps topics emerged:
+
+Regarding CPU vs GPU inference: The speaker has experimented with CPU inference but found results unsatisfactory. The model was fine-tuned with synthetic data and works "okay but not amazingly," so losing precision through quantization for CPU inference degrades quality further. Additionally, the bits-and-bytes library used for quantization doesn't compile on their ARM nodes.
+
+For GPU utilization during fine-tuning, Axolotl handles multi-GPU workloads well automatically, selecting batch sizes that fully utilize available compute. The speaker monitors via nvidia-smi to ensure GPUs are working hard.
+
+For inference optimization, current usage is batch size of one since there's only one user (the speaker). vLLM was chosen specifically because it supports dynamic batching, anticipating future multi-user scenarios.
+
+The speaker has not yet explored Intel optimization libraries like Intel Lex but expresses interest in doing so for potential day job applications.
+
+## Code and Resources
+
+The code is open source and available on GitHub under the "totally legit co" organization in the "health-insurance-llm" repository. This includes deployment configurations and fine-tuning code. The speaker also livestreams development work on Twitch and YouTube, providing transparency into the development process including the struggles—noting this can be valuable for others to see they're not alone when facing challenges.
+
+## Key LLMOps Takeaways
+
+This case study demonstrates several important LLMOps principles in an accessible, budget-constrained context:
+
+- Synthetic data generation can bootstrap training datasets when real data is unavailable or legally constrained
+- Consumer GPU hardware can be viable for inference workloads, though with caveats around form factor and power consumption
+- Kubernetes provides reasonable abstraction for model serving even on heterogeneous home-lab hardware
+- Container version pinning is essential for production stability
+- On-premise infrastructure trades cost savings for operational burden (physical reboots, power management)
+- Honest assessment of production readiness is crucial—not everything needs to be enterprise-ready to provide value, but users should understand limitations

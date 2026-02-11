@@ -1,0 +1,144 @@
+---
+title: "Building a Video Q&A System with RAG and Speaker Detection"
+slug: "building-a-video-q-a-system-with-rag-and-speaker-detection"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "67c9b1f2aa80e98e83b478cd"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:02:23.020Z"
+  createdOn: "2025-03-06T14:32:18.432Z"
+llmopsTags:
+  - "question-answering"
+  - "speech-recognition"
+  - "content-moderation"
+  - "unstructured-data"
+  - "multi-modality"
+  - "rag"
+  - "embeddings"
+  - "prompt-engineering"
+  - "semantic-search"
+  - "vector-search"
+  - "chunking"
+  - "fastapi"
+  - "pinecone"
+  - "elasticsearch"
+  - "openai"
+company: "Vimeo"
+summary: "Vimeo developed a sophisticated video Q&A system that enables users to interact with video content through natural language queries. The system uses RAG (Retrieval Augmented Generation) to process video transcripts at multiple granularities, combined with an innovative speaker detection system that identifies speakers without facial recognition. The solution generates accurate answers, provides relevant video timestamps, and suggests related questions to maintain user engagement."
+link: "https://medium.com/vimeo-engineering-blog/unlocking-knowledge-sharing-for-videos-with-rag-810ab496ae59"
+year: 2024
+seo:
+  title: "Vimeo: Building a Video Q&A System with RAG and Speaker Detection - ZenML LLMOps Database"
+  description: "Vimeo developed a sophisticated video Q&A system that enables users to interact with video content through natural language queries. The system uses RAG (Retrieval Augmented Generation) to process video transcripts at multiple granularities, combined with an innovative speaker detection system that identifies speakers without facial recognition. The solution generates accurate answers, provides relevant video timestamps, and suggests related questions to maintain user engagement."
+  canonical: "https://www.zenml.io/llmops-database/building-a-video-q-a-system-with-rag-and-speaker-detection"
+  ogTitle: "Vimeo: Building a Video Q&A System with RAG and Speaker Detection - ZenML LLMOps Database"
+  ogDescription: "Vimeo developed a sophisticated video Q&A system that enables users to interact with video content through natural language queries. The system uses RAG (Retrieval Augmented Generation) to process video transcripts at multiple granularities, combined with an innovative speaker detection system that identifies speakers without facial recognition. The solution generates accurate answers, provides relevant video timestamps, and suggests related questions to maintain user engagement."
+---
+
+## Overview
+
+Vimeo, a well-known video hosting and sharing platform, built a video Q&A system that allows viewers to interact with video content using natural language queries. The system is designed primarily for knowledge-sharing videos such as meetings, lectures, presentations, and tutorials. Rather than requiring users to watch an entire video to find specific information, the Q&A system can summarize content, answer specific questions, and provide playable moments that link directly to relevant portions of the video.
+
+The core technology powering this system is Retrieval Augmented Generation (RAG), which has become one of the most widely adopted patterns for building production LLM applications. The article was published in July 2024, positioning it during what many in the industry termed "the year of RAG."
+
+## Technical Architecture
+
+### Why RAG for Video Content
+
+The team chose RAG over alternative approaches for several compelling reasons that are relevant to any production LLM deployment:
+
+- **Grounding responses in actual content**: By retrieving specific context from the video transcript, the system reduces hallucinations since answers are based on actual content rather than the LLM's general knowledge.
+- **Handling private or proprietary data**: The videos being processed are user-uploaded content that the LLM would have no knowledge of otherwise, making context injection essential.
+- **Efficiency with long content**: Rather than processing entire video transcripts for each query (which would be slow and expensive), RAG retrieves only the relevant portions, enabling fast response times crucial for chatbot interactions.
+
+### Transcript as the Primary Data Source
+
+The team made a strategic decision to rely solely on the transcript of spoken words in the video, at least for the initial implementation. This decision was pragmatic for two reasons: Vimeo already transcribes videos automatically for closed captioning, so no new infrastructure was needed, and for knowledge-sharing videos, the transcript alone provides sufficient information to answer most important questions. They noted plans to incorporate visual information in the future.
+
+### Bottom-Up Processing for Multi-Scale Context
+
+One of the more interesting technical contributions described is the "bottom-up processing" approach for transcript registration into the vector database. This addresses a fundamental challenge in RAG systems: different types of questions require different amounts of context. Questions about specific details might need only a few sentences, while questions about the overall video theme require understanding the entire content.
+
+The multi-level chunking strategy works as follows:
+
+- **Bottom level (100-200 words)**: Standard transcript chunks corresponding to 1-2 minutes of playback time. These are stored directly without summarization.
+- **Middle level (500 words summarized to 100)**: Larger chunks that are processed by an LLM to create summaries focusing on specific details, numbers, dates, and speaker names.
+- **Top level (entire video)**: All summaries are combined and processed to generate an overall video description focusing on the most important topics.
+
+All three levels are stored in the same vector database, with each entry containing the text representation (original or summarized), the vector embedding, original word timings from the transcript, and start/end timestamps. This hierarchical approach allows the retrieval system to return appropriate context regardless of whether the question is about specific details or overall themes.
+
+### Speaker Detection Without Facial Recognition
+
+A notable feature is the speaker identification system that works without any visual analysis or facial recognition. This is important for privacy considerations and also practical since many videos may not show speakers' faces clearly.
+
+The approach uses audio-based speaker clustering to first segment the conversation by speaker ID (numerical identifiers). The more complex challenge is then mapping these numerical IDs to actual names mentioned in the video.
+
+The team observed that speaker names are most commonly revealed during conversation transitions—moments where speakers hand off to each other, introduce themselves, or thank previous speakers. Their algorithm focuses on these transitions and uses multiple LLM prompts to extract names:
+
+- Identifying who is being addressed at the start of a new speaker's turn
+- Identifying who is being thanked or referenced by the next speaker
+- Detecting self-introductions
+- Aggregating all transitions for a single speaker ID to find name mentions
+
+The system uses a voting mechanism across multiple prompts to increase confidence in name assignments. Importantly, they prefer leaving a speaker unidentified rather than assigning an incorrect name—a sensible approach for production systems where false positives can be more damaging than false negatives.
+
+A clever optimization is the use of masking: when analyzing transitions, they hide irrelevant portions of text to reduce noise and focus the LLM on the relevant context.
+
+### Two-Stage Question Answering
+
+The production system separates the answering task into two distinct LLM calls:
+
+- **First prompt**: Generates the textual answer to the user's question using the retrieved context (either original transcript or summarized text).
+- **Second prompt**: Finds relevant quotes in the original transcript that support the answer, enabling the system to provide playable video moments.
+
+This separation was motivated by observed performance issues when trying to accomplish both tasks in a single prompt, at least with ChatGPT 3.5. The article attributes this to "capacity issues" in the LLM—a practical observation that reflects real-world constraints when deploying language models.
+
+To make the quote-finding more efficient, they embed the generated answer and compute similarity with the retrieved matches, forming a new filtered context that is more likely to contain relevant quotes.
+
+### Proactive Engagement Features
+
+Beyond answering user questions, the system includes features designed to keep viewers engaged:
+
+- **Pre-generated Q&A pairs**: Created during transcript registration by processing all summary chunks together and asking the LLM to generate the most important questions about the video. This helps users who don't know what to ask.
+- **Related question suggestions**: After a user asks a question, the system suggests related questions. These are generated using RAG by embedding the answer, retrieving additional context (which may include new matches not in the original context), and prompting the LLM to create questions that are related to the topic, not already answered, and answerable from the video content.
+
+The related questions feature demonstrates careful prompt engineering to ensure suggested questions are actually useful—avoiding trivial questions and unanswerable ones.
+
+## Production Considerations
+
+Several aspects of this case study reflect mature thinking about production LLM deployments:
+
+**Latency optimization**: RAG inherently supports fast response times by limiting the context that needs to be processed, but the system also pre-computes summaries and video descriptions during registration to avoid real-time summarization.
+
+**Confidence thresholds**: The speaker detection system explicitly prefers not assigning a name over assigning a wrong name, reflecting appropriate conservatism for user-facing features.
+
+**Task decomposition**: Breaking complex tasks (answering + finding quotes) into separate prompts improved reliability, a common pattern in production LLM systems.
+
+**Hybrid retrieval**: The use of embeddings for retrieval combined with similarity filtering against generated answers shows a multi-stage approach to context curation.
+
+**Graceful degradation**: The system is designed to work even when speaker names cannot be identified, visual information is unavailable, or other metadata is missing.
+
+## Limitations and Future Work
+
+The article acknowledges several limitations that represent honest assessment of the current system:
+
+- The system currently relies solely on transcripts and does not process visual information, which limits its ability to answer questions about what is shown (versus what is said) in videos.
+- The speaker detection may fail in informal conversations where names aren't mentioned, or when nicknames create ambiguity.
+- The evaluation methodology and quantitative results are not shared, making it difficult to assess accuracy and performance claims independently.
+
+The team mentions plans to incorporate visual information in the future, suggesting ongoing development and improvement of the system.
+
+## Technology Stack
+
+While the article doesn't provide a complete technology inventory, the following components are mentioned or implied:
+
+- ChatGPT 3.5 for LLM capabilities
+- Vector database for storing embeddings and transcript chunks (specific implementation not named)
+- Nearest neighbors search for retrieval
+- Pre-existing transcription system from Vimeo's closed captioning feature
+- Audio-based speaker clustering (method not specified)
+
+Overall, this case study represents a solid example of applying RAG to a novel domain (video content) with thoughtful adaptations for the specific challenges of the medium, including multi-scale context requirements, speaker identification, and the need to link textual answers back to playable video moments.

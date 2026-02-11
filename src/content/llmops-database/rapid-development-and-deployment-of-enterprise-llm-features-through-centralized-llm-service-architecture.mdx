@@ -1,0 +1,179 @@
+---
+title: "Rapid Development and Deployment of Enterprise LLM Features Through Centralized LLM Service Architecture"
+slug: "rapid-development-and-deployment-of-enterprise-llm-features-through-centralized-llm-service-architecture"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f3e61668e7ef08b1db5c2"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:40:12.770Z"
+  createdOn: "2024-11-21T14:06:25.802Z"
+llmopsTags:
+  - "amazon-aws"
+  - "chatbot"
+  - "compliance"
+  - "cost-optimization"
+  - "document-processing"
+  - "error-handling"
+  - "fallback-strategies"
+  - "guardrails"
+  - "kubernetes"
+  - "latency-optimization"
+  - "microservices"
+  - "monitoring"
+  - "openai"
+  - "prompt-engineering"
+  - "regulatory-compliance"
+  - "reliability"
+  - "scalability"
+  - "security"
+  - "semantic-search"
+company: "PagerDuty"
+summary: "PagerDuty successfully developed and deployed multiple GenAI features in just two months by implementing a centralized LLM API service architecture. They created AI-powered features including runbook generation, status updates, postmortem reports, and an AI assistant, while addressing challenges of rapid development with new technology. Their solution included establishing clear processes, role definitions, and a centralized LLM service with robust security, monitoring, and evaluation frameworks."
+link: "https://www.youtube.com/watch?v=ptqJ4prSHiA"
+year: 2023
+seo:
+  title: "PagerDuty: Rapid Development and Deployment of Enterprise LLM Features Through Centralized LLM Service Architecture - ZenML LLMOps Database"
+  description: "PagerDuty successfully developed and deployed multiple GenAI features in just two months by implementing a centralized LLM API service architecture. They created AI-powered features including runbook generation, status updates, postmortem reports, and an AI assistant, while addressing challenges of rapid development with new technology. Their solution included establishing clear processes, role definitions, and a centralized LLM service with robust security, monitoring, and evaluation frameworks."
+  canonical: "https://www.zenml.io/llmops-database/rapid-development-and-deployment-of-enterprise-llm-features-through-centralized-llm-service-architecture"
+  ogTitle: "PagerDuty: Rapid Development and Deployment of Enterprise LLM Features Through Centralized LLM Service Architecture - ZenML LLMOps Database"
+  ogDescription: "PagerDuty successfully developed and deployed multiple GenAI features in just two months by implementing a centralized LLM API service architecture. They created AI-powered features including runbook generation, status updates, postmortem reports, and an AI assistant, while addressing challenges of rapid development with new technology. Their solution included establishing clear processes, role definitions, and a centralized LLM service with robust security, monitoring, and evaluation frameworks."
+---
+
+## Overview
+
+PagerDuty, a SaaS platform focused on helping developers, DevOps teams, IT operators, and business leaders prevent and resolve incidents, embarked on an ambitious project to integrate generative AI capabilities into their product offering. Following the explosive adoption of ChatGPT in late 2022, the company set an aggressive goal: develop and deploy production-ready GenAI features within two months. Their motto was "think days, not weeks," and this case study, presented by Irina (Staff Applied Scientist) and Saita (Senior ML Engineer), details how they achieved this through careful architectural decisions, defined processes, and cross-functional collaboration.
+
+## The GenAI Features Developed
+
+PagerDuty released several GenAI features for Early Access:
+
+- **AI-Generated Runbooks**: Runbook jobs allow responders to run automated scripts to resolve incidents. Writing these scripts can be complex, so this feature enables users to describe in natural language what job they want, and the system generates the appropriate script.
+
+- **Status Updates**: During incident response, keeping stakeholders informed is critical but time-consuming. This feature generates draft status updates, allowing responders to focus on resolution rather than communication.
+
+- **Postmortem Reports**: Post-incident reports are essential for organizational learning but are often skipped due to the time investment required. The AI generates comprehensive postmortem reports using available incident data, encouraging more consistent documentation.
+
+- **GenAI Assistant (Chatbot)**: A Slack-accessible chatbot that answers questions related to incidents and supports multiple capabilities from the PagerDuty operations cloud.
+
+- **AI Automation Digest**: Runbook job logs can be complex and span multiple nodes. This feature summarizes what happened based on logs and provides actionable next steps for incident resolution.
+
+## Key Challenges Identified
+
+The team identified several challenges inherent in rapid LLM feature development:
+
+**New Technology Learning Curve**: The LLM landscape was (and continues to be) rapidly evolving. The team was learning about new models, libraries, and providers while simultaneously building production features. The speakers noted a feeling that "we are in testing as revolution is happening"—new cutting-edge research releases daily made the ground feel unstable beneath their feet.
+
+**Limited Planning Time**: Moving fast meant evolving requirements, shifting priorities, and difficulty achieving alignment across multiple teams. Even in rapid development, they found that defining minimum required documentation (like design documents) was crucial.
+
+**Too Many Stakeholders**: Managing multiple teams and stakeholders led to excessive meetings and documentation overhead that threatened to distract from actual development. Clear role definition became essential.
+
+**Concurrent Work Streams**: Developing multiple GenAI features simultaneously risked code duplication and independent problem-solving across teams, leading to inefficiencies.
+
+**Performance Evaluation**: Evaluating LLM-based features presented unique challenges around varying outputs, establishing reliable benchmarks, and ensuring consistent results both offline and online.
+
+## The Centralized LLM API Service
+
+The architectural cornerstone of PagerDuty's approach was a centralized LLM API service. This decision addressed multiple challenges simultaneously and became the key enabler for rapid feature deployment.
+
+### Design Requirements
+
+The service was built with several key requirements focused on ethical and efficient LLM use:
+
+**Single Point of Access**: A dedicated team with data science and ML engineering expertise manages LLM access for the entire company. This abstracts away LLM-related complexity (prompt design, model selection, hyperparameter tuning) from product teams who may lack this expertise. It also prevents redundant work where multiple teams solve the same LLM-related problems independently.
+
+**Easy Integration via API Endpoints**: Product teams receive clean API endpoints, reducing their overhead so they can focus on building GenAI capabilities rather than wrestling with LLM complexity.
+
+**Flexibility and Reliability**: The service supports easy switching between LLM providers and models based on requirements. Failover mechanisms ensure availability—if a primary provider goes down, the service falls back to alternatives. This was a prescient design decision given ongoing concerns about LLM provider reliability.
+
+**Security and Legal Compliance**: Working with security and legal teams from the start, they identified high-risk security threats including unauthorized use, prompt injection attacks, and potential data leakage. Mandatory security controls were implemented.
+
+**Continuous Monitoring**: Given the novelty of the technology, extensive visibility into production behavior was essential. Clear definitions around what, how, and where logging occurs—plus access controls—were established with security compliance in mind.
+
+### Technical Architecture
+
+The service runs on Kubernetes, providing robustness and scalability while enabling rapid deployment of new endpoints without worrying about infrastructure concerns. The microservices architecture allows the choice of LLM provider and model to be decoupled from the service itself—product teams can switch between providers and models by simply passing a different prompt version in the API call.
+
+When an API call is made to the service:
+- Customer authentication verifies the account is authorized for GenAI access
+- The request is forwarded to the LLM Manager
+- The LLM Manager builds prompts, makes calls to LLM providers based on input parameters, and handles logging
+
+The service supports multiple LLM providers including OpenAI, Azure OpenAI, and AWS Bedrock, with architecture designed to support future options like self-hosted models and other enterprise APIs.
+
+### Monitoring and Observability
+
+The monitoring strategy involves multiple tools:
+
+- **Datadog**: Receives LLM call metrics including status, token counts, and latency for health and performance monitoring
+- **Sumo Logic and S3**: Stores additional LLM call details for issue detection, debugging, and deeper analysis
+- Access controls ensure only authorized personnel can access logs
+
+The speakers acknowledged that while their current solution works well, they remain open to integrating third-party services for advanced LLM monitoring as needs evolve.
+
+## Process and Role Definition
+
+Successfully deploying GenAI features quickly required clear processes and role definitions across multiple teams: applied scientists, ML engineers, product managers, and product development engineers.
+
+### The LLM Intake to Production Process
+
+**Feasibility Evaluation**: When a new LLM use case emerges (typically from product managers), an applied scientist evaluates whether an LLM is the appropriate solution. The speakers emphasized that "not everything should be solved with LLMs"—the team experienced pressure to apply LLMs to every problem, but simpler techniques are often more appropriate. Data requirements, model selection, and testing plans are defined here, along with success criteria.
+
+**Design Documentation and Security Review**: If feasible and prioritized, a design document ensures alignment, and the security team reviews the use case early. Waiting until late in the process to involve security creates blocking risks.
+
+**Endpoint Development**: ML engineers add new endpoints to the LLM API service, potentially implementing enhancements like support for multiple concurrent LLM calls or data preprocessing for complex use cases.
+
+**Iterative Development**: Applied scientists develop endpoint logic while product engineers build user-facing features, fetch required data, and integrate with new endpoints. Teams start with the simplest approach and iterate through performance evaluation cycles until success criteria are met.
+
+**Deployment and Monitoring**: All teams come together for deployment, then continue monitoring and gathering user feedback for future improvements.
+
+The team emphasizes that this process continues to evolve as they learn, but having it in place was critical for overcoming coordination challenges.
+
+## Performance Evaluation and Risk Management
+
+### Evaluation Techniques
+
+The team employed multiple evaluation approaches:
+
+- **Manual Testing**: Conducted for every feature release
+- **Internal Tooling**: Used a Streamlit application for data science model testing during feasibility research
+- **Customer Zero**: PagerDuty employees used and provided feedback on features before external release
+- **Automated Testing**: Developed labeled datasets and benchmarks; tests run whenever endpoints or prompts are updated to ensure consistent performance
+- **Implicit Customer Feedback**: Signals like customers accepting and publishing AI-generated status updates indicate successful model performance
+- **LLM as a Judge**: Used to compare and rank generated outputs across different approaches
+- **Metrics Monitoring**: Request counts, latency, input/output lengths, and token counts are tracked to detect behavioral changes
+
+### Risk Management Approach
+
+Risk management followed a structured methodology:
+
+- **Threat Identification**: Specific threats identified for each use case with examples and potential impact assessment (reputational and financial)
+- **Probability Assessment**: Distinguishing between theoretical risks and practical risks likely to occur
+- **Mitigation Definition**: Some mitigations prevent threats, others reduce risk or enable post-occurrence detection
+- **Effort-Impact Balance**: Implementation effort weighed against development time, cost, and feature latency impacts
+- **Prioritization**: Threats and mitigations prioritized based on impact, probability, and implementation effort
+
+The team acknowledged that security is an ongoing process requiring continuous assessment of new and emerging risks such as LLM bias and hallucination.
+
+## Security Controls
+
+Specific security measures implemented include:
+
+- **Account Authentication**: Verifies customers are authorized for GenAI access
+- **Throttling**: Limits request counts per account per minute to prevent abuse by malicious actors
+- **Prompt Design Strategy**: Careful prompt engineering to mitigate prompt injection risks
+- **Centralized Controls**: All security measures apply across all endpoints, making updates easy to propagate
+
+## Key Takeaways
+
+The speakers concluded with practical advice for organizations undertaking similar initiatives:
+
+- Early planning saves time later, even when moving fast—alignment, process definition, and design documentation pay dividends
+- Not every use case requires an LLM; data scientists and ML engineers should evaluate where simpler solutions are more appropriate
+- Start with the simplest approach and iterate—essential for rapid development
+- Clear role and responsibility definitions leverage each team member's expertise efficiently
+- Collaboration and teamwork are paramount—PagerDuty's "run together" value was crucial for quick, successful delivery
+
+The case study represents a practical example of how a company navigated the early, chaotic period of enterprise GenAI adoption with a combination of architectural foresight (the centralized LLM API service), process discipline (defined intake-to-production workflows), and pragmatic evaluation approaches. While the speakers present their approach as successful, they also acknowledge ongoing challenges around evaluation, security, and the rapidly evolving LLM landscape—reflecting the reality that LLMOps remains an iterative, continuously improving discipline.

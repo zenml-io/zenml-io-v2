@@ -1,0 +1,125 @@
+---
+title: "Supply Chain Intelligence Platform Using Compound AI Systems"
+slug: "supply-chain-intelligence-platform-using-compound-ai-systems"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "675b1e0fa10926d8fd4d4ab4"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:50:02.779Z"
+  createdOn: "2024-12-12T17:31:59.963Z"
+llmopsTags:
+  - "data-analysis"
+  - "data-integration"
+  - "regulatory-compliance"
+  - "high-stakes-application"
+  - "rag"
+  - "fine-tuning"
+  - "model-optimization"
+  - "human-in-the-loop"
+  - "monitoring"
+  - "databases"
+  - "reliability"
+  - "scalability"
+  - "wandb"
+  - "databricks"
+  - "microsoft-azure"
+  - "amazon-aws"
+  - "prompt-engineering"
+company: "Altana"
+summary: "Altana, a global supply chain intelligence company, faced challenges in efficiently deploying and managing multiple GenAI models for diverse customer use cases. By implementing Databricks Mosaic AI platform, they transformed their ML lifecycle management, combining custom deep learning models with fine-tuned LLMs and RAG workflows. This led to 20x faster model deployment times and 20-50% performance improvements, while maintaining data privacy and governance requirements across their global operations."
+link: "https://www.databricks.com/customers/altana-ai"
+year: 2024
+seo:
+  title: "Altana: Supply Chain Intelligence Platform Using Compound AI Systems - ZenML LLMOps Database"
+  description: "Altana, a global supply chain intelligence company, faced challenges in efficiently deploying and managing multiple GenAI models for diverse customer use cases. By implementing Databricks Mosaic AI platform, they transformed their ML lifecycle management, combining custom deep learning models with fine-tuned LLMs and RAG workflows. This led to 20x faster model deployment times and 20-50% performance improvements, while maintaining data privacy and governance requirements across their global operations."
+  canonical: "https://www.zenml.io/llmops-database/supply-chain-intelligence-platform-using-compound-ai-systems"
+  ogTitle: "Altana: Supply Chain Intelligence Platform Using Compound AI Systems - ZenML LLMOps Database"
+  ogDescription: "Altana, a global supply chain intelligence company, faced challenges in efficiently deploying and managing multiple GenAI models for diverse customer use cases. By implementing Databricks Mosaic AI platform, they transformed their ML lifecycle management, combining custom deep learning models with fine-tuned LLMs and RAG workflows. This led to 20x faster model deployment times and 20-50% performance improvements, while maintaining data privacy and governance requirements across their global operations."
+---
+
+## Overview
+
+Altana is a growth-stage company building what they describe as the world's first value chain management system, focused on making global supply chains more transparent and reliable. The company operates across multiple countries on three continents, serving over a thousand customers with approximately 200 employees. Their core business is deeply rooted in data and machine learning, which forms the foundation of their product offerings for global trade challenges.
+
+The case study presents Altana's journey from struggling with infrastructure overhead and workflow inefficiencies to achieving significant improvements in model deployment speed and performance through the adoption of Databricks' platform. While the claims of 20x faster deployment and 20-50% better performance are impressive, these are self-reported metrics from a customer story published by the platform vendor, so they should be viewed with appropriate context.
+
+## The Problem Space
+
+Before adopting Databricks, Altana faced several operational challenges that are common in LLMOps at scale:
+
+- **Multi-model complexity**: The company deploys numerous different models that combine into various workflows for different customers. This required rapid iteration on approaches and the ability to fine-tune models for specific customer needs.
+- **Performance monitoring across deployments**: They needed to measure both R&D performance and live production performance across multiple cloud deployments, suggesting a multi-cloud or hybrid deployment strategy.
+- **Infrastructure overhead**: The existing infrastructure forced the team to spend valuable engineering resources building boilerplate infrastructure and evaluation tools rather than focusing on product functionality.
+- **Balancing competing priorities**: The CTO explicitly mentioned tension between product functionality, total cost of ownership, vendor lock-in, and information security requirements. This is a realistic assessment of the tradeoffs companies face when selecting LLMOps infrastructure.
+
+## GenAI Use Cases
+
+Altana employs generative AI for several production use cases that demonstrate practical applications of LLMs in the supply chain domain:
+
+**Tax and Tariff Classification**: One of their primary use cases involves streamlining cross-border trading by generating accurate tax and tariff classifications for goods. The system not only classifies goods but also auto-generates comprehensive legal write-ups that customers can use for justification purposes. This is a compelling example of using LLMs to reduce manual work in a domain that traditionally requires significant expertise.
+
+**Supply Chain Knowledge Graph Enhancement**: Another use case focuses on enriching their global supply chain knowledge graph by integrating customer data in a privacy-preserving manner. This enables better understanding of supply chain dependencies and supports strategic decision-making. The privacy-preserving aspect is notable as it addresses a key concern in enterprise AI deployments.
+
+## Technical Architecture and LLMOps Implementation
+
+Altana's implementation demonstrates a sophisticated compound AI systems approach that combines multiple techniques:
+
+**Multi-Stage Workflow Design**: Their most advanced workflows use custom deep learning models for early processing phases, followed by fine-tuned agent workflows with retrieval augmented generation (RAG) for refinements. This layered approach allows them to leverage the strengths of different model types at different stages of the pipeline.
+
+**RLHF Integration**: Reinforcement learning from human feedback (RLHF) from actual customers is used for continuous model refinement. This creates a feedback loop where production usage directly improves model quality over time. The platform is used to track all user input/output decisions, enabling identification of which steps and models in the workflow need fine-tuning for cost, performance, or latency optimization.
+
+**Model Selection Strategy**: The team takes a pragmatic approach to model selection, combining existing open-source LLMs like DBRX, Llama 3, and Phi-3 with their internal proprietary datasets for RAG workflows. These open-source models also serve as backbones for some of their deep learning solutions. This hybrid approach balances the capabilities of state-of-the-art open models with domain-specific customization.
+
+## Key Platform Components
+
+**Managed MLflow**: This tool was described as pivotal in managing Altana's extensive ML lifecycle. The model and LLM evaluation tools in MLflow were specifically highlighted as enabling ML teams to rapidly train, test, and deploy their own models for customers. The evaluation capabilities are particularly important for production LLM deployments where traditional metrics may not capture quality effectively.
+
+**Model Serving**: Combined with MLflow's evaluation tools, Model Serving provides the deployment infrastructure needed to move models from development to production. The "batteries included" nature of having these tools integrated in one platform was cited as enabling better collaboration across data ingest, data engineering, ML, and software teams.
+
+**Delta Lake**: The team migrated all their data to the Delta format approximately a year before the case study was published. Several features were highlighted as beneficial:
+- Time travel functionality for complex debugging of data workflows
+- Shallow copies for experimentation, which reduces overhead when testing new approaches
+- AI-driven performance optimizations that help manage total cost of ownership at scale
+
+**Unity Catalog**: For a company dealing with sensitive supply chain and customer data, governance is critical. Unity Catalog provides data governance tools ensuring customer data privacy and security. The case study emphasizes their federated architecture and privacy-preserving approach where all customer data is kept separate and private—a requirement for enterprise customers in regulated industries.
+
+## Agentic Workflows and Future Direction
+
+An interesting aspect of Altana's implementation is their early adoption of agentic workflows. They mention already integrating agentic workflows into their ETL process for enrichment, validation, and normalization tasks. This represents an emerging pattern in LLMOps where LLMs are not just serving end-user requests but are embedded into data pipelines to improve data quality and processing.
+
+The company plans to expand this usage further, suggesting they see significant value in AI-augmented data engineering. This aligns with broader industry trends toward using LLMs for data transformation and quality tasks.
+
+## Results and Performance Claims
+
+The case study claims the following improvements:
+- **20x faster model deployment**: Models are trained and deployed to production more than 20 times faster than before. This is attributed to the integrated platform reducing infrastructure overhead.
+- **20-50% better model performance**: Even for their "most demanding workloads," model performance improved by 20-50%. While impressive, the methodology for measuring this improvement is not specified.
+- **Expanded model catalog**: The faster deployment velocity enabled them to expand the variety and number of models in production.
+
+It's worth noting that these metrics come from a vendor-published customer story, so they should be interpreted with appropriate skepticism. However, the qualitative benefits described—reduced infrastructure overhead, better team collaboration, and integrated tooling—are consistent with well-documented benefits of unified ML platforms.
+
+## Critical Assessment
+
+While the case study presents compelling results, several aspects warrant consideration:
+
+The performance metrics (20x faster, 20-50% better) are dramatic but lack detailed methodology. What baseline are these improvements measured against? How was model performance quantified, especially for generative outputs like legal write-ups?
+
+The case study is published by Databricks, so it naturally emphasizes positive outcomes. Real-world implementations typically involve more nuanced tradeoffs and challenges that may not be fully represented.
+
+The emphasis on avoiding vendor lock-in through Databricks' "open architecture" is somewhat ironic given that adopting a comprehensive platform like Databricks creates its own form of dependency. However, the mention of being able to "swap in specific models, regional deployments, or optimize specific components as needed" suggests the architecture does provide flexibility.
+
+## Key Takeaways for LLMOps Practitioners
+
+This case study illustrates several important patterns for production LLM deployments:
+
+- Compound AI systems combining multiple model types and techniques often outperform single-model approaches
+- Integrated evaluation and serving capabilities are essential for rapid iteration
+- RLHF from actual customer usage creates valuable feedback loops for continuous improvement
+- Data governance and privacy are non-negotiable requirements for enterprise AI
+- Reducing infrastructure overhead allows teams to focus on product innovation rather than platform engineering
+- Multi-cloud deployment capabilities are increasingly important for enterprise customers with diverse requirements
+
+The Altana case represents a mature LLMOps implementation that goes beyond simple LLM API calls to build sophisticated production systems combining multiple AI techniques for real business value in the supply chain domain.

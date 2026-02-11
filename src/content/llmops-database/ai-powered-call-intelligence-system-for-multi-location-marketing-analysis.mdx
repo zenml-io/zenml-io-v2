@@ -1,0 +1,98 @@
+---
+title: "AI-Powered Call Intelligence System for Multi-Location Marketing Analysis"
+slug: "ai-powered-call-intelligence-system-for-multi-location-marketing-analysis"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "68512e80c482e0146164fcd8"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:11:45.053Z"
+  createdOn: "2025-06-17T08:59:44.656Z"
+llmopsTags:
+  - "customer-support"
+  - "classification"
+  - "summarization"
+  - "data-analysis"
+  - "realtime-application"
+  - "prompt-engineering"
+  - "semantic-search"
+  - "system-prompts"
+  - "cost-optimization"
+  - "latency-optimization"
+  - "api-gateway"
+  - "databases"
+  - "monitoring"
+  - "scalability"
+  - "fastapi"
+  - "amazon-aws"
+company: "Netsertive"
+summary: "Netsertive, a digital marketing solutions provider for multi-location brands and franchises, implemented an AI-powered call intelligence system using Amazon Bedrock and Amazon Nova Micro to automatically analyze customer call tracking data and extract actionable insights. The solution processes real-time phone call transcripts to provide sentiment analysis, call summaries, keyword identification, coaching suggestions, and performance tracking across locations, reducing analysis time from hours or days to minutes while enabling better customer service optimization and conversion rate improvements for their franchise clients."
+link: "https://aws.amazon.com/blogs/machine-learning/how-netsertive-built-a-scalable-ai-assistant-to-extract-meaningful-insights-from-real-time-data-using-amazon-bedrock-and-amazon-nova?tag=soumet-20"
+year: 2025
+seo:
+  title: "Netsertive: AI-Powered Call Intelligence System for Multi-Location Marketing Analysis - ZenML LLMOps Database"
+  description: "Netsertive, a digital marketing solutions provider for multi-location brands and franchises, implemented an AI-powered call intelligence system using Amazon Bedrock and Amazon Nova Micro to automatically analyze customer call tracking data and extract actionable insights. The solution processes real-time phone call transcripts to provide sentiment analysis, call summaries, keyword identification, coaching suggestions, and performance tracking across locations, reducing analysis time from hours or days to minutes while enabling better customer service optimization and conversion rate improvements for their franchise clients."
+  canonical: "https://www.zenml.io/llmops-database/ai-powered-call-intelligence-system-for-multi-location-marketing-analysis"
+  ogTitle: "Netsertive: AI-Powered Call Intelligence System for Multi-Location Marketing Analysis - ZenML LLMOps Database"
+  ogDescription: "Netsertive, a digital marketing solutions provider for multi-location brands and franchises, implemented an AI-powered call intelligence system using Amazon Bedrock and Amazon Nova Micro to automatically analyze customer call tracking data and extract actionable insights. The solution processes real-time phone call transcripts to provide sentiment analysis, call summaries, keyword identification, coaching suggestions, and performance tracking across locations, reducing analysis time from hours or days to minutes while enabling better customer service optimization and conversion rate improvements for their franchise clients."
+---
+
+## Company and Use Case Overview
+
+Netsertive is a digital marketing solutions provider that specializes in serving multi-location brands and franchises through their Multi-Location Experience (MLX) platform. The company helps businesses manage comprehensive digital marketing campaigns across various channels including search engines, social media, display advertising, video content, connected TV, SEO, business listings, reviews, and location-specific web pages. Their platform serves as a centralized solution for managing both national and local marketing efforts while providing analytics and insights through their Insights Manager product.
+
+The specific challenge that drove this LLMOps implementation was the growing demand from customers for more actionable insights from call tracking data. Previously, the manual review process for analyzing customer calls was extremely time-consuming, taking hours or even days for customers with high call volumes. This created a significant bottleneck in providing timely business intelligence that could help franchises improve customer service quality and boost conversion rates. The company needed a scalable solution that could automatically understand phone call content, assess customer sentiment, identify key topics and competitive mentions, provide coaching recommendations for agents, and track performance trends across individual locations, regions, and nationally.
+
+## Technical Architecture and LLM Implementation
+
+The core of Netsertive's LLMOps solution is built around Amazon Bedrock with Amazon Nova Micro as the primary language model. The selection of Amazon Nova Micro was driven by several key factors that align with production LLM requirements: fast response times exceeding 200 tokens per second, low operational costs, consistent performance, and strong language understanding capabilities specifically suited for text-only processing tasks.
+
+The system architecture implements two distinct processing workflows that demonstrate sophisticated LLMOps patterns. The first is a real-time call processing pipeline that handles individual calls as they occur. When a call comes in, it's immediately routed to their Lead API which captures both the live transcript and caller metadata. This real-time capability is crucial for production environments where immediate insights can impact ongoing customer interactions or enable rapid response to service issues.
+
+The transcript data is then forwarded to Amazon Bedrock where Amazon Nova Micro processes it using standardized base prompts. Importantly, the architecture is designed with extensibility in mind, allowing for customer-specific prompt customization as an additional context layer. This demonstrates a mature approach to prompt engineering that balances consistency with customization needs. The model returns structured JSON responses containing multiple analysis components including sentiment analysis, call summaries, key term identification, call theme classification, and specific coaching suggestions.
+
+## Data Management and Storage Strategy
+
+A critical aspect of this LLMOps implementation is the systematic storage of analysis results in an Amazon Aurora database along with associated key metrics. This approach ensures that processed data is properly indexed and readily available for both immediate access and future analysis, which is essential for maintaining data lineage and enabling continuous improvement of the system. The database integration also supports the second workflow component: aggregate analysis processing.
+
+The aggregate analysis workflow operates on both weekly and monthly schedules, automatically gathering call data within specified time periods. This batch processing approach uses specialized prompts designed specifically for trend analysis, which differs from the real-time analysis prompts to focus on identifying patterns and insights across multiple calls. This dual-prompt strategy demonstrates sophisticated prompt engineering that optimizes for different analytical objectives and time horizons.
+
+## Production Deployment and Performance Characteristics
+
+The development and deployment timeline provides insights into the practical aspects of implementing LLMOps solutions. Netsertive completed their evaluation of different tools and models within approximately one week, followed by a complete development cycle from prompt creation and testing to full platform integration within 30 days before launching in beta. This rapid deployment demonstrates the effectiveness of cloud-based LLM services for accelerating time-to-market while maintaining quality standards.
+
+The performance improvements are substantial and quantifiable. The new system reduces analysis time from hours or days to minutes, representing a dramatic improvement in operational efficiency. This speed improvement is crucial for production environments where timely insights directly impact business operations and customer satisfaction. The system processes calls in real-time while maintaining the ability to generate comprehensive aggregate reports, showing the scalability characteristics necessary for production LLM deployments.
+
+## Prompt Engineering and Model Optimization
+
+The case study reveals sophisticated prompt engineering practices that are essential for production LLMOps. The system uses different prompts for real-time individual call analysis versus aggregate trend analysis, demonstrating an understanding that different analytical tasks require optimized prompt strategies. The base prompts are standardized across customers to ensure consistency, while the architecture supports customer-specific customization layers for added context when needed.
+
+The structured JSON response format indicates careful output format engineering to ensure reliable parsing and integration with downstream systems. This approach is critical for production environments where unstructured outputs can cause system failures or require expensive post-processing. The specific analysis components included in the response (sentiment analysis, summaries, key terms, themes, and coaching suggestions) show a comprehensive approach to extracting multiple types of business value from a single model inference.
+
+## Integration Patterns and API Design
+
+The solution demonstrates mature integration patterns through its API-driven architecture. The Lead API serves as the entry point for real-time data ingestion, while Amazon Bedrock provides the model inference capabilities through its API interface. This separation of concerns allows for better maintainability and scalability while enabling the system to handle continuous streams of incoming calls without blocking or performance degradation.
+
+The integration with existing MLX platform components shows how LLM capabilities can be embedded into existing business systems rather than requiring complete platform replacement. This approach reduces implementation risk and allows for gradual rollout of AI capabilities while maintaining existing functionality.
+
+## Operational Monitoring and Business Intelligence
+
+The system generates comprehensive reports displaying trend analysis and comparative metrics through the user interface, providing stakeholders with insights into performance patterns over time while allowing deep dives into specific metrics. This reporting capability demonstrates the importance of making LLM outputs actionable for business users rather than just providing raw analysis results.
+
+The ability to track performance across individual locations, regions, and nationally shows how the system scales to handle hierarchical business structures common in franchise operations. This multi-level analysis capability is particularly important for Netsertive's customer base and demonstrates how LLMOps solutions must be designed with specific business models and organizational structures in mind.
+
+## Production Lessons and Best Practices
+
+Several key LLMOps best practices emerge from this implementation. The use of structured outputs through JSON formatting ensures reliable system integration and reduces the need for complex post-processing. The dual-workflow approach (real-time and batch) optimizes for different business needs while managing computational costs effectively. The systematic database storage of results enables both immediate access and historical analysis, which is crucial for continuous improvement and compliance requirements.
+
+The rapid evaluation and deployment timeline suggests that cloud-based LLM services like Amazon Bedrock can significantly accelerate LLMOps implementations when compared to self-hosted model deployment approaches. However, the one-week evaluation period also indicates the importance of thorough testing and comparison of different models and approaches before committing to a production implementation.
+
+The customer-driven development approach, where the Call Insights AI feature was added based on direct customer feedback and internal marketing expertise, demonstrates the importance of aligning LLM capabilities with actual business needs rather than implementing AI for its own sake. This business-first approach likely contributed to the successful adoption and measurable impact of the solution.
+
+## Scalability and Future Considerations
+
+The architecture design supports future enhancements through its modular approach and API-driven integration patterns. The ability to customize prompts on a per-customer basis provides flexibility for handling diverse business requirements as the platform scales. The combination of real-time and batch processing workflows provides a foundation for handling varying workloads and analytical requirements as the customer base grows.
+
+While the case study presents positive results, it's important to note that this is primarily a vendor-authored success story that may not fully explore potential challenges or limitations. Production LLMOps implementations typically face issues around model consistency, prompt drift, cost management, and handling edge cases that may not be fully addressed in marketing-focused case studies. Organizations considering similar implementations should plan for comprehensive testing, monitoring, and ongoing optimization processes that may extend beyond the initial deployment timeline described here.

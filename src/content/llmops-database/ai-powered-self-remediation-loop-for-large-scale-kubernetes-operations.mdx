@@ -1,0 +1,118 @@
+---
+title: "AI-Powered Self-Remediation Loop for Large-Scale Kubernetes Operations"
+slug: "ai-powered-self-remediation-loop-for-large-scale-kubernetes-operations"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "69306d2f1221534c4ddc2594"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:32:28.615Z"
+  createdOn: "2025-12-03T17:02:39.961Z"
+llmopsTags:
+  - "poc"
+  - "high-stakes-application"
+  - "rag"
+  - "prompt-engineering"
+  - "multi-agent-systems"
+  - "agent-based"
+  - "human-in-the-loop"
+  - "latency-optimization"
+  - "error-handling"
+  - "kubernetes"
+  - "monitoring"
+  - "databases"
+  - "orchestration"
+  - "open-source"
+  - "documentation"
+  - "guardrails"
+  - "reliability"
+  - "scalability"
+  - "langchain"
+  - "postgresql"
+  - "amazon-aws"
+  - "meta"
+company: "Salesforce"
+summary: "Salesforce's Hyperforce Kubernetes platform team manages over 1,400 clusters scaling millions of pods, facing significant operational challenges with engineers spending over 1,000 hours monthly on support tasks. They developed a multi-agent AI-powered self-remediation loop built on AWS Bedrock's multi-agent collaboration framework, integrating with their existing monitoring and automation tools (Prometheus, K8sGPT, Argo CD, and custom tools like Sloop and Periscope). The solution features a manager AI agent that orchestrates multiple specialized worker agents to retrieve telemetry data, perform root cause analysis using RAG-augmented runbooks, and execute safe remediation actions with human-in-the-loop approval via Slack. The implementation achieved a 30% improvement in troubleshooting time and saved approximately 150 hours per month in operational toil, with plans to expand capabilities using knowledge graphs and advanced anomaly detection."
+link: "https://www.youtube.com/watch?v=Ew3nqJQ4uOs"
+year: 2025
+seo:
+  title: "Salesforce: AI-Powered Self-Remediation Loop for Large-Scale Kubernetes Operations - ZenML LLMOps Database"
+  description: "Salesforce's Hyperforce Kubernetes platform team manages over 1,400 clusters scaling millions of pods, facing significant operational challenges with engineers spending over 1,000 hours monthly on support tasks. They developed a multi-agent AI-powered self-remediation loop built on AWS Bedrock's multi-agent collaboration framework, integrating with their existing monitoring and automation tools (Prometheus, K8sGPT, Argo CD, and custom tools like Sloop and Periscope). The solution features a manager AI agent that orchestrates multiple specialized worker agents to retrieve telemetry data, perform root cause analysis using RAG-augmented runbooks, and execute safe remediation actions with human-in-the-loop approval via Slack. The implementation achieved a 30% improvement in troubleshooting time and saved approximately 150 hours per month in operational toil, with plans to expand capabilities using knowledge graphs and advanced anomaly detection."
+  canonical: "https://www.zenml.io/llmops-database/ai-powered-self-remediation-loop-for-large-scale-kubernetes-operations"
+  ogTitle: "Salesforce: AI-Powered Self-Remediation Loop for Large-Scale Kubernetes Operations - ZenML LLMOps Database"
+  ogDescription: "Salesforce's Hyperforce Kubernetes platform team manages over 1,400 clusters scaling millions of pods, facing significant operational challenges with engineers spending over 1,000 hours monthly on support tasks. They developed a multi-agent AI-powered self-remediation loop built on AWS Bedrock's multi-agent collaboration framework, integrating with their existing monitoring and automation tools (Prometheus, K8sGPT, Argo CD, and custom tools like Sloop and Periscope). The solution features a manager AI agent that orchestrates multiple specialized worker agents to retrieve telemetry data, perform root cause analysis using RAG-augmented runbooks, and execute safe remediation actions with human-in-the-loop approval via Slack. The implementation achieved a 30% improvement in troubleshooting time and saved approximately 150 hours per month in operational toil, with plans to expand capabilities using knowledge graphs and advanced anomaly detection."
+---
+
+## Overview
+
+This case study documents Salesforce's journey implementing an AI-powered self-remediation loop for managing their massive Kubernetes infrastructure at scale. The presentation features insights from both AWS (represented by Vikram Egaraman, Solutions Architect) and Salesforce (Shrikant Rajan, Senior Director of Engineering). Salesforce's Hyperforce platform team operates as the compute layer for all Salesforce clouds, managing over 1,400 Kubernetes clusters across multiple cloud vendors, running hundreds of thousands of compute nodes and scaling millions of pods. The team was spending over 1,000 hours monthly on production support, with engineers often paged at 2 AM to troubleshoot issues where the fix might take 5 minutes but the diagnosis took hours. With a projected 5X growth in the next couple of years, the operational scaling challenge became critical, making this an ideal use case for AI-powered operations.
+
+## The Problem Context
+
+The operational challenges at this scale are significant. On-call engineers face thousands of alerts simultaneously and must sift through approximately 50,000 time series metrics and 2 petabytes of logs to identify root causes. The challenges break down into several key areas: isolating signal from noise in vast telemetry data, correlating events across complex microservices architectures, manually logging into multiple disparate monitoring systems (Prometheus for metrics, OpenSearch for logs and traces), and applying fixes without comprehensive runbooks. The presentation emphasizes that this isn't merely a monitoring challenge but an "intelligence crisis" where the inability to effectively correlate telemetry signals leads to extended mean time to identify (MTTI) and mean time to resolve (MTTR) for operational issues.
+
+## Evolution of Tooling and AI Adoption
+
+Before implementing the agentic solution, Salesforce had built extensive custom tooling over the years. This included Sloop for visualizing historical Kubernetes resource states, Periscope for cross-cluster fleet-wide analysis and configuration drift detection, KubeMagic Mirror for automating troubleshooting workflows and auto-generating RCAs, KubeMagic Timeline for correlating events across infrastructure layers, and notably a "pseudo API" that streams Kubernetes data from live production clusters to a secure database with a read-only kubectl interface. While these tools were valuable, they remained siloed with limited interoperability, requiring manual context passing between tools, high learning curves for new engineers, and limited feedback loops for continuous improvement. The operational toil remained high despite these investments.
+
+The team's AI adoption journey began incrementally rather than with a big bang approach. Their first agent was an on-call report generator that automated the weekly summary of incidents, alert trends, and open investigations by connecting to Slack, alerting systems, and observability platforms. This automated approximately 90% of the manual work and was immediately adopted by engineers. Next came a kubectl automation agent that translated natural language queries in Slack into kubectl commands executed via their pseudo API, enabling both on-call engineers and application teams to query cluster status conversationally. The third early success was a live site analysis agent that automated the laborious weekly process of reviewing availability dips and golden signals across all 1,400 clusters, performing anomaly detection and first-level RCA automatically, saving engineers multiple days of work per week. These incremental successes built confidence and demonstrated the potential for more sophisticated self-healing capabilities.
+
+## Multi-Agent Architecture and Framework
+
+The production self-remediation loop is built on a sophisticated multi-agent architecture leveraging AWS Bedrock's multi-agent collaboration features. The architecture centers around a manager AI agent that acts as the chief orchestrator, supported by multiple specialized worker agents. The manager agent is augmented with runbook knowledge ingested into RAG vector databases and provided with infrastructure and topology context. When alerts arrive in Slack, the manager agent retrieves relevant context from the RAG-based runbooks, performs reasoning using the LLM to determine appropriate troubleshooting steps, and delegates data gathering tasks to specialized worker agents.
+
+The worker agents specialize in interfacing with various infrastructure systems. In the initial prototype built with AWS, three agents were implemented: a Prometheus agent that translates natural language queries into PromQL and retrieves metrics, a K8sGPT agent that provides insights about Kubernetes events and real-time pod logs, and an Argo CD agent that can execute remediation actions like increasing resources or restarting pods. The production implementation expanded this to integrate with all of Salesforce's existing tools including Sloop, Periscope, KubeMagic Mirror, and the pseudo API. The worker agents use the Model Context Protocol (MCP) wherever available, though the team notes that MCP adoption was somewhat limited as not every infrastructure system supports it, requiring direct integrations in many cases. The conscious decision to reuse existing automation tools rather than rebuild everything from scratch proved highly valuable and accelerated time to value.
+
+## Agentic Framework and Governance
+
+The solution heavily relies on an internal managed agentic framework built on LangChain and LangGraph, managed by a separate internal team at Salesforce. This framework provides critical data governance capabilities, ensuring data privacy and security when dealing with sensitive logs, metrics, and telemetry data. The framework includes embedded RAG capabilities for knowledge retrieval, security guardrails and access controls to prevent agents from behaving unexpectedly, runtime configuration and integration with observability environments for monitoring agent responses and latencies, and integration with knowledge bases to provide context specific to Salesforce's environment.
+
+The presentation distinguishes between different types of agents: simple assistance agents that respond to prompts with direct answers, deterministic agents with explicitly defined evaluation logic that follow strict action sequences to avoid hallucination (particularly useful for troubleshooting workflows like checking audit logs, isolating application vs infrastructure issues, and checking for dependent failures), autonomous agents that figure out their own evaluation logic based on model training, and multi-agent collaboration systems where an "agent of agents" communicates with individual specialized agents. The production implementation falls into this last category, representing a more sophisticated orchestration pattern.
+
+## Self-Healing Loop Operation
+
+The self-healing loop begins when alerts land in Slack, which serves as the central collaboration and tracking space. The manager AI agent kicks in as the orchestrator, augmenting the alert data with context retrieved from RAG-based runbooks and infrastructure/topology knowledge. It performs reasoning with the LLM to generate a troubleshooting plan identifying what telemetry data is needed to correlate the problem. Worker agents are then dispatched to gather required data from logs, metrics, events, and traces spread across various systems. Once all troubleshooting data is retrieved, the manager synthesizes it using runbook knowledge and LLM reasoning to produce a root cause summary.
+
+The root cause analysis is passed to the AI remediation agent, which determines appropriate remediation actions such as restarting pods or nodes, performing rollout restarts on deployments, or changing configurations. These actions are executed through what Salesforce calls "safe operations" - Argo workflows with built-in guardrails. The human-in-the-loop approval process is critical here: unless explicitly allowed, AI remediation agents cannot take actions in production without human approval. The approval workflow is implemented in Slack, and for particularly sensitive operations, includes a multi-layer approval process where an on-call engineer approves first, followed by a manager or second engineer. A Slack-based feedback loop enables engineers to quickly report when AI makes mistakes in either troubleshooting or remediation, with that feedback captured to improve agents and runbooks continuously.
+
+## Safe Operations and Guardrails
+
+Safety is a paramount concern when allowing AI agents to take actions in production. Salesforce identified four key risk areas and corresponding mitigations. First, unbounded access could be catastrophic if AI could delete control planes, applications, or node pools. Their mitigation restricts AI to a limited, curated set of operations, with no capability beyond explicitly allowed actions. Second, lack of guardrails in tools like kubectl or cloud SDKs could lead to unsafe operations. Their solution implements safeguards for every operation, with quick rollback capabilities where possible. Third, poor visibility could increase production risk, mitigated through strict change management processes, auditing controls, and periodic review processes to track all AI-driven operations. Fourth, even with guardrails and visibility, certainty about AI decisions remains challenging, addressed through progressive autonomy - beginning with mandatory human approvals for every action and gradually relaxing constraints as confidence builds.
+
+Safe operations are implemented as Argo workflows that encode the operational wisdom of seasoned engineers as guardrails. Examples include respecting Pod Disruption Budgets when restarting pods (direct kubectl delete could cause outages), limiting how many nodes restart simultaneously and preventing rapid restart cycles, checking cluster utilization before scaling operations (after experiencing incidents from scaling down busy clusters), and ensuring gradual, controlled changes rather than abrupt modifications. All operations are exposed through Salesforce's in-house compute API with necessary oversight and tracked via change management with extensive dashboard visibility. The presentation emphasizes that while safe operations required additional development effort, this was considered non-negotiable given the criticality of safety and reliability in production environments.
+
+## LLM Integration and Prompt Engineering
+
+The system uses strict LLM prompts to reduce hallucination. The agents are explicitly instructed that every decision must be backed by real data, and if data is missing, they should not make assumptions but instead ask humans for input. The RAG implementation is central to the architecture, with runbook knowledge chunked and stored in vector databases. The structure and accuracy of runbooks was identified as the most critical factor determining overall success - the team learned that duplicate runbooks with conflicting information or poor runbook structure directly impacts RAG chunking efficiency and retrieval quality. This led them to develop a comprehensive runbook strategy defining when and how runbooks are created, modified, and kept up to date.
+
+The system leverages both short-term and long-term memory. Short-term memory enables agents to understand previous responses and provide contextually appropriate follow-ups within a conversation. Long-term memory preserves user preferences across sessions, so business intelligence team members don't need to wade through infrastructure telemetry details while operations engineers get the technical depth they need. The agents also have defined goals and tools, mimicking how human operators would interact with systems - running kubectl commands for insights, executing PromQL queries against Prometheus, accessing K8sGPT for event analysis, etc. A tight observation loop continuously monitors LLM performance to ensure responses meet expectations.
+
+## Results and Impact
+
+The implementation delivered measurable operational improvements. Troubleshooting time improved by 30%, directly reducing MTTI. The agentic architecture saved approximately 150 hours per month, equivalent to one full-time engineer's bandwidth that could be redirected to other priorities. The on-call report agent, kubectl agent, and live site analysis agent each achieved high adoption rates due to tangible time savings and reduced toil. However, the presentation is balanced in acknowledging limitations - the current runbook-based solution struggles with complex problems requiring "connecting the dots" across multiple layers of infrastructure. The example given involves an application experiencing high latency due to DNS timeouts, caused by CoreDNS running on a node with network bandwidth exhaustion, itself caused by an unrelated pod on the same node performing high-volume network transfers. Writing runbooks to solve such multi-hop correlation problems is extremely difficult and doesn't scale across the entire infrastructure for all possible failure modes.
+
+## Key Learnings and Best Practices
+
+Several critical learnings emerged from the implementation. Runbook quality and structure proved fundamental - they are the foundation upon which the entire system operates, and inconsistent or poorly structured runbooks directly undermine AI agent effectiveness. Building safe operations, while requiring additional development effort, is non-negotiable for production reliability and safety. Strict LLM prompts that demand data-backed decisions help reduce hallucination significantly. Continuous feedback loops enable continuous improvement of both runbooks and agents, increasing the success rate of self-healing over time. Progressive autonomy - starting with full human oversight and gradually relaxing it as confidence builds - provides a viable path to scaling agentic actions in production.
+
+Reusing existing tools rather than rebuilding provided the quickest wins and allowed meaningful connections between previously siloed systems. The Slack-based user experience proved powerful for multiple reasons: ease of implementing multi-layer approval processes and feedback loops, enabling direct collaboration when AI makes mistakes, allowing the entire troubleshooting thread to be summarized and fed back as knowledge for future improvements, and supporting both automatic triggering on alerts and on-demand invocation via natural language queries. The user experience consideration is noteworthy - by meeting engineers where they already work (Slack), adoption barriers were significantly reduced.
+
+## Future Directions and Exploration
+
+Salesforce views their current implementation as scratching the surface of what AI agents can accomplish. Their ultimate business goal is eliminating 80% of production support toil. Three main exploration areas are underway. First, knowledge graphs to enable more sophisticated "connecting the dots" for complex problems. They aim to teach AI about infrastructure components, their relationships, potential failures at each component, and cascading impact patterns in a structured way that enables graph traversal for root cause analysis without requiring specific runbooks for every possible failure scenario.
+
+Second, leveraging historical success and failure data more effectively. By recording which root causes and remediation steps worked for specific problems in a structured way, AI could speed up diagnosis and improve accuracy by learning from patterns rather than only following explicit runbooks. Third, exploring whether AI can identify root causes for truly hard problems that humans struggle with - performance issues that remain mysterious despite weeks or months of investigation. Can throwing millions of metrics and terabytes of logs at AI enable it to fish out anomalies that humans miss? This remains an open exploration area without clear answers yet, but represents the frontier of their ambitions.
+
+## Critical Assessment
+
+This case study demonstrates a pragmatic, incremental approach to implementing AI agents in production operations that balances ambition with safety. The emphasis on starting small with lower-risk agents (report generation, kubectl automation) before progressing to self-remediation shows sound engineering judgment. The multi-layer approval process and safe operations framework address legitimate concerns about AI taking production actions, though this does create operational overhead that may limit the ultimate ceiling on automation gains.
+
+The claimed 30% improvement in troubleshooting time and 150 hours monthly savings are significant but somewhat modest given the scale of investment in building the multi-agent framework, safe operations, and integrations. The team's transparency about limitations - particularly the struggle with complex multi-hop problems and the heavy dependency on runbook quality - is refreshing and more credible than uncritical success stories. The acknowledgment that progressive autonomy is necessary suggests they're still in early stages of realizing the full potential.
+
+The reuse of existing tools is both a strength and potential limitation. While it accelerated initial deployment, it may constrain future capabilities compared to purpose-built agent tooling. The reliance on RAG with runbooks inherits all the knowledge management challenges organizations typically face - keeping documentation current, consistent, and comprehensive is notoriously difficult at scale. The exploration of knowledge graphs suggests they recognize this limitation, though implementing and maintaining knowledge graphs at the scale of 1,400+ clusters presents its own significant challenges.
+
+The focus on Slack as the primary interface is pragmatic for adoption but may not scale elegantly to fully autonomous operations. If the goal is 80% toil reduction, Slack-based approval workflows could become bottlenecks. The presentation doesn't deeply address how to validate that AI-generated RCAs are correct before taking action, relying primarily on human review - the quality of this human oversight is critical but potentially subject to automation bias as engineers become accustomed to approving AI recommendations.
+
+Overall, this represents a solid, safety-conscious implementation of multi-agent systems for infrastructure operations with measured early results and realistic acknowledgment of the work remaining to achieve truly autonomous operations at scale. The technical architecture is sound, the incremental approach is appropriate, and the emphasis on safety and guardrails is commendable, though realizing the full vision of 80% toil reduction will require solving the harder problems around complex root cause analysis that current runbook-based approaches struggle with.

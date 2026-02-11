@@ -1,0 +1,110 @@
+---
+title: "Charlotte AI: Agentic AI for Cloud Detection and Response"
+slug: "charlotte-ai-agentic-ai-for-cloud-detection-and-response"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "6876303179c00796695ba39a"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:14:52.812Z"
+  createdOn: "2025-07-15T10:40:49.128Z"
+llmopsTags:
+  - "fraud-detection"
+  - "customer-support"
+  - "classification"
+  - "high-stakes-application"
+  - "realtime-application"
+  - "regulatory-compliance"
+  - "prompt-engineering"
+  - "multi-agent-systems"
+  - "agent-based"
+  - "system-prompts"
+  - "few-shot"
+  - "kubernetes"
+  - "docker"
+  - "monitoring"
+  - "databases"
+  - "api-gateway"
+  - "microservices"
+  - "orchestration"
+  - "security"
+  - "guardrails"
+  - "postgresql"
+  - "redis"
+  - "elasticsearch"
+  - "anthropic"
+company: "Crowdstrike"
+summary: "CrowdStrike developed Charlotte AI, an agentic AI system that automates cloud security incident detection, investigation, and response workflows. The system addresses the challenge of rapidly increasing cloud threats and alert volumes by providing automated triage, investigation assistance, and incident response recommendations for cloud security teams. Charlotte AI integrates with CrowdStrike's Falcon platform to analyze security events, correlate cloud control plane and workload-level activities, and generate detailed incident reports with actionable recommendations, significantly reducing the manual effort required for tier-one security operations."
+link: "https://www.youtube.com/watch?v=KsDcXcs-5UY"
+year: 2025
+seo:
+  title: "Crowdstrike: Charlotte AI: Agentic AI for Cloud Detection and Response - ZenML LLMOps Database"
+  description: "CrowdStrike developed Charlotte AI, an agentic AI system that automates cloud security incident detection, investigation, and response workflows. The system addresses the challenge of rapidly increasing cloud threats and alert volumes by providing automated triage, investigation assistance, and incident response recommendations for cloud security teams. Charlotte AI integrates with CrowdStrike's Falcon platform to analyze security events, correlate cloud control plane and workload-level activities, and generate detailed incident reports with actionable recommendations, significantly reducing the manual effort required for tier-one security operations."
+  canonical: "https://www.zenml.io/llmops-database/charlotte-ai-agentic-ai-for-cloud-detection-and-response"
+  ogTitle: "Crowdstrike: Charlotte AI: Agentic AI for Cloud Detection and Response - ZenML LLMOps Database"
+  ogDescription: "CrowdStrike developed Charlotte AI, an agentic AI system that automates cloud security incident detection, investigation, and response workflows. The system addresses the challenge of rapidly increasing cloud threats and alert volumes by providing automated triage, investigation assistance, and incident response recommendations for cloud security teams. Charlotte AI integrates with CrowdStrike's Falcon platform to analyze security events, correlate cloud control plane and workload-level activities, and generate detailed incident reports with actionable recommendations, significantly reducing the manual effort required for tier-one security operations."
+---
+
+CrowdStrike's Charlotte AI represents a sophisticated implementation of agentic AI for cloud security operations, specifically designed to address the growing complexity and volume of cloud-based threats. The system demonstrates how large language models can be operationalized in production security environments to automate complex investigation and response workflows.
+
+## Overview and Business Context
+
+CrowdStrike, a leading cybersecurity company, developed Charlotte AI as part of their Falcon Cloud Security platform to address several critical challenges in modern cloud security operations. The company identified that adversaries are moving faster than ever, with breakout times (lateral movement across networks) decreasing from 2 minutes 7 seconds to just 51 seconds year-over-year. This acceleration is compounded by the fact that 8 out of 10 detections are now malware-free, meaning attackers are using legitimate tools and credentials to blend in with normal user activity.
+
+The cloud environment presents unique challenges for security operations. Cloud intrusions increased by 45% in a single calendar year, with seven officially named "cloud conscious" adversaries who specifically target cloud infrastructure. The dynamic nature of cloud environments, with their ephemeral resources and identity-driven access patterns, creates an expanded attack surface that is constantly in flux. Security teams face the challenge of correlating activities across multiple layers - from cloud control plane events to workload-level activities - while dealing with fragmented tooling and incomplete visibility.
+
+## Technical Implementation of Charlotte AI
+
+Charlotte AI operates as both a generative AI system for specific queries and an agentic AI system capable of completing complex goals over time. The system is deeply integrated with CrowdStrike's Falcon platform, which collects and analyzes trillions of security events weekly across their global customer base.
+
+The AI system leverages multiple data sources for comprehensive threat analysis. It ingests cloud control plane logs, workload protection telemetry, Kubernetes runtime events, and application security posture management (ASPM) data. This multi-layered approach allows Charlotte to correlate activities across different infrastructure layers, providing context that traditional security tools often miss.
+
+One of the key technical capabilities demonstrated is Charlotte's ability to perform automated triage of security alerts. When a detection occurs, the system automatically analyzes the event, determines whether it represents a true positive, and provides a confidence score along with detailed explanations. This automated triage capability addresses the challenge of alert fatigue in security operations centers, where analysts are overwhelmed by the volume of alerts requiring manual review.
+
+The system also provides sophisticated incident investigation capabilities. Charlotte can analyze process trees, correlate cloud API calls with workload activities, and provide detailed technical analysis of attack techniques. For example, when investigating a reverse shell attack, Charlotte can identify the parent processes, map the attack to known adversary tactics, techniques, and procedures (TTPs), and provide detailed explanations of the attack methodology.
+
+## Workflow Automation and Security Orchestration
+
+A particularly impressive aspect of Charlotte AI's implementation is its integration with CrowdStrike's Fusion SOAR (Security Orchestration, Automation, and Response) platform. This integration enables the creation of sophisticated automated workflows that can respond to security incidents with minimal human intervention.
+
+The demonstration showed a workflow that automatically triggers when any alert is received. The system performs the following automated steps: first, Charlotte triages the alert to determine if it's a true positive; second, the system queries the Next-Generation Security Information and Event Management (NGSIM) system to gather additional context about the incident, including Kubernetes context, container information, and cloud control plane events; third, Charlotte analyzes the combined data using a carefully crafted prompt that positions her as a "tier one SOC analyst" responsible for protecting a Kubernetes environment.
+
+The prompt engineering approach is noteworthy for its specificity and context-awareness. Charlotte is provided with detailed information about the detection, including cluster details, cloud control plane events, and regional information. The system is instructed to provide specific outputs including triage verdict, recommendation, confidence level, and explanation, ensuring consistent and actionable results.
+
+## Automated Incident Response and Reporting
+
+The workflow culminates in the generation of detailed incident reports that are automatically distributed to security teams. These reports demonstrate sophisticated understanding of cloud security concepts and provide actionable recommendations. For instance, in the demonstrated attack scenario involving a compromised developer's credentials and subsequent cloud infrastructure compromise, Charlotte automatically generated a comprehensive incident report that included:
+
+The system identified the specific attack vector (phishing leading to credential compromise), mapped the attack progression through the environment, and provided detailed technical analysis including the specific containers, pods, and nodes affected. Charlotte correctly identified that the attack involved a reverse shell injected into a Python application, leading to credential theft and lateral movement within the cloud environment.
+
+The automated response included immediate containment actions, such as terminating the compromised container, and provided a comprehensive list of recommended follow-up actions including credential revocation, user account deletion, permission auditing, and network policy implementation. This level of detail and accuracy in automated incident response represents a significant advancement in security operations automation.
+
+## Data Integration and Contextual Analysis
+
+Charlotte AI's effectiveness stems from its ability to integrate and analyze data from multiple sources simultaneously. The system correlates endpoint detection data with cloud control plane events, Kubernetes runtime information, and application security posture data to provide comprehensive incident context.
+
+The ASPM integration is particularly sophisticated, allowing Charlotte to understand application dependencies, data flows, and service relationships. This contextual understanding enables the system to assess the potential impact of security incidents more accurately and provide more targeted response recommendations.
+
+The system also integrates threat intelligence data, including adversary profiling and attribution. Charlotte can automatically associate detected activities with known threat actors, providing security teams with valuable context about the likely motivation, capabilities, and future actions of attackers.
+
+## LLMOps Considerations and Challenges
+
+While the presentation focused on capabilities rather than operational challenges, several LLMOps considerations can be inferred from the implementation. The system appears to use a cloud-based LLM (referenced as "cloud latest model" in the workflow), suggesting a dependency on external AI services for core functionality.
+
+The prompt engineering approach demonstrates careful consideration of context management and output formatting. The system uses structured prompts that provide clear role definitions, specific data inputs, and explicit output requirements. This approach helps ensure consistent and reliable performance in production environments.
+
+Quality assurance appears to be handled through collaboration with CrowdStrike's managed detection and response team, whose expert analysts validate the AI's outputs. This human-in-the-loop approach helps ensure that the automated responses meet professional security analyst standards.
+
+## Performance and Scalability
+
+The demonstrated workflow showed impressive response times, with the system generating comprehensive incident reports within approximately four minutes of detection. This performance is critical in security operations where rapid response can significantly impact the outcome of security incidents.
+
+The system's ability to handle the scale of CrowdStrike's global operations - analyzing trillions of security events weekly - suggests robust scalability considerations in the underlying infrastructure. However, the presentation did not provide specific details about the technical architecture supporting this scale.
+
+## Industry Impact and Recognition
+
+CrowdStrike's implementation of Charlotte AI has contributed to their recognition as a leader in cloud security, with recent analyst recognition in Cloud Native Application Protection (CNAP) and cloud detection and response categories. This recognition suggests that the AI-powered approach is being viewed favorably by industry analysts and customers.
+
+The system represents a significant advancement in the operationalization of AI for security operations, demonstrating how large language models can be effectively deployed in production environments to automate complex analytical tasks that traditionally required human expertise. While the presentation is clearly promotional in nature, the technical demonstrations and detailed workflow examples provide credible evidence of a sophisticated AI implementation that addresses real operational challenges in cloud security.

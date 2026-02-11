@@ -1,0 +1,166 @@
+---
+title: "Scaling LLMs for Product Knowledge and Search in E-commerce"
+slug: "scaling-llms-for-product-knowledge-and-search-in-e-commerce"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "674f1de9326bc6ca332f0a5d"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:47:35.975Z"
+  createdOn: "2024-12-03T15:04:09.367Z"
+llmopsTags:
+  - "question-answering"
+  - "data-analysis"
+  - "structured-output"
+  - "multi-modality"
+  - "realtime-application"
+  - "rag"
+  - "prompt-engineering"
+  - "fine-tuning"
+  - "knowledge-distillation"
+  - "model-optimization"
+  - "semantic-search"
+  - "token-optimization"
+  - "latency-optimization"
+  - "cost-optimization"
+  - "monitoring"
+  - "scaling"
+  - "reliability"
+  - "scalability"
+  - "databases"
+  - "elasticsearch"
+  - "openai"
+company: "Doordash"
+summary: "Doordash leverages LLMs to enhance their product knowledge graph and search capabilities as they expand into new verticals beyond food delivery. They employ LLM-assisted annotations for attribute extraction, use RAG for generating training data, and implement LLM-based systems for detecting catalog inaccuracies and understanding search intent. The solution includes distributed computing frameworks, model optimization techniques, and careful consideration of latency and throughput requirements for production deployment."
+link: "https://careersatdoordash.com/blog/unleashing-the-power-of-large-language-models-at-doordash-for-a-seamless-shopping-adventure/"
+year: 2024
+seo:
+  title: "Doordash: Scaling LLMs for Product Knowledge and Search in E-commerce - ZenML LLMOps Database"
+  description: "Doordash leverages LLMs to enhance their product knowledge graph and search capabilities as they expand into new verticals beyond food delivery. They employ LLM-assisted annotations for attribute extraction, use RAG for generating training data, and implement LLM-based systems for detecting catalog inaccuracies and understanding search intent. The solution includes distributed computing frameworks, model optimization techniques, and careful consideration of latency and throughput requirements for production deployment."
+  canonical: "https://www.zenml.io/llmops-database/scaling-llms-for-product-knowledge-and-search-in-e-commerce"
+  ogTitle: "Doordash: Scaling LLMs for Product Knowledge and Search in E-commerce - ZenML LLMOps Database"
+  ogDescription: "Doordash leverages LLMs to enhance their product knowledge graph and search capabilities as they expand into new verticals beyond food delivery. They employ LLM-assisted annotations for attribute extraction, use RAG for generating training data, and implement LLM-based systems for detecting catalog inaccuracies and understanding search intent. The solution includes distributed computing frameworks, model optimization techniques, and careful consideration of latency and throughput requirements for production deployment."
+---
+
+## Overview
+
+Doordash, the on-demand delivery platform, has been expanding beyond its core food delivery business into "New Verticals" including groceries, alcohol, and retail. This expansion brought significant ML/AI challenges: managing hundreds of thousands of SKUs across diverse categories, understanding complex user needs, and optimizing a dynamic marketplace. The company presented their approach at the 2024 AI Conference in San Francisco, detailing how they blend traditional ML with Large Language Models to solve these challenges at scale.
+
+This case study is notable because it comes from a major production environment handling real consumer traffic across multiple verticals. The challenges described—cold start problems, annotation costs, catalog quality, and search relevance—are common across e-commerce and marketplace applications. While the source is a company blog post with a recruitment focus, the technical details provided offer genuine insights into LLMOps practices at scale.
+
+## Product Knowledge Graph Enhancement
+
+One of the key areas where Doordash applies LLMs is in building and enriching their Product Knowledge Graph. This graph contains structured product information that powers both consumer-facing experiences (helping customers find products) and operational workflows (helping dashers identify items during fulfillment).
+
+### LLM-Assisted Annotations for Cold Start
+
+Training effective NLP models for attribute extraction traditionally requires large amounts of high-quality labeled data, which is expensive and time-consuming to produce through human annotation. Doordash addresses this "cold start" problem using LLM-assisted annotation workflows:
+
+- They begin by creating a small set of manually labeled "golden" annotations for new categories or products
+- Using Retrieval-Augmented Generation (RAG), they then generate a larger set of "silver" annotations
+- This expanded dataset enables fine-tuning of a Generalized Attribute Extraction model
+
+The approach reportedly reduces training timelines from weeks to days, though specific metrics on cost savings or quality improvements are not provided in the source material. The technique is particularly valuable when expanding to new product categories where labeled training data doesn't exist.
+
+### Domain-Specific Attribute Extraction
+
+The attribute extraction model must handle diverse product categories with unique attribute schemas. For alcohol products, for example, the system extracts:
+
+- For wine: region, vintage, grape variety
+- For spirits: flavor, aging, ABV, container type
+- For beer: flavor, container, dietary tags
+
+This structured extraction powers more intelligent search, recommendations, and filtering capabilities across the platform.
+
+## Catalog Quality Automation
+
+Maintaining catalog accuracy at scale is critical for customer trust. Doordash uses LLMs to automate detection of catalog inconsistencies through a structured workflow:
+
+- The system constructs natural language prompts from primary attributes (item name, photo, unit information)
+- The LLM evaluates whether product details match the visual representation
+- Detected inconsistencies are classified into priority buckets (P0, P1, P2) based on severity
+
+A P0 issue might be a mismatch between a product's title and its package image (e.g., wrong flavor shown), requiring immediate correction. P1 issues are addressed promptly, while P2 issues enter a backlog. This prioritization system helps operations teams focus on the most impactful fixes first.
+
+While the automation approach is compelling, it's worth noting that the accuracy of LLM-based detection and classification is not quantified in the source material. Real-world performance would depend heavily on prompt engineering quality and the robustness of the underlying vision-language model capabilities.
+
+## Search Transformation
+
+Search at Doordash presents unique challenges due to the multi-intent, multi-entity nature of queries across their marketplace. A search for "apple" could mean fresh fruit from a grocery store, apple juice from a restaurant, or Apple-branded products from retail—the system must disambiguate based on context.
+
+### Multi-Intent and Geo-Aware Search
+
+The search engine is designed to be:
+
+- **Multi-intent**: Understanding that queries can have different meanings depending on user context
+- **Multi-entity**: Returning results across different entity types (products, restaurants, stores)
+- **Geo-aware**: Prioritizing results based on location and accessibility
+
+### LLM-Enhanced Relevance Training
+
+Training relevance models traditionally relies on engagement signals, but these can be noisy and sparse for niche or "tail" queries. Doordash uses LLMs to improve training data quality:
+
+- LLMs assign relevance labels to less common queries where engagement data is insufficient
+- This enhances accuracy for the long-tail of search queries that might otherwise perform poorly
+- The approach reduces dependency on expensive human annotation for relevance labeling
+
+They implement "consensus labeling" with LLMs to ensure precision in their automated labeling process, though specific details on how consensus is achieved (e.g., multiple LLM calls, ensemble approaches) are not elaborated.
+
+### Personalization with Guardrails
+
+Search results are personalized based on individual preferences including dietary needs, brand affinities, price sensitivity, and shopping habits. However, the team explicitly addresses the risk of over-personalization:
+
+- They implement "relevance guardrails" to ensure personalization complements rather than overshadows search intent
+- The example given: a user who frequently buys yogurt searching for "blueberry" should see blueberry products, not yogurt products
+
+This balance between personalization and relevance is a common challenge in search systems, and the acknowledgment of this tradeoff reflects mature production thinking.
+
+## Production Infrastructure and Scaling
+
+### Distributed Computing for LLM Inference
+
+Doordash mentions leveraging distributed computing frameworks, specifically Ray, to accelerate LLM inference at scale. This suggests they're running significant LLM workloads that require horizontal scaling.
+
+### Fine-Tuning Approaches
+
+For domain-specific needs, they employ:
+
+- **LoRA (Low-Rank Adaptation)**: Efficient fine-tuning that adds small trainable rank decomposition matrices
+- **QLoRA**: Quantized LoRA for even more efficient fine-tuning
+
+These techniques allow fine-tuning of large models with reduced computational requirements while maintaining flexibility and scalability.
+
+### Model Optimization for Production
+
+To meet real-time latency requirements, Doordash employs:
+
+- **Model distillation**: Training smaller "student" models from larger LLMs to reduce inference costs
+- **Quantization**: Reducing model precision to decrease computational requirements
+
+This creates smaller, more efficient models suitable for online inference without compromising too heavily on performance. The tension between LLM capability and production latency requirements is a core LLMOps challenge, and these approaches represent standard industry practice for addressing it.
+
+## RAG Integration
+
+Retrieval-Augmented Generation is mentioned as a technique to inject external knowledge into models, enhancing contextual understanding and relevance. While specific implementation details aren't provided, RAG is used both for generating training annotations and potentially for production inference to ground LLM responses in domain-specific information.
+
+## Future Directions
+
+Doordash outlines several forward-looking initiatives:
+
+- **Multimodal LLMs**: Processing and understanding various data types (text, images) for richer customer experiences
+- **Domain-specific LLMs**: Building Doordash-specific models to enhance the Product Knowledge Graph and natural language search
+
+These aspirations suggest continued investment in LLM capabilities, though they represent future work rather than current production systems.
+
+## Critical Assessment
+
+While the case study provides valuable insights into LLMOps at scale, several caveats should be noted:
+
+- The source is a company blog with recruiting objectives, so it naturally emphasizes successes
+- Specific metrics on accuracy, latency, cost savings, or error rates are not provided
+- The balance between "traditional ML" and LLM approaches isn't clearly quantified
+- Production failure modes, monitoring strategies, and incident handling are not discussed
+
+That said, the technical approaches described—RAG for data augmentation, LLM-based labeling, model distillation, and fine-tuning with LoRA—represent sound practices for deploying LLMs in production environments. The emphasis on guardrails (for personalization) and priority-based triage (for catalog issues) suggests mature operational thinking about how to integrate LLMs into production workflows safely and effectively.

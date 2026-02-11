@@ -1,0 +1,126 @@
+---
+title: "Building an AI-Powered Help Desk with RAG and Model Evaluation"
+slug: "building-an-ai-powered-help-desk-with-rag-and-model-evaluation"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f414b2820b88c028a4539"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:39:54.585Z"
+  createdOn: "2024-11-21T14:18:51.351Z"
+llmopsTags:
+  - "chatbot"
+  - "chunking"
+  - "customer-support"
+  - "documentation"
+  - "embeddings"
+  - "error-handling"
+  - "fallback-strategies"
+  - "google-gcp"
+  - "kubernetes"
+  - "langchain"
+  - "microsoft-azure"
+  - "monitoring"
+  - "openai"
+  - "prompt-engineering"
+  - "question-answering"
+  - "rag"
+  - "reliability"
+  - "scalability"
+  - "security"
+  - "semantic-search"
+  - "system-prompts"
+  - "vector-search"
+company: "Vimeo"
+summary: "Vimeo developed a prototype AI help desk chat system that leverages RAG (Retrieval Augmented Generation) to provide accurate customer support responses using their existing Zendesk help center content. The system uses vector embeddings to store and retrieve relevant help articles, integrates with various LLM providers through Langchain, and includes comprehensive testing of different models (Google Vertex AI Chat Bison, GPT-3.5, GPT-4) for performance and cost optimization. The prototype demonstrates successful integration of modern LLMOps practices including prompt engineering, model evaluation, and production-ready architecture considerations."
+link: "https://medium.com/vimeo-engineering-blog/from-idea-to-reality-elevating-our-customer-support-through-generative-ai-101a2c5ea680"
+year: 2023
+seo:
+  title: "Vimeo: Building an AI-Powered Help Desk with RAG and Model Evaluation - ZenML LLMOps Database"
+  description: "Vimeo developed a prototype AI help desk chat system that leverages RAG (Retrieval Augmented Generation) to provide accurate customer support responses using their existing Zendesk help center content. The system uses vector embeddings to store and retrieve relevant help articles, integrates with various LLM providers through Langchain, and includes comprehensive testing of different models (Google Vertex AI Chat Bison, GPT-3.5, GPT-4) for performance and cost optimization. The prototype demonstrates successful integration of modern LLMOps practices including prompt engineering, model evaluation, and production-ready architecture considerations."
+  canonical: "https://www.zenml.io/llmops-database/building-an-ai-powered-help-desk-with-rag-and-model-evaluation"
+  ogTitle: "Vimeo: Building an AI-Powered Help Desk with RAG and Model Evaluation - ZenML LLMOps Database"
+  ogDescription: "Vimeo developed a prototype AI help desk chat system that leverages RAG (Retrieval Augmented Generation) to provide accurate customer support responses using their existing Zendesk help center content. The system uses vector embeddings to store and retrieve relevant help articles, integrates with various LLM providers through Langchain, and includes comprehensive testing of different models (Google Vertex AI Chat Bison, GPT-3.5, GPT-4) for performance and cost optimization. The prototype demonstrates successful integration of modern LLMOps practices including prompt engineering, model evaluation, and production-ready architecture considerations."
+---
+
+## Overview
+
+Vimeo, the video hosting and streaming platform, embarked on a project to prototype and demonstrate the power of generative AI for customer support applications. While the article frames this as primarily a proof-of-concept rather than a production deployment, it provides substantial technical detail about building a Retrieval-Augmented Generation (RAG) system for answering customer queries using existing Help Center content. The project showcases several LLMOps considerations including model selection, vector store implementation, prompt engineering, quality assurance challenges, and comparative evaluation of multiple LLM providers.
+
+The motivation stemmed from limitations in existing customer support options. Customers could open support tickets, search the Help Center, or interact with a traditional intent-based chatbot. However, these methods often failed to surface relevant information efficiently—the article demonstrates this with an example where searching for "domain restrict embed" returned no immediately useful results despite the information existing in the knowledge base.
+
+## Technical Architecture
+
+### Data Ingestion Pipeline
+
+The system begins with a data ingestion pipeline that processes Vimeo's Help Center articles hosted on Zendesk. The pipeline consists of several stages: scraping articles via Zendesk's Help Center API, parsing the HTML content, splitting documents into chunks using HTML tags as delimiters, transforming chunks into vector embeddings via an AI provider's embedding API, and finally storing these embeddings in a vector store.
+
+A notable design decision was to save intermediate files during scraping rather than streaming directly to the vector store. This approach aids in debugging responses later, as developers can inspect the original content that was indexed. The team standardized on a JSON format containing the article body and metadata (title, URL, tags, last modified date), which enables ingestion from various sources beyond Zendesk, such as GitHub, Confluence, or Google Docs.
+
+The chunking strategy uses HTML tags as delimiters, allowing the system to query for specific sections of articles rather than returning entire documents. This granularity improves the relevance of retrieved content for specific queries.
+
+### Vector Store Selection
+
+The team used HNSWLib as their vector store, which operates on local disk storage. This choice was appropriate for their prototype with fewer than 1,000 articles. The article acknowledges that vector store selection depends on use case, and notes that local storage has the advantage of keeping sensitive data out of third-party hands—though this was less critical for already-public help articles.
+
+The architecture supports webhook-based updates from Zendesk to the backend, enabling real-time addition, removal, or replacement of indexed documents as the Help Center content changes.
+
+### Conversational Retrieval Chain
+
+The core of the system uses LangChain's `ConversationalRetrievalQAChain` class to orchestrate the interaction between the vector store and LLM providers. The flow involves multiple steps that are characteristic of production RAG systems:
+
+First, any existing chat history from the current session is combined with the user's latest question. This transcript is sent to the LLM to rephrase the input as a standalone question. This step is crucial for handling conversational context—for example, if a user first asks about embedding videos and then follows up asking about "live videos," the system needs to understand they're likely asking about embedding live videos. This reformulation also helps correct misspellings.
+
+Second, the standalone question is transformed into an embedding representation using the same embedding APIs used during indexing. This embedding is then used to query the vector store for similar content, with the system retrieving matching chunks along with their metadata.
+
+Finally, the relevant document chunks and the standalone question are passed together to the LLM to generate the final answer. The metadata (including source URLs, titles, and tags) is preserved throughout this process, enabling the system to cite sources in its responses.
+
+The LangChain implementation is notably concise—the article provides a simplified code example showing that the core logic requires just a few lines of code to accomplish all of the above, with chainable prompts for question reformatting and question answering.
+
+## Model Comparison and Evaluation
+
+A significant portion of the LLMOps work involved comparing multiple LLM providers to determine the best fit for this use case. The team tested four models: Google Vertex AI Chat Bison, OpenAI ChatGPT 3.5 Turbo, OpenAI ChatGPT 4, and Azure OpenAI ChatGPT 3.5 Turbo.
+
+### Performance Characteristics
+
+Google Vertex AI Chat Bison demonstrated several advantages. It produces more concise answers using bullet points, following instruction prompts more closely than OpenAI's models. This brevity translates to faster response times and cost savings, as pricing is based on character/token count. A key operational benefit is integration with Google Cloud Platform's Workload Identity, allowing Kubernetes containers to automatically authenticate without managing API keys—a significant security and operational improvement over passing around API keys as required with OpenAI.
+
+However, Bison waits for the complete response before returning any information, whereas OpenAI models support streaming tokens to the UI as they're generated. Streaming provides users with immediate feedback that their query is being processed, though the article notes that OpenAI's streaming can slow dramatically during periods of heavy API usage.
+
+OpenAI's GPT-4 delivered stronger and more concise answers than GPT-3.5 Turbo but with dramatically reduced response speed and more than doubled token costs. Azure-hosted OpenAI models provide similar performance to the public API but with better reliability, security, and privacy guarantees, as usage by other customers doesn't affect your dedicated deployment.
+
+### Pricing Analysis
+
+The article provides a nuanced pricing comparison. At the time of writing, Google Vertex AI Chat Bison cost $0.0005 per 1,000 characters for both input and output, while OpenAI ChatGPT 3.5 Turbo charged $0.0015 per 1,000 tokens input and $0.002 per 1,000 tokens output. The key insight is that tokens and characters are not equivalent—one token typically represents 2-5 characters depending on content—so the actual cost difference is smaller than it might initially appear.
+
+### Final Selection
+
+The team selected Google Vertex AI Chat Bison for this use case, citing its concise response generation, adherence to instruction prompts, cost effectiveness, efficient processing, and seamless GCP integration. However, they acknowledge this could change as they continue experimenting, and they may eventually use a combination of providers.
+
+## Challenges and Quality Assurance
+
+The article candidly discusses several challenges encountered, which are instructive for LLMOps practitioners.
+
+### Training Data Contamination
+
+A significant discovery was that ChatGPT contained an outdated copy of Vimeo's Help Center in its training data (from late 2021). This meant the model could sometimes return information based on old training data rather than the provided context documents. This is why the team chose to attach source URLs as metadata rather than relying on the LLM to generate links—ChatGPT would regularly return outdated or nonexistent URLs.
+
+### Quality Assurance at Scale
+
+Ensuring response quality presents a fundamental challenge with LLMs. Even with the temperature parameter set to 0 (reducing response variability), the combinatorial space of possible questions and responses makes comprehensive QA difficult. The team implemented prompt engineering to constrain the model's behavior, including instructions to refuse questions unrelated to Vimeo features.
+
+### Content Moderation
+
+Both AI providers offer safety features. Google Vertex AI has built-in safety filters that flag potentially harmful prompts (the article gives an example of detecting a question about dynamite as related to weapons). OpenAI offers a separate moderation API endpoint with similar capabilities, though it requires additional integration effort since it's not built into LLM responses.
+
+## Architectural Flexibility
+
+The use of LangChain provides notable flexibility for production operations. The team can switch between different LLM and embedding APIs based on specific needs, enabling performance comparison and providing redundancy during provider outages. Similarly, vector stores can be swapped out to suit different query types and datasets—the article suggests one vector store could index internal developer documentation from GitHub, Confluence, Google Docs, and Zendesk to provide employees a unified search experience.
+
+## Limitations and Future Work
+
+While the article presents this as a successful proof of concept, it's worth noting that the system was described as a prototype rather than a production deployment. The article doesn't provide quantitative metrics on accuracy, user satisfaction, or support ticket reduction. The team acknowledges ongoing work to build the best user experience and suggests they may change LLM providers or use multiple providers in the future.
+
+The project demonstrates a solid foundation for an AI-powered customer support system, with thoughtful attention to operational concerns like authentication, content updates, model comparison, and quality control. The technical architecture follows established RAG patterns while incorporating practical production considerations around flexibility and maintainability.

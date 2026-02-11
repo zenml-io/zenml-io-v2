@@ -1,0 +1,101 @@
+---
+title: "AI-Powered Hybrid Approach for Large-Scale Test Migration from Enzyme to React Testing Library"
+slug: "ai-powered-hybrid-approach-for-large-scale-test-migration-from-enzyme-to-react-testing-library"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "68b832cfc7928770dd01415f"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:20:31.126Z"
+  createdOn: "2025-09-03T12:21:35.445Z"
+llmopsTags:
+  - "code-generation"
+  - "legacy-system-integration"
+  - "prompt-engineering"
+  - "few-shot"
+  - "human-in-the-loop"
+  - "cost-optimization"
+  - "error-handling"
+  - "evals"
+  - "fastapi"
+  - "cicd"
+  - "open-source"
+  - "documentation"
+  - "anthropic"
+company: "Slack"
+summary: "Slack faced the challenge of migrating 15,500 Enzyme test cases to React Testing Library to enable upgrading to React 18, an effort estimated at over 10,000 engineering hours across 150+ developers. The team developed an innovative hybrid approach combining Abstract Syntax Tree (AST) transformations with Large Language Models (LLMs), specifically Claude 2.1, to automate the conversion process. The solution involved a sophisticated pipeline that collected context including DOM trees, performed partial AST conversions with annotations, and leveraged LLMs to handle complex cases that traditional codemods couldn't address. This hybrid approach achieved an 80% success rate for automated conversions and saved developers 22% of their migration time, ultimately enabling the complete migration by May 2024."
+link: "https://www.infoq.com/presentations/ai-migration-large-scale/"
+year: 2024
+seo:
+  title: "Slack: AI-Powered Hybrid Approach for Large-Scale Test Migration from Enzyme to React Testing Library - ZenML LLMOps Database"
+  description: "Slack faced the challenge of migrating 15,500 Enzyme test cases to React Testing Library to enable upgrading to React 18, an effort estimated at over 10,000 engineering hours across 150+ developers. The team developed an innovative hybrid approach combining Abstract Syntax Tree (AST) transformations with Large Language Models (LLMs), specifically Claude 2.1, to automate the conversion process. The solution involved a sophisticated pipeline that collected context including DOM trees, performed partial AST conversions with annotations, and leveraged LLMs to handle complex cases that traditional codemods couldn't address. This hybrid approach achieved an 80% success rate for automated conversions and saved developers 22% of their migration time, ultimately enabling the complete migration by May 2024."
+  canonical: "https://www.zenml.io/llmops-database/ai-powered-hybrid-approach-for-large-scale-test-migration-from-enzyme-to-react-testing-library"
+  ogTitle: "Slack: AI-Powered Hybrid Approach for Large-Scale Test Migration from Enzyme to React Testing Library - ZenML LLMOps Database"
+  ogDescription: "Slack faced the challenge of migrating 15,500 Enzyme test cases to React Testing Library to enable upgrading to React 18, an effort estimated at over 10,000 engineering hours across 150+ developers. The team developed an innovative hybrid approach combining Abstract Syntax Tree (AST) transformations with Large Language Models (LLMs), specifically Claude 2.1, to automate the conversion process. The solution involved a sophisticated pipeline that collected context including DOM trees, performed partial AST conversions with annotations, and leveraged LLMs to handle complex cases that traditional codemods couldn't address. This hybrid approach achieved an 80% success rate for automated conversions and saved developers 22% of their migration time, ultimately enabling the complete migration by May 2024."
+---
+
+## Overview
+
+Slack's test migration project represents a compelling case study in production LLM deployment for automating complex code transformations. The company faced a critical technical challenge: migrating 15,500 Enzyme test cases to React Testing Library to enable upgrading from React 17 to React 18. This migration was essential for maintaining Slack's performance standards and accessing modern React features, but the manual effort was estimated at over 10,000 engineering hours across more than 150 frontend developers in 50+ teams.
+
+The project timeline spanned from August 2023 to May 2024, during which Slack's Developer Experience team developed and deployed an innovative hybrid approach that combined traditional Abstract Syntax Tree (AST) transformations with Large Language Models, specifically Anthropic's Claude 2.1. This case study is particularly valuable because it demonstrates how LLMs can be effectively integrated into production workflows for complex code migration tasks that exceed the capabilities of traditional automated tools.
+
+## Technical Architecture and Implementation
+
+The core innovation lay in Slack's hybrid pipeline that modeled human problem-solving approaches. The system operated through a sophisticated multi-step process that began with context collection, where the pipeline gathered the original file code, extracted DOM trees for all test cases, and performed partial AST conversions with strategic annotations. This context was then packaged and sent to the Claude 2.1 API, with the response being parsed, linted, and automatically tested for correctness.
+
+A critical technical insight was the recognition that LLMs alone were insufficient for this task. Initial experiments with pure LLM approaches achieved only 40-60% success rates with high variability, while traditional AST-based codemods reached just 45% success rates. The breakthrough came from understanding that humans succeed at such migrations because they have access to multiple information sources: the rendered DOM, React component code, AST representations, and extensive frontend experience.
+
+The hybrid approach addressed this by implementing two key innovations. First, DOM tree collection was performed for each test case, providing the LLM with the actual HTML structure that users would interact with in the browser. This was crucial for React Testing Library's philosophy of testing from the user's perspective rather than implementation details. Second, the team developed what they called "LLM control with prompts and AST," which involved performing deterministic AST conversions for patterns they could handle with 100% accuracy, while adding strategic annotations for complex cases that required LLM intervention.
+
+## Production Deployment and Operations
+
+The deployment strategy was carefully designed to minimize disruption to ongoing development work. The team distributed the migration workload evenly across all frontend developers, assigning 10 test cases in Q3 and 33 test cases in Q4/Q1 to each developer. Rather than following traditional organizational hierarchies, they created a flat structure where individual developers were directly responsible for their assigned conversions, bypassing typical team-based divisions.
+
+The production pipeline was designed with robust monitoring and feedback mechanisms. Each conversion attempt involved running the generated code and checking for passing tests, with a feedback loop that could incorporate runtime logs and error messages to improve subsequent attempts. Due to API cost constraints at the time, they limited this to one feedback iteration, though they found that additional loops provided diminishing returns of only 10-20% improvement.
+
+From an operational perspective, the team ran conversions primarily during off-peak hours to avoid overloading their API endpoints, using CI systems for batch processing. The pipeline processed files sequentially rather than in parallel, with each file conversion taking 2-4 minutes depending on complexity. Files were automatically bucketed by success rate, allowing developers to prioritize their review efforts on the highest-quality automated conversions.
+
+## Evaluation and Performance Metrics
+
+Slack implemented comprehensive evaluation mechanisms to validate their LLM-powered solution. They created test sets categorized by complexity levels (easy, medium, difficult) and compared automated conversions against human-generated reference implementations. The evaluation revealed that 80% of test code was converted correctly on average, representing a significant improvement over either pure AST or pure LLM approaches.
+
+The production impact was substantial and measurable. Out of 338 files containing over 2,000 test cases processed through the system, 16% were fully converted with all tests passing, while 24% were partially converted. When analyzing at the individual test case level, 22% of executed test cases passed immediately after conversion, with each successful conversion saving an estimated 45 minutes of developer time.
+
+The adoption metrics showed practical validation of the approach, with developers choosing to use the automated tool for 64% of their assigned conversions rather than performing manual migrations. This adoption rate was particularly noteworthy given that developers had the choice between manual conversion and the automated tool, and their willingness to use the automation demonstrated real value delivery.
+
+## Technical Challenges and Limitations
+
+The project encountered several significant technical challenges that provide valuable insights for similar LLM deployments. Token limits posed a substantial constraint, with some legacy components generating requests with 8,000+ lines of code that exceeded API limitations. The team addressed this by implementing fallback strategies, such as excluding DOM tree information in retry attempts when token limits were exceeded.
+
+The philosophical differences between Enzyme and React Testing Library created complexity that traditional rule-based systems couldn't handle. Enzyme focuses on implementation details and component internals, while React Testing Library emphasizes user-centric testing approaches. This fundamental difference meant that direct pattern matching was often impossible, requiring the LLM to understand context and intent rather than simply applying transformation rules.
+
+JavaScript and TypeScript complexity added another layer of difficulty. The team identified 65 different Enzyme methods used across their codebase, with the top 10 accounting for the majority of usage. However, each method could be used in countless variations due to JavaScript's flexibility in function definition, arrow functions, variable assignments, and callback patterns. Traditional AST approaches would have required creating separate rules for each variation, making the approach intractable.
+
+## LLMOps Best Practices and Learnings
+
+Several critical LLMOps insights emerged from this production deployment. The team discovered that successful LLM integration requires extensive preprocessing and postprocessing rather than treating the model as a standalone solution. The LLM component represented only 20% of the development effort, while context collection, result validation, and pipeline orchestration consumed 80% of the work.
+
+Prompt engineering proved crucial for success. The team developed sophisticated prompting strategies that included providing conversion suggestions with specific instructions to control hallucinations, labeling every conversion instance to focus the LLM's attention, and including metadata annotations that guided the model's decision-making process. This approach of giving the LLM structured guidance rather than open-ended instructions was key to achieving reliable results.
+
+The concept of "modeling after humans" became a central design principle. By analyzing how experienced developers approached the migration task, the team identified the key information sources and decision-making processes that could be replicated in their automated pipeline. This human-centered design approach proved more effective than purely technical optimization strategies.
+
+## Cost Considerations and Resource Management
+
+The project operated under significant cost constraints due to the expense of LLM API calls in 2023-2024. This limitation influenced several design decisions, including the single feedback loop restriction and the emphasis on off-peak processing. The team calculated that each successful conversion saved 45 minutes of developer time, providing clear ROI justification despite the API costs.
+
+Resource management extended beyond monetary considerations to include API rate limiting and infrastructure capacity. The team implemented careful scheduling to avoid overwhelming their endpoints and developed queuing mechanisms to handle batch processing efficiently. These operational considerations highlight the importance of infrastructure planning in production LLM deployments.
+
+## Transferability and Future Applications
+
+The hybrid AST-LLM approach developed for this migration has broader applications beyond test framework conversions. The team identified several domains where similar techniques could be valuable, including unit test generation, code modernization, readability improvements, and type system conversions. The key insight is that LLMs excel in scenarios with high variability, complex context requirements, and the need to combine dissimilar information sources that traditional tools cannot process effectively.
+
+The success factors for this approach include complexity that exceeds rule-based systems, availability of the target patterns in LLM training data, and the ability to model human problem-solving processes. Conversely, the team emphasizes avoiding LLM solutions when deterministic approaches are viable, reflecting a pragmatic approach to AI adoption that prioritizes reliability and cost-effectiveness.
+
+## Industry Impact and Open Source Contribution
+
+Recognizing the broader industry need for similar migration tools, Slack open-sourced their solution and published detailed documentation about their approach. This contribution addresses the widespread nature of the Enzyme-to-RTL migration challenge, with Enzyme still being downloaded 1.7 million times weekly as of late 2024, indicating millions of test cases across the industry that require similar conversions.
+
+The case study demonstrates mature LLMOps practices in a production environment, showing how organizations can successfully integrate AI capabilities into existing development workflows while maintaining code quality standards and developer productivity. The comprehensive evaluation methodology, careful prompt engineering, and hybrid architecture approach provide a template for similar large-scale code transformation projects across the industry.

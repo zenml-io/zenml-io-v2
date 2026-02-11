@@ -1,0 +1,160 @@
+---
+title: "Building and Managing Production Agents with Testing and Evaluation Infrastructure"
+slug: "building-and-managing-production-agents-with-testing-and-evaluation-infrastructure"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "678a8667e1dcf7ecc3c9e9ca"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:55:49.595Z"
+  createdOn: "2025-01-17T16:33:43.773Z"
+llmopsTags:
+  - "question-answering"
+  - "structured-output"
+  - "regulatory-compliance"
+  - "high-stakes-application"
+  - "prompt-engineering"
+  - "rag"
+  - "error-handling"
+  - "cost-optimization"
+  - "latency-optimization"
+  - "human-in-the-loop"
+  - "multi-agent-systems"
+  - "agent-based"
+  - "cicd"
+  - "monitoring"
+  - "databases"
+  - "postgresql"
+  - "redis"
+  - "elasticsearch"
+  - "amazon-aws"
+  - "microsoft-azure"
+company: "Nearpod"
+summary: "Nearpod, an edtech company, implemented a sophisticated agent-based architecture to help teachers generate educational content. They developed a framework for building, testing, and deploying AI agents with robust evaluation capabilities, ensuring 98-100% accuracy while managing costs. The system includes specialized agents for different tasks, an agent registry for reuse across teams, and extensive testing infrastructure to ensure reliable production deployment of non-deterministic systems."
+link: "https://www.youtube.com/watch?v=GDw29ThkqjM"
+year: 2023
+seo:
+  title: "Nearpod: Building and Managing Production Agents with Testing and Evaluation Infrastructure - ZenML LLMOps Database"
+  description: "Nearpod, an edtech company, implemented a sophisticated agent-based architecture to help teachers generate educational content. They developed a framework for building, testing, and deploying AI agents with robust evaluation capabilities, ensuring 98-100% accuracy while managing costs. The system includes specialized agents for different tasks, an agent registry for reuse across teams, and extensive testing infrastructure to ensure reliable production deployment of non-deterministic systems."
+  canonical: "https://www.zenml.io/llmops-database/building-and-managing-production-agents-with-testing-and-evaluation-infrastructure"
+  ogTitle: "Nearpod: Building and Managing Production Agents with Testing and Evaluation Infrastructure - ZenML LLMOps Database"
+  ogDescription: "Nearpod, an edtech company, implemented a sophisticated agent-based architecture to help teachers generate educational content. They developed a framework for building, testing, and deploying AI agents with robust evaluation capabilities, ensuring 98-100% accuracy while managing costs. The system includes specialized agents for different tasks, an agent registry for reuse across teams, and extensive testing infrastructure to ensure reliable production deployment of non-deterministic systems."
+---
+
+## Overview
+
+Nearpod is a K-12 EdTech company operating globally that has embarked on a significant journey into LLM-powered agent systems. Zach Wallace, an engineering manager at the company, shares insights from their transition from building a robust data platform to implementing production-grade multi-agent systems. The case study illustrates how the foundational data infrastructure work enabled the team to build reliable, cost-effective AI agents for educational content generation.
+
+## The Data Platform Foundation
+
+Before diving into agents, Nearpod invested significant effort in building a unified data platform. This foundational work proved essential for their subsequent LLM operations. The company faced challenges with data scattered across approximately 20 disparate sources, including Aurora DB and DynamoDB instances, spanning millions to billions of rows.
+
+Their solution leveraged several key technologies:
+
+- **DBT Core** for data transformation, which Wallace describes as enabling engineers to work with data using familiar software engineering patterns
+- **Amazon Redshift** utilized primarily as a data transfer mechanism, similar to Apache Spark, rather than as a primary analytics engine
+- **Zero ETL** capability in Redshift for real-time data synchronization from source databases
+- **Snowflake** for complex transformations
+- **S3** as an intermediary storage layer
+
+The team built what they call a "data product exchange," which represents the underpinning of a data mesh architecture. They define a data product as the intersection of data and its definition—for example, user usage patterns aggregated from login times and application interactions. This data platform became crucial for agent quality because, as Wallace notes, "without data [agents are] not going to have the quality associated that you need to provide reliable and confident answers."
+
+## Agent Architecture and Use Case
+
+The primary use case driving Nearpod's agent development is question generation for teachers. The edtech context presents unique challenges: considerations for students, parents, state legislation, international cultural sensitivities, and language nuances. Wallace describes LLMs as being good at translation but struggling with "trans-adaptations"—culturally appropriate adaptations of content.
+
+The team approaches agent development with what Wallace calls the "three-year-old consultant" metaphor. Agents start with limited capability and require significant input from subject matter experts to reach production quality. This framing helps set appropriate expectations: the initial proof of concept takes only about 7 hours to build (compared to 60+ days using traditional methods), but achieving production quality requires substantial iteration with domain experts.
+
+Their agent architecture includes several specialized components:
+
+- **Input Validation Agent**: Handles sensitive topics and legislative requirements across different regions and cultures
+- **Question Generation Agent**: Focused specifically on generating educational questions
+- **Orchestration Layer**: Manages non-deterministic routing between agents
+
+The team explicitly chose multi-agent architectures over single monolithic agents for several reasons. Specialized agents have smaller token requirements, leading to faster processing and lower costs. They're also easier to understand, debug, and adjust. Wallace emphasizes that breaking down problems into domain-specific agents follows the principle of being a "master of one" rather than a "jack of all trades."
+
+## Agent Registry and Cross-Departmental Collaboration
+
+One of the most innovative aspects of Nearpod's approach is their agent registry. This registry allows agents to be discovered, shared, and composed across the organization. Engineers from any of the company's 12-13 teams can browse available agents and assemble them into new product features.
+
+This architecture fundamentally changes organizational dynamics. Wallace describes how previously isolated departments—curriculum development, legal, sales, marketing—now collaborate much more closely with engineering. The rapid proof-of-concept cycle (hours rather than months) enables stakeholders to review working prototypes and provide actionable feedback early. As Wallace puts it, engineers can now say "I'm a three-year-old [in your domain], so what did I not understand from this language gap?"
+
+The registry model also addresses a common agent anti-pattern: recreating similar functionality across different teams. By centralizing agents, the organization avoids duplication and enables reuse of validated, tested components.
+
+## Evaluation Framework
+
+Nearpod built a custom evaluation framework that serves as the "single source of truth" for their agent systems. Key aspects include:
+
+- **Thousands of evals** for each agent, analogous to TDD tests in traditional software development
+- **Synthetic user prompts** generated to represent expected production usage patterns
+- **Boundary testing** to assess how agents handle edge cases, particularly sensitive topics
+- **98-100% confidence levels** achieved through rigorous testing before production deployment
+
+The evaluation framework was built specifically to address gaps in available tooling. While Python engineers could use OpenAI's eval framework directly, TypeScript engineers (common in Nearpod's stack) lacked similar tooling. The custom framework supports both languages and integrates with CI/CD pipelines for automated testing.
+
+Wallace is candid about the time distribution in agent development: building the initial POC takes only 10-20% of total effort, while 80-90% goes into debugging false positives, prompt tuning, and quality assessment. This insight is valuable for teams planning agent development timelines.
+
+## Cost Optimization
+
+Cost management is deeply integrated into Nearpod's agent operations. Their evaluation framework includes cost estimation capabilities that approximate production costs based on:
+
+- Token counts per agent
+- Expected usage volumes
+- Model pricing
+
+This allows teams to see projected costs before deploying new agents or agent compositions. Wallace notes they've achieved high accuracy (98-100%) with lower costs by using cheaper models, enabled by two key practices:
+
+- **Prompt engineering** to reduce token counts (removing unnecessary sentences, optimizing instructions)
+- **Software engineering** to minimize unnecessary LLM calls
+
+The cost visibility extends to the agent registry, where teams can estimate the expense of combining multiple agents for a new product feature before committing to production deployment.
+
+## Production Deployment
+
+Deploying non-deterministic agents to production requires accepting higher risk than traditional software. Nearpod addresses this through:
+
+- **High-confidence evals** ensuring 98-100% accuracy before deployment
+- **Standard CI/CD pipelines** (releasing agents is mechanically similar to any other production deploy, using environment variables)
+- **Acknowledgment of residual risk** inherent in non-deterministic systems
+
+Wallace references the Air Canada chatbot incident as an example of what can go wrong, emphasizing that teams must accept some level of uncertainty with LLM-based systems while minimizing risk through comprehensive testing.
+
+## Deterministic vs. Non-Deterministic Orchestration
+
+The team uses both deterministic and non-deterministic orchestration patterns depending on the use case. Non-deterministic orchestration allows an orchestrating agent to decide which subordinate agents to invoke based on context. For example, in an e-commerce analogy Wallace provides, an orchestrator might call a user interests agent, a business needs agent, or both, depending on the situation.
+
+This flexibility comes with trade-offs. Non-deterministic flows are harder to predict and debug but offer greater adaptability. The team has learned to carefully consider where non-determinism adds value versus where simpler deterministic flows suffice.
+
+## Feedback Loops and Continuous Improvement
+
+While acknowledging that services like OpenAI don't support direct retraining, Nearpod builds feedback loops through:
+
+- **RAG updates** to refresh the data agents access
+- **Telemetry collection** on agent performance (success rates, error rates, completion metrics)
+- **Data platform integration** to process agent performance data and identify optimization opportunities
+
+This creates a virtuous cycle where agent performance data feeds back into improvements, leveraging the data platform infrastructure built earlier.
+
+## Organizational Implications
+
+Perhaps the most significant insight from Nearpod's experience is how agent development changes organizational dynamics. The speed of prototyping (hours instead of months) means:
+
+- Stakeholders can see working prototypes immediately and provide informed feedback
+- Engineers are less "pot committed" to failed approaches (2 hours of work is easier to discard than 6 months)
+- Cross-functional collaboration becomes essential rather than optional
+- Traditional silos between engineering and business teams break down
+
+Wallace predicts that agents may eventually enable teams to deprecate legacy codebases that have been technically challenging to maintain, replacing them with more flexible agent-based implementations. This represents a fundamental shift in how software organizations might evolve their systems over time.
+
+## Critical Assessment
+
+While the case study presents an optimistic view of agent development, several considerations warrant attention:
+
+- The 98-100% accuracy claims are based on synthetic evaluations, and real-world performance may differ
+- The cultural and legislative sensitivity challenges in EdTech are acknowledged but not fully solved
+- The agent registry and cost estimation infrastructure represent significant investment that may not transfer easily to smaller organizations
+- Long-term maintenance costs of thousands of specialized agents remain to be seen
+
+Nevertheless, Nearpod's approach demonstrates thoughtful integration of data infrastructure, evaluation frameworks, and organizational change management in deploying LLM-based agents at scale.

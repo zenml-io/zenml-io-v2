@@ -1,0 +1,117 @@
+---
+title: "LLMs for Enhanced Search Retrieval and Query Understanding"
+slug: "llms-for-enhanced-search-retrieval-and-query-understanding"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "674f1e1c21f335dcb112db1d"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:47:26.412Z"
+  createdOn: "2024-12-03T15:05:00.857Z"
+llmopsTags:
+  - "question-answering"
+  - "structured-output"
+  - "rag"
+  - "embeddings"
+  - "prompt-engineering"
+  - "semantic-search"
+  - "vector-search"
+  - "error-handling"
+  - "chunking"
+  - "fastapi"
+  - "elasticsearch"
+  - "langchain"
+  - "openai"
+company: "Doordash"
+summary: "Doordash implemented an advanced search system using LLMs to better understand and process complex food delivery search queries. They combined LLMs with knowledge graphs for query segmentation and entity linking, using retrieval-augmented generation (RAG) to constrain outputs to their controlled vocabulary. The system improved popular dish carousel trigger rates by 30%, increased whole page relevance by over 2%, and led to higher conversion rates while maintaining high precision in query understanding."
+link: "https://careersatdoordash.com/blog/how-doordash-leverages-llms-for-better-search-retrieval/"
+year: 2024
+seo:
+  title: "Doordash: LLMs for Enhanced Search Retrieval and Query Understanding - ZenML LLMOps Database"
+  description: "Doordash implemented an advanced search system using LLMs to better understand and process complex food delivery search queries. They combined LLMs with knowledge graphs for query segmentation and entity linking, using retrieval-augmented generation (RAG) to constrain outputs to their controlled vocabulary. The system improved popular dish carousel trigger rates by 30%, increased whole page relevance by over 2%, and led to higher conversion rates while maintaining high precision in query understanding."
+  canonical: "https://www.zenml.io/llmops-database/llms-for-enhanced-search-retrieval-and-query-understanding"
+  ogTitle: "Doordash: LLMs for Enhanced Search Retrieval and Query Understanding - ZenML LLMOps Database"
+  ogDescription: "Doordash implemented an advanced search system using LLMs to better understand and process complex food delivery search queries. They combined LLMs with knowledge graphs for query segmentation and entity linking, using retrieval-augmented generation (RAG) to constrain outputs to their controlled vocabulary. The system improved popular dish carousel trigger rates by 30%, increased whole page relevance by over 2%, and led to higher conversion rates while maintaining high precision in query understanding."
+---
+
+## Overview
+
+Doordash, the food delivery platform, developed an LLM-powered query understanding system to improve their search retrieval capabilities. The core challenge they faced was that users often conduct precise searches with compound requirements—queries like "vegan chicken sandwich" that combine multiple constraints. Traditional embedding-based retrieval systems struggled with these queries because they would return results based on document similarity rather than strict attribute matching, potentially returning chicken sandwiches (not vegan) alongside vegan chicken sandwiches. For dietary restrictions in particular, this imprecision is problematic since users expect strict enforcement of such preferences.
+
+The solution integrates LLMs into their search pipeline for query segmentation and entity linking, leveraging their existing knowledge graph infrastructure to constrain outputs and maintain high precision. This represents a production-grade implementation of LLMs within a search system serving a major consumer platform.
+
+## Search Architecture and Document Understanding
+
+Doordash's search architecture follows a two-track approach: one pipeline for processing documents (items and stores) and another for processing queries. On the document side, they have built comprehensive knowledge graphs for both food items and retail products. These graphs define hierarchical relationships between entities and annotate documents with rich metadata including dietary preferences, flavors, product categories, and quantities.
+
+For example, a retail item like "Non-Dairy Milk & Cookies Vanilla Frozen Dessert - 8 oz" carries metadata tags such as Dietary Preference: "Dairy-free", Flavor: "Vanilla", Product Category: "Ice cream", and Quantity: "8 oz". This metadata is ingested into the search index and makes rich attribute-based retrieval possible.
+
+## LLM-Powered Query Understanding
+
+The query understanding module uses LLMs for two critical tasks: query segmentation and entity linking.
+
+### Query Segmentation
+
+Traditional query segmentation methods rely on statistical approaches like pointwise mutual information (PMI) or n-gram analysis. These methods struggle with complex queries containing multiple overlapping entities or ambiguous relationships. For instance, in "turkey sandwich with cranberry sauce," traditional methods may not correctly determine whether "cranberry sauce" is a separate item or an attribute of the sandwich.
+
+Doordash's approach prompts LLMs to not just segment queries but to classify each segment under their taxonomy categories. Rather than producing arbitrary segments like `["small", "no-milk", "vanilla ice cream"]`, the model outputs structured mappings: `{Quantity: "small", Dietary_Preference: "no-milk", Flavor: "vanilla", Product_Category: "ice cream"}`. This structured output approach improves segmentation accuracy because the categories provide additional context about possible relationships between segments.
+
+### Entity Linking with RAG
+
+Once queries are segmented, the system maps these segments to concepts in the knowledge graph. A segment like "no-milk" should link to the "dairy-free" concept to enable retrieval that isn't restricted to exact string matching. However, LLMs can hallucinate concepts that don't exist in the knowledge graph or mislabel segments entirely.
+
+To address this, Doordash employs retrieval-augmented generation (RAG) to constrain the model's output to their controlled vocabulary. The process works as follows:
+
+- Embeddings are generated for each search query and knowledge graph taxonomy concept (candidate labels). These can be from closed-source models, pre-trained models, or learned in-house.
+- Using an approximate nearest neighbor (ANN) retrieval system, the closest 100 taxonomy concepts are retrieved for each query. This limit exists due to context window constraints and to reduce noise in the prompt that can degrade performance.
+- The LLM is then prompted to link queries to corresponding entities from specific taxonomies (dish types, dietary preferences, cuisines, etc.), selecting only from the retrieved candidate concepts.
+
+This approach reduces hallucinations by ensuring the model selects from concepts already in the knowledge graph rather than generating arbitrary outputs.
+
+## Hallucination Mitigation and Quality Control
+
+The article notes that the hallucination rate on segmentation is less than 1%, but even this low rate requires mitigation given the importance of attributes like dietary preferences. Several strategies are employed:
+
+- **Structured Output Constraints**: By prompting the model to output in a structured format mapped to specific taxonomy categories, the system inherently limits the space of possible outputs.
+- **RAG-based Candidate Restriction**: For entity linking, the ANN retrieval step provides a curated list of candidate labels, ensuring the LLM only selects from valid concepts.
+- **Post-processing Steps**: Additional validation steps prevent potential hallucinations in final output and ensure validity of both segmented queries and linked entities.
+- **Manual Audits**: Annotators review statistically significant samples of output to verify correct segmentation and entity linking. This helps detect systematic errors, refine prompts, and maintain high precision.
+
+## Production Trade-offs: Memorization vs. Generalization
+
+The article provides valuable insights into production trade-offs when deploying LLMs for search. Using LLMs for batch inference on fixed query sets provides highly accurate results but has significant drawbacks:
+
+- **Scalability**: In a dynamic environment like food delivery, new queries constantly emerge, making it impractical to pre-process every possible query.
+- **Maintenance**: The system requires frequent updates and re-processing to incorporate new queries or changes in the knowledge graph.
+- **Feature Staleness**: Pre-computed segmentations and entity links can become outdated over time.
+
+To balance these concerns, Doordash employs a hybrid approach combining LLM-based batch processing with methods that generalize well to unseen queries, including embedding retrieval, traditional statistical models (like BM25), and rule-based systems. This hybrid architecture leverages the deep contextual understanding of LLMs while maintaining real-time adaptability for novel queries.
+
+## Integration with Search Pipeline and Rankers
+
+The effectiveness of the query understanding system depends on integration with downstream components, particularly the rankers that order retrieved documents by relevance. The new query understanding signals needed to be made available to the rankers, which then had to adapt to both the new signals and changed patterns of consumer engagement that the retrieval improvements introduced.
+
+The structured query understanding enables specific retrieval logic—for example, making dietary restrictions a MUST condition (strict enforcement) while allowing flexibility on less strict attributes like flavors as SHOULD conditions. This granular control over retrieval logic would not be possible with purely embedding-based approaches.
+
+## Results and Metrics
+
+The implementation demonstrated significant improvements across multiple metrics:
+
+- **Carousel Trigger Rate**: Nearly 30% increase in the trigger rate of popular dish carousels, meaning the system can retrieve significantly more relevant items to display.
+- **Whole Page Relevance (WPR)**: More than 2% increase in WPR for dish-intent queries, indicating users see more relevant dishes overall.
+- **Conversion**: Rise in same-day conversions, confirming that reduced friction helps consumers make ordering decisions.
+- **Ranker Improvements**: With more diverse engagement data from improved retrieval, retraining the ranker led to an additional 1.6% WPR improvement.
+
+## Future Directions
+
+The validated LLM integration opens several future possibilities: query rewriting and search path recommendations, surfacing popular items for new users, improving retrieval recall and precision through more granular attributes, and deeper consumer behavior understanding for personalization (e.g., inferring that a consumer prefers spicy dishes and Latin American cuisines).
+
+## Assessment and Considerations
+
+This case study represents a well-architected integration of LLMs into a production search system. The approach is notable for several reasons: it leverages existing infrastructure (knowledge graphs) to constrain LLM outputs, it acknowledges and addresses the hallucination problem systematically, it considers production trade-offs between accuracy and scalability, and it validates results with both offline evaluation and online A/B testing.
+
+The hybrid approach—combining LLM batch processing with real-time generalization methods—reflects a pragmatic production mindset. The system doesn't rely solely on LLMs but uses them where they add the most value (complex query understanding) while maintaining traditional methods for scalability and real-time processing.
+
+One limitation worth noting is that the article focuses primarily on batch inference for query understanding rather than real-time LLM inference, which would introduce additional latency and cost considerations. The long-term maintenance burden of keeping the knowledge graph and query understanding in sync is also a consideration for production systems at this scale.

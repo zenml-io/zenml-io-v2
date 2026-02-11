@@ -1,0 +1,124 @@
+---
+title: "Building Robust Evaluation Systems for Auto-Generated Video Titles"
+slug: "building-robust-evaluation-systems-for-auto-generated-video-titles"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "6799e9f123c08516179b247a"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:58:52.288Z"
+  createdOn: "2025-01-29T08:42:25.619Z"
+llmopsTags:
+  - "content-moderation"
+  - "caption-generation"
+  - "prompt-engineering"
+  - "error-handling"
+  - "human-in-the-loop"
+  - "monitoring"
+  - "documentation"
+  - "openai"
+company: "Loom"
+summary: "Loom developed a systematic approach to evaluating and improving their AI-powered video title generation feature. They created a comprehensive evaluation framework combining code-based scorers and LLM-based judges, focusing on specific quality criteria like relevance, conciseness, and engagement. This methodical approach to LLMOps enabled them to ship AI features faster and more confidently while ensuring consistent quality in production."
+link: "https://www.braintrust.dev/blog/loom"
+year: 2025
+seo:
+  title: "Loom: Building Robust Evaluation Systems for Auto-Generated Video Titles - ZenML LLMOps Database"
+  description: "Loom developed a systematic approach to evaluating and improving their AI-powered video title generation feature. They created a comprehensive evaluation framework combining code-based scorers and LLM-based judges, focusing on specific quality criteria like relevance, conciseness, and engagement. This methodical approach to LLMOps enabled them to ship AI features faster and more confidently while ensuring consistent quality in production."
+  canonical: "https://www.zenml.io/llmops-database/building-robust-evaluation-systems-for-auto-generated-video-titles"
+  ogTitle: "Loom: Building Robust Evaluation Systems for Auto-Generated Video Titles - ZenML LLMOps Database"
+  ogDescription: "Loom developed a systematic approach to evaluating and improving their AI-powered video title generation feature. They created a comprehensive evaluation framework combining code-based scorers and LLM-based judges, focusing on specific quality criteria like relevance, conciseness, and engagement. This methodical approach to LLMOps enabled them to ship AI features faster and more confidently while ensuring consistent quality in production."
+---
+
+## Overview
+
+Loom is a video communication platform used by millions of professionals globally. With the emergence of generative AI capabilities, Loom's engineering team identified an opportunity to enhance user experience through LLM-powered features, specifically automatic video title generation. This case study focuses on how Loom approached the LLMOps challenge of evaluating and ensuring quality for AI-generated content in a production environment.
+
+The core challenge Loom faced was not just building the AI feature itself, but establishing a robust methodology for evaluating whether the auto-generated titles were actually good. This is a fundamental LLMOps concern: how do you systematically measure and improve the quality of LLM outputs at scale? The team's solution involved developing custom scoring functions within the Braintrust evaluation platform, following a structured approach to evaluation design.
+
+## The Evaluation Philosophy
+
+Loom's approach to LLM evaluation centers on a user-centric philosophy rather than a model-centric one. Instead of asking "Is the model following my instructions correctly?", they reframe the question as "Is the output ideal for our users, regardless of how it was generated?" This subtle but important distinction allows for higher-level improvements to features and keeps the focus on real-world user value rather than technical compliance.
+
+This philosophy acknowledges that prompt engineering and model fine-tuning are means to an end—the end being user satisfaction. By evaluating outputs against user expectations rather than instruction-following metrics, teams can more easily identify when fundamental changes (like switching models, adjusting prompts, or restructuring the entire approach) might be needed.
+
+## The Four-Step Evaluation Process
+
+Loom developed a structured four-step process for creating evaluation scorers for any AI feature:
+
+### Step 1: Identifying Traits of Great Outputs
+
+The process begins by examining the inputs (what data or prompt the model receives) and the expected outputs (what the model should generate). For the auto-generated video titles feature, the team identified several key traits of a great title:
+
+- Conveys the main idea of the video
+- Is concise yet descriptive
+- Engages readers effectively
+- Is readable with no grammar or spelling issues
+- Contains no hallucinations (fabricated information not in the source)
+- Ends with a single relevant emoji (a brand-specific touch)
+
+This upfront trait identification provides a clear roadmap for building scorers before any actual evaluation code is written.
+
+### Step 2: Checking for Common Quality Measures
+
+The team maintains awareness of quality measures that apply broadly across LLM use cases. These include relevance/faithfulness (accuracy to source material), readability, structure/formatting compliance, factuality (especially for RAG-based systems), bias/toxicity/brand safety considerations, and correct language output. While not every measure applies to every use case, doing a quick assessment helps ensure nothing important is overlooked.
+
+Importantly, Loom customizes these general measures for each specific feature rather than applying generic scorers. By tailoring scorers to the task at hand, they reduce noise in prompts and achieve more reliable, actionable results.
+
+### Step 3: Implementing Objective Measures with Code
+
+A key LLMOps best practice highlighted in this case study is the use of deterministic, code-based scorers whenever possible. For objective checks—such as "Does the output contain exactly one emoji at the end?" or "Does a JSON response contain all required keys?"—code-based validation is preferred over LLM-based evaluation.
+
+This approach offers several advantages in production environments:
+- **Cost efficiency**: Code-based scorers are essentially free to run at any scale
+- **Speed**: Deterministic checks execute almost instantaneously
+- **Consistency**: Unlike LLM-based scorers, code-based checks produce identical results every time
+- **Reduced variability**: Eliminates the inherent unpredictability of LLM responses
+
+This hybrid approach—using code where possible and LLMs only where necessary—represents a mature LLMOps practice that balances capability with reliability and cost.
+
+### Step 4: Creating and Iterating on Scorers
+
+With feature-specific criteria and common measures identified, the team sets up initial scorers in Braintrust. For the video title feature, these included scorers for relevance (focused on the main video topic), conciseness, engagement potential, clarity, and correct language.
+
+The iteration process involves feeding approximately 10-15 test examples through the evaluation pipeline, inspecting results carefully, and refining scorers based on observations. Once the team is satisfied that scorers are properly calibrated, they scale up to running evaluations on larger datasets through online evaluations.
+
+## Best Practices and Technical Details
+
+Several specific best practices emerged from Loom's experience:
+
+**Chain-of-thought for LLM-as-a-judge scorers**: When using LLMs to evaluate other LLM outputs, enabling chain-of-thought reasoning is described as crucial. This produces a "rationale" explaining why a particular score was given, which is invaluable for calibrating and debugging scorers. Without this visibility, it would be difficult to understand whether a scorer is actually measuring what it's intended to measure.
+
+**Single-aspect focus per scorer**: Each scorer should evaluate one distinct aspect of the output (e.g., factual correctness, style, or emoji presence) rather than attempting to assess multiple qualities at once. This separation makes it easier to identify specific areas needing improvement and provides clearer signals for optimization.
+
+**Weighted scoring for prioritization**: When certain aspects matter more than others (factual accuracy over stylistic preferences, for example), weighted averages can combine individual scores into meaningful aggregate metrics. This acknowledges that not all quality dimensions are equally important in production.
+
+**Appropriate scoring granularity**: Sometimes binary (yes/no) scoring is sufficient, while other situations benefit from 3-point or 5-point scales that capture more nuance. Choosing the right granularity depends on the specific quality being measured and how actionable the resulting data needs to be.
+
+## The Evaluation Cycle
+
+Loom describes their overall approach as a cycle: define → implement → evaluate → refine. This iterative process combines prompt tuning, scorer adjustment, and dataset refinement until the team is confident that the evaluation system captures all essential qualities of the feature.
+
+By integrating both objective (code-based) and subjective (LLM-based) measures, the team can quickly identify both technical issues and quality concerns. The emphasis on starting small and iterating quickly helps avoid "analysis paralysis"—a common trap when teams try to build perfect evaluation systems before shipping anything.
+
+## Results and Business Impact
+
+The article claims that Loom has established a "repeatable, reliable system for shipping features faster and more confidently." The specific benefits mentioned include the ability to run large-scale evaluations more quickly, ensuring features reliably meet user needs, and shipping improvements with confidence that they've been thoroughly tested.
+
+It's worth noting that this case study is presented through Braintrust's blog, so there is inherent bias toward presenting the methodology (and the evaluation platform) favorably. The article does not provide specific quantitative results—such as improvement percentages, user satisfaction metrics, or comparisons with previous approaches—which would help validate the claimed benefits more concretely.
+
+## Critical Assessment
+
+While the methodology described is sound and represents genuine LLMOps best practices, readers should note several caveats:
+
+- The source is a vendor blog post (Braintrust), which naturally emphasizes the success of their customer's implementation
+- No specific metrics or quantitative improvements are provided
+- The focus is primarily on the evaluation methodology rather than the full production pipeline (deployment, monitoring, versioning, etc.)
+- The article does not discuss challenges, failures, or lessons learned from mistakes
+
+That said, the four-step scorer creation process and the emphasis on combining deterministic code-based checks with LLM-based evaluation represents a pragmatic, cost-effective approach to LLM evaluation that would be applicable across many use cases. The principle of evaluating from a user perspective rather than a model-compliance perspective is particularly valuable for teams building user-facing AI features.
+
+## Applicability to Other Use Cases
+
+The methodology described is explicitly positioned as applicable beyond video title generation. The article suggests it would work for chat-based assistants, summarization, content generation, and other LLM applications. The structured approach to identifying quality traits, implementing objective checks in code, and iteratively refining LLM-based scorers provides a template that other engineering teams could adapt for their own features.

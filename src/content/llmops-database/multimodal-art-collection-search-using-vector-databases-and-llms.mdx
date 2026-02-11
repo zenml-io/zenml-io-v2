@@ -1,0 +1,142 @@
+---
+title: "Multimodal Art Collection Search Using Vector Databases and LLMs"
+slug: "multimodal-art-collection-search-using-vector-databases-and-llms"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "68272874acc4b1f72e89df11"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:08:15.052Z"
+  createdOn: "2025-05-16T11:58:44.066Z"
+llmopsTags:
+  - "multi-modality"
+  - "unstructured-data"
+  - "embeddings"
+  - "semantic-search"
+  - "vector-search"
+  - "cost-optimization"
+  - "elasticsearch"
+  - "fastapi"
+  - "amazon-aws"
+company: "Actum Digital"
+summary: "An art institution implemented a sophisticated multimodal search system for their collection of 40 million art assets using vector databases and LLMs. The system combines text and image-based search capabilities, allowing users to find artworks based on various attributes including style, content, and visual similarity. The solution evolved from using basic cloud services to a more cost-effective and flexible approach, reducing infrastructure costs to approximately $1,000 per region while maintaining high search accuracy."
+link: "https://www.youtube.com/watch?v=JO0m2PWAKKY"
+seo:
+  title: "Actum Digital: Multimodal Art Collection Search Using Vector Databases and LLMs - ZenML LLMOps Database"
+  description: "An art institution implemented a sophisticated multimodal search system for their collection of 40 million art assets using vector databases and LLMs. The system combines text and image-based search capabilities, allowing users to find artworks based on various attributes including style, content, and visual similarity. The solution evolved from using basic cloud services to a more cost-effective and flexible approach, reducing infrastructure costs to approximately $1,000 per region while maintaining high search accuracy."
+  canonical: "https://www.zenml.io/llmops-database/multimodal-art-collection-search-using-vector-databases-and-llms"
+  ogTitle: "Actum Digital: Multimodal Art Collection Search Using Vector Databases and LLMs - ZenML LLMOps Database"
+  ogDescription: "An art institution implemented a sophisticated multimodal search system for their collection of 40 million art assets using vector databases and LLMs. The system combines text and image-based search capabilities, allowing users to find artworks based on various attributes including style, content, and visual similarity. The solution evolved from using basic cloud services to a more cost-effective and flexible approach, reducing infrastructure costs to approximately $1,000 per region while maintaining high search accuracy."
+---
+
+## Overview
+
+This case study comes from a presentation by a team member at Actum Digital discussing their implementation of a multimodal search system for an art collection. The transcript quality is poor (likely due to automatic transcription issues), but key technical details can be extracted about how they approached building a production AI search system for a large art catalog containing approximately 40 million assets.
+
+The system appears to serve the needs of art collection managers, auctioneers, and potentially end users who need to discover artworks through various search modalities including text-based search and image similarity search. The use case is particularly interesting because art assets have unique characteristics including multilingual metadata (Spanish, French, etc.), varying titles (including self-portraits with generic naming), materials, techniques, and visual similarities that traditional keyword search cannot adequately capture.
+
+## Problem Statement
+
+The team faced several challenges when building a search system for a massive art collection:
+
+- **Scale**: With 40 million assets in the collection, any solution needed to handle significant scale efficiently
+- **Multilingual content**: Art metadata comes in multiple languages including Spanish and French, making traditional search approaches inadequate
+- **Semantic complexity**: Art titles can be generic (like "self-portrait") and don't always describe the content well
+- **Visual similarity needs**: Users often want to find artworks similar in style, composition, or subject matter, which requires understanding the visual content, not just metadata
+- **Cost sensitivity**: As a small team, they needed to find cost-effective solutions while still delivering robust search capabilities
+
+## Technical Architecture
+
+### Infrastructure Components
+
+The solution is built on AWS infrastructure with several key components:
+
+- **AWS Bedrock**: Used for accessing embedding models that transform both text and images into vector representations. Bedrock's managed service approach was chosen because the team is small and didn't want to manage model infrastructure themselves. The presentation mentions they "leverage interface" through Bedrock as a service that is "able to manage" their embedding needs.
+
+- **OpenSearch**: Serves as the vector database for storing and querying embeddings. The choice of OpenSearch allows for both traditional keyword search and vector similarity search to be combined in hybrid queries.
+
+- **Data Pipeline**: They built data pipelines and process functions to handle the ingestion and transformation of art assets into searchable vector representations.
+
+### Multimodal Search Capabilities
+
+The system supports multiple search modalities that can be used independently or in combination:
+
+- **Text search**: Users can search using natural language descriptions
+- **Image similarity search**: Given an image, find visually similar artworks in the collection
+- **Hybrid search**: Combining text and image modalities for more nuanced results
+
+The presentation demonstrates searching for paintings with specific visual characteristics like "the blaze in the middle" and finding artworks with similar visual elements from different angles or styles. This multimodal capability appears to be a core differentiator of their approach.
+
+## Cost Considerations and Optimization
+
+Cost optimization was a major focus of this implementation, which is a critical LLMOps concern for production systems:
+
+### Initial Cost Analysis
+
+The presenter discusses the cost structure which has two main components:
+- Image transformation to vectors (embedding generation)
+- Vector storage and search infrastructure
+
+With 40 million assets requiring embedding, the initial indexing cost was substantial - mentioned as "thousands of dollars" for full reindexing. The ongoing infrastructure cost is approximately $1,000 per month per region.
+
+### Optimization Strategies
+
+Several optimization strategies were discussed:
+
+- **Reducing re-indexing**: Since images don't change frequently in an art collection, they optimized to avoid unnecessary re-embedding of assets that haven't changed. This is a practical insight - the team recognized that unlike dynamic content, art images are relatively static, so they can reduce their embedding costs significantly.
+
+- **Fine-tuning considerations**: The team explored using fine-tuned models as a potential optimization strategy. While this offers more cost-effective inference, they acknowledged drawbacks including increased model management complexity and the need for more sophisticated infrastructure.
+
+- **Architectural simplification**: They mention reducing logic and simplifying their architecture to lower costs while maintaining functionality.
+
+## Score Normalization Challenges
+
+A technical challenge highlighted in the presentation involves score normalization when combining results from different search modalities. When mixing text-based search scores with image similarity scores, the raw scores may be on different scales. 
+
+The presenter mentions normalizing scores to a range of 0 to 1, and references an article explaining the details of how to approach this. This is a common challenge in hybrid search systems where different retrieval methods produce scores that aren't directly comparable.
+
+Different normalization techniques may be more appropriate depending on the use case - the presentation suggests that the choice of technique depends on whether you're doing "ranking documents recommendation" or "more classical problems like financial" applications.
+
+## Infrastructure Reliability
+
+An interesting operational concern raised in the Q&A portion relates to infrastructure reliability. The presenter mentions that they run infrastructure in multiple regions for redundancy, noting that when their "first infrastructure went down" they had a backup. This highlights the importance of high availability in production AI systems, especially for business-critical search functionality.
+
+The presenter expresses some frustration that even services marketed as "very reliable" can have issues, emphasizing the need for redundancy and not relying on a single infrastructure deployment for critical business operations.
+
+## Lessons Learned and Practical Insights
+
+Several practical insights emerge from this case study:
+
+- **Start simple, iterate**: The team appears to have started with a simpler architecture leveraging Bedrock's managed services, then evolved their approach as they learned more about their specific requirements and cost structure.
+
+- **Balance managed services vs. control**: Using AWS Bedrock provided simplicity for a small team, but they're exploring more controlled approaches (like fine-tuning) as their needs mature.
+
+- **Domain-specific considerations matter**: Art collections have unique characteristics (static images, multilingual metadata, importance of visual similarity) that influenced their technical choices.
+
+- **Cost awareness from day one**: With large asset collections, understanding the cost implications of different embedding and search strategies is essential before committing to an architecture.
+
+## Technical Demonstration
+
+The presentation included a live demonstration showing:
+
+- Creating connectors and models in OpenSearch for multimodal search
+- Simple pipeline configuration for ingesting assets
+- Searching for paintings by text queries
+- Finding similar artworks based on visual characteristics
+- Combining image and text search for refined results
+- Results showing matching materials, styles, and visual elements
+
+The demo illustrated searching for artworks with specific visual characteristics like hand positions and finding similar items across the collection with different angles but similar compositional elements.
+
+## Caveats and Limitations
+
+It's important to note some limitations of this case study:
+
+- The transcript quality is extremely poor, making it difficult to extract precise technical details
+- Some specific model names, exact cost figures, and implementation details were lost in transcription
+- The claims about performance and cost-effectiveness cannot be independently verified
+- The comparison with alternative approaches is incomplete due to transcript issues
+
+Despite these limitations, the case study provides valuable insights into the practical considerations of building production multimodal search systems at scale, particularly around cost optimization and infrastructure reliability.

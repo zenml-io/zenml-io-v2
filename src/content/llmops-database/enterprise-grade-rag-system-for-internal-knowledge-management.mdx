@@ -1,0 +1,152 @@
+---
+title: "Enterprise-Grade RAG System for Internal Knowledge Management"
+slug: "enterprise-grade-rag-system-for-internal-knowledge-management"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "697348ca6604ccb1902dd5e4"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2026-02-03T15:19:04.226Z"
+  lastUpdated: "2026-01-23T10:09:36.157Z"
+  createdOn: "2026-01-23T10:09:14.870Z"
+llmopsTags:
+  - "customer-support"
+  - "question-answering"
+  - "chatbot"
+  - "document-processing"
+  - "summarization"
+  - "caption-generation"
+  - "multi-modality"
+  - "unstructured-data"
+  - "rag"
+  - "embeddings"
+  - "prompt-engineering"
+  - "semantic-search"
+  - "chunking"
+  - "system-prompts"
+  - "token-optimization"
+  - "cost-optimization"
+  - "serverless"
+  - "postgresql"
+  - "docker"
+  - "orchestration"
+  - "monitoring"
+  - "api-gateway"
+  - "microservices"
+  - "databases"
+  - "cache"
+  - "security"
+  - "scalability"
+  - "amazon-aws"
+company: "PDI"
+summary: "PDI Technologies, a global leader in convenience retail and petroleum wholesale, built PDIQ (PDI Intelligence Query), an AI-powered internal knowledge assistant to address the challenge of fragmented information across websites, Confluence, SharePoint, and other enterprise systems. The solution implements a custom Retrieval Augmented Generation (RAG) system on AWS using serverless technologies including Lambda, ECS, DynamoDB, S3, Aurora PostgreSQL, and Amazon Bedrock models (Nova Pro, Nova Micro, Nova Lite, and Titan Embeddings V2). The system features sophisticated document processing with image captioning, dynamic token management for chunking (70% content, 10% overlap, 20% summary), and role-based access control. PDIQ improved customer satisfaction scores, reduced resolution times, increased accuracy approval rates from 60% to 79%, and enabled cost-effective scaling through serverless architecture while supporting multiple business units with configurable data sources."
+link: "https://aws.amazon.com/blogs/machine-learning/how-pdi-built-an-enterprise-grade-rag-system-for-ai-applications-with-aws?tag=soumet-20"
+year: 2026
+seo:
+  title: "PDI: Enterprise-Grade RAG System for Internal Knowledge Management - ZenML LLMOps Database"
+  description: "PDI Technologies, a global leader in convenience retail and petroleum wholesale, built PDIQ (PDI Intelligence Query), an AI-powered internal knowledge assistant to address the challenge of fragmented information across websites, Confluence, SharePoint, and other enterprise systems. The solution implements a custom Retrieval Augmented Generation (RAG) system on AWS using serverless technologies including Lambda, ECS, DynamoDB, S3, Aurora PostgreSQL, and Amazon Bedrock models (Nova Pro, Nova Micro, Nova Lite, and Titan Embeddings V2). The system features sophisticated document processing with image captioning, dynamic token management for chunking (70% content, 10% overlap, 20% summary), and role-based access control. PDIQ improved customer satisfaction scores, reduced resolution times, increased accuracy approval rates from 60% to 79%, and enabled cost-effective scaling through serverless architecture while supporting multiple business units with configurable data sources."
+  canonical: "https://www.zenml.io/llmops-database/enterprise-grade-rag-system-for-internal-knowledge-management"
+  ogTitle: "PDI: Enterprise-Grade RAG System for Internal Knowledge Management - ZenML LLMOps Database"
+  ogDescription: "PDI Technologies, a global leader in convenience retail and petroleum wholesale, built PDIQ (PDI Intelligence Query), an AI-powered internal knowledge assistant to address the challenge of fragmented information across websites, Confluence, SharePoint, and other enterprise systems. The solution implements a custom Retrieval Augmented Generation (RAG) system on AWS using serverless technologies including Lambda, ECS, DynamoDB, S3, Aurora PostgreSQL, and Amazon Bedrock models (Nova Pro, Nova Micro, Nova Lite, and Titan Embeddings V2). The system features sophisticated document processing with image captioning, dynamic token management for chunking (70% content, 10% overlap, 20% summary), and role-based access control. PDIQ improved customer satisfaction scores, reduced resolution times, increased accuracy approval rates from 60% to 79%, and enabled cost-effective scaling through serverless architecture while supporting multiple business units with configurable data sources."
+---
+
+## Overview
+
+PDI Technologies developed PDIQ (PDI Intelligence Query), an enterprise-grade AI assistant designed to solve the pervasive problem of fragmented internal knowledge across disparate systems. The company, which operates in the convenience retail and petroleum wholesale industries with 40 years of experience, needed to make scattered information from websites, Confluence pages, SharePoint sites, and various other sources accessible and queryable through a unified interface. This case study provides substantial insight into the production deployment of a sophisticated RAG system, including detailed architecture decisions, model selection strategies, data processing pipelines, and operational considerations that are essential for enterprise LLMOps implementations.
+
+The solution represents a comprehensive approach to enterprise knowledge management using generative AI, with particular emphasis on flexibility, scalability, and security. While this is an AWS blog post that naturally emphasizes AWS services, the architectural patterns and challenges addressed are broadly applicable to enterprise RAG deployments. The reported improvement in accuracy approval rates from 60% to 79% provides concrete evidence of iterative refinement, though as with any vendor-published case study, these metrics should be considered within the context of PDI's specific use cases and evaluation methodologies.
+
+## Technical Architecture and Infrastructure
+
+PDIQ is built entirely on AWS serverless technologies, representing a deliberate architectural choice that prioritizes automatic scaling, reduced operational overhead, and cost optimization. The infrastructure consists of several key components working in concert. Amazon EventBridge serves as the scheduler for maintaining and executing crawler jobs at configurable intervals. AWS Lambda functions invoke these crawlers, which are then executed as containerized tasks by Amazon ECS, providing the compute flexibility needed for diverse crawling workloads with varying resource requirements.
+
+The data persistence layer uses a combination of storage technologies optimized for different purposes. Amazon DynamoDB stores crawler configurations and metadata including S3 image locations and their generated captions, enabling fast lookups and efficient reuse of previously processed content. Amazon S3 serves as the primary repository for all source documents, with S3 event notifications triggering downstream processing. Amazon SNS receives these S3 event notifications and fans them out to Amazon SQS queues, which buffer incoming requests and provide resilience against processing spikes. Lambda functions subscribed to these queues handle the core business logic for chunking, summarizing, and generating vector embeddings. Finally, Aurora PostgreSQL-Compatible Edition with the pgvector extension stores the vector embeddings that enable semantic search capabilities.
+
+The architecture demonstrates thoughtful consideration of enterprise requirements including authentication, authorization, and multi-tenancy. A zero-trust security model implements role-based access control for two distinct personas: administrators who configure knowledge bases and crawlers through Amazon Cognito user groups integrated with enterprise single sign-on, and end users who access knowledge bases based on group permissions validated at the application layer. Crawler credentials are encrypted at rest using AWS KMS and only accessible within isolated execution environments. Users can belong to multiple groups such as human resources or compliance and switch contexts to query role-appropriate datasets, enabling a single platform to serve different business units with curated content.
+
+## Data Ingestion and Crawler Framework
+
+One of PDIQ's most sophisticated components is its extensible crawler framework, which addresses the challenge of ingesting data from heterogeneous sources with different authentication mechanisms, data formats, and access patterns. The system currently supports four distinct crawler types, each optimized for its respective source system.
+
+The web crawler uses Puppeteer for headless browser automation to navigate and extract content from HTML websites. It converts web pages to markdown format using the turndown library, preserving document structure while creating a normalized format for downstream processing. Importantly, the crawler follows embedded links to capture full context and relationships between pages, building a more complete knowledge graph than simple page-by-page extraction would provide. It downloads assets such as PDFs and images while preserving original references, and offers administrators configuration options including rate limiting to avoid overwhelming source systems.
+
+The Confluence crawler leverages the Confluence REST API with authenticated access to extract page content, attachments, and embedded images. It preserves page hierarchy and relationships, which is crucial for understanding organizational context, and handles special Confluence elements like info boxes and notes that carry semantic meaning beyond plain text. Similarly, the Azure DevOps crawler uses the Azure DevOps REST API with OAuth or personal access token authentication to extract code repository information, commit history, and project documentation. It preserves project hierarchy, sprint relationships, and backlog structure, and crucially maps work item relationships such as parent-child or linked items, providing a complete view of the dataset that respects the intrinsic structure of the source system.
+
+The SharePoint crawler uses Microsoft Graph API with OAuth authentication to extract document libraries, lists, pages, and file content. It processes Microsoft Office documents including Word, Excel, and PowerPoint into searchable text, and maintains document version history and permission metadata. This extensible architecture allows PDI to easily add new crawler configurations on demand, with flexibility for administrators to configure settings like frequency, depth, and rate limits for their respective crawlers through a user interface.
+
+## Advanced Image Processing and Captioning
+
+PDIQ implements a sophisticated approach to handling images embedded in documents, recognizing that images contain valuable information that should be searchable and retrievable. When crawlers store data in S3, HTML content is converted to markdown files. The system then performs an optimization step to replace inline images with S3 reference locations. This approach provides several key benefits: it uses S3 object keys to uniquely reference each image, optimizing the synchronization process to detect changes in source data; it optimizes storage by replacing images with captions and avoiding duplicate image storage; it makes the content of images searchable and relatable to the text content in documents; and it enables seamless injection of original images when rendering responses to user inquiries.
+
+The image captioning process scans markdown files to locate image tags, then uses Amazon Nova Lite to generate captions explaining the content of each image. These captions are injected back into the markdown file next to the image tag, enriching the document content and improving contextual searchability. To avoid unnecessary LLM inference calls for identical images that appear in multiple documents, PDIQ stores image metadata including file locations and generated captions in DynamoDB, enabling efficient reuse of previously generated captions and reducing operational costs.
+
+The prompt engineering for image captioning is straightforward and focused: "You are a professional image captioning assistant. Your task is to provide clear, factual, and objective descriptions of images. Focus on describing visible elements, objects, and scenes in a neutral and appropriate manner." The resulting markdown files contain the image tag, LLM-generated caption, and the corresponding S3 file location, creating a rich, searchable representation of both textual and visual content. An example from the case study shows a detailed caption describing a password security notification interface, including specific UI elements, the suggested password strength indicator, and navigation icons, demonstrating the thoroughness of the captioning approach.
+
+## Document Chunking and Embedding Strategy
+
+PDIQ's document processing pipeline represents a significant innovation in enterprise RAG systems, particularly in its approach to chunking and context preservation. The challenge with chunking documents for vector embeddings is balancing the need to fit within model context windows while preserving enough context for accurate retrieval and generation. PDIQ developed a custom strategy based on internal accuracy testing and AWS best practices that allocates tokens dynamically: 70% of the available tokens are dedicated to content, 10% provides overlap between chunks to maintain continuity, and critically, 20% is reserved for summary tokens.
+
+This chunking strategy works as follows. First, the system calculates chunk parameters to determine the size and total number of chunks required for the document based on the 70% content allocation. Then, it uses Amazon Nova Micro to generate a summary of the entire document, constrained by the 20% token allocation. This summary is particularly important because it is reused across all chunks to provide consistent context. The document is then split into overlapping chunks with 10% overlap, and the summary is prepended to each chunk. Finally, Amazon Titan Text Embeddings V2 generates vector embeddings for each chunk, which consists of the summary plus the specific content plus any relevant image captions.
+
+This approach represents thoughtful engineering to address a fundamental challenge in RAG systems: when a similarity search matches a particular chunk, the LLM needs broader context than just that isolated chunk to generate useful responses. By prepending the document summary to every chunk, PDIQ ensures that even when only a small portion of a document matches the user's query, the generation model has access to the overall context and purpose of the source document. According to the case study, this innovation increased the approval rate for accuracy from 60% to 79%, a substantial improvement that suggests the summary prepending strategy effectively addresses context loss in chunked retrieval.
+
+The prompting for summarization is carefully engineered to extract the most relevant information for RAG retrieval. The system prompt instructs the model: "You are a specialized document summarization assistant with expertise in business and technical content." It specifies that summaries should preserve all quantifiable data including numbers, percentages, metrics, dates, and financial figures; highlight key business terminology and domain-specific concepts; extract important entities such as people, organizations, products, and locations; identify critical relationships between concepts; and maintain factual accuracy without adding interpretations. The prompt explicitly focuses the model on extracting information valuable for answering specific business questions, supporting data-driven decision making, and enabling precise information retrieval in a RAG system. It instructs the model to include tables, lists, and structured data in formats that preserve their relationships, and to preserve technical terms, acronyms, and specialized vocabulary exactly as written.
+
+## Model Selection and Multi-Model Strategy
+
+PDIQ demonstrates a sophisticated multi-model strategy, leveraging different Amazon Bedrock foundation models optimized for specific tasks rather than using a single model for all operations. This approach reflects mature LLMOps thinking about balancing cost, performance, and accuracy across different workload types.
+
+Amazon Nova Lite is used for image caption generation, providing a cost-effective option for processing potentially large volumes of images. Amazon Nova Micro generates document summaries, again optimizing for cost on a task that runs for every document processed. Amazon Titan Text Embeddings V2 generates vector embeddings, chosen specifically for its embedding capabilities and compatibility with Aurora PostgreSQL's pgvector extension. Finally, Amazon Nova Pro generates responses to user inquiries, using a more capable model for the user-facing generation task where quality most directly impacts user experience.
+
+This differentiated model selection strategy allows PDI to optimize costs by using smaller, faster models for preprocessing tasks while reserving more capable models for user-facing interactions. It also provides flexibility to interchange models as new options become available or as requirements change, a key consideration for production LLM deployments where the model landscape evolves rapidly. The architecture appears to abstract model selection behind configuration layers, enabling the flexibility to select, apply, and interchange the most suitable LLM for diverse processing requirements without requiring code changes.
+
+## Vector Storage and Retrieval
+
+The vector database implementation uses Aurora PostgreSQL-Compatible Edition in serverless mode with the pgvector extension, providing a managed, scalable solution for storing and querying high-dimensional embeddings. The database schema stores key attributes including a unique knowledge base ID for multi-tenancy support, the embeddings vector for similarity search, the original text consisting of summary plus chunk plus image caption, and a JSON binary object containing metadata fields for extensibility.
+
+This metadata approach provides flexibility for advanced filtering and improved query performance. By storing structured metadata alongside vectors, the system can combine semantic similarity search with traditional filtering on fields like document type, source system, creation date, or access permissions. This hybrid approach often improves retrieval accuracy by constraining the search space before or during similarity matching.
+
+The system implements intelligent synchronization to keep the knowledge base current with source systems. It handles three operations: Add operations for new source objects trigger the full document processing flow described previously. Update operations compare hash key values from the source with hash values stored in the JSON metadata object, reprocessing only when content has actually changed. Delete operations are triggered by S3 deletion events (`s3:ObjectRemoved:*`), which initiate cleanup jobs that delete corresponding records from the Aurora table, maintaining consistency between source systems and the knowledge base.
+
+## Response Generation and Retrieval Pipeline
+
+When users submit queries, PDIQ follows a carefully orchestrated retrieval and generation pipeline. The system performs similarity search against the Aurora PostgreSQL vector database to identify the most relevant document chunks based on semantic similarity between the query embedding and stored chunk embeddings. For the matching chunks, the system retrieves not just the chunk itself but the entire source document, providing broader context for generation. Amazon Nova Pro then generates a response based on the retrieved data and a preconfigured system prompt tailored to PDI's use case.
+
+Critically, the system replaces image links in the retrieved content with actual images from S3 before passing context to the generation model. This ensures that the model has access to visual information when generating responses, not just textual descriptions or captions. This integration of multimodal content into the generation pipeline reflects sophisticated thinking about how to preserve information fidelity through the retrieval and generation process.
+
+The system prompt for response generation is tailored to PDI's specific use case as a support assistant. A snippet provided in the case study indicates the prompt positions the model as a "support assistant specializing in PDI's Logistics (PLC) platform, helping staff research and resolve support cases in Salesforce." It specifies a professional, clear, technical tone while maintaining accessible language. The prompt includes sections on resolution process, response format templates, and handling confidential information, demonstrating attention to both functional requirements and governance concerns.
+
+## Operational Considerations and Monitoring
+
+While the case study focuses primarily on architecture and processing pipelines, several operational aspects emerge. The serverless architecture automatically scales with demand, reducing operational overhead and optimizing costs compared to provisioned infrastructure. The use of SQS queues provides buffering and resilience against processing spikes, preventing downstream components from being overwhelmed during high-volume crawling or when large batches of documents are updated simultaneously.
+
+The crawler scheduling system using EventBridge allows flexible configuration of refresh frequencies, enabling different knowledge bases or source systems to be updated at intervals appropriate to their change frequency and business importance. The modular crawler architecture with separate configurations for each source type facilitates troubleshooting and enables independent evolution of different ingestion pipelines.
+
+The DynamoDB-based metadata storage for image captions and crawler configurations provides fast, scalable lookups with consistent performance characteristics. The decision to store image metadata separately from the main vector database optimizes both cost and performance, avoiding repeated captioning of identical images and reducing the volume of data stored in the more expensive Aurora PostgreSQL vector database.
+
+## Security and Governance
+
+PDIQ implements enterprise-grade security and governance controls essential for production deployments handling sensitive internal knowledge. The zero-trust security model with role-based access control ensures that users only access knowledge bases appropriate to their roles. Integration with Amazon Cognito and enterprise single sign-on provides centralized identity management and audit trails. Crawler credentials are encrypted at rest using AWS KMS and only accessible within isolated execution environments, protecting sensitive authentication tokens for source systems.
+
+The multi-tenancy design with user group support enables a single platform to serve different business units with distinct data sources and access policies. Users can belong to multiple groups and switch contexts to query different datasets, providing flexibility while maintaining security boundaries. This approach allows PDI to consolidate infrastructure and operational management while preserving logical separation between business units.
+
+## Business Outcomes and Evaluation
+
+The case study reports several quantitative and qualitative outcomes. The accuracy approval rate improved from 60% to 79% following the implementation of the summary prepending strategy, suggesting measurable improvement in response quality as evaluated by users. Support teams can resolve customer queries significantly faster, with routine issues often automated and immediate, precise responses provided. Customer satisfaction scores (CSAT) and net promoter scores (NPS) improved, though specific metrics are not provided. Cost reduction is achieved both through automation of repetitive queries, allowing staff to focus on expert-level cases, and through the serverless architecture that scales automatically while minimizing operational overhead.
+
+The flexible configuration options allow data ingestion at consumer-preferred frequencies, and the scalable design enables future ingestion from additional source systems through easily configurable crawlers. The system supports multiple authentication methods including username and password, secret key-value pairs, and API keys, providing flexibility for diverse source systems. Dynamic token management intelligently balances tokens between content and summaries, and the consolidated data format streamlines storage and retrieval across diverse source systems.
+
+It's important to note that these outcomes are self-reported by PDI and AWS, and the evaluation methodologies are not described in detail. The improvement from 60% to 79% accuracy approval rating is significant, but we don't know how approval was measured, who evaluated it, or what constitutes approval. Similarly, the claims about improved efficiency, resolution rates, and customer satisfaction lack specific baseline metrics or experimental controls. While these outcomes are likely directionally accurate and reflect real improvements, production LLMOps practitioners should conduct their own evaluations using their specific data, use cases, and success criteria.
+
+## Future Enhancements and Evolution
+
+PDI has several planned improvements that provide insight into the evolution of enterprise RAG systems. They plan to build additional crawler configurations for new data sources like GitHub, expanding the breadth of knowledge accessible through PDIQ. They intend to develop agentic implementations for PDIQ to integrate into larger complex business processes, suggesting a move beyond simple question-answering toward task automation and workflow integration. Enhanced document understanding with table extraction and structure preservation will improve handling of structured data within documents. Multilingual support will enable global operations, an important consideration for multinational enterprises. Improved relevance ranking with hybrid retrieval techniques suggests ongoing refinement of the retrieval pipeline, potentially combining semantic similarity with keyword matching, metadata filtering, or learned ranking models. Finally, the ability to invoke PDIQ based on events such as source commits would enable just-in-time knowledge updates and integration into developer workflows.
+
+## Critical Assessment and Broader Lessons
+
+PDIQ represents a sophisticated, production-grade RAG system addressing real enterprise challenges around fragmented knowledge and information accessibility. Several aspects of the implementation demonstrate mature LLMOps thinking: the multi-model strategy optimizing for cost and performance across different tasks, the innovative chunking approach with summary prepending to preserve context, the intelligent image processing with caption reuse to optimize costs, the extensible crawler framework enabling diverse source integration, and the serverless architecture providing scalability and operational efficiency.
+
+However, as with any vendor-published case study, several aspects warrant careful consideration. The reported metrics lack detailed evaluation methodologies, making it difficult to assess whether improvements would generalize to other enterprises or use cases. The case study doesn't discuss failure modes, error handling, or situations where the system performs poorly, which are critical considerations for production deployments. Costs are mentioned as reduced but no specific numbers are provided, making it difficult to estimate infrastructure expenses for similar deployments. The system's reliance on AWS services creates vendor lock-in, though the architectural patterns could likely be reimplemented on other cloud platforms with comparable services. The chunking and summarization strategies are specific to PDI's content types and use cases; other enterprises would likely need to experiment with different token allocations and processing pipelines. The accuracy improvement from 60% to 79% is significant but still leaves roughly one in five responses below users' approval threshold, suggesting ongoing challenges with RAG accuracy that are common across the industry.
+
+The case study provides valuable insights into real-world enterprise RAG deployment, including attention to authentication, multi-tenancy, operational efficiency, and iterative improvement based on accuracy metrics. The technical details around chunking strategy, image processing, and multi-model orchestration offer concrete patterns that other practitioners can adapt to their own contexts. However, successful LLMOps requires careful evaluation, monitoring, and iteration specific to each organization's data, use cases, and success criteria rather than direct adoption of any single reference architecture.

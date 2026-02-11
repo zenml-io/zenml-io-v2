@@ -1,0 +1,112 @@
+---
+title: "Building Reliable AI DevOps Agents: Engineering Practices for Nondeterministic LLM Output"
+slug: "building-reliable-ai-devops-agents-engineering-practices-for-nondeterministic-llm-output"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "68762755079a73a38a66f8d6"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:13:59.432Z"
+  createdOn: "2025-07-15T10:03:01.924Z"
+llmopsTags:
+  - "code-generation"
+  - "poc"
+  - "prompt-engineering"
+  - "agent-based"
+  - "multi-agent-systems"
+  - "error-handling"
+  - "fallback-strategies"
+  - "system-prompts"
+  - "cicd"
+  - "monitoring"
+  - "fastapi"
+  - "langchain"
+  - "wandb"
+  - "devops"
+  - "anthropic"
+  - "google-gcp"
+company: "Trunk"
+summary: "Trunk developed an AI DevOps agent to handle root cause analysis (RCA) for test failures in CI pipelines, facing challenges with nondeterministic LLM outputs. They applied traditional software engineering principles adapted for LLMs, including starting with narrow use cases, switching between models (Claude to Gemini) for better tool calling, implementing comprehensive testing with mocked LLM responses, and establishing feedback loops through internal usage and user feedback collection. The approach resulted in a more reliable agent that performs well on specific tasks like analyzing test failures and posting summaries to GitHub PRs."
+link: "https://trunk.io/blog/attempting-to-engineer-the-chaos-out-of-ai-agents"
+year: 2025
+seo:
+  title: "Trunk: Building Reliable AI DevOps Agents: Engineering Practices for Nondeterministic LLM Output - ZenML LLMOps Database"
+  description: "Trunk developed an AI DevOps agent to handle root cause analysis (RCA) for test failures in CI pipelines, facing challenges with nondeterministic LLM outputs. They applied traditional software engineering principles adapted for LLMs, including starting with narrow use cases, switching between models (Claude to Gemini) for better tool calling, implementing comprehensive testing with mocked LLM responses, and establishing feedback loops through internal usage and user feedback collection. The approach resulted in a more reliable agent that performs well on specific tasks like analyzing test failures and posting summaries to GitHub PRs."
+  canonical: "https://www.zenml.io/llmops-database/building-reliable-ai-devops-agents-engineering-practices-for-nondeterministic-llm-output"
+  ogTitle: "Trunk: Building Reliable AI DevOps Agents: Engineering Practices for Nondeterministic LLM Output - ZenML LLMOps Database"
+  ogDescription: "Trunk developed an AI DevOps agent to handle root cause analysis (RCA) for test failures in CI pipelines, facing challenges with nondeterministic LLM outputs. They applied traditional software engineering principles adapted for LLMs, including starting with narrow use cases, switching between models (Claude to Gemini) for better tool calling, implementing comprehensive testing with mocked LLM responses, and establishing feedback loops through internal usage and user feedback collection. The approach resulted in a more reliable agent that performs well on specific tasks like analyzing test failures and posting summaries to GitHub PRs."
+---
+
+Trunk's case study provides a comprehensive view of how they engineered their AI DevOps agent to handle the inherent nondeterminism of LLM outputs while maintaining reliability in production environments. The company, which specializes in developer tools and CI/CD solutions, embarked on building an AI agent specifically to assist with DevOps and developer experience tasks within continuous integration pipelines.
+
+The core challenge Trunk faced was managing the unpredictable nature of LLM outputs while building a production-ready system. As they candidly acknowledge, "LLM outputs are very deterministic, always produce output in a consistent, reliable format, and are never overly verbose. (This is a lie)." This recognition of LLM limitations shaped their entire engineering approach, leading them to adapt traditional software engineering principles for working with nondeterministic systems.
+
+**System Architecture and Initial Scope**
+
+Rather than building an "everything agent" that could handle multiple tasks, Trunk deliberately started with a narrow focus on root cause analysis (RCA) for test failures. This strategic decision was driven by their existing infrastructure around their Flaky Tests feature, which already stored historical stack traces from test failures in CI. The agent's primary function was to examine these failures and post summaries to GitHub pull requests, providing developers with actionable insights into why their tests were failing.
+
+The choice to start small proved crucial for several reasons. First, it allowed them to test for failure scenarios quickly and pivot if necessary. Second, it provided a rich dataset of real-world test failures to work with, exposing the agent to genuine edge cases rather than synthetic test data. Third, it established clear success metrics and user feedback loops from the beginning of the development process.
+
+**Model Selection and Tool Calling Optimization**
+
+One of the most significant technical insights from Trunk's experience was their approach to model selection and the willingness to switch between different LLMs based on specific performance characteristics. Initially working with Claude, they encountered challenges with inconsistent tool calling behavior despite extensive prompt engineering efforts. The engineering team spent considerable time trying to optimize prompts with formatting techniques like "**DO NOT EVER SUGGEST THAT THE USER JUST CLOSE THEIR PR**" appearing in their system prompts.
+
+However, rather than continuing to fight against the model's limitations, they made the strategic decision to switch to Gemini, which provided more deterministic tool calling behavior. This change came with trade-offs - while tool calls became more reproducible, they experienced some reduction in the quality of LLM reasoning capabilities. This decision exemplifies a pragmatic approach to LLMOps: understanding that different models excel at different tasks and being willing to make architectural changes based on empirical performance rather than theoretical preferences.
+
+**Testing and Validation Strategy**
+
+Trunk implemented a comprehensive testing strategy that combined traditional software engineering practices with LLM-specific evaluation methods. They emphasized the importance of testing the entire system, not just the LLM components, arguing that "Set the LLM aside for a minute, it is still important to properly test the rest of your system."
+
+Their testing approach included multiple layers:
+
+- **Unit Testing**: They used MSW (Mock Service Worker) and Vercel's AI SDK mock tooling to mock LLM network responses, allowing them to test different scenarios and edge cases without relying on actual LLM calls during development.
+
+- **Integration Testing**: These tests included actual LLM calls to provide examples of potentially problematic outputs, helping them build better error handling and identify regression issues.
+
+- **Input/Output Validation**: They implemented strict validation of both inputs sent to the LLM and outputs received, ensuring that the system could handle malformed or unexpected responses gracefully.
+
+- **End-to-End Testing**: Full workflow testing provided observability into each step of the agent's process, making it easier to catch regressions and A/B test prompt modifications.
+
+**Observability and Monitoring**
+
+Trunk leveraged LangSmith for comprehensive observability of their agent's behavior, tracking inputs, outputs, and tool calls throughout the system. This observability infrastructure was crucial for debugging issues and understanding the agent's decision-making process. They implemented monitoring at every stage where things could go wrong, including tool executions and LLM outputs, providing detailed insights into system performance and failure modes.
+
+The observability setup allowed them to investigate both successful and failed interactions, building a deeper understanding of when and why the agent performed well or poorly. This data-driven approach to debugging and optimization is essential for maintaining LLM-based systems in production environments.
+
+**User Experience and Output Management**
+
+A significant challenge in their LLMOps implementation was managing the verbosity and quality of LLM outputs. Trunk recognized that LLMs can sometimes produce excessively verbose responses, comparing it to "an infinite number of monkeys hitting keys on an infinite number of typewriters will eventually write the complete works of Shakespeare." They implemented several strategies to ensure consistent, high-quality output:
+
+- **Output Validation**: They created deterministic validation rules, such as character limits, and implemented retry logic when outputs failed to meet these criteria.
+
+- **Subagent Architecture**: They used specialized subagents to extract relevant information, summarize it, and format it appropriately for end users.
+
+- **Rerun Mechanisms**: When outputs failed validation, the system could automatically rerun the LLM call, though this was implemented with cost considerations and retry limits to prevent runaway executions.
+
+**Feedback Loops and Internal Testing**
+
+Trunk implemented multiple feedback mechanisms to continuously improve their agent's performance. They practiced "eating their own dog food" by using the agent on their main monorepo, ensuring that the entire team was exposed to the system's outputs and could provide feedback on its performance. This internal usage revealed issues that might not have been apparent in controlled testing environments.
+
+Additionally, they implemented user feedback forms attached to GitHub PR comments generated by the agent, allowing developers to provide both positive and negative feedback. This direct feedback loop was crucial for identifying edge cases and understanding user needs, enabling continuous improvement of the system.
+
+**Data Preprocessing and Context Management**
+
+To handle the constraints of LLM context windows, Trunk implemented intelligent data preprocessing. They grouped similar test failures and removed non-relevant information from CI logs before sending them to the LLM. This preprocessing served multiple purposes: it kept the system within context limits, reduced costs by minimizing token usage, and improved the quality of analysis by focusing the LLM on relevant information.
+
+The preprocessing pipeline was particularly important given that single CI logs could potentially exceed context window limits, and historical data from multiple test runs needed to be considered for effective root cause analysis. This approach demonstrates the importance of intelligent data curation in LLMOps systems.
+
+**Cost and Performance Optimization**
+
+Throughout their implementation, Trunk maintained awareness of cost considerations, particularly regarding LLM inference costs. Their retry mechanisms were designed with cost caps and limits to prevent expensive runaway executions. They also noted that as LLM prices continue to decrease, retry strategies become more feasible, indicating their adaptive approach to cost-performance trade-offs.
+
+The team recognized that perfect performance isn't always necessary for value creation, stating that "AI tools don't have to take you from 0 to 1. Going from 0 to 0.5 can still be a massive speed boost for manual and repetitive tasks." This perspective influenced their engineering decisions, focusing on reliable partial automation rather than attempting to achieve perfect end-to-end automation.
+
+**Production Deployment and Results**
+
+The final system successfully handles root cause analysis for test failures in CI pipelines, providing developers with actionable insights through GitHub PR comments. The agent performs well on its specific use case, demonstrating that focused scope and careful engineering can overcome the challenges of nondeterministic LLM behavior.
+
+Trunk's approach resulted in a system that maintains reliability while leveraging the power of LLMs for complex reasoning tasks. Their emphasis on traditional software engineering practices, combined with LLM-specific considerations, created a robust production system that provides genuine value to developers working with CI/CD pipelines.
+
+The case study demonstrates that successful LLMOps implementation requires more than just prompt engineering - it demands careful system design, comprehensive testing, robust monitoring, and continuous feedback loops. Trunk's experience shows that with the right engineering practices, it's possible to build reliable AI agents that enhance developer productivity while managing the inherent challenges of working with nondeterministic language models.

@@ -1,0 +1,114 @@
+---
+title: "Evaluation Driven Development for LLM Reliability at Scale"
+slug: "evaluation-driven-development-for-llm-reliability-at-scale"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "67934633d9e9a8af1890926c"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:57:53.439Z"
+  createdOn: "2025-01-24T07:50:11.684Z"
+llmopsTags:
+  - "code-generation"
+  - "customer-support"
+  - "question-answering"
+  - "prompt-engineering"
+  - "error-handling"
+  - "human-in-the-loop"
+  - "system-prompts"
+  - "langchain"
+  - "monitoring"
+  - "documentation"
+  - "open-source"
+  - "reliability"
+  - "openai"
+  - "microsoft-azure"
+company: "Dosu"
+summary: "Dosu, a company providing an AI teammate for software development and maintenance, implemented Evaluation Driven Development (EDD) to ensure reliability of their LLM-based product. As their system scaled to thousands of repositories, they integrated LangSmith for monitoring and evaluation, enabling them to identify failure modes, maintain quality, and continuously improve their AI assistant's performance through systematic testing and iteration."
+link: "https://blog.dosu.dev/iterating-towards-llm-reliability-with-evaluation-driven-development/"
+year: 2024
+seo:
+  title: "Dosu: Evaluation Driven Development for LLM Reliability at Scale - ZenML LLMOps Database"
+  description: "Dosu, a company providing an AI teammate for software development and maintenance, implemented Evaluation Driven Development (EDD) to ensure reliability of their LLM-based product. As their system scaled to thousands of repositories, they integrated LangSmith for monitoring and evaluation, enabling them to identify failure modes, maintain quality, and continuously improve their AI assistant's performance through systematic testing and iteration."
+  canonical: "https://www.zenml.io/llmops-database/evaluation-driven-development-for-llm-reliability-at-scale"
+  ogTitle: "Dosu: Evaluation Driven Development for LLM Reliability at Scale - ZenML LLMOps Database"
+  ogDescription: "Dosu, a company providing an AI teammate for software development and maintenance, implemented Evaluation Driven Development (EDD) to ensure reliability of their LLM-based product. As their system scaled to thousands of repositories, they integrated LangSmith for monitoring and evaluation, enabling them to identify failure modes, maintain quality, and continuously improve their AI assistant's performance through systematic testing and iteration."
+---
+
+## Overview
+
+Dosu is an AI-powered assistant designed to help software developers and open source maintainers handle the significant burden of non-coding tasks such as answering questions, triaging issues, and processing overhead. The company was born from the founder's experience as an open source maintainer, where community growth led to an overwhelming support burden that often causes maintainer burnout. Dosu aims to automate these tasks so developers can focus on coding and shipping features.
+
+The case study focuses on how Dosu developed and refined their approach to ensuring LLM reliability at scale through a methodology they call Evaluation-Driven Development (EDD). As their product grew to be installed on thousands of repositories, they needed to evolve from manual inspection methods to a more sophisticated monitoring and evaluation infrastructure.
+
+## The Challenge of LLM Reliability
+
+The fundamental challenge Dosu faced is one common to many LLM-powered applications: ensuring reliability when the core logic is driven by probabilistic models. Unlike traditional software where changes can be tested with deterministic unit tests, modifications to LLM-based systems can have unpredictable ripple effects. The team observed that "a slight tweak to a prompt led to better results in one domain but caused regression in another."
+
+In the early days after launching in June 2023, Dosu's volume was low enough that the team could manually inspect every single response using basic tools like `grep` and `print` statements. This painstaking process, while time-consuming, was valuable for understanding user behavior patterns, identifying which request types the system handled well, and discovering areas where it struggled.
+
+## Evaluation-Driven Development (EDD) Methodology
+
+Dosu developed EDD as their core methodology for iterating on LLM reliability. Drawing inspiration from test-driven development (TDD), EDD provides a framework where evaluations serve as the baseline for understanding the impact of any change to core logic, models, or prompts.
+
+The EDD workflow at Dosu follows a cyclical pattern: First, they create a new behavior with initial evaluations. They then launch this behavior to users and monitor results in production to identify failure modes. For each failure mode discovered, they add examples to their offline evaluation datasets. The team then iterates on these updated evaluations to improve performance before relaunching. This cycle repeats continuously.
+
+This approach addresses a core tension in LLM development—the need to improve in problem areas while not regressing in areas where performance is already satisfactory. By maintaining evaluation datasets that cover both success cases and known failure modes, the team can validate that changes produce net positive outcomes.
+
+## Scaling Challenges and Tool Selection
+
+As Dosu grew to thousands of repository installations with activity at all hours, the manual monitoring approach became untenable. The team needed to upgrade their LLM monitoring stack while maintaining compatibility with their existing workflows and principles.
+
+Their selection criteria for monitoring tools revealed several important LLMOps best practices they had developed:
+
+**Prompts as Code**: The team treats prompts with the same rigor as source code. Any changes to prompts must go through the same standards as code changes, living in Git with proper version control. This approach enables traceability and rollback capabilities that are essential for production LLM systems.
+
+**Code-Level Tracing**: Dosu's architecture involves more than just LLM requests—they needed to track metadata between LLM requests within a single trace. This requirement reflects the reality that production LLM applications often involve complex chains of operations, data transformations, and decision logic around the LLM calls themselves.
+
+**Data Portability**: Having existing evaluation datasets and tooling, the team prioritized easy data export capabilities. This principle of avoiding vendor lock-in is particularly important in the rapidly evolving LLM space.
+
+**Extensibility**: Given the fast pace of change in LLM technologies and the lack of standardization in how LLM applications are built, the team wanted control over metadata tracking and the ability to customize the tooling to their specific needs.
+
+## LangSmith Implementation
+
+After evaluating options, Dosu selected LangSmith, developed by LangChain. Notably, the case study emphasizes that it was the SDK, rather than the UI or feature set, that was most appealing. The SDK provided the fine-grained controls and customizability they needed.
+
+Implementation was described as straightforward—adding a `@traceable` decorator to LLM-related functions took only minutes. This low-friction instrumentation approach is valuable for teams that need to iterate quickly. The decorator captures both function-level and LLM call traces, showing raw function inputs, rendered prompt templates, and LLM outputs in a single trace view.
+
+## Identifying Failure Modes at Scale
+
+The case study provides insight into the various signals Dosu uses to identify failure modes:
+
+**Explicit Feedback**: Traditional thumbs up/down feedback mechanisms that users can provide directly.
+
+**User Sentiment**: Since Dosu operates on GitHub issues, user responses naturally contain sentiment signals about whether the AI was helpful.
+
+**Internal Errors**: Technical failures including input/output size limits and schema validation failures on generated responses.
+
+**Response Time**: While the team prioritizes quality over speed, understanding slow responses matters for user experience and can indicate underlying issues.
+
+LangSmith's search functionality enables the team to query traces using these criteria, including custom metadata attached to traces. This extensibility allows them to search based on conversation topics, user segments, request categories, and other dimensions relevant to their specific use case.
+
+The case study includes an amusing example of a failure mode where Dosu, when asked to label a pull request, instead told the user about a concert it was excited to attend. This illustrates the unpredictable nature of LLM failures and the importance of comprehensive monitoring to catch such edge cases.
+
+## Workflow Integration
+
+Once failure modes are identified through LangSmith, the team follows the same EDD cycle: search for additional examples of the failure mode, add them to evaluation datasets, iterate against the evaluations, and push a new version. This creates a virtuous cycle where production monitoring directly feeds back into development and testing.
+
+The team is also working on automating evaluation dataset collection from production traffic. This forward-looking initiative would make it simpler for engineers to curate datasets based on various criteria, further accelerating the improvement cycle.
+
+## Critical Assessment
+
+While the case study provides valuable insights into LLMOps practices, a few considerations merit attention:
+
+The article is published on Dosu's own blog and mentions LangSmith prominently, noting that LangChain is "one of our early partners." This relationship means the case study serves partially as a testimonial for LangSmith. The specific quantitative improvements from using LangSmith or EDD are not mentioned in this particular article, though a related article referenced in the text claims a "30% accuracy improvement."
+
+The EDD methodology described is sound and aligns with emerging best practices in the LLMOps community. The principle of treating prompts as code with version control, maintaining comprehensive evaluation datasets, and creating feedback loops from production monitoring are widely applicable patterns.
+
+The case study is light on technical specifics about the evaluation methodology itself—how evaluations are scored, what metrics are tracked, or how trade-offs between different dimensions are managed. This limits the actionability for teams looking to replicate the approach.
+
+## Conclusion
+
+Dosu's experience illustrates a maturation path common to many LLM-powered applications: from manual inspection at low volume, to systematic evaluation methodology, to scalable monitoring infrastructure. The Evaluation-Driven Development framework they describe provides a useful mental model for teams building production LLM applications, emphasizing the importance of continuous feedback loops between production monitoring and development iteration.

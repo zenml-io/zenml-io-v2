@@ -1,0 +1,93 @@
+---
+title: "Enhancing Memory Retrieval Systems Using LangSmith Testing and Evaluation"
+slug: "enhancing-memory-retrieval-systems-using-langsmith-testing-and-evaluation"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f3e72835a462081e07e68"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:35:50.001Z"
+  createdOn: "2024-11-21T14:06:42.266Z"
+llmopsTags:
+  - "chatbot"
+  - "databases"
+  - "error-handling"
+  - "langchain"
+  - "monitoring"
+  - "openai"
+  - "prompt-engineering"
+  - "question-answering"
+  - "rag"
+  - "reliability"
+  - "scalability"
+  - "scaling"
+  - "security"
+  - "semantic-search"
+  - "structured-output"
+company: "New Computer"
+summary: "New Computer improved their AI assistant Dot's memory retrieval system using LangSmith for testing and evaluation. By implementing synthetic data testing, comparison views, and prompt optimization, they achieved 50% higher recall and 40% higher precision in their dynamic memory retrieval system compared to their baseline implementation."
+link: "https://blog.langchain.dev/customers-new-computer/"
+year: 2024
+seo:
+  title: "New Computer: Enhancing Memory Retrieval Systems Using LangSmith Testing and Evaluation - ZenML LLMOps Database"
+  description: "New Computer improved their AI assistant Dot's memory retrieval system using LangSmith for testing and evaluation. By implementing synthetic data testing, comparison views, and prompt optimization, they achieved 50% higher recall and 40% higher precision in their dynamic memory retrieval system compared to their baseline implementation."
+  canonical: "https://www.zenml.io/llmops-database/enhancing-memory-retrieval-systems-using-langsmith-testing-and-evaluation"
+  ogTitle: "New Computer: Enhancing Memory Retrieval Systems Using LangSmith Testing and Evaluation - ZenML LLMOps Database"
+  ogDescription: "New Computer improved their AI assistant Dot's memory retrieval system using LangSmith for testing and evaluation. By implementing synthetic data testing, comparison views, and prompt optimization, they achieved 50% higher recall and 40% higher precision in their dynamic memory retrieval system compared to their baseline implementation."
+---
+
+## Overview
+
+New Computer is the company behind Dot, described as "the first personal AI designed to truly understand its users." The core value proposition of Dot centers around a long-term memory system that learns user preferences over time by observing verbal and behavioral cues. This case study focuses on how New Computer leveraged LangSmith, part of the LangChain ecosystem, to systematically improve their memory retrieval systems in production. The reported results include 50% higher recall and 40% higher precision compared to a previous baseline implementation, though it should be noted that these metrics are self-reported and the baseline comparison details are not fully specified.
+
+## The Agentic Memory Challenge
+
+Unlike traditional RAG (Retrieval-Augmented Generation) systems that rely on static document collections, New Computer built what they describe as an "agentic memory" system. This represents an interesting architectural pattern where documents are dynamically created or pre-calculated specifically for later retrieval, rather than being ingested from existing sources. This creates unique challenges for LLMOps because the system must structure information appropriately during memory creation to ensure effective retrieval as the memory store grows over time.
+
+The memory system includes several sophisticated features that go beyond simple vector similarity search. Memories in Dot's system include optional "meta-fields" such as status indicators (e.g., COMPLETED or IN PROGRESS) and datetime fields like start or due dates. These meta-fields enable more targeted retrieval for high-frequency query patterns, such as task management queries like "Which tasks did I want to get done this week?" This multi-modal approach to memory representation creates additional complexity when optimizing retrieval performance.
+
+## Evaluation and Experimentation Infrastructure
+
+One of the most significant LLMOps challenges New Computer faced was the need to iterate quickly across multiple retrieval methods while maintaining user privacy. Their solution involved creating synthetic data by generating a cohort of synthetic users with LLM-generated backstories. This approach allowed them to test performance without exposing real user data, which is a critical consideration for any personal AI system handling sensitive information.
+
+The synthetic data generation process involved an initial conversation to seed the memory database for each synthetic user. The team then stored queries (messages from synthetic users) along with the complete set of available memories in a LangSmith dataset. This created a reproducible test environment that could be used across multiple experiment iterations.
+
+Using an in-house tool connected to LangSmith, the team labeled relevant memories for each query and defined standard information retrieval evaluation metrics including precision, recall, and F1 score. This labeling infrastructure enabled them to create ground truth datasets against which they could measure retrieval performance across different methods and configurations.
+
+## Multi-Method Retrieval Experimentation
+
+The New Computer team tested a diverse range of retrieval methods, including semantic search, keyword matching, BM25 (a probabilistic ranking function commonly used in information retrieval), and meta-field filtering. Their baseline system used simple semantic search that retrieved a fixed number of the most relevant memories per query.
+
+A key insight from their experimentation was that different query types performed better with different retrieval methods. In some cases, similarity search or keyword methods like BM25 worked better, while in others, these methods required pre-filtering by meta-fields to perform effectively. This finding highlights the importance of query-aware retrieval routing or hybrid approaches in production LLM systems.
+
+The case study notes that running multiple retrieval methods in parallel can lead to a "combinatorial explosion of experiments," which emphasizes the importance of having robust tooling for rapid experimentation. LangSmith's SDK and Experiments UI reportedly enabled New Computer to run, evaluate, and inspect experiment results efficiently. The platform's comparison view allowed them to visualize F1 performance across different experimental configurations, facilitating data-driven decisions about which approaches to incorporate into production.
+
+## Prompt Engineering and Regression Detection
+
+Beyond memory retrieval, the case study describes how New Computer applied similar experimentation methodology to their conversational prompt system. Dot's responses are generated by what they call a "dynamic conversational prompt" that incorporates relevant memories, tool usage (such as search results), and contextual behavioral instructions.
+
+This type of highly variable prompt system presents a classic LLMOps challenge: changes that improve performance on one type of query can cause regressions on others. The New Computer team addressed this by again using synthetic users to generate queries spanning a wide range of intents, creating a diverse test set to catch potential regressions.
+
+LangSmith's experiment comparison view proved valuable for identifying regressed runs resulting from prompt changes. The team could visually inspect the global effects of prompt modifications across their entire test set, making it easier to spot where improvements in one area caused degradation in another. When failures were identified, the built-in prompt playground allowed engineers to adjust prompts directly within the LangSmith UI without context-switching to other tools, reportedly improving iteration speed.
+
+## Production Considerations and Business Impact
+
+The case study mentions that New Computer recently launched Dot and achieved notable conversion metrics, with more than 45% of users converting to the paid tier after hitting the free message limit. While this is a business metric rather than a technical one, it suggests that the improvements in memory retrieval and conversation quality may have contributed to user retention and willingness to pay.
+
+The ongoing use of LangSmith appears to be central to New Computer's development workflow, with the case study indicating that the partnership with LangChain "will remain pivotal" to how the team develops new AI features. This suggests a sustained commitment to observation and experimentation tooling rather than a one-time optimization effort.
+
+## Critical Assessment
+
+While the reported improvements (50% higher recall and 40% higher precision) are significant, several details would strengthen the case study. The baseline comparison is described as a "previous baseline implementation of dynamic memory retrieval," but the specific configuration and limitations of this baseline are not fully specified. The absolute values of recall and precision are not provided, only relative improvements, making it difficult to assess overall system performance.
+
+The synthetic data approach, while valuable for privacy preservation, also raises questions about how well synthetic user queries and memories reflect real-world usage patterns. The case study does not address whether the improvements observed on synthetic data translated proportionally to improvements on real user interactions.
+
+Additionally, the case study is published on LangChain's blog and specifically highlights LangSmith's features, so readers should consider that the perspective may emphasize the positive aspects of using these specific tools. That said, the technical approach of systematic experimentation with labeled datasets and standardized metrics represents sound LLMOps practice regardless of the specific tooling used.
+
+## Key Technical Takeaways
+
+The New Computer case study illustrates several important LLMOps patterns for teams building production LLM applications. First, the use of synthetic data generation for privacy-preserving evaluation is a practical approach for systems handling sensitive user information. Second, the multi-method retrieval experimentation demonstrates the value of not assuming a single retrieval approach will work best across all query types. Third, the emphasis on regression detection through comparison views highlights the interconnected nature of LLM systems where local improvements can cause global regressions.
+
+The integration of prompt experimentation directly into the development workflow, including the ability to modify prompts and immediately evaluate changes, represents an evolution toward more mature LLMOps practices where experimentation and deployment are more tightly coupled. This approach can accelerate iteration cycles but also requires robust evaluation infrastructure to catch issues before they reach production users.

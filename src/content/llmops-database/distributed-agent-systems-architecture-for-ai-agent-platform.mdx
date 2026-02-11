@@ -1,0 +1,86 @@
+---
+title: "Distributed Agent Systems Architecture for AI Agent Platform"
+slug: "distributed-agent-systems-architecture-for-ai-agent-platform"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "68811519b74393fb09a6d5cc"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:16:42.785Z"
+  createdOn: "2025-07-23T17:00:09.313Z"
+llmopsTags:
+  - "chatbot"
+  - "code-generation"
+  - "customer-support"
+  - "document-processing"
+  - "multi-agent-systems"
+  - "agent-based"
+  - "prompt-engineering"
+  - "error-handling"
+  - "fallback-strategies"
+  - "system-prompts"
+  - "kubernetes"
+  - "docker"
+  - "postgresql"
+  - "databases"
+  - "orchestration"
+  - "microservices"
+  - "scaling"
+  - "monitoring"
+  - "fastapi"
+  - "openai"
+  - "anthropic"
+  - "meta"
+  - "microsoft-azure"
+  - "databricks"
+company: "Dust.tt"
+summary: "Dust.tt, an AI agent platform that allows users to build custom AI agents connected to their data and tools, presented their technical approach to building distributed agent systems at scale. The company faced challenges with their original synchronous, stateless architecture when deploying AI agents that could run for extended periods, handle tool orchestration, and maintain state across failures. Their solution involved redesigning their infrastructure around a continuous orchestration loop with versioning systems for idempotency, using Temporal workflows for coordination, and implementing a database-driven communication protocol between agent components. This architecture enables reliable, scalable deployment of AI agents that can handle complex multi-step tasks while surviving infrastructure failures and preventing duplicate actions."
+link: "https://www.youtube.com/watch?v=_KzIt0w3UMI"
+year: 2024
+seo:
+  title: "Dust.tt: Distributed Agent Systems Architecture for AI Agent Platform - ZenML LLMOps Database"
+  description: "Dust.tt, an AI agent platform that allows users to build custom AI agents connected to their data and tools, presented their technical approach to building distributed agent systems at scale. The company faced challenges with their original synchronous, stateless architecture when deploying AI agents that could run for extended periods, handle tool orchestration, and maintain state across failures. Their solution involved redesigning their infrastructure around a continuous orchestration loop with versioning systems for idempotency, using Temporal workflows for coordination, and implementing a database-driven communication protocol between agent components. This architecture enables reliable, scalable deployment of AI agents that can handle complex multi-step tasks while surviving infrastructure failures and preventing duplicate actions."
+  canonical: "https://www.zenml.io/llmops-database/distributed-agent-systems-architecture-for-ai-agent-platform"
+  ogTitle: "Dust.tt: Distributed Agent Systems Architecture for AI Agent Platform - ZenML LLMOps Database"
+  ogDescription: "Dust.tt, an AI agent platform that allows users to build custom AI agents connected to their data and tools, presented their technical approach to building distributed agent systems at scale. The company faced challenges with their original synchronous, stateless architecture when deploying AI agents that could run for extended periods, handle tool orchestration, and maintain state across failures. Their solution involved redesigning their infrastructure around a continuous orchestration loop with versioning systems for idempotency, using Temporal workflows for coordination, and implementing a database-driven communication protocol between agent components. This architecture enables reliable, scalable deployment of AI agents that can handle complex multi-step tasks while surviving infrastructure failures and preventing duplicate actions."
+---
+
+This case study presents Dust.tt's comprehensive approach to building and deploying AI agents at scale, offering valuable insights into the infrastructure challenges that emerge when moving from simple chatbot implementations to complex, long-running agent systems. The presentation was delivered at an MLOps community event and features multiple speakers including representatives from Dust.tt discussing their platform architecture and technical implementation details.
+
+Dust.tt positions itself as a platform that enables users to build AI agents in minutes, connected to their data and tools, powered by leading AI models. The platform follows a structured approach where users provide instructions to agents, select tools for the agent to use, configure access permissions and deployment locations (desktop app, Slack, etc.), and then deploy these agents within their organization's fleet of AI agents.
+
+The technical presentation begins by contextualizing the evolution of AI systems, tracing the path from classical programming through the deep learning revolution to the current era of AI agents. The speakers emphasize how transformers and attention mechanisms fundamentally changed information processing, moving from sequential text processing to simultaneous attention across entire contexts. This evolution enabled the emergence of true AI agents with five defining characteristics: goal-oriented behavior, tool orchestration capabilities, environmental awareness, memory and state management, and self-correction abilities.
+
+The core technical challenge that Dust.tt addresses stems from the fundamental shift from traditional deterministic software systems to probabilistic AI systems. Traditional software follows a predictable function mapping inputs to outputs, enabling reliable engineering practices like comprehensive testing, SLO monitoring, and incremental development. However, AI agents operate on infinite input spaces with stochastic outputs, creating a quantum shift in how products must be built and managed.
+
+Jules, a software engineer at Dust.tt, provides detailed technical insights into their distributed agent systems architecture. The original challenge was that traditional web architecture wasn't suitable for modern AI agents. Early OpenAI APIs were synchronous and stateless, suitable for quick responses. The introduction of tools added orchestration needs, and the advent of reasoning capabilities introduced persistence requirements as agents could run for extended periods (15+ minutes) and needed to survive failures without losing progress.
+
+Dust.tt identified three critical infrastructure challenges. First, deployment issues arose from their monolithic repository structure where frontend and agent code are tightly coupled, meaning frontend deployments would interrupt running agents. Second, idempotency became crucial to prevent duplicate executions of actions like sending invoices when workflows failed and were retried. Third, scalability requirements emerged as agents began spawning sub-agents, requiring proper resource allocation and orchestration.
+
+Their solution centers on an orchestration layer built around a continuous while loop with two main components. The "brain" block contains the LLM that determines whether to run tools or provide final answers to users. The "hands" block executes tools in parallel, addressing scalability concerns. However, the deployment and idempotency challenges required a more sophisticated approach.
+
+The technical innovation lies in their versioning system implemented through two interconnected PostgreSQL tables. The agent_step_content table stores planning outputs from the brain, while the agent_actions table stores tool execution results. Both tables share a versioning structure using step, index, and version fields to track retries. This versioning acts as a safety lock, preventing duplicate executions by checking for successful versions before running tools and returning cached results when available.
+
+The architecture enables distributed coordination without direct communication between brain and hands components. Instead, they communicate through database state, creating a protocol where the brain writes decisions to agent_step_content and reads results from agent_actions, while hands read instructions from agent_step_content and write results to agent_actions. This creates a continuous feedback loop where each component accesses the latest state from the other.
+
+During failures, the versioning system ensures proper coordination. When planning activities retry, they read the maximal version from agent_actions to understand completed tools and write new versions to agent_step_content with updated decisions. When execution activities retry, they read stable planning decisions and attempt to fulfill them by writing new versions to agent_actions. The database becomes the single source of truth for coordination.
+
+The workflow orchestration utilizes Temporal, a workflow orchestrator that Dust.tt was already using for their connectors. Temporal provides the orchestration logic, ensuring steps execute in proper order and survive infrastructure failures. Each iteration of the plan-and-respond loop represents a step in the agent's reasoning process, with durable checkpoints between steps enabling complex scenarios with multiple simultaneous tools while maintaining coordination.
+
+The company explored alternative architectures before settling on their current approach. Container-based solutions using platforms like E2B were considered but presented challenges with resource allocation and storage complexity. Queue-based systems were evaluated but would require maintaining additional infrastructure like message queues, worker pools, and state storage, essentially reinventing workflow orchestration capabilities that Temporal already provided.
+
+An important aspect of Dust.tt's approach is their emphasis on the fundamental paradigm shift required for building with AI. Traditional engineering focuses on reliability and deterministic outcomes, optimizing for 100% success rates through careful testing and incremental development. AI systems require managing acceptable unpredictability while maintaining model expressiveness, necessitating empirical approaches more akin to scientific methodology than traditional engineering.
+
+This shift has organizational implications beyond technical architecture. The company emphasizes that data must function as an operating system, unifying previously siloed tools across product, marketing, engineering, and finance teams. Changes in prompts affect margins, marketing channel investments impact user behavior patterns that affect product performance, requiring unified data systems rather than departmental silos.
+
+The case study illustrates several critical LLMOps considerations. Model updates require complete system reassessment, as demonstrated when Claude 3.7 required rewriting their entire agent system in three weeks due to behavioral differences from version 3.5. This highlights the challenge of model dependency and the need for flexible architectures that can adapt to model changes.
+
+From an evaluation perspective, traditional funnel analysis becomes inadequate for AI agents where user trajectories are unique and complex. The company implements sophisticated evaluation systems with A/B testing in production, continuous evaluation sets sampled from user populations, and rigorous systems for managing the probability distributions that AI outputs represent.
+
+The technical architecture demonstrates several LLMOps best practices including state persistence for long-running processes, idempotency controls for critical actions, distributed coordination patterns for complex workflows, and versioning systems for handling failures gracefully. The use of established workflow orchestration tools like Temporal rather than building custom solutions shows pragmatic engineering decisions that leverage proven infrastructure.
+
+While the presentation provides valuable technical insights, it's worth noting that some claims about their platform's capabilities and ease of use should be viewed critically, as this was presented at a promotional event. The technical architecture details, however, represent genuine engineering solutions to real problems faced when deploying AI agents in production environments.
+
+The case study provides a comprehensive view of the infrastructure challenges and solutions required for production AI agent systems, demonstrating how traditional web architectures must evolve to support the stochastic, long-running, and stateful nature of modern AI agents. Their approach offers a practical framework for other organizations facing similar challenges in deploying AI agents at scale.

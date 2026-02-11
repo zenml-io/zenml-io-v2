@@ -1,0 +1,137 @@
+---
+title: "Building Robust Enterprise Search with LLMs and Traditional IR"
+slug: "building-robust-enterprise-search-with-llms-and-traditional-ir"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f3baaed978765d2d0356b"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:39:18.075Z"
+  createdOn: "2024-11-21T13:54:50.295Z"
+llmopsTags:
+  - "api-gateway"
+  - "compliance"
+  - "cost-optimization"
+  - "document-processing"
+  - "elasticsearch"
+  - "embeddings"
+  - "google-gcp"
+  - "latency-optimization"
+  - "microsoft-azure"
+  - "monitoring"
+  - "question-answering"
+  - "realtime-application"
+  - "reliability"
+  - "scalability"
+  - "scaling"
+  - "security"
+  - "semantic-search"
+  - "structured-output"
+  - "unstructured-data"
+  - "vector-search"
+company: "Glean"
+summary: "Glean tackles enterprise search by combining traditional information retrieval techniques with modern LLMs and embeddings. Rather than relying solely on AI techniques, they emphasize the importance of rigorous ranking algorithms, personalization, and hybrid approaches that combine classical IR with vector search. The company has achieved unicorn status and serves major enterprises by focusing on holistic search solutions that include personalization, feed recommendations, and cross-application integrations."
+link: "https://www.latent.space/p/deedy-das"
+year: 2023
+seo:
+  title: "Glean: Building Robust Enterprise Search with LLMs and Traditional IR - ZenML LLMOps Database"
+  description: "Glean tackles enterprise search by combining traditional information retrieval techniques with modern LLMs and embeddings. Rather than relying solely on AI techniques, they emphasize the importance of rigorous ranking algorithms, personalization, and hybrid approaches that combine classical IR with vector search. The company has achieved unicorn status and serves major enterprises by focusing on holistic search solutions that include personalization, feed recommendations, and cross-application integrations."
+  canonical: "https://www.zenml.io/llmops-database/building-robust-enterprise-search-with-llms-and-traditional-ir"
+  ogTitle: "Glean: Building Robust Enterprise Search with LLMs and Traditional IR - ZenML LLMOps Database"
+  ogDescription: "Glean tackles enterprise search by combining traditional information retrieval techniques with modern LLMs and embeddings. Rather than relying solely on AI techniques, they emphasize the importance of rigorous ranking algorithms, personalization, and hybrid approaches that combine classical IR with vector search. The company has achieved unicorn status and serves major enterprises by focusing on holistic search solutions that include personalization, feed recommendations, and cross-application integrations."
+---
+
+## Overview
+
+Glean is an enterprise search company founded in 2019 by a team of former Google engineers, including Deedy Das who previously served as a Tech Lead on Google Search. The company reached unicorn status with a Series C led by Sequoia at a $1 billion valuation in 2022. Their product serves as an AI-powered internal search and employee portal for enterprises, with customers including Databricks, Canva, Confluent, Duolingo, Samsara, and various Fortune 50 companies.
+
+The genesis of Glean came from a pain point familiar to many ex-Googlers: the loss of internal tools like Google's Moma, which indexes everything used inside Google and allows employees to search across all company resources with proper permissions handling. When these engineers left Google and joined other companies, they realized how difficult it was to function without being able to efficiently find documents, presentations, and information created by colleagues.
+
+## Technical Architecture and Approach
+
+### Hybrid Retrieval Strategy
+
+One of the most significant technical insights from this case study is Glean's deliberate choice to not rely solely on vector search or the latest AI techniques. Instead, they employ a hybrid approach that combines multiple retrieval strategies:
+
+- **Core Information Retrieval (IR) signals**: Traditional IR techniques that have been refined since the 1970s and 1980s still form a foundation of their search system
+- **Synonym handling**: Expanding queries to include related terms
+- **Query understanding**: Parsing and interpreting what users are actually looking for, including handling of acronyms, project names, and internal jargon
+- **Vector search**: Modern embedding-based semantic search is used as one component among many
+- **Document understanding**: Evaluating document quality and relevance
+
+This hybrid approach reflects a mature understanding that cutting-edge AI alone does not guarantee better user experience. The team observed that many enterprise search competitors lean heavily into marketing around "AI-powered, LLM-powered vector search" as buzzwords, but the actual user experience improvements from these techniques can be difficult for users to evaluate.
+
+### Personalization Layer
+
+A critical differentiator for Glean is their personalization system, which considers:
+
+- **User role and department**: An engineer is likely not looking for Salesforce documents
+- **Team relationships**: Documents published or co-authored by people in the user's immediate team are prioritized
+- **Interaction history**: Understanding all user interactions with colleagues to inform relevance
+- **Organizational structure**: Leveraging the company hierarchy to understand context
+
+This personalization layer sits on top of the hybrid retrieval system and is described as a key factor in making their search "good" rather than just technologically sophisticated.
+
+### Ranking Algorithm Tuning
+
+The team emphasizes that effective search comes from "the rigor and intellectual honesty that you put into tuning the ranking algorithm" rather than algorithm complexity. This is described as a painstaking, long-term, and slow process. According to Das, Google Search itself ran without much "real AI" until around 2017-2018, relying instead on carefully tuned ranking components that each solved specific sub-problems extremely well.
+
+## Evolution from Search to Employee Portal
+
+An important product insight from this case study is that pure search functionality is not compelling enough to drive sustained user engagement. Users might use a search tool once and forget about it. To achieve retention, Glean evolved into a broader employee portal with features including:
+
+- **Aggregated notifications/mentions**: All tags and mentions from Slack, Jira, GitHub, email, and other apps in one place
+- **Trending documents**: Documents that are popular in the user's sub-organization
+- **Personalized feed**: Curated documents the system thinks users should see
+- **Collections**: Proactively surfaced content without requiring searches
+- **Go links**: Short memorable URLs (go/project-name) that redirect to relevant documents, a feature borrowed from Google's internal tooling
+
+## LLM Integration Considerations
+
+While the interview was conducted in April 2023, the discussion around LLMs and their integration into enterprise search is instructive for LLMOps practitioners:
+
+### Chat Interface Experimentation
+
+When asked about "Glean Chat," Das indicated they were experimenting with various LLM-powered technologies but would launch what users respond to best. This suggests a user-centric approach to LLM feature development rather than technology-first thinking.
+
+### The Limits of LLMs for Search
+
+The conversation includes thoughtful analysis of where LLMs excel versus where traditional search remains superior:
+
+- **LLM strengths**: Long-tail queries, synthesizing information from sparse sources, technical/coding questions, situations where parsing multiple Stack Overflow answers is mentally taxing
+- **Traditional search strengths**: Factual queries with definitive answers (movie showtimes, song lists), fresh/recent information, exploratory queries where users want to browse multiple results
+
+### Retrieval Augmented Generation (RAG)
+
+The interview discusses retrieval augmented generation as a technique for combining search with LLM generation. The key insight is that RAG-style approaches still fundamentally require search in the backend to provide context, meaning the quality of the underlying search system remains critical even in LLM-augmented products.
+
+### Freshness Challenges
+
+A significant limitation of LLMs discussed is handling fresh information. LLMs cannot be trained quickly or cost-efficiently enough to index new data sources and serve them simultaneously. This makes traditional search or RAG approaches necessary for any enterprise application requiring current information.
+
+## Cost and Infrastructure Considerations
+
+Das provides valuable perspective on AI infrastructure economics, noting that engineers at large companies like Google are completely abstracted from cost considerations. At a startup, understanding infrastructure costs is essential because it directly impacts unit economics. He advocates for more transparency around training costs in research papers and has done analysis estimating training costs for various models (approximately $4 million for LLaMA, $27 million for PaLM).
+
+He also notes the distinction between the cost of the final training run versus the total cost including experimentation, hyperparameter tuning, architecture exploration, and debugging failed runs—which can be approximately 10x the final training cost.
+
+## Using LLMs for Data Generation
+
+An often overlooked but highly practical application discussed is using LLMs to generate synthetic training data for smaller, specialized models. For example, using GPT-4 to generate training data for a named entity recognition (NER) task, then either training a traditional model on this data or using low-rank adaptation (LoRA) to distill the large model into a smaller, faster, more cost-effective model. This approach is described as transforming work that previously took dedicated teams years into something achievable in weeks.
+
+## Enterprise Sales Challenges
+
+The case study touches on the difficulties of selling productivity tools to enterprises. Unlike customer support tools where ROI can be calculated directly (20% improvement in ticket resolution = $X cost savings), search and productivity tools require softer arguments about employee time savings and efficiency. Buyers often default to "we work fine without it" unless they experience the product directly.
+
+## Critical Assessment
+
+While Glean has achieved significant commercial success, several aspects warrant balanced consideration:
+
+- The hybrid approach mixing traditional IR with modern techniques is pragmatic but may be partially a reflection of when the company was founded (2019) rather than a timeless architectural principle
+- The claim that vector search alone is insufficient is well-founded, but the specific contribution of each component to search quality is not quantified
+- The evolution to an employee portal suggests that core search value proposition may be difficult to monetize standalone
+- Integration with enterprise SaaS apps via APIs creates dependency on those APIs remaining available and comprehensive
+
+Overall, this case study provides valuable insights into building production search systems that balance cutting-edge AI techniques with proven information retrieval methods, emphasizing that rigorous engineering and user-centric product development often matter more than adopting the latest AI trends.

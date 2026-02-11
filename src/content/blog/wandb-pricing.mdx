@@ -1,0 +1,537 @@
+---
+title: "WandB Pricing Guide: How Much Does the Platform Cost?"
+slug: "wandb-pricing"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "684514b366bac4e7047c5fa1"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2026-02-03T15:19:04.226Z"
+  lastUpdated: "2026-02-03T10:39:58.192Z"
+  createdOn: "2025-06-08T04:42:27.569Z"
+author: "hamza-tahir"
+category: "mlops"
+tags:
+  - "wandb"
+  - "mlops"
+  - "visualization"
+  - "orchestrators"
+  - "discovery"
+date: "2025-06-08T00:00:00.000Z"
+readingTime: 16 mins
+mainImage:
+  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e970d8a6/6981cf5010e873663bd75923_6981ce8c25b9bedbff8a6b78_wandb-pricing.avif"
+seo:
+  title: "WandB Pricing Guide: How Much Does the Platform Cost? - ZenML Blog"
+  description: "In this WandB pricing guide, we break down the costs, features, and value to help you decide if it’s the right investment for your business."
+  canonical: "https://www.zenml.io/blog/wandb-pricing"
+  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e970d8a6/6981cf5010e873663bd75923_6981ce8c25b9bedbff8a6b78_wandb-pricing.avif"
+  ogTitle: "WandB Pricing Guide: How Much Does the Platform Cost? - ZenML Blog"
+  ogDescription: "In this WandB pricing guide, we break down the costs, features, and value to help you decide if it’s the right investment for your business."
+---
+
+WandB is an MLOps platform widely recognized for its robust capabilities in machine learning experiment tracking, model management, and debugging AI applications. When evaluating MLOps solutions, understanding the pricing structure is key.
+
+This WandB pricing guide provides a breakdown of the platform’s pricing, features, and the value it delivers.
+
+At the end of this Pricing guide, we also introduce an alternative to WandB, ZenML (*disclaimer: this is our product*), which is an affordable replacement. We also explain how you can replace several MLOps processes with our tool and use WandB inside ZenML to get the best experience when running ML pipelines.
+
+## TL;DR
+
+Here’s a quick summary of WandB’s pricing tiers and whether they make sense for your team:
+
+<div data-rt-embed-type="true"><div class="table-container">
+
+
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>W&amp;B Plans Table</title>
+  <style>
+    /* Base table styling */
+    table.comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: Arial, sans-serif;
+      margin: 20px 0;
+    }
+
+    /* Header row styling */
+    table.comparison-table thead th {
+      background-color: #4F4F4F;
+      color: #FFFFFF;
+      padding: 12px 16px;
+      text-align: left;
+      font-weight: bold;
+      font-size: 16px;
+      border: none;
+    }
+
+    /* Body cell styling */
+    table.comparison-table tbody td {
+      border-top: 1px solid #CCCCCC;
+      padding: 12px 16px;
+      vertical-align: top;
+      background-color: #FFFFFF;
+      color: #333333;
+      font-size: 16px;
+      line-height: 1.5;
+      word-wrap: break-word;
+    }
+
+    /* Bullet-list styling */
+    ul.bullet-list {
+      margin: 0;
+      padding-left: 20px;
+      list-style-type: disc;
+    }
+    ul.bullet-list li {
+      margin-bottom: 8px;
+      font-size: inherit;
+      line-height: inherit;
+      font-family: inherit;
+    }
+  </style>
+
+
+
+  <table class="comparison-table">
+    <thead>
+      <tr>
+        <th>Plan</th>
+        <th>Best for</th>
+        <th>Key features</th>
+        <th>Pricing</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Free (Cloud)</td>
+        <td>Individual developers, personal projects</td>
+        <td>
+          <ul class="bullet-list">
+            <li>Complete experiment tracking</li>
+            <li>Model registry and lineage</li>
+            <li>Self-hosted with Docker</li>
+          </ul>
+        </td>
+        <td>$0 per month</td>
+      </tr>
+      <tr>
+        <td>Pro (Cloud)</td>
+        <td>Professional teams that need collaboration</td>
+        <td>
+          <ul class="bullet-list">
+            <li>Up to 10 model seats</li>
+            <li>500 tracked hours per month</li>
+            <li>Comes with all core features</li>
+            <li>Team-based access controls</li>
+          </ul>
+        </td>
+        <td>Starts at $50 per month</td>
+      </tr>
+      <tr>
+        <td>Enterprise (Cloud)</td>
+        <td>Organizations that need compliance/security</td>
+        <td>
+          <ul class="bullet-list">
+            <li>Custom number of model seats</li>
+            <li>Unlimited tracked hours</li>
+            <li>Strong security and compliance features</li>
+            <li>Email and chat support</li>
+          </ul>
+        </td>
+        <td>Custom (contact sales)</td>
+      </tr>
+      <tr>
+        <td>Personal (Self-hosted)</td>
+        <td>Solo developers and personal projects</td>
+        <td>
+          <ul class="bullet-list">
+            <li>1 user seat</li>
+            <li>Experiment tracking, registry, and lineage functionalities</li>
+          </ul>
+        </td>
+        <td>$0 per month</td>
+      </tr>
+      <tr>
+        <td>Advanced Enterprise (Self-hosted)</td>
+        <td>Enterprises that need on-prem control</td>
+        <td>
+          <ul class="bullet-list">
+            <li>Everything in the Cloud Enterprise plan</li>
+            <li>+ IP allow-listing, secure private connectivity, CMEK</li>
+            <li>Dedicated Slack channel and AI solutions engineer support</li>
+          </ul>
+        </td>
+        <td>Custom (contact sales)</td>
+      </tr>
+      <tr>
+        <td>Marketplaces (AWS, GCP, and Azure)</td>
+        <td>Teams on any one of the three marketplaces who want to pay via their marketplace bill and redeem credits/discounts</td>
+        <td>
+          <ul class="bullet-list">
+            <li>Deep marketplace integration</li>
+            <li>LLM evaluations</li>
+            <li>Optimized performance</li>
+            <li>Centralized model &amp; dataset management</li>
+          </ul>
+        </td>
+        <td>
+          $4,800 annually for WandB Models<br>
+          $25,000 for 12 months WandB Weave
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+
+
+</div></div>
+
+WandB is worth inventing when:
+
+✅ You need a polished, hosted ML tracking platform that logs experiments and metrics efficiently.
+
+✅ Your team values built-in collaboration and UI, with managed infrastructure and support.
+
+✅ Security/compliance matter, and you’re ready to pay for Enterprise features like SSO and audit logs.
+
+But WandB may not be ideal if:
+
+❌ Your team is small or budget-conscious. Even at $50 per user per month, costs add up. For example, a 5-person team pays ~$3,000 per year for Pro seats, which can be high compared to other alternatives on the market.
+
+❌ You prefer open-source or local solutions. WandB’s free Personal plan is strictly for non-commercial use, and managed plans are SaaS.
+
+❌ You need broader MLOps (like orchestration, data versioning, hyperparameter tuning). WandB handles tracking but often requires integrating extra tools, raising the overall cost.
+
+**Quick Selection Guide by Use Case (2025):**
+
+<ul id=""><li><strong id="">LLM Application Development</strong>: WandB is strong if you need unified experiment tracking + inference hosting + observability (via W&amp;B Inference and Weave). However, if you only need experiment tracking for LLMs, alternatives like MLflow + dedicated inference providers may be more cost-effective.</li><li><strong id="">Traditional ML with Extensive Training Jobs</strong>: Be cautious—tracked hours billing can become expensive for parallel training or long-running experiments. ZenML or self-hosted MLflow eliminates usage-based costs.</li><li><strong id="">Enterprise with Compliance Requirements</strong>: WandB Enterprise offers HIPAA compliance, SOC2, SSO/SAML, and audit logs. Pricing typically ranges $315-400/seat/month but provides comprehensive security for regulated industries.</li><li><strong id="">Small Teams (&lt;5 people) on Budget</strong>: WandB's $50/user/month Pro plan ($3,000/year for 5 users) may strain startup budgets. Consider ZenML's open-source framework or MLflow for core tracking, reserving WandB for teams that truly need the managed UI and collaboration features.</li><li><strong id="">Foundation Model Builders</strong>: If you're training large language models, WandB's infrastructure monitoring via CoreWeave integration and specialized Registry features make it well-suited for this use case—especially if you leverage marketplace credits.</li></ul>
+
+**Recently Updated (November 2025)**: This WandB pricing guide has been refreshed with the latest 2025 developments, including the new W&B Inference product, Registry general availability, and updated marketplace pricing across AWS, Google Cloud, and Azure. All pricing information and feature comparisons reflect current offerings as of November 2025. Note that personal entities were deprecated in May 2024, requiring teams to migrate to organization-based accounts.
+
+## WandB Pricing Plans Overview
+
+WandB uses a tiered pricing structure that scales with team size and usage requirements. The platform distinguishes between cloud-hosted managed services and self-hosted deployments, with different pricing models for each approach.
+
+WandB uses tracked hours as a primary billing metric for cloud services, where one tracked hour equals one hour of wall-clock time during model training. This means if your model takes 8 hours to train, you consume 8 tracked hours regardless of hardware specifications.
+
+The pricing model avoids per-run fees, giving you predictable costs for experiment management, but usage-based billing can become expensive for teams running extensive parallel training jobs or long-running experiments.
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/66f51452/6845151045b1c11bea7a5e42_wandb-pricing.png" alt="__wf_reserved_inherit" />
+  <figcaption>WandB pricing</figcaption>
+</figure>
+
+Another way to buy managed WandB is via AWS, Google Cloud, and Azure marketplaces. We will cover these in detail in the latter half of this article. First, let's understand some factors that you should consider before investing in WandB.
+
+## WandB Pricing Factors to Consider
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e0227a7e/68451531cea2f9d4e2a324ff_factors-to-consider-before-investing-in-wandb.png" alt="__wf_reserved_inherit" />
+  <figcaption>Factors to consider before investing in WandB</figcaption>
+</figure>
+
+When budgeting for WandB, keep the following factors in mind:
+
+### 1. Team Size and Seats
+
+WandB’s paid plans charge per user (seat). The Personal plan allows only 1 user, and each Pro user pays a monthly fee (starting at $50 per month, which is per seat). If your team is large or growing, those per-user fees can add up quickly. On the flip side, WandB does not charge extra for guests.
+
+### 2. Feature Needs vs. Toolchain
+
+WandB excels at experiment tracking and visualization, but it doesn’t natively include things like pipeline orchestration, hyperparameter sweeps (beyond basic WandB ‘Sweeps’), or advanced dataset versioning.
+
+If your workflow demands those features, you’ll need additional tools. That can increase total cost and complexity. For example, [using Prefect or Kubeflow alongside WandB](https://www.zenml.io/blog/orchestration-showdown-dagster-vs-prefect-vs-airflow) means paying for multiple platforms.
+
+### 3. Data Storage and Usage Limits
+
+Consider how much data and compute you will log. WandB’s Free cloud tier has limits; the free plan has 5 GB of storage, after which extra storage costs ~$0.03 per GB per month.
+
+Even paid tiers can incur overage charges for extremely large runs or storage (especially if using the AWS, GCP, or Azure cloud services). If you log massive datasets or long training runs, these fees will significantly increase your usage charges.
+
+### 4. Security and Compliance
+
+Advanced security features for WandB come only in the Enterprise plan. The free and Pro plans lack SSO, audit logs, and some compliance certifications. If you work in regulated industries like healthcare or finance, check that WandB Enterprise supports your requirements (the Enterprise plan offers HIPAA compliance, SOC2, and SAML SSO).
+
+## What's New in WandB for 2025
+
+The WandB platform has evolved significantly in 2025 to address the growing demands of both traditional MLOps and emerging LLMOps workflows. Understanding these new capabilities is essential when evaluating the platform's value proposition.
+
+### W&B Inference: Hosted LLM Access
+
+Launched in 2025, W&B Inference powered by CoreWeave represents a major expansion beyond WandB's traditional experiment tracking focus. This new product provides API and playground access to leading open-source LLMs including OpenAI GPT OSS, Qwen3, Llama 4, DeepSeek, and Phi models—all without requiring separate hosting providers or API keys.
+
+The key advantage is unified observability: W&B Inference runs directly on CoreWeave infrastructure with monitoring built into W&B Weave, eliminating the fragmented workflows that plague teams juggling multiple LLM providers. Free users receive inference credits for a limited time, after which they must activate pay-as-you-go subscriptions or upgrade to paid plans.
+
+This positions WandB to compete more directly with comprehensive AI development platforms rather than serving solely as an experiment tracker.
+
+### Registry General Availability
+
+W&B Registry reached general availability in 2025, replacing the legacy Model Registry. The new Registry offers enhanced governance capabilities including a Restricted Viewer role, programmatic access control via SCIM, and the ability to star registries for quick access. Organizations are being migrated automatically in stages across server releases.
+
+### Deprecated Features and Migration Requirements
+
+Personal entities (personal accounts) were deprecated in May 2024. Users must now create Teams to access W&B Inference and other modern features. This change affects pricing structure, as the minimum viable deployment now requires team-based accounts rather than individual personal plans.
+
+### Market Context: LLMOps Convergence
+
+The broader MLOps market reached $1.7 billion in 2024 and is projected to grow to $129 billion by 2034 at a 43% CAGR. A key driver is the convergence of traditional MLOps with LLMOps—specialized practices for deploying and managing large language models. WandB's expansion into inference hosting and prompt engineering workflows positions it for this trend, but also means organizations need to evaluate whether they want an all-in-one platform or prefer best-of-breed integrations.
+
+## All Plans Included That WandB Offers (Open Source + Paid)
+
+WandB currently offers 1 open-source option and 3 paid plans, plus a free academic license. The open-source version provides full experiment tracking capabilities but requires self-hosting, while paid plans offer managed cloud services with varying levels of features and support.
+
+### WandB Cloud Hosted Plans
+
+These plans provide a managed service experience, with WandB handling the underlying infrastructure, offering convenience and reduced operational overhead.
+
+#### Free Plan - Open Source
+
+WandB’s free tier is available on the cloud. It gives you experiment tracking, metrics, and basic artifact logging at no cost. You can log parameters, visualize training curves, and compare runs using WandB’s hosted UI. The free plan offers unlimited projects and teams (for personal use) and community support.
+
+It is ideal for individual ML developers and small projects. But you don’t get advanced features like private projects, SSO, or email support (Academic users can apply for an extended free license with larger storage).
+
+Here’s what you get with the free plan:
+
+<ul id=""><li id=""><strong id="">Basics:</strong> Up to 5 Model seats, tracked hours (limited to 5 GB of storage), and Weave data ingestion of 1 GB per month.</li><li id=""><strong id="">Models:</strong> Lightweight experiment tracking, centralized model registry, hyperparameter optimization, and automated ML workflows.</li><li id=""><strong id="">Core Features:</strong> Dataset and model versioning, interactive data visualization, and collaborative dashboards.</li><li id=""><strong id="">Access Control and Permissions:</strong> Public and private projects (no other access controls included).</li><li id=""><strong id="">Security and Compliance:</strong> SOC 2 Type II.</li><li id=""><strong id="">Support:</strong> Email only.</li></ul>
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/4ced0ac8/68451578a4d85d0091119852_wandb-cloud-hosted-free-plan.png" alt="__wf_reserved_inherit" />
+  <figcaption>WandB cloud hosted Free plan</figcaption>
+</figure>
+
+#### Pro Plan
+
+The Pro plan is a paid subscription that starts at $50 per month. It includes everything in the Free plan, plus team and enterprise capabilities. Key additions are CI/CD integrations, Slack/email alerts on run status, unlimited collaborators within your organization, role-based access controls, and priority email/chat support.
+
+In short, Pro is for professional ML teams that need collaborative features and responsive support. Pricing scales with your number of users.
+
+Here’s what you get with the Pro plan:
+
+<ul id=""><li id=""><strong id="">Basics:</strong> Up to 10 Model seats, 500 tracked hours per month (additional hours billed at $1 per hour), 100 GB per month storage (additional storage $0.03 per GB), and Weave data ingestion of 1.5 GB per month.</li><li id=""><strong id="">Models:</strong> Everything from the free plan, plus access to workflow automations.</li><li id=""><strong id="">Core Features:</strong> Dataset and model versioning, interactive data visualization, and collaborative dashboards.</li><li id=""><strong id="">Access Control and Permissions:</strong> Public and private projects, team-based access controls, and service accounts.</li><li id=""><strong id="">Security and Compliance:</strong> SOC 2 Type II and customizable data retention.</li><li id=""><strong id="">Support:</strong> Email only, with first response time from 4 to 24 hours, depending on severity.</li></ul>
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/863a3a5f/6845159bd33a94867670e269_wandb-cloud-hosted-pro-plan.png" alt="__wf_reserved_inherit" />
+  <figcaption>WandB cloud hosted Pro plan</figcaption>
+</figure>
+
+#### Enterprise Plan
+
+The Enterprise tier is custom-priced (contact the WandB sales team to get the pricing).
+
+It bundles all Pro features and adds enterprise-grade options: single-tenant deployment (in the cloud region of your choice), HIPAA-compliant setups, secure private VPC connectivity, customer-managed encryption keys, SSO/SAML, and several other features that you can take a look at in the list below:
+
+<ul id=""><li id=""><strong id="">Basics:</strong> Custom number of Model seats with unlimited tracked hours, customizable storage, and weave data ingestion, along with a dedicated, scalable deployment.</li><li id=""><strong id="">Models:</strong> All features included - same as in Pro plan.</li><li id=""><strong id="">Core Features:</strong> Dataset and model versioning, interactive data visualization, and collaborative dashboards.</li><li id=""><strong id="">Access Control and Permissions:</strong> Public and private projects, team-based access controls, project-level access controls, custom roles, and service accounts.</li><li id=""><strong id="">Security and Compliance:</strong> SOC 2 Type II, customizable data retention, single sign-on, audit logs, bring your own bucket, and HIPAA compliance.</li><li id=""><strong id="">Support:</strong> Email and chat support with 1 to 4 hours of first response time. You also get a dedicated Slack/MS Teams support channel and a dedicated AI solution engineer.</li></ul>
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/a7204696/684514ee4f9b681ee127f17b_wandb-cloid-hosted-enterprise-plan.png" alt="__wf_reserved_inherit" />
+  <figcaption>WandB cloud hosted Enterprise plan</figcaption>
+</figure>
+
+### WandB Privately Hosted Plans
+
+These options let you deploy and manage WandB on your own infrastructure, offering maximum control over data and enhanced privacy.
+
+#### Personal - Free Plan
+
+WandB’s Personal plan lets you run an on-premises WandB server locally, at no license cost. It provides 1 user seat for personal or academic use only.
+
+You can `pip install wandb` and start a local server to log experiments and artifacts. The features are basic: 1 user seat, experiment tracking, a local artifact registry, and lineage visualization. There is no support for multiple users or teams, and corporate usage is explicitly prohibited.
+
+However, it’s fully free for allowed use cases and useful if you want WandB’s capabilities without cloud dependency.
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/24991483/684515db66bac4e7047ca383_wandb-privately-hosted-personal-plan.png" alt="__wf_reserved_inherit" />
+  <figcaption>WandB privately hosted Personal plan</figcaption>
+</figure>
+
+#### Advanced Enterprise
+
+For on-prem enterprise needs, WandB’s Advanced Enterprise plan is also custom-priced. It includes the same local deployment model as Personal, but with full enterprise features.
+
+In addition to the Personal plan’s tracking and one-seat, it adds all the Enterprise-level options: multiple users, flexible deployment (e.g., Docker/Kubernetes), HIPAA compliance, private networking, SAML/SSO, audit logs, machine-to-machine auth, and 24/7 dedicated support.
+
+Essentially, it’s the complete WandB stack you host on your own servers. As a custom offering, pricing is aligned with your scale and requirements.
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/8c62badb/684515f6bc4d7af16162469e_wandb-privately-hosted-advanced-enterprise-plan.png" alt="__wf_reserved_inherit" />
+  <figcaption>WandB privately hosted Advanced Enterprise plan</figcaption>
+</figure>
+
+## WandB on Marketplaces
+
+You can also access WandB via cloud marketplaces. Cloud marketplaces are increasingly serving as central procurement hubs for enterprise software. They offer simplified billing, consolidated spending, and often pre-negotiated terms or the ability to apply existing cloud credits.
+
+### 1. AWS Marketplace
+
+WandB is available on the AWS Marketplace, offering a contract-based pricing model. An ‘Annual Single User License for WandB Models’ is priced at $4,800 for a 12-month period, while an ‘Annual Commitment for WandB Weave, 10GB’ costs $25,000 for 12 months.
+
+Additional usage costs, like storage overage, are billed at $0.001 per unit. With AWS, you get access to WandB with your existing billing accounts, which can be particularly advantageous for leveraging pre-existing AWS enterprise discounts or committed spend agreements.
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/dee8f2e4/68451618763b8fac9fff17ff_wandb-on-aws-marketplace.png" alt="__wf_reserved_inherit" />
+  <figcaption>WandB on AWS marketplace</figcaption>
+</figure>
+
+### 2. Google Cloud Marketplace
+
+WandB is recognized as a Google Cloud Partner Advantage offering that helps you to make a purchase directly through the Google Cloud Platform.
+
+This integration allows you to capitalize on Google's marketplace incentives, including the application of committed-use discounts or promotional credits.
+
+It also ensures seamless compatibility with Google Cloud services and simplifies deployment, like orchestrating the WandB control plane on Google Kubernetes Engine (GKE).
+
+WandB on Google Cloud is designed to accelerate AI development, supporting the evaluation and monitoring of Generative AI applications and integrating with Vertex AI for robust model training and fine-tuning.
+
+The pricing for the plans is as follows:
+
+<ul id=""><li id=""><strong id="">Annual Single User License for WandB Models:</strong> $400 per month + usage fee</li><li id=""><strong id="">Annual Commitment for WandB Weave 10GB:</strong> $2,100 per month + usage fee</li></ul>
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/d0a9fe04/6845163e9344eaf9be568574_wandb-on-google-cloud-marketplace.png" alt="__wf_reserved_inherit" />
+  <figcaption>WandB on Google Cloud Marketplace</figcaption>
+</figure>
+
+### 3. Azure Marketplace
+
+WandB is also listed on the Azure Marketplace, enabling Microsoft Azure enterprise customers to acquire the platform through their existing Azure agreements.
+
+This streamlines the procurement process, allowing you to offset WandB costs against their Azure consumption commitments.
+
+WandB on Azure provides a suite of tools for building AI applications and models with confidence, integrating with Azure OpenAI and Azure Machine Learning services.
+
+The pricing structure of WandB on Azure is exactly the same as you saw for the AWS marketplace.
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/13ad7403/68451658c553a130b686c614_wandb-on-azure-marketplace.png" alt="__wf_reserved_inherit" />
+  <figcaption>WandB on Azure marketplace</figcaption>
+</figure>
+
+## Is WandB Expensive?
+
+Whether WandB is expensive depends on your perspective and needs. The free plan costs nothing, so individuals benefit heavily. The Pro plan at $50 per user per month is a significant investment for larger teams – a 10-person team pays around $6,000 per year.
+
+For a small startup, that might seem steep when compared to free (open-source) tools like [MLflow](https://www.zenml.io/blog/metaflow-vs-mlflow) or ZenML.
+
+However, WandB’s hosted solution eliminates the engineering effort of building your own tracking system. Many enterprises justify the cost as WandB’s polished UI and reliability can speed up development and collaboration.
+
+By comparison, the Advanced Enterprise (on-prem) plan can be very expensive (high five to six figures annually) since it covers all enterprise requirements. However, for large organizations, this cost is offset by the ROI of having 50+ data scientists easily share experiments and meet compliance.
+
+In short, WandB’s per-user fees are on the higher side, but may be reasonable for teams that need its convenience and features. If you’re a smaller team with limited funds, you might find WandB’s paid plans hard to justify.
+
+## ZenML – An Affordable Alternative to WandB
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/3d24034c/683a88fe89e2394cc1106b0e_zenml-homepage.png" alt="__wf_reserved_inherit" />
+  <figcaption>ZenML homepage</figcaption>
+</figure>
+
+For teams concerned about WandB’s cost or scope, [ZenML](https://www.zenml.io/) offers a compelling free open-source and a paid alternative.
+
+ZenML is an [MLOps framework](https://docs.zenml.io/user-guides/starter-guide/create-an-ml-pipeline) that provides end-to-end [pipeline orchestration](https://docs.zenml.io/stacks/stack-components/orchestrators), experiment tracking, model management, and deployment capabilities. Unlike WandB's usage-based pricing, ZenML operates on a different philosophy: provide powerful MLOps tools without vendor lock-in or escalating costs based on your ML workload intensity.
+
+Let’s look at how ZenML can replace or augment key aspects of WandB’s functionality, often at a more accessible price point.
+
+### Feature 1. Experiment Tracking
+
+ZenML automatically logs metrics and parameters for each pipeline run. Its [experiment tracking](https://docs.zenml.io/stacks/stack-components/experiment-trackers) is built-in, or optionally, you can integrate popular trackers like MLflow or even [WandB](https://docs.zenml.io/stack-components/experiment-trackers/wandb) to track and visualize your pipeline runs.
+
+📚 [Read more about ZenML + WandB integration](https://www.zenml.io/integrations/wandb).
+
+When you run a ZenML pipeline, it records each training run’s results and metadata. In fact, ZenML links experiments to pipeline runs and stores all related metrics and artifacts, providing a reproducible record. This happens with no additional license fee – it’s part of the framework.
+
+Unlike WandB's tracked hours model, ZenML's experiment tracking doesn't charge based on training time, making it ideal for teams running extensive [hyperparameter sweeps](https://docs.zenml.io/user-guides/tutorial/hyper-parameter-tuning) or distributed training jobs.
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/ce3ffe8a/681c8ff1cff78cabbca5d18f_a-flowchart-explaning-how-zenml-integrates-with-multiple-tools-and-platform.png" alt="__wf_reserved_inherit" />
+  <figcaption>ZenML experiment tracking</figcaption>
+</figure>
+
+### Feature 2. Artifact and Dataset Versioning
+
+Every output (artifact) from a ZenML step is automatically saved and versioned. The ZenML pipeline engine creates a complete data lineage for you.
+
+This means your datasets, preprocessed data, model checkpoints, etc., are all stored with version control and lineage tracking. You can easily retrieve previous artifacts from past runs and see exactly which run produced them.
+
+Creating artifacts with ZenML just takes a few lines of code:
+
+<div data-rt-embed-type="true"><pre><code fs-codehighlight-element="code">
+from zenml import pipeline, step
+import pandas as pd
+
+@step
+def create_data() -&gt; pd.DataFrame:
+    """Creates a dataframe that becomes an artifact."""
+    return pd.DataFrame({
+        "feature_1": [1, 2, 3],
+        "feature_2": [4, 5, 6],
+        "target": [10, 20, 30]
+    })
+</code></pre></div>
+
+Whereas with WandB, you might need to manage storage quotas or use external versioning tools, which is time-consuming and utilizes extra resources, increasing your overall pricing.
+
+### Feature 3. Model Registry
+
+ZenML includes a model registry in its stack. You can register models, tag versions, and attach metadata. The Model Control Plane lets you register and version models directly as part of your pipelines.
+
+In fact, the platform’s model management is designed so that by properly registering, versioning, linking artifacts, and tracking metadata, you can create a transparent and reproducible workflow.
+
+All of this is available in the open-source core (with a free Python SDK); a managed Pro version adds a dashboard, but even the OSS edition handles full model lifecycle management without extra cost.
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/54d3bc5c/67b448e42a9d9bb96bd945af_EU_AI_Act_Models.gif" alt="__wf_reserved_inherit" />
+  <figcaption>Model Control Plane Overview in ZenML Pro Dashboard</figcaption>
+</figure>
+
+What’s more, ZenML offers several capabilities that extend beyond WandB's core functionality:
+
+<ul id=""><li id="">Unlike WandB, which focuses primarily on experiment tracking, ZenML provides complete pipeline orchestration capabilities, integrating with tools like Apache Airflow, Kubeflow, and Kubernetes for production-grade workflow management.</li><li id="">ZenML automatically caches pipeline steps and artifacts, reducing computational costs and development time by avoiding redundant processing.</li><li id="">The platform includes secure secret management for API keys, database credentials, and other sensitive information needed for ML pipelines.</li><li id="">ZenML ensures complete reproducibility by tracking code versions, dependencies, infrastructure configurations, and data versions for every pipeline run.</li><li id="">ZenML's modular architecture allows teams to choose best-of-breed tools for each component (orchestrator, artifact store, container registry) rather than being constrained by a single vendor's ecosystem.</li></ul>
+
+### Why Teams Choose ZenML Over WandB in 2025
+
+As the MLOps landscape consolidates around LLMOps capabilities, the choice between WandB and ZenML often comes down to philosophy:
+
+**WandB's all-in-one approach** now includes experiment tracking, model registry, inference hosting (W&B Inference), and observability (Weave). This unified platform is attractive for teams that want managed services and don't mind usage-based pricing. The 2025 additions like Inference make WandB more comprehensive but also more expensive as teams consume hosted LLM compute.
+
+**ZenML's open-source flexibility** provides comparable MLOps capabilities (pipeline orchestration, experiment tracking via integrations, artifact versioning) without charging for tracked hours or compute time. ZenML can integrate with WandB for experiment tracking while maintaining cost control. This modular approach prevents vendor lock-in and allows teams to swap components as needs evolve.
+
+The key differentiator in 2025: Do you prioritize convenience (WandB) or cost control + flexibility (ZenML)? For teams experimenting heavily with different LLMs and running extensive training jobs, ZenML's lack of usage-based pricing can result in 50-70% cost savings compared to WandB Pro or Enterprise plans.
+
+## Common Questions About WandB Pricing in 2025
+
+**How much does WandB Pro cost per user?** WandB Pro costs $50 per user per month, which includes 500 tracked hours and 100 GB of storage. Additional tracked hours are billed at $1 per hour, and extra storage costs $0.03 per GB. For a 10-person team, expect annual costs around $6,000 for base seats plus overage charges.
+
+**Does WandB have a free plan?** Yes, WandB offers a free cloud-hosted plan with up to 5 model seats, 5 GB storage, and 1 GB per month of Weave data ingestion. However, personal entities were deprecated in May 2024, so users must create team accounts to access modern features. The free plan is suitable for personal projects but prohibits commercial use.
+
+**What is W&B Inference and how is it priced?** W&B Inference, launched in 2025, provides API and playground access to open-source LLMs like Llama 4, Qwen3, and DeepSeek, powered by CoreWeave infrastructure. Free and Pro plan users receive limited inference credits, after which they need pay-as-you-go subscriptions. Pricing varies by model; check the W&B Inference documentation for current per-token costs.
+
+**How does WandB Enterprise pricing work?** WandB Enterprise uses custom pricing negotiated with the sales team. Based on 2025 procurement data, enterprise costs typically range from $315-400 per seat per month, with pricing influenced by contract length, seat volume, and deployment type (cloud vs. self-hosted). Enterprise plans include unlimited tracked hours, custom storage, SSO/SAML, audit logs, and HIPAA compliance.
+
+**Can I buy WandB through cloud marketplaces?** Yes, WandB is available on AWS Marketplace ($4,800/year for single user license), Google Cloud Marketplace ($400/month for single user), and Azure Marketplace. Marketplace purchases allow you to apply existing cloud credits and simplify procurement through consolidated billing.
+
+**What's the difference between WandB and ZenML for pricing?** ZenML offers an open-source MLOps framework with no usage-based pricing, unlike WandB's tracked hours model. ZenML doesn't charge based on training time or seat count for its open-source version, making it more cost-effective for teams running extensive parallel training jobs. However, WandB provides a more polished hosted UI and comprehensive LLMOps features like Inference and Weave.
+
+## Is WandB Worth Your Investment or are There Better Alternatives on the Market?
+
+WandB offers flexible pricing tiers – from a free plan to enterprise contracts to suit different team sizes and needs. The platform has a decent cloud-hosted service that is robust and feature-rich, but the costs (especially for multiple users or enterprise security) can add up. We also found the free plan to be somewhat limited.
+
+Also, the platform's usage-based billing can become expensive for compute-intensive workloads, and the per-seat costs may not align with all team structures and budgets.
+
+ZenML is comparatively more cost-effective with no functionality sacrifice to be made. Its open-source foundation, comprehensive MLOps capabilities, and freedom from usage-based pricing make it particularly attractive for teams prioritizing flexibility and cost control.
+
+The choice between WandB and alternatives like ZenML ultimately depends on your team's specific requirements: whether you prioritize managed services versus infrastructure control, collaborative features versus cost optimization, and vendor-supported tools versus open-source flexibility. Both platforms can support successful ML operations, but they serve different organizational philosophies and financial constraints.
+
+Want to know what ZenML has in store for you? [Sign up for a 14-day free trial](https://cloud.zenml.io/signup?utm_source=website&utm_medium=website_nav&utm_campaign=cloud_promotion&utm_content=signup_link) and see if it's the right WandB alternative for you and your team.
+
+<figure>
+  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/ec7dc0b8/6845181e95b11552c10f9928_sign-up-for-zenml-pro-free-trial.png" alt="__wf_reserved_inherit" />
+  <figcaption>Sign up for a 14-day free trial of ZenML Pro</figcaption>
+</figure>
+
+**📚 Relevant Reading:**
+
+<ul id=""><li id=""><a href="https://www.zenml.io/blog/prefect-pricing" id="">Prefect Pricing Guide</a></li><li id=""><a href="https://www.zenml.io/blog/outerbounds-pricing" id="">Outerbounds Pricing Guide</a></li><li id=""><a href="https://www.zenml.io/blog/mlflow-vs-weights-and-biases" id="">MLflow vs Weights &amp; Biases</a></li></ul>

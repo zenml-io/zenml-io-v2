@@ -1,0 +1,118 @@
+---
+title: "AI Agent for Customer Service Order Management and Training"
+slug: "ai-agent-for-customer-service-order-management-and-training"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "67a312a2d302f82833898f15"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:59:44.856Z"
+  createdOn: "2025-02-05T07:26:26.560Z"
+llmopsTags:
+  - "customer-support"
+  - "data-analysis"
+  - "regulatory-compliance"
+  - "legacy-system-integration"
+  - "prompt-engineering"
+  - "error-handling"
+  - "human-in-the-loop"
+  - "system-prompts"
+  - "documentation"
+  - "reliability"
+  - "guardrails"
+  - "microsoft-azure"
+company: "RHI Magnesita"
+summary: "RHI Magnesita, facing $3 million in annual losses due to human errors in order processing, implemented an AI agent to assist their Customer Service Representatives (CSRs). The solution, developed with IT-Tomatic, focuses on error reduction, standardization of processes, and enhanced training. The AI system serves as an operating system for CSRs, consolidating information from multiple sources and providing intelligent validation of orders. Early results show improved training efficiency, standardized processes, and the transformation of entry-level CSR positions into hybrid analyst roles."
+link: "https://www.youtube.com/watch?v=W6UIwldUa-c"
+year: 2023
+seo:
+  title: "RHI Magnesita: AI Agent for Customer Service Order Management and Training - ZenML LLMOps Database"
+  description: "RHI Magnesita, facing $3 million in annual losses due to human errors in order processing, implemented an AI agent to assist their Customer Service Representatives (CSRs). The solution, developed with IT-Tomatic, focuses on error reduction, standardization of processes, and enhanced training. The AI system serves as an operating system for CSRs, consolidating information from multiple sources and providing intelligent validation of orders. Early results show improved training efficiency, standardized processes, and the transformation of entry-level CSR positions into hybrid analyst roles."
+  canonical: "https://www.zenml.io/llmops-database/ai-agent-for-customer-service-order-management-and-training"
+  ogTitle: "RHI Magnesita: AI Agent for Customer Service Order Management and Training - ZenML LLMOps Database"
+  ogDescription: "RHI Magnesita, facing $3 million in annual losses due to human errors in order processing, implemented an AI agent to assist their Customer Service Representatives (CSRs). The solution, developed with IT-Tomatic, focuses on error reduction, standardization of processes, and enhanced training. The AI system serves as an operating system for CSRs, consolidating information from multiple sources and providing intelligent validation of orders. Early results show improved training efficiency, standardized processes, and the transformation of entry-level CSR positions into hybrid analyst roles."
+---
+
+## Overview
+
+RHI Magnesita is a global mining and manufacturing company specializing in refractory products (high-temperature insulating ceramics) with approximately $4 billion in annual revenue, including around $1 billion from North American operations. The company has manufacturing and mining sites across China, India, Europe, Turkey, North America, and South America. This case study, presented at a conference in Silicon Valley, details the company's journey implementing an AI agent for customer service representative (CSR) order processing operations, representing their first deployment of AI agent technology in production.
+
+The presentation was given by a member of RHI Magnesita's regional leadership team who had been researching AI agent deployment since the previous year's conference, with the actual implementation beginning approximately five to six months prior to the presentation. The solution was developed in partnership with Itomatic, using their Industrial Virtual Advisor platform.
+
+## Business Problem and Motivation
+
+The primary business driver for this AI initiative was a quantifiable $3 million annual loss attributed to human error in order processing, invoicing, and accounts receivable operations. This figure was identified in 2023 and served as the catalyst for executive buy-in. The company faced several interconnected challenges:
+
+The CSR function at RHI Magnesita is multidimensional, encompassing not just order entry but also order planning, transportation coordination, and customer management. Despite being an entry-level position, CSRs are responsible for generating significant revenue but lack formal training processes. The traditional training approach involved pairing experienced CSRs with newcomers for approximately six months of informal mentorship, leading to inconsistent practices and knowledge transfer. Different trainers taught different methods, resulting in non-standardization across the organization.
+
+The company also faced geographic complexity, with CSR teams having moved from Canada to Brazil and most recently to Mexico, creating a distributed workforce across three countries (Canada, United States, and Mexico) with approximately 33 people in the CSR function. Training this distributed team traditionally required expensive in-person gatherings costing around $50,000 per session, with the speaker noting that attendees likely forget 50% of the training content after returning to their regular jobs.
+
+An additional strategic driver was the impending digital transformation. RHI Magnesita uses SAP R3 as their ERP system, which has been in place since approximately 2000 and is being sunset in 2026. The company needed a bridge solution that could transition from the legacy system to new software while also incorporating supply chain management, transportation management, sales and production forecasting modules, and plant upgrades. Simultaneously, the company was in the process of acquiring a competitor and onboarding approximately 10 new production sites in the United States.
+
+## Solution Architecture and Implementation
+
+The deployed solution is called the "Industrial Virtual Advisor," developed in partnership with Itomatic. The AI agent is designed to serve as an operating system for the CSR function, addressing both the structured SAP data entry tasks (less than 50% of the role) and the unstructured aspects of the job that were previously open to interpretation and prone to errors.
+
+The agent consolidates multiple data sources that CSRs previously had to access separately: PowerPoint training materials, master pricelists, customer requirements for transportation, payment terms, special invoicing instructions, and customer-specific item numbers. Rather than navigating to five, six, or seven different locations to gather information before entering an order, CSRs can now query the agent with simple questions and receive consolidated answers.
+
+A key architectural principle emphasized was that the model is trained exclusively on company-specific data. The speaker stressed that answers come directly from internal pricelists and documentation, meaning the agent won't fabricate information outside of what has been loaded—though this also means outdated source materials will produce outdated answers if not maintained.
+
+## Data Preparation and Training Challenges
+
+The presentation offered candid insights into the data preparation challenges that are often underestimated in enterprise AI deployments. The speaker noted this was "probably the most surprising thing" about the implementation—the sheer volume of information needed to train the model effectively.
+
+The company discovered they lacked adequate training materials. Existing PowerPoints were outdated, with some dating back to the initial SAP R3 implementation around 2000. The Itomatic team conducted validation interviews with subject matter experts, captured on video, to verify and update the information in legacy documentation. This process also helped formalize what a proper training program should look like.
+
+For prompt training, the team collected approximately 300 different questions directly from CSRs about their actual job functions. This approach ensured the model was trained on real-world queries rather than assumed use cases. The speaker emphasized the importance of this user-centric approach: training on "what's bothering a CSR, what do they really want to know" rather than what management thinks they should ask.
+
+Data sharing presented significant IT security challenges. The speaker noted their company has strict data lockdown policies—they cannot even use Chrome on company laptops. Eventually, the team found a workaround using Microsoft Teams shared folders, but this required substantial internal negotiation despite having proper NDAs in place. This is a practical LLMOps consideration that many organizations face when implementing AI solutions that require access to sensitive enterprise data.
+
+## Deployment Stages and Change Management
+
+The speaker outlined a detailed change management framework describing the psychological stages stakeholders go through during AI agent deployment:
+
+The first stage is basic awareness ("What the hell is it?"). Even in 2024-2025, many employees outside of Silicon Valley have limited understanding of AI beyond basic chatbot interactions like generating travel itineraries. Getting stakeholders to understand the agent's purpose and capabilities required significant effort.
+
+The second stage involves managing inflated expectations. Once people understand the concept, they become excited and request numerous additional use cases: forecasting, inventory analysis, and various other functions. The speaker strongly encouraged prioritizing the initial use case and resisting scope creep while documenting other ideas for future phases. The advice was to tell enthusiastic stakeholders to "start gathering your data, get your use case together, let's talk about it" while maintaining focus on the proof of concept.
+
+A challenging phase follows where initial outputs can be underwhelming ("AI can't do anything for us"). Early model outputs may be basic because the prompts haven't been fully refined and the system hasn't been trained on the full scope of real-world questions. The speaker emphasized tight messaging during this phase, reminding users of the original proof-of-concept parameters—in their case, one customer and one order type—rather than letting users query far beyond the trained scope.
+
+The breakthrough comes when users begin recognizing value ("Whoa, this is pretty cool"). The speaker reported that CSRs themselves identified organizational improvements the agent could provide for daily, weekly, and monthly tasks.
+
+## Demonstrated Capabilities
+
+The presentation included a live demonstration of the agent's capabilities at the proof-of-concept stage (approximately five months post-implementation):
+
+The agent can retrieve the top five materials a specific customer orders, including item numbers, descriptions, last order dates, and quantities. The speaker noted this query would have taken approximately 15 minutes to answer manually by searching through Excel files.
+
+When asked about special considerations for a customer order, the agent returns structured information about weights, packaging requirements, shipping terms (delivered vs. customer freight), payment terms, and invoicing requirements. This addresses the "unstructured 50%" of the CSR role that was previously prone to errors.
+
+The agent can analyze order history patterns and provide trend information for specific customers and products.
+
+Most impressively, the agent can perform reasonableness validation—when told a customer ordered 5,000 units of a specific item, the agent applies AI reasoning to determine whether this order quantity aligns with historical patterns. The demonstration showed the reasoning process in the background before confirming the order made sense.
+
+The speaker also described a planned capability to upload final invoices for accuracy checking against customer requirements, pricing, and unit of measurement—directly addressing the error reduction goal and the cash flow problems caused by customers refusing to pay invoices with errors.
+
+## Organizational and Cultural Impact
+
+The Mexico-based CSR team showed particularly strong adoption, quickly understanding and embracing the technology. The speaker attributed this partly to career development motivations—employees recognized that working with AI enhances their resumes and advancement opportunities within the organization.
+
+A critical message emphasized throughout was that "AI does not replace jobs." The speaker noted this message cannot be repeated enough to employee groups. The positioning was that AI trains people faster, motivates them, provides advancement opportunities, and "allows people to think" rather than just typing data into systems. The solution is transforming the entry-level CSR position into a "hybrid CSR, Supply Chain, Sales and Inventory Analyst" role.
+
+For line managers, the agent addresses a retention problem: managers often hold onto underperforming employees because hiring and training replacements is too difficult. If training becomes faster and more standardized, managers can make better personnel decisions and build stronger teams.
+
+The speaker also noted that resource allocation is a constant concern at all management levels. The agent helps address this by accelerating onboarding and reducing the time burden of cross-training distributed teams.
+
+## Future Vision
+
+The speaker envisions the AI agent as analogous to the transition from DOS to Windows—transforming analog, unstructured processes into a usable operating system for business functions. Future development plans include creating multiple agents for specific functions: supply chain management, transportation management, sales forecasting, and potentially an overarching management-level agent.
+
+The solution is positioned to "democratize data" by reducing dependence on a few Excel power users and PowerBI report creators. Any manager can ask questions and receive answers without waiting for specialized analysts.
+
+For a global organization, the approach promises standardization and easier transfer of managers between regions, better cultural exchange, and plant best practices sharing while maintaining a "single source of truth" across operations. The North American implementation is intended as the pilot for global rollout.
+
+## Key LLMOps Lessons
+
+Several practical LLMOps insights emerge from this case study: the importance of collecting user-generated questions for prompt training rather than relying on assumed queries; the need to validate and update legacy documentation before training; the challenge of enterprise data access and security; the value of visible reasoning processes for user trust and understanding; the critical role of change management and expectation setting; and the importance of maintaining scope discipline during early deployment phases while documenting future use cases.

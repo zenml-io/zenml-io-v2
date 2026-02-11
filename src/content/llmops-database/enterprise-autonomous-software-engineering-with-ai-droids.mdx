@@ -1,0 +1,154 @@
+---
+title: "Enterprise Autonomous Software Engineering with AI Droids"
+slug: "enterprise-autonomous-software-engineering-with-ai-droids"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "6838ac14e70ee318dc3b5690"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:09:59.391Z"
+  createdOn: "2025-05-29T18:48:52.213Z"
+llmopsTags:
+  - "code-generation"
+  - "legacy-system-integration"
+  - "agent-based"
+  - "prompt-engineering"
+  - "semantic-search"
+  - "chunking"
+  - "cost-optimization"
+  - "human-in-the-loop"
+  - "multi-agent-systems"
+  - "docker"
+  - "kubernetes"
+  - "cicd"
+  - "monitoring"
+  - "databases"
+  - "api-gateway"
+  - "microservices"
+  - "langchain"
+  - "postgresql"
+  - "redis"
+  - "elasticsearch"
+  - "fastapi"
+  - "wandb"
+  - "anthropic"
+  - "openai"
+  - "hugging-face"
+company: "Factory"
+summary: "Factory.ai built an enterprise-focused autonomous software engineering platform using AI \"droids\" that can handle complex coding tasks independently. The founders met at a LangChain hackathon and developed a browser-based system that allows delegation rather than collaboration, enabling developers to assign tasks to AI agents that can work across entire codebases, integrate with enterprise tools, and complete large-scale migrations. Their approach focuses on enterprise customers with legacy codebases, achieving dramatic results like reducing 4-month migration projects to 3.5 days, while maintaining cost efficiency through intelligent retrieval rather than relying on large context windows."
+link: "https://www.latent.space/p/factory"
+year: 2025
+seo:
+  title: "Factory: Enterprise Autonomous Software Engineering with AI Droids - ZenML LLMOps Database"
+  description: "Factory.ai built an enterprise-focused autonomous software engineering platform using AI \"droids\" that can handle complex coding tasks independently. The founders met at a LangChain hackathon and developed a browser-based system that allows delegation rather than collaboration, enabling developers to assign tasks to AI agents that can work across entire codebases, integrate with enterprise tools, and complete large-scale migrations. Their approach focuses on enterprise customers with legacy codebases, achieving dramatic results like reducing 4-month migration projects to 3.5 days, while maintaining cost efficiency through intelligent retrieval rather than relying on large context windows."
+  canonical: "https://www.zenml.io/llmops-database/enterprise-autonomous-software-engineering-with-ai-droids"
+  ogTitle: "Factory: Enterprise Autonomous Software Engineering with AI Droids - ZenML LLMOps Database"
+  ogDescription: "Factory.ai built an enterprise-focused autonomous software engineering platform using AI \"droids\" that can handle complex coding tasks independently. The founders met at a LangChain hackathon and developed a browser-based system that allows delegation rather than collaboration, enabling developers to assign tasks to AI agents that can work across entire codebases, integrate with enterprise tools, and complete large-scale migrations. Their approach focuses on enterprise customers with legacy codebases, achieving dramatic results like reducing 4-month migration projects to 3.5 days, while maintaining cost efficiency through intelligent retrieval rather than relying on large context windows."
+---
+
+## Overview
+
+Factory AI is a Sequoia-backed enterprise-focused autonomous software engineering (A-SWE) platform founded in 2023 by Matan Grinberg and Eno Reyes after they met at a LangChain hackathon. The company builds what they call "droids" - specialized AI agents designed to handle different aspects of the software development lifecycle including coding, knowledge retrieval, and reliability/incident response. Their focus is specifically on enterprise use cases, serving Fortune 500 companies with complex, legacy codebases that may be 30+ years old.
+
+The founding thesis was that code generation capability is fundamental to LLM intelligence - the better an LLM is at code, the better it tends to be at downstream tasks. Combined with the fact that code is one of the few domains where outputs can be rigorously validated (via execution, tests, etc.), this made autonomous coding agents a particularly promising application area.
+
+## Technical Architecture and Approach
+
+### The Droid System
+
+Factory's platform is organized around specialized "droids" that handle different categories of tasks:
+
+- **Code Droid**: The primary daily driver for development tasks, capable of executing multi-file changes autonomously
+- **Knowledge/Technical Writing Droid**: A deep research-style system that searches, analyzes, and produces documentation
+- **Reliability Droid**: Focused on SRE-style incident response, evidence compilation, and root cause analysis (RCA) generation
+
+The name "droid" was deliberately chosen to differentiate from the overloaded "agent" terminology that had become associated with unreliable "while loop" systems like Baby AGI and AutoGPT. The founders wanted to signal that their system was more constrained and goal-oriented while still being agentic underneath.
+
+### Context Management and Enterprise Integration
+
+A key differentiator emphasized in the case study is Factory's approach to context. The company argues that giving agents access only to code (as many IDE-based tools do) is analogous to onboarding a human engineer by just throwing them into a codebase. Real engineers need access to Slack, Notion, Linear, Jira, Datadog, Sentry, PagerDuty, and other tools to be productive.
+
+Factory integrates with these enterprise systems natively, allowing droids to pull in relevant context from tickets, documentation, and monitoring systems. They also generate "synthetic insights" at indexing time - automatically analyzing code structure, module relationships, and setup procedures rather than requiring users to manually configure these details.
+
+The platform automatically ingests configuration files from other tools (cursor rules, etc.) but intelligently parses them to extract only information the system doesn't already know, avoiding redundant or conflicting guidance.
+
+### Retrieval vs. Large Context Windows
+
+Despite the industry excitement around large context windows, Factory emphasizes efficient retrieval as critical for enterprise deployments. Even with million-token context windows, customers care deeply about cost efficiency. The company invests heavily in retrieval capabilities so that for each actual LLM call, they're selecting only the most relevant context rather than dumping entire repositories into prompts.
+
+Their demo showed a task completing with only 43% of context capacity used despite operating on a large monorepo, demonstrating this retrieval efficiency.
+
+### Local and Remote Execution
+
+A notable feature is support for both local and remote execution. Users can start a task locally with high involvement, then hand it off to a remote droid to continue independently - avoiding the IDE as a bottleneck. The browser-based interface (rather than IDE-native) is a deliberate architectural choice based on the thesis that the optimal UI for AI-assisted development will be fundamentally different from traditional coding environments.
+
+## Evaluation and Benchmarking
+
+### Moving Beyond SWE-Bench
+
+Factory initially gained recognition for strong SWE-Bench results but has since stopped running the benchmark. Their stated reasons align with broader industry concerns: SWE-Bench is Python-only and doesn't match real-world enterprise tasks. They note that newer benchmarks like PutnamBench, Commit0, SWELancer, MLEBench, and PaperBench may be preferred, but none have achieved the universal recognition that HumanEval or SWE-Bench had.
+
+### Internal Evaluation Strategy
+
+Factory's internal evaluation combines multiple approaches:
+
+- **Task-based evals**: Building on benchmarks like AIDER for code editing and file generation
+- **Behavioral specification**: High-level principles broken down into tasks with grades and rubrics, testing behaviors like when to ask clarifying questions vs. proceeding autonomously
+- **Prompt optimization**: Using evals to refine prompts as models change
+
+The company emphasizes that "vibe-based" or sentiment-based internal assessment also matters significantly. The engineers working with these models daily develop intimate understanding of behavioral changes that may not be captured in automated metrics.
+
+### Model-Specific Challenges
+
+A particularly interesting technical challenge discussed is dealing with RL-induced biases in newer models. Sonnet 3.7 and Codex show strong preferences for CLI-based tools (grep, glob) that appear to result from post-training on their respective agentic products (Claude Code, Codex). When Factory provides better search tools, models may still prefer the CLI approaches they were trained on. Their evals must specifically test whether models effectively utilize Factory's superior tooling rather than falling back to familiar patterns.
+
+The team explicitly chose not to fine-tune models, believing that freezing at a specific quality level is lower leverage than iterating on external systems. They view these model biases as bugs the labs will eventually fix rather than permanent constraints to work around.
+
+## Observability and Metrics
+
+### LangSmith Usage
+
+Factory uses LangSmith for observability despite not using LangChain itself. However, they note significant remaining challenges in the observability space, particularly around what they call "semantic observability" - understanding user intent and satisfaction beyond simple thumbs up/down signals.
+
+The challenge is especially acute with enterprise customers where they cannot see code data directly. They suggest that product analytics companies (Amplitude, StatSig) may be closer to solving this than traditional observability tools, as the need is really to understand when users are having good vs. bad experiences with natural language, intent-driven interactions.
+
+### Enterprise Metrics
+
+For enterprise customers, Factory tracks and reports on:
+
+- Token usage (fully usage-based pricing model with transparent billing)
+- Pull requests created and merged code
+- Code churn (percentage of code changed shortly after merging - a quality indicator)
+- Project delivery timeline compression
+
+They found that traditional metrics (commits, lines of code, DORA metrics) matter less than developer sentiment and concrete deadline compression. Their most compelling ROI example was reducing a four-month migration to three and a half days.
+
+## Production Workflow: Migration Example
+
+The case study provides a detailed walkthrough of how Factory handles large migration projects:
+
+The traditional process involves 4-10 people analyzing codebases, creating documentation, developing migration strategies, populating project management tools with epics and tickets, and coordinating dependent work over months.
+
+With Factory, a single engineer can:
+
+- Request complete codebase analysis and documentation generation in one session
+- Generate migration plans informed by documentation and code analysis
+- Have the system create Jira/Linear tickets with properly mapped dependencies
+- Execute multiple parallel tasks across browser tabs simultaneously
+- Review and merge code changes as the droids complete work
+
+The bottleneck shifts from skilled humans writing code to how fast humans can delegate tasks appropriately.
+
+## Model Requirements and Future Directions
+
+The team identified their primary model capability wish: LLMs post-trained on general agentic trajectories over very long timespans (hours, not minutes). Current models lack the ability to maintain goal-directed behavior over extended problem-solving sessions. They reference OpenAI's Operator benchmark where human testers worked for two hours and gave up as the type of challenge they want solved.
+
+They're currently building benchmarks with post-training techniques in mind, suggesting they may eventually use these for their own post-training efforts if necessary, though they continue to prefer staying on frontier models.
+
+## Market Positioning
+
+Factory deliberately targets the enterprise segment which they see as underserved - developers working on 30+ year old codebases doing migrations and maintenance rather than greenfield projects. They argue that while COBOL migrations aren't as viral as flashy demos, the value delivered is dramatic.
+
+Their go-to-market has been primarily word-of-mouth within enterprise networks, with executives sharing experiences at CEO dinners. They're now actively expanding sales and customer success teams, looking specifically for highly technical individuals who can both sell to CIOs and work side-by-side with developers in the platform.

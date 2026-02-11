@@ -1,0 +1,119 @@
+---
+title: "Error Handling in LLM Systems"
+slug: "error-handling-in-llm-systems"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f3fd6e531d1c2ecb800a6"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:35:12.178Z"
+  createdOn: "2024-11-21T14:12:38.307Z"
+llmopsTags:
+  - "documentation"
+  - "error-handling"
+  - "fallback-strategies"
+  - "guardrails"
+  - "high-stakes-application"
+  - "load-balancing"
+  - "microsoft-azure"
+  - "monitoring"
+  - "openai"
+  - "prompt-engineering"
+  - "realtime-application"
+  - "reliability"
+  - "scaling"
+  - "security"
+  - "structured-output"
+company: "Uber"
+summary: "This case study examines a common scenario in LLM systems where proper error handling and response validation is essential. The \"Not Acceptable\" error demonstrates the importance of implementing robust error handling mechanisms in production LLM applications to maintain system reliability and user experience."
+link: "https://www.uber.com/en-JP/blog/query-gpt/?uclick_id=eaf82e80-940f-4baf-87d6-76c4fbd37f1a"
+year: 2024
+seo:
+  title: "Uber: Error Handling in LLM Systems - ZenML LLMOps Database"
+  description: "This case study examines a common scenario in LLM systems where proper error handling and response validation is essential. The \"Not Acceptable\" error demonstrates the importance of implementing robust error handling mechanisms in production LLM applications to maintain system reliability and user experience."
+  canonical: "https://www.zenml.io/llmops-database/error-handling-in-llm-systems"
+  ogTitle: "Uber: Error Handling in LLM Systems - ZenML LLMOps Database"
+  ogDescription: "This case study examines a common scenario in LLM systems where proper error handling and response validation is essential. The \"Not Acceptable\" error demonstrates the importance of implementing robust error handling mechanisms in production LLM applications to maintain system reliability and user experience."
+---
+
+## Overview
+
+Uber's QueryGPT represents a compelling case study in taking an LLM-powered tool from hackathon concept to production-ready service for enterprise data access. The system addresses a significant operational challenge: enabling engineers, operations managers, and data scientists to generate SQL queries through natural language prompts rather than requiring deep knowledge of both SQL syntax and Uber's internal data models. With approximately 1.2 million interactive queries processed monthly on their data platform and the Operations organization contributing around 36% of these queries, the potential productivity gains from automating query authoring are substantial.
+
+The project originated during Uber's Generative AI Hackdays in May 2023 and underwent over 20 iterations before reaching its current production state. The claimed productivity improvement is reducing query authoring time from approximately 10 minutes to 3 minutes, though these figures should be viewed as estimates rather than rigorously validated metrics. In limited release, the system reported 300 daily active users with 78% indicating time savings compared to writing queries from scratch.
+
+## Technical Architecture Evolution
+
+### Initial Version (Hackathon)
+
+The first version relied on a straightforward Retrieval-Augmented Generation (RAG) approach using few-shot prompting. The system would vectorize the user's natural language prompt and perform k-nearest neighbor similarity search to retrieve 3 relevant tables and 7 relevant SQL samples from a small dataset of 7 tier-1 tables and 20 SQL queries. These retrieved samples were combined with custom instructions (covering Uber-specific business concepts like date handling) and sent to the LLM for query generation.
+
+This approach revealed several significant limitations as they attempted to scale beyond the initial small dataset:
+
+- **RAG Quality Issues**: Direct similarity search between natural language prompts and SQL/schema samples produced poor results because the semantic spaces don't align well. A question like "Find the number of trips completed yesterday in Seattle" has limited lexical overlap with CREATE TABLE statements or SELECT queries.
+
+- **Intent Classification Gap**: The system lacked an intermediate step to classify user intent and map it to relevant schemas and samples, leading to retrieval of irrelevant context.
+
+- **Token Limit Constraints**: Large enterprise schemas with 200+ columns could consume 40-60K tokens each. With multiple large tables, the system exceeded the token limits of available models (32K at the time).
+
+### Production Architecture
+
+The current production architecture introduces several key innovations that demonstrate mature LLMOps practices:
+
+**Workspace Concept**: Rather than searching across all available data, the system implements "workspaces" as curated collections of SQL samples and tables organized by business domain (Ads, Mobility, Core Services, IT, Platform Engineering, etc.). This domain-specific partitioning significantly narrows the search radius for RAG and improves relevance. The system includes 11+ pre-defined "system workspaces" plus support for user-created "custom workspaces."
+
+**Multi-Agent Architecture**: The system employs a chain of specialized LLM agents, each handling a focused task:
+
+- **Intent Agent**: Maps user prompts to business domains/workspaces before retrieval occurs. This classification step dramatically improves RAG precision by constraining the search space to relevant schemas and samples.
+
+- **Table Agent**: An LLM agent that selects appropriate tables and presents them to the user for confirmation or modification. This introduces a human-in-the-loop step that addresses feedback about incorrect table selection, allowing users to "ACK" or edit the table list before query generation proceeds.
+
+- **Column Prune Agent**: Addresses the token limit challenge by using an LLM to identify and remove irrelevant columns from large schemas before sending to the query generation step. This optimization improved not only token consumption and cost but also reduced latency due to smaller input sizes.
+
+The architecture demonstrates the principle that decomposing complex tasks into specialized agents improves accuracy compared to asking an LLM to handle a broad generalized task. The article explicitly notes this as a key learning: "LLMs are excellent classifiers" when given small units of specialized work.
+
+## Evaluation Framework
+
+The evaluation approach is particularly noteworthy from an LLMOps perspective, as it acknowledges the inherent challenges of evaluating non-deterministic systems:
+
+**Golden Dataset Curation**: The team manually created a set of question-to-SQL mappings covering various datasets and business domains. This required upfront investment in manually verifying correct intent, required schemas, and golden SQL for real questions extracted from QueryGPT logs.
+
+**Multi-Signal Evaluation**: The evaluation captures signals throughout the generation pipeline rather than just final output:
+
+- Intent accuracy (binary)
+- Table overlap score (0-1 scale measuring correct table identification)
+- Successful query execution (binary)
+- Query output presence (catches hallucinated filters returning empty results)
+- Qualitative query similarity (LLM-based 0-1 score comparing generated vs. golden SQL)
+
+**Product Flow Testing**: The evaluation supports multiple testing modes including a "vanilla" mode measuring baseline performance and a "decoupled" mode that enables component-level evaluation by providing correct inputs at each stage, removing dependencies on earlier component performance.
+
+**Handling Non-Determinism**: The team explicitly acknowledges that identical evaluations can produce different outcomes due to LLM non-determinism, advising against over-indexing on run-to-run changes of approximately 5%. Instead, they focus on identifying error patterns over longer time periods that can inform specific improvements.
+
+**Visualization and Tracking**: The system includes dashboards for tracking question-level run results over time, enabling identification of repeated shortcomings and regressions.
+
+## Operational Challenges and Limitations
+
+The case study is refreshingly honest about ongoing challenges:
+
+**Hallucinations**: The system still experiences instances where the LLM generates queries with non-existent tables or columns. The team has experimented with prompt modifications, introduced chat-style iteration modes, and is exploring a "Validation" agent for recursive hallucination correction, but acknowledges this remains unsolved.
+
+**User Prompt Quality**: Real-world user prompts range from detailed and well-specified to brief 5-word questions with typos asking broad questions requiring multi-table joins. The team found that relying solely on raw user input caused accuracy issues, leading to the development of prompt enhancement/expansion capabilities.
+
+**High Accuracy Expectations**: Users expect generated queries to "just work" with high accuracy, creating a challenging bar for a generative system. The team recommends careful selection of initial user personas for products of this nature.
+
+**Evaluation Coverage**: With hundreds of thousands of datasets at varying documentation levels, the evaluation set cannot fully cover all possible business questions. The team treats evaluation as an evolving artifact that grows with product usage and new bug discoveries.
+
+**Multiple Valid Answers**: SQL queries often have multiple valid solutions using different tables or writing styles, complicating automated evaluation. The LLM-based similarity scoring helps identify when generated queries achieve the same intent through different approaches.
+
+## Model and Infrastructure Choices
+
+The system uses OpenAI GPT-4 Turbo with 128K token context (model version 1106 mentioned). Vector databases and similarity search (k-nearest neighbor) are employed for the RAG components. The transition from 32K to 128K context models helped address token limit issues, but the Column Prune Agent remained necessary due to the extreme size of some enterprise schemas.
+
+## Production Deployment Status
+
+As of publication (September 2024), QueryGPT is in limited release to Operations and Support teams, indicating a cautious rollout approach appropriate for a system that generates executable code. The 300 daily active users and 78% satisfaction metric suggest positive early adoption, though broader rollout presumably depends on continued accuracy improvements.
+
+The iterative development process (20+ algorithm versions) and the human-in-the-loop design for table selection demonstrate a pragmatic approach to deploying LLM systems in production where errors have direct operational impact on data access and analysis workflows.

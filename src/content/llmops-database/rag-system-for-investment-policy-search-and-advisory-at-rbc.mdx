@@ -1,0 +1,174 @@
+---
+title: "RAG System for Investment Policy Search and Advisory at RBC"
+slug: "rag-system-for-investment-policy-search-and-advisory-at-rbc"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "67c9b1b12d48b51bbc7db1bc"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:02:18.836Z"
+  createdOn: "2025-03-06T14:31:13.467Z"
+llmopsTags:
+  - "question-answering"
+  - "regulatory-compliance"
+  - "high-stakes-application"
+  - "rag"
+  - "embeddings"
+  - "prompt-engineering"
+  - "semantic-search"
+  - "vector-search"
+  - "chunking"
+  - "error-handling"
+  - "monitoring"
+  - "security"
+  - "compliance"
+  - "guardrails"
+  - "fastapi"
+  - "chromadb"
+  - "microsoft-azure"
+  - "openai"
+company: "Arcane"
+summary: "RBC developed an internal RAG (Retrieval Augmented Generation) system called Arcane to help financial advisors quickly access and interpret complex investment policies and procedures. The system addresses the challenge of finding relevant information across semi-structured documents, reducing the time specialists spend searching through documentation. The solution combines advanced parsing techniques, vector databases, and LLM-powered generation with a chat interface, while implementing robust evaluation methods to ensure accuracy and prevent hallucinations."
+link: "https://www.youtube.com/watch?v=cqK42uTPUU4"
+seo:
+  title: "Arcane: RAG System for Investment Policy Search and Advisory at RBC - ZenML LLMOps Database"
+  description: "RBC developed an internal RAG (Retrieval Augmented Generation) system called Arcane to help financial advisors quickly access and interpret complex investment policies and procedures. The system addresses the challenge of finding relevant information across semi-structured documents, reducing the time specialists spend searching through documentation. The solution combines advanced parsing techniques, vector databases, and LLM-powered generation with a chat interface, while implementing robust evaluation methods to ensure accuracy and prevent hallucinations."
+  canonical: "https://www.zenml.io/llmops-database/rag-system-for-investment-policy-search-and-advisory-at-rbc"
+  ogTitle: "Arcane: RAG System for Investment Policy Search and Advisory at RBC - ZenML LLMOps Database"
+  ogDescription: "RBC developed an internal RAG (Retrieval Augmented Generation) system called Arcane to help financial advisors quickly access and interpret complex investment policies and procedures. The system addresses the challenge of finding relevant information across semi-structured documents, reducing the time specialists spend searching through documentation. The solution combines advanced parsing techniques, vector databases, and LLM-powered generation with a chat interface, while implementing robust evaluation methods to ensure accuracy and prevent hallucinations."
+---
+
+## Overview
+
+This case study comes from a presentation by Dr. Ahsan Mujahid, Head of AI Solution Acceleration and Innovation at RBC (Royal Bank of Canada), describing their internal RAG system called "Arcane." The system was designed to help investment advisors quickly locate and understand investment policies, addressing a critical bottleneck in financial services where highly trained specialists often face significant backlogs when trying to answer complex policy questions.
+
+The presentation was delivered at a TMLS (Toronto Machine Learning Summit) event and provides valuable insights into deploying RAG systems in highly regulated financial environments with proprietary data. Dr. Mujahid emphasized that while they completed the pilot phase and tested everything in production, the scaling to millions of users would be handled by Borealis AI, RBC's enterprise AI branch.
+
+## The Problem Context
+
+Financial operations, particularly in direct investment advisory services, are extremely complex. The domain encompasses core banking systems, treasury management, mobile banking, asset liability management, foreign exchange, and various investment types. Training specialists in these areas takes years, and these individuals typically arrive with 5-10 years of post-secondary STEM education, often including graduate studies.
+
+The core problem was a service bottleneck: when clients have questions about investment policies, advisors need to quickly find the right information from vast amounts of semi-structured documentation. Every second of delay has multiplicative productivity impacts, often translating to millions of dollars in bottom-line impact. The challenge was compounded by the fact that information about programs like the Home Buyers' Plan (HBP) and other investment policies was scattered across multiple semi-structured sources that were difficult to search efficiently.
+
+## Technical Architecture and Approach
+
+The Arcane system follows a standard RAG architecture but with significant customization for the financial domain. The user interface includes a chat interface with suggested frequent questions for the specific use case, plus chat memory/management functionality on the left side. The chat memory feature proved particularly important for agents specializing in subdomains, though it also introduced challenges that will be discussed later.
+
+### Data Parsing Challenges
+
+The speaker identified parsing of semi-structured data as the single biggest technical challenge they faced. Semi-structured data in their context included XML-like formats, HTML, PDF files, and internal/external websites. These formats are notoriously difficult to work with because:
+
+- Finding the right piece of information to index is inherently challenging
+- There are irregularities even in seemingly structured content - different developers may structure HTML files very differently using different tag sets
+- PDF files of varying ages require different parsing approaches - image-based PDFs require OCR while newer formats can be parsed more directly
+- Information is often scattered between chunks, making retrieval difficult even with excellent RAG infrastructure
+
+The solution emphasized investing heavily in robust parsing capabilities before focusing on other components. Without proper parsing and chunking, even the best LLMs struggle to retrieve the right information, especially given that these are highly specialized internal materials that external models would never have seen during training.
+
+## Evaluation Framework
+
+The presentation devoted significant attention to RAG evaluation, which was described as essential for mitigating the risks of irrelevant or hallucinated responses. In financial advisory contexts, the stakes are particularly high - providing false information to clients could have serious consequences.
+
+### RAGAS Framework
+
+The team utilized RAGAS (Retrieval-Augmented Generation Assessment), an open-source evaluation framework, as their primary evaluation tool. The key metrics include:
+
+- **Context Precision**: From the claims made about the data, how many are correct
+- **Context Recall**: From the correct answers available, how many are being retrieved
+- **Faithfulness**: How factually accurate is the generated answer relative to the retrieved context
+- **Answer Relevancy**: How relevant is the generated answer to the original question
+
+The distinction between faithfulness and relevancy is crucial - a response can be accurate with respect to the context but completely irrelevant to what was actually asked.
+
+### Additional Evaluation Methods
+
+Beyond RAGAS, the team employed multiple complementary evaluation approaches:
+
+- **Human evaluation**: Still considered essential as a no-brainer baseline
+- **Automated fact-checking tools**: For systematic verification
+- **Consistency checks**: Based on the principle that if the same query (or variations) produces consistent responses, the answer is more likely correct. Inconsistent responses across variations often indicate uncertainty or incorrectness
+- **Traditional IR metrics**: Precision, recall, F-score for retrieval quality
+- **Mean Average Precision (MAP)**: Preferred over Mean Reciprocal Rank (MRR) for RAG use cases because information is often scattered across chunks, making single-document retrieval metrics less appropriate
+
+For relevance evaluation specifically, they used:
+- Traditional machine translation metrics (BLEU)
+- Summarization metrics (ROUGE, METEOR)
+- Embedding-based approaches using sentence transformers with cosine similarity, which the speaker particularly favored for their semantic awareness
+
+The TruEra evaluation triad visualization was also referenced as a useful conceptual framework, showing the relationships between query-context (context relevance), query-response (answer relevance), and context-response (groundedness).
+
+## Model Selection and Performance
+
+The team experimented with different OpenAI models and found notable trade-offs:
+
+- **GPT-3.5**: Very fast, no issues with latency
+- **GPT-4**: Slow performance, potentially problematic for real-time advisory use
+- **GPT-4 Turbo**: Somewhat better but still slow
+
+For embeddings, smaller models were deemed acceptable, though better models do produce better results. The key insight was that generation quality (where users interact directly) warranted the best available models, while embeddings for indexing and retrieval could use more efficient options.
+
+The pilot concluded "a few months ago" relative to the presentation, so the speaker acknowledged that model performance may have improved since then. The latency wasn't a showstopper since even slower responses were better than waiting minutes on a call, but it remained a consideration for production scaling.
+
+## Key Lessons Learned
+
+### Profiling and Bottleneck Detection
+
+The speaker emphasized the importance of profiling the entire solution to identify bottlenecks - not just computational bottlenecks but also where things are most likely to go wrong. For their system, parsing was the biggest bottleneck and required the most effort. Vector databases themselves were not a bottleneck, though understanding how to use them properly was important.
+
+### Avoiding "RAG for Everything"
+
+A critical lesson was the importance of not applying RAG indiscriminately. Technologically-biased individuals may be tempted to use the latest tools for every problem, while non-technical stakeholders might see RAG as a magic solution after seeing demonstrations. Technical team members should not shy away from telling partners when RAG isn't the right solution for a particular problem.
+
+### Cumulative Error in Multi-Turn Conversations
+
+One of the most significant production risks identified was the "curse of joint probabilities" in multi-turn conversations. While chat memory and ongoing conversation support provide user experience benefits (not having to re-explain context), they introduce compounding error risks. The speaker noted that if you ask five questions back-to-back, the probability that the fifth answer is completely false becomes very high, even when the correct answer exists in the context.
+
+Careful prompt engineering can help mitigate this but cannot completely solve it. Fine-tuning could help but requires significant data and has cost implications. Perhaps most concerningly, the fifth incorrect answer will often look very convincing, making it harder for users to identify errors.
+
+### User Education
+
+Given the limitations of systematic and systemic risk mitigation, educating users becomes essential. Users need to understand:
+- What's real versus potential hallucination
+- What risks are relevant to their specific use case
+- How to critically evaluate responses, especially in multi-turn conversations
+
+This human guardrail cannot be replaced by technical measures alone in high-stakes financial advisory contexts.
+
+## Security and Privacy Considerations
+
+The speaker referenced a separate hour-long talk on security and privacy but highlighted several key concerns:
+
+### Model Inversion Attacks
+
+This privacy attack allows adversaries with programmatic API access to reconstruct training data and potentially the model itself through consistent attacks. This is particularly concerning for models fine-tuned on proprietary financial data.
+
+### Prompt Injection
+
+Models can potentially be manipulated to reveal information they've been exposed to, which is especially dangerous when the model has access to proprietary organizational information.
+
+### Endpoint Considerations
+
+The location of model execution matters significantly in regulated industries:
+- Internal endpoints are preferred when possible
+- If models run in VPCs or on cloud infrastructure, additional security considerations apply
+- RAG use cases are often not the most expensive to run internally, making on-premises deployment feasible
+- There are many model choices available for internal deployment
+
+### Data Loss Prevention (DLP)
+
+DLP was mentioned as "very important" with "a lot of things that can go wrong," though specifics were deferred due to time constraints.
+
+## Chunking Strategies
+
+In response to a question, the speaker provided guidance on chunking:
+
+- Chunks must be meaningful pieces of information - something that, when examined, clearly contains the information needed to answer a question
+- Cutting chunks in the wrong places (e.g., splitting an important message across paragraph boundaries) makes retrieval extremely difficult
+- Even with excellent RAG infrastructure, poorly chunked information scattered across multiple chunks is very hard to reconstruct and present coherently to clients
+- The specific approach may differ based on text type and context, but the principle of maintaining semantic coherence is universal
+
+## Production Deployment Status
+
+The pilot phase was completed and tested in production, with the system handling questions about investment policies including the Home Buyers' Plan (HBP), withdrawal fees, eligibility criteria, and family-related policy questions. The next phase involving scaling to millions of users was being handed off to Borealis AI, RBC's dedicated AI branch, demonstrating a thoughtful approach to organizational responsibility - innovation teams prototype and validate, while enterprise teams handle production scaling.

@@ -1,0 +1,217 @@
+---
+title: "Building Economic Infrastructure for AI with Foundation Models and Agentic Commerce"
+slug: "building-economic-infrastructure-for-ai-with-foundation-models-and-agentic-commerce"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "690884750e3ddc9ba936a739"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:22:23.726Z"
+  createdOn: "2025-11-03T10:31:17.890Z"
+llmopsTags:
+  - "fraud-detection"
+  - "chatbot"
+  - "code-generation"
+  - "question-answering"
+  - "data-analysis"
+  - "summarization"
+  - "high-stakes-application"
+  - "structured-output"
+  - "realtime-application"
+  - "regulatory-compliance"
+  - "poc"
+  - "customer-support"
+  - "content-moderation"
+  - "translation"
+  - "embeddings"
+  - "rag"
+  - "prompt-engineering"
+  - "few-shot"
+  - "semantic-search"
+  - "vector-search"
+  - "model-optimization"
+  - "latency-optimization"
+  - "cost-optimization"
+  - "agent-based"
+  - "multi-agent-systems"
+  - "human-in-the-loop"
+  - "chunking"
+  - "system-prompts"
+  - "mcp"
+  - "evals"
+  - "kubernetes"
+  - "docker"
+  - "monitoring"
+  - "databases"
+  - "api-gateway"
+  - "microservices"
+  - "cicd"
+  - "devops"
+  - "orchestration"
+  - "open-source"
+  - "documentation"
+  - "security"
+  - "guardrails"
+  - "reliability"
+  - "scalability"
+  - "fastapi"
+  - "postgresql"
+  - "redis"
+  - "cache"
+  - "langchain"
+  - "mistral"
+  - "argilla"
+  - "openai"
+  - "anthropic"
+  - "meta"
+  - "google-gcp"
+  - "amazon-aws"
+  - "microsoft-azure"
+  - "hugging-face"
+  - "circleci"
+company: "Stripe"
+summary: "Stripe, processing approximately 1.3% of global GDP, has evolved from traditional ML-based fraud detection to deploying transformer-based foundation models for payments that process every transaction in under 100ms. The company built a domain-specific foundation model treating charges as tokens and behavior sequences as context windows, ingesting tens of billions of transactions to power fraud detection, improving card-testing detection from 59% to 97% accuracy for large merchants. Stripe also launched the Agentic Commerce Protocol (ACP) jointly with OpenAI to standardize how agents discover and purchase from merchant catalogs, complemented by internal AI adoption reaching 8,500 employees daily using LLM tools, with 65-70% of engineers using AI coding assistants and achieving significant productivity gains like reducing payment method integrations from 2 months to 2 weeks."
+link: "https://www.latent.space/p/stripe"
+year: 2025
+seo:
+  title: "Stripe: Building Economic Infrastructure for AI with Foundation Models and Agentic Commerce - ZenML LLMOps Database"
+  description: "Stripe, processing approximately 1.3% of global GDP, has evolved from traditional ML-based fraud detection to deploying transformer-based foundation models for payments that process every transaction in under 100ms. The company built a domain-specific foundation model treating charges as tokens and behavior sequences as context windows, ingesting tens of billions of transactions to power fraud detection, improving card-testing detection from 59% to 97% accuracy for large merchants. Stripe also launched the Agentic Commerce Protocol (ACP) jointly with OpenAI to standardize how agents discover and purchase from merchant catalogs, complemented by internal AI adoption reaching 8,500 employees daily using LLM tools, with 65-70% of engineers using AI coding assistants and achieving significant productivity gains like reducing payment method integrations from 2 months to 2 weeks."
+  canonical: "https://www.zenml.io/llmops-database/building-economic-infrastructure-for-ai-with-foundation-models-and-agentic-commerce"
+  ogTitle: "Stripe: Building Economic Infrastructure for AI with Foundation Models and Agentic Commerce - ZenML LLMOps Database"
+  ogDescription: "Stripe, processing approximately 1.3% of global GDP, has evolved from traditional ML-based fraud detection to deploying transformer-based foundation models for payments that process every transaction in under 100ms. The company built a domain-specific foundation model treating charges as tokens and behavior sequences as context windows, ingesting tens of billions of transactions to power fraud detection, improving card-testing detection from 59% to 97% accuracy for large merchants. Stripe also launched the Agentic Commerce Protocol (ACP) jointly with OpenAI to standardize how agents discover and purchase from merchant catalogs, complemented by internal AI adoption reaching 8,500 employees daily using LLM tools, with 65-70% of engineers using AI coding assistants and achieving significant productivity gains like reducing payment method integrations from 2 months to 2 weeks."
+---
+
+## Overview
+
+Stripe, as the financial infrastructure provider processing $1.4 trillion annually (about 1.3% of global GDP), has made significant investments in transitioning from traditional machine learning to production-grade LLM systems and foundation models. Emily Glassberg Sands, Stripe's Head of Data & AI, leads efforts to build what the company calls "economic infrastructure for AI," encompassing both internal AI adoption and external products that enable the AI economy.
+
+## Foundation Model for Payments
+
+One of Stripe's most significant LLMOps achievements is building a domain-specific foundation model for payments data. This represents a fundamental shift from single-task ML models to a unified transformer-based approach that produces dense payment embeddings to power multiple downstream applications.
+
+The architecture treats each **charge as a token** and **behavior sequences** as the context window, creating a payments-specific language model. The system ingests **tens of billions of transactions at a rate of 50,000 per minute**, incorporating comprehensive feature sets including IPs, BINs (Bank Identification Numbers), transaction amounts, payment methods, geography, device fingerprints, and merchant characteristics. A critical design decision involves focusing on "last-K relevant events" across heterogeneous actors and surfaces, including login attempts, checkout flows, payment retries, and issuer responses.
+
+The challenge in payments data differs from natural language in that relevant sequences aren't consecutive—the meaningful context could be transactions from a specific IP address, charges on Friday nights with particular credit cards, or patterns across different retailers. This requires the model to capture a broad range of relevant sequences to understand behavioral patterns.
+
+**Production Impact:** The foundation model is deployed on the critical path, processing every single Stripe transaction in **under 100 milliseconds**. For card-testing fraud detection on large merchants, accuracy improved dramatically from 59% to 97%. Card testing involves fraudsters either enumerating through card numbers or randomly guessing valid cards, then selling them or using them for fraud. Traditional ML struggled with sophisticated attackers who hide card-testing attempts within high-volume legitimate traffic at large e-commerce sites—for example, sprinkling hundreds of small-value transactions among millions of legitimate ones. The foundation model's dense embeddings enable real-time cluster detection that identifies these patterns.
+
+Beyond fraud, the model enables rapid development of new capabilities. When AI companies requested detection of "suspicious" transactions that don't result in fraudulent disputes but represent bot traffic or other undesirable activity, Stripe deployed this capability in days by leveraging the foundation model's embeddings, clustering techniques, and textual alignment to label different suspicious patterns that merchants could selectively block.
+
+## AI-Driven Fraud Detection Evolution
+
+Stripe's fraud detection system, called Radar, has evolved significantly with AI capabilities. The company faces new fraud vectors emerging from the AI economy itself. Traditional "friendly fraud" (using legitimate credentials but not creating revenue, such as free trial abuse or refund abuse) has become existentially threatening for AI companies due to high inference costs. Where previously a fraudster might abuse a free SaaS trial with minimal marginal cost to the provider, AI service abuse can rack up tens of thousands of dollars in GPU costs through virtual credit cards or chargebacks.
+
+Stripe observed that 47% of payment leaders cite friendly fraud as their biggest challenge. One AI founder claimed to have "solved" fraud by completely shutting down free trials and dramatically throttling credits until payment ability was proven—effectively choking their own revenue to avoid fraud losses. This prompted Stripe to build Radar extensions specifically targeting AI economy fraud patterns.
+
+The foundation model enables a more sophisticated approach than deterministic rule-based systems. Instead of binary "block/don't block" decisions, the system can generate human-readable descriptions of why specific charges are concerning. The vision is to have humans today, and agents tomorrow, reasoning over these model outputs to make more nuanced decisions. This is particularly important for emerging fraud patterns like virtual credit cards enabling free trial abuse—Stripe cited an example of Robin Hood marketing "free trial cards" that work for 24 hours then expire, which are useful for consumers but devastating for AI businesses when used by fraudsters.
+
+## Agentic Commerce Protocol (ACP)
+
+In collaboration with OpenAI, Stripe launched the Agentic Commerce Protocol to create standardized infrastructure for agent-driven commerce. The protocol emerged from observing a gap in the market: consumers wanted to buy through agents, agents were ready to facilitate purchases, and merchants wanted to enable agent-driven sales, but no standard existed for making this work efficiently.
+
+**Core Components of ACP:**
+
+- **Catalog Schema:** Standardized format for expressing products, inventory, pricing, and brand constraints that agents can consume
+- **Shared Payment Token (SPT):** A scoped, time-limited, amount-capped, revocable payment credential that allows agents to complete transactions without exposing underlying payment methods or bearing transaction risk. The token is designed for compatibility with card network agentic tokens like Mastercard's offerings
+- **Risk Signals:** "Good bot/bad bot" scores that ride with the payment token, enabling merchants to make intelligent decisioning about agent-initiated transactions
+
+The shared payment token is coupled with Stripe Link, which has over 200 million consumers as the wallet for credentials. When processed via Stripe, transactions include Radar risk signals covering fraud likelihood, card testing indicators, and stolen card signals.
+
+**Strategic Design Decisions:** Stripe deliberately designed ACP as an open protocol rather than a proprietary Stripe-only solution. The shared payment token works with any payment service provider, not just Stripe. The protocol is also agent-agnostic—while it launched with ChatGPT Commerce featuring instant checkout from OpenAI, it's designed to enable merchants to integrate once and work with all future agent platforms that adopt the standard.
+
+Early traction includes over 1 million Shopify merchants coming online, major brands like Glossier and Viore, Salesforce's Commerce Cloud integration, and critically, Walmart and Sam's Club adoption—representing the world's largest retailer validating agent-driven commerce. Stripe notes that 58% of Lovable's revenue flows through Link, demonstrating the density and network effects in the AI developer community.
+
+**Alternative Payment Flows:** Beyond the shared payment token, Stripe has implemented other mechanisms for agent payments. A year before ACP, Perplexity launched travel search and booking powered by Stripe's issuing product, which creates one-time-use virtual cards scoped to specific amounts, time windows, and merchants—comparable to how DoorDash issues virtual cards to drivers. Stripe expects multiple payment mechanisms to coexist: shared payment tokens, virtual cards, agent wallets, stable coins, and stored balances, particularly for microtransactions where traditional card economics don't work for small-value purchases like 5-50 cent transactions common in AI services.
+
+## Internal AI Adoption and Infrastructure
+
+Stripe has achieved remarkable internal AI adoption with **8,500 employees (out of approximately 10,000) using LLM tools daily** and **65-70% of engineers using AI coding assistants** in their day-to-day work.
+
+**Internal AI Stack Components:**
+
+- **Toolshed (MCP Server):** A central tool layer providing LLM access to Slack, Google Drive, Git, the data catalog (Hubble), query engines, and more. Agents can both retrieve information and take actions using these tools. This is preferred over pure RAG approaches because it enables not just information retrieval but actual interaction with systems.
+
+- **Text-to-SQL Assistants:** 
+  - External: Sigma Assistant for customer-facing analytics works well because revenue data through Stripe is canonical and well-structured
+  - Internal: "Hubert" serves approximately 900 people per week, sitting on top of Hubble for broad internal data access. The biggest failure mode identified is **data discovery**—the system struggles to identify which tables and fields best answer user queries. Stripe is addressing this through deprecating low-quality tables, creating human-owned documentation for canonical datasets, and incorporating persona context (which organization the user belongs to) as system prompts to bias table selection appropriately.
+
+- **Semantic Events and Real-Time Canonicals:** Stripe is re-architecting payments and usage billing pipelines so the same near-real-time feed powers the Dashboard, Sigma analytics, and data exports (like BigQuery) from a single source of truth that LLMs can reliably consume.
+
+- **LLM-Built Integrations:** A pan-European local payment method integration that historically took approximately 2 months with traditional development was completed in approximately 2 weeks using LLMs, with trajectory toward completing such integrations in days. The LLM essentially reads Stripe's codebase, understands the local payment method's integration documentation, and generates the hookup code—machine-to-machine integration accelerated by AI.
+
+**Productivity Measurement Challenges:** Stripe acknowledges difficulty in measuring true impact beyond superficial metrics. Lines of code and number of PRs are explicitly rejected as meaningful measures—Emily noted receiving three LLM-generated documents in a single week that "sounded good" but weren't clearly connected to reality, requesting just the bullet points the authors fed to ChatGPT rather than the eight-page expansions. The concern is that LLMs can produce high volumes of content that appear thoughtful without the deep reasoning that comes from careful manual construction. The company is working toward measuring impact more empirically through developer-perceived productivity rather than output volume metrics.
+
+Stripe also monitors costs carefully, noting that many AI coding models carry non-trivial expenses, and the company is planning how to balance value extraction with cost management going forward.
+
+**Engineering Culture and LLM Usage:** There's an ongoing tension around LLM-generated content in organizational workflows. Stripe has established a "non-negotiable" requirement: if LLM was used in content generation, it must be cited. The concern is that writing traditionally forced deep thinking and reasoning from first principles—reading and revising a document 50 times to ensure logical consistency—whereas LLMs allow people to skip that cognitive work while producing polished-sounding output. The fear is that over-reliance on LLMs for generation risks under-investing in depth at precisely the moment when depth becomes most valuable.
+
+## Product and Tooling Evolution
+
+**Early LLM Infrastructure (2023):** When GPT-3.5 launched, Stripe immediately recognized the need for enterprise-grade, safe, easy access to LLMs. They built "GoLLM," an internal ChatGPT-like interface with model selection and a preset/prompt-sharing feature that enabled employees to save and share effective prompts. Hundreds of presets emerged overnight for use cases like customer outreach generation and rewriting marketing content in Stripe's tone.
+
+This was followed by an LLM proxy providing production-grade access for engineers to build customer-facing experiences. Early production use cases focused on merchant understanding—when thousands of merchants onboard daily, LLMs help determine what they're selling, whether it's supportable through card networks, creditworthiness, and fraud risk.
+
+**Evolution to Modern Stack:** Stripe has since deprecated GoLLM in favor of open-source solutions like LibraChat, which integrates with the Toolshed MCP servers. This represents their "buy then build" philosophy—initially building when no suitable solution existed, then migrating to open-source or commercial solutions as the ecosystem matures.
+
+**Experimental Projects Team:** A cross-functional group of approximately two dozen senior engineers tackles opportunities that don't naturally fit within any single product vertical but are being pulled from the market. This team produced both the Agentic Commerce Protocol and Token Billing. The team operates with an "embedded" model—pairing experimental projects engineers with product or infrastructure team members to ensure smoother handoffs when projects reach escape velocity and need ongoing ownership.
+
+## Token Billing and AI Business Model Support
+
+Recognizing that many AI companies are "wrappers" building on underlying LLM providers (a term Stripe uses descriptively, not pejoratively), Stripe built Token Billing to address unit economics volatility. When a service depends on upstream LLM costs that can drop 80% or triple unexpectedly, static pricing creates serious risks—competitors can undercut when costs drop, or businesses can go underwater when costs spike.
+
+Token Billing provides an API to track and price inference costs in real-time using a formula: `effective_price_per_unit = base_margin + (model_tokens_used * provider_unit_cost) + overhead`. This allows AI companies to dynamically adjust pricing in response to underlying model cost changes while maintaining healthy margins.
+
+Beyond token billing, Stripe supports various monetization models including usage-based billing, outcome-based pricing (like Intercom's $1 per resolved support ticket), and stable coin payments. Stable coins are particularly relevant for AI companies with global reach and high-value transactions—Shadeform reports 20% of volume now comes through stable coins, with half being fully incremental revenue (customers who wouldn't have purchased otherwise). The cost advantage is significant: 1.5 percentage points for stable coins versus 4.5 percentage points for international cards on large transactions.
+
+## Build vs. Buy Philosophy
+
+Stripe employs a nuanced approach to build-versus-buy decisions. The general philosophy is "buy then build if a buy exists," but they actively validate that buy options truly don't exist before building. They learned from Emily's previous experience at Coursera, where a team of brilliant first-time employees built custom experimentation platforms, analytics platforms, and ML platforms that had to be painfully ripped out and replaced years later—infrastructure that wasn't core to Coursera's competitive advantage.
+
+**Spotlight Program:** When needing new tooling, Stripe runs RFPs (requests for proposals) through their "Spotlight Program." For example, when seeking an evaluation platform, they received over two dozen applications, evaluated all of them, narrowed to two finalists, ran POCs, and ultimately selected Braintrust. They employ similar processes for other infrastructure needs.
+
+**Preferred Vendors:** Stripe's current stack includes Weights & Biases, Flight, and Kubernetes. For feature engineering, they initially used a homegrown platform, evaluated Tecton but couldn't justify it on the critical charge path due to latency and reliability requirements (needing six nines of reliability and tens of milliseconds of latency), and ultimately partnered with Airbnb to build Shepard (open-sourced as Cronon).
+
+**Multi-Provider Strategy:** Stripe deliberately avoids vendor lock-in, particularly for LLM providers. Rather than enterprise-grade wrappers around single providers, they prefer solutions that work across many providers and models, enabling flexible swapping as capabilities and costs evolve.
+
+## Data Infrastructure and LLM Integration
+
+Stripe is investing heavily in semantic events infrastructure and near-real-time, well-documented canonical datasets, anticipating that within nine months, users won't want static dashboards but will expect to be fed insights by agents or query real-time data directly.
+
+The re-architecture focuses initially on payments and usage-based billing, ensuring the same data feed powers the Dashboard, Sigma (for queryable analytics), and Stripe Data Pipeline (for exports to systems like BigQuery where customers combine Stripe data with other sources). Historically, these different products consumed different data feeds, creating confusion. The new architecture provides a single source of truth.
+
+**Data Quality Challenges:** The biggest challenge with Hubert (text-to-SQL) isn't query generation but data discovery—identifying the right tables and fields. Stripe is addressing this through:
+
+- Aggressively deprecating low-quality tables
+- Requiring human-owned documentation for canonical datasets (explicitly not trusting LLMs to document critical data)
+- Incorporating persona context about the user's organizational role to bias table selection toward relevant datasets for their domain
+- Exploring offline learning from historical usage patterns—understanding what people in similar roles typically query
+
+Text-to-SQL works well when data is well-structured and well-documented (like revenue data in Sigma), but most enterprise data lacks this quality, making data discovery the critical bottleneck for LLM-powered analytics.
+
+## Market Observations on AI Economy
+
+Stripe's unique position processing payments for the top AI companies provides visibility into AI economy dynamics. Analyzing the top 100 highest-grossing AI companies on Stripe compared to top 100 SaaS companies from five years prior reveals:
+
+- **GTM Velocity:** AI companies hit $1M/$10M/$30M ARR milestones 2-3× faster than the SaaS cohort
+- **Global Reach:** 2× the country count—median AI company operates in 55 countries in year one, over 100 in year two, versus SaaS companies
+- **Retention:** Slightly lower per-company retention than SaaS, but with an important nuance—customers churn between competing AI products solving the same problem rather than abandoning the problem domain entirely. They "boomerang" back as products leapfrog each other, indicating competitive markets with real value rather than fundamental product-market fit issues.
+- **Team Efficiency:** Revenue per employee dramatically outpaces elite public company benchmarks, with companies like Lovable achieving significant revenue with 10-40 person teams
+- **Growth Rate:** Companies on Stripe grew 7× faster than S&P 500 companies last year
+
+**Business Model Insights:** AI companies are much more likely to use Stripe's full stack (payments, billing, tax, revenue recognition, fraud) than SaaS companies were, enabling them to scale with lean teams. They're also iterating across monetization models more rapidly—fixed subscriptions, usage-based, credit burn-down, outcome-based—because the market is still discovering optimal supply-demand intersections.
+
+The vertical specialization pattern mirrors SaaS (horizontal infrastructure first, then vertical solutions) but is happening faster because companies can build on underlying LLM providers without research investments, and because borderless AI solutions make niche verticals viable at global scale.
+
+**Unit Economics Question:** While people costs are exceptionally low (enabling strong revenue per employee), inference costs remain the open question. Stripe believes it would be unwise to evaluate these businesses assuming current costs, instead modeling reasonable expectations of declining costs based on historical trends. They note that models improving in capability and declining in cost happens "quite a bit, quite quickly," making two-to-three-year ROI horizons more appropriate than in-year returns.
+
+## Low-Code Enablement and Developer Experience
+
+Stripe launched "claimable sandboxes" integrated into V0 (Vercel) and Replit, allowing developers to create complete payment systems—defining products, setting prices, running test charges—before even having a Stripe account. When satisfied, they click a button, authenticate with Stripe (or create an account), claim the sandbox, and immediately go live.
+
+This has driven significant business creation, with Stripe's integration becoming the third-highest used integration in V0 within two weeks of launch. Notably, a significant portion of these new businesses are from non-technical founders who might have struggled with traditional Stripe onboarding. Stripe also built a "future onboarding experience" that learns intent and preferences from tools like Vercel, dropping users into the flow already partially complete based on their sandbox work.
+
+## Conclusion
+
+Stripe's LLMOps journey demonstrates sophisticated production deployment of AI across multiple dimensions: domain-specific foundation models processing billions of transactions in real-time, protocol design for emerging agent-to-agent commerce, massive internal adoption of AI tooling, and infrastructure products enabling the broader AI economy. The company balances building custom solutions when necessary (foundation models, agentic commerce protocol) with adopting best-in-class third-party tools (Braintrust for evals, LibraChat for internal chat), while maintaining a clear focus on enabling their core mission of growing internet GDP. Key lessons include the importance of measuring long-term rather than in-year ROI for AI investments, the critical role of data quality and discovery for LLM success, and the need for humans to maintain deep reasoning capabilities even as LLMs handle increasing cognitive work.

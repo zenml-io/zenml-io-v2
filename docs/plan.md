@@ -1,7 +1,7 @@
 # ZenML Website v2 — Migration Plan
 
 > Last updated: 2026-02-11
-> Status: **Phase 1 COMPLETE, Phase 2A-2E COMPLETE** — All content exported, transformed, and ALL collection schemas defined (17 total). 1,904 MDX files, 2,397 R2 assets. Critical schema discrepancies documented. Ready for Phase 2F (Copy MDX to src/content/).
+> Status: **Phase 1 COMPLETE, Phase 2A-2F COMPLETE** — All content exported, transformed, schemas defined, and 1,904 MDX files copied to src/content/. All collections validated successfully. Ready for Phase 2G (Reference Validation).
 
 ---
 

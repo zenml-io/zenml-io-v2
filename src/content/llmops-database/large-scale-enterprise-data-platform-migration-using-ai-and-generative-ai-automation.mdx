@@ -1,0 +1,140 @@
+---
+title: "Large-Scale Enterprise Data Platform Migration Using AI and Generative AI Automation"
+slug: "large-scale-enterprise-data-platform-migration-using-ai-and-generative-ai-automation"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "693059fb6aba3c208f455e93"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:31:18.315Z"
+  createdOn: "2025-12-03T15:40:43.346Z"
+llmopsTags:
+  - "data-analysis"
+  - "data-cleaning"
+  - "data-integration"
+  - "code-generation"
+  - "legacy-system-integration"
+  - "regulatory-compliance"
+  - "agent-based"
+  - "error-handling"
+  - "cost-optimization"
+  - "model-optimization"
+  - "kubernetes"
+  - "cicd"
+  - "orchestration"
+  - "continuous-deployment"
+  - "continuous-integration"
+  - "open-source"
+  - "documentation"
+  - "compliance"
+  - "guardrails"
+  - "scalability"
+  - "databases"
+  - "microservices"
+  - "devops"
+  - "monitoring"
+  - "amazon-aws"
+  - "hugging-face"
+company: "CommBank"
+summary: "Commonwealth Bank of Australia (CBA), Australia's largest bank serving 17.5 million customers, faced the challenge of modernizing decades of rich data spread across hundreds of on-premise source systems that lacked interoperability and couldn't scale for AI workloads. In partnership with HCL Tech and AWS, CBA migrated 61,000 on-premise data pipelines (equivalent to 10 petabytes of data) to an AWS-based data mesh ecosystem in 9 months. The solution leveraged AI and generative AI to transform code, check for errors, and test outputs with 100% accuracy reconciliation, conducting 229,000 tests across the migration. This enabled CBA to establish a federated data architecture called CommBank.data that empowers 40 lines of business with self-service data access while maintaining strict governance, positioning the bank for AI-driven innovation at scale."
+link: "https://www.youtube.com/watch?v=LK4DTgvMp74"
+year: 2025
+seo:
+  title: "CommBank: Large-Scale Enterprise Data Platform Migration Using AI and Generative AI Automation - ZenML LLMOps Database"
+  description: "Commonwealth Bank of Australia (CBA), Australia's largest bank serving 17.5 million customers, faced the challenge of modernizing decades of rich data spread across hundreds of on-premise source systems that lacked interoperability and couldn't scale for AI workloads. In partnership with HCL Tech and AWS, CBA migrated 61,000 on-premise data pipelines (equivalent to 10 petabytes of data) to an AWS-based data mesh ecosystem in 9 months. The solution leveraged AI and generative AI to transform code, check for errors, and test outputs with 100% accuracy reconciliation, conducting 229,000 tests across the migration. This enabled CBA to establish a federated data architecture called CommBank.data that empowers 40 lines of business with self-service data access while maintaining strict governance, positioning the bank for AI-driven innovation at scale."
+  canonical: "https://www.zenml.io/llmops-database/large-scale-enterprise-data-platform-migration-using-ai-and-generative-ai-automation"
+  ogTitle: "CommBank: Large-Scale Enterprise Data Platform Migration Using AI and Generative AI Automation - ZenML LLMOps Database"
+  ogDescription: "Commonwealth Bank of Australia (CBA), Australia's largest bank serving 17.5 million customers, faced the challenge of modernizing decades of rich data spread across hundreds of on-premise source systems that lacked interoperability and couldn't scale for AI workloads. In partnership with HCL Tech and AWS, CBA migrated 61,000 on-premise data pipelines (equivalent to 10 petabytes of data) to an AWS-based data mesh ecosystem in 9 months. The solution leveraged AI and generative AI to transform code, check for errors, and test outputs with 100% accuracy reconciliation, conducting 229,000 tests across the migration. This enabled CBA to establish a federated data architecture called CommBank.data that empowers 40 lines of business with self-service data access while maintaining strict governance, positioning the bank for AI-driven innovation at scale."
+---
+
+## Overview and Context
+
+Commonwealth Bank of Australia (CBA) undertook what they claim to be the largest and fastest data migration in the Southern Hemisphere, moving from on-premise data platforms to a cloud-based data mesh ecosystem on AWS. The bank, which serves 17.5 million customers (representing 1 in 3 Australians and 1 in 4 businesses), processes 50% of Australia's transactions and ranks as the 13th largest bank globally by market value. According to the presentation, CBA was recently named the top 4 bank globally for AI maturity, though the specific ranking methodology and source are not detailed in the transcript.
+
+The migration was driven by a strategic need to modernize their data infrastructure to support AI and machine learning workloads at scale. Their legacy on-premise platforms, while containing years of rich historical data, lacked the interoperability and scalability required for modern AI applications. The bank recognized that where data lives is where data scientists and engineers will work, making the migration of their entire data estate essential to their AI transformation strategy.
+
+## Data Strategy and Architecture
+
+CBA's data transformation strategy rests on three core pillars: people, safeguards, and technology. On the people front, they moved away from a centralized data team model that couldn't keep pace with business demand, instead embedding data engineers and data scientists directly into lines of business. This federated approach brings data expertise closer to both the use cases and the customers being served.
+
+For safeguards, as a regulated financial institution, CBA embedded governance and risk controls at every stage of the data and AI lifecycle, implementing what they call "safety by design." This is particularly relevant for LLMOps, as it demonstrates the need to integrate compliance and risk management from the beginning rather than as an afterthought.
+
+On the technology pillar, CBA established a data mesh ecosystem on AWS Cloud called CommBank.data. This ecosystem currently empowers 40 lines of business to operate independently, moving and using data seamlessly while enforcing strict governance. The architecture adopts a clear producer-consumer model where each business unit builds, owns, and manages its data as a product with defined roles and responsibilities. A unified data marketplace serves as a single pane of glass where users can discover, request, and consume data across the entire AWS ecosystem, implementing self-service data sharing capabilities.
+
+## The Migration Challenge and Scale
+
+The migration scope was substantial: 61,000 on-premise pipelines representing approximately 10 petabytes of data needed to be moved to AWS. The timeline was ambitious at 9 months, and the quality requirements were stringent—100% of data pipelines were tested three times, totaling 229,000 tests. The migration effectively moved CBA's entire data engineering and AI workforce to the AWS Cloud platform.
+
+The scale and complexity of this migration presented significant technical challenges. Each pipeline needed to be transformed from legacy technologies to AWS-native services, and every single row, column, and number needed to be accounted for with 100% accuracy reconciliation to the on-premise platform. This level of precision is critical for a financial institution where data accuracy directly impacts regulatory compliance, customer trust, and operational integrity.
+
+## AI and Generative AI in the Migration Process
+
+The most relevant aspect of this case study for LLMOps is the use of AI and generative AI to automate and accelerate the migration process. According to the presenters, CBA, AWS, and HCL Tech built AI and generative AI systems that performed three critical functions:
+
+* **Code transformation**: Converting legacy data pipeline code to AWS-native technologies
+* **Error checking**: Identifying issues and inconsistencies in the transformed code
+* **Output testing and reconciliation**: Verifying that the migrated pipelines produced exactly the same results as the on-premise systems with 100% accuracy
+
+While the transcript doesn't provide granular technical details about the specific AI models, frameworks, or techniques used, the application represents a practical use of generative AI for code migration and transformation at enterprise scale. This is an increasingly common pattern where large language models trained on code are used to accelerate legacy modernization efforts.
+
+The presenters emphasize that automation accelerators and parallel testing capabilities enabled the successful migration of such a large number of pipelines in a compressed timeframe. They note that an important takeaway is their commitment to incorporating AI accelerators for all future transitions and legacy migration initiatives, indicating plans to systematize this approach. They mention working towards bringing an "agent late delivery cycle" (ALDC) to life in the future, though this concept isn't elaborated upon in the transcript—it may refer to agentic AI workflows in software delivery.
+
+## Methodology and Approach
+
+CBA adopted what they call a "steel threads" approach, which they distinguish from traditional proofs of concept or MVPs. Steel threads not only prove that the technology works but also productionalize the outcome. Early in the program, CBA kicked off workshops with AWS and HCL to test their most complex data pipelines and AI use cases to validate that migration to AWS-native technologies was viable.
+
+The partnership model emphasized tight integration between CBA, AWS, and HCL Tech as a unified team with a shared purpose, operating under the mantra "one team, one dream." This approach was designed to prevent misalignment often associated with large programs and ambitious deadlines. Each team member was encouraged to feel a sense of ownership toward achieving the common goal.
+
+## Engineering Practices and Team Structure
+
+HCL Tech, as the primary implementation partner, deployed several engineering practices worth noting:
+
+**Talent Management**: They strategically sourced and deployed talent in phases, eventually scaling to over 250 AWS-certified data engineers. The emphasis on early upskilling and certification ensured the team was ready and effective from the start of the migration.
+
+**Team Topology**: They organized teams according to the Dreyfus competency framework, creating what they call "cognitive diverse team structure." Connect pods led enablement, while scaled migration and automation/acceleration squads worked across the program. Elite AI engineers were embedded in teams to foster "creative tension" and consistently identify acceleration opportunities.
+
+**Engineering Transformation**: The teams shifted from specialized roles to full-cycle engineering aligned to CBA's model. Three transformation levers were employed: AWS certification for engineers, focus on full-cycle engineering, and AI-driven automation.
+
+**Quality and Metrics**: They improved test and migration quality in each sprint using matrices to track progress, adopting what they describe as a "future fit delivery model" as a minimum standard.
+
+## Critical Assessment and Considerations
+
+While the case study presents an impressive achievement in terms of scale and speed, several aspects warrant balanced consideration:
+
+**Limited Technical Detail**: The transcript provides limited specifics about the AI and generative AI systems used for code transformation. We don't know which models were employed (whether proprietary or open-source), how they were fine-tuned or adapted to CBA's specific technology stack, what the error rates were, how much human intervention was required, or how the systems were validated and tested before deployment. This makes it difficult to assess the true technical innovation or to replicate the approach.
+
+**Vendor Presentation Context**: This case study is presented in a format that appears to be a conference or promotional event featuring AWS and HCL Tech. The emphasis on partnership success and the lack of discussion around challenges, setbacks, or limitations suggests this is at least partially a marketing presentation. Claims about being "the largest and fastest migration in the Southern Hemisphere" or "top 4 bank globally for AI maturity" lack independent verification or methodology details.
+
+**AI Maturity vs. Migration Success**: While CBA's recognition for AI maturity is mentioned, the connection between this migration project and that recognition isn't explicitly established. The migration is infrastructure modernization that enables AI, but the case study doesn't detail the actual AI applications or LLM deployments running on the new platform.
+
+**Testing and Validation**: The claim of 100% accuracy reconciliation across 229,000 tests is impressive, but the transcript doesn't explain how edge cases, exceptions, or data quality issues were handled. In practice, perfect reconciliation across such a large migration often requires significant human judgment calls about acceptable differences and business rules.
+
+**Generative AI Specifics**: The use of "AI and generative AI" is mentioned, but it's unclear whether traditional AI approaches were used for error detection and testing while generative AI handled code transformation, or if generative AI was the primary technology throughout. The distinction matters for understanding the maturity and reliability of the approach.
+
+## LLMOps Implications and Learnings
+
+From an LLMOps perspective, this case study illustrates several important patterns:
+
+**Code Generation at Scale**: The use of generative AI for code transformation represents a production deployment of LLM capabilities for a business-critical operation. The emphasis on testing (three tests per pipeline) and validation (100% reconciliation) demonstrates the level of quality assurance required when using generative AI for production code generation in regulated industries.
+
+**Human-AI Collaboration**: While the automation is highlighted, the presence of "elite AI engineers" embedded in teams and the emphasis on engineering practices suggests this wasn't a fully automated process. The actual workflow likely involved significant human oversight, review, and intervention—a common pattern in production LLM deployments where AI augments rather than replaces human expertise.
+
+**Domain-Specific Application**: The success of the AI-driven code transformation likely depended on the specificity of the migration task—converting from a defined set of legacy technologies to specific AWS-native services. This represents a constrained problem space where generative AI can be highly effective, as opposed to general-purpose code generation.
+
+**Testing and Validation Infrastructure**: The case study emphasizes parallel testing capabilities and quality metrics. For LLMOps, this highlights the critical importance of robust testing infrastructure when deploying AI-generated outputs in production. The three-test approach and reconciliation requirements represent the kind of rigorous validation needed in high-stakes environments.
+
+**Organizational Readiness**: The upskilling of 250+ engineers with AWS certifications, the adoption of full-cycle engineering practices, and the creation of data and AI labs demonstrate that successful AI deployment requires significant organizational preparation and change management alongside the technology itself.
+
+**Governance and Safety**: The emphasis on "safety by design" and embedded governance at every stage reflects the regulatory requirements of financial services. For LLMOps in regulated industries, this means building compliance, auditability, and risk controls into the AI systems themselves rather than treating them as separate concerns.
+
+## Future Direction
+
+CBA indicates they're now positioned to scale on their "ambitious AI-powered, data-driven future" with the AWS mesh ecosystem in place. The commitment to incorporating AI accelerators into all future transitions and the mention of an "agent late delivery cycle" suggest plans to further automate and systematize their software delivery processes using AI agents.
+
+The data marketplace and self-service capabilities built into CommBank.data create an infrastructure that should support rapid experimentation and deployment of AI applications across the 40 lines of business. The federated model with embedded data scientists and engineers positions the bank to develop and deploy AI solutions closer to business problems and customer needs.
+
+## Conclusion
+
+This case study represents a significant enterprise deployment of AI and generative AI in service of infrastructure modernization rather than customer-facing AI applications. The use of generative AI for code transformation, testing, and validation at the scale of 61,000 pipelines demonstrates the potential for AI to accelerate complex technical migrations. However, the limited technical detail and promotional context of the presentation make it difficult to fully assess the innovation or to understand the specific challenges and tradeoffs encountered. The emphasis on engineering practices, quality assurance, and organizational readiness provides valuable insights into what's required to successfully deploy AI in production for business-critical operations in regulated industries. The case study ultimately illustrates that successful LLMOps requires not just advanced AI technology but also robust testing infrastructure, clear governance frameworks, appropriate team structures, and significant organizational change management.

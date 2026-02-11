@@ -1,0 +1,151 @@
+---
+title: "Building Production-Ready AI Agents and Monitoring Systems"
+slug: "building-production-ready-ai-agents-and-monitoring-systems"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "6790ad374a5af7f56d4bc3b7"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:56:35.489Z"
+  createdOn: "2025-01-22T08:32:55.180Z"
+llmopsTags:
+  - "customer-support"
+  - "code-generation"
+  - "structured-output"
+  - "realtime-application"
+  - "rag"
+  - "embeddings"
+  - "prompt-engineering"
+  - "semantic-search"
+  - "error-handling"
+  - "multi-agent-systems"
+  - "agent-based"
+  - "human-in-the-loop"
+  - "system-prompts"
+  - "monitoring"
+  - "databases"
+  - "api-gateway"
+  - "fastapi"
+  - "postgresql"
+  - "redis"
+  - "elasticsearch"
+  - "langchain"
+  - "chromadb"
+  - "openai"
+  - "anthropic"
+  - "cohere"
+  - "cloudflare"
+  - "microsoft-azure"
+company: "Portkey, Airbyte, Comet"
+summary: "The panel discussion and demo sessions showcase how companies like Portkey, Airbyte, and Comet are tackling the challenges of deploying LLMs and AI agents in production. They address key issues including monitoring, observability, error handling, data movement, and human-in-the-loop processes. The solutions presented range from AI gateways for enterprise deployments to experiment tracking platforms and tools for building reliable AI agents, demonstrating both the challenges and emerging best practices in LLMOps."
+link: "https://www.youtube.com/watch?v=LOdL6xbMPMM"
+year: 2024
+seo:
+  title: "Portkey, Airbyte, Comet: Building Production-Ready AI Agents and Monitoring Systems - ZenML LLMOps Database"
+  description: "The panel discussion and demo sessions showcase how companies like Portkey, Airbyte, and Comet are tackling the challenges of deploying LLMs and AI agents in production. They address key issues including monitoring, observability, error handling, data movement, and human-in-the-loop processes. The solutions presented range from AI gateways for enterprise deployments to experiment tracking platforms and tools for building reliable AI agents, demonstrating both the challenges and emerging best practices in LLMOps."
+  canonical: "https://www.zenml.io/llmops-database/building-production-ready-ai-agents-and-monitoring-systems"
+  ogTitle: "Portkey, Airbyte, Comet: Building Production-Ready AI Agents and Monitoring Systems - ZenML LLMOps Database"
+  ogDescription: "The panel discussion and demo sessions showcase how companies like Portkey, Airbyte, and Comet are tackling the challenges of deploying LLMs and AI agents in production. They address key issues including monitoring, observability, error handling, data movement, and human-in-the-loop processes. The solutions presented range from AI gateways for enterprise deployments to experiment tracking platforms and tools for building reliable AI agents, demonstrating both the challenges and emerging best practices in LLMOps."
+---
+
+## Overview
+
+This transcript captures a multi-panel event hosted at Airbyte's headquarters featuring speakers from Portkey, Airbyte, and Comet discussing practical lessons learned from deploying LLMs in production environments. The discussion provides valuable insights from practitioners who have faced real-world challenges in productionizing generative AI applications across various enterprise contexts.
+
+## Panel 1: AI in Production
+
+### Participants and Their Perspectives
+
+**Rohit from Portkey** described his company as building a production platform for generative AI applications, specifically an AI Gateway with guard rails and governance features targeting mid-market and enterprise companies. He emphasized that productionizing gen AI applications has been "probably the hardest part" of deploying AI applications, which motivated the creation of Portkey's foundational platform.
+
+**Brian Leonard from Airbyte** brought experience from leading the company's AI initiative and previously founding TaskRabbit. Airbyte focuses on making data available and usable for AI use cases, helping organizations leverage data silos from APIs, databases, and other sources.
+
+**Claire Longo from Comet** shared her background as a data scientist and machine learning engineer who became frustrated by the difficulty of getting models into production. Now leading customer success at Comet, she has a unique window into what customers are building with ML Ops and LLM Ops tools.
+
+### Key Lessons on Production Challenges
+
+#### Embedding Services and Infrastructure Surprises
+
+Brian shared a cautionary tale about building their own embedding service. While it seemed economical compared to paying OpenAI, they encountered unexpected challenges: embedding operations consumed significant memory, and processing long documents like the complete text of Huckleberry Finn caused health check timeouts that killed nodes, leading to unexplained failures. This illustrates how seemingly simple infrastructure decisions have hidden complexity in LLM deployments.
+
+#### The Monitoring Gap
+
+Claire highlighted a surprising observation: many sophisticated AI and traditional ML models operate in production without proper monitoring. She noted that while monitoring is obvious for software engineers, it's not common knowledge for practitioners coming from mathematics, analytics, or data science backgrounds. Organizations often deploy systems and then struggle to debug issues retroactively. The best practice, she emphasized, is to think about failure modes, logging requirements, and metrics before deployment, not after.
+
+#### Forward Compatibility and Model Evolution
+
+Rohit introduced the concept of "forward compatibility" as essential for LLM applications. He described scenarios where teams fine-tune a model, are satisfied with evaluations, and then OpenAI releases a better model that changes everything. Applications need to be designed to consume newer APIs and methodologies quickly, assuming improvements in speed, cost, and capability will continue.
+
+#### The Logging Cost Problem
+
+A critical production consideration raised by Rohit concerns the cost of logging LLM outputs. Traditional logs are small (a few KBs), but LLM logs can be extremely large, especially if teams make the mistake of logging embeddings. Traditional logging systems like CloudWatch aren't built for this scale and will generate unexpected costs. He specifically warned: "If you're planning to decide if you're deciding to just put it into CloudWatch I can already tell you don't do that."
+
+### Monitoring and Observability with Comet
+
+Claire described Comet's approach to LLM observability, which includes trace logging (inputs and outputs), custom metrics for issues like hallucination, bias, and fairness, and the ability to drill into specific spans when metrics show anomalies. The key insight is that you need both the logging infrastructure and meaningful metrics to identify when something goes wrong.
+
+### The AI Gateway Pattern
+
+Rohit explained Portkey's AI Gateway architecture as a solution to the challenge of handling LLM failures. Since LLM failures exist on a "gradient" rather than simple success/failure, and developers shouldn't spend their time building guard rails instead of applications, the gateway layer sits between applications and LLMs to understand successes and failures and implement routing logic. For example, if a bias guard rail fails, the system can switch to a more capable model or redact content before returning it to users.
+
+### Notable Use Cases Discussed
+
+**Airbyte's Connector Builder**: Brian described building a feature where users provide a documentation URL, and the system automatically generates a data connector. The key insight was that the "co-pilot approach" works better than all-or-nothing generation—guiding users through the process with previews rather than attempting to generate everything at once, since errors compound across multiple generation steps.
+
+**Insurance Claim Chatbot**: Claire described an insurance company building a chatbot for filing claims. The critical lesson was handling edge cases like fatalities in car accidents, where a human conversation is more appropriate than a chatbot. This required sophisticated routing logic within the system, illustrating that chatbots aren't always the right answer and systems need accurate routing logic that must be monitored in production.
+
+**Indonesian Insurance Reconciliation**: Rohit shared a case where Koala, an Indonesian policy broker, used vision models to process payment receipts uploaded in various formats (screenshots, PDFs, mobile photos). Previous OCR systems for each format kept breaking, but vision models improved accuracy dramatically while handling multiple file formats with a single approach.
+
+### Data Quality Over Model Sophistication
+
+Brian offered a crucial insight from working with hundreds of people building AI systems: when outputs aren't satisfactory, teams often assume they need smarter models, but the real issue is usually the data inputs. Summarizing chapters, adding metadata to chunks, and improving data organization often delivers better results than upgrading models. As he put it, "it's not only about the magic robots, it's the garbage that makes them run."
+
+### Evaluation and Testing Practices
+
+When asked about test-driven development for LLMs, the panelists emphasized that tests and evals serve different purposes but both are essential. Brian described the value of a comprehensive eval suite that runs on every pull request, generating visual feedback on improvements and regressions. Claire advocated for a scientific approach with holdout data sets to avoid overfitting to developer biases, version control for prompts, and eval metrics to compare configurations systematically. Rohit noted the parallels between unit tests, integration tests, and end-to-end tests in AI development.
+
+### Cost Management Strategies
+
+On ROI calculations, Brian advised understanding "Big O notation" for LLM costs—tracking the number of retry loops, workflow steps, and timeout configurations that can cause costs to spiral. He suggested keeping models pluggable so teams can experiment with less expensive options like GPT-3.5 Turbo for specific pipeline steps. Claire emphasized that ROI calculations are use-case specific and often require pairing engineers with business stakeholders to translate model value into business value.
+
+## Panel 2: AI Agents
+
+### Participants
+
+The second panel featured Manash from Hasura (discussing PromptQL), Chen Lee from DBOS, and Danielle Bernardi from Toolhouse, focusing specifically on agent architectures and production challenges.
+
+### Defining AI Agents
+
+The panelists offered complementary definitions: Danielle described an agent as an LLM with a prompt and tools (possibly some APIs and memory), where the prompt defines the agent's task and produces an action plan. Chen characterized agents as AI-driven workflows where the execution flow is determined by the AI rather than predefined, similar to OpenAI Swarm. Manash added that agents are non-deterministic reasoning systems connected to tools that can make function calls based on user input.
+
+### Agent Production Challenges
+
+**Context and Data Transfer**: Manash highlighted the challenge of orchestrating agents that need to transfer large amounts of data between them. When transferring 100,000 rows of data or unstructured content like customer support tickets between specialized agents (e.g., a data retrieval agent to a churn analysis agent), everything typically flows through the LLM context, leading to hallucinations and context loss.
+
+**Error Handling and Durability**: Chen emphasized that agents interact with the real world asynchronously, may wait days for human input, and can fail in numerous ways (API timeouts, rate limits, server crashes). Without proper infrastructure, restarts might cause duplicated database entries or lost task state. Traditional solutions like AWS Step Functions and Lambda create operational nightmares.
+
+**Human-in-the-Loop**: The panelists discussed the importance of human verification for critical decisions like issuing refunds. Manash described implementing deterministic flagging when agents are about to make permanent changes (database writes, POST API calls). Chen noted that current frameworks handle this poorly, requiring manual state snapshotting and restoration.
+
+### Technical Solutions Presented
+
+**DBOS Durable Execution**: Chen demonstrated DBOS's approach of implementing durable execution as a library using decorators to annotate functions as workflow steps. The system persists the result of every execution and provides primitives for waiting days or weeks for human input, then continuing from where it left off. This enables reliable async workflows without complex infrastructure.
+
+**Toolhouse Function Calling**: Danielle demonstrated Toolhouse's platform for simplified function calling, where the infrastructure handles all the code, prompts, and hardware optimization for connecting AI to external services. The goal is making complex technology decisions (like configuring embedding models or vector databases) as simple as installing components in a dashboard.
+
+**PromptQL's Unified Data Access**: Manash described PromptQL's approach of abstracting data retrieval pipelines into a single unified data access layer with a semantic schema. Instead of multiple agents with different RAG pipelines, text-to-SQL, and function calling, the LLM expresses data requirements to this layer, which deterministically fetches data from underlying sources. The agent operates in a programmatic runtime, writing code to express analytical requirements while delegating semantic tasks to downstream LLMs.
+
+### Demos and Practical Examples
+
+**Portkey MCP Integration**: Rohit demonstrated using Model Context Protocol (MCP) with Portkey's AI Gateway to connect local services to AI applications. The demo showed an agent that could write code for a Cloudflare worker, deploy it, and send a Slack notification—all automatically through MCP servers running in the gateway.
+
+**Comet Opik Observability**: Claire demonstrated Opik, Comet's open-source tracing framework for LLM applications. The tool provides decorators for tracking steps in a RAG system, capturing inputs and outputs at each span, and calculating metrics for hallucination and answer relevance. The integration is designed to be minimal—just decorators on existing Python classes.
+
+**DBOS Refund Agent**: Chen demonstrated a customer service agent for refunds that updates a database, sends verification emails to administrators, waits asynchronously for human approval, and then processes or rejects the refund based on input. The demo showed reliable execution even across crashes and long wait periods.
+
+**Hasura PromptQL**: Manash demonstrated an internal customer support assistant connected to BigQuery, product metrics, billing data, and Zendesk. Complex queries joining multiple data sources (e.g., "top 5 customers by revenue with at least 4 projects and 2 support tickets") were handled deterministically, with the system showing its reasoning and self-correcting when it encountered errors.
+
+### Looking Ahead
+
+The panelists expressed excitement about several trends: agents becoming more autonomous while remaining reliable, smaller task-specific models with lower latency and higher accuracy, self-improving systems (already demonstrated in code fixing scenarios), and the continuing reduction of API costs making experimentation more accessible. The common thread was that while models improve rapidly, production success depends heavily on infrastructure, monitoring, and careful system design.

@@ -1,0 +1,137 @@
+---
+title: "Panel Discussion on Building Production LLM Applications"
+slug: "panel-discussion-on-building-production-llm-applications"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f405d0656d92be696bb35"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:37:49.138Z"
+  createdOn: "2024-11-21T14:14:53.075Z"
+llmopsTags:
+  - "cache"
+  - "compliance"
+  - "cost-optimization"
+  - "databases"
+  - "documentation"
+  - "guardrails"
+  - "high-stakes-application"
+  - "human-in-the-loop"
+  - "latency-optimization"
+  - "meta"
+  - "model-optimization"
+  - "monitoring"
+  - "open-source"
+  - "openai"
+  - "prompt-engineering"
+  - "rag"
+  - "reliability"
+  - "scalability"
+  - "scaling"
+  - "security"
+  - "semantic-search"
+  - "structured-output"
+  - "system-prompts"
+  - "vector-search"
+  - "wandb"
+company: "Various"
+summary: "A panel discussion featuring experts from Various companies discussing key aspects of building production LLM applications. The discussion covers critical topics including hallucination management, prompt engineering, evaluation frameworks, cost considerations, and model selection. Panelists share practical experiences and insights on deploying LLMs in production, highlighting the importance of continuous feedback loops, evaluation metrics, and the trade-offs between open source and commercial LLMs."
+link: "https://www.youtube.com/watch?v=usF1Q7tzJD0"
+year: 2023
+seo:
+  title: "Various: Panel Discussion on Building Production LLM Applications - ZenML LLMOps Database"
+  description: "A panel discussion featuring experts from Various companies discussing key aspects of building production LLM applications. The discussion covers critical topics including hallucination management, prompt engineering, evaluation frameworks, cost considerations, and model selection. Panelists share practical experiences and insights on deploying LLMs in production, highlighting the importance of continuous feedback loops, evaluation metrics, and the trade-offs between open source and commercial LLMs."
+  canonical: "https://www.zenml.io/llmops-database/panel-discussion-on-building-production-llm-applications"
+  ogTitle: "Various: Panel Discussion on Building Production LLM Applications - ZenML LLMOps Database"
+  ogDescription: "A panel discussion featuring experts from Various companies discussing key aspects of building production LLM applications. The discussion covers critical topics including hallucination management, prompt engineering, evaluation frameworks, cost considerations, and model selection. Panelists share practical experiences and insights on deploying LLMs in production, highlighting the importance of continuous feedback loops, evaluation metrics, and the trade-offs between open source and commercial LLMs."
+---
+
+## Overview
+
+This case study is derived from an expert panel discussion on building production LLM applications, featuring practitioners from diverse backgrounds: Smitha Rothas (ML Engineer at Prompt Ops working on enterprise observability), George Matthew (Managing Director at Insight Partners, investor in companies like Weights & Biases and Fiddler), Natalia Barina (former AI product leader at Meta focused on transparency and explainability), Sahar Moore (leading LLM initiatives at Stripe), and moderated by Sam Charrington of the TWiML AI podcast. The discussion provides a comprehensive look at the current state of deploying LLMs in production environments, covering everything from use case selection to evaluation frameworks and economic considerations.
+
+## Key Perspectives on LLM Limitations and Strengths
+
+The panel opens with provocative takes on LLMs that set the stage for practical discussion. Natalia argues that hallucinations should be considered a feature rather than a bug, emphasizing that the goal shouldn't be to eliminate hallucinations entirely but rather to select appropriate use cases where LLMs can shine. She proposes a framework for evaluating LLM suitability based on two axes: fluency (the ability to produce human-like, natural-sounding output) and accuracy requirements. Use cases requiring high fluency but tolerating lower accuracy (creative writing, brainstorming, inspiration) are ideal for LLMs, while high-accuracy applications require additional safeguards.
+
+Sahar advocates strongly for open-source language models as the future of LLM applications, citing several advantages: they can run at the edge for privacy-sensitive use cases, developers can fine-tune them for specific purposes to achieve better performance with less compute and latency, they offer flexibility without predefined constraints or policies that sometimes limit commercial APIs, and licensing is no longer an issue with models like Falcon. He notes that models like LLaMA CPP and MLC LLM are bringing powerful capabilities to edge deployment scenarios.
+
+George raises the concern that public training corpora will be exhausted within the next half-decade, as current models are already training on approximately 20% of human-generated content. This reinforces the emerging importance of proprietary data and domain-specific models, suggesting that companies with unique datasets will have significant competitive advantages in the LLM space.
+
+## Prompt Engineering in Production
+
+The discussion provides substantial practical guidance on prompt engineering for production systems. Smitha emphasizes that while tools like LangChain make it easy to build proof-of-concept applications over a weekend, pushing those POCs to production is the challenging part. She offers several concrete recommendations:
+
+Structured output formatting is essential for reliable production systems. Prompting the model to return output in specific formats like JSON with particular markdown tags helps ensure parseable, consistent responses. This becomes critical when LLM output needs to feed into downstream systems or be processed programmatically.
+
+Adding relevant examples and context significantly improves performance. Smitha describes this as a form of "weak RLHF" or few-shot learning. Rather than just adding static examples (which can cause overfitting), she recommends using vector databases to retrieve contextually relevant examples based on semantic similarity to the user's query. This dynamic approach to example selection helps avoid overfitting while still providing the model with useful guidance.
+
+Latency management is a crucial production concern, especially when chaining multiple prompts together. Smitha suggests several UX-focused mitigation strategies: streaming responses (as ChatGPT does) to mask perceived latency, splitting prompts to provide intermediate results while processing continues, and fetching documents first to display while generating answers.
+
+## Hallucination Mitigation Strategies
+
+The panel provides extensive coverage of hallucination mitigation, acknowledging this as one of the most significant challenges in production LLM systems. Sahar offers a key insight: LLMs are "satisfyers" that always want to provide an answer, so giving them an explicit "out" helps avoid hallucinations. For example, when classifying text, adding instructions like "otherwise return N/A or error" provides the model with a legitimate alternative to fabricating a response when it lacks sufficient context.
+
+Prompt chaining and self-reflection techniques are highlighted as effective mitigation strategies. The panel references approaches like "self-reflect" and "SmarterGPT" where the model is asked to generate a response, then critique that response as an expert, and finally provide a resolution incorporating the critique. This improves performance at the cost of increased latency and API calls.
+
+Forcing citations is another effective technique. Requiring the LLM to quote sources for its answers serves two purposes: it helps reduce fabricated information because the model must ground its response in verifiable sources, and it enables users or downstream systems to verify the accuracy of responses by checking the referenced sources.
+
+The panel also discusses LLM blending approaches, referencing the "LLM Blender" research from the Allen Institute for AI. By combining multiple LLMs that each excel in different areas and intelligently orchestrating which model handles which requests, teams can achieve better overall performance. George notes that Jasper is using such a blender-style approach in production.
+
+## Evaluation Frameworks and Challenges
+
+A recurring theme throughout the discussion is that evaluation infrastructure for LLMs significantly lags behind deployment practices. Sahar expresses surprise at how far behind the community is on evaluation, noting that this doesn't prevent teams from deploying to production but represents a significant gap. He emphasizes that improved evaluation would increase confidence in deploying LLM applications.
+
+The panel discusses several approaches to evaluation:
+
+Using more powerful models to judge outputs from less powerful models (e.g., using GPT-4 to evaluate GPT-3.5 responses) has proven surprisingly effective. This automated approach helps scale evaluation efforts while maintaining reasonable quality.
+
+Benchmark question sets are essential for regression testing. Smitha describes maintaining a set of benchmark questions that span multiple areas and continuously adding new questions as edge cases are discovered. These benchmarks can be run daily or at regular intervals to detect when model behavior deviates from expectations.
+
+Keyword-based scoring provides a middle ground between exact matching and purely semantic evaluation. Identifying significant keywords that should appear in correct responses, then checking for their presence in model output, offers a practical evaluation heuristic.
+
+Semantic similarity scoring allows for evaluation of outputs that may be phrased differently but convey the same meaning. This is particularly important for generative tasks where there's no single correct answer.
+
+Natalia references Meta's "AI System Card" approach and recommends OpenAI's GPT-4 system card as a comprehensive template for evaluating LLM risks including safety, toxicity, bias, privacy, and robustness concerns. She notes that thorough evaluation is expensive and resource-intensive, requiring teams to be thoughtful about prioritization.
+
+Prompt versioning emerges as a critical operational concern. Small changes to prompts can cause significant deviations in output, making version control and systematic testing essential for production systems.
+
+## Continuous Improvement and Feedback Loops
+
+George emphasizes that the best LLM-based products will inherently incorporate reinforcement learning feedback loops, whether human, machine, or hybrid. He points to ChatGPT's improvement over time as evidence that RLHF-style feedback loops are fundamental to model quality. The expectation is that production LLM applications will not be "set and forget" deployments but will require continuous improvement based on user feedback and behavioral data.
+
+The panel discusses mechanisms for capturing and utilizing feedback, though acknowledges that tooling in this space is still evolving. When benchmark questions reveal unexpected deviations, teams can add those examples to their evaluation sets, incorporate them as few-shot examples in prompts, or use them to update vector store contents for retrieval-augmented generation.
+
+George also highlights interesting work from the Nomic team (GPT-4 All) on visualizing the latent space of models to identify "holes" where retraining could improve fidelity. This approach to targeted model improvement represents an emerging area of LLMOps practice.
+
+## Economic Considerations
+
+The panel addresses cost optimization for production LLM applications from multiple angles. Natalia notes the fundamental trade-off: more detailed prompts with explicit examples improve model performance but increase inference costs due to longer token counts. OpenAI charges for both input and output tokens, so both prompt length and response length matter.
+
+Practical cost optimization strategies discussed include:
+
+Fine-tuning models for specific use cases allows shorter prompts and reduced per-request costs after the initial fine-tuning investment. Sahar recommends this approach when dealing with longer context windows.
+
+Constraining output length through prompt instructions helps reduce output token costs while also providing more focused responses.
+
+Semantic caching allows reusing previous completions for similar queries rather than making fresh API calls each time.
+
+Using smaller, cheaper models when appropriate offers significant savings. The panel suggests starting with the most powerful model (like GPT-4) to validate feasibility, then iterating on prompts and potentially downgrading to cheaper models (like GPT-3.5) if they can achieve acceptable performance.
+
+George and Sahar both note that cost concerns vary significantly by company stage. Enterprise customers have generally not cited cost as a blocker given the business impact of LLM features, while startups are encouraged to deprioritize cost concerns early on given the rapid decline in LLM inference costs and the importance of proving value first.
+
+## Model Selection
+
+The panel discusses practical approaches to model selection in production environments. Sahar notes that for enterprise settings, available access often determines the starting point—getting agreements in place for various commercial APIs can take time, so teams typically begin with whatever is most readily available.
+
+The recommended approach is to start with the most powerful available model (often GPT-4) to establish feasibility and baseline performance, then iterate on prompting and potentially migrate to smaller, faster, cheaper models if they can meet requirements. This top-down approach avoids the frustration of struggling to make a weaker model work only to discover the task was feasible all along with a more capable model.
+
+For open-source model selection, the panel references leaderboards for LLMs and vector embedding models as useful resources, while acknowledging that organization-specific evaluation benchmarks are essential for making final decisions.
+
+The discussion anticipates the emergence of smarter orchestration layers that will allow teams to plug in different language models and dynamically route requests based on latency requirements, cost constraints, and accuracy metrics—potentially using multiple LLMs for the same use case depending on the specific characteristics of each request.
+
+## Real-World Production Example
+
+George provides a concrete example from Honeycomb, an observability company in the Insight Partners portfolio. They introduced a natural language overlay for their query builder, allowing users to ask questions in plain English rather than learning an esoteric query language. This feature was built using a finely-tuned LLM and was brought to market in weeks rather than months. Notably, it became the most actively used feature in the product within two days of launch, demonstrating both the speed at which LLM features can be developed and the significant user value they can provide when applied to appropriate use cases.

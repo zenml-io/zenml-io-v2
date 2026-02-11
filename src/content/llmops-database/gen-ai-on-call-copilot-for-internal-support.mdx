@@ -1,0 +1,199 @@
+---
+title: "Gen AI On-Call Copilot for Internal Support"
+slug: "gen-ai-on-call-copilot-for-internal-support"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "694adbd058519648e4b03e60"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2026-01-07T09:40:39.763Z"
+  lastUpdated: "2025-12-23T20:11:49.600Z"
+  createdOn: "2025-12-23T18:13:36.165Z"
+llmopsTags:
+  - "customer-support"
+  - "chatbot"
+  - "question-answering"
+  - "rag"
+  - "embeddings"
+  - "prompt-engineering"
+  - "semantic-search"
+  - "vector-search"
+  - "human-in-the-loop"
+  - "cost-optimization"
+  - "chunking"
+  - "system-prompts"
+  - "evals"
+  - "langchain"
+  - "monitoring"
+  - "databases"
+  - "microservices"
+  - "orchestration"
+  - "security"
+  - "scalability"
+  - "cache"
+  - "openai"
+company: "Uber"
+summary: "Uber faced a challenge managing approximately 45,000 monthly questions across internal Slack support channels, creating productivity bottlenecks for both users waiting for responses and on-call engineers fielding repetitive queries. To address this, Uber built Genie, an on-call copilot using Retrieval-Augmented Generation (RAG) to automatically answer user questions by retrieving information from internal documentation sources including their internal wiki (Engwiki), internal Stack Overflow, and engineering requirement documents. Since launching in September 2023, Genie has expanded to 154 Slack channels, answered over 70,000 questions with a 48.9% helpfulness rate, and is estimated to have saved approximately 13,000 engineering hours."
+link: "https://www.uber.com/en-HR/blog/genie-ubers-gen-ai-on-call-copilot/?uclick_id=92508acc-3a86-4fcc-bc5f-ba1799e3055e"
+year: 2024
+seo:
+  title: "Uber: Gen AI On-Call Copilot for Internal Support - ZenML LLMOps Database"
+  description: "Uber faced a challenge managing approximately 45,000 monthly questions across internal Slack support channels, creating productivity bottlenecks for both users waiting for responses and on-call engineers fielding repetitive queries. To address this, Uber built Genie, an on-call copilot using Retrieval-Augmented Generation (RAG) to automatically answer user questions by retrieving information from internal documentation sources including their internal wiki (Engwiki), internal Stack Overflow, and engineering requirement documents. Since launching in September 2023, Genie has expanded to 154 Slack channels, answered over 70,000 questions with a 48.9% helpfulness rate, and is estimated to have saved approximately 13,000 engineering hours."
+  canonical: "https://www.zenml.io/llmops-database/gen-ai-on-call-copilot-for-internal-support"
+  ogTitle: "Uber: Gen AI On-Call Copilot for Internal Support - ZenML LLMOps Database"
+  ogDescription: "Uber faced a challenge managing approximately 45,000 monthly questions across internal Slack support channels, creating productivity bottlenecks for both users waiting for responses and on-call engineers fielding repetitive queries. To address this, Uber built Genie, an on-call copilot using Retrieval-Augmented Generation (RAG) to automatically answer user questions by retrieving information from internal documentation sources including their internal wiki (Engwiki), internal Stack Overflow, and engineering requirement documents. Since launching in September 2023, Genie has expanded to 154 Slack channels, answered over 70,000 questions with a 48.9% helpfulness rate, and is estimated to have saved approximately 13,000 engineering hours."
+---
+
+## Overview
+
+Uber's Genie represents a substantial production deployment of LLM technology to address a concrete operational challenge: managing the high volume of support questions that internal users ask on Slack channels. With around 45,000 questions per month across hundreds of channels, the engineering organization faced significant productivity losses both for users waiting for responses and for on-call engineers repeatedly answering similar questions. The motivation for building Genie stemmed from the fragmented nature of internal knowledge across multiple sources (internal wiki called Engwiki, internal Stack Overflow, and other documentation), making it difficult for users to self-serve answers.
+
+The case study provides valuable insights into the architectural choices, implementation details, and operational considerations for deploying a RAG-based system at scale within a large technology organization. Uber's approach demonstrates pragmatic LLMOps practices including their rationale for choosing RAG over fine-tuning, their data pipeline architecture using Apache Spark, their strategies for addressing hallucination, and their comprehensive evaluation framework.
+
+## Architectural Decisions and Tradeoffs
+
+A critical decision point in building Genie was choosing between fine-tuning an LLM versus implementing RAG. Uber explicitly chose RAG for several reasons that illuminate important LLMOps tradeoffs. Fine-tuning would have required curating high-quality, diverse training examples and dedicating compute resources for continuous model updates as new information became available. RAG, by contrast, didn't require diverse examples upfront and offered a faster time-to-market. This pragmatic choice reflects a common pattern in production LLM systems: when time-to-value and ease of updates are priorities, and when the knowledge base is relatively accessible in document form, RAG often provides a more maintainable solution than fine-tuning, despite potential limitations in response quality or style.
+
+The architectural approach follows a standard RAG pattern but with production-grade considerations. The system scrapes internal data sources (Engwiki, internal Stack Overflow, engineering requirement documents), generates embeddings using OpenAI's embedding model, and stores these in a vector database. When users post questions in Slack, the question gets converted to embeddings, relevant context is retrieved from the vector database, and this context serves as input to an LLM to generate responses. While the high-level architecture is straightforward, the implementation details reveal the complexity of operating such systems at scale.
+
+## Data Pipeline and ETL
+
+Uber built their data ingestion pipeline as a custom Apache Spark application, leveraging Spark for distributed processing of document ingestion and embedding generation. This choice makes sense given the scale of documentation to process and Uber's existing investment in Spark infrastructure. The ETL pipeline has distinct stages for data preparation, embedding generation, and serving artifact creation.
+
+In the data preparation stage, a Spark application fetches content from respective data sources using APIs (Engwiki API, Stack Overflow API). The output is a Spark dataframe with columns for the source URL, content, and metadata. This structured approach to data preparation ensures traceability back to original sources, which becomes important later for citation and hallucination mitigation.
+
+For embedding generation, Uber uses langchain for chunking the content and generates embeddings through OpenAI's embedding API using PySpark UDFs (User Defined Functions). The use of UDFs allows them to parallelize embedding generation across Spark executors, which is crucial for processing large volumes of documents efficiently. The output dataframe schema includes the source URL, original content, chunked content, and the corresponding vector embedding for each chunk. This granular approach to chunking and embedding ensures that retrieval can operate at an appropriate level of granularity rather than on entire documents.
+
+The vectors are then pushed to Terrablob, Uber's internal blob storage system, via a pusher component. A bootstrap job ingests data from the data source to Sia, Uber's in-house vector database solution. Two Spark jobs handle index building, merging, and ingesting data to Terrablob. The system uses a distributed architecture where each leaf node syncs and downloads a base index and snapshot from Terrablob. During retrieval, queries are sent directly to each leaf, suggesting a distributed query processing approach for handling high query volumes.
+
+## Knowledge Service and Query Processing
+
+The back-end component called Knowledge Service handles incoming requests for all queries. It converts incoming questions into embeddings and fetches the most relevant chunks from the vector database. While the case study doesn't provide extensive detail on the retrieval algorithm or ranking mechanisms, the architecture suggests a standard semantic search approach where question embeddings are compared against document chunk embeddings to identify the most relevant context.
+
+One notable aspect of the production deployment is the integration with Michelangelo Gateway, which serves as a pass-through service to the LLM. This architectural choice allows Uber to maintain an audit log and track costs by passing UUIDs through the request chain. Cost tracking is a critical but often overlooked aspect of production LLM systems, and Uber's explicit inclusion of this functionality demonstrates mature LLMOps practices. When Slack clients or other platforms call Knowledge Service, a UUID is passed through the context header to Michelangelo Gateway and then to the LLM, enabling attribution of costs to specific queries or channels.
+
+## Addressing Hallucination
+
+Uber implemented several strategies to reduce hallucinations, which represents one of the key challenges in deploying RAG systems. Their primary approach involved restructuring how prompts are constructed from retrieved context. Rather than simply concatenating retrieved chunks, they explicitly structured the prompt to include multiple "sub-contexts," each associated with its source URL. The prompt explicitly instructs the LLM to only provide answers from the provided sub-contexts and to cite the source URL for each answer.
+
+This approach reflects a common pattern in production RAG systems: constrain the model's behavior through explicit prompt engineering and force attribution to sources. By requiring citation of source URLs, the system provides transparency that allows users to verify information and increases trust. However, it's worth noting that while this approach can reduce hallucinations, it doesn't eliminate them entirely—LLMs may still misinterpret or incorrectly synthesize information from the provided context. The case study doesn't provide detailed metrics on hallucination rates before and after this intervention, which would have been valuable for assessing effectiveness.
+
+## Data Security and Access Control
+
+Data security represents a significant concern when deploying LLM systems that integrate multiple internal data sources. Uber addressed this through careful curation of data sources, only including sources that are widely available to most Uber engineers and avoiding sensitive data sources that might leak information to users who shouldn't have access. This approach represents a conservative strategy that prioritizes security over comprehensiveness.
+
+The architecture also involves sending embeddings and prompts to OpenAI's API, which raises potential data leakage concerns. While the case study doesn't elaborate on specific measures to protect sensitive information when calling external APIs, the pre-curation of data sources suggests that Uber has made conscious decisions about what information is acceptable to process through external services. Organizations deploying similar systems need to carefully consider data residency requirements, contractual protections with API providers, and whether self-hosted models might be necessary for certain use cases.
+
+Additionally, the system implements access control by making embeddings from specific data sources (like particular Engwiki spaces) only accessible through related Slack channels. This provides some level of compartmentalization, ensuring that knowledge from restricted documentation spaces doesn't leak to unrelated channels.
+
+## Evaluation Framework
+
+Uber implemented a comprehensive evaluation framework that represents sophisticated LLMOps practices. The framework operates at multiple levels: user feedback collection, custom evaluation metrics, and document quality assessment.
+
+For user feedback, Genie provides immediate feedback buttons in Slack responses with four options: "Resolved" (answer completely resolved the issue), "Helpful" (answer partially helped but more help needed), "Not Helpful" (response wrong or not relevant), and "Not Relevant" (user needs human support that Genie can't provide). This granular feedback captures different dimensions of usefulness rather than simple thumbs up/down feedback. A Slack plugin captures this feedback and streams it via Kafka to a Hive table with all relevant metadata, which is then visualized in dashboards. This infrastructure demonstrates the importance of building observability into LLM systems from the start.
+
+The 48.9% helpfulness rate mentioned in the results likely represents some combination of "Resolved" and "Helpful" feedback, though the case study doesn't provide a precise definition. While this may seem like a modest success rate, it's important to contextualize: even at 48.9%, the system has answered over 70,000 questions and saved an estimated 13,000 engineering hours. This illustrates an important principle in LLMOps—systems don't need to be perfect to provide substantial value, especially when the alternative is limited human capacity.
+
+Beyond user feedback, Uber provides users with the ability to run custom evaluations for hallucinations, answer relevancy, or other metrics important for their specific use case. This evaluation runs as a separate ETL pipeline using Michelangelo components. The pipeline retrieves Genie's context and responses from Hive, joins them with Slack metadata and user feedback, and passes them to an Evaluator component. The Evaluator implements "LLM as Judge"—using an LLM to evaluate the quality of another LLM's outputs based on specified prompts. The specified metrics are extracted and included in evaluation reports available through a UI.
+
+The "LLM as Judge" approach has become increasingly common in production LLM systems as a way to scale evaluation beyond manual review. However, it's important to note potential limitations: the evaluator LLM may have its own biases and errors, and there's a risk of circular reasoning if the same model is used for both generation and evaluation. The case study doesn't specify whether Uber uses different models or providers for generation versus evaluation, which would be a relevant consideration.
+
+## Document Quality Evaluation
+
+Particularly noteworthy is Uber's implementation of document evaluation, which addresses a fundamental challenge in RAG systems: even with perfect retrieval and generation, the system can only be as good as its source documents. Poor quality documentation—whether incomplete, outdated, ambiguous, or poorly structured—will result in poor responses regardless of the sophistication of the LLM.
+
+Uber's document evaluation app transforms documents in the knowledge base into a Spark dataframe where each row represents one document. The evaluation process again uses "LLM as Judge," feeding the LLM a custom evaluation prompt for each document. The LLM returns an evaluation score along with explanations and actionable suggestions for improving document quality. These metrics are published in evaluation reports accessible through the Michelangelo UI.
+
+This approach demonstrates mature thinking about RAG systems—recognizing that the system involves not just technical components but also the quality of underlying content. By providing actionable feedback to documentation authors, Uber creates a feedback loop that can improve the entire system's effectiveness over time. However, the case study doesn't discuss whether this evaluation has led to measurable improvements in documentation quality or whether documentation owners have been receptive to LLM-generated suggestions, which would be valuable information for assessing the real-world impact of this capability.
+
+## User Experience and Interaction Design
+
+Uber invested in improving the user experience beyond simply providing answers. They developed a new interaction mode that provides "next step action buttons" with each response, allowing users to easily ask follow-up questions, mark questions as resolved, or escalate to human support. This design acknowledges that many user interactions aren't single question-answer exchanges but rather conversational flows that may require multiple turns or ultimately human intervention.
+
+The interaction design also aims to encourage users to read Genie's answers more attentively rather than immediately escalating to human support. This behavioral nudge is important for realizing the productivity benefits of the system—if users habitually skip over AI-generated responses and immediately ask for human help, the system fails to deliver value even when it could have resolved the issue.
+
+The escalation path to human support is explicitly designed into the system, which reflects realistic expectations about AI capabilities. Rather than positioning Genie as a complete replacement for human support, Uber frames it as a first line of defense that can resolve many issues while seamlessly handing off more complex cases. This approach is more likely to gain user acceptance than systems that try to prevent human escalation entirely.
+
+## Deployment Scale and Impact
+
+Since launching in September 2023, Genie has scaled to 154 Slack channels and answered over 70,000 questions. The estimated 13,000 engineering hours saved is a substantial impact, though it's worth noting that the case study doesn't provide details on how this estimate was calculated. Typical approaches might include multiplying the number of resolved/helpful responses by an estimated time saving per response, or comparing support ticket volumes before and after deployment. Without transparency into the calculation methodology, it's difficult to assess whether this represents a conservative or optimistic estimate.
+
+The 48.9% helpfulness rate provides an honest assessment of performance rather than cherry-picked success stories. This transparency is valuable for setting realistic expectations for similar systems. The metric suggests that slightly less than half of interactions are considered at least partially helpful, which means that in more than half of cases, users either found the response unhelpful or not relevant to their needs. This reinforces that current LLM technology, even with well-implemented RAG systems, has significant limitations and isn't a magic solution.
+
+The expansion to 154 channels from an initial deployment demonstrates successful scaling and presumably some level of organic adoption as teams learned about Genie's capabilities. However, the case study doesn't discuss challenges encountered during scaling, whether certain types of channels or questions work better than others, or how performance varies across different documentation domains.
+
+## Technology Stack and Integration Points
+
+The technology stack reflects a combination of external services and internal Uber infrastructure. Key components include:
+
+- **OpenAI** for both embeddings (via their embedding API) and likely for text generation (though the specific model isn't mentioned)
+- **Apache Spark** for distributed data processing and ETL
+- **Terrablob** (Uber's internal blob storage) for storing embeddings and indexes
+- **Sia** (Uber's internal vector database) for vector search
+- **Michelangelo** (Uber's ML platform) for various infrastructure components including evaluation pipelines
+- **Kafka** for streaming user feedback metrics
+- **Hive** for storing metrics and evaluation data
+- **Slack** as the primary user interface
+- **Langchain** for document chunking
+
+This stack demonstrates how production LLM systems typically involve integrating multiple technologies rather than relying on a single platform. The heavy reliance on internal Uber infrastructure (Terrablob, Sia, Michelangelo) suggests that organizations with mature ML platforms can leverage existing investments rather than adopting entirely new infrastructure for LLM applications.
+
+The use of PySpark UDFs for calling the OpenAI embedding API is particularly interesting as it shows how organizations can integrate external API calls into distributed data processing frameworks. However, this approach also creates dependencies on external service availability and rate limits, which can complicate data pipeline operations.
+
+## Production Considerations and Gaps
+
+While the case study provides valuable detail on architecture and implementation, several important production considerations receive limited or no coverage:
+
+**Latency and Performance**: The case study doesn't discuss response time characteristics, which are crucial for user experience. How long do users typically wait for Genie's responses? Are there timeout mechanisms? How does the system handle high query volumes or spikes in traffic?
+
+**Error Handling**: What happens when the vector database is unavailable, when the OpenAI API returns errors, or when retrieval returns no relevant context? The robustness of error handling often distinguishes proof-of-concept systems from production-ready deployments.
+
+**Monitoring and Alerting**: Beyond cost tracking and user feedback metrics, what operational metrics are monitored? Are there alerts for degraded performance, high error rates, or anomalous behavior?
+
+**Model Updates**: How does Uber handle updates to the underlying LLM models (whether from OpenAI or elsewhere)? Model updates can change response characteristics, potentially breaking carefully tuned prompts or introducing regressions.
+
+**Context Window Management**: The case study doesn't discuss how they handle situations where retrieved context exceeds the LLM's context window, or how they prioritize which context to include when space is limited.
+
+**Retrieval Optimization**: Details on retrieval algorithms, ranking mechanisms, how many chunks are retrieved per query, and how retrieval parameters were tuned are not provided.
+
+## Critical Assessment
+
+The Genie case study presents a well-executed RAG implementation that addresses a real business need and appears to deliver meaningful value. Several aspects deserve particular commendation:
+
+- **Pragmatic technology choices**: Choosing RAG over fine-tuning for faster time-to-market and easier updates demonstrates good engineering judgment
+- **Comprehensive evaluation**: The multi-layered evaluation framework including user feedback, custom metrics, and document quality assessment shows sophisticated thinking about measurement
+- **Transparency about limitations**: The 48.9% helpfulness rate and explicit discussion of challenges like hallucination demonstrates realistic expectations
+- **Production infrastructure**: Integration with existing ML platforms, cost tracking, and metrics pipelines shows attention to operational concerns
+
+However, several aspects warrant skepticism or further scrutiny:
+
+- **Cost-benefit analysis**: The 13,000 engineering hours saved is presented without methodology or confidence intervals, making it difficult to assess the true ROI
+- **Limited baseline comparison**: The case study doesn't compare Genie's performance to alternative approaches like improved documentation search, FAQ systems, or other automation
+- **Data security tradeoffs**: The decision to only include widely-available documentation limits Genie's potential usefulness for more specialized or sensitive topics
+- **Hallucination mitigation effectiveness**: While strategies are described, quantitative assessment of their effectiveness is absent
+- **User behavior changes**: It's unclear whether the system has changed how users interact with documentation or whether it's simply replaced some fraction of human support interactions
+
+The case study also reflects a common challenge in LLMOps—measuring the true business impact of AI systems. Saved engineering hours is a convenient metric, but it requires many assumptions: that questions would have otherwise been answered by on-call engineers (rather than users finding answers themselves or abandoning the question), that the time saved by users offsets the time spent developing and maintaining Genie, and that the quality of AI-generated answers is comparable to human responses.
+
+## Lessons for LLMOps Practitioners
+
+Uber's Genie deployment offers several valuable lessons for organizations building production LLM systems:
+
+**Start with a clear, measurable problem**: The 45,000 monthly questions and quantified productivity loss provided clear motivation and success metrics from the outset.
+
+**Choose the right architectural approach for your constraints**: RAG's faster time-to-market and easier updates made it the right choice for Uber's situation, even though fine-tuning might offer benefits in other contexts.
+
+**Build evaluation and feedback mechanisms from day one**: Genie's comprehensive evaluation framework enables continuous improvement and provides data to justify continued investment.
+
+**Don't over-promise on AI capabilities**: By designing explicit escalation paths to human support and being transparent about limitations, Uber set realistic expectations.
+
+**Leverage existing infrastructure where possible**: Uber's use of their existing ML platform (Michelangelo), data processing infrastructure (Spark), and storage systems reduced the complexity of the implementation.
+
+**Consider document quality as part of the system**: The recognition that RAG systems are only as good as their source documents, and the investment in document evaluation, demonstrates systems thinking.
+
+**Iterate on user experience**: The evolution to include action buttons and improved interaction modes shows commitment to refinement based on usage patterns.
+
+## Conclusion
+
+Uber's Genie represents a solid example of production LLMOps practices for a RAG-based support system. The implementation demonstrates careful attention to architecture, evaluation, and user experience, while being realistic about limitations and challenges. The scale of deployment (154 channels, 70,000+ questions answered) and reported impact (13,000 engineering hours saved) suggest meaningful business value, though independent validation of these metrics would strengthen confidence in the results. For organizations considering similar internal AI support systems, Genie provides a useful reference architecture and highlights key considerations around data security, hallucination mitigation, evaluation, and user interaction design. However, practitioners should also recognize that the case study comes from Uber's blog and serves partly as marketing material, so claims about effectiveness and impact should be interpreted with appropriate skepticism and validated through their own pilots and measurements.

@@ -1,0 +1,127 @@
+---
+title: "Multi-Agent Investment Research Assistant with RAG and Human-in-the-Loop"
+slug: "multi-agent-investment-research-assistant-with-rag-and-human-in-the-loop"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "68342b03302b78a57d39c77f"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:09:54.649Z"
+  createdOn: "2025-05-26T08:49:07.917Z"
+llmopsTags:
+  - "question-answering"
+  - "document-processing"
+  - "data-analysis"
+  - "chatbot"
+  - "classification"
+  - "summarization"
+  - "high-stakes-application"
+  - "structured-output"
+  - "rag"
+  - "multi-agent-systems"
+  - "human-in-the-loop"
+  - "prompt-engineering"
+  - "chunking"
+  - "few-shot"
+  - "semantic-search"
+  - "vector-search"
+  - "agent-based"
+  - "system-prompts"
+  - "databases"
+  - "fastapi"
+  - "langchain"
+  - "redis"
+  - "cache"
+  - "elasticsearch"
+  - "monitoring"
+  - "orchestration"
+  - "documentation"
+  - "compliance"
+  - "guardrails"
+  - "reliability"
+company: "J.P. Morgan Chase"
+summary: "J.P. Morgan Chase's Private Bank investment research team developed \"Ask David,\" a multi-agent AI system to automate investment research processes that previously required manual database searches and analysis. The system combines structured data querying, RAG for unstructured documents, and proprietary analytics through specialized agents orchestrated by a supervisor agent. While the team claims significant efficiency gains and real-time decision-making capabilities, they acknowledge accuracy limitations requiring human oversight, especially for high-stakes financial decisions involving billions in assets."
+link: "https://www.youtube.com/watch?v=yMalr0jiOAc"
+year: 2025
+seo:
+  title: "J.P. Morgan Chase: Multi-Agent Investment Research Assistant with RAG and Human-in-the-Loop - ZenML LLMOps Database"
+  description: "J.P. Morgan Chase's Private Bank investment research team developed \"Ask David,\" a multi-agent AI system to automate investment research processes that previously required manual database searches and analysis. The system combines structured data querying, RAG for unstructured documents, and proprietary analytics through specialized agents orchestrated by a supervisor agent. While the team claims significant efficiency gains and real-time decision-making capabilities, they acknowledge accuracy limitations requiring human oversight, especially for high-stakes financial decisions involving billions in assets."
+  canonical: "https://www.zenml.io/llmops-database/multi-agent-investment-research-assistant-with-rag-and-human-in-the-loop"
+  ogTitle: "J.P. Morgan Chase: Multi-Agent Investment Research Assistant with RAG and Human-in-the-Loop - ZenML LLMOps Database"
+  ogDescription: "J.P. Morgan Chase's Private Bank investment research team developed \"Ask David,\" a multi-agent AI system to automate investment research processes that previously required manual database searches and analysis. The system combines structured data querying, RAG for unstructured documents, and proprietary analytics through specialized agents orchestrated by a supervisor agent. While the team claims significant efficiency gains and real-time decision-making capabilities, they acknowledge accuracy limitations requiring human oversight, especially for high-stakes financial decisions involving billions in assets."
+---
+
+## Overview
+
+J.P. Morgan Chase's Private Bank investment research team presented their journey building "Ask David" at the Interrupt conference, sharing insights into deploying a multi-agent LLM system for automating investment research. The team manages thousands of investment products backed by years of valuable data, and prior to this initiative, answering questions about these products required manual research across databases, files, and materials—a time-consuming process that limited the team's ability to scale and provide timely insights. The acronym DAVID stands for "Data Analytics Visualization Insights and Decision-making assistant."
+
+The presentation, delivered by David (representing the business/research side) and Jane (covering technical implementation), candidly addresses both the potential of the system and its limitations. Importantly, the team frames this not as a replacement for human expertise but as an augmentation tool, explicitly acknowledging that "Ask David still consults with real David whenever needed" given the high stakes involved with billions of dollars of client assets.
+
+## Technical Architecture
+
+The system is built as a multi-agent architecture with several key components working in coordination:
+
+**Supervisor Agent**: Acts as the primary orchestrator, interfacing with end users to understand their intent and delegating tasks to specialized sub-agents. The supervisor maintains both short-term and long-term memory to enable personalized user experiences and knows when to invoke human-in-the-loop processes to ensure accuracy and reliability.
+
+**Specialized Sub-Agents**: The system employs three main categories of specialized agents:
+
+- **Structured Data Agent**: Translates natural language queries into SQL queries or API calls, then uses LLMs to summarize the retrieved data. This enables users to access decades of structured data that previously required navigating multiple production systems.
+
+- **Unstructured Data Agent (RAG)**: Handles the vast documentation the bank manages, including emails, meeting notes, presentations, and increasingly video/audio recordings from virtual meetings. Documents are preprocessed, vectorized, and stored in a vector database (MongoDB was mentioned as one storage layer), with a RAG agent retrieving relevant information.
+
+- **Analytics Agent**: Interfaces with proprietary models and APIs that generate insights and visualizations. For simple queries, a ReAct agent uses APIs as tools. For more complex queries, the system employs text-to-code generation with human supervision for execution.
+
+**Workflow Graph Structure**: The end-to-end workflow begins with a planning node that routes queries to one of two main subgraphs—a general QA flow for broad questions (e.g., "how do I invest in gold?") and a specific fund flow for product-specific inquiries. Each subgraph contains its own supervisor agent and team of specialized agents.
+
+**Post-Processing Nodes**: After retrieving answers, the system includes:
+- A personalization node that tailors responses based on user roles (e.g., due diligence specialists receive detailed answers while advisors get general summaries)
+- A reflection node using LLM-as-judge to validate that generated answers make sense, with retry logic if validation fails
+- A summarization node that updates memory and returns the final answer
+
+## Development Methodology
+
+The team emphasized an iterative development approach with several key principles:
+
+**Start Simple and Refactor Often**: Rather than building the complex multi-agent system from day one, the team followed an evolutionary path. They started with a simple ReAct agent to understand fundamentals, then built specialized agents (particularly the RAG agent), then integrated these into a multi-agent flow with a supervisor, and finally developed the current subgraph architecture that can scale to handle different intention types.
+
+**Evaluation-Driven Development**: The team strongly advocates for starting evaluation early, noting that compared to traditional AI projects, GenAI projects have shorter development phases but longer evaluation phases. They recommend defining metrics and goals early, with accuracy being paramount in financial services, and using continuous evaluation to build confidence in improvements.
+
+The team shared specific evaluation practices:
+- Independently evaluating sub-agents to identify weak links—this is crucial for understanding which components need improvement
+- Selecting appropriate metrics based on agent design (e.g., conciseness for summarization agents, trajectory evaluation for tool-calling agents)
+- Starting evaluation even without ground truth, as many useful metrics exist beyond accuracy, and reviewing evaluation results naturally accumulates ground truth examples over time
+- Using LLM-as-judge in combination with human review to scale evaluation without overburdening subject matter experts
+
+## Accuracy Progression and Human-in-the-Loop
+
+The team presented a realistic framework for accuracy improvement when applying general models to specific domains:
+
+- **Starting point (<50%)**: General models applied to domain-specific tasks typically achieve less than 50% accuracy initially
+- **Quick wins (to ~80%)**: Improvements like chunking strategies, search algorithm optimization, and prompt engineering can relatively quickly improve accuracy to around 80%
+- **Workflow optimization (80-90%)**: Creating specialized workflows and subgraphs allows fine-tuning certain question types without impacting others
+- **Last mile (90-100%)**: The team acknowledges this is the "hardest mile" and may not be achievable for GenAI applications to reach 100%
+
+For the last mile, human-in-the-loop is essential. The team explicitly states that with billions of dollars at stake, they cannot afford inaccuracy, so the AI system still consults with human experts when needed. This is a refreshingly honest acknowledgment of LLM limitations in high-stakes domains.
+
+## Use Case Example
+
+The presentation included a walkthrough of a real scenario: a client asking "Why was this fund terminated?" during a meeting with their financial advisor. Previously, this would require the advisor to contact the research team, work with human analysts to understand status change history, research the fund, identify similar alternatives, and manually prepare a client-appropriate presentation.
+
+With Ask David, the workflow proceeds as follows: the planning node identifies this as a fund-specific query, routes to the appropriate subgraph, the supervisor agent extracts fund context and delegates to the document search agent, which retrieves data from MongoDB. The answer is then personalized based on who is asking, validated through reflection, and summarized with reference links for the advisor to explore further.
+
+## Key Takeaways and Lessons Learned
+
+The team concluded with three main takeaways for practitioners building similar systems:
+- **Iterate fast**: Don't try to build the perfect complex system from day one; evolve the architecture as understanding grows
+- **Evaluate early**: Start evaluation even without ground truth, use appropriate metrics, and let the evaluation process naturally build up examples
+- **Keep humans in the loop**: Especially for high-stakes domains, human expertise remains essential for the accuracy levels required
+
+## Critical Assessment
+
+While the presentation provides valuable insights into building production multi-agent systems in finance, several aspects warrant balanced consideration. The team does not share specific accuracy numbers or quantitative results, making it difficult to assess actual production performance. The system appears to still be in development or early deployment phases given the forward-looking language used ("aiming to provide," "we are making our vision a reality").
+
+The honest acknowledgment that 100% accuracy may not be achievable and that human oversight remains necessary is commendable and realistic. However, the actual production deployment status and client usage metrics are not detailed. The architecture and methodology shared are valuable for practitioners, but the case study would benefit from concrete performance metrics and lessons from real production operation.
+
+The technical approach—using a supervisor pattern with specialized sub-agents, combining structured data access, RAG, and code generation—represents a sophisticated but now increasingly common pattern for enterprise LLM applications. The emphasis on evaluation-driven development and the practical progression framework for accuracy improvement provide actionable guidance for similar projects.

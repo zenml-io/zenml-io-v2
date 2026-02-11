@@ -1,0 +1,128 @@
+---
+title: "Using LLMs to Enhance Search Discovery and Recommendations"
+slug: "using-llms-to-enhance-search-discovery-and-recommendations"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "677813fe26ab402349e72673"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:52:03.778Z"
+  createdOn: "2025-01-03T16:44:46.292Z"
+llmopsTags:
+  - "question-answering"
+  - "classification"
+  - "structured-output"
+  - "realtime-application"
+  - "prompt-engineering"
+  - "few-shot"
+  - "semantic-search"
+  - "error-handling"
+  - "latency-optimization"
+  - "cost-optimization"
+  - "chunking"
+  - "system-prompts"
+  - "databases"
+  - "api-gateway"
+  - "monitoring"
+  - "cicd"
+  - "cache"
+  - "openai"
+company: "Instacart"
+summary: "Instacart integrated LLMs into their search stack to enhance product discovery and user engagement. They developed two content generation techniques: a basic approach using LLM prompting and an advanced approach incorporating domain-specific knowledge from query understanding models and historical data. The system generates complementary and substitute product recommendations, with content generated offline and served through a sophisticated pipeline. The implementation resulted in significant improvements in user engagement and revenue, while addressing challenges in content quality, ranking, and evaluation."
+link: "https://tech.instacart.com/supercharging-discovery-in-search-with-llms-556c585d4720"
+year: 2024
+seo:
+  title: "Instacart: Using LLMs to Enhance Search Discovery and Recommendations - ZenML LLMOps Database"
+  description: "Instacart integrated LLMs into their search stack to enhance product discovery and user engagement. They developed two content generation techniques: a basic approach using LLM prompting and an advanced approach incorporating domain-specific knowledge from query understanding models and historical data. The system generates complementary and substitute product recommendations, with content generated offline and served through a sophisticated pipeline. The implementation resulted in significant improvements in user engagement and revenue, while addressing challenges in content quality, ranking, and evaluation."
+  canonical: "https://www.zenml.io/llmops-database/using-llms-to-enhance-search-discovery-and-recommendations"
+  ogTitle: "Instacart: Using LLMs to Enhance Search Discovery and Recommendations - ZenML LLMOps Database"
+  ogDescription: "Instacart integrated LLMs into their search stack to enhance product discovery and user engagement. They developed two content generation techniques: a basic approach using LLM prompting and an advanced approach incorporating domain-specific knowledge from query understanding models and historical data. The system generates complementary and substitute product recommendations, with content generated offline and served through a sophisticated pipeline. The implementation resulted in significant improvements in user engagement and revenue, while addressing challenges in content quality, ranking, and evaluation."
+---
+
+## Overview
+
+Instacart, a major grocery e-commerce platform operating a four-sided marketplace, developed an LLM-powered system to enhance their search experience with discovery-oriented content. The case study from 2024 details how they moved beyond traditional search relevance to incorporate inspirational content that helps users find products they might not have explicitly searched for but would find valuable.
+
+The core business problem was that while Instacart's search was effective at returning directly relevant results, user research revealed a desire for more inspirational and discovery-driven content. The existing "Related Items" section was limited in its approach—for narrow queries like "croissant," it would return loosely related items like "cookies" simply because they shared a department category. Additionally, the system failed to suggest complementary products that would naturally pair with search results (e.g., suggesting soy sauce and rice vinegar for a "sushi" search).
+
+## LLM Integration Strategy
+
+Instacart's approach to integrating LLMs into their production search stack was deliberate and multi-faceted. They identified two key advantages of LLMs for this use case: rich world knowledge that eliminates the need for building extensive knowledge graphs, and improved debuggability through transparent reasoning processes that allow developers to quickly identify and correct errors by adjusting prompts.
+
+The team built upon their earlier success with "Ask Instacart," which handled natural language-style queries, and extended LLM capabilities to enhance search results for all queries, not just broad intent ones.
+
+## Content Generation Techniques
+
+### Basic Generation
+
+The basic generation technique involves instructing the LLM to act as an AI assistant for online grocery shopping. The prompt structure asks the LLM to generate three shopping lists for each query: substitute items, and two complementary/bought-together product groups. The prompts include:
+
+- Specific product requirements defining desired output format
+- Hand-curated few-shot examples demonstrating expected response structure
+- Instructions to generate general recommendations covering various store types
+- Guidance to keep items at a single concept level rather than specific products
+- Requests for brief explanations to enhance user understanding
+
+The output is structured as JSON with categories for substitutes, complementary items, and themed collections. For example, an "ice cream" query would generate substitute frozen treats, complementary toppings and sauces, and themed lists like "Sweet Summer Delights."
+
+### Advanced Generation
+
+The advanced generation technique emerged from recognizing that basic generation often misinterpreted user intent or generated overly generic recommendations. For instance, a search for "Just Mayo" (a vegan mayonnaise brand) would be misinterpreted as generic mayonnaise, and "protein" would return common protein sources rather than the protein bars and powders that users actually converted on.
+
+To address this, Instacart augmented prompts with domain-specific signals:
+
+- Query Understanding (QU) model annotations that identify brands (<B>), product concepts (<P>), and attributes (<A>)
+- Historical engagement data showing which categories users actually converted on
+- Popular purchase patterns for specific queries
+
+The prompt format for advanced generation explicitly includes annotations like "<B>:BODYARMOR" for brand queries and "<P>:pizza, <A>:frozen" for attributed product searches, along with previously purchased product categories. This fusion of LLM world knowledge with Instacart-specific context significantly improved recommendation accuracy.
+
+### Sequential Search Term Analysis
+
+An innovative extension involved analyzing what users typically search for and purchase after their initial query. By examining next converted search terms, the system provides richer context to the LLM. For "sour cream," instead of only considering sour cream products, the system incorporates data showing that users frequently purchase tortilla chips or baked potatoes afterward.
+
+The implementation mines frequently co-occurring lists of consecutive search terms to extract high-quality signals, filtering out noise from partial or varied shopping sessions. This methodology led to an 18% improvement in engagement rate with inspirational content.
+
+## Data Pipeline and Serving Architecture
+
+The production system implements an offline batch processing architecture optimized for latency and cost:
+
+**Data Preparation**: A batch job extracts historical search queries from logs and enriches them with necessary metadata including QU signals, consecutive search terms, and other relevant signals.
+
+**Prompt Generation**: Using predefined prompt templates as base structures, the system populates templates with enriched queries and associated metadata, creating contextually-rich prompts for each specific query.
+
+**LLM Response Generation**: A batch job invokes the LLM and stores responses in a key-value store, with the query as key and the LLM response (containing substitute and complementary recommendations) as value.
+
+**Response-to-Product Mapping**: Each item in the LLM-generated list is treated as a search query and passed through Instacart's existing search engine to retrieve the best matching products from the catalog.
+
+**Post-processing**: The pipeline removes duplicates and similar products, filters irrelevant items, and applies diversity-based reranking to ensure users see varied options.
+
+**Runtime Serving**: When users issue queries, the system retrieves both standard search results and looks up the LLM-content table to display inspirational products in carousels with suitable titles.
+
+## Content Ranking and Page Optimization
+
+With increased content on the page, Instacart faced interface clutter and operational complexity challenges. They developed a "Whole Page Ranker" model that determines optimal positions for new content on the page. This model balances showing highly relevant content to users while maintaining revenue objectives, dynamically adjusting layout based on content type and relevance.
+
+## Evaluation Approach: LLM as a Judge
+
+A significant challenge was developing robust evaluation methods for discovery-oriented content, as traditional relevance metrics don't directly apply—discovery content aims to inspire rather than directly answer queries. With the volume of searches and catalog diversity, scalable assessment methods were essential.
+
+Instacart adopted the "LLM as a Judge" paradigm for quality evaluation. The evaluation prompt positions the LLM as an expert in e-commerce recommendation systems, tasking it to evaluate curator-generated content that produces complementary or substitute search terms. The goal is to assess whether the generated content would encourage users to make purchases, with the LLM providing quality scores.
+
+## Business Alignment and Results
+
+The team emphasized aligning content generation with business metrics, particularly revenue. The generated content needed to meet user needs while supporting business growth objectives. While specific metrics beyond the 18% engagement improvement aren't detailed, the post claims substantial improvements in user engagement and revenue.
+
+## Technical Considerations and Limitations
+
+The case study honestly acknowledges limitations. The advanced generation approach, while effective, is still restrictive because context is bounded by products users engage with for the current query. This introduces bias that limits truly inspirational content generation—hence the development of the sequential search term analysis approach.
+
+The reliance on offline batch processing means content freshness is limited to daily updates. The system also depends heavily on the quality of Query Understanding models for accurate intent annotation, and the product mapping step introduces potential for irrelevant recalls that require post-processing to filter.
+
+## Architectural Insights
+
+The architecture demonstrates a pragmatic approach to LLM deployment: rather than serving LLM calls at request time with associated latency and cost concerns, Instacart pre-computes content offline for known queries. This approach trades off real-time personalization for cost efficiency and consistent latency. The key-value store serving model allows for rapid lookup during user sessions while the batch pipeline handles the computationally expensive LLM inference.
+
+The integration with existing search infrastructure is notable—LLM outputs are treated as queries themselves to leverage existing product matching capabilities, avoiding the need to build entirely new retrieval systems.

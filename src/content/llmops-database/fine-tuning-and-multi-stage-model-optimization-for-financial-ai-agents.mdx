@@ -1,0 +1,138 @@
+---
+title: "Fine-Tuning and Multi-Stage Model Optimization for Financial AI Agents"
+slug: "fine-tuning-and-multi-stage-model-optimization-for-financial-ai-agents"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "6932b272a57d66d101ef5bb5"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:33:44.812Z"
+  createdOn: "2025-12-05T10:22:42.108Z"
+llmopsTags:
+  - "customer-support"
+  - "chatbot"
+  - "classification"
+  - "code-generation"
+  - "summarization"
+  - "high-stakes-application"
+  - "structured-output"
+  - "regulatory-compliance"
+  - "fine-tuning"
+  - "prompt-engineering"
+  - "few-shot"
+  - "latency-optimization"
+  - "cost-optimization"
+  - "agent-based"
+  - "multi-agent-systems"
+  - "human-in-the-loop"
+  - "evals"
+  - "semantic-search"
+  - "pytorch"
+  - "monitoring"
+  - "databases"
+  - "api-gateway"
+  - "guardrails"
+  - "cache"
+  - "amazon-aws"
+  - "hugging-face"
+company: "Robinhood Markets"
+summary: "Robinhood Markets developed a sophisticated LLMOps platform to deploy AI agents serving millions of users across multiple use cases including customer support, content generation (Cortex Digest), and code generation (custom indicators and scans). To address the \"generative AI trilemma\" of balancing cost, quality, and latency in production, they implemented a hierarchical tuning approach starting with prompt optimization, progressing to trajectory tuning with dynamic few-shot examples, and culminating in LoRA-based fine-tuning. Their CX AI agent achieved over 50% latency reduction (from 3-6 seconds to under 1 second) while maintaining quality parity with frontier models, supported by a comprehensive three-layer evaluation system combining LLM-as-judge, human feedback, and task-specific metrics."
+link: "https://www.youtube.com/watch?v=vQ8P-_u2tH4"
+year: 2025
+seo:
+  title: "Robinhood Markets: Fine-Tuning and Multi-Stage Model Optimization for Financial AI Agents - ZenML LLMOps Database"
+  description: "Robinhood Markets developed a sophisticated LLMOps platform to deploy AI agents serving millions of users across multiple use cases including customer support, content generation (Cortex Digest), and code generation (custom indicators and scans). To address the \"generative AI trilemma\" of balancing cost, quality, and latency in production, they implemented a hierarchical tuning approach starting with prompt optimization, progressing to trajectory tuning with dynamic few-shot examples, and culminating in LoRA-based fine-tuning. Their CX AI agent achieved over 50% latency reduction (from 3-6 seconds to under 1 second) while maintaining quality parity with frontier models, supported by a comprehensive three-layer evaluation system combining LLM-as-judge, human feedback, and task-specific metrics."
+  canonical: "https://www.zenml.io/llmops-database/fine-tuning-and-multi-stage-model-optimization-for-financial-ai-agents"
+  ogTitle: "Robinhood Markets: Fine-Tuning and Multi-Stage Model Optimization for Financial AI Agents - ZenML LLMOps Database"
+  ogDescription: "Robinhood Markets developed a sophisticated LLMOps platform to deploy AI agents serving millions of users across multiple use cases including customer support, content generation (Cortex Digest), and code generation (custom indicators and scans). To address the \"generative AI trilemma\" of balancing cost, quality, and latency in production, they implemented a hierarchical tuning approach starting with prompt optimization, progressing to trajectory tuning with dynamic few-shot examples, and culminating in LoRA-based fine-tuning. Their CX AI agent achieved over 50% latency reduction (from 3-6 seconds to under 1 second) while maintaining quality parity with frontier models, supported by a comprehensive three-layer evaluation system combining LLM-as-judge, human feedback, and task-specific metrics."
+---
+
+Robinhood Markets, a financial services company focused on democratizing finance for all users, has built a comprehensive LLMOps platform to deploy multiple AI agents at production scale serving millions of concurrent users. The case study, presented by Nikhil Singhal (Senior Staff ML Engineer leading agentic platform initiatives) and David De Giovanardi (Senior Machine Learning Engineer specializing in model optimization), in partnership with AWS, demonstrates a sophisticated approach to operationalizing LLMs in a highly regulated industry where accuracy is paramount and latency directly impacts customer satisfaction.
+
+**Use Cases and Business Context**
+
+Robinhood has deployed three major AI-powered products that exemplify their production LLM usage. The first is Cortex Digest, a content generation system that automatically analyzes why stocks move up or down by processing analyst reports, news articles, and other financial data to create objective, compliant summaries. The system must handle domain-specific financial vocabulary (understanding that "advice" means "guidance" in financial contexts) and properly weight information sources (prioritizing analyst reports over blog posts). The second use case involves custom indicators and scans, announced at their Hood Summit event, which translates natural language queries into executable trading code (JavaScript), essentially democratizing algorithmic trading by removing the programming barrier. The third and most complex use case is their CX AI agent, a multi-stage customer support system that handles queries ranging from simple FAQ-style questions to complex troubleshooting requiring access to error logs, account history, and multiple data sources.
+
+**The Generative AI Trilemma**
+
+A central challenge Robinhood identified is what they call the "generative AI trilemma" or "problem triangle" - the constant tension between cost, quality, and latency. Using large frontier models provides excellent quality but creates unsustainable cost and latency burdens. Conversely, smaller models improve latency and cost but often fall below safety thresholds, causing responses to be blocked by guardrails. This problem is amplified in agentic workflows because agents aren't single-turn conversations but multi-stage pipelines making numerous model calls. If any single call in the pipeline is slow or produces inferior quality, it jeopardizes the entire end-to-end user experience.
+
+**Hierarchical Tuning Methodology**
+
+Rather than treating every problem as requiring fine-tuning (the "fine-tuning hammer" approach), Robinhood developed a methodological, hierarchical approach with three levels of intervention:
+
+The first level is **prompt tuning**, where they attempt to optimize prompts to elicit better results when migrating from larger to smaller models. They built an automated prompt optimization platform that handles the complexity of multi-stage agents with multiple prompts (n prompts) that all need coordinated optimization. The system starts with a base prompt and foundation model, evaluates performance against a well-stratified evaluation dataset, and if results are insufficient, enters an optimization loop. In this loop, a frontier model critiques the current prompt and generates candidate variations (typically a fan-out of 10-16 candidates). Users can configure whether to include few-shot examples, and the system runs for approximately 5 epochs, evaluating 10-50 rows per iteration and selecting the top 4-5 candidates at each epoch. This approach considers the impact of prompt changes across the entire multi-stage agent pipeline, not just isolated stages.
+
+The second level is **trajectory tuning**, which involves dynamically injecting few-shot examples that carry high fidelity to the user's question. They call this "trajectory" tuning because in their agentic architecture, changing the planner stage alters the entire downstream execution path (trajectory) of the agent workflow. The system maintains an annotated dataset where humans review and provide "golden answers" for cases where the bot failed. These annotations are stored in a vector database, and at inference time, the system retrieves 5-10 relevant examples based on embedding similarity to inject into the prompt. The approach uses a four-pillar system: annotated datasets (labeled by humans with golden answers), the agent itself, an evaluation loop (checking similarity between generated and golden answers using semantic similarity or factuality checks), and a vector database for storing high-quality few-shot examples. When a generated answer doesn't match the golden answer, an analyzer loop tweaks the planner and execution phases until finding a modification that produces the golden answer, which then becomes a reusable few-shot example. While trajectory tuning significantly uplifts quality, it increases input tokens and context length, negatively impacting both latency and cost.
+
+The third and most sophisticated level is **fine-tuning**, specifically using Low-Rank Adaptation (LoRA). Robinhood emphasizes that the "real magic" in fine-tuning isn't in the training recipe (which is often standardized) but in dataset creation. They focus on quality over quantity in training data preparation.
+
+**Data Strategy and Stratification**
+
+For training data creation, Robinhood employs sophisticated stratification strategies. They identify stratification dimensions relevant to their use case - for customer support, these include intent categories, number of conversation turns (single vs. multi-turn), and conversation patterns (like users repeatedly typing "agent" to escalate). Using these dimensions, they apply k-means clustering and sample approximately 5 examples from each cluster, typically resulting in datasets around 15,000 examples (which they found to be a sweet spot for their use cases). They create evaluation/validation datasets using the same stratification approach, comprising 10-20% of the training data size.
+
+An important insight they share is understanding what belongs in training versus evaluation datasets. If a model already performs well on certain question categories, those categories don't need heavy representation in training data (though they should appear in evaluation datasets to catch regressions). This strategic approach reduces training data requirements while maintaining comprehensive evaluation coverage.
+
+For evaluation data generation, they use two approaches: real escalated cases from their internal platform called Optimus (sampling cases where the chatbot failed and was escalated to humans, who then write golden answers), and synthetic data generation (using self-play for coverage expansion and active sampling strategies that focus on underrepresented areas, high-uncertainty regions, or high-impact scenarios based on feedback data).
+
+**Evaluation Framework**
+
+Robinhood implemented a comprehensive three-layer evaluation system that moves beyond "vibe checking" models. The philosophy is "walk before you can run" - without reliable measurement, there's no baseline, and without a baseline, it's impossible to know if fine-tuning actually improves the model or just makes it different.
+
+The **end-to-end evaluation system** has three components: a unified control plane (powered by Braintrust) that aligns engineers, product managers, and data scientists on success criteria; hybrid evaluation combining LLM-as-judge for automated evaluation with human feedback and hand-curated evaluation datasets; and competitive benchmarking that compares fine-tuned models against both closed-source and open-source baseline models before shipping. This system-level visibility helps catch regressions before production deployment.
+
+For **task-specific evaluation**, they use metrics tailored to specific components. For their CX planner (which sits between user questions and the rest of the agentic system), they employ two metric types. First is categorical correctness, treating planning as a classification task and using precision, recall, and F1 scores to verify the planner selected the correct downstream tool or agent (for example, ensuring a question about Apple stock price doesn't invoke the crypto wallet). Second is semantic intent accuracy, which evaluates the input arguments passed to downstream agents by measuring semantic similarity between planner-generated queries and reference sets.
+
+The strategic use of these evaluation types enables rapid iteration. Task-specific metrics allow quick hyperparameter tuning and model comparison during fine-tuning, helping them zero in on promising model candidates. They reserve the more expensive and time-consuming end-to-end metrics for final acceptance testing of selected candidates.
+
+They also developed specialized LLM-as-judge approaches. For the CX bot, they initially tried throwing all account signals into a prompt for evaluation, but the volume of account information overwhelmed the model. They built a two-tier approach: first collecting only the necessary signals needed to answer a specific user question, then using just that filtered information for evaluation. This not only helped scale their evaluation but also helped calibrate human reviewers, who they discovered had inconsistent standards (some being too lenient, others too strict across different intent categories).
+
+**LoRA Implementation Details**
+
+Robinhood extensively adopted LoRA (Low-Rank Adaptation) as their primary fine-tuning method. LoRA addresses the prohibitive cost of full fine-tuning (which requires tracking gradients and optimizer states for all parameters in, say, a 70-billion parameter model) by freezing the pre-trained weights W and introducing two small learnable matrices A and B with a low inner rank (commonly 8 or 16). This reduces trainable parameters by up to a factor of 10,000 depending on the model.
+
+They chose LoRA for multiple reasons. Cost-wise, freezing up to 99% of the model eliminates the need to store optimizer states, allowing most fine-tuning jobs to run on a single GPU. For latency, while introducing additional matrices might seem to add overhead, the linear algebra allows merging these weights with the base model at deployment, resulting in zero latency overhead at inference time. For accuracy, extensive empirical research and their own experience showed LoRA achieving performance comparable to full fine-tuning.
+
+In their transformer architecture integration strategy, they found their "sweet spot" was targeting only the multi-head self-attention weights rather than both attention and feed-forward layers. This selective approach balanced performance with training cost and time. When using Amazon SageMaker and Amazon Bedrock's Custom Model Import (CMI), the deployment process merges base models with LoRA adapters seamlessly, producing a final model identical in architecture to the base model but optimized for specific tasks.
+
+The practical benefits include scalability (very short training times enabling training for multiple use cases rather than just one), fast iteration (training the same use case many times to compare models), and portability (LoRA matrices are typically only a few megabytes compared to many gigabytes for full models). This unlocks previously cost-prohibitive use cases like domain specialization (separate models for SQL vs. Python), persona/tone tuning (soft tone for customer support vs. objective tone for financial writing), and effective A/B testing of multiple model versions with different hyperparameters.
+
+**Fine-Tuning Infrastructure**
+
+Robinhood developed two parallel paths for fine-tuning. The "fast path" leverages AWS SageMaker Jumpstart with standard LoRA recipes for quick experimentation and hypothesis testing, allowing selection of common hyperparameters like rank and target weights. The "power lane" uses SageMaker Studio and SageMaker training jobs for custom LoRA recipes when dealing with messier data or requiring more customization - this serves as their "lab" where engineers test different iterations.
+
+Both paths unify at deployment through Amazon Bedrock with Custom Model Import (CMI), which connects to Robinhood's LLM Gateway. This gateway provides an abstraction layer so engineers not working on fine-tuning can simply hit an API endpoint without caring about model provenance or deployment details.
+
+The overall workflow starts with goal and success criteria definition (in partnership with product and data science teams), proceeds to base model selection aligned with goals (latency vs. quality vs. cost trade-offs), establishes baseline evaluations, creates training datasets (sometimes employing synthetic data generation), conducts training through either path, unifies deployment through Bedrock CMI, and runs evaluation-based iteration loops (shipping to production only when improvements over baseline are confirmed).
+
+**Production Results**
+
+The quantitative results from their CX agent are substantial. They achieved over 50% latency reduction in one of their LoRA-fine-tuned model stages. More concretely, their previous model delivered 3-6 seconds of latency, which the fine-tuned model reduced to under 1 second. The impact was especially significant on the long tail: P90 and P95 latencies previously reached up to 55 seconds, causing customer dissatisfaction and timeout issues (particularly problematic since follow-up stages multiply these delays). The fine-tuned model brought these outliers under control.
+
+Critically, they maintained quality parity, matching the categorical correctness of their trajectory-tuned frontier model. This was essential because in financial services, they cannot compromise on accuracy. Based on this success, they plan to extend fine-tuning to other agents in their Cortex portfolio and report seeing early positive trends.
+
+In another use case (financial crime detection), their evaluation-driven development approach enabled them to achieve the same quality as a frontier model using a smaller, more efficient model out of the box - a result they attribute directly to their rigorous evaluation framework that prevented defaulting to the largest available model.
+
+**Inference Optimization**
+
+Beyond training, Robinhood implemented several inference optimizations. They work closely with AWS Bedrock and CMI to customize inference capabilities, selecting hardware (H100, A100, or other options) based on whether they're optimizing for latency or cost. They extensively leverage prompt caching, advising to move static prompt content toward the beginning so models don't rebuild attention KV cache on every user question, reducing both cost and latency.
+
+They also employ prompt compression techniques, carefully studying input prompts to identify optimization opportunities. This includes changing data representation formats (tabular representations can be more efficient), removing unnecessary UUIDs, and eliminating null values or unused columns. These optimizations reduce input token counts, simultaneously improving latency and cost.
+
+**Lessons Learned and Critical Insights**
+
+Several key lessons emerge from Robinhood's experience. First, evaluation is critical and creates a flywheel effect - their prompt tuning capabilities serve double duty, improving both agent prompts and LLM-as-judge prompts. Second, data preparation quality matters far more than quantity, with thoughtful stratification being essential. Third, their hierarchical tuning methodology ensures efficient use of engineering resources by not defaulting to fine-tuning for every problem. Fourth, the distinction between what belongs in training versus evaluation datasets is crucial (well-performing categories need minimal training representation but must appear in evaluation to catch regressions).
+
+The partnership with AWS (particularly Bedrock and SageMaker) enabled this sophisticated LLMOps platform in a regulated industry, demonstrating that financial services companies can deploy advanced generative AI reliably in production. The case study emphasizes that fine-tuning success requires minimal traditional ML expertise if you have high-quality data and standard recipes (like those in AWS Jumpstart), but creating that high-quality, well-stratified dataset requires deep domain understanding and careful engineering.
+
+**Balanced Assessment**
+
+While the results are impressive, the case study presentation comes from AWS and Robinhood engineers showcasing their joint work, so some healthy skepticism about claimed benefits is warranted. The 50% latency reduction is substantial but applies to one stage of a multi-stage pipeline, not necessarily the entire end-to-end experience. The claim of "quality parity" with frontier models is evaluated using their own metrics and evaluation framework, which, while sophisticated, may not capture all dimensions of model quality that users experience.
+
+The complexity of their infrastructure (prompt tuning systems, trajectory tuning with vector databases, LoRA fine-tuning pipelines, multi-layer evaluation frameworks) represents significant engineering investment that may not be feasible for smaller organizations. The case study would benefit from more specific details about failure modes, cases where their approach didn't work well, or trade-offs they made that didn't pan out.
+
+That said, the methodological approach - starting with prompt optimization, progressing through trajectory tuning, and only then investing in fine-tuning - represents sound engineering practice. Their emphasis on evaluation-first development and stratified dataset creation reflects mature LLMOps thinking. The specific architectural choices (targeting only multi-head attention layers in LoRA, using two-tier LLM-as-judge evaluation) demonstrate practical learnings from production deployment rather than just theoretical optimization.
+
+The financial services context is particularly compelling because accuracy and compliance requirements are non-negotiable, making their quality-parity claims more meaningful. The scale (millions of concurrent users) and diversity of use cases (customer support, content generation, code generation) suggest the approach generalizes beyond a single narrow application. Overall, while presented through a promotional lens, the technical substance and production-scale deployment make this a valuable case study for organizations considering LLMOps at scale.

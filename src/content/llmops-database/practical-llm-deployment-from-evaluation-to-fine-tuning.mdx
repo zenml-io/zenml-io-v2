@@ -1,0 +1,171 @@
+---
+title: "Practical LLM Deployment: From Evaluation to Fine-tuning"
+slug: "practical-llm-deployment-from-evaluation-to-fine-tuning"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "673f3ed46659471f4befb425"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T16:42:25.082Z"
+  createdOn: "2024-11-21T14:08:20.625Z"
+llmopsTags:
+  - "code-generation"
+  - "devops"
+  - "documentation"
+  - "error-handling"
+  - "fine-tuning"
+  - "human-in-the-loop"
+  - "instruction-tuning"
+  - "microsoft-azure"
+  - "model-optimization"
+  - "monitoring"
+  - "openai"
+  - "poc"
+  - "prompt-engineering"
+  - "reliability"
+  - "scalability"
+  - "scaling"
+  - "wandb"
+company: "Parlance Labs"
+summary: "A comprehensive discussion of LLM deployment challenges and solutions across multiple industries, focusing on practical aspects like evaluation, fine-tuning, and production deployment. The case study covers experiences from GitHub's Copilot development, real estate CRM implementation, and consulting work at Parlance Labs, highlighting the importance of rigorous evaluation, data inspection, and iterative development in LLM deployments."
+link: "https://www.youtube.com/watch?v=l7jJhL9geZQ&t=1920s"
+year: 2023
+seo:
+  title: "Parlance Labs: Practical LLM Deployment: From Evaluation to Fine-tuning - ZenML LLMOps Database"
+  description: "A comprehensive discussion of LLM deployment challenges and solutions across multiple industries, focusing on practical aspects like evaluation, fine-tuning, and production deployment. The case study covers experiences from GitHub's Copilot development, real estate CRM implementation, and consulting work at Parlance Labs, highlighting the importance of rigorous evaluation, data inspection, and iterative development in LLM deployments."
+  canonical: "https://www.zenml.io/llmops-database/practical-llm-deployment-from-evaluation-to-fine-tuning"
+  ogTitle: "Parlance Labs: Practical LLM Deployment: From Evaluation to Fine-tuning - ZenML LLMOps Database"
+  ogDescription: "A comprehensive discussion of LLM deployment challenges and solutions across multiple industries, focusing on practical aspects like evaluation, fine-tuning, and production deployment. The case study covers experiences from GitHub's Copilot development, real estate CRM implementation, and consulting work at Parlance Labs, highlighting the importance of rigorous evaluation, data inspection, and iterative development in LLM deployments."
+---
+
+## Overview
+
+This case study is derived from a conversation between Hugo Bowne-Anderson (host of Vanishing Gradients) and Hamill Hussein, founder of Parlance Labs, a research and consultancy focused on helping companies operationalize LLMs. Hussein has over 20 years of experience as a machine learning engineer, including work at major tech companies like Airbnb and GitHub, where he led Code Search Net—a large language model for semantic search that was a precursor to GitHub Copilot.
+
+Parlance Labs works with tech forward companies to accelerate AI-powered features in their products. The discussion provides hard-won perspectives from working with LLM technologies in production environments across various industries, including real estate CRM, nonprofit organizations focused on animal rights, and tech companies.
+
+## The Reality of LLM Adoption
+
+Hussein shares a refreshingly honest perspective on the current state of LLM deployment. He emphasizes that nobody is truly an expert in LLMs yet—the field is too new and rapidly evolving. This creates both excitement and challenges for practitioners. He notes that interest in LLMs has generated serious resource investment from companies, unlike previous waves of ML hype where discussions often remained at the blog post or talking points level.
+
+One particularly interesting observation is the bimodal distribution of LLM adoption among professionals: some people integrate LLMs into everything in their workflow (using them for code, writing, research, creating websites, even logos), while others barely use them at all. Hussein advocates strongly for the former approach, arguing that practitioners who want to build LLM products must use these tools extensively themselves to develop intuition about failure modes, limitations, and effective prompt engineering techniques.
+
+## The Inverted Excitement Curve
+
+The discussion introduces a valuable mental model for understanding LLM projects, attributed to Ville Tuulos (CEO of Outerbounds). Unlike traditional software where excitement gradually builds as a product takes shape, LLM projects often follow an inverted curve: initial excitement is extremely high (you can quickly get impressive responses), but then reality sets in with hallucinations, relevance issues, latency constraints, and enterprise integration challenges. Hussein describes this as more of a "U-shaped curve" or even a "square with three sides"—extreme excitement, followed by a large flat period of suffering, potentially followed by success if you make it work.
+
+## Core Skills for LLMOps
+
+A central theme of the discussion is that traditional data science skills transfer remarkably well to LLM work. Hussein emphasizes several key competencies:
+
+**Data-Centric Approach**: The most important skill is the ability to look at data extensively. Hussein describes spending 99% of his time looking at data, thinking about better ways to measure systems, designing evaluations, and thinking about how to acquire high-quality data—not thinking about training. He advocates for "looking at data until your eyes are bleeding."
+
+**Evaluation and Metrics Design**: Thinking rigorously about evaluation is critical. Data scientists who are practiced at skeptically examining data and thinking carefully about metrics have highly transferable skills.
+
+**Hacker Mentality**: The ability to work with various frameworks (LangChain, etc.), APIs, command line tools, and hardware is essential. Hussein notes candidly that "some of the stuff doesn't work" and practitioners need a certain "Zen" to deal with broken tutorials, inconsistent documentation, and the general messiness of early-stage tooling.
+
+**Developer Velocity**: Perhaps the most actionable insight is the emphasis on maximizing developer velocity—the ability to look at data quickly, debug issues quickly, try things quickly, and get feedback quickly. Hussein notes that many practitioners are looking at five different applications to understand their LLM traces, and tests take hours to run, which dramatically slows iteration.
+
+Interestingly, Hussein explicitly states that deep knowledge of Transformer internals is not required for effective LLM deployment. He points to examples of people who started coding just last year producing excellent fine-tuned models, primarily by being diligent about data curation and rapid experimentation.
+
+## Evaluation Strategies: Beyond Vibe Checks
+
+One of the most valuable sections addresses evaluation—a critical pain point for LLM practitioners. Hussein introduces the concept of "vibe checks" (informal, subjective assessments like "this seems pretty good") and explains why they're tempting but insufficient for production systems.
+
+**Level One: Assertion-Based Testing**
+The first level of evaluation involves creating assertions for the "stupid" failure cases that frequently occur early in LLM development. These include:
+- Model repeating itself
+- Leaking parts of the prompt into output
+- Invalid JSON output
+- Emitting user IDs or other sensitive data into output
+- Template fragments appearing in output
+
+These can be automated and help catch obvious errors. In the GitHub Copilot context, this translated to running unit tests in mass on generated code to verify it actually worked (though Hussein notes this created significant infrastructure challenges with Python requirements management at scale).
+
+**Level Two: Human + Synthetic Evaluation**
+Once assertion-based tests become "useless" (meaning the system rarely fails them anymore), issues become more nuanced and require human judgment. At this stage, Hussein recommends:
+
+- Conducting human evaluation on outputs
+- Constructing synthetic evaluation using an oracle model like GPT-4
+- Critically, tracking the correlation between human and AI evaluations
+
+This correlation study provides principled confidence in whether you can rely on automated evaluation, rather than just using GPT-4 as an evaluator based on a vibe check. The goal is to understand when and how much you can trust the AI evaluator.
+
+**Practical Implementation at ReChat**
+Hussein provides a concrete example from ReChat, a real estate CRM client. Their evaluation approach involves:
+
+- Breaking down evaluation by feature (listing finder, competitive market analysis, contract review, email features)
+- Defining different scenarios within each feature
+- Synthetically generating inputs and perturbing them
+- Having humans evaluate whether outputs are good or bad
+- Running assertions to catch obviously stupid mistakes
+- Using custom-built tools for evaluators to quickly assess interactions
+
+A key simplification: they only evaluate the final output of a chain, not individual steps. If anything in the chain is bad, the whole thing is rejected. This reduces complexity while still generating useful fine-tuning data.
+
+Hussein emphasizes that he personally does much of the evaluation himself, viewing it as difficult to outsource effectively, at least during initial development phases.
+
+## Practical Client Examples
+
+**ReChat (Real Estate CRM)**
+Hussein describes this as his most interesting client. ReChat is a real estate CRM that has an AI interface allowing real estate agents to perform tasks via chat—from comparative market analyses to contract reviews to appointment scheduling. The system involves RAG, function calls, multi-turn conversations, and renders complex outputs in the application.
+
+What makes this project compelling is watching incremental progress similar to how GitHub Copilot evolved—starting ambitious, then getting better every day through careful evaluation and iteration.
+
+**Animal Rights Nonprofit**
+Another client is a nonprofit supporting animal rights, creating applications to help people go vegan by providing personalized recipes. Their constraints include:
+- Being a nonprofit with limited budget
+- Not wanting to depend on OpenAI
+- Interest in on-device models
+
+This leads to exploration of fine-tuning open-source models for multimodal tasks (image to recipe).
+
+## Choosing Between Vendor APIs and Open Source
+
+Hussein provides nuanced guidance on this decision. Many businesses start with OpenAI or similar vendor APIs, and he often recommends creating a "glide path" approach:
+
+- Start with something that works (often a vendor API)
+- Generate lots of data
+- Build a good evaluation system
+- Create proper pipelines
+- Then consider open-source models if/when appropriate
+
+Sometimes open-source is required from the start (due to cost, privacy, or other constraints), but for many scenarios, starting with vendor APIs and planning a migration path is practical.
+
+## Fine-Tuning in Practice
+
+The discussion touches on practical fine-tuning approaches, with Hussein walking through a blog post by Philip Schmid on instruction-tuning Llama 2. Key techniques mentioned include:
+
+**LoRA (Low-Rank Adaptation)**: Freezing most parameters and training only low-rank adapters to reduce memory requirements.
+
+**QLoRA**: Combining LoRA with quantization (loading models in 4-bit) to further reduce memory requirements.
+
+**Instruction Tuning**: Training a next-word-prediction model to behave like a helpful chat assistant by training on question-answer pairs.
+
+**Synthetic Data Generation**: An interesting technique where you show a model some context and have it generate questions about that context, then invert this to create question-answer training pairs from unstructured documents.
+
+Hussein recommends comparing the model before and after fine-tuning to build intuition about how even modest fine-tuning dramatically changes model behavior.
+
+## Hardware Considerations
+
+Hussein briefly touches on hardware challenges, noting he has "three GPUs under my desk" (A6000/RTX 6000s) and considers himself "GPU poor" on some scale. Working with limited hardware requires understanding and using techniques like LoRA, quantization, flash attention, gradient checkpointing, and model sharding. He points to Hugging Face's documentation on efficient multi-GPU training as a resource, though acknowledges the learning curve can be overwhelming.
+
+## Benchmarks and Leaderboards
+
+Hussein expresses significant skepticism about offline evaluation metrics and standard benchmarks for applied problems. His experience suggests there's "tremendous noise" in these evaluations, with low correlation between leaderboard rankings and real-world performance on specific problems.
+
+He recommends finding benchmarks that correlate with your actual experience (mentioning FastEval as one that at least maintains GPT-4 as clearly superior, matching many practitioners' reality). But ultimately, creating your own evaluation set tailored to your specific use case is essential.
+
+## Key Takeaways for Practitioners
+
+The overarching message is that LLMOps success requires:
+- Extensive data work (looking at data, cleaning, curating)
+- Robust evaluation beyond vibe checks
+- Maximizing developer velocity and iteration speed
+- Building custom tools for your specific needs
+- Starting small and tinkering constantly
+- Using LLMs extensively yourself to build intuition
+
+Hussein's call to action: spend half an hour to an hour every day tinkering with LLMs, taking blog posts and editing them with your own data. The field is more accessible than ever, and the core skills many data scientists already possess are highly applicable.

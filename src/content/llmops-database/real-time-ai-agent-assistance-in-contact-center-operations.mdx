@@ -1,0 +1,143 @@
+---
+title: "Real-time AI Agent Assistance in Contact Center Operations"
+slug: "real-time-ai-agent-assistance-in-contact-center-operations"
+draft: false
+webflow:
+  siteId: "64a817a2e7e2208272d1ce30"
+  itemId: "689dd055b238cd9742c2276b"
+  exportedAt: "2026-02-11T10:23:34.071Z"
+  source: "live"
+  lastPublished: "2025-12-23T12:21:17.478Z"
+  lastUpdated: "2025-12-18T17:18:47.482Z"
+  createdOn: "2025-08-14T12:02:29.723Z"
+llmopsTags:
+  - "customer-support"
+  - "chatbot"
+  - "speech-recognition"
+  - "question-answering"
+  - "classification"
+  - "summarization"
+  - "realtime-application"
+  - "rag"
+  - "embeddings"
+  - "prompt-engineering"
+  - "semantic-search"
+  - "vector-search"
+  - "system-prompts"
+  - "human-in-the-loop"
+  - "latency-optimization"
+  - "cost-optimization"
+  - "evals"
+  - "guardrails"
+  - "monitoring"
+  - "api-gateway"
+  - "microservices"
+  - "scalability"
+  - "llama-index"
+  - "anthropic"
+  - "amazon-aws"
+company: "US Bank"
+summary: "US Bank implemented a generative AI solution to enhance their contact center operations by providing real-time assistance to agents handling customer calls. The system uses Amazon Q in Connect and Amazon Bedrock with Anthropic's Claude model to automatically transcribe conversations, identify customer intents, and provide relevant knowledge base recommendations to agents in real-time. While still in production pilot phase with limited scope, the solution addresses key challenges including reducing manual knowledge base searches, improving call handling times, decreasing call transfers, and automating post-call documentation through conversation summarization."
+link: "https://www.youtube.com/watch?v=_nVB2B-M3rs"
+year: 2025
+seo:
+  title: "US Bank: Real-time AI Agent Assistance in Contact Center Operations - ZenML LLMOps Database"
+  description: "US Bank implemented a generative AI solution to enhance their contact center operations by providing real-time assistance to agents handling customer calls. The system uses Amazon Q in Connect and Amazon Bedrock with Anthropic's Claude model to automatically transcribe conversations, identify customer intents, and provide relevant knowledge base recommendations to agents in real-time. While still in production pilot phase with limited scope, the solution addresses key challenges including reducing manual knowledge base searches, improving call handling times, decreasing call transfers, and automating post-call documentation through conversation summarization."
+  canonical: "https://www.zenml.io/llmops-database/real-time-ai-agent-assistance-in-contact-center-operations"
+  ogTitle: "US Bank: Real-time AI Agent Assistance in Contact Center Operations - ZenML LLMOps Database"
+  ogDescription: "US Bank implemented a generative AI solution to enhance their contact center operations by providing real-time assistance to agents handling customer calls. The system uses Amazon Q in Connect and Amazon Bedrock with Anthropic's Claude model to automatically transcribe conversations, identify customer intents, and provide relevant knowledge base recommendations to agents in real-time. While still in production pilot phase with limited scope, the solution addresses key challenges including reducing manual knowledge base searches, improving call handling times, decreasing call transfers, and automating post-call documentation through conversation summarization."
+---
+
+## Case Study Overview
+
+US Bank, the fifth-largest financial institution in the United States with headquarters in Minneapolis, Minnesota, has embarked on an ambitious generative AI initiative to transform their contact center operations. The bank serves various business lines including consumer clients, business banking, institutional banking, and wealth management, with a presence in 13 countries and approximately 70,000 employees. Their retail presence includes 2,000 branches across the United States, and they manage over 100 global contact centers, making this a massive-scale operation with significant technical and operational complexity.
+
+The company's journey began in 2019 when they started migrating their legacy monolithic contact center infrastructure to Amazon Connect, a process that was accelerated by COVID-19 requirements for remote agent capabilities. By 2024, they completed this migration and shifted focus toward transforming the customer and agent experience through advanced technologies, leading to their 2025 exploration of generative AI solutions.
+
+## Problem Statement and Business Challenges
+
+US Bank identified several critical challenges in their contact center operations that traditional automation couldn't adequately address. The primary challenge involves the real-time nature of voice-based customer service, where agents must navigate multiple knowledge bases, systems of record, and CRMs while maintaining natural conversation flow. Unlike asynchronous channels like chat or email, voice interactions require immediate responses, creating significant pressure on agents to quickly locate relevant information.
+
+The manual search process represents a substantial operational burden. Agents spend considerable time searching through knowledge bases to find appropriate answers, similar to challenges faced across the industry but amplified by the real-time requirements of voice channels. This manual process not only impacts efficiency but also affects customer satisfaction due to extended wait times and potential for inconsistent information delivery.
+
+Post-call activities present another significant challenge. After completing customer interactions, agents must manually perform case management tasks, create detailed case notes, and summarize conversations. This administrative burden reduces the time agents can spend on actual customer service and represents a substantial cost center for the organization.
+
+The skills-based routing system, while designed to optimize agent expertise, creates its own challenges. When customers have questions outside an agent's specific skill set, calls must be transferred to other agents, increasing handling times, operational costs, and potentially frustrating customers who must repeat their information and wait additional time for resolution.
+
+## Technical Architecture and Implementation
+
+US Bank's solution leverages a sophisticated multi-component architecture built primarily on Amazon Web Services. The system integrates Amazon Contact Lens for real-time call transcription and speech analytics with Amazon Q in Connect as the core generative AI orchestrator. This architecture choice was driven by specific latency requirements that ruled out simpler solutions like standalone Amazon Bedrock knowledge bases.
+
+Amazon Contact Lens serves as the foundation layer, providing real-time call transcription and generating speech analytics. This service identifies high-level issues and conversation topics, creating the data foundation for downstream AI processing. The real-time nature of this transcription is critical, as any significant delays would render the AI assistance ineffective for live conversations.
+
+Amazon Q in Connect functions as the intelligent orchestrator, processing transcripts from Contact Lens and performing intent detection. A crucial architectural decision involves selective intent processing rather than attempting to analyze every utterance. The system distinguishes between conversational information and actionable intents, only triggering LLM processing when genuine customer intents are identified. This approach reduces computational overhead and improves response relevance.
+
+The system presents identified intents to agents through a user interface, allowing them to selectively request AI-generated recommendations. This human-in-the-loop approach addresses two important considerations: experienced agents may already know answers for certain intents, and real-time conversations may contain multiple intents that don't all require AI assistance. By giving agents control over when to request recommendations, the system optimizes both efficiency and user experience.
+
+When agents request recommendations, the system utilizes Amazon Bedrock with Anthropic's Claude model to generate responses. The knowledge retrieval process involves vector search against specialized knowledge bases stored in S3 buckets, with Q in Connect internally managing the creation of vector databases and RAG (Retrieval-Augmented Generation) stores. This architecture abstracts the complexity of vector database management while providing the performance characteristics required for real-time operations.
+
+## Knowledge Base Management and Data Pipeline
+
+A critical aspect of the implementation involves sophisticated knowledge base management tailored to US Bank's organizational structure. The bank maintains different knowledge bases across various platforms for different business lines and agent specializations. Rather than creating a monolithic knowledge base, they implemented a tagging system within Q in Connect that restricts AI searches to appropriate knowledge bases based on agent roles and call routing.
+
+This tagging approach ensures that when customers call specific contact centers and interact with agents skilled for particular job aids, the AI searches only relevant knowledge bases. This restriction prevents inappropriate cross-domain recommendations and maintains the specialized nature of different service areas within the bank's operations.
+
+US Bank developed an automated data pipeline for knowledge base preparation and maintenance. This pipeline includes data cleansing capabilities that remove unnecessary information before uploading content to S3 buckets. The pipeline approach addresses the fundamental principle that AI systems are only as effective as their underlying data quality, representing a proactive approach to data management that many organizations overlook.
+
+## Model Configuration and Guardrails
+
+The implementation involves extensive configuration of system prompts and guardrails to ensure appropriate behavior for the banking domain. US Bank collaborates with subject matter experts, product partners, and business line representatives to design prompts that are specific to their operational context and regulatory requirements.
+
+Beyond basic prompt engineering, the system implements comprehensive guardrails through both Amazon Bedrock and Q in Connect configurations. These guardrails address multiple security and operational concerns, including prompt injection prevention, response accuracy controls through temperature settings, and domain-specific response boundaries. The guardrail configuration recognizes that the system must defend against both legitimate usage challenges and potential bad actor exploitation attempts.
+
+The system provides flexibility in model selection, allowing US Bank to experiment with different models available through Amazon Bedrock and evolve their choices based on performance characteristics and emerging capabilities. This model-agnostic approach provides important flexibility for long-term operations and optimization.
+
+## Production Deployment and Pilot Approach
+
+US Bank has taken a measured approach to production deployment, implementing what they term a "production pilot" rather than a full-scale launch. The current deployment is limited to specific business lines and a controlled group of agents, allowing for careful monitoring and iterative improvement while managing risk exposure.
+
+This pilot approach reflects mature LLMOps practices, recognizing that generative AI systems require careful observation and tuning in real operational environments. The limited scope allows for meaningful performance measurement while maintaining the ability to quickly address issues or make adjustments based on real-world usage patterns.
+
+Early results from the production pilot indicate positive performance across key metrics including intent detection accuracy, recommendation quality, and most importantly, latency performance. The system achieves true real-time response rather than near real-time, meeting the critical requirement for voice-based interactions.
+
+## Monitoring, Evaluation, and Observability
+
+US Bank recognizes that successful LLMOps requires robust monitoring and evaluation capabilities. They are implementing automated observability tooling specifically designed for LLM applications, exploring both LlamaIndex-based "LLM as a judge" models and Amazon Bedrock's LLM evaluator framework.
+
+This monitoring approach addresses the unique challenges of evaluating generative AI systems in production. Unlike traditional software applications where performance metrics are straightforward, LLM applications require evaluation of response quality, relevance, factual accuracy, and appropriateness for specific business contexts.
+
+The monitoring strategy encompasses multiple dimensions including system performance metrics, response quality evaluation, user satisfaction tracking, and business impact measurement. This comprehensive approach enables continuous improvement and provides the data necessary for scaling decisions.
+
+## Key Learnings and Operational Insights
+
+Several important lessons have emerged from US Bank's implementation experience. The fundamental principle that "AI is as good as your data" has proven critical, driving their investment in automated data cleansing pipelines and ongoing knowledge base maintenance. This lesson reinforces the importance of treating data quality as a core operational concern rather than a one-time setup task.
+
+The importance of proper system prompt design and guardrail configuration has become evident through their collaboration with subject matter experts and business partners. This collaborative approach ensures that the AI system behavior aligns with business requirements and regulatory constraints specific to financial services.
+
+The production pilot has revealed important insights about user adoption and appropriate use cases. Not all agents benefit equally from AI assistance - experienced agents with deep knowledge may find the recommendations less valuable for familiar scenarios, while the system provides substantial value for complex or unfamiliar situations. Understanding these usage patterns is crucial for successful scaling and user adoption.
+
+## Challenges and Limitations
+
+While the presentation focuses primarily on positive outcomes, several challenges and limitations are evident from the implementation details. The complexity of the multi-service architecture introduces operational overhead and potential failure points. Maintaining real-time performance across multiple AWS services requires careful monitoring and optimization.
+
+The limited scope of the current pilot means that many performance claims remain unvalidated at scale. Contact center operations involve significant variability in call volumes, complexity, and agent experience levels that may not be fully represented in the current pilot scope.
+
+The system currently operates without access to customer data, limiting its ability to provide personalized recommendations or access customer-specific information that might be relevant for certain service scenarios. While this approach addresses privacy and security concerns, it may limit the system's effectiveness for some use cases.
+
+## Future Development and Scaling Plans
+
+US Bank's roadmap includes continued experimentation and expansion based on pilot results. They plan to gather comprehensive feedback from agents, business partners, and product teams to identify optimal segments and use cases for AI assistance. This data-driven approach to scaling reflects mature technology adoption practices.
+
+The organization is exploring advanced capabilities including agentic AI and multi-agent frameworks, suggesting interest in more sophisticated AI orchestration beyond current knowledge retrieval applications. They also plan to extend AI capabilities to customer-facing self-service applications, potentially providing voice-based AI interactions directly to customers.
+
+Enterprise scaling represents a significant technical and operational challenge, requiring robust performance monitoring, change management processes, and potentially architectural modifications to handle increased load and complexity. The current monitoring and evaluation framework provides a foundation for this scaling effort.
+
+## Industry Context and Broader Implications
+
+This case study represents a significant real-world application of generative AI in financial services contact centers, an area where regulatory requirements, customer expectations, and operational complexity create unique challenges. The approach demonstrates how large financial institutions can leverage AI capabilities while maintaining appropriate controls and risk management.
+
+The focus on real-time performance and human-in-the-loop design reflects practical considerations often overlooked in theoretical AI implementations. The system design acknowledges that AI augmentation rather than replacement represents the most practical approach for complex customer service scenarios.
+
+The comprehensive approach to guardrails, monitoring, and evaluation provides a template for other organizations implementing similar systems in regulated industries. The emphasis on data quality, domain-specific prompting, and collaborative development with subject matter experts reflects mature practices for enterprise AI deployment.
+
+This implementation demonstrates both the potential and the complexity of deploying generative AI in mission-critical customer service operations, providing valuable insights for organizations considering similar initiatives while highlighting the importance of careful planning, controlled deployment, and ongoing optimization in successful LLMOps implementations.
