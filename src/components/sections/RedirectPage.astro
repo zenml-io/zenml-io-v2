@@ -1,0 +1,33 @@
+---
+/**
+ * RedirectPage — reusable component for redirect-only pages.
+ *
+ * Renders a minimal "Redirecting…" UI with:
+ * - Inline <script> that calls window.location.replace() (matches Webflow behavior)
+ * - Visible fallback link for no-JS / CSP edge cases
+ *
+ * Used with MinimalLayout (no nav/footer chrome).
+ */
+interface Props {
+  /** Absolute destination URL */
+  to: string;
+  /** Fallback link label (shown if JS fails) */
+  label?: string;
+}
+
+const { to, label = "Continue to destination" } = Astro.props;
+---
+
+<div class="flex min-h-screen items-center justify-center">
+  <div class="text-center">
+    <p class="text-lg text-gray-600">Redirecting&hellip;</p>
+    <p class="mt-2 text-sm text-gray-400">
+      If you are not redirected automatically,
+      <a href={to} class="text-primary-600 underline">{label}</a>.
+    </p>
+  </div>
+</div>
+
+<script define:vars={{ to }}>
+  window.location.replace(to);
+</script>

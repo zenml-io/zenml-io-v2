@@ -1,0 +1,111 @@
+---
+/**
+ * /cloud-features/ml-models-control-plane — ML Model Control Plane page.
+ *
+ * Dedicated page (NOT a redirect to /features/centralized-model-control-plane
+ * — the content is distinct). Uses the same visual components as the feature
+ * detail pages but with hardcoded content extracted from the Webflow snapshot.
+ */
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import FeatureHero from "../../components/sections/FeatureHero.astro";
+import FeatureValueSection from "../../components/sections/FeatureValueSection.astro";
+import FeaturesHubCTA from "../../components/sections/FeaturesHubCTA.astro";
+
+// ── Page data ──────────────────────────────────────────────────────
+
+const hero = {
+  title: "ML Model Control Plane",
+  category: "ZenML Pro",
+  deck: "All your models, conveniently gathered in one place. Up-to-date information about your trainings, deployments, and endpoints all within one view. Control model lifecycle through a few clicks.",
+  image: {
+    url: "https://cdn.prod.website-files.com/64a817a2e7e2208272d1ce30/6525599588d1d0f3aeb57a6b_03.01.%20%20Models%20-%20List.webp",
+    alt: "Dashboard displaying machine learning models with versioning, owners, and tags",
+  },
+  primaryCta: { label: "Book a Demo", href: "/book-your-demo" },
+  secondaryCta: { label: "Use Open Source", href: "/get-started" },
+};
+
+const sections = [
+  {
+    title: "Beyond model registries",
+    bullets: [
+      "One central glass plane view over all your models.",
+      "Understand where models originated.",
+      "Gather all trained and deployed models in one central place.",
+    ],
+    image: {
+      url: "https://cdn.prod.website-files.com/64a817a2e7e2208272d1ce30/65324a015f1eb2094d3e0954_27.%20Connect%20your%20infrastructure%20with%20ZenML%20Cloud.webp",
+      alt: "ZenML Cloud infrastructure dashboard",
+    },
+    imageSide: "right" as const,
+  },
+  {
+    title: "Trigger model promotions conveniently",
+    bullets: [
+      "Configure triggers that kick off pipelines to deploy models.",
+      "Manage the lifecycle of model deployments.",
+      "Easy to use and transparent for everyone on the team.",
+    ],
+    image: {
+      url: "https://cdn.prod.website-files.com/64a817a2e7e2208272d1ce30/653249cacf330ff484c21407_18.%20ML%20Model%20Control%20Plane%20Showcase.webp",
+      alt: "ML Model Control Plane showcase dashboard",
+    },
+    imageSide: "left" as const,
+  },
+  {
+    title: "Establish lineage between training and deployment",
+    bullets: [
+      "Track a model from training to deployments — across various infrastructures and tooling.",
+      "Transition easily into production with one-click.",
+      "Ensure reproducibility.",
+    ],
+    image: {
+      url: "https://cdn.prod.website-files.com/64a817a2e7e2208272d1ce30/6526aff7c4fdd6c0d6c1ea26_10_Data_Versioning_and_Lineage_Showcase.webp",
+      alt: "Data versioning and lineage showcase",
+    },
+    imageSide: "right" as const,
+  },
+];
+---
+
+<BaseLayout
+  title="ML Model Control Plane"
+  description="All your models, conveniently gathered in one place. Up-to-date information about your trainings, deployments, and endpoints all within one view. Control model lifecycle through a few clicks."
+  ogImage="https://cdn.prod.website-files.com/64a817a2e7e2208272d1ce30/685aadfc75c3d8495ee841e1_og-img-0625.jpg"
+>
+  <main>
+    {/* Breadcrumb */}
+    <div class="mx-auto max-w-7xl px-4 pt-6 sm:px-6 lg:px-8">
+      <nav class="text-sm text-gray-500">
+        <a href="/pro" class="hover:text-zenml-500">ZenML Pro</a>
+        <span class="mx-2">/</span>
+        <span class="text-gray-900">ML Model Control Plane</span>
+      </nav>
+    </div>
+
+    <FeatureHero
+      title={hero.title}
+      category={hero.category}
+      deck={hero.deck}
+      image={hero.image}
+      primaryCta={hero.primaryCta}
+      secondaryCta={hero.secondaryCta}
+    />
+
+    {sections.map((section) => (
+      <FeatureValueSection
+        title={section.title}
+        bullets={section.bullets}
+        image={section.image}
+        imageSide={section.imageSide}
+      />
+    ))}
+
+    <FeaturesHubCTA
+      headline="Unify Your ML and LLM Workflows"
+      body="Free, powerful MLOps open source foundation. Works with any infrastructure. Upgrade to managed Pro features."
+      primaryCta={{ label: "Book a Demo", href: "/book-your-demo" }}
+      secondaryCta={{ label: "Use Open Source", href: "/get-started" }}
+    />
+  </main>
+</BaseLayout>

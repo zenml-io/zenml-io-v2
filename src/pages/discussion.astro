@@ -1,0 +1,11 @@
+---
+import MinimalLayout from "../layouts/MinimalLayout.astro";
+import RedirectPage from "../components/sections/RedirectPage.astro";
+import { REDIRECT_ONLY_ROUTES } from "../lib/redirectOnly";
+
+const route = REDIRECT_ONLY_ROUTES.find((r) => r.path === "/discussion")!;
+---
+
+<MinimalLayout title="Redirecting…" noindex={true}>
+  <RedirectPage to={route.destination} label={route.label} />
+</MinimalLayout>

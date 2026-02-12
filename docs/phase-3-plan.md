@@ -1,8 +1,8 @@
 # Phase 3: Templates & Pages — Detailed Plan
 
 **Created:** 2026-02-11
-**Last Updated:** 2026-02-11 (3H-6 complete)
-**Status:** 3A–3G COMPLETE, 3H-1a + 3H-1b + 3H-3 + 3H-4 + 3H-5 + 3H-6 COMPLETE — 3H-7 remaining
+**Last Updated:** 2026-02-12 (3H-7 complete — Phase 3 DONE)
+**Status:** PHASE 3 COMPLETE — all sub-phases 3A–3G + 3H-1a + 3H-1b + 3H-3 + 3H-4 + 3H-5 + 3H-6 + 3H-7 DONE
 **Prerequisites:**
 - Phase 2 complete (2,392 content files, 17 collections, all validation passing)
 - **Content format:** Switched from .mdx to .md (MDX v2 too strict for Webflow HTML)
@@ -802,31 +802,52 @@ Tasks:
 
 ---
 
-#### 3H-7: Redirects + Interactive/Utility + Remaining
+#### 3H-7: Redirects + Interactive/Utility + Remaining ✅
+
+**Status: COMPLETE** (2026-02-12)
 
 **Goal:** Handle redirect-only URLs, interactive utility pages, and any remaining miscellaneous pages.
 
-**Redirect-only URLs (6 pages):**
-Short-term: ship minimal Astro pages with `noindex` + JS redirect (matches Webflow behavior).
-Long-term (Phase 4): migrate to `_redirects` file for 301 redirects via Cloudflare Pages.
+**Redirect-only URLs (7 pages):**
+Short-term: shipped as minimal Astro pages with `noindex` + JS redirect (matches Webflow behavior).
+Long-term (Phase 4): will migrate to `_redirects` file for 301 redirects via Cloudflare Pages.
 
-- [ ] `/slack` → Slack community invite URL (P0, referenced in nav/footer)
-- [ ] `/slack-invite` → Slack invite link (P1)
-- [ ] `/roadmap` → `zenml.featureos.app/roadmap` (P0, referenced in nav/footer)
-- [ ] `/discussion` → GitHub discussions (P1)
-- [ ] `/meet` → redirect (P2)
-- [ ] `/zenml-meet` → redirect (P2)
+- [x] `/slack` → Slack community invite URL (P0, referenced in nav/footer)
+- [x] `/slack-invite` → Slack invite link (P1)
+- [x] `/roadmap` → `github.com/orgs/zenml-io/projects/1` (P0, referenced in nav/footer)
+- [x] `/discussion` → GitHub discussions (P1)
+- [x] `/meet` → Eventbrite meetup (P2)
+- [x] `/zenml-meet` → Eventbrite meetup (P2)
+- [x] `/components` → Storybook component library (P2)
 
 **Interactive/utility pages:**
-- [ ] `/roi-calculator` — client-side widget, Preact island (P2, 692 lines in snapshot)
-- [ ] `/live-demo` — interactive demo page (P2)
-- [ ] `/interactive-demo-mcp` — interactive demo page (P2)
-- [ ] `/components` — internal styleguide (P2, may skip entirely)
-- [ ] `/cloud-features/ml-models-control-plane` — similar to feature detail page (P2)
+- [x] `/roi-calculator` — Preact island with 3 sliders, formula module in `src/lib/roiCalculator.ts`
+- [x] `/live-demo` — Storylane iframe embed (`StorylaneEmbed.astro` component)
+- [x] `/interactive-demo-mcp` — Storylane iframe embed
+- [x] `/cloud-features/ml-models-control-plane` — dedicated page (NOT redirect, distinct content from /features/centralized-model-control-plane)
+
+**Decisions made:**
+- `/book-a-demo` + `/signup-for-demo` → 301 redirect to `/book-your-demo` (deferred to Phase 4 `_redirects`)
+- `/cloud-features/ml-models-control-plane` → dedicated page using FeatureHero + FeatureValueSection components
+
+**New files created (15):**
+- `src/lib/redirectOnly.ts` — central redirect registry (reused in Phase 4 for `_redirects` generation)
+- `src/lib/roiCalculator.ts` — pure formula module (no DOM deps)
+- `src/layouts/MinimalLayout.astro` — lightweight layout without nav/footer chrome
+- `src/components/sections/RedirectPage.astro` — reusable redirect component
+- `src/components/sections/StorylaneEmbed.astro` — responsive iframe wrapper
+- `src/components/islands/RoiCalculator.tsx` — interactive ROI calculator Preact island
+- 7 redirect pages in `src/pages/`
+- 2 Storylane embed pages
+- `src/pages/roi-calculator.astro`
+- `src/pages/cloud-features/ml-models-control-plane.astro`
 
 **Validation:**
-- Redirect URLs don't 404 (either page or redirect)
-- ROI calculator sliders work (if built)
+- ✅ All redirect URLs return 200 with `noindex` and JS redirect
+- ✅ ROI calculator sliders update results live (Preact island, `client:load`)
+- ✅ Storylane embeds render responsive iframes
+- ✅ Nav/footer `/slack` and `/roadmap` links no longer 404
+- ✅ Build time: ~27s for ~2,230+ pages
 
 ---
 
