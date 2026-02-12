@@ -340,6 +340,82 @@ body {
   margin: 2rem 0;
 }
 
+/* --- Case study testimonial blocks (Webflow uui-testimonial04 component) --- */
+.prose .uui-section_testimonial04 {
+  margin: 2rem 0;
+}
+
+.prose .uui-testimonial04_component {
+  background-color: var(--color-purple-25);
+  border-left: 4px solid var(--color-warning-300);
+  border-radius: var(--radius-xl);
+  padding: 2rem 2.5rem;
+  margin: 2rem 0;
+  text-align: center;
+}
+
+.prose .uui-testimonial04_component.margin-bottom {
+  margin-bottom: 2.5rem;
+}
+
+/* Quote text — reset prose h3 styles */
+.prose .uui-testimonial04_component h3.uui-heading-small {
+  font-size: 1.375rem;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--color-gray-900);
+  margin: 0 0 1.5rem;
+}
+
+/* Client attribution row */
+.prose .uui-testimonial04_client {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+/* Avatar wrapper — small circle */
+.prose .uui-testimonial04_client-image-wrapper {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+/* Avatar image — fill the circle, no prose img margins */
+.prose .uui-testimonial04_client-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  margin: 0;
+  border-radius: 0;
+}
+
+/* Name and role */
+.prose .uui-testimonial04_client-info {
+  text-align: left;
+}
+
+.prose .uui-testimonial04_client-info .uui-heading-tiny {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--color-gray-900);
+  line-height: 1.4;
+}
+
+.prose .uui-testimonial04_client-info .uui-text-size-medium {
+  font-size: 0.875rem;
+  color: var(--color-gray-500);
+  line-height: 1.4;
+}
+
+/* Reset prose spacing for wrapper divs inside testimonial sections */
+.prose .uui-container-large-22 {
+  margin: 0;
+}
+
 /* --- Anchor offset for in-page links (behind sticky nav) --- */
 .prose [id] {
   scroll-margin-top: 5rem;

@@ -4,6 +4,7 @@
  *
  * Renders company info, website link, ML team size, cloud provider,
  * industry, use case badges, and optional PDF download.
+ * Styled to match the Webflow original with icons and purple labels.
  */
 interface Props {
   company: string;
@@ -18,70 +19,105 @@ interface Props {
 const { company, website, mlTeamSize, cloudProvider, industry, useCases, pdfDownload } = Astro.props;
 ---
 
-<aside class="space-y-5 rounded-xl border border-gray-200 bg-gray-50 p-6">
+<aside class="rounded-2xl border border-gray-200 bg-gray-50 p-6 lg:p-8">
   {pdfDownload && (
     <a
       href={pdfDownload.href}
       target="_blank"
       rel="noopener noreferrer"
-      class="inline-flex items-center gap-2 text-sm font-semibold text-zenml-600 hover:text-zenml-700"
+      class="mb-6 inline-flex items-center gap-2 text-base font-semibold text-zenml-600 hover:text-zenml-700 transition-colors"
     >
-      <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      {/* Download icon */}
+      <svg class="h-5 w-5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M21 15v3.6c0 .56 0 .84-.109 1.054a1 1 0 0 1-.437.437C20.24 20.2 19.96 20.2 19.4 20.2H4.6c-.56 0-.84 0-1.054-.109a1 1 0 0 1-.437-.437C3 19.44 3 19.16 3 18.6V15M17 10l-5 5m0 0-5-5m5 5V3" />
       </svg>
       {pdfDownload.label}
     </a>
   )}
 
-  {company && (
-    <div>
-      <dt class="text-xs font-semibold uppercase tracking-wider text-gray-500">Company</dt>
-      <dd class="mt-1 text-sm font-medium text-gray-900">{company}</dd>
-    </div>
-  )}
+  <dl class="space-y-6">
+    {company && (
+      <div>
+        <dt class="text-xs font-semibold uppercase tracking-wider text-zenml-500">Company</dt>
+        <dd class="mt-2 flex items-center gap-2 text-base font-medium text-gray-900">
+          {/* Building icon */}
+          <svg class="h-5 w-5 flex-shrink-0 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 21h18M9 8h1M9 12h1M9 16h1M14 8h1M14 12h1M14 16h1M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16" />
+          </svg>
+          {company}
+        </dd>
+      </div>
+    )}
 
-  {website && (
-    <div>
-      <dt class="text-xs font-semibold uppercase tracking-wider text-gray-500">Website</dt>
-      <dd class="mt-1">
-        <a href={website.href} target="_blank" rel="noopener noreferrer" class="text-sm font-medium text-zenml-600 hover:text-zenml-700">
-          {website.label} &rarr;
-        </a>
-      </dd>
-    </div>
-  )}
+    {website && (
+      <div>
+        <dt class="text-xs font-semibold uppercase tracking-wider text-zenml-500">Website</dt>
+        <dd class="mt-2 flex items-center gap-2">
+          {/* Link icon */}
+          <svg class="h-5 w-5 flex-shrink-0 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M13.544 10.456a4.368 4.368 0 0 0-6.176 0l-3.089 3.088a4.367 4.367 0 1 0 6.177 6.177L12 18.177" />
+            <path d="M10.456 13.544a4.368 4.368 0 0 0 6.176 0l3.089-3.088a4.367 4.367 0 1 0-6.177-6.177L12 5.823" />
+          </svg>
+          <a href={website.href} target="_blank" rel="noopener noreferrer" class="text-base font-medium text-zenml-600 underline decoration-transparent hover:decoration-zenml-500 transition-colors">
+            {website.label}
+          </a>
+        </dd>
+      </div>
+    )}
 
-  {mlTeamSize && (
-    <div>
-      <dt class="text-xs font-semibold uppercase tracking-wider text-gray-500">ML Team Size</dt>
-      <dd class="mt-1 text-sm font-medium text-gray-900">{mlTeamSize}</dd>
-    </div>
-  )}
+    {mlTeamSize && (
+      <div>
+        <dt class="text-xs font-semibold uppercase tracking-wider text-zenml-500">ML Team Size</dt>
+        <dd class="mt-2 flex items-center gap-2 text-base font-medium text-gray-900">
+          {/* People icon */}
+          <svg class="h-5 w-5 flex-shrink-0 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 3.468a4.5 4.5 0 0 1 0 7.064M18 16.12c1.045.367 1.91.986 2.573 1.786M1 17.906c0-1.848 2.015-3.406 4.5-3.406s4.5 1.558 4.5 3.406M8.25 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z" />
+          </svg>
+          {mlTeamSize}
+        </dd>
+      </div>
+    )}
 
-  {cloudProvider && (
-    <div>
-      <dt class="text-xs font-semibold uppercase tracking-wider text-gray-500">Cloud Provider</dt>
-      <dd class="mt-1 text-sm font-medium text-gray-900">{cloudProvider}</dd>
-    </div>
-  )}
+    {cloudProvider && (
+      <div>
+        <dt class="text-xs font-semibold uppercase tracking-wider text-zenml-500">Cloud Provider</dt>
+        <dd class="mt-2 flex items-center gap-2 text-base font-medium text-gray-900">
+          {/* Cloud icon */}
+          <svg class="h-5 w-5 flex-shrink-0 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6.5 19a4.5 4.5 0 0 1-.42-8.98 7 7 0 0 1 13.84 0A4.5 4.5 0 0 1 17.5 19h-11Z" />
+          </svg>
+          {cloudProvider}
+        </dd>
+      </div>
+    )}
 
-  {industry && (
-    <div>
-      <dt class="text-xs font-semibold uppercase tracking-wider text-gray-500">Industry</dt>
-      <dd class="mt-1 text-sm font-medium text-gray-900">{industry}</dd>
-    </div>
-  )}
+    {industry && (
+      <div>
+        <dt class="text-xs font-semibold uppercase tracking-wider text-zenml-500">Industry</dt>
+        <dd class="mt-2 flex items-center gap-2 text-base font-medium text-gray-900">
+          {/* Store/building icon */}
+          <svg class="h-5 w-5 flex-shrink-0 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 21h18M3 7l3-4h12l3 4M3 7h18M3 7v14m18-14v14M7 11h4v4H7v-4Zm6 6h4v4h-4v-4Z" />
+          </svg>
+          {industry}
+        </dd>
+      </div>
+    )}
+  </dl>
 
   {useCases.length > 0 && (
-    <div>
-      <dt class="text-xs font-semibold uppercase tracking-wider text-gray-500">Use Cases</dt>
-      <dd class="mt-2 flex flex-wrap gap-2">
-        {useCases.map((uc) => (
-          <span class="rounded-full bg-zenml-100 px-3 py-1 text-xs font-medium text-zenml-700">
-            {uc}
-          </span>
-        ))}
-      </dd>
-    </div>
+    <>
+      <hr class="my-6 border-gray-200" />
+      <div>
+        <dt class="text-xs font-semibold uppercase tracking-wider text-zenml-500">Use Cases</dt>
+        <dd class="mt-3 flex flex-wrap gap-2">
+          {useCases.map((uc) => (
+            <span class="rounded-full bg-warning-300/30 px-3 py-1 text-sm font-medium text-gray-800">
+              {uc}
+            </span>
+          ))}
+        </dd>
+      </div>
+    </>
   )}
 </aside>

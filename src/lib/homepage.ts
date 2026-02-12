@@ -208,7 +208,7 @@ export const CASE_STUDY_CARDS: CaseStudyCard[] = [
     href: "/case-study/jetbrains",
   },
   {
-    companyLogo: `${R2}/5f1b0e8a/670e2f2349aab64d5e4eeeb3_enel-min.svg`,
+    companyLogo: `${R2}/c110367c/65c498032806e2ff7daec2bf_ADEO.svg`,
     companyLogoAlt: "ADEO",
     secondaryLogo: `${R2}/d28fbdf4/670e2f23e2b3ba3756fae38e_leroy_merlin_logo-min.svg`,
     secondaryLogoAlt: "Leroy Merlin",
