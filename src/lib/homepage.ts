@@ -217,13 +217,13 @@ export const CASE_STUDY_CARDS: CaseStudyCard[] = [
     href: "/case-study/adeo-leroy-merlin",
   },
   {
-    companyLogo: `${R2}/a0f2ee23/670e2f2398fcad5e2e8f2779_brevo.svg`,
+    companyLogo: `${R2}/a0f2ee23/652d3e5d29d36f927c2bb623_brevo.webp`,
     companyLogoAlt: "Brevo",
     title: "How Brevo accelerated model development by 80% using ZenML",
     href: "/case-study/brevo",
   },
   {
-    companyLogo: `${R2}/9f8b5324/670e2f23e2b3ba3756fae394_cross_screen_media.svg`,
+    companyLogo: `${R2}/9f8b5324/68d6a84a1761cbf9538efefa_cross-screen-media.png`,
     companyLogoAlt: "Cross Screen Media",
     title:
       "How Cross Screen Media Trains Models for 210 Markets in Hours, Not Weeks, with ZenML",
