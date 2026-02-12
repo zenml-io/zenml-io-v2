@@ -9,6 +9,7 @@
  * Shares the same <head> SEO contract as BaseLayout via SEOProps.
  */
 import { resolveSeo, type SEOProps } from "../lib/seo";
+import CookieConsent from "../components/islands/CookieConsent.tsx";
 import "../styles/global.css";
 
 interface Props extends SEOProps {
@@ -47,12 +48,19 @@ const seo = resolveSeo(seoProps, Astro.url.pathname);
     {/* Favicon */}
     <link rel="icon" type="image/png" href="/favicon.png" />
 
-    {/* Plausible analytics (production only) */}
-    {import.meta.env.PROD && (
-      <script defer data-domain="zenml.io" src="https://plausible.io/js/script.js" />
-    )}
+    {/* Plausible analytics — hostname-gated */}
+    <script is:inline>
+      if (window.location.hostname === 'www.zenml.io') {
+        var s = document.createElement('script');
+        s.defer = true;
+        s.dataset.domain = 'zenml.io';
+        s.src = 'https://plausible.io/js/script.js';
+        document.head.appendChild(s);
+      }
+    </script>
   </head>
   <body class:list={["min-h-screen bg-white text-gray-900 antialiased", bodyClass]}>
     <slot />
+    <CookieConsent client:load />
   </body>
 </html>
