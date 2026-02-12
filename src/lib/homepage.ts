@@ -147,6 +147,14 @@ export const FEATURE_TABS: FeatureTab[] = [
 export interface ValueProp {
   title: string;
   description: string;
+  /** Pastel background for the icon square */
+  iconBg: string;
+  /** Stroke/fill color for the icon SVG */
+  iconColor: string;
+  /** "stroke" or "fill" — how the SVG path is colored */
+  iconMode: "stroke" | "fill";
+  /** SVG path(s) — rendered inside a 24×24 viewBox */
+  iconPaths: string[];
 }
 
 export const VALUE_PROPS: ValueProp[] = [
@@ -154,21 +162,45 @@ export const VALUE_PROPS: ValueProp[] = [
     title: "The Glue for Your Fragmented Stack",
     description:
       "Stop writing fragile scripts to connect your tools. ZenML provides a standardized protocol to bind your data retrieval (LlamaIndex), reasoning (LangChain), and training (PyTorch) steps into a single, cohesive system.",
+    iconBg: "#fff6ea",
+    iconColor: "#FA9E33",
+    iconMode: "stroke",
+    iconPaths: [
+      "M13 2L4.09344 12.6879C3.74463 13.1064 3.57023 13.3157 3.56756 13.4925C3.56524 13.6461 3.63372 13.7923 3.75324 13.8889C3.89073 14 4.16316 14 4.70802 14H12L11 22L19.9065 11.3121C20.2553 10.8936 20.4297 10.6843 20.4324 10.5075C20.4347 10.3539 20.3663 10.2077 20.2467 10.1111C20.1092 10 19.8368 10 19.292 10H12L13 2Z",
+    ],
   },
   {
     title: "Break the Prototype Wall",
     description:
       "Teams lose velocity rewriting notebook code for the cloud. ZenML allows the exact same @step to run locally for debugging, in batch for massive evaluations, and then deploy seamlessly to your production serving infrastructure.",
+    iconBg: "#cfe7fc",
+    iconColor: "#0E85F2",
+    iconMode: "stroke",
+    iconPaths: [
+      "M9.5 2h5M7 22h10M12 2v2M12 18v4M7.8 18h8.4c1.68 0 2.52 0 3.162-.327a3 3 0 001.311-1.311C21 15.72 21 14.88 21 13.2V8.8c0-1.68 0-2.52-.327-3.162a3 3 0 00-1.311-1.311C18.72 4 17.88 4 16.2 4H7.8c-1.68 0-2.52 0-3.162.327a3 3 0 00-1.311 1.311C3 6.28 3 7.12 3 8.8v4.4c0 1.68 0 2.52.327 3.162a3 3 0 001.311 1.311C5.28 18 6.12 18 7.8 18z",
+    ],
   },
   {
     title: 'The "Missing Layer" for AI Engineering',
     description:
       "Your current orchestrator runs the job, but it doesn't track the data. ZenML adds a metadata layer to tools like Airflow or Kubeflow, giving you the artifact lineage and reproducibility that raw orchestrators lack.",
+    iconBg: "#d6ebf0",
+    iconColor: "#309DB2",
+    iconMode: "stroke",
+    iconPaths: [
+      "M12 14.9998L9 11.9998M12 14.9998C13.3968 14.4685 14.7369 13.7985 16 12.9998M12 14.9998V19.9998C12 19.9998 15.03 19.4498 16 17.9998C17.08 16.3798 16 12.9998 16 12.9998M9 11.9998C9.53214 10.6192 10.2022 9.29582 11 8.04976C12.1652 6.18675 13.7876 4.65281 15.713 3.59385C17.6384 2.53489 19.8027 1.98613 22 1.99976C22 4.71976 21.22 9.49976 16 12.9998M9 11.9998H4C4 11.9998 4.55 8.96976 6 7.99976C7.62 6.91976 11 7.99976 11 7.99976M4.5 16.4998C3 17.7598 2.5 21.4998 2.5 21.4998C2.5 21.4998 6.24 20.9998 7.5 19.4998C8.21 18.6598 8.2 17.3698 7.41 16.5898C7.02131 16.2188 6.50929 16.0044 5.97223 15.9878C5.43516 15.9712 4.91088 16.1535 4.5 16.4998Z",
+    ],
   },
   {
     title: "Open Source, Enterprise Control",
     description:
       "Built on Apache 2.0 for flexibility, hardened for the enterprise. Deploy ZenML inside your own VPC. Keep full sovereignty over your data, models, and API secrets while meeting SOC2 and ISO 27001 standards.",
+    iconBg: "#ffedf4",
+    iconColor: "#F53D81",
+    iconMode: "stroke",
+    iconPaths: [
+      "M9 11.4999L11 13.4999L15.5 8.99987M20 11.9999C20 16.9083 14.646 20.4783 12.698 21.6147C12.4766 21.7439 12.3659 21.8085 12.2097 21.842C12.0884 21.868 11.9116 21.868 11.7903 21.842C11.6341 21.8085 11.5234 21.7439 11.302 21.6147C9.35396 20.4783 4 16.9083 4 11.9999V7.21747C4 6.41796 4 6.0182 4.13076 5.67457C4.24627 5.37101 4.43398 5.10015 4.67766 4.8854C4.9535 4.64231 5.3278 4.50195 6.0764 4.22122L11.4382 2.21054C11.6461 2.13258 11.75 2.0936 11.857 2.07815C11.9518 2.06444 12.0482 2.06444 12.143 2.07815C12.25 2.0936 12.3539 2.13258 12.5618 2.21054L17.9236 4.22122C18.6722 4.50195 19.0465 4.64231 19.3223 4.8854C19.566 5.10015 19.7537 5.37101 19.8692 5.67457C20 6.0182 20 6.41796 20 7.21747V11.9999Z",
+    ],
   },
 ];
 
