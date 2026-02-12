@@ -41,8 +41,7 @@ const R2 = "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2
 
 export const LOGO_CLOUD = {
   label: "Trusted by 1,000s of top companies to standardize their AI workflows",
-  /** Tier 1 — featured logos (larger, top row) */
-  tier1: [
+  logos: [
     { name: "Airbus", src: `${R2}/6a2ae7e3/670e2f23d254a9be9e02e50f_airbus.svg` },
     { name: "AXA", src: `${R2}/5f1b0e8a/670e2f23b0b89bea22ecee3c_axa-min.svg` },
     { name: "Bundeswehr", src: `${R2}/e8e86576/670e2f2398fcad5e2e8f2775_bundeswehr.svg` },
@@ -51,6 +50,30 @@ export const LOGO_CLOUD = {
     { name: "Koble", src: `${R2}/db4b0c5a/670e2f2331d7f8f62e12458e_koble.svg` },
     { name: "Leroy Merlin", src: `${R2}/d28fbdf4/670e2f23e2b3ba3756fae38e_leroy_merlin_logo-min.svg` },
     { name: "Rivian", src: `${R2}/e3f9dafd/670e2f233c0e2ef03c2dc810_rivian-min.svg` },
+    { name: "ADEO", src: "/images/logos/adeo.png" },
+    { name: "Devoteam", src: "/images/logos/devoteam.svg" },
+    { name: "Frontiers", src: "/images/logos/frontiers.webp" },
+    { name: "Mann+Hummel", src: "/images/logos/mann-hummel.svg" },
+    { name: "Nielsen IQ", src: "/images/logos/nielsen-iq.svg" },
+    { name: "Playtika", src: "/images/logos/playtika.svg" },
+    { name: "Wisetech Global", src: "/images/logos/wisetech.svg" },
+    { name: "AISBACH", src: "/images/logos/aisbach.svg" },
+    { name: "Aisera", src: "/images/logos/aisera.svg" },
+    { name: "ALKi", src: "/images/logos/alki.webp" },
+    { name: "Altenar", src: "/images/logos/altenar.svg" },
+    { name: "Brevo", src: "/images/logos/brevo.webp" },
+    { name: "Digital Diagnostics", src: "/images/logos/digital-diagnostics.svg" },
+    { name: "EarthDaily Agro", src: "/images/logos/earthdaily-agro.png" },
+    { name: "Eikon Therapeutics", src: "/images/logos/eikon-therapeutics.svg" },
+    { name: "Hemato", src: "/images/logos/hemato.png" },
+    { name: "Infoplaza", src: "/images/logos/infoplaza.svg" },
+    { name: "Instabase", src: "/images/logos/instabase.webp" },
+    { name: "IT4IPM", src: "/images/logos/it4ipm.webp" },
+    { name: "Multitel", src: "/images/logos/multitel.webp" },
+    { name: "RiverBank", src: "/images/logos/riverbank.webp" },
+    { name: "Standard Bots", src: "/images/logos/standard-bots.svg" },
+    { name: "Two", src: "/images/logos/two.svg" },
+    { name: "Wayflyer", src: "/images/logos/wayflyer.webp" },
   ] satisfies LogoItem[],
 };
 
