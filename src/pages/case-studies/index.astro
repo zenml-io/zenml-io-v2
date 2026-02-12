@@ -53,11 +53,12 @@ const caseStudies = allCaseStudies.sort(
       </div>
     </section>
 
-    {/* Case study grid */}
-    <section class="bg-gray-50 py-16 sm:py-20">
+    {/* Case study cards + LLMOps banner — Webflow layout: 3 cards, banner, 2 cards */}
+    <section class="bg-white py-16 sm:py-20">
       <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {caseStudies.map((cs) => (
+        {/* First row: 3 cards */}
+        <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          {caseStudies.slice(0, 3).map((cs) => (
             <CaseStudyCard
               href={`/case-study/${cs.data.slug}`}
               title={cs.data.hub.cardTitle}
@@ -65,24 +66,35 @@ const caseStudies = allCaseStudies.sort(
             />
           ))}
         </div>
-      </div>
-    </section>
 
-    {/* LLMOps banner */}
-    <section class="bg-white py-4">
-      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        {/* LLMOps banner — between card rows */}
         <a
           href={CASE_STUDIES_HUB_BANNER.href}
-          class="flex items-center justify-between rounded-xl border border-gray-200 bg-gray-50 px-6 py-4 transition hover:border-zenml-300 hover:shadow-sm"
+          class="my-10 flex items-center justify-between rounded-xl border border-gray-200 bg-gray-50 px-6 py-4 transition hover:border-zenml-300 hover:shadow-sm"
         >
           <div>
             <p class="font-semibold text-gray-900">{CASE_STUDIES_HUB_BANNER.text}</p>
             <p class="text-sm text-gray-500">{CASE_STUDIES_HUB_BANNER.supporting}</p>
           </div>
-          <svg class="h-5 w-5 shrink-0 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M5 12h14M19 12l-7-7M19 12l-7 7" />
-          </svg>
+          <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-gray-200 bg-white">
+            <svg class="h-5 w-5 text-gray-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14M19 12l-7-7M19 12l-7 7" />
+            </svg>
+          </div>
         </a>
+
+        {/* Second row: remaining cards */}
+        {caseStudies.length > 3 && (
+          <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            {caseStudies.slice(3).map((cs) => (
+              <CaseStudyCard
+                href={`/case-study/${cs.data.slug}`}
+                title={cs.data.hub.cardTitle}
+                logos={cs.data.hub.logos}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </section>
 

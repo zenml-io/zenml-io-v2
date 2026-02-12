@@ -2,8 +2,8 @@
 /**
  * CaseStudyCard — card component for the case studies hub grid.
  *
- * Renders a clickable card with company logo(s), case study title,
- * and a "Learn more" link. Used on /case-studies.
+ * Matches the Webflow uui-layout47_content layout: logo(s), title,
+ * and "Learn more" link as separate clickable elements (no card border/shadow).
  */
 interface Props {
   href: string;
@@ -14,12 +14,9 @@ interface Props {
 const { href, title, logos } = Astro.props;
 ---
 
-<a
-  href={href}
-  class="group flex flex-col rounded-xl border border-gray-200 bg-white p-6 shadow-sm transition hover:border-zenml-300 hover:shadow-md"
->
+<div class="group flex flex-col">
   {logos.length > 0 && (
-    <div class="flex items-center gap-3">
+    <a href={href} class="flex items-center gap-3">
       {logos.map((logo) => (
         <img
           src={logo.url}
@@ -28,15 +25,20 @@ const { href, title, logos } = Astro.props;
           loading="lazy"
         />
       ))}
-    </div>
+    </a>
   )}
-  <h3 class="mt-4 text-lg font-semibold leading-snug text-gray-900 group-hover:text-zenml-500 transition">
-    {title}
-  </h3>
-  <span class="mt-auto pt-4 inline-flex items-center text-sm font-semibold text-zenml-500 group-hover:text-zenml-600">
-    Learn more
-    <svg class="ml-1 h-4 w-4 transition group-hover:translate-x-0.5" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M4.667 10h11.666m0 0L10.5 4.167M16.333 10 10.5 15.833" stroke="currentColor" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-  </span>
-</a>
+  <div class="mt-4"></div>
+  <a href={href} class="block">
+    <h3 class="text-lg font-semibold leading-snug text-gray-900 transition hover:text-zenml-500">
+      {title}
+    </h3>
+  </a>
+  <div class="mt-auto pt-4">
+    <a href={href} class="inline-flex items-center text-sm font-semibold text-zenml-500 transition hover:text-zenml-600">
+      Learn more
+      <svg class="ml-1 h-4 w-4 transition group-hover:translate-x-0.5" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M4.667 10h11.666m0 0L10.5 4.167M16.333 10 10.5 15.833" stroke="currentColor" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
+  </div>
+</div>
