@@ -237,7 +237,7 @@ body {
   opacity: 1;
 }
 
-/* --- Raw code blocks (Webflow HTML <pre><code> and hljs wrappers) --- */
+/* --- Code blocks (Shiki build-time highlighting) --- */
 .prose pre {
   background-color: var(--color-gray-900);
   color: var(--color-gray-100);
@@ -253,12 +253,8 @@ body {
   font-family: var(--font-mono);
   font-size: 0.875rem;
   line-height: 1.7;
-  white-space: pre-wrap;
-  word-break: break-word;
-}
-
-.prose pre code.hljs {
-  border-radius: 10px;
+  white-space: pre;
+  word-break: normal;
 }
 
 /* --- Inline code --- */
