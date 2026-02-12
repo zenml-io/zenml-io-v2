@@ -286,52 +286,72 @@ export const CASE_STUDY_CARDS: CaseStudyCard[] = [
   },
 ];
 
-/** Testimonials not in the CMS quotes collection — hardcoded from Webflow */
+/** Testimonial shape for the homepage curated grid */
 export interface Testimonial {
   name: string;
   position: string;
   text: string;
   avatarUrl?: string;
   companyLogoUrl?: string;
+  /** Fallback when no logo image is available */
+  companyName?: string;
 }
 
-export const EXTRA_TESTIMONIALS: Testimonial[] = [
+/**
+ * Curated 6-item testimonial grid matching the Webflow homepage.
+ * Order: HashiCorp, Salesforce, ADEO, Stanford, WiseTech, MadeWithML.
+ * Company logos use colored/dark versions suitable for white backgrounds.
+ */
+export const HOMEPAGE_TESTIMONIALS: Testimonial[] = [
   {
     name: "Harold Gimenez",
     position: "SVP R&D at HashiCorp",
-    text: "ZenML offers the capability to build end-to-end ML workflows that seamlessly integrate with various components of the ML stack.",
+    text: "ZenML offers the capability to build end-to-end ML workflows that seamlessly integrate with various components of the ML stack. This enables teams to accelerate their time to market by bridging the gap between data scientists and engineers.",
+    companyName: "HashiCorp",
+  },
+  {
+    name: "Richard Socher",
+    position: "Former Chief Scientist Salesforce and Founder of You.com",
+    text: "ZenML allows orchestrating ML pipelines independent of any infrastructure or tooling choices. ML teams can free their minds of tooling FOMO from the fast-moving MLOps space, with the simple and extensible ZenML interface.",
+    avatarUrl: `${R2}/3725b9aa/66702f264ab301a2a95b1213_richard.webp`,
+    companyName: "Salesforce",
+  },
+  {
+    name: "François Serra",
+    position: "ML Engineer / ML Ops / ML Solution architect at ADEO Services",
+    text: "ZenML allowed us a fast transition between dev to prod. It's no longer the big fish eating the small fish – it's the fast fish eating the slow fish.",
+    avatarUrl: `${R2}/56aef1bf/667bd578695e19dfb6293814_francois.png`,
+    companyLogoUrl: `${R2}/c110367c/65c498032806e2ff7daec2bf_ADEO.svg`,
+    companyName: "ADEO",
   },
   {
     name: "Chris Manning",
     position: "Professor of Linguistics and CS at Stanford",
-    text: "Many teams still struggle with managing models, datasets, code, and monitoring. ZenML brings needed structure and reproducibility.",
-  },
-  {
-    name: "Maximillian Baluff",
-    position: "Lead AI Engineer at IT4IPM",
-    text: "ZenML's approach to standardization and reusability has been a game-changer for our ML teams.",
-  },
-  {
-    name: "Liza Bykhanova",
-    position: "Data Scientist at Competera",
-    text: "ZenML's automatic logging and containerization have transformed our MLOps pipeline.",
+    text: "Many teams still struggle with managing models, datasets, code, and monitoring as they deploy ML models into production. ZenML provides a solid toolkit for making that easy in the Python ML world.",
+    companyName: "Stanford University",
   },
   {
     name: "Francesco Pudda",
     position: "Machine Learning Engineer at WiseTech Global",
-    text: "Thanks to ZenML we've set up a pipeline where before we had only Jupyter notebooks.",
+    text: "Thanks to ZenML we've set up a pipeline where before we had only Jupyter notebooks. It helped us tremendously with data and model versioning.",
+    companyLogoUrl: "/images/logos/wisetech.svg",
+    companyName: "WiseTech Global",
   },
   {
-    name: "Christian Versloot",
-    position: "Data Technologist at Infoplaza",
-    text: "ZenML has transformed how we manage our GPU resources.",
-  },
-  {
-    name: "Dragos Ciupureanu",
-    position: "VP of Engineering at Koble",
-    text: "With ZenML, we're no longer tied to a single cloud provider.",
+    name: "Goku Mohandas",
+    position: "Founder of MadeWithML",
+    text: "ZenML allows you to quickly and responsibly go from POC to production ML systems while enabling reproducibility, flexibility, and above all, sanity.",
+    avatarUrl: `${R2}/c9fd250b/667bd428a30ba8fd817731c0_goku_quote.jpeg`,
+    companyName: "MadeWithML",
   },
 ];
+
+/** Purple LLMOps banner between case study cards and testimonials */
+export const LLMOPS_BANNER = {
+  headline: "ZenML tracks production AI deployments across the industry",
+  subtext: "See the LLMOps database here",
+  href: "/llmops-database",
+};
 
 /* ------------------------------------------------------------------ */
 /*  Compliance / Security                                             */
