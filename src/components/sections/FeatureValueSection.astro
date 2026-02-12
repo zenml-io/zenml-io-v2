@@ -4,6 +4,9 @@
  *
  * Renders one "value block" from the feature page: heading, body,
  * bullet list, and a screenshot/illustration. Image side alternates.
+ *
+ * Matches Webflow's uui-layout08 section: 48px heading, circle-check
+ * bullets in ZenML purple, 4rem grid gap, 4rem vertical padding.
  */
 interface Props {
   title: string;
@@ -17,32 +20,32 @@ const { title, body, bullets, image, imageSide = "right" } = Astro.props;
 const isImageLeft = imageSide === "left";
 ---
 
-<section class="bg-white py-12 sm:py-16">
+<section class="bg-white py-16">
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
     <div class:list={[
-      "grid items-center gap-8 lg:grid-cols-2",
+      "grid items-center gap-10 lg:grid-cols-2 lg:gap-16",
       isImageLeft && "lg:[direction:rtl] lg:*:[direction:ltr]",
     ]}>
-      <div>
-        <h2 class="text-2xl font-bold text-gray-900 sm:text-3xl">{title}</h2>
+      <div class="max-w-[80%]">
+        <h2 class="text-3xl font-semibold text-gray-900 leading-tight sm:text-[2.75rem] lg:text-[3rem]">{title}</h2>
         {body && (
-          <p class="mt-3 text-lg text-gray-600 leading-relaxed">{body}</p>
+          <p class="mt-4 text-lg text-gray-600 leading-relaxed">{body}</p>
         )}
         {bullets && bullets.length > 0 && (
-          <ul class="mt-4 space-y-2">
+          <ul class="mt-8 space-y-5">
             {bullets.map((item) => (
-              <li class="flex items-start gap-2 text-gray-700">
-                <svg class="mt-1 h-5 w-5 flex-shrink-0 text-zenml-500" viewBox="0 0 20 20" fill="currentColor">
-                  <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd"/>
+              <li class="flex items-start gap-3 text-gray-600">
+                <svg class="mt-0.5 h-7 w-7 flex-shrink-0" viewBox="0 0 28 29" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M8.75 14.38l3.5 3.5 7-7m6.417 3.5c0 6.443-5.224 11.667-11.667 11.667S2.333 20.823 2.333 14.38 7.557 2.713 14 2.713s11.667 5.224 11.667 11.667z" stroke="#7A3EF4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
-                <span>{item}</span>
+                <span class="text-base leading-relaxed">{item}</span>
               </li>
             ))}
           </ul>
         )}
       </div>
       {image?.url && (
-        <div class="overflow-hidden rounded-xl border border-gray-200 shadow-lg">
+        <div class="overflow-hidden rounded-lg">
           <img
             src={image.url}
             alt={image.alt || title}
