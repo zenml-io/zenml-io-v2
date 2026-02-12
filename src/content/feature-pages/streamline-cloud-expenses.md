@@ -12,7 +12,7 @@ hub:
 hero:
   deck: Gain clarity on resource usage and costs across your entire ML infrastructure
   image:
-    url: "https://cdn.prod.website-files.com/64a817a2e7e2208272d1ce30/6526aff7d8b2eec3c9d58a4c_07_Standardization_Showcase.webp"
+    url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/f125b431/6526aff7d8b2eec3c9d58a4c_07_Standardization_Showcase.webp"
     alt: Comparison of team structures with and without ZenML, highlighting streamlined ML pipelines and collaboration.
   primaryCta:
     label: Book a demo
@@ -31,7 +31,7 @@ blocks:
       - Intelligent shutdown of GPU resources post-task completion.
       - Minimize costs by eliminating idle GPU time.
     image:
-      url: "https://cdn.prod.website-files.com/64a817a2e7e2208272d1ce30/6526b353bc2f4cf01e4f4677_04_Orchestrate_Anywhere.webp"
+      url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e87dc510/6526b353bc2f4cf01e4f4677_04_Orchestrate_Anywhere.webp"
       alt: Flowchart of ML tools like Kubeflow, Airflow, AWS Sagemaker, Azure ML Pipelines, showing model deployment process.
     imageSide: right
   - kind: value
@@ -42,7 +42,7 @@ blocks:
       - Intelligent shutdown of GPU resources post-task completion.
       - Minimize costs by eliminating idle GPU time.
     image:
-      url: "https://cdn.prod.website-files.com/64a817a2e7e2208272d1ce30/6526accfd82b706979b8cf7e_02_Connect_your_infrastructure.webp"
+      url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/bcf11e41/6526accfd82b706979b8cf7e_02_Connect_your_infrastructure.webp"
       alt: Diagram of various machine learning tools and frameworks including ZenML, Kubeflow, Vertex AI, and AWS SageMaker for ML pipelines integration.
     imageSide: left
   - kind: value
@@ -53,7 +53,7 @@ blocks:
       - Automatic resource provisioning and de-provisioning based on workload.
       - Integrate effortlessly with your existing ML development process.
     image:
-      url: "https://cdn.prod.website-files.com/64a817a2e7e2208272d1ce30/6526aff7c4fdd6c0d6c1ea26_10_Data_Versioning_and_Lineage_Showcase.webp"
+      url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e6f711a9/6526aff7c4fdd6c0d6c1ea26_10_Data_Versioning_and_Lineage_Showcase.webp"
       alt: Dashboard mockup
     imageSide: right
 
@@ -62,10 +62,10 @@ testimonial:
   name: François Serra
   title: ML Engineer / ML Ops / ML Solution architect at ADEO Services
   avatar:
-    url: "https://cdn.prod.website-files.com/64a817a2e7e2208272d1ce30/65c4a76f32be6961213a61a2_francois.webp"
+    url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/d925b5b9/65c4a76f32be6961213a61a2_francois.webp"
     alt: François Serra
   companyLogo:
-    url: "https://cdn.prod.website-files.com/64a817a2e7e2208272d1ce30/65c498032806e2ff7daec2bf_ADEO.svg"
+    url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/c110367c/65c498032806e2ff7daec2bf_ADEO.svg"
     alt: Testimonial logo
 
 seo:
@@ -73,7 +73,7 @@ seo:
   description: Clear view of resource usage across ML and LLM projects. Optimize spend on compute-intensive GenAI training and inference.
   ogTitle: ZenML Features - Streamline cloud expenses
   ogDescription: Clear view of resource usage across ML and LLM projects. Optimize spend on compute-intensive GenAI training and inference.
-  ogImage: https://cdn.prod.website-files.com/64a817a2e7e2208272d1ce30/66ab53c5a25f4b26fb061f1d_features-optimization.png
+  ogImage: https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/1cf5a56e/66ab53c5a25f4b26fb061f1d_features-optimization.png
 
 webflow:
   siteId: 64a817a2e7e2208272d1ce30

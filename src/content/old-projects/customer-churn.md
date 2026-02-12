@@ -26,7 +26,7 @@ seo:
   title: "ZenML - One AI Platform - From Pipelines to Agents"
   description: "An open-source foundation to ship reliable AI products at scale - on any cloud, anywhere."
   canonical: "https://www.zenml.io"
-  ogImage: "https://cdn.prod.website-files.com/64a817a2e7e2208272d1ce30/695e2c1368a3480fb0daafc4_zenml-open-graph.png"
+  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/cb031609/695e2c1368a3480fb0daafc4_zenml-open-graph.png"
   ogTitle: "ZenML - One AI Platform - From Pipelines to Agents"
   ogDescription: "An open-source foundation to ship reliable AI products at scale - on any cloud, anywhere."
 ---

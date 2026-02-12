@@ -7,16 +7,16 @@ hub:
   cardTitle: "How ADEO Leroy Merlin decreased their time-to-market from 2 months to 2 weeks"
   order: 2
   logos:
-    - url: "https://cdn.prod.website-files.com/64a817a2e7e2208272d1ce30/65c498032806e2ff7daec2bf_ADEO.svg"
+    - url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/c110367c/65c498032806e2ff7daec2bf_ADEO.svg"
       alt: "Stylized teal brushstroke text logo saying \"adeo\" on a white background."
-    - url: "https://cdn.prod.website-files.com/64a817a2e7e2208272d1ce30/65c49832a235dab4e3e0a3ce_leroy-merlin.svg"
+    - url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/356e9829/65c49832a235dab4e3e0a3ce_leroy-merlin.svg"
       alt: "Green triangle logo with the words \"Leroy Merlin\" in black text."
 
 hero:
   logos:
-    - url: "https://cdn.prod.website-files.com/64a817a2e7e2208272d1ce30/65c498032806e2ff7daec2bf_ADEO.svg"
+    - url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/c110367c/65c498032806e2ff7daec2bf_ADEO.svg"
       alt: "Stylized teal brushstroke text logo saying \"adeo\" on a white background."
-    - url: "https://cdn.prod.website-files.com/64a817a2e7e2208272d1ce30/65c49832a235dab4e3e0a3ce_leroy-merlin.svg"
+    - url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/356e9829/65c49832a235dab4e3e0a3ce_leroy-merlin.svg"
       alt: "Green triangle logo with the words \"Leroy Merlin\" in black text."
 
 sidebar:
@@ -40,7 +40,7 @@ seo:
   description: "How ADEO Leroy Merlin Leverages Machine Learning Pipelines for Enhanced Productivity"
   ogTitle: "How ADEO Leroy Merlin is Scaling Data Science with ZenML - Case Study"
   ogDescription: "How ADEO Leroy Merlin Leverages Machine Learning Pipelines for Enhanced Productivity"
-  ogImage: "https://cdn.prod.website-files.com/64a817a2e7e2208272d1ce30/65e9c7cebbb561c57e1a6f23_case_study_adeo.png"
+  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/61db3199/65e9c7cebbb561c57e1a6f23_case_study_adeo.png"
 
 webflow:
   siteId: "64a817a2e7e2208272d1ce30"
@@ -55,7 +55,7 @@ webflow:
                     <div class="uui-testimonial04_component">
                       <h2 class="uui-heading-small text-weight-medium">"ZenML allowed us a fast transition between dev to prod. It’s no longer the big fish eating the small fish – it’s the fast fish eating the slow fish."</h2>
                       <div class="uui-testimonial04_client">
-                        <div class="uui-testimonial04_client-image-wrapper"><img src="https://cdn.prod.website-files.com/64a817a2e7e2208272d1ce30/65c4a76f32be6961213a61a2_francois.webp" loading="lazy" alt="A man in a blue hoodie stands on a grassy hill with a scenic mountain view." class="uui-testimonial04_client-image"></div>
+                        <div class="uui-testimonial04_client-image-wrapper"><img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/d925b5b9/65c4a76f32be6961213a61a2_francois.webp" loading="lazy" alt="A man in a blue hoodie stands on a grassy hill with a scenic mountain view." class="uui-testimonial04_client-image"></div>
                         <div class="uui-testimonial04_client-info">
                           <div class="uui-heading-tiny">François Serra</div>
                           <div class="uui-text-size-medium">ML Engineer / ML Ops / ML Solution architect at ADEO Services</div>
@@ -92,7 +92,7 @@ webflow:
                   <li><strong class="text-dark">Framework and Infrastructure Agnosticism</strong><br>Flexibility to use any ML library, such as TensorFlow or PyTorch, and deploy workloads across different infrastructure targets with minimal overhead.</li>
                 </ul>
                 <figure style="max-width:3498pxpx" class="w-richtext-align-fullwidth w-richtext-figure-type-image">
-                  <div><img src="https://cdn.prod.website-files.com/64a817a2e7e2208272d1ce30/65c4ab894a074e8041ffe6ae_zenml-unified-experience.webp" loading="lazy" alt="ZenML unified experience"></div>
+                  <div><img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/ccbfeef1/65c4ab894a074e8041ffe6ae_zenml-unified-experience.webp" loading="lazy" alt="ZenML unified experience"></div>
                 </figure>
               </div>
               <div class="uui-text-markdown-text w-richtext">
@@ -112,7 +112,7 @@ webflow:
                     <div class="uui-testimonial04_component">
                       <h3 class="uui-heading-small text-weight-medium">"Our data scientists are now autonomous in writing their pipelines &amp; putting it in prod, setting up data-quality gates &amp; alerting easily."</h3>
                       <div class="uui-testimonial04_client">
-                        <div class="uui-testimonial04_client-image-wrapper"><img src="https://cdn.prod.website-files.com/64a817a2e7e2208272d1ce30/65c4a76f32be6961213a61a2_francois.webp" loading="lazy" alt="A man in a blue hoodie stands on a grassy hill with a scenic mountain view." class="uui-testimonial04_client-image"></div>
+                        <div class="uui-testimonial04_client-image-wrapper"><img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/d925b5b9/65c4a76f32be6961213a61a2_francois.webp" loading="lazy" alt="A man in a blue hoodie stands on a grassy hill with a scenic mountain view." class="uui-testimonial04_client-image"></div>
                         <div class="uui-testimonial04_client-info">
                           <div class="uui-heading-tiny">François Serra</div>
                           <div class="uui-text-size-medium">ML Engineer / ML Ops / ML Solution architect at ADEO Services</div>
@@ -127,18 +127,18 @@ webflow:
                 <h3>Expedited Time-to-Market</h3>
                 <p>The shift from 2 months to a mere 2 weeks from development to production marked a significant milestone in ADEO Leroy Merlin's ML journey.</p>
                 <figure style="max-width:undefinedpx" class="w-richtext-align-fullwidth w-richtext-figure-type-image">
-                  <div><img src="https://cdn.prod.website-files.com/64a817a2e7e2208272d1ce30/65c4af97f1b84de8d7c6850f_adeo-time-to-market.webp" loading="lazy" alt="Expedited Time-to-Market"></div>
+                  <div><img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/7d9e1e86/65c4af97f1b84de8d7c6850f_adeo-time-to-market.webp" loading="lazy" alt="Expedited Time-to-Market"></div>
                 </figure>
                 <h3>Robust Deployment</h3>
                 <p>With 5 ML models in production, the team is on track to reach a target of 20 by the end of 2024.</p>
                 <figure style="max-width:1960pxpx" class="w-richtext-align-fullwidth w-richtext-figure-type-image">
-                  <div><img src="https://cdn.prod.website-files.com/64a817a2e7e2208272d1ce30/65c4afdce520d0d9efae9f2b_adeo-models-in-production.webp" loading="lazy" alt="Models in production"></div>
+                  <div><img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/15657862/65c4afdce520d0d9efae9f2b_adeo-models-in-production.webp" loading="lazy" alt="Models in production"></div>
                 </figure>
                 <h3>Automation with Operational Efficiency</h3>
                 <p>1,614 development runs and 109 production runs showcased the reliability and confidence in the ML models deployed.</p>
                 <p>In order to roll-out a new business unit in another country, all the team needed to do was create one config file, and the model was already ready to go.</p>
                 <figure style="max-width:2356pxpx" class="w-richtext-align-fullwidth w-richtext-figure-type-image">
-                  <div><img src="https://cdn.prod.website-files.com/64a817a2e7e2208272d1ce30/65c4b0484e640434f9642876_zenml-automation.webp" loading="lazy" alt="Automation with Operational Efficiency"></div>
+                  <div><img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/41a3736e/65c4b0484e640434f9642876_zenml-automation.webp" loading="lazy" alt="Automation with Operational Efficiency"></div>
                 </figure>
                 <h3>FTP Economy</h3>
                 <p>Streamlined processes led to a remarkable reduction in FTP economy for the 6-member ML team.</p>
@@ -151,7 +151,7 @@ webflow:
                     <div class="uui-testimonial04_component">
                       <h3 class="uui-heading-small text-weight-medium">"ZenML has proven to be a critical asset in our machine learning toolbox, and we are excited to continue leveraging its capabilities to drive ADEO's machine learning initiatives to new heights."</h3>
                       <div class="uui-testimonial04_client">
-                        <div class="uui-testimonial04_client-image-wrapper"><img src="https://cdn.prod.website-files.com/64a817a2e7e2208272d1ce30/65c4a76f32be6961213a61a2_francois.webp" loading="lazy" alt="A man in a blue hoodie stands on a grassy hill with a scenic mountain view." class="uui-testimonial04_client-image"></div>
+                        <div class="uui-testimonial04_client-image-wrapper"><img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/d925b5b9/65c4a76f32be6961213a61a2_francois.webp" loading="lazy" alt="A man in a blue hoodie stands on a grassy hill with a scenic mountain view." class="uui-testimonial04_client-image"></div>
                         <div class="uui-testimonial04_client-info">
                           <div class="uui-heading-tiny">François Serra</div>
                           <div class="uui-text-size-medium">ML Engineer / ML Ops / ML Solution architect at ADEO Services</div>

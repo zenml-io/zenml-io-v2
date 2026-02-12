@@ -12,7 +12,7 @@ hub:
 hero:
   deck: Robust ML security with effortless implementation and management
   image:
-    url: "https://cdn.prod.website-files.com/64a817a2e7e2208272d1ce30/6526aff7d8b2eec3c9d58a4c_07_Standardization_Showcase.webp"
+    url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/f125b431/6526aff7d8b2eec3c9d58a4c_07_Standardization_Showcase.webp"
     alt: Comparison of team structures with and without ZenML, highlighting streamlined ML pipelines and collaboration.
   primaryCta:
     label: Book a demo
@@ -31,7 +31,7 @@ blocks:
       - "Facilitate compliance with EU AI Act & US AI Executive Order through robust tracking."
       - Detailed lineage tracking for model development and decision-making processes.
     image:
-      url: "https://cdn.prod.website-files.com/64a817a2e7e2208272d1ce30/6526ade3b9c339d75d1cce2c_08_Dashboard.webp"
+      url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/44e59760/6526ade3b9c339d75d1cce2c_08_Dashboard.webp"
       alt: ZenML dashboard displaying machine learning pipeline runs and experiment tracking with statuses and components.
     imageSide: right
   - kind: value
@@ -42,7 +42,7 @@ blocks:
       - Comprehensive audit trails for model development and deployment.
       - Seamless integration of security best practices in your ML workflows.
     image:
-      url: "https://cdn.prod.website-files.com/64a817a2e7e2208272d1ce30/6526aaa2897996e16fe7dd9c_12_Portability_Showcase.webp"
+      url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e46619e4/6526aaa2897996e16fe7dd9c_12_Portability_Showcase.webp"
       alt: Flowchart illustrating MLOps tools integration with Kubeflow, SageMaker Pipelines, and AWS for seamless machine learning deployment.
     imageSide: left
   - kind: value
@@ -53,7 +53,7 @@ blocks:
       - Streamlined documentation for regulatory reporting and audits.
       - Enhance transparency and traceability across your ML projects.
     image:
-      url: "https://cdn.prod.website-files.com/64a817a2e7e2208272d1ce30/6526b353bc2f4cf01e4f4677_04_Orchestrate_Anywhere.webp"
+      url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e87dc510/6526b353bc2f4cf01e4f4677_04_Orchestrate_Anywhere.webp"
       alt: Flowchart of ML tools like Kubeflow, Airflow, AWS Sagemaker, Azure ML Pipelines, showing model deployment process.
     imageSide: right
   - kind: complianceBanner
@@ -61,9 +61,9 @@ blocks:
     headline: We Take Security Seriously
     body: ZenML is SOC2 and ISO 27001 compliant, validating our adherence to industry-leading standards for data security, availability, and confidentiality in our ongoing commitment to protecting your ML workflows and data.
     badges:
-      - url: "https://cdn.prod.website-files.com/64a817a2e7e2208272d1ce30/soc2type2_zenml.png"
+      - url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/37007174/soc2type2_zenml.png"
         alt: SOC 2 Type II Badge, tested and attested by Prescient Accurance
-      - url: "https://cdn.prod.website-files.com/64a817a2e7e2208272d1ce30/66e9546d3b19094bf950273a_iso_certified.webp"
+      - url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/959bbffc/66e9546d3b19094bf950273a_iso_certified.webp"
         alt: "ISO/IEC 27001:2022 certification badge for security standards compliance."
 
 testimonial:
@@ -71,10 +71,10 @@ testimonial:
   name: Clément Depraz
   title: Data Scientist at Brevo
   avatar:
-    url: "https://cdn.prod.website-files.com/64a817a2e7e2208272d1ce30/65c60489feaf4767c877fc3f_clement.webp"
+    url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/7999105b/65c60489feaf4767c877fc3f_clement.webp"
     alt: Clément Depraz
   companyLogo:
-    url: "https://cdn.prod.website-files.com/64a817a2e7e2208272d1ce30/66c74d825fbc26b4d09823d1_Brevo-Logo-transparent.webp"
+    url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/52a636b6/66c74d825fbc26b4d09823d1_Brevo-Logo-transparent.webp"
     alt: Testimonial logo
 
 seo:
@@ -82,7 +82,7 @@ seo:
   description: One-view ML infrastructure oversight. Built-in security best practices. Simple configs, robust protection.
   ogTitle: ZenML Features - Security guardrails, always
   ogDescription: One-view ML infrastructure oversight. Built-in security best practices. Simple configs, robust protection.
-  ogImage: https://cdn.prod.website-files.com/64a817a2e7e2208272d1ce30/66ab53c56f4e6f415c9fe537_features-governance.png
+  ogImage: https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/ee326965/66ab53c56f4e6f415c9fe537_features-governance.png
 
 webflow:
   siteId: 64a817a2e7e2208272d1ce30

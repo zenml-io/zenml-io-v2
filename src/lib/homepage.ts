@@ -24,7 +24,7 @@ export const HERO = {
   githubUrl: "https://github.com/zenml-io/zenml",
   /** Lottie JSON for hero animation (autoplay, no loop, 6.4s, SVG renderer) */
   lottieUrl:
-    "https://cdn.prod.website-files.com/64a817a2e7e2208272d1ce30/68d25c7835d8facce3cdb642_hero-0925.json",
+    "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/8d0d5edc/68d25c7835d8facce3cdb642_hero-0925.json",
 };
 
 /* ------------------------------------------------------------------ */

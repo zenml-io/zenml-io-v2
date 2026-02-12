@@ -12,7 +12,7 @@ hub:
 hero:
   deck: One framework for all your MLOps and LLMOps needs, with the flexibility to change as you grow
   image:
-    url: "https://cdn.prod.website-files.com/64a817a2e7e2208272d1ce30/66b23fd465e26fc3d9cb731f_backend-flexibility-01-min.png"
+    url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/153da77b/66b23fd465e26fc3d9cb731f_backend-flexibility-01-min.png"
     alt: Cloud diagram with data scientists and ML tools like AWS, GCP, Kubernetes, highlighting MLOps and model deployment.
   primaryCta:
     label: Book a demo
@@ -31,7 +31,7 @@ blocks:
       - Multi-cloud support ensures true vendor independence.
       - Maintain consistent workflows across diverse environments.
     image:
-      url: "https://cdn.prod.website-files.com/64a817a2e7e2208272d1ce30/6526ad04f45d52aff741b914_13_Productionalization_Showcase.webp"
+      url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/8c0fce5c/6526ad04f45d52aff741b914_13_Productionalization_Showcase.webp"
       alt: Data Scientist and ML Engineer collaborate using ZenML pipelines with Docker for efficient machine learning model deployment.
     imageSide: right
   - kind: value
@@ -42,7 +42,7 @@ blocks:
       - Seamlessly transition between CPU and GPU environments.
       - Leverage unified abstractions for diverse ML and GenAI tasks.
     image:
-      url: "https://cdn.prod.website-files.com/64a817a2e7e2208272d1ce30/6526aff7c4fdd6c0d6c1ea26_10_Data_Versioning_and_Lineage_Showcase.webp"
+      url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e6f711a9/6526aff7c4fdd6c0d6c1ea26_10_Data_Versioning_and_Lineage_Showcase.webp"
       alt: Flowchart of ML pipeline featuring dataset preprocessing, model training on Snowflake data, and AWS deployment.
     imageSide: left
   - kind: value
@@ -53,7 +53,7 @@ blocks:
       - Flexible integrations with leading fine-tuning frameworks, Hugging Face Accelerate, Axolotl, PyTorch Lightning and more.
       - Get a central picture of all LLM models with prompts, metrics, and more.
     image:
-      url: "https://cdn.prod.website-files.com/64a817a2e7e2208272d1ce30/66c750e1f6c733ca2c758e30_autotrack-min.png"
+      url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/73b10dd3/66c750e1f6c733ca2c758e30_autotrack-min.png"
       alt: ZenML pipeline flowchart for machine learning model training and evaluation, featuring Kubernetes orchestration.
     imageSide: right
 
@@ -62,10 +62,10 @@ testimonial:
   name: Dragos Ciupureanu
   title: Koble.ai
   avatar:
-    url: "https://cdn.prod.website-files.com/64a817a2e7e2208272d1ce30/66c751608ff79facff667f9b_dragos.webp"
+    url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/44e4b3cf/66c751608ff79facff667f9b_dragos.webp"
     alt: Dragos Ciupureanu
   companyLogo:
-    url: "https://cdn.prod.website-files.com/64a817a2e7e2208272d1ce30/66c7517561bd21bc1e9f5451_koble-logo.svg"
+    url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/38419ea4/66c7517561bd21bc1e9f5451_koble-logo.svg"
     alt: Testimonial logo
 
 seo:
@@ -73,7 +73,7 @@ seo:
   description: Switch backends freely. Deploy classical ML or LLMs with equal ease. Adapt your LLMOps stack as needs evolve.
   ogTitle: ZenML Features - Backend flexibility, zero lock-in
   ogDescription: Switch backends freely. Deploy classical ML or LLMs with equal ease. Adapt your LLMOps stack as needs evolve.
-  ogImage: https://cdn.prod.website-files.com/64a817a2e7e2208272d1ce30/66ab53c5d022b3bd3be9befe_features-flexibility.png
+  ogImage: https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/d21ed30a/66ab53c5d022b3bd3be9befe_features-flexibility.png
 
 webflow:
   siteId: 64a817a2e7e2208272d1ce30

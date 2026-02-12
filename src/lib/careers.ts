@@ -8,8 +8,6 @@
  */
 import type { CtaLink } from "./marketingPageTypes";
 
-const WEBFLOW_CDN = "https://cdn.prod.website-files.com/64a817a2e7e2208272d1ce30";
-
 // ---------------------------------------------------------------------------
 // SEO
 // ---------------------------------------------------------------------------
@@ -20,7 +18,7 @@ export const CAREERS_SEO = {
   ogTitle: "Careers - ZenML",
   ogDescription:
     "Join the ZenML team. We are quickly growing and looking for motivated team members.",
-  ogImage: `${WEBFLOW_CDN}/64b9920cd04b7c4c0340ce50_og-img-0625.jpg`,
+  ogImage: `https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/3ae53e01/64b9920cd04b7c4c0340ce50_og-img-0625.jpg`,
 } as const;
 
 // ---------------------------------------------------------------------------
@@ -41,7 +39,7 @@ export const CAREERS_MISSION = {
   headline: "Our mission",
   body: "<strong>ZenML's mission is to accelerate worldwide problem solving by making machine learning simple.</strong><br><br>Our open-source framework allows data scientists to write their code as automated pipelines from day 1. Our extensible framework also provides a path to an automated, production-ready software base that can be deployed on any cloud or backend service.",
   image: {
-    url: `${WEBFLOW_CDN}/652ea57525920a782529bb0e_zenml_team_jul23.webp`,
+    url: `https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/7cea56ef/652ea57525920a782529bb0e_zenml_team_jul23.webp`,
     alt: "Group of people posing in front of a historic statue and building under a blue sky.",
   },
   primaryCta: {

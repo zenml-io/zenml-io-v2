@@ -23,7 +23,7 @@ blocks:
       - "Define infrastructure as stack components independent of your code"
       - "Run any code on any stack with minimum fuss"
     image:
-      url: "https://cdn.prod.website-files.com/64a817a2e7e2208272d1ce30/6526b353e6aebd4bab3f07f4_14_Vendor_Lock_in_Showcase.webp"
+      url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/660dfe37/6526b353e6aebd4bab3f07f4_14_Vendor_Lock_in_Showcase.webp"
       alt: "Dashboard mockup"
     imageSide: right
   - kind: value
@@ -33,7 +33,7 @@ blocks:
       - "Flexibly run workflows across all clouds or orchestrations tools such as Airflow or Kubeflow."
       - "AWS, GCP, and Azure integrations all supported out of the box."
     image:
-      url: "https://cdn.prod.website-files.com/64a817a2e7e2208272d1ce30/6526ae31bf639b6c8874a597_05_Integrations_showcase.webp"
+      url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/b7d6eb47/6526ae31bf639b6c8874a597_05_Integrations_showcase.webp"
       alt: "Dashboard mockup"
     imageSide: left
   - kind: value
@@ -43,7 +43,7 @@ blocks:
       - "Easily set up multiple MLOps stacks for different teams with different requirements."
       - "Switch between tools and platforms seamlessly."
     image:
-      url: "https://cdn.prod.website-files.com/64a817a2e7e2208272d1ce30/6526ad04f45d52aff741b914_13_Productionalization_Showcase.webp"
+      url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/8c0fce5c/6526ad04f45d52aff741b914_13_Productionalization_Showcase.webp"
       alt: "Dashboard mockup"
     imageSide: right
   - kind: relatedCompare
@@ -62,7 +62,7 @@ blocks:
       label: "Use Open Source"
       href: "/get-started"
     image:
-      url: "https://cdn.prod.website-files.com/64a817a2e7e2208272d1ce30/66e9556fd34d2791885b0c5f_model_control_plane_01.png"
+      url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/339bb62b/66e9556fd34d2791885b0c5f_model_control_plane_01.png"
       alt: "Dashboard displaying machine learning models, including versions, authors, and tags. Relevant to model monitoring and ML pipelines."
 
 seo:
@@ -70,7 +70,7 @@ seo:
   description: "ZenML vs AWS Sagemaker, GCP Vertex AI, Azure ML, ClearML and more. Understand how ZenML stands apart from traditional e2e platforms"
   ogTitle: "ZenML vs Cloud Platforms"
   ogDescription: "ZenML vs AWS Sagemaker, GCP Vertex AI, Azure ML, ClearML and more. Understand how ZenML stands apart from traditional e2e platforms"
-  ogImage: "https://cdn.prod.website-files.com/64a817a2e7e2208272d1ce30/685aadfc75c3d8495ee841e1_og-img-0625.jpg"
+  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/c1229847/685aadfc75c3d8495ee841e1_og-img-0625.jpg"
 
 webflow:
   siteId: "64a817a2e7e2208272d1ce30"
