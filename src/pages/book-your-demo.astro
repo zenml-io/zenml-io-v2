@@ -1,40 +1,154 @@
 ---
 /**
- * Book Your Demo — primary Cal.com booking page.
+ * Book Your Demo — conversion-optimized two-column layout.
  *
  * Route: /book-your-demo
+ * Minimal chrome (no full nav/footer) to reduce distraction.
+ * Left: marketing copy + stats + customer logos.
+ * Right: ContactForm (demo-request).
+ * Below: testimonial + simple footer.
  */
-import BaseLayout from "../layouts/BaseLayout.astro";
-import CalEmbed from "../components/sections/CalEmbed.astro";
+import MinimalLayout from "../layouts/MinimalLayout.astro";
+import ContactForm from "../components/islands/ContactForm.tsx";
 import {
   BOOK_YOUR_DEMO_SEO,
   BOOK_YOUR_DEMO_HERO,
-  BOOK_YOUR_DEMO_CAL,
+  BOOK_YOUR_DEMO_STATS,
+  BOOK_YOUR_DEMO_LOGOS,
+  BOOK_YOUR_DEMO_FORM,
+  BOOK_YOUR_DEMO_FIELDS,
+  BOOK_YOUR_DEMO_TESTIMONIAL,
 } from "../lib/bookYourDemo";
 ---
 
-<BaseLayout
+<MinimalLayout
   title={BOOK_YOUR_DEMO_SEO.title}
   description={BOOK_YOUR_DEMO_SEO.description}
   ogTitle={BOOK_YOUR_DEMO_SEO.ogTitle}
   ogDescription={BOOK_YOUR_DEMO_SEO.ogDescription}
 >
-  <main>
-    {/* Hero */}
-    <section class="bg-white pt-16 pb-4 sm:pt-24 sm:pb-8">
-      <div class="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
-        <h1 class="text-3xl font-bold text-gray-900 sm:text-4xl">
-          {BOOK_YOUR_DEMO_HERO.headline}
-        </h1>
-        <p class="mt-3 text-lg text-gray-600">{BOOK_YOUR_DEMO_HERO.deck}</p>
+  {/* Logo header */}
+  <header class="border-b border-gray-100 bg-white">
+    <div class="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
+      <a href="/" aria-label="ZenML home">
+        <img
+          src="/images/zenml-logo.svg"
+          alt="ZenML"
+          width="115"
+          height="28"
+          class="h-7 w-auto"
+        />
+      </a>
+    </div>
+  </header>
+
+  <main class="bg-white">
+    {/* Two-column section */}
+    <section class="py-12 sm:py-16 lg:py-20">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="grid items-start gap-12 lg:grid-cols-2 lg:gap-16">
+          {/* ── Left column: marketing copy ── */}
+          <div>
+            <h1 class="text-3xl font-bold text-gray-900 sm:text-4xl">
+              {BOOK_YOUR_DEMO_HERO.headlinePrefix}<span class="text-zenml-500">{BOOK_YOUR_DEMO_HERO.headlineHighlight}</span>{BOOK_YOUR_DEMO_HERO.headlineSuffix}
+            </h1>
+            <p class="mt-4 text-base leading-relaxed text-gray-600 sm:text-lg">
+              {BOOK_YOUR_DEMO_HERO.deck}
+            </p>
+
+            {/* Stats 2×2 grid */}
+            <div class="mt-10 grid grid-cols-2 gap-4">
+              {BOOK_YOUR_DEMO_STATS.map((stat) => (
+                <div class="rounded-lg border border-gray-200 px-4 py-5">
+                  <p class="text-2xl font-bold text-gray-900 sm:text-3xl">
+                    {stat.value}
+                  </p>
+                  <p class="mt-1 text-xs leading-snug text-gray-500 sm:text-sm">
+                    {stat.label}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            {/* Customer logos */}
+            <div class="mt-10 flex flex-wrap items-center gap-6 sm:gap-8">
+              {BOOK_YOUR_DEMO_LOGOS.map((logo) => (
+                <img
+                  src={logo.src}
+                  alt={logo.name}
+                  class="h-6 max-w-[100px] object-contain sm:h-7 sm:max-w-[120px]"
+                  loading="lazy"
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* ── Right column: form ── */}
+          <div>
+            <h2 class="text-2xl font-bold text-gray-900 sm:text-3xl">
+              {BOOK_YOUR_DEMO_FORM.headline}
+            </h2>
+            <p class="mt-2 text-sm text-gray-500">
+              {BOOK_YOUR_DEMO_FORM.deck}
+            </p>
+
+            <div class="mt-6">
+              <ContactForm
+                client:load
+                formType="demo-request"
+                endpoint="/api/forms/demo-request"
+                fields={BOOK_YOUR_DEMO_FIELDS}
+                submitLabel="Send Request"
+                loadingLabel="Sending…"
+                successMessage="Thank you! We successfully received your request."
+                successCta={{ label: "Schedule a time for the demo", href: "/success-calendar" }}
+              />
+            </div>
+
+            {/* Privacy note */}
+            <p class="mt-3 text-center text-xs text-gray-400">
+              By continuing, you agree to our{" "}
+              <a href="/privacy-policy" class="text-zenml-500 underline hover:text-zenml-600">
+                privacy policy
+              </a>.
+            </p>
+          </div>
+        </div>
       </div>
     </section>
 
-    {/* Cal.com embed */}
-    <section class="bg-white pb-16 sm:pb-20">
-      <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-        <CalEmbed config={BOOK_YOUR_DEMO_CAL} />
+    {/* Testimonial */}
+    <section class="border-t border-gray-100 bg-gray-50 py-10 sm:py-14">
+      <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col items-center gap-6 sm:flex-row sm:items-start sm:gap-8">
+          <img
+            src={BOOK_YOUR_DEMO_TESTIMONIAL.avatar}
+            alt={BOOK_YOUR_DEMO_TESTIMONIAL.name}
+            class="h-16 w-16 flex-shrink-0 rounded-full object-cover"
+            loading="lazy"
+          />
+          <div>
+            <blockquote class="text-base leading-relaxed text-gray-700 sm:text-lg">
+              {BOOK_YOUR_DEMO_TESTIMONIAL.quote}
+            </blockquote>
+            <p class="mt-3 text-sm font-semibold text-gray-900">
+              {BOOK_YOUR_DEMO_TESTIMONIAL.name}<span class="font-normal text-gray-500">, {BOOK_YOUR_DEMO_TESTIMONIAL.position}</span>
+            </p>
+          </div>
+        </div>
       </div>
     </section>
   </main>
-</BaseLayout>
+
+  {/* Minimal footer */}
+  <footer class="border-t border-gray-100 bg-white py-6">
+    <div class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-4 text-sm text-gray-400 sm:flex-row sm:px-6 lg:px-8">
+      <p>&copy; {new Date().getFullYear()} ZenML. All rights reserved.</p>
+      <nav class="flex gap-6">
+        <a href="/imprint" class="hover:text-gray-600">Imprint</a>
+        <a href="/privacy-policy" class="hover:text-gray-600">Privacy Policy</a>
+        <a href="/terms-of-service" class="hover:text-gray-600">Terms of Service</a>
+      </nav>
+    </div>
+  </footer>
+</MinimalLayout>
