@@ -1,7 +1,7 @@
 # ZenML Website v2 — Migration Plan
 
-> Last updated: 2026-02-11
-> Status: **Phase 1 COMPLETE, Phase 2 COMPLETE, Phase 3 IN PROGRESS** — 3A–3G complete (layouts, blog, all CMS templates, LLMOps filter island). 3H-1a (legal/404) + 3H-1b (homepage + 13 section components) complete. ~2,180 pages building in ~22s. Next: 3H-3 through 3H-7 (feature detail, case studies, marketing, forms, redirects).
+> Last updated: 2026-02-12
+> Status: **Phase 1 COMPLETE, Phase 2 COMPLETE, Phase 3 COMPLETE, Phase 4 IN PROGRESS** — All templates and pages built (~2,230+ pages in ~27s). All images migrated to R2. Phase 4: SEO & Redirects (sitemap, RSS, redirects, structured data, OG images, parity testing).
 
 ---
 
@@ -224,12 +224,12 @@ Progress:
 
 ---
 
-### Phase 3: Templates & Pages
+### Phase 3: Templates & Pages ✅ COMPLETE
 
 **Goal**: Build all page templates and static pages. The site should render
 every URL that currently exists.
 
-**Status:** 3A–3G COMPLETE, 3H-1a + 3H-1b COMPLETE. Next: 3H-3 through 3H-7 (feature detail, case studies, marketing, forms, redirects)
+**Status:** ✅ Complete (2026-02-12) — All sub-phases 3A–3G + 3H-1a + 3H-1b + 3H-3 + 3H-4 + 3H-5 + 3H-6 + 3H-7 done. ~2,230+ pages building in ~27s.
 
 **Detailed plan**: `docs/phase-3-plan.md`
 
