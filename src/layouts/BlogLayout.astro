@@ -12,8 +12,15 @@ import BaseLayout from "./BaseLayout.astro";
 import Badge from "../components/Badge.astro";
 import Image from "../components/Image.astro";
 import JsonLd from "../components/seo/JsonLd.astro";
+import BlogTOC from "../components/BlogTOC.astro";
 import type { SEOProps } from "../lib/seo";
 import { SITE_URL } from "../lib/constants";
+
+interface Heading {
+  depth: number;
+  slug: string;
+  text: string;
+}
 
 interface Author {
   name: string;
@@ -34,6 +41,8 @@ interface Props extends SEOProps {
   readingTime?: string;
   /** Featured image */
   mainImage?: { url: string; alt?: string; width?: number; height?: number };
+  /** Headings extracted from markdown for TOC */
+  headings?: Heading[];
 }
 
 const {
@@ -43,8 +52,13 @@ const {
   categorySlug,
   readingTime,
   mainImage,
+  headings = [],
   ...seoProps
 } = Astro.props;
+
+// Filter to h2/h3 for TOC display check
+const tocHeadings = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
+const showTOC = tocHeadings.length >= 3;
 
 const formattedDate = new Date(date).toLocaleDateString("en-US", {
   year: "numeric",
@@ -77,72 +91,86 @@ const articleJsonLd = {
 <BaseLayout {...seoProps}>
   <JsonLd data={articleJsonLd} slot="head" />
   <JsonLd data={breadcrumbJsonLd} slot="head" />
-  <article class="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:py-16">
-    {/* Post header */}
-    <header class="mb-8">
-      {/* Category pill */}
-      {category && (
-        <div class="mb-4">
-          <Badge href={categorySlug ? `/category/${categorySlug}` : undefined} variant="primary">
-            {category}
-          </Badge>
-        </div>
-      )}
-
-      {/* Title */}
-      <h1 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-        {seoProps.title}
-      </h1>
-
-      {/* Meta row: author, date, reading time */}
-      <div class="mt-6 flex items-center gap-4 text-sm text-gray-500">
-        {author && (
-          <div class="flex items-center gap-2">
-            {author.avatar && (
-              <Image
-                image={author.avatar}
-                alt={author.name}
-                class="h-8 w-8 rounded-full object-cover"
-                loading="eager"
-              />
-            )}
-            <a
-              href={`/author/${author.slug}`}
-              class="font-medium text-gray-900 hover:text-zenml-500"
-            >
-              {author.name}
-            </a>
+  <div class:list={[
+    "mx-auto px-4 py-12 sm:px-6 lg:py-16",
+    showTOC ? "max-w-5xl xl:grid xl:grid-cols-[minmax(0,48rem)_14rem] xl:gap-10" : "max-w-3xl",
+  ]}>
+    <article>
+      {/* Post header */}
+      <header class="mb-8">
+        {/* Category pill */}
+        {category && (
+          <div class="mb-4">
+            <Badge href={categorySlug ? `/category/${categorySlug}` : undefined} variant="primary">
+              {category}
+            </Badge>
           </div>
         )}
 
-        <time datetime={new Date(date).toISOString()}>
-          {formattedDate}
-        </time>
+        {/* Title */}
+        <h1 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+          {seoProps.title}
+        </h1>
 
-        {readingTime && (
-          <>
-            <span class="text-gray-300">·</span>
-            <span>{readingTime}</span>
-          </>
-        )}
-      </div>
-    </header>
+        {/* Meta row: author, date, reading time */}
+        <div class="mt-6 flex items-center gap-4 text-sm text-gray-500">
+          {author && (
+            <div class="flex items-center gap-2">
+              {author.avatar && (
+                <Image
+                  image={author.avatar}
+                  alt={author.name}
+                  class="h-8 w-8 rounded-full object-cover"
+                  loading="eager"
+                />
+              )}
+              <a
+                href={`/author/${author.slug}`}
+                class="font-medium text-gray-900 hover:text-zenml-500"
+              >
+                {author.name}
+              </a>
+            </div>
+          )}
 
-    {/* Featured image */}
-    {mainImage && (
-      <div class="mb-10 overflow-hidden rounded-xl">
-        <Image
-          image={mainImage}
-          alt={mainImage.alt || seoProps.title}
-          class="w-full"
-          loading="eager"
-        />
+          <time datetime={new Date(date).toISOString()}>
+            {formattedDate}
+          </time>
+
+          {readingTime && (
+            <>
+              <span class="text-gray-300">·</span>
+              <span>{readingTime}</span>
+            </>
+          )}
+        </div>
+      </header>
+
+      {/* Featured image */}
+      {mainImage && (
+        <div class="mb-10 overflow-hidden rounded-xl">
+          <Image
+            image={mainImage}
+            alt={mainImage.alt || seoProps.title}
+            class="w-full"
+            loading="eager"
+          />
+        </div>
+      )}
+
+      {/* Post body (MDX content) */}
+      <div class="prose">
+        <slot />
       </div>
+    </article>
+
+    {/* Table of contents sidebar */}
+    {showTOC && (
+      <aside class="hidden xl:block">
+        <div class="sticky top-24 max-h-[calc(100vh-8rem)] overflow-y-auto">
+          <BlogTOC headings={headings} />
+        </div>
+      </aside>
     )}
-
-    {/* Post body (MDX content) */}
-    <div class="prose">
-      <slot />
-    </div>
-  </article>
+  </div>
 </BaseLayout>
