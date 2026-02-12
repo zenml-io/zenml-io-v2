@@ -121,7 +121,7 @@ for (const post of [featuredPost, ...posts]) {
               </a>
             )}
             {(category || post.data.readingTime) && (
-              <div class="mt-4 inline-flex items-center rounded-full bg-primary-50 p-1 text-xs font-medium text-primary-700" style="mix-blend-mode:multiply">
+              <div class="mt-4 self-start inline-flex items-center rounded-full bg-primary-50 p-1 text-xs font-medium text-primary-700" style="mix-blend-mode:multiply">
                 {category && (
                   <a href={`/category/${category.slug}`} class="rounded-full bg-white px-2 py-0.5 font-semibold text-primary-700 hover:text-primary-800">
                     {category.name}
