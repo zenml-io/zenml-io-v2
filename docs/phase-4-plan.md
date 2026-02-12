@@ -2,7 +2,7 @@
 
 **Created:** 2026-02-12
 **Last Updated:** 2026-02-12
-**Status:** IN PROGRESS — Batches 1–3 complete (4A–4I), 4J remaining
+**Status:** ✅ COMPLETE — All sub-tasks 4A–4J done. Lighthouse deferred to deployed preview.
 **Prerequisites:**
 - Phase 3 COMPLETE (all templates, pages, layouts — ~2,230+ pages building in ~27s)
 - SEO baseline exists: `design/migration/phase1/runs/2026-02-11T0626Z/seo/baseline.json` (2,151 URLs)
@@ -329,26 +329,31 @@ export const GET: APIRoute = async () => {
 **Goal:** Manual verification of SEO best practices across key pages.
 
 **Tasks:**
-- [ ] Verify `<link rel="canonical">` on every page type (spot-check 10):
-  - Homepage: `https://www.zenml.io`
-  - Blog post: `https://www.zenml.io/blog/<slug>`
-  - Blog listing: `https://www.zenml.io/blog`
-  - Blog pagination: `https://www.zenml.io/blog/page/2`
-  - LLMOps entry: `https://www.zenml.io/llmops-database/<slug>`
-  - Feature page: `https://www.zenml.io/features/<slug>`
-  - Compare page: `https://www.zenml.io/compare/<slug>`
-  - Static page: `https://www.zenml.io/pricing`
-  - Author page: `https://www.zenml.io/author/<slug>`
-  - Tag page: `https://www.zenml.io/tags/<slug>`
-- [ ] Verify single H1 per page (spot-check 10 pages)
-- [ ] Verify no `noindex` on pages that should be indexed
-- [ ] Verify `noindex` IS present on pages that should NOT be indexed (drafts, redirect pages before removal)
-- [ ] Verify heading hierarchy (H1 → H2 → H3, no skips) on blog posts
-- [ ] Verify alt text on images (at least on homepage, blog posts)
-- [ ] Verify `<html lang="en">` is present
-- [ ] Verify `<meta charset="UTF-8">` is present
-- [ ] Verify `<meta name="viewport">` is present
-- [ ] Check page load performance with Lighthouse on 5 key pages
+- [x] Verify `<link rel="canonical">` on 10 page types ✅ — all correct, no `.html` suffix, correct `www.zenml.io` domain:
+  - Homepage: `https://www.zenml.io` ✅
+  - Blog post: `https://www.zenml.io/blog/<slug>` ✅
+  - Blog listing: `https://www.zenml.io/blog` ✅
+  - Blog pagination: `https://www.zenml.io/blog/page/2` ✅
+  - LLMOps entry: `https://www.zenml.io/llmops-database/<slug>` ✅
+  - Feature page: `https://www.zenml.io/features/<slug>` ✅
+  - Compare page: `https://www.zenml.io/compare/<slug>` ✅
+  - Static page: `https://www.zenml.io/pricing` ✅
+  - Author page: `https://www.zenml.io/author/<slug>` ✅
+  - Tag page: `https://www.zenml.io/tags/<slug>` ✅
+- [x] Verify single H1 per page ✅ (with known exceptions — see below)
+- [x] Verify no `noindex` on indexable pages ✅ — homepage, blog, pricing, blog posts all clean
+- [x] Verify `noindex` IS present on success/thank-you pages ✅ — book-success, booked, newsletter-success, 404 all have `noindex, nofollow`
+- [x] Verify heading hierarchy on blog posts ✅ — H1 → H2 hierarchy correct on sampled posts
+- [x] Verify alt text on images ✅ — 100% of homepage images have alt attributes
+- [x] Verify `<html lang="en">` is present ✅
+- [x] Verify `<meta charset="UTF-8">` is present ✅
+- [x] Verify `<meta name="viewport">` is present ✅
+- [ ] Check page load performance with Lighthouse on 5 key pages (deferred — requires deployed preview)
+
+**Known H1 issues (inherited from Webflow, not a regression):**
+- 14/17 compare pages have multiple H1s (Markdown body content uses `#` headings)
+- 17/280 blog posts have multiple H1s (6% — same as Webflow original)
+- Post-launch improvement: batch-fix `# headings` → `## headings` in compare and blog content files
 
 ---
 
