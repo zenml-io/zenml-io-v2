@@ -143,6 +143,47 @@ query the live site. The site ID is `64a817a2e7e2208272d1ce30`.
 - When a phase is complete, update `docs/plan.md` to reflect that and note
   any learnings or changes to the plan
 
+## Image & Asset Migration Lessons
+
+These patterns caused silent runtime 404s that only showed up on the deployed
+site — no build errors, no type errors, just broken images.
+
+### Always verify uploads via the public URL
+
+URL rewriting source code is not enough. After uploading images to R2, **test
+the public URL** (`curl -sI https://pub-...r2.dev/webflow/...`) to confirm the
+file is actually accessible. The boto3 API can succeed but the public domain may
+point to a different account/bucket.
+
+### Template literal URLs are invisible to regex audits
+
+Source code like `` `${R2}/hash/file.svg` `` expands to a full URL at runtime,
+but regex scanning for the R2 domain string won't find it. When auditing for
+broken R2 references, **scan for both patterns**:
+- Literal: `https://pub-...r2.dev/webflow/.../hash/file`
+- Template: `${R2}/hash/file` (where `R2` is a constant)
+
+### `public/` assets must be explicitly placed
+
+Astro doesn't error when a component references `/images/logo.svg` but
+`public/images/logo.svg` doesn't exist — it just silently 404s at runtime.
+After adding `/images/*` references, verify the files exist in `public/images/`.
+
+### Webflow CDN may 403 on certain file IDs
+
+Some Webflow file IDs (especially newer `670e2f23...` uploads) return 403
+even with browser User-Agent headers. The Webflow HTML export
+(`design/webflow-export/extracted/images/`) often has equivalent files under
+older file IDs that download fine. Use local export files as source when the
+CDN blocks.
+
+### Filenames with spaces break regex URL matching
+
+R2 keys like `03.01.  Models - List.webp` get truncated at the first space
+by `[^\s...]` regex patterns. For comprehensive audits, match only the 8-char
+hash prefix (`[a-f0-9]{8}`) and verify it exists in the bucket, rather than
+trying to capture the full filename.
+
 ## Skills & Automation
 
 - **Proactively suggest creating Claude Code skills** when a task becomes
