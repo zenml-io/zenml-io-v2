@@ -42,16 +42,21 @@ export interface ResolvedSEO {
 
 /**
  * Build canonical URL from site URL + pathname.
- * Ensures trailing-slash-never alignment (strips trailing / except for root).
+ * Strips .html extension (Astro's build.format: "file" adds it to pathnames)
+ * and trailing slashes to produce clean canonical URLs.
  */
 export function buildCanonical(pathname: string, override?: string): string {
   if (override) return override;
 
   // Root path stays as-is
-  if (pathname === "/") return SITE_URL;
+  if (pathname === "/" || pathname === "/index.html") return SITE_URL;
 
+  let clean = pathname;
+  // Strip .html extension (build.format: "file" adds it to Astro.url.pathname)
+  if (clean.endsWith(".html")) clean = clean.slice(0, -5);
   // Strip trailing slash to match trailingSlash: "never" config
-  const clean = pathname.endsWith("/") ? pathname.slice(0, -1) : pathname;
+  if (clean.endsWith("/")) clean = clean.slice(0, -1);
+
   return `${SITE_URL}${clean}`;
 }
 
