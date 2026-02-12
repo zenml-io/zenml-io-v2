@@ -17,18 +17,15 @@ import { FEATURE_TABS_HEADER, FEATURE_TABS, STATS } from "../../lib/homepage";
         {FEATURE_TABS_HEADER.eyebrow}
       </p>
       <h2 class="mt-2 text-3xl font-bold text-gray-900 sm:text-4xl">
-        {FEATURE_TABS_HEADER.headline}
+        {FEATURE_TABS_HEADER.headline} {FEATURE_TABS_HEADER.subheadline}
       </h2>
-      <p class="mt-2 text-lg text-gray-600">
-        {FEATURE_TABS_HEADER.subheadline}
-      </p>
     </div>
 
     <!-- Stats grid — slides in from top on scroll -->
     <div class="scroll-slide-top stagger-1 mt-12 grid grid-cols-2 gap-6 sm:grid-cols-4">
       {STATS.map((stat) => (
         <div class="text-center">
-          <p class="text-3xl font-bold text-zenml-500 sm:text-4xl">{stat.value}</p>
+          <p class="text-3xl font-bold text-gray-900 sm:text-4xl">{stat.value}</p>
           <p class="mt-1 text-sm text-gray-600">{stat.label}</p>
         </div>
       ))}

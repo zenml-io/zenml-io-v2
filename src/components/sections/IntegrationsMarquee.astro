@@ -16,7 +16,7 @@ const logos = integrations
   .map((i) => ({ name: i.data.title, src: i.data.logo!.url }));
 ---
 
-<section class="overflow-hidden bg-white py-16 sm:py-20">
+<section class="relative overflow-hidden bg-white pt-16 pb-32 sm:pt-20 sm:pb-40">
   <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
     <h2 class="text-3xl font-bold text-gray-900 sm:text-4xl">
       {INTEGRATIONS_MARQUEE.headline}
@@ -30,14 +30,14 @@ const logos = integrations
     <div class="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-white to-transparent"></div>
     <div class="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-white to-transparent"></div>
 
-    <div class="flex animate-marquee gap-10 group-hover:[animation-play-state:paused]">
+    <div class="flex animate-marquee gap-4 group-hover:[animation-play-state:paused]">
       {/* Render logos twice for seamless loop */}
       {[...logos, ...logos].map((logo) => (
-        <div class="flex h-12 w-20 flex-shrink-0 items-center justify-center">
+        <div class="flex h-[60px] w-[60px] flex-shrink-0 items-center justify-center rounded-lg border-2 border-gray-200 bg-white transition-all duration-200 hover:scale-[1.3] hover:border-zenml-500">
           <img
             src={logo.src}
             alt={logo.name}
-            class="max-h-10 max-w-[5rem] object-contain opacity-60 grayscale transition hover:opacity-100 hover:grayscale-0"
+            class="h-10 w-10 object-contain"
             loading="lazy"
           />
         </div>
@@ -54,6 +54,9 @@ const logos = integrations
       {INTEGRATIONS_MARQUEE.secondaryCta.label}
     </Button>
   </div>
+
+  <!-- Purple gradient bridge to WhitepaperCTA section below -->
+  <div class="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent via-purple-900/30 to-purple-900/80 sm:h-40"></div>
 </section>
 
 <style>
@@ -62,7 +65,7 @@ const logos = integrations
     to { transform: translateX(-50%); }
   }
   .animate-marquee {
-    animation: marquee-slide 60s linear infinite;
+    animation: marquee-slide 150s linear infinite;
     width: max-content;
   }
   @media (prefers-reduced-motion: reduce) {
