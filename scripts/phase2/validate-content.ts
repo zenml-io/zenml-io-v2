@@ -7,7 +7,7 @@
  * - Slug uniqueness and format
  * - Draft/source consistency
  *
- * Input: src/content/<collection>/*.mdx
+ * Input: src/content/<collection>/*.md (and *.mdx if any)
  * Output: Console summary + optional JSON report
  */
 
@@ -34,6 +34,10 @@ const EXPECTED_COLLECTIONS = [
   "team",
   "projects",
   "old-projects",
+  // Phase 3 collections (block-driven content)
+  "case-studies",
+  "feature-pages",
+  "vs-pages",
   // Reference collections
   "authors",
   "categories",
@@ -194,23 +198,23 @@ class ContentValidator {
 
       const collectionPath = path.join(CONTENT_DIR, collection);
       const files = await fs.readdir(collectionPath);
-      const mdxFiles = files.filter((f) => f.endsWith(".mdx"));
+      const contentFiles = files.filter((f) => f.endsWith(".md") || f.endsWith(".mdx"));
 
       const stats: CollectionStats = {
         collection,
-        total: mdxFiles.length,
+        total: contentFiles.length,
         drafts: 0,
         published: 0,
         errors: 0,
         warnings: 0,
       };
 
-      for (const file of mdxFiles) {
+      for (const file of contentFiles) {
         const filePath = path.join(collectionPath, file);
         const content = await fs.readFile(filePath, "utf-8");
         const { data, content: body } = matter(content);
 
-        const fileSlug = path.basename(file, ".mdx");
+        const fileSlug = path.basename(file, path.extname(file));
         const isDraft = data.draft === true;
 
         if (isDraft) {
@@ -229,10 +233,17 @@ class ContentValidator {
       }
 
       this.collectionStats.set(collection, stats);
-      console.log(`  ${collection}: ${mdxFiles.length} files`);
+      console.log(`  ${collection}: ${contentFiles.length} files`);
     }
 
     console.log(`\n✅ Loaded ${this.entries.length} entries from ${this.collectionStats.size} collections\n`);
+
+    if (this.entries.length === 0) {
+      throw new Error(
+        "NO_ENTRIES_LOADED: 0 content entries found. " +
+        "Check that CONTENT_DIR contains .md files and file extension filters are correct."
+      );
+    }
   }
 
   /**

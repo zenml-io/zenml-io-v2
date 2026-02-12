@@ -12,7 +12,6 @@
  */
 import { getCollection, getEntry, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import Badge from "../../components/Badge.astro";
 
 export async function getStaticPaths() {
   const compareItems = await getCollection("compare", ({ data }) => !data.draft);

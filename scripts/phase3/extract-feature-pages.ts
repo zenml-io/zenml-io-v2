@@ -9,7 +9,7 @@
 
 import * as cheerio from "cheerio";
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from "node:fs";
-import { join, basename } from "node:path";
+import { join } from "node:path";
 
 const ROOT = process.cwd();
 const HTML_DIR = join(ROOT, "design/webflow-export/extracted/features");
@@ -205,7 +205,7 @@ function extractPage(slug: string, seoMap: Map<string, any>, hubCards: Map<strin
     const blockTitle = cleanText($content.find("h2").first().text());
     const bodyText = cleanText($content.find(".uui-text-size-xlarge").first().text());
     const bullets: string[] = [];
-    $content.find("li").each((_, li) => bullets.push(cleanText($(li).text())));
+    $content.find("li").each((_, li) => { bullets.push(cleanText($(li).text())); });
 
     const img = $imgWrapper.find("img").first();
     const imageUrl = img.attr("src") ? resolveImageUrl(img.attr("src")!) : "";

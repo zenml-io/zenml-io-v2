@@ -320,7 +320,7 @@ const integrationSchema = z.object({
   docsUrl: z.string().url().optional(),
   githubUrl: z.string().url().optional(),
   mainImage: imageSchema.optional(),
-  relatedBlogPosts: z.array(z.string()).default([]), // slug references to blog
+  relatedBlogPosts: slugReferenceArray('blog'),
 
   // SEO & Webflow
   seo: seoSchema,

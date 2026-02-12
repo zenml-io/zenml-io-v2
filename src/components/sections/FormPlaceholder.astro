@@ -54,7 +54,7 @@ const { fields, submitLabel, fallbackCta, privacyHtml } = Astro.props;
           </label>
         ) : (
           <input
-            type={field.type}
+            type={field.type as astroHTML.JSX.HTMLInputTypeAttribute}
             disabled
             placeholder={field.placeholder}
             class="w-full rounded-md border border-gray-300 bg-gray-50 px-4 py-2.5 text-sm text-gray-500 placeholder:text-gray-400"

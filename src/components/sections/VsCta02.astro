@@ -10,10 +10,10 @@ import Button from "../Button.astro";
 
 interface Props {
   headline: string;
-  bullets: string[];
+  bullets: readonly string[];
   primaryCta: { label: string; href: string };
   secondaryCta?: { label: string; href: string };
-  image?: { url: string; alt: string };
+  image?: { url: string; alt?: string };
 }
 
 const { headline, bullets, primaryCta, secondaryCta, image } = Astro.props;
@@ -51,7 +51,7 @@ const { headline, bullets, primaryCta, secondaryCta, image } = Astro.props;
         <div class="hidden lg:block">
           <img
             src={image.url}
-            alt={image.alt}
+            alt={image.alt ?? headline}
             class="rounded-xl shadow-2xl"
             loading="lazy"
           />
