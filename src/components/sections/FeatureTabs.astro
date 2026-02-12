@@ -9,10 +9,10 @@
 import { FEATURE_TABS_HEADER, FEATURE_TABS, STATS } from "../../lib/homepage";
 ---
 
-<section class="bg-white py-16 sm:py-24">
+<section class="scroll-reveal-section bg-white py-16 sm:py-24">
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    <!-- Header -->
-    <div class="text-center">
+    <!-- Header — slides in from top on scroll -->
+    <div class="scroll-slide-top text-center">
       <p class="text-sm font-semibold uppercase tracking-wider text-zenml-500">
         {FEATURE_TABS_HEADER.eyebrow}
       </p>
@@ -24,8 +24,8 @@ import { FEATURE_TABS_HEADER, FEATURE_TABS, STATS } from "../../lib/homepage";
       </p>
     </div>
 
-    <!-- Stats grid -->
-    <div class="mt-12 grid grid-cols-2 gap-6 sm:grid-cols-4">
+    <!-- Stats grid — slides in from top on scroll -->
+    <div class="scroll-slide-top stagger-1 mt-12 grid grid-cols-2 gap-6 sm:grid-cols-4">
       {STATS.map((stat) => (
         <div class="text-center">
           <p class="text-3xl font-bold text-zenml-500 sm:text-4xl">{stat.value}</p>
@@ -34,8 +34,8 @@ import { FEATURE_TABS_HEADER, FEATURE_TABS, STATS } from "../../lib/homepage";
       ))}
     </div>
 
-    <!-- Tabs -->
-    <div class="mt-16" id="feature-tabs">
+    <!-- Tabs — fades in on scroll -->
+    <div class="scroll-fade-in stagger-2 mt-16" id="feature-tabs">
       <!-- Tab buttons -->
       <div class="flex flex-wrap justify-center gap-2 border-b border-gray-200" role="tablist">
         {FEATURE_TABS.map((tab, i) => (
@@ -84,7 +84,44 @@ import { FEATURE_TABS_HEADER, FEATURE_TABS, STATS } from "../../lib/homepage";
   </div>
 </section>
 
+<style>
+  /* Slide-in-from-top animation for header and stats */
+  .scroll-slide-top {
+    opacity: 0;
+    transform: translateY(-30px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  }
+
+  /* Fade-in animation for tab slider */
+  .scroll-fade-in {
+    opacity: 0;
+    transition: opacity 0.8s ease-out;
+  }
+
+  /* Stagger delays for sequential reveal */
+  .stagger-1 { transition-delay: 0.15s; }
+  .stagger-2 { transition-delay: 0.3s; }
+
+  /* Revealed state */
+  .scroll-reveal-section.in-view .scroll-slide-top,
+  .scroll-reveal-section.in-view .scroll-fade-in {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Respect reduced-motion preference */
+  @media (prefers-reduced-motion: reduce) {
+    .scroll-slide-top,
+    .scroll-fade-in {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+</style>
+
 <script>
+  // --- Tab switching ---
   const ACTIVE_CLASSES = ["border-b-2", "border-zenml-500", "text-zenml-500"];
   const INACTIVE_CLASSES = ["text-gray-500", "hover:border-b-2", "hover:border-gray-300", "hover:text-gray-700"];
 
@@ -107,4 +144,19 @@ import { FEATURE_TABS_HEADER, FEATURE_TABS, STATS } from "../../lib/homepage";
       });
     });
   });
+
+  // --- Scroll-triggered reveal ---
+  const section = document.querySelector('.scroll-reveal-section');
+  if (section) {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          section.classList.add('in-view');
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1 }
+    );
+    observer.observe(section);
+  }
 </script>
