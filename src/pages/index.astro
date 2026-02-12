@@ -9,6 +9,7 @@
  * Route: / (homepage)
  */
 import BaseLayout from "../layouts/BaseLayout.astro";
+import JsonLd from "../components/seo/JsonLd.astro";
 import AnnouncementBanner from "../components/sections/AnnouncementBanner.astro";
 import Hero from "../components/sections/Hero.astro";
 import LogoCloud from "../components/sections/LogoCloud.astro";
@@ -22,6 +23,39 @@ import ComplianceSection from "../components/sections/ComplianceSection.astro";
 import NewsletterSignup from "../components/sections/NewsletterSignup.astro";
 import FAQAccordion from "../components/sections/FAQAccordion.astro";
 import FinalCTA from "../components/sections/FinalCTA.astro";
+import { FAQ } from "../lib/homepage";
+import { SITE_URL } from "../lib/constants";
+
+/** Strip HTML tags from a string (for JSON-LD plain text) */
+function stripHtml(html: string): string {
+  return html.replace(/<[^>]+>/g, "");
+}
+
+const orgJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "ZenML",
+  url: SITE_URL,
+  logo: `${SITE_URL}/images/zenml-logo.svg`,
+  sameAs: [
+    "https://github.com/zenml-io/zenml",
+    "https://twitter.com/zenml_io",
+    "https://www.linkedin.com/company/zenml",
+  ],
+};
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: FAQ.items.map((item) => ({
+    "@type": "Question",
+    name: item.question,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: stripHtml(item.answer),
+    },
+  })),
+};
 ---
 
 <BaseLayout
@@ -29,6 +63,8 @@ import FinalCTA from "../components/sections/FinalCTA.astro";
   description="One layer for orchestration, versioning, and governance — from training pipelines to agent evals, local to Kubernetes."
   ogTitle="ZenML — The AI Control Plane"
 >
+  <JsonLd data={orgJsonLd} slot="head" />
+  <JsonLd data={faqJsonLd} slot="head" />
   <AnnouncementBanner slot="before-nav" />
 
   <main>

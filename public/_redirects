@@ -1,0 +1,65 @@
+# ZenML Website Redirects — Cloudflare Pages
+# Generated from: Webflow export (44) + redirectOnly.ts (7) + /cla (1)
+# Total: 52 rules
+# Format: <from> <to> <status>
+# CF Pages processes these BEFORE static files; first match wins.
+
+# ── Internal redirects (from Webflow) ──────────────────────────────
+/open-source-vs-managed /open-source-vs-pro 301
+/pricing-test /pricing 301
+/cloud-terms-and-privacy /terms-of-service 301
+/newsletter /newsletter-signup 301
+/live-demo-cloud /interactive-demo-mcp 301
+/features/symple-syntax /features 301
+/vs/zenml-vs-cloud-platforms /vs/zenml-vs-e2e-platforms 301
+/home / 301
+/live-demo-mcp /interactive-demo-mcp 301
+/features/no-vendor-lock-in /features 301
+/features/accelerate-your-workflow /features 301
+/features/open-source /features 301
+/open-source-vs-paid /open-source-vs-pro 301
+/features/bridge-the-gap /features 301
+/features/simple-syntax /features 301
+/features/run-anywhere /features 301
+/features/unified-end-to-end /features 301
+/cloud /pro 301
+/open-source-vs-cloud /open-source-vs-pro 301
+/features/run-machine-learning-pipelines-anywhere /features 301
+/features/simple-ml-pipeline-syntax /features 301
+/features/standardized-ml /features 301
+/features/end-to-end-machine-learning /features 301
+/features/open-source-mlops-framework /features 301
+/features/no-mlops-platform-vendor-lock-in /features 301
+/features/simplify-your-workflow /features 301
+/features/gap-between-data-science-and-mlops /features 301
+/features/accelerate-your-machine-learning-workflow /features 301
+/plans /pricing 301
+/zenml-vs-other-tools /compare 301
+/compute-catalyst /ai-accelerator-program 301
+/competition / 301
+/event-qr /book-your-demo 301
+/qr /book-your-demo 301
+/signup-for-demo-startup /startups-and-academics 301
+/scratch-card /book-your-demo 301
+/onepager /book-your-demo 301
+
+# ── External redirects (from Webflow) ─────────────────────────────
+/p4t78tnt73bkujthrd1zausuvs9advz3.txt https://uploads-ssl.webflow.com/64a817a2e7e2208272d1ce30/668bef7ef310b0fd5e7b5d00_p4t78tnt73bkujthrd1zausuvs9advz3.txt 301
+/llmops-guide https://docs.zenml.io/user-guide/llmops-guide 301
+/how-to-guides.txt https://docs.zenml.io/llms.txt 301
+/component-guide.txt https://docs.zenml.io/llms.txt 301
+/llms-full.txt https://docs.zenml.io/llms.txt 301
+/demo-video https://www.youtube.com/watch?v=A7FJsJ4yQSU 301
+/changelog https://docs.zenml.io/changelog 301
+
+# ── External redirects (from redirectOnly.ts) ─────────────────────
+/slack https://join.slack.com/t/zenml/shared_invite/zt-3j68xwsxy-C_GyybZPDPxKG0OwSJgwFg 301
+/roadmap https://github.com/orgs/zenml-io/projects/1 301
+/slack-invite https://join.slack.com/t/zenml/shared_invite/zt-3j68xwsxy-C_GyybZPDPxKG0OwSJgwFg 301
+/discussion https://github.com/zenml-io/zenml/discussions 301
+/meet https://www.eventbrite.de/e/zenml-meet-the-community-tickets-354426688767 301
+/zenml-meet https://www.eventbrite.de/e/zenml-meet-the-community-tickets-354426688767 301
+/components https://zenml-io.github.io/react-component-library 301
+
+# ── Additional redirect-like pages ────────────────────────────────
+/cla https://gist.github.com/htahir1/5fb2645b62662f2c723c529f7d9fca09 301

@@ -13,7 +13,28 @@ export default defineConfig({
   build: {
     format: "file",
   },
-  integrations: [preact(), sitemap(), mdx()],
+  integrations: [
+    preact(),
+    sitemap({
+      filter: (page) => {
+        // Exclude non-indexable pages from the sitemap
+        const excludePaths = [
+          "/llmops-index.json",
+          "/blog/rss.xml",
+          "/llmops-database/rss.xml",
+          "/book-success",
+          "/booked",
+          "/book-a-demo-success",
+          "/newsletter-success",
+          "/success-calendar",
+          "/404",
+        ];
+        const url = new URL(page);
+        return !excludePaths.includes(url.pathname);
+      },
+    }),
+    mdx(),
+  ],
   vite: {
     plugins: [tailwindcss()],
   },

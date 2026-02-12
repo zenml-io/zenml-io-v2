@@ -73,7 +73,11 @@ export function resolveSeo(
 ): ResolvedSEO {
   const description = props.description || DEFAULT_DESCRIPTION;
   const canonical = buildCanonical(pathname, props.canonical);
-  const ogImage = props.ogImage || DEFAULT_OG_IMAGE || undefined;
+  const rawOgImage = props.ogImage || DEFAULT_OG_IMAGE || undefined;
+  // OG images must be absolute URLs for social media crawlers
+  const ogImage = rawOgImage?.startsWith("/")
+    ? `${SITE_URL}${rawOgImage}`
+    : rawOgImage;
   const twitterCard = props.twitterCard ?? (ogImage ? "summary_large_image" : "summary");
 
   return {

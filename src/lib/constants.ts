@@ -9,7 +9,7 @@ export const DEFAULT_DESCRIPTION =
 export const ASSET_BASE_URL = "https://pub-placeholder.r2.dev";
 
 /**
- * Default Open Graph image URL (placeholder — replace with real asset in Phase 4).
- * When undefined, OG image meta tags are omitted from pages that don't have their own.
+ * Default Open Graph image URL — used when a page doesn't specify its own.
+ * Blog posts override this with their mainImage.
  */
-export const DEFAULT_OG_IMAGE: string | undefined = undefined;
+export const DEFAULT_OG_IMAGE = "/images/og-default.jpg";

@@ -45,8 +45,13 @@ const seo = resolveSeo(seoProps, Astro.url.pathname);
     <meta name="twitter:description" content={seo.ogDescription} />
     {seo.ogImage && <meta name="twitter:image" content={seo.ogImage} />}
 
-    {/* Favicon */}
+    {/* Favicon & manifest */}
     <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    {/* Structured data (JSON-LD) — injected by child layouts */}
+    <slot name="head" />
 
     {/* Plausible analytics (production only) */}
     {import.meta.env.PROD && (
