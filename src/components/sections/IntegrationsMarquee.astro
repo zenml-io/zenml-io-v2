@@ -16,7 +16,7 @@ const logos = integrations
   .map((i) => ({ name: i.data.title, src: i.data.logo!.url }));
 ---
 
-<section class="relative overflow-hidden bg-white pt-16 pb-32 sm:pt-20 sm:pb-40">
+<section class="relative overflow-hidden bg-white pt-16 pb-16 sm:pt-20 sm:pb-20">
   <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
     <h2 class="text-3xl font-bold text-gray-900 sm:text-4xl">
       {INTEGRATIONS_MARQUEE.headline}
@@ -55,8 +55,6 @@ const logos = integrations
     </Button>
   </div>
 
-  <!-- Purple gradient bridge to WhitepaperCTA section below -->
-  <div class="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent via-purple-900/30 to-purple-900/80 sm:h-40"></div>
 </section>
 
 <style>
