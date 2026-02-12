@@ -282,6 +282,7 @@ const blogSchema = z.object({
   title: z.string(),
   slug: z.string(),
   draft: z.boolean().default(false),
+  featured: z.boolean().default(false),
 
   // Blog-specific fields
   author: slugReference('authors', referenceSlugSets.authors),

@@ -16,16 +16,23 @@ export async function getStaticPaths() {
   const allPosts = (await getCollection("blog", ({ data }) => !data.draft && !data.tags.includes("discovery")))
     .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
 
-  const totalPages = Math.ceil(allPosts.length / pageSize);
+  // Exclude the featured post (shown as hero on page 1)
+  const featuredPost = allPosts.find((p) => p.data.featured) ?? allPosts[0];
+  const remainingPosts = allPosts.filter((p) => p !== featuredPost);
+
+  // Page 1 shows featured + first (pageSize-1) remaining posts
+  // Page 2+ shows the rest
+  const page1Count = pageSize - 1;
+  const totalPages = 1 + Math.ceil(Math.max(remainingPosts.length - page1Count, 0) / pageSize);
 
   // Generate pages 2 through totalPages (page 1 is index.astro)
   return Array.from({ length: totalPages - 1 }, (_, i) => {
     const page = i + 2;
-    const start = (page - 1) * pageSize;
+    const start = page1Count + (page - 2) * pageSize;
     return {
       params: { page: String(page) },
       props: {
-        posts: allPosts.slice(start, start + pageSize),
+        posts: remainingPosts.slice(start, start + pageSize),
         currentPage: page,
         totalPages,
       },
@@ -78,16 +85,18 @@ for (const post of posts) {
                 />
               </a>
             )}
-            <div class="mt-4 flex items-center gap-3 text-sm">
-              {category && (
-                <a href={`/category/${category.slug}`} class="font-semibold text-primary-600 hover:text-primary-700">
-                  {category.name}
-                </a>
-              )}
-              {post.data.readingTime && (
-                <span class="text-gray-500">{post.data.readingTime}</span>
-              )}
-            </div>
+            {(category || post.data.readingTime) && (
+              <div class="mt-4 inline-flex items-center rounded-full bg-primary-50 p-1 text-xs font-medium text-primary-700" style="mix-blend-mode:multiply">
+                {category && (
+                  <a href={`/category/${category.slug}`} class="rounded-full bg-white px-2 py-0.5 font-semibold text-primary-700 hover:text-primary-800">
+                    {category.name}
+                  </a>
+                )}
+                {post.data.readingTime && (
+                  <span class="px-2 font-semibold">{post.data.readingTime}</span>
+                )}
+              </div>
+            )}
             <h2 class="mt-2 line-clamp-2 text-lg font-semibold text-gray-900">
               <a href={`/blog/${post.data.slug}`} class="hover:text-primary-600 transition-colors">
                 {post.data.title}
