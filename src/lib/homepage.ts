@@ -22,9 +22,9 @@ export const HERO = {
   primaryCta: { label: "Book a Demo", href: "/book-your-demo" },
   secondaryCta: { label: "Use Open Source", href: "/get-started" },
   githubUrl: "https://github.com/zenml-io/zenml",
-  /** Lottie JSON for hero animation (autoplay, no loop, 6.4s, SVG renderer) */
-  lottieUrl:
-    "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8d0d5edc/68d25c7835d8facce3cdb642_hero-0925.json",
+  /** Lottie JSON for hero animation (autoplay, no loop, 6.4s, SVG renderer).
+   *  Served from public/ for same-origin access (avoids R2 CORS issues). */
+  lottieUrl: "/lottie/hero-0925.json",
 };
 
 /* ------------------------------------------------------------------ */
