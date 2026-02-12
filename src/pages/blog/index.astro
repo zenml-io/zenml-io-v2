@@ -12,7 +12,9 @@ import Badge from "../../components/Badge.astro";
 const PAGE_SIZE = 12;
 
 // Get all published posts, sorted newest first
-const allPosts = (await getCollection("blog", ({ data }) => !data.draft))
+// Exclude "discovery"-tagged posts from the listing (they're still published
+// with individual pages and sitemap entries, just hidden from the blog grid)
+const allPosts = (await getCollection("blog", ({ data }) => !data.draft && !data.tags.includes("discovery")))
   .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
 
 const totalPages = Math.ceil(allPosts.length / PAGE_SIZE);

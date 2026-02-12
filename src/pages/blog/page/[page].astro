@@ -11,7 +11,8 @@ import Badge from "../../../components/Badge.astro";
 
 export async function getStaticPaths() {
   const pageSize = 12;
-  const allPosts = (await getCollection("blog", ({ data }) => !data.draft))
+  // Exclude "discovery"-tagged posts from the listing (still published individually)
+  const allPosts = (await getCollection("blog", ({ data }) => !data.draft && !data.tags.includes("discovery")))
     .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
 
   const totalPages = Math.ceil(allPosts.length / pageSize);
