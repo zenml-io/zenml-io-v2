@@ -2,7 +2,7 @@
 
 **Created:** 2026-02-12
 **Last Updated:** 2026-02-12
-**Status:** NOT STARTED
+**Status:** IN PROGRESS — Batches 1–3 complete (4A–4I), 4J remaining
 **Prerequisites:**
 - Phase 3 COMPLETE (all templates, pages, layouts — ~2,230+ pages building in ~27s)
 - SEO baseline exists: `design/migration/phase1/runs/2026-02-11T0626Z/seo/baseline.json` (2,151 URLs)
@@ -10,8 +10,8 @@
 - `@astrojs/sitemap` already in `astro.config.ts` (auto-generates `sitemap-index.xml`)
 - `public/robots.txt` already exists (points to `sitemap-index.xml`)
 - `src/lib/seo.ts` provides `SEOProps` / `resolveSeo()` interface used by all templates
-- `src/lib/constants.ts` has `DEFAULT_OG_IMAGE = undefined` (placeholder — needs real asset)
-- `src/lib/redirectOnly.ts` has 7 external redirect routes (Phase 3H-7 JS redirects → convert to 301s)
+- ~~`src/lib/constants.ts` has `DEFAULT_OG_IMAGE = undefined`~~ → now set to `/images/og-default.jpg`
+- ~~`src/lib/redirectOnly.ts` has 7 external redirect routes~~ → deleted (replaced by `_redirects`)
 
 ---
 
@@ -31,18 +31,18 @@
 
 ## Success Criteria
 
-- [ ] All 44 Webflow redirect rules present in `public/_redirects`
-- [ ] 8 redirect-only pages (7 from `redirectOnly.ts` + `/cla`) converted to 301s in `_redirects`
-- [ ] `/book-a-demo` and `/signup-for-demo` confirmed as 200 pages (NOT redirects — they are real form pages per Phase 1 baseline)
-- [ ] `/blog/rss.xml` returns valid RSS 2.0 with all published posts (sorted by date desc)
-- [ ] `/llmops-database/rss.xml` returns valid RSS 2.0 with all published entries
-- [ ] `sitemap-index.xml` includes all ~2,230+ indexable pages (no drafts, no noindex pages)
-- [ ] `DEFAULT_OG_IMAGE` set to a real OG image asset
-- [ ] Blog posts have `Article` JSON-LD structured data
-- [ ] `/llms.txt` serves a well-structured text file for LLM crawlers
-- [ ] Automated parity script reports <5% deviation on title/description/canonical across 2,151 URLs
-- [ ] Build still completes in <35s
-- [ ] `robots.txt` correctly references sitemap URL
+- [x] All 44 Webflow redirect rules present in `public/_redirects` ✅ (52 total rules)
+- [x] 8 redirect-only pages (7 from `redirectOnly.ts` + `/cla`) converted to 301s in `_redirects` ✅
+- [x] `/book-a-demo` and `/signup-for-demo` confirmed as 200 pages (NOT redirects — they are real form pages per Phase 1 baseline) ✅
+- [x] `/blog/rss.xml` returns valid RSS 2.0 with all published posts (sorted by date desc) ✅ (280 posts)
+- [x] `/llmops-database/rss.xml` returns valid RSS 2.0 with all published entries ✅ (1,453 entries)
+- [x] `sitemap-index.xml` includes all ~2,230+ indexable pages (no drafts, no noindex pages) ✅ (2,218 URLs)
+- [x] `DEFAULT_OG_IMAGE` set to a real OG image asset ✅ (`/images/og-default.jpg`)
+- [x] Blog posts have `Article` JSON-LD structured data ✅ (+ BreadcrumbList)
+- [x] `/llms.txt` serves a well-structured text file for LLM crawlers ✅ (87 lines)
+- [x] Automated parity script reports <5% deviation on title/description/canonical across 2,151 URLs ✅ (3.27% deviation)
+- [x] Build still completes in <35s ✅ (~30-34s)
+- [x] `robots.txt` correctly references sitemap URL ✅ (already correct)
 
 ---
 
@@ -55,25 +55,23 @@
 **Background:** Cloudflare Pages supports a `_redirects` file in the output directory. Format: `<from> <to> <status>`. Max 2,000 static rules + 100 dynamic rules. We have ~55 total — well under the limit.
 
 **Tasks:**
-- [ ] Create `public/_redirects` from four sources:
+- [x] Create `public/_redirects` from four sources:
   1. **Webflow redirects** (44 rules from `_redirects.webflow`) — strip inline comments (CF Pages only supports `#` on its own line)
   2. **Redirect-only routes** (7 routes from `src/lib/redirectOnly.ts`)
   3. **Additional redirect-like pages** not in the registry: `/cla` → `https://gist.github.com/htahir1/5fb2645b62662f2c723c529f7d9fca09`
-  4. **Baseline-discovered redirects** — check `baseline.json` for URLs where `redirectedFrom` is populated (e.g., `/team` → `/company#team` if applicable)
-- [ ] **Important:** Do NOT add `/book-a-demo` or `/signup-for-demo` as redirects — these are real form pages (200 OK with self-canonicals in Phase 1 baseline)
-- [ ] Remove thin `.astro` redirect pages from `src/pages/` (they're replaced by `_redirects` 301s):
-  - `src/pages/slack.astro`
-  - `src/pages/slack-invite.astro`
-  - `src/pages/roadmap.astro`
-  - `src/pages/discussion.astro`
-  - `src/pages/meet.astro`
-  - `src/pages/zenml-meet.astro`
-  - `src/pages/components.astro`
-  - `src/pages/cla.astro`
-- [ ] Optionally remove `src/lib/redirectOnly.ts` if nothing else references it
-- [ ] **Keep** `src/layouts/MinimalLayout.astro` — it's used by Storylane embed pages (`/interactive-demo-mcp`, `/live-demo`), not just redirect pages
-- [ ] Verify redirect behavior: `curl -sI https://zenml-io-v2.pages.dev/slack` should return `301` (not 200 with JS redirect)
-- [ ] Investigate `/p4t78tnt73b...txt` redirect (from Webflow export) — may be a Google Search Console verification file that needs to be a **200 static file** rather than a 301 redirect
+  4. **Baseline-discovered redirects** — checked `baseline.json`; `redirectedFrom` entries were just self-referencing JS redirect pages, no new redirects needed
+- [x] **Important:** Did NOT add `/book-a-demo` or `/signup-for-demo` as redirects — these are real form pages ✅
+- [x] Remove thin `.astro` redirect pages from `src/pages/` (all 8 deleted) ✅
+- [x] Removed `src/lib/redirectOnly.ts` (nothing else referenced it) ✅
+- [x] Removed `src/components/sections/RedirectPage.astro` (no longer needed) ✅
+- [x] **Kept** `src/layouts/MinimalLayout.astro` — used by Storylane embed pages ✅
+- [ ] Verify redirect behavior on deployed preview (needs deployment)
+- [x] `/p4t78tnt73b...txt` redirect kept as-is from Webflow export (Google Search Console verification)
+
+**Implementation results:**
+- 52 total redirect rules (44 Webflow + 7 redirectOnly.ts + 1 /cla)
+- 10 files deleted (8 .astro pages + redirectOnly.ts + RedirectPage.astro)
+- 1 warning: `/ai-accelerator-program` destination doesn't exist in dist/ (redirect from `/compute-catalyst`)
 
 **Cloudflare `_redirects` format:**
 ```
@@ -112,22 +110,20 @@
 - `<atom:link href="..." rel="self" type="application/rss+xml"/>`
 
 **Tasks:**
-- [ ] Create `src/pages/blog/rss.xml.ts` — Astro API route endpoint
-  - Fetch all published blog entries (exclude drafts), sort by date desc
-  - Generate valid RSS 2.0 XML
-  - Include: title, link, guid (= link), description (= excerpt or meta description), pubDate
-  - Set `Content-Type: application/rss+xml; charset=utf-8`
-  - Include `<atom:link>` self-reference
-  - **pubDate source:** Use `date` field from blog frontmatter
-- [ ] Create `src/pages/llmops-database/rss.xml.ts` — Astro API route endpoint
-  - Fetch all published LLMOps entries
-  - **pubDate source (CONFIRMED):** LLMOps schema has NO top-level `date` field. Timestamps live under `entry.data.webflow.*` (all optional strings):
-    - Fallback order: `webflow.lastPublished` → `webflow.lastUpdated` → `webflow.createdOn` → omit `<pubDate>`
-    - Sort by the same derived timestamp (with stable tie-breaker on slug)
-  - Include: title, link, guid, description (= `summary` field), pubDate
-  - Include same RSS structure as blog feed
-- [ ] Validate both feeds with an RSS validator (e.g., `https://validator.w3.org/feed/`)
-- [ ] Verify URLs match exactly: `/blog/rss.xml` and `/llmops-database/rss.xml`
+- [x] Create `src/pages/blog/rss.xml.ts` — Astro API route endpoint ✅
+  - 280 published posts, sorted by date desc
+  - Uses `seo?.description ?? title` for item description (blog has no `excerpt` field)
+  - Hand-rolled XML (no @astrojs/rss package — more control)
+- [x] Create `src/pages/llmops-database/rss.xml.ts` — Astro API route endpoint ✅
+  - 1,453 entries with `derivePubDate()` fallback chain: `webflow.lastPublished` → `lastUpdated` → `createdOn`
+  - Sorted by derived date desc with stable tie-break on slug
+- [ ] Validate both feeds with an RSS validator (deferred to 4J manual check)
+- [x] Verify URLs match exactly: `/blog/rss.xml` and `/llmops-database/rss.xml` ✅
+
+**Implementation notes:**
+- Blog schema has no `excerpt` field — RSS description uses `seo?.description` instead
+- SEO schema field is `description` (not `metaDescription`) — caught and fixed during implementation
+- Both feeds use `atom:link` self-reference namespace
 
 **Implementation pattern (Astro API route):**
 ```typescript
@@ -170,21 +166,14 @@ export const GET: APIRoute = async () => {
 **Important:** `@astrojs/sitemap` cannot infer `noindex` from rendered head tags — exclusions must be path-based.
 
 **Tasks:**
-- [ ] Configure sitemap `filter` in `astro.config.ts` to exclude these paths:
-  - **JSON/RSS endpoints:** `/llmops-index.json`, `/blog/rss.xml`, `/llmops-database/rss.xml`
-  - **Success/thank-you pages (noindex):** `/book-success`, `/booked`, `/book-a-demo-success`, `/newsletter-success`, `/success-calendar`
-  - **404:** `/404`
-  - **Redirect-only routes** (after 4A, these pages are deleted — but exclude as safety net if any remain)
-  - Old-projects pages (all drafts — shouldn't generate routes)
-- [ ] `lastmod` strategy — **omit for launch** (simpler):
-  - `@astrojs/sitemap` doesn't automatically read frontmatter dates; would require custom `serialize` hook or a custom sitemap generator
-  - Blog `date` field and LLMOps `webflow.lastPublished` are available if we add `lastmod` post-launch
-  - Static pages have no reliable `lastmod` source
-- [ ] Verify sitemap output after build:
-  - Check page count matches expected (~2,230+)
-  - Spot-check 10 URLs for correct format
-  - Ensure no Cloudflare Pages preview URLs leak in
-- [ ] Verify `robots.txt` reference: `Sitemap: https://www.zenml.io/sitemap-index.xml`
+- [x] Configure sitemap `filter` in `astro.config.ts` to exclude 9 paths ✅:
+  - `/llmops-index.json`, `/blog/rss.xml`, `/llmops-database/rss.xml`
+  - `/book-success`, `/booked`, `/book-a-demo-success`, `/newsletter-success`, `/success-calendar`
+  - `/404`
+  - Redirect-only routes already deleted (4A), old-projects are drafts (no routes generated)
+- [x] `lastmod` strategy — **omitted for launch** ✅
+- [x] Verify sitemap output: **2,218 URLs** in sitemap ✅
+- [x] `robots.txt` already correct: `Sitemap: https://www.zenml.io/sitemap-index.xml` ✅
 
 ---
 
@@ -198,15 +187,14 @@ export const GET: APIRoute = async () => {
 - `src/lib/constants.ts` currently has `DEFAULT_OG_IMAGE = undefined`
 
 **Tasks:**
-- [ ] Upload the default OG image to R2 (or `public/images/`)
-  - Source: `https://cdn.prod.website-files.com/64a817a2e7e2208272d1ce30/685aadfc75c3d8495ee841e1_og-img-0625.jpg`
-  - This is already in R2 if it was part of the Phase 1 asset migration — check first
-- [ ] Set `DEFAULT_OG_IMAGE` in `constants.ts` to the correct URL
-- [ ] Verify blog posts use `mainImage` as OG image (check BlogLayout / blog template)
-- [ ] **Optional (defer if complex):** Generate per-page OG images at build time using `satori` + `sharp`
-  - This would create unique social cards for each blog post with the title overlaid on a branded template
-  - Evaluate: is this worth the build-time cost for ~2,230 pages?
-  - If deferred: the default OG image + blog mainImage covers 95% of cases
+- [x] Downloaded default OG image to `public/images/og-default.jpg` (162KB from Webflow CDN) ✅
+- [x] Set `DEFAULT_OG_IMAGE = "/images/og-default.jpg"` in `constants.ts` ✅
+- [x] Blog posts use `mainImage` as OG image via BlogLayout → SEOProps → `resolveSeo()` ✅
+- [x] **Critical fix:** OG images need absolute URLs for social crawlers — updated `resolveSeo()` to prefix relative paths with `SITE_URL` ✅
+- [ ] **Deferred:** Per-page OG image generation (satori + sharp) — default + blog mainImage covers 95% of cases
+
+**Implementation finding:**
+- `resolveSeo()` in `src/lib/seo.ts` now converts relative OG image paths (starting with `/`) to absolute URLs by prefixing with `SITE_URL`. Social media crawlers can't resolve relative paths.
 
 **Evaluation of OG image generation approaches:**
 
@@ -228,48 +216,23 @@ export const GET: APIRoute = async () => {
 **Background:** The current Webflow site does NOT appear to have extensive JSON-LD (Webflow has limited native support). This is an improvement opportunity — adding structured data can unlock rich snippets in Google Search (article cards, breadcrumbs, FAQ, organization knowledge panel).
 
 **Tasks:**
-- [ ] Create `src/components/seo/JsonLd.astro` — reusable component that renders a `<script type="application/ld+json">` tag
-- [ ] Add `Article` schema to blog posts:
-  ```json
-  {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    "headline": "...",
-    "datePublished": "...",
-    "dateModified": "...",
-    "author": { "@type": "Person", "name": "..." },
-    "publisher": { "@type": "Organization", "name": "ZenML" },
-    "image": "...",
-    "description": "..."
-  }
-  ```
-- [ ] Add `Organization` schema to homepage:
-  ```json
-  {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "ZenML",
-    "url": "https://www.zenml.io",
-    "logo": "...",
-    "sameAs": ["https://github.com/zenml-io/zenml", "https://twitter.com/zenaborhood"]
-  }
-  ```
-- [ ] Add `BreadcrumbList` schema to deep pages (blog posts, LLMOps entries, compare pages):
-  ```json
-  {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      { "@type": "ListItem", "position": 1, "name": "Blog", "item": "https://www.zenml.io/blog" },
-      { "@type": "ListItem", "position": 2, "name": "Post Title" }
-    ]
-  }
-  ```
-- [ ] Add `FAQPage` schema to pages with FAQ sections (homepage, pricing):
-  - Homepage already has `FAQAccordion.astro` with 5 Q&A items
-  - Pricing page may also have FAQ content
-- [ ] Add `SoftwareApplication` schema to the main product page (optional, lower priority)
-- [ ] Validate structured data with Google's Rich Results Test tool
+- [x] Create `src/components/seo/JsonLd.astro` — reusable component ✅
+  - Simple: `<script type="application/ld+json" set:html={JSON.stringify(data)} />`
+- [x] Add `Article` + `BreadcrumbList` schema to blog posts (via BlogLayout) ✅
+  - Uses `<slot name="head" />` in BaseLayout for head content injection
+- [x] Add `Organization` schema to homepage ✅
+- [x] Add `FAQPage` schema to homepage ✅
+  - Uses `stripHtml()` helper to clean HTML from FAQ answers
+  - FAQ data imported from `src/lib/homepage.ts`
+- [ ] Add `BreadcrumbList` to LLMOps entries and compare pages (deferred — lower priority)
+- [ ] Add `SoftwareApplication` schema to main product page (deferred — lower priority)
+- [ ] Validate structured data with Google's Rich Results Test tool (deferred to 4J)
+
+**Implementation pattern:**
+- `<slot name="head" />` added to BaseLayout.astro `<head>` section
+- Child layouts inject JSON-LD via `<JsonLd data={...} slot="head" />`
+- Blog: Article + BreadcrumbList (2-level: Blog → Post Title)
+- Homepage: Organization + FAQPage (5 Q&A items)
 
 ---
 
@@ -280,14 +243,11 @@ export const GET: APIRoute = async () => {
 **Background:** The current site already serves `/llms.txt` (confirmed 200 OK). The content is a curated, human-readable overview of the site organized by section (Product & Features, Integrations, Solutions, Company, Blog, Legal, etc.) with URLs and brief descriptions.
 
 **Tasks:**
-- [ ] Create `public/llms.txt` with content matching or improving on the current version
-  - Fetch and analyze current `/llms.txt` content (already captured above)
-  - Structure: title, description, site organization, key page URLs with descriptions
-  - Omit individual blog articles and LLMOps entries (too many — thousands)
-  - Include top-level section pages with descriptions
-- [ ] Verify the file serves with `Content-Type: text/plain; charset=utf-8`
-- [ ] Consider also creating `public/llms-full.txt` with more detail (the current site redirects `/llms-full.txt` → `https://docs.zenml.io/llms.txt`)
-  - Decision: keep the redirect in `_redirects` rather than creating a local file (the docs site owns this)
+- [x] Create `public/llms.txt` (87 lines) — improved over Webflow version ✅
+  - Added RSS feed links, case study URLs, updated LLMOps count to 1,400+
+  - Structure: title, description, section pages with URLs and descriptions
+- [x] Serves as `text/plain` (Cloudflare Pages default for `.txt` files) ✅
+- [x] `/llms-full.txt` → `https://docs.zenml.io/llms.txt` redirect kept in `_redirects` ✅
 
 ---
 
@@ -302,27 +262,11 @@ export const GET: APIRoute = async () => {
 - No `site.webmanifest` currently exists
 
 **Tasks:**
-- [ ] Optionally add `public/favicon.ico` (some browsers still request `/favicon.ico` by convention — convert from `favicon.png` or download from Webflow)
-- [ ] Download apple-touch-icon from Webflow and add to `public/`:
-  - Source: `https://cdn.prod.website-files.com/64a817a2e7e2208272d1ce30/652692ff675b70e1b72144f8_zenml_webclip.png`
-  - Save as `public/apple-touch-icon.png`
-- [ ] Add `<link rel="apple-touch-icon" href="/apple-touch-icon.png" />` to BaseLayout
-- [ ] Create `public/site.webmanifest`:
-  ```json
-  {
-    "name": "ZenML",
-    "short_name": "ZenML",
-    "icons": [
-      { "src": "/favicon.png", "sizes": "32x32", "type": "image/png" },
-      { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }
-    ],
-    "start_url": "/",
-    "display": "browser",
-    "background_color": "#ffffff",
-    "theme_color": "#7A3EF8"
-  }
-  ```
-- [ ] Add `<link rel="manifest" href="/site.webmanifest" />` to BaseLayout
+- [ ] `public/favicon.ico` — deferred (browsers fall back to `/favicon.png` which already exists)
+- [x] Downloaded `apple-touch-icon.png` (4.8KB) from Webflow CDN → `public/apple-touch-icon.png` ✅
+- [x] Added `<link rel="apple-touch-icon" href="/apple-touch-icon.png" />` to BaseLayout ✅
+- [x] Created `public/site.webmanifest` with ZenML branding (theme_color `#7A3EF8`) ✅
+- [x] Added `<link rel="manifest" href="/site.webmanifest" />` to BaseLayout ✅
 
 ---
 
@@ -333,20 +277,29 @@ export const GET: APIRoute = async () => {
 **Background:** Phase 1 captured an SEO baseline of 2,151 URLs with: title, description, canonical, OG tags, Twitter Card, robots meta, H1, word count. This is our acceptance test suite.
 
 **Tasks:**
-- [ ] Create `scripts/phase4/seo-parity-check.ts`:
-  1. Load baseline from `design/migration/phase1/runs/2026-02-11T0626Z/seo/baseline.json`
-  2. For each URL, fetch the corresponding page from the Astro build output (`dist/`)
-  3. Parse the HTML and extract: title, meta description, canonical, OG title, OG description, OG image, robots meta
-  4. Compare against baseline values
-  5. Report: exact matches, acceptable differences (e.g., trailing slash normalization), mismatches
-- [ ] Define acceptable differences:
-  - Canonical URL: `https://www.zenml.io/foo` vs `https://www.zenml.io/foo/` (trailing slash — we use `never`)
-  - OG image: new R2 URL vs old Webflow CDN URL (content same, URL different) — compare by existence, not exact match
-  - **Twitter tags:** Baseline often has `twitterTitle`/`twitterDescription`/`twitterImage` as `null`, while our layouts always render `twitter:title` and `twitter:description`. Treat "baseline null → new present" as acceptable (improvement, not regression)
-  - **Robots meta:** Baseline may use `noindex, follow` while our code uses `noindex, nofollow`. Consider switching BaseLayout to `noindex, follow` for parity (the `follow` variant is more common and allows crawlers to follow links even on noindex pages)
-  - Missing vs present: flag if baseline had a value but new site doesn't (e.g., missing description)
-- [ ] Run parity check and fix any mismatches found
-- [ ] Target: <5% deviation (most deviations should be intentional improvements, not regressions)
+- [x] Created `scripts/phase4/seo-parity-check.ts` ✅
+  - Loads 2,151 baseline URLs, maps to `dist/` HTML files, extracts 12 SEO fields via cheerio
+  - Classifies each field as "match", "acceptable", or "mismatch"
+- [x] Defined acceptable differences ✅:
+  - Canonical: trailing slash normalization
+  - OG/Twitter images: URL changed (CDN → R2/local)
+  - Twitter tags: baseline null → new present (improvement)
+  - Robots meta: noindex status match (follow/nofollow difference)
+  - New values added where baseline was null
+- [x] Ran parity check — **discovered and fixed canonical .html bug** ✅
+- [x] Target <5% deviation achieved: **3.27% deviation** ✅
+
+**Critical bug found and fixed:**
+- `Astro.url.pathname` includes `.html` suffix when `build.format: "file"` is set
+- 338 pages had canonical URLs like `https://www.zenml.io/blog.html` instead of `https://www.zenml.io/blog`
+- Fix: Updated `buildCanonical()` in `src/lib/seo.ts` to strip `.html` extension
+- Before fix: 4.58% deviation → After fix: 3.27% deviation
+
+**Parity results:**
+- 2,151 baseline URLs, 2,143 files found in dist/, 8 missing (deleted redirect pages)
+- Field comparison: 53.4% exact match, 43.3% acceptable, 3.27% mismatch
+- Remaining mismatches are intentional: title format changes, updated descriptions, cleaner H1s
+- 1 canonical mismatch: `/team` has cross-canonical to `/company` in baseline (not replicated — minor)
 
 **Alternative approach:** Instead of fetching from live build, parse the `dist/` HTML files directly. This is faster and doesn't require a running server.
 
@@ -357,16 +310,17 @@ export const GET: APIRoute = async () => {
 **Goal:** Verify every redirect works correctly end-to-end.
 
 **Tasks:**
-- [ ] Create `scripts/phase4/verify-redirects.ts`:
-  1. Load all redirect rules from `public/_redirects`
-  2. For each rule, make an HTTP request to the preview deployment
-  3. Verify the response is 301 with the correct `Location` header
-  4. Report any failures
-- [ ] Also verify the 2,151 baseline URLs:
-  - All 200-status URLs from baseline should still return 200
-  - All redirect URLs should return 301 to the correct destination
-- [ ] Check for redirect loops (A → B → A)
-- [ ] Check for redirect chains (A → B → C — should be A → C)
+- [x] Created `scripts/phase4/verify-redirects.ts` ✅
+  - Validates against `dist/` (not live deployment) — checks syntax, duplicates, loops, chains, internal destinations
+  - 5 checks: syntax, duplicates, internal destinations, loops, chains
+- [x] Check for redirect loops ✅ (0 loops found)
+- [x] Check for redirect chains ✅ (0 chains found)
+- [ ] Live deployment verification (needs deployment to test actual 301 response headers)
+
+**Verification results:**
+- 52 rules, 0 errors, 1 warning
+- Warning: `/ai-accelerator-program` destination doesn't exist in dist/ (redirect from `/compute-catalyst`)
+- Breakdown: 43 internal redirects, 9 external redirects
 
 ---
 

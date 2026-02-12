@@ -1,7 +1,7 @@
 # ZenML Website v2 — Migration Plan
 
 > Last updated: 2026-02-12
-> Status: **Phase 1 COMPLETE, Phase 2 COMPLETE, Phase 3 COMPLETE, Phase 4 IN PROGRESS** — All templates and pages built (~2,230+ pages in ~27s). All images migrated to R2. Phase 4: SEO & Redirects (sitemap, RSS, redirects, structured data, OG images, parity testing).
+> Status: **Phase 1 COMPLETE, Phase 2 COMPLETE, Phase 3 COMPLETE, Phase 4 IN PROGRESS (4A–4I done, 4J remaining)** — All templates and pages built (~2,230+ pages in ~27–34s). All images migrated to R2. Phase 4: SEO infrastructure complete (redirects, RSS, sitemap, OG images, JSON-LD, llms.txt, favicon). Parity testing passes at 3.27% deviation (<5% target). Final manual SEO checklist (4J) remaining.
 
 ---
 
@@ -285,37 +285,28 @@ Tasks:
 
 ---
 
-### Phase 4: SEO & Redirects
+### Phase 4: SEO & Redirects — IN PROGRESS (4A–4I done)
 
 **Goal**: Ensure every existing URL works, all SEO metadata is preserved,
 and the site is fully indexable by search engines and LLMs.
 
-Tasks:
-- [ ] Generate `sitemap.xml` (Astro built-in integration)
-  - Only indexable pages (no drafts, no previews)
-  - Correct canonical host (`www.zenml.io`)
-  - `lastmod` where available
-- [ ] Generate RSS feeds — **blog** and **LLMOps database** (match existing feed URLs exactly)
-- [ ] Generate Open Graph images at build time (satori + sharp, or similar)
-- [ ] Add `robots.txt`
-- [ ] Preserve all meta tags per page (title, description, canonical URL)
-- [ ] Preserve Open Graph and Twitter Card meta tags
-- [ ] Add structured data (JSON-LD):
-  - `Article` schema for blog posts
-  - `Organization` / `Product` schema on key marketing pages
-  - `BreadcrumbList` schema on deep taxonomies (tags, categories)
-- [ ] Add `llms.txt` for GEO (Generative Engine Optimization)
-- [ ] Migrate existing Webflow 301 redirects → Cloudflare Pages `_redirects` file
-- [ ] Set up additional 301 redirects for any changed URLs
-- [ ] **Automated head tag parity testing**: compare old vs new for all URLs using
-  SEO baseline snapshot (title, description, canonical, OG, robots meta)
-- [ ] Ensure all ~2,300+ URLs return 200 (or 301 to correct destination)
-- [ ] Verify `<link rel="canonical">` on every page
-- [ ] Ensure proper heading hierarchy (single H1 per page)
-- [ ] Alt text on all images
-- [ ] GEO optimization: well-structured content for LLM indexing
+**Status:** Batches 1–3 complete (4A–4I). Final manual checklist (4J) remaining.
 
-**Detailed plan**: `docs/phase-4-plan.md` (create when starting this phase)
+Tasks:
+- [x] **4A: `_redirects`** — 52 rules consolidated from 4 sources, 10 files deleted (redirect pages + registry)
+- [x] **4B: RSS feeds** — `/blog/rss.xml` (280 posts) + `/llmops-database/rss.xml` (1,453 entries)
+- [x] **4C: Sitemap** — 2,218 URLs, 9 excluded paths configured in `@astrojs/sitemap` filter
+- [x] **4D: OG images** — default OG image + absolute URL fix in `resolveSeo()`
+- [x] **4E: JSON-LD** — Article + BreadcrumbList on blog, Organization + FAQPage on homepage
+- [x] **4F: `llms.txt`** — 87-line GEO support file
+- [x] **4G: Favicon & manifest** — apple-touch-icon + site.webmanifest + BaseLayout links
+- [x] **4H: SEO parity** — 3.27% deviation (target <5%) ✅. Discovered + fixed canonical `.html` bug
+- [x] **4I: Redirect verification** — 52 rules, 0 errors, 1 warning
+- [ ] **4J: Final SEO checklist** — manual spot-check of canonicals, headings, noindex, alt text, lang
+
+**Key finding:** `Astro.url.pathname` includes `.html` suffix with `build.format: "file"` — fixed in `buildCanonical()` in `src/lib/seo.ts`
+
+**Detailed plan**: `docs/phase-4-plan.md`
 
 ---
 
@@ -360,8 +351,8 @@ Tasks:
 - [ ] Performance: verify build time is reasonable (~2,300 pages)
 
 **Pre-cutover setup:**
-- [ ] Custom 404 page
-- [ ] Favicon, apple-touch-icon, web manifest (`site.webmanifest`)
+- [x] Custom 404 page (done in Phase 3H-1a)
+- [x] Favicon, apple-touch-icon, web manifest (`site.webmanifest`) (done in Phase 4G)
 - [ ] Security headers via Cloudflare Pages `_headers` file (CSP, X-Frame-Options)
 - [ ] Verify non-www → www redirect works (`zenml.io` → `www.zenml.io`)
 - [ ] Final CMS re-export to catch any content published since initial export
