@@ -1,17 +1,17 @@
 ---
 /**
- * Whitepaper Landing Page — gated content with form placeholder.
+ * Whitepaper Landing Page — gated content with form.
  *
  * Route: /whitepaper-architecting-an-enterprise-grade-mlops-platform
  * Two-column layout: left = copy + image, right = form.
+ * On success, reveals PDF download link.
  */
 import BaseLayout from "../layouts/BaseLayout.astro";
-import FormPlaceholder from "../components/sections/FormPlaceholder.astro";
+import ContactForm from "../components/islands/ContactForm.tsx";
 import {
   WHITEPAPER_SEO,
   WHITEPAPER_CONTENT,
   WHITEPAPER_FIELDS,
-  WHITEPAPER_FALLBACK_CTA,
 } from "../lib/whitepaper";
 ---
 
@@ -57,10 +57,16 @@ import {
             <h3 class="mb-4 text-lg font-bold text-gray-900">
               {WHITEPAPER_CONTENT.formHeadline}
             </h3>
-            <FormPlaceholder
+            <ContactForm
+              client:load
+              formType="whitepaper"
+              endpoint="/api/forms/whitepaper"
               fields={WHITEPAPER_FIELDS}
               submitLabel="Send Request"
-              fallbackCta={WHITEPAPER_FALLBACK_CTA}
+              loadingLabel="Sending…"
+              successMessage="Your whitepaper is ready!"
+              successDownloadUrl={WHITEPAPER_CONTENT.image.url}
+              successCta={{ label: "Book a Demo", href: "/book-your-demo" }}
             />
           </div>
         </div>

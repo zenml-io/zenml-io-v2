@@ -5,12 +5,11 @@
  * Route: /signup-for-demo
  */
 import BaseLayout from "../layouts/BaseLayout.astro";
-import FormPlaceholder from "../components/sections/FormPlaceholder.astro";
+import ContactForm from "../components/islands/ContactForm.tsx";
 import {
   SIGNUP_FOR_DEMO_SEO,
   SIGNUP_FOR_DEMO_HERO,
   SIGNUP_FOR_DEMO_FIELDS,
-  SIGNUP_FOR_DEMO_FALLBACK_CTA,
 } from "../lib/signupForDemo";
 ---
 
@@ -30,10 +29,15 @@ import {
           <p class="mt-3 text-lg text-gray-600">{SIGNUP_FOR_DEMO_HERO.deck}</p>
         </div>
 
-        <FormPlaceholder
+        <ContactForm
+          client:load
+          formType="demo-request"
+          endpoint="/api/forms/demo-request"
           fields={SIGNUP_FOR_DEMO_FIELDS}
           submitLabel="Send Request"
-          fallbackCta={SIGNUP_FOR_DEMO_FALLBACK_CTA}
+          loadingLabel="Sending…"
+          successMessage="Thank you! We'll be in touch shortly."
+          successCta={{ label: "Book a time now", href: "/book-your-demo" }}
         />
       </div>
     </section>

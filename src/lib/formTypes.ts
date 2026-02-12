@@ -41,6 +41,19 @@ export interface PlaceholderField {
   options?: { value: string; label: string }[];
 }
 
+/** Configuration for the ContactForm Preact island. */
+export interface ContactFormConfig {
+  formType: "demo-request" | "whitepaper" | "startup-application";
+  endpoint: string;
+  fields: PlaceholderField[];
+  submitLabel: string;
+  loadingLabel: string;
+  successMessage: string;
+  successCta?: CtaLink;
+  /** URL to reveal on whitepaper form success (PDF download) */
+  successDownloadUrl?: string;
+}
+
 /** Data for the SuccessPanel component. */
 export interface SuccessPageData {
   headline: string;

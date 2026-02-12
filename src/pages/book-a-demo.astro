@@ -1,16 +1,15 @@
 ---
 /**
- * Book a Demo — placeholder demo request form.
+ * Book a Demo — demo request form.
  *
  * Route: /book-a-demo
  */
 import BaseLayout from "../layouts/BaseLayout.astro";
-import FormPlaceholder from "../components/sections/FormPlaceholder.astro";
+import ContactForm from "../components/islands/ContactForm.tsx";
 import {
   BOOK_A_DEMO_SEO,
   BOOK_A_DEMO_HERO,
   BOOK_A_DEMO_FIELDS,
-  BOOK_A_DEMO_FALLBACK_CTA,
 } from "../lib/bookADemo";
 ---
 
@@ -30,10 +29,15 @@ import {
           <p class="mt-3 text-lg text-gray-600">{BOOK_A_DEMO_HERO.deck}</p>
         </div>
 
-        <FormPlaceholder
+        <ContactForm
+          client:load
+          formType="demo-request"
+          endpoint="/api/forms/demo-request"
           fields={BOOK_A_DEMO_FIELDS}
           submitLabel="Send Request"
-          fallbackCta={BOOK_A_DEMO_FALLBACK_CTA}
+          loadingLabel="Sending…"
+          successMessage="Thank you! We'll be in touch shortly."
+          successCta={{ label: "Book a time now", href: "/book-your-demo" }}
         />
       </div>
     </section>
