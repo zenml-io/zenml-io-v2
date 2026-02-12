@@ -2,7 +2,7 @@
 name: "Marwan Zaarab"
 slug: "marwan-zaarab"
 avatar:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/38be1b7e/66e3ff857022c065ea0b0b1c_1_vArVxgAnZbZtOaevd4sfBA.jpg"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/38be1b7e/66e3ff857022c065ea0b0b1c_1_vArVxgAnZbZtOaevd4sfBA.jpg"
 webflow:
   siteId: "64a817a2e7e2208272d1ce30"
   itemId: "660ac4754793d4aeed4df139"

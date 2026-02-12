@@ -12,17 +12,17 @@ webflow:
   createdOn: "2023-10-12T09:13:12.246Z"
 integrationType: "modeling"
 logo:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/a87bf467/66d869586acd2fac3976e2b4_lightgbm.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a87bf467/66d869586acd2fac3976e2b4_lightgbm.png"
 shortDescription: "Supercharge your ZenML pipelines with LightGBM's fast and efficient gradient boosting"
 docsUrl: "https://docs.zenml.io/stacks-and-components/component-guide/model-trainers/lightgbm"
 githubUrl: "https://github.com/zenml-io/zenml/tree/main/examples/lightgbm"
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/ae087dce/6527cced38d4e13f4af3f15e_LightGBM.svg"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ae087dce/6527cced38d4e13f4af3f15e_LightGBM.svg"
 seo:
   title: "Integrate LightGBM with ZenML - Modeling Integrations"
   description: "Supercharge your ZenML pipelines with LightGBM's fast and efficient gradient boosting"
   canonical: "https://www.zenml.io/integrations/lightgbm"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/ae087dce/6527cced38d4e13f4af3f15e_LightGBM.svg"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ae087dce/6527cced38d4e13f4af3f15e_LightGBM.svg"
   ogTitle: "Integrate LightGBM with ZenML - Modeling Integrations"
   ogDescription: "Supercharge your ZenML pipelines with LightGBM's fast and efficient gradient boosting"
 ---

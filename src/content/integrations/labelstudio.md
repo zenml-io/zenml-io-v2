@@ -12,17 +12,17 @@ webflow:
   createdOn: "2023-10-12T13:09:15.899Z"
 integrationType: "data-annotator"
 logo:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/a3a3cd0e/66d867d15dd7dff0bd9fbe50_label-studio.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a3a3cd0e/66d867d15dd7dff0bd9fbe50_label-studio.png"
 shortDescription: "Streamline Data Annotation in ZenML Pipelines with Label Studio"
 docsUrl: "https://docs.zenml.io/stack-components/annotators/label-studio"
 githubUrl: "https://github.com/zenml-io/zenml-projects/tree/main/end-to-end-computer-vision"
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/82697994/66e7484f2d8394657bfcd53f_labelstudio_integration.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/82697994/66e7484f2d8394657bfcd53f_labelstudio_integration.png"
 seo:
   title: "Integrate Label Studio with ZenML - Data Annotator Integrations"
   description: "Streamline Data Annotation in ZenML Pipelines with Label Studio"
   canonical: "https://www.zenml.io/integrations/labelstudio"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/82697994/66e7484f2d8394657bfcd53f_labelstudio_integration.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/82697994/66e7484f2d8394657bfcd53f_labelstudio_integration.png"
   ogTitle: "Integrate Label Studio with ZenML - Data Annotator Integrations"
   ogDescription: "Streamline Data Annotation in ZenML Pipelines with Label Studio"
 ---

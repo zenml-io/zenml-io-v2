@@ -12,17 +12,17 @@ webflow:
   createdOn: "2024-05-29T11:24:13.856Z"
 integrationType: "data-annotator"
 logo:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/38135087/66d867abbb012c9b857c9b33_argilla.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/38135087/66d867abbb012c9b857c9b33_argilla.png"
 shortDescription: "Streamline Data Annotation in ZenML Pipelines with Argilla"
 docsUrl: "https://docs.zenml.io/stack-components/annotators/argilla"
 githubUrl: "https://github.com/argilla-io/argilla"
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/371e363f/66e74c4209220bebc2e991df_argilla_integration.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/371e363f/66e74c4209220bebc2e991df_argilla_integration.png"
 seo:
   title: "Integrate Argilla with ZenML - Data Annotator Integrations"
   description: "Streamline Data Annotation in ZenML Pipelines with Argilla"
   canonical: "https://www.zenml.io/integrations/argilla"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/371e363f/66e74c4209220bebc2e991df_argilla_integration.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/371e363f/66e74c4209220bebc2e991df_argilla_integration.png"
   ogTitle: "Integrate Argilla with ZenML - Data Annotator Integrations"
   ogDescription: "Streamline Data Annotation in ZenML Pipelines with Argilla"
 ---

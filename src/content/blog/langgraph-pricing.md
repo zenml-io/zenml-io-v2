@@ -20,12 +20,12 @@ tags:
 date: "2025-06-22T00:00:00.000Z"
 readingTime: 14 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/3dece063/6981cf3948be69340f5c1484_6981ce8f98d163b6c78c0eaa_langgraph-pricing.avif"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3dece063/6981cf3948be69340f5c1484_6981ce8f98d163b6c78c0eaa_langgraph-pricing.avif"
 seo:
   title: "LangGraph Pricing Guide: How Much Does It Cost? - ZenML Blog"
   description: "In this LangGraph pricing guide, we discuss the costs, features, and value LangGraph provides to help you decide if it’s the right investment for your business."
   canonical: "https://www.zenml.io/blog/langgraph-pricing"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/3dece063/6981cf3948be69340f5c1484_6981ce8f98d163b6c78c0eaa_langgraph-pricing.avif"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3dece063/6981cf3948be69340f5c1484_6981ce8f98d163b6c78c0eaa_langgraph-pricing.avif"
   ogTitle: "LangGraph Pricing Guide: How Much Does It Cost? - ZenML Blog"
   ogDescription: "In this LangGraph pricing guide, we discuss the costs, features, and value LangGraph provides to help you decide if it’s the right investment for your business."
 ---
@@ -74,14 +74,14 @@ Unlike traditional SaaS pricing, LangGraph's model combines seat-based licensing
 Understanding LangGraph's pricing requires considering both the LangSmith subscription costs and the additional usage charges for running agents in production. This dual-cost structure can make budgeting more complex, but it provides flexibility for teams with varying workload patterns.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/94e157f9/685788717cb30cb56c9b383e_langgraph-pricing-plans.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/94e157f9/685788717cb30cb56c9b383e_langgraph-pricing-plans.png" alt="__wf_reserved_inherit" />
   <figcaption>LangGraph Pricing plans</figcaption>
 </figure>
 
 ## LangGraph Pricing Factors to Consider
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/a5b5a2b5/6857888d00a40d4c5f9a48fb_langgraph-pricing-factors-to-consider.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a5b5a2b5/6857888d00a40d4c5f9a48fb_langgraph-pricing-factors-to-consider.webp" alt="__wf_reserved_inherit" />
   <figcaption>LangGraph pricing factors to consider</figcaption>
 </figure>
 
@@ -148,7 +148,7 @@ There are some limits that you also want to keep in mind:
 <ul><li>You get 1 seat and 1 personal workspace.</li><li>The free usage is limited to 5K base traces a month; pay $0.50 per 1K after that. Extended-retention traces cost $4.50 per 1K.</li><li>Throughput - up to 50K events per hour; 500 MB traces stored per hour.</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/5ba5bb29/685788a6df82bf10733cf44b_langgraph-developer-plan.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5ba5bb29/685788a6df82bf10733cf44b_langgraph-developer-plan.png" alt="__wf_reserved_inherit" />
   <figcaption>LangGraph Developer plan</figcaption>
 </figure>
 
@@ -167,7 +167,7 @@ The cost is $0.001 per node executed (each agent action) plus a small per-minute
 But here’s the main catch: to use Plus, you must have LangSmith Plus, which costs $39 per user per month.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/2dd37e93/685788d39388a07367112b2e_langsmith-plus-plan.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2dd37e93/685788d39388a07367112b2e_langsmith-plus-plan.png" alt="__wf_reserved_inherit" />
   <figcaption>LangSmith Plus plan</figcaption>
 </figure>
 
@@ -180,7 +180,7 @@ What do you get for these costs? All the features of the Developer tier, and mor
 The Plus plan’s appeal is that it offers scalability without upfront investment. You don’t pay a large subscription; you pay in proportion to usage. For a team deploying an agent-powered app, this can be cost-efficient if usage is moderate or variable – you’re essentially charged per workflow run.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/9e031355/685788eceb593077d1278768_langgraph-plus-plan.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9e031355/685788eceb593077d1278768_langgraph-plus-plan.png" alt="__wf_reserved_inherit" />
   <figcaption>LangGraph Plus plan</figcaption>
 </figure>
 
@@ -195,7 +195,7 @@ What does Enterprise include? In short, everything in Plus, and then some more:
 <ul><li><strong>Flexible deployment options:</strong> Enterprise customers can deploy LangGraph wherever they need – this includes fully self-hosted on your own cloud or on-premises, or a hybrid model (LangChain runs the control plane while your infrastructure handles the data plane).</li><li><strong>Enterprise-grade support:</strong> LangGraph Enterprise comes with a formal Service Level Agreement (SLA) for uptime on managed offerings. You also get designated support staff, like a dedicated Customer Success Engineer, architectural guidance consultations, and even a shared Slack channel with the LangChain team for fast help.</li><li><strong>Team training and onboarding:</strong> The Enterprise package includes training sessions to help your team use LangGraph effectively.</li><li><strong>Enterprise admin features:</strong> Things like SSO integration (SAML/OKTA login), granular role-based access control, audit logging, and other compliance-related features typically come with the Enterprise plan.</li><li><strong>Custom billing and procurement:</strong> Annual invoicing, ACH payments, vendor onboarding support – basically, the sales process is adapted to enterprise procurement needs.</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/dc07a133/68578919a135f9b50067bfa4_langgraph-enterprise-plan.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/dc07a133/68578919a135f9b50067bfa4_langgraph-enterprise-plan.png" alt="__wf_reserved_inherit" />
   <figcaption>LangGraph Enterprise plan</figcaption>
 </figure>
 
@@ -216,7 +216,7 @@ In our research, we found that a user pointed out that the $0.001 per node fee e
 The Reddit user said, *“I just don’t think the current pricing is reasonable for any system at scale,”* suggesting it was about 10x higher than they anticipated.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/528d9f14/6857892ed9a93b3fd0836caf_a-review-on-langgraph-by-a-reddit-user.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/528d9f14/6857892ed9a93b3fd0836caf_a-review-on-langgraph-by-a-reddit-user.png" alt="__wf_reserved_inherit" />
   <figcaption>Reddit user’s review on LangGraph</figcaption>
 </figure>
 
@@ -245,7 +245,7 @@ For context, 85% of organizations have now integrated AI agents in at least one 
 ## ZenML – An Affordable LangGraph Alternative
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/6e24067d/68562e4e0107b3921a6e7ef4_zenml-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6e24067d/68562e4e0107b3921a6e7ef4_zenml-homepage.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML homepage</figcaption>
 </figure>
 
@@ -258,7 +258,7 @@ Let’s compare LangGraph and ZenML across some key aspects:
 ### Feature 1. Deployment Flexibility
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/52b92f83/6857895a06fed1a98494303a_deployment-flexibility-in-zenml.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/52b92f83/6857895a06fed1a98494303a_deployment-flexibility-in-zenml.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML default local configuration</figcaption>
 </figure>
 
@@ -269,7 +269,7 @@ ZenML goes the other way. The core framework is open source and cloud-agnostic, 
 This BYOC model keeps you in control. Need to live inside a locked-down VPC? Want a multi-cloud or hybrid setup? ZenML’s stack abstraction handles that from day one, so you avoid vendor lock-in and can adapt the deployment to your exact security and compliance rules.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/1ee75246/685789717dfd7227b8288d67_zenml-model-deployers.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1ee75246/685789717dfd7227b8288d67_zenml-model-deployers.png" alt="__wf_reserved_inherit" />
   <figcaption>Model Deployers</figcaption>
 </figure>
 
@@ -310,7 +310,7 @@ ZenML ships its own observability stack. The Dashboard shows live runs, step log
 📚 Read more about it here - [LLM Evaluation & Prompt Tracking Showdown](https://www.zenml.io/blog/a-comprehensive-comparison-of-industry-tools#building-an-automated-evaluation-pipeline-with-zenml)
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/b44d7eb8/6829724115ef64be74d02a8e_zenml_model_registry.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b44d7eb8/6829724115ef64be74d02a8e_zenml_model_registry.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML dashboard</figcaption>
 </figure>
 
@@ -355,7 +355,7 @@ So if you like LangGraph’s abstractions but want a portable, production-ready 
 If you're looking to build agentic workflows without the complexity and cost of LangGraph, schedule [a demo with ZenML](https://www.zenml.io/signup-for-demo). Our team can show you how to create sophisticated ML pipelines, including agent-based systems, while maintaining full control over your infrastructure and costs.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/c4184919/68578a127bfcad97ad9cb7ac_book-a-demo-with-zenml.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c4184919/68578a127bfcad97ad9cb7ac_book-a-demo-with-zenml.webp" alt="__wf_reserved_inherit" />
   <figcaption>Book a demo with ZenML</figcaption>
 </figure>
 

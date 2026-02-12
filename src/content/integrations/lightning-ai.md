@@ -12,17 +12,17 @@ webflow:
   createdOn: "2024-09-16T08:47:27.653Z"
 integrationType: "orchestrator"
 logo:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/4a361b85/66e7e9e24447135c7c269f29_Lightning_AI_Logo.jpeg"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/4a361b85/66e7e9e24447135c7c269f29_Lightning_AI_Logo.jpeg"
 shortDescription: "Accelerate and simplify model training with Lightning AI Studio and ZenML"
 docsUrl: "https://docs.zenml.io/stack-components/orchestrators/lightning"
 githubUrl: "https://lightning.ai/docs/"
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/d21d0f70/670e4506e05e18c255ec5f86_Integration_image__6_.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d21d0f70/670e4506e05e18c255ec5f86_Integration_image__6_.png"
 seo:
   title: "Integrate Lightning AI with ZenML - Orchestrator Integrations"
   description: "Accelerate and simplify model training with Lightning AI Studio and ZenML"
   canonical: "https://www.zenml.io/integrations/lightning-ai"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/d21d0f70/670e4506e05e18c255ec5f86_Integration_image__6_.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d21d0f70/670e4506e05e18c255ec5f86_Integration_image__6_.png"
   ogTitle: "Integrate Lightning AI with ZenML - Orchestrator Integrations"
   ogDescription: "Accelerate and simplify model training with Lightning AI Studio and ZenML"
 ---

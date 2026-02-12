@@ -18,12 +18,12 @@ tags:
 date: "2024-11-13T00:00:00.000Z"
 readingTime: 2 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/93be6863/6746e1d8de773b6aac688246_Gemini_Generated_Image__3_.jpeg"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/93be6863/6746e1d8de773b6aac688246_Gemini_Generated_Image__3_.jpeg"
 seo:
   title: "From POC to Production: A Guide to Scaling Retail MLOps Infrastructure - ZenML Blog"
   description: "Discover how successful retail organizations navigate the complex journey from proof-of-concept to production-ready MLOps infrastructure. This comprehensive guide explores essential strategies for scaling machine learning operations, covering everything from standardized pipeline architecture to advanced model management. Learn practical solutions for handling model proliferation, managing multiple environments, and implementing robust governance frameworks. Whether you're dealing with a growing model fleet or planning for future scaling challenges, this post provides actionable insights for building sustainable, enterprise-grade MLOps systems in retail."
   canonical: "https://www.zenml.io/blog/a-guide-to-scaling-retail-mlops-infrastructure"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/93be6863/6746e1d8de773b6aac688246_Gemini_Generated_Image__3_.jpeg"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/93be6863/6746e1d8de773b6aac688246_Gemini_Generated_Image__3_.jpeg"
   ogTitle: "From POC to Production: A Guide to Scaling Retail MLOps Infrastructure - ZenML Blog"
   ogDescription: "Discover how successful retail organizations navigate the complex journey from proof-of-concept to production-ready MLOps infrastructure. This comprehensive guide explores essential strategies for scaling machine learning operations, covering everything from standardized pipeline architecture to advanced model management. Learn practical solutions for handling model proliferation, managing multiple environments, and implementing robust governance frameworks. Whether you're dealing with a growing model fleet or planning for future scaling challenges, this post provides actionable insights for building sustainable, enterprise-grade MLOps systems in retail."
 ---
@@ -47,7 +47,7 @@ The key to handling multiple customer-specific models lies in creating a standar
 <ul><li>Accept different customer data sources</li><li>Handle varying data schemas and formats</li><li>Produce customer-specific models</li><li>Maintain isolation between different customer contexts</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/dd29443c/6746e240ad9193dcd37d54f7_6746e17070a1422d0abc3164_CleanShot_202024-11-26_20at_2013.08.05.png" alt="Flowchart depicting a standardized MLOps pipeline. Multiple customer configurations (A, B, C) feed into a single pipeline with three layers: Data Ingestion, Processing, and Deployment. The pipeline outputs to Development, Staging, and Production environments, showing how one architecture handles multiple customer needs." />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/dd29443c/6746e240ad9193dcd37d54f7_6746e17070a1422d0abc3164_CleanShot_202024-11-26_20at_2013.08.05.png" alt="Flowchart depicting a standardized MLOps pipeline. Multiple customer configurations (A, B, C) feed into a single pipeline with three layers: Data Ingestion, Processing, and Deployment. The pipeline outputs to Development, Staging, and Production environments, showing how one architecture handles multiple customer needs." />
 </figure>
 
 ### Environment Management Strategy
@@ -79,7 +79,7 @@ Organizations need to think ahead about:
 <ol><li><strong>Scalability</strong>: Building infrastructure that can handle 10x current capacity</li><li><strong>Monitoring</strong>: Implementing comprehensive observability across all models</li><li><strong>Governance</strong>: Establishing clear policies for model deployment and updates</li><li><strong>Resource Management</strong>: Optimizing computing resources across multiple training jobs</li></ol>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/9bd84225/6746e240ad9193dcd37d5512_6746e1a015eea6a052d31cc7_CleanShot_202024-11-26_20at_2013.10.26.png" alt="Boromir - LotR meme with caption “One does not simply deploy ML models to production”" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9bd84225/6746e240ad9193dcd37d5512_6746e1a015eea6a052d31cc7_CleanShot_202024-11-26_20at_2013.10.26.png" alt="Boromir - LotR meme with caption “One does not simply deploy ML models to production”" />
 </figure>
 
 ## Conclusion

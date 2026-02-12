@@ -21,12 +21,12 @@ tags:
 date: "2022-03-07T00:00:00.000Z"
 readingTime: 6 Mins Read
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/db5fdfb0/652fd8a1efff158cb6a96a5e_maturitymodels-tbx.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/db5fdfb0/652fd8a1efff158cb6a96a5e_maturitymodels-tbx.png"
 seo:
   title: "Everything you ever wanted to know about MLOps maturity models - ZenML Blog"
   description: "An exploration of some frameworks created by Google and Microsoft that can help think through improvements to how machine learning models get developed and deployed in production."
   canonical: "https://www.zenml.io/blog/everything-you-ever-wanted-to-know-about-mlops-maturity-models"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/4e909055/652fd8a1efff158cb6a96a5e_maturitymodels-tbx.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/4e909055/652fd8a1efff158cb6a96a5e_maturitymodels-tbx.png"
   ogTitle: "Everything you ever wanted to know about MLOps maturity models - ZenML Blog"
   ogDescription: "An exploration of some frameworks created by Google and Microsoft that can help think through improvements to how machine learning models get developed and deployed in production."
 ---
@@ -42,7 +42,7 @@ These frameworks are commonly referred to when thinking through how an organizat
 [Microsoft’s model](https://docs.microsoft.com/en-us/azure/architecture/example-scenario/mlops/mlops-maturity-model) is the most fine-grained in terms of how it distinguishes progress through the levels. It outlines five separate levels (starting at zero) that can be used to understand the extent of MLOps adoption and maturity in an organization.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/40df1806/652fd8cd6584dfd430be5f88_microsoft-framework.png" alt="Microsoft&#039;s MLOps Maturity Framework" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/40df1806/652fd8cd6584dfd430be5f88_microsoft-framework.png" alt="Microsoft&#039;s MLOps Maturity Framework" />
 </figure>
 
 Google’s level 0 corresponds to that of Microsoft, where everything is manual and there is no automation anywhere. Not only are processes script-driven and manual, but the teams involved in working no the various parts of developing or deploying a model are siloed from each other. After models are ‘deployed’, there is no way of checking how that model is doing or using some kind of feedback loop to catch errors or to roll back if needed.
@@ -64,13 +64,13 @@ To Google, MLOps is therefore about how agile you can be when you’re going thr
 Unfortunately, the leap from the fully manual level to level 1 (“ML Pipeline Automation”) is a pretty sizeable one. This makes the Google framework harder to use as a diagnostic tool, since in many ways you either are doing MLOps or you aren’t; there isn’t much in the way of transitional steps between the two.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/b128e68d/652fd8cddb430b8369bfb9eb_google-level-one.png" alt="Google&#039;s Level One" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b128e68d/652fd8cddb430b8369bfb9eb_google-level-one.png" alt="Google&#039;s Level One" />
 </figure>
 
 Level 1 focuses on the automation of the whole machine learning workflow and work cycle for a single pipeline. At this level, everything is completely automated, including the provision for retraining the entire pipeline when needed, full validation across data, code and models and so on.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/a9cd93cc/652fd8cdd894509d7f667d89_google-level-two.png" alt="Google&#039;s Level Two" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a9cd93cc/652fd8cdd894509d7f667d89_google-level-two.png" alt="Google&#039;s Level Two" />
 </figure>
 
 Level 2 takes this one step further, abstracting another level higher and includes automation for many pipelines. It’s quite similar to level one, just with the ability to handle many models being trained, deployed and handled at the same time.

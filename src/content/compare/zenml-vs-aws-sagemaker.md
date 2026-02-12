@@ -12,7 +12,7 @@ webflow:
   createdOn: "2024-06-25T16:05:29.139Z"
 toolName: "AWS Sagemaker"
 toolIcon:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/8e825c0c/667ae939e27de6a8c2010f2d_sagemaker_logo.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8e825c0c/667ae939e27de6a8c2010f2d_sagemaker_logo.png"
 category: "e2e-platforms"
 integrationType: "e2e-platform"
 advantages:
@@ -25,12 +25,12 @@ heroText: "Unlock the full potential of your machine learning projects with ZenM
 learnMoreUrl: "https://cloud.zenml.io/?utm_source=website&utm_medium=website_hero&utm_campaign=cloud_promotion&utm_content=signup_link"
 seoDescription: "Vendor-neutral ML orchestration. Build, train, and deploy models across environments with flexible workflows and no cloud lock-in."
 openGraphImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/1d687bb2/66c5fcfb0b60f4f51e08aa6e_compare-sagemaker.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1d687bb2/66c5fcfb0b60f4f51e08aa6e_compare-sagemaker.png"
 seo:
   title: "ZenML vs AWS Sagemaker - ZenML vs AWS SageMaker: Supercharge Your ML Workflows"
   description: "Vendor-neutral ML orchestration. Build, train, and deploy models across environments with flexible workflows and no cloud lock-in."
   canonical: "https://www.zenml.io/compare/zenml-vs-aws-sagemaker"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/149dad35/66c5fcfb0b60f4f51e08aa6e_compare-sagemaker.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/149dad35/66c5fcfb0b60f4f51e08aa6e_compare-sagemaker.png"
   ogTitle: "ZenML vs AWS Sagemaker - ZenML vs AWS SageMaker: Supercharge Your ML Workflows"
   ogDescription: "Vendor-neutral ML orchestration. Build, train, and deploy models across environments with flexible workflows and no cloud lock-in."
 ---

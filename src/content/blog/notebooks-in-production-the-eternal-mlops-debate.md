@@ -19,12 +19,12 @@ tags:
 date: "2024-08-30T00:00:00.000Z"
 readingTime: 3 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/7db419ad/66d5c0a9cf6d8e57c18e905f_zenml_news07.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7db419ad/66d5c0a9cf6d8e57c18e905f_zenml_news07.png"
 seo:
   title: "Newsletter Edition #7 - Notebooks in Production: The eternal MLOps debate - ZenML Blog"
   description: "A new ZenML newsletter featuring Istanbul cooking adventures, faster docker builds, and more"
   canonical: "https://www.zenml.io/blog/notebooks-in-production-the-eternal-mlops-debate"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/7db419ad/66d5c0a9cf6d8e57c18e905f_zenml_news07.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7db419ad/66d5c0a9cf6d8e57c18e905f_zenml_news07.png"
   ogTitle: "Newsletter Edition #7 - Notebooks in Production: The eternal MLOps debate - ZenML Blog"
   ogDescription: "A new ZenML newsletter featuring Istanbul cooking adventures, faster docker builds, and more"
 ---
@@ -46,7 +46,7 @@ Now, let's dive into this month's updates...
 **🥂Dishing out new features, together in Istanbul**
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/5fe0ff23/66d5be3e80e90e9b559f051a_team.jpeg" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5fe0ff23/66d5be3e80e90e9b559f051a_team.jpeg" alt="" />
 </figure>
 
 This month the entire ZenML team got together at a central meeting point in the beautiful and historical city of Istanbul. As a remote team, this was a moment where a lot of us met for the first time in the real world! We got to share many laughs, memories, and brainstormings about the future of MLOps, LLMOps, and the place ZenML takes in it!
@@ -56,7 +56,7 @@ I know this is a newsletter about MLOps, but I couldn't help but share this mome
 **📓ZenML and Notebooks: A love-hate relationship (or is it?)**
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/6208c2df/66d5be3ed36a985d71824bd2_zenml_notebooks.png" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6208c2df/66d5be3ed36a985d71824bd2_zenml_notebooks.png" alt="" />
 </figure>
 
 ZenML has historically been used outside of notebooks - as it is usually in the phase of development where things need to be put into a pipeline, therefore after that fast, iterative notebook phase is over. There have been endless debates of how to bridge that gap between these two phases, and while I don't think ZenML will ever advocate for deploying notebooks in production, we now have something that is a great compromise for this eternal discussion.
@@ -68,7 +68,7 @@ From 0.64.0 onwards, you are now [able to run pipelines](https://docs.zenml.io/h
 **💻 A New Onboarding Experience for ZenML**
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/005b56c0/66cc3c8edfe4b28ff5b31f25_66cc3b3af8af09132b41d864_ZenML_20Onboarding_20_3_.gif" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/005b56c0/66cc3c8edfe4b28ff5b31f25_66cc3b3af8af09132b41d864_ZenML_20Onboarding_20_3_.gif" alt="" />
 </figure>
 
 So, remember how I mentioned trying out our new quickstart? Well, there's a bit more to that story. Our great OSS contributer team (shoutout to [Tess ](https://www.linkedin.com/in/tesslockey/)and [Jonathan](https://www.linkedin.com/in/jonathan-hurd-006b4414/)!) have cooked up this nifty VSCode extension that basically gives you a guided tour of ZenML right in your IDE. No more jumping between docs and your code editor - it's all right there in one place.
@@ -80,7 +80,7 @@ Curious to try it out? Just head over to our GitHub repo, hit that 'Code' button
 **🫱🏾🫲🏼 Meet me (Hamza) at AI Tinkerers Paris!**
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/01e2836b/66d5be3e9a631450c143d816_aitinkerers_paris.jpeg" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/01e2836b/66d5be3e9a631450c143d816_aitinkerers_paris.jpeg" alt="" />
 </figure>
 
 I'll be giving a talk next week at the [AI Tinkerers event in Paris](https://paris.aitinkerers.org/), featuring Mistral. It's on Tuesday, September 3rd, 2024. The talk is about scaling GenAI systems - specifically, how to build and manage a system that can handle thousands of personalized AI models. I'll be using a demo that showcases mass AI personalization using Flux.1 model finetunings with DreamBooth.If you're in Paris next week, come check it out and hit me up! If not, I'll share some key takeaways in the next newsletter.

@@ -12,7 +12,7 @@ webflow:
   createdOn: "2024-06-17T13:13:53.153Z"
 toolName: "Kedro"
 toolIcon:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/7adeb0e5/66703557eff22173d1f08be7_kedro.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7adeb0e5/66703557eff22173d1f08be7_kedro.png"
 category: "orchestrators"
 integrationType: "orchestrator"
 advantages:
@@ -23,12 +23,12 @@ heroText: "In this guide, we compare ZenML with Kedro to highlight which framewo
 learnMoreUrl: "https://cloud.zenml.io/?utm_source=website&utm_medium=website_hero&utm_campaign=cloud_promotion&utm_content=signup_link"
 seoDescription: "Kedro alternative: Scalable, user-friendly ML framework. Streamline operations with robust features for efficient project management and deployment."
 openGraphImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/1534dab9/66c5fd29bb6cb76da3b6ed5a_compare-kedro.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1534dab9/66c5fd29bb6cb76da3b6ed5a_compare-kedro.png"
 seo:
   title: "ZenML vs Kedro - ZenML vs Kedro: Scaling your Machine Learning Projects Seamlessly"
   description: "Kedro alternative: Scalable, user-friendly ML framework. Streamline operations with robust features for efficient project management and deployment."
   canonical: "https://www.zenml.io/compare/zenml-vs-kedro"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/6d48b95f/66c5fd29bb6cb76da3b6ed5a_compare-kedro.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6d48b95f/66c5fd29bb6cb76da3b6ed5a_compare-kedro.png"
   ogTitle: "ZenML vs Kedro - ZenML vs Kedro: Scaling your Machine Learning Projects Seamlessly"
   ogDescription: "Kedro alternative: Scalable, user-friendly ML framework. Streamline operations with robust features for efficient project management and deployment."
 ---

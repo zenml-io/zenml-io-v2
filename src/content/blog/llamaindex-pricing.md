@@ -21,12 +21,12 @@ tags:
 date: "2025-08-24T00:00:00.000Z"
 readingTime: 17 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/0253b821/6981cf5010e873663bd75930_6981ce8b0baa2ab9e31a0d14_llamaindex-pricing.avif"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/0253b821/6981cf5010e873663bd75930_6981ce8b0baa2ab9e31a0d14_llamaindex-pricing.avif"
 seo:
   title: "LlamaIndex Pricing Guide: Everything You Must Know Before Investing - ZenML Blog"
   description: "In this LlamaIndex pricing guide, we discuss the costs, features, and value LlamaIndex provides to help you decide if it’s the right investment for your business."
   canonical: "https://www.zenml.io/blog/llamaindex-pricing"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/0253b821/6981cf5010e873663bd75930_6981ce8b0baa2ab9e31a0d14_llamaindex-pricing.avif"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/0253b821/6981cf5010e873663bd75930_6981ce8b0baa2ab9e31a0d14_llamaindex-pricing.avif"
   ogTitle: "LlamaIndex Pricing Guide: Everything You Must Know Before Investing - ZenML Blog"
   ogDescription: "In this LlamaIndex pricing guide, we discuss the costs, features, and value LlamaIndex provides to help you decide if it’s the right investment for your business."
 ---
@@ -77,7 +77,7 @@ In contrast, LlamaIndex Cloud is the hosted platform that provides a web UI, sca
 <ul><li>Every operation on LlamaIndex Cloud – parsing a document, creating an index, running a query, extracting data, etc. – consumes credits. Credits are basically the platform’s internal currency for compute/LLM usage. By definition, 1,000 credits = $1.00 (in the default region). So using 1 credit is $0.001 of value.</li><li>Each subscription plan (Free, Starter, Pro, Enterprise) includes a monthly allotment of credits. If you exceed the included credits, you can pay-as-you-go for additional credits (up to certain limits on Starter/Pro) at the same rate ($0.001 per credit).</li><li>The plans mainly differ in scale and collaboration features: higher tiers give more credits, support for more users, and the ability to connect more data sources and manage more projects/indexes.</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/aa1786e1/68aa922dc951e5ce73c6b3de_llamaindex-pricing-plans.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/aa1786e1/68aa922dc951e5ce73c6b3de_llamaindex-pricing-plans.png" alt="__wf_reserved_inherit" />
   <figcaption>LlamaIndex pricing</figcaption>
 </figure>
 
@@ -86,7 +86,7 @@ In contrast, LlamaIndex Cloud is the hosted platform that provides a web UI, sca
 When planning your LlamaIndex usage, it’s important to understand the factors that drive cost. The actual cost you incur will depend on how you use the framework.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/6888331b/68aa9252688c12491ead70c6_llamaindex-pricing-factors-to-consider.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6888331b/68aa9252688c12491ead70c6_llamaindex-pricing-factors-to-consider.png" alt="__wf_reserved_inherit" />
   <figcaption>LlamaIndex pricing factors to consider</figcaption>
 </figure>
 
@@ -152,7 +152,7 @@ And there are notable limitations:
 Despite these constraints, the free tier is quite useful for evaluation and prototyping. You could parse a handful of documents and build a toy QA bot without spending a penny.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/869810b3/68aa9281d985d3409835b15c_llamaindex-free-plan.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/869810b3/68aa9281d985d3409835b15c_llamaindex-free-plan.webp" alt="__wf_reserved_inherit" />
   <figcaption>LlamaIndex free plan</figcaption>
 </figure>
 
@@ -175,7 +175,7 @@ LlamaIndex seems to intentionally price this tier to be accessible to independen
 For $50, if you’re getting 50K credits, you could parse on the order of 5,000 pages in cost-effective mode or maybe 800 to 1,000 pages in the very expensive premium mode, per month.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/bd2d740a/68aa92a147ccd3e358e58b9b_llamaindex-starter-plan.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/bd2d740a/68aa92a147ccd3e358e58b9b_llamaindex-starter-plan.webp" alt="__wf_reserved_inherit" />
   <figcaption>LlamaIndex Starter plan</figcaption>
 </figure>
 
@@ -190,7 +190,7 @@ Pro is the plan for when you’re moving from experiment to production pilot. It
 At $6,000 per year, it’s a non-trivial expense, so you’d want to be sure your project is delivering value at that scale.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/361c71e9/68aa92bb0239577f5bb6d5fa_llamaindex-pro-plan.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/361c71e9/68aa92bb0239577f5bb6d5fa_llamaindex-pro-plan.webp" alt="__wf_reserved_inherit" />
   <figcaption>LlamaIndex Pro plan</figcaption>
 </figure>
 
@@ -203,7 +203,7 @@ For organizations with advanced needs, LlamaIndex offers an Enterprise plan. The
 In short, Enterprise is a ‘let’s make a deal’ territory for when your needs surpass the self-serve plans. The cost could range widely, presumably in the thousands to tens of thousands per month, depending on scale.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/8f56c6bf/68aa92d2716f312d1d122179_llamaindex-enterprise-plan.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8f56c6bf/68aa92d2716f312d1d122179_llamaindex-enterprise-plan.webp" alt="__wf_reserved_inherit" />
   <figcaption>LlamaIndex Enterprise plan</figcaption>
 </figure>
 
@@ -224,7 +224,7 @@ For example, using the default Cost-effective mode might cost ~3 credits per pag
 Practically, you and your team should try LlamaParse on your documents during the free credits phase to gauge how many credits it consumes and how much better the data quality is. If it saves developer time and improves answer accuracy for your agent, you can justify the cost.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/8c27abed/68aa92f202e976cbdb480316_llamaparse.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8c27abed/68aa92f202e976cbdb480316_llamaparse.png" alt="__wf_reserved_inherit" />
   <figcaption>LlamaParse</figcaption>
 </figure>
 
@@ -251,7 +251,7 @@ For instance, extracting 1,000 receipts in Premium mode would be ~60,000 credits
 On a Pro plan with 500k credits, you could theoretically extract data from ~8,300 pages in premium mode within the included credits.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/79f5d00b/68aa9309e72c096890f14846_llamaextract.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/79f5d00b/68aa9309e72c096890f14846_llamaextract.png" alt="__wf_reserved_inherit" />
   <figcaption>LlamaExtract</figcaption>
 </figure>
 
@@ -292,7 +292,7 @@ However, once you have such an agent, you face an ‘outer loop’ of challenges
 This is where [ZenML](https://www.zenml.io/) comes into play as a powerful complement to LlamaIndex.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/db3ea881/689ac2a3febb312100f576da_zenml-unified-mlops-and-llmops-platform.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/db3ea881/689ac2a3febb312100f576da_zenml-unified-mlops-and-llmops-platform.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ZenML is an open-source MLOps + [LLMOps framework](https://docs.zenml.io/user-guides/llmops-guide) that helps orchestrate and manage the entire lifecycle of machine learning and LLM workflows, including agent-based systems.
@@ -306,7 +306,7 @@ Here are the key ways ZenML helps you productionize LlamaIndex agents:
 ZenML lets you embed your LlamaIndex agent into a larger automated workflow. For example, you might have a ZenML pipeline that periodically fetches new data, uses LlamaIndex to update an index, then triggers an agent to answer any pending queries or generate reports. ZenML treats the agent as just one step in a reproducible pipeline.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/43dfc6b8/68944ad8bb7763bb398a5663_zenml-orchestration.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/43dfc6b8/68944ad8bb7763bb398a5663_zenml-orchestration.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML orchestration</figcaption>
 </figure>
 
@@ -319,7 +319,7 @@ ZenML provides built-in experiment tracking and logging – every time your agen
 ZenML’s dashboard lets you see all your pipeline runs in one place, compare different runs, and even trace through steps.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/c02f837d/6892de82198dfe9aa4d43687_zenml-visualization.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c02f837d/6892de82198dfe9aa4d43687_zenml-visualization.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML visualization</figcaption>
 </figure>
 
@@ -330,7 +330,7 @@ ZenML can help you keep an eye on whether your agent is behaving as expected. Fo
 Over time, this can alert you if a change in the LLM or data causes quality to drop. ZenML makes it easier to answer ‘is my agent still good?’ by tracking performance metrics across pipeline runs.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/a2d6f59d/6892de9d7a7c008a7dde8ba5_zenml-evaluation.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a2d6f59d/6892de9d7a7c008a7dde8ba5_zenml-evaluation.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML evaluation</figcaption>
 </figure>
 
@@ -343,7 +343,7 @@ ZenML’s framework is designed to integrate diverse tools and libraries into on
 All in all, ZenML wraps around LlamaIndex to productionize it. LlamaIndex defines what your agent does (how it uses data and LLMs to answer questions). ZenML defines how that agent is deployed, monitored, and managed over time.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/24d6b34d/68aa938cb3c65107753af35f_zenml-integration.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/24d6b34d/68aa938cb3c65107753af35f_zenml-integration.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML integrations</figcaption>
 </figure>
 

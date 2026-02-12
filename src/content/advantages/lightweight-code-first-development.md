@@ -3,7 +3,7 @@ title: "Lightweight, Code-First Development"
 slug: "lightweight-code-first-development"
 content: "ZenML offers a pip-installable, Python-first approach that lets you start locally and scale later. No enterprise deployment, platform operators, or Kubernetes clusters required to begin — build production-grade ML pipelines in minutes, not weeks."
 image:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/20dbdf41/6989dc01cf93c92d35afc771_669101d14ec4c8275fab7aa3_img05.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/20dbdf41/6989dc01cf93c92d35afc771_669101d14ec4c8275fab7aa3_img05.png"
 webflow:
   siteId: "64a817a2e7e2208272d1ce30"
   itemId: "6989dc01cf93c92d35afc784"

@@ -17,7 +17,7 @@ tags:
 date: "2022-02-23T00:00:00.000Z"
 readingTime: 4 Mins Read
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/984d5d05/65316103f7e61ff7b181e04b_hybrid-uGP_6CAD-14-unsplash.jpg"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/984d5d05/65316103f7e61ff7b181e04b_hybrid-uGP_6CAD-14-unsplash.jpg"
 ---
 
 **Last updated:** November 3, 2022.
@@ -31,7 +31,7 @@ Smaller changes that you’ll notice include updates to our cloud integrations a
 ## ♻️ Continuous Deployment with MLflow
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/c2d1822f/652fbc27eaacc8b0ccf86a81_ci-cd-for-ml-systems.gif" alt="A Continuous Deployment workflow. Achievement unlocked!" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c2d1822f/652fbc27eaacc8b0ccf86a81_ci-cd-for-ml-systems.gif" alt="A Continuous Deployment workflow. Achievement unlocked!" />
 </figure>
 
 The biggest new feature in the 0.6.2 release is our integration with the parts of MLflow that allow you to serve your models. We [previously added MLflow Tracking](https://blog.zenml.io/zero-five-seven-release/), but now hook into the standard format for packaging machine learning models so that you can deploy them for real-time serving using a range of deployment tools. With the new integration you can locally deploy your models [using a local deployment server](https://mlflow.org/docs/latest/models.html#deploy-mlflow-models).
@@ -47,7 +47,7 @@ We’re really excited about the production use cases that this feature enables.
 ## Improving our CLI with rich
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/8f2b7ce7/6531610bcf5a73b5a38420cf_rich-tables.jpeg" alt="Our CLI tables look much nicer with &#039;rich&#039;" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8f2b7ce7/6531610bcf5a73b5a38420cf_rich-tables.jpeg" alt="Our CLI tables look much nicer with &#039;rich&#039;" />
 </figure>
 
 If you’ve been using the ZenML CLI utility for a while, you’ll know that it was functional but maybe not always *delightful*. We’ve [taken a bit of time](https://github.com/zenml-io/zenml/pull/392) to make it more pleasant to use from the user perspective. We used ‘rich’ to add a visual uplift to most user-facing parts of the zenml terminal interface.

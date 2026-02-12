@@ -119,7 +119,7 @@ This example demonstrates how to configure ZenML steps to run on SageMaker Pipel
 Once your pipeline is running on SageMaker, you can visualize and monitor it using the SageMaker UI:
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/25ac8516/66f158051c1ea676c67b60c2_66e13e0735069705b5b930d6_image_20_5_.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/25ac8516/66f158051c1ea676c67b60c2_66e13e0735069705b5b930d6_image_20_5_.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML Pipeline  executed as a Sagemaker Pipeline</figcaption>
 </figure>
 

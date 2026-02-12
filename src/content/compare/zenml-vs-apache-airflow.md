@@ -12,7 +12,7 @@ webflow:
   createdOn: "2024-06-18T10:56:12.599Z"
 toolName: "Apache Airflow"
 toolIcon:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/cf84c32d/66716650d5754c23eb1df5ca_apache-airflow.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/cf84c32d/66716650d5754c23eb1df5ca_apache-airflow.png"
 category: "orchestrators"
 integrationType: "orchestrator"
 advantages:
@@ -25,12 +25,12 @@ heroText: "This article contrasts ZenML and Airflow to emphasize which platform 
 learnMoreUrl: "https://cloud.zenml.io/?utm_source=website&utm_medium=website_hero&utm_campaign=cloud_promotion&utm_content=signup_link"
 seoDescription: "ML-optimized workflow management. Enhance scalability and usability with comprehensive features designed for ML pipeline orchestration."
 openGraphImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/9ed728c4/66c5fd1f7b3dd4887449e667_compare-airflow.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9ed728c4/66c5fd1f7b3dd4887449e667_compare-airflow.png"
 seo:
   title: "ZenML vs Apache Airflow - ZenML vs Airflow: Effortlessly Expand Your ML Initiatives"
   description: "ML-optimized workflow management. Enhance scalability and usability with comprehensive features designed for ML pipeline orchestration."
   canonical: "https://www.zenml.io/compare/zenml-vs-apache-airflow"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/aa7c779f/66c5fd1f7b3dd4887449e667_compare-airflow.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/aa7c779f/66c5fd1f7b3dd4887449e667_compare-airflow.png"
   ogTitle: "ZenML vs Apache Airflow - ZenML vs Airflow: Effortlessly Expand Your ML Initiatives"
   ogDescription: "ML-optimized workflow management. Enhance scalability and usability with comprehensive features designed for ML pipeline orchestration."
 ---

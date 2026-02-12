@@ -21,12 +21,12 @@ tags:
 date: "2025-11-23T00:00:00.000Z"
 readingTime: 18 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/8e0c790c/6981d36ce92aa039b696b8a7_6981d2b078ca0eb6ae358d39_best-llm-monitoring-tools.avif"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8e0c790c/6981d36ce92aa039b696b8a7_6981d2b078ca0eb6ae358d39_best-llm-monitoring-tools.avif"
 seo:
   title: "10 Best LLM Monitoring Tools to Use in 2025 (Ranked & Reviewed) - ZenML Blog"
   description: "Discover the 10 best LLM monitoring tools you can use this year."
   canonical: "https://www.zenml.io/blog/best-llm-monitoring-tools"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/8e0c790c/6981d36ce92aa039b696b8a7_6981d2b078ca0eb6ae358d39_best-llm-monitoring-tools.avif"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8e0c790c/6981d36ce92aa039b696b8a7_6981d2b078ca0eb6ae358d39_best-llm-monitoring-tools.avif"
   ogTitle: "10 Best LLM Monitoring Tools to Use in 2025 (Ranked & Reviewed) - ZenML Blog"
   ogDescription: "Discover the 10 best LLM monitoring tools you can use this year."
 ---
@@ -48,7 +48,7 @@ Here’s a quick overview of what the LLM monitoring tools in this guide are **�
 Here are some key factors to consider before choosing your ideal LLM monitoring tool:
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/f9c9dae4/69203ef6d4229a8bdd57b1bd_factors-to-consider-when-choosing-observability-tool.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f9c9dae4/69203ef6d4229a8bdd57b1bd_factors-to-consider-when-choosing-observability-tool.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### 1. Associated Costs
@@ -94,7 +94,7 @@ Before we dive in, here’s a quick comparison table:
 **Best For:** MLOps and engineering teams who need a unified control plane to connect production monitoring back to the exact code, data, and pipelines that created the model.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/09f03b74/68ef8fecaaa4ab4a11f6d502_zenml-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/09f03b74/68ef8fecaaa4ab4a11f6d502_zenml-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [ZenML](https://www.zenml.io/) stands out as the best monitoring solution on the market because it treats observability not as an afterthought, but as a fundamental part of the model's lifecycle.
@@ -106,7 +106,7 @@ It connects your data, code, and infrastructure, meaning when you spot an issue 
 ### Key Feature 1. Model Control Plane
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/66bd96d0/6922835119de659f7d697d7d_zenml-model-control-plane.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/66bd96d0/6922835119de659f7d697d7d_zenml-model-control-plane.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML model control plan</figcaption>
 </figure>
 
@@ -117,7 +117,7 @@ It tracks lineage automatically, allowing you to see exactly how a deployed mode
 ### Key Feature 2. Built-in Evaluation Workflows
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/19501162/691e92ca27ab4c05752adb2d_zenml-evaluation.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/19501162/691e92ca27ab4c05752adb2d_zenml-evaluation.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML evaluation</figcaption>
 </figure>
 
@@ -128,7 +128,7 @@ You can run offline evaluations using ‘LLM-as-a-judge’ patterns or standard 
 ### Key Feature 3. Metrics, Logs, and Model Metadata for LLM Steps
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e345dfde/692283d2d05392e7c60519eb_zenml-logging.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e345dfde/692283d2d05392e7c60519eb_zenml-logging.webp" alt="__wf_reserved_inherit" />
   <figcaption>Displaying pipeline run logs on the dashboard</figcaption>
 </figure>
 
@@ -143,7 +143,7 @@ ZenML is free and open-source under the Apache 2.0 license. The core framework, 
 Teams needing enterprise-grade collaboration, managed hosting, advanced governance features, and premium support can opt for ZenML’s custom business plans, which vary by deployment model, usage, and team size.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/65bc486d/692283ecb919f4f86316549e_zenml-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/65bc486d/692283ecb919f4f86316549e_zenml-pricing.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -155,7 +155,7 @@ However, because ZenML is a full MLOps + LLMOps framework rather than a plug-and
 ## 2. LangSmith
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/c36fe06c/691e939afd6c1db474aabfc6_langsmith-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c36fe06c/691e939afd6c1db474aabfc6_langsmith-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [LangSmith](https://www.langchain.com/langsmith/observability) is an observability and evaluation platform from the LangChain team. It’s especially popular with LangChain users because it hooks into LangChain callbacks and data structures, but it can work with any LLM stack.
@@ -171,7 +171,7 @@ LangSmith has a free developer plan that typically includes 1 developer seat and
 <ul><li><strong>Plus:</strong> $39 per seat per month</li><li><strong>Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/2d3bb213/6916b365454bf3764e243444_langsmith-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2d3bb213/6916b365454bf3764e243444_langsmith-pricing.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -187,7 +187,7 @@ The trade-offs are mostly around control and cost. LangSmith is a paid platform 
 ## 3. Langfuse
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/581db928/691e9373e8b0353623278c8b_langfuse-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/581db928/691e9373e8b0353623278c8b_langfuse-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [Langfuse](https://langfuse.com/) is an open-source LLM monitoring tool focused on end-to-end tracing, analytics, and cost tracking. You can self-host it, inspect runs in a browser UI, and log events through its SDK or via OpenTelemetry, turning it into a central logbook for all LLM activity.
@@ -203,7 +203,7 @@ The trade-offs are mostly around control and cost. LangSmith is a paid platform 
 <ul><li><strong>Core:</strong> $29 per month</li><li><strong>Pro:</strong> $199 per month</li><li><strong>Enterprise:</strong> $2499 per month</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/3e53bf50/692284349244251fbe5b857b_langfuse-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3e53bf50/692284349244251fbe5b857b_langfuse-pricing.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -215,7 +215,7 @@ The trade-off is setup effort. You have to instrument your app and choose which 
 ## 4. Arize Phoenix
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/8b15bed7/69228441cc14538de4a603f0_arize-phoenix-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8b15bed7/69228441cc14538de4a603f0_arize-phoenix-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [Arize Phoenix](https://phoenix.arize.com/) is an open-source LLM observability tool from Arize AI. It runs in local environments like Jupyter notebooks or containers and is built on OpenTelemetry. Phoenix is widely used for retrieval-augmented generation and LLM-powered search or chat systems.
@@ -231,7 +231,7 @@ Phoenix is completely open-source and free to use as a standalone library. It ca
 <ul><li><strong>Arize AX Free:</strong> Free</li><li><strong>AX Pro:</strong> $50 per month</li><li><strong>AX Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/40ec2c0c/69228451142e131cf0b104aa_arize-phoenix-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/40ec2c0c/69228451142e131cf0b104aa_arize-phoenix-pricing.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -243,7 +243,7 @@ Phoenix can feel like too much if you just need basic logging. The UI expects us
 ## 5. Datadog LLM Observability
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/4030cd90/692284669dc4404a7bde71e6_datadog-llm-observability-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/4030cd90/692284669dc4404a7bde71e6_datadog-llm-observability-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [Datadog](https://www.datadoghq.com/product/llm-observability/) extends its enterprise APM platform with dedicated features for LLM observability. For teams that already use Datadog for infrastructure and microservice monitoring, this gives a native way to plug LLM traces and metrics into the same view.
@@ -265,7 +265,7 @@ If you’re not already in the Datadog ecosystem, adopting it only for LLM obser
 ## 6. W&B Weave (Weights & Biases)
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/22b3aac8/6922847efefb6c16f7a10c71_wandb-weave-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/22b3aac8/6922847efefb6c16f7a10c71_wandb-weave-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [W&B Weave](https://wandb.ai/site/) is an LLM monitoring and evaluation tool built on top of the core W&B platform. It makes logging and analyzing LLM interactions as easy as adding a single line of code to your app and is particularly appealing to teams already using W&B for model tracking.
@@ -281,7 +281,7 @@ W&B Weave offers a free plan for individual use. For teams, it offers two paid p
 <ul><li><strong>Pro:</strong> $60 per month</li><li><strong>Enterprise:</strong> Custom</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/148f8dac/6922848cda53619c4a53946b_wandb-weave-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/148f8dac/6922848cda53619c4a53946b_wandb-weave-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -293,7 +293,7 @@ The flip side is commitment to the W&B ecosystem. If your team prefers separate,
 ## 7. Helicone
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/5ea11d86/6912bc3610546c7e32ba7b81_helicone-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5ea11d86/6912bc3610546c7e32ba7b81_helicone-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [Helicone](https://www.helicone.ai/) is a lightweight, proxy-based LLM observability tool that operates as an AI Gateway. Instead of instrumenting your code with SDKs, you send OpenAI or other LLM API calls through the Helicone proxy, and it logs requests and responses automatically.
@@ -309,7 +309,7 @@ Helicone offers a free Hobby plan that includes 10,000 requests. Above that, you
 <ul><li><strong>Pro:</strong> $20 per seat per month</li><li><strong>Team:</strong> $200 per month</li><li><strong>Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/656ed93a/6912bc4497c88863a5c5c540_helicone-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/656ed93a/6912bc4497c88863a5c5c540_helicone-pricing.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -321,7 +321,7 @@ However, inserting a proxy adds an extra hop that can fail or add latency to req
 ## 7. Portkey
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/13160060/692284b9eaf244c8c140ad05_portkey-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/13160060/692284b9eaf244c8c140ad05_portkey-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [Portkey](https://portkey.ai/) is an AI gateway and control plane that includes robust LLM observability features. It’s like a managed API gateway for your LLM calls, offering request routing, authentication, caching, and built-in monitoring.
@@ -337,7 +337,7 @@ Portkey offers a free Developer plan with up to 10k recorded logs per month. Ove
 <ul><li><strong>Production:</strong> $49 per month</li><li><strong>Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/1c61c17e/692284c88baeb613eb68ede3_portkey-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1c61c17e/692284c88baeb613eb68ede3_portkey-pricing.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -349,7 +349,7 @@ The trade-offs come from that same gateway model. You have to route all LLM traf
 ## 9. Traceloop OpenLLMetry
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/f1bb6986/692284dc98712eeacd4b752c_traceloop-openllmetry-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f1bb6986/692284dc98712eeacd4b752c_traceloop-openllmetry-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [OpenLLMetry](https://www.traceloop.com/openllmetry) by Traceloop is an open-source SDK and standard for sourcing LLM observability data via OpenTelemetry. It gives you a vendor-neutral way to instrument your app using the standard OTLP protocol and send traces to any OTel-compatible backend.
@@ -371,7 +371,7 @@ The downside is that it’s just instrumentation. You still need an OTel collect
 ## 10. TruLens
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/68fc85d0/692284fe93aafc7345b7b683_trulens-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/68fc85d0/692284fe93aafc7345b7b683_trulens-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [TruLens](https://www.trulens.org/) is an open-source library supported by Snowflake. It focuses on evaluating and tracing LLM-based agents and applications using feedback functions. That is, metrics that describe how well the model behaved. Because it can both trace and score runs, it’s helpful for improving agent-style systems.

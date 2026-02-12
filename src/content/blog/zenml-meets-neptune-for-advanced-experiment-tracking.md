@@ -19,12 +19,12 @@ tags:
 date: "2024-09-21T00:00:00.000Z"
 readingTime: 6 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/feece98a/6981d362e92aa039b696ad09_6981d2b20c8a808a04e6eef3_Blog_Post_-_with_image_-_Light.avif"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/feece98a/6981d362e92aa039b696ad09_6981d2b20c8a808a04e6eef3_Blog_Post_-_with_image_-_Light.avif"
 seo:
   title: "Navigating the MLOps Galaxy: ZenML meets Neptune for advanced Experiment Tracking - ZenML Blog"
   description: "The combination of ZenML and Neptune can streamline machine learning workflows and provide unprecedented visibility into experiments. ZenML is an extensible framework for creating production-ready pipelines, while Neptune is a metadata store for MLOps. When combined, these tools offer a robust solution for managing the entire ML lifecycle, from experimentation to production. The combination of these tools can significantly accelerate the development process, especially when working with complex tasks like language model fine-tuning. This integration offers the ability to focus more on innovating and less on managing the intricacies of your ML pipelines."
   canonical: "https://www.zenml.io/blog/zenml-meets-neptune-for-advanced-experiment-tracking"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/feece98a/6981d362e92aa039b696ad09_6981d2b20c8a808a04e6eef3_Blog_Post_-_with_image_-_Light.avif"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/feece98a/6981d362e92aa039b696ad09_6981d2b20c8a808a04e6eef3_Blog_Post_-_with_image_-_Light.avif"
   ogTitle: "Navigating the MLOps Galaxy: ZenML meets Neptune for advanced Experiment Tracking - ZenML Blog"
   ogDescription: "The combination of ZenML and Neptune can streamline machine learning workflows and provide unprecedented visibility into experiments. ZenML is an extensible framework for creating production-ready pipelines, while Neptune is a metadata store for MLOps. When combined, these tools offer a robust solution for managing the entire ML lifecycle, from experimentation to production. The combination of these tools can significantly accelerate the development process, especially when working with complex tasks like language model fine-tuning. This integration offers the ability to focus more on innovating and less on managing the intricacies of your ML pipelines."
 ---
@@ -110,7 +110,7 @@ zenml stack register neptune_stack -e neptune_tracker ... --set
 ```
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/3c8feaa1/66ed520fa333a0bb0e80b590_66ed50617483c897468708ee_image_20_21_.png" alt="ZenML stack description output showing a Stack Configuration table. It lists EXPERIMENT_TRACKER as neptune_experiment_tracker, ORCHESTRATOR as default, and ARTIFACT_STORE as default. The stack is named &#039;neptune_stack&#039; and is active. No labels are set for this stack." />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3c8feaa1/66ed520fa333a0bb0e80b590_66ed50617483c897468708ee_image_20_21_.png" alt="ZenML stack description output showing a Stack Configuration table. It lists EXPERIMENT_TRACKER as neptune_experiment_tracker, ORCHESTRATOR as default, and ARTIFACT_STORE as default. The stack is named &#039;neptune_stack&#039; and is active. No labels are set for this stack." />
   <figcaption>Tip: Use zenml stack describe to see the active stacks contents</figcaption>
 </figure>
 
@@ -220,13 +220,13 @@ fine_tuning_pipeline()
 ```
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/099944b9/66ed520fa333a0bb0e80b58d_66ed5100a85248944570cc69_image_20_22_.png" alt="ZenML pipeline visualization showing a workflow with three steps: &#039;prepare_data&#039; feeding into two &#039;datasets.arrow_dataset.Dataset&#039; outputs, which then feed into &#039;train_model&#039;, resulting in a &#039;transformers.models.distilbert.modeling&#039; output. The pipeline is named &#039;fine_tuning_pipeline-2024_09_20-08_56_05_145452&#039;. The interface shows tabs for Overview, Code, Logs, Configuration, and Metadata, with Metadata selected. The Metadata pane displays an experiment tracker URL." />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/099944b9/66ed520fa333a0bb0e80b58d_66ed5100a85248944570cc69_image_20_22_.png" alt="ZenML pipeline visualization showing a workflow with three steps: &#039;prepare_data&#039; feeding into two &#039;datasets.arrow_dataset.Dataset&#039; outputs, which then feed into &#039;train_model&#039;, resulting in a &#039;transformers.models.distilbert.modeling&#039; output. The pipeline is named &#039;fine_tuning_pipeline-2024_09_20-08_56_05_145452&#039;. The interface shows tabs for Overview, Code, Logs, Configuration, and Metadata, with Metadata selected. The Metadata pane displays an experiment tracker URL." />
 </figure>
 
 As the pipeline runs, ZenML automatically creates Neptune experiments for each step where tracking is enabled. You can view these experiments in the Neptune UI by visiting https://app.neptune.ai/YOUR_WORKSPACE/YOUR_PROJECT/experiments.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e1500dee/66ed520fa333a0bb0e80b59e_66ed51508ea6edd97d09f5ea_image_20_23_.png" alt="neptune.ai experiment tracking interface showing a side-by-side comparison of 5 runs (ZEN-59 to ZEN-63). The left panel lists runs, with ZEN-63, ZEN-62, and ZEN-61 selected. The right panel displays a detailed comparison table of run attributes including Creation Time, Owner (htahir1), Name, Tags, Group Tags, Custom Run Id, and Description. A toolbar at the top offers various view options and a &#039;Create a new run&#039; button." />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e1500dee/66ed520fa333a0bb0e80b59e_66ed51508ea6edd97d09f5ea_image_20_23_.png" alt="neptune.ai experiment tracking interface showing a side-by-side comparison of 5 runs (ZEN-59 to ZEN-63). The left panel lists runs, with ZEN-63, ZEN-62, and ZEN-61 selected. The right panel displays a detailed comparison table of run attributes including Creation Time, Owner (htahir1), Name, Tags, Group Tags, Custom Run Id, and Description. A toolbar at the top offers various view options and a &#039;Create a new run&#039; button." />
 </figure>
 
 In the Neptune UI, you'll have access to a wealth of information:
@@ -234,7 +234,7 @@ In the Neptune UI, you'll have access to a wealth of information:
 <ol><li>Detailed metrics for your fine-tuning run, including accuracy, F1 score, precision, and recall.</li><li>Comparisons between different runs of your pipeline to identify improvements or regressions.</li><li>Training curves to visualize how your model's performance evolved during training.</li><li>Collaboration tools to share results with team members for joint analysis and decision-making.</li></ol>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/2ac60e94/66ed520fa333a0bb0e80b5ae_66ed517ab4c26193b769aa12_image_20_24_.png" alt="Neptune.ai experiment tracking interface showing a parallel coordinates plot of 63 runs. The left panel lists runs, while the right panel displays the plot with axes for sys/id, sys/name, and sys/tags. Lines represent individual runs, connecting their values across these dimensions. The plot shows clustering of runs into &#039;sklearn_regression&#039; and &#039;regression_sklearn&#039; groups. Interface includes options to Restore, Keep, Exclude, Export, and Download as PNG. 50 runs are currently selected." />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2ac60e94/66ed520fa333a0bb0e80b5ae_66ed517ab4c26193b769aa12_image_20_24_.png" alt="Neptune.ai experiment tracking interface showing a parallel coordinates plot of 63 runs. The left panel lists runs, while the right panel displays the plot with axes for sys/id, sys/name, and sys/tags. Lines represent individual runs, connecting their values across these dimensions. The plot shows clustering of runs into &#039;sklearn_regression&#039; and &#039;regression_sklearn&#039; groups. Interface includes options to Restore, Keep, Exclude, Export, and Download as PNG. 50 runs are currently selected." />
 </figure>
 
 ## Beyond Tools: Building a Culture of Experiment Tracking

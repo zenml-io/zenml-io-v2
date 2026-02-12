@@ -22,12 +22,12 @@ tags:
 date: "2022-04-07T00:00:00.000Z"
 readingTime: 9 Mins Read
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/5d798921/6530aa4537a36ef8301da0ef_data-centric.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5d798921/6530aa4537a36ef8301da0ef_data-centric.png"
 seo:
   title: "It's the data, silly!' How data-centric AI is driving MLOps - ZenML Blog"
   description: "ML practitioners today are embracing data-centric machine learning, because of its substantive effect on MLOps practices. In this article, we take a brief excursion into how data-centric machine learning is fuelling MLOps best practices, and why you should care about this change."
   canonical: "https://www.zenml.io/blog/its-the-data-silly-how-data-centric-ai-is-driving-mlops"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/172a94ce/6530aa4537a36ef8301da0ef_data-centric.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/172a94ce/6530aa4537a36ef8301da0ef_data-centric.png"
   ogTitle: "It's the data, silly!' How data-centric AI is driving MLOps - ZenML Blog"
   ogDescription: "ML practitioners today are embracing data-centric machine learning, because of its substantive effect on MLOps practices. In this article, we take a brief excursion into how data-centric machine learning is fuelling MLOps best practices, and why you should care about this change."
 ---
@@ -45,7 +45,7 @@ There is an ever-increasing plethora of resources around MLOps (see the end of t
 ## MLOps is not just about deploying models
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/3e6d4ff9/6530aa7926471fecd5f5b0f3_mlops_tweet.png" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3e6d4ff9/6530aa7926471fecd5f5b0f3_mlops_tweet.png" alt="" />
 </figure>
 
 When speaking about MLOps, developers often confuse it with the simple act of deployment. However, conversations such as the above do not simply refer to deploying models. Machine learning engineering tackles a broader set of challenges that span more than merely wrapping up a model in a server application and deploying it.
@@ -53,7 +53,7 @@ When speaking about MLOps, developers often confuse it with the simple act of de
 ML development may be broken down into the following (relatively) simple processes.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e79a93da/6530aa79519766d64955755e_mlops_process_0.png" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e79a93da/6530aa79519766d64955755e_mlops_process_0.png" alt="" />
 </figure>
 
 Taken as silos, these processes don’t sound too hard:
@@ -63,7 +63,7 @@ Taken as silos, these processes don’t sound too hard:
 However, the reality is that the process looks more like this:
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/84600c76/6530aa798d403fea68594d82_mlops_process_1.png" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/84600c76/6530aa798d403fea68594d82_mlops_process_1.png" alt="" />
 </figure>
 
 More than code, in machine learning **data** affects the output of the system directly. There are feedback loops that happen implicitly and often explicitly within the lifetime of a model that is deployed in production. While in classical software development one could simply test and vet code as it passes through various stages to production, it is more complex and difficult to this in a system affected by data.
@@ -73,7 +73,7 @@ It is in these feedback loops where MLOps ultimately lives. It is not enough to 
 Simply stated, MLOps is a set of practices that aims to deploy and maintain machine learning models in production reliably and efficiently. This is including and beyond getting these models deployed into production.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/db1fda8d/6530aa798d403fea68594da6_mlops_process_2.png" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/db1fda8d/6530aa798d403fea68594da6_mlops_process_2.png" alt="" />
 </figure>
 
 ## Post-deployment Woes
@@ -109,7 +109,7 @@ Andrew Ng recently popularized the term data-centric machine learning with his e
 The essence of the talk is as follows: You can get a lot of bang for your buck from your data by being data-centric rather than model-centric. This means that rather than iterating on the model/code and holding the data static in ML development, it would pay more dividends if you were to hold the code/model static (or even start with a simple model) and try to simulate real-world behavior with the data. This of course is in stark contrast to how ML is taught in crash courses and universities, where the process usually starts in a notebook with reading a static, well-prepared dataset, and training a model on it.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/9e04e9d2/6530aa7a56fb9f228213cf5a_model_vs_data_centric.png" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9e04e9d2/6530aa7a56fb9f228213cf5a_model_vs_data_centric.png" alt="" />
 </figure>
 
 When taking a look at the challenges facing ML in production today, it is clear that a shift towards being data-centric is simply the natural mindset shift that is required. Latency problems can be solved by exposing data scientists to real-world data ingestion patterns. Fairness and bias can be avoided by inspecting the data at the moment of model training. Auditability trails can be kept if data is versioned and tracked as models are developed. The development cycle can also be accelerated vastly by creating data-centric workflows that can adapt to changing data. Finally, drift and data quality can be accounted for early on in the development process.
@@ -127,7 +127,7 @@ A concrete shift to data-centric machine learning often involves an ML team shif
 Here it is important to make a distinction between data-driven pipelines vs task-driven pipelines. This means that serious teams develop ML code as chunks of steps, using some form of tooling to isolate the orchestration of execution of steps from each other. This has the following benefits:
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/cd6f3e45/6530aa7ad25c27f91f94e55c_pipeline_advantages.png" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/cd6f3e45/6530aa7ad25c27f91f94e55c_pipeline_advantages.png" alt="" />
 </figure>
 
 Often this means stepping out of a notebook environment or finding some way of transporting notebook code to such a paradigm.

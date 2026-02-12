@@ -3,7 +3,7 @@ title: "Cost-Effective for Small to Medium Projects"
 slug: "cost-effective-for-small-to-medium-projects"
 content: "With its open-source core and optional paid features, ZenML offers a more cost-effective solution for smaller teams and projects, unlike Databricks' subscription-based model which can be costly for limited use cases."
 image:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/fec1dff1/667196405fbe25aecdd96da9_img04.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/fec1dff1/667196405fbe25aecdd96da9_img04.png"
 webflow:
   siteId: "64a817a2e7e2208272d1ce30"
   itemId: "66912b84ac2f9e4af556b3a6"

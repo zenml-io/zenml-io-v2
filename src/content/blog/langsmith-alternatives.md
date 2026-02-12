@@ -20,12 +20,12 @@ tags:
 date: "2025-11-11T00:00:00.000Z"
 readingTime: 15 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/493fea70/6912c1f28f35f9900eb4a8a7_langsmith-alternatives.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/493fea70/6912c1f28f35f9900eb4a8a7_langsmith-alternatives.png"
 seo:
   title: "Here are the 9 Best LangSmith Alternatives for LLM Observability - ZenML Blog"
   description: "In this article, you learn about the best LangSmith alternatives you can use for full-stack observability."
   canonical: "https://www.zenml.io/blog/langsmith-alternatives"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/493fea70/6912c1f28f35f9900eb4a8a7_langsmith-alternatives.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/493fea70/6912c1f28f35f9900eb4a8a7_langsmith-alternatives.png"
   ogTitle: "Here are the 9 Best LangSmith Alternatives for LLM Observability - ZenML Blog"
   ogDescription: "In this article, you learn about the best LangSmith alternatives you can use for full-stack observability."
 ---
@@ -45,7 +45,7 @@ If you're an ML engineer or Python developer feeling these constraints, this art
 LangSmith is a polished observability suite, but it has several drawbacks in practice:
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/0193290f/6912bb717964e93859970d7d_why-you-need-a-langsmith-alternative.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/0193290f/6912bb717964e93859970d7d_why-you-need-a-langsmith-alternative.webp" alt="__wf_reserved_inherit" />
   <figcaption>Why do you need a LangSmith alternative</figcaption>
 </figure>
 
@@ -58,7 +58,7 @@ By default, any trace that receives feedback or annotation automatically gets up
 Without strict retention controls, a busy workspace can hit monthly bills in the five-figure range. Its own documentation has reports of bills reaching thousands per month for high-volume teams.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/ffac80d2/6912bb84d4001e3fcdfab2f7_langsmith-costs.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ffac80d2/6912bb84d4001e3fcdfab2f7_langsmith-costs.webp" alt="__wf_reserved_inherit" />
   <figcaption>Source</figcaption>
 </figure>
 
@@ -95,7 +95,7 @@ Before we jump in, here’s a quick table listing out the top choices, key featu
 **Best for:** Teams that need end-to-end LLM observability tied to reproducibility, lineage, and governance.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/58055db5/6912bb9a066ae00d05b72a47_zenml-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/58055db5/6912bb9a066ae00d05b72a47_zenml-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [ZenML](https://www.zenml.io/) is an open-source [MLOps + LLMOps](https://www.zenml.io/blog/mlops-vs-llmops) framework that adds production-grade observability to your LLM stack while keeping reproducibility, lineage, and governance at the core.
@@ -113,7 +113,7 @@ ZenML is free and open-source under the Apache 2.0 license. The core framework a
 For teams needing enterprise-grade collaboration, managed hosting, and premium support, ZenML offers custom business plans. These are typically usage- or seat-based and are tailored depending on your deployment model (cloud or on-prem).
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/73ede5d7/6912bba83ff8770d899a15e3_zenml-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/73ede5d7/6912bba83ff8770d899a15e3_zenml-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -125,7 +125,7 @@ On the downside, ZenML’s power comes with structure. It follows a more defined
 ## 2. Langfuse
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/02b57392/6912bbb58450608347ee483b_langfuse-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/02b57392/6912bbb58450608347ee483b_langfuse-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [Langfuse](https://langfuse.com/) is an open-source LLM engineering platform and a very direct competitor to LangSmith. It’s designed from the ground up to provide detailed tracing, prompt management, and [evaluation metrics for LLM applications](https://www.zenml.io/blog/best-llm-evaluation-tools).
@@ -141,7 +141,7 @@ Langfuse is free and open-source to self-host. The company also offers a managed
 <ul><li><strong>Core:</strong> $29 per month</li><li><strong>Pro:</strong> $199 per month</li><li><strong>Enterprise:</strong> $2499 per month</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/ae2a2843/6912bbcaf8e0c5421d530c2c_langfuse-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ae2a2843/6912bbcaf8e0c5421d530c2c_langfuse-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -153,7 +153,7 @@ The main con is that, as a product, it has a similar *scope* to LangSmith, focus
 ## 3. Arize Phoenix
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/fbf53132/6912bbd4bcf306d7164996e2_azire-phoenix-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/fbf53132/6912bbd4bcf306d7164996e2_azire-phoenix-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [Arize Phoenix](https://phoenix.arize.com/) is an open-source library from Arize, an ML-observability company. It emphasizes a “local-first” approach: you run Phoenix from your notebook or server. Phoenix implements the OpenTelemetry standard, so it can capture any LLM call instrumented through its SDK.
@@ -169,7 +169,7 @@ Arize Phoenix is open-source and free to use. It’s designed to work as a stand
 <ul><li><strong>Arize AX Free:</strong> Free</li><li><strong>AX Pro:</strong> $50 per month</li><li><strong>AX Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/a98821a3/6912bbdefe1f120a6713155b_azire-phoenix-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a98821a3/6912bbdefe1f120a6713155b_azire-phoenix-pricing.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -181,7 +181,7 @@ On the flip side, Phoenix is not a persistent production backend by itself. It r
 ## 4. Helicone
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/5ea11d86/6912bc3610546c7e32ba7b81_helicone-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5ea11d86/6912bc3610546c7e32ba7b81_helicone-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [Helicone](https://www.helicone.ai/) is an open-source LLM observability platform that operates as a simple, high-performance proxy. Instead of installing an SDK, you just change your API's base URL, for example, `openai.api_base`, to point to Helicone, and it logs every request and response.
@@ -197,7 +197,7 @@ Helicone offers a free plan with up to 10,000 API requests per month. This is ge
 <ul><li><strong>Pro:</strong> $20 per seat per month</li><li><strong>Team:</strong> $200 per month</li><li><strong>Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/656ed93a/6912bc4497c88863a5c5c540_helicone-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/656ed93a/6912bc4497c88863a5c5c540_helicone-pricing.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -209,7 +209,7 @@ The con is that it is less "deep" than LangSmith or Langfuse for observability. 
 ## 5. Traceloop OpenLLMetry
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/4ad67b8f/6912bbff67812f8ae8b4353c_traceloop-openllmetry-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/4ad67b8f/6912bbff67812f8ae8b4353c_traceloop-openllmetry-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [OpenLLMetry](https://www.traceloop.com/openllmetry) (from Traceloop) is an open-source instrumentation library, not a full-stack platform. Its one and only job is to make it easy to capture traces and metrics from your LLM application and send them to any backend you want, using the OpenTelemetry (OTel) standard.
@@ -223,7 +223,7 @@ The con is that it is less "deep" than LangSmith or Langfuse for observability. 
 OpenLLMetry itself is completely free and open-source. There are no usage fees for the library. If you use Traceloop AI’s cloud offering, they provide a free plan (up to 50,000 spans per month) and then custom enterprise pricing.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/82e1b772/6912bc125fcd121a554e5d53_traceloop-openllmetry-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/82e1b772/6912bc125fcd121a554e5d53_traceloop-openllmetry-pricing.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -235,7 +235,7 @@ The con is that it is only the instrumentation part. It doesn't provide the rich
 ## 6. HoneyHive
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/befd5df4/6912bbe87512c3bba7d5b762_honeyhive-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/befd5df4/6912bbe87512c3bba7d5b762_honeyhive-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [HoneyHive](https://www.honeyhive.ai/) is a comprehensive, proprietary platform focused on the full lifecycle of LLM application development, with a very strong emphasis on evaluation and the dev-prod feedback loop.
@@ -249,7 +249,7 @@ The con is that it is only the instrumentation part. It doesn't provide the rich
 HoneyHive offers a generous **free Developer tier** capped at 10,000 events/month and 30-day retention, with core observability features. The Enterprise plan includes optional on-prem deployment for regulated teams.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/aa92cc4b/6912bc62525f2cb63c7ac229_honeyhive-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/aa92cc4b/6912bc62525f2cb63c7ac229_honeyhive-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -261,7 +261,7 @@ The con is that it’s SaaS-only, and like LangSmith, self-hosting is available 
 ## 7. Tracely
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/c8594e1b/6912bc7b23f165a279d35846_tracely-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c8594e1b/6912bc7b23f165a279d35846_tracely-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 EvidentlyAI is a well-known open-source library for ML model evaluation, monitoring, and drift detection. [Tracely](https://pypi.org/project/tracely/) is their newer, open-source library (based on OpenTelemetry) for capturing LLM traces, which then feed into the main Evidently platform for analysis.
@@ -285,7 +285,7 @@ On the downside, Tracely doesn’t include its own UI, and you rely on a backend
 ## 8. Weights & Biases Weave
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/bc7200c7/6912bc907347ce7d007fe8ba_wandb-weave-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/bc7200c7/6912bc907347ce7d007fe8ba_wandb-weave-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [Weights & Biases](https://wandb.ai/site/weave/) (W&B) is a dominant platform in the classical MLOps space for experiment tracking. W&B Weave is their set of tools for extending this capability to LLM applications, making it a natural choice for teams already in the W&B ecosystem.
@@ -301,7 +301,7 @@ Weights & Biases is free for personal projects, with a generous 100GB storage li
 <ul><li><strong>Pro:</strong> $60 per month</li><li><strong>Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/aa9066f5/6912bc9f2976d56e0a6ee077_wandb-weave-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/aa9066f5/6912bc9f2976d56e0a6ee077_wandb-weave-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -313,7 +313,7 @@ However, Weave is not a standalone tool. It requires a W&B account and know-how 
 ## 9. Opik by Comet
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/53d97ee4/6912bcae582f0ff39e7588f4_opik-by-comet-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/53d97ee4/6912bcae582f0ff39e7588f4_opik-by-comet-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 Similar to W&B, [Comet](https://www.comet.com/site/products/opik/) is another leading MLOps platform for experiment tracking. Opik is their integrated toolset for LLM application observability and evaluation. At its core, it provides rich tracing as well as built-in evaluation and guardrail testing.
@@ -329,7 +329,7 @@ Opik is source-available (not strictly open-source) and can be self-hosted with 
 <ul><li><strong>Free Cloud:</strong> Free</li><li><strong>Pro Cloud:</strong> $39 per month</li><li><strong>Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/d31b5adc/6912bcb910546c7e32ba8b1a_opik-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d31b5adc/6912bcb910546c7e32ba8b1a_opik-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons

@@ -20,11 +20,11 @@ tags:
 date: "2024-07-12T00:00:00.000Z"
 readingTime: 15 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/8c1b1eb9/668ea9a1c8c67436ee659924_zenml-kubernetes-kubeflow-cover.webp"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8c1b1eb9/668ea9a1c8c67436ee659924_zenml-kubernetes-kubeflow-cover.webp"
 seo:
   title: "ZenML + Kubernetes + Kubeflow: Leveraging your MLOps infrastructure - ZenML Blog"
   canonical: "https://www.zenml.io/blog/zenml-kubernetes-kubeflow"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/46c2a567/668ea9a1c8c67436ee659924_zenml-kubernetes-kubeflow-cover.webp"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/46c2a567/668ea9a1c8c67436ee659924_zenml-kubernetes-kubeflow-cover.webp"
   ogTitle: "ZenML + Kubernetes + Kubeflow: Leveraging your MLOps infrastructure - ZenML Blog"
 ---
 
@@ -115,7 +115,7 @@ python run.py --training-pipeline
 Once it is running, your dashboard will show all the details of the associated run, models, and artifacts.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/725677cd/6690e0a666e88ea5cb3dfaea_AD_4nXd_F4m_awfbMzU_sYVLtnQK9eLW-g1SAJ5yeJwttht3PGaR1YuPkxecL_SVLVG36Y6T0rMsIq9vRpdy2uuvgFbAd8ENEwv8DoR8SQnJljXsbtFodVXdOffH8vbd_lVk0HFcTl-cCNni1zaAw5bdjToqgNY.png" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/725677cd/6690e0a666e88ea5cb3dfaea_AD_4nXd_F4m_awfbMzU_sYVLtnQK9eLW-g1SAJ5yeJwttht3PGaR1YuPkxecL_SVLVG36Y6T0rMsIq9vRpdy2uuvgFbAd8ENEwv8DoR8SQnJljXsbtFodVXdOffH8vbd_lVk0HFcTl-cCNni1zaAw5bdjToqgNY.png" alt="" />
 </figure>
 
 ### Transitioning to the cloud - deploying ZenML with ZenML Pro
@@ -135,7 +135,7 @@ Click **“Add Tenant”.**Enter the name of the Tenant and create the tenant.
 <ul><li>In ZenML Pro, a <strong>tenant</strong> is an isolated workspace on a server. It allows teams to manage their projects and resources separately.</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/eb0ac8bd/668e8ef794da32d392605b06_AD_4nXf8XPLiKQLzhaqKmngbmCoBN_UCs5FDp8e_xLZb2oTNJlbSdCUg4epvbNi5b7NhQ2_XZ30PenJnxr-POnDWrL2K12rskndgxQLluYR_Lwoh-wEoW1YniT0nbMDZIUvg7BpKChgWHRndxEs_jtQ8p0tteAnF.png" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/eb0ac8bd/668e8ef794da32d392605b06_AD_4nXf8XPLiKQLzhaqKmngbmCoBN_UCs5FDp8e_xLZb2oTNJlbSdCUg4epvbNi5b7NhQ2_XZ30PenJnxr-POnDWrL2K12rskndgxQLluYR_Lwoh-wEoW1YniT0nbMDZIUvg7BpKChgWHRndxEs_jtQ8p0tteAnF.png" alt="" />
 </figure>
 
 **STEP 3:**
@@ -171,13 +171,13 @@ python run.py --inference-pipeline
 Once it runs, your dashboard will show all the details of the associated run, models, artifacts, and visualization of model health.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/d92c3cbb/668e8ef7b223a03907e8c9ea_AD_4nXfy0LCU__DtSEvduHswQ0TArQfUrAX8BCGzmSa9taMm5Q83C_EvhXLZI65OGU_lZ26W2bEcJk8VctIsq3ouJ_nu6J_kEcVKHSJdgQCPSjHrIw0Di2JdtGM3l9-6CtWE0yswCL8MyxAu_Xr38QXQy9vzk2E.png" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d92c3cbb/668e8ef7b223a03907e8c9ea_AD_4nXfy0LCU__DtSEvduHswQ0TArQfUrAX8BCGzmSa9taMm5Q83C_EvhXLZI65OGU_lZ26W2bEcJk8VctIsq3ouJ_nu6J_kEcVKHSJdgQCPSjHrIw0Di2JdtGM3l9-6CtWE0yswCL8MyxAu_Xr38QXQy9vzk2E.png" alt="" />
 </figure>
 
 **Go to your ZenML Pro account and view the pipeline status.**
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/b46677d2/668e8ef7ed5ad53597ceec15_AD_4nXeh8LSJuPUl0JrOagEbTE0LHVF7q9N0klzMMq3bJUP01J43TJrlqDcvrhdHK5BhVJ2OZFFauoymdHhBBpLYb729jGq7u_ldrShpOk0rZv2Kik8KQU_ZTKrvSq7nrfXZuNgUOsONXz0YvLDIGXzu1fwOoVOG.png" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b46677d2/668e8ef7ed5ad53597ceec15_AD_4nXeh8LSJuPUl0JrOagEbTE0LHVF7q9N0klzMMq3bJUP01J43TJrlqDcvrhdHK5BhVJ2OZFFauoymdHhBBpLYb729jGq7u_ldrShpOk0rZv2Kik8KQU_ZTKrvSq7nrfXZuNgUOsONXz0YvLDIGXzu1fwOoVOG.png" alt="" />
 </figure>
 
 **Detailed Breakdown of a Machine Learning Pipeline:**
@@ -263,7 +263,7 @@ ZenML simplifies the orchestration process, allowing you to focus on building an
 ### Kubernetes vs. Kubeflow: When to Use Each Orchestrator
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/bfa6fda8/66b1ce28961d94d55b44ae18_668ea65d28feb091c2943b6f_zenml-kubernetes-kubeflow.webp" alt="ZenML vs Kubernetes vs Kubeflow" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/bfa6fda8/66b1ce28961d94d55b44ae18_668ea65d28feb091c2943b6f_zenml-kubernetes-kubeflow.webp" alt="ZenML vs Kubernetes vs Kubeflow" />
 </figure>
 
 **Steps to Run Pipelines with Kubernetes Orchestrator**
@@ -302,7 +302,7 @@ zenml artifact-store register ARTIFACT_STORE_NAME --flavor=ARTIFACT_STORE_FLAVOR
 ```
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/19555ca7/668e8ef74adde8432c273412_AD_4nXdMwSCYCJ67fBMzkYMkNqdG020AGBlSzoNGMP_9km5L45QgjzK6TZEg5PNjfV4swQr22FNV7hQQz3lLwDLSVrrYgmbYqmT_ByaRb_VxUIGt8KOArMZSBmYxawhJlIMDOevhq2U9hP5FHpLNw6l5t0nv1h0Y.png" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/19555ca7/668e8ef74adde8432c273412_AD_4nXdMwSCYCJ67fBMzkYMkNqdG020AGBlSzoNGMP_9km5L45QgjzK6TZEg5PNjfV4swQr22FNV7hQQz3lLwDLSVrrYgmbYqmT_ByaRb_VxUIGt8KOArMZSBmYxawhJlIMDOevhq2U9hP5FHpLNw6l5t0nv1h0Y.png" alt="" />
 </figure>
 
 <ul><li>If you would like to see the available flavors of Artifact Stores, you can use the command:</li></ul>
@@ -312,7 +312,7 @@ zenml artifact-store flavor list
 ```
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/dd0f22cb/668e8ef7cdefc03fe3cfa030_AD_4nXeQX5soU60IrcqK_-V8Y9ZN6IOfTkWXedA21BAgKOMNBtzl2w6Ys2yegmy__Z7oLxtEHtxFEmOZJpFhJCd1Vk5KRJkTElNT1rRVx0nPxu7Rukovqwk9Su9sOhayaEnz6qJnwZ_RYtmpnRBafmUXhfLLewXE.png" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/dd0f22cb/668e8ef7cdefc03fe3cfa030_AD_4nXeQX5soU60IrcqK_-V8Y9ZN6IOfTkWXedA21BAgKOMNBtzl2w6Ys2yegmy__Z7oLxtEHtxFEmOZJpFhJCd1Vk5KRJkTElNT1rRVx0nPxu7Rukovqwk9Su9sOhayaEnz6qJnwZ_RYtmpnRBafmUXhfLLewXE.png" alt="" />
 </figure>
 
 **STEP 5: **Container Registries
@@ -324,7 +324,7 @@ zenml container-registry register CONTAINER_REGISTRY_NAME --flavor=CONTAINER_REG
 ```
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/17773b84/668e8ef7c03b6c0352f961d7_AD_4nXcEWmZ63a6UJA9ADO3IsTEuqvzAFh8kthEP6jVSjtzbm4N-W4wzwdI1X8MerPgwEe15-joRrYqx6s48vW6aATyEcGYSLWyPQFe9EgxSslIBogggjMrDwsoNWyFLjkfekjjjNq2wlbGNnToZ4UKX7lLZpwok.png" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/17773b84/668e8ef7c03b6c0352f961d7_AD_4nXcEWmZ63a6UJA9ADO3IsTEuqvzAFh8kthEP6jVSjtzbm4N-W4wzwdI1X8MerPgwEe15-joRrYqx6s48vW6aATyEcGYSLWyPQFe9EgxSslIBogggjMrDwsoNWyFLjkfekjjjNq2wlbGNnToZ4UKX7lLZpwok.png" alt="" />
 </figure>
 
 <ul><li>If you would like to see the available flavors of container registries, you can use the command:</li></ul>
@@ -334,7 +334,7 @@ zenml container-registry flavor list
 ```
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/57e5670a/668e8ef72d49736c2213d7fd_AD_4nXfUH2YDHS2IpK8aCI0qICN84SSRwq8G2qdj8fveKCeBNjj7hIC_FryHs0pSU_W4JObdOcTj3hapDON695YXIxRgTPMTz_ARR3vePtTyH2YKpZT2ci8Oy_CCB3Dz5HwVxUDc3pNBDaE5HztosZ-MgBOeGyWP.png" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/57e5670a/668e8ef72d49736c2213d7fd_AD_4nXfUH2YDHS2IpK8aCI0qICN84SSRwq8G2qdj8fveKCeBNjj7hIC_FryHs0pSU_W4JObdOcTj3hapDON695YXIxRgTPMTz_ARR3vePtTyH2YKpZT2ci8Oy_CCB3Dz5HwVxUDc3pNBDaE5HztosZ-MgBOeGyWP.png" alt="" />
 </figure>
 
 **STEP 6: **Orchestrator
@@ -372,7 +372,7 @@ python file_that_runs_a_zenml_pipeline.py
 <ul><li>If all went well, you should now see the logs of all Kubernetes pods in your terminal. When running kubectl get pods -n zenml, you should also see a pod created in your cluster for each pipeline step.</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/3076b4d4/668e8ef7e51918445e9651a4_AD_4nXcaEQnxfde3YDcf2BO2sA01xAyP13KOOzaGexL5nkmQw23x_bgbiv4R8YCrCR7bLr-NaE6fm9DKP1Rx_WnUha7LAj9-H0AJ3WzaAi30gzIb-KXSc7lyTPwxa11eb81vmrXPnLc_uutIFFE2PPNlgNjFifoD.png" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3076b4d4/668e8ef7e51918445e9651a4_AD_4nXcaEQnxfde3YDcf2BO2sA01xAyP13KOOzaGexL5nkmQw23x_bgbiv4R8YCrCR7bLr-NaE6fm9DKP1Rx_WnUha7LAj9-H0AJ3WzaAi30gzIb-KXSc7lyTPwxa11eb81vmrXPnLc_uutIFFE2PPNlgNjFifoD.png" alt="" />
 </figure>
 
 **Note: **Ensure that the Kubernetes namespace `&lt;zenml>` does exist in your cluster. If not
@@ -434,7 +434,7 @@ zenml artifact-store list
 ```
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/61eeed92/668e8ef770a8bb6474d0f14d_AD_4nXc6M7dG--WGUXZPa2kEa9Le3xnrw38gohzPIcvgTE4_p83mZjg8v9_bsWLecIqS7kebN_vLkAXYhL7gnTV7H9sd6K0_a6uEN16DQhAXS4mh4AAxcGCnpNan3RE-9RxyBxHS1bRFIrT-z5WHqlN2xQ-FTDg.png" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/61eeed92/668e8ef770a8bb6474d0f14d_AD_4nXc6M7dG--WGUXZPa2kEa9Le3xnrw38gohzPIcvgTE4_p83mZjg8v9_bsWLecIqS7kebN_vLkAXYhL7gnTV7H9sd6K0_a6uEN16DQhAXS4mh4AAxcGCnpNan3RE-9RxyBxHS1bRFIrT-z5WHqlN2xQ-FTDg.png" alt="" />
 </figure>
 
 **STEP 4: **Remote container registry
@@ -452,7 +452,7 @@ zenml container-registry list
 ```
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/2e23a503/668e8ef7006391692c5bc175_AD_4nXcNmczIau6wDQPygFV7Hf2Ar0TXGsoC3hAmOudaj2Qpq4dpEeodIP00A_ZtVS15-pSnbjFExP8oxEyRFw6_GUX8MVdkQ61MAf2Yn4cJlmxWs_1GEo0jbE0r1XsWO5btrFRhROmamZgC9dHeo6GpW8-LcSk.png" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2e23a503/668e8ef7006391692c5bc175_AD_4nXcNmczIau6wDQPygFV7Hf2Ar0TXGsoC3hAmOudaj2Qpq4dpEeodIP00A_ZtVS15-pSnbjFExP8oxEyRFw6_GUX8MVdkQ61MAf2Yn4cJlmxWs_1GEo0jbE0r1XsWO5btrFRhROmamZgC9dHeo6GpW8-LcSk.png" alt="" />
 </figure>
 
 **STEP 5: **Kubeflow Orchestrator
@@ -468,7 +468,7 @@ zenml orchestrator list
 ```
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/1210599e/668e8ef7fe55e32cbadd2810_AD_4nXeq39twZzWOnGiuIo9Q-c2p5KOEfDsJLYIkE1Xlbe4_8-lSqDtd7RtOIkqlRSLSWqkOl3gokJHoyU8NbKSi-FF0twuA7Qa2rcMjJdvVX5inHaeM7UYD5NrSaPeRMn7VHhHhhYNt8x3nSaZHI93IRPkJ1uSQ.png" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1210599e/668e8ef7fe55e32cbadd2810_AD_4nXeq39twZzWOnGiuIo9Q-c2p5KOEfDsJLYIkE1Xlbe4_8-lSqDtd7RtOIkqlRSLSWqkOl3gokJHoyU8NbKSi-FF0twuA7Qa2rcMjJdvVX5inHaeM7UYD5NrSaPeRMn7VHhHhhYNt8x3nSaZHI93IRPkJ1uSQ.png" alt="" />
 </figure>
 
 **STEP 6(Optional):** Remote Image Builders
@@ -486,7 +486,7 @@ zenml image-builder list
 ```
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/0cfaa772/668e8ef7ab7376bcfc6e4894_AD_4nXfGKboSF2XwgVDEWMQPTdvhYMuZl8dq8OV5ZYID9uHD68YLA1bXSZtZ8W5WPwbQtndC3xdj9YisatdONpw_RMzqgTpS-nIhOsp7J6RHOPymYVgEacKICf-XAfQx9dS3iPVbK1tBESyUa9NN_5rkP5Y-TNI.png" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/0cfaa772/668e8ef7ab7376bcfc6e4894_AD_4nXfGKboSF2XwgVDEWMQPTdvhYMuZl8dq8OV5ZYID9uHD68YLA1bXSZtZ8W5WPwbQtndC3xdj9YisatdONpw_RMzqgTpS-nIhOsp7J6RHOPymYVgEacKICf-XAfQx9dS3iPVbK1tBESyUa9NN_5rkP5Y-TNI.png" alt="" />
 </figure>
 
 **STEP 7:** Stack	
@@ -508,7 +508,7 @@ zenml stack list
 ```
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/af064fef/668e8ef758414b072a8bcdc1_AD_4nXd1c2zzNBZnCl42P2zYz3zSDwxJfshXhr5gEdvatx4pWGzxJk5SSKqSRPuBz_Zt0IaemmBflTtU9VRATBoPC-ulz_KCZZ0T56EvwcC5unm6EgfNE18pRjoMP1Q4QffzpqrZY4UBbDzTeiMasAuMZf45bEo.png" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/af064fef/668e8ef758414b072a8bcdc1_AD_4nXd1c2zzNBZnCl42P2zYz3zSDwxJfshXhr5gEdvatx4pWGzxJk5SSKqSRPuBz_Zt0IaemmBflTtU9VRATBoPC-ulz_KCZZ0T56EvwcC5unm6EgfNE18pRjoMP1Q4QffzpqrZY4UBbDzTeiMasAuMZf45bEo.png" alt="" />
 </figure>
 
 **You can now run any ZenML pipeline using the Kubeflow orchestrator:**
@@ -518,11 +518,11 @@ python file_that_runs_a_zenml_pipeline.py
 ```
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/9c595aca/668e8ef7b9b60625607a28d0_AD_4nXdKGIlLai2iGhvwSdcE9bo4mWlaRO6mzhPMd4EdkrjLIDrnEM3fPlyJy9TfA2wzF9Ii6-F78p1lvieGT8gPVbTCUf4D-HZ_hH5PWjJYDE0x3K4oR1YzrY5kbZ7mSRkTA8I65GwK2yc3T37Z3owrU2jHevU.png" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9c595aca/668e8ef7b9b60625607a28d0_AD_4nXdKGIlLai2iGhvwSdcE9bo4mWlaRO6mzhPMd4EdkrjLIDrnEM3fPlyJy9TfA2wzF9Ii6-F78p1lvieGT8gPVbTCUf4D-HZ_hH5PWjJYDE0x3K4oR1YzrY5kbZ7mSRkTA8I65GwK2yc3T37Z3owrU2jHevU.png" alt="" />
 </figure>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/fc5fcdda/668e8ef7110b7454d505b1b2_AD_4nXdaD_BVIcy3g9-t066dd218po2ke0HVrncBbqrn1pvvZeaROohclvn__ZSmDMxbhmCMehvqnf01pJJ2fwUl_b2WTbeNkfv1Vexg5zqcY4Rt8z9gHzH5OyCvO793XBBhKfX1HZsZ6IIvhz0_wwWslq4ihj7G.png" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/fc5fcdda/668e8ef7110b7454d505b1b2_AD_4nXdaD_BVIcy3g9-t066dd218po2ke0HVrncBbqrn1pvvZeaROohclvn__ZSmDMxbhmCMehvqnf01pJJ2fwUl_b2WTbeNkfv1Vexg5zqcY4Rt8z9gHzH5OyCvO793XBBhKfX1HZsZ6IIvhz0_wwWslq4ihj7G.png" alt="" />
 </figure>
 
 <ul><li><strong>Access Kubeflow UI</strong></li><li>You can access the Kubeflow UI to monitor your pipeline runs. Retrieve the URL in Python if needed:</li></ul>

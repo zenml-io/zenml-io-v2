@@ -21,12 +21,12 @@ tags:
 date: "2025-10-08T00:00:00.000Z"
 readingTime: 12 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/217af2e1/6981d389ab6d2820d701bc18_6981d2a925b9bedbff8b5317_langflow-vs-n8n.avif"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/217af2e1/6981d389ab6d2820d701bc18_6981d2a925b9bedbff8b5317_langflow-vs-n8n.avif"
 seo:
   title: "Langflow vs n8n: Features, Pricing, and Integrations Compared - ZenML Blog"
   description: "In this Langflow vs n8n, we compare both platforms’ features, pricing, and integrations."
   canonical: "https://www.zenml.io/blog/langflow-vs-n8n"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/217af2e1/6981d389ab6d2820d701bc18_6981d2a925b9bedbff8b5317_langflow-vs-n8n.avif"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/217af2e1/6981d389ab6d2820d701bc18_6981d2a925b9bedbff8b5317_langflow-vs-n8n.avif"
   ogTitle: "Langflow vs n8n: Features, Pricing, and Integrations Compared - ZenML Blog"
   ogDescription: "In this Langflow vs n8n, we compare both platforms’ features, pricing, and integrations."
 ---
@@ -66,7 +66,7 @@ The visual canvas is the core of both platforms, but their design philosophies c
 #### Langflow
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/ce2927e1/68e5e0f680acc62779e74151_langflow-visual-flow-builder.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ce2927e1/68e5e0f680acc62779e74151_langflow-visual-flow-builder.webp" alt="__wf_reserved_inherit" />
   <figcaption>Langflow visual flow builder</figcaption>
 </figure>
 
@@ -81,7 +81,7 @@ A key feature is the interactive Playground, a real-time testing and debugging a
 #### n8n
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/3f49877f/68e5e10fd670c86ab26642a9_n8n-visual-flow-builder.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3f49877f/68e5e10fd670c86ab26642a9_n8n-visual-flow-builder.webp" alt="__wf_reserved_inherit" />
   <figcaption>n8n visual flow builder</figcaption>
 </figure>
 
@@ -102,7 +102,7 @@ See the example below. Your notes can be extensive, as if explaining every node 
 #### Langflow
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/97e86567/68e5e128bd0a03c94595d0b4_langflow-ai-agents.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/97e86567/68e5e128bd0a03c94595d0b4_langflow-ai-agents.webp" alt="__wf_reserved_inherit" />
   <figcaption>Langflow AI agents</figcaption>
 </figure>
 
@@ -117,7 +117,7 @@ For instance, you might build a custom function using Python and then add it as 
 #### n8n
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/3006e0f4/68e5e148556df7bc332b49de_n8n-ai-agent-example.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3006e0f4/68e5e148556df7bc332b49de_n8n-ai-agent-example.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 Similar to Langflow, n8n provides AI agents as a powerful node that is integrable in any workflow. However, the core paradigm is different.
@@ -135,7 +135,7 @@ The best part is, n8n categorizes its AI agent nodes into two types:
 Below is a perfect example of a Tools Agent that acts as a Google Calendar Assistant.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/3e00ab50/68e5e1676a980cd2aac83d35_n8n-google-calendar-agent-automation-example.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3e00ab50/68e5e1676a980cd2aac83d35_n8n-google-calendar-agent-automation-example.webp" alt="__wf_reserved_inherit" />
   <figcaption>Source</figcaption>
 </figure>
 
@@ -152,7 +152,7 @@ Let’s see how Langflow and n8n enable RAG-first agents.
 #### Langflow
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/88b84097/68e5e18440e035687d6fc7fd_langflow-rag-building-blocks.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/88b84097/68e5e18440e035687d6fc7fd_langflow-rag-building-blocks.webp" alt="__wf_reserved_inherit" />
   <figcaption>Langflow RAG building blocks</figcaption>
 </figure>
 
@@ -167,7 +167,7 @@ Also, Langflow’s starter templates lower the barrier for Python devs to implem
 #### n8n
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/b8c2fa33/68e5e1a148c4731438be1ff6_n8n-rag-building-blocks.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b8c2fa33/68e5e1a148c4731438be1ff6_n8n-rag-building-blocks.webp" alt="__wf_reserved_inherit" />
   <figcaption>n8n RAG building blocks</figcaption>
 </figure>
 
@@ -186,7 +186,7 @@ Langflow and n8n offer distinct mechanisms for implementing human-in-the-loop wo
 #### Langflow
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/6f3b17b4/68e5e1b740e035687d6fd10e_lanflow-uses-langgraph-hitl.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6f3b17b4/68e5e1b740e035687d6fd10e_lanflow-uses-langgraph-hitl.webp" alt="__wf_reserved_inherit" />
   <figcaption>Source</figcaption>
 </figure>
 
@@ -199,7 +199,7 @@ Both methods allow a workflow to pause at any node and wait for human input.
 #### n8n
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/78fcc1bd/68e5e1cd34c26a67fe877b2d_n8n-human-in-the-loop.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/78fcc1bd/68e5e1cd34c26a67fe877b2d_n8n-human-in-the-loop.webp" alt="__wf_reserved_inherit" />
   <figcaption>Source</figcaption>
 </figure>
 
@@ -232,7 +232,7 @@ One area both tools address is connecting to internal databases and custom apps.
 Overall, n8n offers a broader integration palette. It is well-suited when your AI workflow needs to interface with various business applications or services beyond the typical AI toolkit.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/713d1112/68e5e1e9f860a4cfadf8d1f8_n8n-integrations.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/713d1112/68e5e1e9f860a4cfadf8d1f8_n8n-integrations.webp" alt="__wf_reserved_inherit" />
   <figcaption>n8n integrations</figcaption>
 </figure>
 
@@ -255,7 +255,7 @@ n8n uses a multi-faceted pricing model. For its managed service, n8n Cloud, it o
 <ul><li><strong>Starter:</strong> € 24 per month</li><li><strong>Pro:</strong> € 60 per month</li><li><strong>Business:</strong> € 800 per month</li><li><strong>Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/7606ae6a/68e5e205890600e052bb0c80_n8n-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7606ae6a/68e5e205890600e052bb0c80_n8n-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ## How ZenML Manages the Outer Loop when Deploying Agentic AI Workflows
@@ -265,7 +265,7 @@ By far, we discussed Langflow and n8n in terms of designing and running AI agent
 This is where we use [ZenML](https://www.zenml.io/). To cover the **outer loop**: everything around the agent, such as orchestration in pipelines, observability, data tracking, evaluation, and scaling in different environments.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/9f36befb/68e5e21cd87126b410eeea96_zenml-unified-mlops-and-llmops-platform.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9f36befb/68e5e21cd87126b410eeea96_zenml-unified-mlops-and-llmops-platform.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ZenML is an open-source MLOps + [LLMOps framework](https://docs.zenml.io/user-guides/llmops-guide) that can integrate with Langflow or n8n workflows to provide a robust production pipeline.
@@ -275,7 +275,7 @@ Here’s how ZenML complements these tools:
 ### 1. Unified Orchestration
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/9717648c/68e5e22ed01ca1041177cb02_zenml-architecture.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9717648c/68e5e22ed01ca1041177cb02_zenml-architecture.webp" alt="__wf_reserved_inherit" />
   <figcaption>ZenML architecture</figcaption>
 </figure>
 
@@ -290,7 +290,7 @@ This means you design your agent in Langflow or n8n, and then ZenML takes over t
 ### 2. End-to-End Visibility and Lineage
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/38989dc1/68e5e241bdefc3bcb5d83cc0_zenml-pipeline-dag-visualization.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/38989dc1/68e5e241bdefc3bcb5d83cc0_zenml-pipeline-dag-visualization.webp" alt="__wf_reserved_inherit" />
   <figcaption>ZenML pipeline DAG visualization</figcaption>
 </figure>
 
@@ -303,7 +303,7 @@ Every trace is visualized using a central dashboard where you can see the entire
 ### 3. Continuous Quality Checks
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/80868477/68e5e253d7792c0af434c5aa_zenml-evaluation.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/80868477/68e5e253d7792c0af434c5aa_zenml-evaluation.webp" alt="__wf_reserved_inherit" />
   <figcaption>ZenML evaluation</figcaption>
 </figure>
 
@@ -314,7 +314,7 @@ Neither Langflow nor n8n on their own has a built-in evaluation store for AI out
 **👀 Note:** At ZenML, we have built several such integrations with tools like CrewAI, LangGraph, LlamaIndex, and more. We are actively shipping new integrations that you can find on this GitHub page: [ZenML Agent Workflow Integrations](https://github.com/zenml-io/zenml/tree/main/examples/agent_framework_integrations).
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/66ad917a/68e5e268ce63ddebca5a99aa_zenml-agent-workflow-integrations.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/66ad917a/68e5e268ce63ddebca5a99aa_zenml-agent-workflow-integrations.png" alt="__wf_reserved_inherit" />
 </figure>
 
 **📚 Related comparison articles to read:**

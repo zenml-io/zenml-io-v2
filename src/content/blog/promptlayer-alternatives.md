@@ -20,12 +20,12 @@ tags:
 date: "2026-02-02T00:00:00.000Z"
 readingTime: 18 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/a501a545/6980326ae20be1c8eee62fd3_promplayer-alternatives.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a501a545/6980326ae20be1c8eee62fd3_promplayer-alternatives.png"
 seo:
   title: "The Top 10 PromptLayer Alternatives to Version, Test, and Monitor Prompts in ML Workflows - ZenML Blog"
   description: "In this article, you learn about the best PromptLayer alternatives to version, test, and monitor prompts in ML workflows."
   canonical: "https://www.zenml.io/blog/promptlayer-alternatives"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/a501a545/6980326ae20be1c8eee62fd3_promplayer-alternatives.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a501a545/6980326ae20be1c8eee62fd3_promplayer-alternatives.png"
   ogTitle: "The Top 10 PromptLayer Alternatives to Version, Test, and Monitor Prompts in ML Workflows - ZenML Blog"
   ogDescription: "In this article, you learn about the best PromptLayer alternatives to version, test, and monitor prompts in ML workflows."
 ---
@@ -47,7 +47,7 @@ In this article, we review 10 of the best PromptLayer alternatives, explaining w
 Here are three reasons why you might consider switching from PromptLayer to a different ML workflow tool:
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/2df6d05c/69802e60c2f7874fc3a177a3_why-look-for-a-promptlayer-alternative.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2df6d05c/69802e60c2f7874fc3a177a3_why-look-for-a-promptlayer-alternative.webp" alt="__wf_reserved_inherit" />
   <figcaption>Why look for a PromptLayer alternative</figcaption>
 </figure>
 
@@ -90,7 +90,7 @@ Before we dive into the details, here's a detailed comparison table for the best
 ## 1. ZenML
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/fcc34884/69802e9740def08f5fd47127_zenml-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/fcc34884/69802e9740def08f5fd47127_zenml-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ZenML is an open-source MLOps + LLMOps framework designed to build reproducible ML and LLM workflows using code-first pipelines.
@@ -120,7 +120,7 @@ For teams already running Python-based workflows, this results in fewer moving p
 <ul><li><strong>Community (Free):</strong> Full open-source framework. You can run it on your own infrastructure for free.</li><li><strong>ZenML Pro (Custom pricing):</strong> A managed control plane that handles the dashboard, user management, and stack configurations. This removes the burden of hosting the ZenML server yourself.</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/c508fdf9/69686958bdf1b77d334d2876_zenml-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c508fdf9/69686958bdf1b77d334d2876_zenml-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -134,7 +134,7 @@ The main downside is that ZenML is less UI-driven than PromptLayer. Teams lookin
 ## 2. Langfuse
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/a12e33de/69802eed0e68c295e1e39c69_langfuse-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a12e33de/69802eed0e68c295e1e39c69_langfuse-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [Langfuse](https://langfuse.com/?tab=prompt-management) is an open-source observability and analytics platform designed specifically for LLM applications. It provides a detailed view of your application's traces, allowing you to debug complex chains and agents while managing prompt versions in a centralized registry.
@@ -150,7 +150,7 @@ Langfuse’s open-source core is free to use, with no usage limits. It also offe
 <ul><li><strong>Core:</strong> $29 per month</li><li><strong>Pro:</strong> $199 per month</li><li><strong>Enterprise:</strong> $2499 per month</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/a2c276e9/69802ef8352a211cf38f3a38_langfuse-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a2c276e9/69802ef8352a211cf38f3a38_langfuse-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -162,7 +162,7 @@ The prompt management features, while useful, still introduce a runtime dependen
 ## 3. LangSmith
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/de28e6e5/69802f39c5d33540d98ba1bc_langsmith-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/de28e6e5/69802f39c5d33540d98ba1bc_langsmith-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [LangSmith](https://www.langchain.com/langsmith/observability) is the observability and evaluation platform from the LangChain team. If you already use LangChain heavily, LangSmith can feel like an extension with one-click instrumentation and in-depth dashboards.
@@ -178,7 +178,7 @@ LangSmith has a free tier for individual developers and two paid plans:
 <ul><li><strong>Plus:</strong> $39/seat per month</li><li><strong>Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e27a9b42/69802f5b4b5a6a70eed2e1fc_langsmith-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e27a9b42/69802f5b4b5a6a70eed2e1fc_langsmith-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -190,7 +190,7 @@ On the downside, it is heavily optimized for the LangChain ecosystem. While you 
 ## 4. Helicone
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/4b426754/69802f6d5784259387e46681_helicone-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/4b426754/69802f6d5784259387e46681_helicone-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [Helicone](https://www.helicone.ai/) positions itself as a specialized proxy and gateway for LLMs. You route your OpenAI/Anthropic API calls through Helicone’s proxy, and it logs all requests, responses, and usage metrics automatically.
@@ -206,7 +206,7 @@ Helicone offers an open-source version and a free Hobby tier that includes 10,00
 <ul><li><strong>Pro:</strong> $79 per month</li><li><strong>Team:</strong> $799 per month</li><li><strong>Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/180ba16b/69802f79084c35c66be24711_helicone-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/180ba16b/69802f79084c35c66be24711_helicone-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -218,7 +218,7 @@ Helicone lacks built-in prompt versioning and deep evaluation workflows, so it�
 ## 5. Arize Phoenix
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/3ea250e4/69802f835fcc93485b16813f_arize-phoenix-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3ea250e4/69802f835fcc93485b16813f_arize-phoenix-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [Arize Phoenix](https://phoenix.arize.com/) is a source-available (Elastic License 2.0) LLM tracing and evaluation platform from Arize AI. It’s free to self-host and is commonly used for LLM observability, evaluation workflows, and RAG debugging. Unlike PromptLayer, Phoenix is more of a toolkit and app for evaluating and understanding LLM performance. It focuses heavily on 'LLM Evals' and visualizing embedding spaces.
@@ -234,7 +234,7 @@ Phoenix is free and open-source for self-hosting. Arize offers a free hosted ver
 <ul><li><strong>AX Pro:</strong> $50 per month</li><li><strong>AX Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/2cd615cc/69802f8c09d8f6f956ad2bd9_arize-phoenix-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2cd615cc/69802f8c09d8f6f956ad2bd9_arize-phoenix-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -246,7 +246,7 @@ The main drawback is that it feels more like a data science tool than a prompt e
 ## 6. Comet Opik
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/7bfb5408/69802f99f5afcf818f3a7aba_comet-opik-hompage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7bfb5408/69802f99f5afcf818f3a7aba_comet-opik-hompage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [Comet Opik](https://www.comet.com/site/products/opik/) is an evaluation and observability platform from the team behind Comet ML. Opik is like Comet’s specialized suite for LLM-powered applications. It lets you log prompts and responses, run automated evals, and even optimize prompts using algorithms.
@@ -264,7 +264,7 @@ Comet Opik offers free open-source and self-hosted versions. Plus, two paid plan
 <ul><li><strong>Pro Cloud:</strong> $19 per month</li><li><strong>Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/b0c08476/69802fa324078de7b8e5a664_comet-opik-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b0c08476/69802fa324078de7b8e5a664_comet-opik-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -276,7 +276,7 @@ However, Opik’s best features are gated behind the Comet ecosystem, which can 
 ## 7. Braintrust
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e27f0689/69802fe265461800951e48b9_braintrust-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e27f0689/69802fe265461800951e48b9_braintrust-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [Braintrust](https://www.braintrust.dev/) is a collaborative AI evaluation and observability platform tailored for LLM applications. It can be seen as a direct competitor to PromptLayer and LangSmith, with an emphasis on team collaboration and a polished UI for evaluation workflows.
@@ -292,7 +292,7 @@ Braintrust offers a free tier for development with up to 1 million trace spans a
 <ul><li><strong>Pro:</strong> $249 per month</li><li><strong>Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/f45e5173/6980300af2ce6c9140a9bb8d_braintrust-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f45e5173/6980300af2ce6c9140a9bb8d_braintrust-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -304,7 +304,7 @@ Being closed-source and cloud-first, Braintrust might not meet strict data contr
 ## 8. Weights & Biases Weave
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/4bb7b117/69803033dd237141c558b0c0_wandb-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/4bb7b117/69803033dd237141c558b0c0_wandb-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [W&B Weave](https://wandb.ai/site/) is the LLM-focused toolkit from Weights & Biases, the industry standard for experiment tracking. It lets you instrument your LLM calls, evaluate responses, and compare results visually, all integrated into the W&B platform. If you’re already using W&B for ML experiments, adopting Weave can consolidate your LLM prompt monitoring into the same workflow.
@@ -320,7 +320,7 @@ Weave usage falls under W&B’s normal pricing. W&B has a free plan for individu
 <ul><li><strong>Pro:</strong> $60 per month</li><li><strong>Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/01ac97c3/698030b84b682c95fcc2af0f_wandb-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/01ac97c3/698030b84b682c95fcc2af0f_wandb-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -332,7 +332,7 @@ On the flip side, if you’re not using W&B already, Weave might feel like addin
 ## 9. DeepEval
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/60e6ea2e/698030d9e298e0644571dffe_deepeval-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/60e6ea2e/698030d9e298e0644571dffe_deepeval-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [DeepEval](https://deepeval.com/) is an open-source evaluation framework from Confident AI. It brings LLM testing and evaluation into one framework. If your main pain point with PromptLayer is limited evaluation capabilities or a lack of rigorous testing, DeepEval is a strong alternative to consider.
@@ -348,7 +348,7 @@ The DeepEval framework is open-source and free. Confident AI (the hosted platfor
 <ul><li><strong>Starter:</strong> $19.99 per user per month</li><li><strong>Premium:</strong> $79.99 per user per month</li><li><strong>Team:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/64582170/698030f67b3a02d92c0956f9_deepeval-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/64582170/698030f67b3a02d92c0956f9_deepeval-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -360,7 +360,7 @@ Without Confident AI, visualization and collaboration features are limited. It l
 ## 10. Vellum
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/b9390935/69803106571f0e1406530450_vellum-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b9390935/69803106571f0e1406530450_vellum-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [Vellum](https://www.vellum.ai/) is a production-grade platform built for teams building complex LLM applications. It’s an end-to-end application builder, which includes prompt engineering, semantic search, and evaluation into a single workflow, often targeting startups and enterprises.
@@ -376,7 +376,7 @@ Vellum has a free plan for building bite-sized custom agents. For scale, it offe
 <ul><li><strong>Pro:</strong> $25 per month</li><li><strong>Business:</strong> $50 per month</li><li><strong>Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/a6f6737c/6980311594c454ce98b0391a_vellum-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a6f6737c/6980311594c454ce98b0391a_vellum-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons

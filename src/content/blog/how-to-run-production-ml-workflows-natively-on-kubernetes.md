@@ -20,12 +20,12 @@ tags:
 date: "2022-06-29T00:00:00.000Z"
 readingTime: 13 Mins Read
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/91f2d879/6530073689bbc099990dd786_zenml_kubernetes_orchestrator_teaser.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/91f2d879/6530073689bbc099990dd786_zenml_kubernetes_orchestrator_teaser.png"
 seo:
   title: "How to run production ML workflows natively on Kubernetes - ZenML Blog"
   description: "Getting started with distributed ML in the cloud: How to orchestrate ML workflows natively on Amazon Elastic Kubernetes Service (EKS)."
   canonical: "https://www.zenml.io/blog/how-to-run-production-ml-workflows-natively-on-kubernetes"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/c38c0cc9/6530073689bbc099990dd786_zenml_kubernetes_orchestrator_teaser.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c38c0cc9/6530073689bbc099990dd786_zenml_kubernetes_orchestrator_teaser.png"
   ogTitle: "How to run production ML workflows natively on Kubernetes - ZenML Blog"
   ogDescription: "Getting started with distributed ML in the cloud: How to orchestrate ML workflows natively on Amazon Elastic Kubernetes Service (EKS)."
 ---
@@ -47,7 +47,7 @@ So, let’s get into it and use the new Kubernetes-native orchestrator to easily
 The following figure shows an overview of the MLOps stack we will build throughout this tutorial:
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/5dd67d3a/65300770242954ff039b96ac_zenml_kubernetes_aws_stack_overview.png" alt="Kubernetes AWS Stack Overview" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5dd67d3a/65300770242954ff039b96ac_zenml_kubernetes_aws_stack_overview.png" alt="Kubernetes AWS Stack Overview" />
 </figure>
 
 ## Setting Up AWS Resources
@@ -305,7 +305,7 @@ zenml stack up
 If everything went well, you should see logs messages similar to the following in your terminal:
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/b94b69af/65300770ffaceec48f41a473_zenml_stack_up_output.png" alt="zenml stack up output" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b94b69af/65300770ffaceec48f41a473_zenml_stack_up_output.png" alt="zenml stack up output" />
 </figure>
 
 ### Running the Example
@@ -321,19 +321,19 @@ This will first build a Docker image locally, including your ML pipeline code fr
 If all went well, you should now see the logs of all Kubernetes pods in your terminal, similar to what is shown below.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/f8720238/65300771bb7cdd49aca1da7b_python_run_output.png" alt="python run.py output" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f8720238/65300771bb7cdd49aca1da7b_python_run_output.png" alt="python run.py output" />
 </figure>
 
 Additionally, a window should have opened in your local browser where you can see a training-serving skew analysis in Facets like the following:
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/78e1d0e0/6530077075d923689bcc8767_facets_analysis_output.png" alt="Facets Analysis" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/78e1d0e0/6530077075d923689bcc8767_facets_analysis_output.png" alt="Facets Analysis" />
 </figure>
 
 When running kubectl get pods -n zenml, you should now also be able to see that a pod was created in your cluster for each pipeline step:
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/b5b07906/6530076fd09aec64e83f70f0_kubectl_get_pods_output.png" alt="kubectl get_pods() output" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b5b07906/6530076fd09aec64e83f70f0_kubectl_get_pods_output.png" alt="kubectl get_pods() output" />
 </figure>
 
 ## Cleanup

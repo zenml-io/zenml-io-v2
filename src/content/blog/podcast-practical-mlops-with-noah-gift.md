@@ -20,12 +20,12 @@ tags:
 date: "2021-12-02T00:00:00.000Z"
 readingTime: 1 Min Read
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/41abc681/65311675aad0c6a470dfc7b6_practical-mlops.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/41abc681/65311675aad0c6a470dfc7b6_practical-mlops.png"
 seo:
   title: "Podcast: Practical MLOps with Noah Gift - ZenML Blog"
   description: "We discuss the role of MLOps in an organization, some deployment war stories from his career as well as what he considers to be 'best practices' in production machine learning."
   canonical: "https://www.zenml.io/blog/podcast-practical-mlops-with-noah-gift"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/13172899/65311675aad0c6a470dfc7b6_practical-mlops.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/13172899/65311675aad0c6a470dfc7b6_practical-mlops.png"
   ogTitle: "Podcast: Practical MLOps with Noah Gift - ZenML Blog"
   ogDescription: "We discuss the role of MLOps in an organization, some deployment war stories from his career as well as what he considers to be 'best practices' in production machine learning."
 ---

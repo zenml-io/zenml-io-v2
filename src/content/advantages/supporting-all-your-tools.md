@@ -3,7 +3,7 @@ title: "Supporting All Your Tools"
 slug: "supporting-all-your-tools"
 content: "ZenML is a native interface to the whole end-to-end machine learning lifecycle, taking you beyond just orchestration."
 image:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/fdf3dfc5/667167751e34699260c6b227_img02.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/fdf3dfc5/667167751e34699260c6b227_img02.png"
 webflow:
   siteId: "64a817a2e7e2208272d1ce30"
   itemId: "66716778245751b790816d18"

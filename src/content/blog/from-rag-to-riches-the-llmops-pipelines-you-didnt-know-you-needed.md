@@ -18,12 +18,12 @@ tags:
 date: "2024-03-21T00:00:00.000Z"
 readingTime: 8 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/dbf8d0cb/65fbf4b2d292e9741e3d0da4_LLMs-min.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/dbf8d0cb/65fbf4b2d292e9741e3d0da4_LLMs-min.png"
 seo:
   title: "From RAGs to riches - The LLMOps pipelines you didn’t know you needed - ZenML Blog"
   description: "Taking large language models (LLMs) into production is no small task. It's a complex process, often misunderstood, and something we’d like to delve into today."
   canonical: "https://www.zenml.io/blog/from-rag-to-riches-the-llmops-pipelines-you-didnt-know-you-needed"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/95efd684/65fbf4b2d292e9741e3d0da4_LLMs-min.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/95efd684/65fbf4b2d292e9741e3d0da4_LLMs-min.png"
   ogTitle: "From RAGs to riches - The LLMOps pipelines you didn’t know you needed  - ZenML Blog"
   ogDescription: "Taking large language models (LLMs) into production is no small task. It's a complex process, often misunderstood, and something we’d like to delve into today."
 ---
@@ -39,7 +39,7 @@ To help you grasp what's required, let’s break down the setup of an LLMOps sys
 ## Step 1: Basic RAG
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/330f1fb1/65fbf7034da4a51e732a79ae_01_basic-rag.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/330f1fb1/65fbf7034da4a51e732a79ae_01_basic-rag.png" alt="__wf_reserved_inherit" />
   <figcaption>Step 1: A basic RAG setup</figcaption>
 </figure>
 
@@ -58,7 +58,7 @@ This pipeline needs to:
 ## Step 2: RAG + Two-Stage Retrieval
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/231a1dd4/65fbf72130d8cd3e852e147f_02_rag-two-stage-retrieval.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/231a1dd4/65fbf72130d8cd3e852e147f_02_rag-two-stage-retrieval.png" alt="__wf_reserved_inherit" />
   <figcaption>Step 2: RAG + Two-stage retrieval with a reranker model</figcaption>
 </figure>
 
@@ -77,7 +77,7 @@ The biggest drawback of adding a reranker is that it can be quite slow - we need
 ## Step 3: Fine-Tuning Embeddings
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/20315e9e/65fbf72f31cf9a313651465f_03_finetune-embeddings-rag.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/20315e9e/65fbf72f31cf9a313651465f_03_finetune-embeddings-rag.png" alt="__wf_reserved_inherit" />
   <figcaption>Step 3: Adding finetuned embeddings to improve the accuracy of the RAG system</figcaption>
 </figure>
 
@@ -94,14 +94,14 @@ The pipeline should:
 ## Step 4: LLM Fine-Tuning (or Pretraining)
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/f9f95279/65fbf73fa4571ab9e52bf457_04_llm-finetuning.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f9f95279/65fbf73fa4571ab9e52bf457_04_llm-finetuning.png" alt="__wf_reserved_inherit" />
   <figcaption>Step 4: Finetuning an opensource LLM for particular use-cases where base foundational models don’t work</figcaption>
 </figure>
 
 The final step involves fine-tuning or pretraining the LLM itself. This is the most technically complex but can yield results specific to your domain or data. Databricks has a great visualization that showcases this in a slightly similar way:
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/edcafc68/65fbf86152fd7a3bbd7a163c_databricks-mosaic-llm__1_.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/edcafc68/65fbf86152fd7a3bbd7a163c_databricks-mosaic-llm__1_.png" alt="__wf_reserved_inherit" />
   <figcaption>Source: Databricks Mosaic product page</figcaption>
 </figure>
 
@@ -112,7 +112,7 @@ However, techniques like [QLoRA](https://neurips.cc/virtual/2023/oral/73855) (wh
 Finetuning a LLM may itself be decomposed into several pipelines like so:
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/39c93086/65fbffd0c48e3bcdc6b30a18_finetuning_llms__1_.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/39c93086/65fbffd0c48e3bcdc6b30a18_finetuning_llms__1_.png" alt="__wf_reserved_inherit" />
   <figcaption>Pipelines needed to finetune LLMs by ZenML</figcaption>
 </figure>
 

@@ -11,7 +11,7 @@ webflow:
   createdOn: "2025-02-06T09:32:30.697Z"
 position: "Frontend Engineer"
 photo:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/08418897/67a480ff7f6a8c7e061e979f_kipras00.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/08418897/67a480ff7f6a8c7e061e979f_kipras00.png"
 email: "kipras.ext@zenml.io"
 linkedin: "https://www.linkedin.com/in/kiprasmel/"
 order: 15

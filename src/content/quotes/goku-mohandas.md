@@ -5,7 +5,7 @@ text: "ZenML allows you to quickly and responsibly go from POC to production ML 
 author: "Goku Mohandas"
 position: "Founder of MadeWithML"
 avatar:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/c9fd250b/667bd428a30ba8fd817731c0_goku_quote.jpeg"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c9fd250b/667bd428a30ba8fd817731c0_goku_quote.jpeg"
 webflow:
   siteId: "64a817a2e7e2208272d1ce30"
   itemId: "667bd42e018dd9ed08b65a8f"

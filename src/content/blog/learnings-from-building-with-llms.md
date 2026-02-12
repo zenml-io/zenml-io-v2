@@ -19,12 +19,12 @@ tags:
 date: "2024-06-07T00:00:00.000Z"
 readingTime: 5 min
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/fcd9fb01/6667fc0970502b90364b350f_llm_newsletter.webp"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/fcd9fb01/6667fc0970502b90364b350f_llm_newsletter.webp"
 seo:
   title: "Newsletter Edition #4 - Learnings from Building with LLMs - ZenML Blog"
   description: "Today, we're back to LLM land (Not too far from Lalaland). Not only do we have a new LoRA + Accelerate-powered finetuning pipeline for you, we're also hosting a RAG themed webinar."
   canonical: "https://www.zenml.io/blog/learnings-from-building-with-llms"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/c5820888/6667fc0970502b90364b350f_llm_newsletter.webp"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c5820888/6667fc0970502b90364b350f_llm_newsletter.webp"
   ogTitle: "Newsletter Edition #4 - Learnings from Building with LLMs - ZenML Blog"
   ogDescription: "Today, we're back to LLM land (Not too far from Lalaland). Not only do we have a new LoRA + Accelerate-powered finetuning pipeline for you, we're also hosting a RAG themed webinar."
 ---
@@ -54,7 +54,7 @@ We have a new LLM template + project for the community! Andrei created this from
 ## ZenML Product Corner
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/fd877c37/6667fb72cdb1a4a96d0c57de_new_docs_1.png" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/fd877c37/6667fb72cdb1a4a96d0c57de_new_docs_1.png" alt="" />
 </figure>
 
 ### Fresh new docs
@@ -64,7 +64,7 @@ We've heard many times that old docs indexed by search engines and hard-to-searc
 [Check out the new docs](https://cloudortto.zenml.io/r?p=abs73iraamgtd6ouq4abaztc2nzzcy7ytureeqifbem3xobjfgdusmettykqu6aiobdtfwqrha6syxkgrfbhpxodg23tvrlaz4nmdckndizrn7avn3v3o)
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/ee09b4ea/6667fb727eed753cf80f0d15_integrations_linkedin_20_281_29.png" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ee09b4ea/6667fb727eed753cf80f0d15_integrations_linkedin_20_281_29.png" alt="" />
 </figure>
 
 ### +3 New Annotator Integrations
@@ -74,7 +74,7 @@ Following the computer vision webinar, we realized we missed a few integrations 
 [See notes](https://cloudortto.zenml.io/r?p=abs73iraamgtd6ouq4abaztc2nzzcy7ytureeqifbum3xobjfgdusmettykqu6aiobdtfwqrha6syxkgrfbhpxodg23tvrlazqonneqwaj4bx7qun74l2fd5dpnezug3hthmzdnhaijbzzbggcq2bvi)
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/723bb2da/6667fb72810174fe1cf9fac4_retry.png" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/723bb2da/6667fb72810174fe1cf9fac4_retry.png" alt="" />
 </figure>
 
 ### Retry configuration for Steps
@@ -102,7 +102,7 @@ New community member [John W Oliver](https://cloudortto.zenml.io/r?p=abs73iraamg
 ### An hour of a practical hands-on session about RAG pipelines
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/c046c195/6667fb7276bdd11f17f113af_webinar_news.webp" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c046c195/6667fb7276bdd11f17f113af_webinar_news.webp" alt="" />
 </figure>
 
 <ul start="1"><li>The process of ingesting and preprocessing data for your RAG pipeline </li><li>The critical role of embeddings in an RAG retrieval workflow</li><li>How ZenML simplifies the tracking and management of RAG-associated artifacts</li><li>Strategies for assessing the performance of your RAG pipelines</li><li>The use of rerankers to enhance the overall retrieval process in your RAG pipeline</li></ul>

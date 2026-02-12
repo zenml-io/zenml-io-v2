@@ -14,7 +14,7 @@ description: "An end-to-end credit scoring workflow that automatically generates
 githubUrl: "https://github.com/zenml-io/zenml-projects/tree/main/credit-scorer"
 mainImageLink: "https://public-flavor-logos.s3.eu-central-1.amazonaws.com/projects/11.jpg"
 previewImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/0a28edcf/683087f7d0f8fa28cf89b6f1_compliance-dashboard.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/0a28edcf/683087f7d0f8fa28cf89b6f1_compliance-dashboard.png"
 tags:
   - "eu-ai-act"
   - "compliance"
@@ -40,7 +40,7 @@ seo:
   title: "Credit Scorer: EU AI Act Compliant MLOps"
   description: "An end-to-end credit scoring workflow that automatically generates the technical evidence required by the EU AI Act."
   canonical: "https://www.zenml.io/projects/credit-scorer-eu-ai-act-compliant-mlops"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/0a28edcf/683087f7d0f8fa28cf89b6f1_compliance-dashboard.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/0a28edcf/683087f7d0f8fa28cf89b6f1_compliance-dashboard.png"
   ogTitle: "Credit Scorer: EU AI Act Compliant MLOps"
   ogDescription: "An end-to-end credit scoring workflow that automatically generates the technical evidence required by the EU AI Act."
 ---

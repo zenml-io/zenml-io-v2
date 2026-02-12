@@ -12,7 +12,7 @@ webflow:
   createdOn: "2023-10-18T07:42:26.255Z"
 position: "Co-founder"
 photo:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e44360e4/652f8c0ec09e4cb229b97657_adam.jpeg"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e44360e4/652f8c0ec09e4cb229b97657_adam.jpeg"
 email: "adam@zenml.io"
 linkedin: "https://www.linkedin.com/in/adam-probst-8134a451/"
 order: 1

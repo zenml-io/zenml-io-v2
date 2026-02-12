@@ -16,7 +16,7 @@ export const GET_STARTED_SEO = {
   ogTitle: "Get Started with ZenML",
   ogDescription:
     "Build production-ready ML pipelines with the open-source framework trusted by thousands of ML engineers worldwide.",
-  ogImage: `https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/3ae53e01/64b9920cd04b7c4c0340ce50_og-img-0625.jpg`,
+  ogImage: `https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3ae53e01/64b9920cd04b7c4c0340ce50_og-img-0625.jpg`,
 } as const;
 
 // ---------------------------------------------------------------------------
@@ -86,7 +86,7 @@ export const GET_STARTED_ARCHITECTURE = {
   headline: "Built on a Robust Client-Server Architecture",
   body: "ZenML is a metadata layer on top of your existing infrastructure, meaning all data and compute stays on your side.",
   image: {
-    url: `https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e19a8b4e/zenml-architecture.png`,
+    url: `https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e19a8b4e/zenml-architecture.png`,
     alt: "ZenML system architecture diagram showing connections between five main components: ZenML Client (Development Environment), ZenML Server, Database, MLOps Infrastructure (Cloud, Kubernetes, on-prem), and MLOps Tools (Experiment tracker, model deployer)",
   },
   primaryCta: { label: "Learn More", href: "/deployments" } as CtaLink,

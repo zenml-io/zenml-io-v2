@@ -21,12 +21,12 @@ tags:
 date: "2025-06-08T00:00:00.000Z"
 readingTime: 16 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e970d8a6/6981cf5010e873663bd75923_6981ce8c25b9bedbff8a6b78_wandb-pricing.avif"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e970d8a6/6981cf5010e873663bd75923_6981ce8c25b9bedbff8a6b78_wandb-pricing.avif"
 seo:
   title: "WandB Pricing Guide: How Much Does the Platform Cost? - ZenML Blog"
   description: "In this WandB pricing guide, we break down the costs, features, and value to help you decide if it’s the right investment for your business."
   canonical: "https://www.zenml.io/blog/wandb-pricing"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e970d8a6/6981cf5010e873663bd75923_6981ce8c25b9bedbff8a6b78_wandb-pricing.avif"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e970d8a6/6981cf5010e873663bd75923_6981ce8c25b9bedbff8a6b78_wandb-pricing.avif"
   ogTitle: "WandB Pricing Guide: How Much Does the Platform Cost? - ZenML Blog"
   ogDescription: "In this WandB pricing guide, we break down the costs, features, and value to help you decide if it’s the right investment for your business."
 ---
@@ -79,7 +79,7 @@ WandB uses tracked hours as a primary billing metric for cloud services, where o
 The pricing model avoids per-run fees, giving you predictable costs for experiment management, but usage-based billing can become expensive for teams running extensive parallel training jobs or long-running experiments.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/66f51452/6845151045b1c11bea7a5e42_wandb-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/66f51452/6845151045b1c11bea7a5e42_wandb-pricing.png" alt="__wf_reserved_inherit" />
   <figcaption>WandB pricing</figcaption>
 </figure>
 
@@ -88,7 +88,7 @@ Another way to buy managed WandB is via AWS, Google Cloud, and Azure marketplace
 ## WandB Pricing Factors to Consider
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e0227a7e/68451531cea2f9d4e2a324ff_factors-to-consider-before-investing-in-wandb.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e0227a7e/68451531cea2f9d4e2a324ff_factors-to-consider-before-investing-in-wandb.png" alt="__wf_reserved_inherit" />
   <figcaption>Factors to consider before investing in WandB</figcaption>
 </figure>
 
@@ -157,7 +157,7 @@ Here’s what you get with the free plan:
 <ul><li><strong>Basics:</strong> Up to 5 Model seats, tracked hours (limited to 5 GB of storage), and Weave data ingestion of 1 GB per month.</li><li><strong>Models:</strong> Lightweight experiment tracking, centralized model registry, hyperparameter optimization, and automated ML workflows.</li><li><strong>Core Features:</strong> Dataset and model versioning, interactive data visualization, and collaborative dashboards.</li><li><strong>Access Control and Permissions:</strong> Public and private projects (no other access controls included).</li><li><strong>Security and Compliance:</strong> SOC 2 Type II.</li><li><strong>Support:</strong> Email only.</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/4ced0ac8/68451578a4d85d0091119852_wandb-cloud-hosted-free-plan.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/4ced0ac8/68451578a4d85d0091119852_wandb-cloud-hosted-free-plan.png" alt="__wf_reserved_inherit" />
   <figcaption>WandB cloud hosted Free plan</figcaption>
 </figure>
 
@@ -172,7 +172,7 @@ Here’s what you get with the Pro plan:
 <ul><li><strong>Basics:</strong> Up to 10 Model seats, 500 tracked hours per month (additional hours billed at $1 per hour), 100 GB per month storage (additional storage $0.03 per GB), and Weave data ingestion of 1.5 GB per month.</li><li><strong>Models:</strong> Everything from the free plan, plus access to workflow automations.</li><li><strong>Core Features:</strong> Dataset and model versioning, interactive data visualization, and collaborative dashboards.</li><li><strong>Access Control and Permissions:</strong> Public and private projects, team-based access controls, and service accounts.</li><li><strong>Security and Compliance:</strong> SOC 2 Type II and customizable data retention.</li><li><strong>Support:</strong> Email only, with first response time from 4 to 24 hours, depending on severity.</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/863a3a5f/6845159bd33a94867670e269_wandb-cloud-hosted-pro-plan.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/863a3a5f/6845159bd33a94867670e269_wandb-cloud-hosted-pro-plan.png" alt="__wf_reserved_inherit" />
   <figcaption>WandB cloud hosted Pro plan</figcaption>
 </figure>
 
@@ -185,7 +185,7 @@ It bundles all Pro features and adds enterprise-grade options: single-tenant dep
 <ul><li><strong>Basics:</strong> Custom number of Model seats with unlimited tracked hours, customizable storage, and weave data ingestion, along with a dedicated, scalable deployment.</li><li><strong>Models:</strong> All features included - same as in Pro plan.</li><li><strong>Core Features:</strong> Dataset and model versioning, interactive data visualization, and collaborative dashboards.</li><li><strong>Access Control and Permissions:</strong> Public and private projects, team-based access controls, project-level access controls, custom roles, and service accounts.</li><li><strong>Security and Compliance:</strong> SOC 2 Type II, customizable data retention, single sign-on, audit logs, bring your own bucket, and HIPAA compliance.</li><li><strong>Support:</strong> Email and chat support with 1 to 4 hours of first response time. You also get a dedicated Slack/MS Teams support channel and a dedicated AI solution engineer.</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/a7204696/684514ee4f9b681ee127f17b_wandb-cloid-hosted-enterprise-plan.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a7204696/684514ee4f9b681ee127f17b_wandb-cloid-hosted-enterprise-plan.png" alt="__wf_reserved_inherit" />
   <figcaption>WandB cloud hosted Enterprise plan</figcaption>
 </figure>
 
@@ -202,7 +202,7 @@ You can `pip install wandb` and start a local server to log experiments and arti
 However, it’s fully free for allowed use cases and useful if you want WandB’s capabilities without cloud dependency.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/24991483/684515db66bac4e7047ca383_wandb-privately-hosted-personal-plan.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/24991483/684515db66bac4e7047ca383_wandb-privately-hosted-personal-plan.png" alt="__wf_reserved_inherit" />
   <figcaption>WandB privately hosted Personal plan</figcaption>
 </figure>
 
@@ -215,7 +215,7 @@ In addition to the Personal plan’s tracking and one-seat, it adds all the Ente
 Essentially, it’s the complete WandB stack you host on your own servers. As a custom offering, pricing is aligned with your scale and requirements.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/8c62badb/684515f6bc4d7af16162469e_wandb-privately-hosted-advanced-enterprise-plan.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8c62badb/684515f6bc4d7af16162469e_wandb-privately-hosted-advanced-enterprise-plan.png" alt="__wf_reserved_inherit" />
   <figcaption>WandB privately hosted Advanced Enterprise plan</figcaption>
 </figure>
 
@@ -230,7 +230,7 @@ WandB is available on the AWS Marketplace, offering a contract-based pricing mod
 Additional usage costs, like storage overage, are billed at $0.001 per unit. With AWS, you get access to WandB with your existing billing accounts, which can be particularly advantageous for leveraging pre-existing AWS enterprise discounts or committed spend agreements.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/dee8f2e4/68451618763b8fac9fff17ff_wandb-on-aws-marketplace.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/dee8f2e4/68451618763b8fac9fff17ff_wandb-on-aws-marketplace.png" alt="__wf_reserved_inherit" />
   <figcaption>WandB on AWS marketplace</figcaption>
 </figure>
 
@@ -249,7 +249,7 @@ The pricing for the plans is as follows:
 <ul><li><strong>Annual Single User License for WandB Models:</strong> $400 per month + usage fee</li><li><strong>Annual Commitment for WandB Weave 10GB:</strong> $2,100 per month + usage fee</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/d0a9fe04/6845163e9344eaf9be568574_wandb-on-google-cloud-marketplace.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d0a9fe04/6845163e9344eaf9be568574_wandb-on-google-cloud-marketplace.png" alt="__wf_reserved_inherit" />
   <figcaption>WandB on Google Cloud Marketplace</figcaption>
 </figure>
 
@@ -264,7 +264,7 @@ WandB on Azure provides a suite of tools for building AI applications and models
 The pricing structure of WandB on Azure is exactly the same as you saw for the AWS marketplace.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/13ad7403/68451658c553a130b686c614_wandb-on-azure-marketplace.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/13ad7403/68451658c553a130b686c614_wandb-on-azure-marketplace.png" alt="__wf_reserved_inherit" />
   <figcaption>WandB on Azure marketplace</figcaption>
 </figure>
 
@@ -283,7 +283,7 @@ In short, WandB’s per-user fees are on the higher side, but may be reasonable 
 ## ZenML – An Affordable Alternative to WandB
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/3d24034c/683a88fe89e2394cc1106b0e_zenml-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3d24034c/683a88fe89e2394cc1106b0e_zenml-homepage.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML homepage</figcaption>
 </figure>
 
@@ -304,7 +304,7 @@ When you run a ZenML pipeline, it records each training run’s results and meta
 Unlike WandB's tracked hours model, ZenML's experiment tracking doesn't charge based on training time, making it ideal for teams running extensive [hyperparameter sweeps](https://docs.zenml.io/user-guides/tutorial/hyper-parameter-tuning) or distributed training jobs.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/ce3ffe8a/681c8ff1cff78cabbca5d18f_a-flowchart-explaning-how-zenml-integrates-with-multiple-tools-and-platform.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ce3ffe8a/681c8ff1cff78cabbca5d18f_a-flowchart-explaning-how-zenml-integrates-with-multiple-tools-and-platform.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML experiment tracking</figcaption>
 </figure>
 
@@ -341,7 +341,7 @@ In fact, the platform’s model management is designed so that by properly regis
 All of this is available in the open-source core (with a free Python SDK); a managed Pro version adds a dashboard, but even the OSS edition handles full model lifecycle management without extra cost.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/54d3bc5c/67b448e42a9d9bb96bd945af_EU_AI_Act_Models.gif" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/54d3bc5c/67b448e42a9d9bb96bd945af_EU_AI_Act_Models.gif" alt="__wf_reserved_inherit" />
   <figcaption>Model Control Plane Overview in ZenML Pro Dashboard</figcaption>
 </figure>
 
@@ -386,7 +386,7 @@ The choice between WandB and alternatives like ZenML ultimately depends on your 
 Want to know what ZenML has in store for you? [Sign up for a 14-day free trial](https://cloud.zenml.io/signup?utm_source=website&utm_medium=website_nav&utm_campaign=cloud_promotion&utm_content=signup_link) and see if it's the right WandB alternative for you and your team.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/ec7dc0b8/6845181e95b11552c10f9928_sign-up-for-zenml-pro-free-trial.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ec7dc0b8/6845181e95b11552c10f9928_sign-up-for-zenml-pro-free-trial.png" alt="__wf_reserved_inherit" />
   <figcaption>Sign up for a 14-day free trial of ZenML Pro</figcaption>
 </figure>
 

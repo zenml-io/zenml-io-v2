@@ -12,12 +12,12 @@ webflow:
   createdOn: "2025-08-26T14:20:30.481Z"
 integrationType: "agents"
 logo:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/dc393543/68adc2b39206458c0cbe525e_llamaindex.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/dc393543/68adc2b39206458c0cbe525e_llamaindex.png"
 shortDescription: "LlamaIndex Function Agent integrated with ZenML"
 docsUrl: "https://docs.zenml.io"
 githubUrl: "https://github.com/zenml-io/zenml/tree/main/examples/agent_framework_integrations/langgraph"
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/da7c121c/68adc3b0a9eaacaf244b9b63_llamaindex.img.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/da7c121c/68adc3b0a9eaacaf244b9b63_llamaindex.img.png"
 relatedBlogPosts:
   - "llamaindex-vs-langgraph"
   - "llamaindex-pricing"
@@ -25,7 +25,7 @@ seo:
   title: "Integrate LlamaIndex with ZenML - Agents Integrations"
   description: "LlamaIndex Function Agent integrated with ZenML"
   canonical: "https://www.zenml.io/integrations/llamaindex"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/da7c121c/68adc3b0a9eaacaf244b9b63_llamaindex.img.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/da7c121c/68adc3b0a9eaacaf244b9b63_llamaindex.img.png"
   ogTitle: "Integrate LlamaIndex with ZenML - Agents Integrations"
   ogDescription: "LlamaIndex Function Agent integrated with ZenML"
 ---

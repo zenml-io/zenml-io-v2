@@ -21,12 +21,12 @@ tags:
 date: "2025-08-01T00:00:00.000Z"
 readingTime: 15 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/9fa6efee/6981d362e92aa039b696acfd_6981d2b20208c93ce57308f8_langgraph-vs-n8n.avif"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9fa6efee/6981d362e92aa039b696acfd_6981d2b20208c93ce57308f8_langgraph-vs-n8n.avif"
 seo:
   title: "LangGraph vs n8n: Choosing the Right Framework for Agentic AI - ZenML Blog"
   description: "Compare LangGraph vs n8n for building AI agents in 2025. Updated with LangGraph 1.0 stable release and n8n's new unlimited workflow pricing. Discover which framework fits your production AI stack."
   canonical: "https://www.zenml.io/blog/langgraph-vs-n8n"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/9fa6efee/6981d362e92aa039b696acfd_6981d2b20208c93ce57308f8_langgraph-vs-n8n.avif"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9fa6efee/6981d362e92aa039b696acfd_6981d2b20208c93ce57308f8_langgraph-vs-n8n.avif"
   ogTitle: "LangGraph vs n8n: Choosing the Right Framework for Agentic AI - ZenML Blog"
   ogDescription: "Compare LangGraph vs n8n for building AI agents in 2025. Updated with LangGraph 1.0 stable release and n8n's new unlimited workflow pricing. Discover which framework fits your production AI stack."
 ---
@@ -77,7 +77,7 @@ Now let’s compare these features in depth.
 #### LangGraph
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/99f16d8c/688465ac58edc1a35e02b4c1_langgraph-workflows-and-agents.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/99f16d8c/688465ac58edc1a35e02b4c1_langgraph-workflows-and-agents.png" alt="__wf_reserved_inherit" />
   <figcaption>LangGraph workflows and agents</figcaption>
 </figure>
 
@@ -92,7 +92,7 @@ LangGraph’s control-flow grammar consists of two primary components:
 #### n8n
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/9c98b755/688c4100768889f0fcad3245_n8n-ai-agent-workflow.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9c98b755/688c4100768889f0fcad3245_n8n-ai-agent-workflow.png" alt="__wf_reserved_inherit" />
   <figcaption>n8n ai agent workflow</figcaption>
 </figure>
 
@@ -115,7 +115,7 @@ n8n provides core nodes for control flow:
 #### LangGraph
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/8f25a78f/688c411bbd4ff15ceeea6954_langgraph-multi-agent-orchestration-patterns.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8f25a78f/688c411bbd4ff15ceeea6954_langgraph-multi-agent-orchestration-patterns.png" alt="__wf_reserved_inherit" />
   <figcaption>LangGraph multi-agent orchestration patterns</figcaption>
 </figure>
 
@@ -134,7 +134,7 @@ The graph includes synchronous or asynchronous nodes, and lets you persist state
 #### n8n
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/80f439f3/688c41421bd0bd36224cf659_n8n-scalable-multi-agent-chat.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/80f439f3/688c41421bd0bd36224cf659_n8n-scalable-multi-agent-chat.png" alt="__wf_reserved_inherit" />
   <figcaption>n8n scalable multi-agent chat</figcaption>
 </figure>
 
@@ -165,7 +165,7 @@ If you want to build complex, highly tailored agent interactions, use LangGraph;
 #### LangGraph
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/718e6512/687b1b7ec161c85267291996_langgraph-state-and-memory-management.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/718e6512/687b1b7ec161c85267291996_langgraph-state-and-memory-management.png" alt="__wf_reserved_inherit" />
   <figcaption>LangGraph short and long-term memory management</figcaption>
 </figure>
 
@@ -182,7 +182,7 @@ This flexibility makes LangGraph suitable for complex conversational agents that
 #### n8n
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/01c6341a/688c417dca677437ac011472_n8n-memory-manager.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/01c6341a/688c417dca677437ac011472_n8n-memory-manager.png" alt="__wf_reserved_inherit" />
   <figcaption>n8n memory manager</figcaption>
 </figure>
 
@@ -207,7 +207,7 @@ Compared to **LangGraph**, n8n’s memory handling is less unified and not as de
 #### LangGraph
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/eca57e4a/687c6e298a554ec3e828c5e5_langgraph-human-in-the-loop.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/eca57e4a/687c6e298a554ec3e828c5e5_langgraph-human-in-the-loop.png" alt="__wf_reserved_inherit" />
   <figcaption>LangGraph human in the loop</figcaption>
 </figure>
 
@@ -228,7 +228,7 @@ Here are the actions a human can take:
 #### n8n
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/0e89f631/688c41b805b526050a8da0c6_n8n-human-in-the-loop.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/0e89f631/688c41b805b526050a8da0c6_n8n-human-in-the-loop.png" alt="__wf_reserved_inherit" />
   <figcaption>n8n human in the loop</figcaption>
 </figure>
 
@@ -285,7 +285,7 @@ LangGraph’s strength lies in its deep, native integration with the broader Lan
 <ul><li><strong>LangChain Components:</strong> The vast library of LangChain integrations for LLMs, document loaders, text splitters, vector stores, and tools can be used directly as nodes within a LangGraph graph.</li><li><strong>LangSmith:</strong> A best-in-class platform for observability, tracing, and debugging. Traces from LangGraph are automatically visualized in LangSmith, showing the step-by-step execution of the graph, which is invaluable for understanding and improving complex agent behavior.</li><li><strong>Extensibility:</strong> As a Python library, LangGraph can be integrated with any other Python package or API, offering limitless extensibility for developers.</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/86f7e780/687c6f66de8d851b3292b639_langchain-ecosystem.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/86f7e780/687c6f66de8d851b3292b639_langchain-ecosystem.png" alt="__wf_reserved_inherit" />
   <figcaption>LangGraph uses the LangChain ecosystem</figcaption>
 </figure>
 
@@ -296,7 +296,7 @@ n8n’s core value proposition is its massive library of over 500 pre-built node
 <ul><li><strong>Breadth of Connectivity:</strong> These integrations cover everything from CRMs (Salesforce, HubSpot) and databases (Postgres, MySQL) to communication platforms (Slack, Discord) and marketing tools.</li><li><strong>LLMOps/MLOps Integrations:</strong> n8n provides robust integrations with all major LLM providers (OpenAI, Anthropic, Google Gemini), vector stores (Pinecone, Weaviate), and data loaders. The generic <code>HTTP Request</code> node allows it to connect to any REST API, making it a viable component in a modern MLOps stack.</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/41a5072e/688c41f3c08b2393079ad766_n8n-integrations.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/41a5072e/688c41f3c08b2393079ad766_n8n-integrations.png" alt="__wf_reserved_inherit" />
   <figcaption>n8n integrations</figcaption>
 </figure>
 
@@ -321,7 +321,7 @@ This is the managed commercial offering with a tiered structure designed to scal
 <ul><li><strong>Developer</strong>: Includes up to 100K nodes executed per month</li><li><strong>Plus</strong>: $0.001 per node executed + standby charges</li><li><strong>Enterprise</strong>: Custom-built plan tailored to your business needs</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/97b85242/687b1c130365fe673ee85bab_langgraph-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/97b85242/687b1c130365fe673ee85bab_langgraph-pricing.png" alt="__wf_reserved_inherit" />
 </figure>
 
 **📚 Related article:**[LangGraph pricing guide](https://www.zenml.io/blog/langgraph-pricing)
@@ -333,7 +333,7 @@ n8n offers three paid plans to choose from. Each plan comes with a 14-day free t
 <ul><li><strong>Starter</strong>: €24 per month. 2.5k workflow executions and 5 active workflows.</li><li><strong>Pro</strong>: €60 per month. 10k workflow executions and 15 active workflows.</li><li><strong>Enterprise</strong>: Custom pricing. Custom number of workflow executions and infinite active workflows.</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/9ecaa979/688c422733359befadf2b831_n8n-pricing-plans.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9ecaa979/688c422733359befadf2b831_n8n-pricing-plans.png" alt="__wf_reserved_inherit" />
 </figure>
 
 **👀 Note:** n8n also has a **Community edition** - a basic version of n8n that’s available on GitHub.
@@ -341,7 +341,7 @@ n8n offers three paid plans to choose from. Each plan comes with a 14-day free t
 ## How ZenML Helps In Closing the Outer Loop Around Your Agents
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/1aad74e0/687b1c29468fe4993262cdc5_zenML-helps-in-closing-the-outer-loop.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1aad74e0/687b1c29468fe4993262cdc5_zenML-helps-in-closing-the-outer-loop.png" alt="__wf_reserved_inherit" />
 </figure>
 
 Building a sophisticated agent is only part of the story. After an agent is deployed, you need to monitor its performance, manage data pipelines, retrain models, and integrate with the rest of your MLOps.

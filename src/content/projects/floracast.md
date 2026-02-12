@@ -14,7 +14,7 @@ description: "A production-ready MLOps pipeline for time series forecasting usin
 githubUrl: "https://github.com/zenml-io/zenml-projects/tree/main/floracast"
 mainImageLink: "https://public-flavor-logos.s3.eu-central-1.amazonaws.com/projects/49.jpg"
 previewImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/4f28a128/68a58035109816ab84e01281_architecture.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/4f28a128/68a58035109816ab84e01281_architecture.png"
 tags:
   - "time-series"
   - "forecasting"
@@ -31,7 +31,7 @@ seo:
   title: "FloraCast"
   description: "A production-ready MLOps pipeline for time series forecasting using ZenML and Darts, featuring TFT-based training and scheduled batch inference."
   canonical: "https://www.zenml.io/projects/floracast"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/4f28a128/68a58035109816ab84e01281_architecture.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/4f28a128/68a58035109816ab84e01281_architecture.png"
   ogTitle: "FloraCast"
   ogDescription: "A production-ready MLOps pipeline for time series forecasting using ZenML and Darts, featuring TFT-based training and scheduled batch inference."
 ---

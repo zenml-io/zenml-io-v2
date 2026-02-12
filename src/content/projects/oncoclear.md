@@ -14,7 +14,7 @@ description: "A production-ready MLOps pipeline for accurate breast cancer class
 githubUrl: "https://github.com/zenml-io/zenml-projects/tree/main/oncoclear"
 mainImageLink: "https://public-flavor-logos.s3.eu-central-1.amazonaws.com/projects/10.jpg"
 previewImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e6ac1bed/68011591ffd74fdbbe5de06b_pipeline_overview.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e6ac1bed/68011591ffd74fdbbe5de06b_pipeline_overview.png"
 tags:
   - "healthcare"
   - "classification"
@@ -34,7 +34,7 @@ seo:
   title: "OncoClear"
   description: "A production-ready MLOps pipeline for accurate breast cancer classification using machine learning."
   canonical: "https://www.zenml.io/projects/oncoclear"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e6ac1bed/68011591ffd74fdbbe5de06b_pipeline_overview.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e6ac1bed/68011591ffd74fdbbe5de06b_pipeline_overview.png"
   ogTitle: "OncoClear"
   ogDescription: "A production-ready MLOps pipeline for accurate breast cancer classification using machine learning."
 ---

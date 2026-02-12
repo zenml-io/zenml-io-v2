@@ -22,12 +22,12 @@ tags:
 date: "2022-06-23T00:00:00.000Z"
 readingTime: 1 Min Read
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/6711f1d5/65310d89e62a40fa6b957b6a_1623738321208-2.jpeg"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6711f1d5/65310d89e62a40fa6b957b6a_1623738321208-2.jpeg"
 seo:
   title: "Podcast: Humans in the Loop with Iva Gumnishka - ZenML Blog"
   description: "This week I spoke with Iva Gumnishka, the founder of Humans in the Loop. They are an organization that provides data annotation and collection services. Their teams are primarily made up of those who have been affected by conflict and now are asylum seekers or refugees."
   canonical: "https://www.zenml.io/blog/podcast-humans-in-the-loop-with-iva-gumnishka"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/23c531de/65310d89e62a40fa6b957b6a_1623738321208-2.jpeg"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/23c531de/65310d89e62a40fa6b957b6a_1623738321208-2.jpeg"
   ogTitle: "Podcast: Humans in the Loop with Iva Gumnishka - ZenML Blog"
   ogDescription: "This week I spoke with Iva Gumnishka, the founder of Humans in the Loop. They are an organization that provides data annotation and collection services. Their teams are primarily made up of those who have been affected by conflict and now are asylum seekers or refugees."
 ---

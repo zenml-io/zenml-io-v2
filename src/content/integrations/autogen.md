@@ -12,12 +12,12 @@ webflow:
   createdOn: "2025-08-26T10:29:03.921Z"
 integrationType: "agents"
 logo:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/b4a393dc/68ad8c7a730f133727136baa_autogen.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b4a393dc/68ad8c7a730f133727136baa_autogen.png"
 shortDescription: "Seamlessly orchestrate flexible, emergent multi-agent workflows inside ZenML pipelines."
 docsUrl: "https://github.com/zenml-io/zenml/tree/main/examples/agent_framework_integrations/autogen"
 githubUrl: "https://github.com/zenml-io/zenml/tree/main/examples/agent_framework_integrations/autogen"
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/682d6695/68ad8fc2f874d72b5e74f0ad_autogen-img.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/682d6695/68ad8fc2f874d72b5e74f0ad_autogen-img.png"
 relatedBlogPosts:
   - "langgraph-vs-autogen"
   - "crewai-vs-autogen"
@@ -25,7 +25,7 @@ seo:
   title: "Integrate AutoGen with ZenML - Agents Integrations"
   description: "Seamlessly orchestrate flexible, emergent multi-agent workflows inside ZenML pipelines."
   canonical: "https://www.zenml.io/integrations/autogen"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/682d6695/68ad8fc2f874d72b5e74f0ad_autogen-img.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/682d6695/68ad8fc2f874d72b5e74f0ad_autogen-img.png"
   ogTitle: "Integrate AutoGen with ZenML - Agents Integrations"
   ogDescription: "Seamlessly orchestrate flexible, emergent multi-agent workflows inside ZenML pipelines."
 ---

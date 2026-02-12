@@ -19,11 +19,11 @@ tags:
 date: "2024-05-13T00:00:00.000Z"
 readingTime: 3 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/5d7d5c42/66436e40d511269b872dcc76_newsletter03.webp"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5d7d5c42/66436e40d511269b872dcc76_newsletter03.webp"
 seo:
   title: "Newsletter Edition #3 - State of Open Source - ZenML Blog"
   canonical: "https://www.zenml.io/blog/state-of-open-source"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/d4d85558/66436e40d511269b872dcc76_newsletter03.webp"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d4d85558/66436e40d511269b872dcc76_newsletter03.webp"
   ogTitle: "Newsletter Edition #3 - State of Open Source - ZenML Blog"
 ---
 
@@ -48,7 +48,7 @@ Last week, we conducted our first webinar, talking about building the data flywh
 ## ZenML Product Corner
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/9e952583/66436dd985e8f00d1c1a8715_dashboard.png" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9e952583/66436dd985e8f00d1c1a8715_dashboard.png" alt="" />
 </figure>
 
 ### Open sourcing our new dashboard
@@ -58,7 +58,7 @@ Last week brought the HUGE news that we finally unfiied the cloud and open sourc
 [Learn More](https://www.zenml.io/blog/oss-dashboard-release)
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/5f25f9c7/66436dd9045a6babe2fcc84e_lora.png" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5f25f9c7/66436dd9045a6babe2fcc84e_lora.png" alt="" />
 </figure>
 
 ### Multi-GPU LLM finetuning with PEFT
@@ -68,7 +68,7 @@ We have a brand new ZenML project by [Andrei](https://www.linkedin.com/in/andrei
 [See code](https://docs.zenml.io/user-guide/cloud-guide)
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/802deec2/66436dd903cc4a8095deaadc_reranking.webp" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/802deec2/66436dd903cc4a8095deaadc_reranking.webp" alt="" />
 </figure>
 
 ### Reranking for better retrieval with LLMs
@@ -96,7 +96,7 @@ We had an absolute blast talking many new users about onboarding on ZenML, and w
 ### Featuring a brand-new MLOps tutorial in 11 minutes!
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e7a14f05/66436dd96e9e5eae8ed3501b_maxresdefault.jpeg" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e7a14f05/66436dd96e9e5eae8ed3501b_maxresdefault.jpeg" alt="" />
 </figure>
 
 <ul start="1"><li>Working with <a target="_blank" href="https://www.linkedin.com/in/gabitov/">Renat Gabitov</a> and the team at <a target="_blank" href="https://www.linkedin.com/company/represent-studio/">Represent</a>, we recorded a "<strong>Zero to Hero</strong>" video tutorial using ZenML.</li><li>The video is professionally edited and shot, and features yours truly. It took me two hours to shoot, and made me appreciate how tough being a full-time YouTuber can be!</li><li>Like and subscribe on YouTube to show the love!</li></ul>

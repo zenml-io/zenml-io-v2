@@ -21,12 +21,12 @@ tags:
 date: "2025-06-29T00:00:00.000Z"
 readingTime: 14 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/5fb612e6/6860bfb8ad89e99066d6749d_llamaindex-alternatives.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5fb612e6/6860bfb8ad89e99066d6749d_llamaindex-alternatives.png"
 seo:
   title: "Here are the Top 7 LlamaIndex Alternatives to Build AI Production Agents - ZenML Blog"
   description: "Discover the top 7 LlamaIndex alternatives to build AI production agents with ease."
   canonical: "https://www.zenml.io/blog/llamaindex-alternatives"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/5fb612e6/6860bfb8ad89e99066d6749d_llamaindex-alternatives.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5fb612e6/6860bfb8ad89e99066d6749d_llamaindex-alternatives.png"
   ogTitle: "Here are the Top 7 LlamaIndex Alternatives to Build AI Production Agents - ZenML Blog"
   ogDescription: "Discover the top 7 LlamaIndex alternatives to build AI production agents with ease."
 ---
@@ -46,7 +46,7 @@ This article surveys the best LlamaIndex alternatives to build agentic AI system
 ## The Need for a LlamaIndex Alternative?
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/3d03c98b/6860be2de1db56a813940c3b_why-you-might-need-a-LlamaIndex-alternative.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3d03c98b/6860be2de1db56a813940c3b_why-you-might-need-a-LlamaIndex-alternative.png" alt="__wf_reserved_inherit" />
   <figcaption>Why you might need a LlamaIndex alternative</figcaption>
 </figure>
 
@@ -114,7 +114,7 @@ Here’s a comparison of the top LlamaIndex alternatives:
 ### 1. LangGraph
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/77ed9291/6860be72f9c24599bc787de0_langgraph-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/77ed9291/6860be72f9c24599bc787de0_langgraph-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [LangGraph](https://www.langchain.com/langgraph) is a framework for building stateful, multi-agent applications with Large Language Models. Developed by LangChain, it provides developers with precise control over agent workflows through graph-based orchestration.
@@ -138,13 +138,13 @@ Apart from the free plan, LangGraph offers three paid plans to choose from:
 <ul><li><strong>Developer</strong>: Includes up to 100K nodes executed per month</li><li><strong>Plus</strong>: $0.001 per node executed + standby charges</li><li><strong>Enterprise</strong>: Custom-built plan tailored to your business needs</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/925871e3/6860be93188a2310a9c87184_langgraph-pricing-plans.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/925871e3/6860be93188a2310a9c87184_langgraph-pricing-plans.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### 2. Haystack (by deepset)
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/f64fff71/6860bea987cb2aa48774652f_haystack-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f64fff71/6860bea987cb2aa48774652f_haystack-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [Haystack](https://haystack.deepset.ai/) is an open-source framework by deepset for building production-ready LLM applications. It focuses on modular pipeline construction, making it easy to combine different components for search, question answering, and agent workflows.
@@ -166,13 +166,13 @@ Haystack itself is completely free and open-source under Apache-2.0. But it also
 <ul><li><strong>Studio:</strong> This is a free plan for individuals prototyping, offering 1 workspace, 1 user, 100 pipeline hours, and community support.</li><li><strong>Enterprise:</strong> This is a custom-priced plan for teams building production-grade AI applications, providing unlimited workspaces, users, pipeline hours, and dedicated support, with cloud or custom deployment options.</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/786b3d5e/6860bec3b4afabe159f325f1_haystack-pricing-plans.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/786b3d5e/6860bec3b4afabe159f325f1_haystack-pricing-plans.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### 3. CrewAI
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/c35f2011/6860bed56ebee86842495545_crewai-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c35f2011/6860bed56ebee86842495545_crewai-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [CrewAI](https://www.crewai.com/) is a framework for orchestrating collaborative AI agents that work together like human teams. It emphasizes role-based agent design where each agent has specific responsibilities and expertise.
@@ -194,7 +194,7 @@ CrewAI’s core framework is also MIT-licensed and open-source. But the platform
 <ul><li><strong>Basic</strong>: $99 per month</li><li><strong>Standard</strong>: $6,000 per year</li><li><strong>Pro</strong>: $12,000 per year</li><li><strong>Enterprise</strong>: $60,000 per year</li><li><strong>Ultra</strong>: $120,000 per year</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/ff64a778/6860beedd0c89f06fbe80f57_crewai-pricing-plans.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ff64a778/6860beedd0c89f06fbe80f57_crewai-pricing-plans.png" alt="__wf_reserved_inherit" />
 </figure>
 
 **👀 Note:** To see CrewAI’s pricing plans, you must sign up for its free plan.
@@ -202,7 +202,7 @@ CrewAI’s core framework is also MIT-licensed and open-source. But the platform
 ### 4. Microsoft AutoGen
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e293f1d1/6860bf0e2ff42f65d505e50d_microsoft-autogen-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e293f1d1/6860bf0e2ff42f65d505e50d_microsoft-autogen-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [AutoGen](https://www.microsoft.com/en-us/research/project/autogen/) is Microsoft's open-source framework for building LLM applications through multi-agent conversations. It enables agents to collaborate autonomously or with human oversight to accomplish complex tasks.
@@ -224,7 +224,7 @@ AutoGen is fully open-source (MIT license). All of the code is available on GitH
 ### 5. Semantic Kernel Agent Framework
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/4c9e1d86/6860bf329652ce2b16c3d82a_semtantic-kernet-agent-framework-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/4c9e1d86/6860bf329652ce2b16c3d82a_semtantic-kernet-agent-framework-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [Semantic Kernel](https://learn.microsoft.com/en-us/semantic-kernel/frameworks/agent/?pivots=programming-language-csharp) is Microsoft's SDK for integrating LLMs into applications, with a recently matured Agent Framework for building both single and multi-agent systems. It emphasizes enterprise readiness and seamless integration with existing business processes.
@@ -246,7 +246,7 @@ Semantic Kernel itself is open-source and free (MIT license) – the SDK and Age
 ### 6. Weaviate
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/4f6ee9e1/6860bf4ab436d98389682c7c_weaviate-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/4f6ee9e1/6860bf4ab436d98389682c7c_weaviate-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [Weaviate](https://weaviate.io/) is an open-source vector database that goes beyond simple similarity search to enable AI-native applications. While not exclusively an agent framework, it provides powerful primitives for building intelligent search and retrieval systems.
@@ -268,13 +268,13 @@ Weaviate offers free access to learning and prototyping with a 14-day trial, aft
 <ul><li><strong>Serverless Cloud (SaaS):</strong> Starts from $25 per month, with storage costing $0.095 per 1 million vector dimensions stored per month (Standard SLA). Higher SLA tiers, Professional and Business Critical, are more expensive.</li><li><strong>Enterprise Cloud (Managed Dedicated Instances):</strong> Starts from $2.64 per AI Unit (AIU), with flexible storage tiers priced per GB per hour or GBvCPU per month. Contact sales for custom pricing.</li><li><strong>Bring Your Own Cloud (BYOC):</strong> Custom pricing for a fully-managed solution or 24/7 support within your Virtual Private Cloud (VPC). Contact sales.</li><li><strong>Weaviate Embeddings:</strong> Provides access to various embedding models hosted in Weaviate Cloud, priced per million tokens, for example, Snowflake arctic-embed-m-v1.5 at $0.025 per 1 million tokens.</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/b2ee7f91/6860bf6878e897e0042f23a1_weaviate-pricing-plans.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b2ee7f91/6860bf6878e897e0042f23a1_weaviate-pricing-plans.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### 7. Jina AI Flow
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/0f8ee9b4/6860bf80c76979b990dcc5c0_jina-ai-flow-documentation.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/0f8ee9b4/6860bf80c76979b990dcc5c0_jina-ai-flow-documentation.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [Jina AI Flow](https://jina.ai/serve/concepts/orchestration/flow/) is a framework for building neural search systems and AI applications with a focus on multi-modal data processing. It provides a unique approach to orchestrating AI services through event-driven pipelines.

@@ -12,7 +12,7 @@ webflow:
   createdOn: "2025-08-18T10:57:45.270Z"
 position: "Senior Software Engineer"
 photo:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/ff591870/68a3072b384de77e2c6b0723_iason.jpg"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ff591870/68a3072b384de77e2c6b0723_iason.jpg"
 email: "iason@zenml.io"
 linkedin: "https://www.linkedin.com/in/iasonandriopoulos"
 order: 8

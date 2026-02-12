@@ -18,12 +18,12 @@ tags:
 date: "2021-12-06T00:00:00.000Z"
 readingTime: 1 Min Read
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/28462a9f/65311c318d6ee23a889a8a5e_luca-upper-Z-4kOr93RCI-unsplash.jpg"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/28462a9f/65311c318d6ee23a889a8a5e_luca-upper-Z-4kOr93RCI-unsplash.jpg"
 seo:
   title: "What's New in v0.5.4 - ZenML Blog"
   description: "Release notes for the new version of ZenML."
   canonical: "https://www.zenml.io/blog/whats-new-in-v0-5-4"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/72c2e367/65311c318d6ee23a889a8a5e_luca-upper-Z-4kOr93RCI-unsplash.jpg"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/72c2e367/65311c318d6ee23a889a8a5e_luca-upper-Z-4kOr93RCI-unsplash.jpg"
   ogTitle: "What's New in v0.5.4 - ZenML Blog"
   ogDescription: "Release notes for the new version of ZenML."
 ---
@@ -37,7 +37,7 @@ ZenML 0.5.4 adds visualizations for your native ZenML pipelines as well as sever
 The [statistics visualizations from the last release](https://blog.zenml.io/zero-five-three-release/) got us all inspired to add a few more useful ways of seeing what’s going on in your pipelines. It’s not uncommon for pipelines to be made up of many steps, and those steps can interact and intersect with one another in often complex patterns. We’ve built a way for you to inspect what’s going on with your ZenML pipeline:
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/4cac363e/65311c3e6c4d6e63305dc144_zenml_lineage.gif" alt="Here&#039;s what the pipeline lineage tracking visualizer looks like" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/4cac363e/65311c3e6c4d6e63305dc144_zenml_lineage.gif" alt="Here&#039;s what the pipeline lineage tracking visualizer looks like" />
 </figure>
 
 *Here’s what the pipeline lineage tracking visualizer looks like*

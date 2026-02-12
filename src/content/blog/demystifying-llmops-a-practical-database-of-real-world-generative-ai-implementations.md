@@ -23,12 +23,12 @@ tags:
 date: "2024-12-02T00:00:00.000Z"
 readingTime: 4 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/19e734e6/6981d37a71c3040935dbc35f_6981d2aaba748f2dc5f0843a_midjourney1.avif"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/19e734e6/6981d37a71c3040935dbc35f_6981d2aaba748f2dc5f0843a_midjourney1.avif"
 seo:
   title: "Demystifying LLMOps: A Practical Database of Real-World Generative AI Implementations - ZenML Blog"
   description: "The LLMOps Database offers a curated collection of 300+ real-world generative AI implementations, providing technical teams with practical insights into successful LLM deployments. This searchable resource includes detailed case studies, architectural decisions, and AI-generated summaries of technical presentations to help bridge the gap between demos and production systems."
   canonical: "https://www.zenml.io/blog/demystifying-llmops-a-practical-database-of-real-world-generative-ai-implementations"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/19e734e6/6981d37a71c3040935dbc35f_6981d2aaba748f2dc5f0843a_midjourney1.avif"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/19e734e6/6981d37a71c3040935dbc35f_6981d2aaba748f2dc5f0843a_midjourney1.avif"
   ogTitle: "Demystifying LLMOps: A Practical Database of Real-World Generative AI Implementations - ZenML Blog"
   ogDescription: "The LLMOps Database offers a curated collection of 300+ real-world generative AI implementations, providing technical teams with practical insights into successful LLM deployments. This searchable resource includes detailed case studies, architectural decisions, and AI-generated summaries of technical presentations to help bridge the gap between demos and production systems."
 ---
@@ -38,7 +38,7 @@ The landscape of generative AI has evolved rapidly, bringing both excitement and
 ## The Quest for Practical Insights
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/5b10df74/674d7ffbccfd203c8294127c_674d7fabf7c49a64ef58fefd_CleanShot_20Dec_201_202024_20_4_.png" alt="Screenshot of the ZenML LLMOps database, a collection of summaries of case studies around the technical implementation of LLMs and GenAI in production." />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5b10df74/674d7ffbccfd203c8294127c_674d7fabf7c49a64ef58fefd_CleanShot_20Dec_201_202024_20_4_.png" alt="Screenshot of the ZenML LLMOps database, a collection of summaries of case studies around the technical implementation of LLMs and GenAI in production." />
 </figure>
 
 The creation of [this database](https://www.zenml.io/llmops-database) emerged from a fundamental observation: while theoretical (and unbounded / hype-based) discussions about LLMs abound, technical teams need concrete, implementation-focused information to guide their deployment decisions. As part of ZenML's commitment to advancing a shared understanding of open-source LLMOps solutions, we've invested time in curating and presenting these production deployments, focusing exclusively on technical depth and real-world problem-solving.
@@ -56,7 +56,7 @@ Rather than getting caught up in terminology debates, we've observed the industr
 ## Navigating the Database
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/dc28cef7/674d7ffbccfd203c8294127f_674d7fdb9f8e6a10f0e96df4_CleanShot_20Dec_201_202024_20_5_.png" alt="Screenshot of a sample entry in the LLMOps database. In this case, it’s part of the summary of Agmatix’s case study around the use of LLMOps for Agricultural Field Trials." />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/dc28cef7/674d7ffbccfd203c8294127f_674d7fdb9f8e6a10f0e96df4_CleanShot_20Dec_201_202024_20_5_.png" alt="Screenshot of a sample entry in the LLMOps database. In this case, it’s part of the summary of Agmatix’s case study around the use of LLMOps for Agricultural Field Trials." />
 </figure>
 
 The LLMOps Database serves as a living repository of practical knowledge, designed for intuitive exploration while maintaining technical depth. Accessible through [our portal](https://www.zenml.io/llmops-database), the database offers sophisticated filtering capabilities that help technical teams quickly find relevant implementations. Whether you're researching [LangChain deployments](https://zenml.webflow.io/llmops-tags/langchain) in production, exploring different [approaches to RAG implementation](https://zenml.webflow.io/llmops-tags/rag), or investigating [LLM monitoring solutions](https://zenml.webflow.io/llmops-tags/monitoring), the database provides targeted access to relevant case studies.

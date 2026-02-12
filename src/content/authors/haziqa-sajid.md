@@ -2,7 +2,7 @@
 name: " Haziqa Sajid"
 slug: "haziqa-sajid"
 avatar:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e188494c/67af23419c358b5f03d2a212_Image_200x200.jpeg"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e188494c/67af23419c358b5f03d2a212_Image_200x200.jpeg"
 webflow:
   siteId: "64a817a2e7e2208272d1ce30"
   itemId: "67af2348422c702b16713200"

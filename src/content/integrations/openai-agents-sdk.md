@@ -12,19 +12,19 @@ webflow:
   createdOn: "2025-08-26T14:27:00.325Z"
 integrationType: "agents"
 logo:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/f221e966/68adc43932c9097522a666d3_openai.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f221e966/68adc43932c9097522a666d3_openai.png"
 shortDescription: "OpenAI Agents SDK integrated with ZenML"
 docsUrl: "https://docs.zenml.io"
 githubUrl: "https://github.com/zenml-io/zenml/tree/main/examples/agent_framework_integrations/openai_agents_sdk"
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/9a636a7f/68adc595169ac0f55969f218_openai-img.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9a636a7f/68adc595169ac0f55969f218_openai-img.png"
 relatedBlogPosts:
   - "the-ultimate-guide-to-llm-batch-inference-with-openai-and-zenml"
 seo:
   title: "Integrate OpenAI Agents SDK with ZenML - Agents Integrations"
   description: "OpenAI Agents SDK integrated with ZenML"
   canonical: "https://www.zenml.io/integrations/openai-agents-sdk"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/9a636a7f/68adc595169ac0f55969f218_openai-img.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9a636a7f/68adc595169ac0f55969f218_openai-img.png"
   ogTitle: "Integrate OpenAI Agents SDK with ZenML - Agents Integrations"
   ogDescription: "OpenAI Agents SDK integrated with ZenML"
 ---

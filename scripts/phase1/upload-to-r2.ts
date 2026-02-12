@@ -383,7 +383,7 @@ async function main() {
     options: {
       'run-id': { type: 'string' },
       'bucket': { type: 'string', default: 'zenml-assets' },
-      'r2-domain': { type: 'string', default: 'pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev' },
+      'r2-domain': { type: 'string', default: 'pub-41d587b95acb4b579d9280542922084b.r2.dev' },
       'concurrency': { type: 'string', default: '5' }
     }
   });
@@ -396,7 +396,7 @@ async function main() {
   }
 
   const bucket = values['bucket'] || 'zenml-assets';
-  const r2Domain = values['r2-domain'] || 'pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev';
+  const r2Domain = values['r2-domain'] || 'pub-41d587b95acb4b579d9280542922084b.r2.dev';
   const concurrency = parseInt(values['concurrency'] || '5', 10);
   const siteId = '64a817a2e7e2208272d1ce30';
 

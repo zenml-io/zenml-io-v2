@@ -7,12 +7,12 @@ hub:
   cardTitle: "How Brevo accelerated model development by 80% using ZenML"
   order: 3
   logos:
-    - url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/52a636b6/66c74d825fbc26b4d09823d1_Brevo-Logo-transparent.webp"
+    - url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/52a636b6/66c74d825fbc26b4d09823d1_Brevo-Logo-transparent.webp"
       alt: "Green \"Brevo\" logo on a transparent background."
 
 hero:
   logos:
-    - url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/cb7581f5/652d3e5d29d36f927c2bb623_brevo.webp"
+    - url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/cb7581f5/652d3e5d29d36f927c2bb623_brevo.webp"
       alt: "Logo of Brevo, previously known as Sendinblue, displayed in green and black text."
 
 sidebar:
@@ -66,7 +66,7 @@ webflow:
                     <div class="uui-testimonial04_component">
                       <h3 class="uui-heading-small text-weight-medium">“After a benchmark on several solutions, we choose ZenML for its stack flexibility and its incremental process. We started from small local pipelines and gradually created more complex production ones. It was very easy to adopt.”</h3>
                       <div class="uui-testimonial04_client">
-                        <div class="uui-testimonial04_client-image-wrapper"><img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/7999105b/65c60489feaf4767c877fc3f_clement.webp" loading="lazy" alt="I'm sorry, but I can't tell who this person is or provide context related to any keywords from the list. Could you provide more information about the image or its context?" class="uui-testimonial04_client-image"></div>
+                        <div class="uui-testimonial04_client-image-wrapper"><img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7999105b/65c60489feaf4767c877fc3f_clement.webp" loading="lazy" alt="I'm sorry, but I can't tell who this person is or provide context related to any keywords from the list. Could you provide more information about the image or its context?" class="uui-testimonial04_client-image"></div>
                         <div class="uui-testimonial04_client-info">
                           <div class="uui-heading-tiny">Clément Depraz</div>
                           <div class="uui-text-size-medium">Data Scientist at Brevo</div>
@@ -82,18 +82,18 @@ webflow:
                 <h3>Homogeneity of Infrastructure &amp; Centralization</h3>
                 <p>Brevo deployed models using various tools within Google Cloud Platform (GCP): Vertex AI, BigQuery ML, and potentially Cloud Function. Despite their unique features, ZenML unified these tools for data scientists, maintaining agility and speed.</p>
                 <figure style="max-width:4186pxpx" class="w-richtext-align-fullwidth w-richtext-figure-type-image">
-                  <div><img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/73dc731d/65cb2cb57f1135046c377951_zenml-infrastructure-centralization.webp" loading="lazy" alt="Homogeneity of Infrastructure &amp; Centralization"></div>
+                  <div><img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/73dc731d/65cb2cb57f1135046c377951_zenml-infrastructure-centralization.webp" loading="lazy" alt="Homogeneity of Infrastructure &amp; Centralization"></div>
                 </figure>
                 <p>ZenML provided a unified experience layer for the data scientists to leverage each individual service, without losing their agility and speed.</p>
                 <h3>Incremental deployment</h3>
                 <p>ZenML provided the flexibility to begin with a compact pipeline operating on a local scale, ensuring detailed inspection of every phase up to a full-scale production pipeline scheduled on the cloud. This incremental approach offers a multitude of possibilities, encouraging experimentation, testing, and evolution of the pipeline.</p>
                 <figure style="max-width:3076pxpx" class="w-richtext-align-fullwidth w-richtext-figure-type-image">
-                  <div><img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/f3e4bc63/65c605234f68da20ece12fa9_zenml-incremental-deployment.webp" loading="lazy" alt="Incremental deployment"></div>
+                  <div><img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f3e4bc63/65c605234f68da20ece12fa9_zenml-incremental-deployment.webp" loading="lazy" alt="Incremental deployment"></div>
                 </figure>
                 <h3>Reliable ML models that are reproducible and auditable</h3>
                 <p>Adopting ZenML ensures reliable, reproducible, and auditable ML models with strong data and model versioning, guaranteeing robustness, efficiency, and full traceability. Brevo gained clear insights into model performance, data usage, and experiment outcomes, reducing troubleshooting time with complete model lineage for review.</p>
                 <figure style="max-width:3320pxpx" class="w-richtext-align-fullwidth w-richtext-figure-type-image">
-                  <div><img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/413761ea/65c60523f2a21ac92ed8b6c0_zenml-models.webp" loading="lazy" alt="Reliable ML models that are reproducible and auditable"></div>
+                  <div><img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/413761ea/65c60523f2a21ac92ed8b6c0_zenml-models.webp" loading="lazy" alt="Reliable ML models that are reproducible and auditable"></div>
                 </figure>
                 <h2>The Results: A Leap in Operational Efficiency and Market Reach</h2>
                 <p>Brevo's adoption of ZenML yielded significant improvements across their ML operations and business outcomes:</p>
@@ -101,13 +101,13 @@ webflow:
                   <li><strong class="text-dark">Increased Model Efficiency<br>‍</strong>With 5 models now in production, Brevo improved fraud targeting, boosted customer satisfaction and reduced workload.</li>
                 </ul>
                 <figure style="max-width:1960pxpx" class="w-richtext-align-fullwidth w-richtext-figure-type-image">
-                  <div><img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/0ba43aec/65c60523bfb44a6f997fafa4_model-efficiency.webp" loading="lazy" alt="Model efficiency"></div>
+                  <div><img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/0ba43aec/65c60523bfb44a6f997fafa4_model-efficiency.webp" loading="lazy" alt="Model efficiency"></div>
                 </figure>
                 <ul role="list">
                   <li><strong class="text-dark">Automated Delivery &amp; Faster Time-to-Market<br>‍</strong>ZenML drastically reduced ML lifecycles from months to days with its automation capabilities, enabling rapid response to market needs.</li>
                 </ul>
                 <figure style="max-width:1960pxpx" class="w-richtext-align-fullwidth w-richtext-figure-type-image">
-                  <div><img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/a2474f81/65c60523f18ce6e8c7751996_developing-model-days.webp" loading="lazy" alt="Days to develop a model"></div>
+                  <div><img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a2474f81/65c60523f18ce6e8c7751996_developing-model-days.webp" loading="lazy" alt="Days to develop a model"></div>
                 </figure>
                 <ul role="list">
                   <li><strong class="text-dark">Enhanced Team Productivity<br>‍</strong>The collaborative features and automation provided by ZenML have streamlined the workflow, allowing the team to focus more on innovation rather than operational overheads.</li>
@@ -127,7 +127,7 @@ webflow:
                     <div class="uui-testimonial04_component">
                       <h3 class="uui-heading-small text-weight-medium">“ZenML has been instrumental in becoming a safer platform, fighting against fraudsters and scammers. It has empowered us to deliver efficient insights to our marketing and sales teams and contribute to overall improvements.”</h3>
                       <div class="uui-testimonial04_client">
-                        <div class="uui-testimonial04_client-image-wrapper"><img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/7999105b/65c60489feaf4767c877fc3f_clement.webp" loading="lazy" alt="I'm sorry, but I can't tell who this person is or provide context related to any keywords from the list. Could you provide more information about the image or its context?" class="uui-testimonial04_client-image"></div>
+                        <div class="uui-testimonial04_client-image-wrapper"><img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7999105b/65c60489feaf4767c877fc3f_clement.webp" loading="lazy" alt="I'm sorry, but I can't tell who this person is or provide context related to any keywords from the list. Could you provide more information about the image or its context?" class="uui-testimonial04_client-image"></div>
                         <div class="uui-testimonial04_client-info">
                           <div class="uui-heading-tiny">Clément Depraz</div>
                           <div class="uui-text-size-medium">Data Scientist at Brevo</div>

@@ -20,12 +20,12 @@ tags:
 date: "2024-08-05T00:00:00.000Z"
 readingTime: 15 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/5a429257/66b0e77bcd476bf0864db24f_zenml-mlops-min.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5a429257/66b0e77bcd476bf0864db24f_zenml-mlops-min.png"
 seo:
   title: "MLOps: What It Is, Why It Matters, and How to Implement It - ZenML Blog"
   description: "An overview of MLOps principles, implementation strategies, best practices, and tools for managing machine learning lifecycles."
   canonical: "https://www.zenml.io/blog/mlops-what-why-how"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/f44c13b2/66b0e77bcd476bf0864db24f_zenml-mlops-min.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f44c13b2/66b0e77bcd476bf0864db24f_zenml-mlops-min.png"
   ogTitle: "MLOps: What It Is, Why It Matters, and How to Implement It - ZenML Blog"
   ogDescription: "An overview of MLOps principles, implementation strategies, best practices, and tools for managing machine learning lifecycles."
 ---
@@ -65,7 +65,7 @@ MLOps is crucial for optimizing and automating machine learning processes in pro
 MLOps merges data science and IT operations, enabling seamless integration of machine learning models into business workflows. By automating model training, deployment, and monitoring, MLOps ensures efficient and reliable incorporation of ML models into production, driving competitive advantage.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/dd9c3576/66b0e17e5990b71526221ada_66b0dfa3dec7dfd115a1a2f0_mlops001.png" alt="Key Benefits of MLOps infographic: Streamlined Model Development, Large-Scale ML Operations, Reproducibility and Robustness, and Meeting Regulatory Requirements. ZenML logo included." />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/dd9c3576/66b0e17e5990b71526221ada_66b0dfa3dec7dfd115a1a2f0_mlops001.png" alt="Key Benefits of MLOps infographic: Streamlined Model Development, Large-Scale ML Operations, Reproducibility and Robustness, and Meeting Regulatory Requirements. ZenML logo included." />
 </figure>
 
 **Statistics**
@@ -81,7 +81,7 @@ Investment in MLOps has grown significantly in recent years. According to [a rep
 Most sufficiently complex models will go through the following nine stages in their [MLOps](https://www.fiddler.ai/mlops) lifecycle:
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/5e42d084/66b0e7d74101550234af602c_66b0e65763eecc7c05a83371_mlops-flow.png" alt="ZenML MLOps lifecycle diagram: Problem Definition, Data Collection, Processing, Exploration, Feature Engineering, Model Training, Integration, Deployment, Release, and Monitoring. Flowchart showing interconnected stages of the machine learning process." />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5e42d084/66b0e7d74101550234af602c_66b0e65763eecc7c05a83371_mlops-flow.png" alt="ZenML MLOps lifecycle diagram: Problem Definition, Data Collection, Processing, Exploration, Feature Engineering, Model Training, Integration, Deployment, Release, and Monitoring. Flowchart showing interconnected stages of the machine learning process." />
 </figure>
 
 **Problem definition:*** All model development starts with identifying a concrete problem to *solve with AI.
@@ -155,7 +155,7 @@ Google suggests three approaches for implementing MLOps:
 <ul><li><strong>MLOps Level 0:</strong> Manual processes.</li><li><strong>MLOps Level 1:</strong> Automation of the ML pipeline.</li><li><strong>MLOps Level 2:</strong> Automation of the CI/CD pipeline.</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e6aa006f/66b0e17e5990b71526221ad2_66b0e0b2b9d39380e27e3634_mlops003.png" alt="ZenML MLOps maturity levels chart: Comparing characteristics and challenges of Manual Processes (Level 0), ML Pipeline Automation (Level 1), and CI/CD Pipeline Automation (Level 2). Details workflow evolution, automation, and operational improvements across MLOps stages." />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e6aa006f/66b0e17e5990b71526221ad2_66b0e0b2b9d39380e27e3634_mlops003.png" alt="ZenML MLOps maturity levels chart: Comparing characteristics and challenges of Manual Processes (Level 0), ML Pipeline Automation (Level 1), and CI/CD Pipeline Automation (Level 2). Details workflow evolution, automation, and operational improvements across MLOps stages." />
 </figure>
 
 **MLOps level 0**
@@ -371,7 +371,7 @@ python app.py
 **Output on localhost:**
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/db20de5b/66b0e5ebe712c30152be942e_66b0e2be4c45970293da4b6e_mlops004.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/db20de5b/66b0e5ebe712c30152be942e_66b0e2be4c45970293da4b6e_mlops004.png" alt="__wf_reserved_inherit" />
 </figure>
 
 We can input the reviews into the textbox for analysis. The output will be categorized as positive, negative, or neutral, with values closer to 1 indicating higher effectiveness.
@@ -453,7 +453,7 @@ python roberta_pipeline.py
 Once it runs, your dashboard will show all the details of the associated run, models, and artifacts.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/a4f00740/66b0e5ebe712c30152be9437_66b0e3875f8b016bd90499b9_mlops005.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a4f00740/66b0e5ebe712c30152be9437_66b0e3875f8b016bd90499b9_mlops005.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ## Tools and Platforms for MLOps
@@ -461,7 +461,7 @@ Once it runs, your dashboard will show all the details of the associated run, mo
 Implementing MLOps effectively requires a combination of tools and platforms that support various stages of the machine learning lifecycle. Here’s an overview of some of the most popular MLOps tools and platforms:
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/8448566a/66b0e5ebe712c30152be942b_66b0e4f0cd476bf0864bfd82_mlops006-min.png" alt="Tools and Platforms for MLOps: ZenML ecosystem diagram illustrating categories including data versioning, deployment orchestration, monitoring, experiment tracking, feature stores, end-to-end MLOps platforms, model training, and automated testing. Features logos of tools like DVC, Kubeflow, Neptune.ai, Feast, TensorFlow, and CML." />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8448566a/66b0e5ebe712c30152be942b_66b0e4f0cd476bf0864bfd82_mlops006-min.png" alt="Tools and Platforms for MLOps: ZenML ecosystem diagram illustrating categories including data versioning, deployment orchestration, monitoring, experiment tracking, feature stores, end-to-end MLOps platforms, model training, and automated testing. Features logos of tools like DVC, Kubeflow, Neptune.ai, Feast, TensorFlow, and CML." />
 </figure>
 
 **Data Versioning and Management**
@@ -521,7 +521,7 @@ Now that you've seen various MLOps tools that streamline work from data collecti
 ### MLOps platforms overview
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/fe68eb4c/66b0e5ebe712c30152be9426_66b0e5c1ce40c78dbecd7429_mlops007-min.png" alt="MLOps platforms overview: Comparison table of ZenML, AWS Sagemaker, ClearML, MLflow, Kubeflow, and Vertex AI. Details category (managed/open-source), description, key areas (tracking, versioning, orchestration), and focus (AWS, experimentation, Spark, model deployment, flexibility). Highlights features of each platform for machine learning operations and workflows." />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/fe68eb4c/66b0e5ebe712c30152be9426_66b0e5c1ce40c78dbecd7429_mlops007-min.png" alt="MLOps platforms overview: Comparison table of ZenML, AWS Sagemaker, ClearML, MLflow, Kubeflow, and Vertex AI. Details category (managed/open-source), description, key areas (tracking, versioning, orchestration), and focus (AWS, experimentation, Spark, model deployment, flexibility). Highlights features of each platform for machine learning operations and workflows." />
 </figure>
 
 ## The Future of MLOps

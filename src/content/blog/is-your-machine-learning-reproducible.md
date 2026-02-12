@@ -21,12 +21,12 @@ tags:
 date: "2021-01-19T00:00:00.000Z"
 readingTime: 5 Mins Read
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/5801795d/6530a90b534b0af06e6bd365_svg-image-1__3_.svg"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5801795d/6530a90b534b0af06e6bd365_svg-image-1__3_.svg"
 seo:
   title: "Is your Machine Learning Reproducible? - ZenML Blog"
   description: "Short answer: not really, but it can become better!"
   canonical: "https://www.zenml.io/blog/is-your-machine-learning-reproducible"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/7524cd93/6530a90b534b0af06e6bd365_svg-image-1__3_.svg"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7524cd93/6530a90b534b0af06e6bd365_svg-image-1__3_.svg"
   ogTitle: "Is your Machine Learning Reproducible? - ZenML Blog"
   ogDescription: "Short answer: not really, but it can become better!"
 ---

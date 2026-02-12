@@ -19,12 +19,12 @@ tags:
 date: "2021-10-27T00:00:00.000Z"
 readingTime: 7 Mins Read
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/5a238312/6531df65bcc4954986ff9cb4_pipes.jpg"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5a238312/6531df65bcc4954986ff9cb4_pipes.jpg"
 seo:
   title: "Taking on the ML pipeline challenge - ZenML Blog"
   description: "Why data scientists need to own their ML workflows in production."
   canonical: "https://www.zenml.io/blog/taking-on-the-ml-pipeline-challenge"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/7fe2f3ba/6531df65bcc4954986ff9cb4_pipes.jpg"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7fe2f3ba/6531df65bcc4954986ff9cb4_pipes.jpg"
   ogTitle: "Taking on the ML pipeline challenge - ZenML Blog"
   ogDescription: "Why data scientists need to own their ML workflows in production."
 ---
@@ -44,7 +44,7 @@ However, awesome as ML pipelines are, they do come with some inherent questions 
 ## The Ownership Dilemma
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/d2e4b7d9/6531df71a79c7763af0d7683_confusing-pipelines.png" alt="ML In Production is confusing" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d2e4b7d9/6531df71a79c7763af0d7683_confusing-pipelines.png" alt="ML In Production is confusing" />
 </figure>
 
 One question that organizations developing machine learning need to answer is **who owns ML pipelines in production**? Is it the data scientist who creates the model? Is it the data engineer who deploys it in production? Is it someone else altogether?
@@ -82,7 +82,7 @@ So it’s a tool that let’s you define pipelines but how is it different from 
 Everybody knows that we are now [in the midst of an explosion in the ML/MLOps tooling landscape](https://huyenchip.com/2020/06/22/mlops.html). ZenML is explicitly designed to have no opinions about the underlying infrastructure/tooling that you would like to use. Rather it exposes higher level concepts like Metadata Stores , Artifact Stores, and Orchestrators that have common interfaces. A ML team can then swap out individual components of their pipelines backends and it will ‘just work’.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/623358b1/6531df715abb521b41c1185c_zenml-is-the-glue.jpeg" alt="Look closer: This isn’t the Hidden Technical Debt Diagram ;-)" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/623358b1/6531df715abb521b41c1185c_zenml-is-the-glue.jpeg" alt="Look closer: This isn’t the Hidden Technical Debt Diagram ;-)" />
 </figure>
 
 So, if you even want to use [MLFlow](https://mlflow.org/) to track your experiments, run the pipeline on [Airflow](https://airflow.apache.org/), and then deploy a model to a [Neptune](https://neptune.ai/) Model Registry, ZenML will facilitate this MLOps Stack for you. This decision can be made jointly by the data scientists and engineers. As ZenML is a framework, custom pieces of the puzzle can also be added here to accommodate legacy infrastructure.
@@ -107,7 +107,7 @@ Also notice that ZenML fully supports objects from common ML frameworks like tor
 ZenML understands that pipelines are going to change over time. Therefore, it encourages running these pipelines locally to begin with and experimenting with the results as they are produced. You can query pipelines in a local Jupyter notebook, and materialize it with different pre-made visualizations like statistics visualizations and schema anomalies.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/dde249c1/6531df72cb7b2d6311e824f3_zenml-pipeline-post-workflow.png" alt="After running pipelines, one can fetch them and see results easily, no matter if run locally or not" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/dde249c1/6531df72cb7b2d6311e824f3_zenml-pipeline-post-workflow.png" alt="After running pipelines, one can fetch them and see results easily, no matter if run locally or not" />
 </figure>
 
 This is a different approach to pipeline development, and is more representative of how a data scientist would like to work in the earlier phases of a project → i.e. with fast, quick iterations and visualizations that help them to make informed decisions about experiments. We call this approach **Pipelines As Experiments (PaE)**.

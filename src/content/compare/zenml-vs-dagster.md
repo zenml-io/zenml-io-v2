@@ -12,7 +12,7 @@ webflow:
   createdOn: "2024-07-12T13:27:35.501Z"
 toolName: "Dagster"
 toolIcon:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/0f610654/66912e16664b84d65aa114e7_dagster-icon.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/0f610654/66912e16664b84d65aa114e7_dagster-icon.png"
 category: "orchestrators"
 integrationType: "orchestrator"
 advantages:
@@ -27,12 +27,12 @@ ctaHeadline: "Streamline Your ML Workflows with ZenML"
 learnMoreUrl: "https://cloud.zenml.io/?utm_source=website&utm_medium=website_hero&utm_campaign=cloud_promotion&utm_content=signup_link"
 seoDescription: "Dagster alternative: Streamline ML ops with intuitive pipelines. Seamless integrations and experiment tracking for efficient ML workflow management."
 openGraphImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/de2542ee/66c5fc89f3a4d934d7130afd_compare-dagster.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/de2542ee/66c5fc89f3a4d934d7130afd_compare-dagster.png"
 seo:
   title: "ZenML vs Dagster - Orchestrate Your Data Pipelines with Ease"
   description: "Dagster alternative: Streamline ML ops with intuitive pipelines. Seamless integrations and experiment tracking for efficient ML workflow management."
   canonical: "https://www.zenml.io/compare/zenml-vs-dagster"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/21610dae/66c5fc89f3a4d934d7130afd_compare-dagster.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/21610dae/66c5fc89f3a4d934d7130afd_compare-dagster.png"
   ogTitle: "ZenML vs Dagster - Orchestrate Your Data Pipelines with Ease"
   ogDescription: "Dagster alternative: Streamline ML ops with intuitive pipelines. Seamless integrations and experiment tracking for efficient ML workflow management."
 ---

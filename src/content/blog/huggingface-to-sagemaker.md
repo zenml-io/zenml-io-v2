@@ -20,12 +20,12 @@ tags:
 date: "2023-11-16T00:00:00.000Z"
 readingTime: 8 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/01c3fb83/6556276e837f48a1862d831f_training_pipeline_overview.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/01c3fb83/6556276e837f48a1862d831f_training_pipeline_overview.png"
 seo:
   title: "Huggingface Model to Sagemaker Endpoint: Automating MLOps with ZenML - ZenML Blog"
   description: "Deploying Huggingface models to AWS Sagemaker endpoints typically only requires a few lines of code. However, there's a growing demand to not just deploy, but to seamlessly automate the entire flow from training to production with comprehensive lineage tracking. ZenML adeptly fills this niche, providing an end-to-end MLOps solution for Huggingface users wishing to deploy to Sagemaker."
   canonical: "https://www.zenml.io/blog/huggingface-to-sagemaker"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/81c84e3e/6556276e837f48a1862d831f_training_pipeline_overview.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/81c84e3e/6556276e837f48a1862d831f_training_pipeline_overview.png"
   ogTitle: "Huggingface Model to Sagemaker Endpoint: Automating MLOps with ZenML - ZenML Blog"
   ogDescription: "Deploying Huggingface models to AWS Sagemaker endpoints typically only requires a few lines of code. However, there's a growing demand to not just deploy, but to seamlessly automate the entire flow from training to production with comprehensive lineage tracking. ZenML adeptly fills this niche, providing an end-to-end MLOps solution for Huggingface users wishing to deploy to Sagemaker."
 ---
@@ -33,7 +33,7 @@ seo:
 Deploying [Huggingface](https://huggingface.co/) models to [AWS Sagemaker](https://aws.amazon.com/sagemaker/) endpoints typically only requires a few lines of code. However, there's a growing demand to not just deploy, but to seamlessly automate the entire flow from training to production with comprehensive lineage tracking. ZenML adeptly fills this niche, providing an end-to-end MLOps solution for Huggingface users wishing to deploy to Sagemaker. Below, we’ll walk through the architecture that ZenML employs to bring a Huggingface model into production with AWS Sagemaker. Of course all of this can be adapted to not just Sagemaker, but any other model deployment service like GCP Vertex or Azure ML Platform
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/4b6568c7/655634b7d30cb780727ae038_pipelines_overview.png" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/4b6568c7/655634b7d30cb780727ae038_pipelines_overview.png" alt="" />
 </figure>
 
 This blog post showcases one way of using [ZenML](https://zenml.io/) pipelines to achieve this:
@@ -53,7 +53,7 @@ Watch the video of this section:
 <figure class="w-richtext-figure-type-video w-richtext-align-center" style="padding-bottom:33.723653395784545%" data-rt-type="video" data-rt-align="center" data-rt-max-width="" data-rt-max-height="33.723653395784545%" data-rt-dimensions="854:480" data-page-url="https://www.youtube.com/watch?v=7OTV--X9bKk&amp;t=1s"><iframe allowFullScreen={true} frameBorder="0" scrolling="no" src="https://www.youtube.com/embed/7OTV--X9bKk?start=1" title="[2/5] Huggingface to Sagemaker with ZenML Pipelines - Feature engineering with a Huggingface Dataset"></iframe></figure>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e982b21f/6556353a385b46aa9bbb543d_pipelines_feature_eng.png" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e982b21f/6556353a385b46aa9bbb543d_pipelines_feature_eng.png" alt="" />
 </figure>
 
 Automated feature engineering forms the foundation of this MLOps workflow. Thats why the first pipeline is the feature engineering pipeline. This pipeline loads some data from Huggingface and uses a base tokenizer to create a tokenized dataset. The data loader step is a simple Python function that returns a Huggingface dataloader object:
@@ -81,7 +81,7 @@ Watch the video for this section:
 <figure class="w-richtext-figure-type-video w-richtext-align-center" style="padding-bottom:33.723653395784545%" data-rt-type="video" data-rt-align="center" data-rt-max-width="" data-rt-max-height="33.723653395784545%" data-rt-dimensions="854:480" data-page-url="https://www.youtube.com/watch?v=YoQoT5eSMek&amp;t=29s"><iframe allowFullScreen={true} frameBorder="0" scrolling="no" src="https://www.youtube.com/embed/YoQoT5eSMek?start=29" title="[3/5] Huggingface to Sagemaker with ZenML Pipelines - Training a BERT based Sentiment Classifer"></iframe></figure>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/01c3fb83/6556276e837f48a1862d831f_training_pipeline_overview.png" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/01c3fb83/6556276e837f48a1862d831f_training_pipeline_overview.png" alt="" />
 </figure>
 
 Once the feature engineering pipeline has run a few times, we have many datasets to choose from. We can feed our desired one into a function that trains the model on the data. Thanks to the ZenML Huggingface integration, this data is loaded directly from the [ZenML artifact store](https://docs.zenml.io/stacks-and-components/component-guide/artifact-stores).
@@ -91,18 +91,18 @@ On the left side, we see our local MLOps stack, which defines our infrastructure
 On the right side is the new kid on the block - the **ZenML Model Control Plane**. The Model Control Plane is a new feature in ZenML that allows users to have a complete overview of their machine learning models. It allows teams to consolidate all artifacts related to their ML models into one place, and manage its lifecycle easily as you can see from this view from the [ZenML Cloud](https://cloud.zenml.io/):
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/890bf91d/655635a42cb69eee96efaacf_mcp_2.png" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/890bf91d/655635a42cb69eee96efaacf_mcp_2.png" alt="" />
 </figure>
 
 In this case, the training pipeline pushes the model into Huggingface each time its trained, and tracks the revision to establish lineage:
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/555f0759/655635ba8364e8a5e4e693a3_hf_repo_commit.png" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/555f0759/655635ba8364e8a5e4e693a3_hf_repo_commit.png" alt="" />
   <figcaption>Notice that the pipeline creates a commit on Huggingface Hub automatically</figcaption>
 </figure>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/bc4ff47d/655635db6f42324843741d98_training_pipeline_with_hf.png" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/bc4ff47d/655635db6f42324843741d98_training_pipeline_with_hf.png" alt="" />
   <figcaption>The same commit is tracked in ZenML</figcaption>
 </figure>
 
@@ -115,7 +115,7 @@ Watch the video of this section:
 <figure class="w-richtext-figure-type-video w-richtext-align-center" style="padding-bottom:33.723653395784545%" data-rt-type="video" data-rt-align="center" data-rt-max-width="" data-rt-max-height="33.723653395784545%" data-rt-dimensions="854:480" data-page-url="https://www.youtube.com/watch?v=_A2l3OMezvE&amp;list=PLhNrLW_IWplw6dBbmGcL828-atJMu3CwF&amp;index=5"><iframe allowFullScreen={true} frameBorder="0" scrolling="no" src="https://www.youtube.com/embed/_A2l3OMezvE" title="[4/5] Huggingface to Sagemaker with ZenML Pipelines - Promoting the model to Production"></iframe></figure>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/91ad41d7/65563624cecadcbf0affcb72_promoting_pipeline_overview.png" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/91ad41d7/65563624cecadcbf0affcb72_promoting_pipeline_overview.png" alt="" />
 </figure>
 
 Following training, the automated promotion pipeline evaluates models against predefined metrics, identifying and marking the most performant one as 'Production ready'. This is another common use case for the Model Control Plane; we store the relevant metrics there to access them easily later:
@@ -148,7 +148,7 @@ Watch the video of this section:
 <figure class="w-richtext-figure-type-video w-richtext-align-center" style="padding-bottom:33.723653395784545%" data-rt-type="video" data-rt-align="center" data-rt-max-width="" data-rt-max-height="33.723653395784545%" data-rt-dimensions="854:480" data-page-url="https://www.youtube.com/watch?v=0-dSE4vzwHY&amp;list=PLhNrLW_IWplw6dBbmGcL828-atJMu3CwF&amp;index=5"><iframe allowFullScreen={true} frameBorder="0" scrolling="no" src="https://www.youtube.com/embed/0-dSE4vzwHY" title="[5/5] Huggingface to Sagemaker with ZenML Pipelines - Deploying to AWS Sagemaker Endpoints"></iframe></figure>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/bc9cd5ea/65563639cdc36d997045cef0_deploying_pipeline_overview.png" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/bc9cd5ea/65563639cdc36d997045cef0_deploying_pipeline_overview.png" alt="" />
 </figure>
 
 This is the final step to automate the deployment of the slated production model to a Sagemaker endpoint. The deployment pipelines handles the complexities of AWS interactions and ensures that the model, along with its full history and context, is transitioned into a live environment ready for use. Here again we use the Model Control Plane interface to query the Huggingface revision and use that information to push to Huggingface Hub:
@@ -195,7 +195,7 @@ endpoint_name = prod_model.metadata["sagemaker_endpoint_name"].value
 The app is therefore decoupled from the other process, and running smoothly. It will always pick up the production version:
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/bfde3f0a/6556365ff4454f14a81e3035_nlp_zenml_demo.png" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/bfde3f0a/6556365ff4454f14a81e3035_nlp_zenml_demo.png" alt="" />
 </figure>
 
 ## Conclusion

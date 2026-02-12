@@ -12,7 +12,7 @@ webflow:
   createdOn: "2024-06-18T14:14:42.073Z"
 toolName: "MLflow"
 toolIcon:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/a1b4e2d9/667194e2cb9c515b07633d21_mlflow.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a1b4e2d9/667194e2cb9c515b07633d21_mlflow.png"
 category: "experiment-trackers"
 integrationType: "experiment-tracker"
 advantages:
@@ -25,12 +25,12 @@ heroText: "Discover how ZenML and MLflow approach machine learning lifecycle man
 learnMoreUrl: "https://cloud.zenml.io/?utm_source=website&utm_medium=website_hero&utm_campaign=cloud_promotion&utm_content=signup_link"
 seoDescription: "MLflow alternative: Comprehensive MLOps beyond tracking. Orchestrate full ML pipelines, integrate tools, and manage workflows efficiently."
 openGraphImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/c714f621/66c5fd140930b4aa6f05e9d0_compare-mlflow.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c714f621/66c5fd140930b4aa6f05e9d0_compare-mlflow.png"
 seo:
   title: "ZenML vs MLflow - ZenML vs MLflow: Streamline Your ML Workflows"
   description: "MLflow alternative: Comprehensive MLOps beyond tracking. Orchestrate full ML pipelines, integrate tools, and manage workflows efficiently."
   canonical: "https://www.zenml.io/compare/zenml-vs-mlflow"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/df576ea6/66c5fd140930b4aa6f05e9d0_compare-mlflow.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/df576ea6/66c5fd140930b4aa6f05e9d0_compare-mlflow.png"
   ogTitle: "ZenML vs MLflow - ZenML vs MLflow: Streamline Your ML Workflows"
   ogDescription: "MLflow alternative: Comprehensive MLOps beyond tracking. Orchestrate full ML pipelines, integrate tools, and manage workflows efficiently."
 ---

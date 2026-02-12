@@ -21,12 +21,12 @@ tags:
 date: "2025-05-25T00:00:00.000Z"
 readingTime: 18 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/755daafe/6832aace9707ff17f4ffcf01_metaflow-alternatives.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/755daafe/6832aace9707ff17f4ffcf01_metaflow-alternatives.png"
 seo:
   title: "8 Metaflow Alternatives to Streamline Your ML Workflows - ZenML Blog"
   description: "Discover the top 8 Metaflow alternatives to streamline your ML workflows."
   canonical: "https://www.zenml.io/blog/metaflow-alternatives"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/755daafe/6832aace9707ff17f4ffcf01_metaflow-alternatives.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/755daafe/6832aace9707ff17f4ffcf01_metaflow-alternatives.png"
   ogTitle: "8 Metaflow Alternatives to Streamline Your ML Workflows - ZenML Blog"
   ogDescription: "Discover the top 8 Metaflow alternatives to streamline your ML workflows."
 ---
@@ -44,7 +44,7 @@ In this article, we introduce 8 alternatives that take care of the drawbacks Met
 There are three core reasons why you might need to switch from Metaflow to an alternative.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/1278fdb1/6832ae0c5b8a3c54fe6fe62c_why-switch-to-a-metaflow-alternative.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1278fdb1/6832ae0c5b8a3c54fe6fe62c_why-switch-to-a-metaflow-alternative.png" alt="__wf_reserved_inherit" />
   <figcaption>Why switch to a Metaflow alternative</figcaption>
 </figure>
 
@@ -123,7 +123,7 @@ Some of the best Metaflow competitors and alternatives are:
 ### 1. ZenML
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/fd41c10e/6832a5b0c8d6f1d6e8ea0ecb_zenml-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/fd41c10e/6832a5b0c8d6f1d6e8ea0ecb_zenml-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [ZenML](https://www.zenml.io/) is an open-source MLOps framework that focuses on [pipeline-centric workflow orchestration](https://docs.zenml.io/concepts/steps_and_pipelines). It lets you write standard Python code and turn it into reproducible ML pipelines with minimal effort.
@@ -133,7 +133,7 @@ ZenML emphasizes flexibility – it works with multiple orchestrators (like [Air
 #### ZenML Workflow Orchestration and Deployment Features
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/2c97c15a/6829726f00d93f05c1569ccb_zenml_pipeline_orchestration.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2c97c15a/6829726f00d93f05c1569ccb_zenml_pipeline_orchestration.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML workflow orchestration</figcaption>
 </figure>
 
@@ -154,7 +154,7 @@ def load_data() -> dict:
 ZenML also facilitates deployment of models: for example, it integrates with [model serving tools](https://docs.zenml.io/stacks/stack-components/model-deployers) and can deploy models as part of the pipeline, bridging the gap between training and production.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/0de7d502/6832a633dd31e2137188c853_zenML-oss-server-deployment-architecture.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/0de7d502/6832a633dd31e2137188c853_zenML-oss-server-deployment-architecture.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML OSS server deployment architecture</figcaption>
 </figure>
 
@@ -173,7 +173,7 @@ However, our platform does not have a native Spark/Ray runner; you must wire the
 ### 2. Kubeflow
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/c94015a7/6832a66c37cebb7393f7abed_kubeflow-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c94015a7/6832a66c37cebb7393f7abed_kubeflow-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [Kubeflow](https://www.kubeflow.org/) is an open-source toolkit for running machine learning workloads on Kubernetes. It’s often dubbed **“the machine learning toolkit for Kubernetes”** because it allows you to define and execute ML pipelines at scale on cloud or on-prem Kubernetes clusters.
@@ -208,7 +208,7 @@ However, Kubeflow is notoriously complex to deploy and maintain. It often demand
 ### 3. Prefect
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/2d8db379/6832a7be71146b42747fd563_prefect-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2d8db379/6832a7be71146b42747fd563_prefect-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [Prefect](https://www.prefect.io/) is a general-purpose workflow orchestration tool that takes a simple yet modern approach to managing data pipelines. It isn’t exclusive to ML – you can orchestrate any Python workflows – but it’s quite relevant to ML tasks as well.
@@ -259,7 +259,7 @@ Unfortunately, Prefect doesn’t have built-in experiment tracking and model man
 ### 4. Neptune
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/4d734770/6832a8169f42323ca954037c_neptune-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/4d734770/6832a8169f42323ca954037c_neptune-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [Neptune](https://neptune.ai/) is a lightweight yet powerful experiment tracking tool designed to help individuals and teams keep track of countless ML experiments in a structured way.
@@ -273,7 +273,7 @@ Nepture provides an experiment dashboard where each run of your model (an experi
 Neptune’s client libraries integrate with many popular ML frameworks to enable convenient logging. For example, it has built-in callbacks for Keras, PyTorch Lightning, XGBoost, etc., so you can auto-log metrics without a ton of custom code.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/31a46a8d/6832a84a5b0b85b380f00f0f_neptune-experiment-tracking.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/31a46a8d/6832a84a5b0b85b380f00f0f_neptune-experiment-tracking.png" alt="__wf_reserved_inherit" />
   <figcaption>Neptune experiment tracking</figcaption>
 </figure>
 
@@ -294,7 +294,7 @@ One thing we noticed Neptune lacks – Unlike Metaflow, which implicitly capture
 ### 5. MLflow
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/23629a58/6832a879d8df3aa70d96134d_mlflow-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/23629a58/6832a879d8df3aa70d96134d_mlflow-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [MLflow](https://mlflow.org/) is one of the most popular open-source platforms for managing ML experiments and model lifecycles. Originally developed by Databricks, MLflow has four key components – tracking, model registry, projects, and models – but it’s best known for its experiment tracking capabilities.
@@ -310,7 +310,7 @@ MLflow automatically keeps track of these logs under an ‘experiment’ name or
 You can launch the MLflow UI `mlflow ui` and it will let you view a list of runs that you can further filter by parameters, and see metrics charts.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/01f61c61/682971b1292840b5a73012f4_setting_up_a_workflow_tracking_environment_in_mlflow.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/01f61c61/682971b1292840b5a73012f4_setting_up_a_workflow_tracking_environment_in_mlflow.png" alt="__wf_reserved_inherit" />
   <figcaption>Setting up a workflow tracking environment in MLflow</figcaption>
 </figure>
 
@@ -329,7 +329,7 @@ Although it's an excellent experiment tracking platform, MLflow on its own doesn
 ### 6. DagsHub
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/9daa8a7b/6832a8e2e52f9fbb71bcd707_dagshub-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9daa8a7b/6832a8e2e52f9fbb71bcd707_dagshub-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [DagsHub](https://dagshub.com/) is a web-based collaboration tool that integrates version control for code, data, and experiments. Essentially, DagsHub combines several open-source tools under one roof to provide a central place for ML projects.
@@ -343,7 +343,7 @@ This means you get compatibility with all MLflow logging methods. For example, y
 Because it’s built on MLflow, DagsHub’s experiment tracking inherits features like parameters, metrics, artifacts, etc.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/fa1dd0c7/6832a8fedd31e213718a0c56_dagshub-experiment-tracking.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/fa1dd0c7/6832a8fedd31e213718a0c56_dagshub-experiment-tracking.png" alt="__wf_reserved_inherit" />
   <figcaption>DagsHub experiment tracking</figcaption>
 </figure>
 
@@ -366,7 +366,7 @@ One major disadvantage of DagsHub, though, is that using DagsHub means relying o
 ### 7. Comet
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/a144e1f2/6832a927f462250e70934442_comet-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a144e1f2/6832a927f462250e70934442_comet-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [Comet](https://www.comet.com/site/) is an ML experimentation and model management platform known for its rich visualization capabilities and broad feature set. As a SaaS (with on-prem available) offering, Comet allows you to track experiments, visualize metrics in real time, compare results, and collaborate with team members.
@@ -382,7 +382,7 @@ Another key aspect is real-time monitoring. As your model trains, Comet streams 
 Comet’s workspaces and user management further enhance collaboration: teams can work in a shared workspace where everyone’s experiments are visible. You can organize experiments with tags, projects, or groups.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/fe7b389f/6832a93dd8df3aa70d965a4c_comet-visualization-and-collaboartion.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/fe7b389f/6832a93dd8df3aa70d965a4c_comet-visualization-and-collaboartion.png" alt="__wf_reserved_inherit" />
   <figcaption>Comet visualization and collaboration</figcaption>
 </figure>
 
@@ -401,7 +401,7 @@ However, like others in this category, Comet doesn’t run your code for you. Yo
 ### 8. Weights & Biases
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/29992627/6832a964be3b408b4a36a06c_wnandb-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/29992627/6832a964be3b408b4a36a06c_wnandb-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [Weights & Biases](https://wandb.ai/site/) offers experiment tracking with real-time logging, similar to Comet, and places a big emphasis on team collaboration and reporting. It’s a hosted solution (with on-prem available) that integrates effortlessly with many ML frameworks via a few lines of code.
@@ -421,7 +421,7 @@ W&B’s reports are like interactive notebooks that live on the platform. In a R
 Lastly, W&B also has features for permissions and privacy: in W&B, you can set projects to private, invite specific collaborators, or open them up.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/2df5f036/6832a981d8df3aa70d9672e1_wandb-visalization-and-collaboration.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2df5f036/6832a981d8df3aa70d9672e1_wandb-visalization-and-collaboration.png" alt="__wf_reserved_inherit" />
   <figcaption>W&amp;B visualization and collaboration</figcaption>
 </figure>
 
@@ -446,6 +446,6 @@ When selecting the best Metaflow alternative, consider your team's specific need
 Still confused about where to get started? [Book a personalized demo call](https://www.zenml.io/book-your-demo) with our Founder and discover how ZenML breaks you free from AWS lock-in while delivering production-ready ML pipelines with true multi-cloud flexibility.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/55428de0/684576e834000d9981f3b957_zenml-book-a-demo.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/55428de0/684576e834000d9981f3b957_zenml-book-a-demo.png" alt="__wf_reserved_inherit" />
   <figcaption>Book your personalized demo</figcaption>
 </figure>

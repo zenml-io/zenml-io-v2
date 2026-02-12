@@ -12,12 +12,12 @@ webflow:
   createdOn: "2025-08-26T13:27:30.675Z"
 integrationType: "agents"
 logo:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/caf5a2cc/68adb6487c9c6ad23ac9e67d_langgraph.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/caf5a2cc/68adb6487c9c6ad23ac9e67d_langgraph.png"
 shortDescription: "LangGraph ReAct agent integrated with ZenML."
 docsUrl: "https://docs.zenml.io"
 githubUrl: "https://github.com/zenml-io/zenml/tree/main/examples/agent_framework_integrations/langgraph"
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/43826c39/68adc07280542f235f7548dc_langgraph-img.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/43826c39/68adc07280542f235f7548dc_langgraph-img.png"
 relatedBlogPosts:
   - "langgraph-alternatives"
   - "langgraph-pricing"
@@ -25,7 +25,7 @@ seo:
   title: "Integrate LangGraph with ZenML - Agents Integrations"
   description: "LangGraph ReAct agent integrated with ZenML."
   canonical: "https://www.zenml.io/integrations/langgraph"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/43826c39/68adc07280542f235f7548dc_langgraph-img.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/43826c39/68adc07280542f235f7548dc_langgraph-img.png"
   ogTitle: "Integrate LangGraph with ZenML - Agents Integrations"
   ogDescription: "LangGraph ReAct agent integrated with ZenML."
 ---

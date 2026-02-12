@@ -12,7 +12,7 @@ webflow:
   createdOn: "2024-07-12T13:12:20.181Z"
 toolName: "Databricks"
 toolIcon:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/254dd3bb/66912a73d5e4735da2796a42_databricks-icon.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/254dd3bb/66912a73d5e4735da2796a42_databricks-icon.png"
 category: "orchestrators"
 integrationType: "orchestrator"
 advantages:
@@ -27,12 +27,12 @@ ctaHeadline: "Experience the ZenML Advantage: Start Your Flexible MLOps Journey"
 learnMoreUrl: "https://cloud.zenml.io/?utm_source=website&utm_medium=website_hero&utm_campaign=cloud_promotion&utm_content=signup_link"
 seoDescription: "Databricks alternative: Flexible ML orchestration without vendor lock-in. Accelerate ML with lightweight, adaptable workflows across multiple clouds."
 openGraphImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/eb03f58e/66c5fca81037c40750571b59_compare-databricks.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/eb03f58e/66c5fca81037c40750571b59_compare-databricks.png"
 seo:
   title: "ZenML vs Databricks - Streamline Your ML Workflows"
   description: "Databricks alternative: Flexible ML orchestration without vendor lock-in. Accelerate ML with lightweight, adaptable workflows across multiple clouds."
   canonical: "https://www.zenml.io/compare/zenml-vs-databricks"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/eb03f58e/66c5fca81037c40750571b59_compare-databricks.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/eb03f58e/66c5fca81037c40750571b59_compare-databricks.png"
   ogTitle: "ZenML vs Databricks - Streamline Your ML Workflows"
   ogDescription: "Databricks alternative: Flexible ML orchestration without vendor lock-in. Accelerate ML with lightweight, adaptable workflows across multiple clouds."
 ---

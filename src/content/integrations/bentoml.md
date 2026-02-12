@@ -12,16 +12,16 @@ webflow:
   createdOn: "2023-10-12T09:13:15.091Z"
 integrationType: "deployer"
 logo:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/6cfafd53/66d86853b0842f70eedf9d56_bentoml.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6cfafd53/66d86853b0842f70eedf9d56_bentoml.png"
 shortDescription: "Seamlessly Deploy Models to Production with ZenML and BentoML"
 docsUrl: "https://docs.zenml.io/stack-components/model-deployers/bentoml"
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/99b6b6cd/67064aab171e78a558352cf9_image__36_.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/99b6b6cd/67064aab171e78a558352cf9_image__36_.png"
 seo:
   title: "Integrate BentoML with ZenML - Deployer Integrations"
   description: "Seamlessly Deploy Models to Production with ZenML and BentoML"
   canonical: "https://www.zenml.io/integrations/bentoml"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/99b6b6cd/67064aab171e78a558352cf9_image__36_.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/99b6b6cd/67064aab171e78a558352cf9_image__36_.png"
   ogTitle: "Integrate BentoML with ZenML - Deployer Integrations"
   ogDescription: "Seamlessly Deploy Models to Production with ZenML and BentoML"
 ---

@@ -21,12 +21,12 @@ tags:
 date: "2023-04-30T00:00:00.000Z"
 readingTime: 10 mins read
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/0b19954a/652cfc99298b3ae336b7b73e_llm.jpg"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/0b19954a/652cfc99298b3ae336b7b73e_llm.jpg"
 seo:
   title: "Using ZenML with LLMs to Analyze Your Databases: A Case Study with you-tldr.com and Supabase/GPT-4 - ZenML Blog"
   description: "Explore how ZenML, an MLOps framework, can be used with large language models (LLMs) like GPT-4 to analyze and version data from databases like Supabase. In this case study, we examine the you-tldr.com website, showcasing ZenML pipelines asynchronously processing video data and generating summaries with GPT-4. Understand how to tackle large language model limitations by versioning data and comparing summaries to unlock your data's potential. Learn how this approach can be easily adapted to work with other databases and LLMs, providing flexibility and versatility for your specific needs."
   canonical: "https://www.zenml.io/blog/using-zenml-with-llms-to-analyze-your-databases-a-case-study-with-you-tldr-com-and-supabase-gpt-4"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/1183d13e/652cfc99298b3ae336b7b73e_llm.jpg"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1183d13e/652cfc99298b3ae336b7b73e_llm.jpg"
   ogTitle: "Using ZenML with LLMs to Analyze Your Databases: A Case Study with you-tldr.com and Supabase/GPT-4 - ZenML Blog"
   ogDescription: "Explore how ZenML, an MLOps framework, can be used with large language models (LLMs) like GPT-4 to analyze and version data from databases like Supabase. In this case study, we examine the you-tldr.com website, showcasing ZenML pipelines asynchronously processing video data and generating summaries with GPT-4. Understand how to tackle large language model limitations by versioning data and comparing summaries to unlock your data's potential. Learn how this approach can be easily adapted to work with other databases and LLMs, providing flexibility and versatility for your specific needs."
 ---

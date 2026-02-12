@@ -21,7 +21,7 @@ tags:
 date: "2022-06-20T00:00:00.000Z"
 readingTime: 15 Mins Read
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/b05fafb4/6530b07c193a7bf8d265b8a1_roman-synkevych-wX2L8L-fGeA-unsplash.jpg"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b05fafb4/6530b07c193a7bf8d265b8a1_roman-synkevych-wX2L8L-fGeA-unsplash.jpg"
 ---
 
 **Last updated:** April 3, 2023.
@@ -65,19 +65,19 @@ If you don’t have an Azure account yet, go to [https://azure.microsoft.com/en-
 Go to [the Azure portal](https://portal.azure.com/#home), click the hamburger button in the top left to open up the portal menu. Then, hover over the Resource groups section until a popup appears and click on the + Create button: 
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/d47dadc7/6530b0d853b5f11c6c23e586_resource_group_0.png" alt="Resource group step 1" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d47dadc7/6530b0d853b5f11c6c23e586_resource_group_0.png" alt="Resource group step 1" />
 </figure>
 
  Select a region and enter a name for your resource group before clicking on Review + create: 
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/70380ca9/6530b0d7cc2eac3120cff3c7_resource_group_1.png" alt="Resource group step 2" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/70380ca9/6530b0d7cc2eac3120cff3c7_resource_group_1.png" alt="Resource group step 2" />
 </figure>
 
  Verify that all the information is correct and click on Create: 
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e15dae43/6530b0d899f1a30ae6129daa_resource_group_2.png" alt="Resource group step 3" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e15dae43/6530b0d899f1a30ae6129daa_resource_group_2.png" alt="Resource group step 3" />
 </figure>
 
 ### Create a storage account
@@ -87,37 +87,37 @@ An [Azure storage account](https://docs.microsoft.com/en-us/azure/storage/common
 Open up the portal menu again, but this time hover over the Storage accounts section and click on the + Create button in the popup once it appears: 
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e4b3b7d2/6530b0d7217561890c954a6a_storage_account_0.png" alt="Storage account step 1" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e4b3b7d2/6530b0d7217561890c954a6a_storage_account_0.png" alt="Storage account step 1" />
 </figure>
 
 Select your previously created **resource group**, a **region** and a **globally unique name** and then click on Review + create:
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/99a40a67/6530b0d878f445d48d7da99c_storage_account_1.png" alt="Storage account step 2" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/99a40a67/6530b0d878f445d48d7da99c_storage_account_1.png" alt="Storage account step 2" />
 </figure>
 
 Make sure that all the values are correct and click on Create:
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/a42ae9d3/6530b0d89019b6bdfa9adef0_storage_account_2.png" alt="Storage account step 3" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a42ae9d3/6530b0d89019b6bdfa9adef0_storage_account_2.png" alt="Storage account step 3" />
 </figure>
 
 Wait until the deployment is finished and click on Go to resource to open up your newly created storage account:
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/3b7064d5/6530b0d7bb19b34fd084d17e_storage_account_3.png" alt="Storage account step 4" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3b7064d5/6530b0d7bb19b34fd084d17e_storage_account_3.png" alt="Storage account step 4" />
 </figure>
 
 In the left menu, select Access keys:
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/101e731e/6530b0d8b8c4c30438c3d877_storage_account_4.png" alt="Storage account step 5" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/101e731e/6530b0d8b8c4c30438c3d877_storage_account_4.png" alt="Storage account step 5" />
 </figure>
 
 Click on Show keys, and once the keys are visible, note down the **storage account name** and the value of the **Key** field of either key1 or key2. We’re going to use them for the <STORAGE_ACCOUNT_NAME> and <STORAGE_ACCOUNT_KEY> placeholders later.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/5ac0377e/6530b0d7b231ab77890877aa_storage_account_5.png" alt="Storage account step 6" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5ac0377e/6530b0d7b231ab77890877aa_storage_account_5.png" alt="Storage account step 6" />
 </figure>
 
 ### Create an Azure Blob Storage Container
@@ -125,19 +125,19 @@ Click on Show keys, and once the keys are visible, note down the **storage accou
 Next, we’re going to create an [Azure Blob Storage Container](https://docs.microsoft.com/en-us/azure/storage/blobs/). It will be used by ZenML to store the output artifacts of all our pipeline steps. To do so, select Containers in the Data storage section of the storage account:
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/605e7624/6530b0d7217561890c95485f_container_0.png" alt="Blob storage container step 1" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/605e7624/6530b0d7217561890c95485f_container_0.png" alt="Blob storage container step 1" />
 </figure>
 
 Then click the + Container button on the top to create a new container:
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/5ee40a8d/6530b0d7bd10d318f48f397a_container_1.png" alt="Blob storage container step 2" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5ee40a8d/6530b0d7bd10d318f48f397a_container_1.png" alt="Blob storage container step 2" />
 </figure>
 
 Choose a name for the container and note it down. We’re going to use it later for the <BLOB_STORAGE_CONTAINER_NAME> placeholder. Then create the container by clicking the Create button.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/17a34075/6530b0d7941b603091730807_container_2.png" alt="Blob storage container step 3" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/17a34075/6530b0d7941b603091730807_container_2.png" alt="Blob storage container step 3" />
 </figure>
 
 ## GitHub Setup
@@ -149,35 +149,35 @@ Next up, we’ll need to create a [GitHub Personal Access Token](https://docs.gi
 <ol><li>Go to <a href="https://github.com/">https://github.com</a>, click on your profile image in the top right corner and select Settings:</li></ol>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/7d5757ca/6530b0d78d403fea6860f70e_pat_0.png" alt="PAT step 1" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7d5757ca/6530b0d78d403fea6860f70e_pat_0.png" alt="PAT step 1" />
 </figure>
 
 <ol><li>Scroll to the bottom and click on Developer Settings on the left side:</li></ol>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/67496335/6530b0d79d34fc77b5d8d804_pat_1.png" alt="PAT step 2" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/67496335/6530b0d79d34fc77b5d8d804_pat_1.png" alt="PAT step 2" />
 </figure>
 
 <ol><li>Select Personal access tokens and click on Generate new token:</li></ol>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/86cd38c5/6530b0d7ee7cadf2b002b1a5_pat_2.png" alt="PAT step 3" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/86cd38c5/6530b0d7ee7cadf2b002b1a5_pat_2.png" alt="PAT step 3" />
 </figure>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/2320c994/6530b0d7dd17f8cd1a1d56cf_pat_3.png" alt="PAT step 4" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2320c994/6530b0d7dd17f8cd1a1d56cf_pat_3.png" alt="PAT step 4" />
 </figure>
 
 <ol><li>Give your token a descriptive name for future reference and select the repo and write:packages scopes:</li></ol>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/0cb0714e/6530b0d70933193dd67cb1cc_pat_4.png" alt="PAT step 5" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/0cb0714e/6530b0d70933193dd67cb1cc_pat_4.png" alt="PAT step 5" />
 </figure>
 
 <ol><li>Scroll to the bottom and click on Generate token. This will bring you to a page that allows you to copy your newly generated token:</li></ol>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/634d3d84/6530b0d76d1f4d39667e83d0_pat_5.png" alt="PAT step 6" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/634d3d84/6530b0d76d1f4d39667e83d0_pat_5.png" alt="PAT step 6" />
 </figure>
 
 Now that we’ve got our token, let’s store it in an environment variable for future steps. We’ll also store our GitHub username that this token was created for. Replace the <PLACEHOLDERS> in the following command and run it:
@@ -211,13 +211,13 @@ Let’s get going:
 <ol><li>Go to <a href="https://github.com/zenml-io/github-actions-orchestrator-tutorial">https://github.com/zenml-io/github-actions-orchestrator-tutorial</a></li><li>Click on Fork in the top right:</li></ol>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/2d887bc8/6530b0d737a36ef83026d3a9_fork_0.png" alt="Fork step 1" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2d887bc8/6530b0d737a36ef83026d3a9_fork_0.png" alt="Fork step 1" />
 </figure>
 
 <ol><li>Click on Create fork:</li></ol>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/16d24283/6530b0d7d5cc716731a74157_fork_1.png" alt="Fork step 2" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/16d24283/6530b0d7d5cc716731a74157_fork_1.png" alt="Fork step 2" />
 </figure>
 
 <ol><li>Clone the repository to your local machine:</li></ol>
@@ -345,19 +345,19 @@ This script runs a ZenML pipeline using our active GitHub stack. The orchestrato
 <ol><li>Wait until the python script has finished running so the Docker image is pushed to GitHub.</li><li>Head to https://github.com/users/&lt;GITHUB_USERNAME&gt;/packages/container/package/zenml-github-actions (replace &lt;GITHUB_USERNAME&gt; with your GitHub username) and select Package settings on the right side:</li></ol>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/0d373db0/6530b0d87abd01ad80dc6763_package_permissions_0.png" alt="Package permissions step 1" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/0d373db0/6530b0d87abd01ad80dc6763_package_permissions_0.png" alt="Package permissions step 1" />
 </figure>
 
 <ol><li>In the Manage Actions access section, click on Add Repository:</li></ol>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/b2a32aca/6530b0d855a960dc3aef8c0b_package_permissions_1.png" alt="Package permissions step 2" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b2a32aca/6530b0d855a960dc3aef8c0b_package_permissions_1.png" alt="Package permissions step 2" />
 </figure>
 
 <ol><li>Search for your forked repository github-actions-orchestrator-tutorial and give it read permissions. Your package settings should then look like this:</li></ol>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/02ee239d/6530b0d7e63eefb2a1632a03_package_permissions_2.png" alt="Package permissions step 3" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/02ee239d/6530b0d7e63eefb2a1632a03_package_permissions_2.png" alt="Package permissions step 3" />
 </figure>
 
 Done! Now all that’s left to do is commit and push the workflow file:
@@ -371,11 +371,11 @@ git push
 If we now check out the GitHub Actions for our repository here https://github.com/<GITHUB_USERNAME>/github-actions-orchestrator-tutorial/actions we should see our pipeline running! 🎉
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/05de00d0/6530b0d7bd10d318f48f398d_success_0.png" alt="Running pipeline" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/05de00d0/6530b0d7bd10d318f48f398d_success_0.png" alt="Running pipeline" />
 </figure>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/a71833af/6530b0d8e6cefa01869cf37d_success_1.png" alt="Finished pipeline" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a71833af/6530b0d8e6cefa01869cf37d_success_1.png" alt="Finished pipeline" />
 </figure>
 
 ## Automate the committing and pushing
@@ -393,19 +393,19 @@ After this update, calling python run.py should automatically build and push a D
 Once we’re done experimenting, let’s delete all the resources we created on Azure so we don’t waste any compute/money. As we’ve bundled it all in one resource group, this step is very easy. Go [the Azure portal](https://portal.azure.com/#home) and select your resource group in the list of resources:
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/a1f0a974/6530b0d8d0bce1093e00fb47_cleanup_0.png" alt="Cleanup step 1" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a1f0a974/6530b0d8d0bce1093e00fb47_cleanup_0.png" alt="Cleanup step 1" />
 </figure>
 
 Next click on Delete resource group on the top:
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/227f1786/6530b0d725ce7aaf73dd1836_cleanup_1.png" alt="Cleanup step 2" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/227f1786/6530b0d725ce7aaf73dd1836_cleanup_1.png" alt="Cleanup step 2" />
 </figure>
 
 In the popup on the right side, type the resource group name and click Delete:
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/26a68143/6530b0d7412750662dbb305b_cleanup_2.png" alt="Cleanup step 3" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/26a68143/6530b0d7412750662dbb305b_cleanup_2.png" alt="Cleanup step 3" />
 </figure>
 
 This will take a few minutes, but after it’s finished all the resources we created should be gone.

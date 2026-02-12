@@ -12,7 +12,7 @@ hub:
 hero:
   deck: Deploy, monitor, and update all ML models from a single dashboard
   image:
-    url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/339bb62b/66e9556fd34d2791885b0c5f_model_control_plane_01.png"
+    url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/339bb62b/66e9556fd34d2791885b0c5f_model_control_plane_01.png"
     alt: Dashboard displaying machine learning models, including versions, authors, and tags. Relevant to model monitoring and ML pipelines.
   primaryCta:
     label: Book a demo
@@ -27,21 +27,21 @@ blocks:
     title: Unified model lifecycle management
     body: Deploy, monitor, and update all your ML models from a single dashboard. Track performance, accuracy, and health in real-time.
     image:
-      url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/a5155748/6526ae3169b1bab0912f0699_03_Collaboration_Showcase.webp"
+      url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a5155748/6526ae3169b1bab0912f0699_03_Collaboration_Showcase.webp"
       alt: Dashboard mockup
     imageSide: right
   - kind: value
     title: Track metrics and metadata
     body: Track and visualize model metrics and metadata such as LLM prompts, centrally in one place.
     image:
-      url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/18d9d346/6526aff76cfa5c0e5d1d9b10_16_Reproducibility_Showcase.webp"
+      url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/18d9d346/6526aff76cfa5c0e5d1d9b10_16_Reproducibility_Showcase.webp"
       alt: Dashboard mockup
     imageSide: left
   - kind: value
     title: Automated model governance
     body: Implement version control, approval workflows, and audit trails for your ML models effortlessly.
     image:
-      url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e6f711a9/6526aff7c4fdd6c0d6c1ea26_10_Data_Versioning_and_Lineage_Showcase.webp"
+      url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e6f711a9/6526aff7c4fdd6c0d6c1ea26_10_Data_Versioning_and_Lineage_Showcase.webp"
       alt: Dashboard mockup
     imageSide: right
 
@@ -50,10 +50,10 @@ testimonial:
   name: Gabriel Martin
   title: Machine Learning Engineer at Frontiers
   avatar:
-    url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/54e7018e/65325388f530bbad5c385f8a_gabriel.webp"
+    url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/54e7018e/65325388f530bbad5c385f8a_gabriel.webp"
     alt: Gabriel Martin
   companyLogo:
-    url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/6ea19d6f/6532545fe5afb00b2fd8b3fe_frontiers_small.webp"
+    url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6ea19d6f/6532545fe5afb00b2fd8b3fe_frontiers_small.webp"
     alt: Testimonial logo
 
 seo:
@@ -61,7 +61,7 @@ seo:
   description: Single glass-plane view for all your ML models, associated artifacts, and pipeline runs.
   ogTitle: ZenML Features - Centralized Model Control Plane
   ogDescription: Single glass-plane view for all your ML models, associated artifacts, and pipeline runs.
-  ogImage: https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/feca1796/686e6bebcd50a1ceede8ebd7_features-observability.png
+  ogImage: https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/feca1796/686e6bebcd50a1ceede8ebd7_features-observability.png
 
 webflow:
   siteId: 64a817a2e7e2208272d1ce30

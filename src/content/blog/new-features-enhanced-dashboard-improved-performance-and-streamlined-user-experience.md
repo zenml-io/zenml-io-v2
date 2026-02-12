@@ -22,12 +22,12 @@ tags:
 date: "2024-10-28T00:00:00.000Z"
 readingTime: 3 min
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/8105f52d/671f62a23250bf01acac4d27_zenml-release-3.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8105f52d/671f62a23250bf01acac4d27_zenml-release-3.png"
 seo:
   title: "New Features: Enhanced Dashboard, Improved Performance, and Streamlined User Experience - ZenML Blog"
   description: "ZenML 0.68.0 introduces several major enhancements including the return of stack components visualization on the dashboard, powerful client-side caching for improved performance, and a streamlined onboarding process that unifies starter and production setups. The release also brings improved artifact management with the new `register_artifact` function, enhanced BentoML integration (v1.3.5), and comprehensive documentation updates, while deprecating legacy features including Python 3.8 support."
   canonical: "https://www.zenml.io/blog/new-features-enhanced-dashboard-improved-performance-and-streamlined-user-experience"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/8105f52d/671f62a23250bf01acac4d27_zenml-release-3.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8105f52d/671f62a23250bf01acac4d27_zenml-release-3.png"
   ogTitle: "New Features: Enhanced Dashboard, Improved Performance, and Streamlined User Experience - ZenML Blog"
   ogDescription: "ZenML 0.68.0 introduces several major enhancements including the return of stack components visualization on the dashboard, powerful client-side caching for improved performance, and a streamlined onboarding process that unifies starter and production setups. The release also brings improved artifact management with the new `register_artifact` function, enhanced BentoML integration (v1.3.5), and comprehensive documentation updates, while deprecating legacy features including Python 3.8 support."
 ---

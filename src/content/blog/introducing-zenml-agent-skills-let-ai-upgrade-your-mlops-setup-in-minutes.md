@@ -20,12 +20,12 @@ tags:
 date: "2026-01-26T00:00:00.000Z"
 readingTime: 6 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/4b8c7eac/6981d36ce92aa039b696b890_6981d2b0f0dd4ffc24e379d6_agent-skills-quick-wins_1_1.avif"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/4b8c7eac/6981d36ce92aa039b696b890_6981d2b0f0dd4ffc24e379d6_agent-skills-quick-wins_1_1.avif"
 seo:
   title: "Introducing ZenML Agent Skills: Let AI Upgrade Your MLOps Setup in Minutes - ZenML Blog"
   description: "ZenML's new Quick Wins skill for Claude Code automatically audits your ML pipelines and implements 15 best-practice improvements (from metadata logging to Model Control Plane setup) based on what's actually missing in your codebase."
   canonical: "https://www.zenml.io/blog/introducing-zenml-agent-skills-let-ai-upgrade-your-mlops-setup-in-minutes"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/4b8c7eac/6981d36ce92aa039b696b890_6981d2b0f0dd4ffc24e379d6_agent-skills-quick-wins_1_1.avif"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/4b8c7eac/6981d36ce92aa039b696b890_6981d2b0f0dd4ffc24e379d6_agent-skills-quick-wins_1_1.avif"
   ogTitle: "Introducing ZenML Agent Skills: Let AI Upgrade Your MLOps Setup in Minutes - ZenML Blog"
   ogDescription: "ZenML's new Quick Wins skill for Claude Code automatically audits your ML pipelines and implements 15 best-practice improvements (from metadata logging to Model Control Plane setup) based on what's actually missing in your codebase."
 ---
@@ -37,7 +37,7 @@ We know teams are already using these tools to write ZenML pipelines. So we thou
 Today we're releasing our first official skill: **ZenML Quick Wins**. It scans your ZenML repository, identifies what's missing, and implements improvements for you. If you've ever suspected your pipelines aren't using all the features ZenML offers, this skill is a great place to start to figure out exactly what you're missing and fix it.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/2365d8c5/6977632e44bd6621d2625647_CleanShot_2026-01-26_at_11.54.38.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2365d8c5/6977632e44bd6621d2625647_CleanShot_2026-01-26_at_11.54.38.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ## What This Skill Actually Does
@@ -53,7 +53,7 @@ The skill handles all of this. Here's the workflow:
 The whole process is conversational. The skill asks questions, checks assumptions, and makes sure it understands your setup before changing anything.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/1dd198e4/6977633b2dd3beb0c4d3c5d4_CleanShot_2026-01-26_at_11.57.08.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1dd198e4/6977633b2dd3beb0c4d3c5d4_CleanShot_2026-01-26_at_11.57.08.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ## The 15 Quick Wins
@@ -75,7 +75,7 @@ The investigation phase uses [subagents](https://code.claude.com/docs/en/sub-age
 These subagents return structured summaries rather than raw output. This keeps the main conversation focused on recommendations rather than getting buried in JSON.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/dfaaa5db/6977634a83a18609b9a3a092_CleanShot_2026-01-26_at_11.57.29.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/dfaaa5db/6977634a83a18609b9a3a092_CleanShot_2026-01-26_at_11.57.29.png" alt="__wf_reserved_inherit" />
 </figure>
 
 Why subagents? The investigation needs to run multiple CLI commands and search across your codebase. Doing this in the main conversation would create a wall of output. Subagents handle the grunt work and return only what matters.
@@ -95,7 +95,7 @@ This is particularly valuable for teams where:
 The skill teaches by doing. Rather than reading about metadata logging, your team sees it implemented in their actual code with their actual data structures.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/22c4672d/6977635959608dba153e8cc2_CleanShot_2026-01-26_at_11.57.53.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/22c4672d/6977635959608dba153e8cc2_CleanShot_2026-01-26_at_11.57.53.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ## Getting Started
@@ -118,7 +118,7 @@ For other tools, check the [skills repository README](https://github.com/zenml-i
 The skill works best when you're in a repository that already has ZenML pipelines. It needs something to analyze. If you're starting from scratch, stay tuned for our upcoming **Greenfield** skill, which will help you scaffold new pipelines from templates.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/af53cb86/697763637ec62629b1d27696_CleanShot_2026-01-26_at_11.58.18.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/af53cb86/697763637ec62629b1d27696_CleanShot_2026-01-26_at_11.58.18.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ## What's Next

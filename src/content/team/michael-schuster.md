@@ -12,7 +12,7 @@ webflow:
   createdOn: "2023-10-18T07:57:17.557Z"
 position: "Founding Software Engineer"
 photo:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/defbf4c4/652f8fc806daec38e93c9033_michael.jpeg"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/defbf4c4/652f8fc806daec38e93c9033_michael.jpeg"
 email: "michael@zenml.io"
 linkedin: "https://www.linkedin.com/in/michael-schuster-7405a5225/"
 order: 6

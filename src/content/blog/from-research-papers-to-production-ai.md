@@ -18,12 +18,12 @@ tags:
 date: "2024-11-30T00:00:00.000Z"
 readingTime: 2 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/d0f222f7/6746c6ffd5d31e928641ab0d_Gemini_Generated_Image__8_.jpeg"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d0f222f7/6746c6ffd5d31e928641ab0d_Gemini_Generated_Image__8_.jpeg"
 seo:
   title: "Bridging the MLOps Divide: From Research Papers to Production Ai - ZenML Blog"
   description: "Discover how organizations can successfully bridge the gap between academic machine learning research and production-ready AI systems. This comprehensive guide explores the cultural and technical challenges of transitioning from research-focused ML to robust production environments, offering practical strategies for implementing effective MLOps practices from day one. Learn how to avoid common pitfalls, manage technical debt, and build a sustainable ML engineering culture that combines academic innovation with production reliability."
   canonical: "https://www.zenml.io/blog/from-research-papers-to-production-ai"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/d0f222f7/6746c6ffd5d31e928641ab0d_Gemini_Generated_Image__8_.jpeg"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d0f222f7/6746c6ffd5d31e928641ab0d_Gemini_Generated_Image__8_.jpeg"
   ogTitle: "Bridging the MLOps Divide: From Research Papers to Production Ai - ZenML Blog"
   ogDescription: "Discover how organizations can successfully bridge the gap between academic machine learning research and production-ready AI systems. This comprehensive guide explores the cultural and technical challenges of transitioning from research-focused ML to robust production environments, offering practical strategies for implementing effective MLOps practices from day one. Learn how to avoid common pitfalls, manage technical debt, and build a sustainable ML engineering culture that combines academic innovation with production reliability."
 ---
@@ -43,7 +43,7 @@ The disconnect manifests in several ways:
 ## The Growing Technical Debt Crisis in ML Projects
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e4b3fd9f/6746cd13d7203f19c1c4dff3_6746c77718df7367c4ba1841_Mountain_20Circuit_20Boards_20Illustration.webp" alt="A dramatic digital illustration of a mountain constructed from tangled circuit boards, neural network nodes, and broken gears. At the base, small figures in white lab coats gesture urgently, surrounded by cascading geometric shapes. The mountain transitions in color from stable blue-green circuits at the base to chaotic orange and red patterns toward the peak, symbolizing growing instability. Above, dark storm clouds loom with binary code patterns embedded in them. The mountain casts a shadow of fragmented code patterns, evoking a sense of complexity and conflict." />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e4b3fd9f/6746cd13d7203f19c1c4dff3_6746c77718df7367c4ba1841_Mountain_20Circuit_20Boards_20Illustration.webp" alt="A dramatic digital illustration of a mountain constructed from tangled circuit boards, neural network nodes, and broken gears. At the base, small figures in white lab coats gesture urgently, surrounded by cascading geometric shapes. The mountain transitions in color from stable blue-green circuits at the base to chaotic orange and red patterns toward the peak, symbolizing growing instability. Above, dark storm clouds loom with binary code patterns embedded in them. The mountain casts a shadow of fragmented code patterns, evoking a sense of complexity and conflict." />
 </figure>
 
 The consequences of not implementing proper MLOps practices from the start can be severe. Technical debt accumulates rapidly in ML projects, often manifesting through:

@@ -12,17 +12,17 @@ webflow:
   createdOn: "2023-10-12T09:13:12.551Z"
 integrationType: "modeling"
 logo:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/1d35570b/66d86935aaeb8c0b9fa1bde7_scikit-learn.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1d35570b/66d86935aaeb8c0b9fa1bde7_scikit-learn.png"
 shortDescription: "Train standard ML models with scikit-learn."
 docsUrl: "https://github.com/zenml-io/zenml/tree/main/examples/quickstart"
 githubUrl: "https://github.com/zenml-io/zenml/tree/main/examples/quickstart"
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/273a56a7/6527e939c442bf01845cd2c4_Scikit_learn_features_9270e57e8f.webp"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/273a56a7/6527e939c442bf01845cd2c4_Scikit_learn_features_9270e57e8f.webp"
 seo:
   title: "Integrate scikit-learn (sklearn) with ZenML - Modeling Integrations"
   description: "Train standard ML models with scikit-learn."
   canonical: "https://www.zenml.io/integrations/sklearn"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/273a56a7/6527e939c442bf01845cd2c4_Scikit_learn_features_9270e57e8f.webp"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/273a56a7/6527e939c442bf01845cd2c4_Scikit_learn_features_9270e57e8f.webp"
   ogTitle: "Integrate scikit-learn (sklearn) with ZenML - Modeling Integrations"
   ogDescription: "Train standard ML models with scikit-learn."
 ---

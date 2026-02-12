@@ -17,7 +17,7 @@ tags:
 date: "2022-08-02T00:00:00.000Z"
 readingTime: 4 Mins Read
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e4bf995c/6531607cdf2ffe3e385a287d_zero-twelve-zero-release.jpg"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e4bf995c/6531607cdf2ffe3e385a287d_zero-twelve-zero-release.jpg"
 ---
 
 **Last updated:** October 17, 2022.
@@ -39,7 +39,7 @@ For a detailed look at what’s changed, give [our full release notes](https://g
 The spotlight in this release is the ZenML Kserve integration. This integration lets you define pipeline steps to scale up your model by serving your ML models on Kubernetes using any of your favorite ML frameworks like TensorFlow, XGBoost, Scikit-Learn, PyTorch from within ZenML!
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/2dee5bfb/6531608430affa9dc797aa4f_kserve.png" alt="KServe" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2dee5bfb/6531608430affa9dc797aa4f_kserve.png" alt="KServe" />
 </figure>
 
 ## 📌 Specify Resources Per Step

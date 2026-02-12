@@ -12,16 +12,16 @@ webflow:
   createdOn: "2023-10-12T09:13:12.540Z"
 integrationType: "modeling"
 logo:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/38c14d54/66d86940d75a1237ceb976ac_tensorflow.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/38c14d54/66d86940d75a1237ceb976ac_tensorflow.png"
 shortDescription: "Accelerate TensorFlow Model Development with ZenML"
 docsUrl: "https://www.fuzzylabs.ai/blog-post/the-road-to-zen-part-1-getting-started-pipelines"
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/5ff4a2fa/66e745170314d43f577134ff_tensorflow_integration.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5ff4a2fa/66e745170314d43f577134ff_tensorflow_integration.png"
 seo:
   title: "Integrate TensorFlow with ZenML - Modeling Integrations"
   description: "Accelerate TensorFlow Model Development with ZenML"
   canonical: "https://www.zenml.io/integrations/tensorflow"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/5ff4a2fa/66e745170314d43f577134ff_tensorflow_integration.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5ff4a2fa/66e745170314d43f577134ff_tensorflow_integration.png"
   ogTitle: "Integrate TensorFlow with ZenML - Modeling Integrations"
   ogDescription: "Accelerate TensorFlow Model Development with ZenML"
 ---

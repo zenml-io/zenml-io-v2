@@ -2,7 +2,7 @@
 name: "Satya Patel"
 slug: "satya-patel"
 avatar:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e622e192/68c7bc087ee80cba986b491e_101352954.jpeg"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e622e192/68c7bc087ee80cba986b491e_101352954.jpeg"
 webflow:
   siteId: "64a817a2e7e2208272d1ce30"
   itemId: "68c7bc0caec39e36caca524a"

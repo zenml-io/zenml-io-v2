@@ -20,12 +20,12 @@ tags:
 date: "2025-12-04T00:00:00.000Z"
 readingTime: 12 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/9f20a9d7/6981cf64f4f7a9ede995c465_6981ce864626f810358db79d_zenml-neptune.avif"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9f20a9d7/6981cf64f4f7a9ede995c465_6981ce864626f810358db79d_zenml-neptune.avif"
 seo:
   title: "Leaving Neptune? Try ZenML for Experiment Tracking and More - ZenML Blog"
   description: "Neptune AI is terminating its standalone SaaS solution. Switch to ZenML to track ML experiments and do much more."
   canonical: "https://www.zenml.io/blog/neptune-to-zenml"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/9f20a9d7/6981cf64f4f7a9ede995c465_6981ce864626f810358db79d_zenml-neptune.avif"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9f20a9d7/6981cf64f4f7a9ede995c465_6981ce864626f810358db79d_zenml-neptune.avif"
   ogTitle: "Leaving Neptune? Try ZenML for Experiment Tracking and More - ZenML Blog"
   ogDescription: "Neptune AI is terminating its standalone SaaS solution. Switch to ZenML to track ML experiments and do much more."
 ---
@@ -53,13 +53,13 @@ MLflow, while open-source, also leaves orchestration and reproducibility largely
 In choosing your Neptune replacement, it's worth asking: **Do we want just another experiment logger, or a more unified ML platform that covers the full cycle from experiment to production?**
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/b713ea8e/6931da06904425ba97a7119b_what-to-look-for-in-a-neptune-replacement.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b713ea8e/6931da06904425ba97a7119b_what-to-look-for-in-a-neptune-replacement.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ## How ZenML Covers (and Extends) Your Experiment Tracking Needs
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/b9de675b/6931da14bce282c14927c6c1_zenml-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b9de675b/6931da14bce282c14927c6c1_zenml-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [ZenML](https://www.zenml.io/) is an open-source MLOps framework that offers experiment tracking plus a whole lot more. Think of ZenML as a unified ML platform rather than just a tracking database.
@@ -69,7 +69,7 @@ With ZenML, you define your ML pipelines (data prep, training, evaluation, deplo
 ### 1. From Runs to Pipelines: A Different Lens on Experiments
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/4d903908/6931da1f2fa19136772bd6b4_zenml-pipelines.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/4d903908/6931da1f2fa19136772bd6b4_zenml-pipelines.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 In ZenML, every experiment run is viewed through the lens of a **pipeline**. Instead of just tracking individual training runs in isolation, ZenML tracks the entire pipeline that produced those results. [Every pipeline run in ZenML is considered an experiment](https://docs.zenml.io/stacks/stack-components/experiment-trackers), complete with rich metadata about each step, its inputs/outputs, parameters, and environment.
@@ -85,7 +85,7 @@ If you transition to ZenML, you will find that your experiments now include info
 ### 2. Auto-Tracking and Lineage without Extra Glue Code
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/f414fd8b/6931da2f6bcc0bea300428e4_auto-tracking-and-lineage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f414fd8b/6931da2f6bcc0bea300428e4_auto-tracking-and-lineage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 One major advantage of ZenML is that [it auto-tracks everything in your ML workflow](https://www.zenml.io/features/auto-track-everything) right from the start. When you run a ZenML pipeline, the framework automatically logs each step execution, the parameters and configs, and all artifacts produced – without you writing custom logging code.
@@ -109,13 +109,13 @@ For example, if you ran an experiment with different hyperparameters in 5 runs, 
 ZenML offers both a table view (for exact numbers and changes between runs).
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/7c9c31ef/6931da4b7f3c70f3d534e26d_experiment-comparison-table-view.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7c9c31ef/6931da4b7f3c70f3d534e26d_experiment-comparison-table-view.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 And a parallel coordinates view for spotting trends and correlations across dozens of runs.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/31add3f9/6931da5c4049aa7c87d39e75_experiment-comparison-parallel.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/31add3f9/6931da5c4049aa7c87d39e75_experiment-comparison-parallel.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 This means you can easily spot, say, how training time vs. accuracy trade off across runs, or how a change in data input affects multiple outcome metrics.
@@ -129,7 +129,7 @@ This means you can easily spot, say, how training time vs. accuracy trade off ac
 ## Keep Your Favorite Trackers - ZenML Wraps Around Them
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/31e63b36/6931da6563b3056c13fb5d4c_zenml-integrates-with-experiment-trackers.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/31e63b36/6931da6563b3056c13fb5d4c_zenml-integrates-with-experiment-trackers.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 Adopting ZenML doesn’t mean you must abandon other tools you love. In fact, ZenML is designed to [integrate with external experiment trackers](https://www.zenml.io/integrations) like [Neptune](https://www.zenml.io/integrations/neptune), Weights & Biases, MLflow, and many others.

@@ -12,17 +12,17 @@ webflow:
   createdOn: "2024-09-11T06:35:27.978Z"
 integrationType: "container-registry"
 logo:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/17995d8c/66e13a26e684bf295214fe94_images.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/17995d8c/66e13a26e684bf295214fe94_images.png"
 shortDescription: "Seamlessly Store and Manage Container Images with Azure Container Registry Integration in ZenML"
 docsUrl: "https://docs.zenml.io/stack-components/container-registries/azure"
 githubUrl: "https://docs.zenml.io/how-to/popular-integrations/azure-guide"
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/830681f9/66e1395395acb9f1c9e14722_azure_container_registry.PNG.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/830681f9/66e1395395acb9f1c9e14722_azure_container_registry.PNG.png"
 seo:
   title: "Integrate Azure Container Registry with ZenML - Container Registry Integrations"
   description: "Seamlessly Store and Manage Container Images with Azure Container Registry Integration in ZenML"
   canonical: "https://www.zenml.io/integrations/azure-container-registry"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/830681f9/66e1395395acb9f1c9e14722_azure_container_registry.PNG.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/830681f9/66e1395395acb9f1c9e14722_azure_container_registry.PNG.png"
   ogTitle: "Integrate Azure Container Registry with ZenML - Container Registry Integrations"
   ogDescription: "Seamlessly Store and Manage Container Images with Azure Container Registry Integration in ZenML"
 ---

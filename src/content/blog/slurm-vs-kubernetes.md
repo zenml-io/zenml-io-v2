@@ -20,12 +20,12 @@ tags:
 date: "2025-12-18T00:00:00.000Z"
 readingTime: 14 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/7e680e89/694382991325243f00232064_slurm-vs-kubernetes.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7e680e89/694382991325243f00232064_slurm-vs-kubernetes.png"
 seo:
   title: "Slurm vs Kubernetes: How HPC and Cloud-Native Orchestration Compare for ML Teams - ZenML Blog"
   description: "In this Slurm vs Kubernetes comparison guide, we compare their primary workflows, control planes, resource models, and scheduling policies."
   canonical: "https://www.zenml.io/blog/slurm-vs-kubernetes"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/7e680e89/694382991325243f00232064_slurm-vs-kubernetes.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7e680e89/694382991325243f00232064_slurm-vs-kubernetes.png"
   ogTitle: "Slurm vs Kubernetes: How HPC and Cloud-Native Orchestration Compare for ML Teams - ZenML Blog"
   ogDescription: "In this Slurm vs Kubernetes comparison guide, we compare their primary workflows, control planes, resource models, and scheduling policies."
 ---
@@ -79,7 +79,7 @@ The fundamental unit of work defines the user interaction model. In Slurm, the u
 ### Slurm
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/ca341cdb/6943985c9a41e87a65441ec6_slurm-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ca341cdb/6943985c9a41e87a65441ec6_slurm-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 Slurm is designed for finite tasks that run to completion. The primary interface is the Command Line Interface (CLI). A user interacts with Slurm by writing a shell script that contains special directives.
@@ -91,7 +91,7 @@ This 'fire-and-forget' model is ideal for training deep learning models. The job
 ### Kubernetes
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/d0664a4c/69439869c276a1f2425c44c5_kubernetes-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d0664a4c/69439869c276a1f2425c44c5_kubernetes-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 Kubernetes is designed for long-running services and composable workloads. The primary interface is the Kubernetes API, typically accessed via `kubectl` and YAML files.
@@ -109,7 +109,7 @@ The architectural layout of the control plane dictates the system's scalability,
 ### Slurm
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/90c7717c/6943987c99513f4aa8255e51_slurm-architecture.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/90c7717c/6943987c99513f4aa8255e51_slurm-architecture.webp" alt="__wf_reserved_inherit" />
   <figcaption>Source</figcaption>
 </figure>
 
@@ -122,7 +122,7 @@ The control processes can run on a single management node with minimal overhead.
 ### Kubernetes
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/ab3bb035/6943988e5036df8ff3f717db_kubernetes-architecture.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ab3bb035/6943988e5036df8ff3f717db_kubernetes-architecture.webp" alt="__wf_reserved_inherit" />
   <figcaption>Source</figcaption>
 </figure>
 
@@ -241,7 +241,7 @@ The choice between Slurm and Kubernetes often forces a split in the ML team. Dat
 This is where **ZenML** enters the picture.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e9223d56/6934efea56d45fd81bd6b428_zenml-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e9223d56/6934efea56d45fd81bd6b428_zenml-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [ZenML](https://www.zenml.io/) acts as a unified control plane that resolves this conflict. It treats the orchestrator as a swappable component in the stack, allowing the same pipeline code to execute on different backends without refactoring.

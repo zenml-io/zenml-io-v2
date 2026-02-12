@@ -12,16 +12,16 @@ webflow:
   createdOn: "2024-09-11T06:28:19.692Z"
 integrationType: "orchestrator"
 logo:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/ed101323/66e1387810bf16edba7b800d_azure-machine-learning-service-logo-445C459FD8-seeklogo.com.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ed101323/66e1387810bf16edba7b800d_azure-machine-learning-service-logo-445C459FD8-seeklogo.com.png"
 shortDescription: "Effortlessly Orchestrate Your ZenML Pipelines with the Power of AzureML"
 docsUrl: "https://docs.zenml.io/stack-components/orchestrators/azureml"
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/03e0ad7f/66e137aad67f99ae59720b12_azureml.PNG.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/03e0ad7f/66e137aad67f99ae59720b12_azureml.PNG.png"
 seo:
   title: "Integrate AzureML Pipelines with ZenML - Orchestrator Integrations"
   description: "Effortlessly Orchestrate Your ZenML Pipelines with the Power of AzureML"
   canonical: "https://www.zenml.io/integrations/azureml-pipelines"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/03e0ad7f/66e137aad67f99ae59720b12_azureml.PNG.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/03e0ad7f/66e137aad67f99ae59720b12_azureml.PNG.png"
   ogTitle: "Integrate AzureML Pipelines with ZenML - Orchestrator Integrations"
   ogDescription: "Effortlessly Orchestrate Your ZenML Pipelines with the Power of AzureML"
 ---

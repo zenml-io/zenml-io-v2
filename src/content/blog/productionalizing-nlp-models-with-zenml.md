@@ -21,12 +21,12 @@ tags:
 date: "2023-11-29T00:00:00.000Z"
 readingTime: 6 min
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/600be2e9/6981d37a71c3040935dbc359_6981d2ae306b2c3cff9abbb7_hfs01.avif"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/600be2e9/6981d37a71c3040935dbc359_6981d2ae306b2c3cff9abbb7_hfs01.avif"
 seo:
   title: "Productionalizing NLP models with ZenML - ZenML Blog"
   description: "Seamlessly automating the journey from training to production, ZenML's new NLP project template offers a comprehensive MLOps solution for teams deploying Huggingface models to AWS Sagemaker endpoints. With its focus on reproducibility, scalability, and best practices, the template simplifies the integration of NLP models into workflows, complete with lineage tracking and various deployment options."
   canonical: "https://www.zenml.io/blog/productionalizing-nlp-models-with-zenml"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/600be2e9/6981d37a71c3040935dbc359_6981d2ae306b2c3cff9abbb7_hfs01.avif"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/600be2e9/6981d37a71c3040935dbc359_6981d2ae306b2c3cff9abbb7_hfs01.avif"
   ogTitle: "Productionalizing NLP models with ZenML - ZenML Blog"
   ogDescription: "Seamlessly automating the journey from training to production, ZenML's new NLP project template offers a comprehensive MLOps solution for teams deploying Huggingface models to AWS Sagemaker endpoints. With its focus on reproducibility, scalability, and best practices, the template simplifies the integration of NLP models into workflows, complete with lineage tracking and various deployment options."
 ---
@@ -56,7 +56,7 @@ zenml init --template template-nlp --template-with-defaults
 This command sets up a project structure that includes pipelines for training, promoting, and deploying your NLP model. Each pipeline is parameterized, offering flexibility and reusability, and can be customized to suite the specific requirements of a scenario involving the fine-tuning of an NLP model.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/6ed7a660/6567014b2e7cc3f24fdd8739_hfs01.png" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6ed7a660/6567014b2e7cc3f24fdd8739_hfs01.png" alt="" />
   <figcaption>ZenML NLP template pipelines</figcaption>
 </figure>
 
@@ -71,7 +71,7 @@ The training pipeline is the heart of the NLP project. It handles data loading, 
 The promotion pipeline is responsible for advancing a model version to a specified stage based on metrics or simply promoting the latest version. This ensures that the best-performing models are the ones being deployed, aligning with the goal of delivering high-quality NLP solutions.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/357c32b0/65670178a9a75cb3e3b430eb_Untitled.png" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/357c32b0/65670178a9a75cb3e3b430eb_Untitled.png" alt="" />
   <figcaption>ZenML NLP template promotion pipeline</figcaption>
 </figure>
 
@@ -84,7 +84,7 @@ Deployment is the final, crucial step that brings machine learning models into t
 Local deployment is often the first step in bringing your model to life. It allows you to test the model in a controlled environment, ensuring that it behaves as expected before scaling up to a more public or resource-intensive setting. With ZenML, local deployment is straightforward. The template includes a Gradio-based interface, which provides a user-friendly way to interact with your model right from your local machine. This is invaluable for quick iterations and demonstrations, as it gives immediate feedback on how the model performs with real input data.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/7949de10/656701a90c46011405103787_Untitled_1.png" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7949de10/656701a90c46011405103787_Untitled_1.png" alt="" />
   <figcaption>Local Gradio deployment for ZenML NLP template model</figcaption>
 </figure>
 
@@ -95,7 +95,7 @@ Deploying locally also means you have full control over the environment, making 
 [HuggingFace Hub](https://huggingface.co/spaces) has emerged as a popular platform for sharing and collaborating on machine learning models, especially in the NLP domain. Deploying to HuggingFace Hub means your model becomes accessible to a wide community of researchers and practitioners, who can use and build upon your work.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/44ffc770/656701b4aa9ff39bb8a04778_Untitled_2.png" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/44ffc770/656701b4aa9ff39bb8a04778_Untitled_2.png" alt="" />
   <figcaption>HuggingFace deployment for ZenML NLP template model</figcaption>
 </figure>
 
@@ -135,7 +135,7 @@ python run.py
 Our created stack will look like the following
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/1aec3a65/656701bf2be2319dc0aba687_Untitled_3.png" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1aec3a65/656701bf2be2319dc0aba687_Untitled_3.png" alt="" />
   <figcaption>ZenML Dashboard</figcaption>
 </figure>
 

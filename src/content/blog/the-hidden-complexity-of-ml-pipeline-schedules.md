@@ -20,12 +20,12 @@ tags:
 date: "2026-01-23T00:00:00.000Z"
 readingTime: 7 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/3acbb256/6973741fbe3a0dc0476f034f_schedules-complexity-small.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3acbb256/6973741fbe3a0dc0476f034f_schedules-complexity-small.png"
 seo:
   title: "The Hidden Complexity of ML Pipeline Schedules - ZenML Blog"
   description: "ML pipeline scheduling hides complexity beneath simple cron syntax—lessons on freshness, monitoring gaps, and overrun policies from Twitter, LinkedIn, and Shopify."
   canonical: "https://www.zenml.io/blog/the-hidden-complexity-of-ml-pipeline-schedules"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/3acbb256/6973741fbe3a0dc0476f034f_schedules-complexity-small.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3acbb256/6973741fbe3a0dc0476f034f_schedules-complexity-small.png"
   ogTitle: "The Hidden Complexity of ML Pipeline Schedules - ZenML Blog"
   ogDescription: "ML pipeline scheduling hides complexity beneath simple cron syntax—lessons on freshness, monitoring gaps, and overrun policies from Twitter, LinkedIn, and Shopify."
 ---
@@ -49,7 +49,7 @@ What I take from this: operational friction quietly stretches retraining cycles,
 LinkedIn's engineering team [ran into a different problem](https://www.linkedin.com/blog/engineering/data-management/an-inside-look-at-linkedins-data-pipeline-monitoring-system-) after a Kafka ingestion migration. Their pipelines bootstrapped every topic from four days prior. The jobs completed successfully. Green icons in their monitoring dashboard.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/143dd905/69736ec74e6a3427777dd0ed_image.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/143dd905/69736ec74e6a3427777dd0ed_image.png" alt="__wf_reserved_inherit" />
   <figcaption>Source: https://www.linkedin.com/blog/engineering/data-management/an-inside-look-at-linkedins-data-pipeline-monitoring-system-</figcaption>
 </figure>
 
@@ -72,7 +72,7 @@ The result? Large traffic surges that could overload the Airflow scheduler and a
 Their solution was to use deterministically randomized schedules for automatically generated DAGs—which represent the vast majority of their workflows. The system generates crontabs based on a hash of a constant seed like the DAG ID. The effect is that jobs spread out naturally (one might run at minute 14, another at minute 42), and the schedules are stable—the same DAG always lands at the same time.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/2c919076/69736ee919fe5577cafa123f_image__1_.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2c919076/69736ee919fe5577cafa123f_image__1_.png" alt="__wf_reserved_inherit" />
   <figcaption>Shopify&#039;s task distribution chart showing smoothed traffic distribution across 10-minute intervals</figcaption>
 </figure>
 
@@ -149,7 +149,7 @@ Not all fields work everywhere. Here's the reality:
 Schedules exist in two places: ZenML's metadata store and the orchestrator's native system. Deleting a schedule from ZenML doesn't automatically delete it from Vertex AI or SageMaker. This can create "ghost schedules" where pipelines continue running after you think you've stopped them.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/1058edb6/69736f0c4e4fb4a39139108f_CleanShot_2026-01-23_at_13.45.47-1.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1058edb6/69736f0c4e4fb4a39139108f_CleanShot_2026-01-23_at_13.45.47-1.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML CLI output listing pipeline schedules</figcaption>
 </figure>
 

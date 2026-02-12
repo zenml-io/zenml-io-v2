@@ -21,12 +21,12 @@ tags:
 date: "2022-02-28T00:00:00.000Z"
 readingTime: 8 Mins Read
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/938e1cf9/6531e43968722354b8eedf27_rich-terminal.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/938e1cf9/6531e43968722354b8eedf27_rich-terminal.png"
 seo:
   title: "Richify that CLI! - ZenML Blog"
   description: "We recently reworked a number of parts of our CLI interface. Here are some quick wins we implemented along the way that can help you improve how users interact with your CLI via the popular open-source library, rich."
   canonical: "https://www.zenml.io/blog/richify-that-cli"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/ccaf9d1e/6531e43968722354b8eedf27_rich-terminal.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ccaf9d1e/6531e43968722354b8eedf27_rich-terminal.png"
   ogTitle: "Richify that CLI! - ZenML Blog"
   ogDescription: "We recently reworked a number of parts of our CLI interface. Here are some quick wins we implemented along the way that can help you improve how users interact with your CLI via the popular open-source library, rich."
 ---
@@ -40,7 +40,7 @@ The items that follow are what I consider to be low-hanging fruit for any CLI th
 ## 1. All the Emojis!
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/1278afc9/6531e44bd39f059847141e95_emoji-sampler.png" alt="Some of the emojis available to you in `rich`" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1278afc9/6531e44bd39f059847141e95_emoji-sampler.png" alt="Some of the emojis available to you in `rich`" />
 </figure>
 
 Let’s cover the important one first 😉: rich offers full support for emojis in your CLI interfaces. I’m being slightly flippant here, but only slightly. You may be familiar with emojis as used in chat apps such as the winking face above, but there are hundreds of other, potentially more useful, emojis that you might want to use.
@@ -52,7 +52,7 @@ You can view a list of all the supported emojis by running python -m rich.emoji 
 ## 2. Markdown parsing
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/341a081c/6531e44b014ba69d939b6676_info-cli.gif" alt="Paging through markdown info about an example" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/341a081c/6531e44b014ba69d939b6676_info-cli.gif" alt="Paging through markdown info about an example" />
 </figure>
 
 Our CLI allows users to view information about [the examples we provide](https://blog.zenml.io/examples-cli/) to showcase how ZenML works (and how it can be used). Each example already contains a markdown README.md file with information about the implementation, installation instructions and so on.
@@ -64,7 +64,7 @@ Now, with rich, we have a way to parse the raw markdown markup and display it as
 ## 3. Beautiful, Informative Tracebacks
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/2543f01b/6531e44c716ca17c9b14133c_rich-traceback.png" alt="A rich traceback" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2543f01b/6531e44c716ca17c9b14133c_rich-traceback.png" alt="A rich traceback" />
 </figure>
 
 Errors are often where the rubber meets the road in software projects. When you’re developing you want those error messages to be informative, clear and not some kind of runic message you have to decode.
@@ -81,7 +81,7 @@ install(show_locals=True)
 ## 4. print() gets a makeover
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/50ef2ccf/6531e44c2677456232b354e0_rich-print.png" alt="A rich printout" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/50ef2ccf/6531e44c2677456232b354e0_rich-print.png" alt="A rich printout" />
 </figure>
 
 Just like tracebacks in rich are better than the Python defaults, you also have [a better print](https://rich.readthedocs.io/en/stable/introduction.html#quick-start). Standard data structures like dicts and lists are converted to strings, syntax highlighting is added and they are clearly presented. (Python already has a tool for this in the standard library — pprint — though it doesn’t have the colors.)
@@ -91,7 +91,7 @@ We don’t actually use any print statements in our CLI tool, but through rich o
 ## 5. Inspect your objects
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/451c7c54/6531e44b716ca17c9b14130b_rich-inspect.png" alt="Using rich&#039;s inspect" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/451c7c54/6531e44b716ca17c9b14130b_rich-inspect.png" alt="Using rich&#039;s inspect" />
 </figure>
 
 I have been using [inspect](https://rich.readthedocs.io/en/stable/introduction.html#rich-inspect) from rich ever since I first saw it used. Like most things in this post, it is a convenience function that offers a better default to standard Python ways of inspecting an object. See the above illustration of what the output looks like. If you pass in methods=True you’ll see what methods can be called on that object. If you pass in docs=True you can read the docstrings for that object.
@@ -101,7 +101,7 @@ Like print, we don’t currently use this anywhere in the outputs of our CLI too
 ## 6. Status Spinners
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/942f1e7a/66c5dd05f13f1bf6b7471c6a_6531ea4ed882a1570936e53a_ezgif.com-optimize_20_3__20_1_.png" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/942f1e7a/66c5dd05f13f1bf6b7471c6a_6531ea4ed882a1570936e53a_ezgif.com-optimize_20_3__20_1_.png" alt="" />
 </figure>
 
 When someone tells you that they upgraded their CLI tool, spinners are what you expect. Who doesn’t love a good spinner!? We added only one (when you call zenml init) but probably will use more as our tool grows.
@@ -118,7 +118,7 @@ with console.status("Doing really important work…"):
 ## 7. Progress Bars
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/69b9d429/6531e44b908686517bfa8782_progress-bar.gif" alt="A gif showing the zenml integration install process" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/69b9d429/6531e44b908686517bfa8782_progress-bar.gif" alt="A gif showing the zenml integration install process" />
 </figure>
 
 The next step up from a spinner is [a progress bar](https://rich.readthedocs.io/en/stable/progress.html). You get these with rich and they’re easy to set up:
@@ -138,7 +138,7 @@ Not only do these progress bars offer a visual indication of your progress, rich
 ## 8. Tables
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/8f2b7ce7/6531610bcf5a73b5a38420cf_rich-tables.jpeg" alt="Our new rich tables" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8f2b7ce7/6531610bcf5a73b5a38420cf_rich-tables.jpeg" alt="Our new rich tables" />
 </figure>
 
 We use all sorts of [tables](https://rich.readthedocs.io/en/stable/tables.html) in our CLI. We display the integrations you have installed, the stacks you have set up, the examples available for download and so on.

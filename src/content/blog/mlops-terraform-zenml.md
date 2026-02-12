@@ -20,12 +20,12 @@ tags:
 date: "2024-07-31T00:00:00.000Z"
 readingTime: 6 min
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/dc1bc81a/66a90449c8b4472cfb2383c6_zenml-terraform-min.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/dc1bc81a/66a90449c8b4472cfb2383c6_zenml-terraform-min.png"
 seo:
   title: "Infrastructure as Code (IaC) for MLOps with Terraform & ZenML - ZenML Blog"
   description: "Infrastructure-as-code meets MLOps: Terraform modules for deploying ML infrastructure on AWS, GCP, and Azure on the Hashicorp registry."
   canonical: "https://www.zenml.io/blog/mlops-terraform-zenml"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/a8f655df/66a90449c8b4472cfb2383c6_zenml-terraform-min.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a8f655df/66a90449c8b4472cfb2383c6_zenml-terraform-min.png"
   ogTitle: "Infrastructure as Code (IaC) for MLOps with Terraform & ZenML - ZenML Blog"
   ogDescription: "Infrastructure-as-code meets MLOps: Terraform modules for deploying ML infrastructure on AWS, GCP, and Azure on the Hashicorp registry."
 ---
@@ -53,7 +53,7 @@ In many ways, [MLOps is an extension of DevOps](https://farisology.medium.com/ze
 [ZenML](https://github.com/zenml-io/zenml) is a MLOps framework that acts as a bridge between machine learning teams and production infrastructure. The ZenML stack concept is the configuration of tools and infrastructure that your pipelines can run on.  [A machine learning pipeline written in ZenML](https://docs.zenml.io/user-guide/starter-guide/create-an-ml-pipeline) runs on the configuration defined in the stack.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/80d7db0d/66a906ccbb7bcbf9fb0058ac_66a9050f57aabfe2cc7168cc_pipeline_production-min.png" alt="A visualization of a machine learning pipeline loading production data on the left side, and a showcase of a ZenML stack on the right side. The stack consists of a Kubernetes orchestrator, an S3 artifact store, an MLflow experiment tracker, and a deepchecks data validator." />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/80d7db0d/66a906ccbb7bcbf9fb0058ac_66a9050f57aabfe2cc7168cc_pipeline_production-min.png" alt="A visualization of a machine learning pipeline loading production data on the left side, and a showcase of a ZenML stack on the right side. The stack consists of a Kubernetes orchestrator, an S3 artifact store, an MLflow experiment tracker, and a deepchecks data validator." />
 </figure>
 
 Out of the box, ZenML’s API assumes that the infrastructure is already provisioned and then expects to register the components in its database. This can be a bit clunky, as it involves enabling the right permissions, executing the correct commands, and ensuring things work as expected across environments. All in all, it can be cumbersome to try to automate this process!

@@ -18,12 +18,12 @@ tags:
 date: "2025-01-21T00:00:00.000Z"
 readingTime: 2 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/bd1a2de5/678fc6ec7a5f2e285369c245_imageai_vs_ml.jpg"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/bd1a2de5/678fc6ec7a5f2e285369c245_imageai_vs_ml.jpg"
 seo:
   title: "AI Engineering vs ML Engineering: Evolving Roles in the GenAI Era - ZenML Blog"
   description: "The rise of Generative AI has shifted the roles of AI Engineering and ML Engineering, with AI Engineers integrating generative AI into software products. This shift requires clear ownership boundaries and specialized expertise. A proposed solution is layer separation, separating concerns into two distinct layers: Application (AI Engineers/Software Engineers), Frontend development, Backend APIs, Business logic, User experience, and ML (ML Engineers). This allows AI Engineers to focus on user experience while ML Engineers optimize AI systems."
   canonical: "https://www.zenml.io/blog/ai-engineering-vs-ml-engineering-evolving-roles-genai"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/bd1a2de5/678fc6ec7a5f2e285369c245_imageai_vs_ml.jpg"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/bd1a2de5/678fc6ec7a5f2e285369c245_imageai_vs_ml.jpg"
   ogTitle: "AI Engineering vs ML Engineering: Evolving Roles in the GenAI Era - ZenML Blog"
   ogDescription: "The rise of Generative AI has shifted the roles of AI Engineering and ML Engineering, with AI Engineers integrating generative AI into software products. This shift requires clear ownership boundaries and specialized expertise. A proposed solution is layer separation, separating concerns into two distinct layers: Application (AI Engineers/Software Engineers), Frontend development, Backend APIs, Business logic, User experience, and ML (ML Engineers). This allows AI Engineers to focus on user experience while ML Engineers optimize AI systems."
 ---
@@ -53,7 +53,7 @@ These aspects align more closely with ML engineering skills than traditional sof
 ## A Proposed Solution: Layer Separation
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/9a2287a0/678fc633e0ed7e602f31270e_678fc5e2280eb82a94adec85_Screenshot_202025-01-21_20205932.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9a2287a0/678fc633e0ed7e602f31270e_678fc5e2280eb82a94adec85_Screenshot_202025-01-21_20205932.png" alt="__wf_reserved_inherit" />
 </figure>
 
 The most effective approach is separating concerns into two distinct layers:
@@ -69,7 +69,7 @@ The most effective approach is separating concerns into two distinct layers:
 These layers communicate through well-defined interfaces like REST APIs or pub/sub patterns, but maintain independent lifecycles and ownership.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/919076e0/678fc15fabf5ee380e177f8a_678fc0845e40688daa331214_Screenshot_202025-01-21_20204249.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/919076e0/678fc15fabf5ee380e177f8a_678fc0845e40688daa331214_Screenshot_202025-01-21_20204249.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ## Example: Enterprise RAG Platform
@@ -79,7 +79,7 @@ Let's examine how this layer separation works in practice. Consider building an 
 Consider building an internal no-code platform for employees to create RAG-powered chatbots:
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/c77b0c32/678fc633e0ed7e602f312716_678fc5b93964b233ca4b5b39_Screenshot_202025-01-21_20210016.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c77b0c32/678fc633e0ed7e602f312716_678fc5b93964b233ca4b5b39_Screenshot_202025-01-21_20210016.png" alt="__wf_reserved_inherit" />
 </figure>
 
 The Application team owns the user experience:

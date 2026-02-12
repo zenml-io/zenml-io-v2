@@ -12,17 +12,17 @@ webflow:
   createdOn: "2024-09-20T11:00:03.121Z"
 integrationType: "container-registry"
 logo:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/155b2955/66ed55a89d83ced32b398f65_6160c8171ad47563a5a862ae_github_packages.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/155b2955/66ed55a89d83ced32b398f65_6160c8171ad47563a5a862ae_github_packages.png"
 shortDescription: "Streamline Container Image Management with GitHub Container Registry and ZenML"
 docsUrl: "https://docs.zenml.io/stack-components/container-registries/github"
 githubUrl: "https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry"
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/2a1f47c8/66ed54db9bb347d23672ec60_image__25_.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2a1f47c8/66ed54db9bb347d23672ec60_image__25_.png"
 seo:
   title: "Integrate GitHub Container Registry with ZenML - Container Registry Integrations"
   description: "Streamline Container Image Management with GitHub Container Registry and ZenML"
   canonical: "https://www.zenml.io/integrations/github-container-registry"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/2a1f47c8/66ed54db9bb347d23672ec60_image__25_.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2a1f47c8/66ed54db9bb347d23672ec60_image__25_.png"
   ogTitle: "Integrate GitHub Container Registry with ZenML - Container Registry Integrations"
   ogDescription: "Streamline Container Image Management with GitHub Container Registry and ZenML"
 ---

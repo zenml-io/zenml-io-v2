@@ -5,9 +5,9 @@ text: "ZenML allows orchestrating ML pipelines independent of any infrastructure
 author: "Richard Socher"
 position: "Former Chief Scientist Salesforce and Founder of You.com"
 avatar:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/3725b9aa/66702f264ab301a2a95b1213_richard.webp"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3725b9aa/66702f264ab301a2a95b1213_richard.webp"
 companyLogo:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/6bf41193/66702f51c21dcf773594cc98_salesforce_white.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6bf41193/66702f51c21dcf773594cc98_salesforce_white.png"
 webflow:
   siteId: "64a817a2e7e2208272d1ce30"
   itemId: "66702f549814540c0c6eb161"

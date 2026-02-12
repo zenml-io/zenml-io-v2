@@ -23,12 +23,12 @@ tags:
 date: "2022-06-08T00:00:00.000Z"
 readingTime: 1 Min Read
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/d5c77e24/6531144bd751fde70754be79_Wilson_Ben_S20NA.jpg"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d5c77e24/6531144bd751fde70754be79_Wilson_Ben_S20NA.jpg"
 seo:
   title: "Podcast: ML Engineering with Ben Wilson - ZenML Blog"
   description: "This week I spoke with Ben Wilson, author of 'Machine Learning Engineering in Action', a jam-backed guide to all the lessons that Ben has learned over his years working to help companies get models out into the world and run them in production."
   canonical: "https://www.zenml.io/blog/podcast-ml-engineering-with-ben-wilson"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/fd6cf598/6531144bd751fde70754be79_Wilson_Ben_S20NA.jpg"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/fd6cf598/6531144bd751fde70754be79_Wilson_Ben_S20NA.jpg"
   ogTitle: "Podcast: ML Engineering with Ben Wilson - ZenML Blog"
   ogDescription: "This week I spoke with Ben Wilson, author of 'Machine Learning Engineering in Action', a jam-backed guide to all the lessons that Ben has learned over his years working to help companies get models out into the world and run them in production."
 ---

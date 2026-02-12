@@ -23,12 +23,12 @@ tags:
 date: "2023-02-24T00:00:00.000Z"
 readingTime: 6 Mins Read
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/8c793841/6531dcf001620e4a22550afe_zennews.jpeg"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8c793841/6531dcf001620e4a22550afe_zennews.jpeg"
 seo:
   title: "ZenNews: Generate summarized news on a schedule - ZenML Blog"
   description: "ZenNews is a tool powered by ZenML that can automate the summarization of news sources and save you time and effort while providing you with the information you need."
   canonical: "https://www.zenml.io/blog/zennews-generate-summarized-news-on-a-schedule"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/cb182325/6531dcf001620e4a22550afe_zennews.jpeg"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/cb182325/6531dcf001620e4a22550afe_zennews.jpeg"
   ogTitle: "ZenNews: Generate summarized news on a schedule - ZenML Blog"
   ogDescription: "ZenNews is a tool powered by ZenML that can automate the summarization of news sources and save you time and effort while providing you with the information you need."
 ---

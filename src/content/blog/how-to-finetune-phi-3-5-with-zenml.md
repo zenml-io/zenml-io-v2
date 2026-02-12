@@ -24,12 +24,12 @@ tags:
 date: "2024-08-21T00:00:00.000Z"
 readingTime: 8 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/843bfd9e/66c5c504b278bfd1685524dd_image.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/843bfd9e/66c5c504b278bfd1685524dd_image.png"
 seo:
   title: "How to Finetune Phi 3.5 with ZenML - ZenML Blog"
   description: "Master cloud-based LLM finetuning: Set up infrastructure, run pipelines, and manage experiments with ZenML's Model Control Plane for Microsoft's latest Phi model."
   canonical: "https://www.zenml.io/blog/how-to-finetune-phi-3-5-with-zenml"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/843bfd9e/66c5c504b278bfd1685524dd_image.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/843bfd9e/66c5c504b278bfd1685524dd_image.png"
   ogTitle: "How to Finetune Phi 3.5 with ZenML - ZenML Blog"
   ogDescription: "Master cloud-based LLM finetuning: Set up infrastructure, run pipelines, and manage experiments with ZenML's Model Control Plane for Microsoft's latest Phi model."
 ---
@@ -41,13 +41,13 @@ Microsoft released [their Phi 3.5 series of models](https://huggingface.co/colle
 If we look at the some of the more general benchmarks, you can see strong performance against models even in a bigger class. Here we see it outperforming the much larger Mistral-7B and Llama3.1-8B models:
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/c1ff465d/66c5c51b711ee731e5aa21e0_66c5c484d9801ea0644bbbf3_CleanShot_202024-08-21_20at_2012.41.47.png" alt="Benchmarks across a number of domains, comparing Phi 3.5 with others in a similar model class like Mistral-7B and Llama3.1" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c1ff465d/66c5c51b711ee731e5aa21e0_66c5c484d9801ea0644bbbf3_CleanShot_202024-08-21_20at_2012.41.47.png" alt="Benchmarks across a number of domains, comparing Phi 3.5 with others in a similar model class like Mistral-7B and Llama3.1" />
 </figure>
 
 Perhaps most interesting and impressive are the improvements in multilingual support, as shown in this specific language-by-language comparison:
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/7d6301ff/66c5c3dedb8b2df64fa6cc90_66c5c0135ae9c05cba41e14f_CleanShot_202024-08-21_20at_2012.23.02_402x.png" alt="Comparison of Phi 3.5 performance between various (human) languages" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7d6301ff/66c5c3dedb8b2df64fa6cc90_66c5c0135ae9c05cba41e14f_CleanShot_202024-08-21_20at_2012.23.02_402x.png" alt="Comparison of Phi 3.5 performance between various (human) languages" />
 </figure>
 
 There are lots of places where it might make sense to finetune your own open-source or open-weights model:
@@ -104,7 +104,7 @@ zenml stack deploy -n phi35-starter -p gcp --set
 This will guide you through a process in which you deploy the infrastructure within GCP.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/7b397082/66c48ff68be405c4188144b5_66a2079e063e15d1458f0af1_Finetune_20Llama_203.1.png" alt="Screenshot of the terminal when setting up a stack with one-click deployment. We use GCP to set up a basic MLOps stack." />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7b397082/66c48ff68be405c4188144b5_66a2079e063e15d1458f0af1_Finetune_20Llama_203.1.png" alt="Screenshot of the terminal when setting up a stack with one-click deployment. We use GCP to set up a basic MLOps stack." />
 </figure>
 
 > 💡 PRO TIP: When selecting the region in which you want this to be deployed, consider choosing `us-central1` since this has (or at least seems to have!) a greater availability of A100 machines and so the step is unlikely to fail on account of unavailable resources
@@ -143,7 +143,7 @@ python run.py --config phi3.5_finetune_remote.yaml
 <ul><li><code>prepare_data</code> - a local data preparation step which downloads the dataset and carries out some preprocessing</li><li><code>evaluate_base</code> - (runs on A100) - a baseline evaluation of the raw model using <a href="https://huggingface.co/spaces/evaluate-metric/rouge">Rouge metrics</a></li><li><code>finetune</code> - (runs on A100) - finetuning the model using the dataset</li><li><code>evaluate_finetuned</code> - (runs on A100) - evaluating the new finetuned model we just created using the same Rouge metrics</li><li><code>promote</code> - checks which of the two models performed best. If the finetuned model performed better, then we <a href="https://docs.zenml.io/how-to/use-the-model-control-plane/promote-a-model">promote the model to **Staging</a>.**</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/3cfcf39b/66c48ff58be405c4188142c3_66a207c98c70dc07dd8dc57d_Llama_203.1_20Finetune_20_1_.png" alt="Screenshot of the DAG (produced by the ZenML dashboard) which finetunes the Llama 3.1 model." />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3cfcf39b/66c48ff58be405c4188142c3_66a207c98c70dc07dd8dc57d_Llama_203.1_20Finetune_20_1_.png" alt="Screenshot of the DAG (produced by the ZenML dashboard) which finetunes the Llama 3.1 model." />
 </figure>
 
 If you’re running using the A100 hardware that we set up above, this pipeline should take somewhere between 45 minutes to an hour to run through. Some regions will have a smaller supply of GPU-powered machines so your steps might fail and retry.
@@ -155,7 +155,7 @@ Our finetuned model lives in the artifact store now and we can now inspect some 
 You can inspect the pipeline run and its artifacts first in the pipeline overview:
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/b20f6d2a/66c5c3dedb8b2df64fa6cc8a_66c5c274fbc89cff7948a83b_CleanShot_202024-08-21_20at_2012.33.01.png" alt="Screenshot of the ZenML dashboard showing the Phi 3.5 pipeline run." />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b20f6d2a/66c5c3dedb8b2df64fa6cc8a_66c5c274fbc89cff7948a83b_CleanShot_202024-08-21_20at_2012.33.01.png" alt="Screenshot of the ZenML dashboard showing the Phi 3.5 pipeline run." />
 </figure>
 
 Useful metadata about the run is displayed on the right panel and by clicking the ‘Configuration’ tab you’ll see all the parameters used when you ran the pipeline. (These are values set by the YAML config file as well as in the pipeline code itself.
@@ -163,13 +163,13 @@ Useful metadata about the run is displayed on the right panel and by clicking th
 Clicking on an individual step (like here for the `finetune` step) will allow you to inspect the runtime parameters for that particular piece of the pipeline:
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/fbc9e502/66c5c3dddb8b2df64fa6cc60_66c5c2b57dba5196313e4e76_CleanShot_202024-08-21_20at_2012.33.59.png" alt="A partial screenshot of the ZenML Dashboard showing parameters passed in for a particular finetuning step." />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/fbc9e502/66c5c3dddb8b2df64fa6cc60_66c5c2b57dba5196313e4e76_CleanShot_202024-08-21_20at_2012.33.59.png" alt="A partial screenshot of the ZenML Dashboard showing parameters passed in for a particular finetuning step." />
 </figure>
 
 Once you’ve done a few experiments, the place to go for a global overview of your experiments and artifacts is the Model Control Plane. Click the ‘Models’ tab on the left side of the Dashboard and you’ll see something like this:
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/a3bb5eed/66c5c3dddb8b2df64fa6cc5d_66c5c2ff62246d5ae485c377_CleanShot_202024-08-21_20at_2012.34.49.png" alt="Screenshot of the ZenML dashboard&#039;s model control plane for Phi 3.5." />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a3bb5eed/66c5c3dddb8b2df64fa6cc5d_66c5c2ff62246d5ae485c377_CleanShot_202024-08-21_20at_2012.34.49.png" alt="Screenshot of the ZenML dashboard&#039;s model control plane for Phi 3.5." />
 </figure>
 
 Note that some of these model versions have been promoted to `Production` and `Staging` stages, which is a way of isolating and highlighting particular statuses of your work product. If you were paying attention above, you’ll notice that the model you finetuned actually was promoted to `Staging` already for you (though you can do it manually in the Dashboard, too). The final step of the pipeline checks whether the finetuned version performs better than the base model (according to the metrics we evaluate) and then if so, we promote it to the next stage. This is a very common pattern in production machine learning and works out of the box with ZenML.
@@ -177,7 +177,7 @@ Note that some of these model versions have been promoted to `Production` and `S
 From this point you can click through to a specific version (`300_steps` for example) and then inspect the artifacts, models, deployments or even metadata surrounding that particular iteration. You can also see all the pipeline runs associated with that particular experiment that you were working on and it’s a way to make sense of all the complexity of your modelling work.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/afb1ba5c/66c5c3dddb8b2df64fa6cc74_66c5c341bccce435828ffdf7_CleanShot_202024-08-21_20at_2012.36.27.png" alt="Screenshot of the ZenML model control plane&#039;s view of model metadata" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/afb1ba5c/66c5c3dddb8b2df64fa6cc74_66c5c341bccce435828ffdf7_CleanShot_202024-08-21_20at_2012.36.27.png" alt="Screenshot of the ZenML model control plane&#039;s view of model metadata" />
 </figure>
 
 And of course, your model artifacts are all available to any downstream use that you might have via the API or Python SDK.

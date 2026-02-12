@@ -24,12 +24,12 @@ tags:
 date: "2024-08-28T00:00:00.000Z"
 readingTime: 3 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/b17656ee/66d06268f0a162b990a94132_zenml-release_2.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b17656ee/66d06268f0a162b990a94132_zenml-release_2.png"
 seo:
   title: "New Features: Enhanced Step Execution, AzureML Integration and More! - ZenML Blog"
   description: "ZenML's latest release 0.65.0 enhances MLOps workflows with single-step pipeline execution, AzureML SDK v2 integration, and dynamic model versioning. The update also introduces a new quickstart experience, improved logging, and better artifact handling. These features aim to streamline ML development, improve cloud integration, and boost efficiency for data science teams across local and cloud environments."
   canonical: "https://www.zenml.io/blog/new-features-enhanced-step-execution-azureml-integration-and-more"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/b17656ee/66d06268f0a162b990a94132_zenml-release_2.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b17656ee/66d06268f0a162b990a94132_zenml-release_2.png"
   ogTitle: "New Features: Enhanced Step Execution, AzureML Integration and More! - ZenML Blog"
   ogDescription: "ZenML's latest release 0.65.0 enhances MLOps workflows with single-step pipeline execution, AzureML SDK v2 integration, and dynamic model versioning. The update also introduces a new quickstart experience, improved logging, and better artifact handling. These features aim to streamline ML development, improve cloud integration, and boost efficiency for data science teams across local and cloud environments."
 ---
@@ -41,7 +41,7 @@ We're thrilled to announce the release of ZenML 0.65.0, bringing significant enh
 Our revamped quickstart demonstrates how ZenML streamlines the transition from local machine learning workflows to cloud-scale operations. This new experience helps users understand and leverage ZenML's capabilities more effectively, bridging the gap between development and production environments.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/20869132/66d06449378f17d2ad529a1e_66d063dd9f99201e24254763_Overview_20_1_.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/20869132/66d06449378f17d2ad529a1e_66d063dd9f99201e24254763_Overview_20_1_.png" alt="__wf_reserved_inherit" />
 </figure>
 
 Try it out using [Google Colab without installation](https://colab.research.google.com/github/zenml-io/zenml/blob/main/examples/quickstart/quickstart.ipynb) now!

@@ -18,12 +18,12 @@ tags:
 date: "2025-05-12T00:00:00.000Z"
 readingTime: 13 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/934b840e/6821cb9dda018894c099cbd1_managing_kubernetes_cover.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/934b840e/6821cb9dda018894c099cbd1_managing_kubernetes_cover.png"
 seo:
   title: "Managing MLOps at Scale on Kubernetes: When Your 8×H100 Server Needs to Serve Everyone - ZenML Blog"
   description: "Kubernetes powers 96% of enterprise ML workloads but often creates more friction than function—forcing data scientists to wrestle with infrastructure instead of building models while wasting expensive GPU resources. Our latest post shows how ZenML combined with NVIDIA's KAI Scheduler enables financial institutions to implement fractional GPU sharing, create team-specific ML stacks, and streamline compliance—accelerating innovation while cutting costs through intelligent resource orchestration."
   canonical: "https://www.zenml.io/blog/managing-mlops-at-scale-on-kubernetes-when-your-8xh100-server-needs-to-serve-everyone"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/934b840e/6821cb9dda018894c099cbd1_managing_kubernetes_cover.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/934b840e/6821cb9dda018894c099cbd1_managing_kubernetes_cover.png"
   ogTitle: "Managing MLOps at Scale on Kubernetes: When Your 8×H100 Server Needs to Serve Everyone - ZenML Blog"
   ogDescription: "Kubernetes powers 96% of enterprise ML workloads but often creates more friction than function—forcing data scientists to wrestle with infrastructure instead of building models while wasting expensive GPU resources. Our latest post shows how ZenML combined with NVIDIA's KAI Scheduler enables financial institutions to implement fractional GPU sharing, create team-specific ML stacks, and streamline compliance—accelerating innovation while cutting costs through intelligent resource orchestration."
 ---
@@ -37,7 +37,7 @@ However, using Kubernetes for machine learning brings its own pain points. Organ
 <ul><li>Multi-cloud flexibility is non-negotiable</li><li>GPU utilization and cost need granular control</li><li>Regulatory requirements demand on-premises deployment</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/8e527827/6821cd14ea5c76add3555f5c_blog00.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8e527827/6821cd14ea5c76add3555f5c_blog00.png" alt="__wf_reserved_inherit" />
   <figcaption>Cases where Kubernetes is specifically relevant for machine learning workloads</figcaption>
 </figure>
 
@@ -106,7 +106,7 @@ ZenML addresses the complexities of Kubernetes for ML by providing an abstractio
 ZenML's service connectors eliminate the complexity of managing connections across environments, but they go far beyond simple data access. These connectors provide a centralized, secure way to manage access to various resources—including Kubernetes clusters—across your organization.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/1d50e3f0/6821c91673655a1284ba8a0d_blog01.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1d50e3f0/6821c91673655a1284ba8a0d_blog01.webp" alt="__wf_reserved_inherit" />
   <figcaption>Service connectors allow secure access to underlying infrastructure</figcaption>
 </figure>
 
@@ -121,7 +121,7 @@ For organizations with multiple teams and strict compliance requirements, servic
 ### Modular Stacks: Infrastructure Governance Made Simple
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/b479f124/6821c9fee52f9959c142793c_blog02.gif" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b479f124/6821c9fee52f9959c142793c_blog02.gif" alt="__wf_reserved_inherit" />
 </figure>
 
 Connect disparate infrastructure stack components and share them securely with a few clicks
@@ -165,7 +165,7 @@ ZenML's implementation abstracts away the complexity, allowing data scientists t
 ### Beautiful UI for Data and Artifact Tracking
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/ddd27ee1/6821cb7c6588d920f3f5dc19_blog03.gif" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ddd27ee1/6821cb7c6588d920f3f5dc19_blog03.gif" alt="__wf_reserved_inherit" />
 </figure>
 
 Beyond simplifying infrastructure, ZenML provides [a comprehensive UI](https://docs.zenml.io/user-guides/starter-guide/manage-artifacts) for tracking experiments, datasets, and model artifacts. This visual layer transforms how teams interact with their ML systems:
@@ -195,7 +195,7 @@ Consider a financial institution with three distinct ML teams, each having diffe
 <ol><li><strong>Fraud Detection Team</strong>: Needs reliable, high-priority access to GPU resources for real-time fraud prediction models</li><li><strong>Investment Research Team</strong>: Requires flexible GPU access for experimental quantitative models</li><li><strong>Customer Analytics Team</strong>: Runs periodic batch training jobs for customer segmentation and recommendation models</li></ol>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/9a30fbd3/6821cb181432dd1dc528df8a_blog04.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9a30fbd3/6821cb181432dd1dc528df8a_blog04.png" alt="__wf_reserved_inherit" />
 </figure>
 
 In this scenario, these teams would compete for resources on a shared GPU cluster, potentially leading to conflicts, inefficient resource utilization, and frustration. Critical fraud models might be delayed by experimental research jobs, while expensive GPU hardware could sit idle outside of business hours.
@@ -209,7 +209,7 @@ The institution could implement a ZenML solution with three distinct stacks shar
 With this, the entire ML process across the enterprise becomes cleaner and more efficient:
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/240d9d3a/6821cb3847aba360d33f8a00_blog05.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/240d9d3a/6821cb3847aba360d33f8a00_blog05.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### The Benefits

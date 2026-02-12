@@ -19,7 +19,7 @@ tags:
 date: "2020-05-04T00:00:00.000Z"
 readingTime: 11 Mins Read
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/206c6f6c/652f5478a3e04647d82c66a6_download__28_.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/206c6f6c/652f5478a3e04647d82c66a6_download__28_.png"
 ---
 
 **Last updated:** November 3, 2022.

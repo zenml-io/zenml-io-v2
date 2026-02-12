@@ -17,7 +17,7 @@ tags:
   - "kubeflow"
   - "evidently"
 image:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/dfcfafe3/6528f5b27148839815258915_loyalty.jpg"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/dfcfafe3/6528f5b27148839815258915_loyalty.jpg"
 description: "Will they stay or will they go? Building a Customer Loyalty Predictor"
 seoTitle: "Predicting Customer Loyalty"
 seoDescription: "Predict the number of three-pointers in the next NBA match."
@@ -26,7 +26,7 @@ seo:
   title: "ZenML - One AI Platform - From Pipelines to Agents"
   description: "An open-source foundation to ship reliable AI products at scale - on any cloud, anywhere."
   canonical: "https://www.zenml.io"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/cb031609/695e2c1368a3480fb0daafc4_zenml-open-graph.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/cb031609/695e2c1368a3480fb0daafc4_zenml-open-graph.png"
   ogTitle: "ZenML - One AI Platform - From Pipelines to Agents"
   ogDescription: "An open-source foundation to ship reliable AI products at scale - on any cloud, anywhere."
 ---
@@ -44,7 +44,7 @@ This project structure including the stack and components can be used on occasio
 ## Stack Components
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/2a08d200/6528ffd3f09f26a0342364c1_customer_churn_64bda83069.png" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2a08d200/6528ffd3f09f26a0342364c1_customer_churn_64bda83069.png" alt="" />
 </figure>
 
 This project uses the following [Stack Components](https://docs.zenml.io/user-guide/component-guide):
@@ -58,7 +58,7 @@ The codes to reproduce this project are open-source on GitHub. View the code [he
 ## Runs
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/819d4d94/6528ffd357f15ad2b9d45241_customer_churn_dag_26bda41d4f.png" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/819d4d94/6528ffd357f15ad2b9d45241_customer_churn_dag_26bda41d4f.png" alt="" />
 </figure>
 
 ## Additional Resources

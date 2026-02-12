@@ -20,12 +20,12 @@ tags:
 date: "2025-06-14T00:00:00.000Z"
 readingTime: 13 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/f8c3a6fa/684d0ca405f48f13be248063_prefect-vs-airflow.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f8c3a6fa/684d0ca405f48f13be248063_prefect-vs-airflow.png"
 seo:
   title: "Prefect vs Airflow vs ZenML: Best Platform to Run ML Pipelines - ZenML Blog"
   description: "In this Prefect vs Airflow vs ZenML article, we explain the difference between the three platforms and educate you about using them in tandem."
   canonical: "https://www.zenml.io/blog/prefect-vs-airflow"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/f8c3a6fa/684d0ca405f48f13be248063_prefect-vs-airflow.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f8c3a6fa/684d0ca405f48f13be248063_prefect-vs-airflow.png"
   ogTitle: "Prefect vs Airflow vs ZenML: Best Platform to Run ML Pipelines - ZenML Blog"
   ogDescription: "In this Prefect vs Airflow vs ZenML article, we explain the difference between the three platforms and educate you about using them in tandem."
 ---
@@ -235,7 +235,7 @@ What’s more, Prefect also logs each task’s state - success, failure, inputs,
 However, Prefect doesn’t automatically version arbitrary data – you must explicitly create artifacts or configure caching. Its focus is on providing hooks so you can manage artifacts via the UI if desired.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/2e35c983/684d09bc168d244e4c96fe75_prefect-artifacts.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2e35c983/684d09bc168d244e4c96fe75_prefect-artifacts.png" alt="__wf_reserved_inherit" />
   <figcaption>Prefect Artifacts</figcaption>
 </figure>
 
@@ -250,7 +250,7 @@ In practice, model files or large datasets are typically written to external sto
 #### ZenML
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/3e4c3498/684d09e1654706f068447903_zenml-artifacts-store.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3e4c3498/684d09e1654706f068447903_zenml-artifacts-store.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML artifact store</figcaption>
 </figure>
 
@@ -267,7 +267,7 @@ This Model Control Plane ties together related artifacts, including weights, met
 This lets you see precisely which code, data, and parameters generated any model version.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/a4766604/684d0a190f1c84f5fba6a0eb_zenml-model-control-plane.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a4766604/684d0a190f1c84f5fba6a0eb_zenml-model-control-plane.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML Model Control Plane</figcaption>
 </figure>
 
@@ -366,7 +366,7 @@ Prefect offers connectors for various tools across the ML lifecycle. These inclu
 Prefect's integrations are deeply tied to its Kubernetes-native architecture, making it a strong choice for teams already invested in or planning to adopt a Kubernetes-based infrastructure for their ML workloads.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/7b24daf1/684d0af351d40eb949ec47a8_prefect-integrations.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7b24daf1/684d0af351d40eb949ec47a8_prefect-integrations.png" alt="__wf_reserved_inherit" />
   <figcaption>Prefect integrations</figcaption>
 </figure>
 
@@ -381,7 +381,7 @@ For ML/AI tools, it integrates with [MLflow](https://www.zenml.io/blog/mlflow-al
 Airflow also provides connectors for numerous databases and data systems, like PostgreSQL, MySQL, MSSQL, Oracle, and MongoDB, and robust data transfer capabilities.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/8a17229b/6843c3029fc9ee3870646088_apache-airflow-integrations.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8a17229b/6843c3029fc9ee3870646088_apache-airflow-integrations.png" alt="__wf_reserved_inherit" />
   <figcaption>Apache Airflow integrations</figcaption>
 </figure>
 
@@ -394,7 +394,7 @@ ZenML has more than 50 built-in connectors across various MLOps categories, incl
 <ul><li><strong>Artifact Store:</strong> S3, Azure Blob Storage, GSC</li><li><strong>Cloud Infrastructure:</strong> AWS, Google Cloud, Azure</li><li><strong>Container Registry:</strong> Azure, Elastic, GitHub, Google Artifact Registry</li><li><strong>Data Visualization:</strong> Facets</li><li><strong>Experiment Tracker:</strong> Comet, MLflow, Neptune, Weights &amp; Biases</li><li><strong>Orchestrator:</strong> Docker, HyperAI, Kubeflow, Modal, Tekton</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/fdbf7908/681c900f26ebfa5fb5c525d6_zenml-list-of-integrations.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/fdbf7908/681c900f26ebfa5fb5c525d6_zenml-list-of-integrations.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML integrations</figcaption>
 </figure>
 
@@ -409,7 +409,7 @@ Prefect’s pricing is pretty straightforward; it offers 1 open source plan and 
 <ul><li><strong>Hobby</strong>: $0 per month - For personal projects and small-scale applications.</li><li><strong>Starter</strong>: $100 per month - For deploying pipelines to production on your own infrastructure.</li><li><strong>Team</strong>: $400 per month - For growing teams with scaling orchestration needs.</li><li><strong>Pro/Enterprise</strong>: Custom pricing - Flexible, sales-assisted plans for advanced security, support, and controls.</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/24874780/684d0bf20b1a5aba9f3d3d7c_prefect-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/24874780/684d0bf20b1a5aba9f3d3d7c_prefect-pricing.png" alt="__wf_reserved_inherit" />
   <figcaption>Prefect pricing</figcaption>
 </figure>
 
@@ -422,7 +422,7 @@ The open-source Airflow software is free to use under Apache 2.0. You can run it
 Managed Airflow services (AWS MWAA, Google Composer, Astronomer) charge based on usage. Airflow has no software cost, but you will have to pay for managed hosting or infrastructure.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/0f2fd409/6843c3e30350bed52f31bd30_airflow-pricing-on-the-aws-marketplace.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/0f2fd409/6843c3e30350bed52f31bd30_airflow-pricing-on-the-aws-marketplace.png" alt="__wf_reserved_inherit" />
   <figcaption>Airflow pricing on the AWS marketplace</figcaption>
 </figure>
 
@@ -435,7 +435,7 @@ Apart from the open-source free plan, the platform offers a hosted control plane
 The Scale plan is custom-priced and lets you customize everything -  workspace, projects, pipelines, models, and pipeline runs per month.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/4b575e54/684d0c608fbf35ca0075bffa_zenml-paid-plans.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/4b575e54/684d0c608fbf35ca0075bffa_zenml-paid-plans.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML paid plans</figcaption>
 </figure>
 
@@ -456,7 +456,7 @@ Many successful ML teams use combinations of these tools. You might use Airflow 
 Ready to turn your ML chaos into MLOps magic? [Book a ZenML demo](https://www.zenml.io/book-your-demo) today and discover how to build production-ready pipelines in minutes, not months.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/08a67db5/684d0c7f8f1f6d02ce5767f4_book-your-personalized-demo.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/08a67db5/684d0c7f8f1f6d02ce5767f4_book-your-personalized-demo.png" alt="__wf_reserved_inherit" />
   <figcaption>Book your personalized demo</figcaption>
 </figure>
 

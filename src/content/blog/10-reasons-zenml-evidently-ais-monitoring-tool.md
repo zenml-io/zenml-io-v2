@@ -21,12 +21,12 @@ tags:
 date: "2022-01-21T00:00:00.000Z"
 readingTime: 7 Mins Read
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/d125adf5/652fad0c38f5ae7fc88c9eea_evidently_ai_logo.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d125adf5/652fad0c38f5ae7fc88c9eea_evidently_ai_logo.png"
 seo:
   title: "10 Reasons ZenML ❤️ Evidently AI's Monitoring Tool - ZenML Blog"
   description: "ZenML recently added an integration with Evidently, an open-source tool that allows you to monitor your data for drift (among other things). This post showcases the integration alongside some of the other parts of Evidently that we like."
   canonical: "https://www.zenml.io/blog/10-reasons-zenml-evidently-ais-monitoring-tool"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/8fdec906/652fad0c38f5ae7fc88c9eea_evidently_ai_logo.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8fdec906/652fad0c38f5ae7fc88c9eea_evidently_ai_logo.png"
   ogTitle: "10 Reasons ZenML ❤️ Evidently AI's Monitoring Tool - ZenML Blog"
   ogDescription: "ZenML recently added an integration with Evidently, an open-source tool that allows you to monitor your data for drift (among other things). This post showcases the integration alongside some of the other parts of Evidently that we like."
 ---
@@ -40,7 +40,7 @@ At its core, Evidently's drift detection calculation functions take in a referen
 ## 1. Drift is inevitable
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/1c9c178c/66c5de03e040ad7b29ea50b4_652fade2edbf50ed52c1068c_car-drift.gif" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1c9c178c/66c5de03e040ad7b29ea50b4_652fade2edbf50ed52c1068c_car-drift.gif" alt="" />
 </figure>
 
 If you're working on any kind of machine learning problem that has an ongoing training loop that takes in new data, you'll want to guard against drift. Machine learning pipelines are built on top of data inputs, so it is worth checking for drift if you have a model that was trained on a certain distribution of data. The incoming data is something you have less control over and since things often change out in the real world, you should have a plan for knowing when things have shifted. Evidently offers [a growing set of features](https://github.com/evidentlyai/evidently) that help you monitor not only data drift but other key aspects like target drift and so on.
@@ -54,7 +54,7 @@ There are enough examples to help illustrate why this is probably a short-sighte
 ## 3. Great documentation and visual explanations
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/39f2e200/66c5de03e040ad7b29ea50a8_652fadfdba9db31f8a1c8c25_evidently-blog.png" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/39f2e200/66c5de03e040ad7b29ea50a8_652fadfdba9db31f8a1c8c25_evidently-blog.png" alt="" />
 </figure>
 
 Before we started using the tool, we heard about Evidently's amazing [documentation](https://docs.evidentlyai.com/) and visual explanations found in [their blogposts](https://evidentlyai.com/blog). If you want to understand the ins and outs of drift detection, or how ML monitoring differs from traditional monitoring, look no further than reading through [their blog archive](https://evidentlyai.com/blog).
@@ -103,7 +103,7 @@ EvidentlyVisualizer().visualize(evidently_outputs)
 And you get an informative set of charts to explore relating to your dataset(s):
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/62852070/66c5de02e040ad7b29ea50a3_652fae156b49b31089e74530_drift_visualization.png" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/62852070/66c5de02e040ad7b29ea50a3_652fae156b49b31089e74530_drift_visualization.png" alt="" />
 </figure>
 
 If you're running this in Jupyter notebooks it'll display the visualizations in-line, and outside it we'll generate a temporary file showing the charts and automatically open your browser to display them.

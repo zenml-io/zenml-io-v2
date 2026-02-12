@@ -12,16 +12,16 @@ webflow:
   createdOn: "2024-09-11T07:00:23.495Z"
 integrationType: "orchestrator"
 logo:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/3ed92cba/672b2b8734919e10dda03f5f_sagemaker_pipelines.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3ed92cba/672b2b8734919e10dda03f5f_sagemaker_pipelines.png"
 shortDescription: "Orchestrate production ZenML pipelines with Amazon SageMaker"
 docsUrl: "https://docs.zenml.io/stack-components/orchestrators/sagemaker"
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/9dfdb43d/66e13e0735069705b5b930d6_image__5_.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9dfdb43d/66e13e0735069705b5b930d6_image__5_.png"
 seo:
   title: "Integrate Sagemaker Pipelines with ZenML - Orchestrator Integrations"
   description: "Orchestrate production ZenML pipelines with Amazon SageMaker"
   canonical: "https://www.zenml.io/integrations/sagemaker-pipelines"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/9dfdb43d/66e13e0735069705b5b930d6_image__5_.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9dfdb43d/66e13e0735069705b5b930d6_image__5_.png"
   ogTitle: "Integrate Sagemaker Pipelines with ZenML - Orchestrator Integrations"
   ogDescription: "Orchestrate production ZenML pipelines with Amazon SageMaker"
 ---

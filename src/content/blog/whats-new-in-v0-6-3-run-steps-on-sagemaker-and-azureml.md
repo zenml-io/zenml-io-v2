@@ -17,7 +17,7 @@ tags:
 date: "2022-03-14T00:00:00.000Z"
 readingTime: 3 Mins Read
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/10740b17/65315f817f8d0747f91705b3_eyestetix-studio-l8qIZmNuD1E-unsplash.jpg"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/10740b17/65315f817f8d0747f91705b3_eyestetix-studio-l8qIZmNuD1E-unsplash.jpg"
 ---
 
 **Last updated:** November 3, 2022.
@@ -31,7 +31,7 @@ Behind the scenes we gave our integration testing suite a massive upgrade, fixed
 ## ☁️ Run Your Steps on Sagemaker and AzureML
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/beb027cf/65315f56f7e61ff7b180417b_zen-in-the-clouds.gif" alt="Running your steps on cloud hardware provided by Sagemaker and AzureML" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/beb027cf/65315f56f7e61ff7b180417b_zen-in-the-clouds.gif" alt="Running your steps on cloud hardware provided by Sagemaker and AzureML" />
 </figure>
 
 As your pipelines become more mature and complex, you might want to use specialized hardware for certain steps of your pipeline. A clear example is wanting to run your training step on GPU machines that get spun up automagically without you having to worry too much about that deployment. Amazon’s [Sagemaker](https://aws.amazon.com/sagemaker) and Microsoft’s [AzureML](https://ml.azure.com/) both offer custom hardware on which you can run your steps.
@@ -51,7 +51,7 @@ We’ll be publishing more about this use case in the coming days, so stay tuned
 ## 📊 visualize Your Model History with Tensorboard
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/cd0820b2/65315f56f86103b0fb7b8760_tensorboard.png" alt="Visualizing model history with Tensorboard" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/cd0820b2/65315f56f86103b0fb7b8760_tensorboard.png" alt="Visualizing model history with Tensorboard" />
 </figure>
 
 [Tensorboard](https://www.tensorflow.org/tensorboard/) is a way to visualize your machine learning models and training outputs. In this release we added a custom visualization for Kubeflow which allows you to see the entire history of a model logged by a step.

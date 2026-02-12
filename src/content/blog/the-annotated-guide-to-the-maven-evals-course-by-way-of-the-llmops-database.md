@@ -20,12 +20,12 @@ tags:
 date: "2025-07-22T00:00:00.000Z"
 readingTime: 12 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/eb3dab14/6981cf64f4f7a9ede995c45b_6981ce864626f810358db782_zenml-evals-course-1.avif"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/eb3dab14/6981cf64f4f7a9ede995c45b_6981ce864626f810358db782_zenml-evals-course-1.avif"
 seo:
   title: "The Annotated Guide to the Maven Evals Course (by way of the LLMOps Database) - ZenML Blog"
   description: "Lessons from the Maven Evals course are combined with 50+ real-world case studies from ZenML's LLMOps Database to show how companies like Discord, GitHub, and Coursera implement the Three Gulfs model and Analyze-Measure-Improve lifecycle to transform failing LLM systems into production-ready applications."
   canonical: "https://www.zenml.io/blog/the-annotated-guide-to-the-maven-evals-course-by-way-of-the-llmops-database"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/eb3dab14/6981cf64f4f7a9ede995c45b_6981ce864626f810358db782_zenml-evals-course-1.avif"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/eb3dab14/6981cf64f4f7a9ede995c45b_6981ce864626f810358db782_zenml-evals-course-1.avif"
   ogTitle: "The Annotated Guide to the Maven Evals Course (by way of the LLMOps Database) - ZenML Blog"
   ogDescription: "Lessons from the Maven Evals course are combined with 50+ real-world case studies from ZenML's LLMOps Database to show how companies like Discord, GitHub, and Coursera implement the Three Gulfs model and Analyze-Measure-Improve lifecycle to transform failing LLM systems into production-ready applications."
 ---
@@ -33,7 +33,7 @@ seo:
 I'm back in the new cohort of [Hamel & Shreya's LLM Evals course](https://maven.com/parlance-labs/evals) which started up again this evening. As part of how I'm revisiting the material this time round, I'm going to publish a series of blogs which will draw ties between the material in the course textbook and the [LLMOps Database](https://www.zenml.io/llmops-database). If you're not already familiar with it, [ZenML's LLMOps Database](https://www.zenml.io/llmops-database) is a resource that I maintain as part of my day job working to make it easier for engineers to put models and LLM-based systems into production. I've gathered together over 800 entries, drawing from company blogs to panel discussions on YouTube and more. Each entry comes with a short and long summary.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/a6f5c017/687ff9389baba712cc51ac5e_CleanShot_2025-07-22_at_22.30.55.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a6f5c017/687ff9389baba712cc51ac5e_CleanShot_2025-07-22_at_22.30.55.png" alt="__wf_reserved_inherit" />
 </figure>
 
 There's lots to learn from the examples which is why I thought it's a great pairing to look at the course notes together with the database entries. You can learn about the theory (and some practical examples from industry!) and how to implement this in your own projects etc in the textbook, and then see how companies are doing it in real life. You can take inspiration from their victories but also learn from the problems they had to solve along the way.

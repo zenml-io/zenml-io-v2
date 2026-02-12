@@ -22,12 +22,12 @@ tags:
 date: "2025-06-01T00:00:00.000Z"
 readingTime: 13 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/92d73265/683a99a29ae23a57b587f9de_metaflow-vs-mlflow.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/92d73265/683a99a29ae23a57b587f9de_metaflow-vs-mlflow.png"
 seo:
   title: "Metaflow vs MLflow vs ZenML: What’s the Difference? - ZenML Blog"
   description: "In this Metaflow vs MLflow vs ZenML article, we explain the difference between the three platforms and educate you about using them in tandem."
   canonical: "https://www.zenml.io/blog/metaflow-vs-mlflow"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/92d73265/683a99a29ae23a57b587f9de_metaflow-vs-mlflow.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/92d73265/683a99a29ae23a57b587f9de_metaflow-vs-mlflow.png"
   ogTitle: "Metaflow vs MLflow vs ZenML: What’s the Difference? - ZenML Blog"
   ogDescription: "In this Metaflow vs MLflow vs ZenML article, we explain the difference between the three platforms and educate you about using them in tandem."
 ---
@@ -207,7 +207,7 @@ Metaflow’s built-in tracking is basic; its main interface is CLI, but [Netflix
 In summary, Metaflow provides lineage by default (all step artifacts are versioned) and lets you inspect any run, but it relies on external tools (or its optional UI) for rich visualization.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/ad8c1c4e/683a9687c0ff2b611c506538_metaflow-experiment-tracking.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ad8c1c4e/683a9687c0ff2b611c506538_metaflow-experiment-tracking.png" alt="__wf_reserved_inherit" />
   <figcaption>Metaflow experiment tracking</figcaption>
 </figure>
 
@@ -222,7 +222,7 @@ MLflow’s UI then makes this easy to query. It also includes a Model Registry: 
 In practice, MLflow provides turnkey tracking and registry features, but you must run it within a notebook, script, or managed service (it does not auto-log anything without your code calling it).
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/f0b23289/681c8ef42b8649f7f85ced46_graph-showing-how-experiment-tracking-is-done-in-mlflow.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f0b23289/681c8ef42b8649f7f85ced46_graph-showing-how-experiment-tracking-is-done-in-mlflow.png" alt="__wf_reserved_inherit" />
   <figcaption>MLflow experiment tracking</figcaption>
 </figure>
 
@@ -239,7 +239,7 @@ On top of that, ZenML offers a [Model Control Plane](https://www.zenml.io/cloud-
 In short, ZenML ensures every pipeline run (and its artifacts) is tracked, and it integrates with best-in-class UIs for visualization.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/ee012717/682971f2010ce568877c2a03_how_zenml_experiment_trackers_fit_into_the_overall_story_of_a_remote_stack.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ee012717/682971f2010ce568877c2a03_how_zenml_experiment_trackers_fit_into_the_overall_story_of_a_remote_stack.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML experiment tracking</figcaption>
 </figure>
 
@@ -266,7 +266,7 @@ Code versions are also captured – each run records the Git commit of your Flow
 In practice, Metaflow provides end-to-end lineage out of the box, but you may need to use its APIs or UI to explore it.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/dd5682fc/683a972b2714dc8d382c1e25_high-level-architecture-diagram-of-metaflow.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/dd5682fc/683a972b2714dc8d382c1e25_high-level-architecture-diagram-of-metaflow.png" alt="__wf_reserved_inherit" />
   <figcaption>High level architecture diagram of Metaflow</figcaption>
 </figure>
 
@@ -283,7 +283,7 @@ MLflow doesn’t inherently version your datasets – if you want to track data 
 What’s more, the platform’s functionality lets you persist any artifacts per run, tie them to the run ID, and its registry versions model artifacts, but it does not automatically capture the lineage between steps or manage raw data versions.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/01f61c61/682971b1292840b5a73012f4_setting_up_a_workflow_tracking_environment_in_mlflow.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/01f61c61/682971b1292840b5a73012f4_setting_up_a_workflow_tracking_environment_in_mlflow.png" alt="__wf_reserved_inherit" />
   <figcaption>MLflow remote tracking with a tracking server</figcaption>
 </figure>
 
@@ -292,7 +292,7 @@ What’s more, the platform’s functionality lets you persist any artifacts per
 #### ZenML
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/2a5bd3d5/683a978569d0908984042c4d_zenml-artifact-store.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2a5bd3d5/683a978569d0908984042c4d_zenml-artifact-store.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML artifact store</figcaption>
 </figure>
 
@@ -335,7 +335,7 @@ Metaflow integrates deeply with cloud infrastructure. It was originally built on
 On the tooling side, Metaflow has connectors to several Python libraries - TensorFlow, PyTorch, Pandas, etc.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/5fdc7d89/683a97d5f70902c6a06aa1b8_metaflow-intergrations.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5fdc7d89/683a97d5f70902c6a06aa1b8_metaflow-intergrations.png" alt="__wf_reserved_inherit" />
   <figcaption>Metaflow integrations</figcaption>
 </figure>
 
@@ -348,14 +348,14 @@ It also integrates with Databricks (where it originated), Databricks offers Mana
 What’s more, MLflow can use any database for its backend store and any blob storage for artifacts. This flexibility means MLflow can fit into most tech stacks with minimal effort.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/b8c24e6f/682972edcffb524e3358a025_mlflow_integrations.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b8c24e6f/682972edcffb524e3358a025_mlflow_integrations.png" alt="__wf_reserved_inherit" />
   <figcaption>MLflow integrations</figcaption>
 </figure>
 
 #### ZenML
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/ce3ffe8a/681c8ff1cff78cabbca5d18f_a-flowchart-explaning-how-zenml-integrates-with-multiple-tools-and-platform.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ce3ffe8a/681c8ff1cff78cabbca5d18f_a-flowchart-explaning-how-zenml-integrates-with-multiple-tools-and-platform.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML is a integration friendly MLOps framework</figcaption>
 </figure>
 
@@ -368,7 +368,7 @@ Our platform offers 50+ out-of-the-box connectors to MLOps tools. Below are some
 ZenML acts like a *meta-orchestrator*: your ZenML pipeline can invoke pipelines on other platforms. This gives you huge flexibility – you’re not locked into one vendor or service.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/fdbf7908/681c900f26ebfa5fb5c525d6_zenml-list-of-integrations.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/fdbf7908/681c900f26ebfa5fb5c525d6_zenml-list-of-integrations.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML integrations</figcaption>
 </figure>
 
@@ -389,7 +389,7 @@ The core Metaflow framework is open-source and free (Apache 2.0). For managed se
 Another way to purchase and deploy Outerbounds is via some major cloud marketplaces. The platform is available on AWS, Google Cloud, and the Azure marketplace.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/68b59fb9/683a98981b0de7dd82671515_outerbounds-paid-plans.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/68b59fb9/683a98981b0de7dd82671515_outerbounds-paid-plans.png" alt="__wf_reserved_inherit" />
   <figcaption>Outerbounds paid plans</figcaption>
 </figure>
 
@@ -400,7 +400,7 @@ MLflow is open-source and free to deploy on your own infrastructure. For managed
 <ul><li><strong>Databricks MLflow:</strong> Included in Databricks Compute, billed by DBU usage.</li><li><strong>AWS SageMaker MLflow:</strong> SageMaker offers an MLflow setup where a small instance (ml.t3.medium) is about $0.642 per hour (plus storage costs).</li><li><strong>Azure ML with MLflow:</strong> MLflow tracking is built into Azure ML; you pay for Azure ML compute and storage (no separate MLflow fee).</li><li><strong>Nebius Managed MLflow:</strong> Nebius offers dedicated MLflow clusters; a 6 vCPU / 24 GB RAM cluster costs about $0.36/hour.</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/9f92ad88/681c904025efe6e1a8dfb657_pricing-for-nebius-managed-mlflow.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9f92ad88/681c904025efe6e1a8dfb657_pricing-for-nebius-managed-mlflow.png" alt="__wf_reserved_inherit" />
   <figcaption>Nebius managed MLflow</figcaption>
 </figure>
 
@@ -415,7 +415,7 @@ The Basic plan includes one workspace, one project, one pipeline, and up to 30 r
 If you’re interested in signing up for the Scale Plan, contact us to tell us what you need; we will provide you with a customized plan and pricing.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/a5fc185d/683a990786178249ed3b8ce7_zenml-paid-plans.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a5fc185d/683a990786178249ed3b8ce7_zenml-paid-plans.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML paid plans</figcaption>
 </figure>
 
@@ -436,6 +436,6 @@ Selecting an MLOps platform between Metaflow vs MLflow vs ZenML depends on your 
 Want to experience the power of a unified MLOps platform that bridges the experimentation and production gap with 50+ integrations? [Book a personalized demo call](https://www.zenml.io/book-your-demo) with our Founder and explore multiple ways how ZenML can cater to your MLOps teams better than any other workflow orchestration platform.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/55428de0/684576e834000d9981f3b957_zenml-book-a-demo.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/55428de0/684576e834000d9981f3b957_zenml-book-a-demo.png" alt="__wf_reserved_inherit" />
   <figcaption>Book your personalized demo</figcaption>
 </figure>

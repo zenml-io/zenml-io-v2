@@ -19,12 +19,12 @@ tags:
 date: "2025-10-29T00:00:00.000Z"
 readingTime: 13 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e44dd935/6904958f51d7032a268c46da_mlops-vs-llmops.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e44dd935/6904958f51d7032a268c46da_mlops-vs-llmops.png"
 seo:
   title: "MLOps vs LLMOps: What’s the Difference? - ZenML Blog"
   description: "In this guide, we showcase the differences between MLOps and LLMOps and explain how to use them in tandem."
   canonical: "https://www.zenml.io/blog/mlops-vs-llmops"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e44dd935/6904958f51d7032a268c46da_mlops-vs-llmops.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e44dd935/6904958f51d7032a268c46da_mlops-vs-llmops.png"
   ogTitle: "MLOps vs LLMOps: What’s the Difference? - ZenML Blog"
   ogDescription: "In this guide, we showcase the differences between MLOps and LLMOps and explain how to use them in tandem."
 ---
@@ -60,7 +60,7 @@ Speaking of which, MLOps should be used when your project involves:
 ## What is LLMOps?
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/12affda0/6901977c5c4ec405043b21ff_what-is-llmops.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/12affda0/6901977c5c4ec405043b21ff_what-is-llmops.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ZenML simplifies the development and deployment of LLM-powered MLOps pipelines.
@@ -98,7 +98,7 @@ In MLOps, the most important artifacts are the datasets, features engineered fro
 Tools like model registries and data version control keep track of which data was used to train which model, and what feature definitions were applied.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/a971e094/6901979f2f5d5b6bfa8329ee_mlops-data-and-artifacts.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a971e094/6901979f2f5d5b6bfa8329ee_mlops-data-and-artifacts.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 #### LLMOps
@@ -108,7 +108,7 @@ LLMOps, on the other hand, deals with a new set of artifacts. The prompt is king
 <ul><li>Embeddings for <a href="https://www.zenml.io/llmops-database/ai-powered-semantic-job-search-at-scale">semantic search</a></li><li>Vector indexes that store them</li><li>External tools and policies for agents</li><li>Trace logs to debug the LLM's reasoning process</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/4a9c273a/690197b5b64f6528c278ace0_llmops-data-and-artifacts.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/4a9c273a/690197b5b64f6528c278ace0_llmops-data-and-artifacts.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 **Bottom line:** In MLOps vs LLMOps, things like prompts, retrieval databases, and guardrail configurations become ‘first-class citizens’ in LLMOps, whereas MLOps is primarily centered on data and model artifacts.
@@ -120,7 +120,7 @@ LLMOps builds upon the foundations of MLOps. But the ‘build loop’ or iterati
 #### MLOps
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/073470a2/690197c8edb2b176e8e323f7_mlops-lifecycle.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/073470a2/690197c8edb2b176e8e323f7_mlops-lifecycle.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 The classic MLOps lifecycle centers on an offline training loop. You collect data, train a model, evaluate it, and deploy. This cycle repeats periodically as new data arrives or model improvements are discovered.
@@ -130,7 +130,7 @@ The iteration cadence is often slower. Much of your effort goes into feature eng
 #### LLMOps
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/792272db/690197d67bd32569c8147956_llmops-lifecycle.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/792272db/690197d67bd32569c8147956_llmops-lifecycle.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 The LLMOps build loop is far more dynamic and faster. You're not usually training a model from scratch. Instead, you start with a pre-trained foundation model. So the ‘training’ phase is minimal or skipped at best.
@@ -150,7 +150,7 @@ MLOps is more work, with more steps, and more model retraining. LLMOps, on the o
 ### 3. Testing and Evaluation
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/4e5bd66d/690197ed1892efb09c59dd2e_testing-and-evaluation.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/4e5bd66d/690197ed1892efb09c59dd2e_testing-and-evaluation.webp" alt="__wf_reserved_inherit" />
   <figcaption>Why evaluation and testing matters</figcaption>
 </figure>
 
@@ -187,7 +187,7 @@ MLOps and LLMOps both offer unique deployment and monitoring features that align
 #### MLOps
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/55ad0406/690198471bc8a749e7c584f5_mlops-deployment-and-monitoring.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/55ad0406/690198471bc8a749e7c584f5_mlops-deployment-and-monitoring.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 In a typical MLOps setup, the overall deployment architecture is fairly contained. You ship a model artifact to a model server behind an API, along with a feature service that supplies real-time features to the model.
@@ -199,7 +199,7 @@ If model performance degrades or data drifts significantly, alerts are raised, a
 #### LLMOps
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/89cfde11/69019854d1c647ebd96d1f3a_llmops-deployment-and-monitoring.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/89cfde11/69019854d1c647ebd96d1f3a_llmops-deployment-and-monitoring.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 LLMOps introduces an application gateway to handle the LLM workflow. The gateway orchestrates multiple components: a router to direct queries, a [vector database for RAG](https://www.zenml.io/blog/vector-databases-for-rag), tool-calling logic, and caching layers to reduce costs.
@@ -267,7 +267,7 @@ Now, here’s the challenge: most MLOps tools don’t natively support LLM workf
 That’s exactly when we built ZenML.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/58c9eb74/68fd99948903b85db56b321b_zenml-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/58c9eb74/68fd99948903b85db56b321b_zenml-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [ZenML](https://www.zenml.io/) is a unified MLOps + [LLMOps framework](https://docs.zenml.io/user-guides/llmops-guide) that extends the battle-tested principles you rely on for classical ML to the new world of LLMs. It's one platform for developing, evaluating, and deploying both Ops into a unified pipeline.
@@ -279,7 +279,7 @@ By standardizing on pipelines, you can:
 ### Future Proof Your Stack
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/5e4e5a84/69019874326c98f259129ebc_future-proof-your-stack-with-zenml.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5e4e5a84/69019874326c98f259129ebc_future-proof-your-stack-with-zenml.webp" alt="__wf_reserved_inherit" />
   <figcaption>ZenML simplifies the development and deployment of LLM-powered MLOps pipelines.</figcaption>
 </figure>
 
@@ -294,7 +294,7 @@ With the recent [pipeline deployment capability](https://docs.zenml.io/concepts/
 ### Collaborate
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/562cd971/6901988ce31af7858e145c88_zenml-collaboration-feature.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/562cd971/6901988ce31af7858e145c88_zenml-collaboration-feature.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 Machine learning pipelines often span multiple teams. ZenML’s central dashboard acts as a single pane of glass where technical and non-technical team members can track progress.

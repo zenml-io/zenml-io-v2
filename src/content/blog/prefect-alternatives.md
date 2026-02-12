@@ -20,12 +20,12 @@ tags:
 date: "2025-07-06T00:00:00.000Z"
 readingTime: 21 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/75fb5601/6869faf9ebcc49cbcf22b3ef_prefect-alternatives.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/75fb5601/6869faf9ebcc49cbcf22b3ef_prefect-alternatives.png"
 seo:
   title: "We Reviewed 8 Best Prefect Alternatives for Machine Learning Teams - ZenML Blog"
   description: "Discover the top 8 Prefect alternatives for machine learning teams."
   canonical: "https://www.zenml.io/blog/prefect-alternatives"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/75fb5601/6869faf9ebcc49cbcf22b3ef_prefect-alternatives.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/75fb5601/6869faf9ebcc49cbcf22b3ef_prefect-alternatives.png"
   ogTitle: "We Reviewed 8 Best Prefect Alternatives for Machine Learning Teams - ZenML Blog"
   ogDescription: "Discover the top 8 Prefect alternatives for machine learning teams."
 ---
@@ -45,7 +45,7 @@ In this article, we explore eight Prefect alternatives that can better serve ML 
 There are three core reasons why teams often seek a Prefect alternative instead of doubling down on Prefect’s ecosystem.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/25f51c3e/6869f596bf2aa883471e79e5_why-look-for-prefect-alternatives.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/25f51c3e/6869f596bf2aa883471e79e5_why-look-for-prefect-alternatives.png" alt="__wf_reserved_inherit" />
   <figcaption>Why look for a Prefect alternative</figcaption>
 </figure>
 
@@ -74,7 +74,7 @@ While Prefect’s open-source core is free, Prefect’s managed Cloud service in
 Key enterprise features – role-based access control (RBAC), longer log retention beyond a few days, high API rate limits, and SSO integrations – are gated behind Pro or Enterprise tiers. For growing teams, costs can escalate quickly as you scale users and flow deployments.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/966a9c26/6869f5c70684676962fd0d6d_prefect-is-expensive.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/966a9c26/6869f5c70684676962fd0d6d_prefect-is-expensive.webp" alt="__wf_reserved_inherit" />
   <figcaption>Prefect is expensive</figcaption>
 </figure>
 
@@ -132,7 +132,7 @@ Some of the best alternatives to Prefect are:
 ### 1. ZenML
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/0f07e00a/6869f5f89e38da48b7c6146d_zenml-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/0f07e00a/6869f5f89e38da48b7c6146d_zenml-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [ZenML](https://www.zenml.io/) is an [open-source MLOps framework](https://docs.zenml.io/getting-started/core-concepts) that provides Python-native pipeline orchestration tailored to ML workflows.
@@ -142,7 +142,7 @@ Created to bridge the gap between research experimentation and production, ZenML
 #### ZenML’s Python-Native Workflow Orchestration Features
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/2c97c15a/6829726f00d93f05c1569ccb_zenml_pipeline_orchestration.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2c97c15a/6829726f00d93f05c1569ccb_zenml_pipeline_orchestration.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML workflow orchestration</figcaption>
 </figure>
 
@@ -163,7 +163,7 @@ def load_data() -> dict:
 The framework's [stack architecture](https://docs.zenml.io/user-guides/production-guide/understand-stacks) separates pipeline logic from infrastructure. You develop locally and deploy to any environment by switching configurations. A single pipeline runs on your laptop during development, then deploys to Kubernetes, Airflow, or Kubeflow in production without code changes. Each stack combines components like [orchestrators](https://docs.zenml.io/stacks/stack-components/orchestrators), [artifact stores](https://docs.zenml.io/stacks/stack-components/artifact-stores), and compute resources.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/374a4169/6869f6651602c220344bd99e_zenml-allows-you-to-run-code-on-any-stack.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/374a4169/6869f6651602c220344bd99e_zenml-allows-you-to-run-code-on-any-stack.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML is the translation layer that allows your code to run on any of your stacks</figcaption>
 </figure>
 
@@ -182,7 +182,7 @@ As a newer player, ZenML’s ecosystem and community are still growing – it’
 ### 2. Apache Airflow
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/107c495b/6869f67f0684676962fd2426_apache-airflow-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/107c495b/6869f67f0684676962fd2426_apache-airflow-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [Apache Airflow](https://airflow.apache.org/) remains the most battle-tested workflow orchestrator in the data ecosystem. Originally developed at Airbnb and now an Apache Software Foundation project, it powers data pipelines at thousands of organizations through its mature DAG-based architecture.
@@ -194,7 +194,7 @@ Airflow uses the concept of Directed Acyclic Graphs (DAGs) to define workflows i
 In a DAG file, you declare tasks using operators like the `PythonOperator` to run Python functions, the BashOperator for shell commands, etc., and set dependencies between tasks to control their execution order.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/2a04ad34/6869f697a00ef1a2d1214342_apache-airflow-dag-overview.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2a04ad34/6869f697a00ef1a2d1214342_apache-airflow-dag-overview.png" alt="__wf_reserved_inherit" />
   <figcaption>DAG overview</figcaption>
 </figure>
 
@@ -232,7 +232,7 @@ However, compared to newer ML-focused tools, Airflow to us felt heavyweight and 
 ### 3. Metaflow
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/7d98f3f8/6869f6e94fbc931013c13399_metaflow-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7d98f3f8/6869f6e94fbc931013c13399_metaflow-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 Developed by Netflix to boost data scientists' productivity, [Metaflow](https://metaflow.org/) provides a unique approach to ML workflow orchestration. It focuses on making the transition from prototype to production as smooth as possible while handling infrastructure complexity behind the scenes.
@@ -263,7 +263,7 @@ The order of execution is specified by using `self.next()` transitions between s
 By default, Metaflow runs workflows locally, but it offers seamless scalability to the cloud. For example, you can use decorators like `@batch` or `@kubernetes` on a step to indicate it should execute on AWS Batch or a Kubernetes cluster – Metaflow will package that code, ship it to the cloud, and retrieve results automatically.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/0fdaae6a/6869f72256431f77dd8ed35a_metaflow-deployment.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/0fdaae6a/6869f72256431f77dd8ed35a_metaflow-deployment.png" alt="__wf_reserved_inherit" />
   <figcaption>Metaflow deployment</figcaption>
 </figure>
 
@@ -288,7 +288,7 @@ However, remember that inspecting runs can be done either via the command line o
 ### 4. lakeFS
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/448a828c/6869f74998c09ae9745cf91f_lakefs-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/448a828c/6869f74998c09ae9745cf91f_lakefs-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [lakeFS](https://lakefs.io/) brings Git-like version control to data lakes, solving one of the most challenging aspects of [ML pipelines](https://www.zenml.io/blog/easy-mlops-pipelines) – data versioning and lineage. By treating data as code, it enables reproducibility and experimentation at the data layer.
@@ -296,7 +296,7 @@ However, remember that inspecting runs can be done either via the command line o
 #### lakeFS’ Artifact and Data Versioning Features
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/5205ec1d/6869f76169926f460c1bedef_lakefs-git-like-versioning.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5205ec1d/6869f76169926f460c1bedef_lakefs-git-like-versioning.png" alt="__wf_reserved_inherit" />
   <figcaption>Git-Like versioning</figcaption>
 </figure>
 
@@ -321,7 +321,7 @@ But keep this in mind that lakeFS is specialized for data versioning, so it’s 
 ### 5. MLflow
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/f8206933/6869f77deb4540a7a47de281_mlflow-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f8206933/6869f77deb4540a7a47de281_mlflow-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 MLflow is an open-source platform for managing the ML lifecycle, primarily known for its experiment tracking and model registry components. It does not orchestrate workflows like Prefect, but it complements orchestrators by handling the metadata, parameters, metrics, artifacts, and models that result from ML runs.
@@ -329,7 +329,7 @@ MLflow is an open-source platform for managing the ML lifecycle, primarily known
 #### MLflow’s Artifact and Data Versioning Features
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/1eff3d06/6869f78f1f14ac67040c8581_mlflow-versioning.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1eff3d06/6869f78f1f14ac67040c8581_mlflow-versioning.png" alt="__wf_reserved_inherit" />
   <figcaption>MLflow versioning</figcaption>
 </figure>
 
@@ -377,7 +377,7 @@ No doubt about MLflow’s artifact and data versioning capabilities, but it’s 
 ### 6. Weights & Biases
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/1e2b3fa6/6869f7b9236965c3178f03e9_wandb-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1e2b3fa6/6869f7b9236965c3178f03e9_wandb-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [Weights & Biases](https://wandb.ai/site/) has emerged as the premium experiment tracking platform, offering unparalleled visualization and collaboration features. While not an orchestrator, its deep integration capabilities make it a powerful complement to any workflow tool.
@@ -391,7 +391,7 @@ Beyond metrics, W&B logs rich media, including model predictions, confusion matr
 Interactive visualizations let you zoom into training curves, overlay multiple runs, and spot patterns across experiments. Tables organize runs by metadata fields like learning rate or batch size. This combination of automatic tracking and flexible visualization accelerates debugging and optimization. Every logged element becomes searchable metadata that helps reproduce successful experiments or understand failures.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/6c06f76f/6869f7d3754da27fa297722c_wandb-experiment-tracking.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6c06f76f/6869f7d3754da27fa297722c_wandb-experiment-tracking.png" alt="__wf_reserved_inherit" />
   <figcaption>Experiment training</figcaption>
 </figure>
 
@@ -421,7 +421,7 @@ But one thing to note is that Weights & Biases is primarily a hosted SaaS (cloud
 ### 7. Neptune AI
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/3e2d51c5/6869f7ebd0840df8ad8c5a55_neptune-ai-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3e2d51c5/6869f7ebd0840df8ad8c5a55_neptune-ai-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [Neptune](https://neptune.ai/) provides a flexible metadata store for ML experiments, positioning itself between lightweight trackers and comprehensive platforms. Its strength lies in organizing and querying experimental data at scale.
@@ -437,7 +437,7 @@ Let's say you log every layer’s weights histogram from a neural network or the
 <ul><li>Scalars like metrics, for example, accuracy per epoch</li><li>Hyperparameters</li><li>Text logs</li><li>Images like confusion matrix plots</li><li>Artifacts – model weights, data files</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/261b6598/6869f8058e9044e0efd5b833_neptune-experiment-tracking.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/261b6598/6869f8058e9044e0efd5b833_neptune-experiment-tracking.png" alt="__wf_reserved_inherit" />
   <figcaption>Neptune experiment tracking</figcaption>
 </figure>
 
@@ -463,7 +463,7 @@ However, Neptune’s visualization is more utilitarian – it may lack some adva
 ### 8. Kedro
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/c58eabcc/6869f81dba98f993b730b9d3_kedro-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c58eabcc/6869f81dba98f993b730b9d3_kedro-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [Kedro](https://kedro.org/) brings software engineering best practices to machine learning and data science workflows. Developed by QuantumBlack, it emphasizes maintainability, modularity, and collaboration in ML projects.
@@ -481,7 +481,7 @@ Kedro's Data Catalog offers configuration-driven data management with built-in v
 Although Kedro doesn't include native experiment tracking UI, it promotes reproducibility through a clear separation of parameters, data, and code in structured formats. The framework's flexibility shines through its plugin ecosystem, particularly the Kedro-MLflow integration, which bridges Kedro pipelines with dedicated experiment tracking platforms by automatically logging parameters, metrics, and data versions.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/8b04734c/6869f834fff14c231d9f08c4_kedro-viz-visualization.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8b04734c/6869f834fff14c231d9f08c4_kedro-viz-visualization.png" alt="__wf_reserved_inherit" />
   <figcaption>Kedro Viz visualization</figcaption>
 </figure>
 
@@ -506,6 +506,6 @@ Now might be a good time to consider ZenML as a Prefect alternative if you want 
 Still confused about where to get started? [Book a personalized demo call](https://www.zenml.io/book-your-demo) with our Founder and discover how ZenML can help you build production-ready ML pipelines with true multi-cloud flexibility.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/890c042e/6869f852405fd774ebfa70b9_book-personalized-demo-with-zenml.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/890c042e/6869f852405fd774ebfa70b9_book-personalized-demo-with-zenml.png" alt="__wf_reserved_inherit" />
   <figcaption>Book your personalized demo</figcaption>
 </figure>

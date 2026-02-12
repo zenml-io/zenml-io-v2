@@ -22,12 +22,12 @@ tags:
 date: "2023-09-01T00:00:00.000Z"
 readingTime: 3 Mins Read
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/37243c82/65294ca22f17b3dbe1f52300_mlstacks_blog.jpg"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/37243c82/65294ca22f17b3dbe1f52300_mlstacks_blog.jpg"
 seo:
   title: "Introducing mlstacks: a refreshed way to deploy MLOps infrastructure - ZenML Blog"
   description: "We released an updated way to deploy MLOps infrastructure, building on the success of the `mlops-stack` repo and its stack recipes. All the new goodies are available via the `mlstacks` Python package."
   canonical: "https://www.zenml.io/blog/introducing-mlstacks-a-refreshed-way-to-deploy-mlops-infrastructure"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/c5585946/65294ca22f17b3dbe1f52300_mlstacks_blog.jpg"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c5585946/65294ca22f17b3dbe1f52300_mlstacks_blog.jpg"
   ogTitle: "Introducing mlstacks: a refreshed way to deploy MLOps infrastructure - ZenML Blog"
   ogDescription: "We released an updated way to deploy MLOps infrastructure, building on the success of the `mlops-stack` repo and its stack recipes. All the new goodies are available via the `mlstacks` Python package."
 ---
@@ -41,7 +41,7 @@ You can use mlstacks [directly as a Python package](https://pypi.org/project/mls
 We reworked the previous way of doing things to be more stable and reliable. We even added new features like the ability to get a cost estimate for your MLOps stacks.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/100abd95/65294917457744f21f063c4b_mlstacks_breakdown.png" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/100abd95/65294917457744f21f063c4b_mlstacks_breakdown.png" alt="" />
 </figure>
 
 We were inspired by [the work done by the FuzzyLabs team on Matcha](https://github.com/fuzzylabs/matcha) as well as by conversations with users of the old mlops-stacks repository / functionality. In that spirit, MLStacks is also designed to be able to work as a standalone deployment option independent of ZenML. All of this is available in the new mlstacks Python package and with [ZenML's latest release (0.44.1)](https://github.com/zenml-io/zenml/releases/tag/0.44.1).
@@ -73,7 +73,7 @@ Most of the examples shown here are fairly simple as they allow you to try thing
 MLStacks works by taking stack and component specification files and parsing them into Terraform files which are in turn deployed to your cloud (or local, in the case of k3d) infrastructure. Our Python package will validate your specification files to ensure that you're not using invalid or unsupported combinations of components.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/5dc0b37e/652949178546cb4cca7a88c3_mlstacks.jpeg" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5dc0b37e/652949178546cb4cca7a88c3_mlstacks.jpeg" alt="" />
 </figure>
 
 If you find something that we don't yet support but that you need for your work, we encourage you to contribute to the project!
@@ -81,7 +81,7 @@ If you find something that we don't yet support but that you need for your work,
 When using mlstacks through ZenML, you don't have to do the work of writing the stack specification .yaml files. You simply need to compose the CLI command that specifies which components you need in your stack.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/4a8f6f43/65294917e659b133a3db73e0_zenml-with-mlstacks.jpeg" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/4a8f6f43/65294917e659b133a3db73e0_zenml-with-mlstacks.jpeg" alt="" />
 </figure>
 
 We're working to provide other (easier) ways to deploy your infrastructure using ZenML but for now CLI deployments offer all the flexibility of the mlstacks package without the need to write your own stack and component specifications!

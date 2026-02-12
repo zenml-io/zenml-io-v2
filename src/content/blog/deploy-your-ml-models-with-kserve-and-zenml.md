@@ -21,12 +21,12 @@ tags:
 date: "2022-08-04T00:00:00.000Z"
 readingTime: 14 Mins Read
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/9be8b31e/652fc9461f361b78b1fcb271_kserve-pipeline.jpg"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9be8b31e/652fc9461f361b78b1fcb271_kserve-pipeline.jpg"
 seo:
   title: "Deploy your ML models with KServe and ZenML - ZenML Blog"
   description: "How to use ZenML and KServe to deploy serverless ML models in just a few steps."
   canonical: "https://www.zenml.io/blog/deploy-your-ml-models-with-kserve-and-zenml"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/3dffa3e9/652fc9461f361b78b1fcb271_kserve-pipeline.jpg"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3dffa3e9/652fc9461f361b78b1fcb271_kserve-pipeline.jpg"
   ogTitle: "Deploy your ML models with KServe and ZenML - ZenML Blog"
   ogDescription: "How to use ZenML and KServe to deploy serverless ML models in just a few steps."
 ---
@@ -42,7 +42,7 @@ This post outlines how to use the KServe integration with ZenML. By the end of t
 The content of this post was presented during our weekly community meetup. View the recording [here](https://www.youtube.com/watch?v=nZeBhkN6RZU).
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/8a726d2d/652fc90861a2876115b6602e_0.jpeg" alt="youtube-thumbnail" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8a726d2d/652fc90861a2876115b6602e_0.jpeg" alt="youtube-thumbnail" />
 </figure>
 
 ## Why KServe?
@@ -72,13 +72,13 @@ To start we will create a new GCP project for the express purpose of having all 
 Click on the project select box
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/25474daf/652fc90828c1133696409368_gcp-projects-page.png" alt="GCP Projects page" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/25474daf/652fc90828c1133696409368_gcp-projects-page.png" alt="GCP Projects page" />
 </figure>
 
 Create a New Project
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/bd20a958/652fc9098320ec57475de056_gcp-create-project.png" alt="Create new project" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/bd20a958/652fc9098320ec57475de056_gcp-create-project.png" alt="Create new project" />
 </figure>
 
 Give the project a name and click on create. The process may take some time. Once that is done, you will need to enable billing for the project so that you can set up all required resources.
@@ -88,13 +88,13 @@ Give the project a name and click on create. The process may take some time. Onc
 We’ll start off by creating a GKE Standard cluster
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e2e72974/652fc909aa655260b8a723d2_gcp-create-project.png" alt="Create GCP project" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e2e72974/652fc909aa655260b8a723d2_gcp-create-project.png" alt="Create GCP project" />
 </figure>
 
 Optionally, give the cluster a name, otherwise, leave everything as it is since this cluster is only for demo purposes.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/17b22b99/652fc9090a486ba5b69f7316_create-gke-cluster.png" alt="Create GKE standard cluster" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/17b22b99/652fc9090a486ba5b69f7316_create-gke-cluster.png" alt="Create GKE standard cluster" />
 </figure>
 
 ### Cloud Storage
@@ -102,13 +102,13 @@ Optionally, give the cluster a name, otherwise, leave everything as it is since 
 Search cloud storage or use this [link](https://console.cloud.google.com/storage/).
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/f2edaf53/652fc9081f361b78b1fc5581_gcp-create-bucket.png" alt="Create GS bucket" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f2edaf53/652fc9081f361b78b1fc5581_gcp-create-bucket.png" alt="Create GS bucket" />
 </figure>
 
 Once the bucket is created, you can find the storage URI as follows:
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/9303ec11/652fc90959967a6775e737e2_gcp-bucket-uri.png" alt="GS bucket URI" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9303ec11/652fc90959967a6775e737e2_gcp-bucket-uri.png" alt="GS bucket URI" />
 </figure>
 
 For the creation of the [ZenML Artifact Store](https://blog.zenml.io/vertex-ai-blog/#zenml-artifact-store) you will need the following data:
@@ -122,43 +122,43 @@ With all the resources set up, you will now need to set up a service account wit
 Start by searching for IAM in the search bar or use this link: https://console.cloud.google.com/iam-admin. Here you will need to create a new Service Account.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/fcb00496/652fc909ce6de6122ec560dd_gcp-create-serviceaccount.png" alt="Create Service account" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/fcb00496/652fc909ce6de6122ec560dd_gcp-create-serviceaccount.png" alt="Create Service account" />
 </figure>
 
 First off you’ll need to name the service account. Make sure to give it a clear name and description.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/37dbff6e/652fc908e37eab9854582e2b_serviceaccount-details.png" alt="Service account details" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/37dbff6e/652fc908e37eab9854582e2b_serviceaccount-details.png" alt="Service account details" />
 </figure>
 
 This service account will need to have the role of Storage Admin.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/dfa99a35/652fc909edd487fb7a0f7b85_serviceaccount-roles.png" alt="Service account roles" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/dfa99a35/652fc909edd487fb7a0f7b85_serviceaccount-roles.png" alt="Service account roles" />
 </figure>
 
 Finally, you need to make sure your own account will have the right to run-as this service account. It probably also makes sense to give yourself the right to manage this service account to perform changes later on.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/1fa7cef9/652fc908f3d583e78788b52b_serviceaccount-user-access.png" alt="Service account user access" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1fa7cef9/652fc908f3d583e78788b52b_serviceaccount-user-access.png" alt="Service account user access" />
 </figure>
 
 Finally, you can now find your new service account in the IAM tab. You’ll need the Principal when creating your ZenML Model Deployer.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/8b25249f/652fc9085f28216b1123cff0_select-serviceaccount.png" alt="Select service account" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8b25249f/652fc9085f28216b1123cff0_select-serviceaccount.png" alt="Select service account" />
 </figure>
 
 We will have to download the service account key; we are going to use this key to grant KServe access to the (ZenML) artifact store.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/94833adf/652fc9095f28216b1123d0de_serviceaccount-keys.png" alt="Service account keys" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/94833adf/652fc9095f28216b1123d0de_serviceaccount-keys.png" alt="Service account keys" />
 </figure>
 
 We can click on the service account then keys and create a new key and select JSON format.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/d3be7ba6/652fc908aaca78c075588b28_create-serviceaccount-key.png" alt="create a service account key" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d3be7ba6/652fc908aaca78c075588b28_create-serviceaccount-key.png" alt="create a service account key" />
 </figure>
 
 ## Setting Up KServe and ZenML Stack
@@ -172,13 +172,13 @@ The first thing we need to do is to connect to the GKE cluster. (As mentioned ab
 We can get the right command to connect to the cluster on the Kubernetes Engine page.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/1df705f1/652fc908a2e9da205bb8803b_connect-gke-cluster.png" alt="GKE connect" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1df705f1/652fc908a2e9da205bb8803b_connect-gke-cluster.png" alt="GKE connect" />
 </figure>
 
 Now we can copy the command and run it from our terminal
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/3859911c/652fc908544b12cdade47a3a_gke-connect-command.png" alt="GKE connection command" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3859911c/652fc908544b12cdade47a3a_gke-connect-command.png" alt="GKE connection command" />
 </figure>
 
 <ol><li>Install Istio:</li></ol>
@@ -480,7 +480,7 @@ python run_pytorch.py
 `Cleanup should be fairly straightforward now, so long as you bundled all of these resources into one separate project. Simply navigate to the Cloud Resource Manager and delete your project:`
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/f341a0a7/652fc9096fc4a4cbf8386553_delete-gcp-project.png" alt="Delete GCP Project" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f341a0a7/652fc9096fc4a4cbf8386553_delete-gcp-project.png" alt="Delete GCP Project" />
 </figure>
 
 ## Conclusion

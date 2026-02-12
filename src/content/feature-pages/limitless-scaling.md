@@ -12,7 +12,7 @@ hub:
 hero:
   deck: Effortlessly deploy across clouds and infrastructures with unified resource management
   image:
-    url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/bcf11e41/6526accfd82b706979b8cf7e_02_Connect_your_infrastructure.webp"
+    url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/bcf11e41/6526accfd82b706979b8cf7e_02_Connect_your_infrastructure.webp"
     alt: Diagram of various machine learning tools and frameworks including ZenML, Kubeflow, Vertex AI, and AWS SageMaker for ML pipelines integration.
   primaryCta:
     label: Book a demo
@@ -31,7 +31,7 @@ blocks:
       - Easy one-click setups to connect your compute plane.
       - Infrastructure-agnostic code eliminates vendor lock-in.
     image:
-      url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/153da77b/66b23fd465e26fc3d9cb731f_backend-flexibility-01-min.png"
+      url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/153da77b/66b23fd465e26fc3d9cb731f_backend-flexibility-01-min.png"
       alt: Cloud diagram with data scientists and ML tools like AWS, GCP, Kubernetes, highlighting MLOps and model deployment.
     imageSide: right
   - kind: value
@@ -42,7 +42,7 @@ blocks:
       - Shield data scientists from intricate cloud configurations.
       - Seamlessly transition between local, cloud, and hybrid environments.
     image:
-      url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/514b3df0/6526abf3a9418f8674b15b23_01_Local_to_production.webp"
+      url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/514b3df0/6526abf3a9418f8674b15b23_01_Local_to_production.webp"
       alt: Code snippet for ML model finetuning using ZenML with integrations like MLflow and PyTorch, showcasing experiment tracking.
     imageSide: left
   - kind: value
@@ -53,7 +53,7 @@ blocks:
       - Leverage our Terraform modules or single-click deployments for rapid setup.
       - Standardize team onboarding with templated infrastructure solutions.
     image:
-      url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/51fb2330/66b2401c6b33e26b8ddc008e_backend-flexibility-03-min.webp"
+      url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/51fb2330/66b2401c6b33e26b8ddc008e_backend-flexibility-03-min.webp"
       alt: Dashboard mockup
     imageSide: right
 
@@ -62,10 +62,10 @@ testimonial:
   name: François Serra
   title: ML Engineer / ML Ops / ML Solution architect at ADEO Services
   avatar:
-    url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/d925b5b9/65c4a76f32be6961213a61a2_francois.webp"
+    url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d925b5b9/65c4a76f32be6961213a61a2_francois.webp"
     alt: François Serra
   companyLogo:
-    url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/c110367c/65c498032806e2ff7daec2bf_ADEO.svg"
+    url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c110367c/65c498032806e2ff7daec2bf_ADEO.svg"
     alt: Testimonial logo
 
 seo:
@@ -73,7 +73,7 @@ seo:
   description: Scale to major clouds or K8s effortlessly. 50+ MLOps and LLMOps integrations. From small models to large language models, grow seamlessly.
   ogTitle: ZenML Features - Limitless scaling
   ogDescription: Scale to major clouds or K8s effortlessly. 50+ MLOps and LLMOps integrations. From small models to large language models, grow seamlessly.
-  ogImage: https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/77df0702/66ab53c5cdb5ba0016913439_features-scale.png
+  ogImage: https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/77df0702/66ab53c5cdb5ba0016913439_features-scale.png
 
 webflow:
   siteId: 64a817a2e7e2208272d1ce30

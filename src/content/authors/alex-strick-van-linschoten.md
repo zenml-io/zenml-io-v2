@@ -2,7 +2,7 @@
 name: "Alex Strick van Linschoten"
 slug: "alex-strick-van-linschoten"
 avatar:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/9804d473/652948c72d87d2e2afebb29b_alex.jpg"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9804d473/652948c72d87d2e2afebb29b_alex.jpg"
 webflow:
   siteId: "64a817a2e7e2208272d1ce30"
   itemId: "652948c9e3f0d78f4725de2f"

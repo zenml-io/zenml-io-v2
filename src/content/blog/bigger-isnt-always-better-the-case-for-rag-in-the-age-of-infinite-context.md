@@ -19,12 +19,12 @@ tags:
 date: "2024-06-06T00:00:00.000Z"
 readingTime: 4 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/83bd6b16/6661693afbb7372212514c71_Context_window_lengths.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/83bd6b16/6661693afbb7372212514c71_Context_window_lengths.png"
 seo:
   title: "Bigger Isn't Always Better: The Case for RAG in the Age of Infinite Context - ZenML Blog"
   description: "Context windows in large language models are getting super big, which makes you wonder if Retrieval-Augmented Generation (RAG) systems will still be useful. But even with unlimited context windows, RAG systems are likely here to stay because they're simple, efficient, flexible, and easy to understand."
   canonical: "https://www.zenml.io/blog/bigger-isnt-always-better-the-case-for-rag-in-the-age-of-infinite-context"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/29f5b8c6/6661693afbb7372212514c71_Context_window_lengths.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/29f5b8c6/6661693afbb7372212514c71_Context_window_lengths.png"
   ogTitle: "Bigger Isn't Always Better: The Case for RAG in the Age of Infinite Context - ZenML Blog"
   ogDescription: "Context windows in large language models are getting super big, which makes you wonder if Retrieval-Augmented Generation (RAG) systems will still be useful. But even with unlimited context windows, RAG systems are likely here to stay because they're simple, efficient, flexible, and easy to understand."
 ---
@@ -34,7 +34,7 @@ For quite some time, large language models have been constrained by how much tex
 In case you're wondering what you can do with a million tokens, here are some rough estimations to put that in context:
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/3ed372cd/6661690c7e7b08cb4823c901_CleanShot_2024-06-06_at_09.44.43.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3ed372cd/6661690c7e7b08cb4823c901_CleanShot_2024-06-06_at_09.44.43.png" alt="__wf_reserved_inherit" />
   <figcaption>Token lengths for some sample texts</figcaption>
 </figure>
 
@@ -53,7 +53,7 @@ Firstly, these new architectures are still in the research phase, and it will ta
 So while the landscape is certainly evolving, RAG is likely to continue to play an important role even as context windows expand. With that in mind, let's take a closer look at how RAG systems work. [Our recently-published guide](https://docs.zenml.io/user-guide/llmops-guide) showcases how to use RAG to overcome the limitations of short context windows:
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/154ee720/6661694e9f4f50bf4ff3e2bc_Rag_Process_Whole.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/154ee720/6661694e9f4f50bf4ff3e2bc_Rag_Process_Whole.png" alt="__wf_reserved_inherit" />
 </figure>
 
 <ul><li>you split your text data into small chunks (optionally attaching metadata alongside)</li><li>you encode your chunks as vectors (helped by pre-made embedding models) and store them somewhere</li><li>when you’re ready to use your RAG system, you encode a question as a vector and find other vectors that are similar.</li><li>you take the most relevant handful of those context chunks and pass them to the LLM along with the original question to get a response to your question</li></ul>

@@ -21,12 +21,12 @@ tags:
 date: "2025-08-06T00:00:00.000Z"
 readingTime: 16 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e5b36420/6981cf3948be69340f5c1481_6981ce8ba084d07347c1f772_agentforce-pricing.avif"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e5b36420/6981cf3948be69340f5c1481_6981ce8ba084d07347c1f772_agentforce-pricing.avif"
 seo:
   title: "Salesforce Agentforce Pricing Guide: How Much Does It Cost? - ZenML Blog"
   description: "In this Agentforce pricing guide, we discuss the costs, features, and value Agentforce provides to help you decide if it’s the right investment for your business."
   canonical: "https://www.zenml.io/blog/agentforce-pricing"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e5b36420/6981cf3948be69340f5c1481_6981ce8ba084d07347c1f772_agentforce-pricing.avif"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e5b36420/6981cf3948be69340f5c1481_6981ce8ba084d07347c1f772_agentforce-pricing.avif"
   ogTitle: "Salesforce Agentforce Pricing Guide: How Much Does It Cost? - ZenML Blog"
   ogDescription: "In this Agentforce pricing guide, we discuss the costs, features, and value Agentforce provides to help you decide if it’s the right investment for your business."
 ---
@@ -71,7 +71,7 @@ Salesforce has designed [Agentforce pricing](https://www.salesforce.com/in/agent
 This means you choose a model that fits how you deploy AI agents. For instance, a company might start with consumption-based pricing (pay only for each AI interaction) and later move to a per-user unlimited plan as their usage grows.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e9a461e8/6892dcdcef49eb6dd31dddb1_agentforce-pricing-plans.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e9a461e8/6892dcdcef49eb6dd31dddb1_agentforce-pricing-plans.png" alt="__wf_reserved_inherit" />
 </figure>
 
 What’s more, Agentforce allows a mix-and-match approach. It lets you enable a customer-facing chatbot billed per conversation, while also giving some employees an unlimited-use AI assistant via a $125 per user add-on.
@@ -79,7 +79,7 @@ What’s more, Agentforce allows a mix-and-match approach. It lets you enable a 
 Importantly, if you do make a commitment (for example, buying conversation packs or user licenses), you’re not locked into wasting them – Salesforce’s Flex Agreement lets you convert unused human licenses into AI credits or vice versa, adjusting spend as priorities shift.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/69d96501/6892dcf393d6fa07de1ef832_agentforce-add-ons-and-other-paid-plans.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/69d96501/6892dcf393d6fa07de1ef832_agentforce-add-ons-and-other-paid-plans.png" alt="__wf_reserved_inherit" />
 </figure>
 
 Overall, the pricing structure is modular. Small teams dip their toes in for a few hundred dollars or less, while large enterprises invest in an all-inclusive plan to cover widespread AI usage. Next, we’ll look at some factors that influence what you actually pay.
@@ -87,7 +87,7 @@ Overall, the pricing structure is modular. Small teams dip their toes in for a f
 ## Agentforce Pricing Factors to Consider
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/b387951d/6892dd0c68f8d54b4cec8c75_factors-to-consider-when-investing-in-agentforce.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b387951d/6892dd0c68f8d54b4cec8c75_factors-to-consider-when-investing-in-agentforce.png" alt="__wf_reserved_inherit" />
   <figcaption>Factors to consider when investing in Agentforce</figcaption>
 </figure>
 
@@ -144,7 +144,7 @@ Unused credits roll over until their stated expiry, giving you freedom to scale 
 The model is ideal for pilots, seasonal workloads, or teams that want to spend to track actual value delivered. Just keep an eye on consumption: high-volume automation chews through credits fast, so regular Digital Wallet reviews are essential.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/971e76c1/6892dd37e9dbb4d4c72d2b5b_agentforce-flex-credits-plan.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/971e76c1/6892dd37e9dbb4d4c72d2b5b_agentforce-flex-credits-plan.png" alt="__wf_reserved_inherit" />
   <figcaption>Agentforce Flex Credits plan</figcaption>
 </figure>
 
@@ -163,7 +163,7 @@ This model was widely criticized because a simple, single-turn query was billed 
 You must choose between Flex Credits and Conversations; they cannot be used simultaneously in the same org.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/aecc8803/6892dd6ec0cf8619bbd1f313_agentforce-conversations-plan.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/aecc8803/6892dd6ec0cf8619bbd1f313_agentforce-conversations-plan.png" alt="__wf_reserved_inherit" />
   <figcaption>Agentforce Conversations plan</figcaption>
 </figure>
 
@@ -182,7 +182,7 @@ If your agents power critical customer interactions or you simply want white-glo
 For many teams, the included plan is a good choice during experimentation; you control costs while you validate use-case ROI. Just budget for an upgrade if you later need round-the-clock coverage or hands-on implementation.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/2b1834c1/6892dd98d34ff3c38218717c_agentforce-standard-success-plan.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2b1834c1/6892dd98d34ff3c38218717c_agentforce-standard-success-plan.png" alt="__wf_reserved_inherit" />
   <figcaption>Agentforce Standard Success plan</figcaption>
 </figure>
 
@@ -211,7 +211,7 @@ A team of 50 service agents has unlimited AI assistance for a fixed monthly cost
 A good idea is to typically pilot these add-ons with select users first, measuring the productivity gains and adoption rate before expanding to more employees. Importantly, these add-ons focus exclusively on internal (employee-facing) AI capabilities; external customer interactions might still require separate Conversation or Flex Credit purchases.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/a5f665f4/6892ddc3b94b21336c607b6c_agentforce-add-ons.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a5f665f4/6892ddc3b94b21336c607b6c_agentforce-add-ons.png" alt="__wf_reserved_inherit" />
   <figcaption>Agentforce add-ons</figcaption>
 </figure>
 
@@ -232,7 +232,7 @@ The extra $25 monthly per-user cost ensures the AI tools align tightly with your
 In short, if your organization uses Salesforce Industry Clouds, investing in the Agentforce Industries Add-ons is a strategic choice for embedding specialized, compliant AI directly into your workflows.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/99f09809/6892dde43e98a4be113e531d_agentforce-for-industries-plan.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/99f09809/6892dde43e98a4be113e531d_agentforce-for-industries-plan.png" alt="__wf_reserved_inherit" />
   <figcaption>Agentforce for industries plan</figcaption>
 </figure>
 
@@ -249,7 +249,7 @@ Salesforce positions Agentforce 1 as the ‘most comprehensive AI suite,’ [ide
 Enterprises like banks rolling out AI across thousands of users and channels may prefer Agentforce 1, simplifying executive communications about AI costs. However, smaller businesses or early-stage AI adopters will likely find this plan excessive.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/2845eb33/6892de138ba029c8157a4743_agentforce-one-editions-plan.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2845eb33/6892de138ba029c8157a4743_agentforce-one-editions-plan.png" alt="__wf_reserved_inherit" />
   <figcaption>Agentforce 1 Editions plan</figcaption>
 </figure>
 
@@ -268,7 +268,7 @@ Companies have reported that when deployed strategically (e.g., deflecting routi
 **Real-world calculations support this:** One Reddit user shared that a typical support agent might handle 20 to 50 conversations a day. If Agentforce took those over at $2 each, that’s roughly $50 to $125 in cost per day. Compare that to the fully-loaded cost of a support employee for a day (perhaps $200 to $400, including salary, benefits, overhead). The AI comes out cheaper, potentially by a factor of 3 or more, for equivalent work.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/44639854/6892de2b9aa9ea6ed9f2b015_what-reddit-user-said-about-agentforce-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/44639854/6892de2b9aa9ea6ed9f2b015_what-reddit-user-said-about-agentforce-pricing.png" alt="__wf_reserved_inherit" />
   <figcaption>Reddit user’s review on Agentforce’s pricing</figcaption>
 </figure>
 
@@ -287,7 +287,7 @@ When Salesforce introduced Flex Credits and the unlimited internal licenses (aft
 ## Deploy AI Agents with Agentforce and Handle the Complete Lifecycle with ZenML
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/1aad74e0/687b1c29468fe4993262cdc5_zenML-helps-in-closing-the-outer-loop.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1aad74e0/687b1c29468fe4993262cdc5_zenML-helps-in-closing-the-outer-loop.png" alt="__wf_reserved_inherit" />
 </figure>
 
 Using Agentforce to deploy AI agents is just the beginning. While Agentforce excels at the ‘inner loop’ of agent development – i.e., creating an agent, defining its behavior, and executing it within Salesforce – there’s an entire ‘outer loop’ to consider: monitoring, maintaining, and evolving those agents as part of your MLOps workflow.
@@ -301,7 +301,7 @@ When paired with Agentforce, ZenML takes over the outer-loop responsibilities th
 ### 1. Pipeline Orchestration and Integration
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/f851cbbc/6892de675f3cdef5338b7153_zenml-architecture.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f851cbbc/6892de675f3cdef5338b7153_zenml-architecture.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML architecture</figcaption>
 </figure>
 
@@ -314,7 +314,7 @@ Agentforce provides the agentic AI step - the ‘thinking and action’ part, an
 ### 2. Visibility and Tracking
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/c02f837d/6892de82198dfe9aa4d43687_zenml-visualization.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c02f837d/6892de82198dfe9aa4d43687_zenml-visualization.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML visualization</figcaption>
 </figure>
 
@@ -331,7 +331,7 @@ Agentforce itself provides some analytics in Salesforce, but ZenML’s tracking 
 ### 3. Performance Evaluation and Feedback
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/a2d6f59d/6892de9d7a7c008a7dde8ba5_zenml-evaluation.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a2d6f59d/6892de9d7a7c008a7dde8ba5_zenml-evaluation.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML evaluation</figcaption>
 </figure>
 
@@ -344,7 +344,7 @@ If the agent’s performance dips, ZenML flags it. Essentially, ZenML closes the
 ### 4. Agent Maintenance and Versioning
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/54d3bc5c/67b448e42a9d9bb96bd945af_EU_AI_Act_Models.gif" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/54d3bc5c/67b448e42a9d9bb96bd945af_EU_AI_Act_Models.gif" alt="__wf_reserved_inherit" />
   <figcaption>ZenML artifacts management</figcaption>
 </figure>
 

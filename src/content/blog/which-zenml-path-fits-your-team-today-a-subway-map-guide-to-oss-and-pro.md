@@ -19,12 +19,12 @@ tags:
 date: "2025-04-23T00:00:00.000Z"
 readingTime: 7 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/3bfad9b7/6809163ae54dc3aac273150d_image__1___1_.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3bfad9b7/6809163ae54dc3aac273150d_image__1___1_.png"
 seo:
   title: "Which ZenML Path Fits Your Team Today? A Subway-Map Guide to OSS and Pro - ZenML Blog"
   description: "Learn when to upgrade from open-source ZenML to Pro features with our subway-map guide to scaling ML operations for growing teams, from solo experiments to enterprise collaboration."
   canonical: "https://www.zenml.io/blog/which-zenml-path-fits-your-team-today-a-subway-map-guide-to-oss-and-pro"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/3bfad9b7/6809163ae54dc3aac273150d_image__1___1_.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3bfad9b7/6809163ae54dc3aac273150d_image__1___1_.png"
   ogTitle: "Which ZenML Path Fits Your Team Today? A Subway-Map Guide to OSS and Pro - ZenML Blog"
   ogDescription: "Learn when to upgrade from open-source ZenML to Pro features with our subway-map guide to scaling ML operations for growing teams, from solo experiments to enterprise collaboration."
 ---
@@ -40,7 +40,7 @@ This post helps ML leads decide exactly when ZenML Pro’s Projects, RBAC, Templ
 Picture a single colored subway line with four consecutive stations:
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/19a7d063/680916cae54dc3aac2738252_Image_from_Notion__5___1_.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/19a7d063/680916cae54dc3aac2738252_Image_from_Notion__5___1_.png" alt="__wf_reserved_inherit" />
 </figure>
 
 <ul><li><strong>The Track (OSS ZenML).</strong> Your existing pipelines, stacks, and artifacts keep running exactly as they are.</li><li><strong>The Stations (ZenML Pro).</strong> Optional stops you can pull into the moment the pain becomes real—no ticket upgrades, no track changes.</li></ul>

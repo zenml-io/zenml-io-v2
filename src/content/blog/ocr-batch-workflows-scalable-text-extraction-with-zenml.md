@@ -19,12 +19,12 @@ tags:
 date: "2025-04-09T00:00:00.000Z"
 readingTime: 8 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/2737e611/6981d37a71c3040935dbc353_6981d2adacfcb44f002ee1a3_blog_cover.avif"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2737e611/6981d37a71c3040935dbc353_6981d2adacfcb44f002ee1a3_blog_cover.avif"
 seo:
   title: "OCR Batch Workflows: Scalable Text Extraction with ZenML - ZenML Blog"
   description: "How do you reliably process thousands of diverse documents with GenAI OCR at scale? Explore why robust workflow orchestration is critical for achieving reliability in production. See how ZenML was used to build a scalable, multi-model batch processing system that maintains comprehensive visibility into accuracy metrics. Learn how this approach enables systematic benchmarking to select optimal OCR models for your specific document processing needs."
   canonical: "https://www.zenml.io/blog/ocr-batch-workflows-scalable-text-extraction-with-zenml"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/2737e611/6981d37a71c3040935dbc353_6981d2adacfcb44f002ee1a3_blog_cover.avif"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2737e611/6981d37a71c3040935dbc353_6981d2adacfcb44f002ee1a3_blog_cover.avif"
   ogTitle: "OCR Batch Workflows: Scalable Text Extraction with ZenML - ZenML Blog"
   ogDescription: "How do you reliably process thousands of diverse documents with GenAI OCR at scale? Explore why robust workflow orchestration is critical for achieving reliability in production. See how ZenML was used to build a scalable, multi-model batch processing system that maintains comprehensive visibility into accuracy metrics. Learn how this approach enables systematic benchmarking to select optimal OCR models for your specific document processing needs."
 ---
@@ -44,7 +44,7 @@ The framework revolves around two core pipelines:
 - [Batch Processing Pipeline](https://github.com/zenml-io/zenml-projects/blob/main/omni-reader/pipelines/batch_pipeline.py): Designed to efficiently process large document volumes, gathering outputs in a structured format while tracking key performance metrics.- [Evaluation Pipeline](https://github.com/zenml-io/zenml-projects/blob/main/omni-reader/pipelines/evaluation_pipeline.py): Compares outputs from different models against ground truth data using metrics like `CER`, `WER`, and Levenshtein similarity to identify the most effective approach for specific needs.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e70e6629/67f673756bef06dbe8c14ad0_pipeline_dags.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e70e6629/67f673756bef06dbe8c14ad0_pipeline_dags.png" alt="__wf_reserved_inherit" />
   <figcaption>Batch and Evaluation Pipeline DAGs</figcaption>
 </figure>
 
@@ -101,7 +101,7 @@ ZenML's inherent capabilities were instrumental here. Its built-in tracking of a
 For instance, the pipeline generates an HTML report that visually compares the overall performance across the evaluated models, serving as one such embedded artifact:
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/a5b26ff5/67f67952d8f019dd5e65794b_visualization.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a5b26ff5/67f67952d8f019dd5e65794b_visualization.png" alt="__wf_reserved_inherit" />
   <figcaption>HTML report (1 of 2) comparing overall performance across models</figcaption>
 </figure>
 
@@ -110,7 +110,7 @@ Beyond the overall comparison, the evaluation pipeline calculates detailed perfo
 - **Character Error Rate (CER)**: Quantifies accuracy at the character level.- **Word Error Rate (WER)**: Measures accuracy based on word-level differences.- **Ground Truth Similarity**: Leverages the Levenshtein ratio to assess the overall alignment between the model's output and the ground truth text.- **Cross-Model Similarity**: Compares the outputs of different models against each other to identify potential outliers or systemic inconsistencies.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/ad0e1ab4/67f679bc4ca410fa31f95678_metrics.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ad0e1ab4/67f679bc4ca410fa31f95678_metrics.png" alt="__wf_reserved_inherit" />
   <figcaption>HTML Report (2 of 2) showing model outputs and key metrics</figcaption>
 </figure>
 
@@ -135,7 +135,7 @@ You can explore the OmniReader project and experiment with it by following these
 The included Streamlit app provides an interactive UI for uploading documents, comparing the extraction results from different models side-by-side, and testing the impact of custom prompts on performance.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/8e59b93b/67f67a78dab85b07345d5360_streamlit.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8e59b93b/67f67a78dab85b07345d5360_streamlit.png" alt="__wf_reserved_inherit" />
   <figcaption>Streamlit UI</figcaption>
 </figure>
 

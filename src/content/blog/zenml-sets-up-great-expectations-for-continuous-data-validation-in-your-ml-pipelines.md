@@ -22,12 +22,12 @@ tags:
 date: "2022-07-07T00:00:00.000Z"
 readingTime: 18 Mins Read
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/b4253d43/653173fbd3f284555af57536_continuous-data-validation.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b4253d43/653173fbd3f284555af57536_continuous-data-validation.png"
 seo:
   title: "ZenML sets up Great Expectations for continuous data validation in your ML pipelines - ZenML Blog"
   description: "ZenML combines forces with Great Expectations to add data validation to the list of continuous processes automated with MLOps. Discover why data validation is an important part of MLOps and try the new integration with a hands-on tutorial."
   canonical: "https://www.zenml.io/blog/zenml-sets-up-great-expectations-for-continuous-data-validation-in-your-ml-pipelines"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/b9f3df1f/653173fbd3f284555af57536_continuous-data-validation.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b9f3df1f/653173fbd3f284555af57536_continuous-data-validation.png"
   ogTitle: "ZenML sets up Great Expectations for continuous data validation in your ML pipelines - ZenML Blog"
   ogDescription: "ZenML combines forces with Great Expectations to add data validation to the list of continuous processes automated with MLOps. Discover why data validation is an important part of MLOps and try the new integration with a hands-on tutorial."
 ---
@@ -413,13 +413,13 @@ python run.py
 Regardless of which stack you are using to run the pipelines, you should see the ZenML visualizer kicking in and opening two Data Docs tabs in your browser, one pointing to the Expectation Suite generated in the profiling pipeline run, the other pointing to the validation results from the data validation pipeline run.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/7ececf58/6531740e948c96d5ccc1880a_data-docs-expectation-suite.png" alt="Data Docs Expectation Suite" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7ececf58/6531740e948c96d5ccc1880a_data-docs-expectation-suite.png" alt="Data Docs Expectation Suite" />
 </figure>
 
  
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/d6c8180b/6531740de96e79420f16981b_data-docs-validation-results.png" alt="Data Docs Validation Results" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d6c8180b/6531740de96e79420f16981b_data-docs-validation-results.png" alt="Data Docs Validation Results" />
 </figure>
 
 ### What Happened Here?

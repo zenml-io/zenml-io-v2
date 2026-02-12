@@ -12,12 +12,12 @@ webflow:
   createdOn: "2025-08-26T12:16:46.341Z"
 integrationType: "agents"
 logo:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/2fce639d/68ada5b4b2a1841dcdba89e4_crew-ai.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2fce639d/68ada5b4b2a1841dcdba89e4_crew-ai.png"
 shortDescription: "CrewAI multi-agent crew framework integrated with ZenML"
 docsUrl: "https://docs.zenml.io"
 githubUrl: "https://github.com/zenml-io/zenml/tree/main/examples/agent_framework_integrations/crewai"
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/8f1f077a/68ada9c93969573d85a40ddd_crew-image.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8f1f077a/68ada9c93969573d85a40ddd_crew-image.png"
 relatedBlogPosts:
   - "langgraph-vs-crewai"
   - "crewai-pricing"
@@ -25,7 +25,7 @@ seo:
   title: "Integrate CrewAI with ZenML - Agents Integrations"
   description: "CrewAI multi-agent crew framework integrated with ZenML"
   canonical: "https://www.zenml.io/integrations/crew-ai"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/8f1f077a/68ada9c93969573d85a40ddd_crew-image.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8f1f077a/68ada9c93969573d85a40ddd_crew-image.png"
   ogTitle: "Integrate CrewAI with ZenML - Agents Integrations"
   ogDescription: "CrewAI multi-agent crew framework integrated with ZenML"
 ---

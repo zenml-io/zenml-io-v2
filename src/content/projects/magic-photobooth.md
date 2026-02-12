@@ -14,7 +14,7 @@ description: "A personalized AI image generation product that can create your av
 githubUrl: "https://github.com/zenml-io/zenml-projects/tree/main/magic-photobooth"
 mainImageLink: "https://public-flavor-logos.s3.eu-central-1.amazonaws.com/projects/4.jpg"
 previewImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e3859126/67e242f8a2222c5e150495f1_batch-dreambooth.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e3859126/67e242f8a2222c5e150495f1_batch-dreambooth.png"
 tags:
   - "image-generation"
   - "video-generation"
@@ -35,7 +35,7 @@ seo:
   title: "Magic Photobooth"
   description: "A personalized AI image generation product that can create your avatars from a selfie."
   canonical: "https://www.zenml.io/projects/magic-photobooth"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e3859126/67e242f8a2222c5e150495f1_batch-dreambooth.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e3859126/67e242f8a2222c5e150495f1_batch-dreambooth.png"
   ogTitle: "Magic Photobooth"
   ogDescription: "A personalized AI image generation product that can create your avatars from a selfie."
 ---

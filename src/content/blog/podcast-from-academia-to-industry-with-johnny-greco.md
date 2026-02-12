@@ -22,12 +22,12 @@ tags:
 date: "2022-03-03T00:00:00.000Z"
 readingTime: 1 Min Read
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/d7515ac4/65310c8939fbac43398d5a47_johnny-greco.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d7515ac4/65310c8939fbac43398d5a47_johnny-greco.png"
 seo:
   title: "Podcast: From Academia to Industry with Johnny Greco - ZenML Blog"
   description: "This week I spoke with Johnny Greco, a data scientist working at Radiology Partners. Johnny transitioned into his current work from a career as an academic — working in astronomy — where also worked in the open-source space to build a really interesting synthetic image data project."
   canonical: "https://www.zenml.io/blog/podcast-from-academia-to-industry-with-johnny-greco"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/b57b218e/65310c8939fbac43398d5a47_johnny-greco.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b57b218e/65310c8939fbac43398d5a47_johnny-greco.png"
   ogTitle: "Podcast: From Academia to Industry with Johnny Greco - ZenML Blog"
   ogDescription: "This week I spoke with Johnny Greco, a data scientist working at Radiology Partners. Johnny transitioned into his current work from a career as an academic — working in astronomy — where also worked in the open-source space to build a really interesting synthetic image data project."
 ---

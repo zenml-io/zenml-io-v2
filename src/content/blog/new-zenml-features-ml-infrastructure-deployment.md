@@ -18,12 +18,12 @@ tags:
 date: "2024-08-01T00:00:00.000Z"
 readingTime: 3 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/bffeeb48/66ab987f4189493be8bc0881_zenml-release-0-63-min.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/bffeeb48/66ab987f4189493be8bc0881_zenml-release-0-63-min.png"
 seo:
   title: "New Features: Easy ML Infrastructure Deployment and More! - ZenML Blog"
   description: "Recent releases of ZenML’s Python package have included a better way to deploy machine learning infrastructure or stacks, new annotation tool integrations, an upgrade of our Pydantic dependency and lots of documentation improvements."
   canonical: "https://www.zenml.io/blog/new-zenml-features-ml-infrastructure-deployment"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/2185183d/66ab987f4189493be8bc0881_zenml-release-0-63-min.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2185183d/66ab987f4189493be8bc0881_zenml-release-0-63-min.png"
   ogTitle: "New Features: Easy ML Infrastructure Deployment and More! - ZenML Blog"
   ogDescription: "Recent releases of ZenML’s Python package have included a better way to deploy machine learning infrastructure or stacks, new annotation tool integrations, an upgrade of our Pydantic dependency and lots of documentation improvements."
 ---
@@ -37,7 +37,7 @@ One of the key highlights of our recent releases is the introduction of [an easy
 With just a few clicks or a single command (`zenml stack deploy`), you can now set up the necessary infrastructure to run ZenML pipelines on the cloud. In the dashboard, simply navigate to the "Stacks" section and follow the guided process to deploy your stack.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/7e7a0843/66ab98b3858a8134491f3945_66ab95cb7395de18755994b7_one-click-deployment-min.gif" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7e7a0843/66ab98b3858a8134491f3945_66ab95cb7395de18755994b7_one-click-deployment-min.gif" alt="__wf_reserved_inherit" />
 </figure>
 
 If you like to see it in action and learn more about it, you can also watch [this 2-minute tutorial](https://www.youtube.com/watch?v=AME3YzfeXpc) or check out [our blog post](https://www.zenml.io/blog/easy-mlops-pipelines) about the 1-click deployment tool.
@@ -49,7 +49,7 @@ Adding on top of the deployment tool, we have also implemented a new tool called
 You can access the stack wizard through the CLI by using a single command (`zenml stack register -p YOUR_PROVIDER`), or through the dashboard by visiting the stacks section and clicking on `+New Stack`.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/da713a12/66a89907569a3536348350ad_66a898b846b4a6ca86777db5_wizard-steps.gif" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/da713a12/66a89907569a3536348350ad_66a898b846b4a6ca86777db5_wizard-steps.gif" alt="__wf_reserved_inherit" />
 </figure>
 
 Similar to the 1-click deployment, we have published [a 2-minute tutorial video](https://www.youtube.com/watch?v=diyt-Y7GLwY&t=20s) and [a blog post](https://www.zenml.io/blog/easy-mlops-pipelines-2-stack-wizard) about the Stack Wizard if you would like to learn more about it.

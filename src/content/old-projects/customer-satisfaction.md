@@ -17,7 +17,7 @@ tags:
   - "kubeflow"
   - "evidently"
 image:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/c6e08a5f/6528052e86f0ee0b11729b0f_satisfaction.jpg"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c6e08a5f/6528052e86f0ee0b11729b0f_satisfaction.jpg"
 description: "Predicting how a customer will feel about a product before they even ordered it"
 seoTitle: "Predicting Customer Satisfaction About A Product"
 seoDescription: "Predicting how a customer will feel about a product before they even ordered it"
@@ -26,7 +26,7 @@ seo:
   title: "ZenML - One AI Platform - From Pipelines to Agents"
   description: "An open-source foundation to ship reliable AI products at scale - on any cloud, anywhere."
   canonical: "https://www.zenml.io"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/cb031609/695e2c1368a3480fb0daafc4_zenml-open-graph.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/cb031609/695e2c1368a3480fb0daafc4_zenml-open-graph.png"
   ogTitle: "ZenML - One AI Platform - From Pipelines to Agents"
   ogDescription: "An open-source foundation to ship reliable AI products at scale - on any cloud, anywhere."
 ---
@@ -44,7 +44,7 @@ This project structure including the stack and components can be used on occasio
 ## Stack and Components
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/aec5c4c2/6528fc92ab8f44dc6a80d5cb_customer_satisfaction_9404527b5e.png" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/aec5c4c2/6528fc92ab8f44dc6a80d5cb_customer_satisfaction_9404527b5e.png" alt="" />
 </figure>
 
 This project uses the following [Stack Components](https://docs.zenml.io/user-guide/component-guide):
@@ -58,7 +58,7 @@ The codes to reproduce this project are open-source on GitHub. View the code [he
 ## Runs
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/8c3a553d/6528fc927f404ba1fd8b0f1a_Screen_Shot_2023_02_01_at_13_41_06_28c77ee286.png" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8c3a553d/6528fc927f404ba1fd8b0f1a_Screen_Shot_2023_02_01_at_13_41_06_28c77ee286.png" alt="" />
 </figure>
 
 ## Additional Resources

@@ -18,12 +18,12 @@ tags:
 date: "2020-05-17T00:00:00.000Z"
 readingTime: 5 Mins Read
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/2faf4119/652fb25aaa553331b6f819d9_svg-image-1__1_.svg"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2faf4119/652fb25aaa553331b6f819d9_svg-image-1__1_.svg"
 seo:
   title: "A case for declarative configurations for ML training - ZenML Blog"
   description: "Using config files to specify infrastructure for training isn't widely practiced in the machine learning community, but it helps a lot with reproducibility."
   canonical: "https://www.zenml.io/blog/a-case-for-declarative-configurations-for-ml-training"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/3e7c252f/652fb25aaa553331b6f819d9_svg-image-1__1_.svg"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3e7c252f/652fb25aaa553331b6f819d9_svg-image-1__1_.svg"
   ogTitle: "A case for declarative configurations for ML training - ZenML Blog"
   ogDescription: "Using config files to specify infrastructure for training isn't widely practiced in the machine learning community, but it helps a lot with reproducibility."
 ---

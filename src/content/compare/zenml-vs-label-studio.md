@@ -12,7 +12,7 @@ webflow:
   createdOn: "2024-07-12T10:24:45.903Z"
 toolName: "Label Studio"
 toolIcon:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/6545aaf7/669102fb7b644680e41c8244_label-studio_icon.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6545aaf7/669102fb7b644680e41c8244_label-studio_icon.png"
 category: "data-annotators"
 integrationType: "data-annotator"
 advantages:
@@ -27,12 +27,12 @@ ctaHeadline: "Elevate Your ML Workflow with ZenML: From Annotation to Deployment
 learnMoreUrl: "https://cloud.zenml.io/?utm_source=website&utm_medium=website_hero&utm_campaign=cloud_promotion&utm_content=signup_link"
 seoDescription: "Label Studio complement: End-to-end ML orchestration with annotation integration. Streamline pipelines from data prep to deployment with versioning."
 openGraphImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/c61a963d/66c5fcdcf3a4d934d7136e59_compare-label.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c61a963d/66c5fcdcf3a4d934d7136e59_compare-label.png"
 seo:
   title: "ZenML vs Label Studio - Streamline Your ML Workflow with ZenML: From Data Annotation to Deployment"
   description: "Label Studio complement: End-to-end ML orchestration with annotation integration. Streamline pipelines from data prep to deployment with versioning."
   canonical: "https://www.zenml.io/compare/zenml-vs-label-studio"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/52ed5c5a/66c5fcdcf3a4d934d7136e59_compare-label.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/52ed5c5a/66c5fcdcf3a4d934d7136e59_compare-label.png"
   ogTitle: "ZenML vs Label Studio - Streamline Your ML Workflow with ZenML: From Data Annotation to Deployment"
   ogDescription: "Label Studio complement: End-to-end ML orchestration with annotation integration. Streamline pipelines from data prep to deployment with versioning."
 ---

@@ -12,7 +12,7 @@ webflow:
   createdOn: "2024-07-12T09:53:13.208Z"
 toolName: "Hugging Face"
 toolIcon:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/22a0f7f8/6690fbe8b54ad26f1ebd383f_huggingface_icon.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/22a0f7f8/6690fbe8b54ad26f1ebd383f_huggingface_icon.png"
 category: "modeling"
 integrationType: "modeling"
 advantages:
@@ -27,12 +27,12 @@ ctaHeadline: "Streamline Your MLOps Workflow with ZenML and Hugging Face Integra
 learnMoreUrl: "https://cloud.zenml.io/?utm_source=website&utm_medium=website_hero&utm_campaign=cloud_promotion&utm_content=signup_link"
 seoDescription: "Hugging Face complement: Comprehensive MLOps for model development. Streamline workflows with versioning, tracking, and seamless Hugging Face deployment."
 openGraphImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/d6da930a/66c5fcef7b3dd4887449bc45_compare-hf.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d6da930a/66c5fcef7b3dd4887449bc45_compare-hf.png"
 seo:
   title: "ZenML vs Hugging Face - Streamline MLOps with ZenML: Seamless Integration with Hugging Face"
   description: "Hugging Face complement: Comprehensive MLOps for model development. Streamline workflows with versioning, tracking, and seamless Hugging Face deployment."
   canonical: "https://www.zenml.io/compare/zenml-vs-hugging-face"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/281622b8/66c5fcef7b3dd4887449bc45_compare-hf.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/281622b8/66c5fcef7b3dd4887449bc45_compare-hf.png"
   ogTitle: "ZenML vs Hugging Face - Streamline MLOps with ZenML: Seamless Integration with Hugging Face"
   ogDescription: "Hugging Face complement: Comprehensive MLOps for model development. Streamline workflows with versioning, tracking, and seamless Hugging Face deployment."
 ---

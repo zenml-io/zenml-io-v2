@@ -23,12 +23,12 @@ date: "2025-08-20T00:00:00.000Z"
 readingTime: 5 mins
 featured: true
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/019c0e2f/68a5daefbf0e814612905036_forecasting-platform-min.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/019c0e2f/68a5daefbf0e814612905036_forecasting-platform-min.png"
 seo:
   title: "Building a Forecasting Platform, Not Just Models - ZenML Blog"
   description: "FloraCast is a production-ready template that shows how to build a forecasting platform—config-driven experiments, model versioning/staging, batch inference, and scheduled retrains—with ZenML and Darts."
   canonical: "https://www.zenml.io/blog/floracast-forecasting-platform"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/019c0e2f/68a5daefbf0e814612905036_forecasting-platform-min.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/019c0e2f/68a5daefbf0e814612905036_forecasting-platform-min.png"
   ogTitle: "Building a Forecasting Platform, Not Just Models - ZenML Blog"
   ogDescription: "FloraCast is a production-ready template that shows how to build a forecasting platform—config-driven experiments, model versioning/staging, batch inference, and scheduled retrains—with ZenML and Darts."
 ---
@@ -56,7 +56,7 @@ FloraCast encodes these concerns in code + YAML so you can get there on day one.
 ## Setting up an MLOps flywheel with two pipelines
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/4655b4c2/68a5d3adf0dfce90a16ddf90_2008_01.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/4655b4c2/68a5d3adf0dfce90a16ddf90_2008_01.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 > 📣 We’ve seen similar patterns in other forecasting projects in ZenML, such as Retail Forecast. That project focuses on predicting retail sales across stores using simpler models (like Prophet and ARIMA) to show how ZenML pipelines structure experimentation. FloraCast builds on the same MLOps principles but takes it further with TFT, model promotion via MCP, and scheduled inference — a more production-ready pattern.
@@ -70,7 +70,7 @@ The repo gives you two pipelines that cover the day-2 realities:
 <ul><li><a href="https://github.com/zenml-io/zenml-projects/blob/main/floracast/steps/train.py"><code>steps/train.py</code></a>: trains a <a href="https://unit8co.github.io/darts/generated_api/darts.models.forecasting.tft_model.html">Darts <strong>Temporal Fusion Transformer (TFT)</strong></a> with YAML-driven hyperparams.</li><li><a href="https://github.com/zenml-io/zenml-projects/blob/main/floracast/steps/evaluate.py"><code>steps/evaluate.py</code></a>: computes <a href="https://en.wikipedia.org/wiki/Symmetric_mean_absolute_percentage_error">**SMAPE</a>** and logs an HTML visualization artifact so you can actually see how predictions track ground truth.</li><li><a href="https://github.com/zenml-io/zenml-projects/blob/main/floracast/steps/promote.py"><code>steps/promote.py</code></a>: compares the score to the current production model and promotes the new one if it’s better (you can also do this manually)</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/7a3cc402/68a5d3cf919ee3469298d426_2008_02.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7a3cc402/68a5d3cf919ee3469298d426_2008_02.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 **2. Batch inference** ([pipelines/batch_inference_pipeline.py](https://github.com/zenml-io/zenml-projects/blob/main/floracast/pipelines/batch_inference_pipeline.py))
@@ -80,7 +80,7 @@ The repo gives you two pipelines that cover the day-2 realities:
 <ul><li><a href="https://github.com/zenml-io/zenml-projects/blob/main/floracast/steps/batch_infer.py"><code>steps/batch_infer.py</code></a>: loads the production model from the <a href="https://docs.zenml.io/concepts/models">ZenML <strong>Model Control Plane (MCP)</strong></a> and produces a multi-step forecast DataFrame.</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/2777720c/68a5d41162be1b6d7d35921a_2008_03.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2777720c/68a5d41162be1b6d7d35921a_2008_03.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 This separation is key: training is about experiments, inference is about stability.
@@ -126,7 +126,7 @@ Promotion logic lives in [steps/promote.py](https://github.com/zenml-io/zenml-pr
 This gives you traceability: what’s in prod, how it got there, and which artifacts back it up.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/d8caf022/68a5d44d5eff9269cd091e92_2008_04.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d8caf022/68a5d44d5eff9269cd091e92_2008_04.webp" alt="__wf_reserved_inherit" />
   <figcaption>The ZenML Model Control Plane in action.</figcaption>
 </figure>
 
@@ -137,7 +137,7 @@ And here’s the really powerful part: **if you want multiple forecasting models
 Each one will have its own versions and predictions neatly tracked in ZenML. No chaos, no overwriting, everything versioned and auditable.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/8e584a70/68a5d46771cc44a6af38ad71_2008_05.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8e584a70/68a5d46771cc44a6af38ad71_2008_05.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ## From dev to prod, and staying fresh

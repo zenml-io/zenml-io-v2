@@ -20,12 +20,12 @@ tags:
 date: "2025-05-15T00:00:00.000Z"
 readingTime: 5 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/765a1059/6825b8ee023348faad2f9286_Kai_Scheduler_Cover__1_.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/765a1059/6825b8ee023348faad2f9286_Kai_Scheduler_Cover__1_.png"
 seo:
   title: "NVIDIA KAI Scheduler: Optimize GPU Usage in ZenML Pipelines - ZenML Blog"
   description: "Discover how to optimize GPU utilization in Kubernetes environments by integrating NVIDIA's KAI Scheduler with ZenML pipelines, enabling fractional GPU allocation for improved resource efficiency and cost savings in machine learning workflows."
   canonical: "https://www.zenml.io/blog/nvidia-kai-scheduler-optimize-gpu-usage-in-zenml-pipelines"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/765a1059/6825b8ee023348faad2f9286_Kai_Scheduler_Cover__1_.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/765a1059/6825b8ee023348faad2f9286_Kai_Scheduler_Cover__1_.png"
   ogTitle: "NVIDIA KAI Scheduler: Optimize GPU Usage in ZenML Pipelines - ZenML Blog"
   ogDescription: "Discover how to optimize GPU utilization in Kubernetes environments by integrating NVIDIA's KAI Scheduler with ZenML pipelines, enabling fractional GPU allocation for improved resource efficiency and cost savings in machine learning workflows."
 ---
@@ -37,7 +37,7 @@ TL;DR  If you already have a GPU‑enabled GKE cluster, jump straight to the "R
 ## Why should you care about KAI Scheduler?
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/b688a425/6825b98507e5d13e2e3f821d_Clipboard_Image_from_TinyPNG__1_.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b688a425/6825b98507e5d13e2e3f821d_Clipboard_Image_from_TinyPNG__1_.png" alt="__wf_reserved_inherit" />
 </figure>
 
 Kubernetes has a blind spot: once a container asks for **one GPU**, the scheduler hands over the entire card—even if your workload needs only a sliver of its memory or compute. NVIDIA's [KAI Scheduler](https://github.com/nvidia/kai-scheduler/) (open‑sourced by *Run\:ai* in March 2025) closes that gap by adding AI‑centric primitives on top of the default scheduler:

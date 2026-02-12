@@ -24,7 +24,7 @@ export const HERO = {
   githubUrl: "https://github.com/zenml-io/zenml",
   /** Lottie JSON for hero animation (autoplay, no loop, 6.4s, SVG renderer) */
   lottieUrl:
-    "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/8d0d5edc/68d25c7835d8facce3cdb642_hero-0925.json",
+    "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8d0d5edc/68d25c7835d8facce3cdb642_hero-0925.json",
 };
 
 /* ------------------------------------------------------------------ */
@@ -37,7 +37,7 @@ export interface LogoItem {
   height?: number;
 }
 
-const R2 = "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30";
+const R2 = "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30";
 
 export const LOGO_CLOUD = {
   label: "Trusted by 1,000s of top companies to standardize their AI workflows",

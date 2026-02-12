@@ -20,12 +20,12 @@ tags:
 date: "2020-05-07T00:00:00.000Z"
 readingTime: 12 Mins Read
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/95a024be/652f6599209a1125c072d272_download__29_.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/95a024be/652f6599209a1125c072d272_download__29_.png"
 seo:
   title: "Predicting the winner of a DotA 2 match using distributed deep learning pipelines - ZenML Blog"
   description: "ZenML makes it easy to setup training pipelines that give you all the benefits of cached steps."
   canonical: "https://www.zenml.io/blog/predicting-the-winner-of-a-dota-2-match-using-distributed-deep-learning-pipelines"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/64019378/652f6599209a1125c072d272_download__29_.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/64019378/652f6599209a1125c072d272_download__29_.png"
   ogTitle: "Predicting the winner of a DotA 2 match using distributed deep learning pipelines - ZenML Blog"
   ogDescription: "ZenML makes it easy to setup training pipelines that give you all the benefits of cached steps."
 ---

@@ -18,12 +18,12 @@ tags:
 date: "2022-12-19T00:00:00.000Z"
 readingTime: 10 Mins Read
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e780e3f7/652fc1c99d3835dc15d8c494_cover-shivalika.jpg"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e780e3f7/652fc1c99d3835dc15d8c494_cover-shivalika.jpg"
 seo:
   title: "ChequeEasy: Banking with Transformers - ZenML Blog"
   description: "A winning entry - 3rd prize winner at Month of MLOps 2022 competition. Extraction of metadata from cheques using Transformers and ZenML."
   canonical: "https://www.zenml.io/blog/chequeeasy-banking-with-transformers"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e202dfa3/652fc1c99d3835dc15d8c494_cover-shivalika.jpg"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e202dfa3/652fc1c99d3835dc15d8c494_cover-shivalika.jpg"
   ogTitle: "ChequeEasy: Banking with Transformers - ZenML Blog"
   ogDescription: "A winning entry - 3rd prize winner at Month of MLOps 2022 competition. Extraction of metadata from cheques using Transformers and ZenML."
 ---
@@ -119,7 +119,7 @@ The Training pipeline defines the end-to-end process of training the Donut model
 The Training pipeline can be summarized as follows:
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/fbb333b6/652fc1ec0e5e8071f1538319_training_pipeline_cheque_easy.png" alt="training_pipeline" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/fbb333b6/652fc1ec0e5e8071f1538319_training_pipeline_cheque_easy.png" alt="training_pipeline" />
 </figure>
 
 ### Load config, model, processor
@@ -149,7 +149,7 @@ Once the deployment trigger has been activated, this step takes the trained mode
 This pipeline consists of 3 simple steps as summarized below:
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/be9fd35c/652fc1ed0c114e2edc70520f_inference_pipeline_cheque_easy.png" alt="inference_pipeline" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/be9fd35c/652fc1ed0c114e2edc70520f_inference_pipeline_cheque_easy.png" alt="inference_pipeline" />
 </figure>
 
 ### Load data

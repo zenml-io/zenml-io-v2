@@ -19,7 +19,7 @@ tags:
 date: "2021-11-26T00:00:00.000Z"
 readingTime: 5 Mins Read
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e6f47b99/6530af83193a7bf8d264920e_sam_zen_mode.jpg"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e6f47b99/6530af83193a7bf8d264920e_sam_zen_mode.jpg"
 ---
 
 **Last updated:** October 17, 2022.
@@ -31,13 +31,13 @@ When working on a project in Python, it is very likely that you will run into an
 In recent years, the field of Machine Learning has become even more fractured, especially in a production setting. Anyone who deals with a Machine Learning workflow needs to not only think about designing and training models but also a wide variety of tasks ranging from data ingestion to processing, from training to serving, from distributed processing to orchestration. The solutions to these problems are usually tailored to the problem at hand and they utilize a different set of tools/frameworks to bring forth a solution. Naturally, it is impossible to claim that there is only”**one”** set of tools/frameworks that can solve it all.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/4ba90beb/6530afb3d5cc716731a5bd76_sam_frustrated.jpeg" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/4ba90beb/6530afb3d5cc716731a5bd76_sam_frustrated.jpeg" alt="" />
 </figure>
 
 We think about this all the time at **ZenML** and it is why we aim to create an environment where our users already have access to some of the widely used tools while having the option to extend the framework as they see fit. Through a set of high-level abstractions, we want to minimize the friction as much as possible between these moving parts of an ML workflow. At the core of this solution, we have our **Integrations**.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/735e25d5/6530afb3d0bce1093eff5a15_sam_zen_mode.jpeg" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/735e25d5/6530afb3d0bce1093eff5a15_sam_zen_mode.jpeg" alt="" />
 </figure>
 
 ## What do Integrations bring to the table?

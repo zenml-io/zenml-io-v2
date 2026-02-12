@@ -21,12 +21,12 @@ tags:
 date: "2025-03-10T00:00:00.000Z"
 readingTime: 5 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/6b48c576/67ce93b1e21d3fd4c6f08672_CleanShot_Mar_10_2025.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6b48c576/67ce93b1e21d3fd4c6f08672_CleanShot_Mar_10_2025.png"
 seo:
   title: "Chat With Your ML Pipelines: Introducing the ZenML MCP Server - ZenML Blog"
   description: "Discover the new ZenML MCP Server that brings conversational AI to ML pipelines. Learn how this implementation of the Model Context Protocol allows natural language interaction with your infrastructure, enabling query capabilities, pipeline analytics, and run management through simple conversation. Explore current features, engineering decisions, and future roadmap for this timely addition to the rapidly evolving MCP ecosystem."
   canonical: "https://www.zenml.io/blog/chat-with-your-ml-pipelines-introducing-the-zenml-mcp-server"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/6b48c576/67ce93b1e21d3fd4c6f08672_CleanShot_Mar_10_2025.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6b48c576/67ce93b1e21d3fd4c6f08672_CleanShot_Mar_10_2025.png"
   ogTitle: "Chat With Your ML Pipelines: Introducing the ZenML MCP Server - ZenML Blog"
   ogDescription: "Discover the new ZenML MCP Server that brings conversational AI to ML pipelines. Learn how this implementation of the Model Context Protocol allows natural language interaction with your infrastructure, enabling query capabilities, pipeline analytics, and run management through simple conversation. Explore current features, engineering decisions, and future roadmap for this timely addition to the rapidly evolving MCP ecosystem."
 ---
@@ -34,7 +34,7 @@ seo:
 In a week where the Machine Learning community has been buzzing with unprecedented enthusiasm around the [Model Context Protocol (MCP)](https://modelcontextprotocol.io/), our announcement of the [ZenML MCP Server](https://github.com/zenml-io/mcp-zenml) couldn't be more timely. As social media feeds, YouTube and developer forums overflow with MCP implementations and discussions, we're excited to introduce our contribution that brings the power of conversational AI directly to your ML pipelines—allowing you to interact with your infrastructure through natural language rather than commands or dashboards.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/cf0c6655/67ce91a51be70e2d8c349dc3_ZenML_MCP_Chat.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/cf0c6655/67ce91a51be70e2d8c349dc3_ZenML_MCP_Chat.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ## What We Built
@@ -52,7 +52,7 @@ This implementation enables a range of practical use cases:
 ## Why It's Useful
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/796c66f3/67ce91c2fc513aa8497c87e5_CleanShot_Mar_9_from_ZenML_MCP_Server.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/796c66f3/67ce91c2fc513aa8497c87e5_CleanShot_Mar_9_from_ZenML_MCP_Server.png" alt="__wf_reserved_inherit" />
 </figure>
 
 The ZenML MCP Server offers numerous advantages for developers and teams:
@@ -64,7 +64,7 @@ The ability to "chat with your pipelines" opens up new possibilities for how tea
 ## Understanding the MCP Landscape
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/a121477b/67ce91dd9abf6487e364e76c_MCP_Overview_Chat_with_ML_Pipelines.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a121477b/67ce91dd9abf6487e364e76c_MCP_Overview_Chat_with_ML_Pipelines.png" alt="__wf_reserved_inherit" />
 </figure>
 
 The Model Context Protocol (MCP) was released in late November 2024 and it took a while for the protocol to really take off. More recently Mahesh Murag (Anthropic) [held a workshop](https://www.youtube.com/watch?v=kQmXtrmQ5Zg) at the AI Engineering conference in which he spoke about how Anthropic saw future updates and expansions to the MCP.
@@ -124,7 +124,7 @@ Once you've set up the ZenML MCP Server, you're only limited by your imagination
 "Can you write me a report (as a markdown artifact) about the `simple_pipeline` and tell the story of the history of its runs, which were successful etc., and what stacks worked, which didn't, as well as some performance metrics + recommendations?"
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/89a09555/67ce92936799949f71629e83_CleanShot_Mar_10_2025_from_TinyPNG.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/89a09555/67ce92936799949f71629e83_CleanShot_Mar_10_2025_from_TinyPNG.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Comparative Pipeline Analysis
@@ -132,7 +132,7 @@ Once you've set up the ZenML MCP Server, you're only limited by your imagination
 "Could you analyze all our ZenML pipelines and create a comparison report (as a markdown artifact) that highlights differences in success rates, average run times, and resource usage? Please include a section on which stacks perform best for each pipeline type."
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/31fde8b0/67ce92da53b173ac13b5a874_CleanShot_Mar_9_from_ZenML__1_.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/31fde8b0/67ce92da53b173ac13b5a874_CleanShot_Mar_9_from_ZenML__1_.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Stack Component Analysis
@@ -140,7 +140,7 @@ Once you've set up the ZenML MCP Server, you're only limited by your imagination
 "Please generate a comprehensive report or dashboard on our ZenML stack components, showing which ones are most frequently used across our pipelines. Include information about version compatibility issues and performance variations."
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/55a7e67a/67ce92f01cb444c9c5bf805d_CleanShot_Mar_9_from_ZenML_Chat.gif" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/55a7e67a/67ce92f01cb444c9c5bf805d_CleanShot_Mar_9_from_ZenML_Chat.gif" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Run Template Analysis

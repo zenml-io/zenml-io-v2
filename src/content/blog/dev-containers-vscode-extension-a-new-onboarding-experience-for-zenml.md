@@ -20,12 +20,12 @@ tags:
 date: "2024-08-26T00:00:00.000Z"
 readingTime: 6 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/96c42cea/66cc3dc0f8af09132b4444ea_Onboarding_Experience_Aug_5_Screenshot_copy.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/96c42cea/66cc3dc0f8af09132b4444ea_Onboarding_Experience_Aug_5_Screenshot_copy.png"
 seo:
   title: "Dev Containers + a VSCode Extension = A New Onboarding Experience for ZenML - ZenML Blog"
   description: "Two open-source contributors describe how they built a new onboarding experience for the ZenML Quickstart native to VS Code."
   canonical: "https://www.zenml.io/blog/dev-containers-vscode-extension-a-new-onboarding-experience-for-zenml"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/96c42cea/66cc3dc0f8af09132b4444ea_Onboarding_Experience_Aug_5_Screenshot_copy.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/96c42cea/66cc3dc0f8af09132b4444ea_Onboarding_Experience_Aug_5_Screenshot_copy.png"
   ogTitle: "Dev Containers + a VSCode Extension = A New Onboarding Experience for ZenML - ZenML Blog"
   ogDescription: "Two open-source contributors describe how they built a new onboarding experience for the ZenML Quickstart native to VS Code."
 ---
@@ -37,7 +37,7 @@ Of course, ZenML already has some great Quickstart guides, like the [Jupyter Not
 That task comprised two parts: getting a consistent sandboxed environment for the user to experiment in and guiding the user through a series of steps to introduce the ZenML framework.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/86b4c1cb/66cc3c8edfe4b28ff5b31f36_66cc38b945ea84e35c02b049_ZenML_20Onboarding.gif" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/86b4c1cb/66cc3c8edfe4b28ff5b31f36_66cc38b945ea84e35c02b049_ZenML_20Onboarding.gif" alt="__wf_reserved_inherit" />
 </figure>
 
 ## A Sandboxed IDE with Codespaces
@@ -112,7 +112,7 @@ That's a fairly simple example. But sometimes we had to be more creative when tr
 On the other hand, one of the benefits of developing such an experience in VSCode is the user’s ability to freely experiment with the Python code examples. With this in mind, we wanted to create an easy way for the user to restore the code examples to their original form after any experimentation.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/b256f458/66cc3c8edfe4b28ff5b31f31_66cc3a2029f75da38268fd4a_ZenML_20Onboarding_20_1_.gif" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b256f458/66cc3c8edfe4b28ff5b31f31_66cc3a2029f75da38268fd4a_ZenML_20Onboarding_20_1_.gif" alt="__wf_reserved_inherit" />
 </figure>
 
 We did this by creating backups of the original files and initializing listeners for changes to the active code editor. Any time a given code example didn’t match up to the backup, we made a `reset code` button available for the user.
@@ -170,7 +170,7 @@ The task of running code and watching for its success or failure was extracted i
 To display to the user an interface for navigating the Quickstart, we made use of [VSCode's WebViews](https://code.visualstudio.com/api/extension-guides/webview), which allows you to display a custom HTML file within VSCode.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/88d9ca34/66cc3c8edfe4b28ff5b31f2d_66cc3aa8dc280fe51b25a61e_Onboarding_20Experience_20Aug_205_20Screenshot.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/88d9ca34/66cc3c8edfe4b28ff5b31f2d_66cc3aa8dc280fe51b25a61e_Onboarding_20Experience_20Aug_205_20Screenshot.png" alt="__wf_reserved_inherit" />
 </figure>
 
 WebViews in VSCode are isolated from the rest of VSCode and don't have direct access to the VSCode API, but instead use message-passing between the embedded script in the HTML page and the WebView object. We then used a switch statement to determine the right course of action based on the message type:
@@ -257,7 +257,7 @@ Part of working on the Quickstart requires fine-tuning the flow between steps, a
 It's one of those things that is fairly easy to implement (it's simply hijacking the same method that opens the code snippet for each step) but makes a significant quality-of-life improvement.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/1dc015c0/66cc3c8ddfe4b28ff5b31f1b_66cc3b0cdf0995bc44f8d77d_ZenML_20Onboarding_20Experience.gif" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1dc015c0/66cc3c8ddfe4b28ff5b31f1b_66cc3b0cdf0995bc44f8d77d_ZenML_20Onboarding_20Experience.gif" alt="__wf_reserved_inherit" />
 </figure>
 
 ## Future Work
@@ -271,7 +271,7 @@ In an ideal world, a user would be able to navigate to this process in one step 
 The GIF below illustrates the current situation: we see Codespaces pausing and then reloading several times before the Quickstart loads. A user could interpret the pause in action at any of these points as the provisioning process being finished, which is not ideal.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/6ff5476e/66cc3c8edfe4b28ff5b31f22_66cc3b22f608b645de3e2b1c_ZenML_20Onboarding_20_2_.gif" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6ff5476e/66cc3c8edfe4b28ff5b31f22_66cc3b22f608b645de3e2b1c_ZenML_20Onboarding_20_2_.gif" alt="__wf_reserved_inherit" />
 </figure>
 
 Other points to improve upon are related to the flow itself. At the moment the flow allows the user to connect to an instance of [ZenML Pro](https://www.zenml.io/pro), and later provides some insight into the fact that a user could also spin up a local version of the dashboard. It would be nice if instead the user was presented with both options up front. In addition, some ability to choose between multiple Quickstarts (perhaps each tailored towards a different ZenML flow, or varying in complexity) would be beneficial.
@@ -285,7 +285,7 @@ We're excited about what we developed so far. We feel an IDE-integrated onboardi
 If you’d like to try the Quickstart, you can do so by heading [over to the repository](https://github.com/zenml-io/vscode-quickstart), clicking the Code button, and creating a new Codespaces.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/005b56c0/66cc3c8edfe4b28ff5b31f25_66cc3b3af8af09132b41d864_ZenML_20Onboarding_20_3_.gif" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/005b56c0/66cc3c8edfe4b28ff5b31f25_66cc3b3af8af09132b41d864_ZenML_20Onboarding_20_3_.gif" alt="__wf_reserved_inherit" />
 </figure>
 
 [Tess Lockey](https://tesslockey.com/)* is a full-stack software engineer with a background in design. She enjoys working on tools that help us think, create, and collaborate better. Feel free to reach out and connect on *[LinkedIn](https://www.linkedin.com/in/tesslockey/)*.*

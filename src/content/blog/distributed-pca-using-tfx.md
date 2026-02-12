@@ -20,7 +20,7 @@ tags:
 date: "2020-02-27T00:00:00.000Z"
 readingTime: 5 Mins Read
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/d957264c/652e86a7d6e7c242bfcb3d5f_download__24_.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d957264c/652e86a7d6e7c242bfcb3d5f_download__24_.png"
 ---
 
 **Last updated:** November 3, 2022.
@@ -85,7 +85,7 @@ When you actually execute a Transform component with the above preprocessing_fn,
 After running a successful TFX pipeline, you can easily use the output of the Transform component to extract the transformed data for visualization. In the accompanying colab, this is exactly what is shown:
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/8b4c72a7/652e860f988afd27f1b45e29_distributed_pca_01.png" alt="Iris Dataset PCA" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8b4c72a7/652e860f988afd27f1b45e29_distributed_pca_01.png" alt="Iris Dataset PCA" />
 </figure>
 
 As you can see, the separation between the three classes is clearly visible in the reduced dimension space.

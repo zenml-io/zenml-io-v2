@@ -12,12 +12,12 @@ webflow:
   createdOn: "2024-09-23T12:08:22.432Z"
 integrationType: "modeling"
 logo:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/4a909b44/66f15a47230d547766de53f9_66d86795fb809547dcae5c99_huggingface-p-130x130q80.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/4a909b44/66f15a47230d547766de53f9_66d86795fb809547dcae5c99_huggingface-p-130x130q80.png"
 shortDescription: "Accelerate NLP and Computer Vision with Hugging Face Models in ZenML Pipelines"
 docsUrl: "https://docs.zenml.io/how-to/pipeline-development/training-with-gpus/accelerate-distributed-training"
 githubUrl: "https://github.com/zenml-io/zenml/tree/main/examples/llm_finetuning"
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/a71646c2/66f1599e1983557cdabc4786_image__32_.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a71646c2/66f1599e1983557cdabc4786_image__32_.png"
 relatedBlogPosts:
   - "huggingface-to-sagemaker"
   - "productionalizing-nlp-models-with-zenml"
@@ -26,7 +26,7 @@ seo:
   title: "Integrate Hugging Face with ZenML - Modeling Integrations"
   description: "Accelerate NLP and Computer Vision with Hugging Face Models in ZenML Pipelines"
   canonical: "https://www.zenml.io/integrations/huggingface"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/a71646c2/66f1599e1983557cdabc4786_image__32_.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a71646c2/66f1599e1983557cdabc4786_image__32_.png"
   ogTitle: "Integrate Hugging Face with ZenML - Modeling Integrations"
   ogDescription: "Accelerate NLP and Computer Vision with Hugging Face Models in ZenML Pipelines"
 ---

@@ -19,12 +19,12 @@ tags:
 date: "2024-08-30T00:00:00.000Z"
 readingTime: 10 min
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/d3b7eb4f/66d1dbf5fa2e7cdd71eaea6e_orchestration_showdown_min.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d3b7eb4f/66d1dbf5fa2e7cdd71eaea6e_orchestration_showdown_min.png"
 seo:
   title: "Orchestration Showdown: Dagster vs Prefect vs Airflow - ZenML Blog"
   description: "Comparing Airflow, Dagster, and Prefect: Choosing the right orchestration tool for your data workflows."
   canonical: "https://www.zenml.io/blog/orchestration-showdown-dagster-vs-prefect-vs-airflow"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/d3b7eb4f/66d1dbf5fa2e7cdd71eaea6e_orchestration_showdown_min.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d3b7eb4f/66d1dbf5fa2e7cdd71eaea6e_orchestration_showdown_min.png"
   ogTitle: "Orchestration Showdown: Dagster vs Prefect vs Airflow - ZenML Blog"
   ogDescription: "Comparing Airflow, Dagster, and Prefect: Choosing the right orchestration tool for your data workflows."
 ---
@@ -46,7 +46,7 @@ Selecting the right data orchestration tool is critical to the success of any pr
 By the end of this article, you’ll understand how these tools differ and which one is the best fit for your data orchestration needs.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/7272726e/66d1d2619747b939cb14daff_66d1d0fb38f6dc4fc5782d2a_orchestration_showdown_01.png" alt="A graph titled &#039;Star History&#039; showing the GitHub stars growth of three projects from 2016 to 2024. The graph compares apache/airflow (red line), PrefectHQ/prefect (blue line), and dagster-io/dagster (yellow line). Apache Airflow shows the highest growth, reaching over 30k stars by 2024. Prefect and Dagster start later, around 2018-2019, with lower but steady growth, reaching about 15k and 10k stars respectively by 2024. The y-axis represents GitHub stars from 0 to 30k, and the x-axis shows years from 2016 to 2024." />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7272726e/66d1d2619747b939cb14daff_66d1d0fb38f6dc4fc5782d2a_orchestration_showdown_01.png" alt="A graph titled &#039;Star History&#039; showing the GitHub stars growth of three projects from 2016 to 2024. The graph compares apache/airflow (red line), PrefectHQ/prefect (blue line), and dagster-io/dagster (yellow line). Apache Airflow shows the highest growth, reaching over 30k stars by 2024. Prefect and Dagster start later, around 2018-2019, with lower but steady growth, reaching about 15k and 10k stars respectively by 2024. The y-axis represents GitHub stars from 0 to 30k, and the x-axis shows years from 2016 to 2024." />
 </figure>
 
 ## Understanding Orchestration Tools: What They Are and Why They Matter
@@ -76,7 +76,7 @@ With orchestration tools, you streamline your operations, reduce errors, and acc
 [Airflow](https://airflow.apache.org/) is a workflow orchestration tool for orchestrating distributed applications. It works by scheduling jobs across different servers or nodes using Directed Acyclic Graphs (DAGs). Apache Airflow provides a rich user interface that makes it easy to visualize the flow of data through the pipeline. It also allows users to monitor the progress of each task and view logs.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/fa8e2ed0/66d1d2619747b939cb14db06_66d1d13842c938feacecacc1_airflow_architecture.png" alt="Diagram of Airflow architecture. Shows interconnected components: Metadata Database, Airflow UI, Webserver, Scheduler with Executor, Queue, multiple Workers, and DAG Directories. Arrows indicate data flow between components. The Scheduler is linked to an &#039;airflow.cfg&#039; configuration snippet showing executor options. The Airflow logo, a colorful pinwheel, is in the top-left corner. The diagram uses a purple color scheme on a white background." />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/fa8e2ed0/66d1d2619747b939cb14db06_66d1d13842c938feacecacc1_airflow_architecture.png" alt="Diagram of Airflow architecture. Shows interconnected components: Metadata Database, Airflow UI, Webserver, Scheduler with Executor, Queue, multiple Workers, and DAG Directories. Arrows indicate data flow between components. The Scheduler is linked to an &#039;airflow.cfg&#039; configuration snippet showing executor options. The Airflow logo, a colorful pinwheel, is in the top-left corner. The diagram uses a purple color scheme on a white background." />
 </figure>
 
 ### Features of Airflow
@@ -156,7 +156,7 @@ This simple data pipeline example demonstrates the use of the TaskFlow API with 
 Open your web browser and go to [http://localhost:8080](http://localhost:8080). The default username and password are both airflow. This will give you access to the Airflow dashboard, where you can manage your DAGs and monitor tasks.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/eb757c65/66d1dc91294029c6835a86e3_66d1d33db2628fd6a540921c_airflow_demo.png" alt="Airflow UI showing &#039;tutorial_taskflow_api&#039; DAG with three sequential tasks: extract, transform, and load. Interface includes navigation bar, task status filters, and various view options." />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/eb757c65/66d1dc91294029c6835a86e3_66d1d33db2628fd6a540921c_airflow_demo.png" alt="Airflow UI showing &#039;tutorial_taskflow_api&#039; DAG with three sequential tasks: extract, transform, and load. Interface includes navigation bar, task status filters, and various view options." />
 </figure>
 
 Step 9: Shut Down Airflow
@@ -184,7 +184,7 @@ We will explore each of these problems by analyzing how Dagster and Prefect, two
 ### Architecture Diagram
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/8813237a/66d1dc91294029c6835a86d7_66d1d3b731dddb6b6a961295_dagster_architecture.png" alt="Dagster architecture diagram showing Dagit Web Servers, repositories (ETL, ML, DS), executors, and a database. Components are interconnected with arrows indicating data flow and interactions." />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8813237a/66d1dc91294029c6835a86d7_66d1d3b731dddb6b6a961295_dagster_architecture.png" alt="Dagster architecture diagram showing Dagit Web Servers, repositories (ETL, ML, DS), executors, and a database. Components are interconnected with arrows indicating data flow and interactions." />
 </figure>
 
 ### Features of Dagster
@@ -224,7 +224,7 @@ This starter kit includes:
 In this project, we're building an analytical pipeline that explores popular topics on HackerNews.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/b254fab2/66d1dc91294029c6835a86dd_66d1d7070bfd9600fcffb07c_dagster_example.png" alt="Dagster UI showing &#039;all_assets_job&#039; graph with nodes for &#039;topstory_ids&#039;, &#039;topstories&#039;, and &#039;most_frequent_words&#039;. Interface includes navigation, search, and job info panels." />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b254fab2/66d1dc91294029c6835a86dd_66d1d7070bfd9600fcffb07c_dagster_example.png" alt="Dagster UI showing &#039;all_assets_job&#039; graph with nodes for &#039;topstory_ids&#039;, &#039;topstories&#039;, and &#039;most_frequent_words&#039;. Interface includes navigation, search, and job info panels." />
 </figure>
 
 This project:
@@ -254,7 +254,7 @@ Open your web browser and go to  [http://localhost:3000](http://localhost:3000)
 With Dagster, you define pipelines using an asset-centric approach instead of tasks. Dagster’s modular architecture allows custom resources as inputs into pipelines, which can be swapped based on environments.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/5efc4613/66d1dc91294029c6835a86e6_66d1d77bc03b9dda5b180d9d_dagster_example_2.png" alt="Dagster deployment view for &#039;quickstart_etl&#039;, showing assets list with statuses. Includes &#039;hackernews&#039; group with 3 materialized assets and a &#039;default&#039; group with 1 asset." />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5efc4613/66d1dc91294029c6835a86e6_66d1d77bc03b9dda5b180d9d_dagster_example_2.png" alt="Dagster deployment view for &#039;quickstart_etl&#039;, showing assets list with statuses. Includes &#039;hackernews&#039; group with 3 materialized assets and a &#039;default&#039; group with 1 asset." />
 </figure>
 
 ### The Problems with Dagster
@@ -272,7 +272,7 @@ Dagster integrates with many popular tools, but there’s always the possibility
 ### Architecture Diagram
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/a7ac2662/66d1dc92294029c6835a86f6_66d1d7c912434f7c46301746_prefect_architecture.png" alt="Prefect architecture diagram showing components: Your Laptop, Execution Environments, Cloud UI, and Cloud API. Includes connections to external services like PagerDuty, Slack, and Twilio." />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a7ac2662/66d1dc92294029c6835a86f6_66d1d7c912434f7c46301746_prefect_architecture.png" alt="Prefect architecture diagram showing components: Your Laptop, Execution Environments, Cloud UI, and Cloud API. Includes connections to external services like PagerDuty, Slack, and Twilio." />
 </figure>
 
 ### Features of Prefect
@@ -349,7 +349,7 @@ prefect orion start
 Here, you can visualize your flow runs, view logs, and manage your Prefect settings.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/a9d08e0a/66d1dc91294029c6835a86e0_66d1d85251559d5661dbb122_prefect_demo.png" alt="Prefect UI showing &#039;Runs&#039; page with timeline graph and list of completed flows. Interface includes filters for date, flows, deployments, and work pools, with a side navigation menu." />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a9d08e0a/66d1dc91294029c6835a86e0_66d1d85251559d5661dbb122_prefect_demo.png" alt="Prefect UI showing &#039;Runs&#039; page with timeline graph and list of completed flows. Interface includes filters for date, flows, deployments, and work pools, with a side navigation menu." />
 </figure>
 
 ### The Problems with Prefect
@@ -359,7 +359,7 @@ While Prefect offers many modern conveniences, you may encounter some [challenge
 ## Features: Comparison table
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/686e048b/66d1dc92294029c6835a8703_66d1d880002a27c4d6a464f3_orchestration_comparison_table.png" alt="Comparison table of features for Dagster, Prefect, and Airflow data orchestration tools. Covers aspects like scheduling, UI support, workflow definition, integrations, scalability, and use cases." />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/686e048b/66d1dc92294029c6835a8703_66d1d880002a27c4d6a464f3_orchestration_comparison_table.png" alt="Comparison table of features for Dagster, Prefect, and Airflow data orchestration tools. Covers aspects like scheduling, UI support, workflow definition, integrations, scalability, and use cases." />
 </figure>
 
 ### Quick Selection Guide by Use Case (2025 Edition):
@@ -437,7 +437,7 @@ Now, suppose you need even more control—like modifying job behavior based on t
 ### Example: Dynamic Scheduling in Dagster
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/d19b2b00/66d1dc92294029c6835a86f0_66d1d9358ed545e4d78d01bf_all_assets_job.png" alt="Dagster UI showing &#039;all_assets_job&#039; overview with three materialized assets: &#039;topstory_ids&#039;, &#039;topstories&#039;, and &#039;most_frequent_words&#039;. The job is part of &#039;quickstart_etl&#039; and uses the Hacker News API." />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d19b2b00/66d1dc92294029c6835a86f0_66d1d9358ed545e4d78d01bf_all_assets_job.png" alt="Dagster UI showing &#039;all_assets_job&#039; overview with three materialized assets: &#039;topstory_ids&#039;, &#039;topstories&#039;, and &#039;most_frequent_words&#039;. The job is part of &#039;quickstart_etl&#039; and uses the Hacker News API." />
 </figure>
 
 With Dagster, you’re not just scheduling tasks—you’re controlling them with precision. You can tailor your job's execution to suit your exact needs, something Airflow struggles with, especially when it comes to dynamic scheduling.
@@ -459,7 +459,7 @@ In Prefect, creating dynamic workflows is as straightforward as it gets. You can
 Dagster takes dynamic workflows to another level with its ability to define and parametrize graphs. This allows you to fully customize your resources, configurations, hooks, and executors, giving you total control over how your jobs are executed.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/d3eff921/66d1dc92294029c6835a86f3_66d1db5c88987b70d817f086_all_assets_job_02.png" alt="Dagster UI showing &#039;all_assets_job&#039; graph with three connected assets: &#039;topstory_ids&#039;, &#039;topstories&#039;, and &#039;most_frequent_words&#039;. Interface includes search and filter options, and an unexpanded &#039;my_asset&#039; node." />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d3eff921/66d1dc92294029c6835a86f3_66d1db5c88987b70d817f086_all_assets_job_02.png" alt="Dagster UI showing &#039;all_assets_job&#039; graph with three connected assets: &#039;topstory_ids&#039;, &#039;topstories&#039;, and &#039;most_frequent_words&#039;. Interface includes search and filter options, and an unexpanded &#039;my_asset&#039; node." />
 </figure>
 
 ### Why Prefect and Dagster Are the Dynamic Workflow Champions

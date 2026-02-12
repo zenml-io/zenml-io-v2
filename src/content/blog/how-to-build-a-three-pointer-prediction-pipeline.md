@@ -20,7 +20,7 @@ tags:
 date: "2022-02-02T00:00:00.000Z"
 readingTime: 10 Mins Read
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/ab6db543/652fdbb1b36e74e7cab4a037_hoop.jpg"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ab6db543/652fdbb1b36e74e7cab4a037_hoop.jpg"
 ---
 
 **Last updated:** November 14, 2022.
@@ -34,7 +34,7 @@ This challenge is what we call a ZenHack. A ZenHack is a small internal hackatho
 For this ZenHack specifically we had quite a few new features to showcase. We wanted to show off how to use [Evidently](https://evidentlyai.com/) for drift detection, [MLFlow](https://mlflow.org/) for tracking our runs and [Kubeflow Pipelines](https://www.kubeflow.org/) for the orchestration of scheduled repeating pipeline runs.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/3ce46098/652fdbf03ca8fee9721dc1db_evidently_mlflow_discord_kubeflow.png" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3ce46098/652fdbf03ca8fee9721dc1db_evidently_mlflow_discord_kubeflow.png" alt="" />
 </figure>
 
 As we have some hardcore NBA fans on the team, the idea of creating a prediction bot for NBA matches came up. This idea caught on quickly and our minds started to put together the story that we wanted to explore.
@@ -60,13 +60,13 @@ Regarding our question about Curry’s impact, there are only a few steps needed
 <ol><li>We need to import the data from the nba -&gt; Importer Step</li><li>We need to split our data around our chosen delineation date <strong>2016-02-27</strong> -&gt; Splitter Step</li><li>We need to let Evidently do what it does best: analyze data -&gt; Drift Detector Step</li></ol>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/b8b8cc84/652fdbf0837ddd529e08b2e6_DriftDetectionPipeline.png" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b8b8cc84/652fdbf0837ddd529e08b2e6_DriftDetectionPipeline.png" alt="" />
 </figure>
 
 With these steps implemented and easily connected within a ZenML pipeline, all that is left to do is to run the pipeline and look at the beautiful visualization that Evidently offers:
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/efc7b72e/652fdbf136749b40cb86553a_currys_drift.png" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/efc7b72e/652fdbf136749b40cb86553a_currys_drift.png" alt="" />
 </figure>
 
 As you can see here, we were quickly able to go from data and initial question to a full-blown pipeline and an answer to our question. It appears that the data has drifted ever since 2016-02-27. This might not be undeniable proof for the claim made about Stephen Curry’s impact on the game. But it is a compelling correlation.
@@ -76,7 +76,7 @@ As you can see here, we were quickly able to go from data and initial question t
 With the data exploration behind us, let’s advance onto the continuous pipelines. Within our brainstorming session we came up with a diagram very similar to the one below, albeit a bit less organized.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/517a949a/652fdbef49bdf56ce764a879_Training_and_Inference_Pipeline.png" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/517a949a/652fdbef49bdf56ce764a879_Training_and_Inference_Pipeline.png" alt="" />
 </figure>
 
 Let us unpack this diagram together. The objective of this ZenHack was for us to periodically receive predictions for upcoming NBA matches in our discord channel. So what do we need to get there? Well, on the highest level of abstraction we need two separate entities. One **continuous training pipeline** and a **prediction pipeline**.
@@ -84,7 +84,7 @@ Let us unpack this diagram together. The objective of this ZenHack was for us to
 ### Training pipeline
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e2252ea0/652fdbf0a7529511effd8be4_Training_pipeline.png" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e2252ea0/652fdbf0a7529511effd8be4_Training_pipeline.png" alt="" />
 </figure>
 
 The training pipeline needs to take in historical data for a given timeframe and spit out a trained model at the other end. Here is a short description for all the steps we deemed necessary to get from input to output.
@@ -98,7 +98,7 @@ On the other branch:
 ### Prediction Pipeline
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/a0060b9a/652fdbf1e2007bafb9a18ddc_Prediction_pipeline.png" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a0060b9a/652fdbf1e2007bafb9a18ddc_Prediction_pipeline.png" alt="" />
 </figure>
 
 The prediction pipeline on the other hand needs a schedule for upcoming matches as the input and should post our prediction to our Discord chat. To achieve this we have also split the problem into a few distinct steps.
@@ -149,7 +149,7 @@ Check out our [docs](https://docs.zenml.io/stacks-and-components/component-guide
 Within our ZenHack we used Kubeflow as the orchestration backend for our scheduled training. After some configuration steps (see screenshot below) Kubeflow Pipelines runs locally.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/dfd71f77/652fdbef8a2ad302388f4571_kubeflowstack.png" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/dfd71f77/652fdbef8a2ad302388f4571_kubeflowstack.png" alt="" />
 </figure>
 
 The Python script that is called in the last line of the screenshot instantiates the pipeline and starts a scheduled run. For demonstration purposes we have chosen to repeat every 10 minutes here.
@@ -175,7 +175,7 @@ This is why we implemented a small Discord-posting step that takes our ZenHack a
 Here is the very first prediction posted at 10:39 CET on 30.01.2022:
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/1cccf1d5/652fdbeecb0e3c4284d55a40_Prediction.png" alt="&quot;Prediction posted to discord&quot;" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1cccf1d5/652fdbeecb0e3c4284d55a40_Prediction.png" alt="&quot;Prediction posted to discord&quot;" />
 </figure>
 
 And somehow our very first prediction came true. Approximately four and a half hours later Orlando Magic concluded their [match](https://statsdmz.nba.com/pdfs/20220130/20220130_DALORL_book.pdf) against the Dallas Mavericks with 11 three-pointers.

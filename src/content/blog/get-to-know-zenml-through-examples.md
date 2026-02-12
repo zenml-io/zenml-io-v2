@@ -20,7 +20,7 @@ tags:
 date: "2022-01-06T00:00:00.000Z"
 readingTime: 2 Mins Read
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/72bbcb28/652fdaa72b544c2d44bc7263_cli.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/72bbcb28/652fdaa72b544c2d44bc7263_cli.png"
 ---
 
 **Last updated:** November 8, 2022.

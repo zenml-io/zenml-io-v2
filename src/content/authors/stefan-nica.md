@@ -2,7 +2,7 @@
 name: "Stefan Nica"
 slug: "stefan-nica"
 avatar:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/3026199b/66e3ff4ef3b91117507b234a_652f904e44d8c087c2c22338_stefan_z-p-800.jpeg"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3026199b/66e3ff4ef3b91117507b234a_652f904e44d8c087c2c22338_stefan_z-p-800.jpeg"
 webflow:
   siteId: "64a817a2e7e2208272d1ce30"
   itemId: "652f800de94088a7717d7f1e"

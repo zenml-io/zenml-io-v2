@@ -12,7 +12,7 @@ hub:
 hero:
   deck: Automatic logging and versioning for truly reproducible ML workflows
   image:
-    url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/44e59760/6526ade3b9c339d75d1cce2c_08_Dashboard.webp"
+    url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/44e59760/6526ade3b9c339d75d1cce2c_08_Dashboard.webp"
     alt: ZenML dashboard displaying machine learning pipeline runs and experiment tracking with statuses and components.
   primaryCta:
     label: Book a demo
@@ -31,7 +31,7 @@ blocks:
       - Maintain consistent visibility across development and production environments.
       - Streamline debugging and auditing with granular execution insights.
     image:
-      url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/73b10dd3/66c750e1f6c733ca2c758e30_autotrack-min.png"
+      url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/73b10dd3/66c750e1f6c733ca2c758e30_autotrack-min.png"
       alt: Dashboard mockup
     imageSide: right
   - kind: value
@@ -42,7 +42,7 @@ blocks:
       - Automatic linking of model artifacts to specific code commits.
       - Effortless recreation of experiments and model versions.
     image:
-      url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/18d9d346/6526aff76cfa5c0e5d1d9b10_16_Reproducibility_Showcase.webp"
+      url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/18d9d346/6526aff76cfa5c0e5d1d9b10_16_Reproducibility_Showcase.webp"
       alt: Dashboard mockup
     imageSide: left
   - kind: value
@@ -53,7 +53,7 @@ blocks:
       - "Eliminate \"works on my machine\" issues across your team."
       - Enable anyone to run fully reproducible code without DevOps expertise.
     image:
-      url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/8c0fce5c/6526ad04f45d52aff741b914_13_Productionalization_Showcase.webp"
+      url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8c0fce5c/6526ad04f45d52aff741b914_13_Productionalization_Showcase.webp"
       alt: Dashboard mockup
     imageSide: right
 
@@ -62,10 +62,10 @@ testimonial:
   name: Liza Bykhanova
   title: Data Scientist at Competera
   avatar:
-    url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/86fc4bde/66c753b0c5cf7be07c7663c6_liza-comp.webp"
+    url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/86fc4bde/66c753b0c5cf7be07c7663c6_liza-comp.webp"
     alt: Liza Bykhanova
   companyLogo:
-    url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/5002cd28/652e3a21beacacf6c2497054_competera.webp"
+    url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5002cd28/652e3a21beacacf6c2497054_competera.webp"
     alt: Testimonial logo
 
 seo:
@@ -73,7 +73,7 @@ seo:
   description: Automatic logging of code, data, and LLM prompts. Version control for ML and GenAI workflows. Focus on innovation, not bookkeeping.
   ogTitle: ZenML Features - Auto-track everything
   ogDescription: Automatic logging of code, data, and LLM prompts. Version control for ML and GenAI workflows. Focus on innovation, not bookkeeping.
-  ogImage: https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/9ded18ac/66ab53c575931f9f5b61bbf5_features-observability.png
+  ogImage: https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9ded18ac/66ab53c575931f9f5b61bbf5_features-observability.png
 
 webflow:
   siteId: 64a817a2e7e2208272d1ce30

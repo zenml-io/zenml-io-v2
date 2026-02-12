@@ -19,12 +19,12 @@ tags:
 date: "2024-06-21T00:00:00.000Z"
 readingTime: 1 min
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/d806f8e9/66759c0d006ae90eeb3286df_CleanShot_2024-06-21_at_17.27.44.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d806f8e9/66759c0d006ae90eeb3286df_CleanShot_2024-06-21_at_17.27.44.png"
 seo:
   title: "How to use ZenML and DBT together - ZenML Blog"
   description: "How to use ZenML and dbt together, all powered by ZenML's built-in success hooks that run whenever your pipeline successfully completes."
   canonical: "https://www.zenml.io/blog/how-to-use-zenml-and-dbt-together"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/007aead9/66759c0d006ae90eeb3286df_CleanShot_2024-06-21_at_17.27.44.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/007aead9/66759c0d006ae90eeb3286df_CleanShot_2024-06-21_at_17.27.44.png"
   ogTitle: "How to use ZenML and DBT together - ZenML Blog"
   ogDescription: "How to use ZenML and dbt together, all powered by ZenML's built-in success hooks that run whenever your pipeline successfully completes."
 ---

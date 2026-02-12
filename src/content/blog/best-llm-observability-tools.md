@@ -21,12 +21,12 @@ tags:
 date: "2025-09-11T00:00:00.000Z"
 readingTime: 15 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/095cf242/6981d352ce4b26d085d70411_6981d2b4097bef43faa44900_best-llm-observability-tools.avif"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/095cf242/6981d352ce4b26d085d70411_6981d2b4097bef43faa44900_best-llm-observability-tools.avif"
 seo:
   title: "What are the 9 Best LLM Observability Tools Currently on the Market? - ZenML Blog"
   description: "Discover the best LLM observability tools currently on the market to build agentic AI workflows."
   canonical: "https://www.zenml.io/blog/best-llm-observability-tools"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/095cf242/6981d352ce4b26d085d70411_6981d2b4097bef43faa44900_best-llm-observability-tools.avif"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/095cf242/6981d352ce4b26d085d70411_6981d2b4097bef43faa44900_best-llm-observability-tools.avif"
   ogTitle: "What are the 9 Best LLM Observability Tools Currently on the Market? - ZenML Blog"
   ogDescription: "Discover the best LLM observability tools currently on the market to build agentic AI workflows."
 ---
@@ -46,7 +46,7 @@ The best LLM observability tools currently on the market are:
 ## What to Look for In an LLM Observability Tool?
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/a56387ce/68c2ab341b9a40fb23c2d83f_eval-criteria-for-best-llm-observability-tools.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a56387ce/68c2ab341b9a40fb23c2d83f_eval-criteria-for-best-llm-observability-tools.webp" alt="__wf_reserved_inherit" />
   <figcaption>Eval criteria for best LLM observability tools</figcaption>
 </figure>
 
@@ -81,7 +81,7 @@ In this section, we go all-in with our detailed breakdown of the best LLM observ
 ## 1. ZenML
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/41120ffa/68c2ab63c46b03210427f502_zenml-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/41120ffa/68c2ab63c46b03210427f502_zenml-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [ZenML](https://www.zenml.io/) is a pipeline-centric MLOps/LLMOps framework that brings built-in observability to every run, step, and artifact in your AI workflows. It’s listed first in the attached roundup for unifying orchestration and observability.
@@ -97,7 +97,7 @@ Its dashboard gives you an interactive DAG, run history, artifact lineage, step 
 We are upgrading our platform to bring every ML and LLM workflow into one place for you to run, track, and improve. Think of processes like data preparation, training, RAG indexing, agent orchestration, and more, all in one place.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/bfb5e7e7/689ac1161e098c7fa15feea2_zenml-pricing-plans.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/bfb5e7e7/689ac1161e098c7fa15feea2_zenml-pricing-plans.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -109,7 +109,7 @@ But remember, ZenML is not a specialized LLM observability or a one-click QA sol
 ## 2. LangSmith
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/a330da18/68c2ab99fd1e9a7396d827ea_langsmith-logo.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a330da18/68c2ab99fd1e9a7396d827ea_langsmith-logo.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [LangSmith](https://www.langchain.com/langsmith) helps teams debug, test, and monitor LLM applications built with the [LangChain framework](https://www.zenml.io/blog/llamaindex-vs-langchain). Although core to LangChain, LangSmith is not limited to LangChain projects and can trace any LLM application.
@@ -125,7 +125,7 @@ You can use LangSmith by signing up for LangChain. It offers a generous free pla
 <ul><li><strong>Plus:</strong> $39 per month</li><li><strong>Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/d9c2e1bf/68c2abb128642f6e2a6d8f4a_langfuse-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d9c2e1bf/68c2abb128642f6e2a6d8f4a_langfuse-pricing.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -137,7 +137,7 @@ However, since LangSmith’s focus is on the application layer, it doesn’t mon
 ## 3. LangFuse
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/0774a960/68c2ac05b142c4c56791e63b_langfuse-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/0774a960/68c2ac05b142c4c56791e63b_langfuse-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [Langfuse](https://langfuse.com/) is an open-source LLM observability platform designed with collaborative debugging and cost tracking in mind. It provides detailed tracing, prompt management, and evaluation capabilities while remaining framework-agnostic.
@@ -153,7 +153,7 @@ Langfuse offers a generous free ‘**Hobby**’ plan on its cloud platform and h
 <ul><li><strong>Core:</strong> $59 per month</li><li><strong>Pro:</strong> $199 per month</li><li><strong>Enterprise:</strong> Custom</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/d9c2e1bf/68c2abb128642f6e2a6d8f4a_langfuse-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d9c2e1bf/68c2abb128642f6e2a6d8f4a_langfuse-pricing.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -165,7 +165,7 @@ While Langfuse’s UI is solid, it’s not as tightly integrated into developmen
 ## 4. Arize Phoenix
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/22cf55ef/68c2ac24f7c7fe2753756e7e_azire-phoenix-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/22cf55ef/68c2ac24f7c7fe2753756e7e_azire-phoenix-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [Arize Phoenix](https://phoenix.arize.com/) is an open-source LLM observability tool built by Arize AI, known for its ML model monitoring platform. It is built entirely on OpenTelemetry standards and is designed to run in your local environment, such as a Jupyter notebook or a container.
@@ -181,7 +181,7 @@ Phoenix is open source and free to self-host. Arize also offers hosted options f
 <ul><li><strong>AX Pro:</strong> $50 per month</li><li><strong>AX Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/74e88356/68c2ac35c44761feefdaa714_azire-phoenix-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/74e88356/68c2ac35c44761feefdaa714_azire-phoenix-pricing.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -193,7 +193,7 @@ On the con side, Phoenix can be a bit heavyweight: it’s essentially a full app
 ## 5. Datadog LLM Observability
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/46b89030/68c2ac4abd7369ea6369df72_datadog-llm-observability-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/46b89030/68c2ac4abd7369ea6369df72_datadog-llm-observability-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [Datadog](https://www.datadoghq.com/) extends its enterprise APM platform with dedicated LLM observability features. If your organization already uses Datadog for infrastructure or microservice monitoring, this is a natural way to bring LLM events into that fold.
@@ -215,7 +215,7 @@ Datadog’s LLM Observability is not a separate product, but rather an add-on ca
 ## 6. Helicone
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/8c01a83a/68c2ac620c3ffd10bc0c0082_helicone-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8c01a83a/68c2ac620c3ffd10bc0c0082_helicone-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [Helicone](https://www.helicone.ai/) is a lightweight proxy-based LLM observability tool. Instead of calling the LLM API directly, you can route requests through Helicone’s proxy endpoint, and it will log all requests and responses along with response time, analytics, and metadata, without requiring an SDK or code modification.
@@ -231,7 +231,7 @@ Helicone has a free plan for hobbyists and three premium plans:
 <ul><li><strong>Pro:</strong> $20 per seat per month</li><li><strong>Team:</strong> $200 per month</li><li><strong>Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/4905ae9d/68c2ac73ae1a185fe84bdfc2_helicone-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/4905ae9d/68c2ac73ae1a185fe84bdfc2_helicone-pricing.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -243,7 +243,7 @@ However, the proxy-first approach adds a potential point of failure and latency 
 ## 7. Traceloop OpenLLMetry
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/63785ced/68c2ac8733dec6880e9c7d48_traceloop-openllmetry-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/63785ced/68c2ac8733dec6880e9c7d48_traceloop-openllmetry-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [OpenLLMetry](https://www.traceloop.com/openllmetry) by Traceloop is an open-source SDK and standard for sourcing LLM observability data via OpenTelemetry. It allows developers to configure their code using a standard OTPL protocol and send traces to the Traceloop platform or any other OpenTelemetry-compatible backend.
@@ -257,7 +257,7 @@ However, the proxy-first approach adds a potential point of failure and latency 
 OpenLLMetry is completely free. The only costs would be for whatever backend you choose. Traceloop’s own cloud has a free forever plan for up to 50,000 spans per month and a custom enterprise plan.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/d44dd383/68c2ac9de7823e92d904d349_traceloop-openllmetry-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d44dd383/68c2ac9de7823e92d904d349_traceloop-openllmetry-pricing.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -269,7 +269,7 @@ The main drawback is that it is an SDK-based solution, requiring more code-level
 ## 8. Vellum AI
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/7d8a220a/68c2acb238b810e20afc3454_vellum-ai-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7d8a220a/68c2acb238b810e20afc3454_vellum-ai-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [Vellum.ai](https://www.vellum.ai/?utm_source=direct&utm_medium=none) is a full-stack LLM app-building platform. Core to its stack are observability and monitoring features designed to track the performance of the LLM app built and deployed on the Vellum platform.
@@ -283,7 +283,7 @@ The main drawback is that it is an SDK-based solution, requiring more code-level
 Vellum offers a free plan with 50 prompt executions per day and lets you collaborate (max 5 users), but if you want premium features and increased limits, it has the Pro plan at $500 per month and the Enterprise plan (custom pricing).
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/f770687d/68c2acc5f2106cc61082eb25_vellum-ai-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f770687d/68c2acc5f2106cc61082eb25_vellum-ai-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -295,7 +295,7 @@ The main con is a higher degree of vendor lock-in. You don’t have the flexibil
 ## 9. Portkey
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/ffe6292e/68c2acdaeb07c580ea1c3735_portkey-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ffe6292e/68c2acdaeb07c580ea1c3735_portkey-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [Portkey](https://portkey.ai/features/observability) is an AI gateway and control panel that provides production infrastructure for LLM applications. Think of Portkey as a combination of an LLM API gateway and an observability suite, alongside other enterprise features.
@@ -311,7 +311,7 @@ Portkey has a free forever plan for developers and two paid plans:
 <ul><li><strong>Production:</strong> $49 per month</li><li><strong>Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/a49c959a/68c2acedde099cf65981842e_portkey-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a49c959a/68c2acedde099cf65981842e_portkey-pricing.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -323,7 +323,7 @@ The flip side is complexity and commitment. Adopting Portkey means routing throu
 ## How ZenML Helps You in Your Agentic AI Journey Apart from LLM Observability
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/8c1eda41/68ba64d552371735c4daebc4_zenml-unified-mlops-and-llmops-platform.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8c1eda41/68ba64d552371735c4daebc4_zenml-unified-mlops-and-llmops-platform.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ZenML is the most complete, pipeline-centric choice for teams that want unified MLOps + [LLMOps with observability](https://docs.zenml.io/user-guides/llmops-guide). This section shows how ZenML closes the agentic-AI ‘outer loop’ around whatever framework you use.
@@ -335,7 +335,7 @@ Define your end-to-end agentic system as a pipeline of steps (a DAG). Move from 
 ZenML supports Airflow, Kubeflow, Kubernetes, and even GitHub Actions, so you can run and **schedule** pipelines in the platforms you already use or trigger them from CI/CD. Parameterized configs let you A/B models, tools, or prompts without touching core logic.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/58f85480/68ad35ed6234a852865d267c_zenml-agentic-flow.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/58f85480/68ad35ed6234a852865d267c_zenml-agentic-flow.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML agentic flow</figcaption>
 </figure>
 
@@ -344,7 +344,7 @@ ZenML supports Airflow, Kubeflow, Kubernetes, and even GitHub Actions, so you ca
 Every step yields versioned artifacts with tracked inputs and outputs. You can trace any agent decision back to the data, parameters, and code that produced it. The dashboard shows runs, DAGs, artifacts, and metadata so you can compare behavior across revisions. When connected to your repo, ZenML also records the git commit used for a run.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/83aa06c4/68ba650b4c60518ca7fe3027_zenml-pipeline-dag-visualization.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/83aa06c4/68ba650b4c60518ca7fe3027_zenml-pipeline-dag-visualization.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML pipeline DAG visualization</figcaption>
 </figure>
 
@@ -353,14 +353,14 @@ Every step yields versioned artifacts with tracked inputs and outputs. You can t
 Ship an evaluation loop alongside your agent. ZenML provides practical patterns for LLM-as-judge and human-in-the-loop reviews, so you can score outputs automatically and escalate edge cases to people. You can also wire alerts into Slack or Discord to notify the team of failures or review requests.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/bfea7a61/68ad362d9d17ed197069fd89_zenml-evaluation.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/bfea7a61/68ad362d9d17ed197069fd89_zenml-evaluation.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML evaluation</figcaption>
 </figure>
 
 **👀 Note:** At ZenML, we have built several agent workflow integrations with tools like [Semantic Kernel](https://www.zenml.io/blog/semantic-kernel-alternatives), [LangGraph](https://www.zenml.io/blog/langgraph-vs-autogen), [LlamaIndex](https://www.zenml.io/blog/llamaindex-vs-crewai), and more. We are actively shipping new integrations that you can find on this GitHub page:[ ](https://www.google.com/url?q=https://github.com/zenml-io/zenml/tree/main/examples/agent_framework_integrations&sa=D&source=editors&ust=1757515698965889&usg=AOvVaw2Dqpg2oxL_Qv_ur-XuZtkX)[ZenML Agent Workflow Integrations](https://github.com/zenml-io/zenml/tree/main/examples/agent_framework_integrations).
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/c51a5e76/68b58a4795f60f9023d117eb_zenml-agent-workflow-integrations.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c51a5e76/68b58a4795f60f9023d117eb_zenml-agent-workflow-integrations.png" alt="__wf_reserved_inherit" />
 </figure>
 
 **📚 Other relevant articles to read:**

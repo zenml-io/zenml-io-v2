@@ -12,17 +12,17 @@ webflow:
   createdOn: "2023-10-12T09:13:15.552Z"
 integrationType: "modeling"
 logo:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/57ed57da/66d86825158860fcb2891449_neural-prophet.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/57ed57da/66d86825158860fcb2891449_neural-prophet.png"
 shortDescription: "Enhance Time Series Forecasting with NeuralProphet and ZenML"
 docsUrl: "https://github.com/zenml-io/zenml/tree/main/src/zenml/integrations/neural_prophet"
 githubUrl: "https://github.com/ourownstory/neural_prophet"
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/41904b7c/66e0299d19eef2b296480c6a_Screenshot_2024-09-04_at_10.33.51.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/41904b7c/66e0299d19eef2b296480c6a_Screenshot_2024-09-04_at_10.33.51.png"
 seo:
   title: "Integrate NeuralProphet with ZenML - Modeling Integrations"
   description: "Enhance Time Series Forecasting with NeuralProphet and ZenML"
   canonical: "https://www.zenml.io/integrations/neuralprophet"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/41904b7c/66e0299d19eef2b296480c6a_Screenshot_2024-09-04_at_10.33.51.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/41904b7c/66e0299d19eef2b296480c6a_Screenshot_2024-09-04_at_10.33.51.png"
   ogTitle: "Integrate NeuralProphet with ZenML - Modeling Integrations"
   ogDescription: "Enhance Time Series Forecasting with NeuralProphet and ZenML"
 ---

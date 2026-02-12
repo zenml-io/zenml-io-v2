@@ -21,12 +21,12 @@ tags:
 date: "2025-12-10T00:00:00.000Z"
 readingTime: 13 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/1b88c4de/6938f0a23e662c513aaf288d_neptune-ai-vs-mlflow.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1b88c4de/6938f0a23e662c513aaf288d_neptune-ai-vs-mlflow.png"
 seo:
   title: "Neptune AI vs MLflow vs ZenML: Which ML Experiment Tracking Stack Should You Use? - ZenML Blog"
   description: "In this Neptune AI vs MLflow vs ZenML article, we explain the difference between the three platforms by comparing their features, integrations, and pricing."
   canonical: "https://www.zenml.io/blog/neptune-ai-vs-mlflow"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/1b88c4de/6938f0a23e662c513aaf288d_neptune-ai-vs-mlflow.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1b88c4de/6938f0a23e662c513aaf288d_neptune-ai-vs-mlflow.png"
   ogTitle: "Neptune AI vs MLflow vs ZenML: Which ML Experiment Tracking Stack Should You Use? - ZenML Blog"
   ogDescription: "In this Neptune AI vs MLflow vs ZenML article, we explain the difference between the three platforms by comparing their features, integrations, and pricing."
 ---
@@ -110,7 +110,7 @@ Since the OpenAI acquisition and platform shutdown announcement, teams relying o
 ### MLflow
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/b596c985/6938ee4fe192ac2d8004586d_mlflow-experiment-tracking.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b596c985/6938ee4fe192ac2d8004586d_mlflow-experiment-tracking.webp" alt="__wf_reserved_inherit" />
   <figcaption>MLflow experiment tracking</figcaption>
 </figure>
 
@@ -125,7 +125,7 @@ MLflow Projects improves reproducibility through environment capture, but orches
 ### ZenML
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/4a4ed178/6938ee7483c9611ce77185c7_zenml-experiment-tracking.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/4a4ed178/6938ee7483c9611ce77185c7_zenml-experiment-tracking.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ZenML takes a pipeline-first approach to [experiment tracking](https://docs.zenml.io/stacks/stack-components/experiment-trackers). Instead of logging individual scripts, you define pipelines and steps, and ZenML automatically versions all inputs, outputs, and intermediate artifacts.
@@ -149,7 +149,7 @@ In production AI, the code is often the least important part of the reproducibil
 ### Neptune AI
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/df00a794/6938ee86eee81a1af8ff5738_netune-ai-artifact-tracking.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/df00a794/6938ee86eee81a1af8ff5738_netune-ai-artifact-tracking.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 Neptune AI uses a [metadata-only artifact tracking](https://docs-legacy.neptune.ai/logging/artifacts/) approach. When you call `run["artifacts/dataset"].upload("data/train.csv")`, Neptune computes a hash, stores metadata, and only uploads the file if small or explicitly requested.
@@ -163,7 +163,7 @@ Neptune’s structure makes it easy to track models, datasets, and checkpoints a
 ### MLflow
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e478ba2d/6938ee9a9b6ff80f739c64c3_mlflow-models.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e478ba2d/6938ee9a9b6ff80f739c64c3_mlflow-models.webp" alt="__wf_reserved_inherit" />
   <figcaption>Source</figcaption>
 </figure>
 
@@ -274,7 +274,7 @@ Databricks users get seamless MLflow integration because jobs and notebooks auto
 ### ZenML
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/1484fec4/6938eeb9c18ebb3d407a4f81_zenml-orchestration.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1484fec4/6938eeb9c18ebb3d407a4f81_zenml-orchestration.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ZenML is built for orchestration. You define steps using `@step` and connect them inside a `@pipeline`, and ZenML handles execution order, caching, artifact passing, and metadata tracking automatically.
@@ -300,7 +300,7 @@ Neptune AI focuses on framework-level and experiment-level integrations. You cou
 <ul><li>PyTorch Lightning, TensorFlow/Keras, scikit-learn, XGBoost, LightGBM</li><li>Optuna, Ray Tune, Hyperopt for HPO</li><li>Airflow, Kubeflow Pipelines, Prefect for orchestration</li><li>Jupyter notebook extension</li><li>REST API for custom tooling</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/06202fc9/6938ef2984bacfdcf73c6503_neptune-ai-integration.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/06202fc9/6938ef2984bacfdcf73c6503_neptune-ai-integration.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### MLflow
@@ -312,7 +312,7 @@ MLflow integrates broadly because it is open-source and ecosystem-native. Autolo
 MLflow fits cleanly into almost any existing ML workflow due to its API+plugin architecture.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/1f2f731d/6938ef359391e3faac554381_mlflow-integration.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1f2f731d/6938ef359391e3faac554381_mlflow-integration.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### ZenML
@@ -322,7 +322,7 @@ MLflow fits cleanly into almost any existing ML workflow due to its API+plugin a
 <ul><li><strong>Orchestrators:</strong> Airflow, Kubeflow, Argo, Ray, local</li><li><strong>Experiment trackers:</strong> MLflow, W&amp;B, ClearML, Comet</li><li><strong>Artifact stores:</strong> S3, GCS, Azure Blob, local FS</li><li><strong>Model deployers:</strong> Seldon, BentoML, SageMaker, Ray Serve</li><li><strong>Data validation:</strong> Great Expectations, whylogs, Evidently</li><li><strong>Feature store:</strong> Feast</li><li><strong>Container registries:</strong> Docker Hub, ECR, GCR</li><li><strong>Alerters:</strong> Slack, email</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/b4e7fa76/6938ef41fd2324f2eb80bf68_zenml-integration.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b4e7fa76/6938ef41fd2324f2eb80bf68_zenml-integration.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ZenML is the most flexible of the three. It acts as the central hub that binds all MLOps tools into one pipeline workflow, without forcing a specific cloud or framework.
@@ -350,7 +350,7 @@ ZenML is free and open-source (Apache 2.0 License). The core framework, includin
 These paid plans include features like SSO, role-based access control, premium support, and hosting, but **all the core functionality remains free** in the open-source version. Essentially, you can start with ZenML’s free tier and only consider paid options if you need advanced collaboration or want ZenML to manage the infrastructure for you.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/6c572d03/6938ef54014d659b02d9340a_zenml-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6c572d03/6938ef54014d659b02d9340a_zenml-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ## Which MLOps Platform Is Best For You?

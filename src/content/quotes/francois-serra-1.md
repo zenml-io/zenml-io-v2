@@ -5,9 +5,9 @@ text: "ZenML allowed us a fast transition between dev to prod. It’s no longer 
 author: "François Serra"
 position: "ML Engineer / ML Ops / ML Solution architect at ADEO Services"
 avatar:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/56aef1bf/667bd578695e19dfb6293814_francois.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/56aef1bf/667bd578695e19dfb6293814_francois.png"
 companyLogo:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/b8ed755a/667bd618ee6049af44ceb6e8_adeo_logo_white.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b8ed755a/667bd618ee6049af44ceb6e8_adeo_logo_white.png"
 webflow:
   siteId: "64a817a2e7e2208272d1ce30"
   itemId: "667bd5a0e71af9888da27472"

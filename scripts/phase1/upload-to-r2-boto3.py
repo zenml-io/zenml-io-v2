@@ -334,7 +334,7 @@ def main():
     parser.add_argument("--bucket", default="zenml-assets", help="R2 bucket name")
     parser.add_argument(
         "--r2-domain",
-        default="pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev",
+        default="pub-41d587b95acb4b579d9280542922084b.r2.dev",
         help="R2 public domain",
     )
     parser.add_argument("--concurrency", type=int, default=10, help="Parallel upload workers")

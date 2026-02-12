@@ -16,7 +16,7 @@ tags:
   - "discord"
   - "gcp"
 image:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/4b18b0d3/6528090ff92d76d934a67376_news.jpg"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/4b18b0d3/6528090ff92d76d934a67376_news.jpg"
 description: "A tool powered by ZenML that can automate the summarization of news sources."
 seoTitle: "Summarize Articles with ZenNews"
 seoDescription: "A tool powered by ZenML that can automate the summarization of news sources."
@@ -25,7 +25,7 @@ seo:
   title: "ZenML - One AI Platform - From Pipelines to Agents"
   description: "An open-source foundation to ship reliable AI products at scale - on any cloud, anywhere."
   canonical: "https://www.zenml.io"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/cb031609/695e2c1368a3480fb0daafc4_zenml-open-graph.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/cb031609/695e2c1368a3480fb0daafc4_zenml-open-graph.png"
   ogTitle: "ZenML - One AI Platform - From Pipelines to Agents"
   ogDescription: "An open-source foundation to ship reliable AI products at scale - on any cloud, anywhere."
 ---

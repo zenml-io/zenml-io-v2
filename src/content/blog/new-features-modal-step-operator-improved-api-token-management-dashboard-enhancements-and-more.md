@@ -21,12 +21,12 @@ tags:
 date: "2024-12-06T00:00:00.000Z"
 readingTime: 3 min
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/b86b37d4/67531e1327b52ec6fc5fa5a7_ZenML_Release_5__1_.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b86b37d4/67531e1327b52ec6fc5fa5a7_ZenML_Release_5__1_.png"
 seo:
   title: "New Features: Modal Step Operator, Improved API Token Management, Dashboard Enhancements and More! - ZenML Blog"
   description: "ZenML 0.71.0 features the Modal Step Operator for fast, configurable cloud execution, dynamic artifact naming, and enhanced visualizations. It improves API token management, dashboard usability, and infrastructure stability while fixing key bugs. Expanded documentation supports advanced workflows and big data management."
   canonical: "https://www.zenml.io/blog/new-features-modal-step-operator-improved-api-token-management-dashboard-enhancements-and-more"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/b86b37d4/67531e1327b52ec6fc5fa5a7_ZenML_Release_5__1_.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b86b37d4/67531e1327b52ec6fc5fa5a7_ZenML_Release_5__1_.png"
   ogTitle: "New Features: Modal Step Operator, Improved API Token Management, Dashboard Enhancements and More! - ZenML Blog"
   ogDescription: "ZenML 0.71.0 features the Modal Step Operator for fast, configurable cloud execution, dynamic artifact naming, and enhanced visualizations. It improves API token management, dashboard usability, and infrastructure stability while fixing key bugs. Expanded documentation supports advanced workflows and big data management."
 ---

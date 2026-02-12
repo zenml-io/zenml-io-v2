@@ -21,12 +21,12 @@ tags:
 date: "2026-02-09T00:00:00.000Z"
 readingTime: 15 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/d701752d/69896007a26bddc867039dd4_mlflow-vs-airflow.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d701752d/69896007a26bddc867039dd4_mlflow-vs-airflow.png"
 seo:
   title: "MLflow vs Airflow vs ZenML: Choosing the Right Tool for Modern ML Pipelines - ZenML Blog"
   description: "In this MLflow vs Airflow vs ZenML article, we determine which is the right tool for modern ML pipelines."
   canonical: "https://www.zenml.io/blog/mlflow-vs-airflow"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/d701752d/69896007a26bddc867039dd4_mlflow-vs-airflow.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d701752d/69896007a26bddc867039dd4_mlflow-vs-airflow.png"
   ogTitle: "MLflow vs Airflow vs ZenML: Choosing the Right Tool for Modern ML Pipelines - ZenML Blog"
   ogDescription: "In this MLflow vs Airflow vs ZenML article, we determine which is the right tool for modern ML pipelines."
 ---
@@ -58,7 +58,7 @@ How you define your pipelines affects how easily you can reuse components, manag
 ### MLflow
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/73c2dbf4/69895e1d7be331183afe0de7_mlflow-architecture.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/73c2dbf4/69895e1d7be331183afe0de7_mlflow-architecture.webp" alt="__wf_reserved_inherit" />
   <figcaption>MLflow architecture</figcaption>
 </figure>
 
@@ -98,7 +98,7 @@ if __name__ == "__main__":
 ### Airflow
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/3baa06cc/69895e3758b69753b1d1a90b_airflow-dag.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3baa06cc/69895e3758b69753b1d1a90b_airflow-dag.webp" alt="__wf_reserved_inherit" />
   <figcaption>Airflow DAG</figcaption>
 </figure>
 
@@ -157,7 +157,7 @@ In machine learning, the code is only one part of the equation; ML engineers mus
 ### MLflow
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/a1d27ba5/696db0623b6f59c51eaf944d_mlflow-experiment-tracking-and-run-metadata.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a1d27ba5/696db0623b6f59c51eaf944d_mlflow-experiment-tracking-and-run-metadata.webp" alt="__wf_reserved_inherit" />
   <figcaption>MLflow experiment tracking</figcaption>
 </figure>
 
@@ -174,7 +174,7 @@ MLflow makes tracking easy, but it doesn’t guarantee end-to-end reproducibilit
 ### Airflow
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/4fb1e345/694627100861c14fef14ef61_airflow-experiment-tracking-and-metadata.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/4fb1e345/694627100861c14fef14ef61_airflow-experiment-tracking-and-metadata.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 Airflow itself has no built-in experiment tracking or ML metadata management. While it does store the state of tasks and their start/end times, it doesn’t log model metrics, loss, or hyperparameters. You can build these into your DAGs manually, but Airflow won’t surface them in any meaningful way.
@@ -194,7 +194,7 @@ Thus, Airflow needs to be paired with a proper experiment tracker. That’s why 
 ### ZenML
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/4a4ed178/6938ee7483c9611ce77185c7_zenml-experiment-tracking.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/4a4ed178/6938ee7483c9611ce77185c7_zenml-experiment-tracking.webp" alt="__wf_reserved_inherit" />
   <figcaption>ZenML experiment tracking</figcaption>
 </figure>
 
@@ -229,7 +229,7 @@ So, in terms of execution and scheduling, MLflow is **minimalistic**. It is ligh
 ### Airflow
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/06cc2db5/69895e8534556ce4ea9d6b1f_airflow-scheduling.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/06cc2db5/69895e8534556ce4ea9d6b1f_airflow-scheduling.webp" alt="__wf_reserved_inherit" />
   <figcaption>Airflow scheduling</figcaption>
 </figure>
 
@@ -262,7 +262,7 @@ Airflow does not model GPUs at the ML abstraction level, but can request GPU res
 ### ZenML
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/7916e6ed/69895e9b1d4f09cdf55edef4_zenml-scheduling.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7916e6ed/69895e9b1d4f09cdf55edef4_zenml-scheduling.webp" alt="__wf_reserved_inherit" />
   <figcaption>ZenML scheduling</figcaption>
 </figure>
 
@@ -291,7 +291,7 @@ Infrastructure is flexible too:
 MLflow’s open-source model format (`MLmodel`) is widely supported, making it easy to plug into other tools. It’s not meant to handle data ingestion or orchestration, but it logs from almost anywhere with minimal friction.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/d1ae5453/696db139dfcb368d2fca0897_mlflow-integrations.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d1ae5453/696db139dfcb368d2fca0897_mlflow-integrations.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Airflow
@@ -299,7 +299,7 @@ MLflow’s open-source model format (`MLmodel`) is widely supported, making it e
 Airflow has a massive library of Providers. Whether you need to connect to Snowflake, Salesforce, AWS Redshift, or Slack, there is likely an Airflow Operator for it. This makes it one of the strongest general-purpose tools for orchestrating data movement.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e82aeb52/69462750b1a115d6cded0558_airflow-integrations.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e82aeb52/69462750b1a115d6cded0558_airflow-integrations.webp" alt="__wf_reserved_inherit" />
   <figcaption>Apache Airflow integration</figcaption>
 </figure>
 
@@ -312,7 +312,7 @@ Key [ZenML integrations](https://www.zenml.io/integrations):
 <ul><li><strong>Orchestrators:</strong> Airflow, Kubeflow, Kubernetes, Tekton, SageMaker Pipelines, Vertex AI Pipelines, AzureML Pipelines</li><li><strong>Experiment tracking:</strong> MLflow, Weights &amp; Biases, Comet</li><li><strong>Model deployment:</strong> KServe, Seldon, MLflow serving, SageMaker endpoints</li><li><strong>Cloud training/compute:</strong> SageMaker step operator, Vertex AI step operator, Azure ML support</li><li><strong>Validation + quality:</strong> Great Expectations (data checks)</li><li><strong>Automation/ops:</strong> alerts and pipeline hooks (for example, Slack notifications)</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/1d82b748/6946273b56bd53317bb529f0_zenml-integration-capabilities.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1d82b748/6946273b56bd53317bb529f0_zenml-integration-capabilities.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ## MLflow vs Airflow vs ZenML: Pricing
@@ -322,7 +322,7 @@ Key [ZenML integrations](https://www.zenml.io/integrations):
 MLflow is open-source and free to use. You can self-host it, which incurs infrastructure and maintenance costs. Managed MLflow services, like those on Databricks or AWS, charge based on the compute and storage resources you consume.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/3aa0605a/696db14eed59466d7814453d_mlflow-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3aa0605a/696db14eed59466d7814453d_mlflow-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Airflow
@@ -338,7 +338,7 @@ Providers like Amazon MWAA (Managed Workflows for Apache Airflow) or Astronomer 
 <ul><li><strong>Community (Free):</strong> Full open-source framework. You can run it on your own infrastructure for free.</li><li><strong>ZenML Pro (Custom pricing):</strong> A managed control plane that handles the dashboard, user management, and stack configurations. This removes the burden of hosting the ZenML server yourself.</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/c508fdf9/69686958bdf1b77d334d2876_zenml-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c508fdf9/69686958bdf1b77d334d2876_zenml-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 **📚 Relevant articles to read:**

@@ -21,12 +21,12 @@ tags:
 date: "2025-05-24T00:00:00.000Z"
 readingTime: 10 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/3d85664b/6981d362e92aa039b696ad03_6981d2b2ae2379d4be06fd83_prefect-pricing.avif"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3d85664b/6981d362e92aa039b696ad03_6981d2b2ae2379d4be06fd83_prefect-pricing.avif"
 seo:
   title: "Prefect Pricing Guide: Is the Platform Worth the Investment? - ZenML Blog"
   description: "In this Prefect pricing guide, we break down the costs, features, and value to help you decide if it’s the right investment for your business."
   canonical: "https://www.zenml.io/blog/prefect-pricing"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/3d85664b/6981d362e92aa039b696ad03_6981d2b2ae2379d4be06fd83_prefect-pricing.avif"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3d85664b/6981d362e92aa039b696ad03_6981d2b2ae2379d4be06fd83_prefect-pricing.avif"
   ogTitle: "Prefect Pricing Guide: Is the Platform Worth the Investment? - ZenML Blog"
   ogDescription: "In this Prefect pricing guide, we break down the costs, features, and value to help you decide if it’s the right investment for your business."
 ---
@@ -75,7 +75,7 @@ What’s more, Prefect doesn’t charge per task or execution – you get predic
 Here’s a quick breakdown of Prefect’s current plans:
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/705e23bc/683154d16afa9871d77a74c5_prefect-cloud-offers-four-different-paid-plans.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/705e23bc/683154d16afa9871d77a74c5_prefect-cloud-offers-four-different-paid-plans.png" alt="__wf_reserved_inherit" />
   <figcaption>Prefect cloud pricing</figcaption>
 </figure>
 
@@ -128,7 +128,7 @@ However, the open-source plan comes with a trade-off in features and maintenance
 <ul><li>You’ll be responsible for deploying and managing the Prefect server (or using Prefect’s CLI for local orchestration).</li><li>There is a basic UI for Prefect open source, but it lacks the polished dashboards and aggregated insights of Prefect Cloud.</li><li>The OSS version doesn’t include advanced cloud-only features like hosted automation, built-in SSO, or long-term logging.</li><li>You get no official support beyond community forums.</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/fe4126a8/68315520362112339a6ab31a_prefect-open-source-version-capabilities.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/fe4126a8/68315520362112339a6ab31a_prefect-open-source-version-capabilities.png" alt="__wf_reserved_inherit" />
   <figcaption>Prefect open source version capabilities</figcaption>
 </figure>
 
@@ -147,7 +147,7 @@ That said, limitations of the Hobby plan might be too restrictive for most produ
 There are feature restrictions like no service accounts or advanced permissions. Once you start pushing those limits – say, you want to collaborate with teammates or run more workflows on a schedule – you’ll need to move to a paid tier.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/befa82ba/6831556ee42a265d3db9d114_prefect-cloud-hobby-plan.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/befa82ba/6831556ee42a265d3db9d114_prefect-cloud-hobby-plan.png" alt="__wf_reserved_inherit" />
   <figcaption>Prefect Cloud Hobby plan</figcaption>
 </figure>
 
@@ -160,7 +160,7 @@ Here’s what it offers:
 <ul><li>3 developer seats, 1 Workspace, 20 deployments.</li><li>4,500 minutes of serverless compute per month</li><li>1 additional work pool. Work pools are a bridge between the Prefect orchestration layer and the infrastructure where flows are run.</li><li>Ability to bring your own compute. This means your Prefect agents can run on your own servers or a <a href="https://www.zenml.io/blog/kubeflow-vs-mlflow">Kubernetes cluster</a>, in addition to using Prefect’s hosted execution.</li><li>Features like Logging and alerting, webhooks, and 10 event-driven automations.</li><li>SCMI (GitHub, Google, and Microsoft) allows you to control access to Prefect Cloud from your preferred identity provider.</li><li>7-day run retention and API rate limit of 500 per minute.</li><li>Community support</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/77cece68/6831559982b2956a9128259c_prefect-cloud-starter-plan.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/77cece68/6831559982b2956a9128259c_prefect-cloud-starter-plan.png" alt="__wf_reserved_inherit" />
   <figcaption>Prefect Cloud Starter plan</figcaption>
 </figure>
 
@@ -171,7 +171,7 @@ The Team plan is priced at $400 per month and targets growing teams with greater
 <ul><li>The plan supports up to 8 developer seats, 1 workspace, and 50 monthly deployments.</li><li>Includes 13,500 minutes of serverless compute credits per month.</li><li>3 additional work pools.</li><li>Ability to bring your own compute.</li><li>All features in the Starter Plan + service accounts and 50 event-driven automations.</li><li>24 hours audit log retention and 14 days run retention.</li><li>API rate limit of 1,000 per minute.</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/b9d91a61/683155bb0e3e3204ed007823_prefect-cloud-team-plan.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b9d91a61/683155bb0e3e3204ed007823_prefect-cloud-team-plan.png" alt="__wf_reserved_inherit" />
   <figcaption>Prefect Cloud Team plan</figcaption>
 </figure>
 
@@ -184,7 +184,7 @@ The plan offers everything Prefect has:
 <ul><li>Unlimited developer seats, workflows, and deployments.</li><li>Custom serverless compute credits and unlimited additional work pools.</li><li>500+ event-driven automations and all features that the Team plan offers.</li><li>SAML/OIDC, SCIM security, custom audit log retention, and run retention.</li><li>Granular permissions &amp; RBAC.</li><li>24x7 support available via portal, email, and response SLAs.</li><li>99.9%+ uptime service level agreements (SLAs).</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/03227299/683155e30cf15d61734e001c_prefect-cloud-enterprise-plan.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/03227299/683155e30cf15d61734e001c_prefect-cloud-enterprise-plan.png" alt="__wf_reserved_inherit" />
   <figcaption>Prefect Cloud Enterprise plan</figcaption>
 </figure>
 
@@ -381,7 +381,7 @@ Additionally, if you require capabilities outside Prefect’s scope (like experi
 ## ZenML – An Affordable Alternative to Prefect
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/4774409b/68281c439f8dc3255401b97a_zenml_homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/4774409b/68281c439f8dc3255401b97a_zenml_homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 If you’re concerned about Prefect’s pricing or its limited scope for ML-specific needs, [ZenML is an affordable alternative](https://www.zenml.io/compare/zenml-vs-prefect).
@@ -393,7 +393,7 @@ Let’s look at how ZenML can replace or augment key aspects of Prefect’s func
 ### Feature 1. Workflow Orchestration
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/3973118f/683156b9b48bd1d0cd5437b7_zenml-workflow-orchestration.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3973118f/683156b9b48bd1d0cd5437b7_zenml-workflow-orchestration.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML orchestration</figcaption>
 </figure>
 
@@ -408,7 +408,7 @@ From a pricing perspective, ZenML’s orchestration comes built-in with the open
 ### Feature 2. Experiment Tracking
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/ce3ffe8a/681c8ff1cff78cabbca5d18f_a-flowchart-explaning-how-zenml-integrates-with-multiple-tools-and-platform.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ce3ffe8a/681c8ff1cff78cabbca5d18f_a-flowchart-explaning-how-zenml-integrates-with-multiple-tools-and-platform.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML experiment tracking</figcaption>
 </figure>
 
@@ -425,7 +425,7 @@ Both Prefect and ZenML offer integration with external tools, but ZenML's integr
 And more.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/c84ec635/68315756d19d39b7ac6af808_all-third-party-platforms-zenml-integrates-with.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c84ec635/68315756d19d39b7ac6af808_all-third-party-platforms-zenml-integrates-with.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML integrations</figcaption>
 </figure>
 
@@ -438,7 +438,7 @@ Beyond the points above, it’s worth noting some additional features ZenML offe
 <ul><li><strong>Model Registry:</strong> ZenML can function as a model registry or connect to one, allowing you to version and catalog your machine learning models within the pipeline workflow.</li><li><strong>Hyperparameter Tuning:</strong> Integrates with hyperparameter optimization frameworks (like Optuna or others) to enable hyperparameter tuning as part of your pipelines.</li><li><strong>Data Versioning:</strong> ZenML emphasizes reproducibility, including data versioning support. It can tie in with data version control systems or ensure that datasets and data artifacts used in pipelines are tracked.</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/be93749f/683157734991f2e7ab9f53a3_list-of-features-zenml-has-but-prefect-does-not.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/be93749f/683157734991f2e7ab9f53a3_list-of-features-zenml-has-but-prefect-does-not.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML vs Prefect</figcaption>
 </figure>
 
@@ -453,6 +453,6 @@ If you're looking for a platform where you can build reproducible AI workflows f
 [Book a personalized demo call](https://www.zenml.io/book-your-demo) with our Founder and discover how ZenML streamlines your ML workflow orchestration at a fraction of the cost compared to Prefect.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/55428de0/684576e834000d9981f3b957_zenml-book-a-demo.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/55428de0/684576e834000d9981f3b957_zenml-book-a-demo.png" alt="__wf_reserved_inherit" />
   <figcaption>Book your personalized demo</figcaption>
 </figure>

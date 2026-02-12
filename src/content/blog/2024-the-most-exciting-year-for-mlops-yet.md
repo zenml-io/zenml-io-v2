@@ -19,11 +19,11 @@ tags:
 date: "2024-04-17T00:00:00.000Z"
 readingTime: 3 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e70ac5de/6630a6056237778d2ef91a66_2024.webp"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e70ac5de/6630a6056237778d2ef91a66_2024.webp"
 seo:
   title: "Newsletter Edition #2 - 2024: The most exciting year for MLOps yet - ZenML Blog"
   canonical: "https://www.zenml.io/blog/2024-the-most-exciting-year-for-mlops-yet"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/a5a506c7/6630a6056237778d2ef91a66_2024.webp"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a5a506c7/6630a6056237778d2ef91a66_2024.webp"
   ogTitle: "Newsletter Edition #2 - 2024: The most exciting year for MLOps yet - ZenML Blog"
 ---
 
@@ -50,7 +50,7 @@ Your opinion is crucial to us! Join a user testing session and help us improve Z
 ## ZenML Product Corner
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/d61aa696/6630a8729c7ba8098fa35b63_rag50lines.jpeg" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d61aa696/6630a8729c7ba8098fa35b63_rag50lines.jpeg" alt="" />
 </figure>
 
 ### LLMOps Guide
@@ -60,7 +60,7 @@ Want to see how RAG works in ~50 lines of code, with no Langchain or other wrapp
 [Learn More](https://docs.zenml.io/user-guide/llmops-guide)
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e93b7963/6630a8725a710dd574767145_metadata.webp" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e93b7963/6630a8725a710dd574767145_metadata.webp" alt="" />
 </figure>
 
 ### Easy cloud stacks
@@ -70,7 +70,7 @@ A stack is the configuration of tools and infrastructure that your pipelines can
 [Learn more](https://docs.zenml.io/user-guide/cloud-guide)
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/dbdea346/6630a872dd3b5432f25f21b2_paperspace.jpeg" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/dbdea346/6630a872dd3b5432f25f21b2_paperspace.jpeg" alt="" />
 </figure>
 
 ### Lambda Labs support in ZenML

@@ -21,12 +21,12 @@ tags:
 date: "2025-06-21T00:00:00.000Z"
 readingTime: 15 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/5914cdf6/6981d362e92aa039b696acf4_6981d2b42956b6fef73d8042_langgraph-alternatives.avif"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5914cdf6/6981d362e92aa039b696acf4_6981d2b42956b6fef73d8042_langgraph-alternatives.avif"
 seo:
   title: "We Tested 8 LangGraph Alternatives for Scalable Agent Orchestration - ZenML Blog"
   description: "Discover the top 8 LangGraph alternatives for scalable agent orchestration."
   canonical: "https://www.zenml.io/blog/langgraph-alternatives"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/5914cdf6/6981d362e92aa039b696acf4_6981d2b42956b6fef73d8042_langgraph-alternatives.avif"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5914cdf6/6981d362e92aa039b696acf4_6981d2b42956b6fef73d8042_langgraph-alternatives.avif"
   ogTitle: "We Tested 8 LangGraph Alternatives for Scalable Agent Orchestration - ZenML Blog"
   ogDescription: "Discover the top 8 LangGraph alternatives for scalable agent orchestration."
 ---
@@ -46,7 +46,7 @@ Whether you’re building autonomous research agents or adding LLM-powered steps
 ## The Need for a LangGraph Alternative?
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/84cb6e52/68562e00c0e2c8d0c622dbb3_why-look-for-langgraph-alternatives.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/84cb6e52/68562e00c0e2c8d0c622dbb3_why-look-for-langgraph-alternatives.webp" alt="__wf_reserved_inherit" />
   <figcaption>Why look for a LangGraph alternative</figcaption>
 </figure>
 
@@ -112,7 +112,7 @@ Here's a comparison of the top LangGraph alternatives:
 ### 1. ZenML
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/6e24067d/68562e4e0107b3921a6e7ef4_zenml-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6e24067d/68562e4e0107b3921a6e7ef4_zenml-homepage.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML homepage</figcaption>
 </figure>
 
@@ -127,7 +127,7 @@ Essentially, ZenML can orchestrate and manage the surrounding pipeline in which 
 ### Feature 1. Prompt Versioning
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/be3c4146/68562ed4dd78e3f5bfc4be74_zenml-prompt-versioning.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/be3c4146/68562ed4dd78e3f5bfc4be74_zenml-prompt-versioning.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML prompt versioning</figcaption>
 </figure>
 
@@ -144,7 +144,7 @@ In short, prompt versioning is baked into the pipeline lifecycle, turning what i
 ### Feature 2. Artifact Visualization
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/b3dc7d49/68510c0d4203b28e29bd77eb_CleanShot_Jun_16_2025_from_Deep_Research.gif" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b3dc7d49/68510c0d4203b28e29bd77eb_CleanShot_Jun_16_2025_from_Deep_Research.gif" alt="__wf_reserved_inherit" />
   <figcaption>ZenML Artifact visualization</figcaption>
 </figure>
 
@@ -157,7 +157,7 @@ All in all, ZenML provides a comprehensive view of a model's lifecycle, addressi
 ### Feature 3. Flexible Orchestration Options Across Different Stacks
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e06ca294/685630285ab7d5dd1b9211d5_zenml-orchestration.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e06ca294/685630285ab7d5dd1b9211d5_zenml-orchestration.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML orchestration</figcaption>
 </figure>
 
@@ -186,7 +186,7 @@ But remember, ZenML is not a specialized multi-agent orchestration tool, so you 
 ### 2. CrewAI
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/09cbfb3f/6856304314deed2061b98945_crewai-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/09cbfb3f/6856304314deed2061b98945_crewai-homepage.png" alt="__wf_reserved_inherit" />
   <figcaption>CrewAI homepage</figcaption>
 </figure>
 
@@ -205,7 +205,7 @@ That said, we think CrewAI lacks flexibility in comparison to more free-form sys
 ### 3. Microsoft AutoGen
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/51d53a7b/6856305b79b0250089d93d1b_microsoft-autogen-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/51d53a7b/6856305b79b0250089d93d1b_microsoft-autogen-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [AutoGen](https://www.microsoft.com/en-us/research/project/autogen/) is an open-source multi-agent framework from Microsoft Research that focuses on enabling conversational interactions among AI agents and humans to solve tasks. AutoGen’s philosophy is to orchestrate multiple LLM-based agents by letting them talk to each other in natural language, possibly involving tool use and human feedback, to collaborate on complex problems.
@@ -223,7 +223,7 @@ The flip side of AutoGen’s freedom is unpredictability and potential inefficie
 ### 4. LlamaIndex AgentWorkflow
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e76208c4/6856307aa7ab9915103fb2e9_llamaIndex-agentworkflow-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e76208c4/6856307aa7ab9915103fb2e9_llamaIndex-agentworkflow-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [LlamaIndex](https://www.llamaindex.ai/blog/introducing-agentworkflow-a-powerful-system-for-building-ai-agent-systems) has introduced AgentWorkflow, a system designed to simplify the building and orchestration of AI agent systems by building upon LlamaIndex's existing `Workflow` abstractions.
@@ -241,7 +241,7 @@ A significant issue is that after an agent hands off control, the receiving agen
 ### 5. Semantic Kernel Agent Orchestration
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/1021da15/685630932bc9e8c02ccdd97c_semantic-kernet-agent-orchestration-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1021da15/685630932bc9e8c02ccdd97c_semantic-kernet-agent-orchestration-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [Semantic Kernel (SK)](https://learn.microsoft.com/en-us/semantic-kernel/) is Microsoft’s open-source SDK for building AI integrations, primarily known in the .NET world (with Python support as well). In May 2025, the Semantic Kernel team introduced a multi-agent orchestration framework within SK.
@@ -259,7 +259,7 @@ One consideration is that SK’s multi-agent features are relatively new (as of 
 ### 6. SuperAGI
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/1a1d1588/685630a46a00aca2128ffc7f_superagi-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1a1d1588/685630a46a00aca2128ffc7f_superagi-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [SuperAGI](https://superagi.com/) is an autonomous AI agent framework that has gained significant traction on GitHub (15k+ stars). It brands itself as a ‘dev-first’ platform for building, managing, and deploying useful autonomous agents quickly.
@@ -277,7 +277,7 @@ However, because SuperAGI does a lot, it’s also relatively complex. The platfo
 ### 7. PydanticAI
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/cdd2704b/685630b78a7368e7b99f9be0_pydanticai-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/cdd2704b/685630b78a7368e7b99f9be0_pydanticai-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [PydanticAI](https://ai.pydantic.dev/) is a Python agent framework for production-grade Generative AI applications, integrating Pydantic with Large Language Models (LLMs). It aims to replicate FastAPI's developer experience for GenAI.
@@ -295,7 +295,7 @@ PydanticAI’s approach, while robust, might be a bit intimidating for those not
 ### 8. Marvin by Prefect
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/32c64620/685630cb08445531fcec766d_marvi-ai-by-prefect-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/32c64620/685630cb08445531fcec766d_marvi-ai-by-prefect-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [Marvin](https://www.prefect.io/marvin) is an open-source library (developed by Prefect) described as an ‘ambient intelligence’ and multi-agent orchestration tool. It is actually closely related to PydanticAI; in fact, Marvin 3.0 is the PydanticAI approach discussed above.
@@ -321,7 +321,7 @@ The key is matching tool capabilities to your team's expertise and project requi
 But if you’re ready to build production-grade agent systems with enterprise support, [book a demo call with ZenML](https://www.zenml.io/book-your-demo) and discover how pipeline-based orchestration can transform your agent workflows while providing the observability and governance features your team needs.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/08a67db5/684d0c7f8f1f6d02ce5767f4_book-your-personalized-demo.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/08a67db5/684d0c7f8f1f6d02ce5767f4_book-your-personalized-demo.png" alt="__wf_reserved_inherit" />
   <figcaption>Book your personalized demo</figcaption>
 </figure>
 

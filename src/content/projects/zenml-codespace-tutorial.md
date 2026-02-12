@@ -14,7 +14,7 @@ description: "Interactive VS Code extension that provides hands-on ZenML pipelin
 githubUrl: "https://github.com/zenml-io/vscode-tutorial-extension"
 mainImageLink: "https://public-flavor-logos.s3.eu-central-1.amazonaws.com/projects/48.jpg"
 previewImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/8ba50637/6852c9c8c44a472f186173dc_zenml-icon.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8ba50637/6852c9c8c44a472f186173dc_zenml-icon.png"
 tags:
   - "education"
   - "vs-code-extension"
@@ -36,7 +36,7 @@ seo:
   title: "ZenML Codespace Tutorial"
   description: "Interactive VS Code extension that provides hands-on ZenML pipeline tutorials directly in your development environment"
   canonical: "https://www.zenml.io/projects/zenml-codespace-tutorial"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/8ba50637/6852c9c8c44a472f186173dc_zenml-icon.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8ba50637/6852c9c8c44a472f186173dc_zenml-icon.png"
   ogTitle: "ZenML Codespace Tutorial"
   ogDescription: "Interactive VS Code extension that provides hands-on ZenML pipeline tutorials directly in your development environment"
 ---

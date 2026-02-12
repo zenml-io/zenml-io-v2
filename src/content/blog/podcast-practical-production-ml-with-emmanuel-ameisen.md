@@ -23,12 +23,12 @@ tags:
 date: "2022-03-18T00:00:00.000Z"
 readingTime: 1 Min Read
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/c59cd401/653116bcc81fe7fa58f29555_portrait.jpg"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c59cd401/653116bcc81fe7fa58f29555_portrait.jpg"
 seo:
   title: "Podcast: Practical Production ML with Emmanuel Ameisen - ZenML Blog"
   description: "This week I spoke with Emmanuel Ameisen, a data scientist and ML engineer currently based at Stripe. Emmanuel also wrote an excellent O'Reilly book called 'Building Machine Learning Powered Applications', a book I find myself often returning to for inspiration and that I was pleased to get the chance to reread in preparation for our discussion."
   canonical: "https://www.zenml.io/blog/podcast-practical-production-ml-with-emmanuel-ameisen"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/6159fe7a/653116bcc81fe7fa58f29555_portrait.jpg"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6159fe7a/653116bcc81fe7fa58f29555_portrait.jpg"
   ogTitle: "Podcast: Practical Production ML with Emmanuel Ameisen - ZenML Blog"
   ogDescription: "This week I spoke with Emmanuel Ameisen, a data scientist and ML engineer currently based at Stripe. Emmanuel also wrote an excellent O'Reilly book called 'Building Machine Learning Powered Applications', a book I find myself often returning to for inspiration and that I was pleased to get the chance to reread in preparation for our discussion."
 ---

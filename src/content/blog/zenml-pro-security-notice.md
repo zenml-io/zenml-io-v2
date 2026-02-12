@@ -19,12 +19,12 @@ tags:
 date: "2024-09-01T00:00:00.000Z"
 readingTime: 1 min
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/aecb7ae5/65c9f71ef81c034b070e8b97_02_-_Logo__2___1_.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/aecb7ae5/65c9f71ef81c034b070e8b97_02_-_Logo__2___1_.png"
 seo:
   title: "Security Advisory: Important Update for ZenML Pro Users - ZenML Blog"
   description: "The ZenML team has addressed a security finding in ZenML Pro's role management system, reported by JFrog Security Research team. This update provides important information for users regarding role-based access controls and recommended actions"
   canonical: "https://www.zenml.io/blog/zenml-pro-security-notice"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/aecb7ae5/65c9f71ef81c034b070e8b97_02_-_Logo__2___1_.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/aecb7ae5/65c9f71ef81c034b070e8b97_02_-_Logo__2___1_.png"
   ogTitle: "Security Advisory: Important Update for ZenML Pro Users - ZenML Blog"
   ogDescription: "The ZenML team has addressed a security finding in ZenML Pro's role management system, reported by JFrog Security Research team. This update provides important information for users regarding role-based access controls and recommended actions"
 ---

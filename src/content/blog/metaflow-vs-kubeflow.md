@@ -21,12 +21,12 @@ tags:
 date: "2025-07-14T00:00:00.000Z"
 readingTime: 16 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e99248ea/68748ec8089332e17f2b9aaf_kubeflow-vs-metaflow.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e99248ea/68748ec8089332e17f2b9aaf_kubeflow-vs-metaflow.png"
 seo:
   title: "Metaflow vs Kubeflow vs ZenML: Which ML Pipeline Tool Is Right for You? - ZenML Blog"
   description: "In this Metaflow vs Kubeflow vs ZenML article, we explain the difference between these platforms and which one is the right ML pipeline tool for you."
   canonical: "https://www.zenml.io/blog/metaflow-vs-kubeflow"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e99248ea/68748ec8089332e17f2b9aaf_kubeflow-vs-metaflow.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e99248ea/68748ec8089332e17f2b9aaf_kubeflow-vs-metaflow.png"
   ogTitle: "Metaflow vs Kubeflow vs ZenML: Which ML Pipeline Tool Is Right for You? - ZenML Blog"
   ogDescription: "In this Metaflow vs Kubeflow vs ZenML article, we explain the difference between these platforms and which one is the right ML pipeline tool for you."
 ---
@@ -63,7 +63,7 @@ Here’s a TL;DR of the features we compare for Metaflow, Kubeflow, and ZenML.
 #### Metaflow
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/af5fef85/687489eb2d7c87c9edeb76a6_metaflow-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/af5fef85/687489eb2d7c87c9edeb76a6_metaflow-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [Metaflow’s](https://metaflow.org/) core design centers on [Python-based orchestration](https://docs.zenml.io/stacks/stack-components/orchestrators) of flows. You define a pipeline as a `FlowSpec` class with Python `@step` methods, and Metaflow’s engine takes care of executing those steps in the correct order (based on your code’s `self.next()` dependencies).
@@ -106,7 +106,7 @@ Basic time-based scheduling can be handled through these integrations or even vi
 #### Kubeflow
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/58529c05/68748a3d7919c081d60520dd_kubeflow-xboost-runtime-graph.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/58529c05/68748a3d7919c081d60520dd_kubeflow-xboost-runtime-graph.png" alt="__wf_reserved_inherit" />
   <figcaption>Kubeflow pipeline runtime execution graph</figcaption>
 </figure>
 
@@ -127,7 +127,7 @@ The Kubeflow UI and API allow setting these triggers, and the system will automa
 #### ZenML
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/2150c2d2/6829704d70093a50cc509c5e_zenml_pipeline_orchestration.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2150c2d2/6829704d70093a50cc509c5e_zenml_pipeline_orchestration.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ZenML takes a unique approach that we can call ‘meta-orchestration.’ Rather than being a full workflow orchestrator itself, ZenML acts as a layer above your choice of orchestrator.
@@ -208,7 +208,7 @@ For experiment tracking, Metaflow doesn’t have a fancy UI, but it provides a C
 #### Kubeflow
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e37cba10/68748afa682c0263ee078eba_kubeflow-experiment-tracking.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e37cba10/68748afa682c0263ee078eba_kubeflow-experiment-tracking.png" alt="__wf_reserved_inherit" />
   <figcaption>Kubeflow experiment tracking</figcaption>
 </figure>
 
@@ -229,7 +229,7 @@ Lastly, Kubeflow also provides ‘Katib’ for experiment tracking in the sense 
 #### ZenML
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/8e3c7533/68748b1fdeda23efead77019_zenml-experiment-tracker.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8e3c7533/68748b1fdeda23efead77019_zenml-experiment-tracker.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML experiment tracker</figcaption>
 </figure>
 
@@ -281,7 +281,7 @@ ZenML tracks everything end-to-end (artifacts, runs, metrics) and plays nicely w
 #### Metaflow
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/b9c24953/68748bd5db4d07b96b0fdeda_metaflow-card.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b9c24953/68748bd5db4d07b96b0fdeda_metaflow-card.png" alt="__wf_reserved_inherit" />
   <figcaption>Metaflow card</figcaption>
 </figure>
 
@@ -298,7 +298,7 @@ While Metaflow doesn’t have a built-in GUI for general workflow management, Ne
 #### Kubeflow
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/1b4fdbca/68748bf3e4d16b4c232bf15d_kubeflow-visualization.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1b4fdbca/68748bf3e4d16b4c232bf15d_kubeflow-visualization.png" alt="__wf_reserved_inherit" />
   <figcaption>Kubeflow visualization</figcaption>
 </figure>
 
@@ -319,7 +319,7 @@ For visualizing outputs, Kubeflow Pipelines has a feature for output artifacts v
 #### ZenML
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/6adcb220/68748c1ba4ecd9797b6239df_zenml-visualization.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6adcb220/68748c1ba4ecd9797b6239df_zenml-visualization.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML visualization</figcaption>
 </figure>
 
@@ -334,7 +334,7 @@ This graph is similar in concept to Kubeflow’s: nodes for steps, arrows for de
 Because ZenML pipelines are written in Python, this DAG is generated automatically without your efforts. The dashboard DAG views updates in real-time as the pipeline runs, showing which steps are running or completed.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/d8ece3bb/68748c38c27c24c62560287e_zenml-dag-visualization.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d8ece3bb/68748c38c27c24c62560287e_zenml-dag-visualization.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML DAG visualization</figcaption>
 </figure>
 
@@ -359,7 +359,7 @@ ZenML provides a sleek dashboard that combines the best of both worlds: interact
 ### Metaflow
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/2a0aedf2/68748c55751aa2670766c0f7_metaflow-integration.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2a0aedf2/68748c55751aa2670766c0f7_metaflow-integration.png" alt="__wf_reserved_inherit" />
   <figcaption>Metaflow integrations</figcaption>
 </figure>
 
@@ -378,7 +378,7 @@ This strong integration with core cloud services and common ML frameworks makes 
 ### Kubeflow
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/3d1d75ab/68748c799596d5c6c43f02c2_kubeflow-integrations.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3d1d75ab/68748c799596d5c6c43f02c2_kubeflow-integrations.png" alt="__wf_reserved_inherit" />
   <figcaption>Kubeflow integrations</figcaption>
 </figure>
 
@@ -393,7 +393,7 @@ For example, it provides custom CRDs for distributed training: TFJob for TensorF
 ### ZenML
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/c77041cb/68748c94996d3b8bd3767e08_zenml-integrations.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c77041cb/68748c94996d3b8bd3767e08_zenml-integrations.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML integrations</figcaption>
 </figure>
 
@@ -410,7 +410,7 @@ Here are the tools ZenML integrates with across MLOPs:
 And many more.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/87ef7692/68748cbd751aa2670766e92c_zenml-list-of-all-integrations.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/87ef7692/68748cbd751aa2670766e92c_zenml-list-of-all-integrations.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML list of integrations</figcaption>
 </figure>
 
@@ -433,7 +433,7 @@ Additionally, Outerbounds can be purchased and deployed via major cloud marketpl
 You can read more about Outerbound pricing in this guide: Outerbound Pricing Guide.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/2334568b/68748cd9c27c24c625606ac9_outerbounds-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2334568b/68748cd9c27c24c625606ac9_outerbounds-pricing.png" alt="__wf_reserved_inherit" />
   <figcaption>Outerbounds pricing</figcaption>
 </figure>
 
@@ -448,7 +448,7 @@ The cost considerations for open-source Kubeflow are primarily infrastructure an
 <ul><li><strong>Civo Kubeflow as a Service:</strong> Starts at $271.58 per month, providing a fully managed ML development environment with auto-scaling capabilities.</li><li><strong>Arrikto Kubeflow as a Service:</strong> Pricing begins at $2.06 per hour for active deployments and $0.20/hour when idle, offering a 7-day free trial.</li><li><strong>Canonical's Managed Kubeflow:</strong> Offers tailored solutions with a 99.9% uptime SLA, with pricing details available upon request.</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/28234633/68748cf709c5e71a96231dd2_civo-kubeflow-as-a-service.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/28234633/68748cf709c5e71a96231dd2_civo-kubeflow-as-a-service.png" alt="__wf_reserved_inherit" />
   <figcaption>Civo Kubeflow as a service</figcaption>
 </figure>
 
@@ -459,7 +459,7 @@ ZenML’s pricing is pretty straightforward. We offer an open-source plan (commu
 We also offer ZenML Pro, which is a managed infrastructure with advanced collaboration features for scaling teams and production deployments. You can book a demo with us to learn more about the pricing.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e52d6b7d/68748d1c751aa267076706bd_zenml-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e52d6b7d/68748d1c751aa267076706bd_zenml-pricing.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML pricing</figcaption>
 </figure>
 
@@ -474,7 +474,7 @@ ZenML is perfect for teams that want to start simple but maintain a path to scal
 When the time is right, [book a demo call with us](https://www.zenml.io/book-your-demo) to learn how we can create a tailored plan for all your ML workflows.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/b58d4a82/68748d43996d3b8bd376bbbc_book-a-demo-call.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b58d4a82/68748d43996d3b8bd376bbbc_book-a-demo-call.png" alt="__wf_reserved_inherit" />
   <figcaption>Book a demo call</figcaption>
 </figure>
 

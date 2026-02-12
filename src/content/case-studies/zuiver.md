@@ -7,12 +7,12 @@ hub:
   cardTitle: "Navigating ML Complexity with ZenML: How Zuiver.ai Built a Streamlined AI Detection Pipeline"
   order: 5
   logos:
-    - url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/d50aa4ac/zuiver.svg"
+    - url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d50aa4ac/zuiver.svg"
       alt: "Zuiver.ai"
 
 hero:
   logos:
-    - url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/d50aa4ac/zuiver.svg"
+    - url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d50aa4ac/zuiver.svg"
       alt: "Zuiver.ai"
 
 sidebar:
@@ -33,7 +33,7 @@ seo:
   description: "How Zuiver.ai transformed their ML operations from distributed research infrastructure to unified production pipelines"
   ogTitle: "Zuiver and ZenML: How Zuiver.ai Built a Streamlined AI Detection Pipeline"
   ogDescription: "How Zuiver.ai transformed their ML operations from distributed research infrastructure to unified production pipelines"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/315871c0/686646b670b9174c522ecd19_zuiver-case-study.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/315871c0/686646b670b9174c522ecd19_zuiver-case-study.png"
 
 webflow:
   siteId: "64a817a2e7e2208272d1ce30"
@@ -44,7 +44,7 @@ webflow:
 
 <div class="uui-text-markdown-text w-richtext">
                 <figure style="max-width:2288pxpx" class="w-richtext-align-fullwidth w-richtext-figure-type-image">
-                  <div><img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/0b43294f/zenml-before_after.png" loading="lazy" alt="Before and after diagram showing workflow transformation: left side depicts fragmented setup with SSH terminals, multiple isolated environments, and manual synchronization steps; right side shows streamlined workflow with two environments managed centrally through ZenML platform via single Python pipeline command"></div>
+                  <div><img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/0b43294f/zenml-before_after.png" loading="lazy" alt="Before and after diagram showing workflow transformation: left side depicts fragmented setup with SSH terminals, multiple isolated environments, and manual synchronization steps; right side shows streamlined workflow with two environments managed centrally through ZenML platform via single Python pipeline command"></div>
                 </figure>
                 <ul role="list">
                   <li><strong class="text-dark">Unified Development Experience<br>‍</strong>Consolidated fragmented workflows across SSH sessions, research clusters, and local environments into a single, coherent pipeline system.<strong class="text-dark">‍</strong></li>
@@ -70,7 +70,7 @@ webflow:
                     <div class="uui-testimonial04_component">
                       <h3 class="uui-heading-small text-weight-medium">"Before ZenML, I had to SSH into the research cluster, set up the environment every time, schedule a batch, continuously monitor it... then copy the results back to my computer. It was just locally on my computer, scattered everywhere."</h3>
                       <div class="uui-testimonial04_client">
-                        <div class="uui-testimonial04_client-image-wrapper"><img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/1fceb208/mundvetter.jpeg" loading="lazy" width="248" alt="Mund Vetter" class="uui-testimonial04_client-image"></div>
+                        <div class="uui-testimonial04_client-image-wrapper"><img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1fceb208/mundvetter.jpeg" loading="lazy" width="248" alt="Mund Vetter" class="uui-testimonial04_client-image"></div>
                         <div class="uui-testimonial04_client-info">
                           <div class="uui-heading-tiny">Mund Vetter</div>
                           <div class="uui-text-size-medium">Co-founder at Zuiver.ai</div>
@@ -89,12 +89,12 @@ webflow:
                 <p>‍<strong>Pipeline-First Development</strong></p>
                 <p><strong>‍</strong>ZenML's step-based architecture provided the structure needed to transform ad-hoc scripts into reproducible, maintainable pipelines.</p>
                 <figure style="max-width:2544px" class="w-richtext-align-fullwidth w-richtext-figure-type-image">
-                  <div><img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/9e50fad5/zenml-scripts-vs-steps.png" loading="lazy" alt="Comparison diagram showing transformation from traditional scripts (left) with complex, unstructured Python code containing imports, loops, and functions, to structured pipeline steps (right) featuring three sequential steps with benefits highlighted as reproducible and maintainable"></div>
+                  <div><img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9e50fad5/zenml-scripts-vs-steps.png" loading="lazy" alt="Comparison diagram showing transformation from traditional scripts (left) with complex, unstructured Python code containing imports, loops, and functions, to structured pipeline steps (right) featuring three sequential steps with benefits highlighted as reproducible and maintainable"></div>
                 </figure>
                 <p><strong>Write Once, Run Anywhere</strong> </p>
                 <p>Starting with local development, <a href="http://zuiver.ai/">Zuiver.ai</a> could seamlessly transition to Modal for compute-intensive tasks, then to GCP when they secured cloud credits—all without changing their core pipeline code.</p>
                 <figure style="max-width:2060px" class="w-richtext-align-fullwidth w-richtext-figure-type-image">
-                  <div><img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/339d91be/zenml-code-changes.png" loading="lazy" alt="Flowchart diagram showing Pipeline Code at the top branching into three deployment environments: Local Development (laptop icon), Modal Serverless (Modal logo), and GCP Production (Google Cloud logo), with text below stating 'No code changes required'"></div>
+                  <div><img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/339d91be/zenml-code-changes.png" loading="lazy" alt="Flowchart diagram showing Pipeline Code at the top branching into three deployment environments: Local Development (laptop icon), Modal Serverless (Modal logo), and GCP Production (Google Cloud logo), with text below stating 'No code changes required'"></div>
                 </figure>
                 <p><strong>Custom Feature Development Through Partnership</strong></p>
                 <p><strong>‍</strong>The bi-weekly collaboration calls with ZenML's team resulted in tailored solutions:<br></p>
@@ -110,7 +110,7 @@ webflow:
                 <h2>The Partnership Impact</h2>
                 <h3>More Than a Tool—A Collaborative Journey</h3>
                 <figure style="max-width:2060px" class="w-richtext-align-fullwidth w-richtext-figure-type-image">
-                  <div><img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/b77c6e27/same-pipeline-code.png" loading="lazy" alt="Diagram showing three deployment options - Local Development (ZenML logo), Modal Integration (Modal logo), and GCP Scaling (Google Cloud logo) - all connected by arrows pointing down to a central purple box labeled 'Same Pipeline Code"></div>
+                  <div><img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b77c6e27/same-pipeline-code.png" loading="lazy" alt="Diagram showing three deployment options - Local Development (ZenML logo), Modal Integration (Modal logo), and GCP Scaling (Google Cloud logo) - all connected by arrows pointing down to a central purple box labeled 'Same Pipeline Code"></div>
                 </figure>
                 <p><strong>Responsive Technical Support</strong></p>
                 <p>"With bigger companies, the support is quite bad. Here, we got direct access to the technical team," Mund observes. The Slack-based support meant issues were resolved quickly, often with same-day responses.</p>
@@ -127,7 +127,7 @@ webflow:
                     <div class="uui-testimonial04_component">
                       <h3 class="uui-heading-small text-weight-medium">"ZenML gave us way better understanding of how well we did. Now I can just run <strong class="code-in-quote">python run_pipeline.py</strong> and it runs my pipeline. I don't have to set anything else up. The idea that you can start locally and then switch to cloud when you have credits—that flexibility is nice."</h3>
                       <div class="uui-testimonial04_client">
-                        <div class="uui-testimonial04_client-image-wrapper"><img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/1fceb208/mundvetter.jpeg" loading="lazy" alt="Mund Vetter" class="uui-testimonial04_client-image"></div>
+                        <div class="uui-testimonial04_client-image-wrapper"><img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1fceb208/mundvetter.jpeg" loading="lazy" alt="Mund Vetter" class="uui-testimonial04_client-image"></div>
                         <div class="uui-testimonial04_client-info">
                           <div class="uui-heading-tiny">Mund Vetter</div>
                           <div class="uui-text-size-medium">Co-founder at Zuiver.ai</div>
@@ -140,7 +140,7 @@ webflow:
               <div class="uui-text-markdown-text w-richtext">
                 <h2>The Business Value</h2>
                 <figure style="max-width:1960px" class="w-richtext-align-fullwidth w-richtext-figure-type-image">
-                  <div><img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/58da7f2c/zuiver_deployment_time_reduction.png" loading="lazy" alt="Bar chart comparing deployment times: 'Without ZenML (10 hours)' shown as a long dark gray bar, versus 'With ZenML (2 hours)' shown as a shorter purple bar, with a green badge indicating '-80%' time reduction"></div>
+                  <div><img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/58da7f2c/zuiver_deployment_time_reduction.png" loading="lazy" alt="Bar chart comparing deployment times: 'Without ZenML (10 hours)' shown as a long dark gray bar, versus 'With ZenML (2 hours)' shown as a shorter purple bar, with a green badge indicating '-80%' time reduction"></div>
                 </figure>
                 <h3>Empowering Small Teams to Build Big</h3>
                 <p><strong>Accelerated Development Velocity</strong></p>
@@ -152,7 +152,7 @@ webflow:
                 <p><strong>Startup-Friendly Scalability</strong></p>
                 <p>The ability to start small and scale up meant <a href="http://zuiver.ai/">Zuiver.ai</a> could optimize costs while maintaining the flexibility to grow.</p>
                 <figure style="max-width:2336px" class="w-richtext-align-fullwidth w-richtext-figure-type-image">
-                  <div><img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/b08ef6db/zenml-enterprise-level-ml.png" loading="lazy" alt="Three-panel progression diagram showing Small Team (illustrated group of three people collaborating) leading through ZenML (company logo in purple box) to Enterprise-level ML System (computer monitor displaying system architecture), connected by right-pointing arrows"></div>
+                  <div><img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b08ef6db/zenml-enterprise-level-ml.png" loading="lazy" alt="Three-panel progression diagram showing Small Team (illustrated group of three people collaborating) leading through ZenML (company logo in purple box) to Enterprise-level ML System (computer monitor displaying system architecture), connected by right-pointing arrows"></div>
                 </figure>
                 <h2>Looking Forward</h2>
                 <p>
@@ -163,7 +163,7 @@ webflow:
               <div class="uui-testimonial04_component">
                 <h3 class="uui-heading-small text-weight-medium">"It's definitely really great having this support. You get almost no support from the big cloud providers. With ZenML, we had direct contact with the team, could request features, and got unbiased technical advice. That made all the difference."</h3>
                 <div class="uui-testimonial04_client">
-                  <div class="uui-testimonial04_client-image-wrapper"><img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/1fceb208/mundvetter.jpeg" loading="lazy" alt="Mund Vetter" class="uui-testimonial04_client-image"></div>
+                  <div class="uui-testimonial04_client-image-wrapper"><img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1fceb208/mundvetter.jpeg" loading="lazy" alt="Mund Vetter" class="uui-testimonial04_client-image"></div>
                   <div class="uui-testimonial04_client-info">
                     <div class="uui-heading-tiny">Mund Vetter</div>
                     <div class="uui-text-size-medium">Co-founder at Zuiver.ai</div>

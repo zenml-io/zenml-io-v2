@@ -18,12 +18,12 @@ tags:
 date: "2024-11-19T00:00:00.000Z"
 readingTime: 2 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e3e906fc/674702f1fafaa06022f24e2e_CleanShot_2024-11-26_at_13.39.10.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e3e906fc/674702f1fafaa06022f24e2e_CleanShot_2024-11-26_at_13.39.10.png"
 seo:
   title: "Enterprise MLOps in Healthcare: Balancing Complexity, Compliance, and User Needs - ZenML Blog"
   description: "Enterprise MLOps in healthcare presents unique challenges at the intersection of machine learning and medical compliance. This comprehensive guide explores how organizations can successfully implement ML operations while navigating complex regulatory requirements, diverse user needs, and infrastructure decisions. From managing multiple user personas to choosing between on-premises and cloud deployments, learn essential strategies for building scalable, compliant MLOps platforms that serve both technical and clinical teams. Discover practical approaches to tool selection, infrastructure optimization, and the creation of flexible ML ecosystems that balance sophisticated capabilities with accessibility, all within the strict parameters of healthcare environments."
   canonical: "https://www.zenml.io/blog/enterprise-mlops-in-healthcare-balancing-complexity-compliance-and-user-needs"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e3e906fc/674702f1fafaa06022f24e2e_CleanShot_2024-11-26_at_13.39.10.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e3e906fc/674702f1fafaa06022f24e2e_CleanShot_2024-11-26_at_13.39.10.png"
   ogTitle: "Enterprise MLOps in Healthcare: Balancing Complexity, Compliance, and User Needs - ZenML Blog"
   ogDescription: "Enterprise MLOps in healthcare presents unique challenges at the intersection of machine learning and medical compliance. This comprehensive guide explores how organizations can successfully implement ML operations while navigating complex regulatory requirements, diverse user needs, and infrastructure decisions. From managing multiple user personas to choosing between on-premises and cloud deployments, learn essential strategies for building scalable, compliant MLOps platforms that serve both technical and clinical teams. Discover practical approaches to tool selection, infrastructure optimization, and the creation of flexible ML ecosystems that balance sophisticated capabilities with accessibility, all within the strict parameters of healthcare environments."
 ---

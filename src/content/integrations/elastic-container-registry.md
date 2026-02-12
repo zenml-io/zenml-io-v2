@@ -12,11 +12,11 @@ webflow:
   createdOn: "2024-09-11T07:15:44.277Z"
 integrationType: "container-registry"
 logo:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/c63dd028/672b2d75af6d63a749c8fac0_elastic_container_registry.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c63dd028/672b2d75af6d63a749c8fac0_elastic_container_registry.png"
 shortDescription: "Streamline container image management with AWS ECR and ZenML"
 docsUrl: "https://docs.zenml.io/stack-components/container-registries/aws"
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/26a5339b/66e141fc72ee3b06c3de0f80_Screenshot_2024-09-04_at_10.44.37.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/26a5339b/66e141fc72ee3b06c3de0f80_Screenshot_2024-09-04_at_10.44.37.png"
 relatedBlogPosts:
   - "easy-mlops-pipelines-2-stack-wizard"
   - "easy-mlops-pipelines"
@@ -24,7 +24,7 @@ seo:
   title: "Integrate Elastic Container Registry with ZenML - Container Registry Integrations"
   description: "Streamline container image management with AWS ECR and ZenML"
   canonical: "https://www.zenml.io/integrations/elastic-container-registry"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/26a5339b/66e141fc72ee3b06c3de0f80_Screenshot_2024-09-04_at_10.44.37.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/26a5339b/66e141fc72ee3b06c3de0f80_Screenshot_2024-09-04_at_10.44.37.png"
   ogTitle: "Integrate Elastic Container Registry with ZenML - Container Registry Integrations"
   ogDescription: "Streamline container image management with AWS ECR and ZenML"
 ---

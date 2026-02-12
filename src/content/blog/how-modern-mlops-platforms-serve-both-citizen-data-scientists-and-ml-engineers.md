@@ -18,12 +18,12 @@ tags:
 date: "2024-11-26T00:00:00.000Z"
 readingTime: 2 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/9e01791e/674704b6b6b459f6b1c3d5ef_Gemini_Generated_Image__2_.jpeg"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9e01791e/674704b6b6b459f6b1c3d5ef_Gemini_Generated_Image__2_.jpeg"
 seo:
   title: "Bridging the Gap: How Modern MLOps Platforms Serve Both Citizen Data Scientists and ML Engineers - ZenML Blog"
   description: "Discover how modern MLOps platforms are evolving to bridge the gap between citizen data scientists and ML engineers, tackling the complex challenge of serving both technical and non-technical users. This analysis explores the hidden costs of DIY platform building, infrastructure abstraction challenges, and the emerging solutions that enable seamless collaboration while maintaining governance and efficiency. Learn why the future of MLOps lies not in one-size-fits-all approaches, but in flexible, modular architectures that empower both personas to excel in their roles."
   canonical: "https://www.zenml.io/blog/how-modern-mlops-platforms-serve-both-citizen-data-scientists-and-ml-engineers"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/9e01791e/674704b6b6b459f6b1c3d5ef_Gemini_Generated_Image__2_.jpeg"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9e01791e/674704b6b6b459f6b1c3d5ef_Gemini_Generated_Image__2_.jpeg"
   ogTitle: "Bridging the Gap: How Modern MLOps Platforms Serve Both Citizen Data Scientists and ML Engineers - ZenML Blog"
   ogDescription: "Discover how modern MLOps platforms are evolving to bridge the gap between citizen data scientists and ML engineers, tackling the complex challenge of serving both technical and non-technical users. This analysis explores the hidden costs of DIY platform building, infrastructure abstraction challenges, and the emerging solutions that enable seamless collaboration while maintaining governance and efficiency. Learn why the future of MLOps lies not in one-size-fits-all approaches, but in flexible, modular architectures that empower both personas to excel in their roles."
 ---
@@ -57,7 +57,7 @@ One of the most persistent challenges in MLOps is the abstraction of infrastruct
 ## Bridging the Gap: From Experimentation to Production
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/6e5679bb/6747051e1b3a5f38ce4e254e_674704d9b1f1d42101dc99bb_CleanShot_202024-11-26_20at_2012.48.49.png" alt="Flowchart showing MLOps workflow from experimentation to production. Three main layers: Experimentation Environment (light blue) shows citizen data scientist&#039;s path through experiment workspace to model development and version registry; Production Environment (light blue) shows ML engineer&#039;s workflow through validation, deployment pipeline, model serving, and operations; these are connected by a handoff process. Both environments are overseen by a Governance Layer (light red) containing access management, compliance, lineage tracking, and resource management. An Infrastructure Layer (light green) at the bottom supports both environments with cloud providers, compute resources, and credentials management." />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6e5679bb/6747051e1b3a5f38ce4e254e_674704d9b1f1d42101dc99bb_CleanShot_202024-11-26_20at_2012.48.49.png" alt="Flowchart showing MLOps workflow from experimentation to production. Three main layers: Experimentation Environment (light blue) shows citizen data scientist&#039;s path through experiment workspace to model development and version registry; Production Environment (light blue) shows ML engineer&#039;s workflow through validation, deployment pipeline, model serving, and operations; these are connected by a handoff process. Both environments are overseen by a Governance Layer (light red) containing access management, compliance, lineage tracking, and resource management. An Infrastructure Layer (light green) at the bottom supports both environments with cloud providers, compute resources, and credentials management." />
 </figure>
 
 The real challenge isn't just building two separate platforms – it's creating a seamless handoff mechanism between them. Organizations need a way to:

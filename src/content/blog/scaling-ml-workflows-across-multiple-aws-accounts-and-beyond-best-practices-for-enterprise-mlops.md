@@ -19,12 +19,12 @@ tags:
 date: "2025-04-28T00:00:00.000Z"
 readingTime: 12 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/7f1fd203/680fb894b45fc2e8a9f2f112_streamlining-model-promotion-blog-cover-vf.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7f1fd203/680fb894b45fc2e8a9f2f112_streamlining-model-promotion-blog-cover-vf.png"
 seo:
   title: "Scaling ML Workflows Across Multiple AWS Accounts (and Beyond): Best Practices for Enterprise MLOps - ZenML Blog"
   description: "Enterprises struggle with ML model management across multiple AWS accounts (development, staging, and production), which creates operational bottlenecks despite providing security benefits. This post dives into ten critical MLOps challenges in multi-account AWS environments, including complex pipeline languages, lack of centralized visibility, and configuration management issues. Learn how organizations can leverage ZenML's solutions to achieve faster, more reliable model deployment across Dev, QA, and Prod environments while maintaining security and compliance requirements."
   canonical: "https://www.zenml.io/blog/scaling-ml-workflows-across-multiple-aws-accounts-and-beyond-best-practices-for-enterprise-mlops"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/7f1fd203/680fb894b45fc2e8a9f2f112_streamlining-model-promotion-blog-cover-vf.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7f1fd203/680fb894b45fc2e8a9f2f112_streamlining-model-promotion-blog-cover-vf.png"
   ogTitle: "Scaling ML Workflows Across Multiple AWS Accounts (and Beyond): Best Practices for Enterprise MLOps - ZenML Blog"
   ogDescription: "Enterprises struggle with ML model management across multiple AWS accounts (development, staging, and production), which creates operational bottlenecks despite providing security benefits. This post dives into ten critical MLOps challenges in multi-account AWS environments, including complex pipeline languages, lack of centralized visibility, and configuration management issues. Learn how organizations can leverage ZenML's solutions to achieve faster, more reliable model deployment across Dev, QA, and Prod environments while maintaining security and compliance requirements."
 ---
@@ -42,7 +42,7 @@ Organizations with mature ML practices typically implement a multi-account strat
 <ol><li><strong>Development/Experimentation</strong>: Where data scientists build and test models</li><li><strong>Staging/QA</strong>: Where models undergo validation and compliance checks</li><li><strong>Production</strong>: Where approved models serve business-critical applications</li></ol>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/156809ba/680fb1e04674bb2971756766_ML-13463-architecture-diagram.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/156809ba/680fb1e04674bb2971756766_ML-13463-architecture-diagram.png" alt="__wf_reserved_inherit" />
   <figcaption>Source: “How Aviva built a scalable, secure, and reliable MLOps platform using Amazon SageMaker.”</figcaption>
 </figure>
 
@@ -70,7 +70,7 @@ These challenges are especially acute for organizations managing dozens of model
 AWS MLOps implementations can require multiple different contexts across different libraries and SDKs, from YAML to Python, which can get overwhelming for managing efficiency at scale. For example, to create a single training workflow, one might have to write local scripts, push to CodeCommit, then write a CI workflow that compiles into a Sagemaker pipeline SDK.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/d685e180/680fb28c090846c25c2868eb_image.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d685e180/680fb28c090846c25c2868eb_image.png" alt="__wf_reserved_inherit" />
   <figcaption>Many different touchpoints to deploy a ML pipeline on AWS</figcaption>
 </figure>
 
@@ -118,7 +118,7 @@ ZenML provides a central dashboard that shows all pipelines, models, and metrics
 <ul><li>Track model lineage from development to production</li><li>Compare model performance across environments</li><li>Monitor deployment status across all accounts</li><li>Manage approvals from a central location</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/1de036e5/6810d27936a8b920060eba5b_central-dashboard-artifact-metadata-visualization-2.gif" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1de036e5/6810d27936a8b920060eba5b_central-dashboard-artifact-metadata-visualization-2.gif" alt="__wf_reserved_inherit" />
 </figure>
 
 <h3 class="challenge-title-3">
@@ -192,7 +192,7 @@ def deploy_model(model):
 ```
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/76d6177c/680fb3b9fd2d51e98c50bc4e_image__1_.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/76d6177c/680fb3b9fd2d51e98c50bc4e_image__1_.png" alt="__wf_reserved_inherit" />
 </figure>
 
 <h3 class="challenge-title">
@@ -296,7 +296,7 @@ Data scientists develop locally but deploy to AWS cloud environments, creating a
 ZenML allows the exact same code to run locally or in any AWS account:
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/a614dbb1/680fb4514884f1816b1ea558_pipeline_architecture.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a614dbb1/680fb4514884f1816b1ea558_pipeline_architecture.png" alt="__wf_reserved_inherit" />
 </figure>
 
 <h3 class="challenge-title">
@@ -322,7 +322,7 @@ Many organizations operate across multiple cloud providers or maintain hybrid en
 ZenML's stack abstraction layer allows the same pipelines to run seamlessly across different cloud providers using detailed stack configurations. See this animation to see how easily we can configure stack components for different providers across different regions with a few  clicks (you can also do this via Terraform or API):
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/07dbbc8e/680fb468ad9313f61c767518_ezgif-897208260645f8.gif" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/07dbbc8e/680fb468ad9313f61c767518_ezgif-897208260645f8.gif" alt="__wf_reserved_inherit" />
 </figure>
 
 <h3 class="challenge-title">
@@ -366,7 +366,7 @@ def regulatory_visualization_step(compliance_report, drift_report):
 ```
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/2f3071cf/680fb49415f0b629049c25a9_ezgif-8f3679c2b7517a.gif" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2f3071cf/680fb49415f0b629049c25a9_ezgif-8f3679c2b7517a.gif" alt="__wf_reserved_inherit" />
 </figure>
 
 This approach allows organizations to implement "data-quality gates & alerting easily," as mentioned in their case study, while Brevo has leveraged similar techniques to become "a safer platform, fighting against fraudsters and scammers." The visualizations and reports generated serve as crucial documentation for audit purposes while ensuring consistent governance across all AWS environments.
@@ -439,7 +439,7 @@ def train_model(params: Dict[str, Any]):
 You can then compare metadata easily in one interface across stacks and models:
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/bfe6807f/680fb4f067c6206e44f9d6e6_image__2_.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/bfe6807f/680fb4f067c6206e44f9d6e6_image__2_.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ## Transforming MLOps Across AWS Accounts

@@ -2,7 +2,7 @@
 name: "Jayesh Sharma"
 slug: "jayesh-sharma"
 avatar:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/8985d1e6/66e3fed762527b4cb6405f56_652f90f2488ed3e2036a771a_jayesh-p-800.jpeg"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8985d1e6/66e3fed762527b4cb6405f56_652f90f2488ed3e2036a771a_jayesh-p-800.jpeg"
 webflow:
   siteId: "64a817a2e7e2208272d1ce30"
   itemId: "652f7faaba1640e3fc6b6618"

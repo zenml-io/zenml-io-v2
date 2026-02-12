@@ -18,12 +18,12 @@ tags:
 date: "2024-08-09T00:00:00.000Z"
 readingTime: 12 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/cb48f11f/66b231af4e5e9fcc902e48a7_zenml-airflow-kubeflow-vertex-cloudcomposer-min.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/cb48f11f/66b231af4e5e9fcc902e48a7_zenml-airflow-kubeflow-vertex-cloudcomposer-min.png"
 seo:
   title: "MLOps on GCP: Cloud Composer (Airflow) vs Vertex AI (Kubeflow) - ZenML Blog"
   description: "Cloud Composer (Airflow) vs Vertex AI (Kubeflow): How to choose the right orchestration service on GCP based on your requirements and internal resources."
   canonical: "https://www.zenml.io/blog/cloud-composer-airflow-vs-vertex-ai-kubeflow"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/84525d93/66b231af4e5e9fcc902e48a7_zenml-airflow-kubeflow-vertex-cloudcomposer-min.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/84525d93/66b231af4e5e9fcc902e48a7_zenml-airflow-kubeflow-vertex-cloudcomposer-min.png"
   ogTitle: "MLOps on GCP: Cloud Composer (Airflow) vs Vertex AI (Kubeflow) - ZenML Blog"
   ogDescription: "Cloud Composer (Airflow) vs Vertex AI (Kubeflow): How to choose the right orchestration service on GCP based on your requirements and internal resources."
 ---
@@ -77,7 +77,7 @@ From the offset, this example demonstrates how Vertex AI Pipelines can offer sig
 ## Using ZenML to bridge the gap between Airflow and Kubeflow
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/de243447/66b0f47d42b5b042b4604494_66b0f41bd9f86bf7ca4e3b93_mlops-gcp02.png" alt="A diagram showing how ZenML, the opensource MLOps framework, integrates to various Google Cloud Platform services like Vertex AI  and Cloud Composer." />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/de243447/66b0f47d42b5b042b4604494_66b0f41bd9f86bf7ca4e3b93_mlops-gcp02.png" alt="A diagram showing how ZenML, the opensource MLOps framework, integrates to various Google Cloud Platform services like Vertex AI  and Cloud Composer." />
 </figure>
 
 ZenML is an open-source MLOps framework designed to simplify the development, deployment, and management of machine learning workflows. It provides data scientists and ML engineers with a standardized approach to building production-ready machine learning pipelines.
@@ -95,7 +95,7 @@ By providing this bridge, ZenML enables teams to leverage the mature ecosystem a
 ## Example ML Workflow: Optimized Cloud Spend with Cloud Composer and Vertex AI
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/61f6b140/66b23731b8a56f8388458666_66b2337d33dc71c2cfd98158_zenml_airflow_vertex_gcp_mlops-min.png" alt="A flow diagram showing the components and data flow of an AI/ML pipeline. It includes steps for data extraction, transformation, augmentation, model training, and deployment. The pipeline runs on Airflow and Vertex platforms." />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/61f6b140/66b23731b8a56f8388458666_66b2337d33dc71c2cfd98158_zenml_airflow_vertex_gcp_mlops-min.png" alt="A flow diagram showing the components and data flow of an AI/ML pipeline. It includes steps for data extraction, transformation, augmentation, model training, and deployment. The pipeline runs on Airflow and Vertex platforms." />
 </figure>
 
 To illustrate how ZenML can leverage both Cloud Composer and Vertex AI, let's consider a practical example: the [ECB interest rate prediction pipeline](https://github.com/zenml-io/zenml-projects/tree/main/airflow-cloud-composer-etl-feature-train). This real-world scenario demonstrates how ZenML seamlessly integrates these platforms for effective ML workflow orchestration. The example showcases the seamless integration between Airflow and Vertex AI, leveraging the strengths of both platforms within the ZenML framework.
@@ -193,7 +193,7 @@ To learn more about the terraform script, read the [ZenML documentation.](https:
 **Step 1: ETL Pipeline**
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/0d716166/66b23731b8a56f8388458653_66b23522f9d58e717e8b3049_pipes01-min.png" alt="A diagram showing the data extraction and transformation steps of an AI/ML pipeline. It includes components for extracting data, transforming it, and generating a transformed dataset." />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/0d716166/66b23731b8a56f8388458653_66b23522f9d58e717e8b3049_pipes01-min.png" alt="A diagram showing the data extraction and transformation steps of an AI/ML pipeline. It includes components for extracting data, transforming it, and generating a transformed dataset." />
 </figure>
 
 This pipeline extracts raw ECB interest rate data, transforms it, and loads the cleaned data into a BigQuery dataset.
@@ -212,7 +212,7 @@ python run.py --etl --mode production
 **Step 2: Feature Engineering Pipeline**
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/a8b222aa/66b23731b8a56f838845864b_66b23575e30f52fbf88bfd93_pipes02-min.png" alt="A diagram depicting the data augmentation and model training phases of an AI/ML pipeline. It includes components for creating an augmented dataset, training an XGBoost model, and generating model metrics." />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a8b222aa/66b23731b8a56f838845864b_66b23575e30f52fbf88bfd93_pipes02-min.png" alt="A diagram depicting the data augmentation and model training phases of an AI/ML pipeline. It includes components for creating an augmented dataset, training an XGBoost model, and generating model metrics." />
 </figure>
 
 This pipeline takes the transformed dataset and augments it with additional features. Again the result is stored in a BigQuery dataset.
@@ -231,7 +231,7 @@ python run.py --feature --transformed_dataset_version "200"
 **Step 3: Model Training Pipeline**
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/9b650e09/66b23731b8a56f8388458647_66b235b48ac4f8603cee12bb_pipes03-min.png" alt="A diagram illustrating the model promotion and deployment steps of an AI/ML pipeline. It includes a component for the promoted model and shows that the pipeline runs on the Vertex platform." />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9b650e09/66b23731b8a56f8388458647_66b235b48ac4f8603cee12bb_pipes03-min.png" alt="A diagram illustrating the model promotion and deployment steps of an AI/ML pipeline. It includes a component for the promoted model and shows that the pipeline runs on the Vertex platform." />
 </figure>
 
 This pipeline uses the augmented dataset to train an XGBoost regression model and potentially promote it with the [ZenML Model Control Plane. ](https://docs.zenml.io/how-to/use-the-model-control-plane)
@@ -256,7 +256,7 @@ This example showcases how ZenML simplifies the process of building complex, mul
 ## Using Gradio to Demo the Model
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/9209b6e8/66b0f47d42b5b042b4604497_66b0f46d69066b833519d6ed_gradio.png" alt="ECB Main Refinancing Rate Prediction Tool - Users can input Deposit Facility and Marginal Lending Facility Rates to forecast the ECB&#039;s Main Refinancing Rate. Includes sliders to adjust input values and a output field to display the predicted rate." />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9209b6e8/66b0f47d42b5b042b4604497_66b0f46d69066b833519d6ed_gradio.png" alt="ECB Main Refinancing Rate Prediction Tool - Users can input Deposit Facility and Marginal Lending Facility Rates to forecast the ECB&#039;s Main Refinancing Rate. Includes sliders to adjust input values and a output field to display the predicted rate." />
 </figure>
 
 After training and deploying our model using ZenML, we can create an interactive demo using Gradio. This allows stakeholders to easily interact with the model and understand its predictions without needing to dive into the code.

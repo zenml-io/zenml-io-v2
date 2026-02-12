@@ -12,7 +12,7 @@ webflow:
   createdOn: "2023-10-18T07:58:18.959Z"
 position: "Founding Solutions Engineer"
 photo:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/f1ad96e3/652f9019929fdbade2b61a76_alexej.jpeg"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f1ad96e3/652f9019929fdbade2b61a76_alexej.jpeg"
 email: "alexej@zenml.io"
 linkedin: "https://www.linkedin.com/in/alexej-penner/"
 order: 6

@@ -12,18 +12,18 @@ webflow:
   createdOn: "2024-05-29T11:44:01.112Z"
 integrationType: "experiment-tracker"
 logo:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/7195594b/66d8678adb416cf13838baeb_comet.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7195594b/66d8678adb416cf13838baeb_comet.png"
 shortDescription: "Effortlessly track and visualize Comet experiments with ZenML pipelines"
 docsUrl: "https://docs.zenml.io/stack-components/experiment-trackers/comet"
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/cb2888c4/66e9ab03fc78245ffa53c4af_Integration_image.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/cb2888c4/66e9ab03fc78245ffa53c4af_Integration_image.png"
 relatedBlogPosts:
   - "integrate-zenml-and-comet-for-better-experiment-tracking"
 seo:
   title: "Integrate Comet with ZenML - Experiment Tracker Integrations"
   description: "Effortlessly track and visualize Comet experiments with ZenML pipelines"
   canonical: "https://www.zenml.io/integrations/comet"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/cb2888c4/66e9ab03fc78245ffa53c4af_Integration_image.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/cb2888c4/66e9ab03fc78245ffa53c4af_Integration_image.png"
   ogTitle: "Integrate Comet with ZenML - Experiment Tracker Integrations"
   ogDescription: "Effortlessly track and visualize Comet experiments with ZenML pipelines"
 ---

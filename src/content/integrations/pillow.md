@@ -12,17 +12,17 @@ webflow:
   createdOn: "2023-10-12T09:13:15.613Z"
 integrationType: "modeling"
 logo:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/ead3d425/66d86817964104ce1a2057f3_pillow.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ead3d425/66d86817964104ce1a2057f3_pillow.png"
 shortDescription: "PIL is the Python Imaging Library, most commonly used via the Pillow fork. This integration allows you to materialize image artifacts."
 docsUrl: "https://docs.zenml.io/how-to/visualize-artifacts/types-of-visualizations"
 githubUrl: "https://github.com/zenml-io/zenml/tree/main"
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/9169bcc6/6527e2962dddd2674a0325ce_pexels_leah_kelley_185933_629915726d.webp"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9169bcc6/6527e2962dddd2674a0325ce_pexels_leah_kelley_185933_629915726d.webp"
 seo:
   title: "Integrate Pillow with ZenML - Modeling Integrations"
   description: "PIL is the Python Imaging Library, most commonly used via the Pillow fork. This integration allows you to materialize image artifacts."
   canonical: "https://www.zenml.io/integrations/pillow"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/9169bcc6/6527e2962dddd2674a0325ce_pexels_leah_kelley_185933_629915726d.webp"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9169bcc6/6527e2962dddd2674a0325ce_pexels_leah_kelley_185933_629915726d.webp"
   ogTitle: "Integrate Pillow with ZenML - Modeling Integrations"
   ogDescription: "PIL is the Python Imaging Library, most commonly used via the Pillow fork. This integration allows you to materialize image artifacts."
 ---

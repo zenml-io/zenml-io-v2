@@ -20,12 +20,12 @@ tags:
 date: "2025-05-19T00:00:00.000Z"
 readingTime: 7 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/9e3d0f95/682aef103777dd48ba17665c_Stop_Wasting_Time__1_.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9e3d0f95/682aef103777dd48ba17665c_Stop_Wasting_Time__1_.png"
 seo:
   title: "Stop Wasting Time Debating ML Platforms—Your Team Will Use Multiple Anyway - ZenML Blog"
   description: "Future-proof your ML operations by building portable pipelines that work across multiple platforms instead of forcing standardization on a single solution."
   canonical: "https://www.zenml.io/blog/stop-wasting-time-debating-ml-platforms--your-team-will-use-multiple-anyway"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/9e3d0f95/682aef103777dd48ba17665c_Stop_Wasting_Time__1_.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9e3d0f95/682aef103777dd48ba17665c_Stop_Wasting_Time__1_.png"
   ogTitle: "Stop Wasting Time Debating ML Platforms—Your Team Will Use Multiple Anyway - ZenML Blog"
   ogDescription: "Future-proof your ML operations by building portable pipelines that work across multiple platforms instead of forcing standardization on a single solution."
 ---
@@ -63,7 +63,7 @@ DENSO, one of the world's largest automotive suppliers, faced serious challenges
 [Read the DENSO case study →](https://kubernetes.io/case-studies/denso/)
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/cfb14aae/682aec546875750998412de0_CleanShot_May_19_from_ML_Platforms.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/cfb14aae/682aec546875750998412de0_CleanShot_May_19_from_ML_Platforms.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ## When each platform type excels
@@ -71,7 +71,7 @@ DENSO, one of the world's largest automotive suppliers, faced serious challenges
 Each platform category serves a specific set of needs in the ML lifecycle, which is precisely why organizations inevitably end up using multiple platforms. Understanding these strengths helps teams make informed decisions about where to deploy specific workloads—while maintaining portable pipeline code that can move between platforms.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/2f4e2f55/682aec639f9cccb93f409ddc_Visual_Selection__1___1_.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2f4e2f55/682aec639f9cccb93f409ddc_Visual_Selection__1___1_.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Kubernetes-backed Platforms shine when...
@@ -109,7 +109,7 @@ These solutions shine when regulatory requirements mandate local data processing
 The multi-platform reality becomes most apparent when you encounter the inherent limitations of each platform type. These constraints aren't design flaws—they're natural trade-offs that emerge from each platform's architectural choices and priorities.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/937d23f2/682aec78b42d096beec54543_Visual_Selection_from_Napkin_AI__2___1_.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/937d23f2/682aec78b42d096beec54543_Visual_Selection_from_Napkin_AI__2___1_.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Kubernetes-backed Platforms falter when...
@@ -131,7 +131,7 @@ Airbnb's machine learning infrastructure highlights this multi-platform challeng
 [Learn about Airbnb's Bighead →](https://www.youtube.com/watch?v=yBiyT1azwtQ)
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e11de570/682aec9618d15bb5486d1c89_CleanShot_May_19_from_ML_Platforms__1_.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e11de570/682aec9618d15bb5486d1c89_CleanShot_May_19_from_ML_Platforms__1_.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Open-source Orchestrators struggle when...
@@ -165,7 +165,7 @@ DoorDash's ML infrastructure perfectly illustrates the multi-platform reality. T
 [Explore DoorDash's ML architecture →](https://neptune.ai/blog/how-these-8-companies-implement-mlops)
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/9ccefd4d/682aec962ae7e2dc1d8ddab7_Stop_Wasting_Time_Debating_ML_Platforms.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9ccefd4d/682aec962ae7e2dc1d8ddab7_Stop_Wasting_Time_Debating_ML_Platforms.png" alt="__wf_reserved_inherit" />
 </figure>
 
 These scenarios aren't exceptions—they're the rule. The question isn't whether you'll operate in a multi-platform world, but how effectively you'll navigate it.
@@ -235,7 +235,7 @@ For example, you can build your pipeline once but still access Databricks' Delta
 Transitioning to portable pipelines doesn't require a "big bang" rewrite of your existing systems. The most successful organizations start with a single pipeline or team, prove the concept, and gradually expand. The decoupling approach can be applied incrementally, starting with new projects while existing systems continue to operate normally.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/090ffa63/682aec9f126887eebd7c3bde_Visual_Selection_from_Napkin_AI__3___1_.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/090ffa63/682aec9f126887eebd7c3bde_Visual_Selection_from_Napkin_AI__3___1_.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ## Cost lens — the hidden ROI of pipeline portability

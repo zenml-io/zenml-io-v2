@@ -21,12 +21,12 @@ tags:
 date: "2025-07-26T00:00:00.000Z"
 readingTime: 15 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/87ee2800/6981d37a71c3040935dbc35c_6981d2ac2de2dfee3e8167d0_langflow-vs-langgraph.avif"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/87ee2800/6981d37a71c3040935dbc35c_6981d2ac2de2dfee3e8167d0_langflow-vs-langgraph.avif"
 seo:
   title: "Langflow vs LangGraph: A Detailed Comparison for Building Agentic AI Systems - ZenML Blog"
   description: "This Langflow vs LangGraph article explains all the differences between these AI agentic systems."
   canonical: "https://www.zenml.io/blog/langflow-vs-langgraph"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/87ee2800/6981d37a71c3040935dbc35c_6981d2ac2de2dfee3e8167d0_langflow-vs-langgraph.avif"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/87ee2800/6981d37a71c3040935dbc35c_6981d2ac2de2dfee3e8167d0_langflow-vs-langgraph.avif"
   ogTitle: "Langflow vs LangGraph: A Detailed Comparison for Building Agentic AI Systems - ZenML Blog"
   ogDescription: "This Langflow vs LangGraph article explains all the differences between these AI agentic systems."
 ---
@@ -82,7 +82,7 @@ Now, let’s dive deeper into each feature and see how Langflow and LangGraph di
 #### Langflow
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/992b4dc6/6884656a3b28f8e72cf438e1_langflow-workflows-and-agents.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/992b4dc6/6884656a3b28f8e72cf438e1_langflow-workflows-and-agents.png" alt="__wf_reserved_inherit" />
   <figcaption>Langflow workflows and agents</figcaption>
 </figure>
 
@@ -103,14 +103,14 @@ You visually connect an Agent to tools like web search or calculators, and Langf
 What’s more, the framework also lets you build multi-agent workflows by including multiple Agent components that interact in sequence, or achieve conditional branching using logic components.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/03e3cbde/6884658318e6f05a5819f399_build-flows-with-langflow.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/03e3cbde/6884658318e6f05a5819f399_build-flows-with-langflow.png" alt="__wf_reserved_inherit" />
   <figcaption>Build flows with Langflow</figcaption>
 </figure>
 
 #### LangGraph
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/99f16d8c/688465ac58edc1a35e02b4c1_langgraph-workflows-and-agents.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/99f16d8c/688465ac58edc1a35e02b4c1_langgraph-workflows-and-agents.png" alt="__wf_reserved_inherit" />
   <figcaption>LangGraph workflows and agents</figcaption>
 </figure>
 
@@ -139,7 +139,7 @@ Multi-agent collaboration is where LangGraph excels. Since any node can be a sub
 #### Langflow
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/4d74b061/688465dff78c65307a6c3783_langflow-architecture-on-kubernetes.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/4d74b061/688465dff78c65307a6c3783_langflow-architecture-on-kubernetes.png" alt="__wf_reserved_inherit" />
   <figcaption>Langflow architecture on Kubernetes</figcaption>
 </figure>
 
@@ -156,7 +156,7 @@ While this is great for speed and simplicity, it offers less flexibility if you 
 #### LangGraph
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/aa262e9f/687b199e0760b0d1fb35819e_how-ai-agents-are-connected-in-langgraph.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/aa262e9f/687b199e0760b0d1fb35819e_how-ai-agents-are-connected-in-langgraph.png" alt="__wf_reserved_inherit" />
   <figcaption>How AI agents are connected in LangGraph</figcaption>
 </figure>
 
@@ -238,7 +238,7 @@ That being said, Langflow does offer some observability of state during developm
 #### LangGraph
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/718e6512/687b1b7ec161c85267291996_langgraph-state-and-memory-management.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/718e6512/687b1b7ec161c85267291996_langgraph-state-and-memory-management.png" alt="__wf_reserved_inherit" />
   <figcaption>LangGraph state and memory management</figcaption>
 </figure>
 
@@ -265,7 +265,7 @@ The former is about context; the latter is about true statefulness, a non-negoti
 #### Langflow
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/cc9dda72/6884686b62414a671071f5a3_langflow-as-an-mcp-client.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/cc9dda72/6884686b62414a671071f5a3_langflow-as-an-mcp-client.png" alt="__wf_reserved_inherit" />
   <figcaption>Langflow as an MCP client</figcaption>
 </figure>
 
@@ -276,7 +276,7 @@ Langflow fully embraces MCP by functioning as both a server and a client.
 #### LangGraph
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/1fe93db2/6884688c6780c9ca9b1ecb2c_langgraph-mcp.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1fe93db2/6884688c6780c9ca9b1ecb2c_langgraph-mcp.png" alt="__wf_reserved_inherit" />
   <figcaption>LangGraph MCP</figcaption>
 </figure>
 
@@ -303,7 +303,7 @@ Key integration categories include:
 ### LangGraph
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/86f7e780/687c6f66de8d851b3292b639_langchain-ecosystem.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/86f7e780/687c6f66de8d851b3292b639_langchain-ecosystem.png" alt="__wf_reserved_inherit" />
   <figcaption>LangGraph uses the LangChain ecosystem</figcaption>
 </figure>
 
@@ -342,7 +342,7 @@ This is the managed commercial offering with a tiered structure designed to scal
 <ul><li><strong>Developer</strong>: Includes up to 100K nodes executed per month</li><li><strong>Plus</strong>: $0.001 per node executed + standby charges</li><li><strong>Enterprise</strong>: Custom-built plan tailored to your business needs</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/97b85242/687b1c130365fe673ee85bab_langgraph-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/97b85242/687b1c130365fe673ee85bab_langgraph-pricing.png" alt="__wf_reserved_inherit" />
 </figure>
 
 **📚 Related article:**[LangGraph pricing guide](https://www.zenml.io/blog/langgraph-pricing)
@@ -350,7 +350,7 @@ This is the managed commercial offering with a tiered structure designed to scal
 ## How ZenML Helps In Closing the Outer Loop Around Your Agents
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/1aad74e0/687b1c29468fe4993262cdc5_zenML-helps-in-closing-the-outer-loop.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1aad74e0/687b1c29468fe4993262cdc5_zenML-helps-in-closing-the-outer-loop.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML for MLOps and LLMOps</figcaption>
 </figure>
 

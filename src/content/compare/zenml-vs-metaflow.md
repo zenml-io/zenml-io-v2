@@ -12,7 +12,7 @@ webflow:
   createdOn: "2024-07-12T13:21:00.830Z"
 toolName: "Metaflow"
 toolIcon:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/cba0b631/66912c659100581b94360eea_metaflow-icon.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/cba0b631/66912c659100581b94360eea_metaflow-icon.png"
 category: "e2e-platforms"
 integrationType: "e2e-platform"
 advantages:
@@ -27,12 +27,12 @@ ctaHeadline: "Experience the ZenML Difference: Elevate Your MLOps with Flexibili
 learnMoreUrl: "https://cloud.zenml.io/?utm_source=website&utm_medium=website_hero&utm_campaign=cloud_promotion&utm_content=signup_link"
 seoDescription: "Metaflow alternative: Flexible ML orchestration with comprehensive MLOps. Accelerate ML using adaptable architecture and seamless integrations."
 openGraphImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/ec16cf19/66c5fc98fadb3fe872287097_compare-metaflow.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ec16cf19/66c5fc98fadb3fe872287097_compare-metaflow.png"
 seo:
   title: "ZenML vs Metaflow - Streamline Your ML Workflows"
   description: "Metaflow alternative: Flexible ML orchestration with comprehensive MLOps. Accelerate ML using adaptable architecture and seamless integrations."
   canonical: "https://www.zenml.io/compare/zenml-vs-metaflow"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/ff7f4b25/66c5fc98fadb3fe872287097_compare-metaflow.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ff7f4b25/66c5fc98fadb3fe872287097_compare-metaflow.png"
   ogTitle: "ZenML vs Metaflow - Streamline Your ML Workflows"
   ogDescription: "Metaflow alternative: Flexible ML orchestration with comprehensive MLOps. Accelerate ML using adaptable architecture and seamless integrations."
 ---

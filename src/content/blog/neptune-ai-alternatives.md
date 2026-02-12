@@ -21,12 +21,12 @@ tags:
 date: "2025-12-08T00:00:00.000Z"
 readingTime: 17 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/f381babd/69365b26c5058ddb8a004123_neptune-ai-alternatives.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f381babd/69365b26c5058ddb8a004123_neptune-ai-alternatives.png"
 seo:
   title: "8 Best Neptune AI Alternatives to Track Your ML Experiments Better - ZenML Blog"
   description: "In this article, you will learn about the best Neptune AI alternatives to help you track your ML experiments better."
   canonical: "https://www.zenml.io/blog/neptune-ai-alternatives"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/f381babd/69365b26c5058ddb8a004123_neptune-ai-alternatives.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f381babd/69365b26c5058ddb8a004123_neptune-ai-alternatives.png"
   ogTitle: "8 Best Neptune AI Alternatives to Track Your ML Experiments Better - ZenML Blog"
   ogDescription: "In this article, you will learn about the best Neptune AI alternatives to help you track your ML experiments better."
 ---
@@ -42,7 +42,7 @@ Below, we present nine of the best Neptune AI alternatives – each offering rob
 ## Evaluation Criteria
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/f1919ab5/693659744317c7e15c359f4e_neptune-ai-alternatives-evaluation-criteria.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f1919ab5/693659744317c7e15c359f4e_neptune-ai-alternatives-evaluation-criteria.png" alt="__wf_reserved_inherit" />
   <figcaption>Neptune AI alternatives evaluation criteria</figcaption>
 </figure>
 
@@ -77,7 +77,7 @@ In a hurry, here’s a table summarizing the top Neptune AI alternatives:
 ## 1. ZenML
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/09f03b74/68ef8fecaaa4ab4a11f6d502_zenml-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/09f03b74/68ef8fecaaa4ab4a11f6d502_zenml-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [ZenML](https://www.zenml.io/) is an open-source MLOps + [LLMOps framework](https://docs.zenml.io/user-guides/llmops-guide) that specializes not just in experiment tracking, but also in providing an end-to-end platform covering experiment tracking and the rest of the ML lifecycle.
@@ -89,7 +89,7 @@ Let’s have a look at some features that ZenML has (similar to Neptune AI) and 
 ### Feature 1. Artifact Tracking and Visualization
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/7ff95713/6936599eb5c43e3aa03bf8a4_zenml-artifact-tracking-and_visualization.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7ff95713/6936599eb5c43e3aa03bf8a4_zenml-artifact-tracking-and_visualization.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ZenML automatically tracks and versions [every artifact produced in your pipelines](https://docs.zenml.io/user-guides/starter-guide/manage-artifacts). Models, datasets, and other outputs are stored in an artifact store and linked to the pipeline steps that create them.
@@ -103,7 +103,7 @@ This is the reason why [JetBrains chose ZenML](https://www.zenml.io/case-study/j
 ### Feature 2. Metadata Tracking
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/99c6b1be/693659af379ea1f1899b8f14_zenml-metadata-tracking.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/99c6b1be/693659af379ea1f1899b8f14_zenml-metadata-tracking.png" alt="__wf_reserved_inherit" />
 </figure>
 
 Beyond artifacts, ZenML captures [rich metadata about each run](https://docs.zenml.io/concepts/metadata). It logs parameters, metrics, source code versions, environment details, and even the Git commit ID automatically. Every pipeline run is an experiment tracked by ZenML - meaning you get experiment tracking **for free** whenever you run a pipeline.
@@ -113,7 +113,7 @@ This metadata-centric approach gives you experiment comparisons and insights sim
 ### Feature 3. Model Registry
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/79d72a4c/693659d12d41f0da893c6617_zenml-model-registry.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/79d72a4c/693659d12d41f0da893c6617_zenml-model-registry.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ZenML comes with a built-in model registry that lets you [register models as pipeline outputs](https://docs.zenml.io/concepts/models) and manage their stages (like assigning “production” or “staging” tags).
@@ -125,7 +125,7 @@ Neptune didn’t offer a native model registry – you had to rely on external t
 ### ZenML MLOps Integrations
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/ce3ffe8a/681c8ff1cff78cabbca5d18f_a-flowchart-explaning-how-zenml-integrates-with-multiple-tools-and-platform.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ce3ffe8a/681c8ff1cff78cabbca5d18f_a-flowchart-explaning-how-zenml-integrates-with-multiple-tools-and-platform.png" alt="__wf_reserved_inherit" />
 </figure>
 
 One of ZenML’s strengths is its flexibility and [integration with other MLOps tools](https://www.zenml.io/integrations). It is designed to be cloud-agnostic and pluggable (‘no lock-in’ philosophy). You can mix and match infrastructure backends in a ZenML stack – for example, log artifacts to S3, run pipelines on Kubernetes, use MLflow or Weights & Biases as tracking UIs if desired, etc.
@@ -153,7 +153,7 @@ ZenML is free and open-source (Apache 2.0 License). The core framework, includin
 These paid plans include features like SSO, role-based access control, premium support, and hosting, but **all the core functionality remains free** in the open-source version. Essentially, you can start with ZenML’s free tier and only consider paid options if you need advanced collaboration or want ZenML to manage the infrastructure for you.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/8457aa72/68749c6f3e4df322cd38399e_zenml-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8457aa72/68749c6f3e4df322cd38399e_zenml-pricing.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -165,7 +165,7 @@ However, ZenML is comparatively newer to the market and is not as battle-tested 
 ## 2. Weights & Biases
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/f4f47968/69365a308418f2814bc63fe6_weight-and-biases-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f4f47968/69365a308418f2814bc63fe6_weight-and-biases-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [Weights & Biases](https://wandb.ai/site/) is a popular cloud-based platform for experiment tracking and model management, making it a strong alternative to Neptune. It provides a polished UI for real-time monitoring of ML runs, and it’s known for its powerful visualization and collaboration features.
@@ -185,7 +185,7 @@ For Cloud-hosted, it has 3 plans to choose from:
 And it has a Personal and Advanced Enterprise plan (both are custom pricing) for a privately-hosted platform.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/7a6eb8a9/69365a4e50c73c4663ec2096_weights-and-biases-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7a6eb8a9/69365a4e50c73c4663ec2096_weights-and-biases-pricing.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -197,7 +197,7 @@ However, the pricing can become steep for large teams. The proprietary nature of
 ## 3. MLflow
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/b8effeb3/69365a5d36e879907aae8349_mlflow-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b8effeb3/69365a5d36e879907aae8349_mlflow-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [MLflow](https://mlflow.org/) is an open-source platform originally developed by Databricks, and it has become a de facto standard for experiment tracking in many ML teams. If you’re looking for a Neptune alternative that you can self-host and integrate easily with various tools, MLflow is a top contender.
@@ -213,7 +213,7 @@ MLflow is free and open-source. You can install an MLflow tracking server on you
 There is no official paid version of MLflow itself except via companies that offer it as a service. For instance, Databricks provides a managed MLflow as part of its platform (with enterprise features like access control), and cloud vendors integrate MLflow into their offerings (with some limitations).
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/99b46ec3/69365a6a6cb21d693440f9d2_mlflow-managed-service-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/99b46ec3/69365a6a6cb21d693440f9d2_mlflow-managed-service-pricing.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -225,7 +225,7 @@ The downside is the user interface. It feels dated and less interactive compared
 ## 4. Comet ML
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/46db8add/69365a76ab2f1a7c849ec9c3_comet-ml-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/46db8add/69365a76ab2f1a7c849ec9c3_comet-ml-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [Comet ML](https://www.comet.com/site/) is another experiment tracking platform that overlaps with Neptune’s feature set and goes a bit further. It’s a SaaS-first tool (with on-prem options) that allows tracking, visualizing, and comparing experiments, plus it includes a model registry and even some production monitoring.
@@ -241,7 +241,7 @@ Comet ML offers a free plan, two paid plans:
 <ul><li><strong>Pro:</strong> $39 per user per month</li><li><strong>Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/88bd018e/69365a81d770ef5b235d84bd_comet-ml-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/88bd018e/69365a81d770ef5b235d84bd_comet-ml-pricing.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -253,7 +253,7 @@ However, collaboration features like organizing teams and projects are only avai
 ## 5. AimStack
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/2d8d74a5/69365a8ca86074ef5baa4368_aimstack-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2d8d74a5/69365a8ca86074ef5baa4368_aimstack-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [AimStack](https://aimstack.io/) (Aim) is an open-source experiment tracker that has gained popularity as a lightweight yet powerful alternative to tools like Neptune. It’s essentially an open-source version of an experiment tracking UI, which you can self-host for free.
@@ -269,7 +269,7 @@ Aim is completely free in its open-source form. You can use it without any licen
 <ul><li><strong>Team Tier:</strong> $11 per month per user</li><li><strong>Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/bbb9e243/69365a96417a92c73eb616f5_aimstack-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/bbb9e243/69365a96417a92c73eb616f5_aimstack-pricing.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -281,7 +281,7 @@ The downside is that it is a newer tool compared to others on the list. The comm
 ## 6. ClearML
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/b5964590/69365aa3d9e7a43d26b864fb_clearml-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b5964590/69365aa3d9e7a43d26b864fb_clearml-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [ClearML](https://clear.ml/) is an end-to-end MLOps platform that includes experiment tracking as one of its core components. It can be seen as a more expansive alternative to Neptune – not only does it track experiments, but it also offers orchestration, data management, and even a pipeline scheduler.
@@ -295,7 +295,7 @@ The downside is that it is a newer tool compared to others on the list. The comm
 ClearML comes with a free plan (Community) that offers most of the MLOps features and 100GB of free artifact storage. But if you want more storage, API calls, and additional features, you can switch to its Pro version that costs $15 per month per user + usage.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/11f585c3/69365ab123f5230b889e8aaf_clearml-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/11f585c3/69365ab123f5230b889e8aaf_clearml-pricing.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -307,7 +307,7 @@ Because ClearML does a lot, some parts are not as polished as dedicated tools. F
 ## 7. Polyaxon
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e8b3ca0b/69365abf5340ea3acca9816f_polyaxon-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e8b3ca0b/69365abf5340ea3acca9816f_polyaxon-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [Polyaxon](https://polyaxon.com/) is a platform that originally focused on experiment management and hyperparameter tuning on Kubernetes. Over time, it evolved into a full ML lifecycle platform. It tracks experiments similar to Neptune, but its real strength is in orchestrating them at scale (particularly in cloud or on-prem clusters).
@@ -325,7 +325,7 @@ The first one is a Hybrid cloud where you have three plans to choose from:
 <ul><li><strong>Platform:</strong> $450 per month billed annually ($555 monthly)</li><li><strong>Teams:</strong> $1,200 per month billed annually ($1,500 monthly)</li><li><strong>Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/512f5dd8/69365ae02f6a26069ecd1598_polyaxon-hybrid-cloud-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/512f5dd8/69365ae02f6a26069ecd1598_polyaxon-hybrid-cloud-pricing.png" alt="__wf_reserved_inherit" />
 </figure>
 
 It also has plans to self-host the platform:
@@ -333,7 +333,7 @@ It also has plans to self-host the platform:
 <ul><li><strong>Community:</strong> Free</li><li><strong>Business:</strong> $4,000 per month billed annually</li><li><strong>Enterprise:</strong> Custom</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/509161ca/69365aed633bfabe9bd856a5_polyaxon-self-hosted-plans-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/509161ca/69365aed633bfabe9bd856a5_polyaxon-self-hosted-plans-pricing.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -345,7 +345,7 @@ But setting up Polyaxon, especially the open-source version on a Kubernetes clus
 ## 8. Google Vertex AI
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/5d9e1435/69365afc3efcced0b4707d6e_google-vertex-ai-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5d9e1435/69365afc3efcced0b4707d6e_google-vertex-ai-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [Vertex AI](https://cloud.google.com/vertex-ai) is Google Cloud’s unified ML platform, which includes experiment tracking among its many services. If you were using Neptune and are open to a cloud-specific solution, Vertex AI could step in by logging experiments within the broader Google ecosystem.
@@ -361,7 +361,7 @@ Vertex AI’s experiment tracking does not have a separate charge; you pay for t
 The pricing model for Vertex AI is pay-as-you-go for each service (training, prediction, etc.). There’s no user-based pricing – instead, costs come from compute, storage, and other services used.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/6bf713f8/69365b11a601fb4416bbddf5_google-vertex-ai-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6bf713f8/69365b11a601fb4416bbddf5_google-vertex-ai-pricing.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons

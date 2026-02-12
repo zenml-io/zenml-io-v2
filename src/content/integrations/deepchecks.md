@@ -12,17 +12,17 @@ webflow:
   createdOn: "2023-10-12T09:13:16.443Z"
 integrationType: "data-validator"
 logo:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/544fdc24/66d867e77279ed98da4c637f_deepchecks.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/544fdc24/66d867e77279ed98da4c637f_deepchecks.png"
 shortDescription: "Automate robust data and model validation in your ML pipelines with Deepchecks and ZenML"
 docsUrl: "https://docs.zenml.io/stack-components/data-validators/deepchecks"
 githubUrl: "https://github.com/zenml-io/zenml/tree/main/examples/deepchecks"
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/19463ec9/66e0303fc6916694d6ca6c99_image__4_.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/19463ec9/66e0303fc6916694d6ca6c99_image__4_.png"
 seo:
   title: "Integrate Deepchecks with ZenML - Data Validator Integrations"
   description: "Automate robust data and model validation in your ML pipelines with Deepchecks and ZenML"
   canonical: "https://www.zenml.io/integrations/deepchecks"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/19463ec9/66e0303fc6916694d6ca6c99_image__4_.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/19463ec9/66e0303fc6916694d6ca6c99_image__4_.png"
   ogTitle: "Integrate Deepchecks with ZenML - Data Validator Integrations"
   ogDescription: "Automate robust data and model validation in your ML pipelines with Deepchecks and ZenML"
 ---

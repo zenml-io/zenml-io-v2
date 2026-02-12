@@ -21,12 +21,12 @@ tags:
 date: "2025-10-15T00:00:00.000Z"
 readingTime: 15 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/31d89e2e/6981d352ce4b26d085d7040e_6981d2b4aed180881e426c5a_best-llm-orchestration-frameworks.avif"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/31d89e2e/6981d352ce4b26d085d7040e_6981d2b4aed180881e426c5a_best-llm-orchestration-frameworks.avif"
 seo:
   title: "9 Best LLM Orchestration Frameworks for Agents and RAG - ZenML Blog"
   description: "Discover the 9 best LLM orchestration frameworks for agents and RAG."
   canonical: "https://www.zenml.io/blog/best-llm-orchestration-frameworks"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/31d89e2e/6981d352ce4b26d085d7040e_6981d2b4aed180881e426c5a_best-llm-orchestration-frameworks.avif"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/31d89e2e/6981d352ce4b26d085d7040e_6981d2b4aed180881e426c5a_best-llm-orchestration-frameworks.avif"
   ogTitle: "9 Best LLM Orchestration Frameworks for Agents and RAG - ZenML Blog"
   ogDescription: "Discover the 9 best LLM orchestration frameworks for agents and RAG."
 ---
@@ -42,7 +42,7 @@ In this guide, we break down 9 of the best LLM orchestration frameworks for agen
 Before we jump in, let’s examine the three key factors to look for in an LLM orchestration framework.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/32f4e31f/68ef27ca0bda01dc529b05ab_factors-to-consider-when-selecting-an-llm-orchestration-framework.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/32f4e31f/68ef27ca0bda01dc529b05ab_factors-to-consider-when-selecting-an-llm-orchestration-framework.webp" alt="__wf_reserved_inherit" />
   <figcaption>Factors to consider when selecting an LLM orchestration framework</figcaption>
 </figure>
 
@@ -81,7 +81,7 @@ Ideally, look for LLM orchestrations frameworks that support experiment trackers
 ## 1. ZenML
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/d6b09280/68ef2801cad1ae0486def13f_zenml-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d6b09280/68ef2801cad1ae0486def13f_zenml-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [ZenML](https://www.zenml.io/) is an open-source MLOps and LLMOps framework designed to help teams build reliable, reproducible, and production-grade AI systems. For LLM orchestration, ZenML provides the same battle-tested orchestration backbone that powers ML pipelines, now extended to manage the entire LLM lifecycle, from data preparation to model evaluation and deployment.
@@ -97,7 +97,7 @@ Ideally, look for LLM orchestrations frameworks that support experiment trackers
 We are upgrading our platform to bring every ML and LLM workflow into one place for you to run, track, and improve. Think of processes like data preparation, training, RAG indexing, agent orchestration, and more, all in one place.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/b1937f86/68ef282419ad348d35bd9c69_zenml-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b1937f86/68ef282419ad348d35bd9c69_zenml-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -109,7 +109,7 @@ Automatic tracing and some LLM-specific observability features are still in deve
 ## 2. LangGraph
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/6b363b91/68ef2831865daf9e8b685ca8_langgraph-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6b363b91/68ef2831865daf9e8b685ca8_langgraph-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [LangGraph](https://www.langchain.com/langgraph) is an extension of the popular LangChain library. It provides a cyclical, graph-based architecture for building stateful LLM agents. You define each step or tool invocation as a node in a directed graph, and edges control the flow of information.
@@ -127,7 +127,7 @@ LangGraph’s core library is open-source and free to use. While the cloud platf
 <ul><li><strong>Developer:</strong> Free</li><li><strong>Plus:</strong> $39 per month</li><li><strong>Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/c2dc5e77/68ba62f138468c579932e7c7_langgraph-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c2dc5e77/68ba62f138468c579932e7c7_langgraph-pricing.png" alt="__wf_reserved_inherit" />
 </figure>
 
 **📚 Also read:** [LangGraph pricing](https://www.zenml.io/blog/langgraph-pricing)
@@ -141,7 +141,7 @@ This code-first approach, while powerful, results in a steeper learning curve. L
 ## 3. LlamaIndex
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/0bef8451/68ef28645636a97547cbf0fb_llamaindex-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/0bef8451/68ef28645636a97547cbf0fb_llamaindex-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [LlamaIndex](https://www.llamaindex.ai/) is a data framework built to connect custom data sources to LLMs. It’s best suited for creating RAG applications and also provides tools for building LLM agents that can plan and act based on that data.
@@ -159,7 +159,7 @@ The open-source LlamaIndex library is licensed under the MIT license and is free
 <ul><li><strong>Free tier:</strong> $0, includes 10k credits (sufficient to try out with smaller workloads).</li><li><strong>Starter plan:</strong> $50 per month, includes 50k credits</li><li><strong>Pro plan:</strong> $500 per month, includes 500k credits</li><li><strong>Enterprise plan:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/784b34c8/68ba635fc1f82b66de6669c5_llamaindex-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/784b34c8/68ba635fc1f82b66de6669c5_llamaindex-pricing.png" alt="__wf_reserved_inherit" />
 </figure>
 
 **📚 Also read:** [LlamaIndex pricing](https://www.zenml.io/blog/llamaindex-pricing)
@@ -173,7 +173,7 @@ The trade-off is more responsibility for guardrails like step limits, terminatio
 ## 4. Flowise
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/640c3e5c/68ef296758e055b6ee1d1a17_flowise-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/640c3e5c/68ef296758e055b6ee1d1a17_flowise-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [Flowise](https://flowiseai.com/) is an open-source, low-code platform for building LLM applications. It provides a drag-and-drop node-based editor where you can chain together LLMs, prompts, tools, memory modules, and data sources on a canvas.
@@ -191,7 +191,7 @@ Flowise is an open-source project and can be self-hosted for free. For users who
 <ul><li><strong>Free:</strong> $0 per month; limited to 2 flows and 100 predictions per month.</li><li><strong>Starter:</strong> $35 per month</li><li><strong>Pro:</strong> $65 per month</li><li><strong>Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/a5361cdc/68ef29772b7eb80cf293de6a_flowise-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a5361cdc/68ef29772b7eb80cf293de6a_flowise-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -203,7 +203,7 @@ However, this visual abstraction can be limiting for advanced logic and presents
 ## 5. Langflow
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/8244d8a6/68ba64b29505b004e3eb3d5e_langflow-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8244d8a6/68ba64b29505b004e3eb3d5e_langflow-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [Langflow](https://www.langflow.org/) is an open-source visual orchestration tool for LLMs. It’s a graphical user interface built on top of the LangChain ecosystem that allows you to drag and drop, as well as connect building blocks such as models, prompts, tools, and memory into a flowchart.
@@ -227,7 +227,7 @@ However, Langflow faces challenges common to visual builders, including latency 
 ## 6. Prefect + ControlFlow
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/b3a0e1de/68ef299c05779c0ef82113fb_prefect-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b3a0e1de/68ef299c05779c0ef82113fb_prefect-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [Prefect](https://www.prefect.io/controlflow) is a popular general-purpose workflow orchestration tool, and ControlFlow is an open-source extension from the Prefect team focused on orchestrating AI agent workflows. Together, Prefect and ControlFlow let you orchestrate LLM agents with the same rigor as traditional ETL pipelines.
@@ -243,7 +243,7 @@ The ControlFlow framework is part of the open-source Prefect library and is free
 <ul><li><strong>Starter:</strong> $100 per month</li><li><strong>Team:</strong> $400 per month</li><li><strong>Pro and Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/9a65e748/68ef29aad8f3681d5cb8fec6_prefect-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9a65e748/68ef29aad8f3681d5cb8fec6_prefect-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 **📚 Also read:** [Prefect pricing](https://www.zenml.io/blog/prefect-pricing)
@@ -257,7 +257,7 @@ On the downside, using Prefect + ControlFlow can feel heavier-weight for simple 
 ## 7. Microsoft Agent Framework
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/687c9c45/68ef29b9a531e65e4ad1dd31_microsoft-agent-framework-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/687c9c45/68ef29b9a531e65e4ad1dd31_microsoft-agent-framework-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [Microsoft Agent Framework](https://learn.microsoft.com/en-us/agent-framework/overview/agent-framework-overview) is an open-source SDK and runtime from Microsoft for building sophisticated multi-agent AI systems. Announced in late 2025, it actually combines ideas from two earlier AI projects: the enterprise-ready features of Semantic Kernel and the experimental multi-agent orchestration ideas from AutoGen.
@@ -279,7 +279,7 @@ On the con side, because it’s new, the framework may not be as battle-tested b
 ## 8. Haystack
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/f64fff71/6860bea987cb2aa48774652f_haystack-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f64fff71/6860bea987cb2aa48774652f_haystack-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [Haystack](https://haystack.deepset.ai/) is an open-source Python framework from deepset for building production-grade LLM applications. It has a strong focus on semantic search and advanced RAG. Its orchestration capabilities are centered around composable and modular pipelines that allow for the construction of highly customized and scalable AI workflows.
@@ -293,7 +293,7 @@ On the con side, because it’s new, the framework may not be as battle-tested b
 Haystack is an open-source framework and is free to use. Deepset also offers a commercial ‘deepset AI Platform,’ which includes a free ‘Studio’ tier for prototyping and custom-priced Enterprise plans./
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/f9ef8fb7/68ef29e0db225589b268f71c_haystack-pricing-plans.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f9ef8fb7/68ef29e0db225589b268f71c_haystack-pricing-plans.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -305,7 +305,7 @@ On the con side, Haystack’s approach can be somewhat rigid for highly dynamic 
 ## 9. CrewAI
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/71532cce/68ef29ec602a460106ba4206_crewai-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/71532cce/68ef29ec602a460106ba4206_crewai-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [CrewAI](https://www.crewai.com/) is a Python framework designed for orchestrating role-playing, autonomous AI agents. Its core orchestration philosophy is to model workflows as a 'crew' of collaborating agents. Each agent is given a specific role, a goal, and a set of tools, and they work together to accomplish complex tasks.
@@ -323,7 +323,7 @@ CrewAI offers a free, open-source framework. For a managed experience, it provid
 <ul><li><strong>Basic:</strong> A free tier that includes 50 workflow executions per month.</li><li><strong>Professional:</strong> $25 per month, which includes 100 executions, with additional executions available on a pay-as-you-go basis.</li><li><strong>Enterprise:</strong> Custom pricing for large-scale deployments that require advanced support, security, and infrastructure options.</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/cacbdb9b/68ef2a00d642382321e51096_crewai-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/cacbdb9b/68ef2a00d642382321e51096_crewai-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons

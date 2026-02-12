@@ -25,12 +25,12 @@ tags:
 date: "2024-10-01T00:00:00.000Z"
 readingTime: 3 min
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/220158b4/6981d36ce92aa039b696b89e_6981d2af5c146b4b5a8cdcc3_zenml-release.avif"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/220158b4/6981d36ce92aa039b696b89e_6981d2af5c146b4b5a8cdcc3_zenml-release.avif"
 seo:
   title: "New Features: Improved Sagemaker Orchestration, New DAG Visualizer, Skypilot with Kubernetes, and more - ZenML Blog"
   description: "This release incorporates updates to the SageMaker Orchestrator, DAG Visualizer, and environment variable handling. It also includes Kubernetes support for Skypilot and an updated Deepchecks integration. Various other improvements and bug fixes have been implemented across different areas of the platform."
   canonical: "https://www.zenml.io/blog/new-features-improved-sagemaker-orchestration-new-dag-visualizer-skypilot-with-kubernetes-and-more"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/220158b4/6981d36ce92aa039b696b89e_6981d2af5c146b4b5a8cdcc3_zenml-release.avif"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/220158b4/6981d36ce92aa039b696b89e_6981d2af5c146b4b5a8cdcc3_zenml-release.avif"
   ogTitle: "New Features: Improved Sagemaker Orchestration, New DAG Visualizer, Skypilot with Kubernetes, and more - ZenML Blog"
   ogDescription: "This release incorporates updates to the SageMaker Orchestrator, DAG Visualizer, and environment variable handling. It also includes Kubernetes support for Skypilot and an updated Deepchecks integration. Various other improvements and bug fixes have been implemented across different areas of the platform."
 ---

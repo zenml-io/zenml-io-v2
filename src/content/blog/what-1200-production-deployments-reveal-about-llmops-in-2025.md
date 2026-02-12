@@ -23,7 +23,7 @@ date: "2025-12-19T00:00:00.000Z"
 readingTime: 18 mins
 featured: true
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/25bb7ee8/695e3047a1771f3f63cd4d83_zenml-llms-long.jpg"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/25bb7ee8/695e3047a1771f3f63cd4d83_zenml-llms-long.jpg"
 ---
 
 The LLMOps Database crossed 1,200 case studies this month. Since we last wrote one of these summaries, we've catalogued another 400 production deployments. These are real systems handling real traffic, built by teams navigating the gap between "it works in a notebook" and "it works at 2am when the on-call engineer is asleep."
@@ -37,7 +37,7 @@ This is a practical assessment of what's working, what isn't, and what the teams
 ## 1. Real Engineering Replaces POC Demos
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/977f1902/694506486b2d6e37360e379a_2-final.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/977f1902/694506486b2d6e37360e379a_2-final.png" alt="__wf_reserved_inherit" />
 </figure>
 
 When we first started the LLMOps Database, much of what we catalogued fell into the "interesting experiment" category: proof-of-concept deployments, weekend RAG chatbots, and systems that quietly disappeared when confronted with real traffic. That has changed. Companies have moved beyond experimenting with AI as a productivity add-on to rebuilding core business processes around LLM capabilities, and the evidence shows up in the metrics that matter: revenue impact, operational scale, and measurable outcomes.
@@ -95,7 +95,7 @@ The organisations extracting real value aren't necessarily the ones with the mos
 ## 2. Context Engineering > Prompt Engineering
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/c9a57328/694506648824cb6c53bc2d45_3-final.jpg" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c9a57328/694506648824cb6c53bc2d45_3-final.jpg" alt="__wf_reserved_inherit" />
 </figure>
 
 If 2023 was the year of prompt engineering (learning how to talk to models), then 2024 and 2025 have marked the rise of context engineering: learning how to architect the information models consume. We've watched this become one of the clearest dividing lines between teams that ship reliable LLM systems and those still wrestling with inconsistent results.
@@ -181,7 +181,7 @@ The million-token context window serves less as a feature to exploit and more as
 ## 3. The Frontier: Where Production Meets Experimentation
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/91ad1c52/6945068f6a756899882d634c_4-final.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/91ad1c52/6945068f6a756899882d634c_4-final.png" alt="__wf_reserved_inherit" />
 </figure>
 
 While the previous sections cover patterns that have solidified into recognisable best practices, two areas remain in active flux: agent infrastructure (harnesses and the reinforcement learning loops that improve them), and memory systems for long-running agents. Both represent genuine production needs, but neither has stabilised into consensus approaches. What we're seeing is parallel experimentation rather than industry convergence.
@@ -211,7 +211,7 @@ Other teams are exploring knowledge graphs (Cognee), user-confirmed preferences 
 ## 4. MCP at One Year: Quiet Stabilisation
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/0c8a61c7/694506cee823e60581126856_5-final.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/0c8a61c7/694506cee823e60581126856_5-final.png" alt="__wf_reserved_inherit" />
 </figure>
 
 The Model Context Protocol has been in the wild for roughly a year now, and something unexpected has happened: it's become one of the more stable elements in the LLMOps landscape. While agent harnesses and memory systems remain in active flux, MCP has settled into a recognisable pattern: enterprises building servers, SaaS companies exposing their APIs, and a growing body of practical knowledge about what works and what doesn't. The database reveals genuine production deployments with real limitations being openly discussed rather than hype-driven adoption.
@@ -273,7 +273,7 @@ What the database suggests is that MCP is settling into its appropriate role: in
 ## 5. Evals and Guardrails: Where the Engineering Actually Happens
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/40baa624/694506e2647b441a4b75baaa_6-final.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/40baa624/694506e2647b441a4b75baaa_6-final.png" alt="__wf_reserved_inherit" />
 </figure>
 
 If there's one area where the database reveals the most dramatic maturation in production LLM practices, it's the parallel evolution of evaluation systems and guardrails. What began as informal "vibe checks" and basic content filters has transformed into sophisticated engineering disciplines. The shift represents a fundamental rethinking of how organisations validate and constrain AI behaviour in systems where the consequences of failure extend well beyond embarrassing chatbot responses.
@@ -373,7 +373,7 @@ The gap between the vibe check and these sophisticated systems is substantial. B
 ## 6. Software Engineering Skills: The Hidden Bottleneck
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/abcc15ae/694506f7c7fa395ee565226f_7-final.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/abcc15ae/694506f7c7fa395ee565226f_7-final.png" alt="__wf_reserved_inherit" />
 </figure>
 
 The novelty of the LLM has worn off. What remains, as documented across hundreds of case studies in the database, is a clear pattern: the teams shipping reliable production systems are distinguished less by AI research credentials than by their software engineering fundamentals.
@@ -445,7 +445,7 @@ This isn't what most teams want to hear. Building robust distributed systems is 
 ## 7. Hyperscalers and the Allure of the Frontier
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/df129b7e/6945071b24cbf4e7b241c7fc_8-final.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/df129b7e/6945071b24cbf4e7b241c7fc_8-final.png" alt="__wf_reserved_inherit" />
 </figure>
 
 There's a seductive narrative that runs through every model announcement and every benchmark chart: wait for the next release, and your production problems will solve themselves. GPT-6 will reason better. Gemini 4 Pro will have a larger context window. The next Claude ("when 5.0?!") will be faster and cheaper. Just wait.

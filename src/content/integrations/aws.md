@@ -12,12 +12,12 @@ webflow:
   createdOn: "2023-10-11T07:47:02.481Z"
 integrationType: "cloud-infrastructure"
 logo:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/53b7f1a7/66d869a2f43502df5f9278d8_aws.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/53b7f1a7/66d869a2f43502df5f9278d8_aws.png"
 shortDescription: "Effortlessly orchestrate your ML pipelines on AWS with ZenML"
 docsUrl: "https://docs.zenml.io/how-to/auth-management/aws-service-connector"
 githubUrl: "https://github.com/zenml-io/mlstacks/tree/main/aws-minimal"
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e92f8633/66f15354a9b8f9bf45423205_image__30_.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e92f8633/66f15354a9b8f9bf45423205_image__30_.png"
 relatedBlogPosts:
   - "easy-mlops-pipelines-2-stack-wizard"
   - "easy-mlops-pipelines"
@@ -26,7 +26,7 @@ seo:
   title: "Integrate AWS with ZenML - Cloud Infrastructure Integrations"
   description: "Effortlessly orchestrate your ML pipelines on AWS with ZenML"
   canonical: "https://www.zenml.io/integrations/aws"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e92f8633/66f15354a9b8f9bf45423205_image__30_.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e92f8633/66f15354a9b8f9bf45423205_image__30_.png"
   ogTitle: "Integrate AWS with ZenML - Cloud Infrastructure Integrations"
   ogDescription: "Effortlessly orchestrate your ML pipelines on AWS with ZenML"
 ---

@@ -12,7 +12,7 @@ hub:
 hero:
   deck: Accelerate your ML workflow with seamless local-to-cloud transitions and smart caching
   image:
-    url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/f74b42dd/66c74b8f2f2804e73e8592b2_iterate00-min.png"
+    url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f74b42dd/66c74b8f2f2804e73e8592b2_iterate00-min.png"
     alt: Flowchart of a ZenML machine learning pipeline from experiment to production with cloud integrations like AWS.
   primaryCta:
     label: Book a demo
@@ -31,7 +31,7 @@ blocks:
       - Automated containerization ensures reproducibility across infrastructures.
       - Schedule workflows seamlessly.
     image:
-      url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e87dc510/6526b353bc2f4cf01e4f4677_04_Orchestrate_Anywhere.webp"
+      url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e87dc510/6526b353bc2f4cf01e4f4677_04_Orchestrate_Anywhere.webp"
       alt: Dashboard mockup
     imageSide: right
   - kind: value
@@ -42,7 +42,7 @@ blocks:
       - "Write once, deploy anywhere: from laptops to Kubernetes clusters."
       - Accelerate team-wide adoption of MLOps best practices.
     image:
-      url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/275e5f03/6526b16496016196110c9820_11_Pipeline_Code_Example.webp"
+      url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/275e5f03/6526b16496016196110c9820_11_Pipeline_Code_Example.webp"
       alt: Dashboard mockup
     imageSide: left
   - kind: value
@@ -53,7 +53,7 @@ blocks:
       - Blazing fast development speed with automated data versioning.
       - Eliminate idle GPU time, optimizing resource utilization.
     image:
-      url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e6f711a9/6526aff7c4fdd6c0d6c1ea26_10_Data_Versioning_and_Lineage_Showcase.webp"
+      url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e6f711a9/6526aff7c4fdd6c0d6c1ea26_10_Data_Versioning_and_Lineage_Showcase.webp"
       alt: Dashboard mockup
     imageSide: right
 
@@ -62,10 +62,10 @@ testimonial:
   name: Clément Depraz
   title: Data Scientist at Brevo
   avatar:
-    url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/7999105b/65c60489feaf4767c877fc3f_clement.webp"
+    url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7999105b/65c60489feaf4767c877fc3f_clement.webp"
     alt: Clément Depraz
   companyLogo:
-    url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/52a636b6/66c74d825fbc26b4d09823d1_Brevo-Logo-transparent.webp"
+    url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/52a636b6/66c74d825fbc26b4d09823d1_Brevo-Logo-transparent.webp"
     alt: Testimonial logo
 
 seo:
@@ -73,7 +73,7 @@ seo:
   description: Local to cloud seamlessly. Jupyter to production pipelines in minutes. Smart caching accelerates iterations everywhere. Rapidly experiment with ML and GenAI models.
   ogTitle: ZenML Features - Iterate at warp speed
   ogDescription: Local to cloud seamlessly. Jupyter to production pipelines in minutes. Smart caching accelerates iterations everywhere. Rapidly experiment with ML and GenAI models.
-  ogImage: https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/7115cb8f/66ab53c595e08fa9bb385de9_features-speed.png
+  ogImage: https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7115cb8f/66ab53c595e08fa9bb385de9_features-speed.png
 
 webflow:
   siteId: 64a817a2e7e2208272d1ce30

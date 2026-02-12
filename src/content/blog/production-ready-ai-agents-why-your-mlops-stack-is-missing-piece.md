@@ -21,11 +21,11 @@ tags:
 date: "2025-08-25T00:00:00.000Z"
 readingTime: 9 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/a2227a5c/6981cf64f4f7a9ede995c45f_6981ce85f4094e16a9d13538_zenpulse-part-1.avif"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a2227a5c/6981cf64f4f7a9ede995c45f_6981ce85f4094e16a9d13538_zenpulse-part-1.avif"
 seo:
   title: "Production-Ready AI Agents: Why Your MLOps Stack is the Missing Piece - ZenML Blog"
   canonical: "https://www.zenml.io/blog/production-ready-ai-agents-why-your-mlops-stack-is-missing-piece"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/a2227a5c/6981cf64f4f7a9ede995c45f_6981ce85f4094e16a9d13538_zenpulse-part-1.avif"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a2227a5c/6981cf64f4f7a9ede995c45f_6981ce85f4094e16a9d13538_zenpulse-part-1.avif"
   ogTitle: "Production-Ready AI Agents: Why Your MLOps Stack is the Missing Piece - ZenML Blog"
 ---
 
@@ -48,7 +48,7 @@ This is why an MLOps production backend is the natural home for agents: pipeline
 In production, an agent is a workflow of retrieval, tool calls, LLM invocations, and often human oversight. Modern frameworks express this complexity as graphs — nodes and edges routing data and decisions. ZenML is designed to orchestrate exactly such graphs. By modeling agents as pipeline steps within ZenML, teams gain reproducibility, scalability, and observability out-of-the-box.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/b41a7013/68ac1164cb6ceff5ef88e5db_CleanShot_2025-08-25_at_09.22.53.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b41a7013/68ac1164cb6ceff5ef88e5db_CleanShot_2025-08-25_at_09.22.53.png" alt="__wf_reserved_inherit" />
 </figure>
 
 **Pipelines for structure.**ZenML pipelines inherently map to the multi-step logic of production agents, where each step generates clear, typed artifacts for downstream tasks. The ZenML model defines explicit input/output boundaries and deterministic execution flows, directly aligning with frameworks like [LangGraph](https://langchain-ai.github.io/langgraph/how-tos/graph-api/) that conceptualize agents as stateful node-and-edge structures. Unlike notebooks or single-script solutions, ZenML visualizes and enforces agent execution clearly and consistently.
@@ -74,7 +74,7 @@ We built an agent-driven application feature as part of an internal tool called 
 ZenPulse is a small web app (AIOHTTP + Jinja2, PostgreSQL) that lets us compose an announcement, trigger a pipeline, and post the result to Slack. The app never runs the agent code. It calls a [ZenML Run Template](https://docs.zenml.io/concepts/templates), then waits for a webhook with the markdown. That boundary let us evolve models and prompts without touching the web container and gave us lineage, retries, and scheduling for free.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/6118e0ac/68ac117ce773ef4c77fdaba1_Untitled_diagram___Mermaid_Chart-2025-08-25-072203__1_.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6118e0ac/68ac117ce773ef4c77fdaba1_Untitled_diagram___Mermaid_Chart-2025-08-25-072203__1_.png" alt="__wf_reserved_inherit" />
   <figcaption>Figure 2  —  ZenPulse architecture (Frontend on Fly.io. ZenML backend on Kubernetes. REST in, webhook out.)</figcaption>
 </figure>
 
@@ -93,7 +93,7 @@ We implement the agent as a single ZenML step that wires LangGraph to GitHub MCP
 We kept the DAG small and legible. Responsibilities are explicit, and the ZenML UI makes runs debuggable by step.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e2931d9b/68ac118fd87a5aca0016ad53_CleanShot_2025-08-25_at_09.02.26__1_.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e2931d9b/68ac118fd87a5aca0016ad53_CleanShot_2025-08-25_at_09.02.26__1_.png" alt="__wf_reserved_inherit" />
   <figcaption>Figure 3  —  ZenPulse pipeline DAG (Agentic workflow as a pipeline you can reason about.)</figcaption>
 </figure>
 
@@ -106,7 +106,7 @@ In practice we’ve experimented with folding lightweight fetches into `do_agent
 The admin “Compose” screen accepts sources and style, triggers a run template, polls `/status`, then drops the returned markdown into the editor for a quick human pass before posting to Slack. The UI stays decoupled from prompt or model churn. That separation is why we can iterate on LangGraph graphs, prompts, or models without redeploying the web app.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/da279503/68ac11a1d2a128672dfcbced_CleanShot_2025-08-25_at_09.04.06.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/da279503/68ac11a1d2a128672dfcbced_CleanShot_2025-08-25_at_09.04.06.png" alt="__wf_reserved_inherit" />
   <figcaption>Figure 4  —  ZenPulse compose UI (Trigger, preview, and send.)</figcaption>
 </figure>
 
@@ -139,7 +139,7 @@ ZenML “owns” the shape under `results`; ZenPulse “owns” persistence and 
 ### Request lifecycle (what actually happens)
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/c895e8b7/68ac11b7bf7fc79b0117b10d_Untitled_diagram___Mermaid_Chart-2025-08-25-070949__1_.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c895e8b7/68ac11b7bf7fc79b0117b10d_Untitled_diagram___Mermaid_Chart-2025-08-25-070949__1_.png" alt="__wf_reserved_inherit" />
   <figcaption>Figure 5  —  Request lifecycle (UI → backend → DB → ZenML → K8s pipeline → webhook → DB → UI.)</figcaption>
 </figure>
 

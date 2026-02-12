@@ -12,7 +12,7 @@ webflow:
   createdOn: "2024-06-25T14:59:48.842Z"
 toolName: "Kubeflow"
 toolIcon:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e39ef501/667ae534d2e5382e86fcc99d_kubeflow_logo.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e39ef501/667ae534d2e5382e86fcc99d_kubeflow_logo.png"
 category: "orchestrators"
 integrationType: "orchestrator"
 advantages:
@@ -25,12 +25,12 @@ heroText: "ZenML is a lightweight alternative to Kubeflow, the Kubernetes-native
 learnMoreUrl: "https://cloud.zenml.io/?utm_source=website&utm_medium=website_hero&utm_campaign=cloud_promotion&utm_content=signup_link"
 seoDescription: "Kubeflow alternative: Lightweight ML pipeline management. Simplify MLOps with flexible, user-friendly workflows across various environments."
 openGraphImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/2e40df2c/66c5fd0877ea668d1d4be490_compare-kubeflow.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2e40df2c/66c5fd0877ea668d1d4be490_compare-kubeflow.png"
 seo:
   title: "ZenML vs Kubeflow - ZenML vs Kubeflow: Elevate Your ML Workflows"
   description: "Kubeflow alternative: Lightweight ML pipeline management. Simplify MLOps with flexible, user-friendly workflows across various environments."
   canonical: "https://www.zenml.io/compare/zenml-vs-kubeflow"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/89d79b0d/66c5fd0877ea668d1d4be490_compare-kubeflow.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/89d79b0d/66c5fd0877ea668d1d4be490_compare-kubeflow.png"
   ogTitle: "ZenML vs Kubeflow - ZenML vs Kubeflow: Elevate Your ML Workflows"
   ogDescription: "Kubeflow alternative: Lightweight ML pipeline management. Simplify MLOps with flexible, user-friendly workflows across various environments."
 ---

@@ -12,11 +12,11 @@ webflow:
   createdOn: "2023-10-12T09:13:16.620Z"
 integrationType: "orchestrator"
 logo:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/3b75b2be/66d867dd11cc5bf2b439aa93_skypilot.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3b75b2be/66d867dd11cc5bf2b439aa93_skypilot.png"
 shortDescription: "Streamline ML Workloads on any cloud with SkyPilot VM Orchestration in ZenML"
 docsUrl: "https://docs.zenml.io/stack-components/orchestrators/skypilot-vm"
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/951e5aa7/66e72e9ccfe54a76d81185e3_image__7_.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/951e5aa7/66e72e9ccfe54a76d81185e3_image__7_.png"
 relatedBlogPosts:
   - "supercharge-open-source-ml-workflows-with-zenml-and-skypilot"
   - "new-features-improved-sagemaker-orchestration-new-dag-visualizer-skypilot-with-kubernetes-and-more"
@@ -24,7 +24,7 @@ seo:
   title: "Integrate Skypilot VM with ZenML - Orchestrator Integrations"
   description: "Streamline ML Workloads on any cloud with SkyPilot VM Orchestration in ZenML"
   canonical: "https://www.zenml.io/integrations/skypilot"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/951e5aa7/66e72e9ccfe54a76d81185e3_image__7_.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/951e5aa7/66e72e9ccfe54a76d81185e3_image__7_.png"
   ogTitle: "Integrate Skypilot VM with ZenML - Orchestrator Integrations"
   ogDescription: "Streamline ML Workloads on any cloud with SkyPilot VM Orchestration in ZenML"
 ---

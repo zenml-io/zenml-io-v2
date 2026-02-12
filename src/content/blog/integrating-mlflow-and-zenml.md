@@ -75,7 +75,7 @@ In this example, ZenML manages the overall pipeline structure, while MLflow auto
 <ul start="2"><li><strong>Seamless Experiment Tracking<br /></strong>ZenML's integration with MLflow allows you to automatically create MLflow experiments for each pipeline run. This means you can leverage MLflow's powerful UI to visualize and compare results from different pipeline runs, all within the context of your ZenML workflows.</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/0415c0ec/6704fe45f2ea78fcfbd6fe8c_6704f8e8333835e7439bd2ab_mlflow_screenshot.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/0415c0ec/6704fe45f2ea78fcfbd6fe8c_6704f8e8333835e7439bd2ab_mlflow_screenshot.png" alt="__wf_reserved_inherit" />
 </figure>
 
 <ul start="3"><li><strong>Flexibility in Deployment Scenarios<br /></strong>ZenML's MLflow integration supports various deployment scenarios, from local development to remote servers. This flexibility allows you to start with a simple setup and scale as your project grows.</li></ul>

@@ -22,7 +22,7 @@ ROOT = Path(__file__).resolve().parent.parent.parent
 load_dotenv(ROOT / ".env")
 
 SITE_ID = "64a817a2e7e2208272d1ce30"
-R2_DOMAIN = "pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev"
+R2_DOMAIN = "pub-41d587b95acb4b579d9280542922084b.r2.dev"
 IMAGES_DIR = ROOT / "design" / "webflow-export" / "extracted" / "images"
 
 # The 2 remaining images: (webflow_url, local_filename)

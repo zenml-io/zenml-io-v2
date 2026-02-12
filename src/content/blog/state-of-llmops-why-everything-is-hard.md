@@ -21,12 +21,12 @@ date: "2024-11-04T00:00:00.000Z"
 readingTime: 4 mins
 featured: true
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/995dddff/67288f8f1c16455593c10f45_CleanShot_2024-11-04_at_09.54.34__1_.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/995dddff/67288f8f1c16455593c10f45_CleanShot_2024-11-04_at_09.54.34__1_.png"
 seo:
   title: "The State of LLM Operations or LLMOps: Why Everything is Hard (And That's OK) - ZenML Blog"
   description: "Machine Learning (ML) adoption is gaining momentum, but challenges include robust pipelines, quality issues, and scale monitoring. Recognizing and overcoming these challenges is crucial."
   canonical: "https://www.zenml.io/blog/state-of-llmops-why-everything-is-hard"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/995dddff/67288f8f1c16455593c10f45_CleanShot_2024-11-04_at_09.54.34__1_.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/995dddff/67288f8f1c16455593c10f45_CleanShot_2024-11-04_at_09.54.34__1_.png"
   ogTitle: "The State of LLM Operations or LLMOps: Why Everything is Hard (And That's OK) - ZenML Blog"
   ogDescription: "Machine Learning (ML) adoption is gaining momentum, but challenges include robust pipelines, quality issues, and scale monitoring. Recognizing and overcoming these challenges is crucial."
 ---
@@ -34,7 +34,7 @@ seo:
 We're now a few years in to a more widespread adoption of LLMs across a variety of domains. Research continues, new models get released, but while everyone's talking about what LLMs can do, practitioners are grappling with how to make them work reliably. I took a look at the kinds of challenges people mention when it comes to the use of LLMs in production and it seems that these span the entire ML lifecycle, suggesting we're in early days of enterprise LLM adoption.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/f80a7841/672890ae5ca736b64f4f0ac2_67288eb2c46c88a8f0bcce86_CleanShot_202024-11-01_20at_2013.17.00.png" alt="The &#039;everything is fine&#039; meme repurposed to refer to LLMOps." />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f80a7841/672890ae5ca736b64f4f0ac2_67288eb2c46c88a8f0bcce86_CleanShot_202024-11-01_20at_2013.17.00.png" alt="The &#039;everything is fine&#039; meme repurposed to refer to LLMOps." />
 </figure>
 
 It's unfortunate that these challenges tend to be relatively less talked about than new SOTA benchmarks or incremental improvements in model architectures. While understandable, this can give a false sense of confidence (read: hype) around the realities of adopting LLM technologies into enterprise and other business use cases. Turns out it's hard to operationalise LLMs!
@@ -58,7 +58,7 @@ We recently ran [a competition giveaway](https://www.linkedin.com/feed/update/ur
 What emerged from the responses was striking not for any single overwhelming challenge, but rather for how the difficulties span the entire MLOps lifecycle. Let's break down these challenges and understand why they matter for organizations attempting to operationalize LLMs.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/86ba5963/672890ae5ca736b64f4f0abc_67288ee3bedf0013e1554f0b_CleanShot_202024-11-01_20at_2013.36.45.png" alt="Diagram showing the main challenges faced by people with LLMOps: input, quality, integration and data security." />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/86ba5963/672890ae5ca736b64f4f0abc_67288ee3bedf0013e1554f0b_CleanShot_202024-11-01_20at_2013.36.45.png" alt="Diagram showing the main challenges faced by people with LLMOps: input, quality, integration and data security." />
 </figure>
 
 ### Input & Pipeline Challenges
@@ -102,7 +102,7 @@ We're seeing a pendulum swing in the industry from pure capability excitement to
 ## The Path Forward
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/68e62e25/672890ae5ca736b64f4f0ac5_67288efcc71fc0e3d64914c7_CleanShot_202024-11-01_20at_2013.19.02.png" alt="Diagram showing the state of llmops solutions, from ones that are currently working and then the ones that still need work." />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/68e62e25/672890ae5ca736b64f4f0ac5_67288efcc71fc0e3d64914c7_CleanShot_202024-11-01_20at_2013.19.02.png" alt="Diagram showing the state of llmops solutions, from ones that are currently working and then the ones that still need work." />
 </figure>
 
 Despite the challenges, we're seeing some clear patterns emerge in what's working for teams deploying LLMs in production. RAG (Retrieval Augmented Generation) has emerged as a key architectural pattern, even with its inherent complexities. It's not perfect – as several practitioners noted, getting the retrieval part right remains non-trivial – but it's providing a solid foundation for building more reliable and controllable LLM applications.
@@ -128,7 +128,7 @@ Perhaps surprisingly, we're still in early days when it comes to UI/UX patterns 
 It might seem overwhelming that there are so many fundamental challenges in operationalizing LLMs. But I'd argue this is actually a good sign – it means we're moving past the hype and starting to grapple with the real complexities of making these systems work in practice. This is what maturation looks like.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/7bbdd12a/672890ae5ca736b64f4f0abf_67288f36402975f8de0e671e_Life_20Finds_20a_20Way.gif" alt="GIF of the &#039;life finds a way&#039; meme from Jurassic Park." />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7bbdd12a/672890ae5ca736b64f4f0abf_67288f36402975f8de0e671e_Life_20Finds_20a_20Way.gif" alt="GIF of the &#039;life finds a way&#039; meme from Jurassic Park." />
 </figure>
 
 The democratization potential of LLM technology remains strong. Yes, there are challenges, but the barriers to entry are primarily about solving well-defined (if difficult) engineering problems rather than requiring deep expertise in model architecture or training. This means teams can focus on their specific use cases and gradually build up their operational capabilities.

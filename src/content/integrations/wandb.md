@@ -12,17 +12,17 @@ webflow:
   createdOn: "2023-10-12T09:13:13.415Z"
 integrationType: "experiment-tracker"
 logo:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/d15ff444/66d869126dc9da65a47f4a58_wandb.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d15ff444/66d869126dc9da65a47f4a58_wandb.png"
 shortDescription: "Supercharge your ZenML pipelines with seamless Weights & Biases experiment tracking and visualization"
 docsUrl: "https://docs.zenml.io/stack-components/experiment-trackers/wandb"
 githubUrl: "https://docs.zenml.io/stack-components/experiment-trackers/wandb"
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/f38cc2ca/66f1609c09b07cedd8e525e5_Integration_image__3_.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f38cc2ca/66f1609c09b07cedd8e525e5_Integration_image__3_.png"
 seo:
   title: "Integrate Weights & Biases with ZenML - Experiment Tracker Integrations"
   description: "Supercharge your ZenML pipelines with seamless Weights & Biases experiment tracking and visualization"
   canonical: "https://www.zenml.io/integrations/wandb"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/f38cc2ca/66f1609c09b07cedd8e525e5_Integration_image__3_.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f38cc2ca/66f1609c09b07cedd8e525e5_Integration_image__3_.png"
   ogTitle: "Integrate Weights & Biases with ZenML - Experiment Tracker Integrations"
   ogDescription: "Supercharge your ZenML pipelines with seamless Weights & Biases experiment tracking and visualization"
 ---

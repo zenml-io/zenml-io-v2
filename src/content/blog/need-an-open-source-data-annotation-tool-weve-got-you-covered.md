@@ -21,12 +21,12 @@ tags:
 date: "2022-06-10T00:00:00.000Z"
 readingTime: 3 Mins Read
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/4f6f4811/653108b2609f2772118ea081_os-cover.jpg"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/4f6f4811/653108b2609f2772118ea081_os-cover.jpg"
 seo:
   title: "Need an open-source data annotation tool? We've got you covered! - ZenML Blog"
   description: "We put together a list of 48 open-source annotation and labeling tools to support different kinds of machine-learning projects."
   canonical: "https://www.zenml.io/blog/need-an-open-source-data-annotation-tool-weve-got-you-covered"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/f19d9181/653108b2609f2772118ea081_os-cover.jpg"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f19d9181/653108b2609f2772118ea081_os-cover.jpg"
   ogTitle: "Need an open-source data annotation tool? We've got you covered! - ZenML Blog"
   ogDescription: "We put together a list of 48 open-source annotation and labeling tools to support different kinds of machine-learning projects."
 ---
@@ -42,7 +42,7 @@ The tradeoffs for both are often similar to the broader tools around choosing op
 With all this in mind, I gathered together a list of all the open-source data labeling tools available currently. You can check out our [awesome-open-data-annotation repository here](https://github.com/zenml-io/awesome-open-data-annotation).
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/6f1d025e/66c5ddab0367332da24b61f5_6531097ace522436b8b59c2a_ezgif.com-optimize_20_1_.gif" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6f1d025e/66c5ddab0367332da24b61f5_6531097ace522436b8b59c2a_ezgif.com-optimize_20_1_.gif" alt="" />
 </figure>
 
 The core selection criteria were as follows:

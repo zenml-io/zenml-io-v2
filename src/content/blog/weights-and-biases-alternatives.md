@@ -21,12 +21,12 @@ tags:
 date: "2025-07-14T00:00:00.000Z"
 readingTime: 13 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/5193b9ae/6874a1b75517f5ba5893a2e0_wandb-alternatives.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5193b9ae/6874a1b75517f5ba5893a2e0_wandb-alternatives.png"
 seo:
   title: "Here are the 7 Best Weights & Biases Alternatives for Better Experiment Tracking - ZenML Blog"
   description: "Discover the top 7 Weights & Biases alternatives for better experiment tracking."
   canonical: "https://www.zenml.io/blog/weights-and-biases-alternatives"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/5193b9ae/6874a1b75517f5ba5893a2e0_wandb-alternatives.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5193b9ae/6874a1b75517f5ba5893a2e0_wandb-alternatives.png"
   ogTitle: "Here are the 7 Best Weights & Biases Alternatives for Better Experiment Tracking - ZenML Blog"
   ogDescription: "Discover the top 7 Weights & Biases alternatives for better experiment tracking."
 ---
@@ -46,7 +46,7 @@ In this post, we explore 7 Weights & Biases alternatives designed to address the
 *Even with its popularity, Weights & Biases presents several challenges for machine learning teams, particularly as operations scale and demands intensify.*
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/87b2e96d/687497c3803e8ed1fafe2fb6_need-for-wandb-alternatives.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/87b2e96d/687497c3803e8ed1fafe2fb6_need-for-wandb-alternatives.png" alt="__wf_reserved_inherit" />
   <figcaption>The need for WandB alternatives</figcaption>
 </figure>
 
@@ -110,7 +110,7 @@ This means that beyond merely handling large data, true scalability and reliabil
 ## 1. ZenML
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/1c03d02a/687499183eb07682f282aa2a_zenml-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1c03d02a/687499183eb07682f282aa2a_zenml-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [ZenML](https://www.zenml.io/) is an open-source MLOps framework that unifies pipeline orchestration with experiment tracking. Unlike W&B (which is model-centric), ZenML treats each pipeline run as an experiment and tracks metadata at every pipeline step.
@@ -118,7 +118,7 @@ This means that beyond merely handling large data, true scalability and reliabil
 ### Key Feature 1. Experiment Tracking and Run Comparison
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/8728ce69/68749934c41a80753ed7240d_zenml-experiment-tracker.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8728ce69/68749934c41a80753ed7240d_zenml-experiment-tracker.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML experiment tracker</figcaption>
 </figure>
 
@@ -129,7 +129,7 @@ This means users can leverage their preferred tracking tool while ZenML orchestr
 The [ZenML Pro dashboard](https://docs.zenml.io/concepts/dashboard-features) offers advanced tools for comparing experiments, including Table View Comparisons for side-by-side analysis of metadata, configurations, and outcomes, and Parallel Coordinates Visualization for understanding complex relationships between parameters and results.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/2fc71d33/68749abf4666f83b66f1784e_zenml-pro-dashboard.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2fc71d33/68749abf4666f83b66f1784e_zenml-pro-dashboard.png" alt="__wf_reserved_inherit" />
 </figure>
 
 It supports comprehensive cross-pipeline run analysis, tracking numerical metadata, and sharing visualizations for collaborative insights. This lets your team analyze processing times, resource utilization, and data preprocessing statistics directly within the pipeline orchestration workflow.
@@ -137,7 +137,7 @@ It supports comprehensive cross-pipeline run analysis, tracking numerical metada
 ### Key Feature 2. Artifact Versioning and Lineage
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/5b28e3a4/68749adf601a251f2eb1ffa2_zenml-artifacts.gif" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5b28e3a4/68749adf601a251f2eb1ffa2_zenml-artifacts.gif" alt="__wf_reserved_inherit" />
   <figcaption>ZenML artifact management</figcaption>
 </figure>
 
@@ -168,7 +168,7 @@ If a step has been run previously with identical inputs, code, and configuration
 ### Key Feature 3. Model Registry and Lifecycle Management
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/381dd00b/68749bbefd74fa31a4a865c4_zenl-model-registries.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/381dd00b/68749bbefd74fa31a4a865c4_zenl-model-registries.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML model registries</figcaption>
 </figure>
 
@@ -202,7 +202,7 @@ Its controlled release cycle prioritizes backward compatibility, offering more s
 ZenML is free, open source (Community Edition) for self-hosted use. For teams needing managed infrastructure, ZenML Pro offers a hosted control plane, multi-tenant workspaces, RBAC, SSO, and compliance features (SOC2/ISO27001) under a custom pricing plan.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/8457aa72/68749c6f3e4df322cd38399e_zenml-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8457aa72/68749c6f3e4df322cd38399e_zenml-pricing.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML pricing</figcaption>
 </figure>
 
@@ -215,7 +215,7 @@ ZenML does not have a native Spark/Ray runner; you must wire these frameworks yo
 ## 2. Neptune AI
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/c02452e2/68749ce72c17c6328603d2cc_neptune-ai-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c02452e2/68749ce72c17c6328603d2cc_neptune-ai-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [Neptune](https://neptune.ai/) is a managed experiment tracking platform designed for high-scale and collaboration. The Neptune UI is optimized for large-volume experiments: it can render hundreds of thousands of runs and billions of data points faster than many alternatives in this list.
@@ -231,7 +231,7 @@ Neptune has a free trial that’s coming soon, which you can take and get to kno
 <ul><li><strong>Startup:</strong> $150 per user per month</li><li><strong>Lab:</strong> $250 per user per month</li><li><strong>Self-hosted:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/8457aa72/68749c6f3e4df322cd38399e_zenml-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8457aa72/68749c6f3e4df322cd38399e_zenml-pricing.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -252,7 +252,7 @@ The platform is more expensive for small teams as it has no cheap per-use option
 ## 3. Comet
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/a7821169/68749f33a758d398f042f2e7_comet-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a7821169/68749f33a758d398f042f2e7_comet-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [Comet](https://comet.com/) is an AI developer platform that provides an end-to-end model evaluation platform. It aims to bring consistency and predictability to AI applications and agentic systems at scale, covering the entire ML lifecycle from experiment management to production monitoring.
@@ -268,7 +268,7 @@ Comet offers a free plan for a single platform user, and it has 2 paid plans to 
 <ul><li><strong>Pro:</strong> $39 per user per month (up to 10 users)</li><li><strong>Enterprise:</strong> Custom pricing (unlimited users)</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/b1363a2f/68749f5244f8c49add4ab736_comet-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b1363a2f/68749f5244f8c49add4ab736_comet-pricing.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -289,7 +289,7 @@ However, the free tier has strict limits, and the per-user seat model can add up
 ## 4. ClearML
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/ed342ebd/6874a0467695e3a04c135b35_clearml-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ed342ebd/6874a0467695e3a04c135b35_clearml-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [ClearML](https://clear.ml/) is an AI Infrastructure Platform designed to maximize AI performance and scalability for enterprises. It offers a three-layer solution that streamlines the entire AI workflow, from initial development to production deployment.
@@ -305,7 +305,7 @@ ClearML offers a free community plan that costs nothing for up to 3 members. Apa
 <ul><li><strong>Pro:</strong> $15 per user per month + usage</li><li><strong>Scale:</strong> Custom pricing (Pay for What You Use)</li><li><strong>Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/2a057710/6874a098a93987293ad86dd9_clearml-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2a057710/6874a098a93987293ad86dd9_clearml-pricing.png" alt="__wf_reserved_inherit" />
 </figure>
 
 **📚 Related reading:** [ClearML pricing guide](https://www.zenml.io/blog/clearml-pricing)
@@ -319,7 +319,7 @@ But also keep this in mind: ClearML has a steep learning curve for new users. Th
 ## 5. MLflow
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/f92a80d0/6874a0b4f23cb71fe3288033_mlflow-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f92a80d0/6874a0b4f23cb71fe3288033_mlflow-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [MLflow](https://mlflow.org/) is an open-source developer platform designed to build AI applications and models with confidence, offering end-to-end tracking, observability, and evaluations. It helps streamline machine learning workflows, including experiment tracking, model management, and deployment, providing a flexible and widely adopted solution for various ML needs.
@@ -337,7 +337,7 @@ Managed MLflow services include:
 <ul><li><a href="https://www.zenml.io/blog/databricks-alternatives">Databricks</a> MLflow: Fully integrated MLflow experience within Databricks, with pricing based on Databricks compute units and storage consumption rather than separate MLflow fees.</li><li><strong>AWS SageMaker MLflow</strong>: Managed MLflow tracking server starting at $0.642/hour for ml.t3.medium instances, plus separate charges for artifact storage in S3.</li><li><strong>Azure Machine Learning with MLflow</strong>: Built-in MLflow integration with pricing based on Azure ML compute instances and storage usage.</li><li><strong>Nebius Managed MLflow</strong>: Dedicated MLflow clusters starting at approximately $0.36/hour for 6 vCPUs and 24 GiB RAM configurations.</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/9f92ad88/681c904025efe6e1a8dfb657_pricing-for-nebius-managed-mlflow.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9f92ad88/681c904025efe6e1a8dfb657_pricing-for-nebius-managed-mlflow.png" alt="__wf_reserved_inherit" />
   <figcaption>Nebius managed MLflow</figcaption>
 </figure>
 
@@ -363,7 +363,7 @@ However, MLflow lacks advanced collaboration features, like discussions or team 
 ## 6. Google Vertex AI Experiments
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/18e7bf89/6874a1096bec56d4cb4b1993_google-vertiex-ai-experiments-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/18e7bf89/6874a1096bec56d4cb4b1993_google-vertiex-ai-experiments-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [Vertex AI](https://cloud.google.com/vertex-ai/docs/experiments/intro-vertex-ai-experiments) is Google Cloud’s managed ML platform, and **Vertex Experiments** (built on ML Metadata) is its tracking component. In practice, any training you do via Vertex (Notebooks, AutoML, pipelines) can log metrics and artifacts into Vertex. Internally, this uses Google’s **ML Metadata (MLMD)** library. For visualization, Vertex AI integrates with TensorBoard as the analysis UI.
@@ -387,7 +387,7 @@ But remember, it’s not a standalone product: there’s no sophisticated multi-
 ## 7. TensorBoard
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/6d22bd09/6874a121192bf0d798f2863c_tensorboard-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6d22bd09/6874a121192bf0d798f2863c_tensorboard-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [TensorBoard](https://www.tensorflow.org/tensorboard) is a suite of visualization tools designed to help you understand, debug, and optimize TensorFlow programs for machine learning experimentation. It provides the necessary visualization and tooling for various aspects of ML experimentation, making it an essential tool for deep learning researchers and developers.
@@ -426,7 +426,7 @@ Still confused about which Weights & Biases alternative is the best for you? [Si
 If you think ZenML is the right ML framework platform for you, [book a demo call](https://www.zenml.io/book-your-demo) with our team to learn more about how we can build a plan tailored to your needs.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/890c042e/6869f852405fd774ebfa70b9_book-personalized-demo-with-zenml.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/890c042e/6869f852405fd774ebfa70b9_book-personalized-demo-with-zenml.png" alt="__wf_reserved_inherit" />
   <figcaption>Book your personalized demo</figcaption>
 </figure>
 

@@ -23,12 +23,12 @@ tags:
 date: "2022-10-27T00:00:00.000Z"
 readingTime: 24 Mins Read
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/a0ba3c78/65316efcf9b3dff475f9db48_thumbnail__1_.gif"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a0ba3c78/65316efcf9b3dff475f9db48_thumbnail__1_.gif"
 seo:
   title: "Transforming Vanilla PyTorch Code into Production Ready ML Pipeline - Without Selling Your Soul - ZenML Blog"
   description: "Transform quickstart PyTorch code as a ZenML pipeline and add experiment tracking and secrets manager component."
   canonical: "https://www.zenml.io/blog/transforming-vanilla-pytorch-code-into-production-ready-ml-pipeline-without-selling-your-soul"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/2f1d63af/65316efcf9b3dff475f9db48_thumbnail__1_.gif"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2f1d63af/65316efcf9b3dff475f9db48_thumbnail__1_.gif"
   ogTitle: "Transforming Vanilla PyTorch Code into Production Ready ML Pipeline - Without Selling Your Soul - ZenML Blog"
   ogDescription: "Transform quickstart PyTorch code as a ZenML pipeline and add experiment tracking and secrets manager component."
 ---
@@ -48,7 +48,7 @@ Is there a way we could transform quickstart code so that they are usable for pr
 With ZenML, yes it is 🚀.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/64abd488/65316f5e1e6c29ac57ef8425_meme.jpeg" alt="poster" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/64abd488/65316f5e1e6c29ac57ef8425_meme.jpeg" alt="poster" />
 </figure>
 
 In this post, we will show you how to turn vanilla PyTorch code into a production-ready ML pipeline that can be run on any cloud infrastructure while incorporating the best practices of MLOps. Next, we’ll also show how you can easily manage access credentials and include components like experiment trackers into your pipeline.
@@ -220,7 +220,7 @@ In ZenML, a pipeline consists of a series of steps, organized in any order that 
 The following illustration is a simple pipeline that consists of three steps running one after another.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/cd63a9e1/65316f5ef10545815b37aa46_pipeline_step.gif" alt="pipeline_steps" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/cd63a9e1/65316f5ef10545815b37aa46_pipeline_step.gif" alt="pipeline_steps" />
 </figure>
 
 The figure above is the exact pipeline and steps that we will construct from the vanilla PyTorch code. Let’s start the transformation.
@@ -422,7 +422,7 @@ zenml up
 This spins up a local [ZenML Server](https://docs.zenml.io/v/0.21.0/getting-started/core-concepts#zenml-server-and-dashboard) and launches the dashboard in the browser at http://127.0.0.1:8237). Key in default as the username and leave the password empty, then click “Log in”.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/f9f38201/65316f5e290e62113d94e87c_dashboard.gif" alt="login" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f9f38201/65316f5e290e62113d94e87c_dashboard.gif" alt="login" />
 </figure>
 
 In the dashboard, you’ll see all details about your *Steps*, *Pipelines*, *Runs*, *Stacks*, and *Stack Components*. There’s also a neat visualization on the pipeline which lets you visually inspect your workflow.
@@ -446,7 +446,7 @@ Of course not.
 Sharing access credentials in your code or files is a quick way to set your butt on fire. We wouldn’t recommend it.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/c5da66f6/65316f5f1dc62f53d46eaa75_fire.gif" alt="fire" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c5da66f6/65316f5f1dc62f53d46eaa75_fire.gif" alt="fire" />
 </figure>
 
 [via GIPHY](https://giphy.com/gifs/season-13-the-simpsons-13x20-xT5LMpPoihn5AsoNB6)
@@ -624,7 +624,7 @@ def train_test(
 The rest of the code remains the same. If you run the code the experiment metrics now should appear in your W&B dashboard. Here’s mine
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/5a633282/65316f5ed77259beb157eb7f_wandb_dashboard.png" alt="dashboard" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5a633282/65316f5ed77259beb157eb7f_wandb_dashboard.png" alt="dashboard" />
 </figure>
 
 In our example above, we did not log a lot of experiment information for simplicity. But you can always log other metrics from any steps in the pipeline with wandb.log.
@@ -640,7 +640,7 @@ In summary, you’ve learned how to -
 With this new superpower, you can turn any PyTorch code into ZenML steps and pipelines and accelerate your journey to production ML. Using the same steps you can also transform the code from other frameworks like Tensorflow/Keras. Check out this [example](https://github.com/zenml-io/zenml/tree/849d323139f3f4e3a8a2ca84a97fe225f9dfe7ce/examples/wandb_tracking).
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/d14d252f/65316f5ef10545815b37aa42_success.gif" alt="success" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d14d252f/65316f5ef10545815b37aa42_success.gif" alt="success" />
 </figure>
 
 Where to go next? If you’re starting with ZenML we recommend checking out the [quickstart](https://github.com/zenml-io/zenml/tree/main/examples/quickstart) to learn more. Or if you’re new to MLOps, check out our [ZenBytes](https://github.com/zenml-io/zenbytes) repository where we walk you through short practical lessons using ZenML.

@@ -20,12 +20,12 @@ tags:
 date: "2021-12-01T00:00:00.000Z"
 readingTime: 3 Mins Read
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/2af25be4/6530a78fe4deb66a7ae8fc1a_post_its.jpg"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2af25be4/6530a78fe4deb66a7ae8fc1a_post_its.jpg"
 seo:
   title: "How we track our todo comments using GitHub Actions - ZenML Blog"
   description: "A programmatic means of ensuring #TODO comments made in code also end up in our Jira ticketing system."
   canonical: "https://www.zenml.io/blog/how-we-track-our-todo-comments-using-github-actions"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/97edcf76/6530a78fe4deb66a7ae8fc1a_post_its.jpg"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/97edcf76/6530a78fe4deb66a7ae8fc1a_post_its.jpg"
   ogTitle: "How we track our todo comments using GitHub Actions - ZenML Blog"
   ogDescription: "A programmatic means of ensuring #TODO comments made in code also end up in our Jira ticketing system."
 ---
@@ -35,7 +35,7 @@ seo:
 If you’re a software developer, you’re probably familiar with the following scenario: You’re working on a new feature or trying to fix a bug, and while reading through some code existing code you notice that there’s a nicer way to write it, or maybe a potential edge case isn’t handled. But where to go from here? Write a todo comment and let your future self handle it of course!
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/7f9ee035/6530a7bdf971ce8d04e97f90_todo_meme.jpeg" alt="Problems for future me" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7f9ee035/6530a7bdf971ce8d04e97f90_todo_meme.jpeg" alt="Problems for future me" />
 </figure>
 
 While this might not be the optimal solution, I still regularly use todo comments if the fix is too complicated to implement right away as I find it can get quite distracting to repeatedly switch to my browser and create an issue with a meaningful description.
@@ -45,7 +45,7 @@ While this might not be the optimal solution, I still regularly use todo comment
 This however brings a problem with it: these todos are separated from our Jira board so we did not take them into account when planning our sprints. Keeping the comments in code in sync with our Jira issues manually would require a considerable amount of effort. We would have to periodically go over the entire codebase and create issues for new todos as well as delete issues and todos if their counterpart was removed. Instead, we looked at multiple GitHub integrations in the Jira marketplace but couldn’t find an existing solution with similar features, so we decided to implement a GitHub Action that helps us track todos automatically.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/d3fcd825/6530a7bc9dbffe60298b0b98_github_action.png" alt="TODO" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d3fcd825/6530a7bc9dbffe60298b0b98_github_action.png" alt="TODO" />
 </figure>
 
 ## GitHub Actions to the rescue

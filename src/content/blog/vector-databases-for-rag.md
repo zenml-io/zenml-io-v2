@@ -21,12 +21,12 @@ tags:
 date: "2025-10-01T00:00:00.000Z"
 readingTime: 17 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/685f5aef/6981cf3948be69340f5c147b_6981ce8cacfcb44f002ded62_best-vector-databases-for-rag.avif"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/685f5aef/6981cf3948be69340f5c147b_6981ce8cacfcb44f002ded62_best-vector-databases-for-rag.avif"
 seo:
   title: "We Tried and Tested 10 Best Vector Databases for RAG Pipelines - ZenML Blog"
   description: "Discover the 10 best data vector databases for RAG pipelines."
   canonical: "https://www.zenml.io/blog/vector-databases-for-rag"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/685f5aef/6981cf3948be69340f5c147b_6981ce8cacfcb44f002ded62_best-vector-databases-for-rag.avif"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/685f5aef/6981cf3948be69340f5c147b_6981ce8cacfcb44f002ded62_best-vector-databases-for-rag.avif"
   ogTitle: "We Tried and Tested 10 Best Vector Databases for RAG Pipelines - ZenML Blog"
   ogDescription: "Discover the 10 best data vector databases for RAG pipelines."
 ---
@@ -50,7 +50,7 @@ For this article, we evaluated and tested the **10 best vector databases for RAG
 When comparing vector databases for RAG, our evaluation focused on three core pillars that matter most in a RAG pipeline.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/4fb43751/68dca8c7254b920bcd6965a2_vector-db-for-rag-eval-criteria.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/4fb43751/68dca8c7254b920bcd6965a2_vector-db-for-rag-eval-criteria.webp" alt="__wf_reserved_inherit" />
   <figcaption>Eval criteria to pick the top vector databases for RAG pipelines</figcaption>
 </figure>
 
@@ -91,7 +91,7 @@ Here is a quick summary of the 10 best vector databases we tested for building R
 ## 1. Pinecone
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/421b53f9/68dca8ef5f3e3e63a08a818b_pinecone-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/421b53f9/68dca8ef5f3e3e63a08a818b_pinecone-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [Pinecone](https://www.pinecone.io/) is a fully managed, cloud-native vector database designed for ease of use and massive scale. Its serverless architecture makes it a popular choice for RAG applications, as it abstracts away scaling constraints and infrastructure management, and allows developers to focus on building.
@@ -107,7 +107,7 @@ Pinecone offers a usage-based pricing model with a free ‘Starter’ tier. The 
 <ul><li><strong>Standard:</strong> $50 per month minimum spend</li><li><strong>Enterprise:</strong> $500 per month minimum spend</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/c4f69ca4/68dca901d3ed4e3eb61f42bf_pinecone-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c4f69ca4/68dca901d3ed4e3eb61f42bf_pinecone-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -119,7 +119,7 @@ However, Pinecone is a closed-source SaaS. If you need on-premises or more contr
 ## 2. Turbopuffer
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/4bd0c9e6/68dca92ce9c65af35700d419_turbopuffer-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/4bd0c9e6/68dca92ce9c65af35700d419_turbopuffer-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [Turbopuffer](https://turbopuffer.com/) is a serverless vector and full-text search engine built on object storage. It is designed for extreme cost-effectiveness and scalability, making it an intriguing option for RAG pipelines at a massive scale.
@@ -135,7 +135,7 @@ Turbopuffer offers plan-based pricing with a minimum monthly spend. It has three
 <ul><li><strong>Launch:</strong> $64 per month</li><li><strong>Scale:</strong> $256 per month</li><li><strong>Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/d1476678/68dca940bd941f8804d39f06_turbopuffer-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d1476678/68dca940bd941f8804d39f06_turbopuffer-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 **👀 Note:** Within these tiers, usage costs are based on storage, writes, and queries.
@@ -149,7 +149,7 @@ The main downside is the trade-off in latency; cold queries and writes have high
 ## 3. Redis
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/6e814d06/68dca95566ede1a631383a2c_redis-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6e814d06/68dca95566ede1a631383a2c_redis-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [Redis](https://redis.io/) is a well-known data store that offers vector search as a natural extension of its in-memory engine. Its exceptional speed makes it a strong candidate for low-latency RAG applications, especially for teams already using Redis in their stack.
@@ -165,7 +165,7 @@ Redis is open-source, so the core vector search capability is free to use on you
 <ul><li><strong>Flex:</strong> $0.007 per hour</li><li><strong>Essentials:</strong> $0.007 per hour</li><li><strong>Pro:</strong> $0.274 per hour</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/511d49d7/68dca966a794ffc77304c341_qdrant-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/511d49d7/68dca966a794ffc77304c341_qdrant-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 **👀 Note:** Pricing is primarily based on memory (RAM) and can scale up significantly for larger datasets.
@@ -179,7 +179,7 @@ The primary con is its in-memory nature, which makes it expensive for storing la
 ## 4. Weaviate
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/2bc29a29/68dca978b3aaf9489ef3e230_weaviate-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2bc29a29/68dca978b3aaf9489ef3e230_weaviate-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [Weaviate](https://weaviate.io/) is an open-source, AI-native vector database built with a graph-like class schema. The design helps you scale and provide more flexibility in RAG workflows. It offers a rich feature set, including built-in vectorization modules and advanced search capabilities.
@@ -195,7 +195,7 @@ Weaviate itself is open-source (BSD-3), so you can self-host it for free. The We
 <ul><li><strong>Serverless Cloud:</strong> $25 per month</li><li><strong>Enterprise Cloud:</strong> $2.64 per AIU (AI Unit)</li><li><strong>BYO Cloud:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/a706b969/68dca98d51e9006ab1e940dd_vespa-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a706b969/68dca98d51e9006ab1e940dd_vespa-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -207,7 +207,7 @@ However, defining the schema correctly is critical. Performance can lag behind s
 ## 5. Qdrant
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/f9ca2e61/68dca99f024834fc55537c25_qdrant-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f9ca2e61/68dca99f024834fc55537c25_qdrant-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [Qdrant](https://qdrant.tech/) is an open-source vector search engine written in Rust. It’s purpose-built for RAG applications where speed and memory safety are paramount.
@@ -223,7 +223,7 @@ Qdrant itself is open-source. The Qdrant Cloud service offers a free 1GB cluster
 <ul><li><strong>Hybrid Cloud:</strong> $0.014</li><li><strong>Private Cloud:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/511d49d7/68dca966a794ffc77304c341_qdrant-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/511d49d7/68dca966a794ffc77304c341_qdrant-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -235,7 +235,7 @@ However, it doesn’t natively do hybrid keyword search or have built-in vectori
 ## 6. Milvus
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/95826cac/68dca9c83d55484900aac8ad_milvus-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/95826cac/68dca9c83d55484900aac8ad_milvus-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [Milvus](https://milvus.io/) is a highly scalable, open-source vector database. Built with a cloud-native, distributed architecture that separates compute and storage, Milvus can scale to handle billions or even trillions of vectors.
@@ -253,7 +253,7 @@ Milvus itself is open-source. Zilliz offers Milvus as a managed service. The fre
 <ul><li><strong>Dedicated:</strong> $99 per month</li><li><strong>Serverless:</strong> $0.30 per GB per month</li><li><strong>BYOC:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/bc41e300/68dca9e1fd8d8b6e6d24100e_milvus-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/bc41e300/68dca9e1fd8d8b6e6d24100e_milvus-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -265,7 +265,7 @@ On the contrary, Milvus can be complex to operate. Its clustering and resource s
 ## 7. Vespa
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/33927ad1/68dca9f3bd941f8804d3b895_vespa-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/33927ad1/68dca9f3bd941f8804d3b895_vespa-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [Vespa](https://vespa.ai/) is a powerful open-source engine for big data and AI. It functions as both a fully-featured search engine and a vector database. It’s designed for real-time applications that combine vector search, lexical search, and machine-learned ranking at scale.
@@ -279,7 +279,7 @@ On the contrary, Milvus can be complex to operate. Its clustering and resource s
 Vespa itself is open-source (Apache 2.0) and can be self-deployed at no software cost. They also offer Vespa Cloud, a managed service with usage-based pricing based on allocated resources (vCPU, memory, disk) per hour, with different tiers for support and features.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/a706b969/68dca98d51e9006ab1e940dd_vespa-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a706b969/68dca98d51e9006ab1e940dd_vespa-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -291,7 +291,7 @@ However, running a Vespa cluster is more involved than a simple vector store. Yo
 ## 8. pgvector (postgres)
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/ce55e268/68dcaa1539e422e68b9f8890_pgvector-github.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ce55e268/68dcaa1539e422e68b9f8890_pgvector-github.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [pgvector](https://github.com/pgvector/pgvector) is an extension for PostgreSQL that adds vector similarity search to the classic SQL database. If your application already uses Postgres, you can keep everything in one database (data + vectors). You get full SQL querying power on the same data that backs your app.
@@ -313,7 +313,7 @@ On the contrary, Postgres isn’t designed for massive vector workloads. Large e
 ## 9. Elasticsearch
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/135530d0/68dcaa29093e8731aa71ec3b_elasticsearch-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/135530d0/68dcaa29093e8731aa71ec3b_elasticsearch-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [Elasticsearch](https://www.elastic.co/elasticsearch) (by Elastic) is a mature distributed search engine. Traditionally used for text, logs, and metrics, Elasticsearch can also store and search embeddings via its dense vector datatype.
@@ -329,7 +329,7 @@ Elasticsearch is open-source, but the managed service is popular. On the Elastic
 <ul><li><strong>Standard:</strong> $99 per month</li><li><strong>Gold:</strong> $114 per month</li><li><strong>Platinum:</strong> $131 per month</li><li><strong>Enterprise:</strong> $184 per month</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/53f876fb/68dcaa4e1ebaf9d4af38773c_elasticsearch-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/53f876fb/68dcaa4e1ebaf9d4af38773c_elasticsearch-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -341,7 +341,7 @@ However, it can be complex to manage and tune, and its resource consumption, esp
 ## 10. MongoDB
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/d7bf7d1c/68dcaa60b291a6b98e82e28b_mongodb-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d7bf7d1c/68dcaa60b291a6b98e82e28b_mongodb-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [MongoDB](https://www.mongodb.com/), a leading document database, has integrated vector search directly into its platform with Atlas Vector Search. You store your data as usual in MongoDB collections and define a vector search index on a field containing embeddings. This allows developers to build RAG applications on a flexible document model, storing vectors alongside their application data.
@@ -357,7 +357,7 @@ Vector Search in Atlas has no separate fee. It’s included on all cluster tiers
 <ul><li><strong>Free</strong> (Up to 512 MB storage, shared RAM, and vCPU)</li><li><strong>Flex:</strong> Up to $30 per month ($0.11 per hour)</li><li><strong>Dedicated:</strong> Pay as you go ($0.08 per hour)</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/f7d2b988/68dcaa7a8b462463d469038d_mongodb-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f7d2b988/68dcaa7a8b462463d469038d_mongodb-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -371,7 +371,7 @@ As a more recent addition, its large-scale vector workloads are improving but ma
 Choosing the right vector database depends on your priorities. What do you prioritize: latency, scalability, cost efficiency, or ecosystem fit? Each of the databases we tested brings its own strengths and trade-offs to the table. The good news is that you don’t have to lock yourself into just one choice.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/80238d96/68d36f905df86638012edf81_zenml-unified-mlops-and-llmops-platform.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/80238d96/68d36f905df86638012edf81_zenml-unified-mlops-and-llmops-platform.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 That’s where [ZenML](https://www.zenml.io/) comes in. ZenML is not a vector database; it’s the orchestration layer for your entire RAG and agent pipeline. With ZenML, you can plug in any vector database you prefer, whether Pinecone, Weaviate, Qdrant, Milvus, or even Postgres with pgvector, and focus on building reliable, [fine-tuned](https://docs.zenml.io/user-guides/llmops-guide/finetuning-embeddings) production-ready pipelines.

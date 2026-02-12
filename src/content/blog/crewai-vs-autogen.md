@@ -21,12 +21,12 @@ tags:
 date: "2025-08-09T00:00:00.000Z"
 readingTime: 16 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/0dc8837c/6896df17b7c50904d1a75760_crewai-vs-autogen.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/0dc8837c/6896df17b7c50904d1a75760_crewai-vs-autogen.png"
 seo:
   title: "CrewAI vs AutoGen: Which One Is the Best Framework to Build AI Agents and Applications - ZenML Blog"
   description: "In this Crewai vs Autogen article, we explain the difference between the two and conclude which one is the best to build AI agents and applications."
   canonical: "https://www.zenml.io/blog/crewai-vs-autogen"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/0dc8837c/6896df17b7c50904d1a75760_crewai-vs-autogen.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/0dc8837c/6896df17b7c50904d1a75760_crewai-vs-autogen.png"
   ogTitle: "CrewAI vs AutoGen: Which One Is the Best Framework to Build AI Agents and Applications - ZenML Blog"
   ogDescription: "In this Crewai vs Autogen article, we explain the difference between the two and conclude which one is the best to build AI agents and applications."
 ---
@@ -86,7 +86,7 @@ To understand how CrewAI and AutoGen differ, we compare them across several core
 ### CrewAI
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/ce4ddf87/6896df333567a52779e9486b_crewai-framework-overview.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ce4ddf87/6896df333567a52779e9486b_crewai-framework-overview.png" alt="__wf_reserved_inherit" />
   <figcaption>CrewAI framework overview</figcaption>
 </figure>
 
@@ -105,7 +105,7 @@ In short, CrewAI’s orchestration is top-down: the developer orchestrates how a
 ### AutoGen
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/016fe60b/687c6ddad5e2d0a96f94e339_built-in-agents-in-autogen.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/016fe60b/687c6ddad5e2d0a96f94e339_built-in-agents-in-autogen.png" alt="__wf_reserved_inherit" />
   <figcaption>AutoGen multi agent conversation framework</figcaption>
 </figure>
 
@@ -198,7 +198,7 @@ CrewAI’s philosophy in authoring is “explicit is better than implicit” –
 ### AutoGen
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/2a99a30d/6896df73a1027c9cf5c67c99_autogen-studio.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2a99a30d/6896df73a1027c9cf5c67c99_autogen-studio.png" alt="__wf_reserved_inherit" />
   <figcaption>AutoGen Studio</figcaption>
 </figure>
 
@@ -221,7 +221,7 @@ But the key difference is that AutoGen’s default tooling aims to lower the bar
 ### CrewAI
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/544ef421/6896df88eafbcc44460b6225_prompting-in-crewai.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/544ef421/6896df88eafbcc44460b6225_prompting-in-crewai.png" alt="__wf_reserved_inherit" />
   <figcaption>Prompting in CrewAI</figcaption>
 </figure>
 
@@ -294,7 +294,7 @@ However, the downside is less direct control: you don’t explicitly insert a pa
 ### CrewAI
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/39c2f85f/6896df9a929a7bb3ff6c26dd_crewai-human-in-the-loop.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/39c2f85f/6896df9a929a7bb3ff6c26dd_crewai-human-in-the-loop.png" alt="__wf_reserved_inherit" />
   <figcaption>CrewAI human in the loop</figcaption>
 </figure>
 
@@ -311,7 +311,7 @@ From the developer’s perspective, enabling human-in-the-loop is often as simpl
 ### AutoGen
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/eb5eda0b/6896dfb1da58f454a68d7939_autogen-human-in-the-loop.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/eb5eda0b/6896dfb1da58f454a68d7939_autogen-human-in-the-loop.png" alt="__wf_reserved_inherit" />
   <figcaption>AutoGen human in the loop</figcaption>
 </figure>
 
@@ -342,7 +342,7 @@ CrewAI comes with its own integrations and also uses external Python libraries. 
 <ul><li><strong>LLMs</strong>: Groq, OpenAI, Anthropic</li><li><strong>Services</strong>: Revium, RagaAI, StartSE</li><li><strong>Education</strong>: PWC, DeepLearning, K2 Consulting</li><li><strong>Applications</strong>: Composio, Chroma, Cloudera</li><li><strong>Integrations</strong>: Notion, Slack, Replit</li><li><strong>Infrastructure</strong>: Microsoft Azure, MongoDB, Nexla</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/72a6d841/685f793a57ab7985d1a245c4_crewai-ecosystem.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/72a6d841/685f793a57ab7985d1a245c4_crewai-ecosystem.png" alt="__wf_reserved_inherit" />
   <figcaption>CrewAI ecosystem</figcaption>
 </figure>
 
@@ -367,7 +367,7 @@ CrewAI’s core framework is also MIT-licensed and open-source. But the platform
 <ul><li><strong>Basic</strong>: $99 per month</li><li><strong>Standard</strong>: $6,000 per year</li><li><strong>Pro</strong>: $12,000 per year</li><li><strong>Enterprise</strong>: $60,000 per year</li><li><strong>Ultra</strong>: $120,000 per year</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/1e859c2e/689449cc51a07a407e816d4f_crewai-pricing-plan-overview.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1e859c2e/689449cc51a07a407e816d4f_crewai-pricing-plan-overview.png" alt="__wf_reserved_inherit" />
   <figcaption>CrewAI pricing plans</figcaption>
 </figure>
 
@@ -388,7 +388,7 @@ While there are no officially managed plans, it’s possible to build a managed 
 ## How ZenML Helps In Closing the Outer Loop Around Your Agents
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/7a33802b/6896dfdabb853e01ec9b805b_zenml-mlops-and-llmops-platform.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7a33802b/6896dfdabb853e01ec9b805b_zenml-mlops-and-llmops-platform.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 Frameworks like CrewAI and AutoGen focus on the inner loop of agent development, defining roles, prompts, and interactions.
@@ -425,14 +425,14 @@ def simple_ml_pipeline():
 **Unified Visibility and Lineage: **ZenML tracks artifacts, prompts, agent outputs, and dependencies. A central dashboard visualizes this lineage, enabling teams to debug failures, identify drift, and reproduce past runs. This is especially valuable for complex multi‑agent chats where state is implicit.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/c02f837d/6892de82198dfe9aa4d43687_zenml-visualization.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c02f837d/6892de82198dfe9aa4d43687_zenml-visualization.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML visualization</figcaption>
 </figure>
 
 **Continuous Evaluation**: ZenML pipelines can include evaluation steps to test agent responses for correctness, bias, or hallucination. You can flag and/or re-queue bad runs automatically. CrewAI and AutoGen focus on execution, but ZenML provides the feedback loop for quality improvement.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/a2d6f59d/6892de9d7a7c008a7dde8ba5_zenml-evaluation.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a2d6f59d/6892de9d7a7c008a7dde8ba5_zenml-evaluation.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML evaluation</figcaption>
 </figure>
 

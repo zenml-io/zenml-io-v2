@@ -19,12 +19,12 @@ tags:
 date: "2024-07-04T00:00:00.000Z"
 readingTime: 12 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/8e3e03ba/6981d37a71c3040935dbc350_6981d2adf36d74a0feed3d9f_llm-001.avif"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8e3e03ba/6981d37a71c3040935dbc350_6981d2adf36d74a0feed3d9f_llm-001.avif"
 seo:
   title: "The Ultimate Guide to LLM Batch Inference with OpenAI and ZenML - ZenML Blog"
   description: "OpenAI's Batch API allows you to submit queries for 50% of what you'd normally pay. Not all their models work with the service, but in many use cases this will save you lots of money on your LLM inference, just so long as you're not building a chatbot!"
   canonical: "https://www.zenml.io/blog/the-ultimate-guide-to-llm-batch-inference-with-openai-and-zenml"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/8e3e03ba/6981d37a71c3040935dbc350_6981d2adf36d74a0feed3d9f_llm-001.avif"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8e3e03ba/6981d37a71c3040935dbc350_6981d2adf36d74a0feed3d9f_llm-001.avif"
   ogTitle: "The Ultimate Guide to LLM Batch Inference with OpenAI and ZenML - ZenML Blog"
   ogDescription: "OpenAI's Batch API allows you to submit queries for 50% of what you'd normally pay. Not all their models work with the service, but in many use cases this will save you lots of money on your LLM inference, just so long as you're not building a chatbot!"
 ---
@@ -42,7 +42,7 @@ The core benefit is around cost: batch request cost half the normal rate. Any it
 Aside from the cost benefits, you get significantly higher token limits if you’re sending in batch requests which again may make certain use cases feasible which weren’t with the standard limits. See the OpenAI docs for the specific details but [this chart](https://platform.openai.com/settings/organization/limits) sums it up, with TPD and TPM being tokens per day and minute respectively:
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e72a7b09/668696a4701f47c3d170f9f5_img01.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e72a7b09/668696a4701f47c3d170f9f5_img01.png" alt="__wf_reserved_inherit" />
 </figure>
 
 You should consider using the batch API for your use case includes some combination of the following:
@@ -152,13 +152,13 @@ You can accomplish everything above by using the OpenAI platform’s web UI. Let
 We already have a file, so we can just submit it directly. OpenAI will then validate that the file is in the right format and then directly schedule the batch predictions.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/2bd74c16/66869a02a6c4e0396ed8bd12_img_02.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2bd74c16/66869a02a6c4e0396ed8bd12_img_02.png" alt="__wf_reserved_inherit" />
 </figure>
 
 **2. Download the predictions when ready**
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/21a2b47e/66869a0d41bb888afd9a4336_img_03.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/21a2b47e/66869a0d41bb888afd9a4336_img_03.png" alt="__wf_reserved_inherit" />
 </figure>
 
 Depending on the size of the predictions, you will have to wait some time until they are ready. The five queries I submitted (see above for the actual prompts) were returned to me in 11 seconds actually, so this goes to show that you might receive your responses significantly faster than 24 hours.
@@ -336,13 +336,13 @@ So our pipeline keeps running in your cloud orchestrator of choice, every 45 min
 Of course, all your runs and metadata are visible and inspectable via the ZenML dashboard:
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/2f61f5db/66869c18ffa82381de54f87c_img_04.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2f61f5db/66869c18ffa82381de54f87c_img_04.png" alt="__wf_reserved_inherit" />
 </figure>
 
 And to access the data you can just use the [Python SDK](https://sdkdocs.zenml.io/) to access the data, or alternatively just [pass the output of this pipeline into another pipeline](https://docs.zenml.io/how-to/build-pipelines/trigger-a-pipeline-from-another) for processing for [LLM finetuning](https://github.com/zenml-io/zenml-projects/tree/main/llm-lora-finetuning) or whatever your specific use case is!
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/3b56eb21/66869c3dc485388aae0c9525_img_05.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3b56eb21/66869c3dc485388aae0c9525_img_05.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ## 👀 Gotcha Corner: Things to watch out for

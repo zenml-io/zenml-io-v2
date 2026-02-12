@@ -21,7 +21,7 @@ tags:
 date: "2026-02-10T00:00:00.000Z"
 readingTime: 14 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/06e56673/698aadaae6c689521795e4f7_mlrun-vs-mlflow.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/06e56673/698aadaae6c689521795e4f7_mlrun-vs-mlflow.png"
 ---
 
 Today, MLOps teams are stuck in a tool sprawl nightmare. You have one tool for training, another for tracking experiments, and a dozen scripts often held together with a thin layer of duct tape.
@@ -55,7 +55,7 @@ How you define workflows and how they execute (local vs. remote) determines whet
 #### MLRun
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/96ad34da/698aac84fb6028e194fea61e_mlrun-architecture.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/96ad34da/698aac84fb6028e194fea61e_mlrun-architecture.webp" alt="__wf_reserved_inherit" />
   <figcaption>MLRun architecture</figcaption>
 </figure>
 
@@ -102,7 +102,7 @@ MLRun also supports advanced execution features like retries and cron-style sche
 #### MLflow
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/73c2dbf4/69895e1d7be331183afe0de7_mlflow-architecture.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/73c2dbf4/69895e1d7be331183afe0de7_mlflow-architecture.webp" alt="__wf_reserved_inherit" />
   <figcaption>MLflow architecture</figcaption>
 </figure>
 
@@ -176,7 +176,7 @@ Experiment tracking is needed to know which hyperparameters produced the best mo
 #### MLRun
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/6e5a982c/698aacab962a56a2ac776669_mlrun-experiment-tracking.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6e5a982c/698aacab962a56a2ac776669_mlrun-experiment-tracking.webp" alt="__wf_reserved_inherit" />
   <figcaption>MLRun experiment tracking</figcaption>
 </figure>
 
@@ -206,7 +206,7 @@ MLRun lets you use the Iguazio UI provided dashboards to visualize it. However, 
 #### MLflow
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/b596c985/6938ee4fe192ac2d8004586d_mlflow-experiment-tracking.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b596c985/6938ee4fe192ac2d8004586d_mlflow-experiment-tracking.webp" alt="__wf_reserved_inherit" />
   <figcaption>MLflow experiment tracking</figcaption>
 </figure>
 
@@ -229,7 +229,7 @@ MLflow is widely integrated across the MLOps ecosystem. Many orchestration and p
 #### ZenML
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/4a4ed178/6938ee7483c9611ce77185c7_zenml-experiment-tracking.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/4a4ed178/6938ee7483c9611ce77185c7_zenml-experiment-tracking.webp" alt="__wf_reserved_inherit" />
   <figcaption>ZenML experiment tracking</figcaption>
 </figure>
 
@@ -242,7 +242,7 @@ The benefit ZenML adds is **context**. It links the MLflow experiment (or any ex
 ZenML includes a dashboard for visualising pipelines, runs, steps, artefacts, and associated metadata. Some advanced dashboard views (e.g., experiment comparison or full model control-plane features) depend on the ZenML edition.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/89ac6c74/698aace9f912fdb9a4d8ae9e_zenml-experiment-comparison-in-the-dashboard.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/89ac6c74/698aace9f912fdb9a4d8ae9e_zenml-experiment-comparison-in-the-dashboard.webp" alt="__wf_reserved_inherit" />
   <figcaption>ZenML experiment comparison in the dashboard</figcaption>
 </figure>
 
@@ -257,7 +257,7 @@ If you can’t trace a model back to the dataset that trained it, you have not a
 #### MLRun
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/5ee0d950/698aad01ea29e59703e14f7a_mlrun-artifacts.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5ee0d950/698aad01ea29e59703e14f7a_mlrun-artifacts.webp" alt="__wf_reserved_inherit" />
   <figcaption>MLRun artifacts</figcaption>
 </figure>
 
@@ -284,7 +284,7 @@ There’s also no built-in comparison across artifact types. You can inspect art
 #### ZenML
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/49b8f776/698aad19f5bee90a5ab09f39_zenml-artifact-tracking-and-visualization.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/49b8f776/698aad19f5bee90a5ab09f39_zenml-artifact-tracking-and-visualization.webp" alt="__wf_reserved_inherit" />
   <figcaption>ZenML artifact tracking and visualization</figcaption>
 </figure>
 
@@ -311,7 +311,7 @@ Key integrations include:
 <ul><li><strong>Execution runtimes:</strong> Kubernetes jobs, real-time Nuclio functions, serving graphs, Dask, Spark, MPIJob (Horovod) and more.</li><li><strong>Data stores and artifact backends: O</strong>bject storage and filesystems (e.g., S3, Azure object storage, Google cloud object storage), plus additional backends in the MLRun ecosystem.</li><li><strong>Streaming and eventing:</strong> Kafka and cron/HTTP-based triggers (plus Iguazio-specific backends where applicable).</li><li><strong>Cloud service integrations:</strong> MLRun includes examples and demos integrating with services such as AWS SageMaker and AzureML as part of broader ML pipelines.</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/a10089f4/698aad2bf792f2ad23f7b716_mlrun-integrations.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a10089f4/698aad2bf792f2ad23f7b716_mlrun-integrations.webp" alt="__wf_reserved_inherit" />
   <figcaption>Source</figcaption>
 </figure>
 
@@ -326,13 +326,13 @@ On the infrastructure side, MLflow is flexible too:
 MLflow’s open-source model format (`MLmodel`) is widely supported, making it easy to plug into other tools. It’s not meant to handle data ingestion or orchestration, but it logs from almost anywhere with minimal friction.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/d1ae5453/696db139dfcb368d2fca0897_mlflow-integrations.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d1ae5453/696db139dfcb368d2fca0897_mlflow-integrations.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### ZenML
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/1d82b748/6946273b56bd53317bb529f0_zenml-integration-capabilities.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1d82b748/6946273b56bd53317bb529f0_zenml-integration-capabilities.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ZenML’s architecture is explicitly modular. It uses a stack concept where each part, whether it’s an orchestrator, tracker, artifact, or metadata store, has multiple connectors.
@@ -356,7 +356,7 @@ MLRun is a free, open-source MLOps orchestration framework. Costs associated wit
 MLflow is open-source and free to use. You can self-host it, which incurs infrastructure and maintenance costs. Managed MLflow services, like those on Databricks or AWS, charge based on the compute and storage resources you consume.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/3aa0605a/696db14eed59466d7814453d_mlflow-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3aa0605a/696db14eed59466d7814453d_mlflow-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 **📚 Read this guide and explore the top **[MLflow alternatives](https://www.zenml.io/blog/mlflow-alternatives)**.**
@@ -368,7 +368,7 @@ MLflow is open-source and free to use. You can self-host it, which incurs infras
 <ul><li><strong>Community (Free):</strong> Full open-source framework. You can run it on your own infrastructure for free.</li><li><strong>ZenML Pro (Custom pricing):</strong> A managed control plane that handles the dashboard, user management, and stack configurations. This removes the burden of hosting the ZenML server yourself.</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/c508fdf9/69686958bdf1b77d334d2876_zenml-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c508fdf9/69686958bdf1b77d334d2876_zenml-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 **📚 Relevant comparison to read:**

@@ -12,12 +12,12 @@ webflow:
   createdOn: "2025-08-26T12:59:18.197Z"
 integrationType: "agents"
 logo:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/986b08b5/68adafb26944ec2a46778809_langchain.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/986b08b5/68adafb26944ec2a46778809_langchain.png"
 shortDescription: "LangChain agent chains integrated with ZenML"
 docsUrl: "https://docs.zenml.io"
 githubUrl: "https://github.com/zenml-io/zenml/tree/main/examples/agent_framework_integrations/langchain"
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e2efe0d8/68adb54f8efaceb435c1b7db_langchain-img.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e2efe0d8/68adb54f8efaceb435c1b7db_langchain-img.png"
 relatedBlogPosts:
   - "productionalizing-langchain-and-llamaindex-with-a-zenml-mlops-pipeline-to-help-community-slack-support"
   - "langgraph-alternatives"
@@ -25,7 +25,7 @@ seo:
   title: "Integrate LangChain with ZenML - Agents Integrations"
   description: "LangChain agent chains integrated with ZenML"
   canonical: "https://www.zenml.io/integrations/langchain"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e2efe0d8/68adb54f8efaceb435c1b7db_langchain-img.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e2efe0d8/68adb54f8efaceb435c1b7db_langchain-img.png"
   ogTitle: "Integrate LangChain with ZenML - Agents Integrations"
   ogDescription: "LangChain agent chains integrated with ZenML"
 ---

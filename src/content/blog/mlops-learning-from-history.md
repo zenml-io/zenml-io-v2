@@ -20,12 +20,12 @@ tags:
 date: "2020-11-09T00:00:00.000Z"
 readingTime: 6 Mins Read
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/8cab1e6c/6530b03325ce7aaf73dc51b1_svg-image-1__4_.svg"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8cab1e6c/6530b03325ce7aaf73dc51b1_svg-image-1__4_.svg"
 seo:
   title: "MLOps: Learning from history - ZenML Blog"
   description: "MLOps isn't just about new technologies and coding practices. Getting better at productionizing your models also likely requires some institutional and/or organisational shifts."
   canonical: "https://www.zenml.io/blog/mlops-learning-from-history"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/a976d8e2/6530b03325ce7aaf73dc51b1_svg-image-1__4_.svg"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a976d8e2/6530b03325ce7aaf73dc51b1_svg-image-1__4_.svg"
   ogTitle: "MLOps: Learning from history - ZenML Blog"
   ogDescription: "MLOps isn't just about new technologies and coding practices. Getting better at productionizing your models also likely requires some institutional and/or organisational shifts."
 ---

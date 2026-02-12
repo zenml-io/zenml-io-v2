@@ -21,12 +21,12 @@ tags:
 date: "2022-02-09T00:00:00.000Z"
 readingTime: 6 Mins Read
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/7eb0c0dd/653004a88d0bd6e9c80afd8d_mlflow-logo.jpeg"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7eb0c0dd/653004a88d0bd6e9c80afd8d_mlflow-logo.jpeg"
 seo:
   title: "How to improve your experimentation workflows with MLflow Tracking and ZenML - ZenML Blog"
   description: "Use MLflow Tracking to automatically ensure that you're capturing data, metadata and hyperparameters that contribute to how you are training your models. Use the UI interface to compare experiments, and let ZenML handle the boring setup details."
   canonical: "https://www.zenml.io/blog/how-to-improve-your-experimentation-workflows-with-mlflow-tracking-and-zenml"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/180f7d83/653004a88d0bd6e9c80afd8d_mlflow-logo.jpeg"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/180f7d83/653004a88d0bd6e9c80afd8d_mlflow-logo.jpeg"
   ogTitle: "How to improve your experimentation workflows with MLflow Tracking and ZenML - ZenML Blog"
   ogDescription: "Use MLflow Tracking to automatically ensure that you're capturing data, metadata and hyperparameters that contribute to how you are training your models. Use the UI interface to compare experiments, and let ZenML handle the boring setup details."
 ---
@@ -64,7 +64,7 @@ If you’re using ZenML to bring together the various tools in your machine lear
 MLflow Tracking gives you that ability to inspect the various experiments and pipeline runs in the (local) web interface and is probably going to be a friendlier way of interacting with and reasoning about your machine learning experiments.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/4bbb0c23/653004d4eb404487bba19253_mlflow-screenshot.png" alt="Tracking machine learning training runs with MLFlow" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/4bbb0c23/653004d4eb404487bba19253_mlflow-screenshot.png" alt="Tracking machine learning training runs with MLFlow" />
 </figure>
 
 You could have used MLflow Tracking in the past, too, but with our latest integration updates ZenML handles some of the boilerplate complicated setup that comes with using MLflow. There are [different ways](https://mlflow.org/docs/latest/tracking.html#where-runs-are-recorded) of deploying the tracking infrastructure and servers and it isn’t a completely painless task to set all this up and to get going with MLflow Tracking. This is where we make your life a bit easier: we setup everything you need to use it on your (currently: local) machine, connecting the MLFlow Tracking interface to your ZenML artifact store. It can be a bit tricky to configure the relevant connections between the various modular pieces that talk to each other, and we hide this from you beneath an abstraction.

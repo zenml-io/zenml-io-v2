@@ -17,7 +17,7 @@ tags:
 date: "2022-07-19T00:00:00.000Z"
 readingTime: 6 Mins Read
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/fec83eea/6531dbdbbecfc0b0c523780a_gaelle-marcel-vrkSVpOwchk-unsplash.jpg"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/fec83eea/6531dbdbbecfc0b0c523780a_gaelle-marcel-vrkSVpOwchk-unsplash.jpg"
 ---
 
 **Last updated:** November 3, 2022.
@@ -33,7 +33,7 @@ Beyond this, as usual we included a number of smaller bugfixes and documentation
 We’ve been hard at work on our new stack component and integration with [Label Studio](https://labelstud.io/), the first of our data annotation tools. 🥳
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/9b36bf4b/6531dbe5a15ab6bdf4cc722b_label-studio-integration.png" alt="Object Detection with ZenML and Label Studio" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9b36bf4b/6531dbe5a15ab6bdf4cc722b_label-studio-integration.png" alt="Object Detection with ZenML and Label Studio" />
 </figure>
 
 Annotators are a stack component that enables the use of data annotation as part of your ZenML stack and pipelines. You can use the associated CLI command to launch annotation, configure your datasets and get stats on how many labeled tasks you have ready for use.

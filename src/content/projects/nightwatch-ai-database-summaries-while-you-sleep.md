@@ -14,7 +14,7 @@ description: "Wake up to AI-generated insights from your Supabase database every
 githubUrl: "https://github.com/zenml-io/zenml-projects/tree/main/nightwatch-ai"
 mainImageLink: "https://public-flavor-logos.s3.eu-central-1.amazonaws.com/projects/5.jpg"
 previewImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/89de9e78/67e244b850bf8684881fde53_youtldr_summarizer_slack.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/89de9e78/67e244b850bf8684881fde53_youtldr_summarizer_slack.png"
 tags:
   - "natural-language-processing"
   - "text-summarization"
@@ -35,7 +35,7 @@ seo:
   title: "NightWatch: AI Database Summaries While You Sleep"
   description: "Wake up to AI-generated insights from your Supabase database every morning. This ZenML pipeline uses OpenAI's GPT-4 to analyze yesterday's database activity, compare it to historical trends, and deliver concise summaries directly to your Slack channels."
   canonical: "https://www.zenml.io/projects/nightwatch-ai-database-summaries-while-you-sleep"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/89de9e78/67e244b850bf8684881fde53_youtldr_summarizer_slack.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/89de9e78/67e244b850bf8684881fde53_youtldr_summarizer_slack.png"
   ogTitle: "NightWatch: AI Database Summaries While You Sleep"
   ogDescription: "Wake up to AI-generated insights from your Supabase database every morning. This ZenML pipeline uses OpenAI's GPT-4 to analyze yesterday's database activity, compare it to historical trends, and deliver concise summaries directly to your Slack channels."
 ---

@@ -11,7 +11,7 @@ webflow:
   createdOn: "2023-10-18T08:02:14.766Z"
 position: "Junior Platform Engineer"
 photo:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/c78a0b25/652f90f2488ed3e2036a771a_jayesh.jpeg"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c78a0b25/652f90f2488ed3e2036a771a_jayesh.jpeg"
 email: "jayesh.ext@zenml.io"
 linkedin: "https://www.linkedin.com/in/wjayesh/"
 order: 9

@@ -19,12 +19,12 @@ tags:
 date: "2025-07-10T00:00:00.000Z"
 readingTime: 5 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/9eec284e/6981cf5010e873663bd7592b_6981ce8bcd6daca28158210c_zenml-mcp-dxt_1.avif"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9eec284e/6981cf5010e873663bd7592b_6981ce8bcd6daca28158210c_zenml-mcp-dxt_1.avif"
 seo:
   title: "ZenML's MCP Server Supports DXT: Making MLOps Conversations Frictionless - ZenML Blog"
   description: "ZenML's new DXT-packaged MCP server transforms MLOps workflows by enabling natural language conversations with ML pipelines, experiments, and infrastructure, reducing setup time from 15 minutes to 30 seconds and eliminating the need to hunt across multiple dashboards for answers."
   canonical: "https://www.zenml.io/blog/zenmls-mcp-server-supports-dxt-making-mlops-conversations-frictionless"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/9eec284e/6981cf5010e873663bd7592b_6981ce8bcd6daca28158210c_zenml-mcp-dxt_1.avif"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9eec284e/6981cf5010e873663bd7592b_6981ce8bcd6daca28158210c_zenml-mcp-dxt_1.avif"
   ogTitle: "ZenML's MCP Server Supports DXT: Making MLOps Conversations Frictionless - ZenML Blog"
   ogDescription: "ZenML's new DXT-packaged MCP server transforms MLOps workflows by enabling natural language conversations with ML pipelines, experiments, and infrastructure, reducing setup time from 15 minutes to 30 seconds and eliminating the need to hunt across multiple dashboards for answers."
 ---
@@ -38,7 +38,7 @@ Luckily, now we have DXT. DXT ('desktop extension') files are zip files containi
 Here's how easy it is to install the ZenML MCP Server in Claude Desktop with our DXT file:
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/8b34316e/686f85da98a899b9de1c1652_CleanShot_2025-07-10_at_11.15.53.gif" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8b34316e/686f85da98a899b9de1c1652_CleanShot_2025-07-10_at_11.15.53.gif" alt="__wf_reserved_inherit" />
 </figure>
 
 You download the DXT file, you drag and drop it onto the 'Settings' pane, click 'Install' and it's then clear which extra values you need to provide to get it up and running. From download to first query we're now talking something like 30 seconds instead of 15 minutes.
@@ -116,7 +116,7 @@ if __name__ == "__main__":
 I used the new [Grok4](https://artificialanalysis.ai/models/grok-4) model via OpenRouter to put it through its paces.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/cd0a2853/686f89bcb9b6299e3912dd4d_grok4-mcp.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/cd0a2853/686f89bcb9b6299e3912dd4d_grok4-mcp.png" alt="__wf_reserved_inherit" />
 </figure>
 
 The suggestions for improvement (for a DeepSeek distillation project we're working on) are almost all on point and include one or two points I hadn't at all thought to consider. If you have real eagle eyes you'll notice that the new DXT implementation isn't used in how our MCP server gets set up with `mcp-use` , but that's mainly because we're so early in getting our implementation out. At time of writing only Cursor Desktop supports the new format, but `mcp-use` has [an open issue](https://github.com/mcp-use/mcp-use/issues/162) and others are busy with their implementation so it's only a matter of weeks I expect.

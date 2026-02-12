@@ -2,7 +2,7 @@
 name: "Hamza Tahir"
 slug: "hamza-tahir"
 avatar:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/19d4b125/652f8dcd929fdbade2b3639a_hamza.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/19d4b125/652f8dcd929fdbade2b3639a_hamza.png"
 webflow:
   siteId: "64a817a2e7e2208272d1ce30"
   itemId: "652cfca52c26659c8b204a07"

@@ -20,12 +20,12 @@ tags:
 date: "2022-01-31T00:00:00.000Z"
 readingTime: 7 Mins Read
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/177dcf81/6531dff0a79c7763af0e1032_mypy-logo.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/177dcf81/6531dff0a79c7763af0e1032_mypy-logo.png"
 seo:
   title: "Type hints are good for the soul, or how we use mypy at ZenML - ZenML Blog"
   description: "A dive into Python type hinting, how implementing them makes your codebase more robust, and some suggestions on how you might approach adding them into a large legacy codebase."
   canonical: "https://www.zenml.io/blog/type-hints-are-good-for-the-soul-or-how-we-use-mypy-at-zenml"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/48a30cc0/6531dff0a79c7763af0e1032_mypy-logo.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/48a30cc0/6531dff0a79c7763af0e1032_mypy-logo.png"
   ogTitle: "Type hints are good for the soul, or how we use mypy at ZenML - ZenML Blog"
   ogDescription: "A dive into Python type hinting, how implementing them makes your codebase more robust, and some suggestions on how you might approach adding them into a large legacy codebase."
 ---
@@ -90,7 +90,7 @@ You can configure [mypy](http://mypy-lang.org/) to your heart’s desire either 
 One extra trick that is pretty invaluable is how we use [pre-commit](https://pre-commit.com/) to [ensure that code is not throwing any mypy errors](https://github.com/zenml-io/zenml/blob/develop/.pre-commit-config.yaml) before a commit is allowed to be made. I’ll be honest and admit that sometimes you get this fun workflow, where you fix one [mypy](http://mypy-lang.org/) error only to find many other errors get spawned as a consequence of the fix:
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/facf2699/6531dffa7d0d5b5080815590_xd-programming.gif" alt="GIF showing one fixed error leading to a series of other errors needing fixing" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/facf2699/6531dffa7d0d5b5080815590_xd-programming.gif" alt="GIF showing one fixed error leading to a series of other errors needing fixing" />
 </figure>
 
 For the most part, however, I haven’t found the mypy-enforced discipline around type hints to be much of a burden. One thing we don’t currently do is type-hint our tests, though probably that would be a good addition.

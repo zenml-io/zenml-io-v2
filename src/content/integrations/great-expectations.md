@@ -12,16 +12,16 @@ webflow:
   createdOn: "2023-10-12T09:13:13.923Z"
 integrationType: "data-validator"
 logo:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/88d6b213/672b2bda616f148555a240b5_great-expectations.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/88d6b213/672b2bda616f148555a240b5_great-expectations.png"
 shortDescription: "Ensure Data Quality and Consistency in Your ML Pipelines with Great Expectations and ZenML"
 docsUrl: "https://docs.zenml.io/stack-components/data-validators/great-expectations"
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/34660601/6527c48a33e7588093872882_great_expectations_b3266e867a.webp"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/34660601/6527c48a33e7588093872882_great_expectations_b3266e867a.webp"
 seo:
   title: "Integrate Great Expectations with ZenML - Data Validator Integrations"
   description: "Ensure Data Quality and Consistency in Your ML Pipelines with Great Expectations and ZenML"
   canonical: "https://www.zenml.io/integrations/great-expectations"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/34660601/6527c48a33e7588093872882_great_expectations_b3266e867a.webp"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/34660601/6527c48a33e7588093872882_great_expectations_b3266e867a.webp"
   ogTitle: "Integrate Great Expectations with ZenML - Data Validator Integrations"
   ogDescription: "Ensure Data Quality and Consistency in Your ML Pipelines with Great Expectations and ZenML"
 ---

@@ -21,12 +21,12 @@ tags:
 date: "2025-07-07T00:00:00.000Z"
 readingTime: 20 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/93977529/686b6bd7426b1f78f21bacf5_kedro-alternatives.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/93977529/686b6bd7426b1f78f21bacf5_kedro-alternatives.png"
 seo:
   title: "9 Best Kedro Alternatives to Build Production-Ready Data Science Pipelines - ZenML Blog"
   description: "Discover the best Kedro alternatives to build production-grade data science pipelines."
   canonical: "https://www.zenml.io/blog/kedro-alternatives"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/93977529/686b6bd7426b1f78f21bacf5_kedro-alternatives.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/93977529/686b6bd7426b1f78f21bacf5_kedro-alternatives.png"
   ogTitle: "9 Best Kedro Alternatives to Build Production-Ready Data Science Pipelines - ZenML Blog"
   ogDescription: "Discover the best Kedro alternatives to build production-grade data science pipelines."
 ---
@@ -46,7 +46,7 @@ In this article, we dive into 9 of the best Kedro alternatives, examining how ea
 ## Why Do You Need a Kedro Alternative?
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/5ee4540d/686b66d4fa557f440261579e_why-do-you-need-a-kedro-alternative.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5ee4540d/686b66d4fa557f440261579e_why-do-you-need-a-kedro-alternative.png" alt="__wf_reserved_inherit" />
   <figcaption>Why do you need a Kedro alternative</figcaption>
 </figure>
 
@@ -67,7 +67,7 @@ Because Kedro lacks its own execution engine, deploying Kedro pipelines in a pro
 With Kedro, you have to pack your project and manually containerize it for deployment – a process that’s not as smooth as ‘one-click’ deployments offered by some MLOps platforms.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/35cc7764/686b66f16b4b36ed3d2044a1_kedro-deployment-issues.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/35cc7764/686b66f16b4b36ed3d2044a1_kedro-deployment-issues.png" alt="__wf_reserved_inherit" />
   <figcaption>Kedro deployment issues</figcaption>
 </figure>
 
@@ -127,7 +127,7 @@ With the above criteria in mind, let’s explore the best Kedro alternatives.
 ## 1. ZenML
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/0f07e00a/6869f5f89e38da48b7c6146d_zenml-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/0f07e00a/6869f5f89e38da48b7c6146d_zenml-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [ZenML](https://www.zenml.io/) takes a fundamentally different approach than Kedro by treating pipelines as first-class citizens with built-in orchestration, versioning, and deployment capabilities. While Kedro focuses on code organization, ZenML provides a [complete MLOps platform](https://www.zenml.io/blog/mlops-what-why-how) that bridges development and production.
@@ -141,7 +141,7 @@ Key capabilities include:
 <ul><li><a href="https://docs.zenml.io/concepts/artifacts"><strong>Automatic artifact versioning</strong></a>: Each dataset, model, or file produced by a pipeline step is hashed and stored with a version tag, so you can always retrieve the exact artifact from any prior run.</li><li><strong>Rich metadata capture:</strong> ZenML logs metadata like shapes of datasets, model parameters, performance metrics, and more, automatically for each step.</li><li><strong>Run lineage and naming:</strong> ZenML maintains lineage graphs linking every artifact to the run, step, and data that produced it.</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/00d188af/686b673e548c057ed7d2cf93_zenml-architecture.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/00d188af/686b673e548c057ed7d2cf93_zenml-architecture.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Other Prominent Features
@@ -157,7 +157,7 @@ However, being a newer framework, ZenML’s community is growing but is currentl
 ## 2. MLflow
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/9168649a/686b67a75184c0729d702ac3_mlflow-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9168649a/686b67a75184c0729d702ac3_mlflow-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [MLflow](https://mlflow.org/) provides comprehensive experiment tracking and model management capabilities that many Kedro users adopt to fill the gap left by Kedro-Viz's deprecated features. While it lacks orchestration, MLflow excels at capturing and organizing ML metadata.
@@ -173,7 +173,7 @@ While MLflow doesn't provide immutable dataset versioning like DVC or W&B, it re
 The Model Registry extends versioning capabilities, which allows you to register models with semantic versions (v1, v2) and promote them through stages.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/f0b23289/681c8ef42b8649f7f85ced46_graph-showing-how-experiment-tracking-is-done-in-mlflow.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f0b23289/681c8ef42b8649f7f85ced46_graph-showing-how-experiment-tracking-is-done-in-mlflow.png" alt="__wf_reserved_inherit" />
   <figcaption>MLflow experiment tracking</figcaption>
 </figure>
 
@@ -202,7 +202,7 @@ A glaring limitation is that MLflow by itself doesn’t replace Kedro’s pipeli
 ## 3. Weights & Biases
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/8de84a46/686b67f34ea23489e4f5407d_wandb-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8de84a46/686b67f34ea23489e4f5407d_wandb-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [Weights & Biases](https://wandb.ai/site/) offers advanced experiment tracking with superior visualization capabilities and team collaboration features. The platform goes beyond basic logging to provide interactive dashboards and reports.
@@ -218,7 +218,7 @@ You can log an artifact to W&B, and it will hash the contents and keep every ver
 The platform effectively acts as a version control system for datasets and models.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e6a1b256/686b68186abcdf0d3048f1b6_wandb-artifacts.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e6a1b256/686b68186abcdf0d3048f1b6_wandb-artifacts.png" alt="__wf_reserved_inherit" />
   <figcaption>WandB artifacts</figcaption>
 </figure>
 
@@ -248,7 +248,7 @@ A common downside to W&B is that its free tier and even paid tiers have quotas, 
 ## 4. Prefect
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e8a54575/686b685c063c62feb2ea315f_prefect-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e8a54575/686b685c063c62feb2ea315f_prefect-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [Prefect](https://www.prefect.io/) combines Python-native workflow definition with sophisticated visualization and monitoring capabilities. Unlike Kedro's static pipeline visualization, Prefect provides real-time execution monitoring and debugging tools.
@@ -260,7 +260,7 @@ Prefect offers an excellent web UI (Prefect UI) to monitor and manage your workf
 The interface is modern and developer-friendly. From a visualization perspective, Prefect has a few key features: It automatically infers the DAG of your `@flow` from the structure of your code. It then renders this DAG in the UI so you can see the pipeline structure and status at a glance.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/37fddbc2/686b6876ce1a9da1403e092c_prefect-visualization.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/37fddbc2/686b6876ce1a9da1403e092c_prefect-visualization.png" alt="__wf_reserved_inherit" />
   <figcaption>Prefect visualization</figcaption>
 </figure>
 
@@ -281,7 +281,7 @@ But remember, Prefect does not include built-in experiment tracking or model man
 ## 5. Dagster
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/986d2d93/686b6890b668ce59a9f8c54f_dagster-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/986d2d93/686b6890b668ce59a9f8c54f_dagster-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 Dagster introduces a unique asset-centric approach to pipeline development that provides a richer context than Kedro's task-based model. The platform treats data assets as first-class citizens with built-in lineage and quality tracking.
@@ -297,7 +297,7 @@ You can click on any asset to see its provenance (what upstream assets it depend
 In terms of running pipelines, Dagit allows you to launch pipeline runs from the UI easily, with configurable parameters.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/3aa18914/686b68a51312d415bcc18da3_dagster-data-visualization.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3aa18914/686b68a51312d415bcc18da3_dagster-data-visualization.png" alt="__wf_reserved_inherit" />
   <figcaption>Dagster data visualization</figcaption>
 </figure>
 
@@ -314,7 +314,7 @@ But all this functionality of Dagster comes with a steep learning curve. The con
 ## 6. Google Vertex AI Pipelines
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/3433d236/686b68c18b5db835c9a42313_google-vertex-ai-pipeline-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3433d236/686b68c18b5db835c9a42313_google-vertex-ai-pipeline-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [Vertex AI](https://cloud.google.com/vertex-ai?hl=en) Pipelines provides enterprise-grade pipeline orchestration with deep Google Cloud integration. The platform offers managed infrastructure and automatic scaling that removes operational overhead.
@@ -330,7 +330,7 @@ For ML workflows, Vertex provides specialized visualization capabilities. For ex
 Additionally, because Vertex AI integrates with Vertex ML Metadata, you can track lineage – the UI displays which datasets and models were consumed or produced by each step.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/24eee261/686b68d5063c62feb2ea6fe1_vertex-ai-pipeline-visualization.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/24eee261/686b68d5063c62feb2ea6fe1_vertex-ai-pipeline-visualization.png" alt="__wf_reserved_inherit" />
   <figcaption>Vertex AI pipeline visualization</figcaption>
 </figure>
 
@@ -355,7 +355,7 @@ The main con is lock-in to Google Cloud. Vertex AI Pipelines only runs on GCP. I
 ## 7. Kubeflow
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/1b6f9eb6/686b68fc17d329bcec866808_kubeflow-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1b6f9eb6/686b68fc17d329bcec866808_kubeflow-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [Kubeflow](https://www.kubeflow.org/) provides comprehensive ML workflow orchestration on Kubernetes, offering the distributed computing capabilities that Kedro cannot provide natively. The platform includes specialized operators for ML workloads.
@@ -371,7 +371,7 @@ The Kubeflow Pipelines UI gives a clear view of the pipeline’s DAG and statuse
 It also supports caching: if enabled, it can skip executing steps whose inputs haven’t changed from a previous run.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/88746151/686b6911e8ef0996443626ed_kubeflow-architecture.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/88746151/686b6911e8ef0996443626ed_kubeflow-architecture.png" alt="__wf_reserved_inherit" />
   <figcaption>Kubeflow architecture</figcaption>
 </figure>
 
@@ -400,7 +400,7 @@ Being an end-to-end platform, Kubeflow is notoriously complex to deploy and main
 ## 8. Apache Airflow
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/94d35b3c/686b69351312d415bcc20b2c_apache-airflow-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/94d35b3c/686b69351312d415bcc20b2c_apache-airflow-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [Apache Airflow](https://airflow.apache.org/) is one of the most established workflow orchestrators, widely used in data engineering. It’s a platform to programmatically author, schedule, and monitor workflows as DAGs of tasks. While not designed specifically for ML, it’s often used to schedule ML pipelines or data preparation jobs.
@@ -418,7 +418,7 @@ Airflow’s executor architecture allows it to scale – you can run it with a L
 This means Airflow can handle pipelines with hundreds of tasks per day, potentially across a cluster of machines – it’s proven at enterprise scale.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/7cf57c12/686b69499883daa670bdbba7_apache-airflow-architecture.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7cf57c12/686b69499883daa670bdbba7_apache-airflow-architecture.png" alt="__wf_reserved_inherit" />
   <figcaption>Apache Airflow architecture</figcaption>
 </figure>
 
@@ -441,7 +441,7 @@ Airflow was originally created for ETL-type workflows and can feel heavyweight a
 ## 9. Argo Workflows
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/23e71062/686b69747f5de306521474b6_argo-workflows-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/23e71062/686b69747f5de306521474b6_argo-workflows-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [Argo Workflows](https://argoproj.github.io/workflows/) provides Kubernetes-native workflow orchestration with a focus on cloud-native practices. The platform excels at complex, distributed workflows with advanced control flow.
@@ -457,7 +457,7 @@ Artifact passing between task functionality lets Argo automatically move output 
 It also supports parameters so you can template your workflows. For example, you might have a workflow that trains a model given a data path and some hyperparameters as inputs – you can submit that workflow with different parameter values without redefining the whole thing.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/3732ec4b/686b698bbf2aa88347a00363_argo-workflows-orchestration.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3732ec4b/686b698bbf2aa88347a00363_argo-workflows-orchestration.png" alt="__wf_reserved_inherit" />
   <figcaption>Argo Workflows orchestration</figcaption>
 </figure>
 
@@ -482,6 +482,6 @@ ZenML gives you orchestration, artifact versioning, and experiment tracking in o
 Still confused about where to get started? [Book a personalized demo call](https://www.zenml.io/book-your-demo) with our Founder and discover how ZenML can help you build production-ready pipelines with true multi-cloud flexibility.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/890c042e/6869f852405fd774ebfa70b9_book-personalized-demo-with-zenml.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/890c042e/6869f852405fd774ebfa70b9_book-personalized-demo-with-zenml.png" alt="__wf_reserved_inherit" />
   <figcaption>Book your personalized demo</figcaption>
 </figure>

@@ -20,12 +20,12 @@ tags:
 date: "2022-06-02T00:00:00.000Z"
 readingTime: 5 Mins Read
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/432e954e/65300417ffaceec48f3cae5f_cover.jpg"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/432e954e/65300417ffaceec48f3cae5f_cover.jpg"
 seo:
   title: "How to get the most out of data annotation - ZenML Blog"
   description: "I explain why data labeling and annotation should be seen as a key part of any machine learning workflow, and how you probably don't want to label data only at the beginning of your process."
   canonical: "https://www.zenml.io/blog/how-to-get-the-most-out-of-data-annotation"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/ba7edb6d/65300417ffaceec48f3cae5f_cover.jpg"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ba7edb6d/65300417ffaceec48f3cae5f_cover.jpg"
   ogTitle: "How to get the most out of data annotation - ZenML Blog"
   ogDescription: "I explain why data labeling and annotation should be seen as a key part of any machine learning workflow, and how you probably don't want to label data only at the beginning of your process."
 ---
@@ -55,7 +55,7 @@ Perhaps most importantly, the wide availability of some pretty great starting po
 ## When and where to do your labeling
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/452d5023/65300452eb3291a25b290a09_labeling-when.png" alt="When and where to label your data" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/452d5023/65300452eb3291a25b290a09_labeling-when.png" alt="When and where to label your data" />
 </figure>
 
 Labeling isn’t a static practice but rather something you probably will want to be doing throughout. There are some places where it makes a lot of sense to plan to do some labeling:

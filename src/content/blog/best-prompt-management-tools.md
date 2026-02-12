@@ -20,12 +20,12 @@ tags:
 date: "2025-11-30T00:00:00.000Z"
 readingTime: 15 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/2e7492a4/692bdf0f9e5df6fe6c9f07f7_best-prompt-management-tools.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2e7492a4/692bdf0f9e5df6fe6c9f07f7_best-prompt-management-tools.png"
 seo:
   title: "9 Best Prompt Management Tools for ML and AI Engineering Teams - ZenML Blog"
   description: "Discover the 9 best prompt monitoring tools for ML and AI engineering teams."
   canonical: "https://www.zenml.io/blog/best-prompt-management-tools"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/2e7492a4/692bdf0f9e5df6fe6c9f07f7_best-prompt-management-tools.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2e7492a4/692bdf0f9e5df6fe6c9f07f7_best-prompt-management-tools.png"
   ogTitle: "9 Best Prompt Management Tools for ML and AI Engineering Teams - ZenML Blog"
   ogDescription: "Discover the 9 best prompt monitoring tools for ML and AI engineering teams."
 ---
@@ -45,7 +45,7 @@ Here’s a quick overview of what the prompt management tools in the article are
 ## Factors to Consider when Selecting the Best Prompt Management Tools to Use
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/151912b2/692bddef04f854c6736af15a_best-prompt-management-tools-selection-factors.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/151912b2/692bddef04f854c6736af15a_best-prompt-management-tools-selection-factors.webp" alt="__wf_reserved_inherit" />
   <figcaption>Best prompt management tool evaluation criteria</figcaption>
 </figure>
 
@@ -80,7 +80,7 @@ Here’s the quick comparison table of all the prompt management tools we’ll c
 **Best for:** Engineering teams that want prompt management built directly into their ML pipelines; using prompts as versioned artifacts with full lineage, reproducibility, and production-grade governance.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/09f03b74/68ef8fecaaa4ab4a11f6d502_zenml-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/09f03b74/68ef8fecaaa4ab4a11f6d502_zenml-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [ZenML](https://www.zenml.io/) brings a unique, production-first approach to prompt management: instead of treating prompts as loose text files, ZenML versions them as artifacts inside reproducible pipelines.
@@ -100,7 +100,7 @@ ZenML is free and open-source under the Apache 2.0 license. The core framework, 
 Teams needing enterprise-grade collaboration, managed hosting, advanced governance features, and premium support can opt for ZenML’s custom business plans, which vary by deployment model, usage, and team size.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/65bc486d/692283ecb919f4f86316549e_zenml-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/65bc486d/692283ecb919f4f86316549e_zenml-pricing.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -112,7 +112,7 @@ The tradeoff is that ZenML is engineering-oriented, so non-technical users may f
 ## 2. Langfuse
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/581db928/691e9373e8b0353623278c8b_langfuse-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/581db928/691e9373e8b0353623278c8b_langfuse-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [Langfuse](https://langfuse.com/docs/observability/overview) is an open-source LLM observability tool with built-in prompt management. It helps you track prompt changes, run experiments, and debug outputs from a single dashboard.
@@ -128,7 +128,7 @@ Langfuse provides a free Hobby plan, which includes 50,000 units per month and s
 <ul><li><strong>Core:</strong> $29 per month</li><li><strong>Pro:</strong> $199 per month</li><li><strong>Enterprise:</strong> $2499 per month</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/3e53bf50/692284349244251fbe5b857b_langfuse-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3e53bf50/692284349244251fbe5b857b_langfuse-pricing.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -140,7 +140,7 @@ On the flip side, it’s heavier than tools focused only on prompt management. Y
 ## 3. Agenta
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/26554852/692bde494b7780352537fde2_agenta-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/26554852/692bde494b7780352537fde2_agenta-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [Agenta](https://agenta.ai/) is an open-source platform that centralizes prompt management, testing, and monitoring. Think of it as a single, visual interface to version, compare, and evaluate prompts across models with minimal setup.
@@ -156,7 +156,7 @@ Agenta is free to self-host under an MIT license. The cloud version has a free H
 <ul><li><strong>Pro:</strong> $49 per month</li><li><strong>Business:</strong> $399 per month</li><li><strong>Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/724db019/692bde543b40803f2c64b49d_agenta-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/724db019/692bde543b40803f2c64b49d_agenta-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -168,7 +168,7 @@ On the downside, because Agenta tries to do a bit of everything, it may lack pol
 ## 4. Pezzo
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/522aca16/692bde5f4eea4705c94279e6_pezzo-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/522aca16/692bde5f4eea4705c94279e6_pezzo-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [Pezzo](https://pezzo.ai/) is a lightweight, open-source prompt management tool built for developers. It lets teams version, test, and deploy prompts instantly from a central hub, without hardcoding or redeploying. It also adds observability and team collaboration features.
@@ -190,7 +190,7 @@ On the flip side, Pezzo is still maturing, so tools for evaluation and prompt co
 ## 5. LangSmith
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/274ccfd1/6916b35968dc1de1426ba228_langsmith-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/274ccfd1/6916b35968dc1de1426ba228_langsmith-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [LangSmith](https://www.langchain.com/) is a closed-source LLM app management platform by the LangChain [team.It](http://team.It)’s designed to work with LangChain-based apps but is framework-agnostic and works with any LLM workflow.
@@ -206,7 +206,7 @@ LangSmith has a free developer plan that typically includes 1 developer seat and
 <ul><li><strong>Plus:</strong> $39 per seat per month</li><li><strong>Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/9e4fe787/692bde8912b03207aebc3447_langsmith-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9e4fe787/692bde8912b03207aebc3447_langsmith-pricing.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -218,7 +218,7 @@ On the downside, LangSmith being a SaaS product means you may be sending prompt 
 ## 6. PromptLayer
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/c5c7df44/692bdea1630ac23f413d91e3_promptlayer-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c5c7df44/692bdea1630ac23f413d91e3_promptlayer-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [PromptLayer](https://www.promptlayer.com/) began as a logging and tracing layer for LLM API calls and has since matured into a prompt management platform that logs, versions, and stores prompts between your app and LLM provider. It provides core tools for visual editing, versioning, and regression testing to help you manage prompts at scale.
@@ -234,7 +234,7 @@ PromptLayer offers a free tier supporting up to 5 users and 2,500 requests per m
 <ul><li><strong>Pro:</strong> $49 per month</li><li><strong>Team:</strong> $500 per month</li><li><strong>Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/6c6f541c/692bdeb2fdc0fed6fdb95f56_promptlayer-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6c6f541c/692bdeb2fdc0fed6fdb95f56_promptlayer-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -246,7 +246,7 @@ However, this worry-free hosting has some tradeoffs. One consideration is data p
 ## 7. PromptHub
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/19088042/692bdebc6de36a94c28b1596_prompthub-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/19088042/692bdebc6de36a94c28b1596_prompthub-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [PromptHub](https://www.prompthub.us/) is built for teams and the broader prompt engineering community. It combines private workspaces for internal use with a public hub of prompts (hence the name).
@@ -262,7 +262,7 @@ PromptHub is a SaaS offering with a freemium model. The Free plan allows unlimit
 <ul><li><strong>Pro:</strong> $12 per user per month</li><li><strong>Team:</strong> $20 per user per month</li><li><strong>Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/b7e1bbba/692bdec610efd62e0bb75174_prompthub-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b7e1bbba/692bdec610efd62e0bb75174_prompthub-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -274,7 +274,7 @@ On the con side, the feature set is broad, so the UI may feel dense at first. If
 ## 8. prst.ai
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/6a916574/692bded5c270b74752c1d721_psrt-ai-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6a916574/692bded5c270b74752c1d721_psrt-ai-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [prst.ai](https://prst.ai/) is a no-code, self-hosted prompt management and automation gateway for businesses that prioritize data privacy and control. It acts as an orchestration layer in front of AI models and services and enables teams to manage prompts, route traffic, and monitor usage within their own infrastructure.
@@ -288,7 +288,7 @@ On the con side, the feature set is broad, so the UI may feel dense at first. If
 prst.ai offers a free, self-hosted version. A closed-source, SaaS version at $49.99 per month. And an enterprise, self-hosted version with custom pricing.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/bc953e3d/692bdee046370e7ce48d29ef_prst-ai-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/bc953e3d/692bdee046370e7ce48d29ef_prst-ai-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -300,7 +300,7 @@ However, it requires some setup and infrastructure knowledge. The interface, whi
 ## 9. Izlo
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/c4131662/692bdeeca60e4c546ec1c502_izlo-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c4131662/692bdeeca60e4c546ec1c502_izlo-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [Izlo](https://getizlo.com/) is a collaborative prompt management platform designed to help teams centralize, version, and iterate on prompts efficiently. It brings scattered prompts into a shared workspace with lightweight version control, testing, and deployment tools built for fast iteration.
@@ -316,7 +316,7 @@ Izlo also offers a free trial and three subscription plans:
 <ul><li><strong>Solo:</strong> $20 per month</li><li><strong>Pro:</strong> $25 per user per month</li><li><strong>Enterprise:</strong> $39 per user per month</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/03752ca2/692bdefa227901c961801c51_izlo-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/03752ca2/692bdefa227901c961801c51_izlo-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons

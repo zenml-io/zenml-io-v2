@@ -17,7 +17,7 @@ tags:
   - "kubeflow"
   - "evidently"
 image:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/3f8222f8/6528f2f357f15ad2b9c40aef_energy.jpg"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3f8222f8/6528f2f357f15ad2b9c40aef_energy.jpg"
 description: "Predict Electricity Power Generation Based On Wind Forecast In Orkney, Scotland"
 seoTitle: "Forecasting Wind Power Generation"
 seoDescription: "Predict Electricity Power Generation Based On Wind Forecast In Orkney, Scotland"
@@ -26,7 +26,7 @@ seo:
   title: "ZenML - One AI Platform - From Pipelines to Agents"
   description: "An open-source foundation to ship reliable AI products at scale - on any cloud, anywhere."
   canonical: "https://www.zenml.io"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/cb031609/695e2c1368a3480fb0daafc4_zenml-open-graph.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/cb031609/695e2c1368a3480fb0daafc4_zenml-open-graph.png"
   ogTitle: "ZenML - One AI Platform - From Pipelines to Agents"
   ogDescription: "An open-source foundation to ship reliable AI products at scale - on any cloud, anywhere."
 ---
@@ -44,7 +44,7 @@ This project structure including the stack and components can be used on occasio
 ## Stack and Components
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/aa0405d8/6528ffa7ede77d73d7278a53_timeseries_c1d93251a3.png" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/aa0405d8/6528ffa7ede77d73d7278a53_timeseries_c1d93251a3.png" alt="" />
 </figure>
 
 This project uses the following [Stack Components](https://docs.zenml.io/user-guide/component-guide):
@@ -60,5 +60,5 @@ The codes to reproduce this project are open-source [ZenML Project](https://gith
 The pipeline was run with a local orchestrator and a remote step operator to train the model on VertexAI. The visualization is shown on the ZenML Dashboard.The following DAG shows the pipeline on the ZenML Dashboard:
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/328c8aeb/6528ffa7d832aae1bf0eb26c_time_series_2ea2080d1b.png" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/328c8aeb/6528ffa7d832aae1bf0eb26c_time_series_2ea2080d1b.png" alt="" />
 </figure>

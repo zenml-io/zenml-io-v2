@@ -12,11 +12,11 @@ webflow:
   createdOn: "2023-10-12T09:13:16.105Z"
 integrationType: "orchestrator"
 logo:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/c62112d9/66d867f173c4a5c0d77847e5_kubernetes.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c62112d9/66d867f173c4a5c0d77847e5_kubernetes.png"
 shortDescription: "Seamlessly Orchestrate ML Pipelines on Kubernetes with ZenML"
 docsUrl: "https://docs.zenml.io/stack-components/orchestrators/kubernetes"
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/6ca5afd0/66e14084f1622ce81a2706e7_image__6_.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6ca5afd0/66e14084f1622ce81a2706e7_image__6_.png"
 relatedBlogPosts:
   - "how-to-run-production-ml-workflows-natively-on-kubernetes"
   - "zenml-kubernetes-kubeflow"
@@ -24,7 +24,7 @@ seo:
   title: "Integrate Kubernetes with ZenML - Orchestrator Integrations"
   description: "Seamlessly Orchestrate ML Pipelines on Kubernetes with ZenML"
   canonical: "https://www.zenml.io/integrations/kubernetes"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/6ca5afd0/66e14084f1622ce81a2706e7_image__6_.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6ca5afd0/66e14084f1622ce81a2706e7_image__6_.png"
   ogTitle: "Integrate Kubernetes with ZenML - Orchestrator Integrations"
   ogDescription: "Seamlessly Orchestrate ML Pipelines on Kubernetes with ZenML"
 ---

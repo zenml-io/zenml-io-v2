@@ -18,12 +18,12 @@ tags:
 date: "2024-11-17T00:00:00.000Z"
 readingTime: 2 min
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/dbc0f181/674701e8c50d46849320e4e3_Gemini_Generated_Image__5_.jpeg"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/dbc0f181/674701e8c50d46849320e4e3_Gemini_Generated_Image__5_.jpeg"
 seo:
   title: "How to Scale MLOps Across Multiple Clients: A Consulting Firm's Standardization Playbook - ZenML Blog"
   description: "Discover how leading ML consulting firms are mastering the art of standardizing MLOps practices across diverse client environments while maintaining flexibility and efficiency. This comprehensive guide explores practical strategies for building reusable assets, managing multi-cloud deployments, and establishing robust MLOps frameworks that adapt to various enterprise requirements. Learn how to balance standardization with client-specific needs, implement effective knowledge transfer processes, and scale your ML consulting practice without compromising on quality or security."
   canonical: "https://www.zenml.io/blog/a-consulting-firms-standardization-playbook"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/dbc0f181/674701e8c50d46849320e4e3_Gemini_Generated_Image__5_.jpeg"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/dbc0f181/674701e8c50d46849320e4e3_Gemini_Generated_Image__5_.jpeg"
   ogTitle: "How to Scale MLOps Across Multiple Clients: A Consulting Firm's Standardization Playbook - ZenML Blog"
   ogDescription: "Discover how leading ML consulting firms are mastering the art of standardizing MLOps practices across diverse client environments while maintaining flexibility and efficiency. This comprehensive guide explores practical strategies for building reusable assets, managing multi-cloud deployments, and establishing robust MLOps frameworks that adapt to various enterprise requirements. Learn how to balance standardization with client-specific needs, implement effective knowledge transfer processes, and scale your ML consulting practice without compromising on quality or security."
 ---
@@ -55,7 +55,7 @@ Building a strong internal asset library is crucial for consulting efficiency, b
 ## Standardization vs. Flexibility: Finding the Balance
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/8fd29829/674702a2ebd635a621bd18bd_67470214880531be4025bd1b_CleanShot_202024-11-26_20at_2013.35.53.png" alt="&quot;Why not both?&quot; meme adapted to show &quot;Standardization&quot; and &quot;Flexibility&quot;" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8fd29829/674702a2ebd635a621bd18bd_67470214880531be4025bd1b_CleanShot_202024-11-26_20at_2013.35.53.png" alt="&quot;Why not both?&quot; meme adapted to show &quot;Standardization&quot; and &quot;Flexibility&quot;" />
 </figure>
 
 The key to successful ML consulting lies in finding the right balance between standardization and flexibility. Here's a practical approach:

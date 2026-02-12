@@ -25,9 +25,9 @@ export const WHITEPAPER_CONTENT = {
   subheadline: "Is your ML platform more of a headache than a helper?",
   body: `Let's be honest, many are. It slows down iterations, hinders deployment, and ultimately costs you your competitive edge. This whitepaper provides a blueprint for building an enterprise-grade MLOps platform that <em>actually</em> works:<br><br><strong>Eliminate the Firefighting:</strong> Learn how to free your data scientists from infrastructure struggles so they can focus on innovation.<br><br><strong>Achieve a Unified Control Plane:</strong> Get complete visibility and management of your entire ML lifecycle, from experimentation to deployment.<br><br><strong>Build a Seamless, Integrated Ecosystem:</strong> Discover how to move beyond individual tools and create a platform that truly empowers your team.`,
   image: {
-    url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/ac6a7d69/677e159006becfde35062714_Whitepaper MLOps Platform.pdf",
+    url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ac6a7d69/677e159006becfde35062714_Whitepaper MLOps Platform.pdf",
     previewUrl:
-      "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/640aaaba/677dca3d6a4a17a9f9e3ec41_whitepaper00.png",
+      "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/640aaaba/677dca3d6a4a17a9f9e3ec41_whitepaper00.png",
     alt: "Pages from the ZenML Whitepaper stacked one over another",
   },
   formHeadline: "Get the Whitepaper",

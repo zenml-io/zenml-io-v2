@@ -12,19 +12,19 @@ webflow:
   createdOn: "2025-08-26T11:01:00.201Z"
 integrationType: "agents"
 logo:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/7035354b/68ad93f3f7b83030996de1af_aws-strands.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7035354b/68ad93f3f7b83030996de1af_aws-strands.png"
 shortDescription: "Build and orchestrate Strands agents with reproducible ZenML pipelines."
 docsUrl: "https://docs.zenml.io"
 githubUrl: "https://github.com/zenml-io/zenml/tree/main/examples/agent_framework_integrations/autogen"
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/c8617db2/68ada471e15a1cc0b3f503d4_aws-strands-img.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c8617db2/68ada471e15a1cc0b3f503d4_aws-strands-img.png"
 relatedBlogPosts:
   - "production-ready-ai-agents-why-your-mlops-stack-is-missing-piece"
 seo:
   title: "Integrate AWS Strands with ZenML - Agents Integrations"
   description: "Build and orchestrate Strands agents with reproducible ZenML pipelines."
   canonical: "https://www.zenml.io/integrations/aws-strands"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/c8617db2/68ada471e15a1cc0b3f503d4_aws-strands-img.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c8617db2/68ada471e15a1cc0b3f503d4_aws-strands-img.png"
   ogTitle: "Integrate AWS Strands with ZenML - Agents Integrations"
   ogDescription: "Build and orchestrate Strands agents with reproducible ZenML pipelines."
 ---

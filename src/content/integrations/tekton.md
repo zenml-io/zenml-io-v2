@@ -12,17 +12,17 @@ webflow:
   createdOn: "2023-10-12T09:13:14.945Z"
 integrationType: "orchestrator"
 logo:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/09eb0c5e/66d868607279ed98da4ce394_tekton.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/09eb0c5e/66d868607279ed98da4ce394_tekton.png"
 shortDescription: "Orchestrate your ML pipelines with the Tekton orchestrator."
 docsUrl: "https://docs.zenml.io/stack-components/orchestrators/tekton"
 githubUrl: "https://docs.zenml.io/stack-components/orchestrators/tekton"
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/ace78aa1/6527e5f87d89b1901d5d38fa_tekton_ui_3_36d493a8dd.webp"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ace78aa1/6527e5f87d89b1901d5d38fa_tekton_ui_3_36d493a8dd.webp"
 seo:
   title: "Integrate Tekton with ZenML - Orchestrator Integrations"
   description: "Orchestrate your ML pipelines with the Tekton orchestrator."
   canonical: "https://www.zenml.io/integrations/tekton"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/ace78aa1/6527e5f87d89b1901d5d38fa_tekton_ui_3_36d493a8dd.webp"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ace78aa1/6527e5f87d89b1901d5d38fa_tekton_ui_3_36d493a8dd.webp"
   ogTitle: "Integrate Tekton with ZenML - Orchestrator Integrations"
   ogDescription: "Orchestrate your ML pipelines with the Tekton orchestrator."
 ---

@@ -18,7 +18,7 @@ tags:
 date: "2020-12-26T00:00:00.000Z"
 readingTime: 5 Mins Read
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/ed0c7c33/652fb380ba9db31f8a23767f_svg-image-1__2_.svg"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ed0c7c33/652fb380ba9db31f8a23767f_svg-image-1__2_.svg"
 ---
 
 **Last updated:** February 16, 2022.

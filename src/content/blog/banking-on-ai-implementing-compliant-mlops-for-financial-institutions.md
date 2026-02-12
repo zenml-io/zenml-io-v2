@@ -19,12 +19,12 @@ tags:
 date: "2025-05-20T00:00:00.000Z"
 readingTime: 8 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/8cf04c23/6981d37a71c3040935dbc365_6981d2ab9b5bd50b8dcb1d56_banking-on-ai-blog-post-cover.avif"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8cf04c23/6981d37a71c3040935dbc365_6981d2ab9b5bd50b8dcb1d56_banking-on-ai-blog-post-cover.avif"
 seo:
   title: "Banking on AI: Implementing Compliant MLOps for Financial Institutions - ZenML Blog"
   description: "Traditional banks face growing pressure to deploy machine learning rapidly while meeting strict regulatory requirements. This blog post explores how modern MLOps practices, like automated data lineage, validation testing, and model observability can help financial institutions bridge the gap. Featuring real-world insights from NatWest and an open-source ZenML pipeline, it offers a practical roadmap for compliant, scalable AI deployment."
   canonical: "https://www.zenml.io/blog/banking-on-ai-implementing-compliant-mlops-for-financial-institutions"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/8cf04c23/6981d37a71c3040935dbc365_6981d2ab9b5bd50b8dcb1d56_banking-on-ai-blog-post-cover.avif"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8cf04c23/6981d37a71c3040935dbc365_6981d2ab9b5bd50b8dcb1d56_banking-on-ai-blog-post-cover.avif"
   ogTitle: "Banking on AI: Implementing Compliant MLOps for Financial Institutions - ZenML Blog"
   ogDescription: "Traditional banks face growing pressure to deploy machine learning rapidly while meeting strict regulatory requirements. This blog post explores how modern MLOps practices, like automated data lineage, validation testing, and model observability can help financial institutions bridge the gap. Featuring real-world insights from NatWest and an open-source ZenML pipeline, it offers a practical roadmap for compliant, scalable AI deployment."
 ---
@@ -74,7 +74,7 @@ This transformation enabled them to rapidly deploy AI models that adapt to chang
 ## Putting It into Action: A Real-World MLOps Template For Banks
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/6e194169/682c87882381b27329b8d77a_image__1_.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6e194169/682c87882381b27329b8d77a_image__1_.png" alt="__wf_reserved_inherit" />
 </figure>
 
 To help you start quickly, we've built an open-source ZenML pipeline—the [Bank Subscription Prediction](https://github.com/zenml-io/zenml-projects/tree/main/bank_subscription_prediction) project—that showcases these practices in action. This example pipeline:
@@ -82,7 +82,7 @@ To help you start quickly, we've built an open-source ZenML pipeline—the [Bank
 <ul><li>Automatically manages data lineage and versioning.</li><li>Includes built-in bias and performance tests that run automatically with every deployment.</li><li>Deploys seamlessly across various infrastructures (cloud, on-premise, hybrid) with minimal changes.</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/7dc812a1/682c8799331d21a2348dfb42_image__2_.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7dc812a1/682c8799331d21a2348dfb42_image__2_.png" alt="__wf_reserved_inherit" />
 </figure>
 
 With [ZenML](https://zenml.io/), the pipeline itself generates all necessary compliance documentation, freeing your engineers to focus on building models rather than writing audit reports.

@@ -21,12 +21,12 @@ tags:
 date: "2025-09-06T00:00:00.000Z"
 readingTime: 16 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/aeca855d/68bbbf620a8f3484e0fdde6d_flowise-alternatives.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/aeca855d/68bbbf620a8f3484e0fdde6d_flowise-alternatives.png"
 seo:
   title: "7 Best Flowise Alternatives to Build AI Agents that Deliver Efficient Results - ZenML Blog"
   description: "Discover the top 7 Flowise alternatives - code and no-code that you can leverage to build and deploy efficient AI agents."
   canonical: "https://www.zenml.io/blog/flowise-alternatives"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/aeca855d/68bbbf620a8f3484e0fdde6d_flowise-alternatives.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/aeca855d/68bbbf620a8f3484e0fdde6d_flowise-alternatives.png"
   ogTitle: "7 Best Flowise Alternatives to Build AI Agents that Deliver Efficient Results - ZenML Blog"
   ogDescription: "Discover the top 7 Flowise alternatives - code and no-code that you can leverage to build and deploy efficient AI agents."
 ---
@@ -44,7 +44,7 @@ In this article, we’ll cover what Flowise is, why you might need an alternativ
 ## What is Flowise?
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/2cc38174/68bbbcd2a392d3613569cdc3_flowise-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2cc38174/68bbbcd2a392d3613569cdc3_flowise-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [Flowise](https://flowiseai.com/) is an open-source generative AI platform that lets you build AI agents and LLM workflows through a visual drag-and-drop interface. It provides modular nodes that you can connect on a canvas to create chatbots, Q&A systems, and other AI-powered applications, without code.
@@ -66,7 +66,7 @@ A common issue with Flowise is its performance under load. Community forums and 
 For example, one [GitHub user](https://github.com/FlowiseAI/Flowise/discussions/3733) shares how each new request on Flowise builds a graph that never gets freed, consuming more memory until the server goes down, unless you implement a custom caching workaround.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/b1dc0a01/68bbbce9bc281d5faeeb8618_flowise-excessive-ram-consumption-issue.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b1dc0a01/68bbbce9bc281d5faeeb8618_flowise-excessive-ram-consumption-issue.png" alt="__wf_reserved_inherit" />
 </figure>
 
 Reliability issues under load have also surfaced. On hosting platforms like Render, [users saw](https://community.render.com/t/issue-with-flowiseai-server-restarts-when-using-vector-memory-modules/16251) their Flowise server restart or flows disappear when using certain memory-intensive modules.
@@ -96,7 +96,7 @@ Additionally, some features, like the new workspaces and RBAC model, are still m
 We evaluated Flowise alternatives through a lens focused on production readiness, essentially using three criteria:
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/aa7c28a8/68bbbd0234845d434f1370c4_evaluation-criteria-to-choose-a-flowise-alternative.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/aa7c28a8/68bbbd0234845d434f1370c4_evaluation-criteria-to-choose-a-flowise-alternative.webp" alt="__wf_reserved_inherit" />
   <figcaption>Evaluation criteria to choose flowise alternatives</figcaption>
 </figure>
 
@@ -138,7 +138,7 @@ Let’s first look at four code-first frameworks that serve as Flowise alternati
 ### 1. AutoGen
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/b18376aa/68bbbd29b354943c2368dd7c_autogen-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b18376aa/68bbbd29b354943c2368dd7c_autogen-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [Microsoft's AutoGen](https://www.reddit.com/r/flowise/comments/1es5a7h/update_to_new_version_causes_loss_of_agents_tools/) is a framework for developing LLM applications that use multiple, collaborating agents to solve complex tasks. Unlike Flowise's visual node-based approach, AutoGen focuses on dynamic systems where the workflow is not a predefined graph but emerges from the conversation between agents.
@@ -166,7 +166,7 @@ However, this freedom often leads to unpredictability. Since agents converse fre
 ### 2. Griptape
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/b62af51a/68bbbd434b2e2994df7cb529_griptape-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b62af51a/68bbbd434b2e2994df7cb529_griptape-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [Griptape](https://www.griptape.ai/) is a Python-native framework for building structured, secure, and production-ready AI agents and workflows. It’s a go-to alternative to Flowise for developers who want complete coding control without the unpredictability of conversational frameworks.
@@ -186,7 +186,7 @@ Griptape’s strengths are its clean design and performance. Developers often fi
 On the contrary, you might find it ‘too code-centric’; even though Nodes exists, Griptape’s full power is realized in Python. Also, certain high-level features, like one-click deployment or built-in monitoring, might require using Griptape Cloud. If you strictly self-host, you’ll need to implement logging or monitoring.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/da24ddb8/68bbbd82b717b4abde815f6c_semantic-kerenl-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/da24ddb8/68bbbd82b717b4abde815f6c_semantic-kerenl-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [Semantic Kernel](https://learn.microsoft.com/en-us/semantic-kernel/) is Microsoft's open-source SDK for integrating LLMs into new and existing applications through a plugin-based architecture. Rather than building standalone agent systems, it focuses on embedding AI reasoning directly into enterprise applications and services.
@@ -212,7 +212,7 @@ The flip side of being an SDK is that it lacks a visual interface or turnkey UI.
 ### 4. Haystack by deepset
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/56006746/68bbbd99f73e7e3bde322a73_haystack-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/56006746/68bbbd99f73e7e3bde322a73_haystack-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [Haystack](https://haystack.deepset.ai/) is a production-ready, open-source Python framework for building customizable LLM applications, with a focus on creating advanced RAG and agentic search systems. It’s an ideal Flowise alternative for teams that need to build complex, high-performance data and search pipelines to power their AI agents.
@@ -238,7 +238,7 @@ No-code alternatives are platforms where you build and deploy AI agents without 
 ### 5. n8n
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/d06f2c7b/68ba640a825a0321beebad30_n8n-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d06f2c7b/68ba640a825a0321beebad30_n8n-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [n8n](https://n8n.io/) is a low-code workflow automation platform that extends beyond AI agents to general business process automation. While not specifically built for LLMs, it’s a popular Flowise alternative for teams that need to integrate AI agents into broader business process automation.
@@ -256,7 +256,7 @@ n8n offers three paid plans to choose from. Each plan comes with a 14-day free t
 <ul><li><strong>Starter</strong>: €24 per month with 2.5k workflow executions.</li><li><strong>Pro</strong>: €60 per month with 10k workflow executions.</li><li><strong>Enterprise</strong>: Custom pricing. Custom number of workflow executions and infinite active workflows.</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/d0d53d48/68bbbdc0346768367a507b55_n8n-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d0d53d48/68bbbdc0346768367a507b55_n8n-pricing.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -272,7 +272,7 @@ However, n8n lacks the AI-specific features that make Flowise attractive, like b
 ### 6. Botpress
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/7a984521/68bbbdd20853112c117bed34_botpress-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7a984521/68bbbdd20853112c117bed34_botpress-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [Botpress](https://botpress.com/) is an end-to-end platform for building LLM-powered chatbots and AI agents that can operate across channels. It provides a more focused alternative to Flowise for teams building primarily conversational agents and customer-facing AI systems.
@@ -288,7 +288,7 @@ Botpress offers a ‘Pay-as-you-go’ plan that is free to start. Other than tha
 <ul><li><strong>Plus:</strong> $79 per month</li><li><strong>Team:</strong> $445 per month</li><li><strong>Enterprise:</strong> $2,000 per month</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/c414ceb3/68bbbde8ba682fdd780a4cbf_botpress-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c414ceb3/68bbbde8ba682fdd780a4cbf_botpress-pricing.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -300,7 +300,7 @@ The main con is less flexibility in custom agent logic. It’s primarily for con
 ## 7. Relevance AI
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/51b6a8e0/68bbbdfc9cdf82cd1880357b_relevance-ai-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/51b6a8e0/68bbbdfc9cdf82cd1880357b_relevance-ai-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [Relevance AI](https://relevanceai.com/) provides a no-code platform specifically designed for building AI agents and workflows. It allows you to create custom AI agents simply by describing their functions in natural language.
@@ -318,7 +318,7 @@ Relevance AI offers a generous free plan along with four paid plans:
 <ul><li><strong>Pro:</strong> $17.10 per month</li><li><strong>Team:</strong> $179.10 per month</li><li><strong>Business:</strong> $539.10 per month</li><li><strong>Enterprise:</strong> Custom</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/088a6763/68bbbe1059822bce06b34a5f_relevance-ai-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/088a6763/68bbbe1059822bce06b34a5f_relevance-ai-pricing.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -338,7 +338,7 @@ This outer loop involves the entire MLOps + LLMOps lifecycle: deploying, monitor
 Code-first agent-building frameworks themselves do not solve these MLOps challenges, and therefore, [ZenML](https://www.zenml.io/) was built for it.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/8c1eda41/68ba64d552371735c4daebc4_zenml-unified-mlops-and-llmops-platform.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8c1eda41/68ba64d552371735c4daebc4_zenml-unified-mlops-and-llmops-platform.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ZenML is an open-source MLOps + [LLMOps framework](https://docs.zenml.io/user-guides/llmops-guide) that works as the glue and guardrails around your agent frameworks built atop Griptape, AutoGen, and other code-first tools. It doesn’t replace their functionality; rather, it complements them by managing the lifecycle and infrastructure aspects of your AI workflows.
@@ -350,7 +350,7 @@ Here are ways ZenML helps in boosting your agentic AI journey:
 ### 1. Unified Pipeline Orchestration
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/270ce903/68ba64ec4faed82c8c0be502_zenml-architecture.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/270ce903/68ba64ec4faed82c8c0be502_zenml-architecture.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML architecture</figcaption>
 </figure>
 
@@ -363,7 +363,7 @@ ZenML handles scheduling and executing these pipelines, so you can incorporate a
 ### 2. Experiment Tracking and Visibility
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/83aa06c4/68ba650b4c60518ca7fe3027_zenml-pipeline-dag-visualization.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/83aa06c4/68ba650b4c60518ca7fe3027_zenml-pipeline-dag-visualization.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML pipeline DAG visualization</figcaption>
 </figure>
 
@@ -382,7 +382,7 @@ LLM agents might change behavior due to external factors, and without an outer l
 **👀 Note:** At ZenML, we have built several agent workflow integrations with tools like Semantic Kernel, LangGraph, LlamaIndex, and more. We are actively shipping new integrations that you can find on this GitHub page: [ZenML Agent Workflow Integrations](https://github.com/zenml-io/zenml/tree/main/examples/agent_framework_integrations).
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/c51a5e76/68b58a4795f60f9023d117eb_zenml-agent-workflow-integrations.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c51a5e76/68b58a4795f60f9023d117eb_zenml-agent-workflow-integrations.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ## The Best Flowise Alternatives to Build Automated AI Workflows

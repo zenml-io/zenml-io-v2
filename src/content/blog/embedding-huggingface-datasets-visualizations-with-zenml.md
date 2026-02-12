@@ -19,12 +19,12 @@ tags:
 date: "2024-07-16T00:00:00.000Z"
 readingTime: 3 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/f1cc8836/66962f27b0cc58597264ea77_hf-zenml.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f1cc8836/66962f27b0cc58597264ea77_hf-zenml.png"
 seo:
   title: "🤗 Embedding HuggingFace datasets visualizations with ZenML - ZenML Blog"
   description: "Shipping 🤗 datasets visualization embedded in the ZenML dashboard in a few hours"
   canonical: "https://www.zenml.io/blog/embedding-huggingface-datasets-visualizations-with-zenml"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/f1d102aa/66962f27b0cc58597264ea77_hf-zenml.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f1d102aa/66962f27b0cc58597264ea77_hf-zenml.png"
   ogTitle: "🤗 Embedding HuggingFace datasets visualizations with ZenML - ZenML Blog"
   ogDescription: "Shipping 🤗 datasets visualization embedded in the ZenML dashboard in a few hours"
 ---
@@ -32,13 +32,13 @@ seo:
 Yesterday, Alex pointed me to [this tweet](https://x.com/julien_c/status/1812099420726456457) from Julien Chaumond, CTO of [Huggingface](https://huggingface.co/):
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/3dcc5b8d/66962a7f334003e6a67433fa_post-hf.jpg" alt="Screenshot of a tweet by Julien Chaumond showing off how you can embed the hugging face datasets viewer in any webpage" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3dcc5b8d/66962a7f334003e6a67433fa_post-hf.jpg" alt="Screenshot of a tweet by Julien Chaumond showing off how you can embed the hugging face datasets viewer in any webpage" />
 </figure>
 
 We instantly thought it would be a good idea to embed the visualization in the [ZenML dashboard](https://github.com/zenml-io/zenml-dashboard). As the 🤗 Huggingface team already exposed this embedding functionality as a simple iframe, we could easily do this:
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/8019a867/66962ad918b90058529e7699_hf-01.png" alt="Screenshot showing the HTML code you can use to embed an iframe for a hugging face dataset" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8019a867/66962ad918b90058529e7699_hf-01.png" alt="Screenshot showing the HTML code you can use to embed an iframe for a hugging face dataset" />
 </figure>
 
 See an example on any [🤗 Huggingface dataset](https://huggingface.co/datasets/proj-persona/PersonaHub?viewer_embed=true)
@@ -46,7 +46,7 @@ See an example on any [🤗 Huggingface dataset](https://huggingface.co/datasets
 Within a few  hours, we had it [reviewed and merged](https://github.com/zenml-io/zenml/pull/2851):
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/0e3b787f/66962b0f6e2a7bcf0c7aca2c_hf-02.png" alt="Image of the ZenML dashboard with a Hugging Face artifact visualization embedded" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/0e3b787f/66962b0f6e2a7bcf0c7aca2c_hf-02.png" alt="Image of the ZenML dashboard with a Hugging Face artifact visualization embedded" />
 </figure>
 
 ## 🏃 Custom visualizations in ZenML
@@ -153,7 +153,7 @@ if __name__ == "__main__":
 Run the above from version 0.62.0 onwards, and you’ll see the following in the ZenML dashboard:
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/511a3e2e/66962d257701e080d2fbbb06_dash-hf.gif" alt="GIF showing the ZenML dashboard UI, navigating to an embedded hugging face dataset" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/511a3e2e/66962d257701e080d2fbbb06_dash-hf.gif" alt="GIF showing the ZenML dashboard UI, navigating to an embedded hugging face dataset" />
 </figure>
 
 This was a fun two hours to spend on this relatively simple but hopefully popular enhancement to the [ZenML Huggingface integration](https://zenml.io/integrations/huggingface). Give us a [star if you like it](https://github.com/zenml-io/zenml), or say hi on [Slack](https://zenml.io/slack)! Till next time.

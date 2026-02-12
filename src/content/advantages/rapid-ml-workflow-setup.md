@@ -3,7 +3,7 @@ title: "Rapid ML Workflow Setup"
 slug: "rapid-ml-workflow-setup"
 content: "ZenML ensures a faster setup, outpacing orchestrators for quick, efficient ML workflows."
 image:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/b3d35d94/667031351fd1b7332bb478d0_img01.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b3d35d94/667031351fd1b7332bb478d0_img01.png"
 webflow:
   siteId: "64a817a2e7e2208272d1ce30"
   itemId: "667031379944c1b075971bcd"

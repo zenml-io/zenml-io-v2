@@ -19,12 +19,12 @@ tags:
 date: "2021-11-19T00:00:00.000Z"
 readingTime: 1 Min Read
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/d7a9674c/653109c865f70889583d4817_download__12_.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d7a9674c/653109c865f70889583d4817_download__12_.png"
 seo:
   title: "Pipeline Conversations: Our New Podcast - ZenML Blog"
   description: "We launched a podcast to have conversations with people working to productionize their machine learning models and to learn from their experience."
   canonical: "https://www.zenml.io/blog/pipeline-conversations-our-new-podcast"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/90424e0c/653109c865f70889583d4817_download__12_.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/90424e0c/653109c865f70889583d4817_download__12_.png"
   ogTitle: "Pipeline Conversations: Our New Podcast - ZenML Blog"
   ogDescription: "We launched a podcast to have conversations with people working to productionize their machine learning models and to learn from their experience."
 ---
@@ -40,7 +40,7 @@ Alex Strick van Linschoten is the initiator and host of [Pipeline Conversations]
 This episode is an introduction to ZenML and its founders, Hamza and myself. We talk about our passion, our journey of how we met, what we initially wanted to build and how we ended up starting ZenML in the MLOps space.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/f05e9b9e/653109f32b47a0e63791ca34_hamza-adam.png" alt="Adam and Hamza" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f05e9b9e/653109f32b47a0e63791ca34_hamza-adam.png" alt="Adam and Hamza" />
 </figure>
 
 *Adam & Hamza*

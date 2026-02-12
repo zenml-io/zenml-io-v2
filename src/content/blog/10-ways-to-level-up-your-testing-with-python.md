@@ -21,12 +21,12 @@ tags:
 date: "2021-11-04T00:00:00.000Z"
 readingTime: 9 Mins Read
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/03b94348/652fae85e6860b5820492aa8_testing-glasses.jpg"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/03b94348/652fae85e6860b5820492aa8_testing-glasses.jpg"
 seo:
   title: "10 Ways To Level Up Your Testing with Python - ZenML Blog"
   description: "A mix of mental and technical skills you can develop to get better at testing your Python code."
   canonical: "https://www.zenml.io/blog/10-ways-to-level-up-your-testing-with-python"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/f6a4fb69/652fae85e6860b5820492aa8_testing-glasses.jpg"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f6a4fb69/652fae85e6860b5820492aa8_testing-glasses.jpg"
   ogTitle: "10 Ways To Level Up Your Testing with Python - ZenML Blog"
   ogDescription: "A mix of mental and technical skills you can develop to get better at testing your Python code."
 ---

@@ -17,7 +17,7 @@ tags:
 date: "2022-03-28T00:00:00.000Z"
 readingTime: 4 Mins Read
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/249ec10c/6531618ac31a6fa3503f4a1b_balloons__1_.jpg"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/249ec10c/6531618ac31a6fa3503f4a1b_balloons__1_.jpg"
 ---
 
 **Last updated:** November 3, 2022.
@@ -50,7 +50,7 @@ zenml profile activate NEW_PROFILE_NAME
 This provides you with a completely fresh environment that only has the default local stack pre-registered, where you can work without disturbing other profiles or projects. You can specify both globally and on a project (folder) level which profile to default to using. For ease of transition, any legacy ZenML repositories (projects) will automatically be migrated to a new isolated profile so you can maintain the separation you are used to:
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/7967a43a/6531619186dad4136a61c2de_legacy-migration.png" alt="Migration of Legacy Profiles" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7967a43a/6531619186dad4136a61c2de_legacy-migration.png" alt="Migration of Legacy Profiles" />
 </figure>
 
 ## 🔑 Secret Management

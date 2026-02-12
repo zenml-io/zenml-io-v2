@@ -12,11 +12,11 @@ webflow:
   createdOn: "2024-09-04T14:42:09.657Z"
 integrationType: "artifact-store"
 logo:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/8c3c56cb/66d870a806cf369e1b62ffe4_google_cloud_storage.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8c3c56cb/66d870a806cf369e1b62ffe4_google_cloud_storage.png"
 shortDescription: "Seamlessly Store your pipeline step outputs with Google Cloud Storage (GCS)"
 docsUrl: "https://docs.zenml.io/stack-components/artifact-stores/gcp"
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/8b41365f/66d87125d06e345b0cab8209_gcs_integration.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8b41365f/66d87125d06e345b0cab8209_gcs_integration.png"
 relatedBlogPosts:
   - "cloud-composer-airflow-vs-vertex-ai-kubeflow"
   - "building-scalable-forecasting-solutions"
@@ -25,7 +25,7 @@ seo:
   title: "Integrate Google Cloud Storage (GCS) with ZenML - Artifact Store Integrations"
   description: "Seamlessly Store your pipeline step outputs with Google Cloud Storage (GCS)"
   canonical: "https://www.zenml.io/integrations/google-cloud-storage"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/8b41365f/66d87125d06e345b0cab8209_gcs_integration.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8b41365f/66d87125d06e345b0cab8209_gcs_integration.png"
   ogTitle: "Integrate Google Cloud Storage (GCS) with ZenML - Artifact Store Integrations"
   ogDescription: "Seamlessly Store your pipeline step outputs with Google Cloud Storage (GCS)"
 ---

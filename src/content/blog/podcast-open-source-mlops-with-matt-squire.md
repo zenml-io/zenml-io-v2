@@ -23,12 +23,12 @@ tags:
 date: "2022-03-31T00:00:00.000Z"
 readingTime: 2 Mins Read
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/d264f6f7/653127504e74889dfd6afcfb_matt-squire-profile.jpeg"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d264f6f7/653127504e74889dfd6afcfb_matt-squire-profile.jpeg"
 seo:
   title: "Podcast: Open-Source MLOps with Matt Squire - ZenML Blog"
   description: "This week I spoke with Matt Squire, the CTO and co-founder of Fuzzy Labs, where they help partner organizations think through how best to productionise their machine learning workflows."
   canonical: "https://www.zenml.io/blog/podcast-open-source-mlops-with-matt-squire"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/4af5c9e0/653127504e74889dfd6afcfb_matt-squire-profile.jpeg"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/4af5c9e0/653127504e74889dfd6afcfb_matt-squire-profile.jpeg"
   ogTitle: "Podcast: Open-Source MLOps with Matt Squire - ZenML Blog"
   ogDescription: "This week I spoke with Matt Squire, the CTO and co-founder of Fuzzy Labs, where they help partner organizations think through how best to productionise their machine learning workflows."
 ---
@@ -48,7 +48,7 @@ In this clip, Matt talks through the components that would make up his ideal MLO
 Matt has also recently been writing a series of blog posts about ZenML over at the Fuzzy Labs Blog:
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/350c658a/6531275840b0d68e5ae25459_blogposts.png" alt="Fuzzy Lab blog posts" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/350c658a/6531275840b0d68e5ae25459_blogposts.png" alt="Fuzzy Lab blog posts" />
 </figure>
 
 Only the [first](https://www.fuzzylabs.ai/blog-post/the-road-to-zen-part-1-getting-started-pipelines) [two](https://www.fuzzylabs.ai/blog-post/the-road-to-zen-running-experiments) parts are out, but they cover the basics of running ZenML pipelines as well as experiment tracking with MLflow. Towards the end of the first one, Matt lays out the case for why a tool like ZenML is important in a machine learning workflow:

@@ -21,12 +21,12 @@ tags:
 date: "2022-03-02T00:00:00.000Z"
 readingTime: 11 Mins Read
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/49d3413c/653005518a8d62272d184427_continuous.gif"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/49d3413c/653005518a8d62272d184427_continuous.gif"
 seo:
   title: "How to painlessly deploy your ML models with ZenML - ZenML Blog"
   description: "Connecting model training pipelines to deploying models in production is regarded as a difficult milestone on the way to achieving Machine Learning operations maturity for an organization. ZenML rises to the challenge and introduces a novel approach to continuous model deployment that renders a smooth transition from experimentation to production."
   canonical: "https://www.zenml.io/blog/how-to-painlessly-deploy-your-ml-models-with-zenml"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/6494e611/653005518a8d62272d184427_continuous.gif"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6494e611/653005518a8d62272d184427_continuous.gif"
   ogTitle: "How to painlessly deploy your ML models with ZenML - ZenML Blog"
   ogDescription: "Connecting model training pipelines to deploying models in production is regarded as a difficult milestone on the way to achieving Machine Learning operations maturity for an organization. ZenML rises to the challenge and introduces a novel approach to continuous model deployment that renders a smooth transition from experimentation to production."
 ---
@@ -54,13 +54,13 @@ Helping ML practitioners and organizations overcome these obstacles is precisely
 If your project only utilizes models for offline batch inference, you don’t have to leave the comfortable confines of the pipeline paradigm: predictions can be precomputed with a batch inference pipeline scheduled to run periodically in production. The inference pipeline loads up the latest model from storage, runs it on a batch of recently collected data and saves the prediction results in an external database or object storage where the application can access them.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/4810e9cd/6530058c5159f040612deed1_continuous-training.gif" alt="Continuous Training Pipeline" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/4810e9cd/6530058c5159f040612deed1_continuous-training.gif" alt="Continuous Training Pipeline" />
 </figure>
 
  
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/3b143789/6530058a7a5cc2736c17a76d_batch-inference.gif" alt="Batch Offline Inference Pipeline" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3b143789/6530058a7a5cc2736c17a76d_batch-inference.gif" alt="Batch Offline Inference Pipeline" />
 </figure>
 
 However, if your user-facing application relies on real-time predictions made on live data and low latency is critical to ensuring a good user experience, you can no longer afford the overhead of loading models on-demand. In this case, automating the end-to-end ML workflow is not complete without continuously deploying models to some form of model prediction server or service platform.
@@ -76,7 +76,7 @@ Let’s take a tour of the main improvements that ZenML Services bring to the Ma
 Perhaps the best and most obvious feature that you get out of using Services with ZenML pipelines is that they are automatically tracked and managed by ZenML. This is particularly useful for continuous model deployment, where the complications of provisioning and updating model prediction servers with the latest available models are seamlessly integrated in the familiar pipeline workflow and abstracted away from the user.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/30a43293/6530058b791c6b6f8b260ed3_continuous-deployment.gif" alt="Continuous Deployment Pipeline" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/30a43293/6530058b791c6b6f8b260ed3_continuous-deployment.gif" alt="Continuous Deployment Pipeline" />
 </figure>
 
 The [MLflow Deployment Service example](https://docs.zenml.io/stacks-and-components/component-guide/model-deployers/mlflow) showcases the first of several concrete ZenML prediction service integrations to follow that take away the burden of managing and maintaining model prediction servers and make implementing continuous deployment a breeze. Here are some relevant sections from that example that capture the experience of building a continuous deployment pipeline:
@@ -137,7 +137,7 @@ Note how the model deployment Service is returned as an output Artifact by the m
 ## Store Services as Artifacts
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/2ab887e6/6530058b9abb7055cb0c59f9_675obz.jpeg" alt="" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2ab887e6/6530058b9abb7055cb0c59f9_675obz.jpeg" alt="" />
 </figure>
 
 [from Imgflip Meme Generator](https://imgflip.com/memegenerator)

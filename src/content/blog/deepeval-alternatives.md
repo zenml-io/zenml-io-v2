@@ -21,12 +21,12 @@ tags:
 date: "2025-11-20T00:00:00.000Z"
 readingTime: 14 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/0eb4814c/6981d389ab6d2820d701bc15_6981d2a9cac03d50ba86910f_deepeval-alternatives.avif"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/0eb4814c/6981d389ab6d2820d701bc15_6981d2a9cac03d50ba86910f_deepeval-alternatives.avif"
 seo:
   title: "8 Best DeepEval Alternatives: Which LLM Evaluation Framework is Better? - ZenML Blog"
   description: "In this article, you will learn about the best DeepEval alternatives that you can use for LLM evaluation."
   canonical: "https://www.zenml.io/blog/deepeval-alternatives"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/0eb4814c/6981d389ab6d2820d701bc15_6981d2a9cac03d50ba86910f_deepeval-alternatives.avif"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/0eb4814c/6981d389ab6d2820d701bc15_6981d2a9cac03d50ba86910f_deepeval-alternatives.avif"
   ogTitle: "8 Best DeepEval Alternatives: Which LLM Evaluation Framework is Better? - ZenML Blog"
   ogDescription: "In this article, you will learn about the best DeepEval alternatives that you can use for LLM evaluation."
 ---
@@ -52,7 +52,7 @@ At a time when LLMs are known to confidently produce plausible-sounding but enti
 That’s why teams are shifting from DeepEval toward hybrid AI systems, emphasizing ‘human-in-the-loop’ processes. Human judgments remain costly and slow, though more reliable and accurate.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/53215f6c/691e92a03f3fed1ce9dd6e3b_heavy-reliance-on-llm-as-a-judge.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/53215f6c/691e92a03f3fed1ce9dd6e3b_heavy-reliance-on-llm-as-a-judge.webp" alt="__wf_reserved_inherit" />
   <figcaption>Source</figcaption>
 </figure>
 
@@ -87,7 +87,7 @@ Here’s a quick table comparing all the top DeepEval alternatives we’re going
 **Best for:** Teams that want a unified, end-to-end MLOps + LLMOps platform with built-in evaluation, reproducibility, and full pipeline observability, making it one of the strongest full-stack DeepEval alternatives.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/66f567b2/691e92ba6d98f73dbeb7ba55_zenml-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/66f567b2/691e92ba6d98f73dbeb7ba55_zenml-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ZenML is an open-source MLOps + LLMOps framework designed to bring structure, reproducibility, and governance to ML and LLM applications.
@@ -97,7 +97,7 @@ As a DeepEval alternative, ZenML stands out because it integrates evaluation dir
 ### Key Feature 1. RAG Evaluation
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/19501162/691e92ca27ab4c05752adb2d_zenml-evaluation.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/19501162/691e92ca27ab4c05752adb2d_zenml-evaluation.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML RAG evaluation</figcaption>
 </figure>
 
@@ -112,7 +112,7 @@ This gives teams a systematic way to compare multiple retrievers, generators, mo
 ### Key Feature 2. CI/CD Integration
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/7079b712/691e92df90aa05e45ae55b36_zenml-ci-cd.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7079b712/691e92df90aa05e45ae55b36_zenml-ci-cd.webp" alt="__wf_reserved_inherit" />
   <figcaption>Pipeline being run on staging/production stack through CI/CD</figcaption>
 </figure>
 
@@ -127,7 +127,7 @@ This makes ZenML ideal for teams who want evaluation to function like software t
 ### Key Feature 3. Tracking and Lineage
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/83aa06c4/68ba650b4c60518ca7fe3027_zenml-pipeline-dag-visualization.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/83aa06c4/68ba650b4c60518ca7fe3027_zenml-pipeline-dag-visualization.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML tracking and lineage</figcaption>
 </figure>
 
@@ -148,7 +148,7 @@ ZenML is **free and open-source** under the Apache 2.0 license. The core framewo
 For teams requiring enterprise-grade collaboration, managed hosting, advanced security, and premium support, ZenML provides custom business plans. These typically depend on deployment model (cloud or on-premises), usage, or team size.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/566ecac3/6916b2f1e727fa75e3efeca3_zenml-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/566ecac3/6916b2f1e727fa75e3efeca3_zenml-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -160,7 +160,7 @@ But remember, being a full MLOps framework requires more initial setup than ligh
 ## 2. Ragas
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/bb1c4ab2/691e931f0d4b8769a5d173a5_ragas-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/bb1c4ab2/691e931f0d4b8769a5d173a5_ragas-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [Ragas](https://www.ragas.io/) is a lightweight, open-source evaluation toolkit purpose-built for RAG pipelines. It offers domain-specific metrics like context relevance, faithfulness, and semantic similarity scoring.
@@ -182,7 +182,7 @@ But keep in mind, Ragas focuses on RAG and isn't much preferred for general LLM 
 ## 3. TruLens
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/58d1f620/691e9332310eac418375c528_trulens-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/58d1f620/691e9332310eac418375c528_trulens-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [TruLens](https://www.trulens.org/) is an open-source framework that provides evaluation and tracing for LLM applications. Rather than DeepEval’s black-box evaluation, TruLens emphasizes explainability through feedback functions. It lets you compose logic from small, reusable feedback functions measuring groundedness, relevance, language match, and custom criteria.
@@ -204,7 +204,7 @@ Building feedback functions requires more engineering effort than using DeepEval
 ## 4. Promptfoo
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/df800c39/691e9346a9582ff729376b05_promptfoo-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/df800c39/691e9346a9582ff729376b05_promptfoo-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [Promptfoo](https://www.promptfoo.dev/) is a lightweight prompt [evaluation framework](https://www.zenml.io/blog/best-llm-evaluation-tools) built for fast iteration and regression testing. It’s ideal for developers who want to track prompt quality, benchmark across models, and automate prompt testing in CI, all without complex setup.
@@ -218,7 +218,7 @@ Building feedback functions requires more engineering effort than using DeepEval
 Promptfoo is completely free and open-source under the MIT license. Paid cloud hosting is available for team collaboration and result sharing.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/f95f9555/691e93485912b42cef851c25_promptfoo-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f95f9555/691e93485912b42cef851c25_promptfoo-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -230,7 +230,7 @@ However, it lacks deeper [observability features](https://www.zenml.io/blog/best
 ## 5. Arize Phoenix
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/ca038da3/6916b3a5a75a15653b610c5f_azire-phoenix-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ca038da3/6916b3a5a75a15653b610c5f_azire-phoenix-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [Arize Phoenix](https://phoenix.arize.com/) is an open-source observability platform from Arize AI. It captures traces through OpenTelemetry, enabling you to debug agent behavior, perform what-if analysis, and evaluate quality across runs. Its trace-first approach allows for quicker debugging visibility for complex LLM systems.
@@ -246,7 +246,7 @@ Arize Phoenix is free to self-host with no limit on the number of users. On top 
 <ul><li><strong>AX Pro:</strong> $50 per month</li><li><strong>AX Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/a98821a3/6912bbdefe1f120a6713155b_azire-phoenix-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a98821a3/6912bbdefe1f120a6713155b_azire-phoenix-pricing.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -258,7 +258,7 @@ But Phoenix is observability-focused, not evaluation-focused. You get traces and
 ## 6. Langfuse
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/581db928/691e9373e8b0353623278c8b_langfuse-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/581db928/691e9373e8b0353623278c8b_langfuse-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [Langfuse](https://langfuse.com/) is an open-source LLM engineering platform that directly competes in the space of LangSmith and Phoenix. It helps teams trace, evaluate, and manage prompts for LLM applications.
@@ -274,7 +274,7 @@ Langfuse is free to use and open-source for self-hosting. Langfuse Cloud offers 
 <ul><li><strong>Core:</strong> $29 per month</li><li><strong>Pro:</strong> $199 per month</li><li><strong>Enterprise:</strong> $2499 per month</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/03805a01/691e93817bf29bd66d503210_langfuse-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/03805a01/691e93817bf29bd66d503210_langfuse-pricing.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -286,7 +286,7 @@ The framework focuses primarily on the LLM layer, so it doesn’t cover full ML 
 ## 7. UpTrain
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/c587a8e8/691e938eeb484fab1ddeb4b6_uptrain-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c587a8e8/691e938eeb484fab1ddeb4b6_uptrain-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [UpTrain](https://uptrain.ai/) is an open-source observability and evaluation tool built for monitoring LLM outputs in production. It excels at automated quality checks, drift detection, and root-cause analysis across chatbot and RAG workflows.
@@ -308,7 +308,7 @@ UpTrain has less community adoption than DeepEval, meaning fewer examples and in
 ## 8. LangSmith
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/c36fe06c/691e939afd6c1db474aabfc6_langsmith-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c36fe06c/691e939afd6c1db474aabfc6_langsmith-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [LangSmith](https://www.langchain.com/langsmith/observability) is LangChain's commercial observability platform. It’s a managed SaaS platform developed by the LangChain team. It’s deeply integrated with the LangChain ecosystem and designed to track prompts, sessions, and evaluation signals across development and production environments.
@@ -324,7 +324,7 @@ Langsmith offers a free developer plan and two paid plans:
 <ul><li><strong>Plus:</strong> $39 per seat per month</li><li><strong>Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/2d3bb213/6916b365454bf3764e243444_langsmith-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2d3bb213/6916b365454bf3764e243444_langsmith-pricing.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons

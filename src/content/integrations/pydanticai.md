@@ -12,19 +12,19 @@ webflow:
   createdOn: "2025-08-26T14:37:02.480Z"
 integrationType: "agents"
 logo:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/ac3aac54/68adc6964e4ca90c41950ffa_pydantic.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ac3aac54/68adc6964e4ca90c41950ffa_pydantic.png"
 shortDescription: "PydanticAI type-safe agents integrated with ZenML"
 docsUrl: "https://docs.zenml.io"
 githubUrl: "https://github.com/zenml-io/zenml/tree/main/examples/agent_framework_integrations/pydanticai"
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/77d9c754/68adc7b3c1e15b4e493af0d3_pydanticai-img.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/77d9c754/68adc7b3c1e15b4e493af0d3_pydanticai-img.png"
 relatedBlogPosts:
   - "llm-agents-in-production-architectures-challenges-and-best-practices"
 seo:
   title: "Integrate PydanticAI with ZenML - Agents Integrations"
   description: "PydanticAI type-safe agents integrated with ZenML"
   canonical: "https://www.zenml.io/integrations/pydanticai"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/77d9c754/68adc7b3c1e15b4e493af0d3_pydanticai-img.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/77d9c754/68adc7b3c1e15b4e493af0d3_pydanticai-img.png"
   ogTitle: "Integrate PydanticAI with ZenML - Agents Integrations"
   ogDescription: "PydanticAI type-safe agents integrated with ZenML"
 ---

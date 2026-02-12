@@ -12,7 +12,7 @@ webflow:
   createdOn: "2024-10-08T12:00:42.267Z"
 toolName: "Valohai"
 toolIcon:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/8e3306a1/67051ee41295ebfd0139bf81_valohai.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8e3306a1/67051ee41295ebfd0139bf81_valohai.png"
 category: "e2e-platforms"
 integrationType: "e2e-platform"
 advantages:
@@ -28,12 +28,12 @@ ctaHeadline: "Experience the ZenML Advantage"
 learnMoreUrl: "https://cloud.zenml.io/?utm_source=website&utm_medium=website_hero&utm_campaign=cloud_promotion&utm_content=signup_link"
 seoDescription: "Valohai alternative: Open-source MLOps framework with extensive integrations. Accelerate ML development using Python-based SDK, adaptable architecture, and existing infrastructure, while avoiding vendor lock-in."
 openGraphImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/051716c8/67051ed8600a92cbd8f4a6f9_compare-valohai.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/051716c8/67051ed8600a92cbd8f4a6f9_compare-valohai.png"
 seo:
   title: "ZenML vs Valohai - Open source MLOps stack"
   description: "Valohai alternative: Open-source MLOps framework with extensive integrations. Accelerate ML development using Python-based SDK, adaptable architecture, and existing infrastructure, while avoiding vendor lock-in."
   canonical: "https://www.zenml.io/compare/zenml-vs-valohai"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/051716c8/67051ed8600a92cbd8f4a6f9_compare-valohai.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/051716c8/67051ed8600a92cbd8f4a6f9_compare-valohai.png"
   ogTitle: "ZenML vs Valohai - Open source MLOps stack"
   ogDescription: "Valohai alternative: Open-source MLOps framework with extensive integrations. Accelerate ML development using Python-based SDK, adaptable architecture, and existing infrastructure, while avoiding vendor lock-in."
 ---

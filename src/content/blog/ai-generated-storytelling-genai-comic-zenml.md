@@ -20,12 +20,12 @@ tags:
 date: "2024-08-19T00:00:00.000Z"
 readingTime: 4 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/5a7b5a8c/6981d389ab6d2820d701bc00_6981d2aba626881724d7d4df_CleanShot_2024-08-19_at_11.49.00_402x.avif"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5a7b5a8c/6981d389ab6d2820d701bc00_6981d2aba626881724d7d4df_CleanShot_2024-08-19_at_11.49.00_402x.avif"
 seo:
   title: "AI-Generated Storytelling: A GenAI Comic About ZenML - ZenML Blog"
   description: "Playing around with some genAI services and tools to create a story and comic that showcases the journey of MLOps adoption for a small team."
   canonical: "https://www.zenml.io/blog/ai-generated-storytelling-genai-comic-zenml"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/5a7b5a8c/6981d389ab6d2820d701bc00_6981d2aba626881724d7d4df_CleanShot_2024-08-19_at_11.49.00_402x.avif"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5a7b5a8c/6981d389ab6d2820d701bc00_6981d2aba626881724d7d4df_CleanShot_2024-08-19_at_11.49.00_402x.avif"
   ogTitle: "AI-Generated Storytelling: A GenAI Comic About ZenML - ZenML Blog"
   ogDescription: "Playing around with some genAI services and tools to create a story and comic that showcases the journey of MLOps adoption for a small team."
 ---
@@ -47,7 +47,7 @@ Storyboarding the panels was the product of a very long conversation with [Claud
 The hardest part by far was to achieve visual continuity through the course of the whole story, namely how to make sure that the face of the main character didn't change from image to image. There are ways to achieve this through prompts (e.g. give the character a scar or glasses or a vibrant hair colour) but those all felt a bit hacky and didn't respond well to other changes (i.e. when his emotions changed). In the end I settled on a trick I'd learned during [Part 2 of the FastAI course](https://course.fast.ai/Lessons/part2.html) which was more along the lines of passing in an image into the prompt as well. I got this working with [diffusers](https://huggingface.co/docs/diffusers/index) first just as a proof that it was possible and then I quite quickly switched to having getimg.ai handle this — you can pass in characters, styles or other content.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/b2e75b16/66c31c577a37989a2291bb59_66c31ba3d321355051a7b9dd_getimg-ai-generation.png" alt="Screenshot of the getimg.ai image generation tool, using custom characters" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b2e75b16/66c31c577a37989a2291bb59_66c31ba3d321355051a7b9dd_getimg-ai-generation.png" alt="Screenshot of the getimg.ai image generation tool, using custom characters" />
 </figure>
 
 Then the rest of the work was just many iterations, tweaking how much the image reference was to be followed, and adjusting the number of inference steps and the guidance scale. I also had a standard negative prompt as well ('Disfigured, blurry, nude'), but I didn't play around with that much. 

@@ -21,12 +21,12 @@ tags:
 date: "2025-08-20T00:00:00.000Z"
 readingTime: 17 mins
 mainImage:
-  url: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/31fdfde6/68a564f72c519b02fa18ec5a_crewai-alternatives.png"
+  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/31fdfde6/68a564f72c519b02fa18ec5a_crewai-alternatives.png"
 seo:
   title: "We Tried and Tested 7 CrewAI Alternatives to Build Automated AI Workflows - ZenML Blog"
   description: "Discover the top 7 CrewAI alternatives you can leverage to build automated AI workflows."
   canonical: "https://www.zenml.io/blog/crewai-alternatives"
-  ogImage: "https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/31fdfde6/68a564f72c519b02fa18ec5a_crewai-alternatives.png"
+  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/31fdfde6/68a564f72c519b02fa18ec5a_crewai-alternatives.png"
   ogTitle: "We Tried and Tested 7 CrewAI Alternatives to Build Automated AI Workflows - ZenML Blog"
   ogDescription: "Discover the top 7 CrewAI alternatives you can leverage to build automated AI workflows."
 ---
@@ -48,7 +48,7 @@ We close with a practical path to operate agents at scale by wrapping your chose
 Why might you need a [CrewAI](https://www.crewai.com/) alternative in the first place? While CrewAI is a solid foundation for multi-agent systems, there are a few reasons teams may hit its limits and seek other solutions.
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/24754729/68a55e007ee2924f569da689_reasons-you-need-crewai-alternatives.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/24754729/68a55e007ee2924f569da689_reasons-you-need-crewai-alternatives.png" alt="__wf_reserved_inherit" />
   <figcaption>Reasons you need a CrewAI alternatives</figcaption>
 </figure>
 
@@ -118,7 +118,7 @@ We tested seven promising alternatives to CrewAI, each offering a different appr
 ## 1. AutoGen
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/eba57350/68a55e49e4ad983dcf16fdd6_autogen-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/eba57350/68a55e49e4ad983dcf16fdd6_autogen-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [AutoGen](https://microsoft.github.io/autogen/stable//index.html) is an open-source framework from Microsoft Research for creating AI agents that collaborate through conversations. Instead of following a fixed sequence of tasks (like CrewAI’s crew workflow), AutoGen lets multiple agents interact in a free-form chat loop, even allowing a human to join the conversation when needed.
@@ -136,7 +136,7 @@ However, the freedom AutoGen provides comes at the cost of guidance. With no pre
 ## 2. LangGraph
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/e603a240/68a55e79f6ab623343536b1c_langgraph-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e603a240/68a55e79f6ab623343536b1c_langgraph-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [LangGraph](https://www.langchain.com/langgraph) is a stateful orchestration framework. Every step writes a checkpoint you can rewind to or branch from, which means you can pause for human input and later resume without losing context. Studio gives you a debugging view and integrates tightly with LangSmith for traces and evals.
@@ -154,7 +154,7 @@ The downside is that LangGraph’s richness comes with complexity. There is some
 ## 3. Agent Development Kit (Google)
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/cec58e5b/68a55ea943a86d0ea04636b2_agent-development-kit-google-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/cec58e5b/68a55ea943a86d0ea04636b2_agent-development-kit-google-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [Google’s Agent Development Kit](https://google.github.io/adk-docs/) (ADK) is a flexible, modular framework for developing and deploying AI agents. Announced as part of the Vertex AI ecosystem, it’s Google’s answer to making agent-building more like standard software development.
@@ -172,7 +172,7 @@ In terms of downsides, ADK is relatively new (version 0.1.x) and evolving. As su
 ## 4. OpenAI Agents SDK
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/b7366376/68a55ec54ad4dc5ef3bcd582_openai-agent-sdk-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b7366376/68a55ec54ad4dc5ef3bcd582_openai-agent-sdk-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 The [OpenAI Agents SDK](https://openai.github.io/openai-agents-python/) is a lightweight toolkit to build agents powered by OpenAI’s models (like GPT-4) that can use tools and perform multi-step reasoning. It’s essentially OpenAI’s in-house answer to frameworks like LangChain or CrewAI, streamlined for their API.
@@ -190,7 +190,7 @@ On the downside, the Agents SDK is somewhat opinionated towards the OpenAI way o
 ## 5. Langflow
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/c733b5d9/68a55ee9be0265cd732479e6_langflow-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c733b5d9/68a55ee9be0265cd732479e6_langflow-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [Langflow](https://www.langflow.org/) is an open-source visual builder for LLM workflows; a no-code interface on top of LangChain. It lets you design chains of prompts, tools, and logic by drawing diagrams instead of writing code, which can dramatically speed up prototyping and collaboration.
@@ -208,7 +208,7 @@ On the downside, visual tools can sometimes be limiting for very complex logic. 
 ## 6. FlowiseAI
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/d6e35dfa/68a55f030a0e760b1f1638a9_flowiseai-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d6e35dfa/68a55f030a0e760b1f1638a9_flowiseai-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [Flowise](https://flowiseai.com/) is another open-source visual workflow builder for LLMs, similar to Langflow. It lets you create, test, and deploy AI agent chains through a browser UI. Flowise’s focus is on the quick deployment of these workflows.
@@ -226,7 +226,7 @@ While FlowiseAI supports multi-agent setups and API deployment, its memory manag
 ## 7. LlamaIndex
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/f5a31ff0/68a55f3475521225deb39cd8_llamaindex-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f5a31ff0/68a55f3475521225deb39cd8_llamaindex-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [LlamaIndex](https://www.llamaindex.ai/) (formerly GPT Index) is an open-source framework focused on connecting LLMs with external data sources for retrieval-augmented generation (RAG). It’s not a full agent orchestrator like CrewAI, but it can augment or replace parts of CrewAI’s functionality when your agents need to work with a lot of knowledge or documents.
@@ -244,7 +244,7 @@ However, LlamaIndex is narrower in scope than the other alternatives here. It wa
 ## How ZenML Helps in Closing the Outer Loop Around CrewAI and Its Alternatives
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/1aad74e0/687b1c29468fe4993262cdc5_zenML-helps-in-closing-the-outer-loop.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1aad74e0/687b1c29468fe4993262cdc5_zenML-helps-in-closing-the-outer-loop.png" alt="__wf_reserved_inherit" />
 </figure>
 
 All the alternatives above (and CrewAI itself) focus on the ‘inner loop’ of agent development – designing how agents think, interact, and solve tasks. However, building a clever agent is only half the battle.
@@ -260,7 +260,7 @@ Here are a few ways our platform helps close the outer loop:
 ### 1. End-to-End Orchestration
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/f851cbbc/6892de675f3cdef5338b7153_zenml-architecture.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f851cbbc/6892de675f3cdef5338b7153_zenml-architecture.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML architecture</figcaption>
 </figure>
 
@@ -273,7 +273,7 @@ Steps and Pipelines ensure that moving from a prototype to a deployed workflow i
 ### 2. Unified Visibility and Lineage
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/8dff2b8f/68a564703779dabb2e1234ec_zenml-pipeline-rag-visualization.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8dff2b8f/68a564703779dabb2e1234ec_zenml-pipeline-rag-visualization.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML pipeline DAG visualization</figcaption>
 </figure>
 
@@ -288,7 +288,7 @@ This kind of lineage is crucial for debugging and for compliance (e.g., auditing
 ### 3. Continuous Evaluation and Feedback
 
 <figure>
-  <img src="https://pub-d0f853843b954aadbcd60eaff1d9c6e2.r2.dev/webflow/64a817a2e7e2208272d1ce30/a2d6f59d/6892de9d7a7c008a7dde8ba5_zenml-evaluation.png" alt="__wf_reserved_inherit" />
+  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a2d6f59d/6892de9d7a7c008a7dde8ba5_zenml-evaluation.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML evaluation</figcaption>
 </figure>
 
