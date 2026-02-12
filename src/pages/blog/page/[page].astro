@@ -4,10 +4,11 @@
  *
  * Page 1 is handled by blog/index.astro.
  * Generates /blog/page/2, /blog/page/3, etc.
+ *
+ * Same card design as index.astro but without the featured hero post.
  */
 import { getCollection, getEntry } from "astro:content";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
-import Badge from "../../../components/Badge.astro";
 
 export async function getStaticPaths() {
   const pageSize = 12;
@@ -48,22 +49,27 @@ for (const post of posts) {
   title={`Blog - Page ${currentPage} - ZenML`}
   description="Insights on MLOps, LLMOps, and production machine learning from the ZenML team."
 >
-  <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-    <header class="mb-12">
-      <h1 class="text-4xl font-bold tracking-tight text-gray-900">Blog</h1>
-      <p class="mt-4 text-lg text-gray-600">
-        Insights on MLOps, LLMOps, and production machine learning.
-      </p>
-    </header>
+  {/* Purple gradient header */}
+  <div class="bg-gradient-to-b from-primary-50 to-white">
+    <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
+      <div class="text-center">
+        <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">ZenML Blog</h1>
+        <p class="mx-auto mt-4 max-w-2xl text-lg text-gray-600">
+          The latest news, opinions and technical guides from ZenML.
+        </p>
+      </div>
+    </div>
+  </div>
 
+  <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
     {/* Post grid */}
     <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
       {posts.map((post) => {
         const category = categoryMap.get(post.data.category || "");
         return (
-          <article class="group flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white transition-shadow hover:shadow-md">
+          <article class="group flex flex-col">
             {post.data.mainImage && (
-              <a href={`/blog/${post.data.slug}`} class="block aspect-[16/9] overflow-hidden">
+              <a href={`/blog/${post.data.slug}`} class="block aspect-[16/9] overflow-hidden rounded-xl">
                 <img
                   src={post.data.mainImage.url}
                   alt={post.data.mainImage.alt || post.data.title}
@@ -72,33 +78,35 @@ for (const post of posts) {
                 />
               </a>
             )}
-            <div class="flex flex-1 flex-col p-5">
+            <div class="mt-4 flex items-center gap-3 text-sm">
               {category && (
-                <Badge href={`/category/${category.slug}`} variant="primary" class="mb-2 self-start">
+                <a href={`/category/${category.slug}`} class="font-semibold text-primary-600 hover:text-primary-700">
                   {category.name}
-                </Badge>
-              )}
-              <h2 class="mb-2 text-lg font-semibold leading-snug text-gray-900">
-                <a href={`/blog/${post.data.slug}`} class="hover:text-primary-600">
-                  {post.data.title}
                 </a>
-              </h2>
-              <div class="mt-auto flex items-center gap-3 pt-4 text-sm text-gray-500">
-                <time datetime={new Date(post.data.date).toISOString().split("T")[0]}>
-                  {new Date(post.data.date).toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "short",
-                    day: "numeric",
-                  })}
-                </time>
-                {post.data.readingTime && (
-                  <>
-                    <span aria-hidden="true">&middot;</span>
-                    <span>{post.data.readingTime}</span>
-                  </>
-                )}
-              </div>
+              )}
+              {post.data.readingTime && (
+                <span class="text-gray-500">{post.data.readingTime}</span>
+              )}
             </div>
+            <h2 class="mt-2 line-clamp-2 text-lg font-semibold text-gray-900">
+              <a href={`/blog/${post.data.slug}`} class="hover:text-primary-600 transition-colors">
+                {post.data.title}
+              </a>
+            </h2>
+            {post.data.seo?.description && (
+              <p class="mt-1 line-clamp-3 text-sm leading-relaxed text-gray-600">
+                {post.data.seo.description}
+              </p>
+            )}
+            <a
+              href={`/blog/${post.data.slug}`}
+              class="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-primary-600 hover:text-primary-700 transition-colors"
+            >
+              Read post
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" class="shrink-0">
+                <path d="M5.83 14.17L14.17 5.83M14.17 5.83H5.83M14.17 5.83V14.17" stroke="currentColor" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
           </article>
         );
       })}
