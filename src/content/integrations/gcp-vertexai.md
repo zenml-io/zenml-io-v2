@@ -28,6 +28,18 @@ seo:
   ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e0ff5439/66e7310b0dcb8cb0f1d0050a_image__9_.png"
   ogTitle: "Integrate Google Cloud Vertex AI Pipelines with ZenML - Orchestrator Integrations"
   ogDescription: "Streamline your MLOps workflows on GCP with ZenML and Vertex AI Pipelines"
+overviewTitle: "Streamline your MLOps workflows on GCP with ZenML and Vertex AI Pipelines"
+overviewDescription: "Enhance your machine learning operations by leveraging the power of Vertex AI Pipelines orchestration through ZenML. This integration enables you to run production-ready, scalable ML pipelines on Google Cloud Platform, taking advantage of the fully managed serverless infrastructure and intuitive UI for tracking pipeline runs."
+featuresWithZenmlHtml: "<ul id=\"\"><li id=\"\">Seamlessly integrate ZenML pipelines with Vertex AI Pipelines for end-to-end ML workflows on GCP</li><li id=\"\">Easily deploy and scale your pipelines using Vertex AI's managed serverless infrastructure</li><li id=\"\">Track and monitor pipeline runs through the intuitive Vertex AI UI, accessible directly from ZenML</li><li id=\"\">Leverage GPU acceleration for compute-intensive steps in your ZenML pipelines</li><li id=\"\">Schedule recurring pipeline runs using Vertex AI's native scheduling capabilities</li></ul><p>‍</p>"
+toolFeaturesHtml: "<ul id=\"\"><li id=\"\">Fully managed serverless infrastructure for running ML pipelines at scale</li><li id=\"\">Intuitive UI for visualizing and monitoring pipeline runs and logs</li><li id=\"\">Native support for GPU-accelerated workloads</li><li id=\"\">Flexible scheduling options for recurring pipeline runs</li><li id=\"\">Seamless integration with other GCP services and tools in the Vertex AI platform</li></ul><p>‍</p>"
+codeExampleHtml: "<div data-rt-embed-type='true'><pre><code fs-codehighlight-element=\"code\" class=\"language-shell\">\nzenml integration install gcp\nzenml stack set ...\n</code></pre></div><div data-rt-embed-type='true'><pre><code fs-codehighlight-element=\"code\" class=\"language-python\">\nfrom zenml.integrations.gcp.flavors.vertex_orchestrator_flavor import VertexOrchestratorSettings\n\n# Choose an accelerator to run on\nvertex_settings = VertexOrchestratorSettings(\n                node_selector_constraint=(\n                    \"cloud.google.com/gke-accelerator\",\n                    \"NVIDIA_TESLA_P4\",\n                )\n            )\n\n@pipeline(\n    settings={\n        \"orchestrator.vertex\": vertex_settings,\n    }\n)\ndef vertex_pipeline():\n    ingest_data()\n    train_model()\n    evaluate_model()\n\n# Run the pipeline\nvertex_pipeline()\n</code></pre></div>"
+documentationLinkText: "Read the full Vertex AI Pipelines integration documentation"
+additionalResources:
+  - label: "Using Vertex with a full google stack"
+    href: "https://docs.zenml.io/how-to/popular-integrations/gcp-guide"
+  - label: "Learn more about Vertex AI Pipelines in the GCP documentation"
+    href: "https://cloud.google.com/vertex-ai/docs/pipelines/introduction"
+isUpdatedToNewFormat: true
 ---
 
 <ul><li>Seamlessly integrate ZenML pipelines with Vertex AI Pipelines for end-to-end ML workflows on GCP</li><li>Easily deploy and scale your pipelines using Vertex AI's managed serverless infrastructure</li><li>Track and monitor pipeline runs through the intuitive Vertex AI UI, accessible directly from ZenML</li><li>Leverage GPU acceleration for compute-intensive steps in your ZenML pipelines</li><li>Schedule recurring pipeline runs using Vertex AI's native scheduling capabilities</li></ul>

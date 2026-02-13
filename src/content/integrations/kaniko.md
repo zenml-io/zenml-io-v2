@@ -25,6 +25,14 @@ seo:
   ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9db69c0a/66e02b513d4f8dbbe140fad1_Screenshot_2024-09-04_at_10.16.07.png"
   ogTitle: "Integrate Kaniko with ZenML - Image Builder Integrations"
   ogDescription: "Build Container Images Effortlessly with Kaniko and ZenML"
+overviewTitle: "Build Container Images Effortlessly with Kaniko and ZenML"
+overviewDescription: "Seamlessly integrate Kaniko, a powerful container image builder, with your ZenML pipelines. This integration allows you to build container images without relying on Docker, making it ideal for environments where Docker is not available or when you're already familiar with Kubernetes."
+featuresWithZenmlHtml: "<ul id=\"\"><li id=\"\">Eliminate the need for Docker on your client machine</li><li id=\"\">Seamlessly integrate with Kubernetes clusters for building images</li><li id=\"\">Customize build pod configurations to suit your specific requirements</li></ul><p>‍</p>"
+toolFeaturesHtml: "<ul id=\"\"><li id=\"\">Dockerless container image building</li><li id=\"\">Native integration with Kubernetes</li><li id=\"\">Efficient layer caching for faster builds</li><li id=\"\">Extensible with additional build arguments and configurations</li></ul><p>‍</p>"
+codeExampleHtml: "<div data-rt-embed-type='true'><pre><code fs-codehighlight-element=\"code\" class=\"language-shell\">\nzenml image-builder register &lt;NAME> \\\n    --flavor=kaniko \\\n    --kubernetes_context=&lt;KUBERNETES_CONTEXT>\nzenml stack update -i &lt;NAME>\n</code></pre></div>"
+documentationLinkText: "Read the full Kaniko integration docs"
+githubLinkText: "Kaniko GitHub repository"
+isUpdatedToNewFormat: true
 ---
 
 <ul><li>Eliminate the need for Docker on your client machine</li><li>Seamlessly integrate with Kubernetes clusters for building images</li><li>Customize build pod configurations to suit your specific requirements</li></ul>

@@ -25,6 +25,18 @@ seo:
   ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/fcd451e4/6704f16f3a197dff1d594688_Integration_image__4_.png"
   ogTitle: "Integrate MLflow with ZenML - Experiment Tracker Integrations"
   ogDescription: "Seamlessly track and visualize ZenML pipeline experiments with MLflow"
+overviewTitle: "Seamlessly track and visualize ZenML pipeline experiments with MLflow"
+overviewDescription: "Integrate the power of MLflow's experiment tracking capabilities directly into your ZenML pipelines. Effortlessly log and visualize models, parameters, metrics, and artifacts produced by your pipeline steps, enhancing reproducibility and collaboration across your ML workflows."
+featuresWithZenmlHtml: "<ul id=\"\"><li id=\"\">Seamless integration of MLflow tracking within ZenML steps</li><li id=\"\">Automatically link ZenML runs to MLflow experiments for easy navigation</li><li id=\"\">Leverage MLflow's intuitive UI to visualize and compare pipeline results</li><li id=\"\">Supports various MLflow deployment scenarios for flexibility</li><li id=\"\">Secure configuration options using ZenML Secrets</li></ul><p>‍</p>"
+toolFeaturesHtml: "<ul id=\"\"><li id=\"\">Comprehensive experiment tracking and logging</li><li id=\"\">Intuitive UI for visualizing and comparing runs</li><li id=\"\">Support for a wide range of ML frameworks and languages</li><li id=\"\">Flexible deployment options (local, remote server, Databricks)</li><li id=\"\">Model registry for streamlined model versioning and deployment</li></ul><p>‍</p>"
+codeExampleHtml: "<div data-rt-embed-type='true'><pre><code fs-codehighlight-element=\"code\" class=\"language-python\">import numpy as np\nfrom sklearn.ensemble import RandomForestClassifier\nfrom sklearn.base import BaseEstimator\nfrom sklearn.datasets import load_iris\nfrom zenml import pipeline, step\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.metrics import accuracy_score\nimport mlflow\n\n\n@step(experiment_tracker=\"mlflow_tracker\")\ndef train_model() -> BaseEstimator:\n    mlflow.autolog()\n    iris = load_iris()\n    X_train, X_test, y_train, y_test = train_test_split(\n        iris.data, iris.target, test_size=0.2, random_state=42\n    )\n    model = RandomForestClassifier()\n    model.fit(X_train, y_train)\n    y_pred = model.predict(X_test)\n    mlflow.log_param(\"n_estimators\", model.n_estimators)\n    mlflow.log_metric(\"train_accuracy\", accuracy_score(y_test, y_pred))\n    return model\n\n\n@pipeline(enable_cache=False)\ndef training_pipeline():\n    train_model()\n\ntraining_pipeline()</code></pre></div>"
+documentationLinkText: "ZenML MLflow experiment tracker docs"
+githubLinkText: "GitHub: ZenML MLflow Integration Example"
+additionalResources:
+  - label: "Official MLflow Documentation"
+    href: "https://www.mlflow.org/docs/latest/index.html"
+compareSlug: "zenml-vs-mlflow"
+isUpdatedToNewFormat: true
 ---
 
 <ul><li>Seamless integration of MLflow tracking within ZenML steps</li><li>Automatically link ZenML runs to MLflow experiments for easy navigation</li><li>Leverage MLflow's intuitive UI to visualize and compare pipeline results</li><li>Supports various MLflow deployment scenarios for flexibility</li><li>Secure configuration options using ZenML Secrets</li></ul>

@@ -25,5 +25,9 @@ seo:
   ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/fcc2d569/6527e397ffa25a6edf23d40c_pytorch_lightning_fcf5ae8eb7.webp"
   ogTitle: "Integrate PyTorch Lightning with ZenML - Modeling Integrations"
   ogDescription: "Train deep learning models with PyTorch Lightning."
+overviewTitle: "Train models with PyTorch Lightning in ZenML"
+overviewDescription: "PyTorch Lightning is a framework that helps you organize and scale your PyTorch code and it has recently become very popular among machine learning and deep learning researchers. With ZenML's PyTorch integration, you can load, train, and deploy PyTorch Lightning models within your ZenML pipelines."
+githubLinkText: "Go to Github"
+isUpdatedToNewFormat: false
 ---
 

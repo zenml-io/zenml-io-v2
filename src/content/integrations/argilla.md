@@ -25,6 +25,17 @@ seo:
   ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/371e363f/66e74c4209220bebc2e991df_argilla_integration.png"
   ogTitle: "Integrate Argilla with ZenML - Data Annotator Integrations"
   ogDescription: "Streamline Data Annotation in ZenML Pipelines with Argilla"
+overviewTitle: "Streamline Data Annotation in ZenML Pipelines with Argilla"
+overviewDescription: "Enhance your machine learning workflows by integrating Argilla, an open-source data curation platform, with ZenML. This integration enables efficient data annotation within ZenML pipelines, leveraging Argilla's human-in-the-loop approach for improved data quality and model performance."
+featuresWithZenmlHtml: "<ul id=\"\"><li id=\"\">Seamless integration of Argilla's data annotation capabilities within ZenML pipelines</li><li id=\"\">Support for local and deployed instances of Argilla, including Hugging Face Spaces</li><li id=\"\">Access to annotated datasets and annotations through ZenML CLI and SDK</li><li id=\"\">Efficient data curation and labeling for text data in ML workflows</li><li id=\"\">Enhanced model performance through human feedback and expertise</li></ul><p>‍</p>"
+toolFeaturesHtml: "<ul id=\"\"><li id=\"\">Focus on specific use cases and human-in-the-loop approaches</li><li id=\"\">Support for each step in the MLOps cycle, from data labeling to model monitoring</li><li id=\"\">Faster data curation using both human and machine feedback</li><li id=\"\">Designed to enhance the development of small and large language models (LLMs) and NLP tasks</li><li id=\"\">Actively involves human experts in the tool-building process</li></ul><p>‍</p>"
+codeExampleHtml: "<div data-rt-embed-type='true'><pre><code fs-codehighlight-element=\"code\" class=\"language-python\">\n# register an annotator authentication secret first\n# zenml secret create argilla_secrets --api_key=\"&lt;your_argilla_api_key>\"\n# then register the annotator itself\n# zenml annotator register argilla --flavor argilla --authentication_secret=argilla_secrets\n\nfrom zenml.client import Client\n\nclient = Client()\nannotator = client.active_stack.annotator\n\n# list dataset names\ndataset_names = annotator.get_dataset_names()\n\n# get a specific dataset\ndataset = annotator.get_dataset(\"dataset_name\")\n\n# get the annotations for a dataset\nannotations = annotator.get_labeled_data(dataset_name=\"dataset_name\")\n\n# launch the annotation interface via the CLI\n# zenml annotator dataset annotate &lt;dataset_name>\n</code></pre></div>"
+documentationLinkText: "ZenML Argilla integration documentation"
+githubLinkText: "Argilla GitHub Repository"
+additionalResources:
+  - label: "ZenML Argilla Integration SDK Docs"
+    href: "https://sdkdocs.zenml.io/latest/integration_code_docs/integrations-argilla/"
+isUpdatedToNewFormat: true
 ---
 
 <ul><li>Seamless integration of Argilla's data annotation capabilities within ZenML pipelines</li><li>Support for local and deployed instances of Argilla, including Hugging Face Spaces</li><li>Access to annotated datasets and annotations through ZenML CLI and SDK</li><li>Efficient data curation and labeling for text data in ML workflows</li><li>Enhanced model performance through human feedback and expertise</li></ul>

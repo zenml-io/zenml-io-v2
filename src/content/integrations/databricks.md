@@ -27,6 +27,15 @@ seo:
   ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5fc719b5/66ed5712f4a21172a9e148d4_image__27_.png"
   ogTitle: "Integrate Databricks with ZenML - Orchestrator Integrations"
   ogDescription: "Harness the Power of Databricks for Scalable ML Pipelines with ZenML"
+overviewTitle: "Harness the Power of Databricks for Scalable ML Pipelines with ZenML"
+overviewDescription: "Seamlessly integrate ZenML with Databricks to leverage its distributed computing capabilities for efficient and scalable machine learning workflows. This integration enables data scientists and engineers to run their ZenML pipelines on Databricks, taking advantage of its optimized environment for big data processing and ML workloads."
+featuresWithZenmlHtml: "<ul id=\"\"><li id=\"\">Effortlessly orchestrate ZenML pipelines on Databricks infrastructure</li><li id=\"\">Leverage Databricks' distributed computing power for large-scale ML tasks</li><li id=\"\">Seamlessly integrate with other Databricks services and tools</li><li id=\"\">Monitor and manage pipeline runs through the Databricks UI</li><li id=\"\">Schedule pipelines using Databricks' native scheduling capabilities</li></ul><p>‍</p>"
+toolFeaturesHtml: "<ul id=\"\"><li id=\"\">Optimized for big data processing and machine learning workloads</li><li id=\"\">Collaborative environment for data scientists, engineers, and analysts</li><li id=\"\">Scalable and high-performance distributed computing</li><li id=\"\">Integrated with popular data and ML frameworks (e.g., Spark, TensorFlow, PyTorch)</li><li id=\"\">Comprehensive security and governance features</li></ul><p>‍</p>"
+codeExampleHtml: "<div data-rt-embed-type='true'><pre><code fs-codehighlight-element=\"code\" class=\"language-python\">\nfrom zenml.integrations.databricks.flavors.databricks_orchestrator_flavor import DatabricksOrchestratorSettings\n\ndatabricks_settings = DatabricksOrchestratorSettings(\n    spark_version=\"15.3.x-scala2.12\",\n    num_workers=\"3\",\n    node_type_id=\"Standard_D4s_v5\",\n    policy_id=POLICY_ID,\n    autoscale=(2, 3),\n)\n\n@pipeline(\n    settings={\n        \"orchestrator.databricks\": databricks_settings,\n    }\n)\ndef my_pipeline():\n    load_data()\n    preprocess_data()\n    train_model()\n    evaluate_model()\n\nmy_pipeline().run()\n</code></pre></div>"
+documentationLinkText: "ZenML Databricks Orchestrator Documentation"
+githubLinkText: "GitHub: ZenML Databricks Integration Example"
+compareSlug: "zenml-vs-databricks"
+isUpdatedToNewFormat: true
 ---
 
 <ul><li>Effortlessly orchestrate ZenML pipelines on Databricks infrastructure</li><li>Leverage Databricks' distributed computing power for large-scale ML tasks</li><li>Seamlessly integrate with other Databricks services and tools</li><li>Monitor and manage pipeline runs through the Databricks UI</li><li>Schedule pipelines using Databricks' native scheduling capabilities</li></ul>

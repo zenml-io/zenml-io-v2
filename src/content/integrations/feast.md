@@ -24,6 +24,18 @@ seo:
   ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6a95c3bc/66e74ad7b746f3d2cf477755_feast_integration.png"
   ogTitle: "Integrate Feast with ZenML - Feature Store Integrations"
   ogDescription: "Seamlessly Integrate Feature Stores into ML Pipelines with Feast and ZenML"
+overviewTitle: "Seamlessly Integrate Feature Stores into ML Pipelines with Feast and ZenML"
+overviewDescription: "Enhance your machine learning workflows by integrating Feast, a powerful feature store, with ZenML. This integration enables efficient management and serving of features for model training and inference, streamlining the ML pipeline process."
+featuresWithZenmlHtml: "<ul id=\"\"><li id=\"\">Seamless integration of Feast feature stores into ZenML pipelines</li><li id=\"\">Access to historical feature data for model training</li><li id=\"\">Simplified feature retrieval and management within ML workflows</li><li id=\"\">Improved collaboration and reproducibility across teams</li></ul><p>‍</p>"
+toolFeaturesHtml: "<ul id=\"\"><li id=\"\">Unified serving of features to models for training and inference</li><li id=\"\">Scalable offline store for batch scoring and model training</li><li id=\"\">Integration with various data sources and platforms</li><li id=\"\">Centralized feature registry and versioning</li></ul><p>‍</p>"
+codeExampleHtml: "<div data-rt-embed-type='true'><pre><code fs-codehighlight-element=\"code\" class=\"language-python\">\n# First register the feature store and a stack\n# zenml feature-store register feast_store --flavor=feast --feast_repo=\"&lt;PATH/TO/FEAST/REPO>\"\n# zenml stack register ... -f feast_store\n\nfrom zenml import step, pipeline\nfrom zenml.client import Client\n\n@step\ndef get_historical_features(\n    entity_dict, features, full_feature_names=False\n):\n    feature_store = Client().active_stack.feature_store\n    entity_df = pd.DataFrame.from_dict(entity_dict)\n\n    return feature_store.get_historical_features(\n        entity_df=entity_df,\n        features=features,\n        full_feature_names=full_feature_names,\n    )\n\n@pipeline\ndef my_pipeline():\n    my_features = get_historical_features(\n        entity_dict={\"driver_id\": [1001, 1002, 1003]},\n        features=[\"driver_hourly_stats:conv_rate\", \"driver_hourly_stats:acc_rate\"]\n    )\n    # use features in downstream steps\n\n# also use the CLI for Feast metadata etc\n# zenml feature-store feature get-entities\n# zenml feature-store feature get-data-sources\n# ...\n</code></pre></div>"
+documentationLinkText: "Read Feast Integration Documentation"
+additionalResources:
+  - label: "Feast Official Documentation"
+    href: "https://docs.feast.dev/"
+  - label: "Blog Post: “Building an Efficient and Scalable MLOps Workflow with Feast and ZenML”"
+    href: "https://www.linkedin.com/pulse/building-efficient-scalable-mlops-workflow-feast-zenml-sourabh-raj/"
+isUpdatedToNewFormat: true
 ---
 
 <ul><li>Seamless integration of Feast feature stores into ZenML pipelines</li><li>Access to historical feature data for model training</li><li>Simplified feature retrieval and management within ML workflows</li><li>Improved collaboration and reproducibility across teams</li></ul>

@@ -25,6 +25,17 @@ seo:
   ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/cf23e4ac/66eb2fe7ff5d3a1b03a74048_Integration_image__1_.png"
   ogTitle: "Integrate Hugging Face (Inference Endpoints) with ZenML - Deployer Integrations"
   ogDescription: "Effortlessly deploy Hugging Face models to production with ZenML"
+overviewTitle: "Effortlessly deploy Hugging Face models to production with ZenML"
+overviewDescription: "Integrate Hugging Face Inference Endpoints with ZenML to streamline the deployment of transformers, sentence-transformers, and diffusers models. This integration allows you to leverage Hugging Face's secure, scalable infrastructure for hosting models, while managing the deployment process within your ZenML pipelines."
+featuresWithZenmlHtml: "<ul id=\"\"><li id=\"\">Seamless deployment of Hugging Face models directly from ZenML pipelines</li><li id=\"\">Simplified management of inference endpoints within the ZenML ecosystem</li><li id=\"\">Automatically scale deployments based on demand using Hugging Face's infrastructure</li><li id=\"\">Maintain a centralized registry of deployed models for easy tracking and monitoring</li></ul><p>‍</p>"
+toolFeaturesHtml: "<ul id=\"\"><li id=\"\">Secure model hosting on dedicated Hugging Face infrastructure</li><li id=\"\">Autoscaling capabilities to handle variable inference workloads</li><li id=\"\">Support for a wide range of model types and frameworks</li><li id=\"\">Pay-per-use pricing for cost-effective deployments</li><li id=\"\">Enterprise-grade security features like VPC deployment</li></ul><p>‍</p>"
+codeExampleHtml: "<div data-rt-embed-type='true'><pre><code fs-codehighlight-element=\"code\" class=\"language-python\">\nfrom zenml.integrations.huggingface.steps import huggingface_model_deployer_step\nfrom zenml.integrations.huggingface.services.huggingface_deployment import HuggingFaceDeploymentService\nfrom zenml.integrations.huggingface.services import HuggingFaceServiceConfig\n\n@step\ndef predictor(\n    service: HuggingFaceDeploymentService,\n) -> Annotated[str, \"predictions\"]:\n    # Run a inference request against a prediction service\n    data = load_live_data()\n    prediction = service.predict(data)\n    return prediction\n    \n@pipeline\ndef deploy_and_infer():\n    service_config = HuggingFaceServiceConfig(model_name=model_name)\n    service = huggingface_model_deployer_step(\n        model_name=\"text-classification-model\",\n        accelerator=\"gpu\",\n        hf_repository=\"myorg/text-classifier\",\n        task=\"text-classification\"\n    )\n    predictor(service)\n	</code></pre></div><p>‍</p>"
+documentationLinkText: "ZenML Hugging Face integration guide"
+githubLinkText: "Example project: Deploying a text classification model with Hugging Face and ZenML"
+additionalResources:
+  - label: "Hugging Face Inference Endpoints documentation"
+    href: "https://huggingface.co/inference-endpoints"
+isUpdatedToNewFormat: true
 ---
 
 <ul><li>Seamless deployment of Hugging Face models directly from ZenML pipelines</li><li>Simplified management of inference endpoints within the ZenML ecosystem</li><li>Automatically scale deployments based on demand using Hugging Face's infrastructure</li><li>Maintain a centralized registry of deployed models for easy tracking and monitoring</li></ul>

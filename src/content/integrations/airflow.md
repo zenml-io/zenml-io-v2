@@ -24,6 +24,17 @@ seo:
   ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e2fd248b/66c45405628f556f8d92e7aa_Image_from_Notion__2_.png"
   ogTitle: "Integrate Apache Airflow with ZenML - Orchestrator Integrations"
   ogDescription: "Streamline ML Workflows with Apache Airflow Orchestration in ZenML"
+overviewTitle: "Streamline ML Workflows with Apache Airflow Orchestration in ZenML"
+overviewDescription: "Seamlessly integrate the robustness of Apache Airflow with the ML-centric capabilities of ZenML pipelines. This powerful combination simplifies the orchestration of complex machine learning workflows, enabling data scientists and engineers to focus on building high-quality models while leveraging Airflow's proven production-grade features."
+featuresWithZenmlHtml: "<ul id=\"\"><li id=\"\">Native execution of ZenML pipelines as Airflow DAGs</li><li id=\"\">Simplified management of complex ML workflows</li><li id=\"\">Enhanced efficiency and scalability for MLOps pipelines</li><li id=\"\">Compatibility with both local and remote Airflow deployments</li></ul><p>‍</p>"
+toolFeaturesHtml: "<ul id=\"\"><li id=\"\">Robust workflow orchestration for data pipelines</li><li id=\"\">Extensive library of pre-built operators and sensors</li><li id=\"\">Intuitive web-based user interface for monitoring and managing workflows</li><li id=\"\">Scalable architecture for running workflows on distributed systems</li><li id=\"\">Strong focus on extensibility, allowing custom plugins and operators</li></ul><p>‍</p>"
+codeExampleHtml: "<div data-rt-embed-type='true'><pre><code fs-codehighlight-element=\"code\" class=\"language-python\">\nfrom zenml import step, pipeline\nfrom zenml.integrations.airflow.flavors.airflow_orchestrator_flavor import AirflowOrchestratorSettings\n\n@step\ndef my_step():\n    print(\"Running in Airflow!\")\n\nairflow_settings = AirflowOrchestratorSettings(\n    operator=\"airflow.providers.docker.operators.docker.DockerOperator\",\n    operator_args={}\n)\n\n@pipeline(settings={\"orchestrator.airflow\": airflow_settings})\ndef my_airflow_pipeline():\n    my_step()\n\nif __name__ == \"__main__\":\n	my_airflow_pipeline()]\n</code></pre></div>"
+documentationLinkText: "Read the full ZenML Airflow integration documentation"
+additionalResources:
+  - label: "Learn more about Apache Airflow"
+    href: "https://airflow.apache.org/"
+compareSlug: "zenml-vs-apache-airflow"
+isUpdatedToNewFormat: true
 ---
 
 <ul><li>Native execution of ZenML pipelines as Airflow DAGs</li><li>Simplified management of complex ML workflows</li><li>Enhanced efficiency and scalability for MLOps pipelines</li><li>Compatibility with both local and remote Airflow deployments</li></ul>

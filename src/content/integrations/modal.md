@@ -25,5 +25,9 @@ seo:
   ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/4c71532a/66cc77aa422292234dd3f326_CleanShot_2024-08-25_at_17.18.35_2x.png"
   ogTitle: "Integrate Modal with ZenML - Orchestrator Integrations"
   ogDescription: "The Modal step operator is a lightweight alternative to other distributed orchestrators like Airflow or Kubeflow that gives our users the ability to run pipelines on Modal's managed platform without having to install and manage additional tools or components."
+overviewTitle: "Run Pipeline Steps in Production with Modal"
+overviewDescription: "ZenML pipeline steps can be executed directly on Modal's infrastructure. This step operator allows you to run the parts of your machine learning workflow that require GPUs on that infrastructure, saving you money and time. It is an easy and fast solution, without having to install and manage additional tools or components."
+githubLinkText: "Read the documentation"
+isUpdatedToNewFormat: false
 ---
 
