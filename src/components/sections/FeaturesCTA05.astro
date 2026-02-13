@@ -1,0 +1,60 @@
+---
+/**
+ * FeaturesCTA05 — Webflow CTA05-style section for /features page.
+ *
+ * White outer section with a rounded purple inner panel containing a
+ * background image, 2-column grid (text left, buttons right), and
+ * dark/ghost button variants designed for purple backgrounds.
+ */
+import Button from "../Button.astro";
+
+interface Props {
+  headline: string;
+  body: string;
+  primaryCta: { label: string; href: string };
+  secondaryCta: { label: string; href: string };
+}
+
+const { headline, body, primaryCta, secondaryCta } = Astro.props;
+---
+
+<section class="bg-white py-16 sm:py-20">
+  <div class="mx-auto max-w-[80rem] px-8">
+    <div class="cta05-panel">
+      <div class="grid items-center gap-8 lg:grid-cols-[1fr_max-content]">
+        <div>
+          <h3 class="text-[30px] font-bold leading-snug text-white">
+            {headline}
+          </h3>
+          <div class="mt-3">
+            <p class="text-lg leading-relaxed text-white">{body}</p>
+          </div>
+        </div>
+        <div class="flex flex-col-reverse gap-4 sm:flex-row lg:flex-row">
+          <Button href={secondaryCta.href} variant="secondaryGray" size="lg">
+            {secondaryCta.label}
+          </Button>
+          <Button href={primaryCta.href} variant="overDark" size="lg">
+            {primaryCta.label}
+          </Button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta05-panel {
+    background-color: #53389e;
+    background-image: url("/images/grid_bg_02.webp");
+    background-size: cover;
+    background-position: center;
+    border-radius: 1rem;
+    padding: 4rem;
+  }
+  @media (max-width: 767px) {
+    .cta05-panel {
+      padding: 2rem;
+    }
+  }
+</style>

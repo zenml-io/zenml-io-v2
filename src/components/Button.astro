@@ -3,7 +3,7 @@
  * Button — renders <a> when href is provided, <button> otherwise.
  * Encapsulates consistent CTA styling (shadows, radius, hover effects).
  */
-type Variant = "primary" | "secondary" | "ghost";
+type Variant = "primary" | "secondary" | "ghost" | "overDark" | "secondaryGray";
 type Size = "sm" | "md" | "lg";
 
 interface Props {
@@ -29,14 +29,18 @@ const {
 } = Astro.props;
 
 const baseClasses =
-  "inline-flex items-center justify-center font-semibold rounded-md transition-all duration-200 cursor-pointer";
+  "inline-flex items-center justify-center font-semibold rounded-md transition-all duration-300 cursor-pointer";
 
 const variantClasses: Record<Variant, string> = {
   primary:
-    "bg-zenml-500 text-white shadow-button hover:bg-zenml-600 focus:shadow-focus-primary",
+    "bg-zenml-500 text-white border border-purple-600 shadow-button hover:bg-purple-700 focus:shadow-focus-primary",
   secondary:
     "bg-white text-gray-700 border border-gray-300 shadow-button hover:bg-gray-50 focus:shadow-focus-gray",
   ghost: "text-zenml-500 hover:text-zenml-600 hover:bg-zenml-25",
+  overDark:
+    "bg-gray-900 text-white border border-gray-700 shadow-button hover:bg-gray-800",
+  secondaryGray:
+    "bg-transparent text-white border border-white/30 shadow-button hover:bg-white/10",
 };
 
 const sizeClasses: Record<Size, string> = {

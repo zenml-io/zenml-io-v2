@@ -1,21 +1,17 @@
 ---
 /**
- * Features hub page — grid of all 12 feature pages.
+ * Features hub page — grid of 7 feature category cards.
  *
  * Route: /features
  *
- * Renders a hero section, a grid of feature cards grouped by category,
- * and a dark CTA band at the bottom.
+ * Renders a hero section with gradient background, a grid of 7 feature
+ * cards (hardcoded from HUB_CARDS), and a CTA05-style purple panel.
  */
-import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import FeatureCard from "../../components/sections/FeatureCard.astro";
-import FeaturesHubCTA from "../../components/sections/FeaturesHubCTA.astro";
+import FeaturesCTA05 from "../../components/sections/FeaturesCTA05.astro";
 import Button from "../../components/Button.astro";
-import { FEATURES_HUB_HERO, FEATURES_HUB_CTA } from "../../lib/features";
-
-const allFeatures = await getCollection("feature-pages", ({ data }) => !data.draft);
-const features = allFeatures.sort((a, b) => (a.data.hub.order ?? 99) - (b.data.hub.order ?? 99));
+import { FEATURES_HUB_HERO, FEATURES_HUB_CTA, HUB_CARDS } from "../../lib/features";
 ---
 
 <BaseLayout
@@ -25,43 +21,43 @@ const features = allFeatures.sort((a, b) => (a.data.hub.order ?? 99) - (b.data.h
 >
   <main>
     {/* Hero */}
-    <section class="bg-white pt-16 pb-12 sm:pt-24 sm:pb-16">
-      <div class="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
-        <h1 class="text-3xl font-bold text-gray-900 sm:text-4xl lg:text-5xl">
+    <section class="hero-section">
+      <div class="mx-auto max-w-3xl px-8 text-center">
+        <h1 class="text-[3rem] font-bold text-gray-900 leading-tight tracking-tight">
           {FEATURES_HUB_HERO.headline}
         </h1>
-        <p class="mt-4 text-lg text-gray-600 leading-relaxed">
+        <p class="mt-6 text-lg text-gray-600 leading-relaxed">
           {FEATURES_HUB_HERO.body}
         </p>
-        <div class="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-          <Button href={FEATURES_HUB_HERO.primaryCta.href} size="lg">
-            {FEATURES_HUB_HERO.primaryCta.label}
-          </Button>
+        <div class="mt-12 flex flex-col-reverse items-center gap-6 sm:flex-row sm:justify-center" data-reveal>
           <Button href={FEATURES_HUB_HERO.secondaryCta.href} variant="secondary" size="lg">
             {FEATURES_HUB_HERO.secondaryCta.label}
+          </Button>
+          <Button href={FEATURES_HUB_HERO.primaryCta.href} size="lg" target="_blank">
+            {FEATURES_HUB_HERO.primaryCta.label}
           </Button>
         </div>
       </div>
     </section>
 
     {/* Feature grid */}
-    <section class="bg-gray-50 py-16 sm:py-20">
-      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {features.map((f) => (
+    <section class="bg-white py-16 sm:py-20">
+      <div class="mx-auto max-w-[80rem] px-8">
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {HUB_CARDS.map((card) => (
             <FeatureCard
-              href={`/features/${f.data.slug}`}
-              category={f.data.hub.category}
-              title={f.data.hub.title}
-              summary={f.data.hub.summary || f.data.hero.deck}
-              badge={f.data.hub.badge}
+              href={`/features/${card.slug}`}
+              category={card.category}
+              title={card.title}
+              summary={card.summary}
+              iconSvg={card.iconSvg}
             />
           ))}
         </div>
       </div>
     </section>
 
-    <FeaturesHubCTA
+    <FeaturesCTA05
       headline={FEATURES_HUB_CTA.headline}
       body={FEATURES_HUB_CTA.body}
       primaryCta={FEATURES_HUB_CTA.primaryCta}
@@ -69,3 +65,51 @@ const features = allFeatures.sort((a, b) => (a.data.hub.order ?? 99) - (b.data.h
     />
   </main>
 </BaseLayout>
+
+{/* Hero gradient + border matching Webflow heroheader11 */}
+<style>
+  .hero-section {
+    background: linear-gradient(to bottom, #fff, var(--color-zenml-25, #f1ebfe));
+    border-bottom: 1px solid var(--color-primary-100, #f1ebfe);
+    padding-top: 80px;
+    padding-bottom: 48px;
+  }
+</style>
+
+{/* Scroll reveal: fade-in + slight upward slide on scroll */}
+<style>
+  [data-reveal] {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  }
+  [data-reveal].in-view {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    [data-reveal] {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  const revealElements = document.querySelectorAll("[data-reveal]");
+  if (revealElements.length > 0) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("in-view");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: "0px 0px -40px 0px" },
+    );
+    revealElements.forEach((el) => observer.observe(el));
+  }
+</script>
