@@ -180,6 +180,15 @@ const { currentPath = Astro.url.pathname } = Astro.props;
 
       {/* Desktop CTAs */}
       <div class="hidden lg:flex lg:items-center lg:gap-3">
+        <div class="min-w-[40px] h-[28px]">
+          <a
+            class="github-button"
+            href="https://github.com/zenml-io/zenml"
+            data-size="large"
+            data-show-count="true"
+            aria-label="Star zenml-io/zenml on GitHub"
+          >Star</a>
+        </div>
         <Button href={NAV_CTAS[0].href} variant="secondary" size="sm">
           {NAV_CTAS[0].label}
         </Button>

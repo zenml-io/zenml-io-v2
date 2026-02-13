@@ -1,6 +1,6 @@
 ---
 /**
- * NewsletterSignup — email signup form for the ZenML newsletter.
+ * NewsletterSignup — email signup in a purple rounded card matching Webflow.
  *
  * Uses the real Brevo integration via BrevoNewsletterForm component.
  * Used on the homepage and potentially other pages.
@@ -9,17 +9,19 @@ import { NEWSLETTER } from "../../lib/homepage";
 import { BREVO_MAIN_CONFIG } from "../../lib/formConstants";
 import BrevoNewsletterForm from "./BrevoNewsletterForm.astro";
 
-const privacyHtml = `${NEWSLETTER.privacyNote} <a href="${NEWSLETTER.privacyLink.href}" class="text-zenml-500 underline">${NEWSLETTER.privacyLink.label}</a>.`;
+const privacyHtml = `${NEWSLETTER.privacyNote} <a href="${NEWSLETTER.privacyLink.href}" class="text-white/90 underline hover:text-white">${NEWSLETTER.privacyLink.label}</a>.`;
 ---
 
-<section class="border-y border-gray-100 bg-gray-50 py-16 sm:py-20">
-  <div class="mx-auto max-w-2xl px-4 text-center sm:px-6 lg:px-8">
-    <h2 class="text-2xl font-bold text-gray-900 sm:text-3xl">
-      {NEWSLETTER.headline}
-    </h2>
-    <p class="mt-3 text-gray-600">{NEWSLETTER.body}</p>
-    <div class="mt-8 flex justify-center">
-      <BrevoNewsletterForm config={BREVO_MAIN_CONFIG} privacyHtml={privacyHtml} />
+<section class="bg-white py-16 sm:py-20">
+  <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+    <div class="rounded-2xl bg-zenml-500 p-8 text-center sm:px-16 sm:py-12">
+      <h2 class="text-2xl font-bold text-white sm:text-3xl">
+        {NEWSLETTER.headline}
+      </h2>
+      <p class="mt-3 text-white/80">{NEWSLETTER.body}</p>
+      <div class="mt-8 flex justify-center">
+        <BrevoNewsletterForm config={BREVO_MAIN_CONFIG} privacyHtml={privacyHtml} darkBg />
+      </div>
     </div>
   </div>
 </section>

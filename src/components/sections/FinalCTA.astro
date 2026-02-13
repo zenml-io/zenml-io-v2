@@ -1,15 +1,16 @@
 ---
 /**
- * FinalCTA — full-width CTA with feature bullets and product screenshot.
- *
- * Last section before the footer. Shows a headline, 3 value bullets
- * with check icons, dual CTAs, and a product screenshot.
+ * FinalCTA — full-width CTA with gradient background, circle-check bullets,
+ * and a right-bleeding product screenshot. Matches Webflow layout.
  */
 import { FINAL_CTA } from "../../lib/homepage";
 import Button from "../Button.astro";
 ---
 
-<section class="bg-gray-900 py-16 sm:py-24">
+<section
+  class="overflow-hidden py-16 sm:py-24"
+  style="background-color:var(--color-primary-700);background-image:url('/images/gradient_01.webp');background-size:cover;background-position:center;"
+>
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
     <div class="grid items-center gap-12 lg:grid-cols-2">
       <!-- Text column -->
@@ -19,15 +20,19 @@ import Button from "../Button.astro";
         </h2>
         <ul class="mt-8 space-y-4">
           {FINAL_CTA.bullets.map((bullet) => (
-            <li class="flex items-start gap-3 text-gray-300">
+            <li class="flex items-start gap-3 text-lg text-white">
               <svg
-                class="mt-0.5 h-5 w-5 flex-shrink-0 text-zenml-400"
+                class="mt-0.5 h-7 w-7 flex-shrink-0 text-zenml-500"
+                viewBox="0 0 28 28"
                 fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                stroke-width="2"
               >
-                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                <path
+                  d="M8.75 14L12.25 17.5L19.25 10.5M25.667 14C25.667 20.443 20.443 25.667 14 25.667C7.557 25.667 2.333 20.443 2.333 14C2.333 7.557 7.557 2.333 14 2.333C20.443 2.333 25.667 7.557 25.667 14Z"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
               </svg>
               <span>{bullet}</span>
             </li>
@@ -37,18 +42,26 @@ import Button from "../Button.astro";
           <Button href={FINAL_CTA.primaryCta.href} size="lg">
             {FINAL_CTA.primaryCta.label}
           </Button>
-          <Button href={FINAL_CTA.secondaryCta.href} variant="secondary" size="lg">
+          <Button href={FINAL_CTA.secondaryCta.href} variant="secondary" size="lg" class="border-white/20 bg-white text-gray-900 hover:bg-gray-100">
             {FINAL_CTA.secondaryCta.label}
           </Button>
         </div>
       </div>
 
-      <!-- Image column -->
-      <div class="overflow-hidden rounded-xl shadow-2xl">
+      <!-- Image column — right-bleed on desktop, contained on mobile -->
+      <div class="relative min-h-[20rem] lg:min-h-[32rem]">
+        {/* Mobile: contained rounded image */}
         <img
           src={FINAL_CTA.image}
           alt={FINAL_CTA.imageAlt}
-          class="w-full"
+          class="w-full rounded-xl shadow-2xl lg:hidden"
+          loading="lazy"
+        />
+        {/* Desktop: absolute-positioned right-bleed */}
+        <img
+          src={FINAL_CTA.image}
+          alt={FINAL_CTA.imageAlt}
+          class="hidden lg:block absolute top-[7%] left-[12%] w-[48rem] min-w-[48rem] max-w-none rounded-[10px] shadow-2xl"
           loading="lazy"
         />
       </div>

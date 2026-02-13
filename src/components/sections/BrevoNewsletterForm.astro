@@ -5,15 +5,38 @@
  * Uses fetch with mode: 'no-cors' to submit the form data.
  * Progressive enhancement: without JS the form POSTs directly to Brevo.
  * Scoped DOM queries via data-brevo-form attribute — safe for multiple instances.
+ *
+ * Pass `darkBg` when used inside a dark/purple container (adjusts input/button colors).
  */
 import type { BrevoFormConfig } from "../../lib/formTypes";
 
 interface Props {
   config: BrevoFormConfig;
   privacyHtml?: string;
+  darkBg?: boolean;
 }
 
-const { config, privacyHtml } = Astro.props;
+const { config, privacyHtml, darkBg = false } = Astro.props;
+
+const inputClass = darkBg
+  ? "h-[60px] rounded-lg border-0 bg-white px-4 text-xl text-gray-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-white/50 sm:w-80"
+  : "rounded-md border border-gray-300 px-4 py-3 text-sm shadow-sm focus:border-zenml-500 focus:outline-none focus:ring-1 focus:ring-zenml-500 sm:w-72";
+
+const buttonClass = darkBg
+  ? "inline-flex h-[60px] items-center justify-center rounded-lg bg-[var(--color-primary-700)] px-6 text-base font-semibold text-white shadow-button hover:brightness-110 transition disabled:opacity-50 disabled:cursor-not-allowed"
+  : "inline-flex items-center justify-center rounded-md bg-zenml-500 px-5 py-3 text-sm font-semibold text-white shadow-button hover:bg-zenml-600 transition disabled:opacity-50 disabled:cursor-not-allowed";
+
+const successClass = darkBg
+  ? "mt-3 hidden text-sm font-medium text-green-100"
+  : "mt-3 hidden text-sm font-medium text-green-600";
+
+const errorClass = darkBg
+  ? "mt-3 hidden text-sm font-medium text-red-100"
+  : "mt-3 hidden text-sm font-medium text-red-600";
+
+const privacyClass = darkBg
+  ? "mt-4 text-xs text-white/70"
+  : "mt-4 text-xs text-gray-500";
 ---
 
 <div data-brevo-form={config.formId}>
@@ -31,11 +54,11 @@ const { config, privacyHtml } = Astro.props;
       required
       placeholder="Email address"
       autocomplete="email"
-      class="rounded-md border border-gray-300 px-4 py-3 text-sm shadow-sm focus:border-zenml-500 focus:outline-none focus:ring-1 focus:ring-zenml-500 sm:w-72"
+      class={inputClass}
     />
     <button
       type="submit"
-      class="inline-flex items-center justify-center rounded-md bg-zenml-500 px-5 py-3 text-sm font-semibold text-white shadow-button hover:bg-zenml-600 transition disabled:opacity-50 disabled:cursor-not-allowed"
+      class={buttonClass}
     >
       {config.submitLabel}
     </button>
@@ -44,12 +67,12 @@ const { config, privacyHtml } = Astro.props;
     <input type="hidden" name="locale" value="en" />
   </form>
 
-  <p class="mt-3 hidden text-sm font-medium text-green-600" data-brevo-success>
+  <p class={successClass} data-brevo-success>
     Thanks for subscribing! Check your inbox to confirm.
   </p>
-  <p class="mt-3 hidden text-sm font-medium text-red-600" data-brevo-error></p>
+  <p class={errorClass} data-brevo-error></p>
 
-  {privacyHtml && <p class="mt-4 text-xs text-gray-500" set:html={privacyHtml} />}
+  {privacyHtml && <p class={privacyClass} set:html={privacyHtml} />}
 </div>
 
 <script is:inline define:vars={{ formId: config.formId, loadingLabel: config.loadingLabel }}>
