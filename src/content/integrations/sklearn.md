@@ -25,5 +25,9 @@ seo:
   ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/273a56a7/6527e939c442bf01845cd2c4_Scikit_learn_features_9270e57e8f.webp"
   ogTitle: "Integrate scikit-learn (sklearn) with ZenML - Modeling Integrations"
   ogDescription: "Train standard ML models with scikit-learn."
+overviewTitle: "Train models with scikit-learn in ZenML"
+overviewDescription: "Scikit-learn (sklearn) is the most popular Python library for standard machine learning models such as linear classification and regression, k-means clustering, support-vector machines, random forests, gradient boosting, and DBSCAN. With ZenML's sklearn integration, you can load, train, and deploy sklearn models within your ZenML pipelines."
+githubLinkText: "Go to Github"
+isUpdatedToNewFormat: false
 ---
 

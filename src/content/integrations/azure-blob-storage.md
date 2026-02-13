@@ -25,6 +25,17 @@ seo:
   ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/04d97fd2/66e13c84de6cdd3f8bac6caa_azure_blob_storage.PNG.png"
   ogTitle: "Integrate Azure Blob Storage with ZenML - Artifact Store Integrations"
   ogDescription: "Efficiently Store and Share ZenML Artifacts with Azure Blob Storage"
+overviewTitle: "Efficiently Store and Share ZenML Artifacts with Azure Blob Storage"
+overviewDescription: "Enhance your ZenML workflows by leveraging Azure Blob Storage as a scalable and reliable artifact store. This integration enables seamless storage and sharing of pipeline artifacts, making it ideal for collaborative ML projects and production-grade MLOps."
+featuresWithZenmlHtml: "<ul id=\"\"><li id=\"\">Seamlessly store and retrieve pipeline artifacts in Azure Blob Storage</li><li id=\"\">Enable collaboration by sharing artifacts across teams and stakeholders</li><li id=\"\">Scale storage effortlessly to handle the growing demands of ML projects</li><li id=\"\">Integrate with other Azure-based stack components for end-to-end MLOps</li><li id=\"\">Secure access to artifacts using Azure authentication methods</li></ul><p>‍</p>"
+toolFeaturesHtml: "<ul id=\"\"><li id=\"\">Scalable and durable object storage for unstructured data</li><li id=\"\">High availability and geo-redundancy options</li><li id=\"\">Flexible access control and security features</li><li id=\"\">Cost-effective storage for large-scale ML artifacts</li><li id=\"\">Seamless integration with other Azure services</li></ul><p>‍</p>"
+codeExampleHtml: "<div data-rt-embed-type='true'><pre><code fs-codehighlight-element=\"code\" class=\"language-python\">\n# 1. Install the ZenML `azure` integration\n# zenml integration install azure\n\n# 2. Register an Azure artifact store\n# zenml artifact-store register &lt;NAME> --flavor azure --path=&lt;PATH_TO_STORAGE>\n\n# 3. Register a stack with the new artifact store\n# zenml register stack &lt;STACK_NAME> -a &lt;NAME> -o default --set\n\nfrom typing import Annotated\n\nfrom zenml import pipeline, step\nfrom zenml.client import Client\n\n\n@step\ndef hello_world() -> Annotated[str, \"my_first_artifact\"]:\n    return \"Hello World!\"\n\n\n@pipeline\ndef my_pipeline():\n    _ = hello_world()\n\n\nif __name__ == \"__main__\":\n    my_pipeline()\n\n    # Fetch the artifact and print it\n    print(\"Result: \", Client().get_artifact_version(\"my_first_artifact\").load())\n    </code></pre></div>"
+documentationLinkText: "Read the ZenML Azure Blob Storage Artifact Store Documentation"
+githubLinkText: "Read the guide for setting up a full Azure stack"
+additionalResources:
+  - label: "Azure Blob Storage documentation"
+    href: "https://learn.microsoft.com/en-us/azure/storage/blobs/"
+isUpdatedToNewFormat: true
 ---
 
 <ul><li>Seamlessly store and retrieve pipeline artifacts in Azure Blob Storage</li><li>Enable collaboration by sharing artifacts across teams and stakeholders</li><li>Scale storage effortlessly to handle the growing demands of ML projects</li><li>Integrate with other Azure-based stack components for end-to-end MLOps</li><li>Secure access to artifacts using Azure authentication methods</li></ul>

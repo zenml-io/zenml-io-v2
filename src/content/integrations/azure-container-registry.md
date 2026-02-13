@@ -25,6 +25,19 @@ seo:
   ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/830681f9/66e1395395acb9f1c9e14722_azure_container_registry.PNG.png"
   ogTitle: "Integrate Azure Container Registry with ZenML - Container Registry Integrations"
   ogDescription: "Seamlessly Store and Manage Container Images with Azure Container Registry Integration in ZenML"
+overviewTitle: "Seamlessly Store and Manage Container Images with Azure Container Registry Integration in ZenML"
+overviewDescription: "Enhance your MLOps workflow by integrating Azure Container Registry with ZenML. This integration allows you to efficiently store, manage, and deploy container images for your ML components, leveraging the scalability and reliability of Azure's cloud-based container registry service."
+featuresWithZenmlHtml: "<ul id=\"\"><li id=\"\">Seamless integration of Azure Container Registry within ZenML pipelines</li><li id=\"\">Effortless storage and management of container images for ML components</li><li id=\"\">Scalable and reliable container registry backed by Azure's cloud infrastructure</li><li id=\"\">Integrate with other Azure-based stack components for end-to-end MLOps</li><li id=\"\">Secure access and authentication using Azure credentials or service connectors</li></ul><p>‍</p>"
+toolFeaturesHtml: "<ul id=\"\"><li id=\"\">Fully-managed, private container registry for storing Docker and OCI images</li><li id=\"\">High availability and geo-replication for global deployments</li><li id=\"\">Integrated security features like role-based access control and network restrictions</li><li id=\"\">Support for artifact signing and image vulnerability scanning</li><li id=\"\">Comprehensive APIs and tooling for automation and CI/CD integration</li></ul><p>‍</p>"
+codeExampleHtml: "<div data-rt-embed-type='true'><pre><code fs-codehighlight-element=\"code\" class=\"language-python\">\n# 1. Install the ZenML `azure` integration\n# zenml integration install azure\n\n# 2. Register an Azure container registry using its URI\n# zenml container-registry register &lt;NAME> --flavor=azure --uri=\"&lt;YOUR URI>\"\n\n# 3. Update your stack with your new container registry \n# zenml stack update -c &lt;NAME>\n\nfrom zenml import pipeline, step\n\n@step\ndef hello_world() -> str:\n    return \"Hello World!\"\n\n\n@pipeline\ndef my_pipeline():\n    _ = hello_world()\n\n\nif __name__ == \"__main__\":\n    my_pipeline()\n    </code></pre></div>"
+documentationLinkText: "Read the ZenML Azure Container Registry Documentation"
+githubLinkText: "Read the guide for setting up a full Azure stack"
+additionalResources:
+  - label: "Read the docs on how to customize docker builds"
+    href: "https://docs.zenml.io/how-to/customize-docker-builds"
+  - label: "Azure Container Registry documentation"
+    href: "https://learn.microsoft.com/en-us/azure/container-registry/"
+isUpdatedToNewFormat: true
 ---
 
 <ul><li>Seamless integration of Azure Container Registry within ZenML pipelines</li><li>Effortless storage and management of container images for ML components</li><li>Scalable and reliable container registry backed by Azure's cloud infrastructure</li><li>Integrate with other Azure-based stack components for end-to-end MLOps</li><li>Secure access and authentication using Azure credentials or service connectors</li></ul>

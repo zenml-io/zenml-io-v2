@@ -1,15 +1,17 @@
 ---
 /**
- * Integration detail page.
+ * Integration detail page — matches Webflow layout.
  *
- * Renders individual integration pages with logo, description, features,
- * and links to docs/GitHub. Resolves integration type for badge display.
+ * Hero with logo lockup → header row → 2-column layout with sticky sidebar + structured body.
+ * Falls back to markdown Content when structured fields are missing.
  *
  * Generates /integrations/<slug> for each published integration.
  */
 import { getCollection, getEntry, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import Badge from "../../components/Badge.astro";
+import Button from "../../components/Button.astro";
+import IntegrationDetailHero from "../../components/integrations/IntegrationDetailHero.astro";
+import IntegrationDetailSidebar from "../../components/integrations/IntegrationDetailSidebar.astro";
 
 export async function getStaticPaths() {
   const integrations = await getCollection("integrations", ({ data }) => !data.draft);
@@ -21,102 +23,266 @@ export async function getStaticPaths() {
 
 const { integration } = Astro.props;
 const { Content } = await render(integration);
+const d = integration.data;
 
 // Resolve integration type
-const typeEntry = integration.data.integrationType
-  ? await getEntry("integration-types", integration.data.integrationType)
+const typeEntry = d.integrationType
+  ? await getEntry("integration-types", d.integrationType)
   : undefined;
 
+// Resolve related blog posts
+const relatedPosts: Array<{ href: string; title: string; imageUrl?: string }> = [];
+if (d.relatedBlogPosts && d.relatedBlogPosts.length > 0) {
+  const allBlog = await getCollection("blog");
+  const blogBySlug = new Map(allBlog.map(b => [b.data.slug, b]));
+  for (const slug of d.relatedBlogPosts) {
+    const post = blogBySlug.get(slug);
+    if (post) {
+      relatedPosts.push({
+        href: `/blog/${post.data.slug}`,
+        title: post.data.title,
+        imageUrl: post.data.mainImage?.url,
+      });
+    }
+  }
+}
+
+// Resolve compare page name
+const compareEntry = d.compareSlug
+  ? await getEntry("compare", d.compareSlug).catch(() => undefined)
+  : undefined;
+const compareName = compareEntry?.data?.toolName
+  ? `ZenML vs ${compareEntry.data.toolName}`
+  : undefined;
+
+// Determine if we have structured fields for sectioned rendering
+const hasStructuredContent = !!(d.overviewDescription || d.featuresWithZenmlHtml || d.toolFeaturesHtml || d.codeExampleHtml);
+
 // SEO
-const seoTitle = integration.data.seo?.title || `${integration.data.title} Integration - ZenML`;
-const seoDescription = integration.data.seo?.description || integration.data.shortDescription;
-const ogImage = integration.data.seo?.ogImage || integration.data.mainImage?.url;
+const seoTitle = d.seo?.title || `${d.title} Integration - ZenML`;
+const seoDescription = d.seo?.description || d.shortDescription;
+const ogImage = d.seo?.ogImage || d.mainImage?.url;
 ---
 
 <BaseLayout
   title={seoTitle}
   description={seoDescription}
   ogImage={ogImage}
-  ogTitle={integration.data.seo?.ogTitle}
-  ogDescription={integration.data.seo?.ogDescription}
-  canonical={integration.data.seo?.canonical}
+  ogTitle={d.seo?.ogTitle}
+  ogDescription={d.seo?.ogDescription}
+  canonical={d.seo?.canonical}
 >
-  <div class="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
-    {/* Breadcrumb */}
-    <nav class="mb-8 text-sm text-gray-500">
-      <a href="/integrations" class="hover:text-primary-600">Integrations</a>
-      {typeEntry && (
-        <>
-          <span class="mx-2">/</span>
-          <a href={`/integration-type/${typeEntry.data.slug}`} class="hover:text-primary-600">
-            {typeEntry.data.name}
-          </a>
-        </>
-      )}
-      <span class="mx-2">/</span>
-      <span class="text-gray-900">{integration.data.title}</span>
-    </nav>
+  {/* ── Hero: Logo lockup ──────────────────────────────────── */}
+  <IntegrationDetailHero
+    title={d.title}
+    shortDescription={d.shortDescription}
+    logo={d.logo}
+    githubUrl={d.githubUrl}
+    githubLinkText={d.githubLinkText}
+  />
 
-    {/* Header */}
-    <header class="mb-10 flex items-start gap-6">
-      {integration.data.logo && (
-        <img
-          src={integration.data.logo.url}
-          alt={integration.data.logo.alt || integration.data.title}
-          class="h-16 w-16 shrink-0 rounded-xl object-contain"
-        />
-      )}
-      <div>
-        <h1 class="text-3xl font-bold tracking-tight text-gray-900">
-          {integration.data.title}
-        </h1>
-        {integration.data.shortDescription && (
-          <p class="mt-2 text-lg text-gray-600">{integration.data.shortDescription}</p>
-        )}
-        <div class="mt-3 flex flex-wrap items-center gap-3">
-          {typeEntry && (
-            <Badge href={`/integration-type/${typeEntry.data.slug}`} variant="primary">
-              {typeEntry.data.name}
-            </Badge>
+  {/* ── Header row: back link + title + Add to ZenML ───────── */}
+  <div class="border-b border-gray-200 bg-white">
+    <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+      <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div class="flex items-center gap-4">
+          {d.logo && (
+            <div class="flex h-16 w-16 shrink-0 items-center justify-center rounded-xl bg-gray-50 p-2">
+              <img
+                src={d.logo.url}
+                alt={d.logo.alt || d.title}
+                class="h-12 w-12 object-contain"
+              />
+            </div>
           )}
-          {integration.data.docsUrl && (
+          <div>
             <a
-              href={integration.data.docsUrl}
+              href="/integrations"
               class="inline-flex items-center gap-1 text-sm font-medium text-primary-600 hover:text-primary-700"
-              target="_blank"
-              rel="noopener noreferrer"
             >
-              Documentation &rarr;
+              <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 12H4M4 12L10 18M4 12L10 6" />
+              </svg>
+              All integrations
             </a>
-          )}
-          {integration.data.githubUrl && (
-            <a
-              href={integration.data.githubUrl}
-              class="inline-flex items-center gap-1 text-sm font-medium text-gray-600 hover:text-gray-900"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              GitHub &rarr;
-            </a>
+            <h1 class="text-2xl font-bold text-gray-900 sm:text-3xl">{d.title}</h1>
+            {d.shortDescription && (
+              <p class="mt-1 text-gray-600">{d.shortDescription}</p>
+            )}
+          </div>
+        </div>
+        {d.docsUrl && (
+          <a
+            href={d.docsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center justify-center rounded-lg border border-primary-600 bg-white px-5 py-2.5 text-sm font-medium text-primary-600 transition-colors hover:bg-primary-50"
+          >
+            Add to ZenML
+          </a>
+        )}
+      </div>
+    </div>
+  </div>
+
+  {/* ── Main: sidebar + content ────────────────────────────── */}
+  <div class="bg-gray-50">
+    <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+      <div class="flex flex-col gap-10 lg:flex-row lg:gap-16">
+        {/* Sidebar */}
+        <IntegrationDetailSidebar
+          type={typeEntry ? { slug: typeEntry.data.slug, name: typeEntry.data.name } : undefined}
+          docsUrl={d.docsUrl}
+          documentationLinkText={d.documentationLinkText}
+          githubUrl={d.githubUrl}
+          githubLinkText={d.githubLinkText}
+          compareSlug={d.compareSlug}
+          compareName={compareName}
+          integrationLogo={d.logo}
+          relatedPosts={relatedPosts}
+        />
+
+        {/* Content */}
+        <div class="min-w-0 flex-1">
+          {hasStructuredContent ? (
+            <div class="space-y-10">
+              {/* Lead heading — shortDescription as prominent H2 (matches Webflow) */}
+              {d.shortDescription && (
+                <h2 class="text-xl font-bold text-gray-900 sm:text-2xl">{d.shortDescription}</h2>
+              )}
+
+              {/* Tool Overview — overviewDescription is the body text */}
+              {d.overviewDescription && (
+                <p class="text-lg text-gray-600 leading-relaxed">{d.overviewDescription}</p>
+              )}
+
+              {/* Features with ZenML — purple checkmark list */}
+              {d.featuresWithZenmlHtml && (
+                <section>
+                  <h3 class="text-lg font-semibold text-gray-900">Features with ZenML</h3>
+                  <div class="checklist mt-3 max-w-none" set:html={d.featuresWithZenmlHtml} />
+                </section>
+              )}
+
+              {/* Screenshot */}
+              {d.mainImage && (
+                <div class="overflow-hidden rounded-xl border border-gray-200">
+                  <img
+                    src={d.mainImage.url}
+                    alt={d.mainImage.alt || `${d.title} integration screenshot`}
+                    class="w-full object-cover"
+                    loading="lazy"
+                  />
+                </div>
+              )}
+
+              {/* Main Features — purple checkmark list */}
+              {d.toolFeaturesHtml && (
+                <section>
+                  <h3 class="text-lg font-semibold text-gray-900">Main Features</h3>
+                  <div class="checklist mt-3 max-w-none" set:html={d.toolFeaturesHtml} />
+                </section>
+              )}
+
+              {/* How to use */}
+              {d.codeExampleHtml && (
+                <section>
+                  <h3 class="text-lg font-semibold text-gray-900">
+                    How to use ZenML with {d.title}
+                  </h3>
+                  <div class="prose prose-gray mt-3 max-w-none" set:html={d.codeExampleHtml} />
+                </section>
+              )}
+
+              {/* Additional Resources */}
+              {d.additionalResources && d.additionalResources.length > 0 && (
+                <section>
+                  <h3 class="text-lg font-semibold text-gray-900">Additional Resources</h3>
+                  <div class="mt-3 space-y-2">
+                    {d.additionalResources.map((resource) => (
+                      <a
+                        href={resource.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="inline-flex items-center gap-1.5 text-sm font-medium text-primary-600 hover:text-primary-700"
+                      >
+                        {resource.label}
+                        <svg width="21" height="20" viewBox="0 0 21 20" fill="none" class="h-4 w-4">
+                          <path d="M4.6665 9.99984H16.3332M16.3332 9.99984L10.4998 4.1665M16.3332 9.99984L10.4998 15.8332" stroke="currentColor" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                      </a>
+                    ))}
+                  </div>
+                </section>
+              )}
+            </div>
+          ) : (
+            /* Fallback: render full markdown body when structured fields missing */
+            <div class="prose prose-gray max-w-none">
+              <Content />
+            </div>
           )}
         </div>
       </div>
-    </header>
-
-    {/* Main image */}
-    {integration.data.mainImage && (
-      <div class="mb-10 overflow-hidden rounded-xl border border-gray-200">
-        <img
-          src={integration.data.mainImage.url}
-          alt={integration.data.mainImage.alt || `${integration.data.title} integration`}
-          class="w-full object-cover"
-        />
-      </div>
-    )}
-
-    {/* Body content (features list, code examples, etc.) */}
-    <div class="prose prose-gray max-w-none">
-      <Content />
     </div>
   </div>
+
+  {/* ── Bottom CTA ─────────────────────────────────────────── */}
+  <section class="bg-gray-900 py-16 sm:py-20">
+    <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+      <h2 class="text-2xl font-bold text-white sm:text-3xl">
+        Connect Your ML Pipelines to a World of Tools
+      </h2>
+      <p class="mt-3 text-lg text-gray-300">
+        Expand your ML pipelines with {d.title} and other 50+ ZenML Integrations
+      </p>
+      <div class="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+        <Button href="/get-started" size="lg">Use Open Source</Button>
+        <a
+          href="/integrations"
+          class="inline-flex items-center gap-1.5 text-sm font-medium text-primary-400 hover:text-primary-300"
+        >
+          See All Integrations
+          <svg width="21" height="20" viewBox="0 0 21 20" fill="none" class="h-4 w-4">
+            <path d="M4.6665 9.99984H16.3332M16.3332 9.99984L10.4998 4.1665M16.3332 9.99984L10.4998 15.8332" stroke="currentColor" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
 </BaseLayout>
+
+<style>
+  /* Purple circle checkmark list — matches Webflow integration detail pages.
+     Uses absolute positioning (not flexbox) so inline text + <strong> flow naturally. */
+  .checklist :global(ul) {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .checklist :global(li) {
+    position: relative;
+    padding-left: 2.5rem;
+    color: var(--color-gray-700);
+    font-size: 1.0625rem;
+    line-height: 1.7;
+  }
+
+  .checklist :global(li)::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.1rem;
+    width: 1.75rem;
+    height: 1.75rem;
+    /* Exact Webflow SVG: single path draws both circle + checkmark as strokes */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cpath d='M8.75 14L12.25 17.5L19.25 10.5M25.667 14C25.667 20.443 20.443 25.667 14 25.667C7.557 25.667 2.333 20.443 2.333 14C2.333 7.557 7.557 2.333 14 2.333C20.443 2.333 25.667 7.557 25.667 14Z' stroke='%237A3EF4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+</style>

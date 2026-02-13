@@ -25,6 +25,17 @@ seo:
   ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/46a1c764/66ed4e8a604dbf06577c760f_Integration_image__2_.png"
   ogTitle: "Integrate Neptune with ZenML - Experiment Tracker Integrations"
   ogDescription: "Supercharge your ZenML pipelines with Neptune's powerful experiment tracking capabilities"
+overviewTitle: "Supercharge your ZenML pipelines with Neptune's powerful experiment tracking capabilities"
+overviewDescription: "Seamlessly integrate Neptune's advanced experiment tracking features into your ZenML workflows to optimize your machine learning experimentation process. Leverage Neptune's intuitive UI to log, visualize, and compare pipeline runs, making it easier to identify the best performing models and iterate faster."
+featuresWithZenmlHtml: "<ul id=\"\"><li id=\"\">Effortlessly track and visualize ZenML pipeline runs in Neptune</li><li id=\"\">Log models, parameters, metrics, and artifacts from pipeline steps</li><li id=\"\">Seamlessly transition from experimentation to production workflows</li><li id=\"\">Share pipeline results with team members and stakeholders via Neptune</li><li id=\"\">Leverage Neptune as a model registry for production-ready models</li></ul><p>‍</p>"
+toolFeaturesHtml: "<ul id=\"\"><li id=\"\">Interactive experiment tracking and visualization</li><li id=\"\">Comprehensive logging of metrics, parameters, artifacts, and more</li><li id=\"\">Collaborative workspace for sharing results with team members</li><li id=\"\">Flexible and customizable experiment management</li><li id=\"\">Integrates with popular ML frameworks and libraries</li></ul><p>‍</p>"
+codeExampleHtml: "<div data-rt-embed-type='true'><pre><code fs-codehighlight-element=\"code\" class=\"language-python\">import numpy as np\nfrom zenml import step\nfrom zenml.integrations.neptune.experiment_trackers.run_state import (\n    get_neptune_run,\n)\nfrom zenml.integrations.neptune.flavors import NeptuneExperimentTrackerSettings\n\nneptune_settings = NeptuneExperimentTrackerSettings(tags={\"classifier\", \"mnist\"})\n\n\n@step(\n    experiment_tracker=\"&lt;NEPTUNE_TRACKER_STACK_COMPONENT_NAME>\",\n    settings={\n        \"experiment_tracker\": neptune_settings\n    }\n)\ndef training_step(\n    x_test: np.ndarray,\n    y_test: np.ndarray,\n    model,\n) -> float:\n    \"\"\"Log metadata to Neptune run\"\"\"\n    neptune_run = get_neptune_run()\n    neptune_run[\"metrics\"] = ...\n    ...</code></pre></div>"
+documentationLinkText: "End-to-end example of ZenML Neptune integration"
+githubLinkText: "Neptune Experiment Tracking Guide"
+additionalResources:
+  - label: "Neptune-ZenML Integration Docs"
+    href: "https://docs.neptune.ai/integrations/zenml/"
+isUpdatedToNewFormat: true
 ---
 
 <ul><li>Effortlessly track and visualize ZenML pipeline runs in Neptune</li><li>Log models, parameters, metrics, and artifacts from pipeline steps</li><li>Seamlessly transition from experimentation to production workflows</li><li>Share pipeline results with team members and stakeholders via Neptune</li><li>Leverage Neptune as a model registry for production-ready models</li></ul>

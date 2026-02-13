@@ -28,6 +28,13 @@ seo:
   ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/521437de/66e734673d7856003ff191c2_image__12_.png"
   ogTitle: "Integrate Google Cloud with ZenML - Cloud Infrastructure Integrations"
   ogDescription: "Streamline ML Operations with Google Cloud and ZenML"
+overviewTitle: "Streamline ML Operations with Google Cloud and ZenML"
+overviewDescription: "Integrate the power of Google Cloud's scalable infrastructure and managed services with ZenML's MLOps capabilities. This integration enables seamless orchestration of ML workflows on Google Cloud, leveraging Vertex AI Pipelines for serverless, production-ready pipeline execution."
+featuresWithZenmlHtml: "<ul id=\"\"><li id=\"\">Effortless orchestration of ZenML pipelines on Google Cloud's Vertex AI Pipelines</li><li id=\"\">Serverless, scalable execution of ML workflows without provisioning infrastructure</li><li id=\"\">Seamless integration with Google Cloud's managed services for data storage, processing, and model serving</li><li id=\"\">Enhanced visibility and monitoring of pipeline runs through Vertex AI's intuitive UI</li><li id=\"\">Simplified deployment and reproducibility of ML workflows across Google Cloud environments</li></ul><p>‍</p>"
+toolFeaturesHtml: "<ul id=\"\"><li id=\"\">Scalable, serverless infrastructure for ML workloads</li><li id=\"\">Managed services for data storage, processing, and model serving</li><li id=\"\">Vertex AI Pipelines for orchestrating end-to-end ML workflows</li><li id=\"\">Integrated monitoring, logging, and visualization of ML pipeline runs</li><li id=\"\">Seamless integration with Google Cloud's AI Platform for model training and deployment</li></ul><p>‍</p>"
+codeExampleHtml: "<div data-rt-embed-type='true'><pre><code fs-codehighlight-element=\"code\" class=\"language-bash\">\n# Once registered in the frontend, this is all you need to do\n# for all your pipelines to be run on gcp\nzenml integration install gcp\nzenml stack set ...\n</code></pre></div>"
+documentationLinkText: "Getting started with ZenML and GCP"
+isUpdatedToNewFormat: true
 ---
 
 <ul><li>Effortless orchestration of ZenML pipelines on Google Cloud's Vertex AI Pipelines</li><li>Serverless, scalable execution of ML workflows without provisioning infrastructure</li><li>Seamless integration with Google Cloud's managed services for data storage, processing, and model serving</li><li>Enhanced visibility and monitoring of pipeline runs through Vertex AI's intuitive UI</li><li>Simplified deployment and reproducibility of ML workflows across Google Cloud environments</li></ul>

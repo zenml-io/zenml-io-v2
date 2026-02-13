@@ -1,0 +1,64 @@
+---
+/**
+ * Integration detail hero — centered logo lockup + GitHub button.
+ *
+ * Matches Webflow: "Integrations" background label, integration logo + "and" + ZenML mono logo,
+ * short description, and GitHub CTA button.
+ */
+interface Props {
+  title: string;
+  shortDescription?: string;
+  logo?: { url: string; alt?: string };
+  githubUrl?: string;
+  githubLinkText?: string;
+}
+
+const { title, shortDescription, logo, githubUrl, githubLinkText } = Astro.props;
+---
+
+<div class="bg-white">
+  <div class="mx-auto max-w-3xl px-4 py-16 text-center sm:px-6 sm:py-20 lg:px-8">
+    <div class="mb-6 text-sm font-semibold uppercase tracking-widest text-primary-600/40">
+      Integrations
+    </div>
+
+    {/* Logo lockup: integration logo + "and" + ZenML logo */}
+    <div class="flex items-center justify-center gap-4">
+      {logo && (
+        <div class="flex h-20 w-20 items-center justify-center rounded-xl bg-gray-50 p-3">
+          <img
+            src={logo.url}
+            alt={logo.alt || title}
+            class="h-14 w-14 object-contain"
+          />
+        </div>
+      )}
+      <span class="text-lg font-medium text-gray-400">and</span>
+      <div class="flex h-20 w-20 items-center justify-center rounded-xl bg-gray-50 p-3">
+        <img
+          src="/images/zenml-logo-monocolor.svg"
+          alt="ZenML"
+          class="h-14 w-14 object-contain"
+        />
+      </div>
+    </div>
+
+    {shortDescription && (
+      <p class="mx-auto mt-6 max-w-xl text-lg text-gray-600">{shortDescription}</p>
+    )}
+
+    {githubUrl && (
+      <div class="mt-6">
+        <a
+          href={githubUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-900 shadow-sm transition-colors hover:bg-gray-50"
+        >
+          <img src="/images/icon-github.svg" alt="" class="h-5 w-5" />
+          {githubLinkText || "GitHub"}
+        </a>
+      </div>
+    )}
+  </div>
+</div>

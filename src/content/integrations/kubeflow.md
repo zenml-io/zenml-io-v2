@@ -25,5 +25,10 @@ seo:
   ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/48dc6c46/6527cb291258582b5dfc6f86_kubeflow_example_296ec4815b.webp"
   ogTitle: "Integrate Kubeflow with ZenML - Orchestrator Integrations"
   ogDescription: "Orchestrate your ML pipelines on Kubeflow. Works on any infrastructure of your choice - local, on-premises, or in the cloud."
+overviewTitle: "Run Pipelines in Production with Kubeflow"
+overviewDescription: "ZenML provides a deep Kubeflow integration that makes deploying ML pipelines on Kubernetes simple, portable and scalable. When you want to take a ZenML pipeline from a local setting to production, you can run it on any infrastructure you like and orchestrate it on Kubernetes via Kubeflow - all without changing a single line of code."
+githubLinkText: "Read the documentation"
+compareSlug: "zenml-vs-kubeflow"
+isUpdatedToNewFormat: false
 ---
 

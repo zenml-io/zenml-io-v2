@@ -25,5 +25,9 @@ seo:
   ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9e20cc3f/6527c2a03dc9a436e1320b31_github-actions.png"
   ogTitle: "Integrate Github Actions with ZenML - Orchestrator Integrations"
   ogDescription: "Run your ML workflows in the cloud for free using GitHub Actions."
+overviewTitle: "Run pipelines in the cloud for free using Github Actions"
+overviewDescription: "GitHub Actions is a platform that allows you to execute arbitrary software development workflows right in your GitHub repository. It is most commonly used for CI/CD pipelines, but using the GitHub Actions orchestrator ZenML now enables you to easily run and schedule your machine learning pipelines as GitHub Actions workflows. This is great for teams new to cloud orchestration since it requires no setup and is completely free!"
+githubLinkText: "Go to GitHub"
+isUpdatedToNewFormat: false
 ---
 

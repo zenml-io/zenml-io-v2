@@ -25,5 +25,9 @@ seo:
   ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1e7744e2/6527bf577be2a14ddfbf6e27_facets_analysis_output_ea9a140984.webp"
   ogTitle: "Integrate Facets with ZenML - Data Visualization Integrations"
   ogDescription: "Visualize differences between data distributions in your browser. Spot data skew at a glance."
+overviewTitle: "Visualize Data Statistics with Facets"
+overviewDescription: "One of the most critical parts of data-centric ML is to monitor data quality and to prevent potential data issues, such as train-test skew, training-serving skew, data drift, and more. Being aware of these issues, and having respective safety mechanisms in place, is essential when serving ML models to real users. ZenML's Facets integration provides out-of-the-box tools for statistical dataset comparisons and visualizations that enable you to find data issues at a glance."
+githubLinkText: "Go to GitHub"
+isUpdatedToNewFormat: false
 ---
 

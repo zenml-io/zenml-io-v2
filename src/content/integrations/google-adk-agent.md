@@ -28,6 +28,17 @@ seo:
   ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f9dcbd2a/68adab8d6ad81d3c14b9b59b_google-adk-img.png"
   ogTitle: "Integrate Google ADK Agent with ZenML - Agents Integrations"
   ogDescription: "Google Agent Development Kit integrated with ZenML"
+overviewTitle: "Conversational Agent Framework"
+overviewDescription: "Google ADK lets you build Gemini-powered agents with a simple callable interface and built-in tools; connecting ADK to ZenML wraps those agents in reproducible pipelines with artifact tracking, observability, and an easy path from local experiments to production."
+featuresWithZenmlHtml: "<ul id=\"\"><li id=\"\"><strong id=\"\">Pipeline orchestration.</strong> Run Google ADK agents as ZenML steps inside reproducible pipelines.</li><li id=\"\">‍<strong id=\"\">Artifact management.</strong> Capture agent inputs and outputs for lineage, versioning, and auditability.</li><li id=\"\">‍<strong id=\"\">Evaluation ready.</strong> Add post-run checks or eval steps to monitor quality over time.</li><li id=\"\">‍<strong id=\"\">Infrastructure agnostic.</strong> Scale from local runs to Kubernetes, Airflow, and other ZenML stacks.</li><li id=\"\">‍<strong id=\"\">Composable workflows.</strong> Combine agents with retrieval, evals, and deployment steps in one DAG.</li></ul>"
+toolFeaturesHtml: "<ul id=\"\"><li id=\"\"><strong id=\"\">Gemini-powered agents.</strong> Build on Google’s latest models through ADK.</li><li id=\"\">‍<strong id=\"\">Simple callable interface.</strong> Invoke agents directly or through common <code id=\"\">run</code> and <code id=\"\">execute</code> methods.</li><li id=\"\">‍<strong id=\"\">Built-in tools.</strong> Integrate calculations and custom tools inside agent workflows.</li></ul>"
+codeExampleHtml: "<div data-rt-embed-type='true'><pre><code fs-codehighlight-element=\"code\">from zenml import ExternalArtifact, pipeline, step\nfrom adk_agent import root_agent\n\n@step\ndef run_adk(query: str) -> str:\n    return str(root_agent.run(query))\n\n\n@pipeline\ndef google_adk_pipeline() -> str:\n    q = ExternalArtifact(value=\"What's the weather like in Tokyo?\")\n    return run_adk(q.value)\n\nif __name__ == \"__main__\":\n    print(google_adk_pipeline())</code></pre></div>"
+documentationLinkText: "ZenML Documentation"
+githubLinkText: "ZenML Agent Framework Integrations (GitHub)"
+additionalResources:
+  - label: "Google ADK Documentation"
+    href: "https://google.github.io/adk-docs/"
+isUpdatedToNewFormat: true
 ---
 
 <ul><li><strong>Pipeline orchestration.</strong> Run Google ADK agents as ZenML steps inside reproducible pipelines.</li><li><strong>Artifact management.</strong> Capture agent inputs and outputs for lineage, versioning, and auditability.</li><li><strong>Evaluation ready.</strong> Add post-run checks or eval steps to monitor quality over time.</li><li><strong>Infrastructure agnostic.</strong> Scale from local runs to Kubernetes, Airflow, and other ZenML stacks.</li><li><strong>Composable workflows.</strong> Combine agents with retrieval, evals, and deployment steps in one DAG.</li></ul><ul><li><strong>Gemini-powered agents.</strong> Build on Google’s latest models through ADK.</li><li><strong>Simple callable interface.</strong> Invoke agents directly or through common <code>run</code> and <code>execute</code> methods.</li><li><strong>Built-in tools.</strong> Integrate calculations and custom tools inside agent workflows.</li></ul>

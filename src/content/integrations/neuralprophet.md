@@ -25,6 +25,14 @@ seo:
   ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/41904b7c/66e0299d19eef2b296480c6a_Screenshot_2024-09-04_at_10.33.51.png"
   ogTitle: "Integrate NeuralProphet with ZenML - Modeling Integrations"
   ogDescription: "Enhance Time Series Forecasting with NeuralProphet and ZenML"
+overviewTitle: "Enhance Time Series Forecasting with NeuralProphet and ZenML"
+overviewDescription: "Integrate NeuralProphet's powerful time series forecasting capabilities into your ZenML pipelines for seamless and efficient modeling of temporal data. This integration enables you to leverage NeuralProphet's state-of-the-art algorithms and intuitive API within the structured framework of ZenML, streamlining your time series modeling workflow."
+featuresWithZenmlHtml: "<ul id=\"\"><li id=\"\"><strong id=\"\">Seamless Integration</strong>: Effortlessly incorporate NeuralProphet models into your ZenML pipelines, ensuring a smooth and unified workflow.</li><li id=\"\"><strong id=\"\">Reproducibility</strong>: Leverage ZenML's versioning and tracking capabilities to ensure reproducibility and traceability of your NeuralProphet models.</li></ul><p>‍</p>"
+toolFeaturesHtml: "<ul id=\"\"><li id=\"\">Flexible time series modeling with support for trends, seasonality, and holidays</li><li id=\"\">Intuitive API for defining and training models</li><li id=\"\">Automatic hyperparameter tuning for optimized model performance</li><li id=\"\">Built-in model evaluation and visualization tools</li><li id=\"\">Ability to incorporate external regressors and custom loss functions</li></ul><p>‍</p>"
+codeExampleHtml: "<div data-rt-embed-type='true'><pre><code fs-codehighlight-element=\"code\" class=\"language-python\">\nfrom zenml import pipeline, step\nimport pandas as pd\nfrom neuralprophet import NeuralProphet\n\n@step\ndef load_data() -> pd.DataFrame:\n    # Load your time series data here\n    data = pd.read_csv('time_series_data.csv')\n    return data\n\n@step\ndef trainer_step(data: pd.DataFrame) -> NeuralProphet:\n    model = NeuralProphet()\n    model.fit(data, freq=\"D\")\n    return model\n\n@pipeline\ndef time_series_pipeline():\n    data = load_data()\n    trainer_step(data)\n\n\nif __name__ == \"__main__\":\n    time_series_pipeline()\n</code></pre></div>"
+documentationLinkText: "NeuralProphet Integration Source Code"
+githubLinkText: "GitHub Repository: NeuralProphet"
+isUpdatedToNewFormat: true
 ---
 
 <ul><li><strong>Seamless Integration</strong>: Effortlessly incorporate NeuralProphet models into your ZenML pipelines, ensuring a smooth and unified workflow.</li><li><strong>Reproducibility</strong>: Leverage ZenML's versioning and tracking capabilities to ensure reproducibility and traceability of your NeuralProphet models.</li></ul>

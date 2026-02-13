@@ -25,5 +25,9 @@ seo:
   ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9169bcc6/6527e2962dddd2674a0325ce_pexels_leah_kelley_185933_629915726d.webp"
   ogTitle: "Integrate Pillow with ZenML - Modeling Integrations"
   ogDescription: "PIL is the Python Imaging Library, most commonly used via the Pillow fork. This integration allows you to materialize image artifacts."
+overviewTitle: "Use image artifacts in your ZenML pipelines"
+overviewDescription: "PIL is the Python Imaging Library, most commonly used via the Pillow fork. This integration allows you to materialize image artifacts. These image objects will first be serialized, then stored and versioned in the ZenML artifact store. When you access them elsewhere in your pipeline or a post-execution workflow, ZenML will dematerialize the image artifacts. ZenML's Pillow integration provides an out-of-the-box way to use image objects in your ZenML pipelines. Pillow supports most common image formats and types."
+githubLinkText: "Go to Github"
+isUpdatedToNewFormat: false
 ---
 

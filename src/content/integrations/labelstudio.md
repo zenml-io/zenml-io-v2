@@ -25,6 +25,18 @@ seo:
   ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/82697994/66e7484f2d8394657bfcd53f_labelstudio_integration.png"
   ogTitle: "Integrate Label Studio with ZenML - Data Annotator Integrations"
   ogDescription: "Streamline Data Annotation in ZenML Pipelines with Label Studio"
+overviewTitle: "Streamline Data Annotation in ZenML Pipelines with Label Studio"
+overviewDescription: "Integrate Label Studio, a leading open-source annotation platform, with ZenML to seamlessly incorporate data annotation into your ML workflows. This integration enables efficient labeling of diverse data types, including images, audio, text, and time series, directly within ZenML pipelines."
+featuresWithZenmlHtml: "<ul id=\"\"><li id=\"\">Seamless integration of data annotation steps into ZenML pipelines</li><li id=\"\">Support for various annotation types (image, audio, text, time series)</li><li id=\"\">Automated dataset registration and syncing with Label Studio</li><li id=\"\">Easy access to annotated data for downstream pipeline steps</li><li id=\"\">Seamless integration with ZenML’s cloud artifact stores (AWS, Azure, GCP)</li></ul><p>‍</p>"
+toolFeaturesHtml: "<ul id=\"\"><li id=\"\">Supports a wide range of annotation types and use cases</li><li id=\"\">User-friendly web interface for efficient data labeling</li><li id=\"\">Customizable label configurations for project-specific requirements</li><li id=\"\">Collaborative annotation with multiple users and roles</li><li id=\"\">Export annotations in standard formats for further analysis</li></ul><p>‍</p>"
+codeExampleHtml: "<div data-rt-embed-type='true'><pre><code fs-codehighlight-element=\"code\" class=\"language-python\">\n# Setup Label Studio integration\n# 1. Create a secret with your Label Studio API key:\n#    zenml secret create label_studio_secrets --api_key=\"&lt;your_label_studio_api_key>\"\n\n# 2. Register the Label Studio annotator:\n#    zenml annotator register label_studio --flavor label_studio --authentication_secret=\"label_studio_secrets\"\n\n# 3. Update your stack with the Label Studio annotator:\n#    zenml stack update -an label_studio\n\nfrom zenml import pipeline, step\nfrom typing import Dict, Any\nfrom zenml.client import Client\n\n@step\ndef data_loader() -> Dict[str, Any]:\n    \"\"\"Load labeled data from the active annotator.\"\"\"\n    client = Client()\n    annotator = client.active_stack.annotator\n    return annotator.get_labeled_data(dataset_name=\"my_dataset\")\n\n@pipeline\ndef my_pipeline():\n    \"\"\"Define the pipeline using the data loader step.\"\"\"\n    data = data_loader()\n    # Process the labeled data here\n\nif __name__ == \"__main__\":\n    my_pipeline()\n\n# Additional CLI commands for working with Label Studio:\n# - List all datasets:\n#   zenml annotator dataset list\n# - Get statistics for a specific dataset:\n#   zenml annotator dataset stats &lt;dataset_id>\n</code></pre></div>"
+documentationLinkText: "Label Studio Integration Documentation"
+githubLinkText: "End-to-End Computer Vision Example with Label Studio"
+additionalResources:
+  - label: "Label Studio Official Documentation"
+    href: "https://labelstud.io/guide/"
+compareSlug: "zenml-vs-label-studio"
+isUpdatedToNewFormat: true
 ---
 
 <ul><li>Seamless integration of data annotation steps into ZenML pipelines</li><li>Support for various annotation types (image, audio, text, time series)</li><li>Automated dataset registration and syncing with Label Studio</li><li>Easy access to annotated data for downstream pipeline steps</li><li>Seamless integration with ZenML’s cloud artifact stores (AWS, Azure, GCP)</li></ul>

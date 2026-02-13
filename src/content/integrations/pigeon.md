@@ -25,6 +25,17 @@ seo:
   ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/163e5654/66e747284698690459556b8c_pigeon_integration.png"
   ogTitle: "Integrate Pigeon with ZenML - Data Annotator Integrations"
   ogDescription: "Streamline Data Annotation in Jupyter Notebooks with Pigeon and ZenML"
+overviewTitle: "Streamline Data Annotation in Jupyter Notebooks with Pigeon and ZenML"
+overviewDescription: "Integrate Pigeon, a lightweight and intuitive data annotation tool, with ZenML to effortlessly label your datasets directly within Jupyter notebooks. This integration simplifies the annotation process for text classification, image classification, and text captioning tasks, making it ideal for quick labeling during the exploratory phase of your ML projects."
+featuresWithZenmlHtml: "<ul id=\"\"><li id=\"\"><strong id=\"\">Seamless Integration with Jupyter Notebooks<br>‍</strong>Annotate your data without leaving your familiar Jupyter notebook environment, ensuring a smooth workflow.</li><li id=\"\"><strong id=\"\">Easy Setup and Configuration<br>‍</strong>Installing and registering the Pigeon annotator with ZenML is a straightforward process, requiring minimal effort.</li><li id=\"\"><strong id=\"\">Efficient Data Management<br>‍</strong>Utilize ZenML's <code id=\"\">annotator dataset</code> commands to easily list, delete, and retrieve statistics for your annotated datasets.</li><li id=\"\"><strong id=\"\">Streamlined ML Workflows<br>‍</strong>Incorporate Pigeon annotations seamlessly into your ZenML pipelines, enabling efficient data labeling within your ML workflows.</li></ul><p>‍</p>"
+toolFeaturesHtml: "<ul id=\"\"><li id=\"\">Ultra-lightweight and open-source</li><li id=\"\">Supports text classification, image classification, and text captioning</li><li id=\"\">Intuitive interface for quick and easy labeling</li><li id=\"\">Ideal for small to medium-sized datasets</li><li id=\"\">Facilitates collaborative labeling within Jupyter notebooks</li></ul><p>‍</p>"
+codeExampleHtml: "<div data-rt-embed-type='true'><pre><code fs-codehighlight-element=\"code\" class=\"language-python\">\nfrom zenml.client import Client\n\nannotator = Client().active_stack.annotator\n\nannotations = annotator.launch(\n    data=[\n        'This movie was fantastic!',\n        'I was disappointed by the ending of the book.'\n    ],\n    options=[\n        'positive',\n        'negative'\n    ]\n)\n</code></pre></div><p>‍</p>"
+documentationLinkText: "Read the full Pigeon integration documentation"
+githubLinkText: "View the Pigeon GitHub repository"
+additionalResources:
+  - label: "Explore the Pigeon Python package on PyPI"
+    href: "https://pypi.org/project/pigeon-jupyter/"
+isUpdatedToNewFormat: true
 ---
 
 <ul><li><strong>Seamless Integration with Jupyter Notebooks<br /></strong>Annotate your data without leaving your familiar Jupyter notebook environment, ensuring a smooth workflow.</li><li><strong>Easy Setup and Configuration<br /></strong>Installing and registering the Pigeon annotator with ZenML is a straightforward process, requiring minimal effort.</li><li><strong>Efficient Data Management<br /></strong>Utilize ZenML's <code>annotator dataset</code> commands to easily list, delete, and retrieve statistics for your annotated datasets.</li><li><strong>Streamlined ML Workflows<br /></strong>Incorporate Pigeon annotations seamlessly into your ZenML pipelines, enabling efficient data labeling within your ML workflows.</li></ul>

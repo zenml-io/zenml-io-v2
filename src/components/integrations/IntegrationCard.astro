@@ -1,0 +1,78 @@
+---
+/**
+ * Integration vertical card — matches Webflow's integration-list-card.
+ *
+ * 120px logo container on top, name + category label below.
+ * Used on both the hub page and integration-type taxonomy pages.
+ */
+interface Props {
+  href: string;
+  title: string;
+  categoryLabel: string;
+  logo?: { url: string; alt?: string };
+  /** data-type attribute for client-side filtering on the hub page */
+  dataType?: string;
+}
+
+const { href, title, categoryLabel, logo, dataType } = Astro.props;
+---
+
+<a
+  href={href}
+  class="integration-card group"
+  {...(dataType ? { "data-type": dataType } : {})}
+>
+  <div class="integration-card-img">
+    {logo ? (
+      <img
+        src={logo.url}
+        alt={logo.alt || title}
+        class="h-10 w-10 object-contain"
+        loading="lazy"
+      />
+    ) : (
+      <span class="text-2xl font-bold text-gray-400">{title[0]}</span>
+    )}
+  </div>
+  <div class="integration-card-body">
+    <h2 class="text-sm font-semibold text-gray-900">{title}</h2>
+    <div class="mt-1 text-xs text-gray-500">{categoryLabel}</div>
+  </div>
+</a>
+
+<style>
+  .integration-card {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    overflow: hidden;
+    border: 1px solid var(--color-gray-100);
+    border-radius: var(--radius-lg);
+    background: linear-gradient(135deg, #fcfcfc, #fff);
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.77, 0, 0.175, 1);
+  }
+
+  .integration-card:hover {
+    border-color: var(--color-primary-500);
+    background: linear-gradient(135deg, #f9f4ff, #fff);
+    transform: translateY(-6px);
+    box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.08);
+  }
+
+  .integration-card-img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 120px;
+    min-height: 120px;
+    padding: 2rem;
+    border-bottom: 1px solid var(--color-gray-200);
+    background-color: rgba(249, 244, 255, 0.3);
+  }
+
+  .integration-card-body {
+    padding: 1rem 1.5rem 1.5rem;
+  }
+</style>

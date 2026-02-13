@@ -25,5 +25,9 @@ seo:
   ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ace78aa1/6527e5f87d89b1901d5d38fa_tekton_ui_3_36d493a8dd.webp"
   ogTitle: "Integrate Tekton with ZenML - Orchestrator Integrations"
   ogDescription: "Orchestrate your ML pipelines with the Tekton orchestrator."
+overviewTitle: "Run Pipelines in Production with Tekton"
+overviewDescription: "The Tekton orchestrator is an orchestrator flavor provided with the ZenML-Tekton integration that uses Tekton Pipelines to run your pipelines. Tekton Pipelines is a Kubernetes extension that installs and runs on your Kubernetes cluster. It defines a set of Kubernetes Custom Resources that act as building blocks from which you can assemble CI/CD pipelines. Once installed, Tekton Pipelines becomes available via the Kubernetes CLI (kubectl) and via API calls, just like pods and other resources. Tekton is open-source and part of the CD Foundation, a Linux Foundation project."
+githubLinkText: "Read the documentation"
+isUpdatedToNewFormat: false
 ---
 
