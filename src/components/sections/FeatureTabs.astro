@@ -1,15 +1,16 @@
 ---
 /**
- * FeatureTabs — tabbed feature showcase with stats grid.
+ * FeatureTabs — "The ZenML Advantage" tabbed feature showcase.
  *
- * Shows an eyebrow + headline, a 4-stat grid, and 5 feature tabs.
- * Tabs switch content via CSS-only :target or a tiny inline script.
- * Each tab has a title, description, and screenshot image.
+ * Shows an eyebrow + headline, a 4-stat grid, and an auto-cycling
+ * tab slider (Preact island) matching the original Webflow layout:
+ * vertical left menu (40%) + right image panel (60%) with gradient bg.
  */
 import { FEATURE_TABS_HEADER, FEATURE_TABS, STATS } from "../../lib/homepage";
+import FeatureTabsSlider from "../islands/FeatureTabsSlider";
 ---
 
-<section class="scroll-reveal-section bg-white py-16 sm:py-24">
+<section class="feature-tabs scroll-reveal-section bg-white py-16 sm:py-24">
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
     <!-- Header — slides in from top on scroll -->
     <div class="scroll-slide-top text-center">
@@ -31,52 +32,14 @@ import { FEATURE_TABS_HEADER, FEATURE_TABS, STATS } from "../../lib/homepage";
       ))}
     </div>
 
-    <!-- Tabs — fades in on scroll -->
-    <div class="scroll-fade-in stagger-2 mt-16" id="feature-tabs">
-      <!-- Tab buttons -->
-      <div class="flex flex-wrap justify-center gap-2 border-b border-gray-200" role="tablist">
-        {FEATURE_TABS.map((tab, i) => (
-          <button
-            role="tab"
-            aria-selected={i === 0 ? "true" : "false"}
-            aria-controls={`tab-panel-${i}`}
-            data-tab-index={i}
-            class:list={[
-              "feature-tab-btn whitespace-nowrap px-4 py-3 text-sm font-medium transition",
-              i === 0
-                ? "border-b-2 border-zenml-500 text-zenml-500"
-                : "text-gray-500 hover:border-b-2 hover:border-gray-300 hover:text-gray-700",
-            ]}
-          >
-            {tab.title}
-          </button>
-        ))}
-      </div>
-
-      <!-- Tab panels -->
-      {FEATURE_TABS.map((tab, i) => (
-        <div
-          id={`tab-panel-${i}`}
-          role="tabpanel"
-          class:list={[
-            "feature-tab-panel mt-8 grid items-center gap-8 lg:grid-cols-2",
-            i === 0 ? "" : "hidden",
-          ]}
-        >
-          <div>
-            <h3 class="text-xl font-semibold text-gray-900">{tab.title}</h3>
-            <p class="mt-3 text-gray-600 leading-relaxed">{tab.description}</p>
-          </div>
-          <div class="overflow-hidden rounded-xl border border-gray-200 shadow-lg">
-            <img
-              src={tab.image}
-              alt={tab.imageAlt}
-              class="w-full"
-              loading="lazy"
-            />
-          </div>
-        </div>
-      ))}
+    <!-- Tabs slider — Preact island with autoplay -->
+    <div class="scroll-fade-in stagger-2 mt-16">
+      <FeatureTabsSlider
+        client:load
+        tabs={FEATURE_TABS}
+        defaultIndex={3}
+        autoDurationMs={9000}
+      />
     </div>
   </div>
 </section>
@@ -117,34 +80,154 @@ import { FEATURE_TABS_HEADER, FEATURE_TABS, STATS } from "../../lib/homepage";
   }
 </style>
 
+<style is:global>
+  /* ── Tab Slider Layout (matches Webflow .tab-slider) ─────────────── */
+  .feature-tabs .tab-slider {
+    display: flex;
+    align-items: stretch;
+    justify-content: flex-start;
+    width: 100%;
+    gap: 1rem;
+  }
+
+  /* Left column: vertical nav menu */
+  .feature-tabs .tab-slider-menu {
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+  }
+
+  /* Right column: image panel with gradient bg */
+  .feature-tabs .tab-slider-content {
+    width: 60%;
+    min-height: 520px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    background-image: url("/images/tab_bg.avif");
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  /* ── Individual tab button ───────────────────────────────────────── */
+  .feature-tabs .tab-slider-tab {
+    position: relative;
+    text-align: left;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #d0d5dd; /* gray-300 */
+    color: #d0d5dd;
+    padding: 2rem 1.5rem;
+    min-height: 6.5rem;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+
+  .feature-tabs .tab-slider-tab.w--current {
+    color: #101828; /* gray-900 */
+    min-height: auto;
+  }
+
+  .feature-tabs .tab-slider-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    line-height: 1.4;
+  }
+
+  /* ── Description: expand/collapse via grid-template-rows trick ──── */
+  .feature-tabs .tab-slider-nav-desc {
+    display: grid;
+    grid-template-rows: 0fr;
+    opacity: 0;
+    transition: grid-template-rows 0.8s ease, opacity 1s ease;
+  }
+
+  .feature-tabs .tab-slider-tab.w--current .tab-slider-nav-desc {
+    grid-template-rows: 1fr;
+    opacity: 1;
+  }
+
+  .feature-tabs .tab-slider-nav-desc > div {
+    overflow: hidden;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: #475467; /* gray-600 */
+    padding-top: 0.5rem;
+  }
+
+  /* ── Progress bar ────────────────────────────────────────────────── */
+  .feature-tabs .tab-slider-progress {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 0.25rem;
+    width: 0%;
+    background-color: var(--color-zenml-500, #7a3ef4);
+  }
+
+  /* ── Stacked panes (opacity/visibility, not display:none) ────────── */
+  .feature-tabs .tab-slider-pane {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 300ms ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+
+  .feature-tabs .tab-slider-pane.w--tab-active {
+    position: relative;
+    opacity: 1;
+    visibility: visible;
+    z-index: 2;
+  }
+
+  .feature-tabs .tab-slider-image {
+    width: 100%;
+    max-width: 720px;
+    height: auto;
+    border-radius: 8px;
+  }
+
+  /* ── Responsive: stack menu above content on tablet/mobile ──────── */
+  @media (max-width: 1023px) {
+    .feature-tabs .tab-slider {
+      flex-direction: column;
+    }
+    .feature-tabs .tab-slider-menu {
+      width: 100%;
+    }
+    .feature-tabs .tab-slider-content {
+      width: 100%;
+      margin-top: 2rem;
+      min-height: auto;
+    }
+  }
+
+  @media (max-width: 479px) {
+    .feature-tabs .tab-slider-content {
+      padding: 1rem;
+      min-height: auto;
+    }
+    .feature-tabs .tab-slider-tab {
+      padding: 1.25rem 1rem;
+      min-height: auto;
+    }
+  }
+</style>
+
 <script>
-  // --- Tab switching ---
-  const ACTIVE_CLASSES = ["border-b-2", "border-zenml-500", "text-zenml-500"];
-  const INACTIVE_CLASSES = ["text-gray-500", "hover:border-b-2", "hover:border-gray-300", "hover:text-gray-700"];
-
-  const tabBtns = document.querySelectorAll<HTMLButtonElement>(".feature-tab-btn");
-  const tabPanels = document.querySelectorAll<HTMLDivElement>(".feature-tab-panel");
-
-  tabBtns.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const idx = Number(btn.dataset.tabIndex);
-
-      tabBtns.forEach((b) => {
-        const isActive = b === btn;
-        b.setAttribute("aria-selected", String(isActive));
-        ACTIVE_CLASSES.forEach((c) => b.classList.toggle(c, isActive));
-        INACTIVE_CLASSES.forEach((c) => b.classList.toggle(c, !isActive));
-      });
-
-      tabPanels.forEach((panel, i) => {
-        panel.classList.toggle("hidden", i !== idx);
-      });
-    });
-  });
-
-  // --- Scroll-triggered reveal ---
-  const section = document.querySelector('.scroll-reveal-section');
-  if (section) {
+  // Scroll-triggered reveal (kept from original — one-shot IntersectionObserver)
+  document.querySelectorAll<HTMLElement>('.scroll-reveal-section').forEach((section) => {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -155,5 +238,5 @@ import { FEATURE_TABS_HEADER, FEATURE_TABS, STATS } from "../../lib/homepage";
       { threshold: 0.1 }
     );
     observer.observe(section);
-  }
+  });
 </script>
