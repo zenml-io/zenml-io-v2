@@ -8,7 +8,7 @@
  * team member grid (CMS), and open positions.
  */
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { getCollection } from "astro:content";
+import { getCollection, render } from "astro:content";
 import {
   COMPANY_SEO,
   COMPANY_HERO,
@@ -22,6 +22,17 @@ const allTeam = await getCollection("team");
 const teamMembers = allTeam
   .filter((m) => !(m.data as any).draft)
   .sort((a, b) => ((a.data as any).order ?? 99) - ((b.data as any).order ?? 99));
+
+// Pre-render team member body content (fun facts) — render() is async
+const teamCards = await Promise.all(
+  teamMembers.map(async (member) => {
+    const { Content } = await render(member);
+    return { member, Content };
+  })
+);
+
+// Speech bubbles SVG — extracted from Webflow company page (same icon for all 5 values)
+const SPEECH_BUBBLES_SVG = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.09436 11.2288C6.03221 10.8282 5.99996 10.4179 5.99996 10C5.99996 5.58172 9.60525 2 14.0526 2C18.4999 2 22.1052 5.58172 22.1052 10C22.1052 10.9981 21.9213 11.9535 21.5852 12.8345C21.5154 13.0175 21.4804 13.109 21.4646 13.1804C21.4489 13.2512 21.4428 13.301 21.4411 13.3735C21.4394 13.4466 21.4493 13.5272 21.4692 13.6883L21.8717 16.9585C21.9153 17.3125 21.9371 17.4895 21.8782 17.6182C21.8266 17.731 21.735 17.8205 21.6211 17.8695C21.4911 17.9254 21.3146 17.8995 20.9617 17.8478L17.7765 17.3809C17.6101 17.3565 17.527 17.3443 17.4512 17.3448C17.3763 17.3452 17.3245 17.3507 17.2511 17.3661C17.177 17.3817 17.0823 17.4172 16.893 17.4881C16.0097 17.819 15.0524 18 14.0526 18C13.6344 18 13.2237 17.9683 12.8227 17.9073M7.63158 22C10.5965 22 13 19.5376 13 16.5C13 13.4624 10.5965 11 7.63158 11C4.66668 11 2.26316 13.4624 2.26316 16.5C2.26316 17.1106 2.36028 17.6979 2.53955 18.2467C2.61533 18.4787 2.65322 18.5947 2.66566 18.6739C2.67864 18.7567 2.68091 18.8031 2.67608 18.8867C2.67145 18.9668 2.65141 19.0573 2.61134 19.2383L2 22L4.9948 21.591C5.15827 21.5687 5.24 21.5575 5.31137 21.558C5.38652 21.5585 5.42641 21.5626 5.50011 21.5773C5.5701 21.5912 5.67416 21.6279 5.88227 21.7014C6.43059 21.8949 7.01911 22 7.63158 22Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 ---
 
 <BaseLayout
@@ -68,13 +79,16 @@ const teamMembers = allTeam
     </section>
 
     {/* Values */}
-    <section class="bg-gray-50 py-16 sm:py-20">
-      <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+    <section class="bg-white py-16 sm:py-20">
+      <div class="mx-auto max-w-[80rem] px-8">
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {COMPANY_VALUES.map((value) => (
-            <div class="rounded-xl bg-white p-6 shadow-sm">
-              <h3 class="text-lg font-bold text-gray-900">{value.title}</h3>
-              <p class="mt-1 text-sm text-zenml-500">{value.subtitle}</p>
+            <div class="value-card">
+              <div class="featured-icon">
+                <div class="h-6 w-6" set:html={SPEECH_BUBBLES_SVG} />
+              </div>
+              <h3 class="mt-4 text-lg font-bold text-gray-900">{value.title}</h3>
+              <p class="mt-1 text-base text-gray-600">{value.subtitle}</p>
               <ul class="mt-4 space-y-2">
                 {value.bullets.map((bullet) => (
                   <li class="flex items-start gap-2 text-sm text-gray-600">
@@ -93,42 +107,69 @@ const teamMembers = allTeam
 
     {/* Team grid */}
     <section id="team" class="bg-white py-16 sm:py-20">
-      <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto max-w-[80rem] px-8">
         <h2 class="text-2xl font-bold text-gray-900 sm:text-3xl">Meet the team</h2>
-        <div class="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {teamMembers.map((member) => {
+        <div class="mt-10 grid gap-x-8 gap-y-16 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {teamCards.map(({ member, Content }) => {
             const d = member.data as any;
             return (
-              <div class="text-center">
-                {d.photo?.url ? (
-                  <img
-                    src={d.photo.url}
-                    alt={d.title}
-                    class="mx-auto h-32 w-32 rounded-full object-cover"
-                    loading="lazy"
-                  />
-                ) : (
-                  <div class="mx-auto flex h-32 w-32 items-center justify-center rounded-full bg-gray-100 text-2xl font-bold text-gray-400">
-                    {d.title?.charAt(0) ?? "?"}
+              <div class="team-card">
+                <div>
+                  {/* Square image with top corners rounded */}
+                  <div class="team-image-wrapper">
+                    {d.photo?.url ? (
+                      <img
+                        src={d.photo.url}
+                        alt={d.title}
+                        class="team-image"
+                        loading="lazy"
+                      />
+                    ) : (
+                      <div class="team-image-placeholder">
+                        {d.title?.charAt(0) ?? "?"}
+                      </div>
+                    )}
                   </div>
-                )}
-                <h3 class="mt-3 font-semibold text-gray-900">{d.title}</h3>
-                {d.position && (
-                  <p class="mt-1 text-sm text-zenml-500">{d.position}</p>
-                )}
-                {d.linkedin && (
-                  <a
-                    href={d.linkedin}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="mt-2 inline-block text-sm text-gray-400 hover:text-gray-600"
-                    aria-label={`${d.title} on LinkedIn`}
-                  >
-                    <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M22.2234 0H1.77187C0.792187 0 0 0.773438 0 1.72969V22.2656C0 23.2219 0.792187 24 1.77187 24H22.2234C23.2031 24 24 23.2219 24 22.2703V1.72969C24 0.773438 23.2031 0 22.2234 0ZM7.12031 20.4516H3.55781V8.99531H7.12031V20.4516ZM5.33906 7.43438C4.19531 7.43438 3.27188 6.51094 3.27188 5.37187C3.27188 4.23281 4.19531 3.30937 5.33906 3.30937C6.47813 3.30937 7.40156 4.23281 7.40156 5.37187C7.40156 6.50625 6.47813 7.43438 5.33906 7.43438ZM20.4516 20.4516H16.8937V14.8828C16.8937 13.5562 16.8703 11.8453 15.0422 11.8453C13.1906 11.8453 12.9094 13.2937 12.9094 14.7891V20.4516H9.35625V8.99531H12.7687V10.5609H12.8156C13.2891 9.66094 14.4516 8.70938 16.1813 8.70938C19.7859 8.70938 20.4516 11.0813 20.4516 14.1656V20.4516Z" />
-                    </svg>
-                  </a>
-                )}
+
+                  {/* Name, position, fun facts */}
+                  <div class="px-8">
+                    <h3 class="text-lg font-semibold text-gray-900">{d.title}</h3>
+                    {d.position && (
+                      <p class="mt-1 text-sm text-zenml-500">{d.position}</p>
+                    )}
+                    <div class="mt-4 team-facts">
+                      <Content />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Social links — bottom of card */}
+                <div class="flex gap-3 px-8 mt-6">
+                  {d.linkedin && (
+                    <a
+                      href={d.linkedin}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="text-gray-400 hover:text-gray-600 transition-colors"
+                      aria-label={`${d.title} on LinkedIn`}
+                    >
+                      <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M22.2234 0H1.77187C0.792187 0 0 0.773438 0 1.72969V22.2656C0 23.2219 0.792187 24 1.77187 24H22.2234C23.2031 24 24 23.2219 24 22.2703V1.72969C24 0.773438 23.2031 0 22.2234 0ZM7.12031 20.4516H3.55781V8.99531H7.12031V20.4516ZM5.33906 7.43438C4.19531 7.43438 3.27188 6.51094 3.27188 5.37187C3.27188 4.23281 4.19531 3.30937 5.33906 3.30937C6.47813 3.30937 7.40156 4.23281 7.40156 5.37187C7.40156 6.50625 6.47813 7.43438 5.33906 7.43438ZM20.4516 20.4516H16.8937V14.8828C16.8937 13.5562 16.8703 11.8453 15.0422 11.8453C13.1906 11.8453 12.9094 13.2937 12.9094 14.7891V20.4516H9.35625V8.99531H12.7687V10.5609H12.8156C13.2891 9.66094 14.4516 8.70938 16.1813 8.70938C19.7859 8.70938 20.4516 11.0813 20.4516 14.1656V20.4516Z" />
+                      </svg>
+                    </a>
+                  )}
+                  {d.email && (
+                    <a
+                      href={`mailto:${d.email}`}
+                      class="text-gray-400 hover:text-gray-600 transition-colors"
+                      aria-label={`Email ${d.title}`}
+                    >
+                      <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21.5 18L14.8571 12M9.14286 12L2.50003 18M2 7L10.1649 12.7154C10.8261 13.1783 11.1567 13.4097 11.5163 13.4993C11.8339 13.5785 12.1661 13.5785 12.4837 13.4993C12.8433 13.4097 13.1739 13.1783 13.8351 12.7154L22 7M6.8 20H17.2C18.8802 20 19.7202 20 20.362 19.673C20.9265 19.3854 21.3854 18.9265 21.673 18.362C22 17.7202 22 16.8802 22 15.2V8.8C22 7.11984 22 6.27976 21.673 5.63803C21.3854 5.07354 20.9265 4.6146 20.362 4.32698C19.7202 4 18.8802 4 17.2 4H6.8C5.11984 4 4.27976 4 3.63803 4.32698C3.07354 4.6146 2.6146 5.07354 2.32698 5.63803C2 6.27976 2 7.11984 2 8.8V15.2C2 16.8802 2 17.7202 2.32698 18.362C2.6146 18.9265 3.07354 19.3854 3.63803 19.673C4.27976 20 5.11984 20 6.8 20Z" />
+                      </svg>
+                    </a>
+                  )}
+                </div>
               </div>
             );
           })}
@@ -161,3 +202,115 @@ const teamMembers = allTeam
     </section>
   </main>
 </BaseLayout>
+
+<style>
+  /* ---------- Shared gradient card base (values + team) ---------- */
+  .value-card,
+  .team-card {
+    border: 1px solid #f2f4f7;
+    border-radius: 0.5rem;
+    background-image: linear-gradient(135deg, #fcfcfc, #fff);
+    transition: all 0.3s cubic-bezier(0.77, 0, 0.175, 1);
+  }
+
+  .value-card:hover,
+  .team-card:hover {
+    border-color: #7a3ef4;
+    background-image: linear-gradient(135deg, #f9f4ff, #fff);
+    transform: translateY(-10px);
+    box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.2);
+  }
+
+  /* ---------- Value card layout ---------- */
+  .value-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 2rem;
+  }
+
+  /* Purple outlined circle icon container */
+  .featured-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 100%;
+    border: 0.5rem solid #f9f5ff;  /* purple-50 */
+    background-color: #f4ebff;      /* purple-100 */
+    color: #7f56d9;                  /* purple-600 */
+  }
+
+  /* ---------- Team card layout ---------- */
+  .team-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 0 0 2rem;
+  }
+
+  /* Square image with top corners rounded */
+  .team-image-wrapper {
+    width: 100%;
+    padding-top: 100%;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+  }
+
+  .team-image {
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    inset: 0;
+  }
+
+  .team-image-placeholder {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f2f4f7;
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #98a2b3;
+  }
+
+  /* ---------- Team fun facts — purple checkmark bullets ---------- */
+  .team-facts :global(ul) {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .team-facts :global(li) {
+    position: relative;
+    padding-left: 2rem;
+    color: #475467;  /* gray-600 */
+    font-size: 0.875rem;
+    line-height: 1.6;
+  }
+
+  .team-facts :global(li)::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.1rem;
+    width: 1.25rem;
+    height: 1.25rem;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cpath d='M8.75 14L12.25 17.5L19.25 10.5M25.667 14C25.667 20.443 20.443 25.667 14 25.667C7.557 25.667 2.333 20.443 2.333 14C2.333 7.557 7.557 2.333 14 2.333C20.443 2.333 25.667 7.557 25.667 14Z' stroke='%237A3EF4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+</style>
