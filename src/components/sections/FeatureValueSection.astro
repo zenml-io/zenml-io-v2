@@ -9,14 +9,17 @@
  * bullets in ZenML purple, 4rem grid gap, 4rem vertical padding.
  */
 interface Props {
+  eyebrow?: string;
   title: string;
   body?: string;
   bullets?: string[];
+  learnMoreHref?: string;
+  learnMoreLabel?: string;
   image?: { url: string; alt?: string };
   imageSide?: "left" | "right";
 }
 
-const { title, body, bullets, image, imageSide = "right" } = Astro.props;
+const { eyebrow, title, body, bullets, learnMoreHref, learnMoreLabel = "Learn More", image, imageSide = "right" } = Astro.props;
 const isImageLeft = imageSide === "left";
 ---
 
@@ -26,7 +29,10 @@ const isImageLeft = imageSide === "left";
       "grid items-center gap-10 lg:grid-cols-2 lg:gap-16",
       isImageLeft && "lg:[direction:rtl] lg:*:[direction:ltr]",
     ]}>
-      <div class="max-w-[80%]">
+      <div class="max-w-[80%]" data-reveal>
+        {eyebrow && (
+          <p class="mb-3 text-sm font-semibold uppercase tracking-wider text-zenml-500">{eyebrow}</p>
+        )}
         <h2 class="text-3xl font-semibold text-gray-900 leading-tight sm:text-[2.75rem] lg:text-[3rem]">{title}</h2>
         {body && (
           <p class="mt-4 text-lg text-gray-600 leading-relaxed">{body}</p>
@@ -43,9 +49,15 @@ const isImageLeft = imageSide === "left";
             ))}
           </ul>
         )}
+        {learnMoreHref && (
+          <a href={learnMoreHref} class="mt-6 inline-flex items-center gap-2 text-base font-semibold text-zenml-500 transition-colors hover:text-zenml-600">
+            {learnMoreLabel}
+            <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 10a.75.75 0 0 1 .75-.75h10.638l-3.47-3.47a.75.75 0 1 1 1.06-1.06l4.773 4.773a.748.748 0 0 1 0 1.014l-4.773 4.773a.75.75 0 0 1-1.06-1.06l3.47-3.47H3.75A.75.75 0 0 1 3 10Z" clip-rule="evenodd"/></svg>
+          </a>
+        )}
       </div>
       {image?.url && (
-        <div class="overflow-hidden rounded-lg">
+        <div class="overflow-hidden rounded-lg" data-reveal>
           <img
             src={image.url}
             alt={image.alt || title}

@@ -1,0 +1,51 @@
+---
+/**
+ * ProTestimonial02 — purple-background testimonial card matching
+ * Webflow's uui-testimonial02_component pattern.
+ *
+ * Centered layout: quote, avatar + name/title row, company logo.
+ * Background: zenml-500 (#7a3ef4), border-radius: 1rem, padding: 4rem.
+ * All text in white.
+ */
+interface Props {
+  quote: string;
+  name: string;
+  title: string;
+  avatar: string;
+  companyLogo: string;
+  companyLogoAlt?: string;
+}
+
+const { quote, name, title, avatar, companyLogo, companyLogoAlt } = Astro.props;
+---
+
+<section class="bg-white py-12 sm:py-16">
+  <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+    <div class="rounded-2xl bg-zenml-500 px-8 py-12 text-center sm:px-12 sm:py-16" data-reveal>
+      <blockquote class="text-xl font-medium leading-relaxed text-white sm:text-2xl">
+        {quote}
+      </blockquote>
+
+      <div class="mt-8 flex flex-col items-center gap-6 sm:flex-row sm:justify-center">
+        <div class="flex items-center gap-4">
+          <img
+            src={avatar}
+            alt={name}
+            class="h-16 w-16 rounded-full object-cover"
+            loading="lazy"
+          />
+          <div class="text-left">
+            <p class="font-semibold text-white">{name}</p>
+            <p class="text-sm text-white/70">{title}</p>
+          </div>
+        </div>
+        <img
+          src={companyLogo}
+          alt={companyLogoAlt || "Company logo"}
+          class="h-8 max-h-[3rem] w-auto object-contain"
+          loading="lazy"
+        />
+      </div>
+    </div>
+  </div>
+</section>
