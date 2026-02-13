@@ -41,6 +41,7 @@ export interface FaqData {
 export interface ComparisonRow {
   feature: string;
   description?: string;
+  icon?: string; // inline SVG string for row icon
   columns: string[]; // values per column (e.g., ["Basic", "Advanced"])
 }
 
@@ -50,6 +51,7 @@ export interface ComparisonTableData {
   headline: string;
   subheadline?: string;
   columnHeaders: string[];
+  headerColors?: string[]; // Tailwind text color classes per column header
   rows: ComparisonRow[];
 }
 

@@ -3,13 +3,15 @@
  * ComparisonTable — semantic HTML table for feature comparisons.
  *
  * Renders a responsive, accessible <table> with alternating row backgrounds.
- * Used on /open-source-vs-pro, /pricing, /deployments.
+ * Supports optional row icons and per-column header colors.
+ * Used on /open-source-vs-pro.
  */
 import type { ComparisonTableData } from "../../lib/marketingPageTypes";
 
 interface Props extends ComparisonTableData {}
 
-const { eyebrow, headline, subheadline, columnHeaders, rows } = Astro.props;
+const { eyebrow, headline, subheadline, columnHeaders, headerColors, rows } = Astro.props;
+const hasIcons = rows.some((r) => r.icon);
 ---
 
 <section class="bg-white py-16 sm:py-20">
@@ -34,9 +36,12 @@ const { eyebrow, headline, subheadline, columnHeaders, rows } = Astro.props;
       <table class="w-full min-w-[600px] border-collapse text-left">
         <thead>
           <tr class="border-b-2 border-gray-200">
-            <th class="py-3 pr-4 text-sm font-semibold text-gray-500">Feature</th>
-            {columnHeaders.map((header) => (
-              <th class="py-3 px-4 text-center text-sm font-bold text-gray-900">
+            <th class="py-3 pr-4 pl-6 text-sm font-semibold text-purple-700">Feature</th>
+            {columnHeaders.map((header, idx) => (
+              <th class:list={[
+                "py-3 px-4 text-center text-sm font-bold",
+                headerColors?.[idx] ?? "text-gray-900",
+              ]}>
                 {header}
               </th>
             ))}
@@ -49,10 +54,17 @@ const { eyebrow, headline, subheadline, columnHeaders, rows } = Astro.props;
               i % 2 === 0 ? "bg-gray-50" : "bg-white",
             ]}>
               <td class="py-4 pr-4">
-                <div class="font-medium text-gray-900">{row.feature}</div>
-                {row.description && (
-                  <div class="mt-0.5 text-sm text-gray-500">{row.description}</div>
-                )}
+                <div class:list={["flex items-center gap-4", hasIcons && "pl-2"]}>
+                  {row.icon && (
+                    <div class="comparison-icon flex-shrink-0" set:html={row.icon} />
+                  )}
+                  <div>
+                    <div class="font-semibold text-gray-900">{row.feature}</div>
+                    {row.description && (
+                      <div class="mt-0.5 text-xs text-gray-500">{row.description}</div>
+                    )}
+                  </div>
+                </div>
               </td>
               {row.columns.map((value) => (
                 <td class="px-4 py-4 text-center text-sm text-gray-600">
@@ -66,3 +78,22 @@ const { eyebrow, headline, subheadline, columnHeaders, rows } = Astro.props;
     </div>
   </div>
 </section>
+
+<style>
+  .comparison-icon {
+    border: 0.5rem solid var(--color-purple-50, #f9f5ff);
+    background-color: var(--color-purple-100, #f4ebff);
+    color: var(--color-purple-600, #7f56d9);
+    border-radius: 100%;
+    width: 3.5rem;
+    height: 3.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .comparison-icon :global(svg) {
+    width: 1.5rem;
+    height: 1.5rem;
+    color: inherit;
+  }
+</style>
