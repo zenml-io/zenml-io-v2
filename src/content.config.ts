@@ -436,6 +436,7 @@ const projectSchema = z.object({
   description: z.string().optional(),
   tags: slugReferenceArray('project-tags', referenceSlugSets['project-tags']),
   mainImageLink: z.string().url().optional(), // Note: NOT "coverImage"
+  previewImage: imageSchema.optional(), // Larger preview image for detail page header
   githubUrl: z.string().url().optional(),
   demoUrl: z.string().url().optional(),
   tools: z.array(z.string()).default([]), // Tool names
