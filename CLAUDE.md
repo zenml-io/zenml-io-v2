@@ -10,7 +10,7 @@ customize freely.
 - **Traffic**: ~7k unique visitors / ~10k page views per week (and growing)
 - **Hosting target**: Cloudflare Pages (confirmed, deployed at `zenml-io-v2.pages.dev`)
 - **Context**: This is being built as part of a Claude hackathon using Opus 4.6
-- **Status**: Phase 0 complete. **Phase 1 COMPLETE** (2026-02-11). All content exported, transformed to MDX, assets migrated to R2. Ready for Phase 2 (Content Collections & Schemas).
+- **Status**: **Phases 0–5 COMPLETE**. ~2,224 pages building in ~33s. All content migrated, all pages built, SEO infrastructure done, forms live, analytics tracking active. Currently in **Phase 6 (QA & Cutover)** — fixing visual parity gaps page-by-page against the Webflow original.
 
 ## Key Constraints
 
@@ -62,14 +62,15 @@ Full inventory is in `docs/webflow-inventory.md`.
 | Layer | Choice |
 |-------|--------|
 | Framework | **Astro** (TypeScript) — static-first, content collections, islands |
-| Content | **Markdown/MDX in git** — Astro Content Collections with typed schemas |
+| Content | **Markdown (.md) in git** — Astro Content Collections with Zod schemas. **Use `.md` NOT `.mdx`** (MDX v2 breaks on Webflow-exported HTML) |
 | Hosting | **Cloudflare Pages** — edge CDN, branch previews, auto CI/CD |
 | Assets | **Cloudflare R2** — object storage for images/files |
 | Styling | **Tailwind CSS** — utility-first |
-| Interactive | **Preact islands** — for LLMOps filter and other client-side widgets |
+| Interactive | **Preact islands** — 7 islands: LLMOpsFilter, ContactForm, CookieConsent, FeatureTabsSlider, LottieHero, ProTestimonialCarousel, RoiCalculator |
 | Search | **Pagefind** (later) — build-time search index, no server |
-| Forms | Cal.com embeds + Cloudflare Workers (architecture decided, see `docs/forms-audit.md`) |
-| Analytics | **Plausible** (keep existing) |
+| Forms | **ContactForm** Preact island → Cloudflare Pages Functions (`/api/forms/:formType`). Cal.com embeds for demo booking. Brevo for newsletter |
+| Analytics | **Plausible** + GA4 + Segment (hostname-gated to `www.zenml.io` to prevent preview pollution) |
+| Code highlighting | **Shiki** (`github-dark` theme) at build time + **Inconsolata** monospace font |
 | CRM | **Attio** (keep existing) |
 | Design approach | Pixel-perfect recreation first, then iterate |
 
@@ -119,6 +120,26 @@ query the live site. The site ID is `64a817a2e7e2208272d1ce30`.
 - `export-redirects.ts` — Redirect normalization + chain flattening
 - `generate-auto-redirects.ts` — Slug change/deletion detection
 - `catalog-animations.ts` — Animation/interaction catalog
+
+## Phase 2 Complete (2026-02-11)
+
+All 20 content collections defined with Zod schemas in `src/content.config.ts`. 2,392 content files validated. Astro Content Layer API with glob loaders.
+
+## Phase 3 Complete (2026-02-12)
+
+All pages built — layouts, blog (280 posts, 12/page pagination), all CMS templates, LLMOps filter island, 44+ static pages, homepage (13 section components), feature detail pages, case studies, VS comparison pages, form/conversion pages, ROI calculator, Storylane embeds.
+
+## Phase 4 Complete (2026-02-12)
+
+SEO & Redirects — 52 redirect rules in `public/_redirects`, RSS feeds (blog + LLMOps), auto-generated sitemap, OG images, JSON-LD structured data, `llms.txt`, favicon, parity testing at 3.27% gap.
+
+## Phase 5 Complete (2026-02-12)
+
+Forms & Interactive Features — ContactForm Preact island, cookie consent (4 categories), analytics tracking with hostname gate, blog TOC with scroll-spy, Shiki code highlighting, security headers.
+
+## Phase 6 In Progress — QA & Cutover
+
+Fixing visual parity gaps page-by-page against the Webflow original. Recent fixes: homepage sections, features hub, company page, footer gradient, open-source-vs-pro, integrations, projects.
 
 ## Development Conventions
 
@@ -196,12 +217,42 @@ trying to capture the full filename.
 
 ## Key Files
 
+### Documentation
 - `docs/plan.md` — **Master migration plan** (phases, decisions, content model)
-- `docs/phase-0-plan.md` — Phase 0 detailed plan (complete)
-- `docs/phase-1-plan.md` — Phase 1 detailed plan (Content Export & Transform)
-- `docs/investigation_1.md` — Research on what others used to replace Webflow
-- `docs/investigation_2.md` — Practical playbook for the migration
+- `docs/phase-0-plan.md` through `docs/phase-5-plan.md` — Detailed phase plans
 - `docs/webflow-inventory.md` — Full inventory of the Webflow site
 - `docs/forms-audit.md` — Forms architecture audit (8 types, 4 categories)
 - `docs/custom-code-audit.md` — Third-party scripts audit (14 services, 20 scripts)
 - `docs/design-tokens.md` — Extracted design tokens reference
+
+### Core Architecture
+- `astro.config.ts` — Astro config (static output, Cloudflare, Preact, sitemap, Shiki)
+- `src/content.config.ts` — All 20 content collection schemas (Zod)
+- `src/styles/global.css` — Tailwind v4 `@theme` block + design tokens
+- `src/lib/constants.ts` — `SITE_URL` and shared constants
+- `src/lib/seo.ts` — SEO contract (`SEOProps`, `resolveSeo()`, `buildCanonical()`)
+- `src/lib/navigation.ts` — Nav data (typed, not hardcoded)
+- `src/lib/footer.ts` — Footer data (typed, not hardcoded)
+
+### Homepage
+- `src/pages/index.astro` — Homepage composition (13 section components)
+- `src/lib/homepage.ts` — All homepage marketing copy, stats, URLs, FAQ
+- `src/components/sections/` — 37 section components
+
+### Preact Islands (interactive client-side components)
+- `src/components/islands/LLMOpsFilter.tsx` — LLMOps database filter (tag/industry/search)
+- `src/components/islands/ContactForm.tsx` — Form submission → Pages Functions
+- `src/components/islands/CookieConsent.tsx` — Cookie consent banner (4 categories)
+- `src/components/islands/FeatureTabsSlider.tsx` — Homepage auto-cycling feature tabs
+- `src/components/islands/LottieHero.tsx` — Hero Lottie animation player
+- `src/components/islands/ProTestimonialCarousel.tsx` — /pro page testimonial carousel
+- `src/components/islands/RoiCalculator.tsx` — ROI calculator interactive form
+
+### Layouts
+- `src/layouts/BaseLayout.astro` — Main layout (nav, footer, head slots, analytics)
+- `src/layouts/BlogLayout.astro` — Blog post layout (conditional TOC sidebar)
+- `src/layouts/MinimalLayout.astro` — Lightweight shell (no nav/footer) for embeds
+
+### Webflow Reference (gitignored, local only)
+- `design/webflow-export/extracted/` — Original Webflow HTML + CSS export
+- `design/migration/phase1/runs/` — Phase 1 export run artifacts
