@@ -146,14 +146,14 @@ const ogImage = d.seo?.ogImage || d.mainImage?.url;
         <div class="min-w-0 flex-1">
           {hasStructuredContent ? (
             <div class="space-y-10">
-              {/* Tool Overview */}
+              {/* Tool Overview — overviewTitle is a category label (demoted), overviewDescription is the lead text */}
               {(d.overviewTitle || d.overviewDescription) && (
                 <section>
                   {d.overviewTitle && (
-                    <h2 class="text-xl font-bold text-gray-900">{d.overviewTitle}</h2>
+                    <h2 class="text-sm font-semibold uppercase tracking-wider text-gray-400">{d.overviewTitle}</h2>
                   )}
                   {d.overviewDescription && (
-                    <p class="mt-3 text-gray-600 leading-relaxed">{d.overviewDescription}</p>
+                    <p class="mt-2 text-lg text-gray-700 leading-relaxed">{d.overviewDescription}</p>
                   )}
                 </section>
               )}

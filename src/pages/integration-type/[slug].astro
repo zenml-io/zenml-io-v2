@@ -9,6 +9,7 @@
  */
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import IntegrationCard from "../../components/integrations/IntegrationCard.astro";
 
 export async function getStaticPaths() {
   const integrationTypes = await getCollection("integration-types");
@@ -49,36 +50,15 @@ const allIntegrations = (
       </p>
     </header>
 
-    {/* Integration list — same card style as hub */}
-    <div class="space-y-3">
+    {/* Integration grid — same card style as hub */}
+    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {allIntegrations.map((integration) => (
-        <a
+        <IntegrationCard
           href={`/integrations/${integration.data.slug}`}
-          class="flex items-center gap-4 rounded-lg border border-gray-200 bg-white p-4 transition-shadow hover:shadow-md"
-        >
-          {integration.data.logo ? (
-            <div class="flex h-[60px] w-[60px] shrink-0 items-center justify-center rounded-lg bg-gray-50 p-2">
-              <img
-                src={integration.data.logo.url}
-                alt={integration.data.logo.alt || integration.data.title}
-                class="h-10 w-10 object-contain"
-                loading="lazy"
-              />
-            </div>
-          ) : (
-            <div class="flex h-[60px] w-[60px] shrink-0 items-center justify-center rounded-lg bg-gray-100 text-lg font-bold text-gray-400">
-              {integration.data.title[0]}
-            </div>
-          )}
-          <div class="min-w-0">
-            <h2 class="text-base font-semibold text-gray-900">
-              {integration.data.title}
-            </h2>
-            <div class="mt-0.5 text-sm text-gray-500">
-              {integrationType.data.name}
-            </div>
-          </div>
-        </a>
+          title={integration.data.title}
+          categoryLabel={integrationType.data.name}
+          logo={integration.data.logo}
+        />
       ))}
     </div>
 
