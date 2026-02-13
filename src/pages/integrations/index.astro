@@ -1,102 +1,242 @@
 ---
 /**
- * Integrations listing page.
+ * Integrations hub page — matches Webflow layout.
  *
- * Grid of all integrations, grouped by integration type.
+ * Hero section + 2-column layout: left filter radio list, right integrations list.
+ * Client-side filtering via inline script (progressive enhancement).
  * Route: /integrations
  */
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import Button from "../../components/Button.astro";
 
-// Get all published integrations
+// Get all published integrations + types
 const allIntegrations = (
   await getCollection("integrations", ({ data }) => !data.draft)
 ).sort((a, b) => a.data.title.localeCompare(b.data.title));
 
-// Get all integration types for filter display
-const allTypes = await getCollection("integration-types");
+const allTypes = (await getCollection("integration-types")).sort((a, b) =>
+  a.data.name.localeCompare(b.data.name)
+);
 const typeMap = new Map(allTypes.map((t) => [t.data.slug, t.data.name]));
 
-// Group integrations by type
-const grouped = new Map<string, typeof allIntegrations>();
-for (const integration of allIntegrations) {
-  const type = integration.data.integrationType || "other";
-  if (!grouped.has(type)) grouped.set(type, []);
-  grouped.get(type)!.push(integration);
+// Count integrations per type for filter display
+const typeCountMap = new Map<string, number>();
+for (const i of allIntegrations) {
+  const t = i.data.integrationType;
+  typeCountMap.set(t, (typeCountMap.get(t) || 0) + 1);
 }
-
-// Sort groups by type name
-const sortedGroups = [...grouped.entries()].sort((a, b) => {
-  const nameA = typeMap.get(a[0]) || a[0];
-  const nameB = typeMap.get(b[0]) || b[0];
-  return nameA.localeCompare(nameB);
-});
 ---
 
 <BaseLayout
   title="Integrations - ZenML"
-  description="Browse ZenML's integrations for orchestrators, experiment trackers, artifact stores, and more."
+  description="Explore the MLOps landscape with ZenML. Browse 60+ integrations for orchestrators, experiment trackers, artifact stores, and more."
 >
-  <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-    <header class="mb-12">
-      <h1 class="text-4xl font-bold tracking-tight text-gray-900">Integrations</h1>
-      <p class="mt-4 text-lg text-gray-600">
-        Connect ZenML with your favorite MLOps tools. {allIntegrations.length} integrations across {allTypes.length} categories.
+  {/* ── Hero ─────────────────────────────────────────────────── */}
+  <div class="bg-white">
+    <div class="mx-auto max-w-3xl px-4 py-16 text-center sm:px-6 sm:py-20 lg:px-8">
+      <div class="mb-4 text-sm font-semibold uppercase tracking-widest text-primary-600/40">
+        Integrations
+      </div>
+      <h1 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl lg:text-5xl">
+        Explore the MLOps Landscape with ZenML
+      </h1>
+      <div class="mt-4" />
+      <p class="mx-auto max-w-2xl text-lg text-gray-600">
+        ZenML integrates with many different third-party tools. Once code is organized into a ZenML pipeline, you can supercharge your ML workflows with the best-in-class solutions from various MLOps areas.
       </p>
-    </header>
-
-    {/* Type filter chips */}
-    <div class="mb-10 flex flex-wrap gap-2">
-      {sortedGroups.map(([typeSlug, integrations]) => (
-        <a
-          href={`#${typeSlug}`}
-          class="inline-flex items-center gap-1.5 rounded-full border border-gray-200 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 transition-colors hover:border-primary-300 hover:bg-primary-50 hover:text-primary-700"
-        >
-          {typeMap.get(typeSlug) || typeSlug}
-          <span class="text-xs text-gray-400">({integrations.length})</span>
-        </a>
-      ))}
+      <div class="mt-4" />
+      <a
+        href="https://docs.zenml.io/stacks-and-components/component-guide/integration-overview"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex items-center gap-1.5 text-sm font-medium text-primary-600 hover:text-primary-700"
+      >
+        Learn more about different categories of MLOps tools
+        <svg width="21" height="20" viewBox="0 0 21 20" fill="none" class="h-4 w-4">
+          <path d="M4.6665 9.99984H16.3332M16.3332 9.99984L10.4998 4.1665M16.3332 9.99984L10.4998 15.8332" stroke="currentColor" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </a>
+      <img
+        src="/images/integrations-hero.svg"
+        alt="Flowchart of an ML workflow including components like Feature Store, Orchestrator, Code Repo, and Deployment Environment"
+        class="mt-8 w-full"
+        loading="eager"
+      />
     </div>
-
-    {/* Grouped integration grids */}
-    {sortedGroups.map(([typeSlug, integrations]) => (
-      <section id={typeSlug} class="mb-12">
-        <h2 class="mb-6 flex items-center gap-3 text-2xl font-bold text-gray-900">
-          {typeMap.get(typeSlug) || typeSlug}
-          <span class="text-base font-normal text-gray-400">({integrations.length})</span>
-        </h2>
-        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {integrations.map((integration) => (
-            <a
-              href={`/integrations/${integration.data.slug}`}
-              class="group flex items-center gap-3 rounded-lg border border-gray-200 bg-white p-4 transition-shadow hover:shadow-md"
-            >
-              {integration.data.logo ? (
-                <img
-                  src={integration.data.logo.url}
-                  alt={integration.data.logo.alt || integration.data.title}
-                  class="h-10 w-10 shrink-0 rounded-lg object-contain"
-                  loading="lazy"
-                />
-              ) : (
-                <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gray-100 text-sm font-bold text-gray-400">
-                  {integration.data.title[0]}
-                </div>
-              )}
-              <div class="min-w-0">
-                <h3 class="truncate font-medium text-gray-900 group-hover:text-primary-600">
-                  {integration.data.title}
-                </h3>
-                {integration.data.shortDescription && (
-                  <p class="mt-0.5 truncate text-xs text-gray-500">
-                    {integration.data.shortDescription}
-                  </p>
-                )}
-              </div>
-            </a>
-          ))}
-        </div>
-      </section>
-    ))}
   </div>
+
+  {/* ── Main: filter + list ─────────────────────────────────── */}
+  <section class="bg-gray-50 py-16 sm:py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col gap-8 lg:flex-row lg:gap-12">
+        {/* ── Left: Filter list ─── */}
+        <aside class="w-full shrink-0 lg:w-56">
+          <nav id="integration-filters" class="sticky top-24 flex flex-row flex-wrap gap-2 lg:flex-col lg:gap-0">
+            <button
+              data-filter="__all__"
+              class="filter-btn is-active w-full rounded-lg px-3 py-2 text-left text-sm font-medium text-gray-900 transition-colors hover:bg-primary-50 hover:text-primary-700"
+            >
+              All Integrations
+              <span class="ml-1 text-xs text-gray-400">({allIntegrations.length})</span>
+            </button>
+            {allTypes.map((type) => (
+              <button
+                data-filter={type.data.slug}
+                class="filter-btn w-full rounded-lg px-3 py-2 text-left text-sm font-medium text-gray-600 transition-colors hover:bg-primary-50 hover:text-primary-700"
+              >
+                {type.data.name}
+                <span class="ml-1 text-xs text-gray-400">
+                  ({typeCountMap.get(type.data.slug) || 0})
+                </span>
+              </button>
+            ))}
+          </nav>
+        </aside>
+
+        {/* ── Right: Integrations list ─── */}
+        <div class="flex-1">
+          <div id="integrations-list" class="space-y-3">
+            {allIntegrations.map((integration) => (
+              <a
+                href={`/integrations/${integration.data.slug}`}
+                data-type={integration.data.integrationType}
+                class="integration-card flex items-center gap-4 rounded-lg border border-gray-200 bg-white p-4 transition-shadow hover:shadow-md"
+              >
+                {integration.data.logo ? (
+                  <div class="flex h-[60px] w-[60px] shrink-0 items-center justify-center rounded-lg bg-gray-50 p-2">
+                    <img
+                      src={integration.data.logo.url}
+                      alt={integration.data.logo.alt || integration.data.title}
+                      class="h-10 w-10 object-contain"
+                      loading="lazy"
+                    />
+                  </div>
+                ) : (
+                  <div class="flex h-[60px] w-[60px] shrink-0 items-center justify-center rounded-lg bg-gray-100 text-lg font-bold text-gray-400">
+                    {integration.data.title[0]}
+                  </div>
+                )}
+                <div class="min-w-0">
+                  <h2 class="text-base font-semibold text-gray-900">
+                    {integration.data.title}
+                  </h2>
+                  <div class="mt-0.5 text-sm text-gray-500">
+                    {typeMap.get(integration.data.integrationType) || integration.data.integrationType}
+                  </div>
+                </div>
+              </a>
+            ))}
+          </div>
+
+          {/* Empty state (hidden by default, shown by JS) */}
+          <div id="empty-state" class="hidden py-12 text-center text-gray-500">
+            No integrations found for this category.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* ── CTA02: Unify Your ML and LLM Workflows ────────────── */}
+  <section class="bg-gray-900 py-16 sm:py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col items-center gap-10 lg:flex-row lg:gap-16">
+        <div class="flex-1 text-center lg:text-left">
+          <h2 class="text-2xl font-bold text-white sm:text-3xl">
+            Unify Your ML and LLM Workflows
+          </h2>
+          <ul class="mt-6 space-y-4">
+            <li class="flex items-start gap-3">
+              <svg class="mt-0.5 h-6 w-6 shrink-0 text-primary-400" viewBox="0 0 28 28" fill="none">
+                <path d="M8.75 14L12.25 17.5L19.25 10.5M25.667 14C25.667 20.443 20.443 25.667 14 25.667C7.557 25.667 2.333 20.443 2.333 14C2.333 7.557 7.557 2.333 14 2.333C20.443 2.333 25.667 7.557 25.667 14Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              <span class="text-lg text-white">Free, powerful MLOps open source foundation</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <svg class="mt-0.5 h-6 w-6 shrink-0 text-primary-400" viewBox="0 0 28 28" fill="none">
+                <path d="M8.75 14L12.25 17.5L19.25 10.5M25.667 14C25.667 20.443 20.443 25.667 14 25.667C7.557 25.667 2.333 20.443 2.333 14C2.333 7.557 7.557 2.333 14 2.333C20.443 2.333 25.667 7.557 25.667 14Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              <span class="text-lg text-white">Works with any infrastructure</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <svg class="mt-0.5 h-6 w-6 shrink-0 text-primary-400" viewBox="0 0 28 28" fill="none">
+                <path d="M8.75 14L12.25 17.5L19.25 10.5M25.667 14C25.667 20.443 20.443 25.667 14 25.667C7.557 25.667 2.333 20.443 2.333 14C2.333 7.557 7.557 2.333 14 2.333C20.443 2.333 25.667 7.557 25.667 14Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              <span class="text-lg text-white">Upgrade to managed Pro features</span>
+            </li>
+          </ul>
+          <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center lg:justify-start">
+            <Button href="/book-your-demo" size="lg">Book a Demo</Button>
+            <Button href="/get-started" variant="secondary" size="lg">Use Open Source</Button>
+          </div>
+        </div>
+        <div class="hidden lg:block lg:flex-1">
+          <img
+            src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/66e9556f/66e9556fd34d2791885b0c5f_model_control_plane_01.png"
+            alt="Dashboard displaying machine learning models, including versions, authors, and tags"
+            class="rounded-xl shadow-2xl"
+            loading="lazy"
+            width="1690"
+            height="960"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
 </BaseLayout>
+
+<style>
+  .filter-btn.is-active {
+    background-color: var(--color-primary-50);
+    color: var(--color-primary-700);
+    font-weight: 600;
+  }
+</style>
+
+<script>
+  // Client-side integration filtering
+  document.addEventListener("DOMContentLoaded", () => {
+    const filters = document.querySelectorAll<HTMLButtonElement>("[data-filter]");
+    const cards = document.querySelectorAll<HTMLElement>("[data-type]");
+    const emptyState = document.getElementById("empty-state");
+
+    function applyFilter(type: string | null) {
+      let visibleCount = 0;
+      cards.forEach((card) => {
+        const show = !type || type === "__all__" || card.dataset.type === type;
+        card.style.display = show ? "" : "none";
+        if (show) visibleCount++;
+      });
+      if (emptyState) {
+        emptyState.classList.toggle("hidden", visibleCount > 0);
+      }
+      // Update active state
+      filters.forEach((btn) => {
+        const isActive = btn.dataset.filter === (type || "__all__");
+        btn.classList.toggle("is-active", isActive);
+      });
+      // Update URL for deep linking (without page reload)
+      const url = new URL(window.location.href);
+      if (type && type !== "__all__") {
+        url.searchParams.set("type", type);
+      } else {
+        url.searchParams.delete("type");
+      }
+      history.replaceState(null, "", url.toString());
+    }
+
+    filters.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        applyFilter(btn.dataset.filter || null);
+      });
+    });
+
+    // Apply filter from URL on load
+    const params = new URLSearchParams(window.location.search);
+    const initialFilter = params.get("type");
+    if (initialFilter) {
+      applyFilter(initialFilter);
+    }
+  });
+</script>

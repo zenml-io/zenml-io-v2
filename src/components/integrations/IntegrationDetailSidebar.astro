@@ -1,0 +1,128 @@
+---
+/**
+ * Integration detail sticky sidebar.
+ *
+ * Matches Webflow: Category badge, Learn More links, Compare block, Related Resources.
+ * All sections are conditionally rendered based on available data.
+ */
+interface RelatedPost {
+  href: string;
+  title: string;
+  imageUrl?: string;
+}
+
+interface Props {
+  type?: { slug: string; name: string };
+  docsUrl?: string;
+  documentationLinkText?: string;
+  githubUrl?: string;
+  githubLinkText?: string;
+  compareSlug?: string;
+  compareName?: string;
+  integrationLogo?: { url: string; alt?: string };
+  relatedPosts: RelatedPost[];
+}
+
+const {
+  type,
+  docsUrl,
+  documentationLinkText,
+  githubUrl,
+  githubLinkText,
+  compareSlug,
+  compareName,
+  integrationLogo,
+  relatedPosts,
+} = Astro.props;
+---
+
+<aside class="w-full shrink-0 lg:w-64">
+  <div class="sticky top-24 space-y-8">
+    {/* Category */}
+    {type && (
+      <div>
+        <h3 class="text-xs font-semibold uppercase tracking-wider text-gray-400">Category</h3>
+        <a
+          href={`/integration-type/${type.slug}`}
+          class="mt-2 inline-block rounded-full bg-primary-50 px-3 py-1 text-sm font-medium text-primary-700 hover:bg-primary-100"
+        >
+          {type.name}
+        </a>
+      </div>
+    )}
+
+    {/* Learn More */}
+    {(docsUrl || githubUrl) && (
+      <div>
+        <h3 class="text-xs font-semibold uppercase tracking-wider text-gray-400">Learn More</h3>
+        <div class="mt-2 space-y-2">
+          {docsUrl && (
+            <a
+              href={docsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex items-center gap-2 text-sm font-medium text-primary-600 hover:text-primary-700"
+            >
+              <svg class="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 19V16H7C5.34315 16 4 17.3431 4 19M8.8 22H16.8C17.9201 22 18.4802 22 18.908 21.782C19.2843 21.5903 19.5903 21.2843 19.782 20.908C20 20.4802 20 19.9201 20 18.8V5.2C20 4.07989 20 3.51984 19.782 3.09202C19.5903 2.71569 19.2843 2.40973 18.908 2.21799C18.4802 2 17.9201 2 16.8 2H8.8C7.11984 2 6.27976 2 5.63803 2.32698C5.07354 2.6146 4.6146 3.07354 4.32698 3.63803C4 4.27976 4 5.11984 4 6.8V17.2C4 18.8802 4 19.7202 4.32698 20.362C4.6146 20.9265 5.07354 21.3854 5.63803 21.673C6.27976 22 7.11984 22 8.8 22Z" />
+              </svg>
+              {documentationLinkText || "Documentation"}
+            </a>
+          )}
+          {githubUrl && (
+            <a
+              href={githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex items-center gap-2 text-sm font-medium text-gray-700 hover:text-gray-900"
+            >
+              <svg class="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M12.008 2C6.474 2 2 6.583 2 12.254c0 5.532 2.867 9.37 6.843 10.727.5.1.523-.312.523-.58v-2.042c-3.1.374-3.224-1.517-3.432-1.824-.42-.724-1.414-.908-1.118-1.253.706-.374 1.427.093 2.262 1.36.605.92 1.784.764 2.381.612.094-.503.322-.951.644-1.312-3.211-.577-4.552-2.543-4.552-4.881 0-1.133.372-2.175 1.103-3.017-.465-1.38.044-2.562.113-2.753 1.326-.119 2.707.95 2.814 1.035.754-.204 1.616-.312 2.536-.312.924 0 1.79.112 2.549.318.255-.194 1.52-1.1 2.746-.988.066.191.566 1.346.125 2.695.74.845 1.116 1.895 1.116 3.031 0 2.345-1.35 4.31-4.571 4.88.456.478.738 1.136.738 1.868v2.97c.02.244 0 .485.396.485C19.161 21.578 22 17.757 22 12.255 22 6.583 17.526 2 12.008 2Z" />
+              </svg>
+              {githubLinkText || "Get Started"}
+            </a>
+          )}
+        </div>
+      </div>
+    )}
+
+    {/* Compare */}
+    {compareSlug && (
+      <div>
+        <h3 class="text-xs font-semibold uppercase tracking-wider text-gray-400">Compare</h3>
+        <a
+          href={`/compare/${compareSlug}`}
+          class="mt-2 flex items-center gap-2 rounded-lg border border-gray-200 bg-white p-3 transition-shadow hover:shadow-sm"
+        >
+          <div class="flex items-center gap-1.5">
+            <img src="/images/zenml-icon.webp" alt="ZenML" class="h-8 w-8 rounded" />
+            <span class="text-xs font-medium text-gray-400">vs</span>
+            {integrationLogo && (
+              <img src={integrationLogo.url} alt={compareName || ""} class="h-8 w-8 rounded object-contain" />
+            )}
+          </div>
+          <span class="text-sm font-medium text-gray-700">{compareName || compareSlug.replace("zenml-vs-", "ZenML vs ")}</span>
+        </a>
+      </div>
+    )}
+
+    {/* Related Resources */}
+    {relatedPosts.length > 0 && (
+      <div>
+        <h3 class="text-xs font-semibold uppercase tracking-wider text-gray-400">Related Resources</h3>
+        <div class="mt-2 space-y-3">
+          {relatedPosts.map((post) => (
+            <a href={post.href} class="flex items-center gap-3 group">
+              {post.imageUrl && (
+                <img src={post.imageUrl} alt="" class="h-14 w-14 shrink-0 rounded-lg object-cover" loading="lazy" />
+              )}
+              <span class="line-clamp-2 text-sm font-medium text-gray-700 group-hover:text-primary-600">
+                {post.title}
+              </span>
+            </a>
+          ))}
+        </div>
+      </div>
+    )}
+  </div>
+</aside>
