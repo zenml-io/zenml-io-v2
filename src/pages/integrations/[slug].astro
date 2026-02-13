@@ -276,14 +276,12 @@ const ogImage = d.seo?.ogImage || d.mainImage?.url;
     content: "";
     position: absolute;
     left: 0;
-    top: 0.15rem;
+    top: 0.1rem;
     width: 1.75rem;
     height: 1.75rem;
-    border-radius: 50%;
-    border: 2px solid var(--color-primary-500);
-    background-color: transparent;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%237A3EF4' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12l4 4 8-8'/%3E%3C/svg%3E");
-    background-size: 14px 14px;
+    /* Exact Webflow SVG: single path draws both circle + checkmark as strokes */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cpath d='M8.75 14L12.25 17.5L19.25 10.5M25.667 14C25.667 20.443 20.443 25.667 14 25.667C7.557 25.667 2.333 20.443 2.333 14C2.333 7.557 7.557 2.333 14 2.333C20.443 2.333 25.667 7.557 25.667 14Z' stroke='%237A3EF4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
   }
