@@ -29,10 +29,10 @@ const { currentPath = Astro.url.pathname } = Astro.props;
       </a>
 
       {/* Desktop Nav */}
-      <nav class="hidden lg:flex lg:items-center lg:gap-1" role="navigation" aria-label="Main navigation">
+      <nav class="hidden lg:flex lg:items-center lg:gap-1 h-full" role="navigation" aria-label="Main navigation">
         {/* Dropdown menus */}
         {NAV_DROPDOWNS.map((dropdown) => (
-          <div class="group">
+          <div class="group flex h-full items-center">
             <button
               class="flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50 hover:text-gray-900"
               aria-expanded="false"
@@ -44,9 +44,9 @@ const { currentPath = Astro.url.pathname } = Astro.props;
               </svg>
             </button>
             {/* Dropdown panel — positioned relative to the <header> (sticky = containing block) */}
-            <div class="pointer-events-none invisible absolute inset-x-0 top-full z-50 pt-2 opacity-0 transition-all duration-200 group-hover:pointer-events-auto group-hover:visible group-hover:opacity-100">
+            <div class="pointer-events-none invisible absolute inset-x-0 top-full z-50 opacity-0 transition-[opacity,visibility] duration-200 group-hover:pointer-events-auto group-hover:visible group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:visible group-focus-within:opacity-100">
+              <div class="bg-white shadow-large border-b border-gray-100">
               <div class="mx-auto max-w-[var(--container-lg)] px-4 sm:px-6 lg:px-8">
-              <div class="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-large">
                 <div class="flex">
                   {/* Left: link columns */}
                   <div class="flex flex-1 gap-0 p-5">
