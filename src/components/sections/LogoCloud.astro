@@ -2,27 +2,44 @@
 /**
  * LogoCloud — infinite-scrolling trust bar showing customer/partner logos.
  *
- * All 32 logos scroll continuously in a single row. The logo set is
+ * All logos scroll continuously in a single row. The logo set is
  * duplicated in the DOM to create a seamless loop via CSS animation.
  * Pauses on hover. Faded edges mask the scroll boundaries.
+ *
+ * Accepts optional props to customise label, logos, and background.
+ * Falls back to homepage LOGO_CLOUD data when no props are provided.
  */
-import { LOGO_CLOUD } from "../../lib/homepage";
+import { LOGO_CLOUD, type LogoItem } from "../../lib/homepage";
 
-const logos = LOGO_CLOUD.logos;
+interface Props {
+  label?: string;
+  logos?: LogoItem[];
+  /** Tailwind classes for the outer <section> background. */
+  bgClass?: string;
+  /** Tailwind class for the fade-edge gradient "from" color (must match bg). */
+  fadeFromClass?: string;
+}
+
+const {
+  label = LOGO_CLOUD.label,
+  logos = LOGO_CLOUD.logos,
+  bgClass = "border-y border-gray-100 bg-gray-50",
+  fadeFromClass = "from-gray-50",
+} = Astro.props;
 ---
 
-<section class="border-y border-gray-100 bg-gray-50 py-10 sm:py-12">
+<section class:list={[bgClass, "py-10 sm:py-12"]}>
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
     <h2 class="text-center text-xl font-bold text-gray-900 sm:text-2xl">
-      {LOGO_CLOUD.label}
+      {label}
     </h2>
   </div>
 
   <!-- Marquee container -->
   <div class="logo-marquee-wrap group relative mt-8 overflow-hidden">
     <!-- Fade edges -->
-    <div class="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-gray-50 to-transparent sm:w-24"></div>
-    <div class="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-gray-50 to-transparent sm:w-24"></div>
+    <div class:list={["pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r to-transparent sm:w-24", fadeFromClass]}></div>
+    <div class:list={["pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l to-transparent sm:w-24", fadeFromClass]}></div>
 
     <div class="logo-marquee-track flex items-center gap-12 group-hover:[animation-play-state:paused] sm:gap-16">
       {/* Render logos twice for seamless loop */}

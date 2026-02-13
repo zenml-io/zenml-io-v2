@@ -1,0 +1,60 @@
+---
+/**
+ * ProFeaturedTestimonial09 — light-purple testimonial card matching
+ * Webflow's uui-testimonial09_component pattern.
+ *
+ * 2-column grid: narrow portrait image on the left, quote + attribution
+ * on the right with a vertical divider between name and company logo.
+ *
+ * Background: primary-100 (#f1ebfe), border-radius: 0.5rem, padding: 2rem.
+ */
+interface Props {
+  quote: string;
+  name: string;
+  title: string;
+  image: string;
+  imageAlt?: string;
+  companyLogo: string;
+  companyLogoAlt?: string;
+}
+
+const { quote, name, title, image, imageAlt, companyLogo, companyLogoAlt } = Astro.props;
+---
+
+<section class="bg-white py-8 sm:py-12">
+  <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+    <div class="grid items-stretch gap-6 rounded-lg bg-primary-100 p-6 sm:grid-cols-[0.25fr_1fr] sm:gap-8 sm:p-8" data-reveal>
+      {/* Portrait image */}
+      <div class="flex items-center justify-center sm:items-stretch">
+        <img
+          src={image}
+          alt={imageAlt || name}
+          class="h-48 w-48 rounded-lg object-cover sm:h-full sm:w-full"
+          loading="lazy"
+        />
+      </div>
+
+      {/* Quote + attribution */}
+      <div class="flex flex-col justify-center">
+        <blockquote class="text-lg font-medium leading-relaxed text-gray-900 sm:text-xl">
+          {quote}
+        </blockquote>
+
+        {/* Attribution row: name/title | divider | company logo */}
+        <div class="mt-6 flex items-center gap-4">
+          <div>
+            <p class="font-semibold text-gray-900">{name}</p>
+            <p class="text-sm text-gray-500">{title}</p>
+          </div>
+          <div class="h-10 w-px bg-gray-300" aria-hidden="true"></div>
+          <img
+            src={companyLogo}
+            alt={companyLogoAlt || "Company logo"}
+            class="h-8 max-h-[3rem] w-auto object-contain"
+            loading="lazy"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

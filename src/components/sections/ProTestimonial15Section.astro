@@ -1,0 +1,22 @@
+---
+/**
+ * ProTestimonial15Section — wrapper for the testimonial carousel island.
+ *
+ * Provides outer section padding and loads the Preact carousel island
+ * with client:visible for deferred hydration.
+ */
+import ProTestimonialCarousel from "../islands/ProTestimonialCarousel";
+import type { CarouselTestimonial } from "../islands/ProTestimonialCarousel";
+
+interface Props {
+  testimonials: CarouselTestimonial[];
+}
+
+const { testimonials } = Astro.props;
+---
+
+<section class="bg-white py-16 sm:py-20">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <ProTestimonialCarousel client:visible testimonials={testimonials} />
+  </div>
+</section>
