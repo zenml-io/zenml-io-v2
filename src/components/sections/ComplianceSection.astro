@@ -2,14 +2,15 @@
 /**
  * ComplianceSection — vertical stack layout matching Webflow:
  * centered header → full-width architecture diagram → compliance badge banner.
+ * Includes scroll-triggered reveal animations.
  */
 import { COMPLIANCE } from "../../lib/homepage";
 ---
 
-<section class="bg-gray-50 py-16 sm:py-24">
+<section class="bg-gray-50 py-16 sm:py-24" data-reveal-scope="compliance">
   <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
     <!-- Centered header -->
-    <div class="mx-auto max-w-3xl text-center">
+    <div class="mx-auto max-w-3xl text-center" data-reveal>
       <p class="text-sm font-semibold uppercase tracking-wider text-zenml-500">
         {COMPLIANCE.eyebrow}
       </p>
@@ -20,7 +21,7 @@ import { COMPLIANCE } from "../../lib/homepage";
     </div>
 
     <!-- Full-width architecture diagram -->
-    <div class="mt-10 flex justify-center">
+    <div class="mt-10 flex justify-center" data-reveal style="transition-delay:80ms">
       <picture>
         <source media="(max-width: 767px)" srcset={COMPLIANCE.architectureImageMobile} />
         <img
@@ -33,7 +34,7 @@ import { COMPLIANCE } from "../../lib/homepage";
     </div>
 
     <!-- Compliance badge banner -->
-    <div class="mx-auto mt-8 mb-8 flex max-w-[90%] flex-col items-center gap-6 rounded-xl border border-gray-300 bg-white p-6 sm:flex-row sm:items-center sm:gap-8">
+    <div class="mx-auto mt-8 mb-8 flex max-w-[90%] flex-col items-center gap-6 rounded-xl border border-gray-300 bg-white p-6 sm:flex-row sm:items-center sm:gap-8" data-reveal style="transition-delay:160ms">
       <div class="flex shrink-0 items-center gap-6">
         <img
           src={COMPLIANCE.soc2Badge}
@@ -62,3 +63,41 @@ import { COMPLIANCE } from "../../lib/homepage";
     </div>
   </div>
 </section>
+
+<style>
+  [data-reveal] {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  }
+  [data-reveal].in-view {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    [data-reveal] {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  const section = document.querySelector('[data-reveal-scope="compliance"]');
+  if (section) {
+    const revealEls = section.querySelectorAll("[data-reveal]");
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("in-view");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: "0px 0px -40px 0px" },
+    );
+    revealEls.forEach((el) => observer.observe(el));
+  }
+</script>

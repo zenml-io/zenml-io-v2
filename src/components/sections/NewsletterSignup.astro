@@ -12,16 +12,54 @@ import BrevoNewsletterForm from "./BrevoNewsletterForm.astro";
 const privacyHtml = `${NEWSLETTER.privacyNote} <a href="${NEWSLETTER.privacyLink.href}" class="text-white/90 underline hover:text-white">${NEWSLETTER.privacyLink.label}</a>.`;
 ---
 
-<section class="bg-white py-16 sm:py-20">
-  <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-    <div class="rounded-2xl bg-zenml-500 p-8 text-center sm:px-16 sm:py-12">
+<section class="bg-white py-16 sm:py-20" data-reveal-scope="newsletter">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="rounded-2xl bg-zenml-500 p-8 text-center sm:px-16 sm:py-12" data-reveal>
       <h2 class="text-2xl font-bold text-white sm:text-3xl">
         {NEWSLETTER.headline}
       </h2>
       <p class="mt-3 text-white/80">{NEWSLETTER.body}</p>
-      <div class="mt-8 flex justify-center">
+      <div class="mx-auto mt-10 w-full max-w-[30rem]">
         <BrevoNewsletterForm config={BREVO_MAIN_CONFIG} privacyHtml={privacyHtml} darkBg />
       </div>
     </div>
   </div>
 </section>
+
+<style>
+  [data-reveal] {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  }
+  [data-reveal].in-view {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    [data-reveal] {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  const section = document.querySelector('[data-reveal-scope="newsletter"]');
+  if (section) {
+    const revealEls = section.querySelectorAll("[data-reveal]");
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("in-view");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: "0px 0px -40px 0px" },
+    );
+    revealEls.forEach((el) => observer.observe(el));
+  }
+</script>
