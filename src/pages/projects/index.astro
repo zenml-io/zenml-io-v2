@@ -2,14 +2,15 @@
 /**
  * Projects listing page.
  *
- * Grid of all published ZenML projects.
+ * Matches Webflow's uui-section_blog04 pattern: centered hero with purple
+ * "ZenML Projects" badge, 3-column card grid with hover-lift animation.
+ * Cards show image, title, description, license badge, and setup time.
  * Route: /projects
  */
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import Badge from "../../components/Badge.astro";
+import Button from "../../components/Button.astro";
 
-// Get all published projects
 const allProjects = (
   await getCollection("projects", ({ data }) => !data.draft)
 ).sort((a, b) => a.data.title.localeCompare(b.data.title));
@@ -17,52 +18,99 @@ const allProjects = (
 
 <BaseLayout
   title="Projects - ZenML"
-  description="Explore example projects built with ZenML."
+  description="A home for machine learning projects built using ZenML and various integrations"
 >
-  <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-    <header class="mb-12">
-      <h1 class="text-4xl font-bold tracking-tight text-gray-900">Projects</h1>
-      <p class="mt-4 text-lg text-gray-600">
-        Explore example projects built with ZenML. {allProjects.length} projects to learn from.
+  {/* Hero */}
+  <div class="py-16 sm:py-20">
+    <div class="mx-auto max-w-3xl px-4 text-center sm:px-6">
+      <span class="inline-flex items-center rounded-full bg-zenml-50 px-3 py-0.5 text-sm font-semibold text-zenml-500">
+        ZenML Projects
+      </span>
+      <h1 class="mt-4 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl sm:leading-[1.2]" style="letter-spacing: -0.05rem">
+        A home for machine learning projects built using ZenML and various integrations
+      </h1>
+      <p class="mt-4 text-lg leading-relaxed text-gray-600">
+        Browse our projects for everything you need to replicate a production-grade use case — demo, video, blog, and code.
       </p>
-    </header>
-
-    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-      {allProjects.map((project) => (
-        <a
-          href={`/projects/${project.data.slug}`}
-          class="group flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white transition-shadow hover:shadow-md"
-        >
-          {project.data.mainImageLink && (
-            <div class="aspect-[16/9] overflow-hidden">
-              <img
-                src={project.data.mainImageLink}
-                alt={project.data.title}
-                class="h-full w-full object-cover transition-transform group-hover:scale-105"
-                loading="lazy"
-              />
-            </div>
-          )}
-          <div class="flex flex-1 flex-col p-5">
-            <h2 class="text-lg font-semibold text-gray-900 group-hover:text-primary-600">
-              {project.data.title}
-            </h2>
-            {project.data.description && (
-              <p class="mt-2 line-clamp-2 text-sm text-gray-600">{project.data.description}</p>
-            )}
-            {project.data.tools.length > 0 && (
-              <div class="mt-auto flex flex-wrap gap-1.5 pt-4">
-                {project.data.tools.slice(0, 4).map((tool: string) => (
-                  <Badge variant="gray">{tool}</Badge>
-                ))}
-                {project.data.tools.length > 4 && (
-                  <Badge variant="gray">+{project.data.tools.length - 4}</Badge>
-                )}
-              </div>
-            )}
-          </div>
-        </a>
-      ))}
     </div>
   </div>
+
+  {/* Card grid */}
+  <div class="px-4 pb-16 sm:px-6 sm:pb-20 lg:px-8">
+    <div class="mx-auto max-w-7xl">
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {allProjects.map((project) => (
+          <a
+            href={`/projects/${project.data.slug}`}
+            class="group flex flex-col overflow-hidden rounded-lg border border-gray-100 bg-gradient-to-br from-[#fcfcfc] to-white transition-all duration-300 ease-[cubic-bezier(.77,0,.175,1)] hover:-translate-y-2.5 hover:border-zenml-500 hover:from-[#f9f4ff] hover:to-white hover:shadow-[0_0_5px_2px_rgba(0,0,0,0.2)]"
+          >
+            <div class="flex h-[140px] items-center justify-center overflow-hidden">
+              {project.data.mainImageLink && (
+                <img
+                  src={project.data.mainImageLink}
+                  alt={project.data.title}
+                  class="h-full w-full object-cover"
+                  loading="lazy"
+                />
+              )}
+            </div>
+            <div class="flex flex-1 flex-col gap-4 px-6 pb-6 pt-4">
+              <h2 class="text-2xl font-bold leading-tight text-gray-900">
+                {project.data.title}
+              </h2>
+              {project.data.description && (
+                <p class="text-sm leading-relaxed text-gray-600">{project.data.description}</p>
+              )}
+              <div class="mt-auto flex items-center gap-1.5 rounded-full bg-zenml-50 px-2.5 py-0.5 text-sm font-semibold text-zenml-500 w-fit">
+                <svg class="h-5 w-5 flex-shrink-0" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M10 2.5a1.25 1.25 0 100 2.5 1.25 1.25 0 000-2.5zM7.2 2.917a2.917 2.917 0 015.592 0H16.667a.833.833 0 010 1.666H12.796a2.917 2.917 0 01-1.963 1.963V16.667h5.834a.833.833 0 010 1.666H3.333a.833.833 0 010-1.666H9.167V6.546A2.917 2.917 0 017.204 4.583H3.333a.833.833 0 010-1.666H7.2z" fill="#7A3EF4"/>
+                </svg>
+                Apache - 2.0 License
+              </div>
+              <p class="text-sm text-gray-600">Setup time: 5-10 mins</p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  {/* CTA section — dark purple banner matching Webflow's uui-section_cta02 */}
+  <section class="bg-[#281158]">
+    <div class="bg-[url('/images/gradient_01.webp')] bg-cover bg-center">
+      <div class="mx-auto max-w-7xl px-8 sm:px-12">
+        <div class="grid items-center gap-10 py-16 sm:py-20 lg:grid-cols-2 lg:gap-8">
+          <div>
+            <h2 class="text-2xl font-bold text-white sm:text-3xl">
+              Unify Your ML and LLM Workflows
+            </h2>
+            <div class="mt-6 space-y-3">
+              <div class="flex items-start gap-3">
+                <svg class="mt-0.5 h-7 w-7 flex-shrink-0" viewBox="0 0 28 28" fill="none">
+                  <path d="M8.75 14l3.5 3.5 7-7m6.417 3.5c0 6.443-5.224 11.667-11.667 11.667S2.333 20.823 2.333 14 7.557 2.333 14 2.333 25.667 7.557 25.667 14z" stroke="#7A3EF4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span class="text-lg text-white">Free, powerful MLOps open source foundation</span>
+              </div>
+              <div class="flex items-start gap-3">
+                <svg class="mt-0.5 h-7 w-7 flex-shrink-0" viewBox="0 0 28 28" fill="none">
+                  <path d="M8.75 14l3.5 3.5 7-7m6.417 3.5c0 6.443-5.224 11.667-11.667 11.667S2.333 20.823 2.333 14 7.557 2.333 14 2.333 25.667 7.557 25.667 14z" stroke="#7A3EF4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span class="text-lg text-white">Works with any infrastructure</span>
+              </div>
+              <div class="flex items-start gap-3">
+                <svg class="mt-0.5 h-7 w-7 flex-shrink-0" viewBox="0 0 28 28" fill="none">
+                  <path d="M8.75 14l3.5 3.5 7-7m6.417 3.5c0 6.443-5.224 11.667-11.667 11.667S2.333 20.823 2.333 14 7.557 2.333 14 2.333 25.667 7.557 25.667 14z" stroke="#7A3EF4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span class="text-lg text-white">Upgrade to managed Pro features</span>
+              </div>
+            </div>
+            <div class="mt-8 flex flex-wrap gap-3">
+              <Button href="/book-your-demo" size="lg">Book a Demo</Button>
+              <Button href="/get-started" variant="secondary" size="lg">Use Open Source</Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 </BaseLayout>

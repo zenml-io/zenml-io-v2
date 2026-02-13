@@ -2,12 +2,22 @@
 /**
  * Project detail page.
  *
- * Renders individual project pages with description, tags, tools, and links.
- * Generates /projects/<slug> for each published project.
+ * Matches Webflow's detail_projects template: header with back link + project
+ * image + title, then a 2-column layout with sticky left sidebar (project
+ * metadata rows) and right content column (details + gallery).
+ *
+ * Body splitting: Webflow stores Pipelines, Recommended Stack, and Details as
+ * separate CMS fields. Our Phase 1 export merged them into one markdown body.
+ * We parse the body at build time to split them back:
+ *   - #### headings before "Stack Components" → Pipelines (sidebar)
+ *   - #### Stack Components <ul>...</ul> → Recommended Stack (sidebar)
+ *   - Everything after → Details (right column)
+ *
+ * Route: /projects/<slug>
  */
 import { getCollection, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import Badge from "../../components/Badge.astro";
+import Button from "../../components/Button.astro";
 
 export async function getStaticPaths() {
   const projects = await getCollection("projects", ({ data }) => !data.draft);
@@ -18,83 +28,291 @@ export async function getStaticPaths() {
 }
 
 const { project } = Astro.props;
-const { Content } = await render(project);
 
-// SEO
 const seoTitle = project.data.seo?.title || `${project.data.title} - ZenML Projects`;
 const seoDescription = project.data.seo?.description || project.data.description;
+
+/**
+ * Parse the raw markdown body into three sections matching Webflow's CMS fields.
+ * Pattern: #### Pipeline headings → #### Stack Components <ul> → main description
+ */
+interface Pipeline { name: string; description: string }
+
+function splitBody(body: string): {
+  pipelines: Pipeline[];
+  stackHtml: string;
+  detailsHtml: string;
+} {
+  const pipelines: Pipeline[] = [];
+  let stackHtml = '';
+  let detailsRaw = '';
+
+  // Find the Stack Components marker
+  const stackIdx = body.indexOf('#### Stack Components');
+
+  if (stackIdx === -1) {
+    // No pipelines/stack section — entire body is details
+    return { pipelines: [], stackHtml: '', detailsHtml: markdownToHtml(body.trim()) };
+  }
+
+  // Everything before Stack Components is pipeline entries
+  const pipelinesRaw = body.substring(0, stackIdx);
+  const pipelineRegex = /####\s+(.+)\n\n([\s\S]*?)(?=####|\s*$)/g;
+  let match;
+  while ((match = pipelineRegex.exec(pipelinesRaw)) !== null) {
+    pipelines.push({
+      name: match[1].trim(),
+      description: match[2].trim(),
+    });
+  }
+
+  // Extract stack HTML (<ul>...</ul>) and everything after it
+  const afterStack = body.substring(stackIdx);
+  const ulStart = afterStack.indexOf('<ul>');
+  const ulEnd = afterStack.indexOf('</ul>');
+
+  if (ulStart !== -1 && ulEnd !== -1) {
+    stackHtml = afterStack.substring(ulStart, ulEnd + 5);
+    detailsRaw = afterStack.substring(ulEnd + 5).trim();
+  } else {
+    // No <ul> found — rest is details
+    detailsRaw = afterStack.replace(/####\s+Stack Components\s*/, '').trim();
+  }
+
+  return {
+    pipelines,
+    stackHtml,
+    detailsHtml: markdownToHtml(detailsRaw),
+  };
+}
+
+/** Minimal markdown-to-HTML for the details section (headings + paragraphs). */
+function markdownToHtml(md: string): string {
+  if (!md) return '';
+  return md
+    // Convert ### headings
+    .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+    // Convert #### headings
+    .replace(/^#### (.+)$/gm, '<h4>$1</h4>')
+    // Wrap plain text paragraphs (lines not starting with < or empty)
+    .split('\n\n')
+    .map(block => {
+      const trimmed = block.trim();
+      if (!trimmed) return '';
+      // Already HTML (starts with < tag)
+      if (trimmed.startsWith('<')) return trimmed;
+      return `<p>${trimmed}</p>`;
+    })
+    .filter(Boolean)
+    .join('\n');
+}
+
+const { pipelines, stackHtml, detailsHtml } = splitBody(project.body || '');
 ---
 
 <BaseLayout
   title={seoTitle}
   description={seoDescription}
 >
-  <div class="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
-    {/* Back link */}
-    <a href="/projects" class="mb-8 inline-block text-sm text-primary-600 hover:text-primary-700">
-      &larr; Back to projects
-    </a>
-
-    {/* Main image */}
-    {project.data.mainImageLink && (
-      <div class="mb-8 overflow-hidden rounded-xl">
-        <img
-          src={project.data.mainImageLink}
-          alt={project.data.title}
-          class="w-full object-cover"
-        />
-      </div>
-    )}
-
-    <h1 class="text-3xl font-bold tracking-tight text-gray-900">{project.data.title}</h1>
-    {project.data.description && (
-      <p class="mt-3 text-lg text-gray-600">{project.data.description}</p>
-    )}
-
-    {/* Links */}
-    <div class="mt-4 flex gap-4">
-      {project.data.githubUrl && (
-        <a
-          href={project.data.githubUrl}
-          class="inline-flex items-center gap-1.5 rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          View on GitHub &rarr;
-        </a>
+  {/* Header: back link + project image + title */}
+  <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+    <div class="flex flex-col items-start gap-6 sm:flex-row sm:items-center">
+      {/* Project image — uses mainImageLink (the colorful gradient), matching Webflow */}
+      {project.data.mainImageLink && (
+        <div class="flex h-[180px] w-[180px] flex-shrink-0 items-center justify-center overflow-hidden rounded-lg border border-gray-300 bg-white">
+          <img
+            src={project.data.mainImageLink}
+            alt={project.data.title}
+            class="h-full w-full object-cover"
+          />
+        </div>
       )}
-      {project.data.demoUrl && (
+      <div>
         <a
-          href={project.data.demoUrl}
-          class="inline-flex items-center gap-1.5 rounded-lg bg-primary-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary-700"
-          target="_blank"
-          rel="noopener noreferrer"
+          href="/projects"
+          class="mb-3 inline-flex items-center gap-1.5 text-sm font-semibold text-zenml-500 hover:text-zenml-600 transition-colors"
         >
-          Live Demo &rarr;
+          <svg class="h-4 w-4 rotate-180" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" clip-rule="evenodd" />
+          </svg>
+          All Projects
         </a>
-      )}
-    </div>
-
-    {/* Tags */}
-    {project.data.tags.length > 0 && (
-      <div class="mt-6 flex flex-wrap gap-2">
-        {project.data.tags.map((tag: string) => (
-          <Badge variant="blue">{tag}</Badge>
-        ))}
+        <h1 class="text-2xl font-bold text-gray-900 sm:text-3xl">{project.data.title}</h1>
+        {project.data.description && (
+          <p class="mt-2 text-lg leading-relaxed text-gray-600">{project.data.description}</p>
+        )}
       </div>
-    )}
-
-    {/* Tools */}
-    {project.data.tools.length > 0 && (
-      <div class="mt-4">
-        <span class="text-sm font-medium text-gray-500">Tools: </span>
-        <span class="text-sm text-gray-700">{project.data.tools.join(", ")}</span>
-      </div>
-    )}
-
-    {/* Body content */}
-    <div class="prose prose-gray mt-8 max-w-none">
-      <Content />
     </div>
   </div>
+
+  {/* Two-column body */}
+  <div class="mx-auto max-w-7xl px-4 pb-16 sm:px-6 lg:px-8">
+    <div class="grid gap-8 pt-4 lg:grid-cols-[1fr_2fr] lg:gap-12">
+
+      {/* Left column: sticky sidebar */}
+      <div class="lg:sticky lg:top-20 lg:self-start">
+        <div class="overflow-hidden rounded-lg bg-gray-50">
+          {/* Sidebar image — uses mainImageLink (same as header) matching Webflow */}
+          {project.data.mainImageLink && (
+            <div class="flex h-[140px] items-center justify-center overflow-hidden">
+              <img
+                src={project.data.mainImageLink}
+                alt={project.data.title}
+                class="h-full w-full object-cover"
+                loading="lazy"
+              />
+            </div>
+          )}
+
+          {/* Project details rows */}
+          <div class="divide-y divide-gray-100">
+            {/* Project name */}
+            <div class="px-4 py-3 first:pt-4">
+              <div class="text-xs font-semibold uppercase tracking-wider text-gray-400">Project</div>
+              <div class="mt-1 text-base font-semibold text-gray-900">{project.data.title}</div>
+            </div>
+
+            {/* Project ID */}
+            {project.data.projectId && (
+              <div class="px-4 py-3">
+                <div class="text-xs font-semibold uppercase tracking-wider text-gray-400">Project ID</div>
+                <div class="mt-1 font-mono text-lg text-[#7f56d9]">{project.data.projectId}</div>
+                <p class="mt-0.5 text-xs text-gray-500">Use this id to create a new project in ZenML</p>
+              </div>
+            )}
+
+            {/* GitHub repository */}
+            {project.data.githubUrl && (
+              <div class="px-4 py-3">
+                <div class="text-xs font-semibold uppercase tracking-wider text-gray-400">GitHub Repository</div>
+                <a
+                  href={project.data.githubUrl}
+                  class="mt-1 block text-sm text-gray-600 hover:text-zenml-500 break-all transition-colors"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {project.data.githubUrl}
+                </a>
+              </div>
+            )}
+
+            {/* Pipelines — extracted from body, matching Webflow's separate CMS field */}
+            {pipelines.length > 0 && (
+              <div class="px-4 py-3">
+                <div class="text-xs font-semibold uppercase tracking-wider text-gray-400">Pipelines</div>
+                <div class="mt-2 space-y-3">
+                  {pipelines.map((p) => (
+                    <div>
+                      <div class="text-sm font-semibold text-gray-900">{p.name}</div>
+                      {p.description && (
+                        <p class="mt-0.5 text-sm text-gray-600">{p.description}</p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Recommended Stack — extracted from body */}
+            {stackHtml && (
+              <div class="px-4 py-3">
+                <div class="text-xs font-semibold uppercase tracking-wider text-gray-400">Recommended Stack</div>
+                <div class="mt-2 text-sm text-gray-700 [&_li]:mt-1 [&_strong]:font-semibold" set:html={stackHtml} />
+              </div>
+            )}
+
+            {/* Tools */}
+            {project.data.tools.length > 0 && (
+              <div class="px-4 py-3">
+                <div class="text-xs font-semibold uppercase tracking-wider text-gray-400">Tools</div>
+                <div class="mt-2 flex flex-wrap gap-1.5">
+                  {project.data.tools.map((tool: string) => (
+                    <span class="rounded-full bg-gray-100 px-2.5 py-0.5 text-sm font-semibold text-gray-700">
+                      {tool}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Tags */}
+            {project.data.tags.length > 0 && (
+              <div class="px-4 py-3 last:pb-4">
+                <div class="text-xs font-semibold uppercase tracking-wider text-gray-400">Tags</div>
+                <div class="mt-2 flex flex-wrap gap-1.5">
+                  {project.data.tags.map((tag: string) => (
+                    <span class="rounded-full bg-zenml-50 px-2.5 py-0.5 text-sm font-semibold text-zenml-500">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Right column: details + gallery */}
+      <div>
+        {/* Details section — only the main description, not pipelines/stack */}
+        <div class:list={["pb-6 mb-6", project.data.previewImage?.url && "border-b border-gray-100"]}>
+          <div class="text-xs font-semibold uppercase tracking-wider text-gray-400">Details</div>
+          <div class="prose prose-gray mt-3 max-w-none" set:html={detailsHtml} />
+        </div>
+
+        {/* Gallery — show previewImage (the architecture/pipeline diagram) */}
+        {project.data.previewImage?.url && (
+          <div>
+            <div class="text-xs font-semibold uppercase tracking-wider text-gray-400">Gallery</div>
+            <img
+              src={project.data.previewImage.url}
+              alt={project.data.previewImage.alt || project.data.title}
+              class="mt-3 w-full rounded-lg"
+              loading="lazy"
+            />
+          </div>
+        )}
+      </div>
+
+    </div>
+  </div>
+
+  {/* CTA section — same dark purple banner as listing page */}
+  <section class="bg-[#281158]">
+    <div class="bg-[url('/images/gradient_01.webp')] bg-cover bg-center">
+      <div class="mx-auto max-w-7xl px-8 sm:px-12">
+        <div class="grid items-center gap-10 py-16 sm:py-20 lg:grid-cols-2 lg:gap-8">
+          <div>
+            <h2 class="text-2xl font-bold text-white sm:text-3xl">
+              Unify Your ML and LLM Workflows
+            </h2>
+            <div class="mt-6 space-y-3">
+              <div class="flex items-start gap-3">
+                <svg class="mt-0.5 h-7 w-7 flex-shrink-0" viewBox="0 0 28 28" fill="none">
+                  <path d="M8.75 14l3.5 3.5 7-7m6.417 3.5c0 6.443-5.224 11.667-11.667 11.667S2.333 20.823 2.333 14 7.557 2.333 14 2.333 25.667 7.557 25.667 14z" stroke="#7A3EF4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span class="text-lg text-white">Free, powerful MLOps open source foundation</span>
+              </div>
+              <div class="flex items-start gap-3">
+                <svg class="mt-0.5 h-7 w-7 flex-shrink-0" viewBox="0 0 28 28" fill="none">
+                  <path d="M8.75 14l3.5 3.5 7-7m6.417 3.5c0 6.443-5.224 11.667-11.667 11.667S2.333 20.823 2.333 14 7.557 2.333 14 2.333 25.667 7.557 25.667 14z" stroke="#7A3EF4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span class="text-lg text-white">Works with any infrastructure</span>
+              </div>
+              <div class="flex items-start gap-3">
+                <svg class="mt-0.5 h-7 w-7 flex-shrink-0" viewBox="0 0 28 28" fill="none">
+                  <path d="M8.75 14l3.5 3.5 7-7m6.417 3.5c0 6.443-5.224 11.667-11.667 11.667S2.333 20.823 2.333 14 7.557 2.333 14 2.333 25.667 7.557 25.667 14z" stroke="#7A3EF4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span class="text-lg text-white">Upgrade to managed Pro features</span>
+              </div>
+            </div>
+            <div class="mt-8 flex flex-wrap gap-3">
+              <Button href="/book-your-demo" size="lg">Book a Demo</Button>
+              <Button href="/get-started" variant="secondary" size="lg">Use Open Source</Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 </BaseLayout>
