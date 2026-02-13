@@ -300,6 +300,14 @@ const blogSchema = z.object({
 });
 
 /**
+ * Additional resource link (up to 4 per integration in Webflow)
+ */
+const integrationResourceSchema = z.object({
+  label: z.string(),
+  href: z.string(),
+});
+
+/**
  * Integrations schema
  * Route: /integrations/<slug>
  * Count: 68 items
@@ -308,6 +316,15 @@ const blogSchema = z.object({
  * - Field is "integrationType" (not "type")
  * - Field is "shortDescription" (not "description")
  * - Additional fields: docsUrl, githubUrl, mainImage, relatedBlogPosts
+ *
+ * Structured detail fields (Phase 6 parity):
+ * - overviewTitle, overviewDescription: "Tool overview" section
+ * - featuresWithZenmlHtml, toolFeaturesHtml: rich-text sections
+ * - codeExampleHtml: code embed for "How to use" section
+ * - additionalResources: link list at bottom of detail page
+ * - documentationLinkText, githubLinkText: custom CTA labels
+ * - compareSlug: link to /compare/ page (sidebar)
+ * - isUpdatedToNewFormat: Webflow flag for new-style layout
  */
 const integrationSchema = z.object({
   title: z.string(),
@@ -322,6 +339,18 @@ const integrationSchema = z.object({
   githubUrl: z.string().url().optional(),
   mainImage: imageSchema.optional(),
   relatedBlogPosts: slugReferenceArray('blog'),
+
+  // Structured detail page fields (all optional for backward compat)
+  overviewTitle: z.string().optional(),
+  overviewDescription: z.string().optional(),
+  featuresWithZenmlHtml: z.string().optional(),
+  toolFeaturesHtml: z.string().optional(),
+  codeExampleHtml: z.string().optional(),
+  documentationLinkText: z.string().optional(),
+  githubLinkText: z.string().optional(),
+  additionalResources: z.array(integrationResourceSchema).default([]),
+  compareSlug: z.string().optional(),
+  isUpdatedToNewFormat: z.boolean().optional(),
 
   // SEO & Webflow
   seo: seoSchema,
