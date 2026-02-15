@@ -31,10 +31,6 @@ sidebar:
     - "ML pipelines"
     - "Cross-platform"
     - "Dev to prod"
-  pdfDownload:
-    label: "Download Case Study (PDF)"
-    href: "/documents/ZenML_Adeo-Leroy-Merlin-case-study.pdf"
-
 seo:
   title: "How ADEO Leroy Merlin is Scaling Data Science with ZenML - Case Study"
   description: "How ADEO Leroy Merlin Leverages Machine Learning Pipelines for Enhanced Productivity"

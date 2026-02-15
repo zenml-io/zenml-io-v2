@@ -27,10 +27,6 @@ sidebar:
     - "ML pipelines"
     - "Cross-platform"
     - "Dev to prod"
-  pdfDownload:
-    label: "Download Case Study (PDF)"
-    href: "/documents/ZenML_Brevo-case-study.pdf"
-
 seo:
   title: "Brevo (formerly Sendinblue) and ZenML: Redefining Machine Learning in Email Marketing"
   description: "Brevo, formerly known as Sendinblue, is at the forefront of utilizing machine learning to enhance its email marketing services and streamline operations."
