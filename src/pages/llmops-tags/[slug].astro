@@ -11,13 +11,14 @@ import Badge from "../../components/Badge.astro";
 
 export async function getStaticPaths() {
   const llmopsTags = await getCollection("llmops-tags");
+  const tagMap = Object.fromEntries(llmopsTags.map((t) => [t.data.slug, t.data.name]));
   return llmopsTags.map((tag) => ({
     params: { slug: tag.data.slug },
-    props: { tag },
+    props: { tag, tagMap },
   }));
 }
 
-const { tag } = Astro.props;
+const { tag, tagMap } = Astro.props;
 
 // Get all published LLMOps entries with this tag
 const allEntries = (
@@ -60,7 +61,7 @@ const allEntries = (
           )}
           <div class="mt-auto flex flex-wrap gap-1.5 pt-4">
             {entry.data.llmopsTags.slice(0, 4).map((tagSlug: string) => (
-              <Badge variant="blue">{tagSlug}</Badge>
+              <Badge variant="blue" href={`/llmops-tags/${tagSlug}`}>{tagMap[tagSlug] || tagSlug}</Badge>
             ))}
             {entry.data.llmopsTags.length > 4 && (
               <Badge variant="gray">+{entry.data.llmopsTags.length - 4}</Badge>
