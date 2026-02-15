@@ -10,7 +10,7 @@ customize freely.
 - **Traffic**: ~7k unique visitors / ~10k page views per week (and growing)
 - **Hosting target**: Cloudflare Pages (confirmed, deployed at `zenml-io-v2.pages.dev`)
 - **Context**: This is being built as part of a Claude hackathon using Opus 4.6
-- **Status**: **Phases 0–5 COMPLETE**. ~2,224 pages building in ~33s. All content migrated, all pages built, SEO infrastructure done, forms live, analytics tracking active. Currently in **Phase 6 (QA & Cutover)** — fixing visual parity gaps page-by-page against the Webflow original.
+- **Status**: **Phases 0–5 COMPLETE**. ~2,224 pages building in ~33s. All content migrated, all pages built, SEO infrastructure done, forms live, analytics tracking active. Currently in **Phase 6 (QA & Cutover)** — fixing visual parity gaps page-by-page against the Webflow original. **LLMOps Database redesign complete** (faceted sidebar, Pagefind search, AND/OR filtering, sorting, accessibility). **Blog redesign in progress** (sidebar browse, BlogCard component, reading progress).
 
 ## Key Constraints
 
@@ -67,7 +67,7 @@ Full inventory is in `docs/webflow-inventory.md`.
 | Assets | **Cloudflare R2** — object storage for images/files |
 | Styling | **Tailwind CSS** — utility-first |
 | Interactive | **Preact islands** — 7 islands: LLMOpsFilter, ContactForm, CookieConsent, FeatureTabsSlider, LottieHero, ProTestimonialCarousel, RoiCalculator |
-| Search | **Pagefind** (later) — build-time search index, no server |
+| Search | **Pagefind** — build-time full-text search index (1,453 LLMOps pages indexed, hybrid with JSON faceted filtering) |
 | Forms | **ContactForm** Preact island → Cloudflare Pages Functions (`/api/forms/:formType`). Cal.com embeds for demo booking. Brevo for newsletter |
 | Analytics | **Plausible** + GA4 + Segment (hostname-gated to `www.zenml.io` to prevent preview pollution) |
 | Code highlighting | **Shiki** (`github-dark` theme) at build time + **Inconsolata** monospace font |
@@ -231,6 +231,7 @@ trying to capture the full filename.
 - `src/styles/global.css` — Tailwind v4 `@theme` block + design tokens
 - `src/lib/constants.ts` — `SITE_URL` and shared constants
 - `src/lib/seo.ts` — SEO contract (`SEOProps`, `resolveSeo()`, `buildCanonical()`)
+- `src/lib/llmops.ts` — LLMOps domain layer (`getAllPublishedEntries()`, `getRelatedEntries()`, tag/industry counts)
 - `src/lib/navigation.ts` — Nav data (typed, not hardcoded)
 - `src/lib/footer.ts` — Footer data (typed, not hardcoded)
 
@@ -240,7 +241,7 @@ trying to capture the full filename.
 - `src/components/sections/` — 37 section components
 
 ### Preact Islands (interactive client-side components)
-- `src/components/islands/LLMOpsFilter.tsx` — LLMOps database filter (tag/industry/search)
+- `src/components/islands/LLMOpsFilter.tsx` — LLMOps database "Research Hub" (faceted sidebar with industry/tag facets, Pagefind full-text search, AND/OR tag mode, sort, clickable chips, mobile drawer, WCAG-compliant accessibility)
 - `src/components/islands/ContactForm.tsx` — Form submission → Pages Functions
 - `src/components/islands/CookieConsent.tsx` — Cookie consent banner (4 categories)
 - `src/components/islands/FeatureTabsSlider.tsx` — Homepage auto-cycling feature tabs

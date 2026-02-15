@@ -21,6 +21,7 @@ The next-generation [zenml.io](https://www.zenml.io) website — migrated from W
 | Assets | [Cloudflare R2](https://developers.cloudflare.com/r2/) (object storage for images/files) |
 | Forms | Preact ContactForm island → [Cloudflare Pages Functions](https://developers.cloudflare.com/pages/functions/) |
 | Analytics | Plausible + GA4 + Segment (hostname-gated) |
+| Search | [Pagefind](https://pagefind.app/) (build-time full-text index, hybrid with JSON faceted filtering) |
 | Code highlighting | [Shiki](https://shiki.style/) (`github-dark` theme) at build time |
 | Linting | [Biome](https://biomejs.dev/) v2 |
 
@@ -134,7 +135,7 @@ All content lives in `src/content/` as `.md` files with YAML frontmatter. Astro'
 | Collection | Items | Route | Notes |
 |-----------|-------|-------|-------|
 | Blog | 280 | `/blog/[slug]` | Paginated hub (12/page), categories, tags, authors |
-| LLMOps Database | 1,453 | `/llmops-database/[slug]` | Client-side filter island (tag + industry + search) |
+| LLMOps Database | 1,453 | `/llmops-database/[slug]` | Faceted sidebar (industry + tag), Pagefind full-text search, AND/OR filtering, sort, related entries |
 | Integrations | 68 | `/integrations/[slug]` | Hub grid + structured detail pages |
 | Compare (VS) | 17 | `/compare/[slug]` | ZenML vs X comparison pages |
 | Feature Pages | 12 | `/features/[slug]` | Discriminated union blocks for flexible sections |
