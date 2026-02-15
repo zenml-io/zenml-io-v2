@@ -108,9 +108,11 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     }
   }
 
-  // POC: Log submission and return success
+  // POC: Log submission metadata (no PII) and return success
   // Post-launch: Forward to Attio CRM API here
-  console.log(`[form:${formType}]`, JSON.stringify(data));
+  console.log(`[form:${formType}] submission received`, {
+    fields: Object.keys(data).filter((k) => k !== "cf-turnstile-response"),
+  });
 
   return jsonResponse({ success: true, formType });
 };

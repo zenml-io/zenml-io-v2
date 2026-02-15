@@ -110,20 +110,15 @@ public/
 functions/
 └── api/forms/[formType].ts  # Cloudflare Pages Function for form submission
 
-docs/                    # Plan docs + investigations (committed to git)
-├── plan.md              # Master migration plan
-├── phase-0-plan.md      # through phase-5-plan.md
-├── design-tokens.md     # Extracted Webflow design tokens
-├── forms-audit.md       # Forms architecture audit
-└── ...
-
-design/                  # Heavy artifacts (gitignored)
+design/                  # Heavy artifacts + internal docs (gitignored)
 ├── webflow-export/      # Original Webflow HTML + CSS export
+├── docs/                # Migration plans + audits
 └── migration/           # Phase 1 export run artifacts
 
 scripts/
-├── phase1/              # Content export + transform scripts
-└── phase2/              # Content validation scripts
+├── phase2/              # Content validation scripts
+├── phase4/              # SEO parity testing scripts
+└── internal/            # Migration scripts (gitignored)
 ```
 
 ## Content Architecture

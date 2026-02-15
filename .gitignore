@@ -35,3 +35,9 @@ yarn-error.log*
 .claude/
 design/
 .mcp.json
+
+# Internal migration scripts (contain infra-specific defaults)
+scripts/internal/
+
+# Private Claude instructions (contains infra IDs, traffic numbers)
+CLAUDE.private.md
