@@ -8,6 +8,7 @@
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Badge from "../../components/Badge.astro";
+import { getLLMOpsTagCounts } from "../../lib/llmops";
 
 export async function getStaticPaths() {
   const industryTags = await getCollection("industry-tags");
@@ -26,6 +27,9 @@ const { tag, tagMap } = Astro.props;
 const allEntries = (
   await getCollection("llmops-database", ({ data }) => !data.draft && data.industryTags === tag.data.slug)
 ).sort((a, b) => a.data.title.localeCompare(b.data.title));
+
+// Compute top co-occurring LLMOps tags among entries in this industry
+const commonTags = (await getLLMOpsTagCounts(allEntries)).slice(0, 12);
 ---
 
 <BaseLayout
@@ -44,6 +48,30 @@ const allEntries = (
         &larr; Back to LLMOps Database
       </a>
     </header>
+
+    {/* Common tags cross-links */}
+    {commonTags.length > 0 && (
+      <section class="mb-10">
+        <div class="flex items-baseline justify-between gap-4">
+          <h2 class="text-xs font-semibold uppercase tracking-wider text-gray-400">
+            Common tags
+          </h2>
+          <a
+            href="/llmops-tags"
+            class="text-xs font-medium text-primary-600 hover:text-primary-700"
+          >
+            View all tags &rarr;
+          </a>
+        </div>
+        <div class="mt-3 flex flex-wrap gap-2">
+          {commonTags.map((t) => (
+            <Badge variant="blue" href={`/llmops-tags/${t.slug}`}>
+              {t.name} ({t.count})
+            </Badge>
+          ))}
+        </div>
+      </section>
+    )}
 
     {/* Entry grid */}
     <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
