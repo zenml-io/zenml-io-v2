@@ -174,14 +174,14 @@ Old links continue to work unchanged.
 
 ## Accessibility Checklist
 
-- [ ] All inputs have programmatic labels (not placeholder-only)
-- [ ] Tag picker fully keyboard operable (Enter/Space/Escape/arrows)
-- [ ] Visible `:focus-visible` states on all interactive elements
-- [ ] `aria-expanded`/`aria-controls` on custom popovers
-- [ ] Tag mode toggle uses native radio inputs or `role="radiogroup"`
-- [ ] Result count in `aria-live="polite"` region
-- [ ] Pagination has `aria-current="page"` + `aria-label`
-- [ ] Empty state messages announced to screen readers
+- [x] All inputs have programmatic labels (not placeholder-only)
+- [x] Tag picker fully keyboard operable (Enter/Space/Escape/arrows)
+- [x] Visible `:focus-visible` states on all interactive elements
+- [x] `aria-expanded`/`aria-controls` on custom popovers
+- [x] Tag mode toggle uses native radio inputs or `role="radiogroup"`
+- [x] Result count in `aria-live="polite"` region
+- [x] Pagination has `aria-current="page"` + `aria-label`
+- [x] Empty state messages announced to screen readers
 
 ## Verification
 

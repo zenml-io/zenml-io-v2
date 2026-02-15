@@ -46,6 +46,12 @@ export interface LLMOpsFilterProps {
 
 type TagMode = "and" | "or";
 type SortMode = "newest" | "az" | "relevance";
+type FacetScope = "desktop" | "mobile";
+
+// ── Stable IDs ────────────────────────────────────────────────────
+
+const MOBILE_DRAWER_ID = "llmops-filters-drawer";
+const MOBILE_DRAWER_TITLE_ID = "llmops-filters-drawer-title";
 
 // ── Pagefind Adapter ──────────────────────────────────────────────
 
@@ -192,6 +198,32 @@ function sortItems(items: ProcessedItem[], sort: SortMode, q: string): Processed
   return sorted;
 }
 
+// ── Keyboard Helpers ──────────────────────────────────────────────
+
+/** Arrow-key navigation within a facet list (ul > li > button). */
+function handleFacetListKeyDown(e: KeyboardEvent): void {
+  const { key } = e;
+  if (key !== "ArrowDown" && key !== "ArrowUp" && key !== "Home" && key !== "End") return;
+
+  const list = e.currentTarget as HTMLElement;
+  const buttons = [...list.querySelectorAll<HTMLButtonElement>("button:not([disabled])")];
+  if (!buttons.length) return;
+
+  const idx = buttons.indexOf(document.activeElement as HTMLButtonElement);
+  if (idx === -1) return;
+
+  e.preventDefault();
+  let next: number;
+  switch (key) {
+    case "ArrowDown": next = (idx + 1) % buttons.length; break;
+    case "ArrowUp": next = (idx - 1 + buttons.length) % buttons.length; break;
+    case "Home": next = 0; break;
+    case "End": next = buttons.length - 1; break;
+    default: return;
+  }
+  buttons[next].focus();
+}
+
 // ── SVG Icons ─────────────────────────────────────────────────────
 
 function ChevronIcon({ class: c }: { class?: string }) {
@@ -235,6 +267,10 @@ function ExternalIcon() {
   );
 }
 
+// ── Focus ring class (DRY) ────────────────────────────────────────
+
+const FOCUS_RING = "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:ring-offset-1";
+
 // ── Component ──────────────────────────────────────────────────────
 
 export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOpsFilterProps) {
@@ -260,6 +296,11 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
   const [pagefindSlugs, setPagefindSlugs] = useState<string[] | null>(null);
   const [pagefindAvailable, setPagefindAvailable] = useState(false);
   const pagefindSearchId = useRef(0);
+
+  // Mobile drawer refs for focus management
+  const mobileFiltersButtonRef = useRef<HTMLButtonElement | null>(null);
+  const drawerRef = useRef<HTMLDivElement | null>(null);
+  const drawerCloseRef = useRef<HTMLButtonElement | null>(null);
 
   // Lookup maps
   const tagMap = useMemo(() => new Map(tags.map((t) => [t.slug, t.name])), [tags]);
@@ -318,7 +359,7 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
     return () => { cancelled = true; clearTimeout(timer); };
   }, [query]);
 
-  // Close mobile drawer on escape
+  // Close mobile drawer on escape + restore focus
   useEffect(() => {
     if (!mobileDrawerOpen) return;
     const handler = (e: KeyboardEvent) => {
@@ -336,6 +377,25 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
       document.body.style.overflow = "";
     }
     return () => { document.body.style.overflow = ""; };
+  }, [mobileDrawerOpen]);
+
+  // Focus management: focus close button on open, restore on close
+  useEffect(() => {
+    if (mobileDrawerOpen) {
+      // Focus the close button after the drawer animates in
+      requestAnimationFrame(() => { drawerCloseRef.current?.focus(); });
+    } else {
+      // Restore focus to the filter button when drawer closes
+      mobileFiltersButtonRef.current?.focus();
+    }
+  }, [mobileDrawerOpen]);
+
+  // Set inert on drawer when closed to prevent background tabbing
+  useEffect(() => {
+    const el = drawerRef.current;
+    if (!el) return;
+    // @ts-expect-error inert not in all typings yet
+    el.inert = !mobileDrawerOpen;
   }, [mobileDrawerOpen]);
 
   // For faster Pagefind lookups in facet computation
@@ -435,6 +495,14 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
       .map(([slug]) => slug);
   }, [items]);
 
+  // Screen-reader status text (used in aria-live region)
+  const resultsStatusText = useMemo(() => {
+    if (filtered.length === 0) return "No entries match your filters.";
+    const start = (safePage - 1) * pageSize + 1;
+    const end = Math.min(safePage * pageSize, filtered.length);
+    return `Showing ${start} to ${end} of ${filtered.length} entries. Page ${safePage} of ${totalPages}.`;
+  }, [filtered.length, safePage, totalPages, pageSize]);
+
   // Sync URL
   useEffect(() => {
     writeStateToUrl({ q: query, tags: selectedTags, industry: selectedIndustry, page: safePage, tagMode, sort });
@@ -487,108 +555,117 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
     return sorted.slice(0, 10);
   }, [tags, tagCounts, sidebarTagSearch, showAllTags]);
 
-  // ── Sidebar facets (shared between desktop and mobile drawer) ──
+  // ── Sidebar facets (scoped IDs to avoid duplicates in desktop + mobile) ──
 
-  const renderFacets = () => (
-    <div class="space-y-6">
-      {/* Industry facet */}
-      <div>
-        <h3 class="mb-3 text-xs font-semibold uppercase tracking-wider text-gray-400">Industry</h3>
-        <ul class="space-y-1">
-          {industries.map((ind) => {
-            const count = industryCounts.get(ind.slug) || 0;
-            const isSelected = selectedIndustry === ind.slug;
-            return (
-              <li key={ind.slug}>
-                <button
-                  type="button"
-                  onClick={() => selectIndustry(ind.slug)}
-                  class={`flex w-full items-center justify-between rounded-md px-2 py-1.5 text-sm transition-colors ${
-                    isSelected
-                      ? "bg-purple-50 font-medium text-purple-700"
-                      : count > 0
-                        ? "text-gray-700 hover:bg-gray-50"
-                        : "text-gray-400"
-                  }`}
-                  disabled={count === 0 && !isSelected}
-                >
-                  <span class="truncate">{ind.name}</span>
-                  <span class={`ml-2 text-xs tabular-nums ${isSelected ? "text-purple-500" : "text-gray-400"}`}>
-                    {count}
-                  </span>
-                </button>
-              </li>
-            );
-          })}
-        </ul>
-      </div>
+  const renderFacets = (scope: FacetScope) => {
+    const tagSearchId = `llmops-tag-search-${scope}`;
 
-      {/* Technology facet */}
-      <div>
-        <h3 class="mb-3 text-xs font-semibold uppercase tracking-wider text-gray-400">Technologies</h3>
-
-        {/* Tag search within sidebar */}
-        <div class="relative mb-2">
-          <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2.5">
-            <SearchIcon />
-          </div>
-          <input
-            type="search"
-            value={sidebarTagSearch}
-            onInput={(e) => { setSidebarTagSearch((e.target as HTMLInputElement).value); setShowAllTags(true); }}
-            placeholder="Search tags..."
-            class="w-full rounded-md border border-gray-200 py-1.5 pl-8 pr-3 text-sm placeholder-gray-400 focus:border-primary-600 focus:outline-none"
-          />
+    return (
+      <div class="space-y-6">
+        {/* Industry facet */}
+        <div>
+          <h3 class="mb-3 text-xs font-semibold uppercase tracking-wider text-gray-400">Industry</h3>
+          <ul class="space-y-1" onKeyDown={handleFacetListKeyDown}>
+            {industries.map((ind) => {
+              const count = industryCounts.get(ind.slug) || 0;
+              const isSelected = selectedIndustry === ind.slug;
+              return (
+                <li key={ind.slug}>
+                  <button
+                    type="button"
+                    onClick={() => selectIndustry(ind.slug)}
+                    aria-pressed={isSelected}
+                    class={`flex w-full items-center justify-between rounded-md px-2 py-1.5 text-sm transition-colors ${FOCUS_RING} ${
+                      isSelected
+                        ? "bg-purple-50 font-medium text-purple-700"
+                        : count > 0
+                          ? "text-gray-700 hover:bg-gray-50"
+                          : "text-gray-400"
+                    }`}
+                    disabled={count === 0 && !isSelected}
+                  >
+                    <span class="truncate">{ind.name}</span>
+                    <span class={`ml-2 text-xs tabular-nums ${isSelected ? "text-purple-500" : "text-gray-400"}`}>
+                      {count}
+                    </span>
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
         </div>
 
-        <ul class="space-y-0.5">
-          {sidebarTags.map((tag) => {
-            const count = tagCounts.get(tag.slug) || 0;
-            const isSelected = selectedTags.includes(tag.slug);
-            return (
-              <li key={tag.slug}>
-                <button
-                  type="button"
-                  onClick={() => toggleTag(tag.slug)}
-                  class={`flex w-full items-center justify-between rounded-md px-2 py-1.5 text-sm transition-colors ${
-                    isSelected
-                      ? "bg-blue-50 font-medium text-blue-700"
-                      : count > 0
-                        ? "text-gray-700 hover:bg-gray-50"
-                        : "text-gray-400"
-                  }`}
-                >
-                  <span class="truncate">{tag.name}</span>
-                  <span class={`ml-2 text-xs tabular-nums ${isSelected ? "text-blue-500" : "text-gray-400"}`}>
-                    {count}
-                  </span>
-                </button>
-              </li>
-            );
-          })}
-        </ul>
+        {/* Technology facet */}
+        <div>
+          <h3 class="mb-3 text-xs font-semibold uppercase tracking-wider text-gray-400">Technologies</h3>
 
-        {!sidebarTagSearch && !showAllTags && tags.length > 10 && (
-          <button
-            type="button"
-            onClick={() => setShowAllTags(true)}
-            class="mt-2 text-xs font-medium text-primary-600 hover:text-primary-700"
-          >
-            Show all {tags.length} tags
-          </button>
-        )}
-        {showAllTags && !sidebarTagSearch && (
-          <button
-            type="button"
-            onClick={() => setShowAllTags(false)}
-            class="mt-2 text-xs font-medium text-gray-500 hover:text-gray-700"
-          >
-            Show fewer
-          </button>
-        )}
+          {/* Tag search within sidebar */}
+          <div class="relative mb-2">
+            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2.5">
+              <SearchIcon />
+            </div>
+            <label for={tagSearchId} class="sr-only">Search technologies</label>
+            <input
+              id={tagSearchId}
+              type="search"
+              value={sidebarTagSearch}
+              onInput={(e) => { setSidebarTagSearch((e.target as HTMLInputElement).value); setShowAllTags(true); }}
+              placeholder="Search tags..."
+              class={`w-full rounded-md border border-gray-200 py-1.5 pl-8 pr-3 text-sm placeholder-gray-400 focus:border-primary-600 focus:outline-none focus:ring-1 focus:ring-primary-600`}
+            />
+          </div>
+
+          <ul class="space-y-0.5" onKeyDown={handleFacetListKeyDown}>
+            {sidebarTags.map((tag) => {
+              const count = tagCounts.get(tag.slug) || 0;
+              const isSelected = selectedTags.includes(tag.slug);
+              return (
+                <li key={tag.slug}>
+                  <button
+                    type="button"
+                    onClick={() => toggleTag(tag.slug)}
+                    aria-pressed={isSelected}
+                    class={`flex w-full items-center justify-between rounded-md px-2 py-1.5 text-sm transition-colors ${FOCUS_RING} ${
+                      isSelected
+                        ? "bg-blue-50 font-medium text-blue-700"
+                        : count > 0
+                          ? "text-gray-700 hover:bg-gray-50"
+                          : "text-gray-400"
+                    }`}
+                  >
+                    <span class="truncate">{tag.name}</span>
+                    <span class={`ml-2 text-xs tabular-nums ${isSelected ? "text-blue-500" : "text-gray-400"}`}>
+                      {count}
+                    </span>
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+
+          {!sidebarTagSearch && !showAllTags && tags.length > 10 && (
+            <button
+              type="button"
+              onClick={() => setShowAllTags(true)}
+              aria-expanded={false}
+              class={`mt-2 text-xs font-medium text-primary-600 hover:text-primary-700 ${FOCUS_RING}`}
+            >
+              Show all {tags.length} tags
+            </button>
+          )}
+          {showAllTags && !sidebarTagSearch && (
+            <button
+              type="button"
+              onClick={() => setShowAllTags(false)}
+              class={`mt-2 text-xs font-medium text-gray-500 hover:text-gray-700 ${FOCUS_RING}`}
+            >
+              Show fewer
+            </button>
+          )}
+        </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   // ── Enhanced empty state ────────────────────────────────────────
 
@@ -599,7 +676,7 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
     const isAndMode = tagMode === "and";
 
     return (
-      <div class="rounded-lg border border-gray-200 bg-gray-50 py-16 text-center">
+      <div class="rounded-lg border border-gray-200 bg-gray-50 py-16 text-center" role="status">
         <div class="mx-auto max-w-md px-4">
           <p class="text-lg font-medium text-gray-700">No entries match your filters</p>
           <p class="mt-2 text-sm text-gray-500">
@@ -615,7 +692,7 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
             {hasTags && isAndMode && selectedTags.length > 1 && (
               <button
                 type="button"
-                class="rounded-md border border-primary-200 bg-primary-50 px-3 py-1.5 text-sm font-medium text-primary-700 hover:bg-primary-100"
+                class={`rounded-md border border-primary-200 bg-primary-50 px-3 py-1.5 text-sm font-medium text-primary-700 hover:bg-primary-100 ${FOCUS_RING}`}
                 onClick={() => { setTagMode("or"); resetPage(); }}
               >
                 Switch to Match Any
@@ -624,7 +701,7 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
             {hasTags && (
               <button
                 type="button"
-                class="rounded-md border border-gray-200 px-3 py-1.5 text-sm font-medium text-gray-600 hover:bg-gray-100"
+                class={`rounded-md border border-gray-200 px-3 py-1.5 text-sm font-medium text-gray-600 hover:bg-gray-100 ${FOCUS_RING}`}
                 onClick={() => { setSelectedTags([]); resetPage(); }}
               >
                 Clear tags
@@ -633,7 +710,7 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
             {hasIndustry && (
               <button
                 type="button"
-                class="rounded-md border border-gray-200 px-3 py-1.5 text-sm font-medium text-gray-600 hover:bg-gray-100"
+                class={`rounded-md border border-gray-200 px-3 py-1.5 text-sm font-medium text-gray-600 hover:bg-gray-100 ${FOCUS_RING}`}
                 onClick={() => { setSelectedIndustry(""); resetPage(); }}
               >
                 Clear industry
@@ -642,7 +719,7 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
             {hasQuery && (
               <button
                 type="button"
-                class="rounded-md border border-gray-200 px-3 py-1.5 text-sm font-medium text-gray-600 hover:bg-gray-100"
+                class={`rounded-md border border-gray-200 px-3 py-1.5 text-sm font-medium text-gray-600 hover:bg-gray-100 ${FOCUS_RING}`}
                 onClick={() => { setQuery(""); resetPage(); }}
               >
                 Clear search
@@ -650,7 +727,7 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
             )}
             <button
               type="button"
-              class="text-sm font-medium text-gray-500 underline hover:text-gray-700"
+              class={`text-sm font-medium text-gray-500 underline hover:text-gray-700 ${FOCUS_RING}`}
               onClick={clearAll}
             >
               Clear all
@@ -667,7 +744,7 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
                     key={slug}
                     type="button"
                     onClick={() => { clearAll(); toggleTag(slug); }}
-                    class="rounded-full bg-blue-50 px-2.5 py-1 text-xs font-medium text-blue-700 hover:bg-blue-100"
+                    class={`rounded-full bg-blue-50 px-2.5 py-1 text-xs font-medium text-blue-700 hover:bg-blue-100 ${FOCUS_RING}`}
                   >
                     {tagMap.get(slug) || slug}
                   </button>
@@ -684,7 +761,7 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
 
   if (loading) {
     return (
-      <div class="flex items-center justify-center py-20">
+      <div class="flex items-center justify-center py-20" role="status">
         <div class="text-center">
           <div class="mx-auto h-8 w-8 animate-spin rounded-full border-2 border-gray-300 border-t-primary-600" />
           <p class="mt-4 text-sm text-gray-500">Loading LLMOps database...</p>
@@ -695,11 +772,11 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
 
   if (error) {
     return (
-      <div class="rounded-lg border border-red-200 bg-red-50 p-6 text-center">
+      <div class="rounded-lg border border-red-200 bg-red-50 p-6 text-center" role="alert">
         <p class="text-sm text-red-700">Failed to load data: {error}</p>
         <button
           type="button"
-          class="mt-3 text-sm font-medium text-red-600 underline hover:text-red-700"
+          class={`mt-3 text-sm font-medium text-red-600 underline hover:text-red-700 ${FOCUS_RING}`}
           onClick={() => window.location.reload()}
         >
           Retry
@@ -715,7 +792,7 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
       {/* Desktop sidebar */}
       <aside class="hidden lg:block lg:w-64 lg:shrink-0">
         <div class="sticky top-24 max-h-[calc(100vh-8rem)] overflow-y-auto pr-2">
-          {renderFacets()}
+          {renderFacets("desktop")}
         </div>
       </aside>
 
@@ -729,30 +806,37 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
 
       {/* Mobile drawer */}
       <div
+        ref={drawerRef}
+        id={MOBILE_DRAWER_ID}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={MOBILE_DRAWER_TITLE_ID}
+        aria-hidden={!mobileDrawerOpen}
         class={`fixed inset-y-0 left-0 z-50 w-80 max-w-[85vw] transform bg-white shadow-xl transition-transform duration-200 lg:hidden ${
           mobileDrawerOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
         <div class="flex h-full flex-col">
           <div class="flex items-center justify-between border-b border-gray-200 px-4 py-3">
-            <h2 class="font-semibold text-gray-900">Filters</h2>
+            <h2 id={MOBILE_DRAWER_TITLE_ID} class="font-semibold text-gray-900">Filters</h2>
             <button
+              ref={drawerCloseRef}
               type="button"
               onClick={() => setMobileDrawerOpen(false)}
-              class="rounded-md p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
+              class={`rounded-md p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600 ${FOCUS_RING}`}
               aria-label="Close filters"
             >
               <CloseIcon />
             </button>
           </div>
           <div class="flex-1 overflow-y-auto px-4 py-4">
-            {renderFacets()}
+            {renderFacets("mobile")}
           </div>
           <div class="border-t border-gray-200 px-4 py-3">
             <button
               type="button"
               onClick={() => setMobileDrawerOpen(false)}
-              class="w-full rounded-lg bg-primary-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-primary-700"
+              class={`w-full rounded-lg bg-primary-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-primary-700 ${FOCUS_RING}`}
             >
               Show {filtered.length} results
             </button>
@@ -766,9 +850,12 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
         <div class="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center">
           {/* Mobile filter button */}
           <button
+            ref={mobileFiltersButtonRef}
             type="button"
+            aria-expanded={mobileDrawerOpen}
+            aria-controls={MOBILE_DRAWER_ID}
             onClick={() => setMobileDrawerOpen(true)}
-            class="inline-flex items-center gap-2 rounded-lg border border-gray-300 px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 lg:hidden"
+            class={`inline-flex items-center gap-2 rounded-lg border border-gray-300 px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 lg:hidden ${FOCUS_RING}`}
           >
             <FilterIcon />
             Filters
@@ -795,29 +882,40 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
             />
           </div>
 
-          {/* AND/OR toggle */}
-          <div class="flex items-center gap-1 rounded-lg border border-gray-300 p-1">
-            <button
-              type="button"
-              onClick={() => { setTagMode("and"); resetPage(); }}
-              class={`rounded-md px-3 py-1.5 text-xs font-medium transition-colors ${
+          {/* AND/OR toggle — native radio inputs for accessibility */}
+          <fieldset class="flex items-center gap-1 rounded-lg border border-gray-300 p-1" aria-label="Tag match mode">
+            <legend class="sr-only">Tag match mode</legend>
+            <label
+              class={`cursor-pointer rounded-md px-3 py-1.5 text-xs font-medium transition-colors has-[:focus-visible]:outline-none has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-primary-600 ${
                 tagMode === "and" ? "bg-gray-900 text-white" : "text-gray-600 hover:bg-gray-100"
               }`}
-              title="Results must match ALL selected tags"
             >
+              <input
+                type="radio"
+                name="tagMode"
+                value="and"
+                checked={tagMode === "and"}
+                onChange={() => { setTagMode("and"); resetPage(); }}
+                class="sr-only"
+              />
               Match All
-            </button>
-            <button
-              type="button"
-              onClick={() => { setTagMode("or"); resetPage(); }}
-              class={`rounded-md px-3 py-1.5 text-xs font-medium transition-colors ${
+            </label>
+            <label
+              class={`cursor-pointer rounded-md px-3 py-1.5 text-xs font-medium transition-colors has-[:focus-visible]:outline-none has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-primary-600 ${
                 tagMode === "or" ? "bg-gray-900 text-white" : "text-gray-600 hover:bg-gray-100"
               }`}
-              title="Results must match ANY selected tag"
             >
+              <input
+                type="radio"
+                name="tagMode"
+                value="or"
+                checked={tagMode === "or"}
+                onChange={() => { setTagMode("or"); resetPage(); }}
+                class="sr-only"
+              />
               Match Any
-            </button>
-          </div>
+            </label>
+          </fieldset>
 
           {/* Sort dropdown */}
           <div class="sm:w-40">
@@ -842,7 +940,7 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
               <button
                 key={slug}
                 type="button"
-                class="inline-flex items-center gap-1 rounded-full bg-blue-50 px-2.5 py-1 text-xs font-medium text-blue-700 transition-colors hover:bg-blue-100"
+                class={`inline-flex items-center gap-1 rounded-full bg-blue-50 px-2.5 py-1 text-xs font-medium text-blue-700 transition-colors hover:bg-blue-100 ${FOCUS_RING}`}
                 onClick={() => toggleTag(slug)}
                 aria-label={`Remove tag ${tagMap.get(slug) || slug}`}
               >
@@ -853,7 +951,7 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
             {selectedIndustry && (
               <button
                 type="button"
-                class="inline-flex items-center gap-1 rounded-full bg-purple-50 px-2.5 py-1 text-xs font-medium text-purple-700 transition-colors hover:bg-purple-100"
+                class={`inline-flex items-center gap-1 rounded-full bg-purple-50 px-2.5 py-1 text-xs font-medium text-purple-700 transition-colors hover:bg-purple-100 ${FOCUS_RING}`}
                 onClick={() => selectIndustry(selectedIndustry)}
                 aria-label={`Remove industry ${industryMap.get(selectedIndustry) || selectedIndustry}`}
               >
@@ -863,7 +961,7 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
             )}
             <button
               type="button"
-              class="text-xs font-medium text-gray-500 underline hover:text-gray-700"
+              class={`text-xs font-medium text-gray-500 underline hover:text-gray-700 ${FOCUS_RING}`}
               onClick={clearAll}
             >
               Clear all
@@ -880,7 +978,7 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
                 key={slug}
                 type="button"
                 onClick={() => toggleTag(slug)}
-                class="rounded-full bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-600 transition-colors hover:bg-gray-200"
+                class={`rounded-full bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-600 transition-colors hover:bg-gray-200 ${FOCUS_RING}`}
               >
                 {tagMap.get(slug) || slug}
               </button>
@@ -888,11 +986,14 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
           </div>
         )}
 
-        {/* Results count */}
-        <div class="mb-4 text-sm text-gray-500">
-          {filtered.length === items.length
-            ? `${items.length} entries`
-            : `${filtered.length} of ${items.length} entries`}
+        {/* Results count — live region for screen readers */}
+        <div class="mb-4 text-sm text-gray-500" role="status" aria-live="polite" aria-atomic="true">
+          <span aria-hidden="true">
+            {filtered.length === items.length
+              ? `${items.length} entries`
+              : `${filtered.length} of ${items.length} entries`}
+          </span>
+          <span class="sr-only">{resultsStatusText}</span>
         </div>
 
         {/* Results grid */}
@@ -908,7 +1009,7 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
               >
                 <a
                   href={`/llmops-database/${item.slug}`}
-                  class="font-semibold text-gray-900 group-hover:text-primary-600 line-clamp-2"
+                  class={`font-semibold text-gray-900 group-hover:text-primary-600 line-clamp-2 ${FOCUS_RING}`}
                   onClick={(e: MouseEvent) => e.stopPropagation()}
                 >
                   {item.title}
@@ -927,8 +1028,9 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
                       <span aria-hidden="true">&middot;</span>
                       <button
                         type="button"
-                        class="rounded-full bg-purple-50 px-2 py-0.5 text-purple-700 transition-colors hover:bg-purple-100"
+                        class={`rounded-full bg-purple-50 px-2 py-0.5 text-purple-700 transition-colors hover:bg-purple-100 ${FOCUS_RING}`}
                         onClick={(e: MouseEvent) => { e.stopPropagation(); selectIndustry(item.industryTags!); }}
+                        aria-label={`Filter by ${industryMap.get(item.industryTags) || item.industryTags}`}
                       >
                         {industryMap.get(item.industryTags) || item.industryTags}
                       </button>
@@ -949,8 +1051,10 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
                           key={tagSlug}
                           type="button"
                           data-tag-chip
+                          aria-pressed={isSelected}
+                          aria-label={isSelected ? `Remove filter ${tagMap.get(tagSlug) || tagSlug}` : `Filter by ${tagMap.get(tagSlug) || tagSlug}`}
                           onClick={(e: MouseEvent) => { e.stopPropagation(); toggleTag(tagSlug); }}
-                          class={`rounded-full px-2 py-0.5 text-xs transition-colors ${
+                          class={`rounded-full px-2 py-0.5 text-xs transition-colors ${FOCUS_RING} ${
                             isSelected
                               ? "bg-primary-600 text-white"
                               : "bg-blue-50 text-blue-700 hover:bg-blue-100"
@@ -979,7 +1083,8 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
               type="button"
               disabled={safePage <= 1}
               onClick={() => setPage((p) => Math.max(1, p - 1))}
-              class="rounded-md border border-gray-300 px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40"
+              class={`rounded-md border border-gray-300 px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40 ${FOCUS_RING}`}
+              aria-label="Previous page"
             >
               Previous
             </button>
@@ -999,13 +1104,15 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
               }
               return pages.map((p, i) =>
                 p === "..." ? (
-                  <span key={`e${i}`} class="px-1 text-gray-400">...</span>
+                  <span key={`e${i}`} class="px-1 text-gray-400" aria-hidden="true">&hellip;</span>
                 ) : (
                   <button
                     key={p}
                     type="button"
                     onClick={() => setPage(p)}
-                    class={`inline-flex h-10 w-10 items-center justify-center rounded-md text-sm font-medium transition-colors ${
+                    aria-label={`Page ${p}`}
+                    aria-current={p === safePage ? "page" : undefined}
+                    class={`inline-flex h-10 w-10 items-center justify-center rounded-md text-sm font-medium transition-colors ${FOCUS_RING} ${
                       p === safePage
                         ? "bg-primary-600 text-white"
                         : "text-gray-700 hover:bg-gray-50"
@@ -1021,7 +1128,8 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
               type="button"
               disabled={safePage >= totalPages}
               onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-              class="rounded-md border border-gray-300 px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40"
+              class={`rounded-md border border-gray-300 px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40 ${FOCUS_RING}`}
+              aria-label="Next page"
             >
               Next
             </button>
