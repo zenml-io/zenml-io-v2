@@ -47,6 +47,56 @@ export interface LLMOpsFilterProps {
 type TagMode = "and" | "or";
 type SortMode = "newest" | "az" | "relevance";
 
+// ── Pagefind Adapter ──────────────────────────────────────────────
+
+interface PagefindResult {
+  id: string;
+  data: () => Promise<{
+    url: string;
+    excerpt: string;
+    meta: Record<string, string>;
+  }>;
+}
+
+interface PagefindSearchResponse {
+  results: PagefindResult[];
+}
+
+interface PagefindInstance {
+  search: (query: string) => Promise<PagefindSearchResponse>;
+  debouncedSearch: (
+    query: string,
+    options?: Record<string, unknown>,
+    debounceMs?: number,
+  ) => Promise<PagefindSearchResponse | null>;
+  init: () => void;
+}
+
+/** Lazy-load Pagefind. Returns null if unavailable (dev mode). */
+let pagefindPromise: Promise<PagefindInstance | null> | null = null;
+
+function getPagefind(): Promise<PagefindInstance | null> {
+  if (pagefindPromise) return pagefindPromise;
+  // Path stored in a variable so Rollup/Vite can't statically resolve it at build time.
+  // The pagefind directory only exists after `pagefind --site dist` runs post-build.
+  const pagefindPath = "/pagefind/pagefind.js";
+  pagefindPromise = import(/* @vite-ignore */ pagefindPath)
+    .then((pf) => {
+      pf.init();
+      return pf as PagefindInstance;
+    })
+    .catch(() => {
+      console.debug("[LLMOps] Pagefind not available — using substring search");
+      return null;
+    });
+  return pagefindPromise;
+}
+
+/** Extract slug from a Pagefind result URL like "/llmops-database/my-slug" */
+function slugFromUrl(url: string): string {
+  return url.replace(/^\/llmops-database\//, "").replace(/\.html$/, "").replace(/\/$/, "");
+}
+
 // ── URL State ──────────────────────────────────────────────────────
 
 interface FilterState {
@@ -206,6 +256,11 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
   const [sidebarTagSearch, setSidebarTagSearch] = useState("");
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
 
+  // Pagefind state: relevance-ranked slugs when a query is active
+  const [pagefindSlugs, setPagefindSlugs] = useState<string[] | null>(null);
+  const [pagefindAvailable, setPagefindAvailable] = useState(false);
+  const pagefindSearchId = useRef(0);
+
   // Lookup maps
   const tagMap = useMemo(() => new Map(tags.map((t) => [t.slug, t.name])), [tags]);
   const industryMap = useMemo(() => new Map(industries.map((i) => [i.slug, i.name])), [industries]);
@@ -229,7 +284,39 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
         setError(err.message);
         setLoading(false);
       });
+
+    // Pre-warm Pagefind (non-blocking)
+    getPagefind().then((pf) => { if (pf) setPagefindAvailable(true); });
   }, []);
+
+  // Pagefind search: query changes → debounced full-text search → relevance-ranked slugs
+  useEffect(() => {
+    const searchId = ++pagefindSearchId.current;
+
+    if (!query) {
+      setPagefindSlugs(null);
+      return;
+    }
+
+    let cancelled = false;
+    const timer = setTimeout(async () => {
+      const pf = await getPagefind();
+      if (!pf || cancelled || searchId !== pagefindSearchId.current) return;
+
+      const response = await pf.search(query);
+      if (cancelled || searchId !== pagefindSearchId.current) return;
+
+      // Resolve all result data to get URLs → slugs in relevance order
+      const dataPromises = response.results.map((r) => r.data());
+      const results = await Promise.all(dataPromises);
+      if (cancelled || searchId !== pagefindSearchId.current) return;
+
+      const slugs = results.map((d) => slugFromUrl(d.url));
+      setPagefindSlugs(slugs);
+    }, 200);
+
+    return () => { cancelled = true; clearTimeout(timer); };
+  }, [query]);
 
   // Close mobile drawer on escape
   useEffect(() => {
@@ -251,44 +338,84 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
     return () => { document.body.style.overflow = ""; };
   }, [mobileDrawerOpen]);
 
+  // For faster Pagefind lookups in facet computation
+  const pagefindSlugSet = useMemo(
+    () => (pagefindSlugs ? new Set(pagefindSlugs) : null),
+    [pagefindSlugs],
+  );
+
   // Contextual facet counts: tag counts filter by query + industry only
   const tagCounts = useMemo(() => {
-    const filtered = items.filter(
-      (item) => matchesQuery(item, query) && matchesIndustry(item, selectedIndustry),
-    );
+    const usePagefind = pagefindAvailable && query && pagefindSlugSet !== null;
+    const base = items.filter((item) => {
+      if (usePagefind && !pagefindSlugSet!.has(item.slug)) return false;
+      if (!usePagefind && !matchesQuery(item, query)) return false;
+      return matchesIndustry(item, selectedIndustry);
+    });
     const counts = new Map<string, number>();
-    for (const item of filtered) {
+    for (const item of base) {
       for (const tag of item.llmopsTags) {
         counts.set(tag, (counts.get(tag) || 0) + 1);
       }
     }
     return counts;
-  }, [items, query, selectedIndustry]);
+  }, [items, query, selectedIndustry, pagefindAvailable, pagefindSlugSet]);
 
   // Contextual facet counts: industry counts filter by query + tags only
   const industryCounts = useMemo(() => {
-    const filtered = items.filter(
-      (item) => matchesQuery(item, query) && matchesTags(item, selectedTags, tagMode),
-    );
+    const usePagefind = pagefindAvailable && query && pagefindSlugSet !== null;
+    const base = items.filter((item) => {
+      if (usePagefind && !pagefindSlugSet!.has(item.slug)) return false;
+      if (!usePagefind && !matchesQuery(item, query)) return false;
+      return matchesTags(item, selectedTags, tagMode);
+    });
     const counts = new Map<string, number>();
-    for (const item of filtered) {
+    for (const item of base) {
       if (item.industryTags) {
         counts.set(item.industryTags, (counts.get(item.industryTags) || 0) + 1);
       }
     }
     return counts;
-  }, [items, query, selectedTags, tagMode]);
+  }, [items, query, selectedTags, tagMode, pagefindAvailable, pagefindSlugSet]);
 
   // Filter + sort + paginate
+  // When Pagefind is available and a query is active, use Pagefind's relevance-ranked
+  // slugs as the primary result set; apply tag/industry filters on top.
+  // When Pagefind is unavailable (dev mode), fall back to substring matchesQuery().
   const filtered = useMemo(() => {
-    const matched = items.filter(
-      (item) =>
-        matchesQuery(item, query) &&
-        matchesTags(item, selectedTags, tagMode) &&
-        matchesIndustry(item, selectedIndustry),
-    );
-    return sortItems(matched, sort, query);
-  }, [items, query, selectedTags, selectedIndustry, tagMode, sort]);
+    const usePagefindResults = pagefindAvailable && query && pagefindSlugs !== null;
+
+    let matched: ProcessedItem[];
+    if (usePagefindResults) {
+      // Build a set of Pagefind-matched slugs for fast lookup
+      const pfSlugSet = new Set(pagefindSlugs);
+      // Filter items to those Pagefind found, then apply tag/industry filters
+      matched = items.filter(
+        (item) =>
+          pfSlugSet.has(item.slug) &&
+          matchesTags(item, selectedTags, tagMode) &&
+          matchesIndustry(item, selectedIndustry),
+      );
+    } else {
+      // Fallback: substring search (dev mode or no Pagefind)
+      matched = items.filter(
+        (item) =>
+          matchesQuery(item, query) &&
+          matchesTags(item, selectedTags, tagMode) &&
+          matchesIndustry(item, selectedIndustry),
+      );
+    }
+
+    // Sort — for relevance with Pagefind, preserve Pagefind's ordering
+    if (usePagefindResults && sort === "relevance") {
+      const slugOrder = new Map(pagefindSlugs!.map((s, i) => [s, i]));
+      matched.sort((a, b) => (slugOrder.get(a.slug) ?? 9999) - (slugOrder.get(b.slug) ?? 9999));
+    } else {
+      matched = sortItems(matched, sort, query);
+    }
+
+    return matched;
+  }, [items, query, selectedTags, selectedIndustry, tagMode, sort, pagefindSlugs, pagefindAvailable]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
   const safePage = Math.min(page, totalPages);
@@ -317,7 +444,12 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
   const resetPage = useCallback(() => setPage(1), []);
 
   const handleQueryChange = (e: Event) => {
-    setQuery((e.target as HTMLInputElement).value);
+    const newQuery = (e.target as HTMLInputElement).value;
+    setQuery(newQuery);
+    // Auto-switch to relevance sort when user starts typing (if Pagefind available)
+    if (newQuery && pagefindAvailable && sort !== "relevance") setSort("relevance");
+    // Revert to newest when query is cleared
+    if (!newQuery && sort === "relevance") setSort("newest");
     resetPage();
   };
 

@@ -72,9 +72,22 @@ const ogImage = entry.data.seo?.ogImage;
   ogDescription={entry.data.seo?.ogDescription}
   canonical={entry.data.seo?.canonical}
 >
-  <div class="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
+  <div class="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8" data-pagefind-body>
+    {/* Pagefind metadata — slug for result→item mapping, year for sort */}
+    <span data-pagefind-meta={`slug:${entry.data.slug}`} class="hidden" />
+    {entry.data.company && <span data-pagefind-meta={`company:${entry.data.company}`} class="hidden" />}
+    {entry.data.year && <span data-pagefind-meta={`year:${entry.data.year}`} class="hidden" />}
+
+    {/* Pagefind filters — for native filtering (tags + industry) */}
+    {tags.map((tag) => (
+      <span data-pagefind-filter={`tag:${tag.slug}`} class="hidden" />
+    ))}
+    {industryEntry && (
+      <span data-pagefind-filter={`industry:${industryEntry.data.slug}`} class="hidden" />
+    )}
+
     {/* Breadcrumb */}
-    <nav class="mb-8 flex items-center gap-2 text-sm text-gray-500">
+    <nav class="mb-8 flex items-center gap-2 text-sm text-gray-500" data-pagefind-ignore>
       <a href="/llmops-database" class="hover:text-primary-600">LLMOps Database</a>
       <svg class="h-4 w-4 text-gray-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round">
         <path d="M7.5 5L12.5 10L7.5 15" />
@@ -84,7 +97,7 @@ const ogImage = entry.data.seo?.ogImage;
 
     {/* Header */}
     <header class="mb-8">
-      <h1 class="text-3xl font-bold tracking-tight text-gray-900">{entry.data.title}</h1>
+      <h1 class="text-3xl font-bold tracking-tight text-gray-900" data-pagefind-meta="title">{entry.data.title}</h1>
 
       <div class="mt-4 flex flex-wrap items-center gap-3 text-sm text-gray-500">
         {entry.data.company && (
@@ -151,7 +164,7 @@ const ogImage = entry.data.seo?.ogImage;
 
     {/* More Like This */}
     {relatedWithTags.length > 0 && (
-      <section class="mt-16 border-t border-gray-200 pt-10">
+      <section class="mt-16 border-t border-gray-200 pt-10" data-pagefind-ignore>
         <h2 class="mb-6 text-xl font-bold text-gray-900">More Like This</h2>
         <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {relatedWithTags.map((r) => (

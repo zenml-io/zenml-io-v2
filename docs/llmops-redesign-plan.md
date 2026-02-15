@@ -1,10 +1,9 @@
 # LLMOps Database UX Redesign Plan
 
-> **Status**: Planning (after blog redesign)
+> **Status**: Phases 1–6 COMPLETE
 > **Scope**: Full redesign pass — dual-mode (exploration/browsing + precise lookup)
 > **Freedom**: Not tied to pixel-perfect Webflow replication — we can improve!
-> **Sequencing**: After blog redesign
-> **Pagefind**: Deferred to later — enhanced substring search first, Pagefind as follow-up
+> **Pagefind**: Integrated — 1,453 pages indexed, hybrid search (Pagefind for full-text relevance + JSON index for faceted filtering)
 
 ## Current State
 
