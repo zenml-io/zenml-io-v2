@@ -2,33 +2,51 @@
 /**
  * Blog listing page (page 1).
  *
- * Shows the most recent published blog posts with pagination controls.
- * Page 2+ are handled by blog/page/[page].astro.
- *
- * Layout: purple gradient header → featured hero post → 3-col card grid.
- * Matches the Webflow blog listing design.
+ * "Clean & Structured" design: sidebar browse + featured hero + 3-col grid.
+ * Page 2+ handled by blog/page/[page].astro.
  */
-import { getCollection, getEntry } from "astro:content";
+import { getEntry } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import BlogCard from "../../components/blog/BlogCard.astro";
+import BlogSidebar from "../../components/blog/BlogSidebar.astro";
+import Pagination from "../../components/Pagination.astro";
+import Image from "../../components/Image.astro";
+import {
+  getMainFeedPosts,
+  getCategoryCounts,
+  getTagCounts,
+  resolveAuthor,
+  PAGE_SIZE,
+  blogPageHref,
+} from "../../lib/blog";
 
-const PAGE_SIZE = 12;
-
-// Get all published posts, sorted newest first
-// Exclude "discovery"-tagged posts from the listing (they're still published
-// with individual pages and sitemap entries, just hidden from the blog grid)
-const allPosts = (await getCollection("blog", ({ data }) => !data.draft && !data.tags.includes("discovery")))
-  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+const allPosts = await getMainFeedPosts();
 
 // Featured post: prefer a post with `featured: true`, fall back to newest
 const featuredPost = allPosts.find((p) => p.data.featured) ?? allPosts[0];
 const remainingPosts = allPosts.filter((p) => p !== featuredPost);
-const page1Count = PAGE_SIZE - 1; // featured post takes one slot
+const page1Count = PAGE_SIZE - 1; // featured takes one slot
 const totalPages = 1 + Math.ceil(Math.max(remainingPosts.length - page1Count, 0) / PAGE_SIZE);
 const posts = remainingPosts.slice(0, page1Count);
 
-// Resolve categories for display
+// Sidebar data
+const categories = await getCategoryCounts(allPosts);
+const popularTags = await getTagCounts(allPosts);
+
+// Resolve featured post metadata
+const featuredCategory = featuredPost?.data.category
+  ? await getEntry("categories", featuredPost.data.category)
+  : undefined;
+const featuredAuthor = await resolveAuthor(featuredPost?.data.author);
+
+// Resolve metadata for grid posts
+const authorMap = new Map<string, { name: string; slug: string }>();
 const categoryMap = new Map<string, { name: string; slug: string }>();
-for (const post of [featuredPost, ...posts]) {
+for (const post of posts) {
+  if (post.data.author && !authorMap.has(post.data.author)) {
+    const a = await resolveAuthor(post.data.author);
+    if (a) authorMap.set(post.data.author, a);
+  }
   if (post.data.category && !categoryMap.has(post.data.category)) {
     const cat = await getEntry("categories", post.data.category);
     if (cat) categoryMap.set(post.data.category, { name: cat.data.name, slug: cat.data.slug });
@@ -53,141 +71,95 @@ for (const post of [featuredPost, ...posts]) {
   </div>
 
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    {/* Featured post — two-column hero layout */}
-    {featuredPost && (() => {
-      const category = categoryMap.get(featuredPost.data.category || "");
-      return (
-        <article class="grid items-center gap-8 py-12 lg:grid-cols-2 lg:gap-12">
-          <div>
-            {(category || featuredPost.data.readingTime) && (
-              <div class="mb-4 inline-flex items-center rounded-full bg-primary-50 p-1 text-xs font-medium text-primary-700" style="mix-blend-mode:multiply">
-                {category && (
-                  <a href={`/category/${category.slug}`} class="rounded-full bg-white px-2 py-0.5 font-semibold text-primary-700 hover:text-primary-800">
-                    {category.name}
+    {/* Sidebar + Content grid */}
+    <div class="gap-10 pb-12 lg:grid lg:grid-cols-[220px_1fr]">
+      <BlogSidebar categories={categories} popularTags={popularTags} />
+
+      <div>
+        {/* Featured post — two-column hero layout */}
+        {featuredPost && (
+          <article class="grid items-center gap-8 py-8 lg:grid-cols-2 lg:gap-12">
+            <div>
+              {featuredCategory && (
+                <div class="mb-4">
+                  <a
+                    href={`/category/${featuredCategory.data.slug}`}
+                    class="inline-flex items-center rounded-full bg-primary-50 px-3 py-1 text-xs font-semibold text-primary-700 transition-colors hover:bg-primary-100"
+                    style="mix-blend-mode:multiply"
+                  >
+                    {featuredCategory.data.name}
+                    {featuredPost.data.readingTime && (
+                      <span class="ml-2 border-l border-primary-200 pl-2">{featuredPost.data.readingTime}</span>
+                    )}
+                  </a>
+                </div>
+              )}
+              <h2 class="text-2xl font-bold text-gray-900 sm:text-3xl">
+                <a href={`/blog/${featuredPost.data.slug}`} class="transition-colors hover:text-primary-600">
+                  {featuredPost.data.title}
+                </a>
+              </h2>
+              {featuredPost.data.seo?.description && (
+                <p class="mt-4 text-base leading-relaxed text-gray-600">
+                  {featuredPost.data.seo.description}
+                </p>
+              )}
+              <div class="mt-4 flex items-center gap-3 text-sm text-gray-500">
+                {featuredAuthor && (
+                  <a href={`/author/${featuredAuthor.slug}`} class="font-medium text-gray-700 hover:text-primary-600">
+                    {featuredAuthor.name}
                   </a>
                 )}
-                {featuredPost.data.readingTime && (
-                  <span class="px-2 font-semibold">{featuredPost.data.readingTime}</span>
+                {featuredAuthor && featuredPost.data.readingTime && (
+                  <span class="text-gray-300" aria-hidden="true">&middot;</span>
                 )}
+                {featuredPost.data.readingTime && <span>{featuredPost.data.readingTime}</span>}
               </div>
-            )}
-            <h2 class="text-2xl font-bold text-gray-900 sm:text-3xl">
-              <a href={`/blog/${featuredPost.data.slug}`} class="hover:text-primary-600 transition-colors">
-                {featuredPost.data.title}
-              </a>
-            </h2>
-            {featuredPost.data.seo?.description && (
-              <p class="mt-4 text-base leading-relaxed text-gray-600">
-                {featuredPost.data.seo.description}
-              </p>
-            )}
-            <a
-              href={`/blog/${featuredPost.data.slug}`}
-              class="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-primary-600 hover:text-primary-700 transition-colors"
-            >
-              Read post
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" class="shrink-0">
-                <path d="M5.83 14.17L14.17 5.83M14.17 5.83H5.83M14.17 5.83V14.17" stroke="currentColor" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </a>
-          </div>
-          {featuredPost.data.mainImage && (
-            <a href={`/blog/${featuredPost.data.slug}`} class="block overflow-hidden rounded-xl">
-              <img
-                src={featuredPost.data.mainImage.url}
-                alt={featuredPost.data.mainImage.alt || featuredPost.data.title}
-                class="w-full rounded-xl object-cover"
-              />
-            </a>
-          )}
-        </article>
-      );
-    })()}
-
-    {/* Post grid */}
-    <div class="grid gap-8 pb-12 md:grid-cols-2 lg:grid-cols-3">
-      {posts.map((post) => {
-        const category = categoryMap.get(post.data.category || "");
-        return (
-          <article class="group flex flex-col">
-            {post.data.mainImage && (
-              <a href={`/blog/${post.data.slug}`} class="block aspect-[16/9] overflow-hidden rounded-xl">
-                <img
-                  src={post.data.mainImage.url}
-                  alt={post.data.mainImage.alt || post.data.title}
-                  class="h-full w-full object-cover transition-transform group-hover:scale-105"
-                  loading="lazy"
+            </div>
+            {featuredPost.data.mainImage && (
+              <a href={`/blog/${featuredPost.data.slug}`} class="block overflow-hidden rounded-xl">
+                <Image
+                  image={featuredPost.data.mainImage}
+                  alt={featuredPost.data.mainImage.alt || featuredPost.data.title}
+                  class="w-full rounded-xl object-cover"
                 />
               </a>
             )}
-            {(category || post.data.readingTime) && (
-              <div class="mt-4 self-start inline-flex items-center rounded-full bg-primary-50 p-1 text-xs font-medium text-primary-700" style="mix-blend-mode:multiply">
-                {category && (
-                  <a href={`/category/${category.slug}`} class="rounded-full bg-white px-2 py-0.5 font-semibold text-primary-700 hover:text-primary-800">
-                    {category.name}
-                  </a>
-                )}
-                {post.data.readingTime && (
-                  <span class="px-2 font-semibold">{post.data.readingTime}</span>
-                )}
-              </div>
-            )}
-            <h2 class="mt-2 line-clamp-2 text-lg font-semibold text-gray-900">
-              <a href={`/blog/${post.data.slug}`} class="hover:text-primary-600 transition-colors">
-                {post.data.title}
-              </a>
-            </h2>
-            {post.data.seo?.description && (
-              <p class="mt-1 line-clamp-3 text-sm leading-relaxed text-gray-600">
-                {post.data.seo.description}
-              </p>
-            )}
-            <a
-              href={`/blog/${post.data.slug}`}
-              class="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-primary-600 hover:text-primary-700 transition-colors"
-            >
-              Read post
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" class="shrink-0">
-                <path d="M5.83 14.17L14.17 5.83M14.17 5.83H5.83M14.17 5.83V14.17" stroke="currentColor" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </a>
           </article>
-        );
-      })}
-    </div>
+        )}
 
-    {/* Pagination */}
-    {totalPages > 1 && (
-      <nav class="mt-4 mb-12 flex items-center justify-center gap-2" aria-label="Blog pagination">
-        <span class="inline-flex h-10 w-10 items-center justify-center rounded-md bg-primary-600 text-sm font-medium text-white">
-          1
-        </span>
-        {Array.from({ length: Math.min(totalPages - 1, 4) }, (_, i) => i + 2).map((page) => (
-          <a
-            href={`/blog/page/${page}`}
-            class="inline-flex h-10 w-10 items-center justify-center rounded-md border border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-50"
-          >
-            {page}
-          </a>
-        ))}
-        {totalPages > 5 && (
-          <span class="px-2 text-gray-500">&hellip;</span>
-        )}
-        {totalPages > 5 && (
-          <a
-            href={`/blog/page/${totalPages}`}
-            class="inline-flex h-10 w-10 items-center justify-center rounded-md border border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-50"
-          >
-            {totalPages}
-          </a>
-        )}
-        <a
-          href="/blog/page/2"
-          class="ml-2 inline-flex items-center gap-1 rounded-md border border-gray-300 px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
-        >
-          Next &rarr;
-        </a>
-      </nav>
-    )}
+        {/* Divider */}
+        <hr class="border-gray-200" />
+
+        {/* Post grid */}
+        <div class="grid gap-6 py-8 md:grid-cols-2 xl:grid-cols-3">
+          {posts.map((post) => {
+            const author = authorMap.get(post.data.author || "");
+            const category = categoryMap.get(post.data.category || "");
+            return (
+              <BlogCard
+                href={`/blog/${post.data.slug}`}
+                title={post.data.title}
+                excerpt={post.data.seo?.description}
+                image={post.data.mainImage}
+                authorName={author?.name}
+                authorSlug={author?.slug}
+                readingTime={post.data.readingTime}
+                categoryName={category?.name}
+                categorySlug={category?.slug}
+              />
+            );
+          })}
+        </div>
+
+        {/* Pagination */}
+        <Pagination
+          currentPage={1}
+          totalPages={totalPages}
+          getHref={blogPageHref}
+          ariaLabel="Blog pagination"
+        />
+      </div>
+    </div>
   </div>
 </BaseLayout>

@@ -2,12 +2,13 @@
 /**
  * Blog tag taxonomy page.
  *
- * Shows all blog posts with this tag.
+ * Shows all blog posts with this tag using the shared BlogCard component.
  * Generates /tags/<slug> for each tag in the collection.
  */
 import { getCollection, getEntry } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import Badge from "../../components/Badge.astro";
+import BlogCard from "../../components/blog/BlogCard.astro";
+import { resolveAuthor } from "../../lib/blog";
 
 export async function getStaticPaths() {
   const tags = await getCollection("tags");
@@ -19,14 +20,18 @@ export async function getStaticPaths() {
 
 const { tag } = Astro.props;
 
-// Get all published blog posts with this tag
 const allPosts = (
   await getCollection("blog", ({ data }) => !data.draft && data.tags.includes(tag.data.slug))
 ).sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
 
-// Resolve categories for post display
+// Resolve authors and categories
+const authorMap = new Map<string, { name: string; slug: string }>();
 const categoryMap = new Map<string, { name: string; slug: string }>();
 for (const post of allPosts) {
+  if (post.data.author && !authorMap.has(post.data.author)) {
+    const a = await resolveAuthor(post.data.author);
+    if (a) authorMap.set(post.data.author, a);
+  }
   if (post.data.category && !categoryMap.has(post.data.category)) {
     const cat = await getEntry("categories", post.data.category);
     if (cat) categoryMap.set(post.data.category, { name: cat.data.name, slug: cat.data.slug });
@@ -39,59 +44,37 @@ for (const post of allPosts) {
   description={`Blog posts tagged with "${tag.data.name}" from the ZenML team.`}
 >
   <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-    <header class="mb-12">
+    <header class="mb-10">
+      <a href="/blog" class="mb-4 inline-flex items-center gap-1.5 text-sm font-medium text-primary-600 hover:text-primary-700">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" class="shrink-0">
+          <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Back to Blog
+      </a>
       <h1 class="text-4xl font-bold tracking-tight text-gray-900">
         Tag: {tag.data.name}
       </h1>
-      <p class="mt-4 text-lg text-gray-600">
+      <p class="mt-3 text-lg text-gray-600">
         {allPosts.length} {allPosts.length === 1 ? "post" : "posts"} with this tag
       </p>
     </header>
 
-    {/* Post grid */}
-    <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
       {allPosts.map((post) => {
+        const author = authorMap.get(post.data.author || "");
         const category = categoryMap.get(post.data.category || "");
         return (
-          <article class="group flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white transition-shadow hover:shadow-md">
-            {post.data.mainImage && (
-              <a href={`/blog/${post.data.slug}`} class="block aspect-[16/9] overflow-hidden">
-                <img
-                  src={post.data.mainImage.url}
-                  alt={post.data.mainImage.alt || post.data.title}
-                  class="h-full w-full object-cover transition-transform group-hover:scale-105"
-                  loading="lazy"
-                />
-              </a>
-            )}
-            <div class="flex flex-1 flex-col p-5">
-              {category && (
-                <Badge href={`/category/${category.slug}`} variant="primary" class="mb-2 self-start">
-                  {category.name}
-                </Badge>
-              )}
-              <h2 class="mb-2 text-lg font-semibold leading-snug text-gray-900">
-                <a href={`/blog/${post.data.slug}`} class="hover:text-primary-600">
-                  {post.data.title}
-                </a>
-              </h2>
-              <div class="mt-auto flex items-center gap-3 pt-4 text-sm text-gray-500">
-                <time datetime={new Date(post.data.date).toISOString().split("T")[0]}>
-                  {new Date(post.data.date).toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "short",
-                    day: "numeric",
-                  })}
-                </time>
-                {post.data.readingTime && (
-                  <>
-                    <span aria-hidden="true">&middot;</span>
-                    <span>{post.data.readingTime}</span>
-                  </>
-                )}
-              </div>
-            </div>
-          </article>
+          <BlogCard
+            href={`/blog/${post.data.slug}`}
+            title={post.data.title}
+            excerpt={post.data.seo?.description}
+            image={post.data.mainImage}
+            authorName={author?.name}
+            authorSlug={author?.slug}
+            readingTime={post.data.readingTime}
+            categoryName={category?.name}
+            categorySlug={category?.slug}
+          />
         );
       })}
     </div>

@@ -1,0 +1,126 @@
+---
+/**
+ * BlogCard — unified card component for blog listings.
+ *
+ * Used across: blog hub, pagination pages, taxonomy pages, related posts.
+ * Design: "Clean & Structured" — subtle border, small shadow, author + reading time.
+ */
+import Image from "../Image.astro";
+
+interface Props {
+  href: string;
+  title: string;
+  excerpt?: string;
+  image?: { url: string; alt?: string; width?: number; height?: number };
+  authorName?: string;
+  authorSlug?: string;
+  readingTime?: string;
+  categoryName?: string;
+  categorySlug?: string;
+  /** "grid" = full card for listing grids, "compact" = horizontal for related/continue reading */
+  variant?: "grid" | "compact";
+}
+
+const {
+  href,
+  title,
+  excerpt,
+  image,
+  authorName,
+  authorSlug,
+  readingTime,
+  categoryName,
+  categorySlug,
+  variant = "grid",
+} = Astro.props;
+---
+
+{variant === "grid" ? (
+  <article class="group flex flex-col overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5">
+    {image && (
+      <a href={href} class="block aspect-[16/9] overflow-hidden">
+        <Image
+          image={image}
+          alt={image.alt || title}
+          class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+          loading="lazy"
+        />
+      </a>
+    )}
+    <div class="flex flex-1 flex-col p-5">
+      {categoryName && (
+        <div class="mb-2">
+          {categorySlug ? (
+            <a
+              href={`/category/${categorySlug}`}
+              class="inline-flex items-center rounded-full bg-primary-50 px-2.5 py-0.5 text-xs font-semibold text-primary-700 transition-colors hover:bg-primary-100"
+              style="mix-blend-mode:multiply"
+            >
+              {categoryName}
+            </a>
+          ) : (
+            <span class="inline-flex items-center rounded-full bg-primary-50 px-2.5 py-0.5 text-xs font-semibold text-primary-700" style="mix-blend-mode:multiply">
+              {categoryName}
+            </span>
+          )}
+        </div>
+      )}
+      <h2 class="mb-2 line-clamp-2 text-lg font-semibold leading-snug text-gray-900">
+        <a href={href} class="transition-colors hover:text-primary-600">
+          {title}
+        </a>
+      </h2>
+      {excerpt && (
+        <p class="mb-3 line-clamp-2 text-sm leading-relaxed text-gray-600">
+          {excerpt}
+        </p>
+      )}
+      <div class="mt-auto flex items-center gap-2 pt-2 text-sm text-gray-500">
+        {authorName && (
+          <>
+            {authorSlug ? (
+              <a href={`/author/${authorSlug}`} class="font-medium text-gray-700 hover:text-primary-600">
+                {authorName}
+              </a>
+            ) : (
+              <span class="font-medium text-gray-700">{authorName}</span>
+            )}
+          </>
+        )}
+        {authorName && readingTime && <span class="text-gray-300" aria-hidden="true">&middot;</span>}
+        {readingTime && <span>{readingTime}</span>}
+      </div>
+    </div>
+  </article>
+) : (
+  /* Compact variant — horizontal layout for "Continue Reading" / related */
+  <article class="group flex gap-4 overflow-hidden rounded-xl border border-gray-200 bg-white p-4 shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5">
+    {image && (
+      <a href={href} class="block w-28 shrink-0 overflow-hidden rounded-lg">
+        <Image
+          image={image}
+          alt={image.alt || title}
+          class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+          loading="lazy"
+        />
+      </a>
+    )}
+    <div class="flex flex-1 flex-col justify-center">
+      {categoryName && (
+        <div class="mb-1">
+          <span class="text-xs font-semibold text-primary-700">{categoryName}</span>
+        </div>
+      )}
+      <h3 class="line-clamp-2 text-sm font-semibold leading-snug text-gray-900">
+        <a href={href} class="transition-colors hover:text-primary-600">
+          {title}
+        </a>
+      </h3>
+      <div class="mt-1 flex items-center gap-2 text-xs text-gray-500">
+        {authorName && <span class="font-medium text-gray-600">{authorName}</span>}
+        {authorName && readingTime && <span class="text-gray-300" aria-hidden="true">&middot;</span>}
+        {readingTime && <span>{readingTime}</span>}
+      </div>
+    </div>
+  </article>
+)}

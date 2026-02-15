@@ -2,12 +2,13 @@
 /**
  * Author taxonomy page.
  *
- * Shows author bio + all blog posts written by this author.
+ * Shows author bio + all blog posts by this author using the shared BlogCard.
  * Generates /author/<slug> for each author in the collection.
  */
 import { getCollection, getEntry } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import Badge from "../../components/Badge.astro";
+import BlogCard from "../../components/blog/BlogCard.astro";
+import Image from "../../components/Image.astro";
 
 export async function getStaticPaths() {
   const authors = await getCollection("authors");
@@ -19,12 +20,11 @@ export async function getStaticPaths() {
 
 const { author } = Astro.props;
 
-// Get all published blog posts by this author
 const allPosts = (
   await getCollection("blog", ({ data }) => !data.draft && data.author === author.data.slug)
 ).sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
 
-// Resolve categories for post display
+// Resolve categories
 const categoryMap = new Map<string, { name: string; slug: string }>();
 for (const post of allPosts) {
   if (post.data.category && !categoryMap.has(post.data.category)) {
@@ -40,81 +40,58 @@ for (const post of allPosts) {
 >
   <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
     {/* Author header */}
-    <header class="mb-12 flex items-center gap-6">
-      {author.data.avatar && (
-        <img
-          src={author.data.avatar.url}
-          alt={author.data.name}
-          class="h-20 w-20 rounded-full object-cover"
-        />
-      )}
-      <div>
-        <h1 class="text-3xl font-bold tracking-tight text-gray-900">{author.data.name}</h1>
-        {author.data.bio && <p class="mt-2 text-lg text-gray-600">{author.data.bio}</p>}
-        <div class="mt-2 flex gap-3">
-          {author.data.email && (
-            <a href={`mailto:${author.data.email}`} class="text-sm text-primary-600 hover:text-primary-700">
-              Email
-            </a>
-          )}
-          {author.data.linkedin && (
-            <a href={author.data.linkedin} class="text-sm text-primary-600 hover:text-primary-700" target="_blank" rel="noopener noreferrer">
-              LinkedIn
-            </a>
-          )}
+    <header class="mb-10">
+      <a href="/blog" class="mb-4 inline-flex items-center gap-1.5 text-sm font-medium text-primary-600 hover:text-primary-700">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" class="shrink-0">
+          <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Back to Blog
+      </a>
+      <div class="flex items-center gap-6">
+        {author.data.avatar && (
+          <Image
+            image={author.data.avatar}
+            alt={author.data.name}
+            class="h-20 w-20 rounded-full object-cover"
+          />
+        )}
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight text-gray-900">{author.data.name}</h1>
+          {author.data.bio && <p class="mt-2 text-lg text-gray-600">{author.data.bio}</p>}
+          <div class="mt-2 flex gap-3">
+            {author.data.email && (
+              <a href={`mailto:${author.data.email}`} class="text-sm text-primary-600 hover:text-primary-700">
+                Email
+              </a>
+            )}
+            {author.data.linkedin && (
+              <a href={author.data.linkedin} class="text-sm text-primary-600 hover:text-primary-700" target="_blank" rel="noopener noreferrer">
+                LinkedIn
+              </a>
+            )}
+          </div>
         </div>
       </div>
+      <p class="mt-6 text-gray-600">
+        {allPosts.length} {allPosts.length === 1 ? "post" : "posts"}
+      </p>
     </header>
 
-    {/* Post count */}
-    <p class="mb-8 text-gray-600">
-      {allPosts.length} {allPosts.length === 1 ? "post" : "posts"}
-    </p>
-
-    {/* Post grid */}
-    <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
       {allPosts.map((post) => {
         const category = categoryMap.get(post.data.category || "");
         return (
-          <article class="group flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white transition-shadow hover:shadow-md">
-            {post.data.mainImage && (
-              <a href={`/blog/${post.data.slug}`} class="block aspect-[16/9] overflow-hidden">
-                <img
-                  src={post.data.mainImage.url}
-                  alt={post.data.mainImage.alt || post.data.title}
-                  class="h-full w-full object-cover transition-transform group-hover:scale-105"
-                  loading="lazy"
-                />
-              </a>
-            )}
-            <div class="flex flex-1 flex-col p-5">
-              {category && (
-                <Badge href={`/category/${category.slug}`} variant="primary" class="mb-2 self-start">
-                  {category.name}
-                </Badge>
-              )}
-              <h2 class="mb-2 text-lg font-semibold leading-snug text-gray-900">
-                <a href={`/blog/${post.data.slug}`} class="hover:text-primary-600">
-                  {post.data.title}
-                </a>
-              </h2>
-              <div class="mt-auto flex items-center gap-3 pt-4 text-sm text-gray-500">
-                <time datetime={new Date(post.data.date).toISOString().split("T")[0]}>
-                  {new Date(post.data.date).toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "short",
-                    day: "numeric",
-                  })}
-                </time>
-                {post.data.readingTime && (
-                  <>
-                    <span aria-hidden="true">&middot;</span>
-                    <span>{post.data.readingTime}</span>
-                  </>
-                )}
-              </div>
-            </div>
-          </article>
+          <BlogCard
+            href={`/blog/${post.data.slug}`}
+            title={post.data.title}
+            excerpt={post.data.seo?.description}
+            image={post.data.mainImage}
+            authorName={author.data.name}
+            authorSlug={author.data.slug}
+            readingTime={post.data.readingTime}
+            categoryName={category?.name}
+            categorySlug={category?.slug}
+          />
         );
       })}
     </div>

@@ -1,0 +1,74 @@
+---
+/**
+ * Pagination — shared pagination component for all listing pages.
+ *
+ * Consistent UI with proper ARIA attributes: aria-current, aria-label,
+ * and disabled states for prev/next.
+ */
+import { getPaginationItems } from "../lib/blog";
+
+interface Props {
+  currentPage: number;
+  totalPages: number;
+  /** Function that returns the href for a given page number */
+  getHref: (page: number) => string;
+  ariaLabel?: string;
+}
+
+const { currentPage, totalPages, getHref, ariaLabel = "Pagination" } = Astro.props;
+
+if (totalPages <= 1) return;
+
+const items = getPaginationItems(currentPage, totalPages);
+---
+
+<nav class="mt-12 flex items-center justify-center gap-1.5" aria-label={ariaLabel}>
+  {/* Previous */}
+  {currentPage > 1 ? (
+    <a
+      href={getHref(currentPage - 1)}
+      class="mr-1 inline-flex items-center gap-1 rounded-lg border border-gray-200 px-3.5 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50"
+    >
+      &larr; Prev
+    </a>
+  ) : (
+    <span class="mr-1 inline-flex cursor-not-allowed items-center gap-1 rounded-lg border border-gray-100 px-3.5 py-2 text-sm font-medium text-gray-300" aria-disabled="true">
+      &larr; Prev
+    </span>
+  )}
+
+  {/* Page numbers */}
+  {items.map((item) =>
+    item === "ellipsis" ? (
+      <span class="inline-flex h-10 w-6 items-center justify-center text-gray-400">&hellip;</span>
+    ) : item === currentPage ? (
+      <span
+        class="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-primary-600 text-sm font-medium text-white"
+        aria-current="page"
+      >
+        {item}
+      </span>
+    ) : (
+      <a
+        href={getHref(item)}
+        class="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-gray-200 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50"
+      >
+        {item}
+      </a>
+    ),
+  )}
+
+  {/* Next */}
+  {currentPage < totalPages ? (
+    <a
+      href={getHref(currentPage + 1)}
+      class="ml-1 inline-flex items-center gap-1 rounded-lg border border-gray-200 px-3.5 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50"
+    >
+      Next &rarr;
+    </a>
+  ) : (
+    <span class="ml-1 inline-flex cursor-not-allowed items-center gap-1 rounded-lg border border-gray-100 px-3.5 py-2 text-sm font-medium text-gray-300" aria-disabled="true">
+      Next &rarr;
+    </span>
+  )}
+</nav>

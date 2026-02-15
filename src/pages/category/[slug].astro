@@ -2,11 +2,13 @@
 /**
  * Category taxonomy page.
  *
- * Shows all blog posts in this category.
+ * Shows all blog posts in this category using the shared BlogCard component.
  * Generates /category/<slug> for each category in the collection.
  */
 import { getCollection, getEntry } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import BlogCard from "../../components/blog/BlogCard.astro";
+import { resolveAuthor } from "../../lib/blog";
 
 export async function getStaticPaths() {
   const categories = await getCollection("categories");
@@ -18,17 +20,16 @@ export async function getStaticPaths() {
 
 const { category } = Astro.props;
 
-// Get all published blog posts in this category
 const allPosts = (
   await getCollection("blog", ({ data }) => !data.draft && data.category === category.data.slug)
 ).sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
 
-// Resolve authors for post display
-const authorMap = new Map<string, { name: string; slug: string; avatar?: { url: string } }>();
+// Resolve authors for display
+const authorMap = new Map<string, { name: string; slug: string }>();
 for (const post of allPosts) {
   if (post.data.author && !authorMap.has(post.data.author)) {
-    const auth = await getEntry("authors", post.data.author);
-    if (auth) authorMap.set(post.data.author, { name: auth.data.name, slug: auth.data.slug, avatar: auth.data.avatar });
+    const a = await resolveAuthor(post.data.author);
+    if (a) authorMap.set(post.data.author, a);
   }
 }
 ---
@@ -38,58 +39,32 @@ for (const post of allPosts) {
   description={`Blog posts about ${category.data.name} from the ZenML team.`}
 >
   <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-    <header class="mb-12">
+    <header class="mb-10">
+      <a href="/blog" class="mb-4 inline-flex items-center gap-1.5 text-sm font-medium text-primary-600 hover:text-primary-700">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" class="shrink-0">
+          <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Back to Blog
+      </a>
       <h1 class="text-4xl font-bold tracking-tight text-gray-900">{category.data.name}</h1>
-      <p class="mt-4 text-lg text-gray-600">
+      <p class="mt-3 text-lg text-gray-600">
         {allPosts.length} {allPosts.length === 1 ? "post" : "posts"} in this category
       </p>
     </header>
 
-    {/* Post grid */}
-    <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
       {allPosts.map((post) => {
         const author = authorMap.get(post.data.author || "");
         return (
-          <article class="group flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white transition-shadow hover:shadow-md">
-            {post.data.mainImage && (
-              <a href={`/blog/${post.data.slug}`} class="block aspect-[16/9] overflow-hidden">
-                <img
-                  src={post.data.mainImage.url}
-                  alt={post.data.mainImage.alt || post.data.title}
-                  class="h-full w-full object-cover transition-transform group-hover:scale-105"
-                  loading="lazy"
-                />
-              </a>
-            )}
-            <div class="flex flex-1 flex-col p-5">
-              <h2 class="mb-2 text-lg font-semibold leading-snug text-gray-900">
-                <a href={`/blog/${post.data.slug}`} class="hover:text-primary-600">
-                  {post.data.title}
-                </a>
-              </h2>
-              <div class="mt-auto flex items-center gap-3 pt-4 text-sm text-gray-500">
-                {author && (
-                  <>
-                    <a href={`/author/${author.slug}`} class="hover:text-primary-600">{author.name}</a>
-                    <span aria-hidden="true">&middot;</span>
-                  </>
-                )}
-                <time datetime={new Date(post.data.date).toISOString().split("T")[0]}>
-                  {new Date(post.data.date).toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "short",
-                    day: "numeric",
-                  })}
-                </time>
-                {post.data.readingTime && (
-                  <>
-                    <span aria-hidden="true">&middot;</span>
-                    <span>{post.data.readingTime}</span>
-                  </>
-                )}
-              </div>
-            </div>
-          </article>
+          <BlogCard
+            href={`/blog/${post.data.slug}`}
+            title={post.data.title}
+            excerpt={post.data.seo?.description}
+            image={post.data.mainImage}
+            authorName={author?.name}
+            authorSlug={author?.slug}
+            readingTime={post.data.readingTime}
+          />
         );
       })}
     </div>

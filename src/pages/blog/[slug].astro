@@ -3,35 +3,39 @@
  * Blog post detail page.
  *
  * Generates a static page for each published blog post.
- * Resolves author, category, and tag references from their respective collections.
+ * Resolves author, category, tags, and computes prev/next + related posts.
  */
 import { getCollection, getEntry, render } from "astro:content";
 import BlogLayout from "../../layouts/BlogLayout.astro";
 import Badge from "../../components/Badge.astro";
+import {
+  getAllPublishedPosts,
+  getMainFeedPosts,
+  getPrevNext,
+  getRelatedPosts,
+  resolveAuthor,
+} from "../../lib/blog";
 
 export async function getStaticPaths() {
-  const posts = await getCollection("blog", ({ data }) => !data.draft);
-  return posts.map((post) => ({
-    params: { slug: post.data.slug },
-    props: { post },
-  }));
+  const allPosts = await getAllPublishedPosts();
+  const mainFeedPosts = await getMainFeedPosts();
+
+  return allPosts.map((post) => {
+    const { prev, next } = getPrevNext(mainFeedPosts, post.data.slug);
+    const related = getRelatedPosts(mainFeedPosts, post, 3);
+
+    return {
+      params: { slug: post.data.slug },
+      props: { post, prev, next, related },
+    };
+  });
 }
 
-const { post } = Astro.props;
+const { post, prev, next, related } = Astro.props;
 const { Content, headings } = await render(post);
 
 // Resolve author reference
-const authorEntry = post.data.author
-  ? await getEntry("authors", post.data.author)
-  : undefined;
-
-const author = authorEntry
-  ? {
-      name: authorEntry.data.name,
-      slug: authorEntry.data.slug,
-      avatar: authorEntry.data.avatar,
-    }
-  : undefined;
+const author = await resolveAuthor(post.data.author);
 
 // Resolve category reference
 const categoryEntry = post.data.category
@@ -47,6 +51,22 @@ const tags = tagEntries.filter(Boolean).map((t) => ({
   slug: t!.data.slug,
 }));
 
+// Resolve prev/next/related metadata for cards
+const prevAuthor = prev ? await resolveAuthor(prev.data.author) : undefined;
+const nextAuthor = next ? await resolveAuthor(next.data.author) : undefined;
+const relatedAuthors = new Map<string, { name: string; slug: string }>();
+const relatedCategories = new Map<string, { name: string; slug: string }>();
+for (const r of related) {
+  if (r.data.author && !relatedAuthors.has(r.data.author)) {
+    const a = await resolveAuthor(r.data.author);
+    if (a) relatedAuthors.set(r.data.author, a);
+  }
+  if (r.data.category && !relatedCategories.has(r.data.category)) {
+    const cat = await getEntry("categories", r.data.category);
+    if (cat) relatedCategories.set(r.data.category, { name: cat.data.name, slug: cat.data.slug });
+  }
+}
+
 // Build SEO props from frontmatter
 const seoTitle = post.data.seo?.title || `${post.data.title} - ZenML Blog`;
 const seoDescription = post.data.seo?.description;
@@ -60,6 +80,8 @@ const ogImage = post.data.seo?.ogImage || post.data.mainImage?.url;
   ogTitle={post.data.seo?.ogTitle}
   ogDescription={post.data.seo?.ogDescription}
   canonical={post.data.seo?.canonical}
+  postTitle={post.data.title}
+  dek={post.data.seo?.description}
   date={post.data.date}
   author={author}
   category={categoryEntry?.data.name}
@@ -67,6 +89,23 @@ const ogImage = post.data.seo?.ogImage || post.data.mainImage?.url;
   readingTime={post.data.readingTime}
   mainImage={post.data.mainImage}
   headings={headings}
+  prev={prev ? { title: prev.data.title, href: `/blog/${prev.data.slug}` } : undefined}
+  next={next ? { title: next.data.title, href: `/blog/${next.data.slug}` } : undefined}
+  relatedPosts={related.map((r) => {
+    const rAuthor = relatedAuthors.get(r.data.author || "");
+    const rCat = relatedCategories.get(r.data.category || "");
+    return {
+      href: `/blog/${r.data.slug}`,
+      title: r.data.title,
+      excerpt: r.data.seo?.description,
+      image: r.data.mainImage,
+      authorName: rAuthor?.name,
+      authorSlug: rAuthor?.slug,
+      readingTime: r.data.readingTime,
+      categoryName: rCat?.name,
+      categorySlug: rCat?.slug,
+    };
+  })}
 >
   <Content />
 

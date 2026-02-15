@@ -2,17 +2,22 @@
 /**
  * BlogLayout — chrome for blog post detail pages.
  *
- * Renders: category pill, title, author byline, date, reading time,
- * featured image, then the MDX body inside a .prose wrapper.
- *
- * Composes over BaseLayout directly (not ContentLayout) because
- * blog posts have a unique header structure above the prose content.
+ * "Clean & Structured" design with:
+ * - Reading progress bar
+ * - Back to Blog link
+ * - Display title (separate from SEO title) + optional dek
+ * - Author byline + avatar
+ * - Desktop sidebar TOC + mobile inline collapsible TOC
+ * - Author bio card after content
+ * - Prev/Next navigation cards
+ * - Related posts ("Continue Reading") section
  */
 import BaseLayout from "./BaseLayout.astro";
 import Badge from "../components/Badge.astro";
 import Image from "../components/Image.astro";
 import JsonLd from "../components/seo/JsonLd.astro";
 import BlogTOC from "../components/BlogTOC.astro";
+import BlogCard from "../components/blog/BlogCard.astro";
 import type { SEOProps } from "../lib/seo";
 import { SITE_URL } from "../lib/constants";
 
@@ -26,9 +31,31 @@ interface Author {
   name: string;
   slug: string;
   avatar?: { url: string; alt?: string; width?: number; height?: number };
+  bio?: string;
+}
+
+interface PrevNextLink {
+  title: string;
+  href: string;
+}
+
+interface RelatedPost {
+  href: string;
+  title: string;
+  excerpt?: string;
+  image?: { url: string; alt?: string; width?: number; height?: number };
+  authorName?: string;
+  authorSlug?: string;
+  readingTime?: string;
+  categoryName?: string;
+  categorySlug?: string;
 }
 
 interface Props extends SEOProps {
+  /** Display title (shown as h1 — may differ from SEO title) */
+  postTitle?: string;
+  /** Subtitle/excerpt shown under the title */
+  dek?: string;
   /** Post date (ISO string or Date) */
   date: Date;
   /** Author data (resolved from collection) */
@@ -43,9 +70,17 @@ interface Props extends SEOProps {
   mainImage?: { url: string; alt?: string; width?: number; height?: number };
   /** Headings extracted from markdown for TOC */
   headings?: Heading[];
+  /** Previous post link */
+  prev?: PrevNextLink;
+  /** Next post link */
+  next?: PrevNextLink;
+  /** Related posts for "Continue Reading" */
+  relatedPosts?: RelatedPost[];
 }
 
 const {
+  postTitle,
+  dek,
   date,
   author,
   category,
@@ -53,8 +88,14 @@ const {
   readingTime,
   mainImage,
   headings = [],
+  prev,
+  next,
+  relatedPosts = [],
   ...seoProps
 } = Astro.props;
+
+// Display title: prefer postTitle (the actual post title), fall back to SEO title
+const displayTitle = postTitle || seoProps.title;
 
 // Filter to h2/h3 for TOC display check
 const tocHeadings = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
@@ -72,14 +113,14 @@ const breadcrumbJsonLd = {
   "@type": "BreadcrumbList",
   itemListElement: [
     { "@type": "ListItem", position: 1, name: "Blog", item: `${SITE_URL}/blog` },
-    { "@type": "ListItem", position: 2, name: seoProps.title },
+    { "@type": "ListItem", position: 2, name: displayTitle },
   ],
 };
 
 const articleJsonLd = {
   "@context": "https://schema.org",
   "@type": "Article",
-  headline: seoProps.title,
+  headline: displayTitle,
   datePublished: new Date(date).toISOString(),
   ...(author && { author: { "@type": "Person", name: author.name } }),
   publisher: { "@type": "Organization", name: "ZenML", url: SITE_URL },
@@ -91,11 +132,28 @@ const articleJsonLd = {
 <BaseLayout {...seoProps}>
   <JsonLd data={articleJsonLd} slot="head" />
   <JsonLd data={breadcrumbJsonLd} slot="head" />
+
+  {/* Reading progress bar */}
+  <div class="sticky top-0 z-50 h-[3px] bg-gray-100" id="progress-container">
+    <div class="h-full w-0 bg-primary-600 transition-[width] duration-150" id="progress-bar"></div>
+  </div>
+
   <div class:list={[
-    "mx-auto px-4 py-12 sm:px-6 lg:py-16",
+    "mx-auto px-4 py-8 sm:px-6 lg:py-12",
     showTOC ? "max-w-5xl xl:grid xl:grid-cols-[minmax(0,48rem)_14rem] xl:gap-10" : "max-w-3xl",
   ]}>
     <article>
+      {/* Back link */}
+      <a
+        href="/blog"
+        class="mb-6 inline-flex items-center gap-1.5 text-sm font-medium text-primary-600 transition-colors hover:text-primary-700"
+      >
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" class="shrink-0">
+          <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Back to Blog
+      </a>
+
       {/* Post header */}
       <header class="mb-8">
         {/* Category pill */}
@@ -109,8 +167,15 @@ const articleJsonLd = {
 
         {/* Title */}
         <h1 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-          {seoProps.title}
+          {displayTitle}
         </h1>
+
+        {/* Dek / subtitle */}
+        {dek && (
+          <p class="mt-4 text-lg leading-relaxed text-gray-600">
+            {dek}
+          </p>
+        )}
 
         {/* Meta row: author, date, reading time */}
         <div class="mt-6 flex items-center gap-4 text-sm text-gray-500">
@@ -151,26 +216,170 @@ const articleJsonLd = {
         <div class="mb-10 overflow-hidden rounded-xl">
           <Image
             image={mainImage}
-            alt={mainImage.alt || seoProps.title}
+            alt={mainImage.alt || displayTitle}
             class="w-full"
             loading="eager"
           />
         </div>
       )}
 
-      {/* Post body (MDX content) */}
+      {/* Mobile inline TOC (visible below xl, collapsible) */}
+      {showTOC && (
+        <details class="mb-8 rounded-xl border border-gray-200 bg-gray-50 xl:hidden" id="mobile-toc">
+          <summary class="cursor-pointer select-none px-5 py-3 text-sm font-semibold text-gray-700">
+            On this page
+          </summary>
+          <nav class="px-5 pb-4" aria-label="Table of contents">
+            <ul class="space-y-1.5">
+              {tocHeadings.map((heading) => (
+                <li>
+                  <a
+                    href={`#${heading.slug}`}
+                    class:list={[
+                      "block text-sm text-gray-600 transition-colors hover:text-primary-600",
+                      heading.depth === 3 ? "pl-4" : "",
+                    ]}
+                    data-mobile-toc-link
+                  >
+                    {heading.text}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </details>
+      )}
+
+      {/* Post body */}
       <div class="prose">
         <slot />
       </div>
+
+      {/* Author bio card */}
+      {author && (
+        <div class="mt-10 flex items-center gap-4 rounded-xl border border-gray-200 bg-gray-50 p-5">
+          {author.avatar && (
+            <a href={`/author/${author.slug}`} class="shrink-0">
+              <Image
+                image={author.avatar}
+                alt={author.name}
+                class="h-14 w-14 rounded-full object-cover"
+              />
+            </a>
+          )}
+          <div>
+            <a
+              href={`/author/${author.slug}`}
+              class="font-semibold text-gray-900 hover:text-primary-600"
+            >
+              {author.name}
+            </a>
+            {author.bio ? (
+              <p class="mt-1 text-sm leading-relaxed text-gray-600">{author.bio}</p>
+            ) : (
+              <p class="mt-1 text-sm text-gray-500">
+                <a href={`/author/${author.slug}`} class="text-primary-600 hover:text-primary-700">
+                  View all posts &rarr;
+                </a>
+              </p>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Prev/Next navigation */}
+      {(prev || next) && (
+        <div class="mt-10 grid gap-4 sm:grid-cols-2">
+          {prev ? (
+            <a
+              href={prev.href}
+              class="group flex flex-col rounded-xl border border-gray-200 p-5 transition-all hover:border-gray-300 hover:shadow-sm"
+            >
+              <span class="text-xs font-medium text-gray-500 group-hover:text-primary-600">&larr; Previous</span>
+              <span class="mt-2 line-clamp-2 text-sm font-semibold text-gray-900 group-hover:text-primary-600">{prev.title}</span>
+            </a>
+          ) : <div />}
+          {next ? (
+            <a
+              href={next.href}
+              class="group flex flex-col rounded-xl border border-gray-200 p-5 text-right transition-all hover:border-gray-300 hover:shadow-sm"
+            >
+              <span class="text-xs font-medium text-gray-500 group-hover:text-primary-600">Next &rarr;</span>
+              <span class="mt-2 line-clamp-2 text-sm font-semibold text-gray-900 group-hover:text-primary-600">{next.title}</span>
+            </a>
+          ) : <div />}
+        </div>
+      )}
     </article>
 
-    {/* Table of contents sidebar */}
+    {/* Desktop Table of contents sidebar */}
     {showTOC && (
       <aside class="hidden xl:block">
-        <div class="sticky top-24 max-h-[calc(100vh-8rem)] overflow-y-auto">
+        <div class="sticky top-28 max-h-[calc(100vh-8rem)] overflow-y-auto">
           <BlogTOC headings={headings} />
         </div>
       </aside>
     )}
   </div>
+
+  {/* Continue Reading — related posts (full width, outside the article grid) */}
+  {relatedPosts.length > 0 && (
+    <div class="border-t border-gray-200 bg-gray-50">
+      <div class="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:py-16">
+        <h2 class="mb-8 text-2xl font-bold text-gray-900">Continue Reading</h2>
+        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {relatedPosts.map((rp) => (
+            <BlogCard
+              href={rp.href}
+              title={rp.title}
+              excerpt={rp.excerpt}
+              image={rp.image}
+              authorName={rp.authorName}
+              authorSlug={rp.authorSlug}
+              readingTime={rp.readingTime}
+              categoryName={rp.categoryName}
+              categorySlug={rp.categorySlug}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  )}
 </BaseLayout>
+
+<script>
+  // Reading progress bar
+  function initProgress() {
+    const bar = document.getElementById('progress-bar');
+    if (!bar) return;
+
+    function updateProgress() {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = docHeight > 0 ? Math.min((scrollTop / docHeight) * 100, 100) : 0;
+      bar.style.width = progress + '%';
+    }
+
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    updateProgress();
+  }
+
+  // Close mobile TOC when a link is clicked
+  function initMobileTOC() {
+    const details = document.getElementById('mobile-toc');
+    if (!details) return;
+
+    details.querySelectorAll('a[data-mobile-toc-link]').forEach((link) => {
+      link.addEventListener('click', () => {
+        (details as HTMLDetailsElement).open = false;
+      });
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => { initProgress(); initMobileTOC(); });
+  } else {
+    initProgress();
+    initMobileTOC();
+  }
+</script>
