@@ -106,6 +106,7 @@ Fixing visual parity gaps page-by-page against the Webflow original. Recent work
 
 ## Development Conventions
 
+- **This is a public repository.** All commits, documentation, and code are visible to the public. Never commit secrets, API keys, infrastructure IDs, internal URLs, traffic numbers, or other sensitive information. Use `CLAUDE.private.md` (gitignored) for private details. The `design/` folder and `scripts/internal/` are also gitignored for internal-only artifacts
 - `design/` folder is for heavy artifacts (exports, screenshots, JSON dumps, internal docs) — **never commit to git**
 - Make targeted git commits (only relevant files)
 - After running tests, re-run them if you make subsequent changes
