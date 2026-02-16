@@ -3,7 +3,7 @@ import { AbsoluteFill, Img, OffthreadVideo, Sequence, staticFile, useCurrentFram
 import { SceneShell } from '../components/SceneShell';
 import { fadeIn, slideUp } from '../lib/anim';
 import { V2_HOOK } from '../lib/copy';
-import { SECTIONS } from '../lib/timing';
+import { SECTIONS, PLAYBACK_RATE } from '../lib/timing';
 
 type Props = { durationInFrames: number };
 
@@ -16,8 +16,8 @@ export const V2S01Hook: React.FC<Props> = ({ durationInFrames }) => {
   const frame = useCurrentFrame();
   const { clipStart } = SECTIONS.hook;
 
-  // Numbers appear staggered as Alex says them: ~3s, ~6s, ~9s into clip
-  const numberTimings = [clipStart + 60, clipStart + 150, clipStart + 270];
+  // Numbers appear staggered as Alex says them: ~2s, ~5s, ~9s into clip (adjusted for 1.10× speed)
+  const numberTimings = [clipStart + 54, clipStart + 137, clipStart + 245];
 
   return (
     <SceneShell durationInFrames={durationInFrames} bg="#0f0a1e">
@@ -26,6 +26,7 @@ export const V2S01Hook: React.FC<Props> = ({ durationInFrames }) => {
         <Sequence from={clipStart} durationInFrames={SECTIONS.hook.clipDur}>
           <OffthreadVideo
             src={staticFile(SECTIONS.hook.clip)}
+            playbackRate={PLAYBACK_RATE}
             style={{
               width: '100%',
               height: '100%',
@@ -97,19 +98,19 @@ export const V2S01Hook: React.FC<Props> = ({ durationInFrames }) => {
           })}
         </div>
 
-        {/* Subtitle badge — bottom center, appears after numbers */}
-        {frame >= clipStart + 360 && (
+        {/* Subtitle badge — bottom center, appears after numbers (adjusted for 1.10×) */}
+        {frame >= clipStart + 327 && (
           <div
             style={{
               position: 'absolute',
               bottom: 140,
               left: '50%',
-              transform: `translateX(-50%) translateY(${slideUp(frame - (clipStart + 360), 15, 10)}px)`,
+              transform: `translateX(-50%) translateY(${slideUp(frame - (clipStart + 327), 15, 10)}px)`,
               fontSize: 32,
               fontWeight: 600,
               color: '#a78bfa',
               fontFamily: 'system-ui, -apple-system, sans-serif',
-              opacity: fadeIn(frame - (clipStart + 360), 15),
+              opacity: fadeIn(frame - (clipStart + 327), 15),
               textShadow: '0 2px 12px rgba(0,0,0,0.8)',
             }}
           >

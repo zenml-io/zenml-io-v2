@@ -9,12 +9,12 @@ export const V2_HOOK = {
 };
 
 export const V2_WHY = {
-  headline: 'Webflow is great until you outgrow it',
+  headline: 'Platform lock-in is a trap',
   bullets: [
-    'Vendor lock-in — no version control',
-    'No CI/CD or branch previews',
-    'Customization ceiling',
-    'Cost at scale — $$$',
+    '$800/yr rent — $0 on Cloudflare',
+    '1 editor at a time — site locked',
+    'No version control. No CI/CD.',
+    'Manual migration: months + $$$',
   ],
 };
 
@@ -37,7 +37,7 @@ export const V2_LEARNINGS = {
   },
   verification: {
     tag: 'Verification',
-    headline: 'SEO Score: Higher Than the Original',
+    headline: 'SEO 100. Accessibility 100. On Mobile.',
     broll: 'clips/04-blog-post.mp4',
     brollSkip: 0,
     broll2: 'clips/02-blog-listing.mp4',
@@ -47,9 +47,9 @@ export const V2_LEARNINGS = {
 
 export const V2_RESULTS = {
   metrics: [
-    { label: 'SEO Score', value: 'Higher', detail: 'than the Webflow original' },
-    { label: 'Timeline', value: '~5 days', detail: '1 person + Claude Code' },
-    { label: 'Team Unlock', value: 'Everyone ships', detail: 'branches, previews, A/B testing' },
+    { label: 'SEO', value: '92 → 100', detail: 'perfect score on mobile' },
+    { label: 'Accessibility', value: '89 → 100', detail: 'Webflow couldn\'t on desktop' },
+    { label: 'Hosting', value: '$800 → $0', detail: 'Cloudflare Pages free tier' },
   ],
 };
 

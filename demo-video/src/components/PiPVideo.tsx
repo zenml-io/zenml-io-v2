@@ -1,5 +1,6 @@
 import React from 'react';
 import { OffthreadVideo, staticFile, interpolate, useCurrentFrame } from 'remotion';
+import { PLAYBACK_RATE } from '../lib/timing';
 
 type Props = {
   src: string;
@@ -13,6 +14,8 @@ type Props = {
   borderColor?: string;
   /** Fade in over this many frames (from scene start) */
   fadeInFrames?: number;
+  /** CSS object-position for the video within the circle (default centres Alex) */
+  objectPosition?: string;
 };
 
 /**
@@ -26,6 +29,7 @@ export const PiPVideo: React.FC<Props> = ({
   bottom = 48,
   borderColor = 'rgba(167, 139, 250, 0.6)',
   fadeInFrames = 20,
+  objectPosition = '40% 50%',
 }) => {
   const frame = useCurrentFrame();
   const opacity = interpolate(frame, [0, fadeInFrames], [0, 1], { extrapolateRight: 'clamp' });
@@ -50,10 +54,12 @@ export const PiPVideo: React.FC<Props> = ({
     >
       <OffthreadVideo
         src={staticFile(src)}
+        playbackRate={PLAYBACK_RATE}
         style={{
           width: '100%',
           height: '100%',
           objectFit: 'cover',
+          objectPosition,
         }}
       />
     </div>

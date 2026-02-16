@@ -4,7 +4,7 @@ import { SceneShell } from '../components/SceneShell';
 import { PiPVideo } from '../components/PiPVideo';
 import { fadeIn, slideUp } from '../lib/anim';
 import { V2_RESULTS, V2_CLOSE } from '../lib/copy';
-import { SECTIONS } from '../lib/timing';
+import { SECTIONS, PLAYBACK_RATE } from '../lib/timing';
 
 type Props = { durationInFrames: number };
 
@@ -14,22 +14,22 @@ const METRIC_COLORS = ['#22c55e', '#a78bfa', '#3b82f6'];
 /**
  * Section 4+5 — Results & Close.
  *
- * Phase 1 (frames 0–~750): 3 big metric cards + PiP Alex narrating
- * Phase 2 (frames ~750–end): Alex goes full-screen + links fade in
+ * Phase 1 (frames 0–~480): 3 big metric cards + PiP Alex narrating
+ * Phase 2 (frames ~480–end): Alex goes full-screen + links fade in
  *
- * The transition point is roughly when Alex says "This isn't just a ZenML story"
- * which is about 25 seconds into the 41-second clip.
+ * The transition point is roughly when Alex says "But this isn't really about ZenML"
+ * which is about 15 seconds into the 37-second clip.
  */
 export const V2S04ResultsClose: React.FC<Props> = ({ durationInFrames }) => {
   const frame = useCurrentFrame();
   const { clipStart, clipDur } = SECTIONS.close;
 
-  /** Frame within this scene where PiP → fullscreen transition happens */
-  const TRANSITION_FRAME = 720;
+  /** Frame within this scene where PiP → fullscreen transition happens (~15s into clip at 1.10×) */
+  const TRANSITION_FRAME = 425;
   /** Duration of the crossfade */
   const CROSSFADE_DUR = 30;
-  /** When links start appearing */
-  const LINKS_START = 1050;
+  /** When links start appearing (~5s before end) */
+  const LINKS_START = 916;
 
   // PiP opacity: full until transition, then fades out
   const pipOpacity = interpolate(
@@ -154,6 +154,7 @@ export const V2S04ResultsClose: React.FC<Props> = ({ durationInFrames }) => {
           <Sequence from={clipStart} durationInFrames={clipDur}>
             <OffthreadVideo
               src={staticFile(SECTIONS.close.clip)}
+              playbackRate={PLAYBACK_RATE}
               style={{
                 width: '100%',
                 height: '100%',

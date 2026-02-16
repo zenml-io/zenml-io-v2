@@ -11,14 +11,23 @@ type Props = { durationInFrames: number };
 /** Red accent for pain-point cards */
 const ACCENT = '#ef4444';
 
-/** Inline SVG icons — lock, git-branch, layers, dollar */
+/** Inline SVG icons — dollar, lock, git-branch, clock (matched to bullet order) */
 const BulletIcons: React.FC<{ size?: number; color?: string }>[] = [
+  // Dollar — $800/yr rent
+  ({ size = 36, color = ACCENT }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+      <line x1="12" y1="1" x2="12" y2="23" />
+      <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+    </svg>
+  ),
+  // Lock — 1 editor at a time
   ({ size = 36, color = ACCENT }) => (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
       <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
       <path d="M7 11V7a5 5 0 0 1 10 0v4" />
     </svg>
   ),
+  // Git branch — no version control
   ({ size = 36, color = ACCENT }) => (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
       <line x1="6" y1="3" x2="6" y2="15" />
@@ -27,17 +36,11 @@ const BulletIcons: React.FC<{ size?: number; color?: string }>[] = [
       <path d="M18 9a9 9 0 0 1-9 9" />
     </svg>
   ),
+  // Clock — months to migrate
   ({ size = 36, color = ACCENT }) => (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-      <polygon points="12 2 2 7 12 12 22 7 12 2" />
-      <polyline points="2 17 12 22 22 17" />
-      <polyline points="2 12 12 17 22 12" />
-    </svg>
-  ),
-  ({ size = 36, color = ACCENT }) => (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-      <line x1="12" y1="1" x2="12" y2="23" />
-      <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+      <circle cx="12" cy="12" r="10" />
+      <polyline points="12 6 12 12 16 14" />
     </svg>
   ),
 ];
@@ -51,9 +54,9 @@ export const V2S02Why: React.FC<Props> = ({ durationInFrames }) => {
   const { fps } = useVideoConfig();
   const { clipStart, clipDur } = SECTIONS.why;
 
-  /** Cards appear staggered to match Alex's narration pace (~4s apart) */
-  const CARD_START = 200;
-  const CARD_INTERVAL = 120;
+  /** Cards appear staggered to match Alex's narration pace (~4s apart, adjusted for 1.10×) */
+  const CARD_START = 181;
+  const CARD_INTERVAL = 109;
 
   return (
     <SceneShell durationInFrames={durationInFrames} bg="#0f0a1e">

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Audio, Series, staticFile } from 'remotion';
+import { Series } from 'remotion';
 import { SECTIONS } from '../lib/timing';
 import { V2_LEARNINGS } from '../lib/copy';
 import { V2S01Hook } from '../scenes/V2S01Hook';
@@ -9,9 +9,6 @@ import { V2S04ResultsClose } from '../scenes/V2S04ResultsClose';
 
 export const ZenMLHackathonDemo: React.FC = () => (
   <>
-    {/* Background music — low volume so Alex's voice stays clear */}
-    <Audio src={staticFile('audio/bgm.mp3')} volume={0.06} />
-
     <Series>
       {/* Section 1 — Hook (full-screen Alex + number flashes) */}
       <Series.Sequence durationInFrames={SECTIONS.hook.duration}>
