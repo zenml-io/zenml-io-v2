@@ -1,6 +1,14 @@
 node_modules/
 out/
 dist/
+.DS_Store
+
+# Large binary media — clips, audio, video renders
 *.mp4
 *.mov
-.DS_Store
+*.webm
+*.mp3
+*.wav
+
+# Playwright screenshots & extracted frames (large PNGs/JPGs)
+public/screens/
