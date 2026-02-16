@@ -218,7 +218,7 @@ This site was migrated from Webflow in February 2026. The migration followed a 6
 | 5 | Forms & interactive features (contact form, cookie consent, analytics) | Complete |
 | 6 | QA & cutover (visual parity fixes, final testing) | In progress |
 
-DNS has not been switched yet — the migrated site runs at [zenml-io-v2.pages.dev](https://zenml-io-v2.pages.dev/) while we complete final spot checks against the Webflow original. The cutover to `www.zenml.io` will follow once remaining visual parity gaps are resolved.
+DNS has not been switched yet — the migrated site runs at [zenml-io-v2.pages.dev](https://zenml-io-v2.pages.dev/) while we complete final spot checks. The cutover to `www.zenml.io` will follow shortly.
 
 The `design/` directory (gitignored) contains the original Webflow HTML/CSS export used as the source of truth for pixel-perfect recreation. The `docs/` directory contains detailed plans and investigation notes for each phase.
 
