@@ -1,10 +1,74 @@
 /** All on-screen text — single source of truth, grounded in project docs */
 
+/* ── V2 copy (voice-driven video) ─────────────────────────────────────── */
+
+export const V2_HOOK = {
+  /** Flashed on screen as Alex says each number */
+  numbers: ['2,224 Pages', '20 Collections', '~5 Days'],
+  subtitle: 'Claude Code + Opus 4.6',
+};
+
+export const V2_WHY = {
+  headline: 'Webflow is great until you outgrow it',
+  bullets: [
+    'Vendor lock-in — no version control',
+    'No CI/CD or branch previews',
+    'Customization ceiling',
+    'Cost at scale — $$$',
+  ],
+};
+
+export const V2_LEARNINGS = {
+  planning: {
+    tag: 'Planning',
+    headline: '22 Planning Docs. Self-Correcting.',
+    broll: 'clips/03-llmops-database.mp4',
+    brollSkip: 0,
+    broll2: 'clips/03b-llmops-entry.mp4',
+    brollSkip2: 0,
+  },
+  multimodal: {
+    tag: 'Multi-Modal',
+    headline: 'Playwright → Frame Extraction → Understanding',
+    broll: 'clips/01-homepage-scroll.mp4',
+    brollSkip: 0,
+    broll2: 'clips/05-case-study.mp4',
+    brollSkip2: 0,
+  },
+  verification: {
+    tag: 'Verification',
+    headline: 'SEO Score: Higher Than the Original',
+    broll: 'clips/04-blog-post.mp4',
+    brollSkip: 0,
+    broll2: 'clips/02-blog-listing.mp4',
+    brollSkip2: 0,
+  },
+};
+
+export const V2_RESULTS = {
+  metrics: [
+    { label: 'SEO Score', value: 'Higher', detail: 'than the Webflow original' },
+    { label: 'Timeline', value: '~5 days', detail: '1 person + Claude Code' },
+    { label: 'Team Unlock', value: 'Everyone ships', detail: 'branches, previews, A/B testing' },
+  ],
+};
+
+export const V2_CLOSE = {
+  lines: [
+    'zenml-io-v2.pages.dev',
+    'github.com/zenml-io/zenml-io-v2',
+    'Claude Code Hackathon — Feb 10–16, 2026',
+  ],
+};
+
+/* ── V1 copy (kept for reference, used by old scenes) ───────────────── */
+
 export const HOOK = {
   context: 'We migrated a production website from Webflow',
   project: 'zenml.io — an ML platform company',
   numbers: ['2,224 Pages.', '20 Content Collections.', '1 Week.'],
-  subtitle: 'Built entirely with Claude Code + Opus 4.6',
+  subtitle: 'Built with Claude Code + Opus 4.6',
+  asterisk: '*with a little help from Sonnet & Haiku',
 };
 
 export const PROBLEM = {
@@ -16,7 +80,8 @@ export const PROBLEM = {
     'Cost at scale — $$$',
   ],
   scale: '2,224 pages across 20 CMS collections',
-  punchline: 'Migrating a site this large would normally take months',
+  punchline: 'A manual migration would take months.',
+  punchline2: 'And you\'d still get things wrong.',
 };
 
 export const PIPELINE = {
@@ -33,34 +98,23 @@ export const PIPELINE = {
 };
 
 export const WALKTHROUGH = {
-  shots: [
-    { src: 'screens/01-homepage-hero.png', caption: 'Homepage — pixel-perfect recreation' },
-    { src: 'screens/04-blog-listing.png', caption: 'Blog — sidebar browse + card grid' },
-    { src: 'screens/02-llmops-filters.png', caption: 'LLMOps Database — faceted sidebar + search' },
-    { src: 'screens/05-blog-post-toc.png', caption: 'Blog post — table of contents + reading progress' },
-    { src: 'screens/03-llmops-mobile.png', caption: 'Mobile — responsive filter drawer' },
-    { src: 'screens/06-case-study.png', caption: 'Case study — Brevo' },
+  clips: [
+    { src: 'clips/01-homepage-scroll.webm', caption: 'Homepage — pixel-perfect recreation', skipFrames: 30 },
+    { src: 'clips/02-blog-listing.webm', caption: 'Blog — sidebar browse + card grid', skipFrames: 90 },
+    { src: 'clips/03-llmops-database.webm', caption: 'LLMOps Database — faceted sidebar + search', skipFrames: 60 },
+    { src: 'clips/04-blog-post.webm', caption: 'Blog post — TOC + reading progress', skipFrames: 90 },
+    { src: 'clips/05-case-study.webm', caption: 'Case study — JetBrains', skipFrames: 90 },
   ],
 };
 
 export const OPUS = {
   headline: 'What Makes Opus 4.6 Different',
   moments: [
-    {
-      title: 'Self-Auditing Course Correction',
-      body: 'Opus 4.6 used an external MCP server to audit its own architectural plan — found 7 critical issues — then rewrote the entire phase.',
-      commit: 'cf41669',
-    },
-    {
-      title: 'The .md Architectural Pivot',
-      body: 'Recognized that MDX v2 would silently break on Webflow HTML. Switched all 1,904 content files from .mdx to .md — one decision that prevented weeks of debugging.',
-      commit: '3c14121',
-    },
-    {
-      title: 'Beyond Parity',
-      body: 'After building a 1:1 copy, redesigned the LLMOps Database with faceted search, AND/OR filtering, and Pagefind. Then ran its own accessibility audit.',
-      commit: '6565f6c',
-    },
+    { tag: 'Planning', title: 'Incremental Planning', body: 'Created 22 planning documents — not upfront waterfall, but phase-by-phase plans that adapted as complexity emerged. Spikes and sub-phases added on the fly.' },
+    { tag: 'Self-Correction', title: 'Self-Auditing Course Correction', body: 'Autonomously audited its own architectural plan — found 7 critical issues — then rewrote the entire phase.' },
+    { tag: 'Architecture', title: 'The .md Architectural Pivot', body: 'Recognized that MDX v2 would silently break on Webflow HTML. Switched all 1,904 content files — one decision that prevented weeks of debugging.' },
+    { tag: 'Going Beyond', title: 'Beyond Parity', body: 'Redesigned the LLMOps Database with faceted filtering and Pagefind — build-time semantic search with zero server infrastructure.' },
+    { tag: 'SEO', title: 'SEO Beyond Parity', body: 'Preserved every URL, redirect, and meta tag. Google\'s own tools rated the migrated site\'s SEO higher than the Webflow original.' },
   ],
 };
 

@@ -1,12 +1,12 @@
 import React from 'react';
-import { AbsoluteFill, Img, Sequence, staticFile, useCurrentFrame } from 'remotion';
+import { AbsoluteFill, OffthreadVideo, Sequence, staticFile, useCurrentFrame } from 'remotion';
 import { SceneShell } from '../components/SceneShell';
-import { fadeIn, kenBurns } from '../lib/anim';
+import { fadeIn } from '../lib/anim';
 import { WALKTHROUGH } from '../lib/copy';
 
 type Props = { durationInFrames: number };
 
-const SHOT_DURATION = 200;
+const CLIP_DURATION = 216; // frames per clip (7.2s at 30fps) — 5 clips × 216 = 1080
 
 export const Scene04Walkthrough: React.FC<Props> = ({ durationInFrames }) => {
   const frame = useCurrentFrame();
@@ -14,15 +14,15 @@ export const Scene04Walkthrough: React.FC<Props> = ({ durationInFrames }) => {
   return (
     <SceneShell durationInFrames={durationInFrames} bg="#0f0a1e">
       <AbsoluteFill>
-        {WALKTHROUGH.shots.map((shot, i) => {
-          const shotStart = i * SHOT_DURATION;
-          const shotFrame = frame - shotStart;
+        {WALKTHROUGH.clips.map((clip, i) => {
+          const clipStart = i * CLIP_DURATION;
+          const clipFrame = frame - clipStart;
 
           return (
             <Sequence
-              key={shot.src}
-              from={shotStart}
-              durationInFrames={SHOT_DURATION}
+              key={clip.src}
+              from={clipStart}
+              durationInFrames={CLIP_DURATION}
             >
               <AbsoluteFill
                 style={{
@@ -32,7 +32,7 @@ export const Scene04Walkthrough: React.FC<Props> = ({ durationInFrames }) => {
                   backgroundColor: '#0f0a1e',
                 }}
               >
-                {/* Screenshot — show from TOP so nav bar is visible */}
+                {/* Video clip — show from top so nav bar is visible */}
                 <div
                   style={{
                     width: '92%',
@@ -40,18 +40,17 @@ export const Scene04Walkthrough: React.FC<Props> = ({ durationInFrames }) => {
                     borderRadius: 12,
                     overflow: 'hidden',
                     boxShadow: '0 25px 60px rgba(0,0,0,0.5)',
-                    opacity: fadeIn(shotFrame, 15),
+                    opacity: fadeIn(clipFrame, 15),
                   }}
                 >
-                  <Img
-                    src={staticFile(shot.src)}
+                  <OffthreadVideo
+                    src={staticFile(clip.src)}
+                    startFrom={clip.skipFrames} // skip page load time
                     style={{
                       width: '100%',
                       height: '100%',
                       objectFit: 'cover',
                       objectPosition: 'top',
-                      transform: `scale(${kenBurns(shotFrame, SHOT_DURATION, 1.0, 1.04)})`,
-                      transformOrigin: 'top center',
                     }}
                   />
                 </div>
@@ -65,16 +64,16 @@ export const Scene04Walkthrough: React.FC<Props> = ({ durationInFrames }) => {
                     transform: 'translateX(-50%)',
                     backgroundColor: 'rgba(124, 58, 237, 0.92)',
                     color: 'white',
-                    padding: '14px 32px',
+                    padding: '18px 40px',
                     borderRadius: 40,
-                    fontSize: 26,
+                    fontSize: 36,
                     fontWeight: 600,
                     fontFamily: 'system-ui, -apple-system, sans-serif',
-                    opacity: fadeIn(shotFrame - 10, 15),
+                    opacity: fadeIn(clipFrame - 10, 15),
                     whiteSpace: 'nowrap',
                   }}
                 >
-                  {shot.caption}
+                  {clip.caption}
                 </div>
               </AbsoluteFill>
             </Sequence>

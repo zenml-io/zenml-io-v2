@@ -1,29 +1,25 @@
 /**
- * Scene durations in frames (30fps) — beat-aligned to bgm.mp3 (~129 BPM).
- * Must sum to 5400 (3 minutes).
+ * V2 Scene durations in frames (30fps).
+ * Total: 5445 frames = 3:01.5 (extra 1.5s buffer for gentle ending fade).
  *
- * Beat alignment offsets (from analysis):
- *   Hook→Problem:    454f  (+4)
- *   Problem→Pipeline: 1045f (-5)
- *   Pipeline→Walk:   2105f (+5)
- *   Walk→Opus:       3305f (+5)
- *   Opus→Numbers:    4504f (+4)
- *   Numbers→Outro:   4954f (+4)
- *   END:             5395f (-5)
+ * Each section's duration = Alex's clip length + padding for transitions.
+ * Alex clips drive the timing; padding provides fade-in/out breathing room.
+ *
+ * Clip durations: 22s + 25s + 27s + 27s + 25s + 41s = 167s narration
+ * Remaining 13s distributed as transition padding.
  */
-export const SCENES = {
-  hook:       { start: 0,    duration: 454,  label: 'Hook' },
-  problem:    { start: 454,  duration: 591,  label: 'The Problem' },
-  pipeline:   { start: 1045, duration: 1060, label: 'The Pipeline' },
-  walkthrough:{ start: 2105, duration: 1200, label: 'Live Site' },
-  opus:       { start: 3305, duration: 1199, label: 'Opus 4.6' },
-  numbers:    { start: 4504, duration: 450,  label: 'By The Numbers' },
-  outro:      { start: 4954, duration: 446,  label: 'Outro' },
+export const SECTIONS = {
+  hook:         { start: 0,    duration: 750,  label: 'Hook',           clip: 'clips/alex-01-hook.mp4',          clipStart: 0,   clipDur: 660,  mode: 'fullscreen' as const },
+  why:          { start: 750,  duration: 810,  label: 'Why It Matters', clip: 'clips/alex-02-why.mp4',           clipStart: 15,  clipDur: 750,  mode: 'pip' as const },
+  planning:     { start: 1560, duration: 870,  label: 'Planning',       clip: 'clips/alex-03-planning.mp4',      clipStart: 15,  clipDur: 810,  mode: 'pip' as const },
+  multimodal:   { start: 2430, duration: 870,  label: 'Multi-Modal',    clip: 'clips/alex-04-multimodal.mp4',    clipStart: 15,  clipDur: 810,  mode: 'pip' as const },
+  verification: { start: 3300, duration: 810,  label: 'Verification',   clip: 'clips/alex-05-verification.mp4',  clipStart: 15,  clipDur: 750,  mode: 'pip' as const },
+  close:        { start: 4110, duration: 1335, label: 'Results & Close', clip: 'clips/alex-06-results-close.mp4', clipStart: 15,  clipDur: 1275, mode: 'mixed' as const },
 } as const;
-// Sum: 454+591+1060+1200+1199+450+446 = 5400 ✓
+// Sum: 750+810+870+870+810+1335 = 5445 (3:01.5 — extra 1.5s for gentle fade-out)
 
 export const FPS = 30;
-export const TOTAL_FRAMES = 5400;
+export const TOTAL_FRAMES = 5445;
 export const WIDTH = 1920;
 export const HEIGHT = 1080;
 

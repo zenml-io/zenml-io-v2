@@ -25,7 +25,7 @@ export const Scene01Hook: React.FC<Props> = ({ durationInFrames }) => {
         <div style={{ opacity: fadeIn(frame, 20) }}>
           <Img
             src={staticFile('images/zenml-logo.svg')}
-            style={{ height: 70, filter: 'brightness(0) invert(1)' }}
+            style={{ height: 90, filter: 'brightness(0) invert(1)' }}
           />
         </div>
 
@@ -33,7 +33,7 @@ export const Scene01Hook: React.FC<Props> = ({ durationInFrames }) => {
         {frame >= 15 && (
           <div
             style={{
-              fontSize: 36,
+              fontSize: 48,
               color: '#94a3b8',
               fontFamily: 'system-ui, -apple-system, sans-serif',
               fontWeight: 400,
@@ -50,7 +50,7 @@ export const Scene01Hook: React.FC<Props> = ({ durationInFrames }) => {
         {frame >= 35 && (
           <div
             style={{
-              fontSize: 30,
+              fontSize: 40,
               color: '#a78bfa',
               fontFamily: 'ui-monospace, "SF Mono", monospace',
               fontWeight: 500,
@@ -64,7 +64,7 @@ export const Scene01Hook: React.FC<Props> = ({ durationInFrames }) => {
         )}
 
         {/* Big numbers — staggered reveal */}
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12 }}>
           {HOOK.numbers.map((text, i) => {
             const appear = 70 + i * 35;
             const localFrame = frame - appear;
@@ -73,7 +73,7 @@ export const Scene01Hook: React.FC<Props> = ({ durationInFrames }) => {
               <div
                 key={text}
                 style={{
-                  fontSize: 96,
+                  fontSize: 120,
                   fontWeight: 800,
                   color: 'white',
                   fontFamily: 'system-ui, -apple-system, sans-serif',
@@ -91,16 +91,39 @@ export const Scene01Hook: React.FC<Props> = ({ durationInFrames }) => {
         {frame >= 210 && (
           <div
             style={{
-              fontSize: 32,
-              color: '#a78bfa',
-              fontFamily: 'system-ui, -apple-system, sans-serif',
-              fontWeight: 500,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: 12,
+              marginTop: 8,
               opacity: fadeIn(frame - 210, 25),
               transform: `translateY(${slideUp(frame - 210, 25, 16)}px)`,
-              marginTop: 8,
             }}
           >
-            {HOOK.subtitle}
+            <div
+              style={{
+                fontSize: 44,
+                color: '#a78bfa',
+                fontFamily: 'system-ui, -apple-system, sans-serif',
+                fontWeight: 500,
+              }}
+            >
+              {HOOK.subtitle}
+            </div>
+            {/* Whimsical asterisk — pops in slightly later */}
+            {frame >= 260 && (
+              <div
+                style={{
+                  fontSize: 26,
+                  color: '#64748b',
+                  fontFamily: 'system-ui, -apple-system, sans-serif',
+                  fontStyle: 'italic',
+                  opacity: fadeIn(frame - 260, 20),
+                }}
+              >
+                {HOOK.asterisk}
+              </div>
+            )}
           </div>
         )}
       </AbsoluteFill>

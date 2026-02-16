@@ -26,7 +26,7 @@ export const Scene06Numbers: React.FC<Props> = ({ durationInFrames }) => {
         {/* Section title */}
         <div
           style={{
-            fontSize: 52,
+            fontSize: 76,
             fontWeight: 700,
             color: 'white',
             fontFamily: 'system-ui, -apple-system, sans-serif',
@@ -42,8 +42,8 @@ export const Scene06Numbers: React.FC<Props> = ({ durationInFrames }) => {
             display: 'flex',
             flexWrap: 'wrap',
             justifyContent: 'center',
-            gap: 40,
-            maxWidth: 1200,
+            gap: 36,
+            maxWidth: 1500,
           }}
         >
           {NUMBERS.stats.map((stat, i) => {
@@ -55,7 +55,7 @@ export const Scene06Numbers: React.FC<Props> = ({ durationInFrames }) => {
               <div
                 key={stat.label}
                 style={{
-                  width: 260,
+                  width: 320,
                   textAlign: 'center',
                   opacity: localFrame >= 0 ? fadeIn(localFrame, 15) : 0,
                   transform:
@@ -66,7 +66,7 @@ export const Scene06Numbers: React.FC<Props> = ({ durationInFrames }) => {
               >
                 <div
                   style={{
-                    fontSize: 64,
+                    fontSize: 88,
                     fontWeight: 800,
                     color: '#a78bfa',
                     fontFamily: 'system-ui, -apple-system, sans-serif',
@@ -77,7 +77,7 @@ export const Scene06Numbers: React.FC<Props> = ({ durationInFrames }) => {
                 </div>
                 <div
                   style={{
-                    fontSize: 22,
+                    fontSize: 32,
                     color: '#94a3b8',
                     fontFamily: 'system-ui, -apple-system, sans-serif',
                     marginTop: 6,

@@ -17,7 +17,7 @@ export const Scene07Outro: React.FC<Props> = ({ durationInFrames }) => {
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          padding: 80,
+          padding: 40,
           gap: 40,
         }}
       >
@@ -25,12 +25,12 @@ export const Scene07Outro: React.FC<Props> = ({ durationInFrames }) => {
         <div style={{ opacity: fadeIn(frame, 20) }}>
           <Img
             src={staticFile('images/zenml-logo.svg')}
-            style={{ height: 50, filter: 'brightness(0) invert(1)' }}
+            style={{ height: 80, filter: 'brightness(0) invert(1)' }}
           />
         </div>
 
         {/* Links — staggered */}
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 20 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 28 }}>
           {OUTRO.lines.map((line, i) => {
             const appear = 30 + i * 40;
             const localFrame = frame - appear;
@@ -39,7 +39,7 @@ export const Scene07Outro: React.FC<Props> = ({ durationInFrames }) => {
               <div
                 key={line}
                 style={{
-                  fontSize: i === 2 ? 24 : 30,
+                  fontSize: i === 2 ? 36 : 44,
                   fontWeight: i === 2 ? 400 : 600,
                   color: i === 2 ? '#94a3b8' : 'white',
                   fontFamily:

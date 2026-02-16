@@ -1,29 +1,25 @@
 import React from 'react';
-import { AbsoluteFill, useCurrentFrame, useVideoConfig } from 'remotion';
+import { AbsoluteFill, Sequence, useCurrentFrame, useVideoConfig } from 'remotion';
 import { SceneShell } from '../components/SceneShell';
+import { PiPVideo } from '../components/PiPVideo';
 import { fadeIn, slideUp, popSpring } from '../lib/anim';
-import { PROBLEM } from '../lib/copy';
+import { V2_WHY } from '../lib/copy';
+import { SECTIONS } from '../lib/timing';
 
 type Props = { durationInFrames: number };
 
-/** Stagger interval between card pop-ins (frames) */
-const CARD_INTERVAL = 40;
-const CARD_START = 60;
-
-/** Bullet accent — all red since these are pain points */
+/** Red accent for pain-point cards */
 const ACCENT = '#ef4444';
 
-/** Inline SVG icons per bullet — lock, git-branch, layers, dollar */
+/** Inline SVG icons — lock, git-branch, layers, dollar */
 const BulletIcons: React.FC<{ size?: number; color?: string }>[] = [
-  // Lock — vendor lock-in
-  ({ size = 40, color = ACCENT }) => (
+  ({ size = 36, color = ACCENT }) => (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
       <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
       <path d="M7 11V7a5 5 0 0 1 10 0v4" />
     </svg>
   ),
-  // Git branch (crossed) — no CI/CD
-  ({ size = 40, color = ACCENT }) => (
+  ({ size = 36, color = ACCENT }) => (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
       <line x1="6" y1="3" x2="6" y2="15" />
       <circle cx="18" cy="6" r="3" />
@@ -31,16 +27,14 @@ const BulletIcons: React.FC<{ size?: number; color?: string }>[] = [
       <path d="M18 9a9 9 0 0 1-9 9" />
     </svg>
   ),
-  // Layers — customization ceiling
-  ({ size = 40, color = ACCENT }) => (
+  ({ size = 36, color = ACCENT }) => (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
       <polygon points="12 2 2 7 12 12 22 7 12 2" />
       <polyline points="2 17 12 22 22 17" />
       <polyline points="2 12 12 17 22 12" />
     </svg>
   ),
-  // Dollar — cost at scale
-  ({ size = 40, color = ACCENT }) => (
+  ({ size = 36, color = ACCENT }) => (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
       <line x1="12" y1="1" x2="12" y2="23" />
       <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
@@ -48,9 +42,18 @@ const BulletIcons: React.FC<{ size?: number; color?: string }>[] = [
   ),
 ];
 
-export const Scene02Problem: React.FC<Props> = ({ durationInFrames }) => {
+/**
+ * Section 2 — Why It Matters.
+ * Headline + 4 icon cards (existing Scene02 design) + PiP Alex narrating.
+ */
+export const V2S02Why: React.FC<Props> = ({ durationInFrames }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
+  const { clipStart, clipDur } = SECTIONS.why;
+
+  /** Cards appear staggered to match Alex's narration pace (~4s apart) */
+  const CARD_START = 200;
+  const CARD_INTERVAL = 120;
 
   return (
     <SceneShell durationInFrames={durationInFrames} bg="#0f0a1e">
@@ -67,7 +70,7 @@ export const Scene02Problem: React.FC<Props> = ({ durationInFrames }) => {
         {/* Headline */}
         <div
           style={{
-            fontSize: 80,
+            fontSize: 72,
             fontWeight: 700,
             color: 'white',
             fontFamily: 'system-ui, -apple-system, sans-serif',
@@ -76,20 +79,20 @@ export const Scene02Problem: React.FC<Props> = ({ durationInFrames }) => {
             transform: `translateY(${slideUp(frame, 20)}px)`,
           }}
         >
-          {PROBLEM.headline}
+          {V2_WHY.headline}
         </div>
 
-        {/* 2×2 icon card grid — staggered pop-in */}
+        {/* 2×2 icon card grid */}
         <div
           style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(2, 1fr)',
-            gap: 20,
+            gap: 18,
             width: '100%',
-            maxWidth: 1500,
+            maxWidth: 1350,
           }}
         >
-          {PROBLEM.bullets.map((bullet, i) => {
+          {V2_WHY.bullets.map((bullet, i) => {
             const appear = CARD_START + i * CARD_INTERVAL;
             const localFrame = frame - appear;
             const visible = localFrame >= 0;
@@ -102,24 +105,23 @@ export const Scene02Problem: React.FC<Props> = ({ durationInFrames }) => {
                 style={{
                   display: 'flex',
                   alignItems: 'center',
-                  gap: 20,
-                  padding: '28px 32px',
-                  borderRadius: 14,
-                  backgroundColor: `${ACCENT}0f`, // ~6% opacity
+                  gap: 18,
+                  padding: '22px 26px',
+                  borderRadius: 12,
+                  backgroundColor: `${ACCENT}0f`,
                   borderLeft: `3px solid ${ACCENT}`,
                   borderTop: `1px solid ${ACCENT}22`,
                   borderRight: `1px solid ${ACCENT}11`,
                   borderBottom: `1px solid ${ACCENT}11`,
                   opacity: visible ? fadeIn(localFrame, 14) : 0,
-                  transform: `translateY(${visible ? slideUp(localFrame, 18, 16) : 16}px) scale(${0.92 + 0.08 * p})`,
+                  transform: `translateY(${visible ? slideUp(localFrame, 18, 14) : 14}px) scale(${0.92 + 0.08 * p})`,
                 }}
               >
-                {/* Icon in rounded box */}
                 <div
                   style={{
-                    width: 56,
-                    height: 56,
-                    borderRadius: 12,
+                    width: 48,
+                    height: 48,
+                    borderRadius: 10,
                     backgroundColor: `${ACCENT}18`,
                     display: 'flex',
                     alignItems: 'center',
@@ -127,11 +129,11 @@ export const Scene02Problem: React.FC<Props> = ({ durationInFrames }) => {
                     flexShrink: 0,
                   }}
                 >
-                  {Icon && <Icon size={40} color={ACCENT} />}
+                  {Icon && <Icon size={36} color={ACCENT} />}
                 </div>
                 <div
                   style={{
-                    fontSize: 40,
+                    fontSize: 34,
                     color: '#e2e8f0',
                     fontWeight: 500,
                     fontFamily: 'system-ui, -apple-system, sans-serif',
@@ -144,48 +146,12 @@ export const Scene02Problem: React.FC<Props> = ({ durationInFrames }) => {
             );
           })}
         </div>
-
-        {/* Punchline — two staggered lines */}
-        {frame >= 300 && (
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              gap: 8,
-              borderTop: '1px solid rgba(167, 139, 250, 0.3)',
-              paddingTop: 24,
-              width: '100%',
-            }}
-          >
-            <div
-              style={{
-                fontSize: 40,
-                color: '#a78bfa',
-                fontFamily: 'system-ui, -apple-system, sans-serif',
-                fontWeight: 600,
-                textAlign: 'center',
-                opacity: fadeIn(frame - 300, 20),
-              }}
-            >
-              {PROBLEM.punchline}
-            </div>
-            <div
-              style={{
-                fontSize: 40,
-                color: '#ef4444',
-                fontFamily: 'system-ui, -apple-system, sans-serif',
-                fontWeight: 600,
-                textAlign: 'center',
-                opacity: fadeIn(frame - 330, 20),
-                transform: `translateY(${slideUp(frame - 330, 18, 10)}px)`,
-              }}
-            >
-              {PROBLEM.punchline2}
-            </div>
-          </div>
-        )}
       </AbsoluteFill>
+
+      {/* PiP Alex — bottom-left */}
+      <Sequence from={clipStart} durationInFrames={clipDur}>
+        <PiPVideo src={SECTIONS.why.clip} />
+      </Sequence>
     </SceneShell>
   );
 };

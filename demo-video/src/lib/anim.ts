@@ -16,6 +16,10 @@ export const sceneOpacity = (frame: number, sceneDuration: number, dur: number =
 export const slideUp = (frame: number, duration: number = 20, fromY: number = 30) =>
   interpolate(frame, [0, duration], [fromY, 0], { extrapolateRight: 'clamp' });
 
+/** Combined fade in + fade out for a segment (e.g. moment within a scene) */
+export const fadeInOut = (frame: number, duration: number, fadeDur: number = 15) =>
+  Math.min(fadeIn(frame, fadeDur), fadeOut(frame, duration, fadeDur));
+
 /** Ken Burns slow zoom */
 export const kenBurns = (frame: number, duration: number, from: number = 1.0, to: number = 1.06) =>
   interpolate(frame, [0, duration], [from, to], { extrapolateRight: 'clamp' });

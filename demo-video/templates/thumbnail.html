@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1280px;
+    height: 720px;
+    overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #0f0a1e;
+    position: relative;
+  }
+
+  /* Alex photo — left side, shifted further left to center face */
+  .alex {
+    position: absolute;
+    left: -60px;
+    top: 0;
+    width: 580px;
+    height: 720px;
+    overflow: hidden;
+  }
+  .alex img {
+    width: 140%;
+    height: 120%;
+    object-fit: cover;
+    object-position: 65% 15%;
+    filter: brightness(1.05) contrast(1.05);
+  }
+  /* Gradient fade from photo into the dark right side */
+  .alex-fade {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 250px;
+    height: 100%;
+    background: linear-gradient(to right, transparent, #0f0a1e);
+  }
+
+  /* Purple glow accent behind the text area */
+  .glow {
+    position: absolute;
+    right: 100px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  /* Text block — right side */
+  .content {
+    position: absolute;
+    right: 60px;
+    top: 50%;
+    transform: translateY(-50%);
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 16px;
+  }
+
+  .big-number {
+    font-size: 120px;
+    font-weight: 900;
+    color: white;
+    line-height: 1;
+    letter-spacing: -3px;
+    text-shadow: 0 4px 30px rgba(139, 92, 246, 0.4);
+  }
+  .big-number span {
+    color: #a78bfa;
+  }
+
+  .subtitle {
+    font-size: 42px;
+    font-weight: 700;
+    color: #e2e8f0;
+    line-height: 1.2;
+  }
+
+  .accent-line {
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(to right, #a78bfa, #7c3aed);
+    border-radius: 2px;
+    margin: 4px 0;
+  }
+
+  .detail {
+    font-size: 28px;
+    font-weight: 500;
+    color: #94a3b8;
+    line-height: 1.4;
+  }
+  .detail strong {
+    color: #a78bfa;
+    font-weight: 700;
+  }
+
+  /* ZenML logo — top right */
+  .zenml-logo {
+    position: absolute;
+    top: 28px;
+    right: 40px;
+  }
+  .zenml-logo img {
+    height: 40px;
+    filter: brightness(0) invert(1);
+    opacity: 0.85;
+  }
+
+  /* Bottom bar */
+  .bottom-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 56px;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0 60px;
+    gap: 24px;
+  }
+  .badge {
+    font-size: 18px;
+    font-weight: 600;
+    color: #94a3b8;
+    letter-spacing: 0.04em;
+  }
+  .badge strong {
+    color: #a78bfa;
+  }
+</style>
+</head>
+<body>
+
+  <!-- Alex photo on the left -->
+  <div class="alex">
+    <img src="alex-frame.jpg" alt="Alex">
+    <div class="alex-fade"></div>
+  </div>
+
+  <!-- ZenML logo — top right -->
+  <div class="zenml-logo">
+    <img src="zenml-logo.svg" alt="ZenML">
+  </div>
+
+  <!-- Purple glow -->
+  <div class="glow"></div>
+
+  <!-- Main text -->
+  <div class="content">
+    <div class="big-number">2,224 <span>Pages</span></div>
+    <div class="subtitle">in ~5 Days</div>
+    <div class="accent-line"></div>
+    <div class="detail">
+      Full website migration<br>
+      powered by <strong>Claude Code</strong>
+    </div>
+  </div>
+
+  <!-- Bottom badge bar -->
+  <div class="bottom-bar">
+    <div class="badge"><strong>ZenML</strong> &times; Claude Code Hackathon</div>
+  </div>
+
+</body>
+</html>
