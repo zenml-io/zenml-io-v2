@@ -73,7 +73,7 @@ webflow:
                   <li><strong>Operational Risk:</strong> The workflow created single points of failure. As the team noted, if the person responsible for a model run was sick, the entire process could stall, jeopardizing delivery.</li>
                   <li><strong>A Week-Long Bottleneck:</strong> Running models for all 210 markets was a slow operation that stifled iteration and took over a week to complete. The hardware and process limitations also forced them to simplify their models, sacrificing predictive accuracy for the sake of finishing the job. The team knew they could build better models but lacked the platform to do it efficiently.</li>
                 </ul>
-                <figure style="max-width:2552pxpx" class="w-richtext-align-fullwidth w-richtext-figure-type-image">
+                <figure style="max-width:2552px" class="w-richtext-align-fullwidth w-richtext-figure-type-image">
                   <div><img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e5f84a94/cross-screen-media-workflow.png" loading="lazy" alt="Before/After workflow comparison: Fragmented (two codebases, manual translation) vs Unified (single codebase via ZenML Platform to local testing and Kubernetes production)"></div>
                 </figure>
                 <h3><strong>The Solution: A Standardized Platform for Automation</strong></h3>

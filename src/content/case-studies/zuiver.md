@@ -43,7 +43,7 @@ webflow:
 ---
 
 <div class="uui-text-markdown-text w-richtext">
-                <figure style="max-width:2288pxpx" class="w-richtext-align-fullwidth w-richtext-figure-type-image">
+                <figure style="max-width:2288px" class="w-richtext-align-fullwidth w-richtext-figure-type-image">
                   <div><img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/0b43294f/zenml-before_after.png" loading="lazy" alt="Before and after diagram showing workflow transformation: left side depicts fragmented setup with SSH terminals, multiple isolated environments, and manual synchronization steps; right side shows streamlined workflow with two environments managed centrally through ZenML platform via single Python pipeline command"></div>
                 </figure>
                 <ul role="list">

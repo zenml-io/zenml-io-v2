@@ -116,7 +116,6 @@ webflow:
                     </table>
                   </div>
                 </div>
-                
                 <p><em>Note:</em> The <strong>+170%</strong> figure refers to the <strong>month‑over‑month</strong> change in total execution time from <strong>September to October 2025</strong>.</p>
                 <h2><strong>The Challenge: When Enterprise Scale Creates Chaos</strong></h2>
                 <h3><strong>The Orchestrator Sprawl</strong></h3>
@@ -125,7 +124,7 @@ webflow:
                 <p>This technical fragmentation created deep organizational silos. With a ~200‑person AI organization—and around 100 hands‑on ML practitioners—there was no unified platform to track models from training to evaluation, making lineage and reproducibility a manual, detective‑like process. As a result, code reuse was nearly impossible, and valuable time was lost as teams independently solved the same problems, unable to build on each other's work.</p>
                 <h3><strong>The Department Dilemma</strong></h3>
                 <p>Initially, the MLOps team’s mandate was to support multiple teams within a single department. Even within that boundary, teams followed entirely different rules and architectural patterns—from monorepos to dedicated repositories—making a one‑size‑fits‑all solution unrealistic. This diversity of environments and requirements made a one-size-fits-all solution impossible and which meant the current model was fundamentally unsustainable.</p>
-                <figure style="max-width:2432pxpx" class="w-richtext-align-fullwidth w-richtext-figure-type-image">
+                <figure style="max-width:2432px" class="w-richtext-align-fullwidth w-richtext-figure-type-image">
                   <div><img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1829db9b/jetbrains-before_after.png" loading="lazy" alt="Comparison diagram showing fragmented tools before with high maintenance burden, low reuse, and limited lineage issues, versus a unified workflow using ZenML Unified Platform with shared artifacts, supporting models research, validation, and data logs, marked as vendor agnostic and Kubernetes native."></div>
                 </figure>
                 <h2><strong>The Solution: Develop Locally, Scale on Kubernetes</strong></h2>
@@ -140,7 +139,7 @@ webflow:
                   <li><strong>Vendor‑agnostic (no cloud lock‑in)</strong>: Works across clouds and on‑prem, aligning with JetBrains’ strategy to avoid provider‑specific MLOps stacks.</li>
                   <li><strong>Cost‑effective enterprise footprint</strong>: Consolidates multiple orchestrators and homegrown glue into one platform, reducing maintenance burden while improving governance and observability.</li>
                 </ul>
-                <figure style="max-width:2568pxpx" class="w-richtext-align-fullwidth w-richtext-figure-type-image">
+                <figure style="max-width:2568px" class="w-richtext-align-fullwidth w-richtext-figure-type-image">
                   <div><img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/461b2150/jetbrains-stack.png" loading="lazy" alt="Diagram showing ZenML's orchestration, artifact versioning, secrets management, and projects/permissions connecting a developer to internal GKE and external GPU Kubernetes clusters, plus artifact store and data/logs."></div>
                 </figure>
                 <h3><strong>The Phased Implementation Journey</strong></h3>
@@ -159,7 +158,7 @@ webflow:
                 <p>The strongest proof of success has been the platform's rapid, organic adoption following internal advocacy. In a single month (September to October 2025), the number of monthly active users grew by <strong>63%</strong>, driven by word-of-mouth and visible team successes. Concretely, unique monthly active users grew from <strong>27 to 44</strong> between September and October 2025 (+63% month‑over‑month), as additional teams started running real workloads. This demand is widespread, with a planned internal workshop on ML workflows attracting <strong>over 150 invites</strong> from across the organization, signaling massive interest in the new, standardized approach.</p>
                 <h3><strong>Technical and Migration Wins</strong></h3>
                 <p>With a unified platform, JetBrains has unlocked significant technical victories. The MLOps team is successfully migrating complex workloads off of Kubeflow and Prefect OSS, eliminating a major maintenance burden and unifying their infrastructure. New platform capabilities like inline runtimes shorten feedback loops for simple pipelines by skipping per‑step container cold starts; the orchestrator still initializes as usual. Combined with completed stability improvements, this has shifted internal perception from early “low‑maturity” concerns to a stable, production‑grade platform with good standing internally.</p>
-                <figure style="max-width:3414pxpx" class="w-richtext-align-fullwidth w-richtext-figure-type-image">
+                <figure style="max-width:3414px" class="w-richtext-align-fullwidth w-richtext-figure-type-image">
                   <div><img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a7dcf8ee/jetbrains-timeline.png" loading="lazy" alt="Timeline from January to October 2025 showing phases: POC validated; Kubeflow pipeline migration; replacement with incremental wrapping; inline runtimes introduced; 63% MAU growth and 170% execution time improvement; and scaling to 150+ workshop invites and ZenML as default for new ML projects, with user growth from 8 to 44."></div>
                 </figure>
                 <h2><strong>Looking Forward: A Strategic Partnership for the Next Wave of AI</strong></h2>

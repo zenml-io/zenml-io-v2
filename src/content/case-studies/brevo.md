@@ -77,18 +77,18 @@ webflow:
                 <p>Brevo's transition to ZenML marked a pivotal shift in how they approached machine learning. ZenML offered a suite of features that directly addressed Brevo's challenges.</p>
                 <h3>Homogeneity of Infrastructure &amp; Centralization</h3>
                 <p>Brevo deployed models using various tools within Google Cloud Platform (GCP): Vertex AI, BigQuery ML, and potentially Cloud Function. Despite their unique features, ZenML unified these tools for data scientists, maintaining agility and speed.</p>
-                <figure style="max-width:4186pxpx" class="w-richtext-align-fullwidth w-richtext-figure-type-image">
+                <figure style="max-width:4186px" class="w-richtext-align-fullwidth w-richtext-figure-type-image">
                   <div><img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/73dc731d/65cb2cb57f1135046c377951_zenml-infrastructure-centralization.webp" loading="lazy" alt="Homogeneity of Infrastructure &amp; Centralization"></div>
                 </figure>
                 <p>ZenML provided a unified experience layer for the data scientists to leverage each individual service, without losing their agility and speed.</p>
                 <h3>Incremental deployment</h3>
                 <p>ZenML provided the flexibility to begin with a compact pipeline operating on a local scale, ensuring detailed inspection of every phase up to a full-scale production pipeline scheduled on the cloud. This incremental approach offers a multitude of possibilities, encouraging experimentation, testing, and evolution of the pipeline.</p>
-                <figure style="max-width:3076pxpx" class="w-richtext-align-fullwidth w-richtext-figure-type-image">
+                <figure style="max-width:3076px" class="w-richtext-align-fullwidth w-richtext-figure-type-image">
                   <div><img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f3e4bc63/65c605234f68da20ece12fa9_zenml-incremental-deployment.webp" loading="lazy" alt="Incremental deployment"></div>
                 </figure>
                 <h3>Reliable ML models that are reproducible and auditable</h3>
                 <p>Adopting ZenML ensures reliable, reproducible, and auditable ML models with strong data and model versioning, guaranteeing robustness, efficiency, and full traceability. Brevo gained clear insights into model performance, data usage, and experiment outcomes, reducing troubleshooting time with complete model lineage for review.</p>
-                <figure style="max-width:3320pxpx" class="w-richtext-align-fullwidth w-richtext-figure-type-image">
+                <figure style="max-width:3320px" class="w-richtext-align-fullwidth w-richtext-figure-type-image">
                   <div><img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/413761ea/65c60523f2a21ac92ed8b6c0_zenml-models.webp" loading="lazy" alt="Reliable ML models that are reproducible and auditable"></div>
                 </figure>
                 <h2>The Results: A Leap in Operational Efficiency and Market Reach</h2>
@@ -96,13 +96,13 @@ webflow:
                 <ul role="list">
                   <li><strong class="text-dark">Increased Model Efficiency<br>‍</strong>With 5 models now in production, Brevo improved fraud targeting, boosted customer satisfaction and reduced workload.</li>
                 </ul>
-                <figure style="max-width:1960pxpx" class="w-richtext-align-fullwidth w-richtext-figure-type-image">
+                <figure style="max-width:1960px" class="w-richtext-align-fullwidth w-richtext-figure-type-image">
                   <div><img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/0ba43aec/65c60523bfb44a6f997fafa4_model-efficiency.webp" loading="lazy" alt="Model efficiency"></div>
                 </figure>
                 <ul role="list">
                   <li><strong class="text-dark">Automated Delivery &amp; Faster Time-to-Market<br>‍</strong>ZenML drastically reduced ML lifecycles from months to days with its automation capabilities, enabling rapid response to market needs.</li>
                 </ul>
-                <figure style="max-width:1960pxpx" class="w-richtext-align-fullwidth w-richtext-figure-type-image">
+                <figure style="max-width:1960px" class="w-richtext-align-fullwidth w-richtext-figure-type-image">
                   <div><img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a2474f81/65c60523f18ce6e8c7751996_developing-model-days.webp" loading="lazy" alt="Days to develop a model"></div>
                 </figure>
                 <ul role="list">

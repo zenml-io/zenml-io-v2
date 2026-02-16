@@ -87,7 +87,7 @@ webflow:
                   <li><strong class="text-dark">Pipeline Portability<br>‍</strong>Abstracted infrastructure complexities allowed seamless prototyping and deployment across local and cloud environments.</li>
                   <li><strong class="text-dark">Framework and Infrastructure Agnosticism</strong><br>Flexibility to use any ML library, such as TensorFlow or PyTorch, and deploy workloads across different infrastructure targets with minimal overhead.</li>
                 </ul>
-                <figure style="max-width:3498pxpx" class="w-richtext-align-fullwidth w-richtext-figure-type-image">
+                <figure style="max-width:3498px" class="w-richtext-align-fullwidth w-richtext-figure-type-image">
                   <div><img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ccbfeef1/65c4ab894a074e8041ffe6ae_zenml-unified-experience.webp" loading="lazy" alt="ZenML unified experience"></div>
                 </figure>
               </div>
@@ -127,13 +127,13 @@ webflow:
                 </figure>
                 <h3>Robust Deployment</h3>
                 <p>With 5 ML models in production, the team is on track to reach a target of 20 by the end of 2024.</p>
-                <figure style="max-width:1960pxpx" class="w-richtext-align-fullwidth w-richtext-figure-type-image">
+                <figure style="max-width:1960px" class="w-richtext-align-fullwidth w-richtext-figure-type-image">
                   <div><img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/15657862/65c4afdce520d0d9efae9f2b_adeo-models-in-production.webp" loading="lazy" alt="Models in production"></div>
                 </figure>
                 <h3>Automation with Operational Efficiency</h3>
                 <p>1,614 development runs and 109 production runs showcased the reliability and confidence in the ML models deployed.</p>
                 <p>In order to roll-out a new business unit in another country, all the team needed to do was create one config file, and the model was already ready to go.</p>
-                <figure style="max-width:2356pxpx" class="w-richtext-align-fullwidth w-richtext-figure-type-image">
+                <figure style="max-width:2356px" class="w-richtext-align-fullwidth w-richtext-figure-type-image">
                   <div><img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/41a3736e/65c4b0484e640434f9642876_zenml-automation.webp" loading="lazy" alt="Automation with Operational Efficiency"></div>
                 </figure>
                 <h3>FTP Economy</h3>
