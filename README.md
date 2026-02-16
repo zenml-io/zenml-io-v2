@@ -7,6 +7,16 @@
 [![Cloudflare Pages](https://img.shields.io/badge/Cloudflare_Pages-deployed-F38020?logo=cloudflarepages&logoColor=white)](https://pages.cloudflare.com/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 
+<div align="center">
+
+[![Watch the demo video](assets/demo-video-thumbnail.png)](https://youtu.be/vd70OvKFbVc)
+
+**[Watch the 3-minute demo](https://youtu.be/vd70OvKFbVc)** | **[Browse the live site](https://zenml-io-v2.pages.dev/)**
+
+</div>
+
+> **Built during the [Claude Code Hackathon](https://cerebralvalley.ai/e/claude-code-hackathon) (Feb 10–16, 2026).** One person migrated ZenML's entire production website — 2,224 pages across 20 CMS collections — from Webflow to a self-hosted Astro site in ~5 days using Claude Code with Opus 4.6. The demo video above was also built programmatically with Remotion using Claude Code.
+
 The next-generation [zenml.io](https://www.zenml.io) website — migrated from Webflow to a self-hosted static site for full control over content, design, and performance.
 
 ## Tech Stack
@@ -119,6 +129,16 @@ scripts/
 ├── phase2/              # Content validation scripts
 ├── phase4/              # SEO parity testing scripts
 └── internal/            # Migration scripts (gitignored)
+
+demo-video/              # Remotion project — programmatic demo video
+├── src/
+│   ├── compositions/    # Main ZenMLHackathonDemo composition
+│   ├── scenes/          # V2S01Hook, V2S02Why, V2S03Learning, V2S04ResultsClose
+│   ├── components/      # PiPVideo, SceneShell
+│   └── lib/             # timing.ts, copy.ts, anim.ts (data-driven separation)
+├── scripts/             # B-roll recording + thumbnail generation
+├── templates/           # Teleprompter HTML tool
+└── public/clips/        # Video assets (gitignored)
 ```
 
 ## Content Architecture
@@ -199,3 +219,18 @@ This site was migrated from Webflow in February 2026. The migration followed a 6
 | 6 | QA & cutover (visual parity fixes, final testing) | In progress |
 
 The `design/` directory (gitignored) contains the original Webflow HTML/CSS export used as the source of truth for pixel-perfect recreation. The `docs/` directory contains detailed plans and investigation notes for each phase.
+
+## Demo Video
+
+The [3-minute demo video](https://youtu.be/vd70OvKFbVc) was built programmatically using [Remotion](https://www.remotion.dev/) (React-based video framework) — also with Claude Code. The `demo-video/` directory is a self-contained Remotion project.
+
+The video composites pre-recorded webcam clips with B-roll screen recordings of the live site, animated text overlays, and smooth transitions. The architecture separates **timing** (`timing.ts`), **copy** (`copy.ts`), and **animation** (`anim.ts`) into three independent data files, making iteration fast — change the words without touching timing, or adjust durations without touching visuals.
+
+```bash
+cd demo-video
+npm install
+npm run dev      # Preview in Remotion Studio
+npm run render   # Render to MP4
+```
+
+See [`demo-video/building-the-demo-video.md`](demo-video/building-the-demo-video.md) for the full technical write-up.
