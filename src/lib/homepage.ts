@@ -16,11 +16,12 @@ export const ANNOUNCEMENT_BANNER = {
 /*  Hero                                                              */
 /* ------------------------------------------------------------------ */
 export const HERO = {
-  headline: "The AI Control Plane",
+  eyebrow: "Beyond traces. Beyond evals.",
+  headline: "Ship Complex AI Workflows. Not Glue Code.",
   subheadline:
-    "One layer for orchestration, versioning, and governance — from training pipelines to agent evals, local to Kubernetes.",
+    "The platform for teams building serious AI — from training pipelines to multi-step agent workflows. Version, test, promote, and govern everything in one place.",
   primaryCta: { label: "Book a Demo", href: "/book-your-demo" },
-  secondaryCta: { label: "Use Open Source", href: "/get-started" },
+  secondaryCta: { label: "Try Open Source", href: "/get-started" },
   githubUrl: "https://github.com/zenml-io/zenml",
   /** Lottie JSON for hero animation (autoplay, no loop, 6.4s, SVG renderer).
    *  Served from public/ for same-origin access (avoids R2 CORS issues). */
@@ -81,10 +82,10 @@ export const LOGO_CLOUD = {
 /*  Stats                                                             */
 /* ------------------------------------------------------------------ */
 export const STATS = [
-  { value: "78%", label: "faster time‑to‑market" },
-  { value: "65%", label: "reduced engineering overhead" },
-  { value: "3x", label: "more workflows in production" },
-  { value: "5x", label: "faster time to production" },
+  { value: "75%", label: "of teams eval without formal benchmarks", attribution: "Industry research" },
+  { value: "700+", label: "Docker images in one agent workflow", attribution: "JetBrains" },
+  { value: "80%", label: "faster model development", attribution: "Brevo" },
+  { value: "2mo → 2wk", label: "time-to-market", attribution: "ADEO Leroy Merlin" },
 ];
 
 /* ------------------------------------------------------------------ */
@@ -159,9 +160,9 @@ export interface ValueProp {
 
 export const VALUE_PROPS: ValueProp[] = [
   {
-    title: "The Glue for Your Fragmented Stack",
+    title: "Your Agent Traces Don't Tell the Whole Story",
     description:
-      "Stop writing fragile scripts to connect your tools. ZenML provides a standardized protocol to bind your data retrieval (LlamaIndex), reasoning (LangChain), and training (PyTorch) steps into a single, cohesive system.",
+      "Tracing shows what happened inside one run. ZenML connects traces to code commits, prompt versions, container images, and environments — so you know what changed and why.",
     iconBg: "#fff6ea",
     iconColor: "#FA9E33",
     iconMode: "stroke",
@@ -170,9 +171,9 @@ export const VALUE_PROPS: ValueProp[] = [
     ],
   },
   {
-    title: "Break the Prototype Wall",
+    title: "You Need Release Gates, Not Just Evals",
     description:
-      "Teams lose velocity rewriting notebook code for the cloud. ZenML allows the exact same @step to run locally for debugging, in batch for massive evaluations, and then deploy seamlessly to your production serving infrastructure.",
+      "Stop shipping agents on vibes. ZenML treats evaluations as CI-quality gates — compare candidates across model versions, detect regressions, promote through staging to production.",
     iconBg: "#cfe7fc",
     iconColor: "#0E85F2",
     iconMode: "stroke",
@@ -181,9 +182,9 @@ export const VALUE_PROPS: ValueProp[] = [
     ],
   },
   {
-    title: 'The "Missing Layer" for AI Engineering',
+    title: "Your Agent Is a DAG, Not a Chat Window",
     description:
-      "Your current orchestrator runs the job, but it doesn't track the data. ZenML adds a metadata layer to tools like Airflow or Kubeflow, giving you the artifact lineage and reproducibility that raw orchestrators lack.",
+      "Multi-step, multi-service, failure-prone workflows need orchestration, not a framework. ZenML handles state management, sandbox execution, retries, and artifact capture natively.",
     iconBg: "#d6ebf0",
     iconColor: "#309DB2",
     iconMode: "stroke",
@@ -192,9 +193,9 @@ export const VALUE_PROPS: ValueProp[] = [
     ],
   },
   {
-    title: "Open Source, Enterprise Control",
+    title: "Nobody Owns the Outer Loop",
     description:
-      "Built on Apache 2.0 for flexibility, hardened for the enterprise. Deploy ZenML inside your own VPC. Keep full sovereignty over your data, models, and API secrets while meeting SOC2 and ISO 27001 standards.",
+      "Braintrust sees traces. Langfuse sees logs. ZenML sees the full picture — infra, artifacts, environments, and lineage across runs. The system of record for your agent development lifecycle.",
     iconBg: "#ffedf4",
     iconColor: "#F53D81",
     iconMode: "stroke",
@@ -205,11 +206,11 @@ export const VALUE_PROPS: ValueProp[] = [
 ];
 
 export const VALUE_PROPS_CTA = {
-  headline: "Ready to Unify Your AI Platform?",
+  headline: "Ready to Own the Outer Loop?",
   subtext:
-    "Join thousands of teams using ZenML to eliminate chaos and accelerate AI delivery",
+    "Join thousands of teams using ZenML to version, test, and promote AI workflows with confidence",
   primaryCta: { label: "Book a Demo", href: "/book-your-demo" },
-  secondaryCta: { label: "Use Open Source", href: "/get-started" },
+  secondaryCta: { label: "Try Open Source", href: "/get-started" },
 };
 
 /* ------------------------------------------------------------------ */
@@ -251,7 +252,7 @@ export interface CaseStudyCard {
 export const CUSTOMER_STORIES_HEADER = {
   headline: "Customer Stories",
   subheadline:
-    "Learn how teams are using ZenML to save time and simplify their MLOps.",
+    "Learn how teams are using ZenML to ship AI workflows faster and with confidence.",
 };
 
 export const CASE_STUDY_CARDS: CaseStudyCard[] = [
@@ -374,7 +375,7 @@ export const COMPLIANCE = {
 /*  Newsletter Signup                                                 */
 /* ------------------------------------------------------------------ */
 export const NEWSLETTER = {
-  headline: "Looking to Get Ahead in MLOps & LLMOps?",
+  headline: "Looking to Get Ahead in AI Engineering?",
   body: "Subscribe to the ZenML newsletter and receive regular product updates, tutorials, examples, and more.",
   privacyNote: "We care about your data in our",
   privacyLink: { label: "privacy policy", href: "/privacy-policy" },
@@ -432,10 +433,10 @@ export const FAQ = {
 /*  Final CTA                                                         */
 /* ------------------------------------------------------------------ */
 export const FINAL_CTA = {
-  headline: "Unify Your ML and LLM Workflows",
+  headline: "Unify Your AI Development Lifecycle",
   bullets: [
-    "Free, powerful MLOps open source foundation",
-    "Works with any infrastructure",
+    "Free, powerful open source foundation",
+    "From training pipelines to agent workflows",
     "Upgrade to managed Pro features",
   ],
   primaryCta: { label: "Book a Demo", href: "/book-your-demo" },

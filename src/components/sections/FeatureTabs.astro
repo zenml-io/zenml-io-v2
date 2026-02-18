@@ -28,6 +28,9 @@ import FeatureTabsSlider from "../islands/FeatureTabsSlider";
         <div class="text-center">
           <p class="text-3xl font-bold text-gray-900 sm:text-4xl">{stat.value}</p>
           <p class="mt-1 text-sm text-gray-600">{stat.label}</p>
+          {stat.attribution && (
+            <p class="mt-1 text-xs text-gray-400 italic">— {stat.attribution}</p>
+          )}
         </div>
       ))}
     </div>
