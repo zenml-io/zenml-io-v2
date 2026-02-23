@@ -121,7 +121,7 @@ const rawBody = item.body || "";
 // Extract table HTML (first <table>...</table>, optionally wrapped in div)
 let tableHtml = item.data.featureTableHtml || "";
 if (!tableHtml && rawBody) {
-  const tableMatch = rawBody.match(/<(?:div[^>]*>)?\s*<table[\s\S]*?<\/table>\s*(?:<\/div>)?/i);
+  const tableMatch = rawBody.match(/(?:<div[^>]*>\s*)?<table[\s\S]*?<\/table>\s*(?:<\/div>)?/i);
   if (tableMatch) tableHtml = tableMatch[0];
 }
 
