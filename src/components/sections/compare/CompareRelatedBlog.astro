@@ -30,14 +30,14 @@ const {
 ---
 
 {posts.length > 0 && (
-  <section class="bg-gradient-to-b from-gray-50 to-white py-16 sm:py-20">
+  <section class="blog-section bg-gradient-to-b from-gray-50 to-white py-16 sm:py-20">
     <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-10">
+      <div class="text-center mb-10 fade-in-element">
         <p class="text-sm font-semibold uppercase tracking-wider text-zenml-500 mb-3">{eyebrow}</p>
         <h2 class="text-2xl font-bold text-gray-900 sm:text-3xl">{headline}</h2>
       </div>
 
-      <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+      <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 fade-in-element">
         {posts.map((post) => (
           <BlogCard
             title={post.title}
@@ -50,3 +50,32 @@ const {
     </div>
   </section>
 )}
+
+<style>
+  .blog-section .fade-in-element {
+    opacity: 0;
+    transform: translateY(1rem);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  }
+  .blog-section .fade-in-element.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+
+<script>
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.1 }
+  );
+  document.querySelectorAll('.blog-section .fade-in-element').forEach((el) => {
+    observer.observe(el);
+  });
+</script>

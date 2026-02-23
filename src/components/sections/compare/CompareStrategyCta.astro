@@ -27,33 +27,33 @@ const {
 } = Astro.props;
 ---
 
-<section class="bg-[#F4EBFF] py-16 sm:py-20">
+<section class="strategy-cta-section bg-[#F4EBFF] py-16 sm:py-20">
   <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
     {/* Advantages grid */}
     {advantages.length > 0 && (
-      <div class="mb-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+      <div class="mb-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {advantages.map((adv) => (
-          <div class="text-center">
+          <div class="fade-in-element text-left">
             {adv.image && (
               <img
                 src={adv.image.url}
                 alt={adv.image.alt || adv.title}
-                width="100"
-                height="100"
-                class="mx-auto mb-4 object-contain"
+                width="120"
+                height="120"
+                class="mb-5 object-contain mix-blend-multiply"
                 loading="lazy"
               />
             )}
-            <h3 class="text-lg font-semibold text-gray-900">{adv.title}</h3>
-            <p class="mt-2 text-sm text-gray-600">{adv.content}</p>
+            <h3 class="text-2xl font-bold tracking-tight text-gray-900 sm:text-[1.875rem] sm:leading-[1.4]">{adv.title}</h3>
+            <p class="mt-3 text-base leading-relaxed text-gray-600">{adv.content}</p>
           </div>
         ))}
       </div>
     )}
 
     {/* Strategy CTA */}
-    <div class="text-center">
-      <h2 class="text-xl font-semibold text-gray-900 sm:text-2xl">{headline}</h2>
+    <div class="fade-in-element text-center">
+      <h2 class="text-2xl font-bold text-gray-900">{headline}</h2>
       <div class="mt-6">
         <Button href={primaryCta.href} size="lg">
           {primaryCta.label}
@@ -62,3 +62,32 @@ const {
     </div>
   </div>
 </section>
+
+<style>
+  .strategy-cta-section .fade-in-element {
+    opacity: 0;
+    transform: translateY(1rem);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  }
+  .strategy-cta-section .fade-in-element.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+
+<script>
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.15 }
+  );
+  document.querySelectorAll('.strategy-cta-section .fade-in-element').forEach((el) => {
+    observer.observe(el);
+  });
+</script>
