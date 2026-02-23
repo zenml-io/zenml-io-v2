@@ -60,9 +60,10 @@ const seo = resolveSeo(seoProps, Astro.url.pathname);
     <script async defer src="https://buttons.github.io/buttons.js"></script>
 
     {/* Plausible analytics — Essential, but hostname-gated to avoid polluting
-        analytics with preview-deploy traffic (import.meta.env.PROD is true on previews) */}
+        analytics with preview-deploy traffic (import.meta.env.PROD is true on previews).
+        Matches both www.zenml.io (canonical) and apex zenml.io (DNS cutover). */}
     <script is:inline>
-      if (window.location.hostname === 'www.zenml.io') {
+      if (['www.zenml.io','zenml.io'].includes(window.location.hostname)) {
         var s = document.createElement('script');
         s.defer = true;
         s.dataset.domain = 'zenml.io';

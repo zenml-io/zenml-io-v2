@@ -105,6 +105,14 @@ export const BOOK_YOUR_DEMO_FIELDS: PlaceholderField[] = [
     required: true,
     placeholder: "Users",
   },
+  {
+    name: "privacy",
+    label: "Privacy agreement",
+    type: "checkbox",
+    required: true,
+    placeholder:
+      'You agree to our <a href="/privacy-policy" class="text-zenml-500 underline">privacy policy</a>.',
+  },
 ];
 
 // ---------------------------------------------------------------------------

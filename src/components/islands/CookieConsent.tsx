@@ -12,9 +12,9 @@ import {
   type ConsentCategory,
   type ScriptDefinition,
 } from "../../lib/consentConfig";
+import { isProdHostname } from "../../lib/constants";
 
 const STORAGE_KEY = "cookie_consent";
-const PROD_HOSTNAME = "www.zenml.io";
 
 type ConsentState = Record<ConsentCategory, boolean>;
 
@@ -65,8 +65,8 @@ function injectScript(script: ScriptDefinition): void {
 
 /** Inject all scripts for consented categories. */
 function applyConsent(consent: ConsentState): void {
-  // Only inject on production domain
-  if (typeof window !== "undefined" && window.location.hostname !== PROD_HOSTNAME) {
+  // Only inject on production domain (www.zenml.io or apex zenml.io)
+  if (typeof window !== "undefined" && !isProdHostname(window.location.hostname)) {
     return;
   }
 

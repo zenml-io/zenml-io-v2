@@ -81,10 +81,17 @@ export default function ContactForm({
         });
 
         if (!res.ok) {
-          const body = await res.json().catch(() => ({}));
-          const msg =
-            (body as { error?: string }).error ||
-            "Something went wrong. Please try again.";
+          const body = await res.json().catch(() => ({})) as {
+            error?: string;
+            errors?: Record<string, string>;
+          };
+          // Surface per-field errors from server (e.g. privacy consent)
+          if (body.errors && Object.keys(body.errors).length > 0) {
+            setErrors(body.errors);
+            setState("idle");
+            return;
+          }
+          const msg = body.error || "Something went wrong. Please try again.";
           setServerError(msg);
           setState("error");
           return;

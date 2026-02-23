@@ -108,10 +108,20 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     }
   }
 
+  // Server-side privacy consent enforcement (GDPR requirement).
+  // All lead forms require explicit privacy policy agreement.
+  const privacyValue = (data.privacy ?? "").trim().toLowerCase();
+  if (!/^(on|true|1)$/.test(privacyValue)) {
+    return jsonResponse(
+      { success: false, errors: { privacy: "You must agree to the privacy policy" } },
+      422,
+    );
+  }
+
   // POC: Log submission metadata (no PII) and return success
   // Post-launch: Forward to Attio CRM API here
   console.log(`[form:${formType}] submission received`, {
-    fields: Object.keys(data).filter((k) => k !== "cf-turnstile-response"),
+    fields: Object.keys(data).filter((k) => !["cf-turnstile-response", "privacy"].includes(k)),
   });
 
   return jsonResponse({ success: true, formType });
