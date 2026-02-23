@@ -69,12 +69,23 @@ export const FOOTER_VS: FooterColumn[] = [
   {
     title: "ZenML vs Orchestrators",
     titleHref: "/vs/zenml-vs-orchestrators",
-    links: [],
+    links: [
+      { label: "Apache Airflow", href: "/compare/zenml-vs-apache-airflow" },
+      { label: "Argo Workflows", href: "/compare/zenml-vs-argo-workflows" },
+      { label: "Dagster", href: "/compare/zenml-vs-dagster" },
+      { label: "Databricks", href: "/compare/zenml-vs-databricks" },
+      { label: "Flyte", href: "/compare/zenml-vs-flyte" },
+      { label: "Kedro", href: "/compare/zenml-vs-kedro" },
+      { label: "Kubeflow", href: "/compare/zenml-vs-kubeflow" },
+      { label: "Prefect", href: "/compare/zenml-vs-prefect" },
+    ],
   },
   {
     title: "ZenML vs Exp Trackers",
     titleHref: "/vs/zenml-vs-experiment-trackers",
     links: [
+      { label: "Langfuse", href: "/compare/zenml-vs-langfuse" },
+      { label: "MLflow", href: "/compare/zenml-vs-mlflow" },
       { label: "Weights & Biases", href: "/vs/zenml-vs-experiment-trackers" },
       { label: "Neptune AI", href: "/vs/zenml-vs-experiment-trackers" },
       { label: "CometML", href: "/vs/zenml-vs-experiment-trackers" },
@@ -84,9 +95,26 @@ export const FOOTER_VS: FooterColumn[] = [
     title: "ZenML vs e2e Platforms",
     titleHref: "/vs/zenml-vs-e2e-platforms",
     links: [
-      { label: "GCP Vertex AI", href: "/vs/zenml-vs-e2e-platforms" },
-      { label: "Azure ML", href: "/vs/zenml-vs-e2e-platforms" },
+      { label: "AWS Sagemaker", href: "/compare/zenml-vs-aws-sagemaker" },
+      { label: "Alteryx", href: "/compare/zenml-vs-alteryx" },
+      { label: "Azure ML", href: "/compare/zenml-vs-azure-ml" },
       { label: "ClearML", href: "/compare/zenml-vs-clearml" },
+      { label: "Dataiku", href: "/compare/zenml-vs-dataiku" },
+      { label: "Domino Data Lab", href: "/compare/zenml-vs-domino-data-lab" },
+      { label: "Metaflow", href: "/compare/zenml-vs-metaflow" },
+      { label: "Valohai", href: "/compare/zenml-vs-valohai" },
+      { label: "Vertex AI", href: "/compare/zenml-vs-vertex-ai" },
+    ],
+  },
+  {
+    title: "ZenML vs Other Tools",
+    links: [
+      { label: "DVC", href: "/compare/zenml-vs-dvc" },
+      { label: "Hugging Face", href: "/compare/zenml-vs-hugging-face" },
+      { label: "KServe", href: "/compare/zenml-vs-kserve" },
+      { label: "Label Studio", href: "/compare/zenml-vs-label-studio" },
+      { label: "LangGraph", href: "/compare/zenml-vs-langgraph" },
+      { label: "Seldon Core", href: "/compare/zenml-vs-seldon-core" },
     ],
   },
 ];
