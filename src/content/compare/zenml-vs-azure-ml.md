@@ -191,7 +191,10 @@ seo:
       <span class="tooltiptext">Supports scheduling pipeline jobs for routine retraining via UI, CLI, and SDK — though v2 schedules do not support event-based triggers</span>
     </td>
   </tr>
-</tbody></table></div><div data-rt-embed-type="true"><pre><code fs-codehighlight-element="code">from zenml import pipeline, step, Model
+</tbody></table></div>
+
+```python
+from zenml import pipeline, step, Model
 from zenml.integrations.mlflow.steps import (
     mlflow_model_deployer_step,
 )
@@ -201,24 +204,24 @@ from sklearn.metrics import mean_squared_error
 import numpy as np
 
 @step
-def ingest_data() -&gt; pd.DataFrame:
+def ingest_data() -> pd.DataFrame:
     return pd.read_csv("data/dataset.csv")
 
 @step
-def train_model(df: pd.DataFrame) -&gt; RandomForestRegressor:
+def train_model(df: pd.DataFrame) -> RandomForestRegressor:
     X, y = df.drop("target", axis=1), df["target"]
     model = RandomForestRegressor(n_estimators=100)
     model.fit(X, y)
     return model
 
 @step
-def evaluate(model: RandomForestRegressor, df: pd.DataFrame) -&gt; float:
+def evaluate(model: RandomForestRegressor, df: pd.DataFrame) -> float:
     X, y = df.drop("target", axis=1), df["target"]
     preds = model.predict(X)
     return float(np.sqrt(mean_squared_error(y, preds)))
 
 @step
-def check_drift(df: pd.DataFrame) -&gt; bool:
+def check_drift(df: pd.DataFrame) -> bool:
     # Plug in Evidently, Great Expectations, etc.
     return detect_drift(df)
 
@@ -232,7 +235,13 @@ def ml_pipeline():
 # Runs on any orchestrator, logs to MLflow,
 # tracks artifacts, and triggers retraining — all
 # in one portable, version-controlled pipeline
-ml_pipeline()</code></pre></div><div data-rt-embed-type="true"><pre><code fs-codehighlight-element="code">from azure.identity import DefaultAzureCredential
+ml_pipeline()
+```
+
+
+
+```python
+from azure.identity import DefaultAzureCredential
 from azure.ai.ml import MLClient, Input, dsl, load_component
 
 credential = DefaultAzureCredential()
@@ -269,4 +278,7 @@ ml_client.jobs.stream(submitted.name)
 
 # Requires Azure subscription, workspace, IAM config.
 # Pipelines tied to Azure ML workspace control plane.
-# v1 SDK deprecated — must use v2 (azure-ai-ml).</code></pre></div><ul><li>Explore how ZenML maps common Azure ML concepts like pipelines, components, and registries to a portable, cloud-agnostic stack</li><li>Learn how to migrate gradually: keep Azure ML where it's strongest while standardizing pipeline logic for multi-cloud flexibility</li><li>See real-world patterns for swapping orchestrators and backends without rewriting workflows as your organization grows</li></ul>
+# v1 SDK deprecated — must use v2 (azure-ai-ml).
+```
+
+<ul><li>Explore how ZenML maps common Azure ML concepts like pipelines, components, and registries to a portable, cloud-agnostic stack</li><li>Learn how to migrate gradually: keep Azure ML where it's strongest while standardizing pipeline logic for multi-cloud flexibility</li><li>See real-world patterns for swapping orchestrators and backends without rewriting workflows as your organization grows</li></ul>

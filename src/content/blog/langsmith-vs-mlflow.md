@@ -166,16 +166,18 @@ This means you can write a single ZenML pipeline that uses MLflow for experiment
 
 For example:`‍`‍
 
-<div data-rt-embed-type="true"><pre><code fs-codehighlight-element="code">
+
+
+```python
 from zenml import step, pipeline
 
 @step
-def load_data() -&gt; str:
+def load_data() -> str:
     # Logic to load data
     return "data"
 
 @step
-def train_model(data: str) -&gt; None:
+def train_model(data: str) -> None:
     # Logic to train model
     pass
 
@@ -183,7 +185,9 @@ def train_model(data: str) -&gt; None:
 def simple_ml_pipeline():
     data = load_data()
     train_model(data)
-</code></pre></div>
+```
+
+
 
 This decouples code from the execution engine. You can run pipelines locally or via an external orchestrator and even swap out the execution backend at will without changing your pipeline code. ZenML handles dependencies between steps, spins up containers or jobs for each step, and even caches step outputs to skip recomputation when nothing has changed.
 
@@ -219,7 +223,9 @@ If you want full reproducibility, you typically need to explicitly log or refere
 
 By capturing these, MLflow lets you later reproduce or analyze any run in detail. For example, you might train a model, log one parameter and metric, and save the model so you can compare or reuse it later:`‍`‍
 
-<div data-rt-embed-type="true"><pre><code fs-codehighlight-element="code">
+
+
+```python
 import mlflow
 from sklearn.linear_model import LogisticRegression
 
@@ -230,7 +236,9 @@ with mlflow.start_run():
     mlflow.log_param("C", 1.0)
     mlflow.log_metric("accuracy", model.score(X_test, y_test))
     mlflow.sklearn.log_model(model, "model")
-</code></pre></div>
+```
+
+
 
 This is the typical MLflow pattern: wrap your training code in a run, log what matters, and let MLflow handle tracking and storage. If you use the MLflow Project format, it can also define the Conda environment or Docker container used for the run. This allows you to re-run a training script and get statistically similar results.
 

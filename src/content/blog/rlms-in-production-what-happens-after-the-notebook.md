@@ -95,7 +95,8 @@ The number of `process_chunk` steps is decided at runtime based on the query and
 
 Here's the core of the dynamic fan-out, straight from the pipeline code:
 
-<div data-rt-embed-type="true"><pre><code fs-codehighlight-element="code">@pipeline(dynamic=True, enable_cache=True)
+```python
+@pipeline(dynamic=True, enable_cache=True)
 def rlm_analysis_pipeline(
     source_path: str = "data/sample_emails.json",
     query: str = "What financial irregularities or concerns are discussed?",
@@ -131,7 +132,7 @@ def rlm_analysis_pipeline(
 
     # Step 4: Synthesize all chunk findings
     return aggregate_results(chunk_results, chunk_trajectories, query)
-</code></pre></div>
+```
 
 Two ZenML-specific APIs are doing the heavy lifting here, and they're easy to confuse:
 
@@ -210,7 +211,8 @@ Each plan+reflect iteration costs 2 LLM calls. The final summarize costs 1. So `
 
 One clarification on terminology: in the original RLM paper, “recursive” refers to symbolic recursion inside a REPL, where the model writes code that can programmatically invoke sub-model calls over slices or transformations of the input and store intermediate results as variables. A reflect step is a useful control mechanism for deciding whether to keep searching, but recursion in the RLM sense is about those programmatic sub-calls inside the environment, not reflection alone. In the code, this looks like:
 
-<div data-rt-embed-type="true"><pre><code fs-codehighlight-element="code">while llm_calls &lt; max_iterations - 1:  # Reserve 1 call for summarize
+```python
+while llm_calls < max_iterations - 1:  # Reserve 1 call for summarize
     # PLAN: LLM decides which tools to use
     plan_response = llm_call(SEARCH_PLAN_SYSTEM, plan_prompt, json_mode=True)
     llm_calls += 1
@@ -229,20 +231,21 @@ One clarification on terminology: in the original RLM paper, “recursive” ref
 
 # SUMMARIZE: Final synthesis
 summary = llm_call(SUMMARIZE_SYSTEM, summarize_prompt, json_mode=True)
-</code></pre></div>
+```
 
 ### The 5 Typed Tools
 
 Instead of giving the model a full REPL where it can write arbitrary Python, this implementation constrains it to 5 typed, deterministic tools:
 
-<div data-rt-embed-type="true"><pre><code fs-codehighlight-element="code">TOOL_DESCRIPTIONS = {
+```python
+TOOL_DESCRIPTIONS = {
     "grep":      "grep_emails(pattern) - Search email bodies/subjects by regex",
     "sender":    "filter_by_sender(sender) - Filter by sender name/email",
     "recipient": "filter_by_recipient(recipient) - Filter by recipient",
     "date":      "filter_by_date(start, end) - Filter by ISO date range",
     "count":     "count_matches(pattern) - Count regex matches across emails",
 }
-</code></pre></div>
+```
 
 This is a deliberate design choice. The original RLM paper gives the model a full REPL, and DSPy’s dspy.RLM defaults to executing code in a local sandbox (Deno + Pyodide), and can be configured with different interpreters depending on your security and dependency requirements. In production, though, sandboxing alone doesn't cover the whole story. You also want to constrain the agent's *action space* so runs are auditable, deterministic where possible, and resistant to prompt injection and "excessive agency" style failures. This aligns with the [OWASP LLM Top 10](https://owasp.org/www-project-top-10-for-large-language-model-applications/) categories: prompt injection (LLM01), insecure output handling (LLM02), model denial of service via runaway computation (LLM04), and excessive agency (LLM08).
 
@@ -252,12 +255,13 @@ We made this trade-off deliberately. In production, you want to know exactly wha
 
 The pipeline enforces budgets at two levels:
 
-<div data-rt-embed-type="true"><pre><code fs-codehighlight-element="code"># Pipeline-level: controls DAG width (how many chunks)
+```python
+# Pipeline-level: controls DAG width (how many chunks)
 max_chunks = min(max(max_chunks, 1), 10)
 
 # Step-level: controls LLM calls per chunk
 max_iterations = min(max(max_iterations, 2), 12)
-</code></pre></div>
+```
 
 Neither layer alone is sufficient. Without pipeline-level control, the LLM could decide to create 1,000 chunks. Without step-level control, a single chunk could loop forever. Together, they put a hard ceiling on both the total parallelism and the per-chunk LLM spend.
 
@@ -269,7 +273,8 @@ This is where it clicks for most people.
 
 Every action in the RLM loop gets logged to a trajectory artifact. Here's what one looks like, stored as a JSON artifact in ZenML:
 
-<div data-rt-embed-type="true"><pre><code fs-codehighlight-element="code">[
+```json
+[
   {"step": "preview", "action": "Examined 15 emails", "output": "Chunk contains 15 emails, Date range: 2001-01..."},
   {"step": "plan", "iteration": 1, "action": "Planned 3 searches", "searches": [{"tool": "grep", "reason": "Search for LJM references"}]},
   {"step": "search", "iteration": 1, "tool": "grep", "args": {"pattern": "LJM"}, "match_count": 7},
@@ -280,7 +285,7 @@ Every action in the RLM loop gets logged to a trajectory artifact. Here's what o
   {"step": "reflect", "iteration": 2, "sufficient": true, "reasoning": "Have enough evidence about LJM timeline"},
   {"step": "summarize", "finding_preview": "4 emails from early 2001 discuss LJM unwinding...", "confidence": "high", "total_iterations": 2, "total_llm_calls": 5}
 ]
-</code></pre></div>
+```
 
 This matters for three reasons:
 
@@ -288,7 +293,8 @@ This matters for three reasons:
 
 **Cost attribution.** Each trajectory event is tied to a step with logged metadata: duration, LLM calls, matches found. The `log_metadata` call at the end of each `process_chunk` records everything you need for per-chunk cost breakdown, without writing any custom logging.
 
-<div data-rt-embed-type="true"><pre><code fs-codehighlight-element="code">log_metadata(
+```python
+log_metadata(
     metadata={
         "chunk_range": f"{start_idx}-{end_idx}",
         "chunk_size": len(chunk_emails),
@@ -298,7 +304,7 @@ This matters for three reasons:
         "duration_s": duration,
     }
 )
-</code></pre></div>
+```
 
 <figure>
   <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b28ec946/699898ad5c6f85fac61c8025_rlm-per-chunk-analysis-results.avif" alt="Per-chunk analysis output from the RLM pipeline showing detailed results for Chunk 1 (Emails 0-100) and Chunk 2 (Emails 100-200), each with findings about potential financial irregularities, supporting code snippets for email filtering logic, and significance scores." />
@@ -316,7 +322,8 @@ The full example is in the ZenML repo and runs locally with just an OpenAI API k
   <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/80d9d154/699898e5761afcfde5227c9a_rlm-document-analysis-report.avif" alt="ZenML dashboard displaying the RLM Document Analysis Report with a synthesis showing 2 high-severity findings about financial irregularities, key findings with evidence summaries, evidence gaps noting areas for further investigation, and per-chunk analysis breakdown." />
 </figure>
 
-<div data-rt-embed-type="true"><pre><code fs-codehighlight-element="code">git clone https://github.com/zenml-io/zenml.git
+```bash
+git clone https://github.com/zenml-io/zenml.git
 cd zenml/examples/rlm_document_analysis
 pip install -r requirements.txt
 export OPENAI_API_KEY="your-key"
@@ -328,7 +335,7 @@ python run.py --query "What were the key financial irregularities?"
 pip install datasets
 python setup_data.py
 python run.py --source data/emails.json --max-chunks 8
-</code></pre></div>
+```
 
 The pipeline works without an API key too (it falls back to keyword matching), so you can explore the dynamic pipeline structure without spending anything.
 

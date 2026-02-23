@@ -191,7 +191,10 @@ seo:
       <span class="tooltiptext">CronWorkflows and webhook triggers enable automated retraining runs — model promotion and registry logic left to your stack</span>
     </td>
   </tr>
-</tbody></table></div><div data-rt-embed-type="true"><pre><code fs-codehighlight-element="code">from zenml import pipeline, step, Model
+</tbody></table></div>
+
+```python
+from zenml import pipeline, step, Model
 from zenml.integrations.mlflow.steps import (
     mlflow_model_deployer_step,
 )
@@ -201,24 +204,24 @@ from sklearn.metrics import mean_squared_error
 import numpy as np
 
 @step
-def ingest_data() -&gt; pd.DataFrame:
+def ingest_data() -> pd.DataFrame:
     return pd.read_csv("data/dataset.csv")
 
 @step
-def train_model(df: pd.DataFrame) -&gt; RandomForestRegressor:
+def train_model(df: pd.DataFrame) -> RandomForestRegressor:
     X, y = df.drop("target", axis=1), df["target"]
     model = RandomForestRegressor(n_estimators=100)
     model.fit(X, y)
     return model
 
 @step
-def evaluate(model: RandomForestRegressor, df: pd.DataFrame) -&gt; float:
+def evaluate(model: RandomForestRegressor, df: pd.DataFrame) -> float:
     X, y = df.drop("target", axis=1), df["target"]
     preds = model.predict(X)
     return float(np.sqrt(mean_squared_error(y, preds)))
 
 @step
-def check_drift(df: pd.DataFrame) -&gt; bool:
+def check_drift(df: pd.DataFrame) -> bool:
     # Plug in Evidently, Great Expectations, etc.
     return detect_drift(df)
 
@@ -232,14 +235,20 @@ def ml_pipeline():
 # Runs on any orchestrator, logs to MLflow,
 # tracks artifacts, and triggers retraining — all
 # in one portable, version-controlled pipeline
-ml_pipeline()</code></pre></div><div data-rt-embed-type="true"><pre><code fs-codehighlight-element="code">from hera.workflows import Steps, Workflow, WorkflowsService, script
+ml_pipeline()
+```
+
+
+
+```python
+from hera.workflows import Steps, Workflow, WorkflowsService, script
 
 @script()
-def preprocess() -&gt; str:
+def preprocess() -> str:
     print("s3://ml-artifacts/datasets/processed.csv")
 
 @script()
-def train(data_uri: str) -&gt; str:
+def train(data_uri: str) -> str:
     print("s3://ml-artifacts/models/model.pkl")
 
 @script()
@@ -264,4 +273,7 @@ w.create()
 # Requires Kubernetes cluster + Argo installation.
 # No built-in experiment tracking, model registry,
 # artifact lineage, or reproducibility guarantees.
-# ML lifecycle layers must be built separately.</code></pre></div><ul><li>See how ZenML adds ML-native metadata, lineage, artifact tracking, and more on top of your existing Kubernetes infrastructure</li><li>Explore Kubernetes-friendly execution without writing everything as CRDs and YAML: keep your workflow logic Python-first</li><li>Learn how ZenML's stack approach plugs into experiment trackers and deployers so you don't have to build an MLOps platform around Argo</li></ul>
+# ML lifecycle layers must be built separately.
+```
+
+<ul><li>See how ZenML adds ML-native metadata, lineage, artifact tracking, and more on top of your existing Kubernetes infrastructure</li><li>Explore Kubernetes-friendly execution without writing everything as CRDs and YAML: keep your workflow logic Python-first</li><li>Learn how ZenML's stack approach plugs into experiment trackers and deployers so you don't have to build an MLOps platform around Argo</li></ul>

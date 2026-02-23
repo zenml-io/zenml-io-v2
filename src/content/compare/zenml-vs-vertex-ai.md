@@ -191,7 +191,10 @@ seo:
       <span class="tooltiptext">Vertex AI scheduler API supports one-time or recurring pipeline runs for continuous training patterns within GCP</span>
     </td>
   </tr>
-</tbody></table></div><div data-rt-embed-type="true"><pre><code fs-codehighlight-element="code">from zenml import pipeline, step, Model
+</tbody></table></div>
+
+```python
+from zenml import pipeline, step, Model
 from zenml.integrations.mlflow.steps import (
     mlflow_model_deployer_step,
 )
@@ -201,24 +204,24 @@ from sklearn.metrics import mean_squared_error
 import numpy as np
 
 @step
-def ingest_data() -&gt; pd.DataFrame:
+def ingest_data() -> pd.DataFrame:
     return pd.read_csv("data/dataset.csv")
 
 @step
-def train_model(df: pd.DataFrame) -&gt; RandomForestRegressor:
+def train_model(df: pd.DataFrame) -> RandomForestRegressor:
     X, y = df.drop("target", axis=1), df["target"]
     model = RandomForestRegressor(n_estimators=100)
     model.fit(X, y)
     return model
 
 @step
-def evaluate(model: RandomForestRegressor, df: pd.DataFrame) -&gt; float:
+def evaluate(model: RandomForestRegressor, df: pd.DataFrame) -> float:
     X, y = df.drop("target", axis=1), df["target"]
     preds = model.predict(X)
     return float(np.sqrt(mean_squared_error(y, preds)))
 
 @step
-def check_drift(df: pd.DataFrame) -&gt; bool:
+def check_drift(df: pd.DataFrame) -> bool:
     # Plug in Evidently, Great Expectations, etc.
     return detect_drift(df)
 
@@ -232,7 +235,13 @@ def ml_pipeline():
 # Runs on any orchestrator, logs to MLflow,
 # tracks artifacts, and triggers retraining — all
 # in one portable, version-controlled pipeline
-ml_pipeline()</code></pre></div><div data-rt-embed-type="true"><pre><code fs-codehighlight-element="code">from kfp import dsl, compiler
+ml_pipeline()
+```
+
+
+
+```python
+from kfp import dsl, compiler
 from google.cloud import aiplatform
 
 PROJECT_ID = "my-gcp-project"
@@ -240,12 +249,12 @@ REGION = "europe-west1"
 PIPELINE_ROOT = "gs://my-bucket/pipeline-root"
 
 @dsl.component
-def preprocess(input_uri: str) -&gt; str:
+def preprocess(input_uri: str) -> str:
     # Read and clean data from GCS
     return input_uri
 
 @dsl.component
-def train(data_uri: str) -&gt; str:
+def train(data_uri: str) -> str:
     # Train model and write artifacts to GCS
     return f"{data_uri}#trained-model"
 
@@ -270,4 +279,7 @@ job.submit()
 
 # Pipeline runs only on GCP — no built-in
 # portability to AWS, Azure, or on-prem.
-# Metadata tied to Vertex ML Metadata service.</code></pre></div><ul><li>See how ZenML can run on Vertex AI today and still stay portable across AWS, Azure, or on-prem when your strategy changes</li><li>Explore ZenML's stack-based approach to integrating your existing trackers, registries, and artifact stores instead of rebuilding in GCP</li><li>Learn practical migration patterns: keep Vertex training and serving where it helps, while moving pipeline orchestration and metadata to ZenML</li></ul>
+# Metadata tied to Vertex ML Metadata service.
+```
+
+<ul><li>See how ZenML can run on Vertex AI today and still stay portable across AWS, Azure, or on-prem when your strategy changes</li><li>Explore ZenML's stack-based approach to integrating your existing trackers, registries, and artifact stores instead of rebuilding in GCP</li><li>Learn practical migration patterns: keep Vertex training and serving where it helps, while moving pipeline orchestration and metadata to ZenML</li></ul>

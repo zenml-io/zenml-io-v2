@@ -191,7 +191,10 @@ seo:
       <span class="tooltiptext">Can roll out new model versions once produced, but does not automate retraining or the upstream triggers that decide when to retrain</span>
     </td>
   </tr>
-</tbody></table></div><div data-rt-embed-type="true"><pre><code fs-codehighlight-element="code">from zenml import pipeline, step, Model
+</tbody></table></div>
+
+```python
+from zenml import pipeline, step, Model
 from zenml.integrations.mlflow.steps import (
     mlflow_model_deployer_step,
 )
@@ -201,24 +204,24 @@ from sklearn.metrics import mean_squared_error
 import numpy as np
 
 @step
-def ingest_data() -&gt; pd.DataFrame:
+def ingest_data() -> pd.DataFrame:
     return pd.read_csv("data/dataset.csv")
 
 @step
-def train_model(df: pd.DataFrame) -&gt; RandomForestRegressor:
+def train_model(df: pd.DataFrame) -> RandomForestRegressor:
     X, y = df.drop("target", axis=1), df["target"]
     model = RandomForestRegressor(n_estimators=100)
     model.fit(X, y)
     return model
 
 @step
-def evaluate(model: RandomForestRegressor, df: pd.DataFrame) -&gt; float:
+def evaluate(model: RandomForestRegressor, df: pd.DataFrame) -> float:
     X, y = df.drop("target", axis=1), df["target"]
     preds = model.predict(X)
     return float(np.sqrt(mean_squared_error(y, preds)))
 
 @step
-def check_drift(df: pd.DataFrame) -&gt; bool:
+def check_drift(df: pd.DataFrame) -> bool:
     # Plug in Evidently, Great Expectations, etc.
     return detect_drift(df)
 
@@ -232,7 +235,13 @@ def ml_pipeline():
 # Runs on any orchestrator, logs to MLflow,
 # tracks artifacts, and triggers retraining — all
 # in one portable, version-controlled pipeline
-ml_pipeline()</code></pre></div><div data-rt-embed-type="true"><pre><code fs-codehighlight-element="code">import asyncio
+ml_pipeline()
+```
+
+
+
+```python
+import asyncio
 from kubernetes import client
 from kserve import (
     KServeClient, constants,
@@ -276,4 +285,7 @@ asyncio.run(main())
 # Deploys and serves a model on Kubernetes.
 # No pipeline orchestration, experiment tracking,
 # artifact lineage, or retraining automation.
-# Focused purely on the inference endpoint.</code></pre></div><ul id=""><li id="">See how ZenML's KServe integration turns a trained artifact into a managed deployment workflow with versioning and rollback paths</li><li id="">Explore portable pipeline patterns that work locally, in the cloud, or on Kubernetes — then deploy to KServe when you're ready</li><li id="">Learn how ZenML's control plane helps you trace a production endpoint back to the exact code, config, and artifacts that produced it</li></ul>
+# Focused purely on the inference endpoint.
+```
+
+<ul id=""><li id="">See how ZenML's KServe integration turns a trained artifact into a managed deployment workflow with versioning and rollback paths</li><li id="">Explore portable pipeline patterns that work locally, in the cloud, or on Kubernetes — then deploy to KServe when you're ready</li><li id="">Learn how ZenML's control plane helps you trace a production endpoint back to the exact code, config, and artifacts that produced it</li></ul>
