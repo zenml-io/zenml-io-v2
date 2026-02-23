@@ -1,0 +1,67 @@
+---
+/**
+ * CompareRelatedShowdown — related comparison pages grid.
+ *
+ * Shows related /compare/ pages in the same category with logo lockup
+ * (ZenML icon "vs" tool icon) and linked card layout. Matches Webflow's
+ * uui-section_layout76-2 section with hide-if-empty behavior.
+ */
+interface CompareItem {
+  slug: string;
+  toolName: string;
+  toolIcon?: { url: string; alt?: string };
+}
+
+interface Props {
+  eyebrow?: string;
+  headline?: string;
+  items: CompareItem[];
+  zenmlIconUrl: string;
+}
+
+const {
+  eyebrow = "Tool Showdown",
+  headline = "Explore the Advantages of ZenML Over Other Tools",
+  items,
+  zenmlIconUrl,
+} = Astro.props;
+---
+
+{items.length > 0 && (
+  <section class="bg-white py-16 sm:py-20">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-10">
+        <div class="mb-3 inline-flex items-center gap-2">
+          <span class="text-sm font-semibold uppercase tracking-wider text-zenml-500">{eyebrow}</span>
+        </div>
+        <h2 class="text-2xl font-bold text-gray-900 sm:text-3xl">{headline}</h2>
+      </div>
+
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {items.map((item) => (
+          <a
+            href={`/compare/${item.slug}`}
+            class="group flex items-center gap-4 rounded-xl border border-gray-200 bg-white p-5 transition-all hover:border-zenml-300 hover:shadow-md"
+          >
+            <div class="flex items-center gap-2 shrink-0">
+              <img src={zenmlIconUrl} alt="ZenML" width="48" height="48" class="rounded-lg" />
+              <span class="text-lg font-light text-gray-400">vs</span>
+              {item.toolIcon ? (
+                <img src={item.toolIcon.url} alt={item.toolIcon.alt || item.toolName} width="48" height="48" class="rounded-lg" />
+              ) : (
+                <div class="flex h-12 w-12 items-center justify-center rounded-lg bg-gray-100 text-lg font-bold text-gray-400">
+                  {item.toolName[0]}
+                </div>
+              )}
+            </div>
+            <div class="min-w-0">
+              <p class="text-sm font-semibold text-gray-900 group-hover:text-zenml-600 transition-colors">
+                ZenML vs {item.toolName}
+              </p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+)}

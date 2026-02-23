@@ -1,0 +1,74 @@
+---
+/**
+ * CompareHero — hero section for /compare/ pages.
+ *
+ * Matches Webflow's compare detail hero: centered eyebrow badge,
+ * h1 headline, deck paragraph, dual CTAs, and a logo lockup row
+ * (ZenML icon "vs" competitor icon).
+ */
+import Button from "../../Button.astro";
+
+interface Props {
+  toolName: string;
+  toolIcon?: { url: string; alt?: string };
+  headline: string;
+  deck?: string;
+  primaryCta: { label: string; href: string };
+  secondaryCta?: { label: string; href: string };
+  zenmlIconUrl: string;
+}
+
+const { toolName, toolIcon, headline, deck, primaryCta, secondaryCta, zenmlIconUrl } = Astro.props;
+---
+
+<section class="bg-white pt-12 pb-8">
+  <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
+    <div class="mb-4">
+      <span class="inline-block rounded-full bg-zenml-50 px-4 py-1.5 text-sm font-semibold text-zenml-600">
+        Compare ZenML vs
+      </span>
+    </div>
+
+    <h1 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl lg:text-5xl">
+      {headline}
+    </h1>
+
+    {deck && (
+      <p class="mx-auto mt-6 max-w-3xl text-lg text-gray-600 leading-relaxed">
+        {deck}
+      </p>
+    )}
+
+    <div class="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+      <Button href={primaryCta.href} size="lg">
+        {primaryCta.label}
+      </Button>
+      {secondaryCta && (
+        <a
+          href={secondaryCta.href}
+          class="inline-flex items-center gap-1.5 text-base font-semibold text-zenml-500 transition-colors hover:text-zenml-600"
+        >
+          {secondaryCta.label}
+          <svg class="h-5 w-5" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4.667 10h11.666m0 0L10.5 4.167M16.333 10 10.5 15.833" stroke="currentColor" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      )}
+    </div>
+
+    {/* Logo lockup */}
+    <div class="mt-10 flex items-center justify-center gap-5">
+      <div class="flex h-[120px] w-[120px] items-center justify-center rounded-2xl border border-gray-200 bg-white p-4 shadow-sm">
+        <img src={zenmlIconUrl} alt="ZenML" width="80" height="80" class="object-contain" />
+      </div>
+      <span class="text-2xl font-light text-gray-400">vs</span>
+      <div class="flex h-[120px] w-[120px] items-center justify-center rounded-2xl border border-gray-200 bg-white p-4 shadow-sm">
+        {toolIcon ? (
+          <img src={toolIcon.url} alt={toolIcon.alt || toolName} width="80" height="80" class="object-contain" />
+        ) : (
+          <span class="text-3xl font-bold text-gray-400">{toolName[0]}</span>
+        )}
+      </div>
+    </div>
+  </div>
+</section>

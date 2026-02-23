@@ -1,17 +1,33 @@
 ---
 /**
- * Compare/VS detail page.
+ * Compare/VS detail page — /compare/<slug>
  *
- * Renders comparison pages (e.g., ZenML vs MLflow) with:
- * - Hero section with tool icons and headline
- * - Advantages list (fetched from advantages collection)
- * - Comparison table (from body content)
- * - Customer testimonial quote (fetched from quotes collection)
+ * Renders tool-specific comparison pages (e.g., ZenML vs MLflow) with 9 sections
+ * matching the Webflow detail_compare template:
  *
- * Generates /compare/<slug> for each published compare item.
+ * 1. CompareHero (dual CTAs + logo lockup)
+ * 2. FeatureValueSection x3 (from category defaults or frontmatter)
+ * 3. VsTestimonial (dark, from resolved quote)
+ * 4. CompareFeatureHeader + table
+ * 5. CompareCodeComparison (side-by-side)
+ * 6. CompareStrategyCta (advantages + CTA)
+ * 7. CompareRelatedShowdown (related /compare/ pages)
+ * 8. CompareRelatedBlog (3 blog cards)
+ * 9. VsCta02 (gradient final CTA)
  */
-import { getCollection, getEntry, render } from "astro:content";
+import { getCollection, getEntry } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import CompareHero from "../../components/sections/compare/CompareHero.astro";
+import CompareFeatureHeader from "../../components/sections/compare/CompareFeatureHeader.astro";
+import CompareCodeComparison from "../../components/sections/compare/CompareCodeComparison.astro";
+import CompareStrategyCta from "../../components/sections/compare/CompareStrategyCta.astro";
+import CompareRelatedShowdown from "../../components/sections/compare/CompareRelatedShowdown.astro";
+import CompareRelatedBlog from "../../components/sections/compare/CompareRelatedBlog.astro";
+import FeatureValueSection from "../../components/sections/FeatureValueSection.astro";
+import VsTestimonial from "../../components/sections/VsTestimonial.astro";
+import VsCta02 from "../../components/sections/VsCta02.astro";
+import { getCategoryDefaults, ZENML_ICON_URL, formatCategoryLabel } from "../../lib/compareDefaults";
+import { getMainFeedPosts } from "../../lib/blog";
 
 export async function getStaticPaths() {
   const compareItems = await getCollection("compare", ({ data }) => !data.draft);
@@ -22,20 +38,152 @@ export async function getStaticPaths() {
 }
 
 const { item } = Astro.props;
-const { Content } = await render(item);
 
+// ---------------------------------------------------------------------------
+// Category defaults
+// ---------------------------------------------------------------------------
+const categoryDefaults = getCategoryDefaults(item.data.category);
+const categoryLabel = item.data.category ? formatCategoryLabel(item.data.category) : "Tool";
+
+// ---------------------------------------------------------------------------
 // Resolve advantages
+// ---------------------------------------------------------------------------
 const advantageEntries = await Promise.all(
   item.data.advantages.map((slug: string) => getEntry("advantages", slug))
 );
-const advantages = advantageEntries.filter(Boolean);
+const advantages = advantageEntries
+  .filter(Boolean)
+  .map((adv) => ({
+    title: adv!.data.title,
+    content: adv!.data.content,
+    image: adv!.data.image,
+  }));
 
-// Resolve quote
+// ---------------------------------------------------------------------------
+// Resolve quote / testimonial
+// ---------------------------------------------------------------------------
 const quoteEntry = item.data.quote
   ? await getEntry("quotes", item.data.quote)
   : undefined;
 
+// ---------------------------------------------------------------------------
+// Resolve related compare items (same category, excluding self)
+// ---------------------------------------------------------------------------
+const allCompareItems = await getCollection("compare", ({ data }) => !data.draft);
+const relatedCompareItems = allCompareItems
+  .filter((c) => c.data.category === item.data.category && c.data.slug !== item.data.slug)
+  .map((c) => ({
+    slug: c.data.slug,
+    toolName: c.data.toolName || c.data.title.replace("ZenML vs ", ""),
+    toolIcon: c.data.toolIcon,
+  }));
+
+// ---------------------------------------------------------------------------
+// Resolve blog posts (manual slugs or 3 recent)
+// ---------------------------------------------------------------------------
+let blogPosts: Array<{
+  slug: string;
+  title: string;
+  mainImage?: { url: string; alt?: string; width?: number; height?: number };
+  seoDescription?: string;
+}> = [];
+
+if (item.data.relatedBlogSlugs && item.data.relatedBlogSlugs.length > 0) {
+  const entries = await Promise.all(
+    item.data.relatedBlogSlugs.map((slug: string) => getEntry("blog", slug))
+  );
+  blogPosts = entries.filter(Boolean).map((e) => ({
+    slug: e!.data.slug,
+    title: e!.data.title,
+    mainImage: e!.data.mainImage,
+    seoDescription: e!.data.seo?.description,
+  }));
+} else {
+  const recentPosts = await getMainFeedPosts();
+  blogPosts = recentPosts.slice(0, 3).map((p) => ({
+    slug: p.data.slug,
+    title: p.data.title,
+    mainImage: p.data.mainImage,
+    seoDescription: p.data.seo?.description,
+  }));
+}
+
+// ---------------------------------------------------------------------------
+// Value sections (from frontmatter or category defaults)
+// ---------------------------------------------------------------------------
+const valueSections = item.data.valueSections ?? categoryDefaults.valueSections;
+
+// ---------------------------------------------------------------------------
+// Parse body content to extract table, code blocks, and trailing list
+// ---------------------------------------------------------------------------
+const rawBody = item.body || "";
+
+// Extract table HTML (first <table>...</table>, optionally wrapped in div)
+let tableHtml = item.data.featureTableHtml || "";
+if (!tableHtml && rawBody) {
+  const tableMatch = rawBody.match(/<(?:div[^>]*>)?\s*<table[\s\S]*?<\/table>\s*(?:<\/div>)?/i);
+  if (tableMatch) tableHtml = tableMatch[0];
+}
+
+// Extract fenced code blocks
+let zenmlCode = "";
+let toolCode = "";
+let zenmlLanguage = "python";
+let toolLanguage = "python";
+
+if (item.data.codeComparison) {
+  zenmlCode = item.data.codeComparison.zenmlCode;
+  toolCode = item.data.codeComparison.toolCode;
+  zenmlLanguage = item.data.codeComparison.zenmlLanguage || "python";
+  toolLanguage = item.data.codeComparison.toolLanguage || "python";
+} else if (rawBody) {
+  const codeBlockRegex = /```(\w*)\n([\s\S]*?)```/g;
+  const matches = [...rawBody.matchAll(codeBlockRegex)];
+  if (matches.length >= 2) {
+    zenmlLanguage = matches[0][1] || "python";
+    zenmlCode = matches[0][2];
+    toolLanguage = matches[1][1] || "python";
+    toolCode = matches[1][2];
+  }
+}
+
+// Extract trailing <ul><li> for CTA bullets
+let ctaBullets: string[] = [];
+if (item.data.finalCta?.bullets?.length) {
+  ctaBullets = item.data.finalCta.bullets;
+} else if (rawBody) {
+  const ulMatch = rawBody.match(/<ul>\s*(<li>[\s\S]*?)<\/ul>\s*$/);
+  if (ulMatch) {
+    const liMatches = [...ulMatch[1].matchAll(/<li>([\s\S]*?)<\/li>/g)];
+    ctaBullets = liMatches.map((m) => m[1].trim());
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Hero CTAs
+// ---------------------------------------------------------------------------
+const heroPrimaryCta = item.data.heroPrimaryCta || { label: "Book a demo", href: "/book-your-demo" };
+const heroSecondaryCta = item.data.heroSecondaryCta || { label: "Learn More", href: "#feature-comparison" };
+
+// ---------------------------------------------------------------------------
+// Strategy CTA headline
+// ---------------------------------------------------------------------------
+const strategyCtaHeadline = item.data.strategyCtaHeadline || categoryDefaults.strategyCtaHeadline;
+
+// ---------------------------------------------------------------------------
+// Final CTA
+// ---------------------------------------------------------------------------
+const finalCta = item.data.finalCta || {
+  headline: categoryDefaults.finalCta.headline,
+  bullets: ctaBullets.length > 0 ? ctaBullets : categoryDefaults.finalCta.bullets,
+  primaryCta: categoryDefaults.finalCta.primaryCta,
+  secondaryCta: categoryDefaults.finalCta.secondaryCta,
+  image: categoryDefaults.finalCta.image,
+};
+
+// ---------------------------------------------------------------------------
 // SEO
+// ---------------------------------------------------------------------------
 const seoTitle = item.data.seo?.title || `${item.data.title} - ZenML`;
 const seoDescription = item.data.seo?.description || item.data.seoDescription || item.data.heroText;
 const ogImage = item.data.seo?.ogImage || item.data.openGraphImage?.url;
@@ -49,112 +197,86 @@ const ogImage = item.data.seo?.ogImage || item.data.openGraphImage?.url;
   ogDescription={item.data.seo?.ogDescription}
   canonical={item.data.seo?.canonical}
 >
-  <div class="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
-    {/* Hero */}
-    <header class="mb-12 text-center">
-      <div class="mb-6 flex items-center justify-center gap-4">
-        {/* ZenML logo placeholder */}
-        <div class="flex h-14 w-14 items-center justify-center rounded-xl bg-primary-100 text-xl font-bold text-primary-700">
-          Z
-        </div>
-        <span class="text-2xl font-light text-gray-400">vs</span>
-        {item.data.toolIcon ? (
-          <img
-            src={item.data.toolIcon.url}
-            alt={item.data.toolName || "Competitor"}
-            class="h-14 w-14 rounded-xl object-contain"
-          />
-        ) : (
-          <div class="flex h-14 w-14 items-center justify-center rounded-xl bg-gray-100 text-xl font-bold text-gray-400">
-            {(item.data.toolName || "?")[0]}
-          </div>
-        )}
-      </div>
-      <h1 class="text-4xl font-bold tracking-tight text-gray-900">
-        {item.data.headline || item.data.title}
-      </h1>
-      {item.data.heroText && (
-        <p class="mx-auto mt-6 max-w-3xl text-lg text-gray-600">
-          {item.data.heroText}
-        </p>
-      )}
-      {item.data.learnMoreUrl && (
-        <a
-          href={item.data.learnMoreUrl}
-          class="mt-6 inline-block rounded-lg bg-primary-600 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-primary-700"
-        >
-          Try ZenML Free
-        </a>
-      )}
-    </header>
+  {/* 1. Hero */}
+  <CompareHero
+    toolName={item.data.toolName || item.data.title.replace("ZenML vs ", "")}
+    toolIcon={item.data.toolIcon}
+    headline={item.data.headline || item.data.title}
+    deck={item.data.heroText}
+    primaryCta={heroPrimaryCta}
+    secondaryCta={heroSecondaryCta}
+    zenmlIconUrl={ZENML_ICON_URL}
+  />
 
-    {/* Advantages */}
-    {advantages.length > 0 && (
-      <section class="mb-12">
-        <h2 class="mb-6 text-2xl font-bold text-gray-900">Key Advantages</h2>
-        <div class="grid gap-6 md:grid-cols-3">
-          {advantages.map((adv) => (
-            <div class="rounded-lg border border-gray-200 bg-white p-5">
-              {adv!.data.image && (
-                <img
-                  src={adv!.data.image.url}
-                  alt={adv!.data.title}
-                  class="mb-4 h-12 w-12 object-contain"
-                />
-              )}
-              <h3 class="font-semibold text-gray-900">{adv!.data.title}</h3>
-              <p class="mt-2 text-sm text-gray-600">{adv!.data.content}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-    )}
+  {/* 2. Value proposition sections (3x layout08) */}
+  {valueSections.map((section, i) => (
+    <FeatureValueSection
+      title={section.title}
+      bullets={section.bullets}
+      image={section.image}
+      imageSide={i % 2 === 0 ? "right" : "left"}
+    />
+  ))}
 
-    {/* Comparison table (from body content) */}
-    <section class="mb-12">
-      <h2 class="mb-6 text-2xl font-bold text-gray-900">Feature Comparison</h2>
-      <div class="compare-table overflow-x-auto rounded-lg border border-gray-200">
-        <div class="prose prose-gray max-w-none">
-          <Content />
-        </div>
-      </div>
-    </section>
+  {/* 3. Testimonial */}
+  {quoteEntry && (
+    <VsTestimonial
+      quote={quoteEntry.data.text}
+      name={quoteEntry.data.author}
+      title={quoteEntry.data.position}
+      avatar={quoteEntry.data.avatar}
+      companyLogo={quoteEntry.data.companyLogo}
+    />
+  )}
 
-    {/* Quote / Testimonial */}
-    {quoteEntry && (
-      <section class="mb-12 rounded-xl bg-gray-50 p-8">
-        <blockquote class="text-lg italic text-gray-700">
-          &ldquo;{quoteEntry.data.text}&rdquo;
-        </blockquote>
-        <div class="mt-4 flex items-center gap-3">
-          {quoteEntry.data.avatar && (
-            <img
-              src={quoteEntry.data.avatar.url}
-              alt={quoteEntry.data.author}
-              class="h-10 w-10 rounded-full object-cover"
-            />
-          )}
-          <div>
-            <p class="font-semibold text-gray-900">{quoteEntry.data.author}</p>
-            <p class="text-sm text-gray-500">{quoteEntry.data.position}</p>
-          </div>
-        </div>
-      </section>
-    )}
+  {/* 4. Feature comparison table */}
+  {tableHtml && (
+    <CompareFeatureHeader
+      toolName={item.data.toolName || item.data.title.replace("ZenML vs ", "")}
+      toolIcon={item.data.toolIcon}
+      zenmlIconUrl={ZENML_ICON_URL}
+      tableHtml={tableHtml}
+    />
+  )}
 
-    {/* CTA */}
-    {item.data.ctaHeadline && (
-      <section class="text-center">
-        <h2 class="text-2xl font-bold text-gray-900">{item.data.ctaHeadline}</h2>
-        {item.data.learnMoreUrl && (
-          <a
-            href={item.data.learnMoreUrl}
-            class="mt-4 inline-block rounded-lg bg-primary-600 px-8 py-3 text-sm font-semibold text-white transition-colors hover:bg-primary-700"
-          >
-            Get Started
-          </a>
-        )}
-      </section>
-    )}
-  </div>
+  {/* 5. Code comparison */}
+  {zenmlCode && toolCode && (
+    <CompareCodeComparison
+      toolName={item.data.toolName || item.data.title.replace("ZenML vs ", "")}
+      toolIcon={item.data.toolIcon}
+      zenmlIconUrl={ZENML_ICON_URL}
+      zenmlCode={zenmlCode}
+      toolCode={toolCode}
+      zenmlLanguage={zenmlLanguage}
+      toolLanguage={toolLanguage}
+    />
+  )}
+
+  {/* 6. Strategy CTA (advantages + mid-page CTA) */}
+  <CompareStrategyCta
+    headline={strategyCtaHeadline}
+    advantages={advantages}
+  />
+
+  {/* 7. Related comparison showdown */}
+  <CompareRelatedShowdown
+    eyebrow={categoryDefaults.showdownEyebrow}
+    headline={categoryDefaults.showdownHeadline}
+    items={relatedCompareItems}
+    zenmlIconUrl={ZENML_ICON_URL}
+  />
+
+  {/* 8. Related blog posts */}
+  <CompareRelatedBlog posts={blogPosts} />
+
+  {/* 9. Final CTA */}
+  <VsCta02
+    headline={item.data.ctaHeadline || finalCta.headline}
+    bullets={finalCta.bullets}
+    primaryCta={finalCta.primaryCta}
+    secondaryCta={finalCta.secondaryCta}
+    image={finalCta.image}
+    variant="gradient"
+    padded
+  />
 </BaseLayout>

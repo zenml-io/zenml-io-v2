@@ -69,6 +69,16 @@ export const webflowMetaSchema = z.object({
 });
 
 /**
+ * CTA button schema
+ * Used by: compare pages, feature pages, VS pages
+ */
+export const ctaSchema = z.object({
+  label: z.string(),
+  href: z.string(),
+  external: z.boolean().optional(),
+});
+
+/**
  * Base schema for all content items
  * Every collection includes these common fields
  */
@@ -397,12 +407,45 @@ const llmopsSchema = z.object({
  *   toolIcon, category, integrationType, quote, headline, heroText,
  *   ctaHeadline, learnMoreUrl, seoDescription, openGraphImage
  */
+/**
+ * Compare value section schema (layout08 two-column blocks)
+ * 3 per category — pulled from compareDefaults.ts if not in frontmatter
+ */
+const compareValueSectionSchema = z.object({
+  title: z.string(),
+  bullets: z.array(z.string()),
+  image: imageSchema.optional(),
+  imageSide: z.enum(['left', 'right']).default('right'),
+});
+
+/**
+ * Compare code comparison schema (side-by-side code blocks)
+ * Extracted from markdown body fenced code blocks
+ */
+const compareCodeComparisonSchema = z.object({
+  zenmlCode: z.string(),
+  zenmlLanguage: z.string().default('python'),
+  toolCode: z.string(),
+  toolLanguage: z.string().default('python'),
+});
+
+/**
+ * Compare final CTA schema (rich dark/gradient CTA at page bottom)
+ */
+const compareFinalCtaSchema = z.object({
+  headline: z.string(),
+  bullets: z.array(z.string()).default([]),
+  primaryCta: ctaSchema,
+  secondaryCta: ctaSchema.optional(),
+  image: imageSchema.optional(),
+});
+
 const compareSchema = z.object({
   title: z.string(),
   slug: z.string(),
   draft: z.boolean().default(false),
 
-  // VS page-specific fields
+  // VS page-specific fields (original)
   toolName: z.string().optional(),
   toolIcon: imageSchema.optional(),
   category: z.string().optional(),
@@ -415,6 +458,28 @@ const compareSchema = z.object({
   learnMoreUrl: z.string().url().optional(),
   seoDescription: z.string().optional(),
   openGraphImage: imageSchema.optional(),
+
+  // Hero CTA overrides (defaults: Book a demo + Learn More → #feature-comparison)
+  heroPrimaryCta: ctaSchema.optional(),
+  heroSecondaryCta: ctaSchema.optional(),
+
+  // Value proposition sections (3 per category, from compareDefaults.ts if absent)
+  valueSections: z.array(compareValueSectionSchema).optional(),
+
+  // Code comparison (extracted from body fenced code blocks)
+  codeComparison: compareCodeComparisonSchema.optional(),
+
+  // Feature comparison table HTML (extracted from body)
+  featureTableHtml: z.string().optional(),
+
+  // Strategy CTA headline override (default from category in compareDefaults.ts)
+  strategyCtaHeadline: z.string().optional(),
+
+  // Final rich CTA (defaults from compareDefaults.ts if absent)
+  finalCta: compareFinalCtaSchema.optional(),
+
+  // Related blog posts (manual slugs; auto-resolved from recent posts if omitted)
+  relatedBlogSlugs: z.array(z.string()).optional(),
 
   // SEO & Webflow
   seo: seoSchema,
@@ -514,11 +579,7 @@ const oldProjectSchema = z.object({
 // Feature Pages Schema (Phase 3H-3)
 // ============================================================================
 
-const ctaSchema = z.object({
-  label: z.string(),
-  href: z.string(),
-  external: z.boolean().optional(),
-});
+// ctaSchema moved to Reusable Schema Helpers section (used by compare + feature + vs pages)
 
 const featureHubSchema = z.object({
   title: z.string(),

@@ -14,12 +14,21 @@ interface Props {
   primaryCta: { label: string; href: string };
   secondaryCta?: { label: string; href: string };
   image?: { url: string; alt?: string };
+  /** "dark" = gray-900 bg (default), "gradient" = primary-700 with gradient bg */
+  variant?: "dark" | "gradient";
+  /** Extra vertical padding for compare pages */
+  padded?: boolean;
 }
 
-const { headline, bullets, primaryCta, secondaryCta, image } = Astro.props;
+const { headline, bullets, primaryCta, secondaryCta, image, variant = "dark", padded = false } = Astro.props;
+
+const bgClass = variant === "gradient"
+  ? "bg-primary-700 bg-[url('/images/gradient_01.webp')] bg-cover bg-center"
+  : "bg-gray-900";
+const paddingClass = padded ? "py-20 sm:py-28" : "py-16 sm:py-20";
 ---
 
-<section class="bg-gray-900 py-16 sm:py-20">
+<section class:list={[bgClass, paddingClass]}>
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
     <div class="grid items-center gap-10 lg:grid-cols-2">
       <div>
