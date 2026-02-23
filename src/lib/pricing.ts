@@ -18,10 +18,10 @@ import type {
 export const PRICING_SEO = {
   title: "Pricing - ZenML",
   description:
-    "Simple, transparent pricing. Scale with your ML workloads. Only pay for what you use.",
+    "Ship ML pipelines with confidence. Predictable, transparent pricing that scales with value.",
   ogTitle: "Pricing - ZenML",
   ogDescription:
-    "Simple, transparent pricing. Scale with your ML workloads. Only pay for what you use.",
+    "Ship ML pipelines with confidence. Predictable, transparent pricing that scales with value.",
   ogImage: `https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3ae53e01/64b9920cd04b7c4c0340ce50_og-img-0625.jpg`,
 } as const;
 
@@ -29,8 +29,8 @@ export const PRICING_SEO = {
 // Hero
 // ---------------------------------------------------------------------------
 export const PRICING_HERO = {
-  headline: "Simple, transparent pricing",
-  deck: "Scale with your ML workloads. Only pay for what you use.",
+  headline: "Ship ML pipelines with confidence",
+  deck: "Predictable, transparent pricing that scales with value.",
 } as const;
 
 // ---------------------------------------------------------------------------
@@ -82,6 +82,7 @@ const SELF_HOSTED_PRO: PricingPlan = {
     "Air-gapped deployment support",
     "Priority support + custom SLA",
   ],
+  comingSoon: ["Advanced Native Scheduling", "Resource Management & Queueing"],
   cta: { label: "Talk to Sales", href: "/book-your-demo" },
   ctaVariant: "primary",
   secondaryLink: {
@@ -127,9 +128,9 @@ const SELF_HOSTED_COMPARE: PricingCompareTableData = {
           link: "https://docs.zenml.io/concepts/snapshots",
           values: [false, true],
         },
-        { feature: "Advanced Native Scheduling", values: [false, true] },
+        { feature: "Advanced Native Scheduling", values: [false, "COMING SOON"] },
         { feature: "Webhooks & Triggers", values: [false, true] },
-        { feature: "Resource Management & Queueing", values: [false, true] },
+        { feature: "Resource Management & Queueing", values: [false, "COMING SOON"] },
         { feature: "Codespaces (Remote IDE)", values: [false, true] },
         {
           feature: "Modern Server Side Dashboard",
@@ -184,10 +185,11 @@ const SAAS_STARTER: PricingPlan = {
   features: [
     "Model Control Plane",
     "Artifact Control Plane",
-    "RBAC (Standard Roles)",
+    "1 workspace",
+    "Unlimited team members",
     "Basic support",
   ],
-  cta: { label: "Talk to Sales", href: "/book-your-demo" },
+  cta: { label: "Book a Demo", href: "/book-your-demo" },
   ctaVariant: "secondary",
 };
 
@@ -208,13 +210,13 @@ const SAAS_GROWTH: PricingPlan = {
     "Webhooks & Triggers",
     "Priority support",
   ],
-  cta: { label: "Talk to Sales", href: "/book-your-demo" },
+  cta: { label: "Book a Demo", href: "/book-your-demo" },
   ctaVariant: "primary",
 };
 
 const SAAS_SCALE: PricingPlan = {
   name: "Scale",
-  subtitle: "For large teams",
+  subtitle: "For scaling teams",
   price: "$2,499",
   priceSuffix: "/month",
   limits: [
@@ -228,7 +230,7 @@ const SAAS_SCALE: PricingPlan = {
     "Codespaces (Remote IDE)",
     "Priority support",
   ],
-  cta: { label: "Talk to Sales", href: "/book-your-demo" },
+  cta: { label: "Book a Demo", href: "/book-your-demo" },
   ctaVariant: "primary",
 };
 
@@ -252,7 +254,7 @@ const SAAS_ENTERPRISE: PricingPlan = {
     "Professional Services",
     "Dedicated support + SLA",
   ],
-  cta: { label: "Talk to Sales", href: "/book-your-demo" },
+  cta: { label: "Book a Demo", href: "/book-your-demo" },
   ctaVariant: "primary",
 };
 
@@ -285,10 +287,10 @@ const SAAS_COMPARE: PricingCompareTableData = {
     {
       heading: "Advanced Features",
       rows: [
-        { feature: "Advanced Native Scheduling", values: [false, true, true, true] },
-        { feature: "Webhooks & Triggers", values: [false, true, true, true] },
-        { feature: "Resource Management & Queueing", values: [false, false, true, true] },
-        { feature: "Codespaces (Remote IDE)", values: [false, false, true, true] },
+        { feature: "Advanced Native Scheduling", values: [false, "COMING SOON", "COMING SOON", "COMING SOON"] },
+        { feature: "Webhooks & Triggers", values: [false, "COMING SOON", "COMING SOON", "COMING SOON"] },
+        { feature: "Resource Management & Queueing", values: [false, false, "COMING SOON", "COMING SOON"] },
+        { feature: "Codespaces (Remote IDE)", values: [false, false, "COMING SOON", "COMING SOON"] },
       ],
     },
     {

@@ -76,6 +76,10 @@ const colCount = data.columnHeaders.length;
                       <svg class="mx-auto h-5 w-5 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M17 7L7 17M7 7l10 10" />
                       </svg>
+                    ) : val === "COMING SOON" ? (
+                      <span class="inline-block rounded bg-zenml-500 px-1.5 py-0.5 text-[10px] font-bold uppercase leading-tight text-white">
+                        Coming Soon
+                      </span>
                     ) : (
                       <span class="text-gray-700">{val}</span>
                     )}

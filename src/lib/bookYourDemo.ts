@@ -10,7 +10,6 @@
 
 import type { SEOProps } from "./seo";
 import type { PlaceholderField } from "./formTypes";
-import { JOB_TITLE_OPTIONS } from "./formConstants";
 
 const R2 =
   "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30";
@@ -80,7 +79,7 @@ export const BOOK_YOUR_DEMO_FORM = {
 export const BOOK_YOUR_DEMO_FIELDS: PlaceholderField[] = [
   {
     name: "fullName",
-    label: "Full name",
+    label: "Full Name",
     type: "text",
     required: true,
     placeholder: "Full name",
@@ -93,10 +92,18 @@ export const BOOK_YOUR_DEMO_FIELDS: PlaceholderField[] = [
     placeholder: "you@company.inc",
   },
   {
-    name: "jobTitle",
-    label: "Job Title",
-    type: "select",
-    options: JOB_TITLE_OPTIONS,
+    name: "companyProject",
+    label: "Company or Project Name",
+    type: "text",
+    required: true,
+    placeholder: "Company / Project",
+  },
+  {
+    name: "users",
+    label: "How many users are you planning to onboard to ZenML in the next 6 months?",
+    type: "text",
+    required: true,
+    placeholder: "Users",
   },
 ];
 
