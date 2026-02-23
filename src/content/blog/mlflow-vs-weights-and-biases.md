@@ -425,7 +425,7 @@ With its Basic paid plan, you get a 14-day free trial.
   <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/50871d08/683153b8ef773b4eef9fd044_zenml-pricing.png" alt="__wf_reserved_inherit" />
 </figure>
 
-The Scale plan is a custom solution that has limits and features depending on your needs. You can [book a demo](https://zenml.webflow.io/signup-for-demo) with us and get all the details in less than 24 hours.
+The Scale plan is a custom solution that has limits and features depending on your needs. You can [book a demo](/book-your-demo) with us and get all the details in less than 24 hours.
 
 <figure>
   <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d78eedda/6829738000d93f05c1570f07_custom_solutions_for_organizations_by_zenml.png" alt="__wf_reserved_inherit" />
