@@ -50,7 +50,7 @@ ZenML's site is organized into product pages (features, pricing, Pro offering an
 
 - [LLMOps Database](https://www.zenml.io/llmops-database): curated knowledge base of real-world LLMOps implementations (contains 1,400+ pages; not listed individually).
 - [Whitepaper: Architecting an Enterprise MLOps Platform](https://www.zenml.io/whitepaper-architecting-an-enterprise-grade-mlops-platform): blueprint for enterprise-grade MLOps platforms.
-- [AI Accelerator Program](https://www.zenml.io/ai-accelerator-program): startup accelerator program for AI companies.
+- [Startups & Academics](https://www.zenml.io/startups-and-academics): startup and academic programs for AI companies.
 
 ## Comparisons
 

@@ -137,6 +137,8 @@ export default function FeatureTabsSlider({
               src={tab.image}
               alt={tab.imageAlt}
               class="tab-slider-image"
+              width={720}
+              height={460}
               loading={i === defaultIndex ? "eager" : "lazy"}
             />
           </div>

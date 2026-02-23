@@ -35,7 +35,8 @@
 /features/accelerate-your-machine-learning-workflow /features 301
 /plans /pricing 301
 /zenml-vs-other-tools /compare 301
-/compute-catalyst /ai-accelerator-program 301
+/compute-catalyst /startups-and-academics 301
+/ai-accelerator-program /startups-and-academics 301
 /competition / 301
 /event-qr /book-your-demo 301
 /qr /book-your-demo 301
@@ -44,6 +45,8 @@
 /onepager /book-your-demo 301
 /book-calendar /success-calendar 301
 /book-calendar/ /success-calendar 301
+/llmops-waitlist /llmops-database 301
+/llmops-waitlist/ /llmops-database 301
 
 # ── External redirects (from Webflow) ─────────────────────────────
 /p4t78tnt73bkujthrd1zausuvs9advz3.txt https://uploads-ssl.webflow.com/64a817a2e7e2208272d1ce30/668bef7ef310b0fd5e7b5d00_p4t78tnt73bkujthrd1zausuvs9advz3.txt 301
