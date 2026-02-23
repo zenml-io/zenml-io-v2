@@ -43,10 +43,11 @@ function writeConsent(consent: ConsentState): void {
 
 /** Inject a script tag if it hasn't been injected yet. */
 function injectScript(script: ScriptDefinition): void {
-  if (document.getElementById(`cc-${script.id}`)) return;
+  const domId = `cc-${script.id}`;
+  if (document.getElementById(domId)) return;
 
   const el = document.createElement("script");
-  el.id = `cc-${script.id}`;
+  el.id = domId;
 
   if (script.src) {
     el.src = script.src;
@@ -56,6 +57,8 @@ function injectScript(script: ScriptDefinition): void {
   }
   if (script.attrs) {
     for (const [k, v] of Object.entries(script.attrs)) {
+      // Never let attrs.id override our dedup id
+      if (k === "id") continue;
       el.setAttribute(k, v);
     }
   }
@@ -86,6 +89,8 @@ export default function CookieConsent() {
     const saved = readConsent();
     if (saved) {
       setConsent(saved);
+      // Expose saved consent globally so other scripts can read it
+      (window as any).__cookieConsent = saved;
       applyConsent(saved);
       // Don't show banner — already consented
     } else {

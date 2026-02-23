@@ -50,22 +50,25 @@ export const GET: APIRoute = async () => {
   });
 
   const feedUrl = `${SITE_URL}/llmops-database/rss.xml`;
-  const now = new Date().toUTCString();
+  const now = new Date();
+  const nowStr = now.toUTCString();
+  const newestDate = withDates[0]?.pubDate ?? now;
 
   const items = withDates
     .map(({ entry, pubDate }) => {
-      const link = `${SITE_URL}/llmops-database/${entry.id}`;
+      const slug = entry.data.slug ?? entry.id;
+      const link = `${SITE_URL}/llmops-database/${slug}`;
       const description =
         entry.data.seo?.description ?? entry.data.summary ?? entry.data.title;
-      const pubDateTag = pubDate
-        ? `\n      <pubDate>${pubDate.toUTCString()}</pubDate>`
-        : "";
+      // Always emit pubDate — fall back to build time for entries without dates
+      const itemDate = (pubDate ?? now).toUTCString();
 
       return `    <item>
       <title>${escapeXml(entry.data.title)}</title>
-      <link>${link}</link>
-      <guid>${link}</guid>
-      <description>${escapeXml(description)}</description>${pubDateTag}
+      <link>${escapeXml(link)}</link>
+      <guid>${escapeXml(link)}</guid>
+      <description>${escapeXml(description)}</description>
+      <pubDate>${itemDate}</pubDate>
     </item>`;
     })
     .join("\n");
@@ -77,7 +80,9 @@ export const GET: APIRoute = async () => {
     <link>${SITE_URL}/llmops-database</link>
     <description>New entries in the ZenML LLMOps Database</description>
     <language>en</language>
-    <pubDate>${now}</pubDate>
+    <lastBuildDate>${nowStr}</lastBuildDate>
+    <pubDate>${newestDate.toUTCString()}</pubDate>
+    <generator>ZenML Astro Site</generator>
     <atom:link href="${feedUrl}" rel="self" type="application/rss+xml"/>
 ${items}
   </channel>

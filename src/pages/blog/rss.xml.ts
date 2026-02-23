@@ -25,18 +25,21 @@ export const GET: APIRoute = async () => {
 
   const feedUrl = `${SITE_URL}/blog/rss.xml`;
   const now = new Date().toUTCString();
+  const newestDate = posts.length > 0
+    ? new Date(posts[0].data.date).toUTCString()
+    : now;
 
   const items = posts
     .map((post) => {
-      const link = `${SITE_URL}/blog/${post.id}`;
+      const link = `${SITE_URL}/blog/${post.data.slug}`;
       const pubDate = new Date(post.data.date).toUTCString();
       const description =
         post.data.seo?.description ?? post.data.title;
 
       return `    <item>
       <title>${escapeXml(post.data.title)}</title>
-      <link>${link}</link>
-      <guid>${link}</guid>
+      <link>${escapeXml(link)}</link>
+      <guid>${escapeXml(link)}</guid>
       <description>${escapeXml(description)}</description>
       <pubDate>${pubDate}</pubDate>
     </item>`;
@@ -50,7 +53,9 @@ export const GET: APIRoute = async () => {
     <link>${SITE_URL}/blog</link>
     <description>Blog posts written by the ZenML Team</description>
     <language>en</language>
-    <pubDate>${now}</pubDate>
+    <lastBuildDate>${now}</lastBuildDate>
+    <pubDate>${newestDate}</pubDate>
+    <generator>ZenML Astro Site</generator>
     <atom:link href="${feedUrl}" rel="self" type="application/rss+xml"/>
 ${items}
   </channel>

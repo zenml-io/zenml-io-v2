@@ -48,16 +48,8 @@ const seo = resolveSeo(seoProps, Astro.url.pathname);
     {/* Favicon */}
     <link rel="icon" type="image/png" href="/favicon.png" />
 
-    {/* Plausible analytics — hostname-gated (www + apex) */}
-    <script is:inline>
-      if (['www.zenml.io','zenml.io'].includes(window.location.hostname)) {
-        var s = document.createElement('script');
-        s.defer = true;
-        s.dataset.domain = 'zenml.io';
-        s.src = 'https://plausible.io/js/script.js';
-        document.head.appendChild(s);
-      }
-    </script>
+    {/* Analytics and third-party scripts are injected dynamically by the
+        CookieConsent island after user consent. See consentConfig.ts. */}
   </head>
   <body class:list={["min-h-screen bg-white text-gray-900 antialiased", bodyClass]}>
     <slot />

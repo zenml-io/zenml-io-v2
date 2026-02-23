@@ -25,6 +25,12 @@ export interface ScriptDefinition {
 export const TRACKING_SCRIPTS: ScriptDefinition[] = [
   // ── Analytics ────────────────────────────────────────────────
   {
+    id: "plausible",
+    category: "analytics",
+    src: "https://plausible.io/js/script.js",
+    attrs: { defer: "", "data-domain": "zenml.io" },
+  },
+  {
     id: "ga4",
     category: "analytics",
     src: "https://www.googletagmanager.com/gtag/js?id=G-T3T6F795FY",
@@ -73,6 +79,14 @@ export const TRACKING_SCRIPTS: ScriptDefinition[] = [
     category: "marketing",
     inline: `function initApollo(){var n=Math.random().toString(36).substring(7),o=document.createElement("script");o.src="https://assets.apollo.io/micro/website-tracker/tracker.iife.js?nocache="+n,o.async=!0,o.defer=!0,o.onload=function(){window.trackingFunctions.onLoad({appId:"691f4e111003f200159c6363"})},document.head.appendChild(o)}initApollo();`,
   },
+
+  // ── Personalization ────────────────────────────────────────────
+  {
+    id: "github-buttons",
+    category: "personalization",
+    src: "https://buttons.github.io/buttons.js",
+    attrs: { async: "", defer: "" },
+  },
 ];
 
 /** Categories with human-friendly labels and descriptions. */
@@ -91,7 +105,7 @@ export const CONSENT_CATEGORIES: {
   {
     id: "analytics",
     label: "Analytics",
-    description: "Help us understand how visitors use our site (GA4, Segment, Hotjar).",
+    description: "Help us understand how visitors use our site (Plausible, GA4, Segment, Hotjar).",
     required: false,
   },
   {
@@ -103,7 +117,7 @@ export const CONSENT_CATEGORIES: {
   {
     id: "personalization",
     label: "Personalization",
-    description: "Customize content and chat experiences (HubSpot chat).",
+    description: "Customize content and experiences (GitHub star count, HubSpot chat).",
     required: false,
   },
 ];

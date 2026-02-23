@@ -95,10 +95,10 @@ const {
           class="mt-2 flex items-center gap-2 rounded-lg border border-gray-200 bg-white p-3 transition-shadow hover:shadow-sm"
         >
           <div class="flex items-center gap-1.5">
-            <img src="/images/zenml-icon.webp" alt="ZenML" class="h-8 w-8 rounded" />
+            <img src="/images/zenml-icon.webp" alt="ZenML" width="32" height="32" class="h-8 w-8 rounded" />
             <span class="text-xs font-medium text-gray-400">vs</span>
             {integrationLogo && (
-              <img src={integrationLogo.url} alt={compareName || ""} class="h-8 w-8 rounded object-contain" />
+              <img src={integrationLogo.url} alt={compareName || ""} width="32" height="32" class="h-8 w-8 rounded object-contain" />
             )}
           </div>
           <span class="text-sm font-medium text-gray-700">{compareName || compareSlug.replace("zenml-vs-", "ZenML vs ")}</span>
@@ -114,7 +114,7 @@ const {
           {relatedPosts.map((post) => (
             <a href={post.href} class="flex items-center gap-3 group">
               {post.imageUrl && (
-                <img src={post.imageUrl} alt="" class="h-14 w-14 shrink-0 rounded-lg object-cover" loading="lazy" />
+                <img src={post.imageUrl} alt="" width="56" height="56" class="h-14 w-14 shrink-0 rounded-lg object-cover" loading="lazy" />
               )}
               <span class="line-clamp-2 text-sm font-medium text-gray-700 group-hover:text-primary-600">
                 {post.title}

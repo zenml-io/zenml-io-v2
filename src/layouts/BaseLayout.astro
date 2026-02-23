@@ -56,21 +56,9 @@ const seo = resolveSeo(seoProps, Astro.url.pathname);
     {/* Structured data (JSON-LD) — injected by child layouts */}
     <slot name="head" />
 
-    {/* GitHub stars button — renders the star count iframe in navbar */}
-    <script async defer src="https://buttons.github.io/buttons.js"></script>
-
-    {/* Plausible analytics — Essential, but hostname-gated to avoid polluting
-        analytics with preview-deploy traffic (import.meta.env.PROD is true on previews).
-        Matches both www.zenml.io (canonical) and apex zenml.io (DNS cutover). */}
-    <script is:inline>
-      if (['www.zenml.io','zenml.io'].includes(window.location.hostname)) {
-        var s = document.createElement('script');
-        s.defer = true;
-        s.dataset.domain = 'zenml.io';
-        s.src = 'https://plausible.io/js/script.js';
-        document.head.appendChild(s);
-      }
-    </script>
+    {/* Analytics (Plausible, GA4, etc.) and third-party scripts are injected
+        dynamically by the CookieConsent island after user consent is granted.
+        See src/lib/consentConfig.ts for the full script registry. */}
   </head>
   <body class:list={["min-h-screen bg-white text-gray-900 antialiased", bodyClass]}>
     <slot name="before-nav" />

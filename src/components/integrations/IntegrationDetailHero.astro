@@ -29,6 +29,8 @@ const { title, shortDescription, logo, githubUrl, githubLinkText } = Astro.props
           <img
             src={logo.url}
             alt={logo.alt || title}
+            width="56"
+            height="56"
             class="h-14 w-14 object-contain"
           />
         </div>
@@ -38,6 +40,8 @@ const { title, shortDescription, logo, githubUrl, githubLinkText } = Astro.props
         <img
           src="/images/zenml-logo-monocolor.svg"
           alt="ZenML"
+          width="56"
+          height="56"
           class="h-14 w-14 object-contain"
         />
       </div>
@@ -55,7 +59,7 @@ const { title, shortDescription, logo, githubUrl, githubLinkText } = Astro.props
           rel="noopener noreferrer"
           class="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-900 shadow-sm transition-colors hover:bg-gray-50"
         >
-          <img src="/images/icon-github.svg" alt="" class="h-5 w-5" />
+          <img src="/images/icon-github.svg" alt="" width="20" height="20" class="h-5 w-5" />
           {githubLinkText || "GitHub"}
         </a>
       </div>
