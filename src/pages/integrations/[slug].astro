@@ -238,20 +238,24 @@ const ogImage = d.seo?.ogImage || d.mainImage?.url;
   </div>
 
   {/* ── Bottom CTA ─────────────────────────────────────────── */}
-  <section class="bg-gray-900 py-16 sm:py-20">
+  <section class="bg-gray-50 py-16 sm:py-20">
     <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
-      <h2 class="text-2xl font-bold text-white sm:text-3xl">
+      <h2 class="text-2xl font-bold text-gray-900 sm:text-3xl">
         Connect Your ML Pipelines to a World of Tools
       </h2>
-      <p class="mt-3 text-lg text-gray-300">
-        Expand your ML pipelines with {d.title} and other 50+ ZenML Integrations
+      <p class="mt-3 text-lg text-gray-600">
+        Expand your ML pipelines with more than 50 ZenML Integrations
       </p>
-      <IntegrationsLogoRail excludeSlug={d.slug} />
+      <IntegrationsLogoRail
+        excludeSlug={d.slug}
+        limit={6}
+        variant="ctaCentered"
+      />
       <div class="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
         <Button href="/get-started" size="lg">Use Open Source</Button>
         <a
           href="/integrations"
-          class="inline-flex items-center gap-1.5 text-sm font-medium text-primary-400 hover:text-primary-300"
+          class="inline-flex items-center gap-1.5 text-sm font-medium text-primary-600 hover:text-primary-700"
         >
           See All Integrations
           <svg width="21" height="20" viewBox="0 0 21 20" fill="none" class="h-4 w-4">

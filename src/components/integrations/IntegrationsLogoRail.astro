@@ -4,9 +4,16 @@ import { getCollection } from "astro:content";
 interface Props {
   excludeSlug?: string;
   limit?: number;
+  variant?: "scroll" | "ctaCentered";
+  ariaLabel?: string;
 }
 
-const { excludeSlug, limit } = Astro.props as Props;
+const {
+  excludeSlug,
+  limit,
+  variant = "scroll",
+  ariaLabel = "Other ZenML integrations",
+} = Astro.props as Props;
 
 type LogoRailItem = {
   name: string;
@@ -24,7 +31,7 @@ const integrations = await getCollection(
 const logoItems: LogoRailItem[] = integrations
   .flatMap((integration) => {
     const logo = integration.data.logo;
-    if (!logo?.url) {
+    if (!logo?.url || !integration.data.slug) {
       return [];
     }
 
@@ -43,32 +50,61 @@ const logoItems: LogoRailItem[] = integrations
 
 const itemsToRender =
   typeof limit === "number" ? logoItems.slice(0, limit) : logoItems;
+
+const baseTileClass =
+  "flex h-[60px] w-[60px] flex-shrink-0 items-center justify-center rounded-[8px] border-2 border-gray-300 bg-white transition-all duration-200 [transition-timing-function:cubic-bezier(.77,0,.175,1)] focus-visible:z-10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zenml-500";
+
+const ctaTileClass = `${baseTileClass} hover:z-10 hover:scale-[1.3] hover:border hover:border-primary-500 motion-reduce:transition-none motion-reduce:hover:scale-100`;
+
+const scrollTileClass = `${baseTileClass} hover:-translate-y-0.5 hover:border-primary-400`;
+
+const tileClass = variant === "ctaCentered" ? ctaTileClass : scrollTileClass;
 ---
 
 {
   itemsToRender.length > 0 && (
     <div class="mt-6">
-      <div class="overflow-x-auto pb-2 [scrollbar-width:thin]">
-        <ul class="mx-auto flex w-max min-w-full items-center justify-center gap-3" aria-label="Other ZenML integrations">
-          {itemsToRender.map((item) => (
-            <li>
-              <a
-                href={item.href}
-                class="flex h-[56px] w-[56px] flex-shrink-0 items-center justify-center rounded-lg border border-gray-600 bg-white p-2 transition-all duration-200 hover:-translate-y-0.5 hover:border-primary-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-400"
-              >
-                <img
-                  src={item.src}
-                  alt={item.alt}
-                  class="h-8 w-8 object-contain"
-                  width="32"
-                  height="32"
-                  loading="lazy"
-                />
-              </a>
-            </li>
-          ))}
-        </ul>
-      </div>
+      {
+        variant === "ctaCentered" ? (
+          <div class="flex w-full justify-center overflow-hidden px-3 py-3">
+            <ul class="flex flex-nowrap items-center justify-center gap-4" aria-label={ariaLabel}>
+              {itemsToRender.map((item) => (
+                <li>
+                  <a href={item.href} class={tileClass} aria-label={item.name}>
+                    <img
+                      src={item.src}
+                      alt={item.alt}
+                      class="h-10 w-10 object-contain"
+                      width="40"
+                      height="40"
+                      loading="lazy"
+                    />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : (
+          <div class="overflow-x-auto pb-2 [scrollbar-width:thin]">
+            <ul class="mx-auto flex w-max min-w-full items-center justify-center gap-4" aria-label={ariaLabel}>
+              {itemsToRender.map((item) => (
+                <li>
+                  <a href={item.href} class={tileClass} aria-label={item.name}>
+                    <img
+                      src={item.src}
+                      alt={item.alt}
+                      class="h-10 w-10 object-contain"
+                      width="40"
+                      height="40"
+                      loading="lazy"
+                    />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )
+      }
     </div>
   )
 }
