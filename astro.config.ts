@@ -8,7 +8,13 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig({
   site: "https://www.zenml.io",
   output: "static",
-  adapter: cloudflare(),
+  adapter: cloudflare({
+    routes: {
+      extend: {
+        include: [{ pattern: "/api/*" }],
+      },
+    },
+  }),
   trailingSlash: "never",
   build: {
     format: "file",
