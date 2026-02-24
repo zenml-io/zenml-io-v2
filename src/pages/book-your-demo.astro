@@ -10,6 +10,7 @@
  */
 import MinimalLayout from "../layouts/MinimalLayout.astro";
 import ContactForm from "../components/islands/ContactForm.tsx";
+import { TURNSTILE_SITE_KEY } from "../lib/formConstants";
 import {
   BOOK_YOUR_DEMO_SEO,
   BOOK_YOUR_DEMO_HERO,
@@ -102,6 +103,7 @@ import {
                 loadingLabel="Sending…"
                 successMessage="Thank you! We successfully received your request. Now select a time that suits you for the demo."
                 successCta={{ label: "Schedule a time for the demo", href: "https://zcal.co/i/wf5_QqYV" }}
+                turnstileSiteKey={TURNSTILE_SITE_KEY}
               />
             </div>
 

@@ -121,11 +121,14 @@ export async function POST(context: APIContext): Promise<Response> {
   const runtime = (context.locals as Runtime).runtime;
   const env = runtime.env as Record<string, string | undefined>;
 
-  // Optional: Verify Turnstile token
+  // Verify Turnstile token (required when secret key is configured)
   const turnstileToken = data["cf-turnstile-response"];
   const turnstileSecret = env.TURNSTILE_SECRET_KEY;
 
-  if (turnstileSecret && turnstileToken) {
+  if (turnstileSecret) {
+    if (!turnstileToken) {
+      return jsonResponse({ success: false, error: "Bot verification is required" }, 403);
+    }
     const verifyResponse = await fetch(
       "https://challenges.cloudflare.com/turnstile/v0/siteverify",
       {
@@ -139,7 +142,7 @@ export async function POST(context: APIContext): Promise<Response> {
     );
     const result = (await verifyResponse.json()) as { success: boolean };
     if (!result.success) {
-      return jsonResponse({ success: false, error: "Bot verification failed" }, 403);
+      return jsonResponse({ success: false, error: "Bot verification failed. Please try again." }, 403);
     }
   }
 

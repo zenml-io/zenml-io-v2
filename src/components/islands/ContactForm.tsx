@@ -3,8 +3,11 @@
  *
  * Renders a real form with client-side validation, loading/success/error
  * states, and POSTs to the Cloudflare Pages Function.
+ *
+ * Supports optional Cloudflare Turnstile bot protection — pass `turnstileSiteKey`
+ * to enable the invisible challenge widget.
  */
-import { useState, useCallback } from "preact/hooks";
+import { useState, useCallback, useEffect, useRef } from "preact/hooks";
 import type { PlaceholderField } from "../../lib/formTypes";
 import type { CtaLink } from "../../lib/marketingPageTypes";
 import { validateForm, type FormType } from "../../lib/formValidation";
@@ -18,6 +21,7 @@ interface Props {
   successMessage: string;
   successCta?: CtaLink;
   successDownloadUrl?: string;
+  turnstileSiteKey?: string;
 }
 
 type FormState = "idle" | "submitting" | "success" | "error";
@@ -31,10 +35,55 @@ export default function ContactForm({
   successMessage,
   successCta,
   successDownloadUrl,
+  turnstileSiteKey,
 }: Props) {
   const [state, setState] = useState<FormState>("idle");
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [serverError, setServerError] = useState("");
+  const turnstileRef = useRef<HTMLDivElement>(null);
+  const turnstileWidgetId = useRef<string | null>(null);
+
+  // Load the Turnstile script once and render the widget
+  useEffect(() => {
+    if (!turnstileSiteKey) return;
+
+    const SCRIPT_ID = "cf-turnstile-script";
+    const scriptUrl = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=onTurnstileLoad";
+
+    function renderWidget() {
+      if (!turnstileRef.current || turnstileWidgetId.current != null) return;
+      const w = window as unknown as { turnstile?: { render: (el: HTMLElement, opts: Record<string, unknown>) => string } };
+      if (!w.turnstile) return;
+      turnstileWidgetId.current = w.turnstile.render(turnstileRef.current, {
+        sitekey: turnstileSiteKey,
+        theme: "light",
+        size: "flexible",
+      });
+    }
+
+    // If script already loaded, render immediately
+    if (document.getElementById(SCRIPT_ID)) {
+      renderWidget();
+      return;
+    }
+
+    // Register global callback for script load
+    (window as unknown as Record<string, unknown>).onTurnstileLoad = renderWidget;
+
+    const script = document.createElement("script");
+    script.id = SCRIPT_ID;
+    script.src = scriptUrl;
+    script.async = true;
+    script.defer = true;
+    document.head.appendChild(script);
+  }, [turnstileSiteKey]);
+
+  /** Reset the Turnstile widget so the user gets a fresh token for retry. */
+  const resetTurnstile = useCallback(() => {
+    if (turnstileWidgetId.current == null) return;
+    const w = window as unknown as { turnstile?: { reset: (id: string) => void } };
+    w.turnstile?.reset(turnstileWidgetId.current);
+  }, []);
 
   const handleSubmit = useCallback(
     async (e: Event) => {
@@ -88,11 +137,13 @@ export default function ContactForm({
           // Surface per-field errors from server (e.g. privacy consent)
           if (body.errors && Object.keys(body.errors).length > 0) {
             setErrors(body.errors);
+            resetTurnstile();
             setState("idle");
             return;
           }
           const msg = body.error || "Something went wrong. Please try again.";
           setServerError(msg);
+          resetTurnstile();
           setState("error");
           return;
         }
@@ -100,10 +151,11 @@ export default function ContactForm({
         setState("success");
       } catch {
         setServerError("Network error. Please check your connection and try again.");
+        resetTurnstile();
         setState("error");
       }
     },
-    [formType, endpoint, fields],
+    [formType, endpoint, fields, resetTurnstile],
   );
 
   // Success state
@@ -221,6 +273,11 @@ export default function ContactForm({
             )}
           </div>
         ))}
+
+        {/* Cloudflare Turnstile bot protection widget */}
+        {turnstileSiteKey && (
+          <div ref={turnstileRef} class="flex justify-center" />
+        )}
 
         <button
           type="submit"

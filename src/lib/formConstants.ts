@@ -8,6 +8,17 @@
 import type { BrevoFormConfig } from "./formTypes";
 
 // ---------------------------------------------------------------------------
+// Cloudflare Turnstile (bot protection)
+// ---------------------------------------------------------------------------
+
+/**
+ * Public site key for the Turnstile widget.
+ * Set to undefined to disable Turnstile on forms (e.g. during local dev).
+ * Create the widget at: https://dash.cloudflare.com → Turnstile → Add widget
+ */
+export const TURNSTILE_SITE_KEY: string | undefined = "0x4AAAAAAChe6jgz2GyYLHgE";
+
+// ---------------------------------------------------------------------------
 // Cal.com
 // ---------------------------------------------------------------------------
 
