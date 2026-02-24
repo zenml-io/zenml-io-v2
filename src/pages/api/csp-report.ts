@@ -1,17 +1,18 @@
 /**
- * Cloudflare Pages Function: CSP violation report sink.
+ * Astro API route: CSP violation report sink.
  *
  * Route: POST /api/csp-report
  *
  * Browsers POST here when a Content-Security-Policy-Report-Only violation
  * occurs. We accept the report, log a redacted summary, and return 204.
  */
+import type { APIContext } from "astro";
 
-interface Env {}
+export const prerender = false;
 
-export const onRequestPost: PagesFunction<Env> = async (context) => {
+export async function POST(context: APIContext): Promise<Response> {
   try {
-    const body = await context.request.json<Record<string, unknown>>();
+    const body = (await context.request.json()) as Record<string, unknown>;
     const report =
       (body?.["csp-report"] as Record<string, unknown>) ?? body ?? {};
 
@@ -30,11 +31,11 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
   }
 
   return new Response(null, { status: 204 });
-};
+}
 
-// Reject non-POST methods
-export const onRequestGet: PagesFunction = async () =>
-  new Response(JSON.stringify({ error: "Method not allowed" }), {
+export function GET(): Response {
+  return new Response(JSON.stringify({ error: "Method not allowed" }), {
     status: 405,
     headers: { "Content-Type": "application/json" },
   });
+}

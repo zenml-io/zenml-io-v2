@@ -1,5 +1,5 @@
 /**
- * Cloudflare Pages Function: form submission handler.
+ * Astro API route: form submission handler.
  *
  * Route: POST /api/forms/:formType
  *
@@ -7,11 +7,10 @@
  * (fire-and-forget via waitUntil), and returns success to the user.
  * Segment routes form data to CRM destinations (Attio, Apollo).
  */
+import type { APIContext } from "astro";
+import type { Runtime } from "@astrojs/cloudflare";
 
-interface Env {
-  TURNSTILE_SECRET_KEY?: string;
-  SEGMENT_FORMS_WRITE_KEY?: string;
-}
+export const prerender = false;
 
 type FormType = "demo-request" | "whitepaper" | "startup-application";
 
@@ -80,7 +79,7 @@ async function segmentCall(
   }
 }
 
-export const onRequestPost: PagesFunction<Env> = async (context) => {
+export async function POST(context: APIContext): Promise<Response> {
   const formType = context.params.formType as string;
 
   if (!VALID_FORM_TYPES.has(formType as FormType)) {
@@ -118,9 +117,13 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     return jsonResponse({ success: false, errors }, 422);
   }
 
+  // Access Cloudflare runtime for env vars and waitUntil
+  const runtime = (context.locals as Runtime).runtime;
+  const env = runtime.env as Record<string, string | undefined>;
+
   // Optional: Verify Turnstile token
   const turnstileToken = data["cf-turnstile-response"];
-  const turnstileSecret = context.env.TURNSTILE_SECRET_KEY;
+  const turnstileSecret = env.TURNSTILE_SECRET_KEY;
 
   if (turnstileSecret && turnstileToken) {
     const verifyResponse = await fetch(
@@ -134,14 +137,13 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         }),
       },
     );
-    const result = await verifyResponse.json<{ success: boolean }>();
+    const result = (await verifyResponse.json()) as { success: boolean };
     if (!result.success) {
       return jsonResponse({ success: false, error: "Bot verification failed" }, 403);
     }
   }
 
   // Server-side privacy consent enforcement (GDPR requirement).
-  // All lead forms require explicit privacy policy agreement.
   const privacyValue = (data.privacy ?? "").trim().toLowerCase();
   if (!/^(on|true|1)$/.test(privacyValue)) {
     return jsonResponse(
@@ -156,7 +158,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
   });
 
   // Send identify + track to Segment (fire-and-forget — don't block user response)
-  const segmentKey = context.env.SEGMENT_FORMS_WRITE_KEY;
+  const segmentKey = env.SEGMENT_FORMS_WRITE_KEY;
   if (segmentKey) {
     const email = data.email.trim();
     const referer = context.request.headers.get("referer") ?? "";
@@ -189,13 +191,12 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       context: segmentContext,
     });
 
-    context.waitUntil(Promise.all([identifyCall, trackCall]));
+    runtime.ctx.waitUntil(Promise.all([identifyCall, trackCall]));
   }
 
   return jsonResponse({ success: true, formType });
-};
+}
 
-// Reject non-POST methods
-export const onRequestGet: PagesFunction = async () => {
+export function GET(): Response {
   return jsonResponse({ error: "Method not allowed" }, 405);
-};
+}
