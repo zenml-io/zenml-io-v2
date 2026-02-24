@@ -1,4 +1,7 @@
 ---
+import Footer from "../components/Footer.astro";
+import CookieConsent from "../components/islands/CookieConsent.tsx";
+import Navigation from "../components/Navigation.astro";
 /**
  * BaseLayout — the root HTML shell for every page.
  * Renders <head> with full SEO meta, plus Navigation and Footer chrome.
@@ -7,9 +10,6 @@
  * and pass SEOProps through to control their meta tags.
  */
 import { resolveSeo, type SEOProps } from "../lib/seo";
-import Navigation from "../components/Navigation.astro";
-import Footer from "../components/Footer.astro";
-import CookieConsent from "../components/islands/CookieConsent.tsx";
 import "../styles/global.css";
 import "@fontsource/inconsolata/latin-400.css";
 import "@fontsource/inconsolata/latin-700.css";
@@ -65,6 +65,30 @@ const seo = resolveSeo(seoProps, Astro.url.pathname);
     <Navigation currentPath={Astro.url.pathname} />
     <slot />
     <Footer />
+
+    <script is:inline>
+      (async () => {
+        const starElements = document.querySelectorAll("[data-github-stars-count]");
+        if (!starElements.length) return;
+
+        try {
+          const response = await fetch("/api/github-stars", {
+            headers: { Accept: "application/json" },
+          });
+          if (!response.ok) return;
+
+          const data = await response.json();
+          if (!data || typeof data.formatted !== "string") return;
+
+          starElements.forEach((element) => {
+            element.textContent = data.formatted;
+          });
+        } catch {
+          // Keep server-rendered fallback visible on any failure.
+        }
+      })();
+    </script>
+
     <CookieConsent client:load />
   </body>
 </html>

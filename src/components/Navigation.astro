@@ -1,10 +1,20 @@
 ---
+import {
+  FALLBACK_STARS,
+  formatStars,
+  GITHUB_REPO_URL,
+} from "../lib/githubStars";
 /**
  * Navigation — responsive navbar matching the zenml.io Webflow site.
  * Desktop: hover-driven dropdown panels with two-column layout.
  * Mobile: hamburger toggle with accordion sections.
  */
-import { NAV_DROPDOWNS, NAV_LINKS, NAV_CTAS, isActivePath } from "../lib/navigation";
+import {
+  isActivePath,
+  NAV_CTAS,
+  NAV_DROPDOWNS,
+  NAV_LINKS,
+} from "../lib/navigation";
 import Button from "./Button.astro";
 
 interface Props {
@@ -12,6 +22,7 @@ interface Props {
 }
 
 const { currentPath = Astro.url.pathname } = Astro.props;
+const headerStarsFallback = formatStars(FALLBACK_STARS);
 ---
 
 <header class="sticky top-0 z-50 w-full bg-white/95 backdrop-blur-sm border-b border-gray-200/60">
@@ -180,14 +191,16 @@ const { currentPath = Astro.url.pathname } = Astro.props;
 
       {/* Desktop CTAs */}
       <div class="hidden lg:flex lg:items-center lg:gap-3">
-        <div class="min-w-[40px] h-[28px]">
+        <div class="h-[28px]">
           <a
-            class="github-button"
-            href="https://github.com/zenml-io/zenml"
-            data-size="large"
-            data-show-count="true"
+            href={GITHUB_REPO_URL}
             aria-label="Star zenml-io/zenml on GitHub"
-          >Star</a>
+            class="inline-flex h-full items-center gap-1 rounded border border-gray-300 bg-white px-2.5 text-xs font-medium text-gray-700 transition-colors hover:bg-gray-50"
+          >
+            Star
+            <span aria-hidden="true">·</span>
+            <span data-github-stars-count>{headerStarsFallback}</span>
+          </a>
         </div>
         <Button href={NAV_CTAS[0].href} variant="secondary" size="sm">
           {NAV_CTAS[0].label}
