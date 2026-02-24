@@ -66,7 +66,7 @@ customize freely.
 | Styling | **Tailwind CSS** — utility-first |
 | Interactive | **Preact islands** — 7 islands: LLMOpsFilter, ContactForm, CookieConsent, FeatureTabsSlider, LottieHero, ProTestimonialCarousel, RoiCalculator |
 | Search | **Pagefind** — build-time full-text search index (1,453 LLMOps pages indexed, hybrid with JSON faceted filtering) |
-| Forms | **ContactForm** Preact island → Cloudflare Pages Functions (`/api/forms/:formType`). Cal.com embeds for demo booking. Brevo for newsletter |
+| Forms | **ContactForm** Preact island → Astro API routes (`src/pages/api/forms/[formType].ts`, `prerender: false`) → Segment HTTP API (identify + track). Cal.com embeds for demo booking. Brevo for newsletter |
 | Analytics | **Plausible** + GA4 + Segment (hostname-gated to production domain to prevent preview pollution) |
 | Code highlighting | **Shiki** (`github-dark` theme) at build time + **Inconsolata** monospace font |
 | CRM | **Attio** (keep existing) |
@@ -149,6 +149,18 @@ R2 keys with spaces get truncated by `[^\s...]` regex patterns. For
 comprehensive audits, match only the 8-char hash prefix (`[a-f0-9]{8}`) and
 verify it exists in the bucket, rather than trying to capture the full filename.
 
+## Cloudflare Pages Functions vs Astro API Routes
+
+**Do NOT use the `functions/` directory** for serverless endpoints when the
+`@astrojs/cloudflare` adapter is active. The adapter generates a `_worker.js`
+in `dist/` that takes over the single Worker slot — any hand-written
+`functions/` are silently ignored (no build error, just runtime 404s).
+
+Instead, create server-side endpoints as **Astro API routes** in `src/pages/api/`
+with `export const prerender = false`. These are compiled into the adapter's
+Worker and share access to Cloudflare runtime bindings via
+`(context.locals as Runtime).runtime` (env vars, `ctx.waitUntil()`, caches).
+
 ## Key Files
 
 ### Core Architecture
@@ -168,12 +180,16 @@ verify it exists in the bucket, rather than trying to capture the full filename.
 
 ### Preact Islands (interactive client-side components)
 - `src/components/islands/LLMOpsFilter.tsx` — LLMOps database "Research Hub" (faceted sidebar with industry/tag facets, Pagefind full-text search, AND/OR tag mode, sort, clickable chips, mobile drawer, WCAG-compliant accessibility)
-- `src/components/islands/ContactForm.tsx` — Form submission → Pages Functions
+- `src/components/islands/ContactForm.tsx` — Form submission → Astro API routes
 - `src/components/islands/CookieConsent.tsx` — Cookie consent banner (4 categories)
 - `src/components/islands/FeatureTabsSlider.tsx` — Homepage auto-cycling feature tabs
 - `src/components/islands/LottieHero.tsx` — Hero Lottie animation player
 - `src/components/islands/ProTestimonialCarousel.tsx` — /pro page testimonial carousel
 - `src/components/islands/RoiCalculator.tsx` — ROI calculator interactive form
+
+### Server-side API Routes (`prerender: false`)
+- `src/pages/api/forms/[formType].ts` — Form submission handler → Segment HTTP API (identify + track)
+- `src/pages/api/csp-report.ts` — CSP violation report sink (logs redacted summary, returns 204)
 
 ### Layouts
 - `src/layouts/BaseLayout.astro` — Main layout (nav, footer, head slots, analytics)
