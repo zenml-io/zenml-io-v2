@@ -3,12 +3,14 @@
  *
  * Route: POST /api/forms/:formType
  *
- * For the POC, this validates input and returns success.
- * Post-launch: wire to Attio CRM + optional Brevo transactional email.
+ * Validates input, sends identify + track calls to Segment's HTTP API
+ * (fire-and-forget via waitUntil), and returns success to the user.
+ * Segment routes form data to CRM destinations (Attio, Apollo).
  */
 
 interface Env {
   TURNSTILE_SECRET_KEY?: string;
+  SEGMENT_FORMS_WRITE_KEY?: string;
 }
 
 type FormType = "demo-request" | "whitepaper" | "startup-application";
@@ -41,11 +43,41 @@ const REQUIRED_FIELDS: Record<FormType, Record<string, { pattern?: RegExp; messa
   },
 };
 
+/** Fields excluded from the Segment track payload (sensitive or irrelevant for CRM). */
+const EXCLUDED_FIELDS = new Set(["cf-turnstile-response", "privacy"]);
+
+/** Per-form trait fields sent in the identify call. */
+const IDENTIFY_TRAITS: Record<FormType, string[]> = {
+  "demo-request": ["fullName", "email"],
+  whitepaper: ["fullName", "email"],
+  "startup-application": ["fullName", "email", "company"],
+};
+
 function jsonResponse(data: unknown, status = 200): Response {
   return new Response(JSON.stringify(data), {
     status,
     headers: { "Content-Type": "application/json" },
   });
+}
+
+/** Send a single call to Segment's HTTP Tracking API. */
+async function segmentCall(
+  endpoint: "identify" | "track",
+  writeKey: string,
+  body: Record<string, unknown>,
+): Promise<void> {
+  const resp = await fetch(`https://api.segment.io/v1/${endpoint}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Basic ${btoa(writeKey + ":")}`,
+    },
+    body: JSON.stringify(body),
+  });
+  if (!resp.ok) {
+    const text = await resp.text();
+    console.error(`[segment:${endpoint}] ${resp.status}: ${text}`);
+  }
 }
 
 export const onRequestPost: PagesFunction<Env> = async (context) => {
@@ -118,11 +150,47 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     );
   }
 
-  // POC: Log submission metadata (no PII) and return success
-  // Post-launch: Forward to Attio CRM API here
+  // Log submission metadata (no PII)
   console.log(`[form:${formType}] submission received`, {
-    fields: Object.keys(data).filter((k) => !["cf-turnstile-response", "privacy"].includes(k)),
+    fields: Object.keys(data).filter((k) => !EXCLUDED_FIELDS.has(k)),
   });
+
+  // Send identify + track to Segment (fire-and-forget — don't block user response)
+  const segmentKey = context.env.SEGMENT_FORMS_WRITE_KEY;
+  if (segmentKey) {
+    const email = data.email.trim();
+    const referer = context.request.headers.get("referer") ?? "";
+    const userAgent = context.request.headers.get("user-agent") ?? "";
+    const segmentContext = { page: { url: referer }, userAgent };
+
+    // Build traits for identify (name, email, company where available)
+    const traitFields = IDENTIFY_TRAITS[formType as FormType] ?? [];
+    const traits: Record<string, string> = {};
+    for (const field of traitFields) {
+      const val = (data[field] ?? "").trim();
+      if (val) traits[field === "fullName" ? "name" : field] = val;
+    }
+
+    // Build properties for track (all validated fields minus excluded ones)
+    const properties: Record<string, string> = { formType };
+    for (const [key, val] of Object.entries(data)) {
+      if (!EXCLUDED_FIELDS.has(key)) properties[key] = val;
+    }
+
+    const identifyCall = segmentCall("identify", segmentKey, {
+      userId: email,
+      traits,
+      context: segmentContext,
+    });
+    const trackCall = segmentCall("track", segmentKey, {
+      userId: email,
+      event: "Form Submitted",
+      properties,
+      context: segmentContext,
+    });
+
+    context.waitUntil(Promise.all([identifyCall, trackCall]));
+  }
 
   return jsonResponse({ success: true, formType });
 };
