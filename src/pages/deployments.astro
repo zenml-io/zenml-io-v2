@@ -695,25 +695,46 @@ import {
 
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-    const revealScope = page.querySelector('[data-reveal-scope="deployments"]');
-    if (!revealScope || revealScope.dataset.revealInitialized === "true") return;
+    const root = document.documentElement;
+    const revealScope = page.matches('[data-reveal-scope="deployments"]')
+      ? page
+      : page.querySelector('[data-reveal-scope="deployments"]');
+
+    if (!revealScope) {
+      root.classList.remove("reveal-enabled");
+      return;
+    }
+
+    if (revealScope.dataset.revealInitialized === "true") return;
     revealScope.dataset.revealInitialized = "true";
 
     const revealElements = revealScope.querySelectorAll("[data-reveal]");
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          entry.target.classList.add("in-view");
-          observer.unobserve(entry.target);
-        });
-      },
-      {
-        threshold: 0.1,
-        rootMargin: "0px 0px -40px 0px",
-      }
-    );
 
-    revealElements.forEach((element) => observer.observe(element));
+    if (!("IntersectionObserver" in window)) {
+      root.classList.remove("reveal-enabled");
+      revealElements.forEach((element) => element.classList.add("in-view"));
+      return;
+    }
+
+    try {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            entry.target.classList.add("in-view");
+            observer.unobserve(entry.target);
+          });
+        },
+        {
+          threshold: 0.1,
+          rootMargin: "0px 0px -40px 0px",
+        }
+      );
+
+      revealElements.forEach((element) => observer.observe(element));
+    } catch {
+      root.classList.remove("reveal-enabled");
+      revealElements.forEach((element) => element.classList.add("in-view"));
+    }
   })();
 </script>
