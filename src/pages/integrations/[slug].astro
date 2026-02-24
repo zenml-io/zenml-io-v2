@@ -60,13 +60,36 @@ const compareName = compareEntry?.data?.toolName
   ? `ZenML vs ${compareEntry.data.toolName}`
   : undefined;
 
-// Determine if we have structured fields for sectioned rendering
-const hasStructuredContent = !!(
-  d.overviewDescription ||
+// Determine structured rendering/fallback strategy
+const norm = (s: string) => s.trim().toLowerCase();
+
+const overviewTitleRaw = d.overviewTitle?.trim();
+const hasMeaningfulOverviewTitle =
+  !!overviewTitleRaw && norm(overviewTitleRaw) !== norm(d.title);
+
+const introH2 = hasMeaningfulOverviewTitle
+  ? overviewTitleRaw
+  : d.shortDescription?.trim();
+
+const hasStructuredSections = !!(
+  d.overviewDescription?.trim() ||
   d.featuresWithZenmlHtml ||
   d.toolFeaturesHtml ||
-  d.codeExampleHtml
+  d.codeExampleHtml ||
+  (d.additionalResources?.length ?? 0) > 0
 );
+
+const renderStructured = hasStructuredSections;
+const renderMixed = !hasStructuredSections && hasMeaningfulOverviewTitle;
+
+const learnHowHref = d.docsUrl || d.githubUrl || "/get-started";
+const learnHowExternal = Boolean(d.docsUrl || d.githubUrl);
+const learnHowHeadline =
+  d.overviewTitle?.trim() || `Learn how to run on ${d.title}`;
+const learnHowDescription =
+  d.overviewDescription?.trim() || d.shortDescription?.trim();
+const learnHowCtaLabel =
+  d.docsUrl || d.githubUrl ? `Learn how to run on ${d.title}` : "Get started";
 
 // SEO
 const seoTitle = d.seo?.title || `${d.title} Integration - ZenML`;
@@ -154,14 +177,14 @@ const ogImage = d.seo?.ogImage || d.mainImage?.url;
 
         {/* Content */}
         <div class="min-w-0 flex-1">
-          {hasStructuredContent ? (
+          {renderStructured ? (
             <div class="space-y-10">
-              {/* Lead heading — shortDescription as prominent H2 (matches Webflow) */}
-              {d.shortDescription && (
-                <h2 class="text-xl font-bold text-gray-900 sm:text-2xl">{d.shortDescription}</h2>
+              {/* Lead heading */}
+              {introH2 && (
+                <h2 class="text-xl font-bold text-gray-900 sm:text-2xl">{introH2}</h2>
               )}
 
-              {/* Tool Overview — overviewDescription is the body text */}
+              {/* Tool Overview */}
               {d.overviewDescription && (
                 <p class="text-lg text-gray-600 leading-relaxed">{d.overviewDescription}</p>
               )}
@@ -226,6 +249,15 @@ const ogImage = d.seo?.ogImage || d.mainImage?.url;
                 </section>
               )}
             </div>
+          ) : renderMixed ? (
+            <div class="space-y-10">
+              {introH2 && (
+                <h2 class="text-xl font-bold text-gray-900 sm:text-2xl">{introH2}</h2>
+              )}
+              <div class="prose prose-gray max-w-none">
+                <Content />
+              </div>
+            </div>
           ) : (
             /* Fallback: render full markdown body when structured fields missing */
             <div class="prose prose-gray max-w-none">
@@ -236,6 +268,88 @@ const ogImage = d.seo?.ogImage || d.mainImage?.url;
       </div>
     </div>
   </div>
+
+  {/* ── layout01: Learn how to run on ─────────────────────── */}
+  <section class="bg-white py-16 sm:py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+        <div>
+          <h2 class="text-2xl font-bold text-gray-900 sm:text-3xl">{learnHowHeadline}</h2>
+          {learnHowDescription && (
+            <p class="mt-4 text-lg text-gray-600">{learnHowDescription}</p>
+          )}
+          <div class="mt-8">
+            <Button
+              href={learnHowHref}
+              size="lg"
+              target={learnHowExternal ? "_blank" : undefined}
+              rel={learnHowExternal ? "noopener noreferrer" : undefined}
+            >
+              {learnHowCtaLabel}
+            </Button>
+          </div>
+        </div>
+
+        {d.mainImage && (
+          <div class="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
+            <img
+              src={d.mainImage.url}
+              alt={d.mainImage.alt || `${d.title} integration screenshot`}
+              class="w-full object-cover"
+              loading="lazy"
+            />
+          </div>
+        )}
+      </div>
+    </div>
+  </section>
+
+  {/* ── CTA02: Unify Your ML and LLM Workflows ────────────── */}
+  <section class="bg-gray-900 py-16 sm:py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col items-center gap-10 lg:flex-row lg:gap-16">
+        <div class="flex-1 text-center lg:text-left">
+          <h2 class="text-2xl font-bold text-white sm:text-3xl">
+            Unify Your ML and LLM Workflows
+          </h2>
+          <ul class="mt-6 space-y-4">
+            <li class="flex items-start gap-3">
+              <svg class="mt-0.5 h-6 w-6 shrink-0 text-primary-400" viewBox="0 0 28 28" fill="none">
+                <path d="M8.75 14L12.25 17.5L19.25 10.5M25.667 14C25.667 20.443 20.443 25.667 14 25.667C7.557 25.667 2.333 20.443 2.333 14C2.333 7.557 7.557 2.333 14 2.333C20.443 2.333 25.667 7.557 25.667 14Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              <span class="text-lg text-white">Free, powerful MLOps open source foundation</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <svg class="mt-0.5 h-6 w-6 shrink-0 text-primary-400" viewBox="0 0 28 28" fill="none">
+                <path d="M8.75 14L12.25 17.5L19.25 10.5M25.667 14C25.667 20.443 20.443 25.667 14 25.667C7.557 25.667 2.333 20.443 2.333 14C2.333 7.557 7.557 2.333 14 2.333C20.443 2.333 25.667 7.557 25.667 14Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              <span class="text-lg text-white">Works with any infrastructure</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <svg class="mt-0.5 h-6 w-6 shrink-0 text-primary-400" viewBox="0 0 28 28" fill="none">
+                <path d="M8.75 14L12.25 17.5L19.25 10.5M25.667 14C25.667 20.443 20.443 25.667 14 25.667C7.557 25.667 2.333 20.443 2.333 14C2.333 7.557 7.557 2.333 14 2.333C20.443 2.333 25.667 7.557 25.667 14Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              <span class="text-lg text-white">Upgrade to managed Pro features</span>
+            </li>
+          </ul>
+          <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center lg:justify-start">
+            <Button href="/book-your-demo" size="lg">Book a Demo</Button>
+            <Button href="/get-started" variant="secondaryGray" size="lg">Use Open Source</Button>
+          </div>
+        </div>
+        <div class="hidden lg:block lg:flex-1">
+          <img
+            src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/66e9556f/66e9556fd34d2791885b0c5f_model_control_plane_01.png"
+            alt="Dashboard displaying machine learning models, including versions, authors, and tags"
+            class="rounded-xl shadow-2xl"
+            loading="lazy"
+            width="1690"
+            height="960"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
 
   {/* ── Bottom CTA ─────────────────────────────────────────── */}
   <section class="bg-gray-50 py-16 sm:py-20">

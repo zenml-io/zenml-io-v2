@@ -13,14 +13,13 @@ interface Props {
   githubLinkText?: string;
 }
 
-const { title, shortDescription, logo, githubUrl, githubLinkText } = Astro.props;
+const { title, shortDescription, logo, githubUrl, githubLinkText } =
+  Astro.props;
 ---
 
 <div class="bg-white">
   <div class="mx-auto max-w-3xl px-4 py-16 text-center sm:px-6 sm:py-20 lg:px-8">
-    <div class="mb-6 text-sm font-semibold uppercase tracking-widest text-primary-600/40">
-      Integrations
-    </div>
+    <div class="zen-heading-with-bg">Integrations</div>
 
     {/* Logo lockup: integration logo + "and" + ZenML logo */}
     <div class="flex items-center justify-center gap-4">
@@ -66,3 +65,18 @@ const { title, shortDescription, logo, githubUrl, githubLinkText } = Astro.props
     )}
   </div>
 </div>
+
+<style>
+  .zen-heading-with-bg {
+    display: inline-flex;
+    margin-bottom: 1.5rem;
+    border-radius: var(--radius-md);
+    background-color: var(--color-primary-600);
+    background-image: linear-gradient(140deg, var(--color-primary-600), #b0f);
+    color: white;
+    padding: 4px 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.5;
+  }
+</style>
