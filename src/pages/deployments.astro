@@ -1,4 +1,5 @@
 ---
+import Button from "../components/Button.astro";
 /**
  * Deployments page.
  *
@@ -9,16 +10,15 @@
  * methods grid, tabbed architecture diagrams, and final CTA.
  */
 import BaseLayout from "../layouts/BaseLayout.astro";
-import Button from "../components/Button.astro";
 import {
-  DEPLOYMENTS_SEO,
-  DEPLOYMENTS_HERO,
   DEPLOYMENTS_ARCHITECTURE,
   DEPLOYMENTS_COMPARISON,
-  DEPLOYMENTS_SCENARIOS,
-  DEPLOYMENTS_METHODS,
-  DEPLOYMENTS_TABS,
   DEPLOYMENTS_FINAL_CTA,
+  DEPLOYMENTS_HERO,
+  DEPLOYMENTS_METHODS,
+  DEPLOYMENTS_SCENARIOS,
+  DEPLOYMENTS_SEO,
+  DEPLOYMENTS_TABS,
 } from "../lib/deployments";
 ---
 
@@ -29,10 +29,19 @@ import {
   ogDescription={DEPLOYMENTS_SEO.ogDescription}
   ogImage={DEPLOYMENTS_SEO.ogImage}
 >
-  <main>
+  <script is:inline>
+    (() => {
+      const root = document.documentElement;
+      root.classList.add("deployments-tabs-enabled");
+      if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        root.classList.add("reveal-enabled");
+      }
+    })();
+  </script>
+  <main data-page="deployments" data-reveal-scope="deployments">
     {/* Hero */}
     <section class="bg-white pt-16 pb-12 sm:pt-24 sm:pb-16">
-      <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+      <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8" data-reveal>
         <h1 class="text-3xl font-bold text-gray-900 sm:text-4xl lg:text-5xl">
           {DEPLOYMENTS_HERO.headline}
         </h1>
@@ -58,7 +67,7 @@ import {
     {/* Architecture overview (dark) */}
     <section class="bg-gray-900 py-16 sm:py-20">
       <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-        <div class="max-w-3xl">
+        <div class="max-w-3xl" data-reveal>
           <p class="text-sm font-semibold uppercase tracking-wider text-zenml-400">
             {DEPLOYMENTS_ARCHITECTURE.eyebrow}
           </p>
@@ -69,7 +78,7 @@ import {
             {DEPLOYMENTS_ARCHITECTURE.body}
           </p>
         </div>
-        <div class="mt-8">
+        <div class="mt-8" data-reveal style="transition-delay: 80ms;">
           <img
             src={DEPLOYMENTS_ARCHITECTURE.image.url}
             alt={DEPLOYMENTS_ARCHITECTURE.image.alt}
@@ -77,7 +86,7 @@ import {
             loading="lazy"
           />
         </div>
-        <div class="mt-10 grid gap-6 sm:grid-cols-3">
+        <div class="mt-10 grid gap-6 sm:grid-cols-3" data-reveal style="transition-delay: 160ms;">
           {DEPLOYMENTS_ARCHITECTURE.features.map((feat) => (
             <div>
               <p class="text-sm font-semibold uppercase tracking-wider text-orange-400">
@@ -92,9 +101,9 @@ import {
     </section>
 
     {/* Comparison table (dark) */}
-    <section class="bg-gray-900 pb-16 sm:pb-20">
+    <section class="deployments-comparison-section pb-16 sm:pb-20">
       <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-        <div class="max-w-3xl">
+        <div class="max-w-3xl" data-reveal>
           <p class="text-sm font-semibold uppercase tracking-wider text-zenml-400">
             {DEPLOYMENTS_COMPARISON.eyebrow}
           </p>
@@ -102,35 +111,49 @@ import {
             {DEPLOYMENTS_COMPARISON.headline}
           </h2>
         </div>
-        <div class="mt-8 overflow-x-auto">
-          <table class="w-full min-w-[500px] border-collapse text-sm">
+        <div class="mt-8 overflow-x-auto" data-reveal>
+          <table class="w-full min-w-[640px] deployments-comparison-table text-sm">
+            <colgroup>
+              <col style="width: 50%;" />
+              <col style="width: 25%;" />
+              <col style="width: 25%;" />
+            </colgroup>
             <thead>
-              <tr class="border-b border-gray-700">
-                <th class="py-3 pr-4 text-left font-medium text-gray-400">Feature</th>
+              <tr class="deployments-comparison-row-header-copy two-options">
+                <th class="table-feature-heading">Feature</th>
                 {DEPLOYMENTS_COMPARISON.columnHeaders.map((header) => (
-                  <th class="px-4 py-3 text-center font-bold text-white">{header}</th>
+                  <th class="table-col-heading">{header}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
               {DEPLOYMENTS_COMPARISON.rows.map((row, i) => (
                 <tr class:list={[
-                  "border-b border-gray-800",
-                  i % 2 === 0 ? "bg-gray-800/30" : "",
+                  "deployments-comparison-row_two-options",
+                  i % 2 === 0 && "lighter",
                 ]}>
-                  <td class="py-3 pr-4 font-medium text-white">{row.feature}</td>
-                  {row.values.map((val) => (
-                    <td class="px-4 py-3 text-center">
+                  <td class="table-feature">{row.feature}</td>
+                  {row.values.map((val, colIndex) => (
+                    <td class="table-value">
                       {val === true ? (
-                        <svg class="mx-auto h-5 w-5 text-zenml-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <svg
+                          class:list={[
+                            "mx-auto h-5 w-5",
+                            colIndex === 1 || row.values[1] === false ? "text-orange-400" : "text-white",
+                          ]}
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          stroke-width="2"
+                        >
                           <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 12l3 3 6-6m5.5 3a10 10 0 1 1-20 0 10 10 0 0 1 20 0z" />
                         </svg>
                       ) : val === false ? (
-                        <svg class="mx-auto h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <svg class="mx-auto h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="#98A2B3" stroke-width="2">
                           <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14" />
                         </svg>
                       ) : (
-                        <span class="text-gray-300">{val}</span>
+                        <span class="deployments-comparison-text">{val}</span>
                       )}
                     </td>
                   ))}
@@ -149,7 +172,7 @@ import {
           <div class:list={[
             "grid items-center gap-10 lg:grid-cols-2",
             i % 2 === 1 && "lg:[direction:rtl] lg:[&>*]:[direction:ltr]",
-          ]}>
+          ]} data-reveal>
             <div>
               <h2 class="text-2xl font-bold text-gray-900 sm:text-3xl">
                 {scenario.title}
@@ -191,7 +214,7 @@ import {
     <section class="bg-gray-50 py-12">
       <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
         <p class="text-gray-600">Various methods available:</p>
-        <div class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4" data-reveal>
           {DEPLOYMENTS_METHODS.map((method) => (
             <a
               href={method.href}
@@ -218,65 +241,64 @@ import {
     {/* Tabbed architecture diagrams */}
     <section class="bg-white py-16 sm:py-20">
       <div class="mx-auto max-w-5xl px-4 text-center sm:px-6 lg:px-8">
-        <p class="text-sm font-semibold uppercase tracking-wider text-zenml-500">
-          {DEPLOYMENTS_TABS.eyebrow}
-        </p>
-        <h2 class="mt-2 text-2xl font-bold text-gray-900 sm:text-3xl">
-          {DEPLOYMENTS_TABS.headline}
-        </h2>
-        <p class="mt-3 text-lg text-gray-600">{DEPLOYMENTS_TABS.body}</p>
+        <div data-reveal>
+          <p class="text-sm font-semibold uppercase tracking-wider text-zenml-500">
+            {DEPLOYMENTS_TABS.eyebrow}
+          </p>
+          <h2 class="mt-2 text-2xl font-bold text-gray-900 sm:text-3xl">
+            {DEPLOYMENTS_TABS.headline}
+          </h2>
+          <p class="mt-3 text-lg text-gray-600">{DEPLOYMENTS_TABS.body}</p>
+        </div>
 
-        {/* Tab switcher */}
-        <div class="mt-10">
-          <div class="inline-flex rounded-lg border border-gray-200 bg-gray-100 p-1" role="tablist">
+        <div class="deployments-tabs" data-deployments-tabs data-reveal>
+          <div class="deployments-tabs-menu" role="tablist" aria-label="Deployment architectures">
             {DEPLOYMENTS_TABS.tabs.map((tab, i) => (
               <a
                 href={`#deploy-panel-${i}`}
                 role="tab"
                 aria-selected={i === 0 ? "true" : "false"}
                 aria-controls={`deploy-panel-${i}`}
-                data-deploy-panel-id={`deploy-panel-${i}`}
-                class:list={[
-                  "deploy-tab-link flex cursor-pointer items-center gap-2 rounded-md px-4 py-2 text-sm font-semibold no-underline transition-all",
-                  i === 0
-                    ? "bg-white text-gray-900 shadow-sm"
-                    : "text-gray-500 hover:text-gray-700",
-                ]}
+                data-deploy-tab-id={`deploy-panel-${i}`}
+                class:list={["deployments-tab", i === 0 && "w--current"]}
               >
-                {tab.label}
-                <span class:list={[
-                  "rounded-full px-2 py-0.5 text-xs font-bold",
-                  tab.badgeVariant === "pro"
-                    ? "bg-orange-100 text-orange-600"
-                    : "bg-zenml-50 text-zenml-500",
-                ]}>
-                  {tab.badge}
-                </span>
+                <div class="flex items-center gap-2">
+                  <div class="text-base font-semibold text-gray-900">{tab.label}</div>
+                  <span class:list={[
+                    "rounded-full px-2 py-0.5 text-xs font-bold",
+                    tab.badgeVariant === "pro"
+                      ? "bg-orange-100 text-orange-600"
+                      : "bg-zenml-50 text-zenml-500",
+                  ]}>
+                    {tab.badge}
+                  </span>
+                </div>
+                <div class="deployment-description">{tab.description}</div>
               </a>
+            ))}
+          </div>
+
+          <div class="tabs-content">
+            {DEPLOYMENTS_TABS.tabs.map((tab, i) => (
+              <div
+                id={`deploy-panel-${i}`}
+                role="tabpanel"
+                data-deploy-panel
+                class:list={["deployments-tab-pane", i === 0 && "is-active"]}
+              >
+                <img
+                  src={tab.image.url}
+                  alt={tab.image.alt}
+                  class="deployment-image"
+                  loading="lazy"
+                />
+              </div>
             ))}
           </div>
         </div>
 
-        {/* Tab panels */}
-        {DEPLOYMENTS_TABS.tabs.map((tab, i) => (
-          <div
-            id={`deploy-panel-${i}`}
-            role="tabpanel"
-            data-deploy-panel
-            class:list={["deploy-tab-panel mt-6", i !== 0 && "hidden"]}
-          >
-            <p class="mx-auto max-w-2xl text-sm text-gray-600">{tab.description}</p>
-            <img
-              src={tab.image.url}
-              alt={tab.image.alt}
-              class="mx-auto mt-6 max-w-[680px] w-full"
-              loading="lazy"
-            />
-          </div>
-        ))}
-
         {/* Feature grid */}
-        <div class="mt-12 grid gap-6 text-left sm:grid-cols-2 lg:grid-cols-3">
+        <div class="mt-12 grid gap-6 text-left sm:grid-cols-2 lg:grid-cols-3" data-reveal>
           {DEPLOYMENTS_TABS.features.map((feat) => (
             <div>
               <h3 class="font-semibold text-gray-900">{feat.title}</h3>
@@ -290,7 +312,7 @@ import {
     {/* Final CTA (dark) */}
     <section class="bg-gray-900 py-16 sm:py-20">
       <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <div class="grid items-center gap-10 lg:grid-cols-2">
+        <div class="grid items-center gap-10 lg:grid-cols-2" data-reveal>
           <div>
             <h2 class="text-2xl font-bold text-white sm:text-3xl">
               {DEPLOYMENTS_FINAL_CTA.headline}
@@ -326,37 +348,296 @@ import {
   </main>
 </BaseLayout>
 
-{/* Tab switching script */}
+<style is:global>
+  [data-page="deployments"] .deployments-comparison-section {
+    background-color: var(--color-zenml-700);
+  }
+
+  [data-page="deployments"] .deployments-comparison-table {
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+
+  [data-page="deployments"] .deployments-comparison-row-header-copy.two-options .table-feature-heading,
+  [data-page="deployments"] .deployments-comparison-row-header-copy.two-options .table-col-heading {
+    padding: 1rem;
+    border-bottom: 0;
+    color: #fff;
+    font-size: 0.875rem;
+    font-weight: 700;
+  }
+
+  [data-page="deployments"] .deployments-comparison-row-header-copy.two-options .table-feature-heading {
+    text-align: left;
+  }
+
+  [data-page="deployments"] .deployments-comparison-row-header-copy.two-options .table-col-heading {
+    text-align: center;
+  }
+
+  [data-page="deployments"] .deployments-comparison-row_two-options .table-feature,
+  [data-page="deployments"] .deployments-comparison-row_two-options .table-value {
+    padding: 1rem;
+    border-bottom: 0;
+    background-color: var(--color-zenml-700);
+  }
+
+  [data-page="deployments"] .deployments-comparison-row_two-options.lighter .table-feature,
+  [data-page="deployments"] .deployments-comparison-row_two-options.lighter .table-value {
+    background-color: var(--color-zenml-600);
+  }
+
+  [data-page="deployments"] .deployments-comparison-row_two-options .table-feature {
+    color: #fff;
+    font-weight: 500;
+    text-align: left;
+  }
+
+  [data-page="deployments"] .deployments-comparison-row_two-options .table-value {
+    text-align: center;
+  }
+
+  [data-page="deployments"] .deployments-comparison-text {
+    color: #fff;
+  }
+
+  [data-page="deployments"] .deployments-tabs {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+    margin-top: 2rem;
+  }
+
+  [data-page="deployments"] .deployments-tabs-menu {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: flex-start;
+    width: 20%;
+    min-width: 12rem;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    padding-top: 1rem;
+  }
+
+  [data-page="deployments"] .deployments-tab {
+    width: 100%;
+    border-bottom: 1px solid var(--color-gray-500);
+    background-color: transparent;
+    overflow: hidden;
+    text-decoration: none;
+    text-align: left;
+    padding-bottom: 0.5rem;
+  }
+
+  .deployments-tabs-enabled [data-page="deployments"] .deployments-tab {
+    opacity: 0.2;
+  }
+
+  [data-page="deployments"] .deployments-tab.w--current {
+    border-bottom-width: 2px;
+    border-color: var(--color-zenml-500);
+    opacity: 1;
+    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+  }
+
+  [data-page="deployments"] .deployment-description {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.75rem;
+    line-height: 1.5;
+    color: var(--color-gray-700);
+  }
+
+  .deployments-tabs-enabled [data-page="deployments"] .deployment-description {
+    max-height: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+
+  .deployments-tabs-enabled [data-page="deployments"] .deployments-tab.w--current .deployment-description {
+    max-height: 12rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    opacity: 1;
+  }
+
+  [data-page="deployments"] .tabs-content {
+    flex: 1;
+    justify-content: center;
+    align-items: flex-start;
+    display: flex;
+  }
+
+  [data-page="deployments"] .deployments-tab-pane {
+    width: 100%;
+    text-align: center;
+  }
+
+  .deployments-tabs-enabled [data-page="deployments"] .deployments-tab-pane {
+    display: none;
+  }
+
+  .deployments-tabs-enabled [data-page="deployments"] .deployments-tab-pane.is-active {
+    display: block;
+  }
+
+  [data-page="deployments"] .deployment-image {
+    border: 1px solid var(--color-gray-300);
+    border-radius: var(--radius-md);
+    background-color: #fff;
+    width: 100%;
+    max-width: 680px;
+    padding: 1rem;
+  }
+
+  [data-page="deployments"] [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+
+  .reveal-enabled [data-page="deployments"] [data-reveal] {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  }
+
+  .reveal-enabled [data-page="deployments"] [data-reveal].in-view {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (max-width: 1023px) {
+    [data-page="deployments"] .deployments-tabs {
+      flex-direction: column;
+    }
+
+    [data-page="deployments"] .deployments-tabs-menu {
+      width: 100%;
+      min-width: 0;
+    }
+
+    [data-page="deployments"] .tabs-content {
+      width: 100%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal-enabled [data-page="deployments"] [data-reveal] {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+
+    .deployments-tabs-enabled [data-page="deployments"] .deployment-description {
+      transition: none;
+    }
+  }
+</style>
+
 <script>
-  const tabLinks = document.querySelectorAll<HTMLAnchorElement>(".deploy-tab-link");
-  const panels = document.querySelectorAll<HTMLDivElement>("[data-deploy-panel]");
+  (() => {
+    const page = document.querySelector('[data-page="deployments"]');
+    if (!page) return;
 
-  const setActivePanel = (panelId: string | null) => {
-    tabLinks.forEach((link) => {
-      const isActive = link.dataset.deployPanelId === panelId;
-      link.setAttribute("aria-selected", String(isActive));
-      link.classList.toggle("bg-white", isActive);
-      link.classList.toggle("text-gray-900", isActive);
-      link.classList.toggle("shadow-sm", isActive);
-      link.classList.toggle("text-gray-500", !isActive);
-    });
+    const tabsRoot = page.querySelector("[data-deployments-tabs]");
+    if (tabsRoot && tabsRoot.dataset.initialized !== "true") {
+      tabsRoot.dataset.initialized = "true";
+      const tabs = Array.from(tabsRoot.querySelectorAll(".deployments-tab"));
+      const panels = Array.from(tabsRoot.querySelectorAll("[data-deploy-panel]"));
+      const validPanelIds = new Set(panels.map((panel) => panel.id));
 
-    panels.forEach((panel) => {
-      panel.classList.toggle("hidden", panel.id !== panelId);
-    });
-  };
+      const resolvePanelId = (candidateId) => {
+        if (candidateId && validPanelIds.has(candidateId)) return candidateId;
+        return panels[0]?.id ?? null;
+      };
 
-  const updateTabStateFromHash = () => {
-    const hashId = window.location.hash.replace("#", "");
-    const defaultPanelId = tabLinks[0]?.dataset.deployPanelId ?? null;
-    const panelId =
-      hashId && document.getElementById(hashId)?.hasAttribute("data-deploy-panel")
-        ? hashId
-        : defaultPanelId;
+      const setActivePanel = (panelId, updateHash = true) => {
+        if (!panelId) return;
+        tabs.forEach((tab) => {
+          const isActive = tab.dataset.deployTabId === panelId;
+          tab.classList.toggle("w--current", isActive);
+          tab.setAttribute("aria-selected", String(isActive));
+          tab.setAttribute("tabindex", isActive ? "0" : "-1");
+        });
+        panels.forEach((panel) => {
+          panel.classList.toggle("is-active", panel.id === panelId);
+        });
+        if (updateHash) history.replaceState(null, "", `#${panelId}`);
+      };
 
-    setActivePanel(panelId);
-  };
+      const activateByIndex = (index) => {
+        const tab = tabs[index];
+        if (!tab) return;
+        const panelId = resolvePanelId(tab.dataset.deployTabId);
+        if (!panelId) return;
+        tab.focus();
+        setActivePanel(panelId);
+      };
 
-  window.addEventListener("hashchange", updateTabStateFromHash);
-  updateTabStateFromHash();
+      tabs.forEach((tab, index) => {
+        tab.addEventListener("click", (event) => {
+          event.preventDefault();
+          const panelId = resolvePanelId(tab.dataset.deployTabId);
+          setActivePanel(panelId);
+        });
+
+        tab.addEventListener("keydown", (event) => {
+          if (event.key === "ArrowDown" || event.key === "ArrowRight") {
+            event.preventDefault();
+            activateByIndex((index + 1) % tabs.length);
+          } else if (event.key === "ArrowUp" || event.key === "ArrowLeft") {
+            event.preventDefault();
+            activateByIndex((index - 1 + tabs.length) % tabs.length);
+          } else if (event.key === "Home") {
+            event.preventDefault();
+            activateByIndex(0);
+          } else if (event.key === "End") {
+            event.preventDefault();
+            activateByIndex(tabs.length - 1);
+          } else if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            const panelId = resolvePanelId(tab.dataset.deployTabId);
+            setActivePanel(panelId);
+          }
+        });
+      });
+
+      const activateFromHash = () => {
+        const hashPanelId = resolvePanelId(window.location.hash.replace("#", ""));
+        setActivePanel(hashPanelId, false);
+      };
+
+      window.addEventListener("hashchange", activateFromHash);
+      activateFromHash();
+    }
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const revealScope = page.querySelector('[data-reveal-scope="deployments"]');
+    if (!revealScope || revealScope.dataset.revealInitialized === "true") return;
+    revealScope.dataset.revealInitialized = "true";
+
+    const revealElements = revealScope.querySelectorAll("[data-reveal]");
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add("in-view");
+          observer.unobserve(entry.target);
+        });
+      },
+      {
+        threshold: 0.1,
+        rootMargin: "0px 0px -40px 0px",
+      }
+    );
+
+    revealElements.forEach((element) => observer.observe(element));
+  })();
 </script>
