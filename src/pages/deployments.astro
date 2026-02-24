@@ -230,14 +230,14 @@ import {
         <div class="mt-10">
           <div class="inline-flex rounded-lg border border-gray-200 bg-gray-100 p-1" role="tablist">
             {DEPLOYMENTS_TABS.tabs.map((tab, i) => (
-              <button
-                type="button"
+              <a
+                href={`#deploy-panel-${i}`}
                 role="tab"
                 aria-selected={i === 0 ? "true" : "false"}
                 aria-controls={`deploy-panel-${i}`}
-                data-deploy-tab-index={i}
+                data-deploy-panel-id={`deploy-panel-${i}`}
                 class:list={[
-                  "deploy-tab-btn flex items-center gap-2 rounded-md px-4 py-2 text-sm font-semibold transition-all",
+                  "deploy-tab-link flex cursor-pointer items-center gap-2 rounded-md px-4 py-2 text-sm font-semibold no-underline transition-all",
                   i === 0
                     ? "bg-white text-gray-900 shadow-sm"
                     : "text-gray-500 hover:text-gray-700",
@@ -252,7 +252,7 @@ import {
                 ]}>
                   {tab.badge}
                 </span>
-              </button>
+              </a>
             ))}
           </div>
         </div>
@@ -262,7 +262,8 @@ import {
           <div
             id={`deploy-panel-${i}`}
             role="tabpanel"
-            class:list={["mt-6", i !== 0 && "hidden"]}
+            data-deploy-panel
+            class:list={["deploy-tab-panel mt-6", i !== 0 && "hidden"]}
           >
             <p class="mx-auto max-w-2xl text-sm text-gray-600">{tab.description}</p>
             <img
@@ -327,21 +328,35 @@ import {
 
 {/* Tab switching script */}
 <script>
-  const buttons = document.querySelectorAll<HTMLButtonElement>(".deploy-tab-btn");
-  buttons.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const idx = btn.dataset.deployTabIndex;
-      buttons.forEach((b, i) => {
-        const isActive = String(i) === idx;
-        b.setAttribute("aria-selected", String(isActive));
-        b.classList.toggle("bg-white", isActive);
-        b.classList.toggle("text-gray-900", isActive);
-        b.classList.toggle("shadow-sm", isActive);
-        b.classList.toggle("text-gray-500", !isActive);
-      });
-      document.querySelectorAll<HTMLDivElement>("[id^='deploy-panel-']").forEach((panel, i) => {
-        panel.classList.toggle("hidden", String(i) !== idx);
-      });
+  const tabLinks = document.querySelectorAll<HTMLAnchorElement>(".deploy-tab-link");
+  const panels = document.querySelectorAll<HTMLDivElement>("[data-deploy-panel]");
+
+  const setActivePanel = (panelId: string | null) => {
+    tabLinks.forEach((link) => {
+      const isActive = link.dataset.deployPanelId === panelId;
+      link.setAttribute("aria-selected", String(isActive));
+      link.classList.toggle("bg-white", isActive);
+      link.classList.toggle("text-gray-900", isActive);
+      link.classList.toggle("shadow-sm", isActive);
+      link.classList.toggle("text-gray-500", !isActive);
     });
-  });
+
+    panels.forEach((panel) => {
+      panel.classList.toggle("hidden", panel.id !== panelId);
+    });
+  };
+
+  const updateTabStateFromHash = () => {
+    const hashId = window.location.hash.replace("#", "");
+    const defaultPanelId = tabLinks[0]?.dataset.deployPanelId ?? null;
+    const panelId =
+      hashId && document.getElementById(hashId)?.hasAttribute("data-deploy-panel")
+        ? hashId
+        : defaultPanelId;
+
+    setActivePanel(panelId);
+  };
+
+  window.addEventListener("hashchange", updateTabStateFromHash);
+  updateTabStateFromHash();
 </script>
