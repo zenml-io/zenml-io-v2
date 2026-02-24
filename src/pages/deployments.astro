@@ -65,9 +65,9 @@ import {
     </section>
 
     {/* Architecture overview (dark) */}
-    <section class="bg-gray-900 py-16 sm:py-20">
-      <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-        <div class="max-w-3xl" data-reveal>
+    <section class="deployments-dark-rail py-24 sm:py-28">
+      <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div class="mx-auto max-w-3xl text-center" data-reveal>
           <p class="text-sm font-semibold uppercase tracking-wider text-zenml-400">
             {DEPLOYMENTS_ARCHITECTURE.eyebrow}
           </p>
@@ -82,13 +82,13 @@ import {
           <img
             src={DEPLOYMENTS_ARCHITECTURE.image.url}
             alt={DEPLOYMENTS_ARCHITECTURE.image.alt}
-            class="w-full max-w-[900px]"
+            class="mx-auto w-full max-w-[900px]"
             loading="lazy"
           />
         </div>
-        <div class="mt-10 grid gap-6 sm:grid-cols-3" data-reveal style="transition-delay: 160ms;">
+        <div class="deployments-arch-cards mt-16 grid gap-8 sm:grid-cols-3" data-reveal style="transition-delay: 160ms;">
           {DEPLOYMENTS_ARCHITECTURE.features.map((feat) => (
-            <div>
+            <div class="deployments-arch-card">
               <p class="text-sm font-semibold uppercase tracking-wider text-orange-400">
                 {feat.eyebrow}
               </p>
@@ -101,7 +101,7 @@ import {
     </section>
 
     {/* Comparison table (dark) */}
-    <section class="deployments-comparison-section pb-16 sm:pb-20">
+    <section class="deployments-comparison-section pb-24 sm:pb-28">
       <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
         <div class="max-w-3xl" data-reveal>
           <p class="text-sm font-semibold uppercase tracking-wider text-zenml-400">
@@ -310,28 +310,32 @@ import {
     </section>
 
     {/* Final CTA (dark) */}
-    <section class="bg-gray-900 py-16 sm:py-20">
+    <section class="deployments-final-cta-section py-20 sm:py-24">
       <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <div class="grid items-center gap-10 lg:grid-cols-2" data-reveal>
+        <div class="deployments-final-cta-component" data-reveal>
           <div>
             <h2 class="text-2xl font-bold text-white sm:text-3xl">
               {DEPLOYMENTS_FINAL_CTA.headline}
             </h2>
-            <ul class="mt-6 space-y-3">
+            <ul class="deployments-final-cta-item-list">
               {DEPLOYMENTS_FINAL_CTA.bullets.map((bullet) => (
-                <li class="flex items-center gap-3 text-lg text-white">
-                  <svg class="h-6 w-6 flex-shrink-0 text-zenml-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" />
+                <li class="deployments-final-cta-item">
+                  <svg class="deployments-final-cta-item-icon" fill="none" viewBox="0 0 28 28" stroke="currentColor" stroke-width="2">
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M8.75 14l3.5 3.5 7-7M25.666 14c0 6.443-5.223 11.666-11.666 11.666S2.334 20.443 2.334 14 7.557 2.334 14 2.334 25.666 7.557 25.666 14z"
+                    ></path>
                   </svg>
-                  {bullet}
+                  <span>{bullet}</span>
                 </li>
               ))}
             </ul>
-            <div class="mt-8 flex flex-wrap gap-3">
-              <Button href={DEPLOYMENTS_FINAL_CTA.primaryCta.href} variant="secondary" size="lg">
+            <div class="deployments-final-cta-button-row">
+              <Button href={DEPLOYMENTS_FINAL_CTA.primaryCta.href} variant="primary" size="lg">
                 {DEPLOYMENTS_FINAL_CTA.primaryCta.label}
               </Button>
-              <Button href={DEPLOYMENTS_FINAL_CTA.secondaryCta.href} size="lg">
+              <Button href={DEPLOYMENTS_FINAL_CTA.secondaryCta.href} variant="secondaryGray" size="lg">
                 {DEPLOYMENTS_FINAL_CTA.secondaryCta.label}
               </Button>
             </div>
@@ -339,7 +343,7 @@ import {
           <img
             src={DEPLOYMENTS_FINAL_CTA.image.url}
             alt={DEPLOYMENTS_FINAL_CTA.image.alt}
-            class="w-full rounded-xl shadow-2xl"
+            class="deployments-final-cta-image"
             loading="lazy"
           />
         </div>
@@ -349,8 +353,24 @@ import {
 </BaseLayout>
 
 <style is:global>
+  [data-page="deployments"] .deployments-dark-rail,
   [data-page="deployments"] .deployments-comparison-section {
     background-color: var(--color-zenml-700);
+  }
+
+  [data-page="deployments"] .deployments-arch-cards {
+    margin-bottom: 4rem;
+  }
+
+  [data-page="deployments"] .deployments-arch-card {
+    text-align: left;
+    background-color: var(--color-zenml-600);
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    padding: 1.5rem;
+    display: flex;
   }
 
   [data-page="deployments"] .deployments-comparison-table {
@@ -496,6 +516,57 @@ import {
     padding: 1rem;
   }
 
+  [data-page="deployments"] .deployments-final-cta-section {
+    background-color: var(--color-zenml-700);
+    background-image: radial-gradient(circle at 80% 20%, rgba(122, 62, 244, 0.4) 0%, rgba(122, 62, 244, 0) 38%),
+      linear-gradient(180deg, var(--color-zenml-700) 0%, var(--color-zenml-800) 100%);
+    overflow: hidden;
+  }
+
+  [data-page="deployments"] .deployments-final-cta-component {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 2rem 4rem;
+  }
+
+  [data-page="deployments"] .deployments-final-cta-item-list {
+    display: grid;
+    gap: 1rem;
+    margin-top: 2rem;
+    margin-bottom: 2.5rem;
+  }
+
+  [data-page="deployments"] .deployments-final-cta-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    font-size: 1.125rem;
+    line-height: 1.6;
+    color: #fff;
+  }
+
+  [data-page="deployments"] .deployments-final-cta-item-icon {
+    width: 1.75rem;
+    height: 1.75rem;
+    flex-shrink: 0;
+    color: var(--color-zenml-500);
+    margin-top: 0.1rem;
+  }
+
+  [data-page="deployments"] .deployments-final-cta-button-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: center;
+  }
+
+  [data-page="deployments"] .deployments-final-cta-image {
+    width: 100%;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-large);
+  }
+
   [data-page="deployments"] [data-reveal] {
     opacity: 1;
     transform: none;
@@ -524,6 +595,11 @@ import {
 
     [data-page="deployments"] .tabs-content {
       width: 100%;
+    }
+
+    [data-page="deployments"] .deployments-final-cta-component {
+      grid-template-columns: 1fr;
+      gap: 2rem;
     }
   }
 

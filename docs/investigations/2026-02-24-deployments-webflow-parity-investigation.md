@@ -178,3 +178,53 @@ Current repository evidence suggests this is **not** a code/data omission at HEA
 1. `view-source:https://<deployed>/deployments` (search `Self-hosted`)
 2. If found, inspect computed styles for the first-row `<span>` cells.
 3. If not found, verify deployment artifact/caching and route variant (`/deployments` vs `/deployments/`).
+
+## Deployed R1 empty-values symptom — validation workflow (HTML vs cache vs computed styles)
+
+### Source truth already confirmed
+- Source constants include the first-row string values:
+  - `src/lib/deployments.ts` includes `"Self-hosted"` and `"SaaS / Self-hosted"`.
+- Local renderer/build includes these strings:
+  - `dist/deployments.html` contains both values.
+
+### Branch 1 — Verify shipped HTML on deployed route
+Run both route variants and search for first-row text:
+
+```bash
+curl -sSL 'https://<DEPLOYED>/deployments' | rg -n 'Self-hosted|SaaS /'
+curl -sSL 'https://<DEPLOYED>/deployments/' | rg -n 'Self-hosted|SaaS /'
+```
+
+Also open `view-source:https://<DEPLOYED>/deployments` and search for `Self-hosted`.
+
+### Branch 2 — If HTML has values, check if CSS/runtime hides them
+In browser DevTools on the first-row text cell (`<span class="deployments-comparison-text">...`):
+1. Confirm node exists in DOM with expected text.
+2. Check computed styles for: `color`, `opacity`, `display`, `visibility`, `font-size`, clipping/overflow, and positional offsets.
+3. Temporarily force `opacity: 1; color: white;` to test visibility quickly.
+
+### Branch 3 — If HTML does not have values, investigate stale artifact/cache
+Collect response headers and deployment metadata:
+
+```bash
+curl -sSI 'https://<DEPLOYED>/deployments'
+```
+
+Record and compare:
+- `cache-control`
+- `etag`
+- `last-modified`
+- CDN cache status headers (for example `cf-cache-status`, `age`)
+
+If stale, purge/invalidate CDN cache and verify the active deployment artifact/commit SHA.
+
+### Findings status (as of 2026-02-24)
+| Environment | HTML contains values? | Visible in browser? | Notes |
+|---|---:|---:|---|
+| Local source/build | Yes | Yes | Confirmed from source constants + local build artifact |
+| Deployed environment (reported) | Unknown | Reported “No” | Requires Branch 1 run on actual deployed URL |
+
+### Next action owner handoff
+- Next investigator should run **Branch 1 first**.
+- Only continue to **Branch 2** if HTML contains the values.
+- Use **Branch 3** only when deployed HTML itself is missing values.
