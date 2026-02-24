@@ -34,7 +34,7 @@ The mismatch came from our newly added Astro rail using dark CTA styles and scro
 - `design/webflow-export-latest-2026-02-23/extracted/detail_integrations.html:907-909,947-949`
   - per-icon anchor wrappers (`a.integration-slide`) confirm clickable icons.
 - `design/webflow-export-latest-2026-02-23/extracted/detail_integrations.html:956`
-  - `fs-cmsstatic-order="6"` suggests constrained/capped curated presentation.
+  - `fs-cmsstatic-order="6"` indicates constrained CMS ordering (not a complete “show all” rail).
 **Conclusion:** Confirmed parity target.
 
 ### Phase 3 - Follow-up deep dive
@@ -62,7 +62,7 @@ The mismatch came from our newly added Astro rail using dark CTA styles and scro
 - `src/pages/integrations/[slug].astro`
   - bottom CTA now `bg-gray-50`
   - heading/paragraph switched to dark-on-light text
-  - detail rail call now `limit={6}` + `variant="ctaCentered"`
+  - detail rail call now `limit={11}` + `variant="ctaCentered"`
 - `src/components/integrations/IntegrationsLogoRail.astro`
   - added `variant` prop (`scroll` | `ctaCentered`)
   - `ctaCentered` branch uses `overflow-hidden` centered row (no `overflow-x-auto`)
@@ -80,10 +80,10 @@ Two implementation mismatches were introduced during the first parity pass:
 ## Eliminated Hypotheses
 - **“Webflow itself is scrollable and we just missed CSS”** → Eliminated. Webflow uses centered flex with overflow hidden on the parent section block.
 - **“Background mismatch is caused by button variant only”** → Eliminated. Root cause is section-level background class in detail page template.
-- **“All-logo display is required for parity”** → Eliminated. Webflow evidence includes constrained ordering (`fs-cmsstatic-order="6"`) and no scroller behavior.
+- **“All-logo display is required for parity”** → Eliminated. Webflow evidence indicates constrained ordering and no scroller behavior.
 
 ## Recommendations
-1. Keep the detail page rail invocation explicit: `variant="ctaCentered"` and `limit={6}`.
+1. Keep the detail page rail invocation explicit: `variant="ctaCentered"` and a capped `limit` (currently `11` for visual parity).
 2. Keep a separate `scroll` variant for contexts that intentionally need horizontal scroll.
 3. Preserve tile dimensions and hover treatment close to Webflow (60x60 tile, 40x40 icon, subtle transition).
 
