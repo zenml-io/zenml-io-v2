@@ -103,8 +103,8 @@ import {
     {/* Comparison table (dark) */}
     <section class="deployments-comparison-section pb-24 sm:pb-28">
       <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-        <div class="max-w-3xl" data-reveal>
-          <p class="text-sm font-semibold uppercase tracking-wider text-zenml-400">
+        <div class="mx-auto max-w-3xl text-center" data-reveal>
+          <p class="deployments-comparison-eyebrow text-sm font-semibold uppercase tracking-wider">
             {DEPLOYMENTS_COMPARISON.eyebrow}
           </p>
           <h2 class="mt-2 text-2xl font-bold text-white sm:text-3xl">
@@ -371,6 +371,10 @@ import {
     width: 100%;
     padding: 1.5rem;
     display: flex;
+  }
+
+  [data-page="deployments"] .deployments-comparison-eyebrow {
+    color: var(--color-zenml-500);
   }
 
   [data-page="deployments"] .deployments-comparison-table {
