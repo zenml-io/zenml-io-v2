@@ -17,7 +17,7 @@ tags:
 date: "2022-06-13T00:00:00.000Z"
 readingTime: 5 Mins Read
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/fee05f70/65316c6ffcb70cbeed3f2f2e_allison-louise-xABgmlX4ABE-unsplash.jpg"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/fee05f70/65316c6ffcb70cbeed3f2f2e_allison-louise-xABgmlX4ABE-unsplash.jpg"
 ---
 
 **Last updated:** October 17, 2022.
@@ -31,7 +31,7 @@ Beyond this, as usual we included a number of smaller bugfixes and documentation
 Who says you need complicated infrastructure setup to run your pipeline? Just use GitHub Actions. With [this new addition](https://github.com/zenml-io/zenml/pull/685) to ZenML’s ever-growing list of built-in orchestrators, you can run your pipelines using GitHub Actions to manage the dependencies between steps.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8fabf036/65316ca62b6c16e639e56edb_github_actions_ui.png" alt="Running your pipelines using GitHub Actions as orchestrator" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8fabf036/65316ca62b6c16e639e56edb_github_actions_ui.png" alt="Running your pipelines using GitHub Actions as orchestrator" />
 </figure>
 
 You wouldn’t want your secrets floating around openly in your code commits, so we made sure to integrate with [the way GitHub stores secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets) as encrypted environment variables.
@@ -49,7 +49,7 @@ The most exciting thing about this new orchestrator is that it came as a direct 
 [Our community-focused ZenHack day](https://youtu.be/8qb5IABTZ-s) included a number of features that were implemented alongside one another. Among those was a [ChatOps](https://www.atlassian.com/blog/software-teams/what-is-chatops-adoption-guide)-inspired Alerter component, with Slack as its first inbuilt implementation.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d1089d1b/65316ca705577e5ed1e6ac8f_slack-alerter.png" alt="Slack alerter user workflow" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d1089d1b/65316ca705577e5ed1e6ac8f_slack-alerter.png" alt="Slack alerter user workflow" />
 </figure>
 
 You can now define interfaces where you can interact with and make decisions around how your steps get executed through Slack commands. Because seriously, who’d rather do this in the terminal when you can get a friendly Slack ping instead?
@@ -63,7 +63,7 @@ Barely a release passes without some user-facing CLI improvements, and this one 
 <ul><li>If you want to register a stack component but aren’t sure exactly which attributes to register for your particular component, we <a href="https://github.com/zenml-io/zenml/pull/695">added an interactive CLI flow</a> that guides you through everything you need to include.</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8be79554/65316ca6b5fe5f21c8709c9d_interactive.png" alt="An interactive way to add stack components in ZenML" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8be79554/65316ca6b5fe5f21c8709c9d_interactive.png" alt="An interactive way to add stack components in ZenML" />
 </figure>
 
 <ul><li>We previously added the ability to update a pre-existing stack in place, but sometimes you want to duplicate a stack and make a slight modification to one you already configured. In this release we’ve given you that option with the easy zenml stack copy command.</li></ul>

@@ -17,7 +17,7 @@ tags:
 date: "2022-04-28T00:00:00.000Z"
 readingTime: 5 Mins Read
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/89107a6a/65316a8e2b6c16e639e3b1b4_balloons__2_.jpg"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/89107a6a/65316a8e2b6c16e639e3b1b4_balloons__2_.jpg"
 ---
 
 **Last updated:** October 17, 2022.
@@ -58,7 +58,7 @@ And that’s it, we have a shared experiment tracking component in our stack. We
 The latest ZenML release brings two amazing new integrations with HuggingFace and Weights & Biases. Both these integrations were contributions from the growing ZenML community and we could not be more grateful 🙏! In a timely fashion, [Richard Socher](https://de.wikipedia.org/wiki/Richard_Socher) gave a shoutout to all three companies in his [latest interview with Future by a16z](https://future.a16z.com/a-decade-of-deep-learning-ai-startup/).
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5ef57814/65316aa87b744447a519430e_richard_socher_shoutout.png" alt="Richard Socher" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5ef57814/65316aa87b744447a519430e_richard_socher_shoutout.png" alt="Richard Socher" />
 </figure>
 
 [HuggingFace](https://huggingface.co/) models are now supported to be passed through ZenML pipelines [see full example](https://zenml.io/integrations/huggingface). Huge shoutout to [@Ankur3107](https://github.com/Ankur3107) for PR [#467](https://github.com/zenml-io/zenml/pull/467).

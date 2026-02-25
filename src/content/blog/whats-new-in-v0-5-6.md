@@ -17,7 +17,7 @@ tags:
 date: "2021-12-23T00:00:00.000Z"
 readingTime: 1 Min Read
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a3e4cbf1/65311cae44672e646fc04baf_balloons-unsplash-0-5-6.jpeg"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a3e4cbf1/65311cae44672e646fc04baf_balloons-unsplash-0-5-6.jpeg"
 ---
 
 **Last updated:** November 3, 2022.

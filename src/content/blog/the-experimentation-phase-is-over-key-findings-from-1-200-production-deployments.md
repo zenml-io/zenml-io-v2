@@ -21,12 +21,12 @@ tags:
 date: "2025-12-19T00:00:00.000Z"
 readingTime: 3 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/22d06e8a/6981d352ce4b26d085d70414_6981d2b4e0df7e2b97a5ff54_zenml-llms-short.avif"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/22d06e8a/6981d352ce4b26d085d70414_6981d2b4e0df7e2b97a5ff54_zenml-llms-short.avif"
 seo:
   title: "The Experimentation Phase Is Over: Key Findings from 1,200 Production Deployments - ZenML Blog"
   description: "Analysis of 1,200 production LLM deployments reveals six key patterns separating successful teams from those stuck in demo mode: context engineering over prompt engineering, infrastructure-based guardrails, rigorous evaluation practices, and the recognition that software engineering fundamentals—not frontier models—remain the primary predictor of success."
   canonical: "https://www.zenml.io/blog/the-experimentation-phase-is-over-key-findings-from-1-200-production-deployments"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/22d06e8a/6981d352ce4b26d085d70414_6981d2b4e0df7e2b97a5ff54_zenml-llms-short.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/22d06e8a/6981d352ce4b26d085d70414_6981d2b4e0df7e2b97a5ff54_zenml-llms-short.avif"
   ogTitle: "The Experimentation Phase Is Over: Key Findings from 1,200 Production Deployments - ZenML Blog"
   ogDescription: "Analysis of 1,200 production LLM deployments reveals six key patterns separating successful teams from those stuck in demo mode: context engineering over prompt engineering, infrastructure-based guardrails, rigorous evaluation practices, and the recognition that software engineering fundamentals—not frontier models—remain the primary predictor of success."
 ---

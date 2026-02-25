@@ -20,12 +20,12 @@ tags:
 date: "2025-11-14T00:00:00.000Z"
 readingTime: 15 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1972edbc/6916b42dfd3cc25c91252f9a_langfuse-alternatives.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1972edbc/6916b42dfd3cc25c91252f9a_langfuse-alternatives.png"
 seo:
   title: "8 Best Langfuse Alternatives to Trace, Evaluate, and Manage Prompts for Your LLM Application - ZenML Blog"
   description: "In this article, you learn about the best Langfuse alternatives for tracing, eval, prompt management, and metrics for LLM apps."
   canonical: "https://www.zenml.io/blog/langfuse-alternatives"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1972edbc/6916b42dfd3cc25c91252f9a_langfuse-alternatives.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1972edbc/6916b42dfd3cc25c91252f9a_langfuse-alternatives.png"
   ogTitle: "8 Best Langfuse Alternatives to Trace, Evaluate, and Manage Prompts for Your LLM Application - ZenML Blog"
   ogDescription: "In this article, you learn about the best Langfuse alternatives for tracing, eval, prompt management, and metrics for LLM apps."
 ---
@@ -47,7 +47,7 @@ In this article, we briefly cover why you might seek a Langfuse alternative, wha
 Even if Langfuse jump-started your LLM observability, as your application matures, your architectural or organizational needs might shift.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e237a87c/6916b2c243137ea9815553fd_why-do-you-need-a-langfuse-alternative.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e237a87c/6916b2c243137ea9815553fd_why-do-you-need-a-langfuse-alternative.webp" alt="__wf_reserved_inherit" />
   <figcaption>Why do you need a Langfuse alternative</figcaption>
 </figure>
 
@@ -98,7 +98,7 @@ Here’s a quick table comparing the best Langfuse alternatives:
 **Best for:** Teams that want a unified, open-source MLOps + [LLMOps platform](https://docs.zenml.io/user-guides/llmops-guide) with governance, lineage, and evaluation baked into reproducible pipelines; so observability isn’t a sidecar but part of the system.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/09f03b74/68ef8fecaaa4ab4a11f6d502_zenml-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/09f03b74/68ef8fecaaa4ab4a11f6d502_zenml-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [ZenML](https://www.zenml.io/) is an open-source AI platform that spans pipelines → deployment → agents. Instead of adding tracing after the fact, ZenML treats observability as metadata flowing through versioned pipelines: every run, artifact, and prompt/dataset can be tracked, compared, and gated with human approvals and alerts.
@@ -116,7 +116,7 @@ ZenML is free and open-source under the Apache 2.0 license. The core framework a
 For teams needing enterprise-grade collaboration, managed hosting, and premium support, ZenML offers custom business plans. These are typically usage- or seat-based and are tailored depending on your deployment model (cloud or on-prem).
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/566ecac3/6916b2f1e727fa75e3efeca3_zenml-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/566ecac3/6916b2f1e727fa75e3efeca3_zenml-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -128,7 +128,7 @@ The trade-off is that ZenML isn’t a drop-in, per-request tracing UI like Langf
 ## 2. LangSmith
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/274ccfd1/6916b35968dc1de1426ba228_langsmith-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/274ccfd1/6916b35968dc1de1426ba228_langsmith-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [LangSmith](https://www.langchain.com/langsmith/observability) is a managed SaaS by the LangChain team. It’s purpose-built for debugging and monitoring LLM apps built using LangChain or LangGraph. If you’re already in the LangChain ecosystem, LangSmith provides deep integration and an interface to trace each agent’s chain of thoughts step-by-step.
@@ -144,7 +144,7 @@ LangSmith has a free developer plan that typically includes 1 developer seat and
 <ul><li><strong>Plus:</strong> $39 per seat per month</li><li><strong>Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2d3bb213/6916b365454bf3764e243444_langsmith-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2d3bb213/6916b365454bf3764e243444_langsmith-pricing.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -158,7 +158,7 @@ Its major drawbacks stem from its closed-source nature and a usage-based cost st
 ## 3. HoneyHive
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/030048c3/6916b37331010f4a860f1799_honeyhive-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/030048c3/6916b37331010f4a860f1799_honeyhive-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [HoneyHive](https://www.honeyhive.ai/) is a proprietary, full-lifecycle platform for LLM development. Think of it as a modern AI observability platform that emphasizes both monitoring and evaluation.
@@ -172,7 +172,7 @@ Its major drawbacks stem from its closed-source nature and a usage-based cost st
 HoneyHive offers a generous free Developer tier capped at 10,000 events/month and 30-day retention, with core observability features. The Enterprise plan includes optional on-prem deployment for regulated teams.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3a62a15d/6916b37e9c3e527dc6784e99_honeyhive-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3a62a15d/6916b37e9c3e527dc6784e99_honeyhive-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -184,7 +184,7 @@ The limitation is that it remains primarily a proprietary SaaS platform, with se
 ## 4. Braintrust
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/69706009/6916b38816cea6a92e3f8dce_braintrust-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/69706009/6916b38816cea6a92e3f8dce_braintrust-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 Braintrust is a proprietary LLM engineering platform focused on observability, evaluation, and analysis at scale. Its core is Brainstore, a database purpose-built for AI workloads that the company reports as ~80× faster on real-world benchmarks, enabling sub-second queries across terabytes of traces.
@@ -202,7 +202,7 @@ But if you want more, you can upgrade to two of the paid plans it offers:
 <ul><li><strong>Pro:</strong> $249 per month</li><li><strong>Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b2805a3f/6916b391b57166012b03b25d_braintrust-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b2805a3f/6916b391b57166012b03b25d_braintrust-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -214,7 +214,7 @@ The core drawback is Braintrust’s pricing structure. Its premium price deters 
 ## 5. Arize Phoenix
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ca038da3/6916b3a5a75a15653b610c5f_azire-phoenix-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ca038da3/6916b3a5a75a15653b610c5f_azire-phoenix-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [Phoenix](https://arize.com/docs/phoenix) (by Arize AI) is an open-source observability tool designed for local-first use. It’s essentially a Python library + web app that you run in a notebook or cloud instance to visualize traces, embeddings, and evaluation metrics for your LLM app.
@@ -230,7 +230,7 @@ Arize Phoenix is completely open-source and free for use as a standalone library
 <ul><li><strong>Arize AX Free:</strong> Free</li><li><strong>AX Pro:</strong> $50 per month</li><li><strong>AX Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a98821a3/6912bbdefe1f120a6713155b_azire-phoenix-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a98821a3/6912bbdefe1f120a6713155b_azire-phoenix-pricing.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -242,7 +242,7 @@ However, Phoenix requires manual setup and maintenance, unlike plug-and-play Saa
 ## 6. Galileo
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/802a3f31/6916b3bc98d137ce1d114537_galileo-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/802a3f31/6916b3bc98d137ce1d114537_galileo-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [Galileo](https://galileo.ai/) is an enterprise-grade LLM observability and governance platform. It’s the best Langfuse alternative if you need strong security and collaboration features while monitoring complex LLM agent systems. It provides prompt and model evaluation, agent monitoring, and guardrail enforcement in a single product.
@@ -258,7 +258,7 @@ Galileo offers a Free plan with generous limits: 5,000 traces per month, unlimit
 <ul><li><strong>Pro:</strong> $150 per month</li><li><strong>Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b2805a3f/6916b391b57166012b03b25d_braintrust-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b2805a3f/6916b391b57166012b03b25d_braintrust-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -270,7 +270,7 @@ However, access to the most robust features, particularly self-hosted deployment
 ## 7. PromptLayer
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/352a48bf/6916b3ddf699c6cfe5160a86_promptlayer-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/352a48bf/6916b3ddf699c6cfe5160a86_promptlayer-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [PromptLayer](https://www.promptlayer.com/) started as a way to log and version OpenAI API calls, and has since grown into a broader platform with prompt observability, version control, A/B testing, and even a visual workflow builder. It integrates tracing and analytics capabilities focused exclusively on the prompt lifecycle for deep optimization.
@@ -294,7 +294,7 @@ The core limitation is its narrow focus on the LLM call layer. It lacks trace de
 ## 8. Confident AI
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d4464a65/6916b3e7e229be3aba6e23cc_confident-ai-by-deepeval-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d4464a65/6916b3e7e229be3aba6e23cc_confident-ai-by-deepeval-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [Confident AI](https://www.confident-ai.com/) is a dedicated cloud platform built on top of the open-source DeepEval framework. If you’re looking for a Langfuse alternative that emphasizes robust evaluation and QA of LLMs, Confident AI is a strong contender.
@@ -310,7 +310,7 @@ Confident AI is completely free and open-source. It also offers a free cloud tie
 <ul><li><strong>Starter:</strong> $19.99 per user per month</li><li><strong>Premium:</strong> $79.99 per user per month</li><li><strong>Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/fad06cd9/6916b4073343672e158c7d59_confident-ai-by-deepeval-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/fad06cd9/6916b4073343672e158c7d59_confident-ai-by-deepeval-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons

@@ -12,19 +12,19 @@ webflow:
   createdOn: "2024-07-16T09:26:57.975Z"
 integrationType: "deployer"
 logo:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5439fa99/6696392a47017a8a18c7fb7e_Databricks_logo.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5439fa99/6696392a47017a8a18c7fb7e_Databricks_logo.png"
 shortDescription: "Deploy Scalable, Production-Ready ML Models with Databricks and ZenML"
 docsUrl: "https://docs.zenml.io/stack-components/model-deployers/databricks"
 githubUrl: "https://github.com/zenml-io/zenml-projects/tree/main/databricks-demo"
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d9e77d21/66ed57bf279f14e4aaeb39b2_image__28_.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d9e77d21/66ed57bf279f14e4aaeb39b2_image__28_.png"
 relatedBlogPosts:
   - "using-zenml-databricks-to-supercharge-llm-development"
 seo:
   title: "Integrate Databricks Deployment with ZenML - Deployer Integrations"
   description: "Deploy Scalable, Production-Ready ML Models with Databricks and ZenML"
   canonical: "https://www.zenml.io/integrations/databricks-deployment"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d9e77d21/66ed57bf279f14e4aaeb39b2_image__28_.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d9e77d21/66ed57bf279f14e4aaeb39b2_image__28_.png"
   ogTitle: "Integrate Databricks Deployment with ZenML - Deployer Integrations"
   ogDescription: "Deploy Scalable, Production-Ready ML Models with Databricks and ZenML"
 overviewTitle: "Deploy Scalable, Production-Ready ML Models with Databricks and ZenML"

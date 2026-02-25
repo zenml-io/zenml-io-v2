@@ -12,17 +12,17 @@ webflow:
   createdOn: "2024-09-11T06:47:24.368Z"
 integrationType: "artifact-store"
 logo:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/79d78fd5/66e13cf5daf0568ff1fd3d5e_download__1_.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/79d78fd5/66e13cf5daf0568ff1fd3d5e_download__1_.png"
 shortDescription: "Efficiently Store and Share ZenML Artifacts with Azure Blob Storage"
 docsUrl: "https://docs.zenml.io/stack-components/artifact-stores/azure"
 githubUrl: "https://docs.zenml.io/how-to/popular-integrations/azure-guide"
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/04d97fd2/66e13c84de6cdd3f8bac6caa_azure_blob_storage.PNG.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/04d97fd2/66e13c84de6cdd3f8bac6caa_azure_blob_storage.PNG.png"
 seo:
   title: "Integrate Azure Blob Storage with ZenML - Artifact Store Integrations"
   description: "Efficiently Store and Share ZenML Artifacts with Azure Blob Storage"
   canonical: "https://www.zenml.io/integrations/azure-blob-storage"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/04d97fd2/66e13c84de6cdd3f8bac6caa_azure_blob_storage.PNG.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/04d97fd2/66e13c84de6cdd3f8bac6caa_azure_blob_storage.PNG.png"
   ogTitle: "Integrate Azure Blob Storage with ZenML - Artifact Store Integrations"
   ogDescription: "Efficiently Store and Share ZenML Artifacts with Azure Blob Storage"
 overviewTitle: "Efficiently Store and Share ZenML Artifacts with Azure Blob Storage"

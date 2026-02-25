@@ -12,7 +12,7 @@ webflow:
   createdOn: "2026-02-12T18:49:52.932Z"
 toolName: "Seldon Core"
 toolIcon:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c44808e0/6996da60aab58b97b9f4bba8_Seldon_Core_icon.avif"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c44808e0/6996da60aab58b97b9f4bba8_Seldon_Core_icon.avif"
 category: "model-serving"
 integrationType: "deployer"
 advantages:
@@ -26,12 +26,12 @@ ctaHeadline: "Ready to orchestrate the pipelines that feed your Seldon Core depl
 learnMoreUrl: "https://docs.zenml.io/user-guides/production-guide"
 seoDescription: "Looking for an open-source alternative to Seldon Core? ZenML orchestrates training, testing, and promotion pipelines that feed your serving layer."
 openGraphImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7f93c328/6996da78aed2c6e3a275dbae_compare-seldon-core.avif"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7f93c328/6996da78aed2c6e3a275dbae_compare-seldon-core.avif"
 seo:
   title: "ZenML vs Seldon Core - Lifecycle orchestration vs Kubernetes model serving"
   description: "Looking for an open-source alternative to Seldon Core? ZenML orchestrates training, testing, and promotion pipelines that feed your serving layer."
   canonical: "https://www.zenml.io/compare/zenml-vs-seldon-core"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7f93c328/6996da78aed2c6e3a275dbae_compare-seldon-core.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7f93c328/6996da78aed2c6e3a275dbae_compare-seldon-core.avif"
   ogTitle: "ZenML vs Seldon Core - Lifecycle orchestration vs Kubernetes model serving"
   ogDescription: "Looking for an open-source alternative to Seldon Core? ZenML orchestrates training, testing, and promotion pipelines that feed your serving layer."
 ---

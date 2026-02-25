@@ -19,12 +19,12 @@ tags:
 date: "2025-04-18T00:00:00.000Z"
 readingTime: 9 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2199f7e4/680261e7e7580388a7260cf3_oncoclear-project-main-image.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2199f7e4/680261e7e7580388a7260cf3_oncoclear-project-main-image.png"
 seo:
   title: "Streamlined ML Model Deployment: A Practical Approach - ZenML Blog"
   description: "OncoClear is an end-to-end MLOps solution that transforms raw diagnostic measurements into reliable cancer classification predictions. Built with ZenML's robust framework, it delivers enterprise-grade machine learning pipelines that can be deployed in both development and production environments."
   canonical: "https://www.zenml.io/blog/streamlined-ml-model-deployment-a-practical-approach"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2199f7e4/680261e7e7580388a7260cf3_oncoclear-project-main-image.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2199f7e4/680261e7e7580388a7260cf3_oncoclear-project-main-image.png"
   ogTitle: "Streamlined ML Model Deployment: A Practical Approach - ZenML Blog"
   ogDescription: "OncoClear is an end-to-end MLOps solution that transforms raw diagnostic measurements into reliable cancer classification predictions. Built with ZenML's robust framework, it delivers enterprise-grade machine learning pipelines that can be deployed in both development and production environments."
 ---
@@ -32,7 +32,7 @@ seo:
 Your team has developed a breakthrough machine learning model with impressive metrics in your development environment. Stakeholders are excited about the potential impact. But now comes the truly challenging part—bridging the gap between that promising prototype and a reliable production tool that end users can trust with real-world decisions.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3834abf8/68018698e51ebdd49585eca5_fastapi_docs.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3834abf8/68018698e51ebdd49585eca5_fastapi_docs.png" alt="__wf_reserved_inherit" />
   <figcaption>Figure 1: A FastAPI interface for the deployed breast cancer classifier model, showing the available endpoints for health checks, predictions, and debugging.</figcaption>
 </figure>
 
@@ -97,7 +97,7 @@ Let's now look at how to implement the deployment pipeline itself using ZenML st
 At the heart of this approach is a deployment pipeline powered by [automatic tracking infrastructure](https://docs.zenml.io/user-guides/starter-guide/manage-artifacts). Each deployment run is versioned, reproducible, and fully traceable with complete logs of inputs, outputs, environment variables, and pipeline context.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b63a3c19/68024d1c9d530f34d839acde_deployment_pipeline.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b63a3c19/68024d1c9d530f34d839acde_deployment_pipeline.png" alt="__wf_reserved_inherit" />
   <figcaption>Figure 2: Deployment pipeline DAG showing the image building and container deployment steps along with their respective outputs.</figcaption>
 </figure>
 
@@ -210,7 +210,7 @@ def local_deployment(
 While deploying models is critical, equally important is determining which models should reach production in the first place. In traditional ML workflows, this decision often relies on informal team discussions or manual comparisons—introducing unnecessary risk for critical applications.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/90a8f08c/68024dd2857febef15c2ce1e_inference_pipeline.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/90a8f08c/68024dd2857febef15c2ce1e_inference_pipeline.png" alt="__wf_reserved_inherit" />
   <figcaption>Figure 3: Inference pipeline visualization showing how prediction results feed into the ZenML Server&#039;s model registry, which maintains versioned models (SGD development version and RF production version) with their associated artifacts.</figcaption>
 </figure>
 
@@ -332,7 +332,7 @@ The core insight remains consistent: treating deployment with the same systemati
 The journey from promising algorithm to trusted production tool is challenging, but with systematic deployment pipelines and evidence-based promotion systems, it's a journey that more ML projects can successfully complete.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b1318f59/68024e4ac77b41c570ffad7e_deployment_architecture.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b1318f59/68024e4ac77b41c570ffad7e_deployment_architecture.png" alt="__wf_reserved_inherit" />
   <figcaption>Figure 4: End-to-end ML lifecycle showing the connections between feature engineering, model training, and inference pipelines, all integrated with the ZenML Server that manages model versions and provides artifact lineage.</figcaption>
 </figure>
 
@@ -341,7 +341,7 @@ The journey from promising algorithm to trusted production tool is challenging, 
 We built this ML deployment project to showcase practical, accessible MLOps and it's available  in the [zenml-projects](https://github.com/zenml-io/zenml-projects) repo on our [GitHub](https://www.notion.so/zenml-repository-e6c414075a1c44e59ee11f90393d50be?pvs=21). The instructions to try it out are in the [README](https://github.com/zenml-io/zenml-projects/blob/main/oncoclear/README.md). We plan to add more deployment patterns going forward, so keep an eye out.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d581bd56/68024ea071707f7b9d95980b_pipeline_overview.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d581bd56/68024ea071707f7b9d95980b_pipeline_overview.png" alt="__wf_reserved_inherit" />
 </figure>
 
 With ZenML, all of the pipelines are tracked in the dashboard. The pipeline overview shown in the screenshot above demonstrates how feature engineering, model training, and inference pipelines connect through the ZenML Server, with clear visibility of model versions and their promotion status. You can see how the entire ML lifecycle is automatically documented, giving you full traceability from data preparation through training to deployment.

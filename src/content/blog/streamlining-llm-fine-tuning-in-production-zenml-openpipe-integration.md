@@ -19,12 +19,12 @@ tags:
 date: "2025-03-18T00:00:00.000Z"
 readingTime: 15 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f1486825/67d936cdc068694152598a38_zenml-openpipe.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f1486825/67d936cdc068694152598a38_zenml-openpipe.png"
 seo:
   title: "Streamlining LLM Fine-Tuning in Production: ZenML + OpenPipe Integration - ZenML Blog"
   description: "The OpenPipe integration in ZenML bridges the complexity of large language model fine-tuning, enabling enterprises to create tailored AI solutions with unprecedented ease and reproducibility."
   canonical: "https://www.zenml.io/blog/streamlining-llm-fine-tuning-in-production-zenml-openpipe-integration"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f1486825/67d936cdc068694152598a38_zenml-openpipe.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f1486825/67d936cdc068694152598a38_zenml-openpipe.png"
   ogTitle: "Streamlining LLM Fine-Tuning in Production: ZenML + OpenPipe Integration - ZenML Blog"
   ogDescription: "The OpenPipe integration in ZenML bridges the complexity of large language model fine-tuning, enabling enterprises to create tailored AI solutions with unprecedented ease and reproducibility."
 ---
@@ -46,7 +46,7 @@ The [ZenML](https://zenml.io/)-[OpenPipe](https://openpipe.ai/) integration addr
 <ul><li><a href="https://zenml.io/"><strong>ZenML's</strong></a><strong> production-grade MLOps orchestration</strong>: Pipeline tracking, artifact lineage, and deployment automation</li><li><a href="https://openpipe.ai/"><strong>OpenPipe's</strong></a><strong> specialized LLM fine-tuning capabilities</strong>: Optimized training processes for various foundation models</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1f5c6dd3/67d9327bbbab7951ad1ffa0c_422815663-86c5be2c-7faf-4ac8-96d1-9921a9d2f6a2.png" alt="ZenML + OpenPipe Integration" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1f5c6dd3/67d9327bbbab7951ad1ffa0c_422815663-86c5be2c-7faf-4ac8-96d1-9921a9d2f6a2.png" alt="ZenML + OpenPipe Integration" />
 </figure>
 
 This integration enables data scientists and ML engineers to:
@@ -227,7 +227,7 @@ The implementation follows [OpenPipe's fine-tuning best practices](https://docs.
 Once the fine-tuning process completes, OpenPipe automatically deploys your model and makes it available through their API. You can immediately start using your fine-tuned model with a simple curl request:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/af0958dc/67d9327b23da1853a0bd734f_zenml_openpipe_pipeline_deployed.png" alt="OpenPipe Deployed Model" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/af0958dc/67d9327b23da1853a0bd734f_zenml_openpipe_pipeline_deployed.png" alt="OpenPipe Deployed Model" />
   <figcaption>The OpenPipe console showing a successfully deployed fine-tuned model</figcaption>
 </figure>
 

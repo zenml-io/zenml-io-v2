@@ -19,12 +19,12 @@ tags:
 date: "2022-12-16T00:00:00.000Z"
 readingTime: 6 Mins Read
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/66807f4a/652fd704aa179f0bc991537d_thumbnail.gif"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/66807f4a/652fd704aa179f0bc991537d_thumbnail.gif"
 seo:
   title: "Detecting Fraudulent Financial Transactions with ZenML - ZenML Blog"
   description: "A winning entry - 2nd prize winner at Month of MLOps 2022 competition."
   canonical: "https://www.zenml.io/blog/detecting-fraudulent-financial-transactions-with-zenml"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1a8e4caa/652fd704aa179f0bc991537d_thumbnail.gif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1a8e4caa/652fd704aa179f0bc991537d_thumbnail.gif"
   ogTitle: "Detecting Fraudulent Financial Transactions with ZenML - ZenML Blog"
   ogDescription: "A winning entry - 2nd prize winner at Month of MLOps 2022 competition."
 ---
@@ -64,7 +64,7 @@ Thanks to ZenML’s infrastructure-agnostic design, it was also simple to integr
 The Training pipeline can be summarized as follows:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7087911d/652fd739aa655260b8b97879_training_pipeline_two.png" alt="training_pipeline" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7087911d/652fd739aa655260b8b97879_training_pipeline_two.png" alt="training_pipeline" />
 </figure>
 
 ### 📥 Baseline Data Importer
@@ -96,7 +96,7 @@ Our Continuous Deployment pipeline is responsible for a more ambitious task than
 In particular, we extended the Training pipeline to include five additional steps, described in further detail below:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f0c49bf3/652fd73782ae19a5246597db_cont_deploy_pipeline_two.png" alt="cont_deploy_pipeline" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f0c49bf3/652fd73782ae19a5246597db_cont_deploy_pipeline_two.png" alt="cont_deploy_pipeline" />
 </figure>
 
 ### 📰 New Data Importer

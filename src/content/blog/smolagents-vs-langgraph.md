@@ -21,12 +21,12 @@ tags:
 date: "2025-09-28T00:00:00.000Z"
 readingTime: 11 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/effa7917/68d8d72916786469feb0bb79_smolagents-vs-langgraph.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/effa7917/68d8d72916786469feb0bb79_smolagents-vs-langgraph.png"
 seo:
   title: "Smolagents vs LangGraph: Which One’s Easier to Build and Run AI Agents - ZenML Blog"
   description: "In this Smolagents vs LangGraph, we explain the difference between the two and conclude which one is the best to build AI agents."
   canonical: "https://www.zenml.io/blog/smolagents-vs-langgraph"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/effa7917/68d8d72916786469feb0bb79_smolagents-vs-langgraph.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/effa7917/68d8d72916786469feb0bb79_smolagents-vs-langgraph.png"
   ogTitle: "Smolagents vs LangGraph: Which One’s Easier to Build and Run AI Agents - ZenML Blog"
   ogDescription: "In this Smolagents vs LangGraph, we explain the difference between the two and conclude which one is the best to build AI agents."
 ---
@@ -92,7 +92,7 @@ print(result)
 #### LangGraph
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8f25a78f/688c411bbd4ff15ceeea6954_langgraph-multi-agent-orchestration-patterns.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8f25a78f/688c411bbd4ff15ceeea6954_langgraph-multi-agent-orchestration-patterns.png" alt="__wf_reserved_inherit" />
   <figcaption>LangGraph’s multi-agent patterns</figcaption>
 </figure>
 
@@ -131,7 +131,7 @@ Agents in Smolagents inherently remember what happened during **a single run**. 
 #### LangGraph
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/718e6512/687b1b7ec161c85267291996_langgraph-state-and-memory-management.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/718e6512/687b1b7ec161c85267291996_langgraph-state-and-memory-management.png" alt="__wf_reserved_inherit" />
   <figcaption>LangGraph state and memory management</figcaption>
 </figure>
 
@@ -214,7 +214,7 @@ Smolagent's primary safety concern arises from the **CodeAgent's ability to writ
 LangGraph's safety model is inherent because of its explicit graph architecture. Since agent logic is defined in nodes and prompts, it can only transition between those actions along the edges that you’ve created.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ee1ac081/68c7f1bc194725f4b99a4682_langgraph-human-in-the-loop.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ee1ac081/68c7f1bc194725f4b99a4682_langgraph-human-in-the-loop.png" alt="__wf_reserved_inherit" />
   <figcaption>LangGraph human in the loop</figcaption>
 </figure>
 
@@ -249,7 +249,7 @@ LangGraph sits on top of the LangChain framework, so it has access to everything
 <ul><li><strong>LangChain Components</strong>: The extensive library of integrations for LLMs, document loaders, text splitters, vector stores, and tools.</li><li><strong>LangSmith</strong>: Traces from LangGraph are automatically visualized in LangSmith, providing a step-by-step view of the graph's execution and the agent's reasoning process.</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/86f7e780/687c6f66de8d851b3292b639_langchain-ecosystem.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/86f7e780/687c6f66de8d851b3292b639_langchain-ecosystem.png" alt="__wf_reserved_inherit" />
   <figcaption>LangGraph uses the LangChain ecosystem</figcaption>
 </figure>
 
@@ -272,7 +272,7 @@ Beyond that, **LangChain offers three paid plans for LangGraph**:
 <ul><li><strong>Developer:</strong> Free</li><li><strong>Plus:</strong> $39 per month</li><li><strong>Enterprise:</strong> Custom</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/97b85242/687b1c130365fe673ee85bab_langgraph-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/97b85242/687b1c130365fe673ee85bab_langgraph-pricing.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ## How ZenML Manages the Outer Loop when Deploying Agentic AI Workflows
@@ -288,7 +288,7 @@ Here’s how ZenML adds value:
 ### 1. Embed Agents in End-To-End Pipelines
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/80238d96/68d36f905df86638012edf81_zenml-unified-mlops-and-llmops-platform.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/80238d96/68d36f905df86638012edf81_zenml-unified-mlops-and-llmops-platform.webp" alt="__wf_reserved_inherit" />
   <figcaption>ZenML orchestration</figcaption>
 </figure>
 
@@ -301,7 +301,7 @@ The end-to-end orchestration makes the entire process versioned, reproducible, a
 ### 2. Unified Visibility and Lineage
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/10ed37e0/68ccd78a709ca124cef348cc_zenml-orchestration-use-case.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/10ed37e0/68ccd78a709ca124cef348cc_zenml-orchestration-use-case.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ZenML automatically tracks and versions every part of your pipeline, including input prompts, agent responses, the LLMs used, and any data artifacts.
@@ -313,7 +313,7 @@ Our central dashboard provides a complete history of all runs, allowing your tea
 ### 3. Continuous Quality Checks
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5add9e53/68d36fc9ee0f2c3ac7d26e71_zenml-evaluation.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5add9e53/68d36fc9ee0f2c3ac7d26e71_zenml-evaluation.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML evaluation</figcaption>
 </figure>
 
@@ -328,7 +328,7 @@ In short, Smolagents and LangGraph define *what* the agent does; ZenML governs *
 **👀 Note:** At ZenML, we have built several such integrations with tools like LangChain, LlamaIndex, CrewAI, and more. We are actively shipping new integrations that you can find on this GitHub page: [ZenML Agent Workflow Integrations](https://github.com/zenml-io/zenml/tree/main/examples/agent_framework_integrations).
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/df9321c0/68d36fdae6a00052f415f45c_zenml-agent-workflow-integrations.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/df9321c0/68d36fdae6a00052f415f45c_zenml-agent-workflow-integrations.png" alt="__wf_reserved_inherit" />
 </figure>
 
 **📚 Other comparison articles to read:**

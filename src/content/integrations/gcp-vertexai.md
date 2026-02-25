@@ -12,11 +12,11 @@ webflow:
   createdOn: "2023-10-12T09:13:14.382Z"
 integrationType: "orchestrator"
 logo:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3621e87c/66d86886a6dc58ed59b15d41_vertex.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3621e87c/66d86886a6dc58ed59b15d41_vertex.png"
 shortDescription: "Streamline your MLOps workflows on GCP with ZenML and Vertex AI Pipelines"
 docsUrl: "https://docs.zenml.io/stack-components/orchestrators/vertex"
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e0ff5439/66e7310b0dcb8cb0f1d0050a_image__9_.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e0ff5439/66e7310b0dcb8cb0f1d0050a_image__9_.png"
 relatedBlogPosts:
   - "cloud-composer-airflow-vs-vertex-ai-kubeflow"
   - "easy-mlops-pipelines"
@@ -25,7 +25,7 @@ seo:
   title: "Integrate Google Cloud Vertex AI Pipelines with ZenML - Orchestrator Integrations"
   description: "Streamline your MLOps workflows on GCP with ZenML and Vertex AI Pipelines"
   canonical: "https://www.zenml.io/integrations/gcp-vertexai"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e0ff5439/66e7310b0dcb8cb0f1d0050a_image__9_.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e0ff5439/66e7310b0dcb8cb0f1d0050a_image__9_.png"
   ogTitle: "Integrate Google Cloud Vertex AI Pipelines with ZenML - Orchestrator Integrations"
   ogDescription: "Streamline your MLOps workflows on GCP with ZenML and Vertex AI Pipelines"
 overviewTitle: "Streamline your MLOps workflows on GCP with ZenML and Vertex AI Pipelines"

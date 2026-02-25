@@ -17,7 +17,7 @@ tags:
 date: "2021-11-24T00:00:00.000Z"
 readingTime: 1 Min Read
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/602a645a/65311bcf9cf864e3ba6a9cd6_download__13_.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/602a645a/65311bcf9cf864e3ba6a9cd6_download__13_.png"
 ---
 
 **Last updated:** November 3, 2022.
@@ -33,7 +33,7 @@ In the latest release we added the concept of visualizations as a first-class ci
 We use the built-in FacetStatisticsVisualizer using the [Facets Overview](https://pypi.org/project/facets-overview/) integration. [Facets](https://pair-code.github.io/facets/) is an awesome project that helps users visualize large amounts of data in a coherent way.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/fea341f5/65311be06f4ff3c280be97c7_stats.gif" alt="Here&#039;s what the statistics visualizer looks like" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/fea341f5/65311be06f4ff3c280be97c7_stats.gif" alt="Here&#039;s what the statistics visualizer looks like" />
 </figure>
 
 *Here’s what the statistics visualizer looks like*

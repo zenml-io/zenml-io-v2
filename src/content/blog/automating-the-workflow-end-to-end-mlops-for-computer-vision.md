@@ -19,11 +19,11 @@ tags:
 date: "2024-05-28T00:00:00.000Z"
 readingTime: 2 min
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e612504a/666bfaa5c02ad1e045d236ff_webinar_blog.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e612504a/666bfaa5c02ad1e045d236ff_webinar_blog.png"
 seo:
   title: "Automating the Workflow: End-to-end MLOps for Computer Vision - ZenML Blog"
   canonical: "https://www.zenml.io/blog/automating-the-workflow-end-to-end-mlops-for-computer-vision"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a4d591b3/666bfaa5c02ad1e045d236ff_webinar_blog.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a4d591b3/666bfaa5c02ad1e045d236ff_webinar_blog.png"
   ogTitle: "Automating the Workflow: End-to-end MLOps for Computer Vision - ZenML Blog"
 ---
 

@@ -21,12 +21,12 @@ tags:
 date: "2025-09-15T00:00:00.000Z"
 readingTime: 4 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c0344366/68c7bb5782d0b9eb7457f574_Custom_Evals_in_ZenML.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c0344366/68c7bb5782d0b9eb7457f574_Custom_Evals_in_ZenML.png"
 seo:
   title: "How I Built and Evaluated a Clinical RAG System with ZenML (and Why Custom Evaluation Matters) - ZenML Blog"
   description: "On custom evaluation frameworks for clinical RAG systems, showing why domain-specific metrics matter more than plug-and-play solutions when trust and safety are non-negotiable."
   canonical: "https://www.zenml.io/blog/how-i-built-and-evaluated-a-clinical-rag-system-with-zenml-and-why-custom-evaluation-matters"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c0344366/68c7bb5782d0b9eb7457f574_Custom_Evals_in_ZenML.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c0344366/68c7bb5782d0b9eb7457f574_Custom_Evals_in_ZenML.png"
   ogTitle: "How I Built and Evaluated a Clinical RAG System with ZenML (and Why Custom Evaluation Matters) - ZenML Blog"
   ogDescription: "On custom evaluation frameworks for clinical RAG systems, showing why domain-specific metrics matter more than plug-and-play solutions when trust and safety are non-negotiable."
 ---
@@ -52,7 +52,7 @@ If you want a system you (or any clinician) can actually trust, you have to sepa
 ## Project Overview: Clinical-RAG Demo 🔬
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f7696d40/68c7bac6df4a72bb8ad562f5_CleanShot_2025-09-15_at_09.05.05.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f7696d40/68c7bac6df4a72bb8ad562f5_CleanShot_2025-09-15_at_09.05.05.png" alt="__wf_reserved_inherit" />
 </figure>
 
 My demo focused on orthopedic physical therapy. The idea was simple: a clinician asks a question (for example, “How do you assess carpal tunnel syndrome?") and the system does three things:
@@ -62,7 +62,7 @@ My demo focused on orthopedic physical therapy. The idea was simple: a clinician
 I built this stack around Postgres with `pgvector` for retrieval, sentence-transformers for embeddings, and ZenML to orchestrate the whole pipeline—from ingestion, to retrieval, to generation, and, most importantly, to evaluation.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1377beb7/68c7bb0c80253efe73866669_CleanShot_2025-09-15_at_09.06.28.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1377beb7/68c7bb0c80253efe73866669_CleanShot_2025-09-15_at_09.06.28.png" alt="__wf_reserved_inherit" />
   <figcaption>Watch the full video on YouTube</figcaption>
 </figure>
 

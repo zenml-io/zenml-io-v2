@@ -12,7 +12,7 @@ webflow:
   createdOn: "2023-10-18T08:06:01.343Z"
 position: "Founding Product Designer"
 photo:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c06e7c2a/652f91e606daec38e93ef1c4_zuri.jpeg"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c06e7c2a/652f91e606daec38e93ef1c4_zuri.jpeg"
 email: "zuri.ext@zenml.io"
 linkedin: "https://www.linkedin.com/in/zurinegrin/"
 order: 12

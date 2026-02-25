@@ -21,12 +21,12 @@ tags:
 date: "2026-02-19T00:00:00.000Z"
 readingTime: 14 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3326221d/69968e99493bb5e28b737c63_comet-alternatives.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3326221d/69968e99493bb5e28b737c63_comet-alternatives.png"
 seo:
   title: "We Tried and Tested the 9 Best Comet Alternatives for Model Evaluation - ZenML Blog"
   description: "In this article, you will learn about the best Comet alternatives for model evaluation."
   canonical: "https://www.zenml.io/blog/comet-alternatives"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3326221d/69968e99493bb5e28b737c63_comet-alternatives.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3326221d/69968e99493bb5e28b737c63_comet-alternatives.png"
   ogTitle: "We Tried and Tested the 9 Best Comet Alternatives for Model Evaluation - ZenML Blog"
   ogDescription: "In this article, you will learn about the best Comet alternatives for model evaluation."
 ---
@@ -54,7 +54,7 @@ Teams are migrating away from Comet for three reasons: scale, cost, and infrastr
 ### 1. Key Evaluation and Governance Features are Gated to Enterprise
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5920fb41/69968d07b8b543e2f733b47c_comet-gated-features.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5920fb41/69968d07b8b543e2f733b47c_comet-gated-features.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 Governance is a common reason why engineers switch to a Comet alternative.
@@ -66,7 +66,7 @@ Startups and mid-sized teams find themselves forced into expensive contracts jus
 ### 2. Usage Limits Become a Tax on Evaluation at Scale
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5e795fc3/69968d114b3b6bccb2c70bbc_comet-usage-limits.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5e795fc3/69968d114b3b6bccb2c70bbc_comet-usage-limits.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 Comet’s cloud-hosted free and pro plans have serious usage limit issues. Data usage at 500 GB sounds reasonable on paper, but experiment tracking data adds up fast: metrics, artifacts, model files, checkpoints, images, and logs.
@@ -266,7 +266,7 @@ These 9 Comet alternatives fall into four buckets: pipeline and lineage platform
 ## 1. ZenML
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1c191b2d/69968d233cc2c2abadcfe7d7_zenml-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1c191b2d/69968d233cc2c2abadcfe7d7_zenml-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [ZenML](https://www.zenml.io/) is the workflow layer that turns evaluation from a dashboard activity into a repeatable pipeline. You define eval runs as steps, persist outputs as artifacts, and keep metric lineage intact across versions. It’s CI-friendly by design, and you can swap trackers, registries, and judges without rewriting pipeline code.
@@ -274,7 +274,7 @@ These 9 Comet alternatives fall into four buckets: pipeline and lineage platform
 ### Key Feature 1. End-to-End Pipeline Workflow Management
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f2b05030/69968d399193b32ee8466e65_zenml-pipeline-workflow-management.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f2b05030/69968d399193b32ee8466e65_zenml-pipeline-workflow-management.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 Comet is good at tracking and analysis. ZenML’s center of gravity is defining and running [multi-step ML/LLM workflows](https://docs.zenml.io/concepts/steps_and_pipelines) (pipelines made of steps that produce artifacts), so you can take a messy notebook-to-prod journey and turn it into a repeatable system.
@@ -284,7 +284,7 @@ If your pain is ‘we can’t reliably rerun, schedule, standardize, and operate
 ### Key Feature 2. Stronger ‘Artifact-First’ Backbone for Production Workflows
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a7568721/69968d45ca92caf012720b8c_zenml-artifacts.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a7568721/69968d45ca92caf012720b8c_zenml-artifacts.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [ZenML requires an Artifact Store](https://docs.zenml.io/concepts/artifacts) and treats step inputs/outputs as artifacts that get persisted, which makes it naturally suited to production pipelines where artifacts must live beyond a single experiment session. Comet can version and visualize artifacts/lineage, but ZenML’s workflow model is designed around artifacts as the backbone of execution.
@@ -292,7 +292,7 @@ If your pain is ‘we can’t reliably rerun, schedule, standardize, and operate
 ### Key Feature 3. Infrastructure Portability via ‘Stacks’
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/dce85104/69968d6d7bb45128560c2251_zenml-stacks.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/dce85104/69968d6d7bb45128560c2251_zenml-stacks.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [ZenML formalizes your infrastructure as a Stack](https://docs.zenml.io/concepts/stack_components) (orchestrator + artifact store + optional components). This is how you standardize execution across environments and teams and avoid hard-coupling your workflow to one platform. Comet doesn’t position itself as the layer that defines your full execution stack.
@@ -302,7 +302,7 @@ If your pain is ‘we can’t reliably rerun, schedule, standardize, and operate
 [ZenML offers](https://www.zenml.io/pricing) a free, open-source Community Edition (Apache 2.0). It also has a Pro plan for enterprise users who require managed infrastructure, role-based access control, or advanced collaboration features.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/035a90c0/69968d791b75dfb3b3fd6d27_zenml-self-hosted.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/035a90c0/69968d791b75dfb3b3fd6d27_zenml-self-hosted.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 Both the plans above are self-hosted. ZenML now also has 4 paid SaaS plans:
@@ -310,7 +310,7 @@ Both the plans above are self-hosted. ZenML now also has 4 paid SaaS plans:
 <ul><li><strong>Starter:</strong> $399 per month</li><li><strong>Growth:</strong> $999 per month</li><li><strong>Scale:</strong> $2,499 per month</li><li><strong>Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/27fccb69/69968d84efffdca118fc04cd_zenml-saas-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/27fccb69/69968d84efffdca118fc04cd_zenml-saas-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -322,7 +322,7 @@ But if you are a very small team that just does ad-hoc experiments, the structur
 ## 2. Weights & Biases
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b7a7c55a/69968d8fa4f25d885b22c614_wandb-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b7a7c55a/69968d8fa4f25d885b22c614_wandb-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [Weights & Biases](https://wandb.ai/site/) is a tracking suite, and Weave adds evaluation primitives for LLM apps. It’s a solid Comet alternative when you want training tracking plus judge scoring under one workspace. It also replaces Comet's dashboard with interactive charts for model evaluation metrics.
@@ -338,7 +338,7 @@ W&B offers a free tier for personal projects and two paid tiers:
 <ul><li><strong>Pro:</strong> $60 per month</li><li><strong>Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d3e4fd22/69968da01b75dfb3b3fd703d_wandb-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d3e4fd22/69968da01b75dfb3b3fd703d_wandb-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -352,7 +352,7 @@ W&B supports running a local self-hosted server for Personal (non-corporate) use
 ## 3. MLflow
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/4b10b3d2/69968dadc5f2cd6f15f2fc48_mlflow-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/4b10b3d2/69968dadc5f2cd6f15f2fc48_mlflow-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [MLflow](https://mlflow.org/) is an open-source platform dedicated to managing the machine learning lifecycle. It acts as a highly standardized Comet alternative by providing a universal model registry and logging system without proprietary lock-in.
@@ -376,7 +376,7 @@ MLflow’s UI can be brittle in practice; Some users report intermittent UI regr
 ## 4. Databricks (Lakehouse + ML tooling)
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7635391d/69968dbf4ccbc51bc7b85703_databricks-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7635391d/69968dbf4ccbc51bc7b85703_databricks-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [Databricks](https://www.databricks.com/) provides a unified data platform with native MLflow integration. For evaluation, it’s among popular Comet alternatives because it brings MLflow-based LLM evaluation and agent evaluation close to Lakehouse data. You get an environment where data engineering and model evaluation happen in the same place.
@@ -390,7 +390,7 @@ MLflow’s UI can be brittle in practice; Some users report intermittent UI regr
 Databricks pricing is usage-based. Databricks cites Mosaic AI Agent Evaluation at [$0.15 per million input tokens](https://www.databricks.com/product/pricing/agent-evaluation) and $0.60 per million output tokens.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1b1ffea8/69968dca862d1ec14a757564_databricks-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1b1ffea8/69968dca862d1ec14a757564_databricks-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -404,7 +404,7 @@ But remember, adopting Databricks only for evaluation is a large platform decisi
 ## 5. Google Agent Development Kit
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b65a8a60/69968dd374cb48f544c8eba1_google-adk-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b65a8a60/69968dd374cb48f544c8eba1_google-adk-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [Google ADK](https://docs.cloud.google.com/agent-builder/agent-development-kit/overview) is a code-first toolkit that treats agent evaluation like software testing. It’s a solid Comet alternative for teams building multi-agent architectures rather than traditional machine learning models.
@@ -426,7 +426,7 @@ The tool remains relatively new and highly specialized. It requires deep commitm
 ## 6. Amazon SageMaker
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/31767701/69968de35174e0bb6149d92c_amazon-sagemaker-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/31767701/69968de35174e0bb6149d92c_amazon-sagemaker-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [Amazon SageMaker](https://aws.amazon.com/sagemaker/) is the managed option for teams on AWS. It delivers an end-to-end suite of machine learning tools for training, tracking, and evaluating models without external dependencies.
@@ -448,7 +448,7 @@ On the flip side, the interface and permission models confuse many beginners. Co
 ## 7. Azure Machine Learning
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/0aab1108/69968e4e0a7a2f2946472660_azure-ml-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0aab1108/69968e4e0a7a2f2946472660_azure-ml-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [Azure Machine Learning](https://azure.microsoft.com/en-us/products/machine-learning) offers an enterprise-grade workspace for the entire machine learning lifecycle. It serves as a highly secure Comet alternative for organizations heavily invested in the Microsoft ecosystem.
@@ -462,7 +462,7 @@ On the flip side, the interface and permission models confuse many beginners. Co
 Azure Machine Learning is billed pay‑as‑you‑go for the underlying compute and associated Azure services you use; pricing details are published, and enterprise agreements are available for organisations that want negotiated terms.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6500b1e3/69968e59a2687a2cd433af62_azure-ml-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6500b1e3/69968e59a2687a2cd433af62_azure-ml-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -474,7 +474,7 @@ The downside is that ownership spreads across several Azure services, so budgeti
 ## 8. Arize Phoenix
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6e385da0/69968e658228da94295ccc8f_arize-phoenix-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6e385da0/69968e658228da94295ccc8f_arize-phoenix-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [Arize Phoenix](https://phoenix.arize.com/) is an open-source observability platform designed specifically for generative AI. It replaces Comet by focusing deeply on tracing and evaluating large language models rather than traditional machine learning algorithms.
@@ -490,7 +490,7 @@ Phoenix is free to self-host and source-available under the Elastic License 2.0 
 <ul><li><strong>AX Pro:</strong> $50 per month</li><li><strong>AX Enterprise:</strong> Custom</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f80509b0/69968e6f5174e0bb6149e35b_arize-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f80509b0/69968e6f5174e0bb6149e35b_arize-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -502,7 +502,7 @@ On GitHub, a few users have reported trace completeness issues in certain integr
 ## 9. Langfuse
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/dc42ca29/69968e7b726ee4300978fbc5_langfuse-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/dc42ca29/69968e7b726ee4300978fbc5_langfuse-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [Langfuse](https://langfuse.com/) is an open-source LLM engineering platform. It serves as a Comet alternative by providing precise metric tracking and prompt management for conversational AI applications.
@@ -518,7 +518,7 @@ Langfuse offers a generous free plan for hobbyists and individual developers. Ot
 <ul><li><strong>Core:</strong> $29 per month</li><li><strong>Pro:</strong> $199 per month</li><li><strong>Enterprise:</strong> $2,499 per month</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e5bceaa0/69968e87b962c22fd82a7589_langfuse-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e5bceaa0/69968e87b962c22fd82a7589_langfuse-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons

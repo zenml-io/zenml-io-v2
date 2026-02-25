@@ -12,7 +12,7 @@ webflow:
   createdOn: "2023-10-18T08:03:48.377Z"
 position: "Founding DevEx Engineer"
 photo:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/99bfcb81/652f9162461e66d1b9b55934_safoine.jpeg"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/99bfcb81/652f9162461e66d1b9b55934_safoine.jpeg"
 email: "safoine.ext@zenml.io"
 linkedin: "https://www.linkedin.com/in/safoinme/"
 order: 10

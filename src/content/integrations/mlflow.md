@@ -12,17 +12,17 @@ webflow:
   createdOn: "2023-10-12T09:13:13.001Z"
 integrationType: "experiment-tracker"
 logo:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7e447a6a/66d8692949cd3b8bf2f4dcc6_mlflow.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7e447a6a/66d8692949cd3b8bf2f4dcc6_mlflow.png"
 shortDescription: "Seamlessly track and visualize ZenML pipeline experiments with MLflow"
 docsUrl: "https://docs.zenml.io/stack-components/experiment-trackers/mlflow"
 githubUrl: "https://github.com/zenml-io/zenml/blob/main/tests/integration/examples/mlflow/run.py"
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/fcd451e4/6704f16f3a197dff1d594688_Integration_image__4_.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/fcd451e4/6704f16f3a197dff1d594688_Integration_image__4_.png"
 seo:
   title: "Integrate MLflow with ZenML - Experiment Tracker Integrations"
   description: "Seamlessly track and visualize ZenML pipeline experiments with MLflow"
   canonical: "https://www.zenml.io/integrations/mlflow"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/fcd451e4/6704f16f3a197dff1d594688_Integration_image__4_.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/fcd451e4/6704f16f3a197dff1d594688_Integration_image__4_.png"
   ogTitle: "Integrate MLflow with ZenML - Experiment Tracker Integrations"
   ogDescription: "Seamlessly track and visualize ZenML pipeline experiments with MLflow"
 overviewTitle: "Seamlessly track and visualize ZenML pipeline experiments with MLflow"

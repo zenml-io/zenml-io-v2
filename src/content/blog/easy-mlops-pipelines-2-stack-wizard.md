@@ -19,12 +19,12 @@ tags:
 date: "2024-07-30T00:00:00.000Z"
 readingTime: 8 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/bf750f71/66a897670e183fb455727490_wizard-deployments-min.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/bf750f71/66a897670e183fb455727490_wizard-deployments-min.png"
 seo:
   title: "Easy ML infrastructure for cloud MLOps pipelines - ZenML Blog"
   description: "Now you can easily connect AWS, GCP, and Azure cloud providers with ZenML directly with an easy wizard in the dashboard."
   canonical: "https://www.zenml.io/blog/easy-mlops-pipelines-2-stack-wizard"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9cd53ee4/66a897670e183fb455727490_wizard-deployments-min.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9cd53ee4/66a897670e183fb455727490_wizard-deployments-min.png"
   ogTitle: "Easy ML infrastructure for cloud MLOps pipelines - ZenML Blog"
   ogDescription: "Now you can easily connect AWS, GCP, and Azure cloud providers with ZenML directly with an easy wizard in the dashboard."
 ---
@@ -56,7 +56,7 @@ This feature is for users who have **existing infrastructure deployed**, and who
 Here is how it works:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9c0ad609/66a89907569a3536348350b5_66a897d4281f27085c952267_easy-stack-registration-steps-min.png" alt="Flowchart showing ZenML&#039;s cloud resource management process: input credentials, scan resources, select resources, and auto-register stack." />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9c0ad609/66a89907569a3536348350b5_66a897d4281f27085c952267_easy-stack-registration-steps-min.png" alt="Flowchart showing ZenML&#039;s cloud resource management process: input credentials, scan resources, select resources, and auto-register stack." />
 </figure>
 
 This flow makes it super trivial to just point to the right services and defaults to sane configuration options. You can simply select what sort of orchestration service you want to use, what bucket to utilize for the artifacts and the container registry you’d like to use. All the rest is created automatically by ZenML.
@@ -76,7 +76,7 @@ This will launch a CLI flow that will guide you through registering a stack.
 If you’d rather use the dashboard, you can do so by clicking on the `Stacks` section, and then clicking on “Create Stack”:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/da713a12/66a89907569a3536348350ad_66a898b846b4a6ca86777db5_wizard-steps.gif" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/da713a12/66a89907569a3536348350ad_66a898b846b4a6ca86777db5_wizard-steps.gif" alt="__wf_reserved_inherit" />
 </figure>
 
 ## 🤸What’s next?

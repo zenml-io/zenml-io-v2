@@ -20,12 +20,12 @@ tags:
 date: "2026-01-04T00:00:00.000Z"
 readingTime: 15 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1b6e469b/695a3fce2378acf2b5698d28_databricks-vs-snowflake.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1b6e469b/695a3fce2378acf2b5698d28_databricks-vs-snowflake.png"
 seo:
   title: "Databricks vs Snowflake: How to Choose the Right Data Intelligence Platform - ZenML Blog"
   description: "This Databricks vs Snowflake guide will compare both platforms, so you know which one fits your criteria as the right data intelligence platform."
   canonical: "https://www.zenml.io/blog/databricks-vs-snowflake"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1b6e469b/695a3fce2378acf2b5698d28_databricks-vs-snowflake.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1b6e469b/695a3fce2378acf2b5698d28_databricks-vs-snowflake.png"
   ogTitle: "Databricks vs Snowflake: How to Choose the Right Data Intelligence Platform - ZenML Blog"
   ogDescription: "This Databricks vs Snowflake guide will compare both platforms, so you know which one fits your criteria as the right data intelligence platform."
 ---
@@ -57,7 +57,7 @@ The fundamental difference between Databricks and Snowflake lies in their archit
 ### Databricks Architecture - Lakehouse with Open Data
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d50127e9/695a3e9c86029780ddee45dd_databricks-high-level-architecture.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d50127e9/695a3e9c86029780ddee45dd_databricks-high-level-architecture.webp" alt="__wf_reserved_inherit" />
   <figcaption>High-level architecture</figcaption>
 </figure>
 
@@ -70,7 +70,7 @@ Under the hood, Databricks clusters run in your cloud account that’s managed b
 ### Snowflake Architecture - Managed Cloud Warehouse
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/de8fd5f2/695a3eb3a531b645f4b87371_snowflake-architecture.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/de8fd5f2/695a3eb3a531b645f4b87371_snowflake-architecture.webp" alt="__wf_reserved_inherit" />
   <figcaption>Snowflake architecture</figcaption>
 </figure>
 
@@ -101,7 +101,7 @@ Databricks and Snowflake also differ greatly in day-to-day usability and the ski
 ### Databricks - Powerful, But Some Assembly Required
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b3aab3d1/695a3ec81334dcd506383ddf_databricks-compute-confugiration.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b3aab3d1/695a3ec81334dcd506383ddf_databricks-compute-confugiration.webp" alt="__wf_reserved_inherit" />
   <figcaption>Compute configuration</figcaption>
 </figure>
 
@@ -142,7 +142,7 @@ Both Databricks and Snowflake come with machine learning, but the depth of their
 ### Databricks - Built-in Machine Learning and MLflow
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f2d1a983/695a3ee5c82045008163e5d6_databricks-built-in-ml-and-mlflow-functionalities.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f2d1a983/695a3ee5c82045008163e5d6_databricks-built-in-ml-and-mlflow-functionalities.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 Databricks is arguably one of the most ML-friendly platforms available because it provides an integrated environment for the entire ML lifecycle. Key tools include:
@@ -174,7 +174,7 @@ On Databricks, this code automatically records an experiment run in MLflow, incl
 ### Snowflake - SQL Analytics with Emerging ML Features
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b76241b5/695a3f37edaa97ce3106fc0b_snowflake-sql-and-ml-functionalities.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b76241b5/695a3f37edaa97ce3106fc0b_snowflake-sql-and-ml-functionalities.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 Snowflake’s heritage is in SQL analytics, so it traditionally wasn’t used for model training. However, recognizing the importance of data science, Snowflake has introduced features to support ML workflows:
@@ -192,7 +192,7 @@ As data platforms mature, governance and security have become paramount. Both Da
 ### Databricks - Unity Catalog
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2db432e1/695a3f15ab3eab1b6ee1a4bd_databricks-unity-catalog.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2db432e1/695a3f15ab3eab1b6ee1a4bd_databricks-unity-catalog.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 Databricks Unity Catalog is a unified governance solution for all data assets in the Databricks Lakehouse. It provides a single interface to govern tables, files, ML models, and more across multiple workspaces and cloud accounts. Some key capabilities of Unity Catalog include:
@@ -204,7 +204,7 @@ Unity Catalog turns Databricks from a ‘wild west’ of notebooks into a more *
 ### Snowflake - Horizon Catalog
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f69f01e9/695a3ef794c29fa09397b36f_snowflake-horizon-catalog.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f69f01e9/695a3ef794c29fa09397b36f_snowflake-horizon-catalog.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 Snowflake’s Horizon catalog is a newer addition that extends Snowflake’s governance beyond the traditional database catalog. The platform already has robust security features, but Horizon aims to provide a unified governance plan across diverse data sources. Here’s what Horizon offers:
@@ -236,7 +236,7 @@ The Delta Sharing protocol allows you to share live data with external organizat
 [Databricks Partner Connect](https://www.databricks.com/partnerconnect) provides one-click integration setup for common tools. This feature simplifies the process of connecting to ingestion tools, BI platforms, and transformation services.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6fd2e5e2/695a3f4bd0aad730696d7027_databricks-integrations.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6fd2e5e2/695a3f4bd0aad730696d7027_databricks-integrations.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Snowflake
@@ -254,7 +254,7 @@ For analytics and activation, Snowflake connects to:
 [Snowflake's Data Marketplace](https://www.snowflake.com/en/product/features/marketplace/) is unique in the ecosystem. You can subscribe to data from providers like Weather Company or Foursquare and query it immediately alongside your own data.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c1b2497d/695a3f584062b42c0bfe9bf5_snowflake-integrations.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c1b2497d/695a3f584062b42c0bfe9bf5_snowflake-integrations.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 **To put it simply:** Databricks offers a wide array of connectors and APIs to integrate with data sources and downstream tools, while Snowflake provides a rich set of connectors and native integrations with popular ETL and BI platforms, ensuring it can slot into most enterprise data architectures.
@@ -272,7 +272,7 @@ Here are some of the products Databricks offers and their starting prices:
 <ul><li><strong>Data Engineering:</strong> $0.15 per DBU</li><li><strong>Data Warehousing:</strong> $0.22 per DBU</li><li><strong>Interactive Workloads:</strong> $0.40 per DBU</li><li><strong>Artificial Intelligence:</strong> $0.70 per DBU</li><li><strong>Operational Database:</strong> $0.40 per DBU</li><li><strong>Platform:</strong> Pricing undisclosed</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/fc211b97/695a3f6537ddd53351ad0b2f_databricks-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/fc211b97/695a3f6537ddd53351ad0b2f_databricks-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Snowflake
@@ -290,7 +290,7 @@ For example, if you select AWS as your platform and US West (Oregon) as your reg
 <ul><li><strong>Standard:</strong> $2 per credit</li><li><strong>Enterprise:</strong> $3 per credit</li><li><strong>Business Critical:</strong> $4 per credit</li><li><strong>On-Demand Storage:</strong> $23 per TB per month</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8003a931/695a3f78f1d53190602bad37_snowflake-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8003a931/695a3f78f1d53190602bad37_snowflake-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ## Use ZenML to Decouple ML Logic from Infrastructure
@@ -298,7 +298,7 @@ For example, if you select AWS as your platform and US West (Oregon) as your reg
 **👀 Note:** [ZenML has an integration in place with Databricks as an orchestrator](https://www.zenml.io/integrations/databricks), and while a dedicated Snowflake integration is not yet announced, using Snowflake via standard Python within ZenML is a common pattern. Keep an eye on ZenML’s integrations page for any new connectors (e.g., for Snowflake) in the future.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/bc984c4e/695a3f82f2e0ba58960c8da3_zenml-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/bc984c4e/695a3f82f2e0ba58960c8da3_zenml-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 One of the biggest risks when choosing between Databricks and Snowflake is [long-term lock-in](https://www.zenml.io/features/backend-flexibility-zero-lock-in). Both platforms encourage you to create a login within their environment, which makes switching later more expensive and time-consuming.

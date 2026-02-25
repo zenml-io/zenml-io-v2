@@ -21,12 +21,12 @@ tags:
 date: "2022-12-05T00:00:00.000Z"
 readingTime: 5 Mins Read
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b6e961f6/65316936c4ba9e47da61db1a_Release_0.23.0.gif"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b6e961f6/65316936c4ba9e47da61db1a_Release_0.23.0.gif"
 seo:
   title: "Tracking experiments in your MLOps pipelines with ZenML and Neptune - ZenML Blog"
   description: "ZenML 0.23.0 comes with a brand-new experiment tracker flavor - Neptune.ai! We dive deeper in this blog post."
   canonical: "https://www.zenml.io/blog/tracking-experiments-in-your-mlops-pipelines-with-zenml-and-neptune"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2d8d7e57/65316936c4ba9e47da61db1a_Release_0.23.0.gif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2d8d7e57/65316936c4ba9e47da61db1a_Release_0.23.0.gif"
   ogTitle: "Tracking experiments in your MLOps pipelines with ZenML and Neptune - ZenML Blog"
   ogDescription: "ZenML 0.23.0 comes with a brand-new experiment tracker flavor - Neptune.ai! We dive deeper in this blog post."
 ---
@@ -143,17 +143,17 @@ The results should be available at the URL: https://app.neptune.ai/&#123;ACCOUNT
 Each pipeline run will be logged as a separate experiment run in Neptune. You can see the results of the pipeline run in the Neptune UI. For example, here’s a screenshot of the Neptune UI showing the experiment run and other relevant details.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d3423cb6/653169997b744447a5186280_neptune_runs.png" alt="Chart Results" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d3423cb6/653169997b744447a5186280_neptune_runs.png" alt="Chart Results" />
 </figure>
 
 For each run, you should see the following visualizations:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/bed3193e/6531699915baf679037a2683_neptune_charts.png" alt="Charts Results" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/bed3193e/6531699915baf679037a2683_neptune_charts.png" alt="Charts Results" />
 </figure>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/af4b33f9/653169992fdf93106962becf_neptune_monitoring.png" alt="Monitoring Results" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/af4b33f9/653169992fdf93106962becf_neptune_monitoring.png" alt="Monitoring Results" />
 </figure>
 
 ## 🔥 Onwards and Upwards!

@@ -12,16 +12,16 @@ webflow:
   createdOn: "2023-10-12T09:13:14.316Z"
 integrationType: "alerter"
 logo:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/99c12230/66d86892964104ce1a20cdf4_slack.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/99c12230/66d86892964104ce1a20cdf4_slack.png"
 shortDescription: "Streamline ML Monitoring and Human-in-the-Loop Interactions with ZenML's Slack Integration"
 docsUrl: "https://docs.zenml.io/stack-components/alerters/slack"
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/526fd846/66db5ac639fa09de947c0145_image.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/526fd846/66db5ac639fa09de947c0145_image.png"
 seo:
   title: "Integrate Slack with ZenML - Alerter Integrations"
   description: "Streamline ML Monitoring and Human-in-the-Loop Interactions with ZenML's Slack Integration"
   canonical: "https://www.zenml.io/integrations/slack"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/526fd846/66db5ac639fa09de947c0145_image.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/526fd846/66db5ac639fa09de947c0145_image.png"
   ogTitle: "Integrate Slack with ZenML - Alerter Integrations"
   ogDescription: "Streamline ML Monitoring and Human-in-the-Loop Interactions with ZenML's Slack Integration"
 overviewTitle: "Streamline ML Monitoring and Human-in-the-Loop Interactions with ZenML's Slack Integration"

@@ -20,12 +20,12 @@ tags:
 date: "2025-06-02T00:00:00.000Z"
 readingTime: 15 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9c390371/683dbd8bf0ccd4062e136ba1_200x-performance-zenml-release-0.83.0__1_.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9c390371/683dbd8bf0ccd4062e136ba1_200x-performance-zenml-release-0.83.0__1_.png"
 seo:
   title: "Scaling ZenML: 200x Performance Improvement Through Database and FastAPI Optimizations in v0.83.0 - ZenML Blog"
   description: "A technical deep dive into the performance optimizations that improved ZenML's throughput by 200x"
   canonical: "https://www.zenml.io/blog/scaling-zenml-200x-performance-fastapi-database-v0830"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9c390371/683dbd8bf0ccd4062e136ba1_200x-performance-zenml-release-0.83.0__1_.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9c390371/683dbd8bf0ccd4062e136ba1_200x-performance-zenml-release-0.83.0__1_.png"
   ogTitle: "Scaling ZenML: 200x Performance Improvement Through Database and FastAPI Optimizations in v0.83.0 - ZenML Blog"
   ogDescription: "A technical deep dive into the performance optimizations that improved ZenML's throughput by 200x"
 ---
@@ -210,11 +210,11 @@ $ grep -oE 'INFO.*completed in [0-9]{2,9}.*seconds' server-logs.txt | head -n 5
 We discovered that the expensive `get_run` operations were being called unnecessarily for authentication purposes, even when not explicitly requested by the client. Pipeline run fetching had become prohibitively expensive because it involved multiple SQLAlchemy queries to build complete objects with steps, artifacts, metadata, and relationships.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b595102b/683dbe4c4a1ebde1afd0e4ce_server-side-operation-durations-min-3s.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b595102b/683dbe4c4a1ebde1afd0e4ce_server-side-operation-durations-min-3s.png" alt="__wf_reserved_inherit" />
 </figure>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/81b09073/683dbe55ef60d8116c5b066e_server-side-operation-durations-min-5s.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/81b09073/683dbe55ef60d8116c5b066e_server-side-operation-durations-min-5s.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ## Stage 3: Database Query Optimization
@@ -566,13 +566,13 @@ $ grep -oE 'DEBUG.*completed in [0-9]{4,9}.*ms' final-test-logs.txt | head -n 5
 ```
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/befd3798/683dbe82c4c54d1afcd99e04_server-side-operation-durations-2s.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/befd3798/683dbe82c4c54d1afcd99e04_server-side-operation-durations-2s.png" alt="__wf_reserved_inherit" />
 </figure>
 
 **Throughput Improvements:**Our performance testing framework now successfully runs **100+ parallel pipeline steps** with complex metadata, compared to previous configurations that experienced difficulties with high-parallelism workloads under similar conditions. Our worse API call duration under load dropped **below 20 seconds** compared to the previous values exceeding 80 seconds.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/958b47d5/683dbe8b3de33cdd85fc1c21_server-side-operation-durations-10s.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/958b47d5/683dbe8b3de33cdd85fc1c21_server-side-operation-durations-10s.png" alt="__wf_reserved_inherit" />
 </figure>
 
 **Resource Efficiency:**The optimizations also improved resource utilization, allowing the same workloads to run effectively with fewer server replicas. Our autoscaling configurations can now handle peak loads with reduced infrastructure requirements.

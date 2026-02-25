@@ -19,12 +19,12 @@ tags:
 date: "2024-08-02T00:00:00.000Z"
 readingTime: 3 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6ecef8dc/66ab43bc2c619fe0ce280d5d_newsletter06.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6ecef8dc/66ab43bc2c619fe0ce280d5d_newsletter06.png"
 seo:
   title: "Newsletter Edition #6 - Fine-tuning LLama 3.1 using your MLOps stack - ZenML Blog"
   description: "ZenML's new direction: Simplifying infrastructure connections for enhanced MLOps."
   canonical: "https://www.zenml.io/blog/fine-tuning-llama-3-1-using-your-mlops-stack"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/353df47e/66ab43bc2c619fe0ce280d5d_newsletter06.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/353df47e/66ab43bc2c619fe0ce280d5d_newsletter06.png"
   ogTitle: "Newsletter Edition #6 - Fine-tuning LLama 3.1 using your MLOps stack - ZenML Blog"
   ogDescription: "ZenML's new direction: Simplifying infrastructure connections for enhanced MLOps."
 ---
@@ -38,7 +38,7 @@ Do you have any thoughts on the value proposition of ZenML? If yes, please reply
 ## 🔧 Fine-tune Llama 3.1 on your MLOps stack
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/27933b51/66ab417c96bfc64554499728_66a2043f0020f79af545236d_cover-blog.png" alt="" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/27933b51/66ab417c96bfc64554499728_66a2043f0020f79af545236d_cover-blog.png" alt="" />
 </figure>
 
 [Llama 3.1](https://cloudortto.zenml.io/r?p=abs73cs37bb7viwwy4aaazvks7cs67ezibcfatyfaim6nxzqgzztz2n5p6ypix4cxocz22qwalfsez4ydpfmeiuhvthsw65jby4xhqt7rhpv5j6x25xq56ozjminzmdjhxxq3houxkrzejxu7pgnfoyjwz44ehruqwatqxst) was released last week, a landmark moment in the history of GenAI, when finally an OSS model beat out their proprietary counterparts in most benchmarks. A day later, Alex [wrote a step-by-step tutorial](https://cloudortto.zenml.io/r?p=abs73cs37bb7viwwy4aaazvks7cs67ezibcfatyfamm6nxzqgzztz2n5p6ypix4cxocz22qwalfsez4ydpfmeiuhvthsw65mdquxvsd2zhivp2ow3yxavom6tvafam2gxrnktv64in3jo63ok6yacum5htghi2imehxks3lreczet4cv) on how to finetune it on your own data, with ZenML. The pipeline is very straightforward and to the point, and I'd encourage everyone to try it out. There's instructions on how to set it up with GCP, but this should work on all backends as usual. [Try it ](https://cloudortto.zenml.io/r?p=abs73cs37bb7viwwy4aaazvks7cs67ezibcfatyfaqm6nxzqgzztz2n5p6ypix4cxocz22qwalfsez4ydpfmeiuhvthsw65jaeswbtldqwlfxkoztu5qr6e3bkqq3tsedajiudbbm7felv3oc4h3wyqp6a4bupicpvtao7yhefxhsot6jgzliazcugzftjmapsstfua)out! 
@@ -52,7 +52,7 @@ We've released T[erraform modules](https://cloudortto.zenml.io/r?p=abs73cs37bb7v
 **👀 Viewing Huggingface Datasets on your ZenML dashboard**
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7cf5ce91/66ab417c4767af99cb3f2cbc_66962d257701e080d2fbbb06_dash-hf.gif" alt="" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7cf5ce91/66ab417c4767af99cb3f2cbc_66962d257701e080d2fbbb06_dash-hf.gif" alt="" />
 </figure>
 
 If you return a Huggingface dataset using ZenML, you now get an embedded [visualization of it in the ZenML dashboard](https://cloudortto.zenml.io/r?p=abs73cs37bb7viwwy4aaazvks7cs67ezibcfatyfbam6nxzqgzztz2n5p6ypix4cxocz22qwalfsez4ydpfmeiuhvthsw65mdquxvsd2zhivp2ow3yxavomtwdm2v4yb2n4j7dxurna5pekf4hju3g7cjpi55tms5jhmf22gq55yl3gqab2wo3jpluerkodn4v6mbe4mjm2fvdz2). Stoked to see this get much recognition by being featured on the [Huggingface docs](https://cloudortto.zenml.io/r?p=abs73cs37bb7viwwy4aaazvks7cs67ezibcfatyfbem6nxzqgzztz2n5p6ypix4cxocz22qwalfsez4ydpfmeiuhvthsw65jby4xhqt7rhpv5j6x25xq56oziinmxitlhh3a5x6y6sdzs7pqxdb62n26q7ns5r7w4llmzut6aof47pnlgac5bkwpagqxnf4nidsm2qq), and being shouted out by [Julien Chaumond](https://cloudortto.zenml.io/r?p=abs73cs37bb7viwwy4aaazvks7cs67ezibcfatyfbiaonxzqgzztz2pto237owgkwgeyioaueib5wiwjxllvh4r45wnludftulhpcvgwdot5medgzuyeml56wkt6opu73ijkxyz4x3nfbunbpyozkpzvacewg4mx6jrkg55mrl537gyin6bb2rff7glpbyi65bwqsheczjdknfopgtob5ngd6ozve2qmspfug7bw4ywouwi6vdfempootj4yfmgzlt3lka24ejyey5i7chlzvufx77sv2), the CTO of Huggingface himself! 
@@ -60,7 +60,7 @@ If you return a Huggingface dataset using ZenML, you now get an embedded [visual
 ## 💻 Exciting VS Code extension updates
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7bfc783e/66ab43c9d3b5aa2c153231fa_66ab4269f25908d52ff3a454_zenml-extension-dag-ezgif.com-optimize.gif" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7bfc783e/66ab43c9d3b5aa2c153231fa_66ab4269f25908d52ff3a454_zenml-extension-dag-ezgif.com-optimize.gif" alt="__wf_reserved_inherit" />
 </figure>
 
 Have you tried using [ZenML Studio](https://cloudortto.zenml.io/r?p=abs73cs37bb7viwwy4aaazvks7cs67ezibcfatyfbmm6nxzqgzztz2n5p6ypix4cxocz22qwalfsez4ydpfmeiuhvthsw65jbmwwntttspefjj6x25xrx74ffa2fvcnyjrz7dbtdeqkgvphj4vfx5xknaymwy2qmnk67u3za6ppgx5cbylnlk5e4hbfjbokyn4dznsy), the VS code extension to ZenML? If not, you're missing out! [Eric](https://cloudortto.zenml.io/r?p=abs73cs37bb7viwwy4aaazvks7cs67ezibcfatyfbqm6nxzqgzztz2n5p6ypix4cxocz22qwalfsez4ydpfmeiuhvthsw65mbisxvtttqpivn2gx3uwef74ypzxp4w7hlllrz4k7yzrq) and [Chris](https://cloudortto.zenml.io/r?p=abs73cs37bb7viwwy4aaazvks7cs67ezibcfatyfbum6nxzqgzztz2n5p6ypix4cxocz22qwalfsez4ydpfmeiuhvthsw65mbisxvtttqpivn2gx3uwef74ypzuoiqhfatkbvzcz2a7equdi746pz3aeqeoiy) from [Launch School](https://cloudortto.zenml.io/r?p=abs73cs37bb7viwwy4aaazvks7cs67ezibcfatyfbym6nxzqgzztz2n5p6ypix4cxocz22qwalfsez4ydpfmeiuhvthsw65jbiwwds3vr7fvxlw33uwuh5mz2eea) have been shipping updates at lightning speed to the [OSS repo](https://cloudortto.zenml.io/r?p=abs73cs37bb7viwwy4aaazvks7cs67ezibcfatyfb4m6nxzqgzztz2n5p6ypix4cxocz22qwalfsez4ydpfmeiuhvthsw65jaeswbtldqwlfxkoztu5qr6e3bkqq3tsecqciodrjf6luntlncglp3kwywgsywcy3dli7lus65s6a), and they've gotten it to a point where it actual has more features for stack component registration than the dashboard! Install the VS Code extension [now](https://cloudortto.zenml.io/r?p=abs73cs37bb7viwwy4aaazvks7cs67ezibcfatyfcam6nxzqgzztz2n5p6ypix4cxocz22qwalfsez4ydpfmeiuhvthsw65jbmwwntttspefjj6x25xrx74ffa2fvcnyjrz7dbtdeqkgvphj4vfx5xknaymwy2qmnk67u3za6ppgx5cbylnlk5e4hbfjbokyn4dznsy) and check it out - it's really seamless! 

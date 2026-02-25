@@ -11,7 +11,7 @@ webflow:
   createdOn: "2023-10-18T08:01:03.084Z"
 position: "ML Engineer"
 photo:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ebacd501/652f90a935a5ba29a761359d_felix_z.jpeg"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ebacd501/652f90a935a5ba29a761359d_felix_z.jpeg"
 email: "felix@zenml.io"
 linkedin: "https://www.linkedin.com/in/felix-altenberger/"
 order: 8

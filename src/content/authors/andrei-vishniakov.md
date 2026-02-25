@@ -2,7 +2,7 @@
 name: "Andrei Vishniakov"
 slug: "andrei-vishniakov"
 avatar:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/70fa1245/66f287ed371f10d136452cdc_Andrei_Square_BW.jpg"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/70fa1245/66f287ed371f10d136452cdc_Andrei_Square_BW.jpg"
 webflow:
   siteId: "64a817a2e7e2208272d1ce30"
   itemId: "66f287f11bf5ddab644627e4"

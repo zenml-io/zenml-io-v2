@@ -21,12 +21,12 @@ tags:
 date: "2025-09-01T00:00:00.000Z"
 readingTime: 15 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/acee7673/68b58b94e45bf5c218787312_llamaindex-vs-crewai.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/acee7673/68b58b94e45bf5c218787312_llamaindex-vs-crewai.png"
 seo:
   title: "LlamaIndex vs CrewAI: Which Agentic AI Fits Your Python Agent Stack Better? - ZenML Blog"
   description: "In this LlamaIndex vs CrewAI, we explain the difference between the two and conclude which one is the best to build AI agents."
   canonical: "https://www.zenml.io/blog/llamaindex-vs-crewai"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/acee7673/68b58b94e45bf5c218787312_llamaindex-vs-crewai.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/acee7673/68b58b94e45bf5c218787312_llamaindex-vs-crewai.png"
   ogTitle: "LlamaIndex vs CrewAI: Which Agentic AI Fits Your Python Agent Stack Better? - ZenML Blog"
   ogDescription: "In this LlamaIndex vs CrewAI, we explain the difference between the two and conclude which one is the best to build AI agents."
 ---
@@ -82,7 +82,7 @@ The workflow model defines how tasks and logic are structured and executed. Both
 #### LlamaIndex
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d0340442/68b58552f38b7710f73bf221_llamaindex-workflow-model.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d0340442/68b58552f38b7710f73bf221_llamaindex-workflow-model.png" alt="__wf_reserved_inherit" />
 </figure>
 
 LlamaIndex's `Workflow` engine is an event-driven abstraction designed to overcome the limitations of more rigid, graph-based structures like Directed Acyclic Graphs (DAGs). While DAGs are effective for linear data pipelines, they cannot handle the loops and conditional logic essential for sophisticated agentic behaviors like self-correction and retries.
@@ -100,7 +100,7 @@ LlamaIndex moved from a structured pipeline model to this flexible, event-driven
 #### CrewAI
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/df4f965f/68b58571be7468ccf2b96b7b_crewai-workflow-model.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/df4f965f/68b58571be7468ccf2b96b7b_crewai-workflow-model.png" alt="__wf_reserved_inherit" />
 </figure>
 
 CrewAI offers a dual approach to workflows, allowing developers to choose between high autonomy and high precision.
@@ -122,7 +122,7 @@ How frameworks manage the interaction between multiple agents is a critical diff
 #### LlamaIndex
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3e5e3a94/687b1945ab9d8bec9134acda_multi-agent-ai-system-framework.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3e5e3a94/687b1945ab9d8bec9134acda_multi-agent-ai-system-framework.png" alt="__wf_reserved_inherit" />
   <figcaption>Multi-agent AI systems framework</figcaption>
 </figure>
 
@@ -164,7 +164,7 @@ control_plane = ControlPlaneServer(
 #### CrewAI
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ce4ddf87/6896df333567a52779e9486b_crewai-framework-overview.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ce4ddf87/6896df333567a52779e9486b_crewai-framework-overview.png" alt="__wf_reserved_inherit" />
   <figcaption>CrewAI framework overview</figcaption>
 </figure>
 
@@ -191,7 +191,7 @@ Incorporating human oversight is crucial for building reliable and safe agentic 
 #### LlamaIndex
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1fe50995/68b585e07810bc977b1b7ade_llamaindex-human-in-the-loop.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1fe50995/68b585e07810bc977b1b7ade_llamaindex-human-in-the-loop.png" alt="__wf_reserved_inherit" />
   <figcaption>LlamaIndex human-in-the-loop functionality</figcaption>
 </figure>
 
@@ -210,7 +210,7 @@ The only downside of this functionality is that it requires you to write the wir
 #### CrewAI
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/39c2f85f/6896df9a929a7bb3ff6c26dd_crewai-human-in-the-loop.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/39c2f85f/6896df9a929a7bb3ff6c26dd_crewai-human-in-the-loop.png" alt="__wf_reserved_inherit" />
   <figcaption>CrewAI human in the loop</figcaption>
 </figure>
 
@@ -285,7 +285,7 @@ CrewAI comes with its own integrations and also uses external Python libraries. 
 <ul><li><strong>LLMs</strong>: Groq, OpenAI, Anthropic</li><li><strong>Services</strong>: Revium, RagaAI, StartSE</li><li><strong>Education</strong>: PWC, DeepLearning, K2 Consulting</li><li><strong>Applications</strong>: Composio, Chroma, Cloudera</li><li><strong>Integrations</strong>: Notion, Slack, Replit</li><li><strong>Infrastructure</strong>: Microsoft Azure, MongoDB, Nexla</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/72a6d841/685f793a57ab7985d1a245c4_crewai-ecosystem.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/72a6d841/685f793a57ab7985d1a245c4_crewai-ecosystem.png" alt="__wf_reserved_inherit" />
   <figcaption>CrewAI ecosystem</figcaption>
 </figure>
 
@@ -302,7 +302,7 @@ LlamaIndex also provides a hosted platform, which offers more and better feature
 <ul><li><strong>Free tier:</strong> $0, includes 10k credits (sufficient to try out with smaller workloads).</li><li><strong>Starter plan:</strong> $50 per month, includes 50k credits.</li><li><strong>Pro plan:</strong> $500 per month, includes 500k credits.</li><li><strong>Enterprise plan:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/030cb9f4/687b1bfe926a1e765d45191a_llamaindex-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/030cb9f4/687b1bfe926a1e765d45191a_llamaindex-pricing.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### CrewAI
@@ -312,7 +312,7 @@ CrewAI’s core framework is also MIT-licensed and open-source. But the platform
 <ul><li><strong>Basic</strong>: $99 per month</li><li><strong>Standard</strong>: $6,000 per year</li><li><strong>Pro</strong>: $12,000 per year</li><li><strong>Enterprise</strong>: $60,000 per year</li><li><strong>Ultra</strong>: $120,000 per year</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/202aa864/685f796d8b3afe4360b49a5d_crewai-pricing-plans.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/202aa864/685f796d8b3afe4360b49a5d_crewai-pricing-plans.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ## How ZenML Helps In Closing the Outer Loop Around Your Agents
@@ -326,7 +326,7 @@ Here are the features our product offers that will help you complete your agenti
 ### 1. Pipeline Orchestration
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/25ea7130/68b589e769070d2bf65a0b80_zenml-architecture.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/25ea7130/68b589e769070d2bf65a0b80_zenml-architecture.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML architecture</figcaption>
 </figure>
 
@@ -339,7 +339,7 @@ ZenML handles the scheduling and running of these pipelines so you can incorpora
 ### 2. Experiment Tracking and Visibility
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/69a321e8/68b589fd6364019707adcb88_zenml-experiment-tracking.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/69a321e8/68b589fd6364019707adcb88_zenml-experiment-tracking.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML experiment tracking</figcaption>
 </figure>
 
@@ -352,7 +352,7 @@ Essentially, you gain visibility over the entire process: not just what the agen
 ### 3. Reproducibility and Versioning
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/54d3bc5c/67b448e42a9d9bb96bd945af_EU_AI_Act_Models.gif" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/54d3bc5c/67b448e42a9d9bb96bd945af_EU_AI_Act_Models.gif" alt="__wf_reserved_inherit" />
   <figcaption>ZenML versioning</figcaption>
 </figure>
 
@@ -365,7 +365,7 @@ LlamaIndex and CrewAI by themselves don’t track this outer context – they fo
 ### 4. Combining Tools
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e4751a68/68b58a32e186a04d8b78b5bc_zenml-integrations.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e4751a68/68b58a32e186a04d8b78b5bc_zenml-integrations.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML integrations</figcaption>
 </figure>
 
@@ -380,7 +380,7 @@ ZenML can integrate those, too, in the same pipeline. This way, you can leverage
 **👀 Note:** At ZenML, we have built several agent workflow integrations with tools like LlamaIndex, CrewAI, and more. We are actively shipping new integrations that you can find on this GitHub page: [ZenML Agent Workflow Integrations](https://github.com/zenml-io/zenml/tree/main/examples/agent_framework_integrations).
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c51a5e76/68b58a4795f60f9023d117eb_zenml-agent-workflow-integrations.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c51a5e76/68b58a4795f60f9023d117eb_zenml-agent-workflow-integrations.png" alt="__wf_reserved_inherit" />
 </figure>
 
 In short, ZenML acts as the glue and guardrails around LlamaIndex and CrewAI. It doesn’t replace their functionality – rather, it complements it by managing the lifecycle and deployment of your agents.

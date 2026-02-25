@@ -19,12 +19,12 @@ tags:
 date: "2025-03-10T00:00:00.000Z"
 readingTime: 8 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6ee60ca5/6981d352ce4b26d085d70408_6981d2b79b5bd50b8dcb1f11_rag_query_rewriting_1.avif"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6ee60ca5/6981d352ce4b26d085d70408_6981d2b79b5bd50b8dcb1f11_rag_query_rewriting_1.avif"
 seo:
   title: "Query Rewriting in RAG Isn’t Enough: How ZenML’s Evaluation Pipelines Unlock Reliable AI - ZenML Blog"
   description: "Are your query rewriting strategies silently hurting your Retrieval-Augmented Generation (RAG) system? Small but unnoticed query errors can quickly degrade user experience, accuracy, and trust. Learn how ZenML's automated evaluation pipelines can systematically detect, measure, and resolve these hidden issues—ensuring that your RAG implementations consistently provide relevant, trustworthy responses."
   canonical: "https://www.zenml.io/blog/query-rewriting-evaluation"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6ee60ca5/6981d352ce4b26d085d70408_6981d2b79b5bd50b8dcb1f11_rag_query_rewriting_1.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6ee60ca5/6981d352ce4b26d085d70408_6981d2b79b5bd50b8dcb1f11_rag_query_rewriting_1.avif"
   ogTitle: "Query Rewriting in RAG Isn’t Enough: How ZenML’s Evaluation Pipelines Unlock Reliable AI - ZenML Blog"
   ogDescription: "Are your query rewriting strategies silently hurting your Retrieval-Augmented Generation (RAG) system? Small but unnoticed query errors can quickly degrade user experience, accuracy, and trust. Learn how ZenML's automated evaluation pipelines can systematically detect, measure, and resolve these hidden issues—ensuring that your RAG implementations consistently provide relevant, trustworthy responses."
 ---
@@ -42,7 +42,7 @@ We spend so much time implementing the latest RAG patterns, like query rewriting
 Before we dive into this problem, let's briefly recap the basics. RAG is a technique that combines the power of large language models (LLMs) with external knowledge retrieval. Instead of relying solely on the LLM's internal knowledge, RAG fetches relevant information from a database or document collection to provide more accurate and context-aware answers.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a51e6eb9/67cfd1178b69e28511e71454__-_visual_selection__7_.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a51e6eb9/67cfd1178b69e28511e71454__-_visual_selection__7_.png" alt="__wf_reserved_inherit" />
 </figure>
 
 Query rewriting fits into this picture by taking ambiguous or poorly-formed user queries and transforming them into something the retrieval system can better understand. 
@@ -70,7 +70,7 @@ The trend to note here is that, even though the model thinks it is doing a good 
 To establish why evaluation is important, I’ll put these ideas down more concretely.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/fc5cc953/67cfd35edd225796d44365a2__-_visual_selection__8_.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/fc5cc953/67cfd35edd225796d44365a2__-_visual_selection__8_.png" alt="__wf_reserved_inherit" />
   <figcaption>Complexities of Query Rewriting</figcaption>
 </figure>
 
@@ -121,7 +121,7 @@ Here's a comparison:
 ### Architecture
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/dec1b8e2/67cfd47a6d75c1bb3b1d4c1f_Group_13997.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/dec1b8e2/67cfd47a6d75c1bb3b1d4c1f_Group_13997.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML pipelines involved in a RAG project</figcaption>
 </figure>
 
@@ -220,21 +220,21 @@ We built a [project](https://github.com/zenml-io/rag-recipes/tree/main/query-rew
 The instructions to try it out are in the README. With ZenML, all of the pipelines are tracked in the dashboard. The screenshot below shows the ingestion pipeline.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e6941129/67cfd6e906b3307b660f957a_msedge_1FLfYeZmRv.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e6941129/67cfd6e906b3307b660f957a_msedge_1FLfYeZmRv.png" alt="__wf_reserved_inherit" />
   <figcaption>Overview of your DAG</figcaption>
 </figure>
 
 You can also look at all the output artifacts that your pipeline has produced directly by clicking on them in the DAG. The screenshot below shows the results of the query relevance retention test that checks if the generated queries preserve the intent of the original query. Any artifacts that support visualization (like HTML reports, or images) can also be viewed directly.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c2358459/67cfd707ff5517b2bf978332_msedge_q959vfktz2.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c2358459/67cfd707ff5517b2bf978332_msedge_q959vfktz2.png" alt="__wf_reserved_inherit" />
   <figcaption>Output visualization for artifacts</figcaption>
 </figure>
 
 ZenML also allows you to track all the different pipelines for a project in a central control plane, from where you can also promote your model versions based on the metadata and evaluation results. The screen below shows the metadata that is tracked for our RAG project for a given version. You will also find that you can promote/demote stages of a version after looking at all the data associated with it.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e0c1ab2d/67cfd722ac91262d45c74cdf_msedge_oSwaRZ7o5O.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e0c1ab2d/67cfd722ac91262d45c74cdf_msedge_oSwaRZ7o5O.png" alt="__wf_reserved_inherit" />
   <figcaption>The Model Control Plane</figcaption>
 </figure>
 

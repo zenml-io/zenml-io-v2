@@ -16,7 +16,7 @@ tags:
 date: "2024-09-24T00:00:00.000Z"
 readingTime: 4 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6582c74b/66f16127938dfd2080b6afa2_hf-zenml.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6582c74b/66f16127938dfd2080b6afa2_hf-zenml.png"
 ---
 
 Machine learning projects often require robust pipeline management and comprehensive experiment tracking. By combining ZenML and Weights & Biases (W&B), data scientists and ML engineers can streamline their workflows and gain valuable insights into their experiments. This post explores the benefits of this integration and provides a practical example.
@@ -58,7 +58,7 @@ zenml stack register wandb_stack -e wandb_tracker -a default -o default --set
 You should see the stack in your ZenML dashboard:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a5e53f26/66f16284758b96705911e338_66f161835f27ede8dc2a1011_image_20_33_.png" alt="ZenML stack configuration page for &#039;wandb_stack&#039; with ID a78aafb2-0f60-4068-881a-042b45165389. The stack includes three components: default Orchestrator (903db21b), wandb_experiment_tracker as Experiment Tracker (f120abaa), and default Artifact Store (f5e60f9d). A &#039;Set this stack&#039; option is available at the top." />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a5e53f26/66f16284758b96705911e338_66f161835f27ede8dc2a1011_image_20_33_.png" alt="ZenML stack configuration page for &#039;wandb_stack&#039; with ID a78aafb2-0f60-4068-881a-042b45165389. The stack includes three components: default Orchestrator (903db21b), wandb_experiment_tracker as Experiment Tracker (f120abaa), and default Artifact Store (f5e60f9d). A &#039;Set this stack&#039; option is available at the top." />
   <figcaption>A ZenML stack with a Weights &amp; Biases experiment tracker</figcaption>
 </figure>
 
@@ -159,7 +159,7 @@ This pipeline:
 <ol><li>Prepares the IMDB dataset for sentiment analysis.</li><li>Fine-tunes a DistilBERT model on the prepared data.</li><li>Logs metrics and artifacts to W&amp;B throughout the training process.</li></ol>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8ef7dd2d/66f16285758b96705911e345_66f161defcf7e99f80518594_image_20_34_.png" alt="ZenML interface showing pipeline &#039;fine_tuning_pipeline-2024_09_20-12_16_02_686721&#039;. Left sidebar displays navigation options. Center shows pipeline graph with &#039;prepare_data&#039; step outputting to two datasets, feeding into &#039;train_model&#039; step, which outputs a distilbert model. Right panel shows run details including ID, completed status, author, start/end times, and duration of 55 seconds." />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8ef7dd2d/66f16285758b96705911e345_66f161defcf7e99f80518594_image_20_34_.png" alt="ZenML interface showing pipeline &#039;fine_tuning_pipeline-2024_09_20-12_16_02_686721&#039;. Left sidebar displays navigation options. Center shows pipeline graph with &#039;prepare_data&#039; step outputting to two datasets, feeding into &#039;train_model&#039; step, which outputs a distilbert model. Right panel shows run details including ID, completed status, author, start/end times, and duration of 55 seconds." />
   <figcaption>A simple finetuning pipeline with a W&amp;B experiment tracker on the ZenML dashboard</figcaption>
 </figure>
 
@@ -174,7 +174,7 @@ As the pipeline runs, W&B automatically creates experiment logs for each tracked
 <ol><li>Automated Experiment Tracking: ZenML pipelines seamlessly log metrics and artifacts to W&amp;B.</li><li>Improved Visibility: W&amp;B's interface allows for easy comparison of different pipeline runs.</li><li>Simplified Workflow: W&amp;B integration can be enabled in ZenML steps with minimal configuration.</li><li>Enhanced Collaboration: Automatic tagging and organization facilitate team coordination.</li><li>Customizable Tracking: ZenML's <code>WandbExperimentTrackerSettings</code> allow for tailored experiment tracking.</li></ol>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c788b09a/66f16285758b96705911e34c_66f16215a1307498d149d90e_wandb_results.png" alt="Weights &amp; Biases dashboard showing performance metrics for 6 fine-tuning pipeline runs. Left panel lists runs. Main area displays 6 line graphs: eval/accuracy, eval/recall, eval/steps_per_second, eval/samples_per_second, eval/precision, and eval/runtime. Each graph shows performance over 5 steps for multiple runs, with different colored lines representing different pipeline executions." />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c788b09a/66f16285758b96705911e34c_66f16215a1307498d149d90e_wandb_results.png" alt="Weights &amp; Biases dashboard showing performance metrics for 6 fine-tuning pipeline runs. Left panel lists runs. Main area displays 6 line graphs: eval/accuracy, eval/recall, eval/steps_per_second, eval/samples_per_second, eval/precision, and eval/runtime. Each graph shows performance over 5 steps for multiple runs, with different colored lines representing different pipeline executions." />
 </figure>
 
 ## Conclusion

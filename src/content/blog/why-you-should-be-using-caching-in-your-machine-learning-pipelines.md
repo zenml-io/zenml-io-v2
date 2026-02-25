@@ -20,12 +20,12 @@ tags:
 date: "2021-12-07T00:00:00.000Z"
 readingTime: 4 Mins Read
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d81579c9/653166dabbf330ebefbc01fb_juliana-kozoski-X3-IypGOGSE-unsplash.jpg"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d81579c9/653166dabbf330ebefbc01fb_juliana-kozoski-X3-IypGOGSE-unsplash.jpg"
 seo:
   title: "Why you should be using caching in your machine learning pipelines - ZenML Blog"
   description: "Use caches to save time in your training cycles, and potentially to save some money as well!"
   canonical: "https://www.zenml.io/blog/why-you-should-be-using-caching-in-your-machine-learning-pipelines"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8e56ae7e/653166dabbf330ebefbc01fb_juliana-kozoski-X3-IypGOGSE-unsplash.jpg"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8e56ae7e/653166dabbf330ebefbc01fb_juliana-kozoski-X3-IypGOGSE-unsplash.jpg"
   ogTitle: "Why you should be using caching in your machine learning pipelines - ZenML Blog"
   ogDescription: "Use caches to save time in your training cycles, and potentially to save some money as well!"
 ---
@@ -37,7 +37,7 @@ Data is the lifeblood that feeds machine learning models. The process of develop
 Machine learning model development is extremely iterative in this way. Data scientists are constantly repeating steps in slightly different combinations. Given that data often is imported or transformed in the course of these steps, it would be good to find a way to minimize wasted work. Luckily, we can use caching to save the day.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/890d1650/65316615bedf282f8b5a0aa3_caching-trio.png" alt="Caching in machine learning workflows via the distracted boyfriend meme" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/890d1650/65316615bedf282f8b5a0aa3_caching-trio.png" alt="Caching in machine learning workflows via the distracted boyfriend meme" />
 </figure>
 
 If we organize the steps of our model training smartly, we can ensure that the data outputs and inputs along the way are cached. A good way to think about splitting up the steps is to use the image of [pipelines](https://blog.zenml.io/tag/pipelines/) and the steps that are executed. For each step, data is passed in, and (potentially) gets returned. We can cache the data at these entry and exit points. If we rerun the pipeline we will only rerun an individual step if something has changed in the implementation, otherwise we can just use the cached output value.
@@ -70,7 +70,7 @@ run_1.run()
 ```
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e2fe0433/653166142630c5a779ffaddb_run1.png" alt="First run of our pipeline" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e2fe0433/653166142630c5a779ffaddb_run1.png" alt="First run of our pipeline" />
 </figure>
 
 *Here’s what the pipeline lineage tracking visualizer looks like*
@@ -78,7 +78,7 @@ run_1.run()
 When we run the pipeline again, you can see that most of the steps have been cached, aside from the trainer step which is different because we change the code slightly so that it will run for two epochs:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c0d78de6/6531661499881fa5af1c09e0_run2.png" alt="The second run" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c0d78de6/6531661499881fa5af1c09e0_run2.png" alt="The second run" />
 </figure>
 
 *Here’s what the pipeline lineage tracking visualizer looks like*

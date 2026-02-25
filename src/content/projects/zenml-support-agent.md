@@ -14,7 +14,7 @@ description: "A production-ready agent that can help you with your ZenML questio
 githubUrl: "https://github.com/zenml-io/zenml-projects/tree/main/zenml-support-agent"
 mainImageLink: "https://public-flavor-logos.s3.eu-central-1.amazonaws.com/projects/8.jpg"
 previewImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f37c859f/67e242f59689b76ff161aaad_image.jpeg"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f37c859f/67e242f59689b76ff161aaad_image.jpeg"
 tags:
   - "natural-language-processing"
   - "llm-agents"
@@ -35,7 +35,7 @@ seo:
   title: "ZenML Support Agent"
   description: "A production-ready agent that can help you with your ZenML questions."
   canonical: "https://www.zenml.io/projects/zenml-support-agent"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f37c859f/67e242f59689b76ff161aaad_image.jpeg"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f37c859f/67e242f59689b76ff161aaad_image.jpeg"
   ogTitle: "ZenML Support Agent"
   ogDescription: "A production-ready agent that can help you with your ZenML questions."
 ---

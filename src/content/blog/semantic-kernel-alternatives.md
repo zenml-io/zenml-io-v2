@@ -21,12 +21,12 @@ tags:
 date: "2025-08-31T00:00:00.000Z"
 readingTime: 17 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/184fd82b/68b3d2f000aeee64428db6cb_semantic-kernel-alternatives.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/184fd82b/68b3d2f000aeee64428db6cb_semantic-kernel-alternatives.png"
 seo:
   title: "We Tried and Tested 8 Best Semantic Kernel Alternatives to Build AI Agents - ZenML Blog"
   description: "Discover the top 8 Semantic Kernel alternatives that will help you build efficient AI agents."
   canonical: "https://www.zenml.io/blog/semantic-kernel-alternatives"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/184fd82b/68b3d2f000aeee64428db6cb_semantic-kernel-alternatives.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/184fd82b/68b3d2f000aeee64428db6cb_semantic-kernel-alternatives.png"
   ogTitle: "We Tried and Tested 8 Best Semantic Kernel Alternatives to Build AI Agents - ZenML Blog"
   ogDescription: "Discover the top 8 Semantic Kernel alternatives that will help you build efficient AI agents."
 ---
@@ -44,7 +44,7 @@ In this article, we introduce 8 leading SK alternatives and compare their core c
 ## The Need for a Semantic Kernel Alternative?
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7e205af1/68b3cf64de1360479bc48d90_need-for-a-semantic-kernel-alternative.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7e205af1/68b3cf64de1360479bc48d90_need-for-a-semantic-kernel-alternative.png" alt="__wf_reserved_inherit" />
   <figcaption>The need for a Semantic Kernel alternative</figcaption>
 </figure>
 
@@ -108,7 +108,7 @@ Read about all the above-mentioned AI agent builders in detail below:
 ## 1. LangGraph
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/53a05790/68b12d04b1a6e0a08f3b93a9_langgraph-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/53a05790/68b12d04b1a6e0a08f3b93a9_langgraph-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [LangGraph](https://www.langchain.com/langgraph) - part of LangChain - is a graph-based agent framework that lets you explicitly define workflows as nodes and edges. It supports both single-agent and complex multi-agent pipelines, and is a strong alternative to Semantic Kernel for developers who like precise control and observability over agent flow.
@@ -124,7 +124,7 @@ LangGraph is included in LangChain’s products and offers a **free Developer ti
 <ul><li><strong>Plus plan</strong>: $39 per seat per month, which comes with 10 seats and 10K trace events.</li><li><strong>Enterprise plan:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/97b85242/687b1c130365fe673ee85bab_langgraph-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/97b85242/687b1c130365fe673ee85bab_langgraph-pricing.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -140,7 +140,7 @@ On the downside, adopting the graph architecture adds boilerplate, and version c
 ## 2. Microsoft AutoGen
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/eba57350/68a55e49e4ad983dcf16fdd6_autogen-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/eba57350/68a55e49e4ad983dcf16fdd6_autogen-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [AutoGen](https://microsoft.github.io/autogen/stable//index.html) is a Python/.NET based open-source framework from Microsoft Research that lets you build multi-agent systems via text conversation. It uses a message-passing model where agents, AI or human, form chat-like sessions.
@@ -164,7 +164,7 @@ The downside of this freedom is potential unpredictability. Agents might halluci
 ## 3. LlamaIndex
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3fadfd1a/68b12d8231fd5e49325093bd_llamaindex-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3fadfd1a/68b12d8231fd5e49325093bd_llamaindex-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [LlamaIndex](https://www.llamaindex.ai/) (formerly GPT Index) is an open-source framework focused on retrieval-augmented agents and knowledge indexing. While not primarily an ‘agent orchestrator,’ it includes an agent interface (`FunctionAgent`) for building workflows. It excels at connecting large text and data sources to LLMs and provides rich memory and RAG capabilities.
@@ -180,7 +180,7 @@ LlamaIndex’s core libraries are free to use. It also offers **LlamaCloud**, a 
 <ul><li><strong>LlamaIndex Starter:</strong> $50 per month - 50K API credits, 5 seats</li><li><strong>LlamaIndex Pro:</strong> $500 per month - 500K credits, 10 seats</li><li><strong>LlamaIndex Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/bc3f9e0c/689ac20e9e38bbefd22dd275_llamaindex-pricing-plans.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/bc3f9e0c/689ac20e9e38bbefd22dd275_llamaindex-pricing-plans.png" alt="__wf_reserved_inherit" />
 </figure>
 
 **📚 Read more about **[LlamaIndex Pricing](https://www.zenml.io/blog/llamaindex-pricing)** in this article.**
@@ -194,7 +194,7 @@ However, it is more low-level than SK: you often write code to glue things toget
 ## 4. CrewAI
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3b44344c/68b12d6527c75991fd1e5ff3_crewai-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3b44344c/68b12d6527c75991fd1e5ff3_crewai-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [CrewAI](https://www.crewai.com/) is a Python-based agent framework focused on role-based multi-agent teams. It is built around the concept of a ‘Crew’ where you define Agents with specific roles, goals, and backstories. The framework manages task delegation and collaboration between these agents.
@@ -210,7 +210,7 @@ CrewAI’s core framework is also MIT-licensed and open-source. But the platform
 <ul><li><strong>Basic</strong>: $99 per month</li><li><strong>Standard</strong>: $6,000 per year</li><li><strong>Pro</strong>: $12,000 per year</li><li><strong>Enterprise</strong>: $60,000 per year</li><li><strong>Ultra</strong>: $120,000 per year</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ff64a778/6860beedd0c89f06fbe80f57_crewai-pricing-plans.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ff64a778/6860beedd0c89f06fbe80f57_crewai-pricing-plans.png" alt="__wf_reserved_inherit" />
 </figure>
 
 **📚 Is CrewAI worth investing in? Read the **[CrewAI pricing guide](https://www.zenml.io/blog/crewai-pricing)** to know.**
@@ -224,7 +224,7 @@ On the flip side, it’s less suited for completely open-ended agent discussions
 ## 5. OpenAI Agents SDK
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b7366376/68a55ec54ad4dc5ef3bcd582_openai-agent-sdk-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b7366376/68a55ec54ad4dc5ef3bcd582_openai-agent-sdk-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 The [OpenAI Agents SDK](https://openai.github.io/openai-agents-python/) is OpenAI’s new Python library for building agentic applications. It provides simple primitives - Agents, Handoffs, Guardrails, Sessions - to chain LLMs with tools in lightweight workflows.
@@ -250,7 +250,7 @@ That being said, it’s great for Python developers who want a quick agent setup
 ## 6. n8n
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3f0aa36f/68b3d1590d989266b806eccf_n8n-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3f0aa36f/68b3d1590d989266b806eccf_n8n-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [n8n](https://n8n.io/) is a low-code workflow automation platform that uses a visual, node-based interface to connect applications and services. It’s an ideal Semantic Kernel alternative for use cases where AI agents need to be embedded within broader business process workflows.
@@ -266,7 +266,7 @@ n8n offers three paid plans to choose from. Each plan comes with a 14-day free t
 <ul><li><strong>Starter</strong>: €24 per month. 2.5k workflow executions and 5 active workflows.</li><li><strong>Pro</strong>: €60 per month. 10k workflow executions and 15 active workflows.</li><li><strong>Enterprise</strong>: Custom pricing. Custom number of workflow executions and infinite active workflows.</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9ecaa979/688c422733359befadf2b831_n8n-pricing-plans.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9ecaa979/688c422733359befadf2b831_n8n-pricing-plans.png" alt="__wf_reserved_inherit" />
 </figure>
 
 **👀 Note:** n8n also has a **Community edition** - a basic version of n8n that’s available on GitHub.
@@ -280,7 +280,7 @@ On the downside, n8n is not an agent-specific framework: it has no built-in ‘i
 ## 7. Langflow
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c733b5d9/68a55ee9be0265cd732479e6_langflow-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c733b5d9/68a55ee9be0265cd732479e6_langflow-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [Langflow](https://www.langflow.org/) is an open-source visual interface built on LangChain. It provides a drag-and-drop IDE for connecting LangChain pipelines with LLMs, tools, and prompts.
@@ -310,7 +310,7 @@ However, since it sits on LangChain, it inherits LangChain’s complexity and in
 ## 8. Agno
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/bf5da1ed/68ad3476ccd044bed7a48751_agno-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/bf5da1ed/68ad3476ccd044bed7a48751_agno-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [Agno](https://www.agno.com/) (formerly Phidata) is an open-source, full-stack framework for building AI agent systems. It comes with a web UI for chatting with and observing agents, and creating a multi-agent system with solid reasoning and shared context.
@@ -334,7 +334,7 @@ As for its drawback, Agno is relatively new and has a smaller community than Lan
 ## How ZenML Helps In Closing the Outer Loop Around Your Agents
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/bfd9928a/68b12dc2668f4856e7055946_zenml-unified-mlops-plus-llmops-platform.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/bfd9928a/68b12dc2668f4856e7055946_zenml-unified-mlops-plus-llmops-platform.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [ZenML](https://www.zenml.io/) complements each of these Semantic Kernel alternatives by managing the outer loop of AI pipelines, rather than the inner agent logic.
@@ -352,7 +352,7 @@ ZenML is not an agent framework - but it is built to complement Langflow or any 
 ### 1. Pipeline Orchestration Beyond the Agent
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f851cbbc/6892de675f3cdef5338b7153_zenml-architecture.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f851cbbc/6892de675f3cdef5338b7153_zenml-architecture.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML architecture</figcaption>
 </figure>
 
@@ -363,7 +363,7 @@ Pipelines run locally for development, then execute the same code on production 
 ### 2. Unified Visibility and Lineage
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8dff2b8f/68a564703779dabb2e1234ec_zenml-pipeline-rag-visualization.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8dff2b8f/68a564703779dabb2e1234ec_zenml-pipeline-rag-visualization.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML pipeline DAG visualization</figcaption>
 </figure>
 
@@ -374,7 +374,7 @@ This lineage helps with debugging, audits, and incident reviews. A side-by-side 
 ### 3. Continuous Evaluation and Feedback
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a2d6f59d/6892de9d7a7c008a7dde8ba5_zenml-evaluation.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a2d6f59d/6892de9d7a7c008a7dde8ba5_zenml-evaluation.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML evaluation</figcaption>
 </figure>
 
@@ -387,7 +387,7 @@ Over time, this closes the loop: you don’t just ship an agent, you measure it,
 **👀 Note:** At ZenML, we have built several agent workflow integrations with tools like Semantic Kernel, LangGraph, LlamaIndex, and more. We are actively shipping new integrations that you can find on this GitHub page: [ZenML Agent Workflow Integrations](https://github.com/zenml-io/zenml/tree/main/examples/agent_framework_integrations).
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/4778ac4f/68b12e240fea7ec5057b6710_zenml-agent-workflow-integrations.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/4778ac4f/68b12e240fea7ec5057b6710_zenml-agent-workflow-integrations.png" alt="__wf_reserved_inherit" />
 </figure>
 
 **Bottom line:** Use your preferred agent framework for inner-loop logic, and pair it with ZenML to own the outer loop - pipelines, lineage, evaluations, and dependable deployment.

@@ -21,12 +21,12 @@ tags:
 date: "2025-08-07T00:00:00.000Z"
 readingTime: 17 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8e8e527f/6981cf5010e873663bd75933_6981ce891833f8168a664192_crewai-pricing.avif"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8e8e527f/6981cf5010e873663bd75933_6981ce891833f8168a664192_crewai-pricing.avif"
 seo:
   title: "CrewAI Pricing Guide: Plans and Features the Framework Offers - ZenML Blog"
   description: "In this CrewAI pricing guide, we discuss the costs, features, and value CrewAI provides to help you decide if it’s the right investment for your business."
   canonical: "https://www.zenml.io/blog/crewai-pricing"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8e8e527f/6981cf5010e873663bd75933_6981ce891833f8168a664192_crewai-pricing.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8e8e527f/6981cf5010e873663bd75933_6981ce891833f8168a664192_crewai-pricing.avif"
   ogTitle: "CrewAI Pricing Guide: Plans and Features the Framework Offers - ZenML Blog"
   ogDescription: "In this CrewAI pricing guide, we discuss the costs, features, and value CrewAI provides to help you decide if it’s the right investment for your business."
 ---
@@ -105,7 +105,7 @@ The Basic plan is designed for experimentation, with a modest execution quota an
 Enterprise and Ultra plans remove virtually all limits, providing tens of thousands or even hundreds of thousands of executions per month, generous onboarding, and dedicated support.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1e859c2e/689449cc51a07a407e816d4f_crewai-pricing-plan-overview.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1e859c2e/689449cc51a07a407e816d4f_crewai-pricing-plan-overview.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ## CrewAI Pricing Factors to Consider
@@ -113,7 +113,7 @@ Enterprise and Ultra plans remove virtually all limits, providing tens of thousa
 *Pricing is more than just the sticker on each tier. The following factors can help you decide which plan fits your organisation’s needs.*
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3146299c/689449e572b26f3abc24d9e9_crewai-pricing-factors-to-consider.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3146299c/689449e572b26f3abc24d9e9_crewai-pricing-factors-to-consider.webp" alt="__wf_reserved_inherit" />
   <figcaption>CrewAI pricing factors to consider</figcaption>
 </figure>
 
@@ -180,7 +180,7 @@ Essentially, you’re trading time for money: the free plan lets you learn CrewA
 **Upgrade considerations:** Once you start hitting the limits or you simply want to onboard teammates, you must upgrade. The free tier is ideal for individual developers or researchers who are evaluating CrewAI. For any kind of production use or multi-developer project, you’ll outgrow it quickly.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8b27e26e/68944a110d525e1eb6db8d3f_crewai-open-source.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8b27e26e/68944a110d525e1eb6db8d3f_crewai-open-source.png" alt="__wf_reserved_inherit" />
   <figcaption>CrewAI Open Source</figcaption>
 </figure>
 
@@ -201,7 +201,7 @@ It’s the lowest paid tier, so it does not include any formal onboarding sessio
 **Good for:** CrewAI’s Basic plan is positioned for hobbyists and small businesses. At $99 per month, it’s relatively accessible, yet those 100 executions could feel limiting if you’re trying to use CrewAI for anything customer-facing at scale.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1304d421/68944a3017bca88acefabf14_crewai-basic-plan.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1304d421/68944a3017bca88acefabf14_crewai-basic-plan.png" alt="__wf_reserved_inherit" />
   <figcaption>CrewAI Basic plan</figcaption>
 </figure>
 
@@ -232,7 +232,7 @@ When considering Standard vs. Basic, note that $6,000 per year is a significant 
 **💻 Engineering note:*** Before upgrading, ask whether self-hosting the open-source core could meet the same needs for the cost of some DevOps time.*
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/60b29dc1/68944a4adf075c9846a7b5c9_crewai-standard-plan.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/60b29dc1/68944a4adf075c9846a7b5c9_crewai-standard-plan.png" alt="__wf_reserved_inherit" />
   <figcaption>CrewAI Standard plan</figcaption>
 </figure>
 
@@ -253,7 +253,7 @@ For example, if you have an AI agent handling incoming queries on a website, 2,0
 **💻 Engineering note:*** If you’re on the fence, benchmark the OSS version first; $12K buys a lot of infra credits.*
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7ec0501f/68944a6405f87b81815a96b6_crewai-pro-plan.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7ec0501f/68944a6405f87b81815a96b6_crewai-pro-plan.png" alt="__wf_reserved_inherit" />
   <figcaption>CrewAI Pro plan</figcaption>
 </figure>
 
@@ -276,7 +276,7 @@ Lastly, Enterprise plans also include advanced admin and governance features: gr
 *💻 Engineering note: Smaller teams with security expertise can often reach similar scale by self-hosting the OSS package plus managed LLMs.*
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/97552ac4/68944a8c64408d428545379b_crewai-enterprise-plan.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/97552ac4/68944a8c64408d428545379b_crewai-enterprise-plan.png" alt="__wf_reserved_inherit" />
   <figcaption>CrewAI Enterprise plan</figcaption>
 </figure>
 
@@ -309,7 +309,7 @@ It’s worth mentioning that if your needs are approaching the Ultra level, you 
 CrewAI might even go beyond listed features (e.g., offer even higher quotas or deeper integration support) for strategic customers. At this level, you’re not just buying software, you’re entering a partnership with the vendor.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/37fba400/68944aa837e564081599c490_crewai-ultra-plan.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/37fba400/68944aa837e564081599c490_crewai-ultra-plan.png" alt="__wf_reserved_inherit" />
   <figcaption>CrewAI Ultra plan</figcaption>
 </figure>
 
@@ -332,7 +332,7 @@ Ultimately, CrewAI provides a flexible cost structure that scales from free to e
 ## Deploy AI Agents with CrewAI and Handle the Complete Lifecycle of These AI Agents with ZenML
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1aad74e0/687b1c29468fe4993262cdc5_zenML-helps-in-closing-the-outer-loop.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1aad74e0/687b1c29468fe4993262cdc5_zenML-helps-in-closing-the-outer-loop.png" alt="__wf_reserved_inherit" />
 </figure>
 
 CrewAI is a best-in-class framework for the ‘inner loop’ of agent development, which involves defining agent roles, assigning tasks, and orchestrating their collaborative logic.
@@ -344,7 +344,7 @@ A CrewAI system can be embedded as a step within a larger ZenML pipeline, creati
 ### End-to-End Orchestration
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/43dfc6b8/68944ad8bb7763bb398a5663_zenml-orchestration.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/43dfc6b8/68944ad8bb7763bb398a5663_zenml-orchestration.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML orchestration</figcaption>
 </figure>
 
@@ -353,7 +353,7 @@ ZenML pipelines manage the entire process surrounding the agent. [This includes 
 ### Full Reproducibility and Tracking
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c02f837d/6892de82198dfe9aa4d43687_zenml-visualization.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c02f837d/6892de82198dfe9aa4d43687_zenml-visualization.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML visualization</figcaption>
 </figure>
 
@@ -364,7 +364,7 @@ As a result, each execution leaves behind an immutable, comprehensive record; pe
 ### Systematic Evaluation
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a2d6f59d/6892de9d7a7c008a7dde8ba5_zenml-evaluation.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a2d6f59d/6892de9d7a7c008a7dde8ba5_zenml-evaluation.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML evaluation</figcaption>
 </figure>
 

@@ -20,12 +20,12 @@ tags:
 date: "2020-06-06T00:00:00.000Z"
 readingTime: 10 Mins Read
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/26414364/652fbe00eaacc8b0ccfb07a7_technical_debt.jpg"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/26414364/652fbe00eaacc8b0ccfb07a7_technical_debt.jpg"
 seo:
   title: "Avoiding technical debt with ML pipelines - ZenML Blog"
   description: "Pipelines help you think and act better when it comes to how you execute your machine learning training workflows."
   canonical: "https://www.zenml.io/blog/avoiding-technical-debt-with-ml-pipelines"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/41329675/652fbe00eaacc8b0ccfb07a7_technical_debt.jpg"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/41329675/652fbe00eaacc8b0ccfb07a7_technical_debt.jpg"
   ogTitle: "Avoiding technical debt with ML pipelines - ZenML Blog"
   ogDescription: "Pipelines help you think and act better when it comes to how you execute your machine learning training workflows."
 ---
@@ -37,7 +37,7 @@ Okay, lets make it clear at the start: This post is NOT intended for people who 
 # A typical workflow
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7d37ca1b/652fbde6ec47f5df214d9280_technical_debt.jpeg" alt="Technical Debt in ML" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7d37ca1b/652fbde6ec47f5df214d9280_technical_debt.jpeg" alt="Technical Debt in ML" />
 </figure>
 
 *Image Source: *[Michael Mayer on Flickr](https://www.flickr.com/photos/michael_mayer/8701850930)* | Attribution License found *[here](https://creativecommons.org/licenses/by/2.0/)

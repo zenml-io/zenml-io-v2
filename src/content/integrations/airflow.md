@@ -12,16 +12,16 @@ webflow:
   createdOn: "2023-10-12T09:13:13.882Z"
 integrationType: "orchestrator"
 logo:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f107978e/66d868dfc7c1543ce4559c9d_airflow.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f107978e/66d868dfc7c1543ce4559c9d_airflow.png"
 shortDescription: "Streamline ML Workflows with Apache Airflow Orchestration in ZenML"
 docsUrl: "https://docs.zenml.io/stack-components/orchestrators/airflow"
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e2fd248b/66c45405628f556f8d92e7aa_Image_from_Notion__2_.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e2fd248b/66c45405628f556f8d92e7aa_Image_from_Notion__2_.png"
 seo:
   title: "Integrate Apache Airflow with ZenML - Orchestrator Integrations"
   description: "Streamline ML Workflows with Apache Airflow Orchestration in ZenML"
   canonical: "https://www.zenml.io/integrations/airflow"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e2fd248b/66c45405628f556f8d92e7aa_Image_from_Notion__2_.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e2fd248b/66c45405628f556f8d92e7aa_Image_from_Notion__2_.png"
   ogTitle: "Integrate Apache Airflow with ZenML - Orchestrator Integrations"
   ogDescription: "Streamline ML Workflows with Apache Airflow Orchestration in ZenML"
 overviewTitle: "Streamline ML Workflows with Apache Airflow Orchestration in ZenML"

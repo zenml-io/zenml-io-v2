@@ -21,12 +21,12 @@ tags:
 date: "2025-12-20T00:00:00.000Z"
 readingTime: 14 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/82c8458b/6946283cbcfc762a5032d252_airflow-vs-kubeflow.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/82c8458b/6946283cbcfc762a5032d252_airflow-vs-kubeflow.png"
 seo:
   title: "Airflow vs Kubeflow vs ZenML: Feature-by-Feature Comparison for Modern ML Teams - ZenML Blog"
   description: "An Airflow vs Kubeflow vs ZenML guide that does a feature-by-feature comparison."
   canonical: "https://www.zenml.io/blog/airflow-vs-kubeflow"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/82c8458b/6946283cbcfc762a5032d252_airflow-vs-kubeflow.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/82c8458b/6946283cbcfc762a5032d252_airflow-vs-kubeflow.png"
   ogTitle: "Airflow vs Kubeflow vs ZenML: Feature-by-Feature Comparison for Modern ML Teams - ZenML Blog"
   ogDescription: "An Airflow vs Kubeflow vs ZenML guide that does a feature-by-feature comparison."
 ---
@@ -175,13 +175,13 @@ However, Airflow lacks native concepts for ML workflows. For example, there’s 
 On the positive side, Airflow’s developer experience has improved with features like the UI’s Code View and Graph view, which help you visualize and debug DAGs.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/63e1ba41/6946267b417fd81a51e2ebb2_airflow-pipeline.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/63e1ba41/6946267b417fd81a51e2ebb2_airflow-pipeline.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Kubeflow
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/bacd47e3/6946268d3532b48ed3b0b10e_kubeflow-pipeline.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/bacd47e3/6946268d3532b48ed3b0b10e_kubeflow-pipeline.webp" alt="__wf_reserved_inherit" />
   <figcaption>Source</figcaption>
 </figure>
 
@@ -208,7 +208,7 @@ The orchestration engine determines how reliable, scalable, and responsive the s
 ### ZenML
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/11d97f7a/694626a66fd88222bb47193c_zenml-integration-with-orchestrators.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/11d97f7a/694626a66fd88222bb47193c_zenml-integration-with-orchestrators.webp" alt="__wf_reserved_inherit" />
   <figcaption>Source</figcaption>
 </figure>
 
@@ -227,7 +227,7 @@ Similarly, if a new orchestrator is introduced tomorrow, ZenML could add support
 ### Airflow
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d5c63d16/694626bd0322604ac8808475_airflow-orchestrator.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d5c63d16/694626bd0322604ac8808475_airflow-orchestrator.webp" alt="__wf_reserved_inherit" />
   <figcaption>Source</figcaption>
 </figure>
 
@@ -246,7 +246,7 @@ However, Airflow's worker architecture can be limiting for ML. Training a large 
 ### Kubeflow
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6d9d2bdb/694626d09f0f15d153837825_kubeflow-orchestrator.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6d9d2bdb/694626d09f0f15d153837825_kubeflow-orchestrator.webp" alt="__wf_reserved_inherit" />
   <figcaption>Source</figcaption>
 </figure>
 
@@ -271,7 +271,7 @@ For ML workflows, keeping track of what you ran, with which data, parameters, an
 ### ZenML
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/bc603919/694626f11b4f90e055e2c2b6_zenml-experiment-tracking.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/bc603919/694626f11b4f90e055e2c2b6_zenml-experiment-tracking.webp" alt="__wf_reserved_inherit" />
   <figcaption>Source</figcaption>
 </figure>
 
@@ -290,7 +290,7 @@ Moreover, ZenML abstracts the concept of artifacts. Whether the data is stored i
 ### Airflow
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/4fb1e345/694627100861c14fef14ef61_airflow-experiment-tracking-and-metadata.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/4fb1e345/694627100861c14fef14ef61_airflow-experiment-tracking-and-metadata.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 Airflow has no built-in concept of ML artifacts. It doesn’t inherently know that a file is a dataset or that a model was produced.
@@ -310,7 +310,7 @@ When running a pipeline, KFP automatically logs artifacts, like models, datasets
 Kubeflow also has a Model Registry component/project that provides a central index for models, versions, and related metadata. It fills a gap between model experimentation and production activities. It provides a central interface for all stakeholders in the ML lifecycle to collaborate on ML models.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5b3220b5/69462726d1a011b132228f40_kubeflow-experiment-tracking.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5b3220b5/69462726d1a011b132228f40_kubeflow-experiment-tracking.webp" alt="__wf_reserved_inherit" />
   <figcaption>Source</figcaption>
 </figure>
 
@@ -325,7 +325,7 @@ No tool lives in isolation. Here’s how Airflow, Kubeflow, and ZenML integrate 
 ### ZenML
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1d82b748/6946273b56bd53317bb529f0_zenml-integration-capabilities.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1d82b748/6946273b56bd53317bb529f0_zenml-integration-capabilities.webp" alt="__wf_reserved_inherit" />
   <figcaption>ZenML Integrations</figcaption>
 </figure>
 
@@ -338,7 +338,7 @@ ZenML is designed as an integration hub. It features a 'Stack' concept where you
 Airflow has a massive library of Providers. Whether you need to connect to Snowflake, Salesforce, AWS Redshift, or Slack, there is likely an Airflow Operator for it. This makes it the best tool for moving data into your ML system.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e82aeb52/69462750b1a115d6cded0558_airflow-integrations.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e82aeb52/69462750b1a115d6cded0558_airflow-integrations.webp" alt="__wf_reserved_inherit" />
   <figcaption>Apache Airflow integration</figcaption>
 </figure>
 
@@ -357,7 +357,7 @@ All three: [Airflow](https://www.zenml.io/blog/flyte-vs-airflow), Kubeflow, and 
 These paid plans include features like SSO, role-based access control, premium support, and hosting, but **all the core functionality remains free** in the open-source version. Essentially, you can start with ZenML’s free tier and only consider paid options if you need advanced collaboration or want ZenML to manage the infrastructure for you.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6c572d03/6938ef54014d659b02d9340a_zenml-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6c572d03/6938ef54014d659b02d9340a_zenml-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Airflow
@@ -377,7 +377,7 @@ Vertex AI Pipelines is a managed (serverless) service that can execute pipelines
 ## ZenML Doesn’t Replace Airflow or Kubeflow: It Makes Them Better for ML
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2a62a581/6946277ebdf08f9688f49919_use-airflow-and-kubeflow-inside-zenml.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2a62a581/6946277ebdf08f9688f49919_use-airflow-and-kubeflow-inside-zenml.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 The real question for ML teams is not Airflow vs Kubeflow vs ZenML. It is whether you want to work directly at the orchestration layer or at the ML workflow layer.

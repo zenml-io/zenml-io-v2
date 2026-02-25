@@ -17,7 +17,7 @@ tags:
 date: "2022-12-23T00:00:00.000Z"
 readingTime: 4 Mins Read
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/44c2b325/652fb770a8476387ffe5715d_demo.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/44c2b325/652fb770a8476387ffe5715d_demo.png"
 ---
 
 **Last updated:** December 23, 2022.
@@ -31,7 +31,7 @@ Here is a video summary of our submission.
 ## How does it work?
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/242dd3bd/652fb7539888d48729bd5318_inference_pipeline.png" alt="inference_pipeline" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/242dd3bd/652fb7539888d48729bd5318_inference_pipeline.png" alt="inference_pipeline" />
 </figure>
 
 The visual question-answering pipeline is inspired by [this paper](https://github.com/microsoft/PICa) from Microsoft. In short, we prompt GPT-3 with a generated image caption and object tag list, the question-answer pair, and context examples that demonstrate the task at hand in a few-shot learning method as shown in the diagram above. As a result, we achieve a [BERTScore](http://bit.ly/3tM1mmc) computed F1 score of around .989 on a test set we selected at random.

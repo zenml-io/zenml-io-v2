@@ -12,18 +12,18 @@ webflow:
   createdOn: "2023-10-12T09:13:13.481Z"
 integrationType: "data-validator"
 logo:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/30001cf5/66d868feae26c1d6b7e42f24_evidently.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/30001cf5/66d868feae26c1d6b7e42f24_evidently.png"
 shortDescription: "Ensure data quality and guard against drift with Evidently profiling in ZenML"
 docsUrl: "https://docs.zenml.io/stack-components/data-validators/evidently"
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b8f413a4/66e02ec6c735595e832d5d8b_image__3_.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b8f413a4/66e02ec6c735595e832d5d8b_image__3_.png"
 relatedBlogPosts:
   - "10-reasons-zenml-evidently-ais-monitoring-tool"
 seo:
   title: "Integrate Evidently with ZenML - Data Validator Integrations"
   description: "Ensure data quality and guard against drift with Evidently profiling in ZenML"
   canonical: "https://www.zenml.io/integrations/evidently"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b8f413a4/66e02ec6c735595e832d5d8b_image__3_.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b8f413a4/66e02ec6c735595e832d5d8b_image__3_.png"
   ogTitle: "Integrate Evidently with ZenML - Data Validator Integrations"
   ogDescription: "Ensure data quality and guard against drift with Evidently profiling in ZenML"
 overviewTitle: "Ensure data quality and guard against drift with Evidently profiling in ZenML"

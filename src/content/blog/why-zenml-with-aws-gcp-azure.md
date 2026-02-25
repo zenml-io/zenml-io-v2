@@ -22,12 +22,12 @@ tags:
 date: "2024-10-18T00:00:00.000Z"
 readingTime: 3 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/535ce35c/67123de17c5633dce46e6fbd_zenml-cloud-ops.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/535ce35c/67123de17c5633dce46e6fbd_zenml-cloud-ops.png"
 seo:
   title: "Elevate Your Cloud MLOps with ZenML - ZenML Blog"
   description: "Why use ZenML alongside AWS / GCP / Azure MLOps platforms? Let's dive into why ZenML complements and enhance existing cloud MLOps infrastructure."
   canonical: "https://www.zenml.io/blog/why-zenml-with-aws-gcp-azure"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/535ce35c/67123de17c5633dce46e6fbd_zenml-cloud-ops.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/535ce35c/67123de17c5633dce46e6fbd_zenml-cloud-ops.png"
   ogTitle: "Elevate Your Cloud MLOps with ZenML - ZenML Blog"
   ogDescription: "Why use ZenML alongside AWS / GCP / Azure MLOps platforms? Let's dive into why ZenML complements and enhance existing cloud MLOps infrastructure."
 ---
@@ -39,14 +39,14 @@ If you're already utilizing one of the major clouds for ML/AI, you might be wond
 [Take a look at companies running ML/AI in the cloud](https://www.evidentlyai.com/ml-platforms), and you'll spot many who've been at it for years, some for over a decade.  These organizations have honed their cloud ML/AI practices over time.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/33b5dfa4/67123d843619168acb38cfb6_671239917d20587cf7be5d3c_image_20_40_.png" alt="A table showing machine learning platforms of tech companies. Columns include Company, Industry, ML platform, Announcement year, and Last update. Companies listed are Meta (Facebook), Uber, Google, Groupon, and Salesforce, with their respective ML platforms FBLearner, Michelangelo, TFX, Flux, and Einstein. The table does not directly mention MLOps, cloud services, or specific providers like AWS, Azure, or GCP" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/33b5dfa4/67123d843619168acb38cfb6_671239917d20587cf7be5d3c_image_20_40_.png" alt="A table showing machine learning platforms of tech companies. Columns include Company, Industry, ML platform, Announcement year, and Last update. Companies listed are Meta (Facebook), Uber, Google, Groupon, and Salesforce, with their respective ML platforms FBLearner, Michelangelo, TFX, Flux, and Einstein. The table does not directly mention MLOps, cloud services, or specific providers like AWS, Azure, or GCP" />
   <figcaption>Enterprise Machine Learning Platforms: A Comparative Overview via Evidently</figcaption>
 </figure>
 
 ZenML was born from this evolution. We recognized that while cloud providers excel at offering foundational services like scalable storage, compute, and robust security, ML teams need more. They need a dedicated layer that empowers ML engineers and data scientists to develop systems quickly and independently.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/79e4acd3/67123d843619168acb38cfbf_67123c7d6514c7c316e65e02_mlops-timeline.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/79e4acd3/67123d843619168acb38cfbf_67123c7d6514c7c316e65e02_mlops-timeline.png" alt="__wf_reserved_inherit" />
   <figcaption>Timeline showing the evolution of cloud ML/AI</figcaption>
 </figure>
 
@@ -59,7 +59,7 @@ Eventually, organizations realize they need a more robust, productive environmen
 ## ZenML on Cloud MLOps Platforms: Practical Benefits
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b1cb8669/67123d843619168acb38cfb9_67123c9fab2d7cb2ee85d905_zenml-cloud-integration.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b1cb8669/67123d843619168acb38cfb9_67123c9fab2d7cb2ee85d905_zenml-cloud-integration.png" alt="__wf_reserved_inherit" />
   <figcaption>Diagram illustrating ZenML&#039;s integration with cloud services</figcaption>
 </figure>
 
@@ -88,7 +88,7 @@ Remember, the goal of ZenML is to enhance your existing cloud MLOps setup, not r
 ## Your Next Step in ML/AI Evolution
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/cf69fa10/67123d843619168acb38cfb2_67123ce9c687e5e592630875_zenml-multi-cloud.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/cf69fa10/67123d843619168acb38cfb2_67123ce9c687e5e592630875_zenml-multi-cloud.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ZenML doesn't replace cloud MLOps platforms. It complements them. If the idea of building cloud-agnostic ML/AI systems using a developer-friendly platform, securely running in your cloud account, and leveraging optimal resources across clouds resonates with you, it's time to give ZenML a try.

@@ -17,7 +17,7 @@ tags:
 date: "2022-06-28T00:00:00.000Z"
 readingTime: 3 Mins Read
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/936fceb2/65315e3776349a66e3b6a406_release-zero-ten-balloon.jpg"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/936fceb2/65315e3776349a66e3b6a406_release-zero-ten-balloon.jpg"
 ---
 
 **Last updated:** October 17, 2022.
@@ -25,7 +25,7 @@ mainImage:
 The 0.10.0 release continues our streak of extending ZenML with support for new orchestrators, this time by adding the Kubernetes Native Orchestrator. Also included are: a Data Validator stack component and Great Expectations implementation and a community-contributed Vault secret manager among a host of other things! ✨
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ab63e14a/65315e3e4d86cd944826151f_release_GIF.gif" alt="Release GIF" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ab63e14a/65315e3e4d86cd944826151f_release_GIF.gif" alt="Release GIF" />
 </figure>
 
 Beyond this, as usual we included a number of smaller bugfixes and documentation changes to cumulatively improve experience of using ZenML as a user. For a detailed look at what’s changed, give [our full release notes](https://github.com/zenml-io/zenml/releases/tag/0.10.0) a glance.
@@ -39,7 +39,7 @@ This orchestrator is a lightweight alternative to other distributed orchestrator
 It’s amazing but don’t take my word for it; try it on your own or wait for the dedicated blog post that we’ve planned, which, by the way, also features a little surprise to make it easier for you to follow along 😉
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/31b96efe/65315e3e879138498a1c30b5_k8s.png" alt="Kubernetes Orchestration pods" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/31b96efe/65315e3e879138498a1c30b5_k8s.png" alt="Kubernetes Orchestration pods" />
 </figure>
 
 There’s a lot to love about this integration.
@@ -55,7 +55,7 @@ Want to run data quality checks as part of a ZenML pipeline? We’ve got you cov
 We introduce Data Validators and The Great Expectations integration which eliminates the complexity associated with configuring the store backends for Great Expectations by reusing our Artifact Store concept for that purpose and gives ZenML users immediate access to Great Expectations in both local and cloud settings.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1012d18b/65315e3ef86103b0fb7a76fa_great_expectations_validation_result.png" alt="Great Expectation Validation Result" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1012d18b/65315e3ef86103b0fb7a76fa_great_expectations_validation_result.png" alt="Great Expectation Validation Result" />
 </figure>
 
 In addition, there are two new standard steps:

@@ -11,11 +11,11 @@ webflow:
   createdOn: "2023-10-12T09:13:14.174Z"
 integrationType: "secrets-manager"
 logo:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/262fe1e1/66d868b0d6aa10eca87e65d4_hashicorp.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/262fe1e1/66d868b0d6aa10eca87e65d4_hashicorp.png"
 shortDescription: "Manage your secrets with Vault Key/Value secrets engine."
 docsUrl: "https://docs.zenml.io/stacks-and-components/component-guide/secrets-managers/vault"
 githubUrl: "https://docs.zenml.io/stacks-and-components/component-guide/secrets-managers/vault"
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2c70003f/6527c56c43b13d94724dc47c_vault_teaser_6612d0b532.webp"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2c70003f/6527c56c43b13d94724dc47c_vault_teaser_6612d0b532.webp"
 ---
 

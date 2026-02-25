@@ -19,7 +19,7 @@ tags:
 date: "2020-06-11T00:00:00.000Z"
 readingTime: 6 Mins Read
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/804febe4/652fbfbc63c2335d9d9892fb_0_splits.jpg"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/804febe4/652fbfbc63c2335d9d9892fb_0_splits.jpg"
 ---
 
 **Last updated:** November 21, 2022.
@@ -35,7 +35,7 @@ For me, splitting data is the most under-rated task in all of data science. It i
 In order to illustrate the split mechanisms, it helps to start with a sample dataset to do the splits on. To make things easy, let’s use a simple multi-variate, time-series dataset represented in tabular format. This data consists of3 numerical features, 1 categorical feature, and 1 timestamp feature. Below this is visualized:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ab8def53/652fbfa89d3835dc15d5d4a2_1_whole_dataset.png" alt="1_whole_dataset" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ab8def53/652fbfa89d3835dc15d5d4a2_1_whole_dataset.png" alt="1_whole_dataset" />
 </figure>
 
 This type of dataset is common across many use-cases and industries in machine learning. A concrete example can be multiple timestreams transmitted from different machines with multiple sensors on a factory floor. The categorical variable would then be the ID of the machine, the numerical features would be what the sensors are recording (e.g. pressure, temperature, etc.), and the timestamp would be when the data was transmitted and recorded in the database.
@@ -51,7 +51,7 @@ To make things easy, you decide to go make a simple split with train and eval. Y
 The most straightforward transformation we can do is to represent the data per categorical class (in our running example, visualize the data per machine). This would yield the following result:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e64fdf48/652fbfa7d20b3a93ce333f74_2_grouped.png" alt="2_grouped" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e64fdf48/652fbfa7d20b3a93ce333f74_2_grouped.png" alt="2_grouped" />
 </figure>
 
 ## The Horizontal Split
@@ -59,7 +59,7 @@ The most straightforward transformation we can do is to represent the data per c
 The grouping together suddenly makes the issue of splitting a bit simpler, and largely dependent on your hypothesis. If the machines are running under similar conditions, one question you might ask is: How would a ML model trained on one group generalize to other groups. That is, if trained on class_1, class_2 and class_3 timestreams how would the model fair on class_4 and class_5 timestreams. Here is a visualization of that split:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1b879331/652fbfa815d81ca9e7189ec4_3_horizontal.png" alt="3_horizontal" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1b879331/652fbfa815d81ca9e7189ec4_3_horizontal.png" alt="3_horizontal" />
 </figure>
 
 I call this the Horizontal split due to the nature of the cut line in the above visualization. This split can be easily achieved in most ML libraries by simply grouping by the categorical feature and partitioning along it. A successful training with this split would show evidence that the model has picked up signals that generalize across previously unseen groups. However, it would not showcase that it can predict the future behavior of one group.
@@ -71,7 +71,7 @@ It’s important to note that the split decision did NOT account for time as a b
 But what if you want to split across time itself? For most time-series modeling, a common way to split the data is past and future. That is, to take in the training set historical data relative to the data in the eval set. The hypothesis, in this case, would be: How would a ML model trained on historical data per group generalize to future data for each group?. This question might be answered by the so-called Vertical split:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/35fc115b/652fbfa7e60df8a20720ba0b_4_vertical.png" alt="4_vertical" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/35fc115b/652fbfa7e60df8a20720ba0b_4_vertical.png" alt="4_vertical" />
 </figure>
 
 A successful training with this split would showcase that the model can pick up patterns across timestreams it has already seen, and make accurate predictions of behavior in the future. However, this itself would not show that this model will generalize well to other timestreams from different groups.
@@ -83,7 +83,7 @@ Of course, your multiple timestreams have to be sorted now individually, so we s
 An inquisitive ML researcher might at this point wonder if they could produce a model that would generalize under both constraints of the Horizontal and the Vertical split. The hypothesis, in that case, would be: How would a model trained on historical data for SOME groups generalize to future data of these groups AND all data from other groups?. A visualization of this Hybrid split would look like this:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c13f6f5e/652fbfa95abe133b61464280_5_hybrid.png" alt="5_hybrid" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c13f6f5e/652fbfa95abe133b61464280_5_hybrid.png" alt="5_hybrid" />
 </figure>
 
 Naturally, if model training is successful, this model would surely be more robust than the others in a real-world setting. It would have displayed evidence of not only the learning patterns of some of the groups it has already seen but also evidence of the fact that it has picked up signals that generalize across groups. This might be useful if we are to add more similar machines to the factory in the future.

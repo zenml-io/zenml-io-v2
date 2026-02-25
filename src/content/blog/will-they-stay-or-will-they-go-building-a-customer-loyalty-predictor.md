@@ -22,12 +22,12 @@ tags:
 date: "2022-05-27T00:00:00.000Z"
 readingTime: 14 Mins Read
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d971da38/65315636d60fba2556f0cc26_poster.jpg"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d971da38/65315636d60fba2556f0cc26_poster.jpg"
 seo:
   title: "Will they stay or will they go? Building a Customer Loyalty Predictor - ZenML Blog"
   description: "We built an end-to-end production-grade pipeline using ZenML for a customer churn model that can predict whether a customer will remain engaged with the company or not."
   canonical: "https://www.zenml.io/blog/will-they-stay-or-will-they-go-building-a-customer-loyalty-predictor"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/62de717f/65315636d60fba2556f0cc26_poster.jpg"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/62de717f/65315636d60fba2556f0cc26_poster.jpg"
   ogTitle: "Will they stay or will they go? Building a Customer Loyalty Predictor - ZenML Blog"
   ogDescription: "We built an end-to-end production-grade pipeline using ZenML for a customer churn model that can predict whether a customer will remain engaged with the company or not."
 ---
@@ -57,7 +57,7 @@ I will be using ZenML’s [Kubeflow](https://docs.zenml.io/stacks-and-components
 Our training pipeline run_kubeflow_pipeline.py consists of the following steps:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a74ae20e/65315658bb9cf38ff778cd68_pipelinestepsexplanation.png" alt="PipelineStepExplanation" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a74ae20e/65315658bb9cf38ff778cd68_pipelinestepsexplanation.png" alt="PipelineStepExplanation" />
 </figure>
 
 <ul><li>ingest_data: Ingest the data from the source and create a DataFrame.</li><li>encode_cat_cols: Encode categorical columns.</li><li>drop_cols: Dropping irrelevant columns.</li><li>data_splitter: Split the data into training and test sets.</li><li>model_trainer: Train the model.</li><li>evaluation: Evaluate the trained model.</li></ul>
@@ -207,7 +207,7 @@ kubectl --namespace kubeflow port-forward svc/ml-pipeline-ui 8080:80
 To see the UI, you can go to [the localhost URL](http://localhost:8080/#/runs). If everything is working, you should see the model deployed and running as below:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/71316f60/65315658103186417b4ef6cc_runsuccesskubeflow.png" alt="SuccessfulPipelineRun" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/71316f60/65315658103186417b4ef6cc_runsuccesskubeflow.png" alt="SuccessfulPipelineRun" />
 </figure>
 
 ### Connecting Kubeflow Pipelines with Streamlit
@@ -246,7 +246,7 @@ While building the real-world workflow for predicting whether a customer will ch
 In this project, I built a continuous deployment pipeline that trains a model and then serves it with Seldon Core as the industry-ready model deployment tool of choice. If you are interested in learning more about Seldon Core, you can check out the [ZenML example](https://docs.zenml.io/stacks-and-components/component-guide/model-deployers/seldon). The following diagram shows the flow of the whole pipeline:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a27d77b5/653156593ed4f28baaba867b_seldoncondeploy.gif" alt="seldondeployment" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a27d77b5/653156593ed4f28baaba867b_seldoncondeploy.gif" alt="seldondeployment" />
 </figure>
 
 Let’s set up our full AWS stack to run the pipeline using Seldon Core.
@@ -327,7 +327,7 @@ kubectl --namespace kubeflow port-forward svc/ml-pipeline-ui 8080:80
 To see the UI, you can go to the [localhost:8080](http://localhost:8080/#/runs). If everything is working, you should see the model deployed and running as below: 
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/bda790a4/65315658f9da8c2f39a78d06_continous_deployment_pipeline.png" alt="SuccessfulPipelineRunContinuous" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/bda790a4/65315658f9da8c2f39a78d06_continous_deployment_pipeline.png" alt="SuccessfulPipelineRunContinuous" />
 </figure>
 
 If you want to run the pipeline with the --predict flag, you can run the following command to run the pipeline:
@@ -339,7 +339,7 @@ python run_seldon_deployment_pipeline.py --secret seldon-init-container-secret -
 This will run the inference pipeline that will serve the model for inference. You can check the model is serving by going to the [localhost:8080](http://localhost:8080/#/runs) and see the model is serving as below in your inference pipeline run: 
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2410d46f/65315659d60fba2556f0f9e8_inferencepipelinerun.png" alt="SuccessfulPipelineRunInference" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2410d46f/65315659d60fba2556f0f9e8_inferencepipelinerun.png" alt="SuccessfulPipelineRunInference" />
 </figure>
 
 ### Connecting Seldon Core Pipelines with Streamlit

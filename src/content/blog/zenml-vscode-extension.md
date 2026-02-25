@@ -22,12 +22,12 @@ tags:
 date: "2024-04-01T00:00:00.000Z"
 readingTime: 8 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/96619f85/660ac3dc8cf57b508528727a_High_Level_Overview.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/96619f85/660ac3dc8cf57b508528727a_High_Level_Overview.png"
 seo:
   title: "The ZenML VSCode Extension: Bridging Python and TypeScript - ZenML Blog"
   description: "Community member Marwan Zaarab explains how and why he built a VS Code Extension for ZenML."
   canonical: "https://www.zenml.io/blog/zenml-vscode-extension"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7c576569/660ac3dc8cf57b508528727a_High_Level_Overview.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7c576569/660ac3dc8cf57b508528727a_High_Level_Overview.png"
   ogTitle: "The ZenML VSCode Extension: Bridging Python and TypeScript - ZenML Blog"
   ogDescription: "Community member Marwan Zaarab explains how and why he built a VS Code Extension for ZenML."
 ---
@@ -35,7 +35,7 @@ seo:
 ZenML has become an essential tool in the rapidly developing landscape of Machine Learning and MLOps, making it easier to build, deploy, and manage ML models in production environments. The creation of [a Visual Studio Code (VSCode) extension for ZenML](https://marketplace.visualstudio.com/items?itemName=ZenML.zenml-vscode) marks another step towards improving developer workflows, combining the flexible capabilities of ZenML and Python with the structured environment of TypeScript.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/0061c1f7/660a843e1bf8a5e02a557c5f_CleanShot_2024-04-01_at_11.53.43.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0061c1f7/660a843e1bf8a5e02a557c5f_CleanShot_2024-04-01_at_11.53.43.png" alt="__wf_reserved_inherit" />
 </figure>
 
 This project took on the challenge of integrating different programming languages to create a smooth workflow, accommodating ZenML's various server configurations—from local to cloud-based setups—within the VSCode ecosystem. My journey involved bringing together Python's versatility with TypeScript's structure, aiming to enhance the user experience.
@@ -57,7 +57,7 @@ The *vscode-python-tools-extension* template provided a solid base for connectin
 ### High-level overview
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/96619f85/660ac3dc8cf57b508528727a_High_Level_Overview.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/96619f85/660ac3dc8cf57b508528727a_High_Level_Overview.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Custom LSP Server Implementation
@@ -65,7 +65,7 @@ The *vscode-python-tools-extension* template provided a solid base for connectin
 The core of the extension's functionality relies on the Language Server Protocol (LSP), enabling actions within VSCode to trigger corresponding Python operations on the server side. This process involves serializing results into JSON for transmission back to the client, where they are deserialized and integrated into the VSCode interface. The cycle ensures that results are transmitted following a well-defined pathway:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/fd077354/660ac3518cf57b508527d26f_Serialization_Deserialization.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/fd077354/660ac3518cf57b508527d26f_Serialization_Deserialization.png" alt="__wf_reserved_inherit" />
 </figure>
 
 **1. Action Execution**: In the VSCode extension for ZenML, user interactions trigger Python scripts on the LSP server using a standard method, *workspace/executeCommand*. This approach, highlighted in the *switchActiveStack* function below, allows the execution of server-side custom commands, like *zenml-python.switchActiveStack*, to modify the active ZenML stack. Importantly, while *zenml-python.switchActiveStack*is a custom command, *workspace/executeCommand* remains the default method employed for all LSP server command executions.
@@ -111,7 +111,7 @@ The custom LSP server implementation enables seamless communication between the 
 Command handlers setup on the Python-based LSP server side allowed us to send messages between the extension and the user's Python environment, which allowed for execution of ZenML-related operations directly from the ZenML Python library. The figure below provides a basic overview of these interactions:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e30d5582/660ac37107e76c0164192554_LSP_client_server_flow.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e30d5582/660ac37107e76c0164192554_LSP_client_server_flow.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ## Architectural Decision: ZenML Independence
@@ -129,7 +129,7 @@ The activation process orchestrates the initialization of the extension's core c
 The diagram below illustrates the detailed activation process:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5e9a826e/660ac38dd3c9f291d4b1b530_Activation__1_.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5e9a826e/660ac38dd3c9f291d4b1b530_Activation__1_.png" alt="__wf_reserved_inherit" />
 </figure>
 
 By decoupling ZenML from the extension's dependencies, users gain the flexibility to manage their ZenML installations independently, ensuring compatibility with their preferred workflows. The extension's activation process sets up the Python-based LSP server, ZenML client, and command handlers, creating a seamless bridge between VSCode and the user's Python environment. This architecture empowers users to execute ZenML operations directly from VSCode, enhancing productivity and simplifying MLOps workflows.
@@ -139,7 +139,7 @@ By decoupling ZenML from the extension's dependencies, users gain the flexibilit
 The core components of the extension and their functionality is shown here:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c843a23c/660acd157dca8ed5d32e6aee_components-map.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c843a23c/660acd157dca8ed5d32e6aee_components-map.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ## Additional Goals and Challenges

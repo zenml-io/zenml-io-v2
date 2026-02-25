@@ -26,12 +26,12 @@ tags:
 date: "2024-11-26T00:00:00.000Z"
 readingTime: 9 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9d980b8b/67459043d448c0234ad77df8_Gemini_Generated_Image.jpeg"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9d980b8b/67459043d448c0234ad77df8_Gemini_Generated_Image.jpeg"
 seo:
   title: "Everything you ever wanted to know about LLMOps Maturity Models - ZenML Blog"
   description: "As organizations rush to adopt generative AI, several major tech companies have proposed maturity models to guide this journey. While these frameworks offer useful vocabulary for discussing organizational progress, they should be viewed as descriptive rather than prescriptive guides. Rather than rigidly following these models, organizations are better served by focusing on solving real problems while maintaining strong engineering practices, building on proven DevOps and MLOps principles while adapting to the unique challenges of GenAI implementation."
   canonical: "https://www.zenml.io/blog/everything-you-ever-wanted-to-know-about-llmops-maturity-models"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9d980b8b/67459043d448c0234ad77df8_Gemini_Generated_Image.jpeg"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9d980b8b/67459043d448c0234ad77df8_Gemini_Generated_Image.jpeg"
   ogTitle: "Everything you ever wanted to know about LLMOps Maturity Models - ZenML Blog"
   ogDescription: "As organizations rush to adopt generative AI, several major tech companies have proposed maturity models to guide this journey. While these frameworks offer useful vocabulary for discussing organizational progress, they should be viewed as descriptive rather than prescriptive guides. Rather than rigidly following these models, organizations are better served by focusing on solving real problems while maintaining strong engineering practices, building on proven DevOps and MLOps principles while adapting to the unique challenges of GenAI implementation."
 ---
@@ -59,7 +59,7 @@ Perhaps most importantly, practitioners need to focus on solving real problems r
 ## The Microsoft GenAIOps Maturity Model
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/456360e2/6745918509b80fb95784c2c1_674590a6eebe175374cc1620_CleanShot_20Nov_2025_20LLMOps_20Maturity_20Models.png" alt="Microsoft Azure GenAIOps maturity model diagram, showing four stages." />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/456360e2/6745918509b80fb95784c2c1_674590a6eebe175374cc1620_CleanShot_20Nov_2025_20LLMOps_20Maturity_20Models.png" alt="Microsoft Azure GenAIOps maturity model diagram, showing four stages." />
 </figure>
 
 Microsoft's GenAIOps Maturity Model presents a four-level framework for assessing and developing an organization's generative AI operations capabilities. I'll go into it in a bit more detail as it is the most interesting and technically developed of the four models.
@@ -105,7 +105,7 @@ Note that that mature GenAIOps, as defined in this model, isn't just about techn
 ## IBM Maturity Model for GenAI Adoption
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/0183b9aa/6745918609b80fb95784c2cd_674590e15744f8b334d23585_CleanShot_20Nov_2025_20LLMOps_20Maturity_20Models_20_1_.png" alt="IBM Maturity Model for GenAI adoption diagram. Made up of 5 stages. Screenshot of the table." />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0183b9aa/6745918609b80fb95784c2cd_674590e15744f8b334d23585_CleanShot_20Nov_2025_20LLMOps_20Maturity_20Models_20_1_.png" alt="IBM Maturity Model for GenAI adoption diagram. Made up of 5 stages. Screenshot of the table." />
 </figure>
 
 [IBM's maturity model](https://www.ibm.com/architectures/hybrid/genai-adoption-maturity-model) outlines five distinct phases of organizational maturity in generative AI adoption. Organizations typically begin in Phase 1, characterized by experimental use of generic models, where efforts are largely localized and reactive, with limited organizational understanding of the technology. During this initial phase, IBM recommends focusing on developing basic awareness and initiating pilot projects.
@@ -125,7 +125,7 @@ Overall, Microsoft's model is more specific about technical implementations (lik
 ## Datastax Generative AI Maturity Model
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/30ebf8a1/6745918609b80fb95784c2ca_67459110ad265ea42b9441b8_CleanShot_20Nov_2025_20LLMOps_20Maturity_20Models_20_2_.png" alt="Datastax GenAI maturity model diagram. Shows the progression from laggard to leader across four different areas of focus." />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/30ebf8a1/6745918609b80fb95784c2ca_67459110ad265ea42b9441b8_CleanShot_20Nov_2025_20LLMOps_20Maturity_20Models_20_2_.png" alt="Datastax GenAI maturity model diagram. Shows the progression from laggard to leader across four different areas of focus." />
 </figure>
 
 [The Datastax model](https://www.datastax.com/blog/the-value-of-a-generative-ai-maturity-model-unlocking-the-power-of-ai-for-business-success) takes a distinctive approach by evaluating maturity across four key pillars - Contextualization, Architecture, Culture & Talent, and Trust - while progressing through four maturity levels: Beginning, Responsive, Proactive, and Leading.
@@ -141,7 +141,7 @@ What sets the Datastax model apart is its holistic view across the four pillars,
 ## AIM Research Generative AI Maturity Framework
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/63e3aecc/6745918609b80fb95784c2c7_6745912b5ee9c5647c607a70_CleanShot_20Nov_2025_20LLMOps_20Maturity_20Models_20_3_.png" alt="AIM Research GenAI maturity framework. This diagram shows 5 levels and the progression through them (from exploration to transformation)." />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/63e3aecc/6745918609b80fb95784c2c7_6745912b5ee9c5647c607a70_CleanShot_20Nov_2025_20LLMOps_20Maturity_20Models_20_3_.png" alt="AIM Research GenAI maturity framework. This diagram shows 5 levels and the progression through them (from exploration to transformation)." />
 </figure>
 
 The [AIM Research Generative AI Maturity Framework](https://aimresearch.co/generative-ai-maturity-framework) presents a five-level progression model that focuses on organizational adoption and integration of generative AI technologies:
@@ -153,7 +153,7 @@ What's particularly notable about the AIM framework is its emphasis on organizat
 ## Are These Maturity Models Actually Useful?
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2140043f/6745918509b80fb95784c2be_67459149e940b7359969968e_CleanShot_20Nov_2025_20LLMOps_20Maturity_20Models_20_4_.png" alt="Diagram showing a synthesized view of all the GenAI maturity models referenced in the blog above." />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2140043f/6745918509b80fb95784c2be_67459149e940b7359969968e_CleanShot_20Nov_2025_20LLMOps_20Maturity_20Models_20_4_.png" alt="Diagram showing a synthesized view of all the GenAI maturity models referenced in the blog above." />
 </figure>
 
 The rapid evolution of generative AI has spawned multiple frameworks attempting to guide organizations through its adoption, just as [we saw for MLOps](https://www.zenml.io/blog/everything-you-ever-wanted-to-know-about-mlops-maturity-models). While these models offer valuable perspectives, they should be viewed more as descriptive snapshots of current thinking rather than prescriptive roadmaps. This is particularly true given how quickly the landscape is changing – we're still discovering the most effective ways to deploy and maintain GenAI systems at scale.

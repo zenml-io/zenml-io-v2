@@ -21,12 +21,12 @@ tags:
 date: "2025-02-14T00:00:00.000Z"
 readingTime: 8 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b82bb143/6981d352ce4b26d085d703fe_6981d2b60a1b82880fc2f4f7_1.avif"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b82bb143/6981d352ce4b26d085d703fe_6981d2b60a1b82880fc2f4f7_1.avif"
 seo:
   title: "Multimodal LLM Pipelines: From Data Ingestion to Real-Time Inference - ZenML Blog"
   description: "Learn how to build, fine-tune, and deploy multimodal LLMs using ZenML. Explore LLMOps best practices for deployment, real-time inference and model management."
   canonical: "https://www.zenml.io/blog/multimodal-llm-pipelines-from-data-ingestion-to-real-time-inference"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b82bb143/6981d352ce4b26d085d703fe_6981d2b60a1b82880fc2f4f7_1.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b82bb143/6981d352ce4b26d085d703fe_6981d2b60a1b82880fc2f4f7_1.avif"
   ogTitle: "Multimodal LLM Pipelines: From Data Ingestion to Real-Time Inference - ZenML Blog"
   ogDescription: "Learn how to build, fine-tune, and deploy multimodal LLMs using ZenML. Explore LLMOps best practices for deployment, real-time inference and model management."
 ---
@@ -36,7 +36,7 @@ Most of the newer AI models like [OpenAI’s o1](https://openai.com/o1/), Claude
 Multimodal AI models are powerful but come with challenges. They need to handle large and diverse datasets and complex integrations. Recent advancements have made building and deploying these models easier, but having a clear process is still important. In this article, we will use ZenML to fine-tune a vision model with Supervised Fine Tuning (SFT) and deploy it on Hugging Face inference endpoints.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/4e415291/67af0d153c9034c1e47448a9_AD_4nXe1hswTSquDZjKFP3-7u8_YYslj42-wrb5LBq73zroSs1mDDO3WaiUkQrkfcKT1il9fS1Jje2MfYlTjfrSpNIKO-E2UT_agS3qJ5x_A6tdRo6omwWKdx_7V9ayMN7Zad0QrRbd5TA.png" alt="" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/4e415291/67af0d153c9034c1e47448a9_AD_4nXe1hswTSquDZjKFP3-7u8_YYslj42-wrb5LBq73zroSs1mDDO3WaiUkQrkfcKT1il9fS1Jje2MfYlTjfrSpNIKO-E2UT_agS3qJ5x_A6tdRo6omwWKdx_7V9ayMN7Zad0QrRbd5TA.png" alt="" />
   <figcaption>Fig 1: System Architecture Diagram of Fine-Tuning and Deploying the Vision Model</figcaption>
 </figure>
 
@@ -169,7 +169,7 @@ These steps may not be necessary for local users, as ZenML allows for local expe
 To do this, retrieve the Server URL by navigating to the ZenML Cloud dashboard
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ad3af554/67af0ea0ee0eb80426fff0a6_AD_4nXfpBM7w7lgKsNRFQGRld4i_xstUwyurQgtksgQxdPDoYWb2jXHWBWnWGMaknW7HJfSaZL5hnmfjzFwOeZyJ2pNVrxsbCGcQwdqLUW09d2ZFa3BgpWv1MytgS02ILYv95Q9OZpqURQ.png" alt="" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ad3af554/67af0ea0ee0eb80426fff0a6_AD_4nXfpBM7w7lgKsNRFQGRld4i_xstUwyurQgtksgQxdPDoYWb2jXHWBWnWGMaknW7HJfSaZL5hnmfjzFwOeZyJ2pNVrxsbCGcQwdqLUW09d2ZFa3BgpWv1MytgS02ILYv95Q9OZpqURQ.png" alt="" />
   <figcaption>Fig 2: ZenML Dashboard</figcaption>
 </figure>
 
@@ -260,7 +260,7 @@ def dataset_visualization_pipeline():
 This script fetches images from given URLs and embeds them into an HTML visualization alongside their corresponding questions and answers. It utilizes ZenML's pipeline and step functionalities to automate the visualization process. If an image is unavailable, the script ensures graceful handling by displaying a placeholder message instead.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d6a6351a/67af0fc92df3e411a0eda0be_AD_4nXfzB8gkiVV_n0-Mfhgy4lAJ1If3lGFFnbaHErbf5ePsnSW6XSbsMooy8UQ04RTxwWoVwRI0CVNVVUZCragUMTAtKFSCY8vQFhjxF5fAPFgMZfPYZzjmL4NSS3s-RWI8Mv0IKGmlKg.png" alt="" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d6a6351a/67af0fc92df3e411a0eda0be_AD_4nXfzB8gkiVV_n0-Mfhgy4lAJ1If3lGFFnbaHErbf5ePsnSW6XSbsMooy8UQ04RTxwWoVwRI0CVNVVUZCragUMTAtKFSCY8vQFhjxF5fAPFgMZfPYZzjmL4NSS3s-RWI8Mv0IKGmlKg.png" alt="" />
   <figcaption>Fig 3: Visualization of the Dataset using ZenML</figcaption>
 </figure>
 
@@ -275,7 +275,7 @@ artifact.visualize()
 You can locate the artifact version by selecting the output node and navigating to the visualization tab.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2be0379d/67af10145c580883d0dab410_AD_4nXcu-Vzsd-mQ7zjqLNXAX9S4hP5Q4-IhDUa7sgja6I6l-uhxObdO8lXSnECyCetxuWUTEvs_sXQjQ6epFtWObj24ODneFndxY0fAB6kjcKYSwvFT1EdV0k1a4vqeaFEMHkJgtoVErw.png" alt="" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2be0379d/67af10145c580883d0dab410_AD_4nXcu-Vzsd-mQ7zjqLNXAX9S4hP5Q4-IhDUa7sgja6I6l-uhxObdO8lXSnECyCetxuWUTEvs_sXQjQ6epFtWObj24ODneFndxY0fAB6kjcKYSwvFT1EdV0k1a4vqeaFEMHkJgtoVErw.png" alt="" />
   <figcaption>Fig 4: Dataset Visualization Pipeline</figcaption>
 </figure>
 
@@ -492,7 +492,7 @@ def finetuning_pipeline():
 We can trigger the pipeline, and upon successful fine-tuning, it will be reflected on the ZenML dashboard. Below is a Direct Acyclic Graph (DAG) representation of the process:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/87a6fa91/67af11b7851cff67fb481f36_AD_4nXdbJWrxRs-wp2cj3Bxf_U8SCQPAQdejUTAeBOdGP8sv0pP4t4EBR5R-QRP8KJd5fNCJ9SjeLab4idkfULmZFsmC6oDvqmIMJFTsCebIcqIm2ezHj2MwRF8Gl_vFmeWwr4q56cRRaQ.png" alt="" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/87a6fa91/67af11b7851cff67fb481f36_AD_4nXdbJWrxRs-wp2cj3Bxf_U8SCQPAQdejUTAeBOdGP8sv0pP4t4EBR5R-QRP8KJd5fNCJ9SjeLab4idkfULmZFsmC6oDvqmIMJFTsCebIcqIm2ezHj2MwRF8Gl_vFmeWwr4q56cRRaQ.png" alt="" />
   <figcaption>Fig 5: DAG for the Fine-Tuning Pipeline</figcaption>
 </figure>
 
@@ -580,14 +580,14 @@ def evaluate_pipeline():
 Here’s the evaluate pipeline on ZenML:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ced9c3b7/67af12829a4dc308f72cc40f_AD_4nXfM8Hp6Mosf7pe8r2tVihElUJkKxxe2WNDA-A-lDjDRZJzVO024DO5DX_494vdRSW1r2dGVBAJdg6LyoUOjLhVkKAelFuskgQk_9p0Qn5Fm3r7vSXETkt2c2sBr1_jdUiHLuweKKw.png" alt="" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ced9c3b7/67af12829a4dc308f72cc40f_AD_4nXfM8Hp6Mosf7pe8r2tVihElUJkKxxe2WNDA-A-lDjDRZJzVO024DO5DX_494vdRSW1r2dGVBAJdg6LyoUOjLhVkKAelFuskgQk_9p0Qn5Fm3r7vSXETkt2c2sBr1_jdUiHLuweKKw.png" alt="" />
   <figcaption>Fig 6: Evaluate Pipeline in ZenML</figcaption>
 </figure>
 
 Here’s the output result:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e816cfb2/67af129fcca7f8ef8ab928eb_AD_4nXd8Y08n3xhZkRDwlRTbxfU3BaGr8t8dvCF_FFcrECNlNNnENAeP-JNtF7twHc_FGdNyhMzwzoZ6V68UE-kdrYRgNDtKqZ6V48UcARC2Hs24AVapheH5cxty7d01ehS-1dTYHCP7.png" alt="" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e816cfb2/67af129fcca7f8ef8ab928eb_AD_4nXd8Y08n3xhZkRDwlRTbxfU3BaGr8t8dvCF_FFcrECNlNNnENAeP-JNtF7twHc_FGdNyhMzwzoZ6V68UE-kdrYRgNDtKqZ6V48UcARC2Hs24AVapheH5cxty7d01ehS-1dTYHCP7.png" alt="" />
   <figcaption>Fig 7: Evaluation Result of the Evaluate Pipeline</figcaption>
 </figure>
 
@@ -611,7 +611,7 @@ To make sure everything is set up properly, here’s what we can do:
 We can also see that in the dashboard:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b7f9c394/67af1301ee08b2f630afa7c4_AD_4nXc33tqNKsG9EhmDnTZqWuZxf7kmXhxmpwfIZf3U2qy9S8kV2_U8t5gG4s9ei5JxGpkQlTLS8BLjGDN7YbyUWoI1LeXHXcEBTNWK3KrGN0fWpfQHxGtYu1Cku3u3wfJAahDLewxw.png" alt="" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b7f9c394/67af1301ee08b2f630afa7c4_AD_4nXc33tqNKsG9EhmDnTZqWuZxf7kmXhxmpwfIZf3U2qy9S8kV2_U8t5gG4s9ei5JxGpkQlTLS8BLjGDN7YbyUWoI1LeXHXcEBTNWK3KrGN0fWpfQHxGtYu1Cku3u3wfJAahDLewxw.png" alt="" />
   <figcaption>Fig 8: The Newly Created Stack for Model Deployment</figcaption>
 </figure>
 
@@ -663,14 +663,14 @@ huggingface_deployment_pipeline(<huggingface repository>, <model name>, <namespa
 Here’s the DAG for the deployment service:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8112009b/67af1386babdf9dca722210d_AD_4nXci2umidOuWf62PO_hoxlTWYqf0jlSHx8oF7oUvLHhp07X97t3emCl5PaZm5yag9fwRV4uKDJ-ZDLTd0W-pfTrClE8_UAXqZUjMTxnH_I5X9YCjrVJpRrKkGXU27H4xgm5qKIgRfA.png" alt="" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8112009b/67af1386babdf9dca722210d_AD_4nXci2umidOuWf62PO_hoxlTWYqf0jlSHx8oF7oUvLHhp07X97t3emCl5PaZm5yag9fwRV4uKDJ-ZDLTd0W-pfTrClE8_UAXqZUjMTxnH_I5X9YCjrVJpRrKkGXU27H4xgm5qKIgRfA.png" alt="" />
   <figcaption>Fig 9: HuggingFace Deployment Service</figcaption>
 </figure>
 
 We can also verify it through the Inference endpoint:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/afa4cf47/67af13a52d7b2bb78daf8a54_AD_4nXe-xBX2E9hdlXpYze0feJfHAeub-75-AwHdTQBm9ksc8TvbT3qBrUV0vUGi0-57eynUnDkeiwQy6H99B83ByjwMOMg0vWpplSQ78YhA6l1ewZIlWSi6na5lWfhm_-HQvz1WevgL.png" alt="" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/afa4cf47/67af13a52d7b2bb78daf8a54_AD_4nXe-xBX2E9hdlXpYze0feJfHAeub-75-AwHdTQBm9ksc8TvbT3qBrUV0vUGi0-57eynUnDkeiwQy6H99B83ByjwMOMg0vWpplSQ78YhA6l1ewZIlWSi6na5lWfhm_-HQvz1WevgL.png" alt="" />
   <figcaption>Fig 10: Deployment of Model on HuggingFace Endpoints</figcaption>
 </figure>
 
@@ -704,7 +704,7 @@ output = query(payload)
 We have fine-tuned a vision model plus deployed it on Hugging Face inference endpoints with ZenML.  For the following image and question, we get the following response:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/301ad249/67af14151945cc181bbc55a6_AD_4nXcBn4_GyRF0FKAggI1gTZ-1GdrdDbaAYXBiWIRpOiVF4cGeryjlI1pGmJutbXoCdt4_R7FlIPputhwmPYdxSmwnSCIIPBWASmXmoI5hwbmVOwLJZu6P0Jd-Vm2G_BEy407Wv6by.jpeg" alt="" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/301ad249/67af14151945cc181bbc55a6_AD_4nXcBn4_GyRF0FKAggI1gTZ-1GdrdDbaAYXBiWIRpOiVF4cGeryjlI1pGmJutbXoCdt4_R7FlIPputhwmPYdxSmwnSCIIPBWASmXmoI5hwbmVOwLJZu6P0Jd-Vm2G_BEy407Wv6by.jpeg" alt="" />
   <figcaption>Fig 11: Sample from the Test Data</figcaption>
 </figure>
 

@@ -22,12 +22,12 @@ tags:
 date: "2025-04-11T00:00:00.000Z"
 readingTime: 14 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/513e616b/67f8ec431e4c9d319dae8ed0_ZenML_Service_Connectors__1___1_.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/513e616b/67f8ec431e4c9d319dae8ed0_ZenML_Service_Connectors__1___1_.png"
 seo:
   title: "How to Simplify Authentication in Machine Learning Pipelines (Without Compromising Security) - ZenML Blog"
   description: "Discover how ZenML's Service Connectors solve one of MLOps' most frustrating challenges: credential management. This deep dive explores how Service Connectors eliminate security risks and save engineer time by providing a unified authentication layer across cloud providers (AWS, GCP, Azure). Learn how this approach improves developer experience with reduced boilerplate, enforces security best practices with short-lived tokens, and enables true multi-cloud ML workflows without credential headaches. Compare ZenML's solution with alternatives from Kubeflow, Airflow, and cloud-native platforms to understand why proper credential abstraction is the unsung hero of efficient MLOps."
   canonical: "https://www.zenml.io/blog/how-to-simplify-authentication-in-machine-learning-pipelines-for-mlops"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/513e616b/67f8ec431e4c9d319dae8ed0_ZenML_Service_Connectors__1___1_.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/513e616b/67f8ec431e4c9d319dae8ed0_ZenML_Service_Connectors__1___1_.png"
   ogTitle: "How to Simplify Authentication in Machine Learning Pipelines (Without Compromising Security) - ZenML Blog"
   ogDescription: "Discover how ZenML's Service Connectors solve one of MLOps' most frustrating challenges: credential management. This deep dive explores how Service Connectors eliminate security risks and save engineer time by providing a unified authentication layer across cloud providers (AWS, GCP, Azure). Learn how this approach improves developer experience with reduced boilerplate, enforces security best practices with short-lived tokens, and enables true multi-cloud ML workflows without credential headaches. Compare ZenML's solution with alternatives from Kubeflow, Airflow, and cloud-native platforms to understand why proper credential abstraction is the unsung hero of efficient MLOps."
 ---
@@ -43,7 +43,7 @@ Machine learning pipelines rarely exist in isolation. They interact with a diver
 For each of these interactions, engineering teams face the same question: "How do we securely provide the right credentials to the right components of our ML system?"
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/07dd205a/67f8e2df931310874811a743_Service_Connectors_Blog_Image.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/07dd205a/67f8e2df931310874811a743_Service_Connectors_Blog_Image.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### The Hidden Complexity of ML Authentication
@@ -93,7 +93,7 @@ zenml service-connector list-types
 ```
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/539800a3/67f8e3034a02fc11dcbed59c_CleanShot_Apr_11_from_Service_Connectors_Blog.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/539800a3/67f8e3034a02fc11dcbed59c_CleanShot_Apr_11_from_Service_Connectors_Blog.png" alt="__wf_reserved_inherit" />
 </figure>
 
 This design creates a unified language across cloud providers. Instead of dealing with the specifics of each provider's authentication mechanisms, you work with consistent abstractions. For instance, `kubernetes-cluster` represents any Kubernetes implementation, whether it's Amazon EKS, Google GKE, Azure AKS, or a self-hosted cluster.
@@ -249,7 +249,7 @@ def train_model():
 ```
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d9fa2b4c/67f8e3391e86f0a1011cbc17_Mind_Blown_Meme.gif" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d9fa2b4c/67f8e3391e86f0a1011cbc17_Mind_Blown_Meme.gif" alt="__wf_reserved_inherit" />
 </figure>
 
 The service connector handles all authentication behind the scenes. Developers no longer need to worry about credential sources, environment variables, or cloud-specific authentication methods. The pipeline code becomes cleaner, more focused, and cloud-agnostic.
@@ -718,7 +718,7 @@ ZenML Service Connectors address these challenges without sacrificing flexibilit
 The result is a solution that combines the security of enterprise secret management with the simplicity needed for productive ML development.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5d77a2b7/67f8e35525c87d6890ea9a3b_CleanShot_Apr_11_2025_from_Service_Connectors_Blog.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5d77a2b7/67f8e35525c87d6890ea9a3b_CleanShot_Apr_11_2025_from_Service_Connectors_Blog.png" alt="__wf_reserved_inherit" />
 </figure>
 
 While every approach has its place, ZenML Service Connectors stand out by providing a balance of security, usability, and flexibility that's specifically tailored to ML workflows. They abstract authentication complexity without limiting capabilities, creating a foundation for scalable, secure ML pipelines across any environment.
@@ -804,7 +804,7 @@ Within minutes, you can experience ML workflows without the credential headaches
 Authentication and credential management may not be the most exciting topics in ML. They lack the glamour of cutting-edge architectures or state-of-the-art performance metrics. But they're essential underpinnings of any robust ML system.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/73797ac1/67f8e3e0dc8eb17a7c02733a_Hero_GIF_Optimizer__1_.gif" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/73797ac1/67f8e3e0dc8eb17a7c02733a_Hero_GIF_Optimizer__1_.gif" alt="__wf_reserved_inherit" />
 </figure>
 
 Service Connectors may be the unsung hero of the MLOps landscape, quietly solving a pervasive, frustrating problem that consumes engineer time and creates security risks. By abstracting authentication complexity, they let ML teams focus on what matters: delivering value through machine learning.

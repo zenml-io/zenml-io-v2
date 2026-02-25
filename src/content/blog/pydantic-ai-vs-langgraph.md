@@ -21,12 +21,12 @@ tags:
 date: "2025-09-15T00:00:00.000Z"
 readingTime: 15 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/be0bec65/6981d36ce92aa039b696b898_6981d2affe2c3f562a2c8f2a_pydantic-ai-vs-langgraph.avif"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/be0bec65/6981d36ce92aa039b696b898_6981d2affe2c3f562a2c8f2a_pydantic-ai-vs-langgraph.avif"
 seo:
   title: "Pydantic AI vs LangGraph: Features, Integrations, and Pricing Compared - ZenML Blog"
   description: "In this Pydantic AI vs LangGraph, we explain the difference between the two and conclude which one is the best to build AI agents."
   canonical: "https://www.zenml.io/blog/pydantic-ai-vs-langgraph"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/be0bec65/6981d36ce92aa039b696b898_6981d2affe2c3f562a2c8f2a_pydantic-ai-vs-langgraph.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/be0bec65/6981d36ce92aa039b696b898_6981d2affe2c3f562a2c8f2a_pydantic-ai-vs-langgraph.avif"
   ogTitle: "Pydantic AI vs LangGraph: Features, Integrations, and Pricing Compared - ZenML Blog"
   ogDescription: "In this Pydantic AI vs LangGraph, we explain the difference between the two and conclude which one is the best to build AI agents."
 ---
@@ -111,7 +111,7 @@ In the code above, `support_agent` is a self-contained agent. The framework uses
 #### LangGraph
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/730a5531/68c7f14d610f2fa8b9e9c0d8_how-ai-agents-are-connected-in-langgraph.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/730a5531/68c7f14d610f2fa8b9e9c0d8_how-ai-agents-are-connected-in-langgraph.png" alt="__wf_reserved_inherit" />
   <figcaption>How AI agents are connected in LangGraph</figcaption>
 </figure>
 
@@ -161,7 +161,7 @@ Both frameworks can handle multiple agents working together, but the approach di
 #### Pydantic AI
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c00fbb9e/68c7f18424ac0da12786cebc_pydantic-ai-agent-delegation.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c00fbb9e/68c7f18424ac0da12786cebc_pydantic-ai-agent-delegation.png" alt="__wf_reserved_inherit" />
   <figcaption>Pydantic AI agent delegation</figcaption>
 </figure>
 
@@ -172,7 +172,7 @@ Pydantic AI doesn’t spawn multiple agents by itself in a conversation; it’s 
 #### LangGraph
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2e9618d6/68c7f19b1dea2371365a01c5_langgraph-multi-agent-orchestration-patterns.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2e9618d6/68c7f19b1dea2371365a01c5_langgraph-multi-agent-orchestration-patterns.png" alt="__wf_reserved_inherit" />
   <figcaption>LangGraph multi-agent orchestration patterns</figcaption>
 </figure>
 
@@ -255,7 +255,7 @@ This mechanism is relatively straightforward to set up, especially since it’s 
 #### LangGraph
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ee1ac081/68c7f1bc194725f4b99a4682_langgraph-human-in-the-loop.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ee1ac081/68c7f1bc194725f4b99a4682_langgraph-human-in-the-loop.png" alt="__wf_reserved_inherit" />
   <figcaption>LangGraph human in the loop</figcaption>
 </figure>
 
@@ -339,14 +339,14 @@ It’s worth noting how each framework ties into a logging/observability stack, 
 Both Pydantic AI and LangGraph come with natural integrations for monitoring agent behavior; typically pairing with the platforms created by their parent projects:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ea2e98da/68c7f1e6a4b541749590cce1_logfire-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ea2e98da/68c7f1e6a4b541749590cce1_logfire-homepage.png" alt="__wf_reserved_inherit" />
   <figcaption>Logfire’s homepage</figcaption>
 </figure>
 
 [Pydantic AI + Logfire](https://pydantic.dev/logfire)**: **Pydantic AI is designed to work seamlessly with Pydantic Logfire, which is an OpenTelemetry-based observability platform that the team built alongside the framework. With minimal setup, Pydantic AI will emit traces of each agent run, including model calls, tool calls, and validations, to Logfire.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6ebdf327/68c7f1fba91f5e90c45aa3cc_langsmith-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6ebdf327/68c7f1fba91f5e90c45aa3cc_langsmith-homepage.png" alt="__wf_reserved_inherit" />
   <figcaption>LangSmith’s homepage</figcaption>
 </figure>
 
@@ -363,7 +363,7 @@ Pydantic AI's integration strategy is focused on strategic depth, prioritizing o
 <ul><li><strong>LLMs</strong>: It is model-agnostic, with built-in support for all major providers like OpenAI, Anthropic, Gemini, and Cohere, as well as a wide range of OpenAI-compatible endpoints.</li><li><strong>Observability</strong>: It offers native integration with Pydantic Logfire and supports any other OpenTelemetry-compatible tool, such as <a href="https://langfuse.com/">Langfuse</a>.</li><li><strong>Interoperability</strong>: It is built around open standards like the Model Context Protocol (MCP) for accessing external tools, Agent2Agent (A2A) for inter-agent communication, and AG-UI for connecting to interactive frontends.</li><li><strong>Durable Execution</strong>: For long-running and fault-tolerant workflows, Pydantic AI integrates with production-grade workflow engines like Temporal and DBOS.</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/bc20935d/68c7f2139aba7881ec703de1_pydanitc-ai-integrations.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/bc20935d/68c7f2139aba7881ec703de1_pydanitc-ai-integrations.png" alt="__wf_reserved_inherit" />
   <figcaption>Pydantic AI integrations</figcaption>
 </figure>
 
@@ -374,7 +374,7 @@ LangGraph’s strength lies in its deep, native integration with the broader Lan
 <ul><li><strong>LangChain Components:</strong> The vast library of LangChain integrations for LLMs, document loaders, text splitters, vector stores, and tools can be used directly as nodes within a LangGraph graph.</li><li><strong>LangSmith:</strong> A best-in-class platform for observability, tracing, and debugging. Traces from LangGraph are automatically visualized in LangSmith, showing the step-by-step execution of the graph, which is invaluable for understanding and improving complex agent behavior.</li><li><strong>Extensibility:</strong> As a Python library, LangGraph can be integrated with any other Python package or API, offering limitless extensibility for developers.</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e59c6a63/68c7f234ad68004ea9acb3a9_langraph-uses-the-langchain-ecosystem.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e59c6a63/68c7f234ad68004ea9acb3a9_langraph-uses-the-langchain-ecosystem.png" alt="__wf_reserved_inherit" />
   <figcaption>LangGraph uses the LangChain ecosystem</figcaption>
 </figure>
 
@@ -397,7 +397,7 @@ Here are the plans it offers:
 <ul><li><strong>Pro:</strong> $2 per million spans/metrics</li><li><strong>Cloud Enterprise:</strong> Custom pricing</li><li><strong>Self-hosted Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/fed81459/68c7f24edf9a2299a6b9277f_pydantic-ai-pricing-plans.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/fed81459/68c7f24edf9a2299a6b9277f_pydantic-ai-pricing-plans.png" alt="__wf_reserved_inherit" />
   <figcaption>Pydantic AI pricing plans</figcaption>
 </figure>
 
@@ -414,7 +414,7 @@ This is the managed commercial offering with a tiered structure designed to scal
 <ul><li><strong>Developer</strong>: Includes up to 100K nodes executed per month</li><li><strong>Plus</strong>: $0.001 per node executed + standby charges</li><li><strong>Enterprise</strong>: Custom-built plan tailored to your business needs</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c2dc5e77/68ba62f138468c579932e7c7_langgraph-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c2dc5e77/68ba62f138468c579932e7c7_langgraph-pricing.png" alt="__wf_reserved_inherit" />
 </figure>
 
 **📚 Related article: **[LangGraph pricing guide](https://www.zenml.io/blog/langgraph-pricing)
@@ -424,7 +424,7 @@ This is the managed commercial offering with a tiered structure designed to scal
 You might be wondering: Pydantic AI vs LangGraph sounds like an either/or choice, but what if you could use them together or interchangeably as needed? That’s where **ZenML** comes in.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/cd6305e5/68c7f285dc31fb46675dfaad_zenml-unified-mlops-and-llmops-platform.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/cd6305e5/68c7f285dc31fb46675dfaad_zenml-unified-mlops-and-llmops-platform.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [ZenML](https://www.zenml.io/) is an open-source MLOps + [LLMOps framework](https://docs.zenml.io/user-guides/llmops-guide) that acts as the glue for integrating various AI tools into production workflows.
@@ -436,7 +436,7 @@ Rather than competing with Pydantic AI or LangGraph, ZenML complements them by h
 With ZenML, you can encapsulate an agent-based solution into a reproducible pipeline. This means you could have a ZenML pipeline that first prepares some data, then runs a Pydantic AI agent step, then perhaps runs a LangGraph agent in another step (or even in parallel), and finally evaluates the results.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/25ea7130/68b589e769070d2bf65a0b80_zenml-architecture.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/25ea7130/68b589e769070d2bf65a0b80_zenml-architecture.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML architecture</figcaption>
 </figure>
 
@@ -447,7 +447,7 @@ ZenML automatically tracks artifacts and lineage of each pipeline run. For agent
 In a multi-agent scenario with implicit state, ZenML’s tracking can save you from a lot of headaches. You get a central dashboard to visualize how data and decisions flow through the agents.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/54d3bc5c/67b448e42a9d9bb96bd945af_EU_AI_Act_Models.gif" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/54d3bc5c/67b448e42a9d9bb96bd945af_EU_AI_Act_Models.gif" alt="__wf_reserved_inherit" />
   <figcaption>ZenML artifact management</figcaption>
 </figure>
 
@@ -460,7 +460,7 @@ You can use [CrewAI](https://www.zenml.io/integrations/crew-ai), [AutoGen](https
 For instance, ZenML would allow you to orchestrate a pipeline where one step uses a LangGraph agent to do a complex multi-agent research task, and another step uses a Pydantic AI agent to take that research and format it into a report.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8a9d375d/68c7f2d31dea2371365a70b3_zenml-agents-integration.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8a9d375d/68c7f2d31dea2371365a70b3_zenml-agents-integration.webp" alt="__wf_reserved_inherit" />
   <figcaption>ZenML agents integration</figcaption>
 </figure>
 
@@ -469,7 +469,7 @@ ZenML acts as the production backbone for whichever agentic framework you choose
 **👀 Note:** At ZenML, we have built several agent workflow integrations with tools like [Semantic Kernel](https://www.zenml.io/blog/semantic-kernel-alternatives), [LangGraph](https://www.zenml.io/blog/langgraph-vs-autogen), [LlamaIndex](https://www.zenml.io/blog/llamaindex-vs-crewai), and more. We are actively shipping new integrations that you can find on this GitHub page: [ZenML Agent Workflow Integrations](https://github.com/zenml-io/zenml/tree/main/examples/agent_framework_integrations).
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c51a5e76/68b58a4795f60f9023d117eb_zenml-agent-workflow-integrations.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c51a5e76/68b58a4795f60f9023d117eb_zenml-agent-workflow-integrations.png" alt="__wf_reserved_inherit" />
 </figure>
 
 **📚 Read more comparison articles:**

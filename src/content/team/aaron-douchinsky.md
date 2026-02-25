@@ -11,7 +11,7 @@ webflow:
   createdOn: "2025-11-11T09:01:02.396Z"
 position: "Strategic Growth"
 photo:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c89b37a6/6912face7e28cc5d030ef955_aaron.jpg"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c89b37a6/6912face7e28cc5d030ef955_aaron.jpg"
 email: "aaron.ext@zenml.io"
 linkedin: "https://www.linkedin.com/in/aarondouchinsky/"
 order: 4

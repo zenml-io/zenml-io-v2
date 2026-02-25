@@ -21,12 +21,12 @@ tags:
 date: "2025-12-08T00:00:00.000Z"
 readingTime: 11 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2bfb1c50/6981d389ab6d2820d701bc03_6981d2abdb7ef4bf7bde6cfa_temporal_vs_airflow.avif"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2bfb1c50/6981d389ab6d2820d701bc03_6981d2abdb7ef4bf7bde6cfa_temporal_vs_airflow.avif"
 seo:
   title: "Temporal vs Airflow: Which Orchestrator Fits Your Workflows? - ZenML Blog"
   description: "In this Temporal vs Airflow comparison, we break down the key differences in architecture, features, and use cases to help you decide which tool belongs in your stack."
   canonical: "https://www.zenml.io/blog/temporal-vs-airflow"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2bfb1c50/6981d389ab6d2820d701bc03_6981d2abdb7ef4bf7bde6cfa_temporal_vs_airflow.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2bfb1c50/6981d389ab6d2820d701bc03_6981d2abdb7ef4bf7bde6cfa_temporal_vs_airflow.avif"
   ogTitle: "Temporal vs Airflow: Which Orchestrator Fits Your Workflows? - ZenML Blog"
   ogDescription: "In this Temporal vs Airflow comparison, we break down the key differences in architecture, features, and use cases to help you decide which tool belongs in your stack."
 ---
@@ -70,7 +70,7 @@ While both are orchestrators, the fundamental difference lies in *what* you are 
 ### Temporal
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c1ad1219/6934ee173f8281bf67add9d9_temporal-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c1ad1219/6934ee173f8281bf67add9d9_temporal-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 Temporal treats each workflow as a durable stateful function. You write workflows as regular code in any language, like Java, Go, Python, etc., and the Temporal platform handles execution and recovery.
@@ -104,7 +104,7 @@ Notably, Temporal’s documentation highlights its popularity in AI/ML contexts.
 ### Airflow
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/696006b2/6934ee2c8b0d508ece35802e_apache-airflow-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/696006b2/6934ee2c8b0d508ece35802e_apache-airflow-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 Airflow is a workflow scheduler. It structures workflows as DAGs of independent tasks designed to run on schedules or triggers. It’s the industry standard for:
@@ -171,7 +171,7 @@ If a worker crashes, Temporal restarts the workflow on a new worker and 'replays
 ### Airflow
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/83959a3d/6934ef9ac8b3b1583ac930a3_airflow-dag-workflow.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/83959a3d/6934ef9ac8b3b1583ac930a3_airflow-dag-workflow.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 Airflow models workflows as Directed Acyclic Graphs (DAGs). You define dependencies between tasks, but unlike Temporal, Airflow does not maintain the internal variables of your Python script across tasks.
@@ -241,7 +241,7 @@ You simply import `SnowflakeOperator` or `SageMakerOperator` and configure it wi
 Airflow also integrates with execution backends: it can use Celery, Kubernetes, or other executors to run tasks. On the community side, Airflow has monitoring, logging, and authentication integrations and a built-in Web UI. Because Airflow is part of the Apache Foundation, there are also many enterprise support options and managed offerings that tie into it.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/0628cb0a/6934efbecbcc8e295b1398c4_airflow-integrations.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0628cb0a/6934efbecbcc8e295b1398c4_airflow-integrations.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ## Temporal vs Airflow: Pricing
@@ -253,7 +253,7 @@ The core Temporal platform is completely open source (MIT license) and can be se
 <ul><li><strong>Essentials:</strong> $100 per month</li><li><strong>Business:</strong> $500 per month</li><li><strong>Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/35335f66/6934efcdc7048c189e4b8b23_temporal-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/35335f66/6934efcdc7048c189e4b8b23_temporal-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Airflow
@@ -265,13 +265,13 @@ But for managed services, you can visit the [Astronomer website](https://www.ast
 <ul><li>Developer</li><li>Team</li><li>Business</li><li>Enterprise</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/df2b80f8/6934efdb4e0ea3f0c644142d_airflow-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/df2b80f8/6934efdb4e0ea3f0c644142d_airflow-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ## How ZenML Extends Existing Orchestrators with ML-Native Capabilities
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e9223d56/6934efea56d45fd81bd6b428_zenml-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e9223d56/6934efea56d45fd81bd6b428_zenml-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 While Temporal and Airflow handle task execution, they don’t inherently understand the Machine Learning lifecycle. They treat a 'model training' task the same as a 'send email' task; they just run it.

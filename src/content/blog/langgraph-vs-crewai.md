@@ -21,12 +21,12 @@ tags:
 date: "2025-06-28T00:00:00.000Z"
 readingTime: 12 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/028f4da6/6981d362e92aa039b696ad0c_6981d2b2b6cff7744ed9765d_langgraph-vs-crewai.avif"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/028f4da6/6981d362e92aa039b696ad0c_6981d2b2b6cff7744ed9765d_langgraph-vs-crewai.avif"
 seo:
   title: "LangGraph vs CrewAI: Let’s Learn About the Differences - ZenML Blog"
   description: "In this LangGraph vs CrewAI article, we explain the difference between the three platforms and educate you about using them efficiently inside ZenML."
   canonical: "https://www.zenml.io/blog/langgraph-vs-crewai"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/028f4da6/6981d362e92aa039b696ad0c_6981d2b2b6cff7744ed9765d_langgraph-vs-crewai.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/028f4da6/6981d362e92aa039b696ad0c_6981d2b2b6cff7744ed9765d_langgraph-vs-crewai.avif"
   ogTitle: "LangGraph vs CrewAI: Let’s Learn About the Differences - ZenML Blog"
   ogDescription: "In this LangGraph vs CrewAI article, we explain the difference between the three platforms and educate you about using them efficiently inside ZenML."
 ---
@@ -92,7 +92,7 @@ In this section, we compare LangGraph and CrewAI across the four most important 
 #### LangGraph
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2e0e0af5/685f77900a3b9fbf5b0bb4cb_langgraph-hierarchical-workflow-deployment-graph.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2e0e0af5/685f77900a3b9fbf5b0bb4cb_langgraph-hierarchical-workflow-deployment-graph.png" alt="__wf_reserved_inherit" />
   <figcaption>LangGraph’s Hierarchical workflow deployment graph</figcaption>
 </figure>
 
@@ -153,7 +153,7 @@ CrewAI also has a **Consensual Process** type planned for future development. Th
 #### LangGraph
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c58383c4/685f7871f6049443349ae7a3_implementing-human-in-the-loop-in-langgraph.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c58383c4/685f7871f6049443349ae7a3_implementing-human-in-the-loop-in-langgraph.png" alt="__wf_reserved_inherit" />
   <figcaption>Implementing human in the loop with LangGraph</figcaption>
 </figure>
 
@@ -168,7 +168,7 @@ This functionality allows developers to intervene mid-graph, validate or correct
 ### CrewAI
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/73db61a9/685f788ac9c1b5941aaec4cc_crewai-human-in-loop-execution.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/73db61a9/685f788ac9c1b5941aaec4cc_crewai-human-in-loop-execution.png" alt="__wf_reserved_inherit" />
   <figcaption>CrewAI human in the loop</figcaption>
 </figure>
 
@@ -267,7 +267,7 @@ The open-source core also lets you integrate any secrets management or RBAC syst
 #### CrewAI
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c4067832/685f78f4da1e3cd5053ddf27_crewai-security-and-compliance.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c4067832/685f78f4da1e3cd5053ddf27_crewai-security-and-compliance.png" alt="__wf_reserved_inherit" />
   <figcaption>CrewAI’s security and compliance</figcaption>
 </figure>
 
@@ -300,7 +300,7 @@ You can insert prebuilt agents, like ReAct or retrieval agents from LangChain, a
 LangGraph’s documentation summarizes its integrations perfectly.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3af40442/685f7917b5671780e5561115_langgraph-ecosystem.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3af40442/685f7917b5671780e5561115_langgraph-ecosystem.png" alt="__wf_reserved_inherit" />
   <figcaption>LangGraph’s ecosystem</figcaption>
 </figure>
 
@@ -311,7 +311,7 @@ CrewAI comes with its own integrations and also uses external Python libraries. 
 <ul><li><strong>LLMs</strong>: Antropic, Facebook Llama, Google Cloud</li><li><strong>Services</strong>: Elint Data, Fathom, Hubspot</li><li><strong>Education</strong>: Amazon AWS, DeepLearning, IBM</li><li><strong>Applications</strong>: Box, Chroma, Cloudera</li><li><strong>Integrations</strong>: Arize, AgentOps, LangTrace</li><li><strong>Infrastructure</strong>: Microsoft Azure, MongoDB, Nexla</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/72a6d841/685f793a57ab7985d1a245c4_crewai-ecosystem.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/72a6d841/685f793a57ab7985d1a245c4_crewai-ecosystem.png" alt="__wf_reserved_inherit" />
   <figcaption>CrewAI ecosystem</figcaption>
 </figure>
 
@@ -340,7 +340,7 @@ Apart from the free plan, LangGraph offers three paid plans to choose from:
 <ul><li><strong>Developer</strong>: Includes up to 100K nodes executed per month</li><li><strong>Plus</strong>: $0.001 per node executed + standby charges</li><li><strong>Enterprise</strong>: Custom-built plan tailored to your business needs</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ef7c9231/685f79570adfb3779255f0b4_langgraph-pricing-plans.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ef7c9231/685f79570adfb3779255f0b4_langgraph-pricing-plans.png" alt="__wf_reserved_inherit" />
   <figcaption>LangGraph pricing plans</figcaption>
 </figure>
 
@@ -353,7 +353,7 @@ CrewAI’s core framework is also MIT-licensed and open-source. But the platform
 <ul><li><strong>Basic</strong>: $99 per month</li><li><strong>Standard</strong>: $6,000 per year</li><li><strong>Pro</strong>: $12,000 per year</li><li><strong>Enterprise</strong>: $60,000 per year</li><li><strong>Ultra</strong>: $120,000 per year</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/202aa864/685f796d8b3afe4360b49a5d_crewai-pricing-plans.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/202aa864/685f796d8b3afe4360b49a5d_crewai-pricing-plans.png" alt="__wf_reserved_inherit" />
   <figcaption>CrewAI pricing plans</figcaption>
 </figure>
 

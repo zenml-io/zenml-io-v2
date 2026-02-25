@@ -17,7 +17,7 @@ tags:
 date: "2022-09-21T00:00:00.000Z"
 readingTime: 7 Mins Read
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/37a5b4aa/6531e22d154860d79271cd5c_6531e0c4c11bd41473fcd108_combined_zero_thirteen.jpeg"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/37a5b4aa/6531e22d154860d79271cd5c_6531e0c4c11bd41473fcd108_combined_zero_thirteen.jpeg"
 ---
 
 **Last updated:** November 3, 2022.

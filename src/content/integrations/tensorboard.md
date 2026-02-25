@@ -12,17 +12,17 @@ webflow:
   createdOn: "2023-10-12T09:13:12.477Z"
 integrationType: "experiment-tracker"
 logo:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b3b611ec/672b2f55134b0393a0529d82_tensorboard_logo.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b3b611ec/672b2f55134b0393a0529d82_tensorboard_logo.png"
 shortDescription: "Effortlessly Track and Visualize ML Experiments with TensorBoard and ZenML"
 docsUrl: "https://docs.zenml.io/integrations/visualizers/tensorboard"
 githubUrl: "https://github.com/zenml-io/zenml/tree/main/examples/tensorboard_integration"
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6837081e/6527e6b01b3197dd334bb82a_tensorboard_visualization_23fe9fe5a9.webp"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6837081e/6527e6b01b3197dd334bb82a_tensorboard_visualization_23fe9fe5a9.webp"
 seo:
   title: "Integrate TensorBoard with ZenML - Experiment Tracker Integrations"
   description: "Effortlessly Track and Visualize ML Experiments with TensorBoard and ZenML"
   canonical: "https://www.zenml.io/integrations/tensorboard"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6837081e/6527e6b01b3197dd334bb82a_tensorboard_visualization_23fe9fe5a9.webp"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6837081e/6527e6b01b3197dd334bb82a_tensorboard_visualization_23fe9fe5a9.webp"
   ogTitle: "Integrate TensorBoard with ZenML - Experiment Tracker Integrations"
   ogDescription: "Effortlessly Track and Visualize ML Experiments with TensorBoard and ZenML"
 overviewTitle: "Effortlessly Track and Visualize ML Experiments with TensorBoard and ZenML"

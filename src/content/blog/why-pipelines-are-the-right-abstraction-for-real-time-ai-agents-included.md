@@ -23,12 +23,12 @@ tags:
 date: "2025-10-24T00:00:00.000Z"
 readingTime: 8 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/419a2c7d/6981cf0ef4f7a9ede9959a03_6981ce8f2956b6fef73c54de_image-1.avif"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/419a2c7d/6981cf0ef4f7a9ede9959a03_6981ce8f2956b6fef73c54de_image-1.avif"
 seo:
   title: "Why Pipelines Are the Right Abstraction for Real-Time AI (Agents Included) - ZenML Blog"
   description: "ZenML's Pipeline Deployments transform pipelines into persistent HTTP services with warm state, instant rollbacks, and full observability—unifying real-time AI agents and classical ML models under one production-ready abstraction."
   canonical: "https://www.zenml.io/blog/why-pipelines-are-the-right-abstraction-for-real-time-ai-agents-included"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/419a2c7d/6981cf0ef4f7a9ede9959a03_6981ce8f2956b6fef73c54de_image-1.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/419a2c7d/6981cf0ef4f7a9ede9959a03_6981ce8f2956b6fef73c54de_image-1.avif"
   ogTitle: "Why Pipelines Are the Right Abstraction for Real-Time AI (Agents Included) - ZenML Blog"
   ogDescription: "ZenML's Pipeline Deployments transform pipelines into persistent HTTP services with warm state, instant rollbacks, and full observability—unifying real-time AI agents and classical ML models under one production-ready abstraction."
 ---
@@ -44,7 +44,7 @@ Let's explore why pipelines are the right abstraction for this new world of real
 ## Why pipelines?
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/4b06761a/68fb2f86b8b9cb772cf769d0_image-2.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/4b06761a/68fb2f86b8b9cb772cf769d0_image-2.png" alt="__wf_reserved_inherit" />
 </figure>
 
 Pipelines aren't just for batch jobs anymore. Here's what you get when you use them as your application boundary for real-time AI:
@@ -58,7 +58,7 @@ Pipelines evolved from where they were mostly represented by cron scripts to whe
 The shift from batch to real-time pipelines isn’t just a matter of speed — it demands new architectural primitives. To meet these needs, we’re introducing **pipeline deployments**, a new way to run pipelines as persistent, real-time services. Instead of executing once and tearing down, these deployments stay warm, ready to respond instantly to requests.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8559ad32/68fb2fab7f82bef8715e4bbb_image-3.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8559ad32/68fb2fab7f82bef8715e4bbb_image-3.png" alt="__wf_reserved_inherit" />
 </figure>
 
 Let’s look at a simple example — a ZenML pipeline that uses an LLM to fetch and analyze the weather for a given city (defined in a [run.py](http://run.py/) file):
@@ -94,7 +94,7 @@ curl -X POST \
 Each HTTP request creates a pipeline run, giving you full lineage and observability. Pipeline Deployments turn your pipeline into a long-running HTTP service that keeps resources warm—cutting cold starts from 30 seconds to milliseconds.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3f25cb26/68fb2fdc5dd50c0b1f8789ee_CleanShot_202025-10-23_20at_2018.14.14.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3f25cb26/68fb2fdc5dd50c0b1f8789ee_CleanShot_202025-10-23_20at_2018.14.14.png" alt="__wf_reserved_inherit" />
 </figure>
 
 The built-in local deployer works out of the box. For cloud deployments, see our [Deployer documentation](https://docs.zenml.io/concepts/deployment). Targeting AWS or GCP is just a matter of registering a different deployer as part of your stack:
@@ -195,7 +195,7 @@ When deployed, ZenML automatically serves your frontend and backend from the sam
 Open the deployment URL, and you’ll see a fully functional web interface — inference in real time with your deployed pipeline.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c668189a/68fb300e50c8fcf8334f113a_image-4.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c668189a/68fb300e50c8fcf8334f113a_image-4.png" alt="__wf_reserved_inherit" />
 </figure>
 
 It’s a small detail with huge implications: you can now go from pipeline to **production-grade AI app** — backend, API, and live frontend — all with a single deployment command.
@@ -305,7 +305,7 @@ zenml pipeline deploy pipelines.churn_inference_pipeline.churn_inference_pipelin
 Now, every `curl` request to the `/invoke` endpoint (or interaction with the web UI) gets a prediction from your scikit-learn model. You get the best of both worlds: a model trained in a reproducible batch pipeline, served with a warm state, full lineage tracking, and even a custom UI.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/81f700db/68fb302a6e4c903d2113f469_image-5.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/81f700db/68fb302a6e4c903d2113f469_image-5.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ## Try it in the Dashboard
@@ -315,7 +315,7 @@ Once deployed, use the ZenML dashboard's **Playground** to test your deployment:
 <ul><li>Paste your JSON payload</li><li>Click <strong>Invoke</strong> to test the endpoint</li><li>Get instant response, latency metrics, and a ready-to-use cURL command</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/067320c0/68fb303fad609cd2a5ca5686_CleanShot_202025-10-23_20at_2020.48.08.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/067320c0/68fb303fad609cd2a5ca5686_CleanShot_202025-10-23_20at_2020.48.08.png" alt="__wf_reserved_inherit" />
 </figure>
 
 That's the pattern: whether for agents or classical ML, pipelines become your **application boundary**—with real-time endpoints, full lineage, and instant rollbacks.

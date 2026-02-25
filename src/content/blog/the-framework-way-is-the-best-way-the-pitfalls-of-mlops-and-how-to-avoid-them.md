@@ -22,12 +22,12 @@ tags:
 date: "2022-05-24T00:00:00.000Z"
 readingTime: 9 Mins Read
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e1fcec58/6531e7467a8b73a355f1083b_zenml-framework.gif"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e1fcec58/6531e7467a8b73a355f1083b_zenml-framework.gif"
 seo:
   title: "The Framework Way is the Best Way: the pitfalls of MLOps and how to avoid them - ZenML Blog"
   description: "As our AI/ML projects evolve and mature, our processes and tooling also need to keep up with the growing demand for automation, quality and performance. But how can we possibly reconcile our need for flexibility with the overwhelming complexity of a continuously evolving ecosystem of tools and technologies? MLOps frameworks promise to deliver the ideal balance between flexibility, usability and maintainability, but not all MLOps frameworks are created equal. In this post, I take a critical look at what makes an MLOps framework worth using and what you should expect from one."
   canonical: "https://www.zenml.io/blog/the-framework-way-is-the-best-way-the-pitfalls-of-mlops-and-how-to-avoid-them"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/af89c4e3/6531e7467a8b73a355f1083b_zenml-framework.gif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/af89c4e3/6531e7467a8b73a355f1083b_zenml-framework.gif"
   ogTitle: "The Framework Way is the Best Way: the pitfalls of MLOps and how to avoid them - ZenML Blog"
   ogDescription: "As our AI/ML projects evolve and mature, our processes and tooling also need to keep up with the growing demand for automation, quality and performance. But how can we possibly reconcile our need for flexibility with the overwhelming complexity of a continuously evolving ecosystem of tools and technologies? MLOps frameworks promise to deliver the ideal balance between flexibility, usability and maintainability, but not all MLOps frameworks are created equal. In this post, I take a critical look at what makes an MLOps framework worth using and what you should expect from one."
 ---
@@ -81,7 +81,7 @@ This limitation of DIY platforms does not become apparent until the machine lear
 ## The Zen of MLOps Frameworks
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/bf34ad4c/6531e75d2d3121348c1de015_mlops-zen.png" alt="MLOps Zen" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/bf34ad4c/6531e75d2d3121348c1de015_mlops-zen.png" alt="MLOps Zen" />
 </figure>
 
 The machine learning ecosystem is still in a state of rapid evolution and you probably don’t want to be locked into a rigid platform if you want to stay ahead of the curve. Revolutionary machine learning tools and techniques are continuously emerging and evolving, and the need for a flexible and easily extensible MLOps framework is indisputable.
@@ -119,7 +119,7 @@ At the same time, the ZenML team acknowledges that AI/ML teams are an amalgam of
 At ZenML, we follow the [S.O.L.I.D.](https://en.wikipedia.org/wiki/SOLID) and [Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) design principles to maintain a loose coupling between core and external components and ensure that the framework is easy to extend and customize.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c475c0db/6531e75d3397a782a593566d_zenml-stacks.png" alt="MLOps Extensible Stacks" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c475c0db/6531e75d3397a782a593566d_zenml-stacks.png" alt="MLOps Extensible Stacks" />
 </figure>
 
 All ZenML Stack components have well-defined and well-documented interfaces. This makes it possible to [extend ZenML to add new Stack component implementations](https://docs.zenml.io/user-guide/starter-guide/understand-stacks) without having to modify the core code and without invalidating any of the interoperability guarantees that ZenML provides. The following are some examples of the extensibility options supported by ZenML:

@@ -23,12 +23,12 @@ tags:
 date: "2022-05-11T00:00:00.000Z"
 readingTime: 12 Mins Read
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5e0bedf2/652fbc3bd0e8fecf25702048_ci-cd-zenml.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5e0bedf2/652fbc3bd0e8fecf25702048_ci-cd-zenml.png"
 seo:
   title: "All Continuous, All The Time: Pipeline Deployment Patterns with ZenML - ZenML Blog"
   description: "Connecting model training pipelines to deploying models in production is seen as a difficult milestone on the way to achieving MLOps maturity for an organization. ZenML rises to the challenge and introduces a novel approach to continuous model deployment that renders a smooth transition from experimentation to production."
   canonical: "https://www.zenml.io/blog/all-continuous-all-the-time-pipeline-deployment-patterns-with-zenml"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c991e4c0/652fbc3bd0e8fecf25702048_ci-cd-zenml.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c991e4c0/652fbc3bd0e8fecf25702048_ci-cd-zenml.png"
   ogTitle: "All Continuous, All The Time: Pipeline Deployment Patterns with ZenML - ZenML Blog"
   ogDescription: "Connecting model training pipelines to deploying models in production is seen as a difficult milestone on the way to achieving MLOps maturity for an organization. ZenML rises to the challenge and introduces a novel approach to continuous model deployment that renders a smooth transition from experimentation to production."
 ---
@@ -58,7 +58,7 @@ Based on all this we can identify CI/CD for ML systems as consisting of the foll
 <ul><li><strong>CI</strong>: Automate the testing and validation for code, data, and models.</li><li><strong>CD</strong>: Automate delivering and packaging of custom systems and deploy them when certain criterion in production is fulfilled.</li><li><strong>CT</strong>: new process and practices which deals with automating training of ML models.</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c2d1822f/652fbc27eaacc8b0ccf86a81_ci-cd-for-ml-systems.gif" alt="CI/CD for ML Systems" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c2d1822f/652fbc27eaacc8b0ccf86a81_ci-cd-for-ml-systems.gif" alt="CI/CD for ML Systems" />
 </figure>
 
 # How ZenML enables CI/CT/CD
@@ -80,7 +80,7 @@ Model Deployers integrate with external tools, services or platforms responsible
 [MLFlow](https://mlflow.org/docs/latest/models.html#deploy-mlflow-models) and [Seldon Core](https://github.com/SeldonIO/seldon-core) are two examples of Model Deployers already provided by ZenML as an integration, with other Model Deployers to follow. All users have to do is run pipelines with the appropriate and easy-to-use configuration, and models get deployed instantly.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a65e38b2/652fbc27086a3c9f4d41534e_seldon-model-deployer.gif" alt="Seldon Model Deployer" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a65e38b2/652fbc27086a3c9f4d41534e_seldon-model-deployer.gif" alt="Seldon Model Deployer" />
 </figure>
 
 To achieve this end, model deployers play three major roles as stack components:
@@ -187,7 +187,7 @@ if services:
 And with the ZenML CLI we can interact with list of served models, start, stop or delete deployments that the active model deployer is responsible for.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/594a5ed3/652fbc278e40fdb3617b3918_served-models-cli.png" alt="Use the ZenML CLI to interact with your served models" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/594a5ed3/652fbc278e40fdb3617b3918_served-models-cli.png" alt="Use the ZenML CLI to interact with your served models" />
 </figure>
 
 ## How we built a CT/CD customer satisfaction ML system with ZenML
@@ -195,7 +195,7 @@ And with the ZenML CLI we can interact with list of served models, start, stop o
 The e-commerce sector is rapidly evolving as internet accessibility increases in different parts of the world. As a result, the demand for online shopping has grown. Businesses want to know how satisfied their customers are with their products and services to make better decisions. Machine learning plays a significant role in various aspects of business like sales prediction, customer segmentation, product recommendation, customer satisfaction and so on. In this example, we have built a model that can predict customer satisfaction based on data provided by customers. We use ZenML’s MLflow integration to [track the model’s performance](https://docs.zenml.io/stacks-and-components/component-guide/experiment-trackers/mlflow) and [to deploy the model](https://docs.zenml.io/stacks-and-components/component-guide/model-deployers/mlflow) for online prediction. Finally, we deploy and interact with a web application that consumes a deployed model with [Streamlit](https://streamlit.io/).
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/0ae298d2/652fbc286e750e159bf251b5_trainingandif.png" alt="Steps in the ZenML continuous deployment pipeline " />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0ae298d2/652fbc286e750e159bf251b5_trainingandif.png" alt="Steps in the ZenML continuous deployment pipeline " />
 </figure>
 
 See the full project code [in our ZenML Projects repo](https://github.com/zenml-io/zenml-projects/tree/main/customer-satisfaction)
@@ -258,7 +258,7 @@ service.predict(...)  # Predict on incoming data from the application
 This project comes with a live demo built with [Streamlit](https://streamlit.io/) which you can find [here](https://share.streamlit.io/ayush714/customer-satisfaction/main).
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1fb8fb8e/652fbc28d0e8fecf257005f2_screenshotofweb.png" alt="DemoApp" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1fb8fb8e/652fbc28d0e8fecf257005f2_screenshotofweb.png" alt="DemoApp" />
 </figure>
 
 The app on the live demo simulates what happens when predicting the customer satisfaction score for a given customer. You can input the features of the product listed below and get the customer satisfaction score.

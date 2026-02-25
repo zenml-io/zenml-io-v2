@@ -12,7 +12,7 @@ webflow:
   createdOn: "2023-10-18T07:56:13.702Z"
 position: "Founding DevEx Engineer"
 photo:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/35ed2c49/652f8f7cbdde10dda5d4a68e_alex.jpeg"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/35ed2c49/652f8f7cbdde10dda5d4a68e_alex.jpeg"
 email: "alex.ext@zenml.io"
 linkedin: "https://www.linkedin.com/in/strickvl/"
 order: 5

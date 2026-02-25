@@ -17,7 +17,7 @@ tags:
 date: "2021-11-16T00:00:00.000Z"
 readingTime: 5 Mins Read
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1e89ed73/6530a848193a7bf8d25b226a_balloons.jpg"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1e89ed73/6530a848193a7bf8d25b226a_balloons.jpg"
 ---
 
 **Last updated:** November 21, 2022.
@@ -70,7 +70,7 @@ Stacks are one of ZenMLs new [core concepts](https://docs.zenml.io/getting-start
 The diagrams below show two exemplary stacks and their components:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/73a66930/6530a86de4deb66a7aea06b0_stacks.png" alt="Development and production stack" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/73a66930/6530a86de4deb66a7aea06b0_stacks.png" alt="Development and production stack" />
 </figure>
 
 *Figure 1: Example stacks for local development (left) and production using Apache Airflow and GCP (right)*

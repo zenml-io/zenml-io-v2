@@ -12,11 +12,11 @@ webflow:
   createdOn: "2024-09-15T20:24:55.178Z"
 integrationType: "container-registry"
 logo:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8badb0ed/66e7427b73f65bd26a9715f2_unnamed.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8badb0ed/66e7427b73f65bd26a9715f2_unnamed.png"
 shortDescription: "Leverage Google’s Container Registry in ZenML Pipelines with Google Artifact Registry Integration"
 docsUrl: "https://docs.zenml.io/stack-components/container-registries/gcp"
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c06a45da/66e741dd0314d43f576e7594_image__14_.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c06a45da/66e741dd0314d43f576e7594_image__14_.png"
 relatedBlogPosts:
   - "cloud-composer-airflow-vs-vertex-ai-kubeflow"
   - "building-scalable-forecasting-solutions"
@@ -24,7 +24,7 @@ seo:
   title: "Integrate Google Artifact Registry with ZenML - Container Registry Integrations"
   description: "Leverage Google’s Container Registry in ZenML Pipelines with Google Artifact Registry Integration"
   canonical: "https://www.zenml.io/integrations/google-artifact-registry"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c06a45da/66e741dd0314d43f576e7594_image__14_.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c06a45da/66e741dd0314d43f576e7594_image__14_.png"
   ogTitle: "Integrate Google Artifact Registry with ZenML - Container Registry Integrations"
   ogDescription: "Leverage Google’s Container Registry in ZenML Pipelines with Google Artifact Registry Integration"
 overviewTitle: "Leverage Google’s Container Registry in ZenML Pipelines with Google Artifact Registry Integration"

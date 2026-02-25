@@ -14,7 +14,7 @@ description: "Turn European Central Bank data into actionable interest rate fore
 githubUrl: "https://github.com/zenml-io/zenml-projects/tree/main/eurorate-predictor"
 mainImageLink: "https://public-flavor-logos.s3.eu-central-1.amazonaws.com/projects/2.jpg"
 previewImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/cadf5fdb/67e242f1a208f582c1a63b7b_zenml_airflow_vertex_gcp_mlops.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/cadf5fdb/67e242f1a208f582c1a63b7b_zenml_airflow_vertex_gcp_mlops.png"
 tags:
   - "etl"
   - "time-series"
@@ -36,7 +36,7 @@ seo:
   title: "EuroRate Predictor"
   description: "Turn European Central Bank data into actionable interest rate forecasts with this comprehensive MLOps solution."
   canonical: "https://www.zenml.io/projects/eurorate-predictor"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/cadf5fdb/67e242f1a208f582c1a63b7b_zenml_airflow_vertex_gcp_mlops.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/cadf5fdb/67e242f1a208f582c1a63b7b_zenml_airflow_vertex_gcp_mlops.png"
   ogTitle: "EuroRate Predictor"
   ogDescription: "Turn European Central Bank data into actionable interest rate forecasts with this comprehensive MLOps solution."
 ---

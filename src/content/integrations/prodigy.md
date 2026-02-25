@@ -12,16 +12,16 @@ webflow:
   createdOn: "2024-05-29T11:19:28.557Z"
 integrationType: "data-annotator"
 logo:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/28d36c77/66d867c72a6cc880ff3bea62_explosion.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/28d36c77/66d867c72a6cc880ff3bea62_explosion.png"
 shortDescription: "Streamline Data Annotation with Prodigy and ZenML"
 docsUrl: "https://docs.zenml.io/stack-components/annotators/prodigy"
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/fa505287/66570ec4c81ad89f310d6969_Prodigy_0.58.0_Image__1_.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/fa505287/66570ec4c81ad89f310d6969_Prodigy_0.58.0_Image__1_.png"
 seo:
   title: "Integrate Prodigy with ZenML - Data Annotator Integrations"
   description: "Streamline Data Annotation with Prodigy and ZenML"
   canonical: "https://www.zenml.io/integrations/prodigy"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/fa505287/66570ec4c81ad89f310d6969_Prodigy_0.58.0_Image__1_.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/fa505287/66570ec4c81ad89f310d6969_Prodigy_0.58.0_Image__1_.png"
   ogTitle: "Integrate Prodigy with ZenML - Data Annotator Integrations"
   ogDescription: "Streamline Data Annotation with Prodigy and ZenML"
 overviewTitle: "Streamline Data Annotation with Prodigy and ZenML"

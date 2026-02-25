@@ -20,12 +20,12 @@ tags:
 date: "2022-03-09T00:00:00.000Z"
 readingTime: 16 Mins Read
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6ad52faa/6530131b35b49e6493e2dc08_gh_actions.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6ad52faa/6530131b35b49e6493e2dc08_gh_actions.png"
 seo:
   title: "How we made our integration tests delightful by optimizing the way our GitHub Actions run our test suite - ZenML Blog"
   description: "As we outgrew our initial template Github Action workflow, here's the five things we added to our Github Action arsenal to fit our growing needs: Caching, Reusable Workflows, Composite Actions, Comment Triggers and Concurrency Management."
   canonical: "https://www.zenml.io/blog/how-we-made-our-integration-tests-delightful-by-optimizing-the-way-our-github-actions-run-our-test-suite"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e1e03683/6530131b35b49e6493e2dc08_gh_actions.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e1e03683/6530131b35b49e6493e2dc08_gh_actions.png"
   ogTitle: "How we made our integration tests delightful by optimizing the way our GitHub Actions run our test suite - ZenML Blog"
   ogDescription: "As we outgrew our initial template Github Action workflow, here's the five things we added to our Github Action arsenal to fit our growing needs: Caching, Reusable Workflows, Composite Actions, Comment Triggers and Concurrency Management."
 ---
@@ -55,13 +55,13 @@ Here at ZenML, we’ve made it our mission to build a tool that spans the comple
 We start this journey in a very standard, cookie-cutter, monolithic workflow. I’m sure many projects start out this way. One yaml file defines a workflow that checks out the code, perform linting, unit testing, integration testing and uploading coverage to [codecov](https://codecov.io/) on a matrix of operating systems and Python versions. Here is one such sample of what the workflow used to look like.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1da12998/6530135a6ba489f168b0f1e2_oldActionSample.png" alt="Our original Github Actions" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1da12998/6530135a6ba489f168b0f1e2_oldActionSample.png" alt="Our original Github Actions" />
 </figure>
 
 One of the largest problems we ran into was the different dependencies each step needed and the consequential nightmare of unexpected upgrades or downgrades of some low-level packages. This would then lead to some confusing error messages and some very long debugging sessions, at the end of which our reaction was something like this:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1a3e727a/65301357f520e1e4ee16d612_turboFacepalm.png" alt="" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1a3e727a/65301357f520e1e4ee16d612_turboFacepalm.png" alt="" />
 </figure>
 
 As you might imagine, the team was growing frustrated with the long testing times and the sporadic errors and a solution needed to be found. Here are five changes we implemented to upgrade our CI pipeline.
@@ -71,7 +71,7 @@ As you might imagine, the team was growing frustrated with the long testing time
 Caching is a powerful way to speed up repeating processes. We run ‘poetry install’ in one such process that is necessary for each aspect of our CI pipeline. We didn’t want to commit the ‘poetry.lock’ file to ensure we would keep ZenML compatible with the newest versions of packages that we are integrating with and test regardless of the state on the developer’s machine. On average the [Poetry](https://python-poetry.org/) installation would take between 10-15 minutes for each cell on the OS-Python Version matrix.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/af3bdc37/653013552d53663e49503174_dependencies.png" alt="Time taken by poetry install" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/af3bdc37/653013552d53663e49503174_dependencies.png" alt="Time taken by poetry install" />
 </figure>
 
 Using caching we are able to make this step nearly instantaneous, assuming a cached venv is available. See the *yaml* excerpt below to see how caching is done within a Github Actions workflow.
@@ -259,7 +259,7 @@ In our case, if you want to run integration tests on Kubeflow Pipelines specific
 You may have noticed that there is also a reaction that can be specified reaction: rocket. This might be more gimmick than anything. But isn’t it the tiny things like this that can take your code from being functional to next level of delightful?
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/03a863d8/6530135507f544ccf062211d_Rocket.png" alt="Comment on PR with a rocket-emoji reaction" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/03a863d8/6530135507f544ccf062211d_Rocket.png" alt="Comment on PR with a rocket-emoji reaction" />
 </figure>
 
 > Note: Using ‘issue-comment’ as a trigger seems to currently be only supported if the workflow with this type of trigger has ended up on the default branch of the repo already. As such this feature is not fully tested on our side yet as it will only reach our main branch in the coming week. I’ll make sure to update this if something changes along the way.
@@ -290,7 +290,7 @@ When I set out on the journey to improve our CI pipelines, the Github Actions we
 As of early March 2022 this is the new CI pipeline that we use here at [ZenML](https://github.com/zenml-io/zenml) and the feedback from my colleagues – fellow engineers – has been very positive overall. I am sure there will be tweaks, changes and refactorings in the future, but for now, this feels Zen.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f66172df/653013572b4287a6bf026fc0_newGhActions.gif" alt="Time taken by poetry install" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f66172df/653013572b4287a6bf026fc0_newGhActions.gif" alt="Time taken by poetry install" />
 </figure>
 
 Check it out yourself [here](https://github.com/zenml-io/zenml/blob/develop/.github/workflows/ci.yml) and feel free to drop in on [Slack](https://zenml.io/slack-invite/) and let us know if this helped you or if you have tips on how we can do even better.

@@ -12,17 +12,17 @@ webflow:
   createdOn: "2024-05-29T11:35:11.444Z"
 integrationType: "alerter"
 logo:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/65d6b0d7/66d867a04ca00e02f4e6542d_discord.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/65d6b0d7/66d867a04ca00e02f4e6542d_discord.png"
 shortDescription: "Seamlessly Integrate Automated Alerts and Human Interaction into Your ML Pipelines with ZenML's Discord Integration"
 docsUrl: "https://docs.zenml.io/integrations/discord"
 githubUrl: "https://github.com/zenml-io/zenml/tree/main/examples/integration_discord"
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a7078b6e/665712e6c81ad89f31118007_CleanShot_2024-05-29_at_13.34.05.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a7078b6e/665712e6c81ad89f31118007_CleanShot_2024-05-29_at_13.34.05.png"
 seo:
   title: "Integrate Discord with ZenML - Alerter Integrations"
   description: "Seamlessly Integrate Automated Alerts and Human Interaction into Your ML Pipelines with ZenML's Discord Integration"
   canonical: "https://www.zenml.io/integrations/discord"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a7078b6e/665712e6c81ad89f31118007_CleanShot_2024-05-29_at_13.34.05.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a7078b6e/665712e6c81ad89f31118007_CleanShot_2024-05-29_at_13.34.05.png"
   ogTitle: "Integrate Discord with ZenML - Alerter Integrations"
   ogDescription: "Seamlessly Integrate Automated Alerts and Human Interaction into Your ML Pipelines with ZenML's Discord Integration"
 overviewTitle: "Seamlessly Integrate Automated Alerts and Human Interaction into Your ML Pipelines with ZenML's Discord Integration"

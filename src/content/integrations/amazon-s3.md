@@ -12,11 +12,11 @@ webflow:
   createdOn: "2024-09-04T09:01:28.361Z"
 integrationType: "artifact-store"
 logo:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b0286146/66d8216682bc260f3dcaa1b5_s3.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b0286146/66d8216682bc260f3dcaa1b5_s3.png"
 shortDescription: "Unleash Scalable Cloud Storage with Amazon S3 and ZenML"
 docsUrl: "https://docs.zenml.io/stack-components/artifact-stores/s3"
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7f866e74/66d8559e03e69633d4b08b83_s3_integration__1_.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7f866e74/66d8559e03e69633d4b08b83_s3_integration__1_.png"
 relatedBlogPosts:
   - "easy-mlops-pipelines-2-stack-wizard"
   - "easy-mlops-pipelines"
@@ -26,7 +26,7 @@ seo:
   title: "Integrate Amazon S3 with ZenML - Artifact Store Integrations"
   description: "Unleash Scalable Cloud Storage with Amazon S3 and ZenML"
   canonical: "https://www.zenml.io/integrations/amazon-s3"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7f866e74/66d8559e03e69633d4b08b83_s3_integration__1_.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7f866e74/66d8559e03e69633d4b08b83_s3_integration__1_.png"
   ogTitle: "Integrate Amazon S3 with ZenML - Artifact Store Integrations"
   ogDescription: "Unleash Scalable Cloud Storage with Amazon S3 and ZenML"
 overviewTitle: "Unleash Scalable Cloud Storage with Amazon S3 and ZenML"

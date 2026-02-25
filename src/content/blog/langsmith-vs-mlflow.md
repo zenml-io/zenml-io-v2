@@ -21,12 +21,12 @@ tags:
 date: "2026-02-12T00:00:00.000Z"
 readingTime: 14 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/0d03958f/698d56aba367420b0e2fa322_langsmith-vs-mlflow.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0d03958f/698d56aba367420b0e2fa322_langsmith-vs-mlflow.png"
 seo:
   title: "LangSmith vs MLflow vs ZenML: Choosing the Right Tool for Production AI - ZenML Blog"
   description: "Compare LangSmith, MLflow, and ZenML across pipeline orchestration, reproducibility, deployment, and pricing to choose the right production AI tool."
   canonical: "https://www.zenml.io/blog/langsmith-vs-mlflow"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/0d03958f/698d56aba367420b0e2fa322_langsmith-vs-mlflow.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0d03958f/698d56aba367420b0e2fa322_langsmith-vs-mlflow.png"
   ogTitle: "LangSmith vs MLflow vs ZenML: Choosing the Right Tool for Production AI - ZenML Blog"
   ogDescription: "Compare LangSmith, MLflow, and ZenML across pipeline orchestration, reproducibility, deployment, and pricing to choose the right production AI tool."
 ---
@@ -155,7 +155,7 @@ For example, if you need to run step A (data prep) on a CPU machine and step B (
 #### ZenML
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d67ee59c/698d570d7db5494461737358_zenml-pipeline-orchestration.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d67ee59c/698d570d7db5494461737358_zenml-pipeline-orchestration.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ZenML provides first-class pipeline orchestration as a core feature. It lets you define pipelines in Python code using the `@pipeline` and `@step `[decorators](https://docs.zenml.io/concepts/steps_and_pipelines), connecting steps into a directed flow.
@@ -267,7 +267,7 @@ Once you have a working model or agent, you need to expose it to the world. For 
 #### LangSmith
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8f95cae6/698d574e2efa8fa41c05a19d_langsmith-agent-deployment.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8f95cae6/698d574e2efa8fa41c05a19d_langsmith-agent-deployment.webp" alt="__wf_reserved_inherit" />
   <figcaption>LangSmith agent deployment</figcaption>
 </figure>
 
@@ -280,7 +280,7 @@ However, LangSmith’s deployment is specific and not intended for general model
 #### MLflow
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1abb518d/698d575f485472ccfb33ccc4_mlflow-serving.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1abb518d/698d575f485472ccfb33ccc4_mlflow-serving.webp" alt="__wf_reserved_inherit" />
   <figcaption>MLflow serving</figcaption>
 </figure>
 
@@ -301,7 +301,7 @@ MLflow treats each model as a portable unit with its code and environment bundle
 #### ZenML
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7e0a6a9d/698d576a10076b794313cbe7_zenml-deployment.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7e0a6a9d/698d576a10076b794313cbe7_zenml-deployment.webp" alt="__wf_reserved_inherit" />
   <figcaption>ZenML deployment</figcaption>
 </figure>
 
@@ -332,7 +332,7 @@ LangSmith integrates deeply with LangChain and LangGraph, but it is framework-ag
 LangSmith also connects to popular large language model APIs and agent frameworks. For example, it offers integrations for OpenAI, Anthropic, and other major LLM providers through LangChain’s modules.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2e3c02fa/698d577f89b9d6f4d808d42f_langsmith-integrations.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2e3c02fa/698d577f89b9d6f4d808d42f_langsmith-integrations.webp" alt="__wf_reserved_inherit" />
   <figcaption>LangSmith integrations</figcaption>
 </figure>
 
@@ -349,14 +349,14 @@ On the deployment side, MLflow connects with major cloud services:
 MLflow does not provide its own workflow orchestration, but it logs from almost anywhere with minimal friction. In more complex stacks, MLflow tracking data can also be consumed by higher-level frameworks like ZenML through MLflow connectors, allowing you to keep MLflow as the tracking layer while managing pipelines elsewhere.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d1ae5453/696db139dfcb368d2fca0897_mlflow-integrations.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d1ae5453/696db139dfcb368d2fca0897_mlflow-integrations.webp" alt="__wf_reserved_inherit" />
   <figcaption>MLflow integrations</figcaption>
 </figure>
 
 ### ZenML
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1d82b748/6946273b56bd53317bb529f0_zenml-integration-capabilities.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1d82b748/6946273b56bd53317bb529f0_zenml-integration-capabilities.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ZenML is designed to be extensible from the ground up. It treats integrations as first-class stack components, which lets you connect existing infrastructure without rewriting pipelines. Each part of the ML workflow is configurable and swappable.
@@ -382,7 +382,7 @@ LangSmith pricing is seat-based plus usage-based.
 👀 **Note:** Trace pricing depends on the retention tier you choose (base vs extended retention), and deployment usage is billed separately outside the included free deployment.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/be55c71d/698d57af956583f318794d55_langsmith-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/be55c71d/698d57af956583f318794d55_langsmith-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### MLflow
@@ -390,7 +390,7 @@ LangSmith pricing is seat-based plus usage-based.
 MLflow is open-source and free to use. You can self-host it, which incurs infrastructure and maintenance costs. Managed MLflow services, like those on Databricks or AWS, charge based on the compute and storage resources you consume.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3aa0605a/696db14eed59466d7814453d_mlflow-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3aa0605a/696db14eed59466d7814453d_mlflow-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### ZenML
@@ -400,7 +400,7 @@ MLflow is open-source and free to use. You can self-host it, which incurs infras
 <ul><li><strong>Community (Free):</strong> Full open-source framework. You can run it on your own infrastructure for free.</li><li><strong>ZenML Pro (Custom pricing):</strong> A managed control plane that handles the dashboard, user management, and stack configurations. This removes the burden of hosting the ZenML server yourself.</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c508fdf9/69686958bdf1b77d334d2876_zenml-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c508fdf9/69686958bdf1b77d334d2876_zenml-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ## Wrapping Up

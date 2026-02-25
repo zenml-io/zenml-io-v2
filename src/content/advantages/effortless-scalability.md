@@ -3,7 +3,7 @@ title: "Effortless Scalability"
 slug: "effortless-scalability"
 content: "With ZenML's support for distributed computing and various compute backends, you can scale your ML workflows effortlessly, whereas scaling in Metaflow requires manual configuration and is more limited in scope."
 image:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/144fb23d/669101d14ec4c8275fab7aa3_img05.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/144fb23d/669101d14ec4c8275fab7aa3_img05.png"
 webflow:
   siteId: "64a817a2e7e2208272d1ce30"
   itemId: "66912d5c84724f73afb97875"

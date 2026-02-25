@@ -12,12 +12,12 @@ webflow:
   createdOn: "2025-08-26T14:45:01.429Z"
 integrationType: "agents"
 logo:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/cc4daf0e/68adc8724b8c436be609f693_semantic-kernel.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/cc4daf0e/68adc8724b8c436be609f693_semantic-kernel.png"
 shortDescription: "Microsoft Semantic Kernel integrated with ZenML"
 docsUrl: "https://docs.zenml.io"
 githubUrl: "https://github.com/zenml-io/zenml/tree/main/examples/agent_framework_integrations/semantic-kernel"
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/02915c9a/68adc98b06ee4a979e26f97b_semantickernel-img.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/02915c9a/68adc98b06ee4a979e26f97b_semantickernel-img.png"
 relatedBlogPosts:
   - "rag-tools"
   - "best-agentic-ai-frameworks"
@@ -25,7 +25,7 @@ seo:
   title: "Integrate Semantic Kernel with ZenML - Agents Integrations"
   description: "Microsoft Semantic Kernel integrated with ZenML"
   canonical: "https://www.zenml.io/integrations/semantic-kernel"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/02915c9a/68adc98b06ee4a979e26f97b_semantickernel-img.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/02915c9a/68adc98b06ee4a979e26f97b_semantickernel-img.png"
   ogTitle: "Integrate Semantic Kernel with ZenML - Agents Integrations"
   ogDescription: "Microsoft Semantic Kernel integrated with ZenML"
 overviewTitle: "Microsoft Semantic Kernel integrated with ZenML"

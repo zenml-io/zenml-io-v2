@@ -3,7 +3,7 @@ title: "Unrivaled User Assistance"
 slug: "unrivaled-user-assistance"
 content: "ZenML excels with dedicated support, offering personalized assistance beyond standard orchestrators."
 image:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/54938439/667167b34c4aaf843c0fac78_img03.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/54938439/667167b34c4aaf843c0fac78_img03.png"
 webflow:
   siteId: "64a817a2e7e2208272d1ce30"
   itemId: "667167b69dcdd6c954617b1f"

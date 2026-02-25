@@ -21,12 +21,12 @@ tags:
 date: "2025-09-13T00:00:00.000Z"
 readingTime: 11 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/178479c6/6981d37a71c3040935dbc34d_6981d2ad55469097c2eb816b_vellum-ai-pricing.avif"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/178479c6/6981d37a71c3040935dbc34d_6981d2ad55469097c2eb816b_vellum-ai-pricing.avif"
 seo:
   title: "Vellum AI Pricing Guide: Is It Worth Investing In? - ZenML Blog"
   description: "In this Vellum AI pricing guide, we discuss the costs, features, and value Vellum AI provides to help you decide if it’s the right investment for your business."
   canonical: "https://www.zenml.io/blog/vellum-ai-pricing"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/178479c6/6981d37a71c3040935dbc34d_6981d2ad55469097c2eb816b_vellum-ai-pricing.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/178479c6/6981d37a71c3040935dbc34d_6981d2ad55469097c2eb816b_vellum-ai-pricing.avif"
   ogTitle: "Vellum AI Pricing Guide: Is It Worth Investing In? - ZenML Blog"
   ogDescription: "In this Vellum AI pricing guide, we discuss the costs, features, and value Vellum AI provides to help you decide if it’s the right investment for your business."
 ---
@@ -76,7 +76,7 @@ The **free plan** lets you start building and deploying small-scale LLM apps at 
 **👀 Note:** Vellum does not publicly list pricing details on its website. You get to know about its accurate pricing when you’re inside your Vellum account. Here’s Vellum AI’s original pricing:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/af07f97c/68c4f1ab67c70a890e4d2dc1_vellum-ai-pricing-plans.jpg" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/af07f97c/68c4f1ab67c70a890e4d2dc1_vellum-ai-pricing-plans.jpg" alt="__wf_reserved_inherit" />
   <figcaption>Vellum AI pricing plans</figcaption>
 </figure>
 
@@ -85,7 +85,7 @@ The **free plan** lets you start building and deploying small-scale LLM apps at 
 When evaluating Vellum’s pricing for your projects, ensure you are aware of the factors below:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/936285dd/68c4f1bde724789b67859598_vellum-ai-pricing-factors.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/936285dd/68c4f1bde724789b67859598_vellum-ai-pricing-factors.webp" alt="__wf_reserved_inherit" />
   <figcaption>Vellum AI pricing factors</figcaption>
 </figure>
 
@@ -140,7 +140,7 @@ The Free plan serves as the entry point to the Vellum ecosystem. It’s designed
 <ul><li>Lacks role-based access control.</li><li>External monitoring capabilities are restricted, which makes integrating with existing observability infrastructure difficult.</li><li>VPC installation is not included.</li><li>Single Sign-On (SSO), on-prem deployment, dedicated support, and SLAs are not included.</li><li>The 5-user limit may quickly become restrictive as AI initiatives expand.</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/438352a3/68c4f1d6555c5ecce01853b1_vellum-ai-free-plan.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/438352a3/68c4f1d6555c5ecce01853b1_vellum-ai-free-plan.png" alt="__wf_reserved_inherit" />
   <figcaption>Vellum AI Free plan</figcaption>
 </figure>
 
@@ -161,7 +161,7 @@ The Pro plan is priced at $500 per month. It doubles down on prompt and workflow
 <ul><li>Still limited to 5 users maximum.</li><li>A notable cost jump from free to $500/month.</li><li>You still have limits; custom limits require upgrading to the Enterprise tier.</li><li>VPC compliance and advanced compliance features will require Enterprise negotiation.</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/bf0bd1ad/68c4f1f5a35bb17fef7d4634_vellum-ai-pro-plan.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/bf0bd1ad/68c4f1f5a35bb17fef7d4634_vellum-ai-pro-plan.png" alt="__wf_reserved_inherit" />
   <figcaption>Vellum AI Pro plan</figcaption>
 </figure>
 
@@ -178,7 +178,7 @@ Vellum AI's Enterprise plan uses custom pricing negotiated based on specific org
 <ul><li><strong>Unlimited usage:</strong> Execution limits and user counts are custom-negotiated to match your scaling demands. You might get <em>‘unlimited’</em> usage (within fair use) or very high ceilings that are unlikely to be hit.</li><li><strong>More users and workspaces:</strong> User seats are unlimited/custom on Enterprise. You can onboard your entire data science and engineering team, and even folks from other departments if needed.</li><li><strong>VPC Install:</strong> Deploy within your own Virtual Private Cloud, either on a public cloud provider or on-premises. This deployment model ensures that all data, including prompts and documents, remains within the customer's network perimeter.</li><li><strong>Enterprise features:</strong> Custom Contracts, BAA, DPA, Single Sign-On (SSO) integration, detailed audit logs, and the ability to enforce data retention policies.</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7cf13587/68c4f20c5521e89cbf191179_vellum-ai-enterprise-plan.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7cf13587/68c4f20c5521e89cbf191179_vellum-ai-enterprise-plan.png" alt="__wf_reserved_inherit" />
   <figcaption>Vellum AI Enterprise plan</figcaption>
 </figure>
 
@@ -199,7 +199,7 @@ Vellum is good at handling the inner loop: creating, debugging, and deploying AI
 However, a production-grade AI agent rarely exists in isolation. It is part of a larger, end-to-end process that requires robust lifecycle management. And this is where [ZenML](https://www.zenml.io/) comes in.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8c1eda41/68ba64d552371735c4daebc4_zenml-unified-mlops-and-llmops-platform.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8c1eda41/68ba64d552371735c4daebc4_zenml-unified-mlops-and-llmops-platform.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ZenML is an open-source MLOps framework that orchestrates entire machine learning workflows. Paired with Vellum, ZenML takes over the outer-loop responsibilities that Vellum alone doesn’t cover.
@@ -211,7 +211,7 @@ Here’s how ZenML does it easily and affordably:
 ### 1. Pipeline Orchestration and Integration
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/0c866484/68c4f298d9bad85cd037a88e_zenml-pipeline-orchestration.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0c866484/68c4f298d9bad85cd037a88e_zenml-pipeline-orchestration.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ZenML allows you to [create orchestrated pipelines](https://docs.zenml.io/concepts/steps_and_pipelines) that include your Vellum agent as just one step of a bigger process. You can embed Vellum prompts/workflows into larger ZenML pipelines that also handle data prep, post-processing, notifications, and more.
@@ -225,7 +225,7 @@ ZenML's stack-agnostic nature also means you can seamlessly combine your Vellum 
 ### 2. Visibility and Tracking
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8dff2b8f/68a564703779dabb2e1234ec_zenml-pipeline-rag-visualization.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8dff2b8f/68a564703779dabb2e1234ec_zenml-pipeline-rag-visualization.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML pipeline DAG visualization</figcaption>
 </figure>
 
@@ -240,13 +240,13 @@ For example, you could trace a pipeline run from raw data ingestion, through the
 With ZenML, every output from a pipeline step becomes a versioned artifact with lineage. [ZenML’s artifact versioning](https://docs.zenml.io/concepts/artifacts) is seamlessly integrated into the pipeline. It automatically tracks every version, so you always know which dataset, model, and prompt version produced a given result.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/54d3bc5c/67b448e42a9d9bb96bd945af_EU_AI_Act_Models.gif" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/54d3bc5c/67b448e42a9d9bb96bd945af_EU_AI_Act_Models.gif" alt="__wf_reserved_inherit" />
 </figure>
 
 **👀 Note:** At ZenML, we have built several agent workflow integrations with tools like Semantic Kernel, LangGraph, LlamaIndex, and more. We are actively shipping new integrations that you can find on this GitHub page:[ ](https://www.google.com/url?q=https://github.com/zenml-io/zenml/tree/main/examples/agent_framework_integrations&sa=D&source=editors&ust=1757656140599347&usg=AOvVaw3BeCp_Jxk1l2V5pSkoZ9NP)[ZenML Agent Workflow Integrations](https://github.com/zenml-io/zenml/tree/main/examples/agent_framework_integrations).
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/4778ac4f/68b12e240fea7ec5057b6710_zenml-agent-workflow-integrations.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/4778ac4f/68b12e240fea7ec5057b6710_zenml-agent-workflow-integrations.png" alt="__wf_reserved_inherit" />
 </figure>
 
 **📚 Other pricing guides to read:**

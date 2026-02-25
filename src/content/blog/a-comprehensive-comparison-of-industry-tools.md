@@ -18,12 +18,12 @@ tags:
 date: "2024-11-18T00:00:00.000Z"
 readingTime: 8 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/571c8563/673b49ae1def5845bbc26a61_llmops_eval_tools.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/571c8563/673b49ae1def5845bbc26a61_llmops_eval_tools.png"
 seo:
   title: "LLM Evaluation & Prompt Tracking Showdown: A Comprehensive Comparison of Industry Tools - ZenML Blog"
   description: "As Large Language Models (LLMs) revolutionize software development, the challenge of ensuring their reliable performance becomes increasingly crucial. This comprehensive guide explores the landscape of LLM evaluation, from specialized platforms like Langfuse and LangSmith to cloud provider solutions from AWS, Google Cloud, and Azure. Learn how to implement effective evaluation strategies, automate testing pipelines, and choose the right tools for your specific needs. Whether you're just starting with manual evaluations or ready to build sophisticated automated pipelines, discover how to gain confidence in your LLM applications through robust evaluation practices."
   canonical: "https://www.zenml.io/blog/a-comprehensive-comparison-of-industry-tools"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/571c8563/673b49ae1def5845bbc26a61_llmops_eval_tools.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/571c8563/673b49ae1def5845bbc26a61_llmops_eval_tools.png"
   ogTitle: "LLM Evaluation & Prompt Tracking Showdown: A Comprehensive Comparison of Industry Tools - ZenML Blog"
   ogDescription: "As Large Language Models (LLMs) revolutionize software development, the challenge of ensuring their reliable performance becomes increasingly crucial. This comprehensive guide explores the landscape of LLM evaluation, from specialized platforms like Langfuse and LangSmith to cloud provider solutions from AWS, Google Cloud, and Azure. Learn how to implement effective evaluation strategies, automate testing pipelines, and choose the right tools for your specific needs. Whether you're just starting with manual evaluations or ready to build sophisticated automated pipelines, discover how to gain confidence in your LLM applications through robust evaluation practices."
 ---
@@ -39,7 +39,7 @@ This is where LLM evaluation becomes not just important, but crucial.
 ## Why Evaluation Matters Now More Than Ever
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/350b7b12/673b2096727b55e62c63b11e_673b167cc6d9ae5e8a598977_Group_2013991.png" alt="A diagram showing why evaluation matters: ensuring reliability, managing risks, measuring progress, building trust." />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/350b7b12/673b2096727b55e62c63b11e_673b167cc6d9ae5e8a598977_Group_2013991.png" alt="A diagram showing why evaluation matters: ensuring reliability, managing risks, measuring progress, building trust." />
   <figcaption>Why evaluation matters</figcaption>
 </figure>
 
@@ -88,7 +88,7 @@ You will notice that the `evaluate` function takes in
 ## Types of Evaluations
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/11bb8fc9/673b2097727b55e62c63b161_673b16e757bafc67dcc7f985_interview-jobinterview.gif" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/11bb8fc9/673b2097727b55e62c63b161_673b16e757bafc67dcc7f985_interview-jobinterview.gif" alt="__wf_reserved_inherit" />
 </figure>
 
 Before diving into what metrics are commonly used to evaluate LLMs, it helps to build a mental image of how they are grouped.
@@ -102,7 +102,7 @@ In general, your evaluations should have a mix of these scorers along with some 
 ## Challenges in Evaluating LLMs
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/022a5f63/673b2096727b55e62c63b117_673b170852998a11913c99d8_Group_20210.png" alt="Challenges in evaluating LLMs: Non deterministic performance, tracking changes is hard, hard to build automated pipelines" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/022a5f63/673b2096727b55e62c63b117_673b170852998a11913c99d8_Group_20210.png" alt="Challenges in evaluating LLMs: Non deterministic performance, tracking changes is hard, hard to build automated pipelines" />
   <figcaption>Diagram showing challenges in evaluating LLMs</figcaption>
 </figure>
 
@@ -123,7 +123,7 @@ The key takeaway is to design solutions that use the best tools and libraries on
 Now let’s dive into all the available tooling options in the industry that you can leverage for your projects. We will start with the specialized LLM evaluation platforms and then see how the hyper-scalers (AWS, GCP, Azure) are handling this important part of an LLM application’s lifecycle.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/aad46a5a/673b2097727b55e62c63b143_673b18a5ea20e2b76b43046e_image_20_43_.png" alt="Tool summary for Langfuse, LangSmith, Braintrust and Evidently including github stars, supported languages, and license" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/aad46a5a/673b2097727b55e62c63b143_673b18a5ea20e2b76b43046e_image_20_43_.png" alt="Tool summary for Langfuse, LangSmith, Braintrust and Evidently including github stars, supported languages, and license" />
 </figure>
 
 ## Specialized LLM Evaluation Platforms
@@ -339,7 +339,7 @@ Evidently is open-source and you can use make use of the library in your apps as
 ## Cloud Provider Solutions
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8c77ed38/673b2097727b55e62c63b12f_673b1c92b2f9a24d4c189656_image_20_44_.png" alt="Evaluation tools by Azure, Vertex, and SageMaker with their supported languages, github stars and more" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8c77ed38/673b2097727b55e62c63b12f_673b1c92b2f9a24d4c189656_image_20_44_.png" alt="Evaluation tools by Azure, Vertex, and SageMaker with their supported languages, github stars and more" />
 </figure>
 
 ### AWS (Sagemaker)
@@ -682,7 +682,7 @@ Learn more about how you can define these flows and run them in the [evaluation 
 ## Comparison Matrix
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2c7b7d37/673b2096727b55e62c63b114_673b1f6e57bafc67dccf7f78_Comparison_20Matrix_20_1_.png" alt="Comparison matrix for LLM evaluation tools like Langfuse, LangSmith, Braintrust, Evidently, SageMaker, Vertex AI and Azure AI Studio" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2c7b7d37/673b2096727b55e62c63b114_673b1f6e57bafc67dccf7f78_Comparison_20Matrix_20_1_.png" alt="Comparison matrix for LLM evaluation tools like Langfuse, LangSmith, Braintrust, Evidently, SageMaker, Vertex AI and Azure AI Studio" />
 </figure>
 
 ## Building an automated evaluation pipeline with ZenML
@@ -690,7 +690,7 @@ Learn more about how you can define these flows and run them in the [evaluation 
 [ZenML](https://www.zenml.io) allows you to build pipelines that are composable and can help you experiment with multiple tools very easily. It also abstracts away responsibilities like managing your data artifacts, making them available across steps so you don’t have to write custom S3 code, for example, in your step code.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c410da6c/66db83503bc9d6004dd29474_66db7b81ddd2db4cb1f1458e_giphy_20_2_.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c410da6c/66db83503bc9d6004dd29474_66db7b81ddd2db4cb1f1458e_giphy_20_2_.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 To get a taste of how ZenML would let you try out all the tools above, I have sample step code for some of them below. The idea is that you can build a pipeline, say a finetuning pipeline that loads your data, finetunes a model, and then evaluates it with the tool of your choice. This means that evaluation is just a step in this pipeline and the implementation of it can be switched based on the tool you use.
@@ -698,7 +698,7 @@ To get a taste of how ZenML would let you try out all the tools above, I have sa
 Or you can also run evaluations across all tools in the same pipeline to see how they fare against each other.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5f34d742/673b2096727b55e62c63b10d_673b1f9f662468fa85316901_image_20_45_.png" alt="A finetuning pipeline with multi-tool evaluations, running in ZenML" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5f34d742/673b2096727b55e62c63b10d_673b1f9f662468fa85316901_image_20_45_.png" alt="A finetuning pipeline with multi-tool evaluations, running in ZenML" />
   <figcaption>A finetuning pipeline with multi-tool evaluations, running in ZenML</figcaption>
 </figure>
 
@@ -946,7 +946,7 @@ LLM evaluation is not just a nice-to-have – it's an essential practice given t
 The evaluation landscape consists of three main categories: custom evaluations (the most crucial but requiring significant effort), specialized platforms (like Langfuse), and cloud provider solutions (such as Amazon SageMaker FMEval). These tools differ primarily in their ease of use, cost structure, scalability, and most importantly, the actual value they bring to your evaluation process.When choosing your evaluation toolkit, the decision often comes down to your existing infrastructure and specific needs. If you're already invested in a cloud platform, their native solutions might be the most pragmatic choice. For more specialized requirements, platforms like Langsmith, Braintrust and more could be worth exploring.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f3d15f53/673b2097727b55e62c63b12b_673b207fde85dfa7b6f878cf_youre-gonna-get-through-this-you-can-do-this.gif" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f3d15f53/673b2097727b55e62c63b12b_673b207fde85dfa7b6f878cf_youre-gonna-get-through-this-you-can-do-this.gif" alt="__wf_reserved_inherit" />
 </figure>
 
 I recommend taking a phased approach to LLM evaluation. Start with manual checks to establish baseline performance, then gradually transition to automated pipelines. This automation is inevitable and valuable – it enables evaluation against larger datasets and allows for scheduled testing of your production applications. Tools with well-designed libraries and SDKs are particularly valuable here, as they enable independent evaluation runs that can be seamlessly integrated into your pipelines.We saw this in practice with the SageMaker example, where adding an evaluation step using the `fmeval` library enhanced the pipeline. This pattern can be replicated with other libraries that match your requirements. The key is ensuring your chosen solution is fast, easy to debug, and reliable. When selecting pipeline tools, prioritize those that offer flexibility in tool integration and enable rapid pipeline development without unnecessary complexity.

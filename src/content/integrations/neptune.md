@@ -12,17 +12,17 @@ webflow:
   createdOn: "2023-10-12T09:13:15.155Z"
 integrationType: "experiment-tracker"
 logo:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6ede5306/66d868461faf236b9f779ba8_neptune.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6ede5306/66d868461faf236b9f779ba8_neptune.png"
 shortDescription: "Supercharge your ZenML pipelines with Neptune's powerful experiment tracking capabilities"
 docsUrl: "https://docs.zenml.io/stack-components/experiment-trackers/neptune#full-code-example"
 githubUrl: "https://docs.zenml.io/stack-components/experiment-trackers/neptune"
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/46a1c764/66ed4e8a604dbf06577c760f_Integration_image__2_.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/46a1c764/66ed4e8a604dbf06577c760f_Integration_image__2_.png"
 seo:
   title: "Integrate Neptune with ZenML - Experiment Tracker Integrations"
   description: "Supercharge your ZenML pipelines with Neptune's powerful experiment tracking capabilities"
   canonical: "https://www.zenml.io/integrations/neptune"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/46a1c764/66ed4e8a604dbf06577c760f_Integration_image__2_.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/46a1c764/66ed4e8a604dbf06577c760f_Integration_image__2_.png"
   ogTitle: "Integrate Neptune with ZenML - Experiment Tracker Integrations"
   ogDescription: "Supercharge your ZenML pipelines with Neptune's powerful experiment tracking capabilities"
 overviewTitle: "Supercharge your ZenML pipelines with Neptune's powerful experiment tracking capabilities"

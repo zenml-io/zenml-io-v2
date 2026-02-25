@@ -22,12 +22,12 @@ tags:
 date: "2026-01-23T00:00:00.000Z"
 readingTime: 12 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/64c14779/6972f3adae42cd70c7c4efb0_n8n-vs-make.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/64c14779/6972f3adae42cd70c7c4efb0_n8n-vs-make.png"
 seo:
   title: "n8n vs Make: Are No-Code Workflow Automations as Efficient as Code-Based Frameworks? - ZenML Blog"
   description: "In this article, we compare n8n vs Make and understand if no-code workflow automations are as efficient as code-based frameworks or not."
   canonical: "https://www.zenml.io/blog/n8n-vs-make"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/64c14779/6972f3adae42cd70c7c4efb0_n8n-vs-make.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/64c14779/6972f3adae42cd70c7c4efb0_n8n-vs-make.png"
   ogTitle: "n8n vs Make: Are No-Code Workflow Automations as Efficient as Code-Based Frameworks?  - ZenML Blog"
   ogDescription: "In this article, we compare n8n vs Make and understand if no-code workflow automations are as efficient as code-based frameworks or not."
 ---
@@ -57,7 +57,7 @@ Being able to see the logic flow of an AI agent, how it chains prompts, accesses
 #### n8n
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f35a5dc8/6972f0bac748600b5fb567b1_n8n-visual-workflow-builder.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f35a5dc8/6972f0bac748600b5fb567b1_n8n-visual-workflow-builder.webp" alt="__wf_reserved_inherit" />
   <figcaption>Source</figcaption>
 </figure>
 
@@ -78,7 +78,7 @@ n8n’s integrations directory lists 1,300+ integrations (each providing one or 
 #### Make
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/412cad1c/6972f2a208ba4e5b6390c177_make-visual-workflow-builder.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/412cad1c/6972f2a208ba4e5b6390c177_make-visual-workflow-builder.webp" alt="__wf_reserved_inherit" />
   <figcaption>Source</figcaption>
 </figure>
 
@@ -101,7 +101,7 @@ Both n8n and Make have evolved beyond simple workflow automation to offer robust
 #### n8n
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/071a5aad/6972f2b70c6022190029a73a_n8n-ai-agent-building.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/071a5aad/6972f2b70c6022190029a73a_n8n-ai-agent-building.webp" alt="__wf_reserved_inherit" />
   <figcaption>Source</figcaption>
 </figure>
 
@@ -116,7 +116,7 @@ So overall, n8n covers all the aspects needed to build a sophisticated AI agent.
 #### Make
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/31655cd2/6972f2d2e8deb9524309ee89_make-ai-agent-building.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/31655cd2/6972f2d2e8deb9524309ee89_make-ai-agent-building.webp" alt="__wf_reserved_inherit" />
   <figcaption>Source</figcaption>
 </figure>
 
@@ -176,7 +176,7 @@ Here's an example of how I used n8n to transform data between nodes:``
 #### Make
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/24e49da4/6972f2e4d1daef3592d6c169_make-data-mapping.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/24e49da4/6972f2e4d1daef3592d6c169_make-data-mapping.webp" alt="__wf_reserved_inherit" />
   <figcaption>Source</figcaption>
 </figure>
 
@@ -199,7 +199,7 @@ While n8n’s integrations directory lists 1,300+ integrations, its real strengt
 <ul><li><strong>Universal adapter:</strong> The <strong>HTTP Request</strong> node acts as a universal adapter to interact with any REST or GraphQL API that lacks a pre-built node.</li><li><strong>Private connectivity:</strong> The self-hosted nature of n8n permits direct access to local databases and private services without exposure to the public internet, a critical feature for enterprise security.</li><li><strong>Community nodes:</strong> The Community Nodes repository allows developers to install custom nodes created by the user base, which facilitates the expansion of platform capabilities beyond the official roadmap.</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/62f99ffd/6972f3167a5091212b0f7b62_n8n-integrations.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/62f99ffd/6972f3167a5091212b0f7b62_n8n-integrations.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Make
@@ -209,7 +209,7 @@ Make dominates in terms of sheer volume. The platform boasts a massive catalog o
 <ul><li><strong>Visual Wrappers:</strong> You don't need to review API documentation to find the right endpoint. You simply select a module like 'Create a Record' or 'Update a Row,' and Make presents a user-friendly form to complete.</li><li><strong>Rapid Setup:</strong> This form-based approach drastically reduces setup time for standard business tools.</li><li><strong>Fallback Option:</strong> For services absent from the library, Make provides a generic <strong>HTTP app</strong> to bridge the gap, though it lacks the depth of control found in n8n.</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e1cc4797/6972f32e1695e1495b8d034c_make-integrations.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e1cc4797/6972f32e1695e1495b8d034c_make-integrations.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ## n8n vs Make: Pricing
@@ -223,7 +223,7 @@ n8n offers a free self-hosted Community Edition (source-available under n8n’s 
 <ul><li><strong>Starter:</strong> $24 per month</li><li><strong>Pro:</strong> $60 per month</li><li><strong>Business:</strong> $960 per month</li><li><strong>Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/116ac318/6972f34f0b0a48f7d7bff5fe_n8n-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/116ac318/6972f34f0b0a48f7d7bff5fe_n8n-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Make
@@ -233,7 +233,7 @@ Make offers a free plan for individual use and four paid plans:
 <ul><li><strong>Core:</strong> $10.59 per month</li><li><strong>Pro:</strong> $18.82 per month</li><li><strong>Teams:</strong> $34.12 per month</li><li><strong>Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/34528b86/6972f35b4819678d1bd3b41c_make-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/34528b86/6972f35b4819678d1bd3b41c_make-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ## When You are Better Off with a Code-Based MLOps/LLMOps Workflow Automation Frameworks
@@ -251,7 +251,7 @@ At this stage, the problem is no longer about how quickly you can assemble an au
 A code-based framework like ZenML makes this transition explicit. Instead of replacing tools like n8n or Make, it sits above them as the orchestration and lifecycle layer. Agents become pipeline steps, experiments become reproducible runs, and evaluations become first-class citizens. This structure allows teams to keep rapid automation where it belongs, while managing AI workflows with the discipline required for long-term reliability and scale.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/452ec14c/6972f36868adbb01d5b9486a_zenml-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/452ec14c/6972f36868adbb01d5b9486a_zenml-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [ZenML](https://www.zenml.io/) helps you close the outer loop around your agents:

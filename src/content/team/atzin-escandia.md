@@ -11,7 +11,7 @@ webflow:
   createdOn: "2023-12-05T11:47:05.797Z"
 position: "Senior Frontend Engineer"
 photo:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a26eac8d/656f096c979081e0663cc882_Atzin_Escandia_BW.JPG"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a26eac8d/656f096c979081e0663cc882_Atzin_Escandia_BW.JPG"
 email: "atzin.ext@zenml.io"
 linkedin: "https://www.linkedin.com/in/atzin-escandia/"
 order: 15

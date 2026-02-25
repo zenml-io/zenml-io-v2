@@ -12,7 +12,7 @@ hub:
 hero:
   deck: Boost team productivity with reusable components and standardized configurations
   image:
-    url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b7d6eb47/6526ae31bf639b6c8874a597_05_Integrations_showcase.webp"
+    url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b7d6eb47/6526ae31bf639b6c8874a597_05_Integrations_showcase.webp"
     alt: Illustration of a person meditating, surrounded by logos of MLOps tools like ZenML and Kubeflow, symbolizing harmony in machine learning operations.
   primaryCta:
     label: Book a demo
@@ -31,7 +31,7 @@ blocks:
       - "Implement DRY (Don't Repeat Yourself) principles in ML workflows."
       - Boost team productivity through standardized, battle-tested modules.
     image:
-      url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d487a224/6526aff7a7bff4a8cd719928_15_Standards_and_Best_Practices.webp"
+      url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d487a224/6526aff7a7bff4a8cd719928_15_Standards_and_Best_Practices.webp"
       alt: "\"ZenML pipeline diagram showcasing process flow for model training and deployment, ideal for MLOps and automated machine learning.\""
     imageSide: right
   - kind: value
@@ -42,7 +42,7 @@ blocks:
       - Minimize environment-related debugging time.
       - Enforce cost-effective practices through standardized configs.
     image:
-      url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ef541fec/6526630da6eabd047c75b0e5_06_Abstractions_Full.svg"
+      url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ef541fec/6526630da6eabd047c75b0e5_06_Abstractions_Full.svg"
       alt: "Flowchart of an ML workflow including components like Feature Store, Orchestrator, Code Repo, and Deployment Environment. Keywords: MLOps, model deployment."
     imageSide: left
   - kind: value
@@ -53,7 +53,7 @@ blocks:
       - Seamlessly transition between cloud resources and local development.
       - Enhance security with centralized access control and audit trails.
     image:
-      url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/339bb62b/66e9556fd34d2791885b0c5f_model_control_plane_01.png"
+      url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/339bb62b/66e9556fd34d2791885b0c5f_model_control_plane_01.png"
       alt: Dashboard displaying machine learning models, including versions, authors, and tags. Relevant to model monitoring and ML pipelines.
     imageSide: right
 
@@ -62,7 +62,7 @@ testimonial:
   name: Maximilian Balluff
   title: Lead AI Engineer at IT4IPM GmbH
   avatar:
-    url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3680131c/66c75606e282da68aa5fc70d_maximilian.webp"
+    url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3680131c/66c75606e282da68aa5fc70d_maximilian.webp"
     alt: Maximilian Balluff
 
 seo:
@@ -70,7 +70,7 @@ seo:
   description: Team-wide templates for steps and pipelines. Collective expertise, accelerated development.
   ogTitle: ZenML Features - Shared ML building blocks
   ogDescription: Team-wide templates for steps and pipelines. Collective expertise, accelerated development.
-  ogImage: https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/be58a1c8/66ab53c59f0f2791825086e7_features-reusability.png
+  ogImage: https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/be58a1c8/66ab53c59f0f2791825086e7_features-reusability.png
 
 webflow:
   siteId: 64a817a2e7e2208272d1ce30

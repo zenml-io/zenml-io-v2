@@ -21,12 +21,12 @@ tags:
 date: "2025-08-26T00:00:00.000Z"
 readingTime: 15 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6a01b380/6981d36ce92aa039b696b8ab_6981d2adca7691aacd2f45d6_best-agentic-ai-frameworks.avif"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6a01b380/6981d36ce92aa039b696b8ab_6981d2adca7691aacd2f45d6_best-agentic-ai-frameworks.avif"
 seo:
   title: "7 Best Agentic AI Frameworks to Build Smarter AI Workflows - ZenML Blog"
   description: "Discover the 7 best Agentic AI frameworks to help you build smarter AI workflows this year."
   canonical: "https://www.zenml.io/blog/best-agentic-ai-frameworks"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6a01b380/6981d36ce92aa039b696b8ab_6981d2adca7691aacd2f45d6_best-agentic-ai-frameworks.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6a01b380/6981d36ce92aa039b696b8ab_6981d2adca7691aacd2f45d6_best-agentic-ai-frameworks.avif"
   ogTitle: "7 Best Agentic AI Frameworks to Build Smarter AI Workflows - ZenML Blog"
   ogDescription: "Discover the 7 best Agentic AI frameworks to help you build smarter AI workflows this year."
 ---
@@ -48,7 +48,7 @@ By the end, you’ll have a clear picture of which framework makes sense for you
 Before choosing a framework, consider how it handles the core requirements of agentic systems.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d2858aca/68ad33d00cd6bd06f5a3c4ee_factors-to-consider-before-investing-in-agentic-ai.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d2858aca/68ad33d00cd6bd06f5a3c4ee_factors-to-consider-before-investing-in-agentic-ai.png" alt="__wf_reserved_inherit" />
   <figcaption>Factors to consider before investing in an agentic AI framework</figcaption>
 </figure>
 
@@ -104,7 +104,7 @@ Now, let’s examine 7 leading frameworks you can leverage to build agentic AI w
 ## 1. ZenML
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/aa2b587a/68ad340362e5375ab7396b5c_zenml-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/aa2b587a/68ad340362e5375ab7396b5c_zenml-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [ZenML](https://www.zenml.io/) is an open-source MLOps + [LLMOps framework](https://docs.zenml.io/user-guides/llmops-guide) that recently expanded into the agentic AI space. It provides a pipeline-centric approach to building intelligent workflows, treating agents and [retrieval-augmented generation](https://www.zenml.io/blog/rag-tools) (RAG) tasks as steps in a [reproducible pipeline](https://www.zenml.io/blog/12-factors-of-reproducible-machine-learning-in-production).
@@ -120,7 +120,7 @@ The framework brings mature ML orchestration practices – versioning, deploymen
 We are upgrading our platform to bring every ML and LLM workflow into one place for you to run, track, and improve. Think of processes like data preparation, training, RAG indexing, agent orchestration, and more, all in one place.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/bfb5e7e7/689ac1161e098c7fa15feea2_zenml-pricing-plans.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/bfb5e7e7/689ac1161e098c7fa15feea2_zenml-pricing-plans.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -134,7 +134,7 @@ On the downside, ZenML is not a specialized agent UI or a one-click solution for
 ## 2. LangGraph
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2205eefb/68ad34444626801554d0d99b_langgraph-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2205eefb/68ad34444626801554d0d99b_langgraph-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [LangGraph](https://www.langchain.com/langgraph) is a library from the creators of LangChain for building stateful, multi-agent applications by representing them as graphs. It extends the LangChain ecosystem with explicit, cyclical workflows that give developers precise control over an agent's reasoning loop.
@@ -150,7 +150,7 @@ LangGraph comes with an open source plan that lets you get started for free and 
 <ul><li><strong>Plus:</strong> $39 per month</li><li><strong>Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1d597672/68ad345c4de716309effe2e1_langgraph-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1d597672/68ad345c4de716309effe2e1_langgraph-pricing.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -162,7 +162,7 @@ The flip side of LangGraph’s flexibility is complexity. There is non-trivial b
 ## 3. Agno
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/bf5da1ed/68ad3476ccd044bed7a48751_agno-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/bf5da1ed/68ad3476ccd044bed7a48751_agno-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [Agno](https://www.agno.com/) (formerly called Phi-Data) is an open-source framework for building full-stack agentic systems with an emphasis on memory, knowledge, and reasoning. It enables you to create everything from single AI agents to teams of agents, complete with long-term memory stores, tool use, and even a web-based agent UI.
@@ -186,7 +186,7 @@ One downside is that Agno’s breadth can translate to complexity. With so many 
 ## 4. CrewAI
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ea8c94c1/68ad34bae6f83ad085b2adbb_crewai-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ea8c94c1/68ad34bae6f83ad085b2adbb_crewai-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [CrewAI](https://www.crewai.com/) is an open-source framework for orchestrating role-playing, autonomous AI agents that work together as a collaborative team. It’s designed to foster collaborative intelligence by allowing agents to delegate tasks and work together to tackle complex objectives.
@@ -202,7 +202,7 @@ CrewAI’s core framework is also MIT-licensed and open-source. But the platform
 <ul><li><strong>Basic</strong>: $99 per month</li><li><strong>Standard</strong>: $6,000 per year</li><li><strong>Pro</strong>: $12,000 per year</li><li><strong>Enterprise</strong>: $60,000 per year</li><li><strong>Ultra</strong>: $120,000 per year</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/202aa864/685f796d8b3afe4360b49a5d_crewai-pricing-plans.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/202aa864/685f796d8b3afe4360b49a5d_crewai-pricing-plans.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -216,7 +216,7 @@ The flip side is rigidity. CrewAI is optimized for workflows that naturally fit 
 ## 5. Microsoft AutoGen
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2d1517fb/68ad34e746ffe203b2b68d6d_microsoft-autogen-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2d1517fb/68ad34e746ffe203b2b68d6d_microsoft-autogen-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [Microsoft AutoGen](https://microsoft.github.io/autogen/stable//index.html) is an open-source framework from Microsoft Research for building AI applications with multiple interacting agents. It takes a conversational paradigm – agents communicate via messages and can collaborate or compete to solve tasks.
@@ -238,7 +238,7 @@ Compared to other agentic frameworks, AutoGen is more of a toolkit than a turnke
 ## 6. OpenAI Agents SDK
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a444ee14/68ad35990d9ecf56a7251f66_openai-agents-sdk-documentation.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a444ee14/68ad35990d9ecf56a7251f66_openai-agents-sdk-documentation.png" alt="__wf_reserved_inherit" />
 </figure>
 
 The [OpenAI Agents SDK](https://openai.github.io/openai-agents-python/) is a lightweight Python framework for building agentic AI applications. Evolving from OpenAI's experimental Swarm project, the SDK provides a set of production-ready primitives designed to simplify the creation of sophisticated, multi-agent workflows with a minimal learning curve.
@@ -260,7 +260,7 @@ Being tightly coupled to OpenAI’s ecosystem can be a double-edged sword. If yo
 ## 7. AWS Strands
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c7f41935/68ad35b99f20bad3f3647b81_aws-strands-agents-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c7f41935/68ad35b99f20bad3f3647b81_aws-strands-agents-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [AWS Strands](https://strandsagents.com/latest/) is an open-source SDK for building autonomous AI agents with a model-first approach. Initially developed and production-tested by internal AWS teams, it provides a flexible framework that integrates seamlessly with AWS services while remaining open to third-party components.
@@ -282,7 +282,7 @@ The model-driven approach, while simpler, means less deterministic control. You�
 ## How ZenML Helps In Closing the Outer Loop Around Agentic AI
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/06eef2a2/68ad35d2e5cde3d99e291f91_zenml-unified-mlops-plus-llmops-platform.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/06eef2a2/68ad35d2e5cde3d99e291f91_zenml-unified-mlops-plus-llmops-platform.png" alt="__wf_reserved_inherit" />
 </figure>
 
 Agentic AI frameworks help your agent reason, plan, and execute tasks. The outer loop is everything that keeps this reliable in production: orchestration, lineage, evaluation, and day-2 ops. ZenML provides that layer around your agentic AI stack.
@@ -290,7 +290,7 @@ Agentic AI frameworks help your agent reason, plan, and execute tasks. The outer
 ### Orchestrate the Full Agentic Flow
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/58f85480/68ad35ed6234a852865d267c_zenml-agentic-flow.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/58f85480/68ad35ed6234a852865d267c_zenml-agentic-flow.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML agentic flow</figcaption>
 </figure>
 
@@ -301,7 +301,7 @@ You can run the same pipeline on a schedule, trigger it from CI/CD, or even from
 ### Unified Visibility and Lineage
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f5ac652f/68ad360fb76242eb074a07a9_zenml-pipeline-dag-visualization.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f5ac652f/68ad360fb76242eb074a07a9_zenml-pipeline-dag-visualization.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML pipeline DAG visualization</figcaption>
 </figure>
 
@@ -312,7 +312,7 @@ Our platform also records code repo commit hashes for runs, which helps when you
 ### Continuous Evaluation and Feedback
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/bfea7a61/68ad362d9d17ed197069fd89_zenml-evaluation.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/bfea7a61/68ad362d9d17ed197069fd89_zenml-evaluation.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML evaluation</figcaption>
 </figure>
 
@@ -323,7 +323,7 @@ What’s more, you can also set up alerts that integrate with Slack or Discord t
 ### Production Rollout and Scale
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/84ceb96b/68ad364a3c6b4e121c3fcc4e_zenML-pipeline-being-run-on-production-stack-through-ci-cd.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/84ceb96b/68ad364a3c6b4e121c3fcc4e_zenML-pipeline-being-run-on-production-stack-through-ci-cd.webp" alt="__wf_reserved_inherit" />
   <figcaption>ZenML pipeline being run on production stack through CI/CD</figcaption>
 </figure>
 

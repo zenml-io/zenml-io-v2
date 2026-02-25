@@ -20,12 +20,12 @@ tags:
 date: "2025-07-04T00:00:00.000Z"
 readingTime: 3 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c1e7c6ba/6981cf3948be69340f5c1478_6981ce8f238b4775b0a81b38_zenml-newsletter-16_2.avif"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c1e7c6ba/6981cf3948be69340f5c1478_6981ce8f238b4775b0a81b38_zenml-newsletter-16_2.avif"
 seo:
   title: "Newsletter Edition #16 - The future of LLMOps @ ZenML (Your Voice Needed) - ZenML Blog"
   description: "We're expanding ZenML beyond its original MLOps focus into the LLMOps space, recognizing the same fragmentation patterns that once plagued traditional machine learning operations. We're developing three core capabilities: native LLM components that provide unified APIs and management across providers like OpenAI and Anthropic, along with standardized prompt versioning and evaluation tools; applying established MLOps principles to agent development to bring systematic versioning, evaluation, and observability to what's currently a \"build it and pray\" approach; and enhancing orchestration to support both LLM framework integration and direct LLM calls within workflows. Central to our philosophy is the principle of starting simple before going autonomous, emphasizing controlled workflows over fully autonomous agents for enterprise production environments, and we're actively seeking community input through a survey to guide our development priorities, recognizing that today's infrastructure decisions will determine which organizations can successfully scale AI deployment versus remaining stuck in pilot phases."
   canonical: "https://www.zenml.io/blog/newsletter-edition-16-future-of-llmops-at-zenml"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c1e7c6ba/6981cf3948be69340f5c1478_6981ce8f238b4775b0a81b38_zenml-newsletter-16_2.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c1e7c6ba/6981cf3948be69340f5c1478_6981ce8f238b4775b0a81b38_zenml-newsletter-16_2.avif"
   ogTitle: "Newsletter Edition #16 - The future of LLMOps @ ZenML (Your Voice Needed) - ZenML Blog"
   ogDescription: "We're expanding ZenML beyond its original MLOps focus into the LLMOps space, recognizing the same fragmentation patterns that once plagued traditional machine learning operations. We're developing three core capabilities: native LLM components that provide unified APIs and management across providers like OpenAI and Anthropic, along with standardized prompt versioning and evaluation tools; applying established MLOps principles to agent development to bring systematic versioning, evaluation, and observability to what's currently a \"build it and pray\" approach; and enhancing orchestration to support both LLM framework integration and direct LLM calls within workflows. Central to our philosophy is the principle of starting simple before going autonomous, emphasizing controlled workflows over fully autonomous agents for enterprise production environments, and we're actively seeking community input through a survey to guide our development priorities, recognizing that today's infrastructure decisions will determine which organizations can successfully scale AI deployment versus remaining stuck in pilot phases."
 ---
@@ -45,7 +45,7 @@ This model has worked well. Companies from JetBrains to [Adeo Leroy Merlin](http
 **The last two years have seen LLM-powered applications dominate the space. This year—the so-called "year of agents"—is gripping everyone's attention. And we're seeing the The last two years have seen LLM-powered applications dominate the space. This year—the so-called "year of agents"—is gripping everyone's attention. And we're seeing the exact same patterns unfold that we witnessed in early MLOps:exact same patterns unfold that we witnessed in early MLOps: unfold that we witnessed in early MLOps:☯The last two years have seen LLM-powered applications dominate the space. This year—the so-called "year of agents"—is gripping everyone's attention. And we're seeing the The last two years have seen LLM-powered applications dominate the space. This year—the so-called "year of agents"—is gripping everyone's attention. And we're seeing the exact same patterns unfold that we witnessed in early MLOps:exact same patterns unfold that we witnessed in early MLOps: unfold that we witnessed in early MLOps:☯**
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5b6d20c2/6867d7e95e34f697d7be792b_MLOps_AgentOps_Comparison-newsletter.jpg" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5b6d20c2/6867d7e95e34f697d7be792b_MLOps_AgentOps_Comparison-newsletter.jpg" alt="__wf_reserved_inherit" />
 </figure>
 
 Look familiar?
@@ -67,11 +67,11 @@ The beauty? These work alongside your existing MLOps stack. Same patterns, expan
 *The following code snippets are just indicators of what the interface(s) might look like. Nothing's written in stone yet and this is certainly work in progress...*
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/26d6f5de/6867d800d1c1db3d977f518e_CleanShot_202025-07-02_20at_2016.51.40.png" alt="" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/26d6f5de/6867d800d1c1db3d977f518e_CleanShot_202025-07-02_20at_2016.51.40.png" alt="" />
 </figure>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/0a0dc7c3/6867d801d1c1db3d977f5197_CleanShot_202025-07-02_20at_2016.52.06.png" alt="" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0a0dc7c3/6867d801d1c1db3d977f5197_CleanShot_202025-07-02_20at_2016.52.06.png" alt="" />
 </figure>
 
 Note that here we are invoking an “agent” from within ZenML — a pattern we expect to see a lot more often (batch evals, invoking in production, iterating while developing etc).
@@ -85,17 +85,17 @@ Having an MLOps flywheel while developing an agent is something that [excites us
 This is our vision of the complete agent development lifecycle—not the current "build it and pray" approach.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8ceca900/6867d801d1c1db3d977f519a_CleanShot_202025-07-02_20at_2016.54.21.png" alt="" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8ceca900/6867d801d1c1db3d977f519a_CleanShot_202025-07-02_20at_2016.54.21.png" alt="" />
 </figure>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/cf9059dc/6867d801d1c1db3d977f5194_CleanShot_202025-07-02_20at_2016.54.30.png" alt="" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/cf9059dc/6867d801d1c1db3d977f5194_CleanShot_202025-07-02_20at_2016.54.30.png" alt="" />
 </figure>
 
 **3. Faster, More Reliable Orchestration**
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/799d5e00/6867d801d1c1db3d977f51a6_CleanShot_202025-07-02_20at_2016.55.22.png" alt="" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/799d5e00/6867d801d1c1db3d977f51a6_CleanShot_202025-07-02_20at_2016.55.22.png" alt="" />
 </figure>
 
 As stated above, there will be cases where you might want to invoke agents within a ZenML pipeline. However, there are also other cases where it might make sense to bake the LLM calls directly into the workflows directly. As [we discussed last month](https://www.zenml.io/blog/newsletter-edition-15---why-you-dont-need-an-agent-but-you-might-need-a-workflow), we've learned that **workflows are often better than fully autonomous agents** for production use cases. More autonomy means more entropy, which enterprise applications can't tolerate.

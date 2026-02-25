@@ -18,11 +18,11 @@ tags:
 date: "2024-03-26T00:00:00.000Z"
 readingTime: 5 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/dbf8d0cb/65fbf4b2d292e9741e3d0da4_LLMs-min.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/dbf8d0cb/65fbf4b2d292e9741e3d0da4_LLMs-min.png"
 seo:
   title: "Newsletter Edition #1 - Welcome to the ZenML newsletter! - ZenML Blog"
   canonical: "https://www.zenml.io/blog/welcome-to-the-zenml-newsletter"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/95efd684/65fbf4b2d292e9741e3d0da4_LLMs-min.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/95efd684/65fbf4b2d292e9741e3d0da4_LLMs-min.png"
   ogTitle: "Newsletter Edition #1 - Welcome to the ZenML newsletter! - ZenML Blog"
 ---
 
@@ -63,7 +63,7 @@ Discover more in the detailed discussion and join the conversation [here](https:
 ## ZenML Product Corner
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5912d61a/6630ab081fee98c0ffd216db_services_snippet.png" alt="" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5912d61a/6630ab081fee98c0ffd216db_services_snippet.png" alt="" />
 </figure>
 
 ### HuggingFace Deployer + Services Update
@@ -73,7 +73,7 @@ With [0.56.2](https://github.com/zenml-io/zenml/releases/tag/0.56.0), we release
 [Learn More](https://gmlnk.com/api/v1/track/link/click/631203231d1fa7664007b69b/1711033381932/?link=https%3A%2F%2FdjZ6V304.eu1.hubspotlinksstarter.com%2FCtc%2FDQ%2B113%2FdjZ6V304%2FVVBFqw1z3CWGW18BQnw1dfhjQVXkGBG5bY80YMSn_nY3m2ndW7lCdLW6lZ3l_N7KJJLqxgch_W3Tn5Xb3FDnBFM5jfCZ2nq7yW5Nf8l33ybjDtW9cN-Ls91WlLPW7mYlkZ892M4nW5SKYT726KLjkW6RS2rK3b7BXlW2Wt1hw3y-xmpW26MZMf13KfYRW4vy0yT9b73GFW72Kw-R3GbqyYW4dSLLL7l1DrwVq-ts14SQx92W8SG2p91VBFf3W5G_YYv5Szm2YW7BLYb144f77XW4DDSpx5pNxw2W8VwgFl6SgjQyMGjJ50HrrXXVKnQRC46r2wQW6fbZDv7NlwgWN8tTYwTvlvHwW639t858874wkf6MqzcK04)
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c5182639/6630ab086e7ac3170e11fae5_llm_finetuning_zoomed_2x.png" alt="" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c5182639/6630ab086e7ac3170e11fae5_llm_finetuning_zoomed_2x.png" alt="" />
 </figure>
 
 ### A brand-new LLM finetuning template
@@ -83,7 +83,7 @@ The new LLM finetuning template contains a collection of ZenML steps, pipelines 
 [Check it out](https://github.com/zenml-io/zenml/tree/main/examples/llm_finetuning)
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/00b31aa7/6630ab08b5ddd719bf47fd75_zenml-new02.gif" alt="" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/00b31aa7/6630ab08b5ddd719bf47fd75_zenml-new02.gif" alt="" />
 </figure>
 
 ### New cloud onboarding for a faster start!

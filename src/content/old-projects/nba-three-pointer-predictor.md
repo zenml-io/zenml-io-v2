@@ -20,7 +20,7 @@ tags:
   - "skilearn"
   - "aws"
 image:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3e632016/6528f080e4171f39a00f722d_nba.jpg"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3e632016/6528f080e4171f39a00f722d_nba.jpg"
 description: "Predict the number of three-pointers in the next NBA match."
 seoTitle: "NBA Three-Pointer Predictor"
 seoDescription: "Predict the number of three-pointers in the next NBA match."
@@ -29,7 +29,7 @@ seo:
   title: "ZenML - One AI Platform - From Pipelines to Agents"
   description: "An open-source foundation to ship reliable AI products at scale - on any cloud, anywhere."
   canonical: "https://www.zenml.io"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/cb031609/695e2c1368a3480fb0daafc4_zenml-open-graph.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/cb031609/695e2c1368a3480fb0daafc4_zenml-open-graph.png"
   ogTitle: "ZenML - One AI Platform - From Pipelines to Agents"
   ogDescription: "An open-source foundation to ship reliable AI products at scale - on any cloud, anywhere."
 ---
@@ -49,7 +49,7 @@ This project structure including the stack and components can be used on occasio
 ## Stack and Components
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e4a9ee15/6528ff808c8705e9743859e6_nba_af08a47da1.png" alt="" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e4a9ee15/6528ff808c8705e9743859e6_nba_af08a47da1.png" alt="" />
 </figure>
 
 This project uses the following [Stack Components](https://docs.zenml.io/user-guide/component-guide):
@@ -65,19 +65,19 @@ The codes to reproduce this project are open-source [ZenML Project](https://gith
 All pipelines were run remotely on with a Kubeflow orchestrator. The DAGs are shown on the Kubeflow central dashboard and the ZenML Dashboard.The following DAG shows the drift detection pipeline on the ZenML Dashboard:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/85757356/6528ff80364862915fc4cb8a_drift_pipeline_9af1edeb54.png" alt="" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/85757356/6528ff80364862915fc4cb8a_drift_pipeline_9af1edeb54.png" alt="" />
 </figure>
 
 The following DAG shows the training pipeline on the ZenML Dashboard:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/89470d42/6528ff80e4171f39a0222788_training_pipeline_ef6296c4a5.png" alt="" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/89470d42/6528ff80e4171f39a0222788_training_pipeline_ef6296c4a5.png" alt="" />
 </figure>
 
 The following DAG shows the inference pipeline on the ZenML Dashboard:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a13c1537/6528ff809ec9911fddbae460_inference_pipeline_40822f81e2.png" alt="" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a13c1537/6528ff809ec9911fddbae460_inference_pipeline_40822f81e2.png" alt="" />
 </figure>
 
 ## Additional resources

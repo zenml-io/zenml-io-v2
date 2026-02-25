@@ -18,12 +18,12 @@ tags:
 date: "2024-08-28T00:00:00.000Z"
 readingTime: 15 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b8186894/66cedb6c1322da49f5c24b1e_mlops-zenml-gcp.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b8186894/66cedb6c1322da49f5c24b1e_mlops-zenml-gcp.png"
 seo:
   title: "Building Scalable Forecasting Solutions: A Comprehensive MLOps Workflow on Google Cloud Platform - ZenML Blog"
   description: "MLOps on Google Cloud Platform streamlines machine learning workflows using Vertex AI and ZenML."
   canonical: "https://www.zenml.io/blog/building-scalable-forecasting-solutions"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b8186894/66cedb6c1322da49f5c24b1e_mlops-zenml-gcp.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b8186894/66cedb6c1322da49f5c24b1e_mlops-zenml-gcp.png"
   ogTitle: "Building Scalable Forecasting Solutions: A Comprehensive MLOps Workflow on Google Cloud Platform - ZenML Blog"
   ogDescription: "MLOps on Google Cloud Platform streamlines machine learning workflows using Vertex AI and ZenML."
 ---
@@ -41,7 +41,7 @@ Together, these features can reduce the loss in model performance and manage the
 In machine learning operations (MLOps), deploying and maintaining ML models requires the right infrastructure and tools. The Google Cloud Platform (GCP) offers services to support the entire ML lifecycle. This blog will focus on core GCP services essential for successful MLOps, including [Google Artifact Registry](https://cloud.google.com/artifact-registry), [Google Cloud Storage](https://cloud.google.com/storage?hl=en), [Google Cloud Build](https://cloud.google.com/build?hl=en), [Compute Engine](https://cloud.google.com/products/compute?hl=en), and [Google Kubernetes](https://cloud.google.com/kubernetes-engine?hl=en). Understanding how to deploy application platforms and manage application logs is crucial for maintaining application health and identifying errors.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8b74427e/66cedbb67dd2f2d70b172fa1_66ced46609e7a21a3e1e2cb4_mlops-on-gcp-min.png" alt="MLOps on GCP: Raw Services including Google Artifact Registry, Google Kubernetes Engine (GKE), Compute Engine, Google Cloud Build, and Google Cloud Storage" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8b74427e/66cedbb67dd2f2d70b172fa1_66ced46609e7a21a3e1e2cb4_mlops-on-gcp-min.png" alt="MLOps on GCP: Raw Services including Google Artifact Registry, Google Kubernetes Engine (GKE), Compute Engine, Google Cloud Build, and Google Cloud Storage" />
 </figure>
 
 ### Google Artifact Registry
@@ -71,7 +71,7 @@ For nearly a decade, Google Cloud has been at the forefront of developing cuttin
 However, this convenience does come with a price, so it's important to evaluate your organization's needs carefully. Whether you're focused on Infrastructure-as-Code, CI/CD pipelines, continuous training pipelines, or prediction services—whether batch or online—Vertex AI has something to offer. You'll also find powerful tools for task automation with schedulers and analytics to drive insights. Your specific approach will depend on your organization's goals and the demands of your ML use case, but with Vertex AI, you're well-equipped to tackle it all.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7e5a1e78/66cedbb67dd2f2d70b172fd4_66ced4e19e7fe6e2806a6bbb_zenml-gcp-flow-min.png" alt="ZenML Vertex AI pipeline workflow: Vertex AI to GCS Bucket Datasets (Working and Final), Save Pipeline Spec as JSON, Triggering Vertex AI Pipelines with Python, and Vertex AI Pipeline execution" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7e5a1e78/66cedbb67dd2f2d70b172fd4_66ced4e19e7fe6e2806a6bbb_zenml-gcp-flow-min.png" alt="ZenML Vertex AI pipeline workflow: Vertex AI to GCS Bucket Datasets (Working and Final), Save Pipeline Spec as JSON, Triggering Vertex AI Pipelines with Python, and Vertex AI Pipeline execution" />
 </figure>
 
 ### Vertex AI Pipelines
@@ -155,7 +155,7 @@ It allows you to manage dependencies, dynamically scale resources, and seamlessl
 When choosing a Google Cloud Platform (GCP) service to orchestrate your ML workloads, consider key factors like the availability of pre-trained models, the power of AI-driven apps, and the flexibility to use custom containers. These elements will guide you in selecting the right service to meet your specific needs efficiently.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/bed76176/66cedbb67dd2f2d70b172fb6_66ced54e3fb9902143a11921_zenml-gcp-pros-cons-min.png" alt="ZenML comparison table: Pros and Cons of Compute Engine, GKE, and Vertex AI Pipelines for ML workloads on Google Cloud Platform" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/bed76176/66cedbb67dd2f2d70b172fb6_66ced54e3fb9902143a11921_zenml-gcp-pros-cons-min.png" alt="ZenML comparison table: Pros and Cons of Compute Engine, GKE, and Vertex AI Pipelines for ML workloads on Google Cloud Platform" />
 </figure>
 
 ## Step-by-step Tutorial: Using an open source framework to optimize your MLOps on GCP
@@ -173,7 +173,7 @@ In this section, you'll discover how to set up and refine your MLOps pipeline on
 The diagram below illustrates how ZenML, an open-source MLOps framework, seamlessly integrates with key Google Cloud Platform (GCP) services to streamline your machine learning workflows. By connecting with GCP components like Vertex AI Pipelines, Kubernetes Engine, and Cloud Storage, ZenML automates the orchestration, deployment, and management of your ML models, allowing you to scale and manage your ML operations with greater efficiency. Additionally, automated tools, a code development platform, and analytics functionalities further enhance this powerful integration, making it easier for you to focus on innovation.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/56441ef3/66cedbb77dd2f2d70b173034_66ced5c4c1cbec3649bc54dd_zenml-with-gcp-min.png" alt="ZenML ML pipeline workflow integrating with Google Cloud services: Load, Train, Evaluate, and Deploy steps connected to Google Artifact Registry, GKE, Cloud Storage, Cloud Build, and Compute Engine" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/56441ef3/66cedbb77dd2f2d70b173034_66ced5c4c1cbec3649bc54dd_zenml-with-gcp-min.png" alt="ZenML ML pipeline workflow integrating with Google Cloud services: Load, Train, Evaluate, and Deploy steps connected to Google Artifact Registry, GKE, Cloud Storage, Cloud Build, and Compute Engine" />
 </figure>
 
 ### Starting with a basic Google Cloud stack
@@ -185,7 +185,7 @@ When using Vertex AI, we require a method to package and transfer your code to t
 To summarize, here is the broad sequence of events that happen when you run a pipeline with such a cloud stack:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7cc194b4/66cedbb67dd2f2d70b172fa4_66ced6beabf2d7d65a1de84e_zenml-gcp-diagram-min.png" alt="ZenML MLOps workflow diagram: Pipeline execution from ZenML Client to Orchestrator, integrating with Container Registry and Artifact Store, showcasing data flow and metadata communication" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7cc194b4/66cedbb67dd2f2d70b172fa4_66ced6beabf2d7d65a1de84e_zenml-gcp-diagram-min.png" alt="ZenML MLOps workflow diagram: Pipeline execution from ZenML Client to Orchestrator, integrating with Container Registry and Artifact Store, showcasing data flow and metadata communication" />
 </figure>
 
 <ol><li><strong>Firstly, the user runs a pipeline</strong> on the <strong>client's machine</strong>. This executes the <a href="http://run.py"><strong>run.py</strong></a> script where ZenML reads the <strong>@pipeline</strong> function and understands what steps must be executed.</li><li>The client asks the server for the stack info, which returns it with the configuration of the cloud stack.</li><li>Based on the stack info and pipeline specification, the client builds and pushes an image to the <a href="https://docs.zenml.io/stack-components/container-registries"><strong>container registry</strong></a>. The image contains the environment for executing the pipeline and the steps' code.</li><li>The client creates a run in the <a href="https://docs.zenml.io/user-guide/production-guide/cloud-orchestration"><strong>orchestrator</strong></a>. For example, the Vertex AI orchestrator creates a virtual machine in the cloud with commands to pull and run a Docker image from the specified container registry.</li><li>The <strong>orchestrator</strong> pulls the appropriate image from the <strong>container registry</strong> as it executes the pipeline (each step has an image).</li><li>As each pipeline runs, it stores artifacts physically in the <strong>artifact store</strong>. Of course, this artifact store must be some form of <strong>Cloud Storage Object</strong> storage.</li><li>As each pipeline runs, it reports status to the ZenML server and optionally queries the server for metadata.</li></ol>
@@ -237,7 +237,7 @@ git clone --depth 1 https://github.com/zenml-io/zenml.git && cd zenml/examples/q
 A stack configures how a pipeline is executed. [Learn more](https://docs.zenml.io/user-guide/production-guide/understand-stacks). Connect your Cloud to deploy your ZenML pipelines in a remote stack.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2001944f/66cedbb67dd2f2d70b172faa_66ced7fa848b979d7060012d_zenml-stack-registration-min.png" alt="ZenML Production Setup interface: 10-minute guide to register a remote stack for cloud deployment of ML pipelines, with options to learn more and access documentation" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2001944f/66cedbb67dd2f2d70b172faa_66ced7fa848b979d7060012d_zenml-stack-registration-min.png" alt="ZenML Production Setup interface: 10-minute guide to register a remote stack for cloud deployment of ML pipelines, with options to learn more and access documentation" />
 </figure>
 
 In ZenML, the [stack](https://docs.zenml.io/user-guide/production-guide/understand-stacks) is a fundamental concept that represents the configuration of your infrastructure. In a typical workflow, creating a stack requires you first to deploy the necessary pieces of infrastructure and then define them as stack components in ZenML with proper authentication.
@@ -255,7 +255,7 @@ zenml stack set [Name Of your stack]
 ```
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f8e8a89c/66cedbb67dd2f2d70b172fb3_66ced84f26107a046567ba57_zenml-stacks-cli.png" alt="ZenML stack configuration table showing three stacks: GCP_Remote_stack (active), default, and local_with_remote_storage, with details on stack ID, owner, orchestrator, container registry, artifact store, and image builder" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f8e8a89c/66cedbb67dd2f2d70b172fb3_66ced84f26107a046567ba57_zenml-stacks-cli.png" alt="ZenML stack configuration table showing three stacks: GCP_Remote_stack (active), default, and local_with_remote_storage, with details on stack ID, owner, orchestrator, container registry, artifact store, and image builder" />
 </figure>
 
 **Install the integrations**
@@ -275,7 +275,7 @@ python run.py --training-pipeline
 **Go to your ZenML Pro account and view the pipeline status:**
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e55b123a/66cedbb77dd2f2d70b173031_66ced8c1475014e1d5a3bbd5_zenml-pipeline-example.png" alt="ZenML machine learning pipeline diagram showing data flow from data_loader through data_splitter, data_preprocessor, model_trainer, model_evaluator, and model_promoter stages, with pandas DataFrames and scikit-learn components" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e55b123a/66cedbb77dd2f2d70b173031_66ced8c1475014e1d5a3bbd5_zenml-pipeline-example.png" alt="ZenML machine learning pipeline diagram showing data flow from data_loader through data_splitter, data_preprocessor, model_trainer, model_evaluator, and model_promoter stages, with pandas DataFrames and scikit-learn components" />
 </figure>
 
 Detailed Breakdown of a Machine Learning Pipeline:
@@ -293,7 +293,7 @@ This pipeline loads, splits, preprocesses data, trains, evaluates, and potential
 — François Serra, ML Engineer / ML Ops / ML Solution Architect at ADEO Services
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/455e86c1/66cedbb67dd2f2d70b172fa7_66ced9150ad503341ca0ea49_zenml-adeo.png" alt="ADEO Leroy Merlin case study with ZenML: 300% increase in models in production, 76.5% decrease in time-to-market (from 8 weeks to 2 weeks), and a quote from François Serra on improved data scientist autonomy" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/455e86c1/66cedbb67dd2f2d70b172fa7_66ced9150ad503341ca0ea49_zenml-adeo.png" alt="ADEO Leroy Merlin case study with ZenML: 300% increase in models in production, 76.5% decrease in time-to-market (from 8 weeks to 2 weeks), and a quote from François Serra on improved data scientist autonomy" />
 </figure>
 
 ADEO, a prominent name in the global retail sector, has embarked on a data-driven transformation to enhance its competitive edge. Recognizing the need for a scalable and efficient machine learning (ML) pipeline, ADEO leveraged **ZenML** to transition from manual, fragmented processes to an agile, automated MLOps setup on the **Google Cloud Platform (GCP)**. This shift significantly reduced their time-to-market and improved deployment efficiency, particularly by integrating **prebuilt containers** and **Automated tools**.
@@ -313,7 +313,7 @@ In ADEO's journey to streamline and standardize their machine learning operation
 Whether focusing on Fraud Detection, Recommendation Systems, or Large Language Models (LLM), each team operates independently across various GCP projects and regions while maintaining a consistent and scalable MLOps framework. **ZenML Pro** empowers you to efficiently manage and orchestrate ML workflows, using distinct "stacks" tailored to different GCP projects and regions. This flexibility allows teams to choose the best infrastructure for their needs while you maintain centralized control over the entire MLOps lifecycle, ensuring consistency, reproducibility, and scalability.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ba4c91a0/66cedbb67dd2f2d70b172fb0_66ced9601dcd61525ab812d7_zenml-architecture.png" alt="ZenML Pro multi-tenant architecture diagram: Three tenants (Fraud Detection, Recommendation, LLM) with pipelines connecting to GCP stacks across different regions, and models deployment flow" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ba4c91a0/66cedbb67dd2f2d70b172fb0_66ced9601dcd61525ab812d7_zenml-architecture.png" alt="ZenML Pro multi-tenant architecture diagram: Three tenants (Fraud Detection, Recommendation, LLM) with pipelines connecting to GCP stacks across different regions, and models deployment flow" />
 </figure>
 
 ## Conclusion

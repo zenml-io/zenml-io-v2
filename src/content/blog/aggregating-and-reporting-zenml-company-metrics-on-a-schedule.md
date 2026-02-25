@@ -19,7 +19,7 @@ tags:
 date: "2022-02-15T00:00:00.000Z"
 readingTime: 6 Mins Read
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/0e99d878/652fb7e6e34f977ffa6943ad_kpi.jpg"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0e99d878/652fb7e6e34f977ffa6943ad_kpi.jpg"
 ---
 
 **Last updated:** October 17, 2022.
@@ -45,7 +45,7 @@ There are a plethora of data ingestion/processing/transformation tools out there
 The structure of the bot is an ETL pipeline—though a very simple one—where multiple data sources fan-in to a single collector and these collected data then fan-out again to multiple destinations.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ec1adbcc/652fb7d60dd66ac8ef8d6c59_flowchart.png" alt="KPI Collector Flow Chart" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ec1adbcc/652fb7d60dd66ac8ef8d6c59_flowchart.png" alt="KPI Collector Flow Chart" />
 </figure>
 
 By structuring our code in an extensible fashion, it becomes easy to extend the sources or destinations:
@@ -89,7 +89,7 @@ For publicly available sites this works, however when data is behind a log-in (e
 To keep the team in the loop in a push style, once a week the bot also includes Discord in its list of destinations. Discord supports implementing custom bots very simply, by providing a REST endpoint that messages can be posted to, which the bot then sends to the desired Discord channel (including supporting basic markup for rich formatting). To coincide with our bi-weekly sprint reviews and just to kick off the week, Monday’s run posts a message looking like this:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1c4d0318/652fb7d627b977ac58977e99_discord-hook.png" alt="Weekly Discord message" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1c4d0318/652fb7d627b977ac58977e99_discord-hook.png" alt="Weekly Discord message" />
 </figure>
 
 This includes looking back to the historic data in Notion from 14 days ago and comparing how the metrics have shrunk or (hopefully!) grown compared to the last sprint.

@@ -21,12 +21,12 @@ tags:
 date: "2025-10-15T00:00:00.000Z"
 readingTime: 15 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1b9ea914/68ef9206ae41bcbd09159129_autogen-alternatives.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1b9ea914/68ef9206ae41bcbd09159129_autogen-alternatives.png"
 seo:
   title: "We Tried and Tested 8 Best AutoGen Alternatives to Build AI Agents and Applications - ZenML Blog"
   description: "In this article, you learn about the best AutoGen alternatives to build AI agents and applications."
   canonical: "https://www.zenml.io/blog/autogen-alternatives"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1b9ea914/68ef9206ae41bcbd09159129_autogen-alternatives.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1b9ea914/68ef9206ae41bcbd09159129_autogen-alternatives.png"
   ogTitle: "We Tried and Tested 8 Best AutoGen Alternatives to Build AI Agents and Applications - ZenML Blog"
   ogDescription: "In this article, you learn about the best AutoGen alternatives to build AI agents and applications."
 ---
@@ -46,7 +46,7 @@ We tested the top 8 AutoGen alternatives so you don’t have to. We’ll briefly
 ## The Need for an AutoGen Alternative?
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8f4137e2/68ef8fd0abd28ef1953f4fbc_need-for-an-autogen-alternative.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8f4137e2/68ef8fd0abd28ef1953f4fbc_need-for-an-autogen-alternative.webp" alt="__wf_reserved_inherit" />
   <figcaption>Need for an AutoGen alternative</figcaption>
 </figure>
 
@@ -105,7 +105,7 @@ The more insight and control an alternative gives you, the easier it is to manag
 ## 1. ZenML
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/09f03b74/68ef8fecaaa4ab4a11f6d502_zenml-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/09f03b74/68ef8fecaaa4ab4a11f6d502_zenml-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [ZenML](https://www.zenml.io/) is the best AutoGen alternative for teams seeking a production-grade orchestration framework for multi-agent and LLM workflows. Unlike AutoGen’s conversation-first model, ZenML offers deterministic control, built-in observability, and reproducibility across every experiment.
@@ -123,7 +123,7 @@ By treating every LLM call or agent step as a pipeline node, ZenML guarantees tr
 ### Key Feature 2. Secrets Management
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/cf31790a/68ef8ff71089f67e319d725a_zenml-secrets-management.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/cf31790a/68ef8ff71089f67e319d725a_zenml-secrets-management.webp" alt="__wf_reserved_inherit" />
   <figcaption>Secrets management</figcaption>
 </figure>
 
@@ -136,7 +136,7 @@ Unlike AutoGen, which requires manual environment setup for key management, ZenM
 ### Key Feature 3. RAG with ZenML
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/da86229e/68ef900daed4883d27b2f784_rag-with-zenml.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/da86229e/68ef900daed4883d27b2f784_rag-with-zenml.webp" alt="__wf_reserved_inherit" />
   <figcaption>RAG with ZenML</figcaption>
 </figure>
 
@@ -151,7 +151,7 @@ This makes it easier to benchmark models, debug context drift, and optimize retr
 We are upgrading our platform to bring every ML and LLM workflow into one place for you to run, track, and improve. Think of processes like data preparation, training, RAG indexing, agent orchestration, and more, all in one place.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/58429906/68ef9022a21d3c5f7a09960a_zenml-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/58429906/68ef9022a21d3c5f7a09960a_zenml-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -163,7 +163,7 @@ But remember, ZenML is not a specialized LLM observability or a one-click QA sol
 ## 2. LangGraph
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c7239ab4/68ef903aa1fe14c6a0e3a7b4_langgraph-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c7239ab4/68ef903aa1fe14c6a0e3a7b4_langgraph-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [LangGraph](https://www.langchain.com/langgraph), from LangChain, is a code-first framework for building stateful, multi-agent workflows with explicit graph structures. It offers a graph-based orchestration model that allows you to visualize your entire LLM workflow using nodes and edges, where a node represents a step (such as an LLM call, a tool use, or a condition), and edges define the flow.
@@ -181,7 +181,7 @@ LangGraph is open-source and free to use. Its hosted version offers three plans:
 <ul><li><strong>Developers:</strong> Free</li><li><strong>Plus:</strong> $39 per month</li><li><strong>Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a52382b7/68ef90475bf63ef93954fdaa_langgraph-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a52382b7/68ef90475bf63ef93954fdaa_langgraph-pricing.png" alt="__wf_reserved_inherit" />
 </figure>
 
 **📚 Also read:** [LangGraph pricing](https://www.zenml.io/blog/langgraph-pricing)
@@ -195,7 +195,7 @@ The trade-off is that it requires more boilerplate code to define the graph, sta
 ## 3. CrewAI
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f8ad9ef1/68ef90542917c02f62f8b8b4_crewai-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f8ad9ef1/68ef90542917c02f62f8b8b4_crewai-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [CrewAI](https://www.crewai.com/) is a framework inspired by the idea of a human ‘crew’ working together. It enables you to create role-based agents and orchestrate them in a guided sequence to achieve a common goal.
@@ -213,7 +213,7 @@ CrewAI’s core framework is licensed under the MIT license and is open-source. 
 <ul><li><strong>Basic:</strong> Free</li><li><strong>Professional:</strong> $25 per month</li><li><strong>Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7d4482d7/68ef906b8d06d3e6fe630dfe_crewai-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7d4482d7/68ef906b8d06d3e6fe630dfe_crewai-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -225,7 +225,7 @@ The downside is that CrewAI’s rigid sequence is less flexible than AutoGen's d
 ## 4. LlamaIndex
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/adcd1d14/68ef9125c90f85b2f86b5ff2_llamaindex-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/adcd1d14/68ef9125c90f85b2f86b5ff2_llamaindex-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [LlamaIndex](https://www.llamaindex.ai/) is a popular data framework for building context-aware LLM applications with deep Retrieval-Augmented Generation (RAG) capabilities. If your agent needs to ingest and reason over custom data (documents, databases), LlamaIndex is often a better fit than AutoGen alone.
@@ -243,7 +243,7 @@ LlamaIndex is free to use (open-source) for its core Python library. LlamaCloud,
 <ul><li><strong>LlamaIndex Starter:</strong> $50 per month - 50K API credits, 5 seats</li><li><strong>LlamaIndex Pro:</strong> $500 per month - 500K credits, 10 seats</li><li><strong>LlamaIndex Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a52382b7/68ef90475bf63ef93954fdaa_langgraph-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a52382b7/68ef90475bf63ef93954fdaa_langgraph-pricing.png" alt="__wf_reserved_inherit" />
 </figure>
 
 **📚 Also read:** [LlamaIndex pricing](https://www.zenml.io/blog/llamaindex-pricing)
@@ -257,7 +257,7 @@ However, LlamaIndex offers limited multi-agent orchestration features. It excels
 ## 5. Hugging Face Smolagents
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/4ac492ff/68ef9140c61803c3fbf3b0ef_smolagents-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/4ac492ff/68ef9140c61803c3fbf3b0ef_smolagents-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [Smolagents](https://huggingface.co/docs/smolagents/en/index) is a minimalist agent library by Hugging Face that prioritizes simplicity and code-centric agent design. It’s essentially a lightweight alternative to AutoGen for scenarios where you want to spin up an agent in a few lines of Python without heavy frameworks.
@@ -281,7 +281,7 @@ The downside is that it requires more hands-on coding to achieve what other fram
 ## 6. Agno
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9818e586/68ef914b874fb474353a128c_agno-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9818e586/68ef914b874fb474353a128c_agno-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [Agno](https://www.agno.com/) (formerly Phidata) is a Python-native toolkit for building structured and production-grade AI assistants. It’s a solid AutoGen alternative if you want code-centric control with a ready runtime and an optional Agent UI for quick testing.
@@ -297,7 +297,7 @@ Agno is completely free to get started (open source). It offers two paid plans a
 <ul><li><strong>Starter:</strong> $150 per month</li><li><strong>Custom:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/cad96471/68ef9157b514c87b116f3ff9_agno-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/cad96471/68ef9157b514c87b116f3ff9_agno-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -309,7 +309,7 @@ As a relatively new project (especially under its rebranded name), the community
 ## 7. Ag2
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/033b8351/68ef916426ae06debe2661d0_ag2-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/033b8351/68ef916426ae06debe2661d0_ag2-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [Ag2](https://ag2.ai/) (Agent Gen 2) is a community-driven fork of the original AutoGen project, created to preserve the v0.2 API and continue its development line independently of Microsoft's v0.4 rewrite. It is the go-to choice for users who were comfortable with the original AutoGen and want to avoid breaking changes.
@@ -331,7 +331,7 @@ Ag2 inherits AutoGen's fundamental architecture limitations. While improvements 
 ## 8. Haystack
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f64fff71/6860bea987cb2aa48774652f_haystack-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f64fff71/6860bea987cb2aa48774652f_haystack-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [Haystack](https://haystack.deepset.ai/) by deepset is a comprehensive, open-source framework for building LLM applications with strong RAG capabilities. It offers a more structured alternative to AutoGen's conversational approach through composable components.
@@ -345,7 +345,7 @@ Ag2 inherits AutoGen's fundamental architecture limitations. While improvements 
 Haystack is an open-source framework and is free to use. Deepset, the company behind it, also offers a managed platform called Deepset Cloud with enterprise features and paid plans.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1c730a2c/68ef917e5c450ddccd253052_haystack-pricing-plans.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1c730a2c/68ef917e5c450ddccd253052_haystack-pricing-plans.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons

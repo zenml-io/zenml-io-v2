@@ -21,12 +21,12 @@ tags:
 date: "2025-10-01T00:00:00.000Z"
 readingTime: 15 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/37fc36b3/6981cf0ef4f7a9ede9959a0a_6981ce8f313683e025df656f_best-llm-embedding-models.avif"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/37fc36b3/6981cf0ef4f7a9ede9959a0a_6981ce8f313683e025df656f_best-llm-embedding-models.avif"
 seo:
   title: "9 Best Embedding Models for RAG to Try This Year - ZenML Blog"
   description: "Discover the 9 best data embedding models for RAG pipelines you build this year."
   canonical: "https://www.zenml.io/blog/best-embedding-models-for-rag"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/37fc36b3/6981cf0ef4f7a9ede9959a0a_6981ce8f313683e025df656f_best-llm-embedding-models.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/37fc36b3/6981cf0ef4f7a9ede9959a0a_6981ce8f313683e025df656f_best-llm-embedding-models.avif"
   ogTitle: "9 Best Embedding Models for RAG to Try This Year - ZenML Blog"
   ogDescription: "Discover the 9 best data embedding models for RAG pipelines you build this year."
 ---
@@ -44,7 +44,7 @@ In this guide, we outline the key considerations for evaluating embeddings, then
 Selecting an embedding model is an MLOps infrastructure decision, not just an NLP one. The model you choose will influence your vector database costs, inference latency, and your ability to adapt the system to your specific domain. Here are the key factors to evaluate.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6d79cbb9/68dcb1fd842501d697668a61_factors-to-consider-when-choosing-embedding-model.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6d79cbb9/68dcb1fd842501d697668a61_factors-to-consider-when-choosing-embedding-model.webp" alt="__wf_reserved_inherit" />
   <figcaption>Factors to consider when choosing embedding models for RAG</figcaption>
 </figure>
 
@@ -87,7 +87,7 @@ The following table provides a quick comparison of the models we review in detai
 ## 1. NVIDIA NV-Embed-v2
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/62fc857e/68dcb23179e64f3c3a80da3f_nvidia-nv-embed-v2.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/62fc857e/68dcb23179e64f3c3a80da3f_nvidia-nv-embed-v2.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [NVIDIA’s NV-Embed-v2](https://huggingface.co/nvidia/NV-Embed-v2) is a high-capacity text embedding model (based on Mistral-7B) designed for top-tier retrieval performance. It outputs 4096-dimensional vectors and currently tops the MTEB benchmark for general and retrieval tasks.
@@ -109,7 +109,7 @@ However, it is English-only and resource-intensive (large vectors and model size
 ## 2. Voyage AI - voyage-3.5 series
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6728f24e/68dcb245112ba84b619e3c84_voyage-3.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6728f24e/68dcb245112ba84b619e3c84_voyage-3.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [Voyage AI’s voyage-3.5 and voyage-3.5-lite](https://blog.voyageai.com/2025/05/20/voyage-3-5/) are cutting-edge embedding models built for high retrieval quality at low cost. They significantly outperform previous generation models while charging only $0.06 and $0.02 per million tokens, respectively.
@@ -131,7 +131,7 @@ The downside is vendor lock-in: you must use Voyage’s API (no local deployment
 ## 3. Google Gemini Embedding-001
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a365a758/68dcb2570fb770f25be9841e_google-gemini-embedding-001.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a365a758/68dcb2570fb770f25be9841e_google-gemini-embedding-001.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [Google's Gemini Embedding model](https://ai.google.dev/gemini-api/docs/embeddings) leverages the powerful, multimodal Gemini family of [LLMs to produce high-quality embeddings](https://www.zenml.io/blog/building-advanced-search-retrieval-and-recommendation-systems-with-llms). It is designed to deliver state-of-the-art performance across a wide array of languages and text modalities, including natural language and source code.
@@ -153,7 +153,7 @@ However, Google does provide a supervised fine-tuning workflow within Vertex AI,
 ## 4. OpenAI text-embedding-3-large
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/37ea4a69/68dcb280672377fe50f9b84f_openai-text-embedding-3-large.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/37ea4a69/68dcb280672377fe50f9b84f_openai-text-embedding-3-large.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [OpenAI’s text-embedding-3-large](https://platform.openai.com/docs/models/text-embedding-3-large) is a high-end proprietary embedding model via the OpenAI API that produces 3072-dimensional vectors. It is designed for both English and non-English content. The model can ingest up to 8191 tokens (approximately 6,000 words) in a single call, making it suitable for processing long documents.
@@ -175,7 +175,7 @@ However, it is a closed-source, proprietary model. While it performs well, some 
 ## 5. Cohere Embed v4
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1945fa97/68dcb29f6c29eef818bc0963_cohere-embed-v4.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1945fa97/68dcb29f6c29eef818bc0963_cohere-embed-v4.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [Cohere Embed v4](https://cohere.com/blog/embed-4) via Oracle Cloud’s Generative AI service is a multimodal embedding model producing 1536-dimensional vectors. It can embed text or single images via Base64 input. Text inputs up to 128K tokens per call are allowed via the API.
@@ -197,7 +197,7 @@ As a proprietary model, it lacks the transparency and control of open-source alt
 ## 6. BAAI BGE-M3
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/109107ec/68dcb2b1202476f1a107beec_baai-bge-m3.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/109107ec/68dcb2b1202476f1a107beec_baai-bge-m3.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [The Beijing Academy of AI’s BGE-M3](https://huggingface.co/BAAI/bge-m3) is an open-source multitask embedding model (Apache 2.0) with a 1024-d output. It’s remarkable for multi-functionality: it supports dense, multi-vector, and sparse retrieval in one model.
@@ -219,7 +219,7 @@ The main drawback is that leveraging its full potential for hybrid search requir
 ## 7. Alibaba Qwen3-Embedding
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d48f5a2f/68dcb2cb112ba84b619e5136_alibaba-qwen3-embedding.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d48f5a2f/68dcb2cb112ba84b619e5136_alibaba-qwen3-embedding.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [Alibaba’s Qwen3-Embedding models](https://github.com/QwenLM/Qwen3-Embedding) (0.6B, 4B, 8B sizes) are proprietary text embedding and reranking models built on the Qwen3 LLM family. They all support 100+ languages (including programming languages) and long contexts (32K tokens).
@@ -241,7 +241,7 @@ However, the models are relatively new, so the surrounding ecosystem of tools an
 ## 8. ModernBERT-Embed
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c30f7a27/68dcb2e7c921399353922b4f_modernbert-embed.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c30f7a27/68dcb2e7c921399353922b4f_modernbert-embed.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [ModernBERT-Embed](https://huggingface.co/nomic-ai/modernbert-embed-base) is an open-source embedding model (Apache-2.0) from Nomic AI, derived from the ModernBERT language model. It produces 768-dimensional vectors by default, but supports Matryoshka truncation to 256-d. ModernBERT was trained on diverse English data, and this embedding variant brings those gains to retrieval.
@@ -263,7 +263,7 @@ Its main limitation is its primary focus on English; a separate model, `mmBERT`,
 ## 9. Snowflake Arctic-Embed (L and M variants)
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/71e75ca5/68dcb300403be68d877fb45e_snowflake-arctic-embed.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/71e75ca5/68dcb300403be68d877fb45e_snowflake-arctic-embed.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [Snowflake’s Arctic-Embed suite](https://www.snowflake.com/en/engineering-blog/snowflake-arctic-embed-2-multilingual/) (v1.5 medium and v2.0 large) is Apache-2.0 licensed, multilingual embedding models tuned for high retrieval quality. The L v2.0 model has 1024-d vectors (303M parameters) and supports 74 languages.
@@ -293,7 +293,7 @@ The entire workflow can be defined as a reproducible ZenML pipeline, ensuring th
 <ol><li><a href="https://docs.zenml.io/user-guides/llmops-guide/finetuning-embeddings/synthetic-data-generation">Synthetic Data Generation</a>: The pipeline begins with a step that uses a tool like <code>Distilabel</code> to automatically generate high-quality question-and-answer pairs from your raw documents. This is a crucial step for creating the training data needed for fine-tuning.</li><li><a href="https://www.zenml.io/integrations/argilla">Data Curation</a> and <a href="https://docs.zenml.io/stacks/stack-components/annotators">Annotation</a>: The synthetically generated data is then pushed to an annotation tool like <code>Argilla</code>. Here, human reviewers can inspect, clean, and refine the data to ensure its quality. ZenML's built-in annotator integration allows the pipeline to seamlessly pull the curated dataset back for the next stage.</li><li><a href="https://docs.zenml.io/user-guides/llmops-guide/finetuning-embeddings">Model Fine-Tuning</a>: A dedicated training step loads the cleaned data and fine-tunes your chosen open-source embedding model. This step can be configured to run on specialized hardware, such as GPUs, to accelerate the training process.</li><li><a href="https://docs.zenml.io/user-guides/llmops-guide/evaluation">Evaluation</a> and Versioning: After training, an evaluation step compares the performance of the new fine-tuned model against the original base model on a held-out test set. The results, along with the new model, the data it was trained on, and the pipeline that produced it, are all versioned and logged in ZenML.</li></ol>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/139fd9ed/68dcb3468b462463d46a846d_zenml-model-control-plane.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/139fd9ed/68dcb3468b462463d46a846d_zenml-model-control-plane.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 This entire process is managed and made observable through ZenML's core features. The [Model Control Plane](https://www.zenml.io/cloud-features/ml-models-control-plane) provides a unified dashboard that acts as a single source of truth, linking every model version to the exact data, code, and pipeline run that created it. This delivers complete lineage and governance for your [RAG system](https://www.zenml.io/blog/building-and-optimizing-rag-pipelines-data-preprocessing-embeddings-and-evaluation-with-zenml).

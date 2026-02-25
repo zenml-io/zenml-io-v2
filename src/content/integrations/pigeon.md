@@ -12,17 +12,17 @@ webflow:
   createdOn: "2024-05-29T11:22:32.415Z"
 integrationType: "data-annotator"
 logo:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7bb9fa5c/66d867bc92fc1deb5ec3e4b8_pigeon.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7bb9fa5c/66d867bc92fc1deb5ec3e4b8_pigeon.png"
 shortDescription: "Streamline Data Annotation in Jupyter Notebooks with Pigeon and ZenML"
 docsUrl: "https://docs.zenml.io/stack-components/annotators/pigeon"
 githubUrl: "https://github.com/agermanidis/pigeon"
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/163e5654/66e747284698690459556b8c_pigeon_integration.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/163e5654/66e747284698690459556b8c_pigeon_integration.png"
 seo:
   title: "Integrate Pigeon with ZenML - Data Annotator Integrations"
   description: "Streamline Data Annotation in Jupyter Notebooks with Pigeon and ZenML"
   canonical: "https://www.zenml.io/integrations/pigeon"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/163e5654/66e747284698690459556b8c_pigeon_integration.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/163e5654/66e747284698690459556b8c_pigeon_integration.png"
   ogTitle: "Integrate Pigeon with ZenML - Data Annotator Integrations"
   ogDescription: "Streamline Data Annotation in Jupyter Notebooks with Pigeon and ZenML"
 overviewTitle: "Streamline Data Annotation in Jupyter Notebooks with Pigeon and ZenML"

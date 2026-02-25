@@ -19,12 +19,12 @@ tags:
 date: "2023-05-26T00:00:00.000Z"
 readingTime: 7 Mins Read
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/efbcf8d2/652cf79329f6f7d9d2435c9b_update.jpg"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/efbcf8d2/652cf79329f6f7d9d2435c9b_update.jpg"
 seo:
   title: "Unleashing More Power and Flexibility with ZenML's New Pipeline and Step Syntax - ZenML Blog"
   description: "The 0.40.0 release introduces a completely reworked interface for developing your ZenML steps and pipelines. It makes working with these components much more natural, intuitive, and enjoyable."
   canonical: "https://www.zenml.io/blog/unleashing-more-power-and-flexibility-with-zenmls-new-pipeline-and-step-syntax"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/531b0906/652cf79329f6f7d9d2435c9b_update.jpg"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/531b0906/652cf79329f6f7d9d2435c9b_update.jpg"
   ogTitle: "Unleashing More Power and Flexibility with ZenML's New Pipeline and Step Syntax - ZenML Blog"
   ogDescription: "The 0.40.0 release introduces a completely reworked interface for developing your ZenML steps and pipelines. It makes working with these components much more natural, intuitive, and enjoyable."
 ---

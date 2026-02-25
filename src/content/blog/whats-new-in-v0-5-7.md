@@ -17,7 +17,7 @@ tags:
 date: "2022-01-17T00:00:00.000Z"
 readingTime: 3 Mins Read
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3140f3e2/65315e8de292fecbae779cfb_yoksel-zok-H9Un6az4rno-unsplash.jpg"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3140f3e2/65315e8de292fecbae779cfb_yoksel-zok-H9Un6az4rno-unsplash.jpg"
 ---
 
 **Last updated:** November 3, 2022.
@@ -31,7 +31,7 @@ There are a bunch of other smaller changes, including preventing Kubeflow Pipeli
 [You voted](https://github.com/zenml-io/zenml/discussions/115), we integrated! This new addition of [MLFlow Tracking](https://www.mlflow.org/docs/latest/tracking.html) as part of ZenML’s integrations means that you can track your training runs using MLFlow. This gives you a handy web UI that you can use to log and query your experiments. ZenML is tracking all of your parameters and metrics already, but you might prefer to visualize those changes in the MLFlow web UI.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/4bbb0c23/653004d4eb404487bba19253_mlflow-screenshot.png" alt="Tracking machine learning training runs with MLFlow" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/4bbb0c23/653004d4eb404487bba19253_mlflow-screenshot.png" alt="Tracking machine learning training runs with MLFlow" />
 </figure>
 
 We’ve [written an example](https://docs.zenml.io/stacks-and-components/component-guide/experiment-trackers/mlflow) that showcases the integration that you can check out by using the zenml example pull mlflow CLI command. The README file offers full instructions for how to set this up manually, but if you just want to try out the UI and let ZenML handle the local setup for you, just type zenml example run mlflow.
@@ -43,7 +43,7 @@ Watch this space for more MLFlow goodness coming your way!
 [Evidently](https://github.com/evidentlyai/evidently) is an open-source tool for detecting drift among your data inputs. Machine learning pipelines are built on top of those data inputs, so it is worth checking for drift if you have a model that was trained on a certain distribution of data.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/fdd41450/65315e94a573237c2d5547b9_evidently-screenshot.png" alt="Detecting and visualizing data drift with Evidently" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/fdd41450/65315e94a573237c2d5547b9_evidently-screenshot.png" alt="Detecting and visualizing data drift with Evidently" />
 </figure>
 
 The ZenML integration with Evidently implements this functionality in the form of several standardized steps. You select which of the profile sections you want to use in your step by passing a string into the EvidentlyProfileConfig. Possible options supported by Evidently are:

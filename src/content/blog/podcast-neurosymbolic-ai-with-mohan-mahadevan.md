@@ -20,12 +20,12 @@ tags:
 date: "2022-01-27T00:00:00.000Z"
 readingTime: 1 Min Read
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ed8b286c/65311623812635d515c3d586_mohan.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ed8b286c/65311623812635d515c3d586_mohan.png"
 seo:
   title: "Podcast: Neurosymbolic AI with Mohan Mahadevan - ZenML Blog"
   description: "Mohan and Alex discuss neurosymbolic AI and the implications of a shift towards that as a core paradigm for production AI systems. In particular, we discuss the practical consequences of such a shift, both in terms of team composition as well as infrastructure requirements."
   canonical: "https://www.zenml.io/blog/podcast-neurosymbolic-ai-with-mohan-mahadevan"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2851841d/65311623812635d515c3d586_mohan.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2851841d/65311623812635d515c3d586_mohan.png"
   ogTitle: "Podcast: Neurosymbolic AI with Mohan Mahadevan - ZenML Blog"
   ogDescription: "Mohan and Alex discuss neurosymbolic AI and the implications of a shift towards that as a core paradigm for production AI systems. In particular, we discuss the practical consequences of such a shift, both in terms of team composition as well as infrastructure requirements."
 ---

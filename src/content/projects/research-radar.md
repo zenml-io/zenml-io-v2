@@ -14,7 +14,7 @@ description: "End-to-end pipeline that automates research paper discovery and cl
 githubUrl: "https://github.com/zenml-io/zenml-projects/tree/main/research-radar"
 mainImageLink: "https://public-flavor-logos.s3.eu-central-1.amazonaws.com/projects/6.jpg"
 previewImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7ed9afac/67e0ee92f50db58a42ff5520_training_pipeline.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7ed9afac/67e0ee92f50db58a42ff5520_training_pipeline.png"
 tags:
   - "llmops"
   - "modernbert"
@@ -36,7 +36,7 @@ seo:
   title: "Research Radar"
   description: "End-to-end pipeline that automates research paper discovery and classification for specialized research domains."
   canonical: "https://www.zenml.io/projects/research-radar"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7ed9afac/67e0ee92f50db58a42ff5520_training_pipeline.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7ed9afac/67e0ee92f50db58a42ff5520_training_pipeline.png"
   ogTitle: "Research Radar"
   ogDescription: "End-to-end pipeline that automates research paper discovery and classification for specialized research domains."
 ---

@@ -17,7 +17,7 @@ tags:
 date: "2022-01-26T00:00:00.000Z"
 readingTime: 3 Mins Read
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b4ab48c6/65315f0d6116d9eb5fc2e60f_rusty-watson-4Kf97smL2eY-unsplash.jpg"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b4ab48c6/65315f0d6116d9eb5fc2e60f_rusty-watson-4Kf97smL2eY-unsplash.jpg"
 ---
 
 **Last updated:** November 3, 2022.
@@ -33,7 +33,7 @@ Smaller changes that you’ll notice include extensive documentation additions, 
 ZenML integrates seamlessly with Whylogs and [WhyLabs](https://whylabs.ai/). This example shows how easy it is to enhance steps in an existing ML pipeline with Whylogs profiling features. Changes to the user code are minimal while ZenML takes care of all aspects related to Whylogs session initialization, profile serialization, versioning and persistence and even uploading generated profiles to [Whylabs](https://whylabs.ai/).
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5a5e9ae6/65315f14ad085808c86ccb7e_whylogs-visualizer.png" alt="Example of the visualizations you can make from Whylogs profiles" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5a5e9ae6/65315f14ad085808c86ccb7e_whylogs-visualizer.png" alt="Example of the visualizations you can make from Whylogs profiles" />
 </figure>
 
 With our WhylogsVisualizer, as described in [the associated example notes](https://docs.zenml.io/stacks-and-components/component-guide/data-validators/whylogs), you can visualize Whylogs profiles generated as part of a pipeline.

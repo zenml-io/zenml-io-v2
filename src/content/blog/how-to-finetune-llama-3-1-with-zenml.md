@@ -24,12 +24,12 @@ tags:
 date: "2024-07-24T00:00:00.000Z"
 readingTime: 8 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8c7c40c4/6981d352ce4b26d085d7040b_6981d2b442a9002981dd6ace_cover-blog.avif"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8c7c40c4/6981d352ce4b26d085d7040b_6981d2b442a9002981dd6ace_cover-blog.avif"
 seo:
   title: "How to Finetune Llama 3.1 with ZenML - ZenML Blog"
   description: "Master cloud-based LLM finetuning: Set up infrastructure, run pipelines, and manage experiments with ZenML's Model Control Plane for Meta's latest Llama model."
   canonical: "https://www.zenml.io/blog/how-to-finetune-llama-3-1-with-zenml"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8c7c40c4/6981d352ce4b26d085d7040b_6981d2b442a9002981dd6ace_cover-blog.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8c7c40c4/6981d352ce4b26d085d7040b_6981d2b442a9002981dd6ace_cover-blog.avif"
   ogTitle: "How to Finetune Llama 3.1 with ZenML - ZenML Blog"
   ogDescription: "Master cloud-based LLM finetuning: Set up infrastructure, run pipelines, and manage experiments with ZenML's Model Control Plane for Meta's latest Llama model."
 ---
@@ -37,7 +37,7 @@ seo:
 Meta released their [Llama 3.1 series of models](https://huggingface.co/collections/meta-llama/llama-31-669fc079a0c406a149a5738f) yesterday. This included some mammoth versions (including the GPT-4-beating [450B-parameter monster](https://huggingface.co/meta-llama/Meta-Llama-3.1-405B)) as well as the more [user-friendly 8B parameter version](https://huggingface.co/meta-llama/Meta-Llama-3.1-8B) that we’ll be working with. The 8B base model is an ideal size for a business use case where you need a capable but not too unwieldy model. If we look at the evaluations from [the technical materials for the 8B model](https://ai.meta.com/blog/meta-llama-3-1/) we can see that the new model are at least performing in the same arena, if not beating some of the capable competitors outright:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/136e4ae2/66c48ff68be405c41881449d_66a207658c70dc07dd8d8d6d_Llama_203.1_20Finetune.png" alt="Chart from the Llama 3.1 launch showing its performance alongside Gemma 9B and Mistral 7B." />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/136e4ae2/66c48ff68be405c41881449d_66a207658c70dc07dd8d8d6d_Llama_203.1_20Finetune.png" alt="Chart from the Llama 3.1 launch showing its performance alongside Gemma 9B and Mistral 7B." />
 </figure>
 
 There are lots of places where it might make sense to finetune your own open-source or open-weights model:
@@ -94,7 +94,7 @@ zenml stack deploy -n llama-starter -p gcp --set
 This will guide you through a process in which you deploy the infrastructure within GCP.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/fc157092/66c48ff68be405c4188144b5_66a2079e063e15d1458f0af1_Finetune_20Llama_203.1.png" alt="Screenshot of the terminal when setting up a stack with one-click deployment. We use GCP to set up a basic MLOps stack." />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/fc157092/66c48ff68be405c4188144b5_66a2079e063e15d1458f0af1_Finetune_20Llama_203.1.png" alt="Screenshot of the terminal when setting up a stack with one-click deployment. We use GCP to set up a basic MLOps stack." />
 </figure>
 
 > 💡 PRO TIP: When selecting the region in which you want this to be deployed, consider choosing `us-central1` since this has (or at least seems to have!) a greater availability of A100 machines and so the step is unlikely to fail on account of unavailable resources
@@ -133,7 +133,7 @@ python run.py --config llama3-1_finetune_remote.yaml
 <ul><li><code>prepare_data</code> - a local data preparation step which downloads the dataset and carries out some preprocessing</li><li><code>evaluate_base</code> - (runs on A100) - a baseline evaluation of the raw model using <a href="https://huggingface.co/spaces/evaluate-metric/rouge">Rouge metrics</a></li><li><code>finetune</code> - (runs on A100) - finetuning the model using the dataset</li><li><code>evaluate_finetuned</code> - (runs on A100) - evaluating the new finetuned model we just created using the same Rouge metrics</li><li><code>promote</code> - checks which of the two models performed best. If the finetuned model performed better, then we <a href="https://docs.zenml.io/how-to/use-the-model-control-plane/promote-a-model">promote the model to **Staging</a>.**</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/0d4287f3/66c48ff58be405c4188142c3_66a207c98c70dc07dd8dc57d_Llama_203.1_20Finetune_20_1_.png" alt="Screenshot of the DAG (produced by the ZenML dashboard) which finetunes the Llama 3.1 model." />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0d4287f3/66c48ff58be405c4188142c3_66a207c98c70dc07dd8dc57d_Llama_203.1_20Finetune_20_1_.png" alt="Screenshot of the DAG (produced by the ZenML dashboard) which finetunes the Llama 3.1 model." />
 </figure>
 
 If you’re running using the A100 hardware that we set up above, this pipeline should take somewhere between 45 minutes to an hour to run through. Some regions will have a smaller supply of GPU-powered machines so your steps might fail and retry.
@@ -145,7 +145,7 @@ Our finetuned model lives in the artifact store now and we can now inspect some 
 You can inspect the pipeline run and its artifacts first in the pipeline overview:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7f877baf/66c48ff58be405c4188142e6_66a207f9aa92e7f94a7a1970_Llama_203.1_20Finetune_20_2_.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7f877baf/66c48ff58be405c4188142e6_66a207f9aa92e7f94a7a1970_Llama_203.1_20Finetune_20_2_.png" alt="__wf_reserved_inherit" />
 </figure>
 
 Useful metadata about the run is displayed on the right panel and by clicking the ‘Configuration’ tab you’ll see all the parameters used when you ran the pipeline. (These are values set by the YAML config file as well as in the pipeline code itself.
@@ -153,13 +153,13 @@ Useful metadata about the run is displayed on the right panel and by clicking th
 Clicking on an individual step (like here for the `finetune` step) will allow you to inspect the runtime parameters for that particular piece of the pipeline:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f370c0b9/66c48ff58be405c4188142e9_66a20a499886bc977618650e_Finetune_20Llama_203.1_20_1_.png" alt="A partial screenshot of the ZenML Dashboard showing parameters passed in for a particular finetuning step." />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f370c0b9/66c48ff58be405c4188142e9_66a20a499886bc977618650e_Finetune_20Llama_203.1_20_1_.png" alt="A partial screenshot of the ZenML Dashboard showing parameters passed in for a particular finetuning step." />
 </figure>
 
 Once you’ve done a few experiments, the place to go for a global overview of your experiments and artifacts is the Model Control Plane. Click the ‘Models’ tab on the left side of the Dashboard and you’ll see something like this (though yours will likely have just one model in here!):
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9d112c2a/66c48ff48be405c4188142bc_66a20aa33b827e07b11af74f_Finetune_20Llama_203.1_20_2_.png" alt="Screenshot of the Model Control Plane on the ZenML Dashboard. This gives you a global overview of the experiments and iterations of work you’ve carried out on your models." />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9d112c2a/66c48ff48be405c4188142bc_66a20aa33b827e07b11af74f_Finetune_20Llama_203.1_20_2_.png" alt="Screenshot of the Model Control Plane on the ZenML Dashboard. This gives you a global overview of the experiments and iterations of work you’ve carried out on your models." />
 </figure>
 
 Note that some of these model versions have been promoted to `Production` and `Staging` stages, which is a way of isolating and highlighting particular statuses of your work product. If you were paying attention above, you’ll notice that the model you finetuned actually was promoted to `Staging` already for you (though you can do it manually in the Dashboard, too). The final step of the pipeline checks whether the finetuned version performs better than the base model (according to the metrics we evaluate) and then if so, we promote it to the next stage. This is a very common pattern in production machine learning and works out of the box with ZenML.
@@ -167,7 +167,7 @@ Note that some of these model versions have been promoted to `Production` and `S
 From this point you can click through to a specific version (`300_steps` for example) and then inspect the artifacts, models, deployments or even metadata surrounding that particular iteration. You can also see all the pipeline runs associated with that particular experiment that you were working on and it’s a way to make sense of all the complexity of your modelling work.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/553be03d/66c48ff48be405c4188142b9_66a20ac537bee3ab907dc3ba_Finetune_20Llama_203.1_20_3_.png" alt="A screenshot of the Model Control Plane overview of a single model version on the ZenML Dashboard. Specifically this shows the metadata tab for a particular model version where you can inspect metrics like the eval scores or even the LLM system prompt." />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/553be03d/66c48ff48be405c4188142b9_66a20ac537bee3ab907dc3ba_Finetune_20Llama_203.1_20_3_.png" alt="A screenshot of the Model Control Plane overview of a single model version on the ZenML Dashboard. Specifically this shows the metadata tab for a particular model version where you can inspect metrics like the eval scores or even the LLM system prompt." />
 </figure>
 
 And of course, your model artifacts are all available to any downstream use that you might have via the API or Python SDK.

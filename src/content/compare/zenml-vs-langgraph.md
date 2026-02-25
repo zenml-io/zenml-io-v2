@@ -12,7 +12,7 @@ webflow:
   createdOn: "2026-02-12T18:52:45.568Z"
 toolName: "LangGraph"
 toolIcon:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ba688cf2/6996dabbaed2c6e3a275e641_LangGraph_icon.avif"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ba688cf2/6996dabbaed2c6e3a275e641_LangGraph_icon.avif"
 category: "genai-frameworks"
 integrationType: "agents"
 advantages:
@@ -26,12 +26,12 @@ ctaHeadline: "Ready to run LangGraph agents with production-grade lifecycle cont
 learnMoreUrl: "https://docs.zenml.io/user-guides/production-guide"
 seoDescription: "ZenML is an open-source alternative layer to productionize LangGraph agents with reproducible pipelines, artifacts, and governance."
 openGraphImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f44a2f53/6996dac457a1b300d8e4a120_compare-LangGraph.avif"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f44a2f53/6996dac457a1b300d8e4a120_compare-LangGraph.avif"
 seo:
   title: "ZenML vs LangGraph - From agent graphs to governed AI pipelines"
   description: "ZenML is an open-source alternative layer to productionize LangGraph agents with reproducible pipelines, artifacts, and governance."
   canonical: "https://www.zenml.io/compare/zenml-vs-langgraph"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f44a2f53/6996dac457a1b300d8e4a120_compare-LangGraph.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f44a2f53/6996dac457a1b300d8e4a120_compare-LangGraph.avif"
   ogTitle: "ZenML vs LangGraph - From agent graphs to governed AI pipelines"
   ogDescription: "ZenML is an open-source alternative layer to productionize LangGraph agents with reproducible pipelines, artifacts, and governance."
 ---

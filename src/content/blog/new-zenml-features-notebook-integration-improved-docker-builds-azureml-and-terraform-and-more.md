@@ -20,12 +20,12 @@ tags:
 date: "2024-08-09T00:00:00.000Z"
 readingTime: 3 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6b5845df/66b60f9cbf5d65778d831660_image-2.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6b5845df/66b60f9cbf5d65778d831660_image-2.png"
 seo:
   title: "New Features: Notebook Integration, Improved Docker builds, AzureML and Terraform and More! - ZenML Blog"
   description: "ZenML's latest release 0.64.0 streamlines MLOps workflows with notebook integration for remote pipelines, optimized Docker builds, AzureML orchestrator support, and Terraform modules for cloud stack provisioning. These updates aim to speed up development, ease cloud deployments, and improve efficiency for data science teams."
   canonical: "https://www.zenml.io/blog/new-zenml-features-notebook-integration-improved-docker-builds-azureml-and-terraform-and-more"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7518aed8/66b60f9cbf5d65778d831660_image-2.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7518aed8/66b60f9cbf5d65778d831660_image-2.png"
   ogTitle: "New Features: Notebook Integration, Improved Docker builds, AzureML and Terraform and More! - ZenML Blog"
   ogDescription: "ZenML's latest release 0.64.0 streamlines MLOps workflows with notebook integration for remote pipelines, optimized Docker builds, AzureML orchestrator support, and Terraform modules for cloud stack provisioning. These updates aim to speed up development, ease cloud deployments, and improve efficiency for data science teams."
 ---
@@ -57,7 +57,7 @@ We're thrilled to announce the release of new Terraform modules on the Hashicorp
 <ul><li>Automated infrastructure setup for ZenML stack deployment</li><li>Streamlined registration of configurations to the ZenML server</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/312b9016/66b610d9b8f45969a09f7c1a_66b610bd95e16fb50b966633_zenml_terraform.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/312b9016/66b610d9b8f45969a09f7c1a_66b610bd95e16fb50b966633_zenml_terraform.png" alt="__wf_reserved_inherit" />
 </figure>
 
 For an in-depth look at how these Terraform modules can revolutionize your MLOps infrastructure, check out our recent blog post: ["Infrastructure as Code (IaC) for MLOps with Terraform & ZenML"](https://www.zenml.io/blog/mlops-terraform-zenml).

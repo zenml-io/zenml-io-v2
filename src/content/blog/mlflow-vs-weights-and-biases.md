@@ -21,12 +21,12 @@ tags:
 date: "2025-05-18T00:00:00.000Z"
 readingTime: 15 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/33f2ba36/6981d362e92aa039b696acf7_6981d2b4cfebcbbff9868dc8_mlflow_vs_w_26b_vs_zenml.avif"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/33f2ba36/6981d362e92aa039b696acf7_6981d2b4cfebcbbff9868dc8_mlflow_vs_w_26b_vs_zenml.avif"
 seo:
   title: "MLflow vs Weights & Biases vs ZenML: What’s the Difference? - ZenML Blog"
   description: "In this MLflow vs Weights & Biases vs ZenML article, we explain the difference between the three platforms and educate you about using them in tandem too."
   canonical: "https://www.zenml.io/blog/mlflow-vs-weights-and-biases"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/33f2ba36/6981d362e92aa039b696acf7_6981d2b4cfebcbbff9868dc8_mlflow_vs_w_26b_vs_zenml.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/33f2ba36/6981d362e92aa039b696acf7_6981d2b4cfebcbbff9868dc8_mlflow_vs_w_26b_vs_zenml.avif"
   ogTitle: "MLflow vs Weights & Biases vs ZenML: What’s the Difference? - ZenML Blog"
   ogDescription: "In this MLflow vs Weights & Biases vs ZenML article, we explain the difference between the three platforms and educate you about using them in tandem too."
 ---
@@ -73,7 +73,7 @@ MLflow’s strength lies in its simplicity and language-agnostic design – it w
 It also supports auto-logging for popular libraries like TensorFlow and PyTorch, automatically capturing metrics and parameters during the model training process. This lowers the manual effort required to track experiments.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/01f61c61/682971b1292840b5a73012f4_setting_up_a_workflow_tracking_environment_in_mlflow.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/01f61c61/682971b1292840b5a73012f4_setting_up_a_workflow_tracking_environment_in_mlflow.png" alt="__wf_reserved_inherit" />
   <figcaption>Setting up a workflow tracking environment in MLflow</figcaption>
 </figure>
 
@@ -86,7 +86,7 @@ W&B’s experiment tracking automatically records nearly everything needed to re
 A major benefit of W&B is that it’s hosted: there’s no need to set up your own server, and you get a web UI without any installation. This makes it extremely convenient for you and your team to start tracking experiments in minutes.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d0d2738e/68281d6d5389f28f9b3c12af_wandb_experiment_tracking.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d0d2738e/68281d6d5389f28f9b3c12af_wandb_experiment_tracking.png" alt="__wf_reserved_inherit" />
   <figcaption>Experiment tracking in Weights &amp; Biases</figcaption>
 </figure>
 
@@ -103,7 +103,7 @@ This gives you the benefits of MLflow tracking combined with ZenML’s pipeline 
 📚 Read more about how ZenML seamlessly tracks and visualizes ZenML pipeline experiments with MLflow: [ZenML + MLflow integration](https://www.zenml.io/integrations/mlflow).
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ee012717/682971f2010ce568877c2a03_how_zenml_experiment_trackers_fit_into_the_overall_story_of_a_remote_stack.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ee012717/682971f2010ce568877c2a03_how_zenml_experiment_trackers_fit_into_the_overall_story_of_a_remote_stack.png" alt="__wf_reserved_inherit" />
   <figcaption>Model architecture diagram showing how ZenML experiment trackers fit into the overall story of a remote stack</figcaption>
 </figure>
 
@@ -183,7 +183,7 @@ On top of artifacts, W&B provides a Model Registry UI, which builds on artifact 
 #### ZenML
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b44d7eb8/6829724115ef64be74d02a8e_zenml_model_registry.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b44d7eb8/6829724115ef64be74d02a8e_zenml_model_registry.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML model registry</figcaption>
 </figure>
 
@@ -234,7 +234,7 @@ Another feature is W&B Launch, which helps deploy training jobs to different env
 #### ZenML
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2c97c15a/6829726f00d93f05c1569ccb_zenml_pipeline_orchestration.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2c97c15a/6829726f00d93f05c1569ccb_zenml_pipeline_orchestration.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ZenML’s core purpose is pipeline orchestration with ML-specific conveniences. It takes a [pipeline-centric approach](https://www.zenml.io/blog/why-ml-should-be-written-as-pipelines-from-the-get-go) to MLOps: you define steps as Python functions or classes and compose them into a pipeline, then ZenML handles running those steps in the correct order on the execution backend of your choice.
@@ -284,7 +284,7 @@ Collaboration in MLflow’s open-source offering is mostly achieved by sharing t
 Another aspect is permissions and sharing. MLflow (open source) doesn’t have user accounts or authentication features; it’s usually deployed within a secure environment or with a simple authentication proxy if needed. So everyone with access to the server sees the same projects and experiments.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/284cedb2/6829728f96b71bb55d4fb4f0_mlflow_has_limited_permissions_and_sharing_features.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/284cedb2/6829728f96b71bb55d4fb4f0_mlflow_has_limited_permissions_and_sharing_features.png" alt="__wf_reserved_inherit" />
   <figcaption>MLflow has limited permissions and sharing features</figcaption>
 </figure>
 
@@ -303,7 +303,7 @@ W&B also offers alerts and notifications, which help when collaborating – for 
 From a visualization perspective, W&B provides powerful tools: custom charts, parallel coordinates plots for hyperparameters, embedding projector for viewing high-dimensional data, confusion matrices, and more.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3905f13e/682972bb4650440bc7048e93_visualization_and_collaboration_feature_of_weights___biases.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3905f13e/682972bb4650440bc7048e93_visualization_and_collaboration_feature_of_weights___biases.png" alt="__wf_reserved_inherit" />
   <figcaption>Visualization and collaboration feature of Weights &amp; Biases</figcaption>
 </figure>
 
@@ -324,7 +324,7 @@ Teams can implement sophisticated access patterns like Organization Admins overs
 The system supports resource ownership models, cross-workspace sharing, and team-based permission management, enabling secure collaboration scenarios from research-to-production handoffs to multi-region development while maintaining compliance and audit trails.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c89780e8/682972d9a2eed4580f96e871_zenml_collaboration_and_visualization_feature.gif" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c89780e8/682972d9a2eed4580f96e871_zenml_collaboration_and_visualization_feature.gif" alt="__wf_reserved_inherit" />
 </figure>
 
 **Bottom line:** W&B leads with shared web projects and deep visual reports. MLflow offers a simple shared server for basic teamwork. ZenML delivers efficient collaboration by standardizing pipelines, letting teams swap in either tracker, and adding artifact visuals that keep research and production aligned.
@@ -334,7 +334,7 @@ The system supports resource ownership models, cross-workspace sharing, and team
 ### MLflow
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b8c24e6f/682972edcffb524e3358a025_mlflow_integrations.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b8c24e6f/682972edcffb524e3358a025_mlflow_integrations.png" alt="__wf_reserved_inherit" />
   <figcaption>MLflow integrations</figcaption>
 </figure>
 
@@ -363,7 +363,7 @@ One notable integration is with Jupyter notebooks – W&B can automatically save
 ### ZenML
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ce3ffe8a/681c8ff1cff78cabbca5d18f_a-flowchart-explaning-how-zenml-integrates-with-multiple-tools-and-platform.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ce3ffe8a/681c8ff1cff78cabbca5d18f_a-flowchart-explaning-how-zenml-integrates-with-multiple-tools-and-platform.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ZenML is all about integrations – it provides a unified interface to over 50 different MLOps tools and frameworks across the pipeline stack.
@@ -381,7 +381,7 @@ Beyond MLflow and W&B, ZenML's integration architecture supports over 50+ tools 
 And many more.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/fdbf7908/681c900f26ebfa5fb5c525d6_zenml-list-of-integrations.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/fdbf7908/681c900f26ebfa5fb5c525d6_zenml-list-of-integrations.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML integrations</figcaption>
 </figure>
 
@@ -396,7 +396,7 @@ Managed MLflow services include:
 <ul><li><a href="https://www.zenml.io/blog/databricks-alternatives"><strong>Databricks</strong></a><strong> MLflow</strong>: Fully integrated MLflow experience within Databricks, with pricing based on Databricks compute units and storage consumption rather than separate MLflow fees.</li><li><strong>AWS SageMaker MLflow</strong>: Managed MLflow tracking server starting at $0.642/hour for ml.t3.medium instances, plus separate charges for artifact storage in S3.</li><li><strong>Azure Machine Learning with MLflow</strong>: Built-in MLflow integration with pricing based on Azure ML compute instances and storage usage.</li><li><strong>Nebius Managed MLflow</strong>: Dedicated MLflow clusters starting at approximately $0.36/hour for 6 vCPUs and 24 GiB RAM configurations.</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9f92ad88/681c904025efe6e1a8dfb657_pricing-for-nebius-managed-mlflow.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9f92ad88/681c904025efe6e1a8dfb657_pricing-for-nebius-managed-mlflow.png" alt="__wf_reserved_inherit" />
   <figcaption>Nebius managed MLflow</figcaption>
 </figure>
 
@@ -409,7 +409,7 @@ W&B offers a free plan designed for the personal development of AI applications 
 The above plans are for cloud-hosted platforms. W&B also offers privately-hosted plans that cost $0 per month for 1 user seat and basic features. To get a more advanced plan, contact W&B for its Advanced Enterprise plan and pricing.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/4e73ed2b/6829735600d93f05c156f2e9_weights___biases_pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/4e73ed2b/6829735600d93f05c156f2e9_weights___biases_pricing.png" alt="__wf_reserved_inherit" />
   <figcaption>Weights &amp; Biases pricing</figcaption>
 </figure>
 
@@ -422,13 +422,13 @@ ZenML has a simple and pretty straightforward pricing compared to MLflow and W&B
 With its Basic paid plan, you get a 14-day free trial.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/50871d08/683153b8ef773b4eef9fd044_zenml-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/50871d08/683153b8ef773b4eef9fd044_zenml-pricing.png" alt="__wf_reserved_inherit" />
 </figure>
 
 The Scale plan is a custom solution that has limits and features depending on your needs. You can [book a demo](/book-your-demo) with us and get all the details in less than 24 hours.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d78eedda/6829738000d93f05c1570f07_custom_solutions_for_organizations_by_zenml.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d78eedda/6829738000d93f05c1570f07_custom_solutions_for_organizations_by_zenml.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ## Which MLOps Platform Is Best For You?
@@ -442,12 +442,12 @@ Choosing among MLflow, Weights & Biases, and ZenML depends on your specific need
 ✅ **Choose ZenML** if you need a *pipeline-centric* MLOps framework that can tie all your tools together and take you from experimentation to production seamlessly.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d883c8cb/6829785696b71bb55d51e691_choice_are_not_mutually_exclusive.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d883c8cb/6829785696b71bb55d51e691_choice_are_not_mutually_exclusive.png" alt="__wf_reserved_inherit" />
 </figure>
 
 So instead of just leveraging any one of them, why not leverage all of them via ZenML? [Book a personalized demo](https://www.zenml.io/book-your-demo) with our (ZenML's) founder and get to know how to use all three platforms in tandem.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/55428de0/684576e834000d9981f3b957_zenml-book-a-demo.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/55428de0/684576e834000d9981f3b957_zenml-book-a-demo.png" alt="__wf_reserved_inherit" />
   <figcaption>Book your personalized demo</figcaption>
 </figure>

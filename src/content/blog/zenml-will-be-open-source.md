@@ -20,12 +20,12 @@ tags:
 date: "2020-11-11T00:00:00.000Z"
 readingTime: 4 Mins Read
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6b4ccfe3/653167894a9348d0d53dece0_svg-image-1__5_.svg"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6b4ccfe3/653167894a9348d0d53dece0_svg-image-1__5_.svg"
 seo:
   title: "ZenML will be open source - ZenML Blog"
   description: "An overview of some of the capabilities that ZenML will unlock for our users."
   canonical: "https://www.zenml.io/blog/zenml-will-be-open-source"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6bd38037/653167894a9348d0d53dece0_svg-image-1__5_.svg"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6bd38037/653167894a9348d0d53dece0_svg-image-1__5_.svg"
   ogTitle: "ZenML will be open source - ZenML Blog"
   ogDescription: "An overview of some of the capabilities that ZenML will unlock for our users."
 ---

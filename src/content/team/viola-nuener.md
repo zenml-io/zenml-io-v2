@@ -12,7 +12,7 @@ webflow:
   createdOn: "2025-03-18T09:18:47.980Z"
 position: "Founder's Associate"
 photo:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7c36e9e6/67d93a585bca5da2c282f411_viola.jpg"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7c36e9e6/67d93a585bca5da2c282f411_viola.jpg"
 email: "viola@zenml.io"
 linkedin: "https://www.linkedin.com/in/viola-nuener"
 order: 3

@@ -12,17 +12,17 @@ webflow:
   createdOn: "2023-10-12T09:13:11.985Z"
 integrationType: "modeling"
 logo:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/91adb6a0/66d8697044edeccaa59362aa_pytorch.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/91adb6a0/66d8697044edeccaa59362aa_pytorch.png"
 shortDescription: "Accelerate your PyTorch model development with ZenML"
 docsUrl: "https://sdkdocs.zenml.io/0.41.0/integration_code_docs/integrations-pytorch/"
 githubUrl: "https://github.com/zenml-io/zenml-projects/tree/main/llm-litgpt-finetuning"
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/bee3469d/66ed566047b3b214b8102483_image__26_.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/bee3469d/66ed566047b3b214b8102483_image__26_.png"
 seo:
   title: "Integrate PyTorch with ZenML - Modeling Integrations"
   description: "Accelerate your PyTorch model development with ZenML"
   canonical: "https://www.zenml.io/integrations/pytorch"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/bee3469d/66ed566047b3b214b8102483_image__26_.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/bee3469d/66ed566047b3b214b8102483_image__26_.png"
   ogTitle: "Integrate PyTorch with ZenML - Modeling Integrations"
   ogDescription: "Accelerate your PyTorch model development with ZenML"
 overviewTitle: "Accelerate your PyTorch model development with ZenML"

@@ -3,7 +3,7 @@ title: "Streamlined ML Workflow Initialization"
 slug: "streamlined-ml-workflow-initialization"
 content: "ZenML guarantees swifter initialization, surpassing orchestrators for prompt, optimized ML workflows."
 image:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b3d35d94/667031351fd1b7332bb478d0_img01.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b3d35d94/667031351fd1b7332bb478d0_img01.png"
 webflow:
   siteId: "64a817a2e7e2208272d1ce30"
   itemId: "6671674d080d2ef20f001ab2"

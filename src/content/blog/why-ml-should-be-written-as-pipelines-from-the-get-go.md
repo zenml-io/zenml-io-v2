@@ -20,12 +20,12 @@ tags:
 date: "2021-03-31T00:00:00.000Z"
 readingTime: 7 Mins Read
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2e030dbd/6531e3a6bc0ec01d9690a008_pipeline-unsplash.jpeg"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2e030dbd/6531e3a6bc0ec01d9690a008_pipeline-unsplash.jpeg"
 seo:
   title: "Why ML should be written as pipelines from the get-go - ZenML Blog"
   description: "Eliminate technical debt with iterative, reproducible pipelines."
   canonical: "https://www.zenml.io/blog/why-ml-should-be-written-as-pipelines-from-the-get-go"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/15727df1/6531e3a6bc0ec01d9690a008_pipeline-unsplash.jpeg"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/15727df1/6531e3a6bc0ec01d9690a008_pipeline-unsplash.jpeg"
   ogTitle: "Why ML should be written as pipelines from the get-go - ZenML Blog"
   ogDescription: "Eliminate technical debt with iterative, reproducible pipelines."
 ---
@@ -37,7 +37,7 @@ Today, Machine Learning powers the top 1% of the most valuable organizations in 
 Going one layer further into how ML propagates through an organization reveals the problem in more depth. The graphic below shows an admittedly simplified representation of a typical setup for machine learning:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/fb1486eb/653176bead82ce598a141d16_1-pipeline-hard-reproduce.png" alt="Why it’s hard to reproduce ML models" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/fb1486eb/653176bead82ce598a141d16_1-pipeline-hard-reproduce.png" alt="Why it’s hard to reproduce ML models" />
 </figure>
 
 *Figure 1: Why it’s hard to reproduce ML models*
@@ -79,7 +79,7 @@ To showcase a more concrete example of my more abstract thoughts above, I’ll u
 [ZenML](https://github.com/zenml-io/zenml) is an exercise in finding the right layer of abstraction for ML. Here, we treat pipelines as first-class citizens. This means that data scientists are exposed to pipelines directly in the framework, but not in the same manner as the data pipelines from the ETL space ([Prefect](https://www.prefect.io/), [Airflow](https://airflow.apache.org/) et al.). Pipelines are treated as experiments — meaning they can be compared and analyzed directly. Only when it is time to flip over to productionalization, can they be converted to classical data pipelines.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/0b920d88/6531e3b17a8b73a355ee5cee_2-right-abstraction-level.png" alt="ZenML abstract pipelines with familiar language to increase ownership of model deployments" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0b920d88/6531e3b17a8b73a355ee5cee_2-right-abstraction-level.png" alt="ZenML abstract pipelines with familiar language to increase ownership of model deployments" />
 </figure>
 
 *Figure 2: ZenML abstract pipelines with familiar language to increase ownership of model deployments.*
@@ -91,7 +91,7 @@ Each pipeline run tracks the metadata, parameters and can be compared to other r
 Additionally, the interfaces exposed for individual steps are mostly set up in a way to be easy to extend in an idempotent, and therefore a distributed, manner. The data scientist can therefore scale-out with different processing backends (like Dataflow/Spark) when they are dealing with larger datasets. All in all, ZenML is trying to get to the following scenario:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/334e17f4/6531e3b1f66cdceef6849c4a_3-zenml-unifies.png" alt="Figure 3: ZenML unifies the ML process." />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/334e17f4/6531e3b1f66cdceef6849c4a_3-zenml-unifies.png" alt="Figure 3: ZenML unifies the ML process." />
 </figure>
 
 *Figure 3: ZenML unifies the ML process.*

@@ -12,7 +12,7 @@ webflow:
   createdOn: "2024-07-12T10:59:48.389Z"
 toolName: "Prefect"
 toolIcon:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3def6ec1/66910ace86fdea23dc97b888_prefect_icon.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3def6ec1/66910ace86fdea23dc97b888_prefect_icon.png"
 category: "orchestrators"
 integrationType: "orchestrator"
 advantages:
@@ -27,12 +27,12 @@ ctaHeadline: "Unlock the Full Potential of Your ML Workflows with ZenML"
 learnMoreUrl: "https://cloud.zenml.io/?utm_source=website&utm_medium=website_hero&utm_campaign=cloud_promotion&utm_content=signup_link"
 seoDescription: "Prefect alternative: ML-centric pipeline orchestration. Streamline workflows with intuitive design, experiment tracking, and MLOps integrations."
 openGraphImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/13a1ff27/66c5fcbc384f1a569f5f0bf6_compare-prefect.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/13a1ff27/66c5fcbc384f1a569f5f0bf6_compare-prefect.png"
 seo:
   title: "ZenML vs Prefect - Elevate Your ML Workflows with ZenML"
   description: "Prefect alternative: ML-centric pipeline orchestration. Streamline workflows with intuitive design, experiment tracking, and MLOps integrations."
   canonical: "https://www.zenml.io/compare/zenml-vs-prefect"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/52e35967/66c5fcbc384f1a569f5f0bf6_compare-prefect.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/52e35967/66c5fcbc384f1a569f5f0bf6_compare-prefect.png"
   ogTitle: "ZenML vs Prefect - Elevate Your ML Workflows with ZenML"
   ogDescription: "Prefect alternative: ML-centric pipeline orchestration. Streamline workflows with intuitive design, experiment tracking, and MLOps integrations."
 ---

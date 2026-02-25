@@ -12,7 +12,7 @@ webflow:
   createdOn: "2026-02-12T18:42:29.640Z"
 toolName: "Azure ML"
 toolIcon:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/acdcb8cd/6996da0b8c7ae17899741092_Azure_ML_icon.avif"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/acdcb8cd/6996da0b8c7ae17899741092_Azure_ML_icon.avif"
 category: "e2e-platforms"
 integrationType: "e2e-platform"
 advantages:
@@ -26,12 +26,12 @@ ctaHeadline: "Ready to Build Pipelines That Aren't Tied to Azure ML?"
 learnMoreUrl: "https://docs.zenml.io/user-guides/production-guide"
 seoDescription: "Looking for an open-source alternative to Azure ML Pipelines? ZenML builds portable ML pipelines across clouds without vendor lock-in."
 openGraphImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ecf9b858/6996da1412413b4c4acb69b4_compare-azure-ML.avif"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ecf9b858/6996da1412413b4c4acb69b4_compare-azure-ML.avif"
 seo:
   title: "ZenML vs Azure ML - Keep Your Pipelines, Drop the Cloud Lock-In"
   description: "Looking for an open-source alternative to Azure ML Pipelines? ZenML builds portable ML pipelines across clouds without vendor lock-in."
   canonical: "https://www.zenml.io/compare/zenml-vs-azure-ml"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ecf9b858/6996da1412413b4c4acb69b4_compare-azure-ML.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ecf9b858/6996da1412413b4c4acb69b4_compare-azure-ML.avif"
   ogTitle: "ZenML vs Azure ML - Keep Your Pipelines, Drop the Cloud Lock-In"
   ogDescription: "Looking for an open-source alternative to Azure ML Pipelines? ZenML builds portable ML pipelines across clouds without vendor lock-in."
 ---

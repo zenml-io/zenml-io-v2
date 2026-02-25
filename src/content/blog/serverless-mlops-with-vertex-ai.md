@@ -20,12 +20,12 @@ tags:
 date: "2022-06-27T00:00:00.000Z"
 readingTime: 11 Mins Read
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3d53096b/653128dd93ba438c4d32e95b_VertexLogo.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3d53096b/653128dd93ba438c4d32e95b_VertexLogo.png"
 seo:
   title: "Serverless MLOps with Vertex AI - ZenML Blog"
   description: "How ZenML lets you have the best of both worlds, serverless managed infrastructure without the vendor lock in."
   canonical: "https://www.zenml.io/blog/serverless-mlops-with-vertex-ai"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a281639e/653128dd93ba438c4d32e95b_VertexLogo.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a281639e/653128dd93ba438c4d32e95b_VertexLogo.png"
   ogTitle: "Serverless MLOps with Vertex AI - ZenML Blog"
   ogDescription: "How ZenML lets you have the best of both worlds, serverless managed infrastructure without the vendor lock in."
 ---
@@ -37,7 +37,7 @@ A serverless architecture allows you to run code without having to directly mana
 However, the advantages are only part of the story. As much as serverless architectures can help you quickly scale, they come with a hidden cost: vendor lock-in. As you build your processes and services around the provider specific APIs and you become more and more dependent on the specific provider with significant costs associated with a potential switch.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/39fe514e/653128fb7f74a7aab1d37835_lockin.jpeg" alt="Lock-In" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/39fe514e/653128fb7f74a7aab1d37835_lockin.jpeg" alt="Lock-In" />
 </figure>
 
 But fret not, ZenML is the perfect abstraction layer that will make it as easy as pie to quickly switch your pipeline orchestration from local to Vertex AI to any of our other Orchestrators.
@@ -148,19 +148,19 @@ To start we will create a new gcp project for the express purpose of having all 
 Click on the project select box
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/22d72fa9/653128fa12fffcb42808e34e_GCP_project0.png" alt="Create Project 1" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/22d72fa9/653128fa12fffcb42808e34e_GCP_project0.png" alt="Create Project 1" />
 </figure>
 
 Create a New Project
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/bd20a958/652fc9098320ec57475de056_gcp-create-project.png" alt="Create Project 2" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/bd20a958/652fc9098320ec57475de056_gcp-create-project.png" alt="Create Project 2" />
 </figure>
 
 and name your project
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ae6add9b/653128f95b4c42da7ca20369_GCP_project2.png" alt="Create Project 3" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ae6add9b/653128f95b4c42da7ca20369_GCP_project2.png" alt="Create Project 3" />
 </figure>
 
 It will take some time for your project to be created. Once it is created you will need to enable billing for the project so that you can set up all required resources.
@@ -176,13 +176,13 @@ This project number can be found on your project dashboard.
 Search cloud storage or use this [link](https://console.cloud.google.com/storage/).
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c51bbefa/653128f8a2cf0880e1ce6644_GCP_Storage0.png" alt="Create Storage 1" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c51bbefa/653128f8a2cf0880e1ce6644_GCP_Storage0.png" alt="Create Storage 1" />
 </figure>
 
 Once the bucket is created, you can find the storage URI as follows.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5b0a1db2/653128f8b814e571605ec1c2_GCP_Storage1.png" alt="Create Storage 2" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5b0a1db2/653128f8b814e571605ec1c2_GCP_Storage1.png" alt="Create Storage 2" />
 </figure>
 
 For the creation of the [ZenML Artifact Store](https://blog.zenml.io/vertex-ai-blog/#zenml-artifact-store) you will need the following data:
@@ -194,13 +194,13 @@ For the creation of the [ZenML Artifact Store](https://blog.zenml.io/vertex-ai-b
 Search container registry or use this [link](https://console.cloud.google.com/marketplace/product/google/containerregistry.googleapis.com).
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/769d6990/653128f912736ea7b1b8cff5_GCP_GCR0.png" alt="Enable Container Registry 0" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/769d6990/653128f912736ea7b1b8cff5_GCP_GCR0.png" alt="Enable Container Registry 0" />
 </figure>
 
 You can find your container registry host (&lt;registry_host>) under settings of your projects’ container registry
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ea15bcb8/653128fc52ed944e062c4117_GCP_GCR1.png" alt="Enable Container Registry 1" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ea15bcb8/653128fc52ed944e062c4117_GCP_GCR1.png" alt="Enable Container Registry 1" />
 </figure>
 
 For the creation of the [ZenML Container Registry](https://blog.zenml.io/vertex-ai-blog/#zenml-container-registry) you will need the following data:
@@ -212,7 +212,7 @@ URI - this is constructed as follows &lt;registry_host>/&lt;gcp_project_name>/&l
 <ul><li>Search secret manager or use this <a href="https://console.cloud.google.com/marketplace/product/google/secretmanager.googleapis.com">link</a></li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/330e369c/653128f94264b7097e76161e_GCP_SM0.png" alt="Enable Secret_Manager 1" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/330e369c/653128f94264b7097e76161e_GCP_SM0.png" alt="Enable Secret_Manager 1" />
 </figure>
 
 You won’t need to do anything else here. The Secret Manager will be uniquely identifiable by the &lt;gcp_project_id> .
@@ -222,7 +222,7 @@ You won’t need to do anything else here. The Secret Manager will be uniquely i
 Search vertex ai or use this [link](https://console.cloud.google.com/vertex-ai).
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/413b939b/653128f8309e6998ec0f1873_GCP_Vertex0.png" alt="Enable Vertex AI 1" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/413b939b/653128f8309e6998ec0f1873_GCP_Vertex0.png" alt="Enable Vertex AI 1" />
 </figure>
 
 Make sure you choose the appropriate region for your location. You will need to remember this location for the [ZenML Orchestrator](https://blog.zenml.io/vertex-ai-blog/#zenml-orchestrator).
@@ -234,31 +234,31 @@ With all the resources set up you will now need to set up a service account with
 Start by searching for IAM in the search bar or use this link: https://console.cloud.google.com/iam-admin. Here you will need to create a new Service Account.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7bf95f9b/653128fb0dd75789d344f2b3_GCP_Service0.png" alt="Enable Service Account 1" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7bf95f9b/653128fb0dd75789d344f2b3_GCP_Service0.png" alt="Enable Service Account 1" />
 </figure>
 
 First off you’ll need to name the service account. Make sure to give it a clear name and description.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5e937782/653128faef2177a17720afaa_GCP_Service1.png" alt="Enable Service Account 2" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5e937782/653128faef2177a17720afaa_GCP_Service1.png" alt="Enable Service Account 2" />
 </figure>
 
 This service account will need to have the roles of: Vertex AI Custom Code Service Agent, Vertex AI Service Agent, Container Registry Service Agent and Secret Manager Admin (for some reason the Secret Manager Secret Accessor role is not enough here).
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/bcd84c40/653128f8bdf253e6ab09ef2f_GCP_Service2.png" alt="Enable Service Account 3" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/bcd84c40/653128f8bdf253e6ab09ef2f_GCP_Service2.png" alt="Enable Service Account 3" />
 </figure>
 
 Finally, you need to make sure your own account will have the right to run-as this service account. It probably also makes sense to give yourself the right to manage this service account to perform changes later on.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/25b8e0fb/653128f901113741c291e186_GCP_Service3.png" alt="Enable Service Account 4" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/25b8e0fb/653128f901113741c291e186_GCP_Service3.png" alt="Enable Service Account 4" />
 </figure>
 
 Finally, you can now find your new service account in the IAM tab. You’ll need the Principal when creating your [ZenML Orchestrator](https://blog.zenml.io/vertex-ai-blog/#zenml-orchestrator).
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f93254d2/653128f91a5749a8955b8d61_GCP_Service4.png" alt="Enable Service Account 4" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f93254d2/653128f91a5749a8955b8d61_GCP_Service4.png" alt="Enable Service Account 4" />
 </figure>
 
 ## Setting up the ZenML Stack
@@ -328,7 +328,7 @@ python run.py
 In the background zenml will use the active stack to run the pipeline using Vertex AI. To do this the orchestrator will build a Docker image that contains all your pipeline code, including its requirements and push it to the container registry. Additionally, a Vertex AI pipeline job is created which contains the information of how the separate steps of the pipeline are related to each other through their inputs and outputs. Once the Docker image is pushed, Vertex AI can now pull the image and use it to run each step of the pipeline in the correct order. You will see a printout in your terminal that will take you into the Vertex AI UI where you’ll be able to observe live, as your pipeline get executed. It should look a little bit like this:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/932d341b/653128f9f3a6d5dfa4169e83_vertex_ai_ui.png" alt="Running Pipeline" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/932d341b/653128f9f3a6d5dfa4169e83_vertex_ai_ui.png" alt="Running Pipeline" />
 </figure>
 
 ## Cleanup
@@ -336,7 +336,7 @@ In the background zenml will use the active stack to run the pipeline using Vert
 Cleanup should be fairly straightforward now, in case you bundled all of these resources into one separate project. Simply navigate to the [Cloud Resource Manager](https://console.cloud.google.com/cloud-resource-manager) and delete your project:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f05d486a/653128fa7213b13e8a7b550e_GCP_Delete0.png" alt="Running Pipeline" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f05d486a/653128fa7213b13e8a7b550e_GCP_Delete0.png" alt="Running Pipeline" />
 </figure>
 
 ## Conclusion

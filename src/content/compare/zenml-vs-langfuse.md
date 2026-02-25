@@ -12,7 +12,7 @@ webflow:
   createdOn: "2026-02-12T18:54:15.136Z"
 toolName: "Langfuse"
 toolIcon:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2367bb34/6996dad3a587ec2f2ab52438_Langfuse_icon.avif"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2367bb34/6996dad3a587ec2f2ab52438_Langfuse_icon.avif"
 category: "llm-observability"
 integrationType: "experiment-tracker"
 advantages:
@@ -26,12 +26,12 @@ ctaHeadline: "Ready to turn Langfuse insights into automated, reproducible AI pi
 learnMoreUrl: "https://docs.zenml.io/user-guides/production-guide"
 seoDescription: "ZenML is an open-source alternative layer to Langfuse: the former (ZenML) helps you orchestrate portable ML/LLM pipelines, while the latter (Langfuse) handles LLM observability. "
 openGraphImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d0ccece9/6996dadef0d9c4207ceb9bbb_compare-Langfuse.avif"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d0ccece9/6996dadef0d9c4207ceb9bbb_compare-Langfuse.avif"
 seo:
   title: "ZenML vs Langfuse - Langfuse for LLM observability. ZenML for shipping AI pipelines."
   description: "ZenML is an open-source alternative layer to Langfuse: the former (ZenML) helps you orchestrate portable ML/LLM pipelines, while the latter (Langfuse) handles LLM observability."
   canonical: "https://www.zenml.io/compare/zenml-vs-langfuse"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d0ccece9/6996dadef0d9c4207ceb9bbb_compare-Langfuse.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d0ccece9/6996dadef0d9c4207ceb9bbb_compare-Langfuse.avif"
   ogTitle: "ZenML vs Langfuse - Langfuse for LLM observability. ZenML for shipping AI pipelines."
   ogDescription: "ZenML is an open-source alternative layer to Langfuse: the former (ZenML) helps you orchestrate portable ML/LLM pipelines, while the latter (Langfuse) handles LLM observability."
 ---

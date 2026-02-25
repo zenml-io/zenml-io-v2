@@ -12,16 +12,16 @@ webflow:
   createdOn: "2024-09-10T11:29:58.289Z"
 integrationType: "orchestrator"
 logo:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6d22d316/672b2c89a8055420705702e2_docker.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6d22d316/672b2c89a8055420705702e2_docker.png"
 shortDescription: "Effortlessly Run ZenML Pipelines in Isolated Docker Containers"
 docsUrl: "https://docs.zenml.io/stack-components/orchestrators/local-docker"
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/11a05ef0/66e02ce6b06f752d507881bc_Screenshot_2024-09-04_at_10.02.06.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/11a05ef0/66e02ce6b06f752d507881bc_Screenshot_2024-09-04_at_10.02.06.png"
 seo:
   title: "Integrate Docker with ZenML - Orchestrator Integrations"
   description: "Effortlessly Run ZenML Pipelines in Isolated Docker Containers"
   canonical: "https://www.zenml.io/integrations/docker"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/11a05ef0/66e02ce6b06f752d507881bc_Screenshot_2024-09-04_at_10.02.06.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/11a05ef0/66e02ce6b06f752d507881bc_Screenshot_2024-09-04_at_10.02.06.png"
   ogTitle: "Integrate Docker with ZenML - Orchestrator Integrations"
   ogDescription: "Effortlessly Run ZenML Pipelines in Isolated Docker Containers"
 overviewTitle: "Effortlessly Run ZenML Pipelines in Isolated Docker Containers"

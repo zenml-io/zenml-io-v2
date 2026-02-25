@@ -12,17 +12,17 @@ webflow:
   createdOn: "2024-05-29T11:47:16.835Z"
 integrationType: "orchestrator"
 logo:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/086f51c7/66d8677d9b340eb855a7ebd8_hyperai.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/086f51c7/66d8677d9b340eb855a7ebd8_hyperai.png"
 shortDescription: "Effortlessly orchestrate your ZenML pipelines on HyperAI's cloud compute platform"
 docsUrl: "https://docs.zenml.io/how-to/training-with-gpus/training-with-gpus"
 githubUrl: "https://docs.zenml.io/stack-components/orchestrators/hyperai"
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1f084b2e/665715bccfd22d44bfc95770_CleanShot_2024-05-29_at_13.46.48.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1f084b2e/665715bccfd22d44bfc95770_CleanShot_2024-05-29_at_13.46.48.png"
 seo:
   title: "Integrate HyperAI with ZenML - Orchestrator Integrations"
   description: "Effortlessly orchestrate your ZenML pipelines on HyperAI's cloud compute platform"
   canonical: "https://www.zenml.io/integrations/hyperai"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1f084b2e/665715bccfd22d44bfc95770_CleanShot_2024-05-29_at_13.46.48.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1f084b2e/665715bccfd22d44bfc95770_CleanShot_2024-05-29_at_13.46.48.png"
   ogTitle: "Integrate HyperAI with ZenML - Orchestrator Integrations"
   ogDescription: "Effortlessly orchestrate your ZenML pipelines on HyperAI's cloud compute platform"
 overviewTitle: "Effortlessly orchestrate your ZenML pipelines on HyperAI's cloud compute platform"

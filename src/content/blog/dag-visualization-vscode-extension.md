@@ -17,12 +17,12 @@ tags:
 date: "2024-08-07T00:00:00.000Z"
 readingTime: 5 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/dd028840/66b0f2033d1cd0682216a778_zenml-vscode-min.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/dd028840/66b0f2033d1cd0682216a778_zenml-vscode-min.png"
 seo:
   title: "Implementing DAG Visualization and Stack Component Registration in the VS Code Extension - ZenML Blog"
   description: "Discover the technical challenges and solutions in developing DAG visualization and stack management for ZenML's VSCode extension."
   canonical: "https://www.zenml.io/blog/dag-visualization-vscode-extension"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a89693b3/66b0f2033d1cd0682216a778_zenml-vscode-min.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a89693b3/66b0f2033d1cd0682216a778_zenml-vscode-min.png"
   ogTitle: "Implementing DAG Visualization and Stack Component Registration in the VS Code Extension - ZenML Blog"
   ogDescription: "Discover the technical challenges and solutions in developing DAG visualization and stack management for ZenML's VSCode extension."
 ---
@@ -39,13 +39,13 @@ zenml alerter register --flavor discord discord_default \
 ``Now, the forms are generated with all necessary fields and interacting with both stacks and components is just a click away.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c13399c8/66b0f27a69066b8335187e07_66b0efeb37fcd2404aa17627_vs01.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c13399c8/66b0f27a69066b8335187e07_66b0efeb37fcd2404aa17627_vs01.png" alt="__wf_reserved_inherit" />
 </figure>
 
 Building on [Marwan's foundation](https://www.zenml.io/blog/zenml-vscode-extension) and initial implementation, I took on the challenge of building these features, focusing on creating aesthetically pleasing and user-friendly interfaces. In this article, I will address some of the more interesting parts of implementing the features. Here you can see the DAG visualizer in action:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/0ab94204/66b0f27a69066b8335187dfa_66b0f005e8da44028febe577_vs02.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0ab94204/66b0f27a69066b8335187dfa_66b0f005e8da44028febe577_vs02.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ## Webviews
@@ -59,13 +59,13 @@ When using webviews, there are several important considerations. First, webviews
 With webviews being sandboxed from the rest of the project, understanding how to communicate between the JavaScript embedded in the webview and the extension itself is crucial. VS Code provides a message queue between the webview and the parent extension, which is the only method to exchange data between the two.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8206682f/66b0f27a69066b8335187dee_66b0f01a63b1cf32df378457_vs-code-extension-flow-min.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8206682f/66b0f27a69066b8335187dee_66b0f01a63b1cf32df378457_vs-code-extension-flow-min.png" alt="__wf_reserved_inherit" />
 </figure>
 
 If we were to render everything inside the webview, the data would need to be sent to it via messages. If context retention was disabled, this process would have to be repeated every time the webview was shown. These limitations led to the decision to pre-render the webviews, ensuring that rendering occurs only once at creation.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/0b226217/66b0f27a69066b8335187dea_66b0f03262f6700d01ff6321_vs-code-flow-min.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0b226217/66b0f27a69066b8335187dea_66b0f03262f6700d01ff6321_vs-code-flow-min.png" alt="__wf_reserved_inherit" />
 </figure>
 
 The rendering flow involves several steps. For each feature, I wrote an action inside a wrapper for the Language Server. The extension would then request this action and build the HTML for the webview, which is subsequently rendered. This approach optimizes performance and ensures a smoother user experience.
@@ -102,7 +102,7 @@ To render the graph, I selected [svg.js](https://svgjs.dev/docs/3.2/) and [svgdo
 Once I was able to render and style the nodes, it became clear that dagrejs’ default edge calculations wouldn't work correctly without modification.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/00a5d664/66b0f27a69066b8335187e1b_66b0f064d9f86bf7ca4b9e1e_vs03.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/00a5d664/66b0f27a69066b8335187e1b_66b0f064d9f86bf7ca4b9e1e_vs03.png" alt="__wf_reserved_inherit" />
 </figure>
 
 As shown in the image, the edges often fail to attach properly to the nodes and instead float in the air. This issue arises because dagrejs calculates node placement based on the maximum possible node size. It generates edge points in the spaces between rows of nodes, connecting them in the shortest possible way. However, since nodes rarely occupy the full allotted space, we end up with these disconnected, hanging edges.
@@ -110,7 +110,7 @@ As shown in the image, the edges often fail to attach properly to the nodes and 
 To address this, I recalculated the endpoints of the edges. I removed the initial and final points from each edge, as these connect directly to the nodes. I then added two new points at each end: one centered on the node and another perpendicular to the connecting point. This adjustment ensures that all edges are orthogonal, with every bend forming a 90-degree angle.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9bfab09c/66b0f27a69066b8335187e0e_66b0f072d3d8292f23a16a6e_vs04.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9bfab09c/66b0f27a69066b8335187e0e_66b0f072d3d8292f23a16a6e_vs04.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Overlapping Edges
@@ -120,7 +120,7 @@ The graph now looks great, but there's one remaining issue: in complex graphs, i
 To solve this, I implemented a feature that highlights all edges originating from a node when you hover over that node with your mouse. This interaction makes it easy to see the connections and understand the relationships between nodes.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5f3d927a/66b0f27a69066b8335187e12_66b0f07e3d1cd0682215acdd_vs05.gif" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5f3d927a/66b0f27a69066b8335187e12_66b0f07e3d1cd0682215acdd_vs05.gif" alt="__wf_reserved_inherit" />
 </figure>
 
 The edge highlighting feature was somewhat tricky to implement because elements within an SVG do not propagate events in the same way as HTML elements; specifically, SVG elements do not bubble events up through the DOM hierarchy. This meant that additional care was needed to ensure that hovering over any part of a node would trigger the desired highlight effect. I had to carefully manage the event listeners and use specific techniques to ensure that the parent node was correctly identified and affected when any of its child elements were hovered over. This meticulous handling was essential to provide a seamless and intuitive user experience.

@@ -21,12 +21,12 @@ tags:
 date: "2022-06-30T00:00:00.000Z"
 readingTime: 1 Min Read
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2d86e957/65310a493a348150f9aa7f40_1561516119854.jpeg"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2d86e957/65310a493a348150f9aa7f40_1561516119854.jpeg"
 seo:
   title: "Podcast: Edge Computer Vision with Karthik Kannan - ZenML Blog"
   description: "I spoke with Karthik Kannan, cofounder and CTO of Envision, a company that builds on top of the Google Glass and using Augmented Reality features of phones to allow visually impaired people to better sense the environment or objects around them."
   canonical: "https://www.zenml.io/blog/podcast-edge-computer-vision-with-karthik-kannan"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1622e7f7/65310a493a348150f9aa7f40_1561516119854.jpeg"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1622e7f7/65310a493a348150f9aa7f40_1561516119854.jpeg"
   ogTitle: "Podcast: Edge Computer Vision with Karthik Kannan - ZenML Blog"
   ogDescription: "I spoke with Karthik Kannan, cofounder and CTO of Envision, a company that builds on top of the Google Glass and using Augmented Reality features of phones to allow visually impaired people to better sense the environment or objects around them."
 ---

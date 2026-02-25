@@ -19,12 +19,12 @@ tags:
 date: "2023-02-10T00:00:00.000Z"
 readingTime: 5 Mins Read
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e6e6b205/652fbf1265e3a9973fd2e0b0_project-thumb.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e6e6b205/652fbf1265e3a9973fd2e0b0_project-thumb.png"
 seo:
   title: "Build ML Models Faster with ZenML Project Templates - ZenML Blog"
   description: "Getting started with your ML project work is easier than ever with Project Templates, a new way to generate scaffolding and a skeleton project structure based on best practices."
   canonical: "https://www.zenml.io/blog/build-ml-models-faster-with-zenml-project-templates"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ab284649/652fbf1265e3a9973fd2e0b0_project-thumb.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ab284649/652fbf1265e3a9973fd2e0b0_project-thumb.png"
   ogTitle: "Build ML Models Faster with ZenML Project Templates - ZenML Blog"
   ogDescription: "Getting started with your ML project work is easier than ever with Project Templates, a new way to generate scaffolding and a skeleton project structure based on best practices."
 ---
@@ -50,7 +50,7 @@ zenml init --template
 You’ll be asked a number of questions about your specific needs for the project, including whether you’d like some sample code illustrating how the template works with a small dataset.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5f975fbc/652fbf01c966b2f46835e0b7_cli-questions.png" alt="CLI questions" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5f975fbc/652fbf01c966b2f46835e0b7_cli-questions.png" alt="CLI questions" />
 </figure>
 
 The tool generates a number of files and explains how you can explore what was generated:
@@ -79,7 +79,7 @@ https://docs.zenml.io/starter-guide/stacks/managing-stacks.
 As it states, the project skeleton structure is actually a functioning, runnable ZenML project that trains a model based on whatever dataset you selected. Simply start the server and execute the run.py file.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/cb32dc26/652fbf0115d81ca9e7179bab_sample-run.png" alt="Template starter project run" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/cb32dc26/652fbf0115d81ca9e7179bab_sample-run.png" alt="Template starter project run" />
 </figure>
 
 Check out the run.py file along with the pipelines and steps modules to see the basic building blocks from which your starter project was created. Once you’re familiar with those, it’s easy to get started with your own work, adapting and building upon the basic code that ZenML Project Templates has helped with.

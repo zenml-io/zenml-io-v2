@@ -12,17 +12,17 @@ webflow:
   createdOn: "2023-10-12T09:13:15.398Z"
 integrationType: "image-builder"
 logo:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/56435a28/66d8683157d8287eda0bbc84_kaniko.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/56435a28/66d8683157d8287eda0bbc84_kaniko.png"
 shortDescription: "Build Container Images Effortlessly with Kaniko and ZenML"
 docsUrl: "https://docs.zenml.io/stack-components/image-builders/kaniko"
 githubUrl: "https://github.com/GoogleContainerTools/kaniko"
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9db69c0a/66e02b513d4f8dbbe140fad1_Screenshot_2024-09-04_at_10.16.07.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9db69c0a/66e02b513d4f8dbbe140fad1_Screenshot_2024-09-04_at_10.16.07.png"
 seo:
   title: "Integrate Kaniko with ZenML - Image Builder Integrations"
   description: "Build Container Images Effortlessly with Kaniko and ZenML"
   canonical: "https://www.zenml.io/integrations/kaniko"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9db69c0a/66e02b513d4f8dbbe140fad1_Screenshot_2024-09-04_at_10.16.07.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9db69c0a/66e02b513d4f8dbbe140fad1_Screenshot_2024-09-04_at_10.16.07.png"
   ogTitle: "Integrate Kaniko with ZenML - Image Builder Integrations"
   ogDescription: "Build Container Images Effortlessly with Kaniko and ZenML"
 overviewTitle: "Build Container Images Effortlessly with Kaniko and ZenML"
