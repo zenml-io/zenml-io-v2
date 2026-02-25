@@ -75,4 +75,33 @@ const layout = config.layout ?? "month_view";
     calLink: calLink,
   });
   Cal.ns[namespace]("ui", { hideEventTypeDetails: false, layout: layout });
+
+  // Plausible tracking listeners (Webflow parity)
+  Cal.ns[namespace]("on", {
+    action: "bookingSuccessful",
+    callback: function (e) {
+      if (window.plausible) {
+        window.plausible("Cal: Booking Confirmed", {
+          props: {
+            date: (e && e.detail && e.detail.data && e.detail.data.date) || "",
+            duration: (e && e.detail && e.detail.data && e.detail.data.duration) || "",
+          },
+        });
+      }
+    },
+  });
+
+  Cal.ns[namespace]("on", {
+    action: "linkReady",
+    callback: function () {
+      if (window.plausible) window.plausible("Cal: Embed Loaded");
+    },
+  });
+
+  Cal.ns[namespace]("on", {
+    action: "linkFailed",
+    callback: function () {
+      if (window.plausible) window.plausible("Cal: Embed Failed");
+    },
+  });
 </script>

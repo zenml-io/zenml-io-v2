@@ -10,6 +10,8 @@ export interface CtaLink {
   label: string;
   href: string;
   external?: boolean;
+  /** Plausible event name — rendered as data-analytics attribute for click tracking. */
+  analytics?: string;
 }
 
 /** A standard hero section. */
