@@ -94,7 +94,7 @@ Embeddings are a natural fit for building recommendation engines that surface re
   <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1f0d2e5b/675185d3265d5e7931ae1203_6751852547bffe1317842cb5_CleanShot_20Dec_205_202024_20_2__20_1_.png" alt="Flowchart showing eBay&#039;s hybrid embedding system for trading cards. Training data from user interactions, sales history, and metadata feeds into a dual-task transformer model, which generates shared embeddings optimized for both semantic similarity and price prediction. These embeddings power real-time similar item search and pricing recommendations in the seller interface." />
 </figure>
 
-Other examples showcase the versatility of embeddings in recommendations. [Golden State Warriors](https://www.zenml.io/llmops-database/ai-powered-personalized-content-recommendations-for-sports-and-entertainment-venue) created personalized content suggestions, while [Nextdoor](https://www.zenml.io/llmops-database/improving-email-engagement-using-generative-ai-with-rejection-sampling) used embeddings to optimize email subject lines for user engagement.
+Other examples showcase the versatility of embeddings in recommendations. [Golden State Warriors](https://www.zenml.io/llmops-database/ai-powered-personalized-content-recommendations-for-sports-and-entertainment-venue) created personalized content suggestions, while [Nextdoor](https://www.zenml.io/llmops-database) used embeddings to optimize email subject lines for user engagement.
 
 ### Personalization with Embeddings
 
@@ -108,7 +108,7 @@ One of the key benefits of embeddings in recommendation systems is the ability t
 
 [Faber Labs](https://www.zenml.io/llmops-database/building-goal-oriented-retrieval-agents-for-low-latency-recommendations-at-scale) took personalization a step further by building LLM-powered agents that optimize for specific conversion goals. By combining user and item embeddings with reinforcement learning, their Gora system generates recommendations aimed at improving metrics like revenue and order value.
 
-Personalization is where embeddings truly shine in recommendation systems. [Nextdoor](https://www.zenml.io/llmops-database/improving-email-engagement-using-generative-ai-with-rejection-sampling), for instance, went beyond basic content recommendations and used embeddings to personalize email subject lines, leading to a measurable increase in user engagement. By incorporating user behavior data and preferences into the embedding space, they were able to generate subject lines that resonated with individual users, resulting in a 1% lift in sessions. This example highlights how even subtle applications of embeddings can drive meaningful business outcomes.
+Personalization is where embeddings truly shine in recommendation systems. [Nextdoor](https://www.zenml.io/llmops-database), for instance, went beyond basic content recommendations and used embeddings to personalize email subject lines, leading to a measurable increase in user engagement. By incorporating user behavior data and preferences into the embedding space, they were able to generate subject lines that resonated with individual users, resulting in a 1% lift in sessions. This example highlights how even subtle applications of embeddings can drive meaningful business outcomes.
 
 ### Multimodal Search: A Glimpse into the Future
 
@@ -152,7 +152,7 @@ However, it's important to go beyond simple retrieval metrics and assess the end
 
 Regular monitoring and analysis of these metrics is essential for identifying areas for improvement and ensuring the system continues to meet user needs.
 
-Evaluation is crucial for ensuring that your embedding system is delivering real value. While offline metrics like `recall@k` and `precision@k` provide a starting point, they don't tell the whole story. It's vital to measure the impact of embeddings on downstream tasks and business metrics. For search applications, this could involve tracking click-through rates and user engagement. For recommendation systems, metrics like conversion rates and customer lifetime value are more relevant. A/B testing, as demonstrated by [Nextdoor](https://www.zenml.io/llmops-database/improving-email-engagement-using-generative-ai-with-rejection-sampling) in their email subject line optimization project, is a powerful technique for evaluating the real-world impact of embedding-based features.
+Evaluation is crucial for ensuring that your embedding system is delivering real value. While offline metrics like `recall@k` and `precision@k` provide a starting point, they don't tell the whole story. It's vital to measure the impact of embeddings on downstream tasks and business metrics. For search applications, this could involve tracking click-through rates and user engagement. For recommendation systems, metrics like conversion rates and customer lifetime value are more relevant. A/B testing, as demonstrated by [Nextdoor](https://www.zenml.io/llmops-database) in their email subject line optimization project, is a powerful technique for evaluating the real-world impact of embedding-based features.
 
 ### Conclusion
 

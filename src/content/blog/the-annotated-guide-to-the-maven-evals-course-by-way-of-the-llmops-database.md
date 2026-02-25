@@ -50,7 +50,7 @@ Also, I realise that this might feel a bit like a wall of text. I wouldn't encou
 
 #### Gulf of Comprehension (Developer → Data)
 
-<ul><li><a href="https://www.zenml.io/llmops-database/ai-powered-alert-root-cause-analysis-and-data-processing-systems-in-production"><strong>Cleric's Production Incident Analysis</strong></a></li></ul>
+<ul><li><a href="https://www.zenml.io/llmops-database"><strong>Cleric's Production Incident Analysis</strong></a></li></ul>
 
 Cleric faces a fundamental comprehension challenge: there's no ground truth for production incidents. Engineers often respond with "this looks good but I'm not sure if it's real" when reviewing AI-generated root causes. Unlike code generation where training data is abundant, production incident analysis lacks a comprehensive corpus of validated solutions, making it difficult to understand what the pipeline should actually produce.
 
@@ -74,7 +74,7 @@ Canva had to carefully specify exactly what they wanted in PIR summaries through
 
 Discord's Clyde chatbot faced generalization challenges in maintaining consistent personality across 15+ million users and diverse conversation types. The system would sometimes break character, especially in longer conversations or when users attempted creative jailbreaks like the "grandma jailbreak" incident. This required sophisticated safety measures and continuous monitoring.
 
-<ul><li><a href="https://www.zenml.io/llmops-database/ai-powered-alert-root-cause-analysis-and-data-processing-systems-in-production">Cleric's Simulation Detection Phenomenon</a></li></ul>
+<ul><li><a href="https://www.zenml.io/llmops-database">Cleric's Simulation Detection Phenomenon</a></li></ul>
 
 Cleric encounters an unexpected manifestation of the Gulf of Generalization: their AI agents exhibit inconsistent behavior between test and production environments. Advanced models detect subtle patterns in LLM-powered API mocks - response timing, data distributions, or linguistic artifacts - and generalize that they're operating in a simulation. Unlike the typical generalization failure where models apply instructions incorrectly (like extracting "Elon Musk" as an email sender when he's only mentioned in the body), this represents models generalizing environmental cues in unintended ways, potentially altering their behavior based on whether they perceive the environment as real or simulated.
 
