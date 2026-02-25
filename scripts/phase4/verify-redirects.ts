@@ -112,6 +112,28 @@ function checkDuplicates(rules: RedirectRule[]): number {
   return errors;
 }
 
+function internalToDistCandidates(to: string): string[] {
+  const pathOnly = to.split(/[?#]/, 1)[0];
+
+  if (pathOnly === "/") {
+    return [`${DIST_DIR}/index.html`];
+  }
+
+  // If destination already looks like a file path (e.g. /sitemap-index.xml),
+  // check for that exact file in dist/.
+  const hasExtension = /\/[^/]+\.[a-z0-9]+$/i.test(pathOnly);
+  if (hasExtension) {
+    return [`${DIST_DIR}${pathOnly}`];
+  }
+
+  // Otherwise treat as an internal page route.
+  const normalized = pathOnly.endsWith("/") ? pathOnly.slice(0, -1) : pathOnly;
+  return [
+    `${DIST_DIR}${normalized}.html`,
+    `${DIST_DIR}${normalized}/index.html`,
+  ];
+}
+
 function checkInternalDestinations(rules: RedirectRule[]): number {
   let warnings = 0;
 
@@ -119,13 +141,13 @@ function checkInternalDestinations(rules: RedirectRule[]): number {
     // Only check internal destinations (starting with /)
     if (!rule.to.startsWith("/")) continue;
 
-    // Check if the destination file exists in dist/
-    const destPath = rule.to === "/"
-      ? `${DIST_DIR}/index.html`
-      : `${DIST_DIR}${rule.to}.html`;
+    const candidates = internalToDistCandidates(rule.to);
+    const found = candidates.some((candidate) => existsSync(candidate));
 
-    if (!existsSync(destPath)) {
-      console.warn(`  Line ${rule.line}: internal destination "${rule.to}" → no file at ${destPath}`);
+    if (!found) {
+      console.warn(
+        `  Line ${rule.line}: internal destination "${rule.to}" → no file at any of: ${candidates.join(", ")}`,
+      );
       warnings++;
     }
   }

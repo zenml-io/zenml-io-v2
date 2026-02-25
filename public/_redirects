@@ -4,6 +4,9 @@
 # Format: <from> <to> <status>
 # CF Pages processes these BEFORE static files; first match wins.
 
+# ── Sitemap compatibility (Webflow → Astro) ───────────────────────
+/sitemap.xml /sitemap-index.xml 301
+
 # ── Internal redirects (from Webflow) ──────────────────────────────
 /open-source-vs-managed /open-source-vs-pro 301
 /pricing-test /pricing 301
