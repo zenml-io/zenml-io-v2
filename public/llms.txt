@@ -39,7 +39,7 @@ ZenML's site is organized into product pages (features, pricing, Pro offering an
 - [Open Source vs Pro](https://www.zenml.io/open-source-vs-pro): compares the open-source framework to the Pro service.
 - [Pricing](https://www.zenml.io/pricing): simple, transparent pricing for community and enterprise users.
 - [Deployments](https://www.zenml.io/deployments): explains ZenML's client-server architecture, local/server/Pro deployment options.
-- [Cloud Features](https://www.zenml.io/cloud-features): detailed breakdown of ZenML Pro cloud capabilities.
+- [ML Models Control Plane](https://www.zenml.io/ml-models-control-plane): detailed breakdown of ZenML Pro cloud capabilities.
 
 ## Integrations & Platform
 
@@ -61,12 +61,12 @@ ZenML's site is organized into product pages (features, pricing, Pro offering an
 
 ## Success Stories
 
-- [Case Studies Hub](https://www.zenml.io/case-study): index of customer stories.
+- [Case Studies Hub](https://www.zenml.io/case-studies): index of customer stories.
 - [ADEO / Leroy Merlin](https://www.zenml.io/case-study/adeo-leroy-merlin): retail team reduced time-to-market from 8.5 weeks to two weeks.
 - [Brevo](https://www.zenml.io/case-study/brevo): email-marketing company improved collaboration and experiment tracking.
-- [Zuiver.ai](https://www.zenml.io/case-study/zuiver-ai): AI/ML startup leveraged ZenML for scalable pipelines.
-- [Rivian](https://www.zenml.io/case-study/rivian): electric vehicle company streamlined ML workflows.
-- [Playtika](https://www.zenml.io/case-study/playtika): gaming company adopted ZenML for ML infrastructure.
+- [Zuiver.ai](https://www.zenml.io/case-study/zuiver): AI/ML startup leveraged ZenML for scalable pipelines.
+- [Cross Screen Media](https://www.zenml.io/case-study/cross-screen-media): media company leveraged ZenML for production ML workflows.
+- [JetBrains](https://www.zenml.io/case-study/jetbrains): developer tools company integrated ZenML into their ML infrastructure.
 
 ## Company & Culture
 
