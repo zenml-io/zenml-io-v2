@@ -1,0 +1,19 @@
+# Default: code reviewers (components, layouts, config, islands, scripts)
+* @strickvl @htahir1 @znegrin @AlexejPenner
+
+# Content: blog posts, authors, tags, categories
+/src/content/blog/ @strickvl @htahir1 @znegrin @AlexejPenner
+/src/content/authors/ @strickvl @htahir1 @znegrin @AlexejPenner
+/src/content/blog-categories/ @strickvl @htahir1 @znegrin @AlexejPenner
+/src/content/blog-tags/ @strickvl @htahir1 @znegrin @AlexejPenner
+
+# Content: LLMOps database entries
+/src/content/llmops-database/ @strickvl @htahir1 @znegrin @AlexejPenner
+
+# Content: marketing copy data files
+/src/lib/homepage.ts @strickvl @htahir1 @znegrin @AlexejPenner
+
+# Content: VS/compare pages, case studies, integrations
+/src/content/compare/ @strickvl @htahir1 @znegrin @AlexejPenner
+/src/content/case-studies/ @strickvl @htahir1 @znegrin @AlexejPenner
+/src/content/integrations/ @strickvl @htahir1 @znegrin @AlexejPenner
