@@ -14,8 +14,14 @@ export function isProdHostname(hostname: string): boolean {
 export const DEFAULT_DESCRIPTION =
   "ZenML — Build portable, production-ready MLOps pipelines.";
 
-/** Asset base URL (R2 bucket — will change to assets.zenml.io later) */
-export const ASSET_BASE_URL = "https://pub-placeholder.r2.dev";
+/** Asset base URL (R2 bucket via custom domain for HTTP/2 multiplexing) */
+export const ASSET_BASE_URL = "https://assets.zenml.io";
+
+/** Webflow site ID used in R2 asset paths */
+const WEBFLOW_SITE_ID = "64a817a2e7e2208272d1ce30";
+
+/** Pre-built base for Webflow-migrated assets: ASSET_BASE_URL/webflow/<siteId> */
+export const R2_WEBFLOW_BASE = `${ASSET_BASE_URL}/webflow/${WEBFLOW_SITE_ID}`;
 
 /**
  * Default Open Graph image URL — used when a page doesn't specify its own.

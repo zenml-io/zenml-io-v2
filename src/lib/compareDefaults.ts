@@ -43,7 +43,8 @@ export interface CompareCategoryDefaults {
 // Shared assets
 // ---------------------------------------------------------------------------
 
-const R2 = 'https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30';
+import { R2_WEBFLOW_BASE } from "./constants";
+const R2 = R2_WEBFLOW_BASE;
 
 const DASHBOARD_IMAGES = {
   localToProduction: {
