@@ -9,6 +9,7 @@
  * Shares the same <head> SEO contract as BaseLayout via SEOProps.
  */
 import { resolveSeo, type SEOProps } from "../lib/seo";
+import PlausibleBridge from "../components/analytics/PlausibleBridge.astro";
 import CookieConsent from "../components/islands/CookieConsent.tsx";
 import "../styles/global.css";
 
@@ -53,6 +54,7 @@ const seo = resolveSeo(seoProps, Astro.url.pathname);
   </head>
   <body class:list={["min-h-screen bg-white text-gray-900 antialiased", bodyClass]}>
     <slot />
+    <PlausibleBridge />
     <CookieConsent client:load />
   </body>
 </html>

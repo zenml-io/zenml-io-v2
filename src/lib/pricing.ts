@@ -53,7 +53,7 @@ const SELF_HOSTED_OSS: PricingPlan = {
     "Basic model registry",
     "Self-managed infrastructure",
   ],
-  cta: { label: "Get Started", href: "/get-started" },
+  cta: { label: "Get Started", href: "/get-started", analytics: "OSS-Get-Started" },
   ctaVariant: "secondary",
 };
 
@@ -83,11 +83,12 @@ const SELF_HOSTED_PRO: PricingPlan = {
     "Priority support + custom SLA",
   ],
   comingSoon: ["Advanced Native Scheduling", "Resource Management & Queueing"],
-  cta: { label: "Talk to Sales", href: "/book-your-demo" },
+  cta: { label: "Talk to Sales", href: "/book-your-demo", analytics: "Enterpise-Self-Hosted-Book-Demo" },
   ctaVariant: "primary",
   secondaryLink: {
     label: "Or talk to an engineer about deployment",
     href: "/open-source-vs-pro",
+    analytics: "Enterprise-Self-Hosted-Talk-Engineer",
   },
 };
 
@@ -164,8 +165,8 @@ const SELF_HOSTED_COMPARE: PricingCompareTableData = {
     },
   ],
   ctaButtons: [
-    { label: "Get Started", href: "/get-started" },
-    { label: "Talk to Sales", href: "/book-your-demo" },
+    { label: "Get Started", href: "/get-started", analytics: "OSS-Get-Started" },
+    { label: "Talk to Sales", href: "/book-your-demo", analytics: "Enterpise-Self-Hosted-Book-Demo" },
   ],
 };
 
@@ -189,7 +190,7 @@ const SAAS_STARTER: PricingPlan = {
     "Unlimited team members",
     "Basic support",
   ],
-  cta: { label: "Book a Demo", href: "/book-your-demo" },
+  cta: { label: "Book a Demo", href: "/book-your-demo", analytics: "Starter-Book-Demo" },
   ctaVariant: "secondary",
 };
 
@@ -210,7 +211,7 @@ const SAAS_GROWTH: PricingPlan = {
     "Webhooks & Triggers",
     "Priority support",
   ],
-  cta: { label: "Book a Demo", href: "/book-your-demo" },
+  cta: { label: "Book a Demo", href: "/book-your-demo", analytics: "Growth-Book-Demo" },
   ctaVariant: "primary",
 };
 
@@ -230,7 +231,7 @@ const SAAS_SCALE: PricingPlan = {
     "Codespaces (Remote IDE)",
     "Priority support",
   ],
-  cta: { label: "Book a Demo", href: "/book-your-demo" },
+  cta: { label: "Book a Demo", href: "/book-your-demo", analytics: "Scale-Book-Demo" },
   ctaVariant: "primary",
 };
 
@@ -254,8 +255,13 @@ const SAAS_ENTERPRISE: PricingPlan = {
     "Professional Services",
     "Dedicated support + SLA",
   ],
-  cta: { label: "Book a Demo", href: "/book-your-demo" },
+  cta: { label: "Book a Demo", href: "/book-your-demo", analytics: "Enterprise-Book-Demo" },
   ctaVariant: "primary",
+  secondaryLink: {
+    label: "Or talk to an engineer about deployment",
+    href: "/book-your-demo",
+    analytics: "Enterprise-Talk-Engineer",
+  },
 };
 
 const SAAS_COMPARE: PricingCompareTableData = {
@@ -317,10 +323,10 @@ const SAAS_COMPARE: PricingCompareTableData = {
     },
   ],
   ctaButtons: [
-    { label: "Talk to Sales", href: "/book-your-demo" },
-    { label: "Talk to Sales", href: "/book-your-demo" },
-    { label: "Talk to Sales", href: "/book-your-demo" },
-    { label: "Talk to Sales", href: "/book-your-demo" },
+    { label: "Talk to Sales", href: "/book-your-demo", analytics: "Starter-Book-Demo" },
+    { label: "Talk to Sales", href: "/book-your-demo", analytics: "Growth-Book-Demo" },
+    { label: "Talk to Sales", href: "/book-your-demo", analytics: "Scale-Book-Demo" },
+    { label: "Talk to Sales", href: "/book-your-demo", analytics: "Enterprise-Book-Demo" },
   ],
 };
 

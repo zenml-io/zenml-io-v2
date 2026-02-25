@@ -1,5 +1,6 @@
 ---
 import Footer from "../components/Footer.astro";
+import PlausibleBridge from "../components/analytics/PlausibleBridge.astro";
 import CookieConsent from "../components/islands/CookieConsent.tsx";
 import Navigation from "../components/Navigation.astro";
 /**
@@ -89,6 +90,7 @@ const seo = resolveSeo(seoProps, Astro.url.pathname);
       })();
     </script>
 
+    <PlausibleBridge />
     <CookieConsent client:load />
   </body>
 </html>
