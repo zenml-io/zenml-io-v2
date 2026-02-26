@@ -7,7 +7,7 @@
     "dev": "astro dev",
     "build": "astro build && pagefind --site dist",
     "preview": "astro preview",
-    "check": "astro check",
+    "check": "astro check --tsconfig ./tsconfig.check.json",
     "validate:content": "tsx scripts/phase2/validate-content.ts",
     "lint": "biome check src/",
     "lint:fix": "biome check --fix src/",

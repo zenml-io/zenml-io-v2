@@ -39,7 +39,7 @@ const privacyClass = darkBg
   : "mt-4 text-xs text-gray-500";
 ---
 
-<div data-brevo-form={config.formId}>
+<div data-brevo-form={config.formId} data-loading-label={config.loadingLabel}>
   <form
     method="POST"
     action={config.action}
@@ -73,49 +73,57 @@ const privacyClass = darkBg
   <p class={errorClass} data-brevo-error></p>
 
   {privacyHtml && <p class={privacyClass} set:html={privacyHtml} />}
-</div>
 
-<script is:inline define:vars={{ formId: config.formId, loadingLabel: config.loadingLabel }}>
-  (function () {
-    const root = document.querySelector('[data-brevo-form="' + formId + '"]');
-    if (!root) return;
+  <script is:inline>
+    (function () {
+      const script = document.currentScript;
+      if (!(script instanceof HTMLScriptElement)) return;
 
-    const form = root.querySelector("[data-brevo-newsletter]");
-    const successMsg = root.querySelector("[data-brevo-success]");
-    const errorMsg = root.querySelector("[data-brevo-error]");
+      const root = script.parentElement;
+      if (!(root instanceof HTMLElement)) return;
 
-    form?.addEventListener("submit", function (e) {
-      e.preventDefault();
-      const btn = form.querySelector("button[type=submit]");
-      const originalText = btn?.textContent;
+      const form = root.querySelector("[data-brevo-newsletter]");
+      if (!(form instanceof HTMLFormElement)) return;
+      if (form.dataset.brevoEnhanced === "true") return;
+      form.dataset.brevoEnhanced = "true";
 
-      if (btn) {
-        btn.disabled = true;
-        btn.textContent = loadingLabel;
-      }
+      const loadingLabel = root.dataset.loadingLabel || "Subscribing...";
+      const successMsg = root.querySelector("[data-brevo-success]");
+      const errorMsg = root.querySelector("[data-brevo-error]");
 
-      const formData = new FormData(form);
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        const btn = form.querySelector("button[type=submit]");
+        const originalText = btn?.textContent;
 
-      fetch(form.action, {
-        method: "POST",
-        body: formData,
-        mode: "no-cors",
-      })
-        .then(function () {
-          form.classList.add("hidden");
-          successMsg?.classList.remove("hidden");
+        if (btn instanceof HTMLButtonElement) {
+          btn.disabled = true;
+          btn.textContent = loadingLabel;
+        }
+
+        const formData = new FormData(form);
+
+        fetch(form.action, {
+          method: "POST",
+          body: formData,
+          mode: "no-cors",
         })
-        .catch(function (err) {
-          console.error("Brevo submit error:", err);
-          if (errorMsg) {
-            errorMsg.textContent = "Subscription failed. Please try again.";
-            errorMsg.classList.remove("hidden");
-          }
-          if (btn) {
-            btn.textContent = originalText;
-            btn.disabled = false;
-          }
-        });
-    });
-  })();
-</script>
+          .then(function () {
+            form.classList.add("hidden");
+            successMsg?.classList.remove("hidden");
+          })
+          .catch(function (err) {
+            console.error("Brevo submit error:", err);
+            if (errorMsg instanceof HTMLElement) {
+              errorMsg.textContent = "Subscription failed. Please try again.";
+              errorMsg.classList.remove("hidden");
+            }
+            if (btn instanceof HTMLButtonElement) {
+              btn.textContent = originalText;
+              btn.disabled = false;
+            }
+          });
+      });
+    })();
+  </script>
+</div>
