@@ -45,7 +45,7 @@ const headerStarsFallback = formatStars(FALLBACK_STARS);
         {NAV_DROPDOWNS.map((dropdown) => (
           <div class="group flex h-full items-center">
             <button
-              class="flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50 hover:text-gray-900"
+              class="flex items-center gap-1 rounded-md px-3 py-2 text-sm font-semibold text-gray-900 transition-colors hover:bg-gray-50"
               aria-expanded="false"
               aria-haspopup="true"
             >
@@ -178,10 +178,10 @@ const headerStarsFallback = formatStars(FALLBACK_STARS);
           <a
             href={link.href}
             class:list={[
-              "rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-gray-50",
+              "rounded-md px-3 py-2 text-sm font-semibold transition-colors hover:bg-gray-50",
               isActivePath(currentPath, link.href)
                 ? "text-zenml-500"
-                : "text-gray-700 hover:text-gray-900",
+                : "text-gray-900",
             ]}
           >
             {link.label}
