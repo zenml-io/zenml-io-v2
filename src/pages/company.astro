@@ -63,7 +63,7 @@ const SPEECH_BUBBLES_SVG = `<svg width="24" height="24" viewBox="0 0 24 24" fill
           <img
             src={COMPANY_ABOUT.image.url}
             alt={COMPANY_ABOUT.image.alt}
-            class="w-full rounded-xl"
+            class="w-full rounded-md"
             loading="lazy"
           />
           <div>
@@ -208,7 +208,7 @@ const SPEECH_BUBBLES_SVG = `<svg width="24" height="24" viewBox="0 0 24 24" fill
   .value-card,
   .team-card {
     border: 1px solid #f2f4f7;
-    border-radius: 0.5rem;
+    border-radius: var(--radius-md);
     background-image: linear-gradient(135deg, #fcfcfc, #fff);
     transition: all 0.3s cubic-bezier(0.77, 0, 0.175, 1);
   }
@@ -218,7 +218,7 @@ const SPEECH_BUBBLES_SVG = `<svg width="24" height="24" viewBox="0 0 24 24" fill
     border-color: #7a3ef4;
     background-image: linear-gradient(135deg, #f9f4ff, #fff);
     transform: translateY(-10px);
-    box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--shadow-medium);
   }
 
   /* ---------- Value card layout ---------- */

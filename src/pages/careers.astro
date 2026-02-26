@@ -57,7 +57,7 @@ import { OPEN_POSITIONS } from "../lib/company";
           <img
             src={CAREERS_MISSION.image.url}
             alt={CAREERS_MISSION.image.alt}
-            class="w-full rounded-xl"
+            class="w-full rounded-md"
             loading="lazy"
           />
           <div>
@@ -92,7 +92,7 @@ import { OPEN_POSITIONS } from "../lib/company";
         </h2>
         <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {CAREERS_WHY.items.map((item) => (
-            <div class="rounded-xl bg-white p-6 shadow-sm">
+            <div class="rounded-md bg-white p-6 shadow-sm">
               <h3 class="text-lg font-semibold text-gray-900">{item.title}</h3>
               <p class="mt-2 text-sm text-gray-600 leading-relaxed">{item.body}</p>
             </div>
@@ -111,7 +111,7 @@ import { OPEN_POSITIONS } from "../lib/company";
         <p class="mt-4 text-gray-600 leading-relaxed">{CAREERS_HIRING_PROCESS.afterIntro}</p>
         <div class="mt-10 grid gap-8 sm:grid-cols-2">
           {CAREERS_HIRING_PROCESS.steps.map((step) => (
-            <div class="rounded-xl border border-gray-200 bg-white p-6">
+            <div class="rounded-md border border-gray-200 bg-white p-6">
               <div class="flex h-10 w-10 items-center justify-center rounded-full border-2 border-zenml-500 text-lg font-bold text-zenml-500">
                 {step.number}
               </div>

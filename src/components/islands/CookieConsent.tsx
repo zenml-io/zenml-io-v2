@@ -148,7 +148,7 @@ export default function CookieConsent() {
 
       {/* Preferences modal */}
       {showPrefs && (
-        <div class="fixed inset-x-4 bottom-4 top-auto z-[9999] mx-auto max-w-lg rounded-xl border border-gray-200 bg-white p-6 shadow-large sm:inset-x-auto sm:bottom-auto sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2">
+        <div class="fixed inset-x-4 bottom-4 top-auto z-[9999] mx-auto max-w-lg rounded-md border border-gray-200 bg-white p-6 shadow-large sm:inset-x-auto sm:bottom-auto sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2">
           <h2 class="text-lg font-bold text-gray-900">Cookie Preferences</h2>
           <p class="mt-1 text-sm text-gray-500">
             Choose which categories of cookies you'd like to allow.

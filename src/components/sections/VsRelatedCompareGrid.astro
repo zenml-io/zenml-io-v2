@@ -32,7 +32,7 @@ const { eyebrow, headline, items } = Astro.props;
         {items.map((item) => (
           <a
             href={item.href}
-            class="group flex items-center gap-4 rounded-xl border border-gray-200 bg-white p-5 shadow-sm transition hover:border-zenml-300 hover:shadow-md"
+            class="group flex items-center gap-4 rounded-md border border-gray-200 bg-white p-5 shadow-sm transition hover:border-zenml-300 hover:shadow-md"
           >
             {item.toolIcon && (
               <img

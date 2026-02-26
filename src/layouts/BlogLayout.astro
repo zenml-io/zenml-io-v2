@@ -213,7 +213,7 @@ const articleJsonLd = {
 
       {/* Featured image */}
       {mainImage && (
-        <div class="mb-10 overflow-hidden rounded-xl">
+        <div class="mb-10 overflow-hidden rounded-md">
           <Image
             image={mainImage}
             alt={mainImage.alt || displayTitle}
@@ -225,7 +225,7 @@ const articleJsonLd = {
 
       {/* Mobile inline TOC (visible below xl, collapsible) */}
       {showTOC && (
-        <details class="mb-8 rounded-xl border border-gray-200 bg-gray-50 xl:hidden" id="mobile-toc">
+        <details class="mb-8 rounded-md border border-gray-200 bg-gray-50 xl:hidden" id="mobile-toc">
           <summary class="cursor-pointer select-none px-5 py-3 text-sm font-semibold text-gray-700">
             On this page
           </summary>
@@ -257,7 +257,7 @@ const articleJsonLd = {
 
       {/* Author bio card */}
       {author && (
-        <div class="mt-10 flex items-center gap-4 rounded-xl border border-gray-200 bg-gray-50 p-5">
+        <div class="mt-10 flex items-center gap-4 rounded-md border border-gray-200 bg-gray-50 p-5">
           {author.avatar && (
             <a href={`/author/${author.slug}`} class="shrink-0">
               <Image
@@ -293,7 +293,7 @@ const articleJsonLd = {
           {prev ? (
             <a
               href={prev.href}
-              class="group flex flex-col rounded-xl border border-gray-200 p-5 transition-all hover:border-gray-300 hover:shadow-sm"
+              class="group flex flex-col rounded-md border border-gray-200 p-5 transition-all hover:border-gray-300 hover:shadow-sm"
             >
               <span class="text-xs font-medium text-gray-500 group-hover:text-primary-600">&larr; Previous</span>
               <span class="mt-2 line-clamp-2 text-sm font-semibold text-gray-900 group-hover:text-primary-600">{prev.title}</span>
@@ -302,7 +302,7 @@ const articleJsonLd = {
           {next ? (
             <a
               href={next.href}
-              class="group flex flex-col rounded-xl border border-gray-200 p-5 text-right transition-all hover:border-gray-300 hover:shadow-sm"
+              class="group flex flex-col rounded-md border border-gray-200 p-5 text-right transition-all hover:border-gray-300 hover:shadow-sm"
             >
               <span class="text-xs font-medium text-gray-500 group-hover:text-primary-600">Next &rarr;</span>
               <span class="mt-2 line-clamp-2 text-sm font-semibold text-gray-900 group-hover:text-primary-600">{next.title}</span>
