@@ -27,7 +27,7 @@ const headerStarsFallback = formatStars(FALLBACK_STARS);
 
 <header class="sticky top-0 z-50 w-full bg-white/95 backdrop-blur-sm border-b border-gray-200/60">
   <div class="mx-auto max-w-[var(--container-lg)] px-4 sm:px-6 lg:px-8">
-    <div class="flex h-[72px] items-center justify-between">
+    <div class="flex h-[72px] items-center">
       {/* Logo */}
       <a href="/" class="flex shrink-0 items-center gap-2">
         <img
@@ -40,7 +40,7 @@ const headerStarsFallback = formatStars(FALLBACK_STARS);
       </a>
 
       {/* Desktop Nav */}
-      <nav class="hidden lg:flex lg:items-center lg:gap-1 h-full" role="navigation" aria-label="Main navigation">
+      <nav class="hidden lg:flex lg:items-center lg:gap-1 lg:ml-12 h-full" role="navigation" aria-label="Main navigation">
         {/* Dropdown menus */}
         {NAV_DROPDOWNS.map((dropdown) => (
           <div class="group flex h-full items-center">
@@ -190,7 +190,7 @@ const headerStarsFallback = formatStars(FALLBACK_STARS);
       </nav>
 
       {/* Desktop CTAs */}
-      <div class="hidden lg:flex lg:items-center lg:gap-3">
+      <div class="hidden lg:ml-auto lg:flex lg:items-center lg:gap-3">
         <div class="h-[28px]">
           <a
             href={GITHUB_REPO_URL}
@@ -222,7 +222,7 @@ const headerStarsFallback = formatStars(FALLBACK_STARS);
       {/* Mobile menu button */}
       <button
         type="button"
-        class="lg:hidden rounded-md p-2 text-gray-700 hover:bg-gray-50"
+        class="ml-auto lg:hidden rounded-md p-2 text-gray-700 hover:bg-gray-50"
         aria-label="Toggle menu"
         data-mobile-toggle
       >
