@@ -50,6 +50,13 @@
 - After uploading, always verify the URL returns HTTP 200 before committing.
 - **Claude Code skill**: Use the `r2-image-upload` skill (`.claude/skills/r2-image-upload/SKILL.md`) for the full upload workflow.
 
+## Contributing Blog Posts
+- New blog posts go in `src/content/blog/<slug>.md` on a feature branch (`blog/<slug>`).
+- Frontmatter must match the `blogSchema` in `src/content.config.ts`. The `webflow` field is NOT needed for new native posts.
+- Author, category, and tag fields are slug references to their respective collections. If a referenced tag or author doesn't exist, create the `.md` file first.
+- All content images must be absolute R2 URLs. Upload via `uv run scripts/r2-upload.py`.
+- **Claude Code skill**: Use the `blog-post-contributor` skill (`.claude/skills/blog-post-contributor/SKILL.md`) for the full workflow — supports both local markdown files and Notion pages as sources.
+
 ## Security & Configuration Tips
 - Never commit secrets, API keys, infra IDs, or private notes.
 - Store local secrets in `.env` (gitignored). See `.env.example` for required variables.

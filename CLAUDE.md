@@ -147,7 +147,9 @@ import { ASSET_BASE_URL } from "./constants";
 const url = `${ASSET_BASE_URL}/content/uploads/1a2b3c4d/hero.webp`;
 ```
 
-**Claude Code skill:** The `r2-image-upload` skill (`.claude/skills/r2-image-upload/SKILL.md`) provides the full upload workflow. It triggers on phrases like "upload image", "add image to R2", or "new blog image".
+**Claude Code skills:**
+- `r2-image-upload` (`.claude/skills/r2-image-upload/SKILL.md`) — upload images to R2. Triggers: "upload image", "add image to R2", "new blog image".
+- `blog-post-contributor` (`.claude/skills/blog-post-contributor/SKILL.md`) — full blog post workflow from markdown or Notion. Triggers: "new blog post", "add blog", "blog from Notion".
 
 ### Migration lessons (from Phase 1)
 
