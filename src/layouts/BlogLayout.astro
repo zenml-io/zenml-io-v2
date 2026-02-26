@@ -352,12 +352,13 @@ const articleJsonLd = {
   function initProgress() {
     const bar = document.getElementById('progress-bar');
     if (!bar) return;
+    const barEl = bar;
 
     function updateProgress() {
       const scrollTop = window.scrollY;
       const docHeight = document.documentElement.scrollHeight - window.innerHeight;
       const progress = docHeight > 0 ? Math.min((scrollTop / docHeight) * 100, 100) : 0;
-      bar.style.width = progress + '%';
+      barEl.style.width = progress + '%';
     }
 
     window.addEventListener('scroll', updateProgress, { passive: true });

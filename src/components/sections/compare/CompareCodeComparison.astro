@@ -9,6 +9,8 @@
  */
 import { Code } from "astro:components";
 
+type CodeLang = Parameters<typeof Code>[0]["lang"];
+
 interface Props {
   toolName: string;
   toolIcon?: { url: string; alt?: string };
@@ -49,7 +51,7 @@ const {
           <span class="text-xl font-semibold text-white">ZenML</span>
         </div>
         <div class="code-comparison-block overflow-x-auto rounded-lg border border-gray-700/50 bg-[#0d1117]">
-          <Code code={zenmlCode.trim()} lang={zenmlLanguage} theme="github-dark" />
+          <Code code={zenmlCode.trim()} lang={zenmlLanguage as CodeLang} theme="github-dark" />
         </div>
       </div>
 
@@ -66,7 +68,7 @@ const {
           <span class="text-xl font-semibold text-white">{toolName}</span>
         </div>
         <div class="code-comparison-block overflow-x-auto rounded-lg border border-gray-700/50 bg-[#0d1117]">
-          <Code code={toolCode.trim()} lang={toolLanguage} theme="github-dark" />
+          <Code code={toolCode.trim()} lang={toolLanguage as CodeLang} theme="github-dark" />
         </div>
       </div>
     </div>

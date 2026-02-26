@@ -52,12 +52,18 @@ if (d.relatedBlogPosts && d.relatedBlogPosts.length > 0) {
 }
 
 // Resolve compare page name
-const compareEntry = d.compareSlug
-  ? await getEntry("compare", d.compareSlug).catch(() => undefined)
-  : undefined;
-const compareName = compareEntry?.data?.toolName
-  ? `ZenML vs ${compareEntry.data.toolName}`
-  : undefined;
+let compareName: string | undefined;
+if (d.compareSlug) {
+  try {
+    const compareEntryResult = getEntry("compare", d.compareSlug);
+    const compareEntry = compareEntryResult ? await compareEntryResult : undefined;
+    if (compareEntry?.data?.toolName) {
+      compareName = `ZenML vs ${compareEntry.data.toolName}`;
+    }
+  } catch {
+    compareName = undefined;
+  }
+}
 
 // Determine structured rendering/fallback strategy
 const introH2 = d.shortDescription?.trim();

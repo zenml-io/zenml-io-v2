@@ -9,7 +9,7 @@ import ProTestimonialCarousel from "../islands/ProTestimonialCarousel";
 import type { CarouselTestimonial } from "../islands/ProTestimonialCarousel";
 
 interface Props {
-  testimonials: CarouselTestimonial[];
+  testimonials: ReadonlyArray<CarouselTestimonial>;
 }
 
 const { testimonials } = Astro.props;

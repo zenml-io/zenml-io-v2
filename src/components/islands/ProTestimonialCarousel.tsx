@@ -18,7 +18,7 @@ export interface CarouselTestimonial {
 }
 
 interface Props {
-  testimonials: CarouselTestimonial[];
+  testimonials: ReadonlyArray<CarouselTestimonial>;
   autoplayMs?: number;
   transitionMs?: number;
 }

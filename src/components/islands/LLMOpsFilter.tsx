@@ -394,7 +394,6 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
   useEffect(() => {
     const el = drawerRef.current;
     if (!el) return;
-    // @ts-expect-error inert not in all typings yet
     el.inert = !mobileDrawerOpen;
   }, [mobileDrawerOpen]);
 
