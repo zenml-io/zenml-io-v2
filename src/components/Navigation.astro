@@ -76,7 +76,7 @@ const headerStarsFallback = formatStars(FALLBACK_STARS);
                             >
                               <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-zenml-25 text-zenml-500">
                                 <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                  <path d="M13 2L4.09 12.69a.5.5 0 00.41.81H12l-1 10 8.91-10.69a.5.5 0 00-.41-.81H12l1-10z" />
+                                  <Fragment set:html={link.icon || '<path d="M13 2L4.09 12.69a.5.5 0 00.41.81H12l-1 10 8.91-10.69a.5.5 0 00-.41-.81H12l1-10z"/>'} />
                                 </svg>
                               </div>
                               <div>
