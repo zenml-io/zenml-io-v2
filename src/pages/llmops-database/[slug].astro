@@ -9,13 +9,14 @@
 import { getCollection, getEntry, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Badge from "../../components/Badge.astro";
-import { getAllPublishedEntries, getRelatedEntries } from "../../lib/llmops";
+import { getAllPublishedEntries, buildRelatedIndex, getRelatedFromIndex } from "../../lib/llmops";
 
 export async function getStaticPaths() {
   const allEntries = await getAllPublishedEntries();
+  const relatedIndex = buildRelatedIndex(allEntries);
 
   return allEntries.map((entry) => {
-    const related = getRelatedEntries(allEntries, entry, 3);
+    const related = getRelatedFromIndex(relatedIndex, entry, 3);
     return {
       params: { slug: entry.data.slug },
       props: { entry, related },
