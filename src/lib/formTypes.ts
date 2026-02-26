@@ -43,7 +43,7 @@ export interface PlaceholderField {
 
 /** Configuration for the ContactForm Preact island. */
 export interface ContactFormConfig {
-  formType: "demo-request" | "whitepaper" | "startup-application";
+  formType: "demo-request" | "whitepaper" | "startup-academic";
   endpoint: string;
   fields: PlaceholderField[];
   submitLabel: string;
