@@ -42,7 +42,15 @@
 - PRs should include: purpose, changed routes/components, validation commands run, and screenshots for UI changes.
 - Verify redirects/canonicals when URL or SEO-related files change.
 
+## Images & Assets (Two-Tier System)
+- **UI/static assets** (`public/images/`): logos, icons, favicons, backgrounds. Reference as `"/images/filename.svg"` (root-relative). Just place the file in `public/images/`.
+- **Content/CMS images** (R2 bucket): blog heroes, screenshots, team photos, OG images. Must be **absolute URLs** — content schemas enforce `z.string().url()`. Upload via `uv run scripts/r2-upload.py <file>`.
+- In `src/lib/*.ts` data files, build R2 URLs from `ASSET_BASE_URL` constant — never hardcode the R2 domain.
+- New R2 uploads use the key prefix `content/uploads/{sha8}/{filename}`. Existing Webflow-migrated images live under `webflow/...`.
+- After uploading, always verify the URL returns HTTP 200 before committing.
+- **Claude Code skill**: Use the `r2-image-upload` skill (`.claude/skills/r2-image-upload/SKILL.md`) for the full upload workflow.
+
 ## Security & Configuration Tips
 - Never commit secrets, API keys, infra IDs, or private notes.
-- Store local secrets in `.env` (gitignored).
+- Store local secrets in `.env` (gitignored). See `.env.example` for required variables.
 - Treat this repo as public by default.

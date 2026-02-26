@@ -113,7 +113,43 @@ Fixing visual parity gaps page-by-page against the Webflow original. Recent work
 - **Build output**: `pnpm build` generates ~2000+ lines of output listing every generated page. Always run it in background mode and use `tail` to check only the final lines for success/failure
 - **Credential management**: When you receive API credentials, tokens, or keys, **always add them to `.env`** for persistence across sessions. The `.env` file is gitignored and safe for secrets
 
-## Image & Asset Migration Lessons
+## Images & Assets
+
+### Two-tier system
+
+| Tier | Location | Use for | How to reference |
+|------|----------|---------|------------------|
+| **A: Static** | `public/images/` | Site-wide UI: logos, icons, favicons, backgrounds, OG default | Root-relative: `"/images/filename.svg"` |
+| **B: R2** | `zenml-assets` bucket | Content images: blog heroes, screenshots, team photos, integration logos, OG images | Absolute URL: `"https://assets.zenml.io/..."` |
+
+**Decision rule:** If the image appears in `src/content/*.md` frontmatter, it must be an absolute URL (content schemas use `z.string().url()`), so it goes to R2. If it's site furniture reused across many pages, put it in `public/images/`.
+
+### Adding new images
+
+**Tier A (static):** Just place the file in `public/images/` and reference it as `"/images/..."`.
+
+**Tier B (R2):** Upload using the one-off script:
+```bash
+uv run scripts/r2-upload.py path/to/image.avif                    # default prefix
+uv run scripts/r2-upload.py path/to/hero.webp --prefix content/blog  # custom prefix
+uv run scripts/r2-upload.py path/to/hero.webp --frontmatter          # print YAML snippet
+```
+
+Requires R2 credentials in `.env` — see `.env.example`.
+
+**R2 key structure:**
+- New uploads: `content/uploads/{sha256_8}/{filename}` (or custom `--prefix`)
+- Webflow-migrated (existing): `webflow/{siteId}/{hash}/{filename}`
+
+**In `src/lib/*.ts` data files:** Build URLs from the canonical constant, never hardcode the domain:
+```ts
+import { ASSET_BASE_URL } from "./constants";
+const url = `${ASSET_BASE_URL}/content/uploads/1a2b3c4d/hero.webp`;
+```
+
+**Claude Code skill:** The `r2-image-upload` skill (`.claude/skills/r2-image-upload/SKILL.md`) provides the full upload workflow. It triggers on phrases like "upload image", "add image to R2", or "new blog image".
+
+### Migration lessons (from Phase 1)
 
 These patterns caused silent runtime 404s that only showed up on the deployed
 site — no build errors, no type errors, just broken images.
