@@ -27,13 +27,19 @@ interface Props {
   turnstileSiteKey?: string;
 }
 
-/** Pick or restore variant from sessionStorage (50/50 split). */
+/** Pick or restore variant from sessionStorage (50/50 split).
+ *  Wrapped in try-catch: Safari private browsing and strict enterprise
+ *  environments can throw on sessionStorage access. */
 function getVariant(): Variant {
-  const stored = sessionStorage.getItem("demo_form_variant");
-  if (stored === "A" || stored === "B") return stored;
-  const v: Variant = Math.random() < 0.5 ? "A" : "B";
-  sessionStorage.setItem("demo_form_variant", v);
-  return v;
+  try {
+    const stored = sessionStorage.getItem("demo_form_variant");
+    if (stored === "A" || stored === "B") return stored;
+    const v: Variant = Math.random() < 0.5 ? "A" : "B";
+    sessionStorage.setItem("demo_form_variant", v);
+    return v;
+  } catch {
+    return Math.random() < 0.5 ? "A" : "B";
+  }
 }
 
 export default function DemoRequestFormAB({

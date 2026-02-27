@@ -99,8 +99,8 @@ const {
 const displayTitle = postTitle || seoProps.title;
 
 
-// Filter to h2/h3 for TOC display check
-const tocHeadings = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
+// H2-only TOC — consistent with BlogTOC.astro desktop sidebar
+const tocHeadings = headings.filter((h) => h.depth === 2);
 const showTOC = tocHeadings.length >= 3;
 
 const formattedDate = new Date(date).toLocaleDateString("en-US", {
@@ -252,10 +252,7 @@ const articleJsonLd = {
                 <li>
                   <a
                     href={`#${heading.slug}`}
-                    class:list={[
-                      "block text-sm text-gray-600 transition-colors hover:text-primary-600",
-                      heading.depth === 3 ? "pl-4" : "",
-                    ]}
+                    class="block text-sm text-gray-600 transition-colors hover:text-primary-600"
                     data-mobile-toc-link
                   >
                     {heading.text}
@@ -333,7 +330,7 @@ const articleJsonLd = {
     {showTOC && (
       <aside class="hidden xl:block">
         <div class="sticky top-32 max-h-[calc(100vh-9rem)] overflow-y-auto">
-          <BlogTOC headings={headings} />
+          <BlogTOC headings={tocHeadings} />
         </div>
       </aside>
     )}

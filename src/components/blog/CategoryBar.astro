@@ -17,17 +17,9 @@ interface Props {
   backLink?: boolean;
   /** Show breadcrumb: "Blog / {title}" — replaces pills and search */
   breadcrumbTitle?: string;
-  /** Blog post index for search */
-  searchIndex?: Array<{
-    title: string;
-    slug: string;
-    excerpt: string;
-    date: string;
-    category: string;
-  }>;
 }
 
-const { categories = [], activeCategory, backLink = false, breadcrumbTitle, searchIndex = [] } = Astro.props;
+const { categories = [], activeCategory, backLink = false, breadcrumbTitle } = Astro.props;
 
 const topCategories = categories.slice(0, 8);
 ---
@@ -84,7 +76,7 @@ const topCategories = categories.slice(0, 8);
         </nav>
 
         <div class="hidden shrink-0 sm:block">
-          <BlogSearch posts={searchIndex} client:idle />
+          <BlogSearch searchIndexUrl="/blog/search-index.json" client:media="(min-width: 640px)" />
         </div>
       </>
     )}

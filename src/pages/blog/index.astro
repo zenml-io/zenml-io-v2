@@ -18,6 +18,7 @@ import {
   getTagCounts,
   resolveAuthor,
   PAGE_SIZE,
+  PAGE_1_GRID_COUNT,
   blogPageHref,
 } from "../../lib/blog";
 
@@ -28,9 +29,8 @@ const featuredPost = allPosts.find((p) => p.data.featured) ?? allPosts[0];
 const remainingPosts = allPosts.filter((p) => p !== featuredPost);
 
 // Grid posts — fill rest of page 1 (multiple of 3 for clean 3-col grid)
-const page1Count = PAGE_SIZE;
-const gridPosts = remainingPosts.slice(0, page1Count);
-const totalPages = 1 + Math.ceil(Math.max(remainingPosts.length - page1Count, 0) / PAGE_SIZE);
+const gridPosts = remainingPosts.slice(0, PAGE_1_GRID_COUNT);
+const totalPages = 1 + Math.ceil(Math.max(remainingPosts.length - PAGE_1_GRID_COUNT, 0) / PAGE_SIZE);
 
 // Taxonomy data
 const categories = await getCategoryCounts(allPosts);
@@ -56,20 +56,6 @@ for (const post of gridPosts) {
   }
 }
 
-// Build search index — resolve all category names first
-for (const p of allPosts) {
-  if (p.data.category && !categoryMap.has(p.data.category)) {
-    const cat = await getEntry("categories", p.data.category);
-    if (cat) categoryMap.set(p.data.category, { name: cat.data.name, slug: cat.data.slug });
-  }
-}
-const searchIndex = allPosts.map((p) => ({
-  title: p.data.title,
-  slug: p.data.slug,
-  excerpt: p.data.seo?.description || "",
-  date: p.data.date.toISOString(),
-  category: categoryMap.get(p.data.category || "")?.name || "",
-}));
 ---
 
 <BaseLayout
@@ -77,7 +63,7 @@ const searchIndex = allPosts.map((p) => ({
   description="Insights on MLOps, LLMOps, and production machine learning from the ZenML team."
 >
   {/* Section header: sticky CategoryBar at top */}
-  <CategoryBar categories={categories} searchIndex={searchIndex} />
+  <CategoryBar categories={categories} />
 
   {/* Editorial Hero */}
   {featuredPost && (

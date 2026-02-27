@@ -17,6 +17,7 @@ import {
   getTagCounts,
   resolveAuthor,
   PAGE_SIZE,
+  PAGE_1_GRID_COUNT,
   blogPageHref,
 } from "../../../lib/blog";
 
@@ -24,12 +25,11 @@ export async function getStaticPaths() {
   const allPosts = await getMainFeedPosts();
   const featuredPost = allPosts.find((p) => p.data.featured) ?? allPosts[0];
   const remainingPosts = allPosts.filter((p) => p !== featuredPost);
-  const page1Count = PAGE_SIZE - 1;
-  const totalPages = 1 + Math.ceil(Math.max(remainingPosts.length - page1Count, 0) / PAGE_SIZE);
+  const totalPages = 1 + Math.ceil(Math.max(remainingPosts.length - PAGE_1_GRID_COUNT, 0) / PAGE_SIZE);
 
   return Array.from({ length: totalPages - 1 }, (_, i) => {
     const page = i + 2;
-    const start = page1Count + (page - 2) * PAGE_SIZE;
+    const start = PAGE_1_GRID_COUNT + (page - 2) * PAGE_SIZE;
     return {
       params: { page: String(page) },
       props: {
@@ -62,20 +62,6 @@ for (const post of posts) {
   }
 }
 
-// Build search index
-for (const p of allPosts) {
-  if (p.data.category && !categoryMap.has(p.data.category)) {
-    const cat = await getEntry("categories", p.data.category);
-    if (cat) categoryMap.set(p.data.category, { name: cat.data.name, slug: cat.data.slug });
-  }
-}
-const searchIndex = allPosts.map((p) => ({
-  title: p.data.title,
-  slug: p.data.slug,
-  excerpt: p.data.seo?.description || "",
-  date: p.data.date.toISOString(),
-  category: categoryMap.get(p.data.category || "")?.name || "",
-}));
 ---
 
 <BaseLayout
@@ -83,7 +69,7 @@ const searchIndex = allPosts.map((p) => ({
   description="Insights on MLOps, LLMOps, and production machine learning from the ZenML team."
 >
   {/* Section header: sticky CategoryBar at top */}
-  <CategoryBar categories={categories} searchIndex={searchIndex} />
+  <CategoryBar categories={categories} />
 
   <div class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8">
     {/* Post grid */}

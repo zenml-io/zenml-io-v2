@@ -32,9 +32,8 @@ const tocHeadings = headings.filter((h) => h.depth === 2);
           <a
             href={`#${heading.slug}`}
             class:list={[
-              "block border-l-2 -ml-px transition-colors duration-150",
+              "block border-l-2 -ml-px pl-4 transition-colors duration-150",
               "text-gray-500 hover:text-gray-900 border-transparent hover:border-gray-400",
-              heading.depth === 3 ? "pl-6 text-xs" : "pl-4",
             ]}
             data-toc-link={heading.slug}
           >

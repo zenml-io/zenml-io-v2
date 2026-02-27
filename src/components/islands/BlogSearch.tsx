@@ -1,8 +1,9 @@
 /**
  * BlogSearch — inline search input with dropdown results.
  *
- * Embedded in CategoryBar. Receives a pre-built post index as JSON prop.
- * Supports Cmd+K / Ctrl+K focus, arrow key navigation, Escape to clear.
+ * Embedded in CategoryBar. Lazy-fetches the blog search index from a static
+ * JSON endpoint on first interaction (focus or typing). Supports Cmd+K /
+ * Ctrl+K focus, arrow key navigation, Escape to clear.
  */
 import { useState, useRef, useEffect, useCallback } from "preact/hooks";
 
@@ -15,15 +16,40 @@ interface PostEntry {
 }
 
 interface Props {
-  posts: PostEntry[];
+  searchIndexUrl: string;
 }
 
-export default function BlogSearch({ posts }: Props) {
+// Module-level cache so re-renders / re-mounts don't re-fetch
+let indexCache: PostEntry[] | null = null;
+
+export default function BlogSearch({ searchIndexUrl }: Props) {
   const [query, setQuery] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(-1);
+  const [posts, setPosts] = useState<PostEntry[]>(indexCache ?? []);
+  const [isLoading, setIsLoading] = useState(false);
+  const [loadError, setLoadError] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const fetchedRef = useRef(indexCache !== null);
+
+  /** Fetch the search index once (on first interaction). */
+  const loadIndex = useCallback(async () => {
+    if (fetchedRef.current) return;
+    fetchedRef.current = true;
+    setIsLoading(true);
+    try {
+      const res = await fetch(searchIndexUrl);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data: PostEntry[] = await res.json();
+      indexCache = data;
+      setPosts(data);
+    } catch {
+      setLoadError(true);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [searchIndexUrl]);
 
   const results = query.trim().length >= 2
     ? posts
@@ -121,7 +147,10 @@ export default function BlogSearch({ posts }: Props) {
             setIsOpen(true);
             setActiveIndex(-1);
           }}
-          onFocus={() => setIsOpen(true)}
+          onFocus={() => {
+            setIsOpen(true);
+            loadIndex();
+          }}
           onKeyDown={handleKeyDown}
           aria-label="Search blog posts"
           aria-expanded={showDropdown}
@@ -142,7 +171,11 @@ export default function BlogSearch({ posts }: Props) {
           role="listbox"
           class="absolute right-0 top-full z-50 mt-1.5 w-80 overflow-hidden rounded-md border border-gray-200 bg-white shadow-lg"
         >
-          {results.length > 0 ? (
+          {isLoading ? (
+            <div class="px-4 py-6 text-center text-sm text-gray-500">Loading…</div>
+          ) : loadError ? (
+            <div class="px-4 py-6 text-center text-sm text-gray-500">Search unavailable</div>
+          ) : results.length > 0 ? (
             results.map((post, i) => (
               <a
                 key={post.slug}

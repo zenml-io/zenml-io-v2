@@ -254,20 +254,17 @@ body {
   opacity: 1;
 }
 
-/* --- Code blocks (Shiki build-time highlighting) --- */
-pre {
+/* --- Code blocks (Shiki build-time highlighting) — scoped to .prose --- */
+.prose pre {
   background-color: #f3f4f6;
   color: #1f0c47;
   border-radius: 10px;
   overflow-x: auto;
-}
-
-.prose pre {
   margin-top: 1.5rem;
   margin-bottom: 1.5rem;
 }
 
-pre code {
+.prose pre code {
   display: block;
   padding: 2em;
   font-family: var(--font-mono);
@@ -281,11 +278,24 @@ pre code {
 /* --- Dark code blocks (get-started page, dark sections) --- */
 .dark-code-block pre {
   background-color: #1a1a2e;
+  color: #e2e8f0;
   border-radius: 10px;
+  overflow-x: auto;
 }
 
-/* --- Inline code --- */
-:not(pre) > code {
+.dark-code-block pre code {
+  display: block;
+  padding: 2em;
+  font-family: var(--font-mono);
+  font-weight: 450;
+  font-size: 0.875rem;
+  line-height: 1.7;
+  white-space: pre;
+  word-break: normal;
+}
+
+/* --- Inline code — scoped to .prose --- */
+.prose :not(pre) > code {
   background-color: #eee;
   color: #f53d81;
   padding: 0.125rem 0.375rem;

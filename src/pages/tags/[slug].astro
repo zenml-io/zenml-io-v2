@@ -50,20 +50,6 @@ for (const post of allPosts) {
   }
 }
 
-// Build search index
-for (const p of mainFeedPosts) {
-  if (p.data.category && !categoryMap.has(p.data.category)) {
-    const cat = await getEntry("categories", p.data.category);
-    if (cat) categoryMap.set(p.data.category, { name: cat.data.name, slug: cat.data.slug });
-  }
-}
-const searchIndex = mainFeedPosts.map((p) => ({
-  title: p.data.title,
-  slug: p.data.slug,
-  excerpt: p.data.seo?.description || "",
-  date: p.data.date.toISOString(),
-  category: categoryMap.get(p.data.category || "")?.name || "",
-}));
 ---
 
 <BaseLayout
@@ -71,7 +57,7 @@ const searchIndex = mainFeedPosts.map((p) => ({
   description={`Blog posts tagged with "${tag.data.name}" from the ZenML team.`}
 >
   {/* Section header: sticky CategoryBar with back link */}
-  <CategoryBar categories={categories} backLink searchIndex={searchIndex} />
+  <CategoryBar categories={categories} backLink />
 
   {/* Tag header — gradient section */}
   <section class="bg-linear-to-t from-primary-50 to-white border-b border-gray-200">

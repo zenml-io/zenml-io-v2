@@ -107,7 +107,7 @@ const formattedDate = publishedDate
               <span class="font-medium text-gray-700">{authorName}</span>
             )
           )}
-          <span class="text-gray-300" aria-hidden="true">&middot;</span>
+          {authorName && <span class="text-gray-300" aria-hidden="true">&middot;</span>}
           <a href={href} class="font-medium text-primary-600 hover:text-primary-700">
             Read article &rarr;
           </a>
