@@ -2,13 +2,14 @@
 /**
  * Paginated blog listing (page 2+).
  *
- * Shares the same sidebar, card, and pagination components as page 1.
+ * Grid-only layout with CategoryBar at top and TagCloud at bottom.
  * Page 1 is handled by blog/index.astro.
  */
 import { getEntry } from "astro:content";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import BlogCard from "../../../components/blog/BlogCard.astro";
-import BlogSidebar from "../../../components/blog/BlogSidebar.astro";
+import CategoryBar from "../../../components/blog/CategoryBar.astro";
+import TagCloud from "../../../components/blog/TagCloud.astro";
 import Pagination from "../../../components/Pagination.astro";
 import {
   getMainFeedPosts,
@@ -43,12 +44,12 @@ export async function getStaticPaths() {
 
 const { posts, currentPage, totalPages, allPosts } = Astro.props;
 
-// Sidebar data
+// Taxonomy data
 const categories = await getCategoryCounts(allPosts);
 const popularTags = await getTagCounts(allPosts);
 
 // Resolve metadata
-const authorMap = new Map<string, { name: string; slug: string }>();
+const authorMap = new Map<string, Awaited<ReturnType<typeof resolveAuthor>>>();
 const categoryMap = new Map<string, { name: string; slug: string }>();
 for (const post of posts) {
   if (post.data.author && !authorMap.has(post.data.author)) {
@@ -60,58 +61,63 @@ for (const post of posts) {
     if (cat) categoryMap.set(post.data.category, { name: cat.data.name, slug: cat.data.slug });
   }
 }
+
+// Build search index
+for (const p of allPosts) {
+  if (p.data.category && !categoryMap.has(p.data.category)) {
+    const cat = await getEntry("categories", p.data.category);
+    if (cat) categoryMap.set(p.data.category, { name: cat.data.name, slug: cat.data.slug });
+  }
+}
+const searchIndex = allPosts.map((p) => ({
+  title: p.data.title,
+  slug: p.data.slug,
+  excerpt: p.data.seo?.description || "",
+  date: p.data.date.toISOString(),
+  category: categoryMap.get(p.data.category || "")?.name || "",
+}));
 ---
 
 <BaseLayout
   title={`Blog - Page ${currentPage} - ZenML`}
   description="Insights on MLOps, LLMOps, and production machine learning from the ZenML team."
 >
-  {/* Purple gradient header */}
-  <div class="bg-gradient-to-b from-primary-50 to-white">
-    <div class="mx-auto max-w-[1440px] px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
-      <div class="text-center">
-        <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">ZenML Blog</h1>
-        <p class="mx-auto mt-4 max-w-2xl text-lg text-gray-600">
-          The latest news, opinions and technical guides from ZenML.
-        </p>
-      </div>
-    </div>
-  </div>
+  {/* Section header: sticky CategoryBar at top */}
+  <CategoryBar categories={categories} searchIndex={searchIndex} />
 
   <div class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8">
-    <div class="gap-10 pb-12 lg:grid lg:grid-cols-[220px_1fr]">
-      <BlogSidebar categories={categories} popularTags={popularTags} />
-
-      <div>
-        {/* Post grid */}
-        <div class="grid gap-6 py-8 md:grid-cols-2 xl:grid-cols-3">
-          {posts.map((post) => {
-            const author = authorMap.get(post.data.author || "");
-            const category = categoryMap.get(post.data.category || "");
-            return (
-              <BlogCard
-                href={`/blog/${post.data.slug}`}
-                title={post.data.title}
-                excerpt={post.data.seo?.description}
-                image={post.data.mainImage}
-                authorName={author?.name}
-                authorSlug={author?.slug}
-                readingTime={post.data.readingTime}
-                categoryName={category?.name}
-                categorySlug={category?.slug}
-              />
-            );
-          })}
-        </div>
-
-        {/* Pagination */}
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          getHref={blogPageHref}
-          ariaLabel="Blog pagination"
-        />
-      </div>
+    {/* Post grid */}
+    <div class="grid gap-8 py-10 md:grid-cols-2 xl:grid-cols-3">
+      {posts.map((post) => {
+        const author = authorMap.get(post.data.author || "");
+        const category = categoryMap.get(post.data.category || "");
+        return (
+          <BlogCard
+            href={`/blog/${post.data.slug}`}
+            title={post.data.title}
+            excerpt={post.data.seo?.description}
+            image={post.data.mainImage}
+            authorName={author?.name}
+            authorSlug={author?.slug}
+            authorAvatar={author?.avatar}
+            readingTime={post.data.readingTime}
+            publishedDate={post.data.date}
+            categoryName={category?.name}
+            categorySlug={category?.slug}
+          />
+        );
+      })}
     </div>
+
+    {/* Pagination */}
+    <Pagination
+      currentPage={currentPage}
+      totalPages={totalPages}
+      getHref={blogPageHref}
+      ariaLabel="Blog pagination"
+    />
   </div>
+
+  {/* Footer tag cloud */}
+  <TagCloud tags={popularTags} />
 </BaseLayout>

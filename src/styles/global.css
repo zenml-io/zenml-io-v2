@@ -504,7 +504,15 @@ pre code {
   border-radius: 0.25rem;
 }
 
-/* --- Anchor offset for in-page links (behind sticky nav) --- */
+/* --- Anchor offset for in-page links (behind sticky nav + category bar) --- */
 .prose [id] {
-  scroll-margin-top: 5rem;
+  scroll-margin-top: 8rem;
+}
+
+/* --- Contain absolutely-positioned iframes (Webflow Loom/YouTube embeds) --- */
+.prose iframe[style*="position: absolute"] {
+  position: relative !important;
+  aspect-ratio: 16 / 9;
+  width: 100% !important;
+  height: auto !important;
 }

@@ -17,8 +17,8 @@ interface Props {
 
 const { headings } = Astro.props;
 
-// Filter to h2 and h3 only (h1 is the post title)
-const tocHeadings = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
+// Show only h2 headings — keeps the TOC scannable on long posts
+const tocHeadings = headings.filter((h) => h.depth === 2);
 ---
 
 {tocHeadings.length >= 3 && (
