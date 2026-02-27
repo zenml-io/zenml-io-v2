@@ -17,12 +17,12 @@ interface Props {
 const { headline, body, primaryCta, secondaryCta } = Astro.props;
 ---
 
-<section class="bg-gray-900 py-16 sm:py-20">
+<section class="bg-gray-900 bg-cover bg-center py-16 sm:py-20" style="background-image: url('/images/grid_bg_02.webp')">
   <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
     <h2 class="text-2xl font-bold text-white sm:text-3xl">{headline}</h2>
     <p class="mt-3 text-lg text-gray-300">{body}</p>
     <div class="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-      <Button href={primaryCta.href} size="lg">
+      <Button href={primaryCta.href} size="lg" class="!bg-zenml-700 !border-zenml-700 hover:!bg-zenml-800">
         {primaryCta.label}
       </Button>
       <Button href={secondaryCta.href} variant="secondary" size="lg">
