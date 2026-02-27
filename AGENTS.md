@@ -8,7 +8,7 @@
   - `lib/` typed utilities/data contracts (SEO, navigation, domain helpers).
   - `styles/global.css` Tailwind v4 theme tokens and global styles.
 - `public/` stores static assets and edge config (`_redirects`, `_headers`).
-- `functions/api/` contains Cloudflare Pages Functions (for forms).
+- `src/pages/api/` contains Astro server-side API routes (`prerender: false`) for forms, CSP reports, etc. **Do NOT use `functions/`** — the Cloudflare adapter silently ignores it.
 - `scripts/phase2`, `scripts/phase4`, `scripts/phase6` hold migration/validation utilities.
 - `design/` and `scripts/internal/` are internal artifacts and are gitignored; do not commit from them.
 

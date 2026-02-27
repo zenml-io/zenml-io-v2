@@ -64,11 +64,11 @@ customize freely.
 | Hosting | **Cloudflare Pages** — edge CDN, branch previews, auto CI/CD |
 | Assets | **Cloudflare R2** — object storage for images/files |
 | Styling | **Tailwind CSS** — utility-first |
-| Interactive | **Preact islands** — 7 islands: LLMOpsFilter, ContactForm, CookieConsent, FeatureTabsSlider, LottieHero, ProTestimonialCarousel, RoiCalculator |
+| Interactive | **Preact islands** — 9 islands: LLMOpsFilter, ContactForm, DemoRequestFormAB, BlogSearch, CookieConsent, FeatureTabsSlider, LottieHero, ProTestimonialCarousel, RoiCalculator |
 | Search | **Pagefind** — build-time full-text search index (1,453 LLMOps pages indexed, hybrid with JSON faceted filtering) |
 | Forms | **ContactForm** Preact island → Astro API routes (`src/pages/api/forms/[formType].ts`, `prerender: false`) → Segment HTTP API (identify + track). Cal.com embeds for demo booking. Brevo for newsletter |
 | Analytics | **Plausible** + GA4 + Segment (hostname-gated to production domain to prevent preview pollution) |
-| Code highlighting | **Shiki** (`github-dark` theme) at build time + **Inconsolata** monospace font |
+| Code highlighting | **Shiki** (custom `zenml-light`/`zenml-dark` themes) at build time + **JetBrains Mono** monospace font (self-hosted variable woff2) |
 | CRM | **Attio** (keep existing) |
 | Design approach | Pixel-perfect recreation first, then iterate |
 
@@ -218,7 +218,9 @@ Worker and share access to Cloudflare runtime bindings via
 
 ### Preact Islands (interactive client-side components)
 - `src/components/islands/LLMOpsFilter.tsx` — LLMOps database "Research Hub" (faceted sidebar with industry/tag facets, Pagefind full-text search, AND/OR tag mode, sort, clickable chips, mobile drawer, WCAG-compliant accessibility)
+- `src/components/islands/BlogSearch.tsx` — Blog search with Cmd+K shortcut, lazy-fetches `/blog/search-index.json` on focus (`client:media` — desktop only)
 - `src/components/islands/ContactForm.tsx` — Form submission → Astro API routes
+- `src/components/islands/DemoRequestFormAB.tsx` — A/B variant demo request form (sessionStorage-based split, Plausible events)
 - `src/components/islands/CookieConsent.tsx` — Cookie consent banner (4 categories)
 - `src/components/islands/FeatureTabsSlider.tsx` — Homepage auto-cycling feature tabs
 - `src/components/islands/LottieHero.tsx` — Hero Lottie animation player
