@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+html {
+  scroll-behavior: smooth;
+}
+
 /*
  * ZenML design tokens — extracted from the Webflow production site.
  * See docs/design-tokens.md for full reference.
