@@ -1,0 +1,16 @@
+{
+  "extends": "./tsconfig.json",
+  "include": [
+    ".astro/types.d.ts",
+    "src/**/*",
+    "functions/**/*",
+    "astro.config.ts"
+  ],
+  "exclude": [
+    "dist",
+    "design",
+    "scripts",
+    ".wrangler",
+    "demo-video"
+  ]
+}

@@ -5,7 +5,7 @@
  * the Cloudflare Pages Function (server-side).
  */
 
-export type FormType = "demo-request" | "whitepaper" | "startup-application";
+export type FormType = "demo-request" | "whitepaper" | "startup-academic";
 
 interface FieldRule {
   required?: boolean;
@@ -26,7 +26,7 @@ export const FORM_RULES: Record<FormType, Record<string, FieldRule>> = {
     fullName: { required: true, message: "Full name is required" },
     email: { required: true, pattern: EMAIL_RE, message: "Valid work email is required" },
   },
-  "startup-application": {
+  "startup-academic": {
     fullName: { required: true, message: "Full name is required" },
     email: { required: true, pattern: EMAIL_RE, message: "Valid email is required" },
     linkedin: { required: true, pattern: URL_RE, message: "LinkedIn URL is required" },
