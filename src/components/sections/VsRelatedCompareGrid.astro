@@ -28,11 +28,11 @@ const { eyebrow, headline, items } = Astro.props;
           {headline}
         </h2>
       )}
-      <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {items.map((item) => (
           <a
             href={item.href}
-            class="group flex items-center gap-4 rounded-xl border border-gray-200 bg-white p-5 shadow-sm transition hover:border-zenml-300 hover:shadow-md"
+            class="group flex items-center gap-4 rounded-md border border-gray-200 bg-white p-5 shadow-sm transition hover:border-zenml-300 hover:shadow-md"
           >
             {item.toolIcon && (
               <img

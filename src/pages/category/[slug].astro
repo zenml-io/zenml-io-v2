@@ -2,13 +2,20 @@
 /**
  * Category taxonomy page.
  *
- * Shows all blog posts in this category using the shared BlogCard component.
- * Generates /category/<slug> for each category in the collection.
+ * Shows all blog posts in this category with the CategoryBar at top
+ * and TagCloud at bottom.
  */
 import { getCollection, getEntry } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import BlogCard from "../../components/blog/BlogCard.astro";
-import { resolveAuthor } from "../../lib/blog";
+import CategoryBar from "../../components/blog/CategoryBar.astro";
+import TagCloud from "../../components/blog/TagCloud.astro";
+import {
+  resolveAuthor,
+  getMainFeedPosts,
+  getCategoryCounts,
+  getTagCounts,
+} from "../../lib/blog";
 
 export async function getStaticPaths() {
   const categories = await getCollection("categories");
@@ -24,37 +31,49 @@ const allPosts = (
   await getCollection("blog", ({ data }) => !data.draft && data.category === category.data.slug)
 ).sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
 
-// Resolve authors for display
-const authorMap = new Map<string, { name: string; slug: string }>();
+// CategoryBar needs all main feed posts for counts
+const mainFeedPosts = await getMainFeedPosts();
+const categories = await getCategoryCounts(mainFeedPosts);
+const popularTags = await getTagCounts(mainFeedPosts);
+
+// Resolve authors
+const authorMap = new Map<string, Awaited<ReturnType<typeof resolveAuthor>>>();
+const categoryMap = new Map<string, { name: string; slug: string }>();
 for (const post of allPosts) {
   if (post.data.author && !authorMap.has(post.data.author)) {
     const a = await resolveAuthor(post.data.author);
     if (a) authorMap.set(post.data.author, a);
   }
+  if (post.data.category && !categoryMap.has(post.data.category)) {
+    const cat = await getEntry("categories", post.data.category);
+    if (cat) categoryMap.set(post.data.category, { name: cat.data.name, slug: cat.data.slug });
+  }
 }
+
 ---
 
 <BaseLayout
   title={`${category.data.name} - ZenML Blog`}
   description={`Blog posts about ${category.data.name} from the ZenML team.`}
 >
-  <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-    <header class="mb-10">
-      <a href="/blog" class="mb-4 inline-flex items-center gap-1.5 text-sm font-medium text-primary-600 hover:text-primary-700">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" class="shrink-0">
-          <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        Back to Blog
-      </a>
-      <h1 class="text-4xl font-bold tracking-tight text-gray-900">{category.data.name}</h1>
-      <p class="mt-3 text-lg text-gray-600">
+  {/* Section header: sticky CategoryBar with back link */}
+  <CategoryBar categories={categories} activeCategory={category.data.slug} backLink />
+
+  {/* Category header — gradient section */}
+  <section class="bg-linear-to-t from-primary-50 to-white border-b border-gray-200">
+    <div class="mx-auto max-w-[1440px] px-4 py-10 sm:px-6 sm:py-14 lg:px-8">
+      <h1 class="text-3xl font-bold tracking-tight text-gray-900">{category.data.name}</h1>
+      <p class="mt-2 text-base text-gray-600">
         {allPosts.length} {allPosts.length === 1 ? "post" : "posts"} in this category
       </p>
-    </header>
+    </div>
+  </section>
 
-    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+  <div class="mx-auto max-w-[1440px] px-4 py-10 sm:px-6 lg:px-8">
+    <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
       {allPosts.map((post) => {
         const author = authorMap.get(post.data.author || "");
+        const cat = categoryMap.get(post.data.category || "");
         return (
           <BlogCard
             href={`/blog/${post.data.slug}`}
@@ -63,7 +82,11 @@ for (const post of allPosts) {
             image={post.data.mainImage}
             authorName={author?.name}
             authorSlug={author?.slug}
+            authorAvatar={author?.avatar}
             readingTime={post.data.readingTime}
+            publishedDate={post.data.date}
+            categoryName={cat?.name}
+            categorySlug={cat?.slug}
           />
         );
       })}
@@ -73,4 +96,7 @@ for (const post of allPosts) {
       <p class="text-center text-gray-500">No posts in this category yet.</p>
     )}
   </div>
+
+  {/* Footer tag cloud */}
+  <TagCloud tags={popularTags} />
 </BaseLayout>

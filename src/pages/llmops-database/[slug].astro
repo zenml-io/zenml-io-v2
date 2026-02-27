@@ -167,7 +167,7 @@ const ogImage = entry.data.seo?.ogImage;
     {relatedWithTags.length > 0 && (
       <section class="mt-16 border-t border-gray-200 pt-10" data-pagefind-ignore>
         <h2 class="mb-6 text-xl font-bold text-gray-900">More Like This</h2>
-        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {relatedWithTags.map((r) => (
             <a
               href={`/llmops-database/${r.slug}`}

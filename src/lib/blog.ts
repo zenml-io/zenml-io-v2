@@ -95,10 +95,14 @@ export async function getCategoryCounts(posts: BlogPost[]): Promise<TaxonomyCoun
     }
   }
 
+  // Bulk fetch all categories once, then look up by slug
+  const allCategories = await getCollection("categories");
+  const catMap = new Map(allCategories.map((c) => [c.data.slug, c.data.name]));
+
   const result: TaxonomyCount[] = [];
   for (const [slug, count] of countMap) {
-    const cat = await getEntry("categories", slug);
-    if (cat) result.push({ slug, name: cat.data.name, count });
+    const name = catMap.get(slug);
+    if (name) result.push({ slug, name, count });
   }
   return result.sort((a, b) => b.count - a.count);
 }
@@ -111,10 +115,14 @@ export async function getTagCounts(posts: BlogPost[]): Promise<TaxonomyCount[]> 
     }
   }
 
+  // Bulk fetch all tags once, then look up by slug
+  const allTags = await getCollection("tags");
+  const tagMap = new Map(allTags.map((t) => [t.data.slug, t.data.name]));
+
   const result: TaxonomyCount[] = [];
   for (const [slug, count] of countMap) {
-    const tag = await getEntry("tags", slug);
-    if (tag) result.push({ slug, name: tag.data.name, count });
+    const name = tagMap.get(slug);
+    if (name) result.push({ slug, name, count });
   }
   return result.sort((a, b) => b.count - a.count);
 }
@@ -148,6 +156,13 @@ export async function resolveAuthor(authorSlug?: string): Promise<ResolvedAuthor
 
 export const PAGE_SIZE = 12;
 
+/**
+ * Number of grid posts on page 1 (featured post is shown separately above).
+ * Shared between blog/index.astro and blog/page/[page].astro to keep
+ * pagination offsets consistent.
+ */
+export const PAGE_1_GRID_COUNT = PAGE_SIZE;
+
 export function getPaginationItems(
   currentPage: number,
   totalPages: number,
@@ -178,4 +193,30 @@ export function getPaginationItems(
 /** Returns the href for a given blog page number. */
 export function blogPageHref(page: number): string {
   return page === 1 ? "/blog" : `/blog/page/${page}`;
+}
+
+// ---------------------------------------------------------------------------
+// Blog search index (used by /blog/search-index.json endpoint)
+// ---------------------------------------------------------------------------
+
+export interface BlogSearchEntry {
+  title: string;
+  slug: string;
+  excerpt: string;
+  date: string;
+  category: string;
+}
+
+/** Build the search index payload for all given posts. */
+export async function buildBlogSearchIndex(posts: BlogPost[]): Promise<BlogSearchEntry[]> {
+  const allCategories = await getCollection("categories");
+  const catMap = new Map(allCategories.map((c) => [c.data.slug, c.data.name]));
+
+  return posts.map((p) => ({
+    title: p.data.title,
+    slug: p.data.slug,
+    excerpt: p.data.seo?.description || "",
+    date: p.data.date.toISOString(),
+    category: catMap.get(p.data.category || "") || "",
+  }));
 }
