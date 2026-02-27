@@ -35,6 +35,7 @@ export interface LogoItem {
   src: string;
   width?: number;
   height?: number;
+  maxWidth?: string;
 }
 
 const R2 = "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30";
@@ -61,7 +62,7 @@ export const LOGO_CLOUD = {
     { name: "Aisera", src: "/images/logos/aisera.svg" },
     { name: "ALKi", src: "/images/logos/alki.webp" },
     { name: "Altenar", src: "/images/logos/altenar.svg" },
-    { name: "Brevo", src: "/images/logos/brevo.webp" },
+    { name: "Brevo", src: "/images/logos/brevo.webp", maxWidth: "80px" },
     { name: "Digital Diagnostics", src: "/images/logos/digital-diagnostics.svg" },
     { name: "EarthDaily Agro", src: "/images/logos/earthdaily-agro.png" },
     { name: "Eikon Therapeutics", src: "/images/logos/eikon-therapeutics.svg" },
