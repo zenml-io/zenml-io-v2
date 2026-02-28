@@ -35,6 +35,7 @@ export interface LogoItem {
   src: string;
   width?: number;
   height?: number;
+  maxWidth?: string;
 }
 
 import { R2_WEBFLOW_BASE } from "./constants";
@@ -62,7 +63,7 @@ export const LOGO_CLOUD = {
     { name: "Aisera", src: "/images/logos/aisera.svg" },
     { name: "ALKi", src: "/images/logos/alki.webp" },
     { name: "Altenar", src: "/images/logos/altenar.svg" },
-    { name: "Brevo", src: "/images/logos/brevo.webp" },
+    { name: "Brevo", src: "/images/logos/brevo.webp", maxWidth: "80px" },
     { name: "Digital Diagnostics", src: "/images/logos/digital-diagnostics.svg" },
     { name: "EarthDaily Agro", src: "/images/logos/earthdaily-agro.png" },
     { name: "Eikon Therapeutics", src: "/images/logos/eikon-therapeutics.svg" },
@@ -308,6 +309,8 @@ export const HOMEPAGE_TESTIMONIALS: Testimonial[] = [
     name: "Harold Gimenez",
     position: "SVP R&D at HashiCorp",
     text: "ZenML offers the capability to build end-to-end ML workflows that seamlessly integrate with various components of the ML stack. This enables teams to accelerate their time to market by bridging the gap between data scientists and engineers.",
+    avatarUrl: `${R2}/31a5f8ee/653297b0b924af52998661bf_harold.webp`,
+    companyLogoUrl: `${R2}/8d7e77c8/hashicorp-min.svg`,
     companyName: "HashiCorp",
   },
   {
@@ -315,6 +318,7 @@ export const HOMEPAGE_TESTIMONIALS: Testimonial[] = [
     position: "Former Chief Scientist Salesforce and Founder of You.com",
     text: "ZenML allows orchestrating ML pipelines independent of any infrastructure or tooling choices. ML teams can free their minds of tooling FOMO from the fast-moving MLOps space, with the simple and extensible ZenML interface.",
     avatarUrl: `${R2}/3725b9aa/66702f264ab301a2a95b1213_richard.webp`,
+    companyLogoUrl: `${R2}/4383273c/salesforce.webp`,
     companyName: "Salesforce",
   },
   {
@@ -329,12 +333,15 @@ export const HOMEPAGE_TESTIMONIALS: Testimonial[] = [
     name: "Chris Manning",
     position: "Professor of Linguistics and CS at Stanford",
     text: "Many teams still struggle with managing models, datasets, code, and monitoring as they deploy ML models into production. ZenML provides a solid toolkit for making that easy in the Python ML world.",
+    avatarUrl: `${R2}/39ef3f55/christopher_stanford.avif`,
+    companyLogoUrl: `${R2}/e0877660/stanford_logo.webp`,
     companyName: "Stanford University",
   },
   {
     name: "Francesco Pudda",
     position: "Machine Learning Engineer at WiseTech Global",
     text: "Thanks to ZenML we've set up a pipeline where before we had only Jupyter notebooks. It helped us tremendously with data and model versioning.",
+    avatarUrl: `${R2}/2d0a68a8/65327258ba7596c721021f2d_pudda.webp`,
     companyLogoUrl: "/images/logos/wisetech.svg",
     companyName: "WiseTech Global",
   },
@@ -343,6 +350,7 @@ export const HOMEPAGE_TESTIMONIALS: Testimonial[] = [
     position: "Founder of MadeWithML",
     text: "ZenML allows you to quickly and responsibly go from POC to production ML systems while enabling reproducibility, flexibility, and above all, sanity.",
     avatarUrl: `${R2}/c9fd250b/667bd428a30ba8fd817731c0_goku_quote.jpeg`,
+    companyLogoUrl: `${R2}/2f3c4ecd/madewithml.webp`,
     companyName: "MadeWithML",
   },
 ];

@@ -27,7 +27,7 @@ const headerStarsFallback = formatStars(FALLBACK_STARS);
 
 <header class="sticky top-0 z-50 w-full bg-white/95 backdrop-blur-sm border-b border-gray-200/60">
   <div class="mx-auto max-w-[var(--container-lg)] px-4 sm:px-6 lg:px-8">
-    <div class="flex h-[72px] items-center justify-between">
+    <div class="flex h-[72px] items-center">
       {/* Logo */}
       <a href="/" class="flex shrink-0 items-center gap-2">
         <img
@@ -40,12 +40,12 @@ const headerStarsFallback = formatStars(FALLBACK_STARS);
       </a>
 
       {/* Desktop Nav */}
-      <nav class="hidden lg:flex lg:items-center lg:gap-1 h-full" role="navigation" aria-label="Main navigation">
+      <nav class="hidden lg:flex lg:items-center lg:gap-1 lg:ml-12 h-full" role="navigation" aria-label="Main navigation">
         {/* Dropdown menus */}
         {NAV_DROPDOWNS.map((dropdown) => (
           <div class="group flex h-full items-center">
             <button
-              class="flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50 hover:text-gray-900"
+              class="flex items-center gap-1 rounded-md px-3 py-2 text-sm font-semibold text-gray-900 transition-colors hover:bg-gray-50"
               aria-expanded="false"
               aria-haspopup="true"
             >
@@ -56,48 +56,46 @@ const headerStarsFallback = formatStars(FALLBACK_STARS);
             </button>
             {/* Dropdown panel — positioned relative to the <header> (sticky = containing block) */}
             <div class="pointer-events-none invisible absolute inset-x-0 top-full z-50 opacity-0 transition-[opacity,visibility] duration-200 group-hover:pointer-events-auto group-hover:visible group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:visible group-focus-within:opacity-100">
-              <div class="bg-white shadow-large border-b border-gray-100">
+              <div class="bg-white shadow-large border-t border-b border-gray-100">
               <div class="mx-auto max-w-[var(--container-lg)] px-4 sm:px-6 lg:px-8">
                 <div class="flex">
-                  {/* Left: link columns */}
-                  <div class="flex flex-1 gap-0 p-5">
-                    {dropdown.sections.slice(0, 2).map((section) => (
-                      <div class="flex-1 px-2">
-                        <div class="mb-3 text-xs font-semibold uppercase tracking-wider text-gray-400">
-                          {section.heading}
-                        </div>
-                        <div class="space-y-1">
-                          {section.links.map((link) => (
-                            <a
-                              href={link.href}
-                              class="group/link flex items-start gap-3 rounded-md p-2 transition-colors hover:bg-gray-50"
-                              target={link.external ? "_blank" : undefined}
-                              rel={link.external ? "noopener noreferrer" : undefined}
-                            >
-                              <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-zenml-25 text-zenml-500">
-                                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                  <path d="M13 2L4.09 12.69a.5.5 0 00.41.81H12l-1 10 8.91-10.69a.5.5 0 00-.41-.81H12l1-10z" />
-                                </svg>
-                              </div>
-                              <div>
-                                <div class="text-sm font-medium text-gray-900 group-hover/link:text-zenml-500">
-                                  {link.label}
-                                </div>
-                                {link.description && (
-                                  <div class="mt-0.5 text-xs text-gray-500 leading-snug">
-                                    {link.description}
-                                  </div>
-                                )}
-                              </div>
-                            </a>
-                          ))}
-                        </div>
+                  {/* Link columns — all equal width */}
+                  {dropdown.sections.slice(0, 2).map((section) => (
+                    <div class="flex-1 p-5">
+                      <div class="mb-3 text-xs font-semibold uppercase tracking-wider text-gray-400">
+                        {section.heading}
                       </div>
-                    ))}
-                  </div>
-                  {/* Right: featured/organization section */}
+                      <div class="space-y-1">
+                        {section.links.map((link) => (
+                          <a
+                            href={link.href}
+                            class="group/link flex items-center gap-3 rounded-md p-2 transition-colors hover:bg-gray-50"
+                            target={link.external ? "_blank" : undefined}
+                            rel={link.external ? "noopener noreferrer" : undefined}
+                          >
+                            <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-zenml-25 text-zenml-500">
+                              <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <Fragment set:html={link.icon || '<path d="M13 2L4.09 12.69a.5.5 0 00.41.81H12l-1 10 8.91-10.69a.5.5 0 00-.41-.81H12l1-10z"/>'} />
+                              </svg>
+                            </div>
+                            <div>
+                              <div class="text-sm font-medium text-gray-900 group-hover/link:text-zenml-500">
+                                {link.label}
+                              </div>
+                              {link.description && (
+                                <div class="mt-0.5 text-xs text-gray-500 leading-snug">
+                                  {link.description}
+                                </div>
+                              )}
+                            </div>
+                          </a>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                  {/* Third column: featured/organization section */}
                   {(dropdown.sections.length > 2 || dropdown.featured) && (
-                    <div class="w-[220px] border-l border-gray-100 bg-gray-50 p-5">
+                    <div class="flex-1 border-l border-gray-100 bg-gray-50/80 p-5">
                       {dropdown.sections.length > 2 && (
                         <div class="mb-4">
                           <div class="mb-3 text-xs font-semibold uppercase tracking-wider text-gray-400">
@@ -107,8 +105,15 @@ const headerStarsFallback = formatStars(FALLBACK_STARS);
                             {dropdown.sections[2].links.map((link) => (
                               <a
                                 href={link.href}
-                                class="group/link flex items-start gap-3 rounded-md p-2 transition-colors hover:bg-gray-100"
+                                class="group/link flex items-center gap-3 rounded-md p-2 transition-colors hover:bg-gray-100"
                               >
+                                {link.icon && (
+                                  <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-zenml-25 text-zenml-500">
+                                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                      <Fragment set:html={link.icon} />
+                                    </svg>
+                                  </div>
+                                )}
                                 <div>
                                   <div class="text-sm font-medium text-gray-900 group-hover/link:text-zenml-500">
                                     {link.label}
@@ -126,42 +131,60 @@ const headerStarsFallback = formatStars(FALLBACK_STARS);
                       )}
                       {dropdown.featured && (
                         <div>
-                          <div class="mb-3 text-xs font-semibold uppercase tracking-wider text-gray-400">
-                            {dropdown.featured.heading}
+                          <div class="mb-3 flex items-center justify-between">
+                            <div class="text-xs font-semibold uppercase tracking-wider text-gray-400">
+                              {dropdown.featured.heading}
+                            </div>
+                            {dropdown.featured.ctaHref && (
+                              <a
+                                href={dropdown.featured.ctaHref}
+                                class="inline-flex items-center gap-0.5 text-[11px] font-medium text-zenml-500 hover:text-zenml-600 transition-colors"
+                              >
+                                {dropdown.featured.ctaLabel}
+                                <svg class="h-3 w-3" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round">
+                                  <path d="M4.167 10h11.666M10.5 4.167L15.833 10 10.5 15.833" />
+                                </svg>
+                              </a>
+                            )}
                           </div>
                           {dropdown.featured.caseStudies?.map((cs) => (
                             <a
                               href={cs.href}
-                              class="mb-2 block rounded-md p-2 transition-colors hover:bg-gray-100"
+                              class="group/link mb-2 flex items-center gap-3 rounded-md p-2 transition-colors hover:bg-gray-100"
                             >
-                              <div class="text-sm font-medium text-gray-900">{cs.label}</div>
-                              <div class="text-xs text-gray-500">{cs.subtitle}</div>
+                              {cs.logoUrl && (
+                                <div class="flex h-10 w-16 shrink-0 items-center justify-center rounded-md bg-white border border-gray-100 p-1.5">
+                                  <img src={cs.logoUrl} alt={cs.label} class="h-full w-full object-contain" loading="lazy" />
+                                </div>
+                              )}
+                              <div>
+                                <div class="text-sm font-medium text-gray-900 group-hover/link:text-zenml-500">{cs.label}</div>
+                                <div class="text-xs text-gray-500">{cs.subtitle}</div>
+                              </div>
                             </a>
                           ))}
                           {dropdown.featured.links?.map((link) => (
                             <a
                               href={link.href}
-                              class="mb-2 block rounded-md p-2 transition-colors hover:bg-gray-100"
+                              class="group/link mb-2 flex items-center gap-3 rounded-md p-2 transition-colors hover:bg-gray-100"
                               target={link.external ? "_blank" : undefined}
                               rel={link.external ? "noopener noreferrer" : undefined}
                             >
-                              <div class="text-sm font-medium text-gray-900">{link.label}</div>
-                              {link.description && (
-                                <div class="text-xs text-gray-500">{link.description}</div>
+                              {link.icon && (
+                                <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-zenml-25 text-zenml-500">
+                                  <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <Fragment set:html={link.icon} />
+                                  </svg>
+                                </div>
                               )}
+                              <div>
+                                <div class="text-sm font-medium text-gray-900 group-hover/link:text-zenml-500">{link.label}</div>
+                                {link.description && (
+                                  <div class="mt-0.5 text-xs text-gray-500 leading-snug">{link.description}</div>
+                                )}
+                              </div>
                             </a>
                           ))}
-                          {dropdown.featured.ctaHref && (
-                            <a
-                              href={dropdown.featured.ctaHref}
-                              class="mt-2 inline-flex items-center gap-1 text-sm font-medium text-zenml-500 hover:text-zenml-600"
-                            >
-                              {dropdown.featured.ctaLabel}
-                              <svg class="h-4 w-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M4.167 10h11.666M10.5 4.167L15.833 10 10.5 15.833" />
-                              </svg>
-                            </a>
-                          )}
                         </div>
                       )}
                     </div>
@@ -178,10 +201,10 @@ const headerStarsFallback = formatStars(FALLBACK_STARS);
           <a
             href={link.href}
             class:list={[
-              "rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-gray-50",
+              "rounded-md px-3 py-2 text-sm font-semibold transition-colors hover:bg-gray-50",
               isActivePath(currentPath, link.href)
                 ? "text-zenml-500"
-                : "text-gray-700 hover:text-gray-900",
+                : "text-gray-900",
             ]}
           >
             {link.label}
@@ -190,7 +213,7 @@ const headerStarsFallback = formatStars(FALLBACK_STARS);
       </nav>
 
       {/* Desktop CTAs */}
-      <div class="hidden lg:flex lg:items-center lg:gap-3">
+      <div class="hidden lg:ml-auto lg:flex lg:items-center lg:gap-3">
         <div class="h-[28px]">
           <a
             href={GITHUB_REPO_URL}
@@ -222,7 +245,7 @@ const headerStarsFallback = formatStars(FALLBACK_STARS);
       {/* Mobile menu button */}
       <button
         type="button"
-        class="lg:hidden rounded-md p-2 text-gray-700 hover:bg-gray-50"
+        class="ml-auto lg:hidden rounded-md p-2 text-gray-700 hover:bg-gray-50"
         aria-label="Toggle menu"
         data-mobile-toggle
       >

@@ -94,7 +94,12 @@ const colCount = data.columnHeaders.length;
           <td></td>
           {data.ctaButtons.map((cta, i) => (
             <td class="px-4 py-4 text-center">
-              <Button href={cta.href} size="sm" variant={i === 0 && colCount === 2 ? "secondary" : "primary"}>
+              <Button
+                href={cta.href}
+                size="sm"
+                variant={i === 0 && colCount === 2 ? "secondary" : "primary"}
+                dataAnalytics={cta.analytics}
+              >
                 {cta.label}
               </Button>
             </td>

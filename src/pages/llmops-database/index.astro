@@ -11,6 +11,8 @@
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import LLMOpsFilter from "../../components/islands/LLMOpsFilter";
+import BrevoNewsletterForm from "../../components/sections/BrevoNewsletterForm.astro";
+import { BREVO_LLMOPS_CONFIG } from "../../lib/formConstants";
 
 // Resolve tag + industry display names for the filter UI
 const allTags = (await getCollection("llmops-tags"))
@@ -85,5 +87,16 @@ const entryCount = (await getCollection("llmops-database", ({ data }) => !data.d
         </div>
       </div>
     </noscript>
+
+    {/* LLMOps newsletter signup — mirrors Webflow original */}
+    <section class="mt-16 rounded-md border border-gray-200 bg-gray-50 px-8 py-10 sm:px-12">
+      <h2 class="text-xl font-semibold text-gray-900">Looking to Get Ahead in LLMOps?</h2>
+      <p class="mt-2 max-w-xl text-sm text-gray-600">
+        Subscribe to the ZenML newsletter and receive regular product updates, tutorials, examples, and more.
+      </p>
+      <div class="mt-6">
+        <BrevoNewsletterForm config={BREVO_LLMOPS_CONFIG} />
+      </div>
+    </section>
   </div>
 </BaseLayout>

@@ -12,12 +12,12 @@ import type { Runtime } from "@astrojs/cloudflare";
 
 export const prerender = false;
 
-type FormType = "demo-request" | "whitepaper" | "startup-application";
+type FormType = "demo-request" | "whitepaper" | "startup-academic";
 
 const VALID_FORM_TYPES = new Set<FormType>([
   "demo-request",
   "whitepaper",
-  "startup-application",
+  "startup-academic",
 ]);
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -33,7 +33,7 @@ const REQUIRED_FIELDS: Record<FormType, Record<string, { pattern?: RegExp; messa
     fullName: { message: "Full name is required" },
     email: { pattern: EMAIL_RE, message: "Valid work email is required" },
   },
-  "startup-application": {
+  "startup-academic": {
     fullName: { message: "Full name is required" },
     email: { pattern: EMAIL_RE, message: "Valid email is required" },
     linkedin: { pattern: URL_RE, message: "LinkedIn URL is required" },
@@ -47,9 +47,9 @@ const EXCLUDED_FIELDS = new Set(["cf-turnstile-response", "privacy"]);
 
 /** Per-form trait fields sent in the identify call. */
 const IDENTIFY_TRAITS: Record<FormType, string[]> = {
-  "demo-request": ["fullName", "email"],
+  "demo-request": ["fullName", "email", "company"],
   whitepaper: ["fullName", "email"],
-  "startup-application": ["fullName", "email", "company"],
+  "startup-academic": ["fullName", "email", "company"],
 };
 
 function jsonResponse(data: unknown, status = 200): Response {

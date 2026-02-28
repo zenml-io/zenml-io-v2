@@ -1,0 +1,39 @@
+---
+/**
+ * PlausibleBridge — global click delegation for Plausible analytics.
+ *
+ * Provides:
+ * 1. `window.__zenmlPlausibleTrack(eventName, props?)` — consent-safe helper
+ * 2. Delegated click handler: any element with `data-analytics="EventName"`
+ *    automatically fires `plausible("EventName")` on click.
+ *
+ * Consent-safe: only fires if `window.plausible` exists (injected by
+ * CookieConsent after user grants analytics consent).
+ *
+ * Included by both BaseLayout and MinimalLayout.
+ */
+---
+
+<script is:inline>
+  if (!window.__zenmlPlausibleBridgeInstalled) {
+    window.__zenmlPlausibleBridgeInstalled = true;
+
+    window.__zenmlPlausibleTrack = function (eventName, props) {
+      if (!window.plausible || !eventName) return;
+      if (props && typeof props === "object") {
+        window.plausible(eventName, { props: props });
+      } else {
+        window.plausible(eventName);
+      }
+    };
+
+    document.addEventListener("click", function (e) {
+      var el = e.target && e.target.closest
+        ? e.target.closest("[data-analytics]")
+        : null;
+      if (!el) return;
+      var name = el.getAttribute("data-analytics");
+      if (name) window.__zenmlPlausibleTrack(name);
+    });
+  }
+</script>

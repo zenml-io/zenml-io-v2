@@ -161,7 +161,7 @@ export default function ContactForm({
   // Success state
   if (state === "success") {
     return (
-      <div class="rounded-xl border border-green-200 bg-green-50 p-6 text-center sm:p-8">
+      <div class="rounded-md border border-green-200 bg-green-50 p-6 text-center sm:p-8">
         <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
           <svg class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
@@ -198,7 +198,7 @@ export default function ContactForm({
   }
 
   return (
-    <div class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm sm:p-8">
+    <div class="rounded-md border border-gray-200 bg-white p-6 shadow-sm sm:p-8">
       {/* Error banner */}
       {state === "error" && serverError && (
         <div class="mb-4 rounded-lg bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700">

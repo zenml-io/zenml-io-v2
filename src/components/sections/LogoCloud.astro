@@ -23,7 +23,7 @@ interface Props {
 const {
   label = LOGO_CLOUD.label,
   logos = LOGO_CLOUD.logos,
-  bgClass = "border-y border-gray-100 bg-gray-50",
+  bgClass = "border-b border-gray-200 bg-gray-50",
   fadeFromClass = "from-gray-50",
 } = Astro.props;
 ---
@@ -41,14 +41,15 @@ const {
     <div class:list={["pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r to-transparent sm:w-24", fadeFromClass]}></div>
     <div class:list={["pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l to-transparent sm:w-24", fadeFromClass]}></div>
 
-    <div class="logo-marquee-track flex items-center gap-12 group-hover:[animation-play-state:paused] sm:gap-16">
+    <div class="logo-marquee-track flex items-center gap-4 group-hover:[animation-play-state:paused] sm:gap-6">
       {/* Render logos twice for seamless loop */}
       {[...logos, ...logos].map((logo) => (
-        <div class="flex h-10 w-[120px] flex-shrink-0 items-center justify-center">
+        <div class="flex h-18 w-[140px] flex-shrink-0 items-center justify-center rounded-md bg-white px-4 py-5">
           <img
             src={logo.src}
             alt={logo.name}
             class="max-h-9 max-w-[120px] object-contain"
+            style={logo.maxWidth ? `max-width:${logo.maxWidth}` : undefined}
             width="120"
             height="36"
             loading="lazy"

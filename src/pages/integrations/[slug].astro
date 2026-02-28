@@ -52,12 +52,18 @@ if (d.relatedBlogPosts && d.relatedBlogPosts.length > 0) {
 }
 
 // Resolve compare page name
-const compareEntry = d.compareSlug
-  ? await getEntry("compare", d.compareSlug).catch(() => undefined)
-  : undefined;
-const compareName = compareEntry?.data?.toolName
-  ? `ZenML vs ${compareEntry.data.toolName}`
-  : undefined;
+let compareName: string | undefined;
+if (d.compareSlug) {
+  try {
+    const compareEntryResult = getEntry("compare", d.compareSlug);
+    const compareEntry = compareEntryResult ? await compareEntryResult : undefined;
+    if (compareEntry?.data?.toolName) {
+      compareName = `ZenML vs ${compareEntry.data.toolName}`;
+    }
+  } catch {
+    compareName = undefined;
+  }
+}
 
 // Determine structured rendering/fallback strategy
 const introH2 = d.shortDescription?.trim();
@@ -92,7 +98,7 @@ const ogImage = d.seo?.ogImage || d.mainImage?.url;
       <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div class="flex items-center gap-4">
           {d.logo && (
-            <div class="flex h-16 w-16 shrink-0 items-center justify-center rounded-xl bg-gray-50 p-2">
+            <div class="flex h-16 w-16 shrink-0 items-center justify-center rounded-md bg-gray-50 p-2">
               <img
                 src={d.logo.url}
                 alt={d.logo.alt || d.title}
@@ -171,7 +177,7 @@ const ogImage = d.seo?.ogImage || d.mainImage?.url;
 
               {/* Screenshot */}
               {d.mainImage && (
-                <div class="overflow-hidden rounded-xl border border-gray-200">
+                <div class="overflow-hidden rounded-md border border-gray-200">
                   <img
                     src={d.mainImage.url}
                     alt={d.mainImage.alt || `${d.title} integration screenshot`}

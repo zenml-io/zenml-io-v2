@@ -64,11 +64,11 @@ customize freely.
 | Hosting | **Cloudflare Pages** — edge CDN, branch previews, auto CI/CD |
 | Assets | **Cloudflare R2** — object storage for images/files |
 | Styling | **Tailwind CSS** — utility-first |
-| Interactive | **Preact islands** — 7 islands: LLMOpsFilter, ContactForm, CookieConsent, FeatureTabsSlider, LottieHero, ProTestimonialCarousel, RoiCalculator |
+| Interactive | **Preact islands** — 9 islands: LLMOpsFilter, ContactForm, DemoRequestFormAB, BlogSearch, CookieConsent, FeatureTabsSlider, LottieHero, ProTestimonialCarousel, RoiCalculator |
 | Search | **Pagefind** — build-time full-text search index (1,453 LLMOps pages indexed, hybrid with JSON faceted filtering) |
 | Forms | **ContactForm** Preact island → Astro API routes (`src/pages/api/forms/[formType].ts`, `prerender: false`) → Segment HTTP API (identify + track). Cal.com embeds for demo booking. Brevo for newsletter |
 | Analytics | **Plausible** + GA4 + Segment (hostname-gated to production domain to prevent preview pollution) |
-| Code highlighting | **Shiki** (`github-dark` theme) at build time + **Inconsolata** monospace font |
+| Code highlighting | **Shiki** (custom `zenml-light`/`zenml-dark` themes) at build time + **JetBrains Mono** monospace font (self-hosted variable woff2) |
 | CRM | **Attio** (keep existing) |
 | Design approach | Pixel-perfect recreation first, then iterate |
 
@@ -113,7 +113,45 @@ Fixing visual parity gaps page-by-page against the Webflow original. Recent work
 - **Build output**: `pnpm build` generates ~2000+ lines of output listing every generated page. Always run it in background mode and use `tail` to check only the final lines for success/failure
 - **Credential management**: When you receive API credentials, tokens, or keys, **always add them to `.env`** for persistence across sessions. The `.env` file is gitignored and safe for secrets
 
-## Image & Asset Migration Lessons
+## Images & Assets
+
+### Two-tier system
+
+| Tier | Location | Use for | How to reference |
+|------|----------|---------|------------------|
+| **A: Static** | `public/images/` | Site-wide UI: logos, icons, favicons, backgrounds, OG default | Root-relative: `"/images/filename.svg"` |
+| **B: R2** | `zenml-assets` bucket | Content images: blog heroes, screenshots, team photos, integration logos, OG images | Absolute URL: `"https://assets.zenml.io/..."` |
+
+**Decision rule:** If the image appears in `src/content/*.md` frontmatter, it must be an absolute URL (content schemas use `z.string().url()`), so it goes to R2. If it's site furniture reused across many pages, put it in `public/images/`.
+
+### Adding new images
+
+**Tier A (static):** Just place the file in `public/images/` and reference it as `"/images/..."`.
+
+**Tier B (R2):** Upload using the one-off script:
+```bash
+uv run scripts/r2-upload.py path/to/image.avif                    # default prefix
+uv run scripts/r2-upload.py path/to/hero.webp --prefix content/blog  # custom prefix
+uv run scripts/r2-upload.py path/to/hero.webp --frontmatter          # print YAML snippet
+```
+
+Requires R2 credentials in `.env` — see `.env.example`.
+
+**R2 key structure:**
+- New uploads: `content/uploads/{sha256_8}/{filename}` (or custom `--prefix`)
+- Webflow-migrated (existing): `webflow/{siteId}/{hash}/{filename}`
+
+**In `src/lib/*.ts` data files:** Build URLs from the canonical constant, never hardcode the domain:
+```ts
+import { ASSET_BASE_URL } from "./constants";
+const url = `${ASSET_BASE_URL}/content/uploads/1a2b3c4d/hero.webp`;
+```
+
+**Claude Code skills:**
+- `r2-image-upload` (`.claude/skills/r2-image-upload/SKILL.md`) — upload images to R2. Triggers: "upload image", "add image to R2", "new blog image".
+- `blog-post-contributor` (`.claude/skills/blog-post-contributor/SKILL.md`) — full blog post workflow from markdown or Notion. Triggers: "new blog post", "add blog", "blog from Notion".
+
+### Migration lessons (from Phase 1)
 
 These patterns caused silent runtime 404s that only showed up on the deployed
 site — no build errors, no type errors, just broken images.
@@ -180,7 +218,9 @@ Worker and share access to Cloudflare runtime bindings via
 
 ### Preact Islands (interactive client-side components)
 - `src/components/islands/LLMOpsFilter.tsx` — LLMOps database "Research Hub" (faceted sidebar with industry/tag facets, Pagefind full-text search, AND/OR tag mode, sort, clickable chips, mobile drawer, WCAG-compliant accessibility)
+- `src/components/islands/BlogSearch.tsx` — Blog search with Cmd+K shortcut, lazy-fetches `/blog/search-index.json` on focus (`client:media` — desktop only)
 - `src/components/islands/ContactForm.tsx` — Form submission → Astro API routes
+- `src/components/islands/DemoRequestFormAB.tsx` — A/B variant demo request form (sessionStorage-based split, Plausible events)
 - `src/components/islands/CookieConsent.tsx` — Cookie consent banner (4 categories)
 - `src/components/islands/FeatureTabsSlider.tsx` — Homepage auto-cycling feature tabs
 - `src/components/islands/LottieHero.tsx` — Hero Lottie animation player

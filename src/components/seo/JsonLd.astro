@@ -13,6 +13,12 @@ interface Props {
 }
 
 const { data } = Astro.props;
+
+function serializeJsonLd(payload: Record<string, unknown>): string {
+  return JSON.stringify(payload).replace(/</g, "\\u003c");
+}
+
+const jsonLd = serializeJsonLd(data);
 ---
 
-<script type="application/ld+json" set:html={JSON.stringify(data)} />
+<script type="application/ld+json" is:inline set:html={jsonLd} />

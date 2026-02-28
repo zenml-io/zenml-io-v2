@@ -38,11 +38,11 @@ const allProjects = (
   {/* Card grid */}
   <div class="px-4 pb-16 sm:px-6 sm:pb-20 lg:px-8">
     <div class="mx-auto max-w-7xl">
-      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {allProjects.map((project) => (
           <a
             href={`/projects/${project.data.slug}`}
-            class="group flex flex-col overflow-hidden rounded-lg border border-gray-100 bg-gradient-to-br from-[#fcfcfc] to-white transition-all duration-300 ease-[cubic-bezier(.77,0,.175,1)] hover:-translate-y-2.5 hover:border-zenml-500 hover:from-[#f9f4ff] hover:to-white hover:shadow-[0_0_5px_2px_rgba(0,0,0,0.2)]"
+            class="group flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-gradient-to-br from-[#fcfcfc] to-white transition-all duration-300 ease-[cubic-bezier(.77,0,.175,1)] hover:-translate-y-2.5 hover:border-zenml-500 hover:from-[#f9f4ff] hover:to-white hover:shadow-medium"
           >
             <div class="flex h-[140px] items-center justify-center overflow-hidden">
               {project.data.mainImageLink && (

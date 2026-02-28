@@ -1,0 +1,124 @@
+{
+  "name": "zenml-light",
+  "type": "light",
+  "colors": {
+    "editor.background": "#f3f4f6",
+    "editor.foreground": "#1f0c47"
+  },
+  "tokenColors": [
+    {
+      "scope": ["comment", "punctuation.definition.comment"],
+      "settings": {
+        "foreground": "#676b79",
+        "fontStyle": "italic"
+      }
+    },
+    {
+      "scope": [
+        "keyword",
+        "keyword.control",
+        "keyword.operator.new",
+        "storage",
+        "storage.type",
+        "storage.modifier",
+        "keyword.control.import",
+        "keyword.control.from",
+        "keyword.control.flow",
+        "keyword.control.conditional",
+        "keyword.control.loop",
+        "keyword.control.trycatch",
+        "constant.language.boolean",
+        "constant.language.null",
+        "constant.language.undefined"
+      ],
+      "settings": {
+        "foreground": "#228a8a"
+      }
+    },
+    {
+      "scope": [
+        "string",
+        "string.quoted",
+        "string.template",
+        "punctuation.definition.string"
+      ],
+      "settings": {
+        "foreground": "#4aa819"
+      }
+    },
+    {
+      "scope": [
+        "entity.name.function",
+        "support.function",
+        "meta.function-call",
+        "entity.name.function.python",
+        "meta.function-call.generic.python"
+      ],
+      "settings": {
+        "foreground": "#7a3ef4"
+      }
+    },
+    {
+      "scope": [
+        "keyword.operator",
+        "keyword.operator.assignment",
+        "keyword.operator.comparison",
+        "keyword.operator.arithmetic",
+        "keyword.operator.logical",
+        "punctuation.separator",
+        "punctuation.accessor",
+        "meta.decorator",
+        "punctuation.definition.decorator",
+        "entity.name.function.decorator"
+      ],
+      "settings": {
+        "foreground": "#f53d81"
+      }
+    },
+    {
+      "scope": [
+        "entity.name.type",
+        "entity.name.class",
+        "support.type",
+        "support.class",
+        "entity.other.inherited-class",
+        "variable.other.property",
+        "variable.other.object.property",
+        "variable.language",
+        "variable.parameter"
+      ],
+      "settings": {
+        "foreground": "#7641bb"
+      }
+    },
+    {
+      "scope": [
+        "constant.numeric",
+        "constant.character",
+        "constant.other"
+      ],
+      "settings": {
+        "foreground": "#f53d81"
+      }
+    },
+    {
+      "scope": [
+        "variable",
+        "variable.other",
+        "entity.name.tag",
+        "punctuation.definition.tag"
+      ],
+      "settings": {
+        "foreground": "#1f0c47"
+      }
+    },
+    {
+      "scope": [
+        "entity.other.attribute-name"
+      ],
+      "settings": {
+        "foreground": "#7641bb"
+      }
+    }
+  ]
+}

@@ -9,7 +9,7 @@
  * Below: testimonial + simple footer.
  */
 import MinimalLayout from "../layouts/MinimalLayout.astro";
-import ContactForm from "../components/islands/ContactForm.tsx";
+import DemoRequestFormAB from "../components/islands/DemoRequestFormAB.tsx";
 import { TURNSTILE_SITE_KEY } from "../lib/formConstants";
 import {
   BOOK_YOUR_DEMO_SEO,
@@ -94,9 +94,8 @@ import {
             </p>
 
             <div class="mt-6">
-              <ContactForm
+              <DemoRequestFormAB
                 client:load
-                formType="demo-request"
                 endpoint="/api/forms/demo-request"
                 fields={BOOK_YOUR_DEMO_FIELDS}
                 submitLabel="Send Request"

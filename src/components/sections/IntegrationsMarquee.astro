@@ -43,7 +43,7 @@ const marqueeItems = [
 ];
 ---
 
-<section class="relative overflow-hidden bg-white pt-16 pb-16 sm:pt-20 sm:pb-20">
+<section class="relative overflow-hidden bg-white bg-cover bg-center border-t border-gray-200 pt-16 pb-16 sm:pt-20 sm:pb-20" style="background-image: url('/images/zenml_light_bg-02.avif')">
   <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
     <h2 class="text-3xl font-bold text-gray-900 sm:text-4xl">
       {INTEGRATIONS_MARQUEE.headline}
@@ -54,11 +54,11 @@ const marqueeItems = [
   <!-- Marquee strip -->
   <div class="group relative mt-10">
     <!-- Fade edges -->
-    <div class="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-white to-transparent"></div>
-    <div class="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-white to-transparent"></div>
+    <div class="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-white/80 to-transparent"></div>
+    <div class="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-white/80 to-transparent"></div>
 
     <div
-      class="flex animate-marquee gap-4 group-hover:[animation-play-state:paused] group-focus-within:[animation-play-state:paused]"
+      class="flex animate-marquee gap-4"
     >
       {/* Render logos twice for seamless loop */}
       {marqueeItems.map((logo) => (
@@ -101,6 +101,10 @@ const marqueeItems = [
   .animate-marquee {
     animation: marquee-slide 150s linear infinite;
     width: max-content;
+  }
+  .group:hover .animate-marquee,
+  .group:focus-within .animate-marquee {
+    animation-play-state: paused;
   }
   @media (prefers-reduced-motion: reduce) {
     .animate-marquee {

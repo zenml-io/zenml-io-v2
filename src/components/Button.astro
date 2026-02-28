@@ -15,6 +15,8 @@ interface Props {
   rel?: string;
   disabled?: boolean;
   class?: string;
+  /** Plausible event name — rendered as data-analytics for click tracking. */
+  dataAnalytics?: string;
 }
 
 const {
@@ -26,6 +28,7 @@ const {
   rel,
   disabled = false,
   class: className,
+  dataAnalytics,
 } = Astro.props;
 
 const baseClasses =
@@ -64,11 +67,11 @@ const classes = [
 
 {
   href ? (
-    <a href={href} class={classes} target={target} rel={rel}>
+    <a href={href} class={classes} target={target} rel={rel} data-analytics={dataAnalytics}>
       <slot />
     </a>
   ) : (
-    <button type={type} class={classes} disabled={disabled}>
+    <button type={type} class={classes} disabled={disabled} data-analytics={dataAnalytics}>
       <slot />
     </button>
   )

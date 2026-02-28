@@ -202,7 +202,7 @@ import {
             <img
               src={scenario.image.url}
               alt={scenario.image.alt}
-              class="w-full rounded-xl"
+              class="w-full rounded-md"
               loading="lazy"
             />
           </div>
@@ -220,7 +220,7 @@ import {
               href={method.href}
               target="_blank"
               rel="noopener noreferrer"
-              class="flex items-center gap-4 rounded-xl border border-gray-200 bg-white p-4 transition hover:shadow-md"
+              class="flex items-center gap-4 rounded-md border border-gray-200 bg-white p-4 transition hover:shadow-md"
             >
               <img
                 src={method.icon}
@@ -622,22 +622,22 @@ import {
 
 <script>
   (() => {
-    const page = document.querySelector('[data-page="deployments"]');
+    const page = document.querySelector<HTMLElement>('[data-page="deployments"]');
     if (!page) return;
 
-    const tabsRoot = page.querySelector("[data-deployments-tabs]");
+    const tabsRoot = page.querySelector<HTMLElement>("[data-deployments-tabs]");
     if (tabsRoot && tabsRoot.dataset.initialized !== "true") {
       tabsRoot.dataset.initialized = "true";
-      const tabs = Array.from(tabsRoot.querySelectorAll(".deployments-tab"));
-      const panels = Array.from(tabsRoot.querySelectorAll("[data-deploy-panel]"));
+      const tabs = Array.from(tabsRoot.querySelectorAll<HTMLAnchorElement>(".deployments-tab"));
+      const panels = Array.from(tabsRoot.querySelectorAll<HTMLElement>("[data-deploy-panel]"));
       const validPanelIds = new Set(panels.map((panel) => panel.id));
 
-      const resolvePanelId = (candidateId) => {
+      const resolvePanelId = (candidateId: string | undefined | null): string | null => {
         if (candidateId && validPanelIds.has(candidateId)) return candidateId;
         return panels[0]?.id ?? null;
       };
 
-      const setActivePanel = (panelId, updateHash = true) => {
+      const setActivePanel = (panelId: string | null, updateHash = true) => {
         if (!panelId) return;
         tabs.forEach((tab) => {
           const isActive = tab.dataset.deployTabId === panelId;
@@ -651,7 +651,7 @@ import {
         if (updateHash) history.replaceState(null, "", `#${panelId}`);
       };
 
-      const activateByIndex = (index) => {
+      const activateByIndex = (index: number) => {
         const tab = tabs[index];
         if (!tab) return;
         const panelId = resolvePanelId(tab.dataset.deployTabId);
@@ -661,13 +661,13 @@ import {
       };
 
       tabs.forEach((tab, index) => {
-        tab.addEventListener("click", (event) => {
+        tab.addEventListener("click", (event: MouseEvent) => {
           event.preventDefault();
           const panelId = resolvePanelId(tab.dataset.deployTabId);
           setActivePanel(panelId);
         });
 
-        tab.addEventListener("keydown", (event) => {
+        tab.addEventListener("keydown", (event: KeyboardEvent) => {
           if (event.key === "ArrowDown" || event.key === "ArrowRight") {
             event.preventDefault();
             activateByIndex((index + 1) % tabs.length);
@@ -700,9 +700,9 @@ import {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const root = document.documentElement;
-    const revealScope = page.matches('[data-reveal-scope="deployments"]')
+    const revealScope: HTMLElement | null = page.matches('[data-reveal-scope="deployments"]')
       ? page
-      : page.querySelector('[data-reveal-scope="deployments"]');
+      : page.querySelector<HTMLElement>('[data-reveal-scope="deployments"]');
 
     if (!revealScope) {
       root.classList.remove("reveal-enabled");
@@ -712,7 +712,7 @@ import {
     if (revealScope.dataset.revealInitialized === "true") return;
     revealScope.dataset.revealInitialized = "true";
 
-    const revealElements = revealScope.querySelectorAll("[data-reveal]");
+    const revealElements = revealScope.querySelectorAll<HTMLElement>("[data-reveal]");
 
     if (!("IntersectionObserver" in window)) {
       root.classList.remove("reveal-enabled");

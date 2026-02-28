@@ -37,6 +37,14 @@ export const BREVO_MAIN_CONFIG: BrevoFormConfig = {
   loadingLabel: "Subscribing…",
 };
 
+export const BREVO_LLMOPS_CONFIG: BrevoFormConfig = {
+  action:
+    "https://63e37fdf.sibforms.com/serve/MUIFADp-QsUQiD_xU8LpiHLJbTYlft-cMexirrAGZcNpN0DO0ZD55q962wJtVFjY9U3tL7bPacsTeeOibcQGOn7rlRmvIY1bc9GVmz8L7uMgYKSparFWsRTiF2pTgCYL04uIjOyKf95rFjpHuTLcLz3vO5oQS1EVeWmaZH4EtsgucWfQSErJ28bTppqWlcUB203d9zn7dPO512Tw",
+  formId: "67d01f2bed4adbf1ecf4e6cc",
+  submitLabel: "Subscribe",
+  loadingLabel: "Subscribing…",
+};
+
 // ---------------------------------------------------------------------------
 // Shared option lists
 // ---------------------------------------------------------------------------

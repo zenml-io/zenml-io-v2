@@ -53,7 +53,7 @@ const SELF_HOSTED_OSS: PricingPlan = {
     "Basic model registry",
     "Self-managed infrastructure",
   ],
-  cta: { label: "Get Started", href: "/get-started" },
+  cta: { label: "Get Started", href: "/get-started", analytics: "OSS-Get-Started" },
   ctaVariant: "secondary",
 };
 
@@ -83,11 +83,12 @@ const SELF_HOSTED_PRO: PricingPlan = {
     "Priority support + custom SLA",
   ],
   comingSoon: ["Advanced Native Scheduling", "Resource Management & Queueing"],
-  cta: { label: "Talk to Sales", href: "/book-your-demo" },
+  cta: { label: "Talk to Sales", href: "/book-your-demo", analytics: "Enterpise-Self-Hosted-Book-Demo" },
   ctaVariant: "primary",
   secondaryLink: {
     label: "Or talk to an engineer about deployment",
     href: "/open-source-vs-pro",
+    analytics: "Enterprise-Self-Hosted-Talk-Engineer",
   },
 };
 
@@ -164,8 +165,8 @@ const SELF_HOSTED_COMPARE: PricingCompareTableData = {
     },
   ],
   ctaButtons: [
-    { label: "Get Started", href: "/get-started" },
-    { label: "Talk to Sales", href: "/book-your-demo" },
+    { label: "Get Started", href: "/get-started", analytics: "OSS-Get-Started" },
+    { label: "Talk to Sales", href: "/book-your-demo", analytics: "Enterpise-Self-Hosted-Book-Demo" },
   ],
 };
 
@@ -189,7 +190,7 @@ const SAAS_STARTER: PricingPlan = {
     "Unlimited team members",
     "Basic support",
   ],
-  cta: { label: "Book a Demo", href: "/book-your-demo" },
+  cta: { label: "Book a Demo", href: "/book-your-demo", analytics: "Starter-Book-Demo" },
   ctaVariant: "secondary",
 };
 
@@ -210,7 +211,7 @@ const SAAS_GROWTH: PricingPlan = {
     "Webhooks & Triggers",
     "Priority support",
   ],
-  cta: { label: "Book a Demo", href: "/book-your-demo" },
+  cta: { label: "Book a Demo", href: "/book-your-demo", analytics: "Growth-Book-Demo" },
   ctaVariant: "primary",
 };
 
@@ -230,7 +231,7 @@ const SAAS_SCALE: PricingPlan = {
     "Codespaces (Remote IDE)",
     "Priority support",
   ],
-  cta: { label: "Book a Demo", href: "/book-your-demo" },
+  cta: { label: "Book a Demo", href: "/book-your-demo", analytics: "Scale-Book-Demo" },
   ctaVariant: "primary",
 };
 
@@ -254,8 +255,13 @@ const SAAS_ENTERPRISE: PricingPlan = {
     "Professional Services",
     "Dedicated support + SLA",
   ],
-  cta: { label: "Book a Demo", href: "/book-your-demo" },
+  cta: { label: "Book a Demo", href: "/book-your-demo", analytics: "Enterprise-Book-Demo" },
   ctaVariant: "primary",
+  secondaryLink: {
+    label: "Or talk to an engineer about deployment",
+    href: "/book-your-demo",
+    analytics: "Enterprise-Talk-Engineer",
+  },
 };
 
 const SAAS_COMPARE: PricingCompareTableData = {
@@ -317,10 +323,10 @@ const SAAS_COMPARE: PricingCompareTableData = {
     },
   ],
   ctaButtons: [
-    { label: "Talk to Sales", href: "/book-your-demo" },
-    { label: "Talk to Sales", href: "/book-your-demo" },
-    { label: "Talk to Sales", href: "/book-your-demo" },
-    { label: "Talk to Sales", href: "/book-your-demo" },
+    { label: "Talk to Sales", href: "/book-your-demo", analytics: "Starter-Book-Demo" },
+    { label: "Talk to Sales", href: "/book-your-demo", analytics: "Growth-Book-Demo" },
+    { label: "Talk to Sales", href: "/book-your-demo", analytics: "Scale-Book-Demo" },
+    { label: "Talk to Sales", href: "/book-your-demo", analytics: "Enterprise-Book-Demo" },
   ],
 };
 
@@ -455,7 +461,7 @@ export const PRICING_STATS = {
     { src: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5cc09160/bundeswehr.svg`, alt: "Bundeswehr" },
     { src: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/4ad1f760/66c84308b1e802ab9a246134_enel-min.svg`, alt: "Enel" },
     { src: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b6111e84/jetbrains-min.svg`, alt: "JetBrains" },
-    { src: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/cb7581f5/652d3e5d29d36f927c2bb623_brevo.webp`, alt: "Brevo" },
+    { src: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/52a636b6/66c74d825fbc26b4d09823d1_Brevo-Logo-transparent.webp`, alt: "Brevo" },
     { src: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/86cd6b7b/cross-screen-media.png`, alt: "Cross Screen Media" },
     { src: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c110367c/65c498032806e2ff7daec2bf_ADEO.svg`, alt: "ADEO" },
     { src: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/356e9829/65c49832a235dab4e3e0a3ce_leroy-merlin.svg`, alt: "Leroy Merlin" },
@@ -472,5 +478,5 @@ export const PRICING_FINAL_CTA = {
   headline: "Start deploying reproducible AI workflows today",
   body: "Enterprise-grade MLOps platform trusted by thousands of companies in production.",
   primaryCta: { label: "Book a Demo", href: "/book-your-demo" } as CtaLink,
-  secondaryCta: { label: "Use Open Source", href: "https://cloud.zenml.io" } as CtaLink,
+  secondaryCta: { label: "Use Open Source", href: "/get-started" } as CtaLink,
 } as const;

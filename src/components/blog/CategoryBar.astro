@@ -1,0 +1,94 @@
+---
+/**
+ * CategoryBar — sticky section header for the blog area.
+ *
+ * Three modes:
+ * 1. Hub (default): "Blog" title + category pills + search
+ * 2. Back link (backLink=true): "← Blog" + category pills + search
+ * 3. Breadcrumb (breadcrumbTitle set): "Blog / Post Title" — no pills, no search
+ */
+import type { TaxonomyCount } from "../../lib/blog";
+import BlogSearch from "../islands/BlogSearch";
+
+interface Props {
+  categories?: TaxonomyCount[];
+  activeCategory?: string;
+  /** Show "← Blog" instead of "Blog" title */
+  backLink?: boolean;
+  /** Show breadcrumb: "Blog / {title}" — replaces pills and search */
+  breadcrumbTitle?: string;
+}
+
+const { categories = [], activeCategory, backLink = false, breadcrumbTitle } = Astro.props;
+
+const topCategories = categories.slice(0, 8);
+---
+
+<div class="sticky top-[72px] z-40 border-b border-gray-100 bg-white/95 backdrop-blur-sm">
+  <div class="mx-auto flex h-11 max-w-[1440px] items-center gap-3 px-4 sm:px-6 lg:px-8">
+    {breadcrumbTitle ? (
+      /* Breadcrumb mode: Blog / Post Title */
+      <>
+        <a href="/blog" class="shrink-0 text-sm font-bold text-gray-900 transition-colors hover:text-primary-600">
+          Blog
+        </a>
+        <span class="shrink-0 text-sm text-gray-300" aria-hidden="true">/</span>
+        <span class="truncate text-sm text-gray-500">{breadcrumbTitle}</span>
+      </>
+    ) : (
+      /* Hub / taxonomy mode */
+      <>
+        {backLink ? (
+          <a
+            href="/blog"
+            class="flex shrink-0 items-center gap-1.5 text-sm font-bold text-gray-900 transition-colors hover:text-primary-600"
+          >
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" class="shrink-0">
+              <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Blog
+          </a>
+        ) : (
+          <a href="/blog" class="shrink-0 text-sm font-bold text-gray-900 transition-colors hover:text-primary-600">
+            Blog
+          </a>
+        )}
+
+        <div class="h-5 w-px shrink-0 bg-gray-200" aria-hidden="true"></div>
+
+        <nav
+          class="category-scroll flex flex-1 items-center gap-2 overflow-x-auto"
+          aria-label="Blog categories"
+        >
+          {topCategories.map((cat) => (
+            <a
+              href={`/category/${cat.slug}`}
+              class:list={[
+                "shrink-0 rounded-full px-3 py-1 text-xs font-medium transition-colors",
+                activeCategory === cat.slug
+                  ? "bg-gray-900 text-white"
+                  : "bg-gray-100 text-gray-700 hover:bg-gray-200",
+              ]}
+            >
+              {cat.name}
+            </a>
+          ))}
+        </nav>
+
+        <div class="hidden shrink-0 sm:block">
+          <BlogSearch searchIndexUrl="/blog/search-index.json" client:media="(min-width: 640px)" />
+        </div>
+      </>
+    )}
+  </div>
+</div>
+
+<style>
+  .category-scroll {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .category-scroll::-webkit-scrollbar {
+    display: none;
+  }
+</style>

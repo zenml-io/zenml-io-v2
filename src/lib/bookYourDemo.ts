@@ -92,7 +92,7 @@ export const BOOK_YOUR_DEMO_FIELDS: PlaceholderField[] = [
     placeholder: "you@company.inc",
   },
   {
-    name: "companyProject",
+    name: "company",
     label: "Company or Project Name",
     type: "text",
     required: true,

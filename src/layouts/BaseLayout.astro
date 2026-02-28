@@ -1,5 +1,6 @@
 ---
 import Footer from "../components/Footer.astro";
+import PlausibleBridge from "../components/analytics/PlausibleBridge.astro";
 import CookieConsent from "../components/islands/CookieConsent.tsx";
 import Navigation from "../components/Navigation.astro";
 /**
@@ -11,8 +12,6 @@ import Navigation from "../components/Navigation.astro";
  */
 import { resolveSeo, type SEOProps } from "../lib/seo";
 import "../styles/global.css";
-import "@fontsource/inconsolata/latin-400.css";
-import "@fontsource/inconsolata/latin-700.css";
 
 interface Props extends SEOProps {
   /** Additional classes on <body> */
@@ -89,6 +88,7 @@ const seo = resolveSeo(seoProps, Astro.url.pathname);
       })();
     </script>
 
+    <PlausibleBridge />
     <CookieConsent client:load />
   </body>
 </html>

@@ -32,8 +32,10 @@ yarn-error.log*
 .dev.vars
 
 # ZenML project (not committed)
-.claude/
+.claude/*
+!.claude/skills/
 design/
+demo-video/
 .mcp.json
 
 # Internal migration scripts (contain infra-specific defaults)

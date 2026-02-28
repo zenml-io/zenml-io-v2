@@ -180,6 +180,7 @@ export function slugReferenceArray(collectionName: string, validSlugs?: Set<stri
  * Authors schema
  * Used by: blog posts
  * Fields: name, slug, avatar, bio, email, linkedin
+ * Note: webflow is optional — new native authors won't have Webflow metadata
  */
 const authorSchema = z.object({
   name: z.string(),
@@ -188,17 +189,17 @@ const authorSchema = z.object({
   bio: z.string().optional(),
   email: z.string().email().optional(),
   linkedin: z.string().url().optional(),
-  webflow: webflowMetaSchema,
+  webflow: webflowMetaSchema.optional(),
 });
 
 /**
  * Simple tag schema (used by multiple collections)
- * Just name + slug + webflow metadata
+ * Just name + slug, with optional webflow metadata for migrated items
  */
 const simpleTagSchema = z.object({
   name: z.string(),
   slug: z.string(),
-  webflow: webflowMetaSchema,
+  webflow: webflowMetaSchema.optional(),
 });
 
 /**
@@ -304,9 +305,9 @@ const blogSchema = z.object({
   // Media
   mainImage: imageSchema.optional(),
 
-  // SEO & Webflow
+  // SEO & Webflow (webflow optional for new native posts)
   seo: seoSchema,
-  webflow: webflowMetaSchema,
+  webflow: webflowMetaSchema.optional(),
 });
 
 /**

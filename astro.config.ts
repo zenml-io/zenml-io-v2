@@ -4,6 +4,8 @@ import preact from "@astrojs/preact";
 import sitemap from "@astrojs/sitemap";
 import mdx from "@astrojs/mdx";
 import tailwindcss from "@tailwindcss/vite";
+import zenmlLight from "./src/styles/zenml-light.json";
+import { remarkDefaultLang } from "./src/lib/remark-default-lang";
 
 export default defineConfig({
   site: "https://www.zenml.io",
@@ -14,8 +16,9 @@ export default defineConfig({
     format: "file",
   },
   markdown: {
+    remarkPlugins: [remarkDefaultLang()],
     shikiConfig: {
-      theme: "github-dark",
+      theme: zenmlLight as any,
     },
   },
   integrations: [
