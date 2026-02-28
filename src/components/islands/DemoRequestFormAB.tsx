@@ -71,11 +71,25 @@ export default function DemoRequestFormAB({
     if (w.plausible) w.plausible("Demo Form Viewed", { props: { variant: v } });
   }, []);
 
-  // Turnstile loader (same pattern as ContactForm)
+  // Load the Turnstile script once (stable effect — runs only on mount)
   useEffect(() => {
     if (!turnstileSiteKey) return;
     const SCRIPT_ID = "cf-turnstile-script";
+    if (document.getElementById(SCRIPT_ID)) return;
     const scriptUrl = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=onTurnstileLoad";
+    const script = document.createElement("script");
+    script.id = SCRIPT_ID;
+    script.src = scriptUrl;
+    script.async = true;
+    script.defer = true;
+    document.head.appendChild(script);
+  }, [turnstileSiteKey]);
+
+  // Render the Turnstile widget once the container div is in the DOM.
+  // Re-runs when `step` changes (Variant B: step 1→2 makes the div appear).
+  useEffect(() => {
+    if (!turnstileSiteKey) return;
+    if (!turnstileRef.current || turnstileWidgetId.current != null) return;
 
     function renderWidget() {
       if (!turnstileRef.current || turnstileWidgetId.current != null) return;
@@ -88,18 +102,15 @@ export default function DemoRequestFormAB({
       });
     }
 
-    if (document.getElementById(SCRIPT_ID)) {
+    // If the Turnstile API is already loaded, render immediately
+    const w = window as unknown as { turnstile?: unknown };
+    if (w.turnstile) {
       renderWidget();
-      return;
+    } else {
+      // Register/replace the global callback so the script load triggers rendering
+      (window as unknown as Record<string, unknown>).onTurnstileLoad = renderWidget;
     }
-    (window as unknown as Record<string, unknown>).onTurnstileLoad = renderWidget;
-    const script = document.createElement("script");
-    script.id = SCRIPT_ID;
-    script.src = scriptUrl;
-    script.async = true;
-    script.defer = true;
-    document.head.appendChild(script);
-  }, [turnstileSiteKey]);
+  }, [turnstileSiteKey, step]);
 
   const resetTurnstile = useCallback(() => {
     if (turnstileWidgetId.current == null) return;
