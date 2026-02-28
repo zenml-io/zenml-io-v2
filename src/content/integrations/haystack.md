@@ -12,12 +12,12 @@ webflow:
   createdOn: "2025-08-26T12:45:35.925Z"
 integrationType: "agents"
 logo:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b4aa5fd6/68adac7ae1cc8ab4416a746d_haystack.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b4aa5fd6/68adac7ae1cc8ab4416a746d_haystack.png"
 shortDescription: "Integrate your Haystack RAG pipelines with ZenML"
 docsUrl: "https://docs.zenml.io"
 githubUrl: "https://github.com/zenml-io/zenml/tree/main/examples/agent_framework_integrations/haystack"
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2fef600a/68adae3536f0ab1d3b12bdec_haystack-img.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2fef600a/68adae3536f0ab1d3b12bdec_haystack-img.png"
 relatedBlogPosts:
   - "best-agentic-ai-frameworks"
   - "llamaindex-alternatives"
@@ -25,7 +25,7 @@ seo:
   title: "Integrate Haystack with ZenML - Agents Integrations"
   description: "Integrate your Haystack RAG pipelines with ZenML"
   canonical: "https://www.zenml.io/integrations/haystack"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2fef600a/68adae3536f0ab1d3b12bdec_haystack-img.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2fef600a/68adae3536f0ab1d3b12bdec_haystack-img.png"
   ogTitle: "Integrate Haystack with ZenML - Agents Integrations"
   ogDescription: "Integrate your Haystack RAG pipelines with ZenML"
 overviewTitle: "Integrate your Haystack RAG pipelines with ZenML"

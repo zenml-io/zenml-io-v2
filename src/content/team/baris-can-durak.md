@@ -12,7 +12,7 @@ webflow:
   createdOn: "2023-10-18T07:54:39.597Z"
 position: "Founding Software Engineer"
 photo:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a88a39a5/652f8f3cfe757b639a5ec48b_baris.jpeg"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a88a39a5/652f8f3cfe757b639a5ec48b_baris.jpeg"
 email: "baris@zenml.io"
 linkedin: "https://www.linkedin.com/in/bcdurak/"
 order: 4

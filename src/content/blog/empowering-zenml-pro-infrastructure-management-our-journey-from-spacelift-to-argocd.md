@@ -21,12 +21,12 @@ tags:
 date: "2024-10-11T00:00:00.000Z"
 readingTime: 4 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/97b245de/6718fa5dcc5d876e01be2531_zenml-infrastructure.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/97b245de/6718fa5dcc5d876e01be2531_zenml-infrastructure.png"
 seo:
   title: "Empowering ZenML Pro Infrastructure Management: Our Journey from Spacelift to ArgoCD - ZenML Blog"
   description: "The combination of ZenML and Neptune can streamline machine learning workflows and provide unprecedented visibility into experiments. ZenML is an extensible framework for creating production-ready pipelines, while Neptune is a metadata store for MLOps. When combined, these tools offer a robust solution for managing the entire ML lifecycle, from experimentation to production. The combination of these tools can significantly accelerate the development process, especially when working with complex tasks like language model fine-tuning. This integration offers the ability to focus more on innovating and less on managing the intricacies of your ML pipelines."
   canonical: "https://www.zenml.io/blog/empowering-zenml-pro-infrastructure-management-our-journey-from-spacelift-to-argocd"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/97b245de/6718fa5dcc5d876e01be2531_zenml-infrastructure.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/97b245de/6718fa5dcc5d876e01be2531_zenml-infrastructure.png"
   ogTitle: "Empowering ZenML Pro Infrastructure Management: Our Journey from Spacelift to ArgoCD - ZenML Blog"
   ogDescription: "The combination of ZenML and Neptune can streamline machine learning workflows and provide unprecedented visibility into experiments. ZenML is an extensible framework for creating production-ready pipelines, while Neptune is a metadata store for MLOps. When combined, these tools offer a robust solution for managing the entire ML lifecycle, from experimentation to production. The combination of these tools can significantly accelerate the development process, especially when working with complex tasks like language model fine-tuning. This integration offers the ability to focus more on innovating and less on managing the intricacies of your ML pipelines."
 ---

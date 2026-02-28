@@ -12,19 +12,19 @@ webflow:
   createdOn: "2024-07-16T09:06:37.633Z"
 integrationType: "orchestrator"
 logo:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5439fa99/6696392a47017a8a18c7fb7e_Databricks_logo.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5439fa99/6696392a47017a8a18c7fb7e_Databricks_logo.png"
 shortDescription: "Harness the Power of Databricks for Scalable ML Pipelines with ZenML"
 docsUrl: "https://docs.zenml.io/stack-components/orchestrators/databricks"
 githubUrl: "https://github.com/zenml-io/zenml-projects/tree/main/databricks-demo"
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5fc719b5/66ed5712f4a21172a9e148d4_image__27_.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5fc719b5/66ed5712f4a21172a9e148d4_image__27_.png"
 relatedBlogPosts:
   - "using-zenml-databricks-to-supercharge-llm-development"
 seo:
   title: "Integrate Databricks with ZenML - Orchestrator Integrations"
   description: "Harness the Power of Databricks for Scalable ML Pipelines with ZenML"
   canonical: "https://www.zenml.io/integrations/databricks"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5fc719b5/66ed5712f4a21172a9e148d4_image__27_.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5fc719b5/66ed5712f4a21172a9e148d4_image__27_.png"
   ogTitle: "Integrate Databricks with ZenML - Orchestrator Integrations"
   ogDescription: "Harness the Power of Databricks for Scalable ML Pipelines with ZenML"
 overviewTitle: "Harness the Power of Databricks for Scalable ML Pipelines with ZenML"

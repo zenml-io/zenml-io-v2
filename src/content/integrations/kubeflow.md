@@ -12,17 +12,17 @@ webflow:
   createdOn: "2023-10-12T09:13:13.928Z"
 integrationType: "orchestrator"
 logo:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/876dd488/66d868ca669d963bc98b84b5_kubeflow.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/876dd488/66d868ca669d963bc98b84b5_kubeflow.png"
 shortDescription: "Orchestrate your ML pipelines on Kubeflow. Works on any infrastructure of your choice - local, on-premises, or in the cloud."
 docsUrl: "https://docs.zenml.io/stack-components/orchestrators/kubeflow"
 githubUrl: "https://docs.zenml.io/stack-components/orchestrators/kubeflow"
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/48dc6c46/6527cb291258582b5dfc6f86_kubeflow_example_296ec4815b.webp"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/48dc6c46/6527cb291258582b5dfc6f86_kubeflow_example_296ec4815b.webp"
 seo:
   title: "Integrate Kubeflow with ZenML - Orchestrator Integrations"
   description: "Orchestrate your ML pipelines on Kubeflow. Works on any infrastructure of your choice - local, on-premises, or in the cloud."
   canonical: "https://www.zenml.io/integrations/kubeflow"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/48dc6c46/6527cb291258582b5dfc6f86_kubeflow_example_296ec4815b.webp"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/48dc6c46/6527cb291258582b5dfc6f86_kubeflow_example_296ec4815b.webp"
   ogTitle: "Integrate Kubeflow with ZenML - Orchestrator Integrations"
   ogDescription: "Orchestrate your ML pipelines on Kubeflow. Works on any infrastructure of your choice - local, on-premises, or in the cloud."
 overviewTitle: "Run Pipelines in Production with Kubeflow"

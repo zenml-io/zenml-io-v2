@@ -12,7 +12,7 @@ webflow:
   createdOn: "2024-07-12T10:47:19.642Z"
 toolName: "Flyte"
 toolIcon:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/999164c8/6691071cb742ce72f8dbf8d5_flyte_icon.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/999164c8/6691071cb742ce72f8dbf8d5_flyte_icon.png"
 category: "orchestrators"
 integrationType: "orchestrator"
 advantages:
@@ -27,12 +27,12 @@ ctaHeadline: "Accelerate Your ML Workflows with ZenML's Agile Orchestration"
 learnMoreUrl: "https://cloud.zenml.io/?utm_source=website&utm_medium=website_hero&utm_campaign=cloud_promotion&utm_content=signup_link"
 seoDescription: "Flyte alternative: Agile ML pipeline orchestration. Accelerate workflows with intuitive tools, seamless MLOps integration, and rapid iteration."
 openGraphImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3dda7b06/66c5fcccd97f7b55fabc1b8d_compare-flyte.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3dda7b06/66c5fcccd97f7b55fabc1b8d_compare-flyte.png"
 seo:
   title: "ZenML vs Flyte - Simplify MLOps with ZenML: Your Agile ML Workflow Orchestrator"
   description: "Flyte alternative: Agile ML pipeline orchestration. Accelerate workflows with intuitive tools, seamless MLOps integration, and rapid iteration."
   canonical: "https://www.zenml.io/compare/zenml-vs-flyte"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/552e5cc2/66c5fcccd97f7b55fabc1b8d_compare-flyte.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/552e5cc2/66c5fcccd97f7b55fabc1b8d_compare-flyte.png"
   ogTitle: "ZenML vs Flyte - Simplify MLOps with ZenML: Your Agile ML Workflow Orchestrator"
   ogDescription: "Flyte alternative: Agile ML pipeline orchestration. Accelerate workflows with intuitive tools, seamless MLOps integration, and rapid iteration."
 ---

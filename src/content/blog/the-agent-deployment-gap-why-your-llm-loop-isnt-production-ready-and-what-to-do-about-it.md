@@ -21,12 +21,12 @@ tags:
 date: "2025-07-28T00:00:00.000Z"
 readingTime: 9 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5bf697c3/6981cf5010e873663bd75928_6981ce88bd9214d719ce5b4b_agent-deployment.avif"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5bf697c3/6981cf5010e873663bd75928_6981ce88bd9214d719ce5b4b_agent-deployment.avif"
 seo:
   title: "The Agent Deployment Gap: Why Your LLM Loop Isn't Production-Ready (And What to Do About It) - ZenML Blog"
   description: "Comprehensive analysis of why simple AI agent prototypes fail in production deployment, revealing the hidden complexities teams face when scaling from demos to enterprise-ready systems."
   canonical: "https://www.zenml.io/blog/the-agent-deployment-gap-why-your-llm-loop-isnt-production-ready-and-what-to-do-about-it"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5bf697c3/6981cf5010e873663bd75928_6981ce88bd9214d719ce5b4b_agent-deployment.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5bf697c3/6981cf5010e873663bd75928_6981ce88bd9214d719ce5b4b_agent-deployment.avif"
   ogTitle: "The Agent Deployment Gap: Why Your LLM Loop Isn't Production-Ready (And What to Do About It) - ZenML Blog"
   ogDescription: "Comprehensive analysis of why simple AI agent prototypes fail in production deployment, revealing the hidden complexities teams face when scaling from demos to enterprise-ready systems."
 ---
@@ -84,7 +84,7 @@ When you look at the data, some patterns emerge. There's what people write about
 On one end of the spectrum, you have the architectural marvels. [Deutsche Telekom's LMOS platform](https://www.zenml.io/llmops-database/building-a-multi-agent-llm-platform-for-customer-service-automation) processes millions of customer queries through a custom Kotlin-based orchestration layer. [Cognizant built Neuro AI](https://www.zenml.io/llmops-database/multi-agent-llm-system-for-business-process-automation), a sophisticated multi-agent system where specialized agents collaborate on complex business workflows. These are serious engineering efforts solving real problems at scale.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3a0c036d/6887d0257811e213d32fe42c_CleanShot_2025-07-28_at_17.42.34__1_.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3a0c036d/6887d0257811e213d32fe42c_CleanShot_2025-07-28_at_17.42.34__1_.png" alt="__wf_reserved_inherit" />
   <figcaption>Deutsche Telekom’s multi-agent architecture</figcaption>
 </figure>
 
@@ -105,7 +105,7 @@ A growing minority—maybe 20-30%—have discovered the appeal of serverless, es
 Of course, there's a reason those complex architectures exist. [Parcha's journey](https://resources.parcha.com/building-ai-agents-in-production/) is instructive here. They started simple—LangChain agents with websocket connections. But production revealed the cracks. Websockets dropped mid-conversation. Agents couldn't recover from failures. The context window filled with noise as conversations progressed.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/35f9eefd/6887d04bcbc040107d865928_image__2_.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/35f9eefd/6887d04bcbc040107d865928_image__2_.png" alt="__wf_reserved_inherit" />
   <figcaption>Parcha’s agent architecture</figcaption>
 </figure>
 
@@ -150,7 +150,7 @@ The rise of standards like Model Context Protocol (MCP) and agent-to-agent (A2A)
 Production agents fail in ways that demos never reveal. Long-running agents need resumability—the ability to pick up from failure points without starting over. [Anthropic's recent multi-agent research](https://www.anthropic.com/engineering/built-multi-agent-research-system) emphasizes this: complex workflows can take minutes or hours, and losing progress to a network blip is unacceptable.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/0a71ec6b/6887d0664fc6f6dd343e9833_image__3_.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0a71ec6b/6887d0664fc6f6dd343e9833_image__3_.png" alt="__wf_reserved_inherit" />
   <figcaption>Anthropic’s multi-agent system process diagram for Claude Deep Research</figcaption>
 </figure>
 
@@ -209,7 +209,7 @@ What's needed isn't another framework or platform. It's a recognition that agent
 Based on the case studies in the [LLMOps Database](https://zenml.io/llmops-database) as well as conversations with customers and colleagues, I’ve come to some tentative interim conclusions about where we are with agent deployment as of late July 2025. None of these are revolutionary insights, but taken together, they might be taken to form a pragmatic view of the current state of the field.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f9fcb176/6887d0b634cad1e1981df252_CleanShot_2025-07-28_at_17.53.22.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f9fcb176/6887d0b634cad1e1981df252_CleanShot_2025-07-28_at_17.53.22.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### The Surface Area Problem

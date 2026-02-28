@@ -20,7 +20,7 @@ tags:
 date: "2026-02-20T00:00:00.000Z"
 readingTime: 7 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/96774f67/69989a5d85555f7a204d0e68_rlm-pipelines__1_.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/96774f67/69989a5d85555f7a204d0e68_rlm-pipelines__1_.png"
 ---
 
 Recursive Language Models are having a moment. The [original paper by Zhang, Kraska, and Khattab](https://arxiv.org/abs/2512.24601) showed that instead of cramming documents into ever-longer context windows, you can let an LLM *programmatically explore* its data, calling tools, delegating sub-tasks, and iterating until it finds what it needs. DSPy's [experimental dspy.RLM module](https://dspy.ai/api/modules/RLM/) brought the pattern to a broader audience. Viral posts about [auditing codebases for 87 cents](https://kmad.ai/Recursive-Language-Models-Security-Audit) caught everyone's attention (worth noting: even that experiment frames itself as a demo, not a replacement for a real security audit, and reruns catch different issues). Prime Intellect called RLMs ["the paradigm of 2026."](https://www.primeintellect.ai/blog/rlm)
@@ -86,7 +86,7 @@ These are orchestration problems. DSPy is a framework for building LLM programs.
 The RLM pattern and ZenML's dynamic pipelines have the same shape:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6293f041/699898420b4f9161462e8d3f_final.avif" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6293f041/699898420b4f9161462e8d3f_final.avif" alt="__wf_reserved_inherit" />
 </figure>
 
 The number of `process_chunk` steps is decided at runtime based on the query and corpus. ZenML auto-names repeated invocations (`process_chunk`, `process_chunk_2`, etc.).
@@ -192,7 +192,7 @@ Here's the practical comparison:
 </div></div>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/16776c54/6998986544fad6cf49ba3bea_rlm-pipeline-dag-zenml-dashboard.avif" alt="ZenML dashboard showing the RLM analysis pipeline DAG visualization with steps for load_documents, plan_decomposition, parallel process_chunk workers, and aggregate_results, alongside the Run Insights panel displaying pipeline parameters including query, max_chunks, and max_iterations." />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/16776c54/6998986544fad6cf49ba3bea_rlm-pipeline-dag-zenml-dashboard.avif" alt="ZenML dashboard showing the RLM analysis pipeline DAG visualization with steps for load_documents, plan_decomposition, parallel process_chunk workers, and aggregate_results, alongside the Run Insights panel displaying pipeline parameters including query, max_chunks, and max_iterations." />
 </figure>
 
 ## Inside the RLM-inspired Loop
@@ -204,7 +204,7 @@ Our production example is RLM-inspired rather than a line-by-line reproduction o
 Each `process_chunk` step runs a bounded iterative loop. Here's the simplified flow:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7a713677/699898979588c3305133edad_final.avif" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7a713677/699898979588c3305133edad_final.avif" alt="__wf_reserved_inherit" />
 </figure>
 
 Each plan+reflect iteration costs 2 LLM calls. The final summarize costs 1. So `max_iterations=6` allows up to 2 full search-reflect rounds plus the final synthesis.
@@ -307,7 +307,7 @@ log_metadata(
 ```
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b28ec946/699898ad5c6f85fac61c8025_rlm-per-chunk-analysis-results.avif" alt="Per-chunk analysis output from the RLM pipeline showing detailed results for Chunk 1 (Emails 0-100) and Chunk 2 (Emails 100-200), each with findings about potential financial irregularities, supporting code snippets for email filtering logic, and significance scores." />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b28ec946/699898ad5c6f85fac61c8025_rlm-per-chunk-analysis-results.avif" alt="Per-chunk analysis output from the RLM pipeline showing detailed results for Chunk 1 (Emails 0-100) and Chunk 2 (Emails 100-200), each with findings about potential financial irregularities, supporting code snippets for email filtering logic, and significance scores." />
 </figure>
 
 **Reproducibility.** Trajectory + artifacts = you can reconstruct exactly what happened in any chunk, months later. This is the same instinct behind good experiment tracking, applied to LLM reasoning.
@@ -319,7 +319,7 @@ A trajectory is basically a structured trace: a sequence of decisions, tool call
 The full example is in the ZenML repo and runs locally with just an OpenAI API key:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/80d9d154/699898e5761afcfde5227c9a_rlm-document-analysis-report.avif" alt="ZenML dashboard displaying the RLM Document Analysis Report with a synthesis showing 2 high-severity findings about financial irregularities, key findings with evidence summaries, evidence gaps noting areas for further investigation, and per-chunk analysis breakdown." />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/80d9d154/699898e5761afcfde5227c9a_rlm-document-analysis-report.avif" alt="ZenML dashboard displaying the RLM Document Analysis Report with a synthesis showing 2 high-severity findings about financial irregularities, key findings with evidence summaries, evidence gaps noting areas for further investigation, and per-chunk analysis breakdown." />
 </figure>
 
 ```bash

@@ -38,7 +38,8 @@ export interface LogoItem {
   maxWidth?: string;
 }
 
-const R2 = "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30";
+import { R2_WEBFLOW_BASE } from "./constants";
+const R2 = R2_WEBFLOW_BASE;
 
 export const LOGO_CLOUD = {
   label: "Trusted by 1,000s of top companies to standardize their AI workflows",

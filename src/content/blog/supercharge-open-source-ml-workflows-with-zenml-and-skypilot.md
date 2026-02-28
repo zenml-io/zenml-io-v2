@@ -19,12 +19,12 @@ tags:
 date: "2024-08-30T00:00:00.000Z"
 readingTime: 5 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5c4b3ab8/66d1eb64268497ccabeea28c_zenml-skypilot.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5c4b3ab8/66d1eb64268497ccabeea28c_zenml-skypilot.png"
 seo:
   title: "Supercharge Open Source ML Workflows with ZenML And Skypilot - ZenML Blog"
   description: "The combination of ZenML and SkyPilot offers a robust solution for managing ML workflows."
   canonical: "https://www.zenml.io/blog/supercharge-open-source-ml-workflows-with-zenml-and-skypilot"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5c4b3ab8/66d1eb64268497ccabeea28c_zenml-skypilot.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5c4b3ab8/66d1eb64268497ccabeea28c_zenml-skypilot.png"
   ogTitle: "Supercharge Open Source ML Workflows with ZenML And Skypilot - ZenML Blog"
   ogDescription: "The combination of ZenML and SkyPilot offers a robust solution for managing ML workflows."
 ---
@@ -156,15 +156,15 @@ glue_fine_tuning_pipeline.with_options(
 This demonstrates the ease of transitioning from local to cloud execution without altering the core pipeline logic. In both cases, this is how it will show up on the dashboard:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/37cc2e56/66d1eb96fae93438864b6a7a_66d1ea95d96236f53db1c500_pipeline1.png" alt="ML pipeline diagram with code for training model step" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/37cc2e56/66d1eb96fae93438864b6a7a_66d1ea95d96236f53db1c500_pipeline1.png" alt="ML pipeline diagram with code for training model step" />
 </figure>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d79db552/66d1eb96fae93438864b6a88_66d1eaa41ac762c654d78869_pipeline2.png" alt="ML pipeline diagram with details of preprocess_data output" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d79db552/66d1eb96fae93438864b6a88_66d1eaa41ac762c654d78869_pipeline2.png" alt="ML pipeline diagram with details of preprocess_data output" />
 </figure>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/164d7ff4/66d1eb96fae93438864b6a85_66d1eabc4427e9c56d35f759_pipeline3.png" alt="ML pipeline diagram with run details and overview" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/164d7ff4/66d1eb96fae93438864b6a85_66d1eabc4427e9c56d35f759_pipeline3.png" alt="ML pipeline diagram with run details and overview" />
 </figure>
 
 Notice how much more shared, collaborative, and observable this run is, vs. having it run ad-hoc. This is the power of having a shared MLOps framework.

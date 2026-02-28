@@ -16,7 +16,7 @@ export const DEPLOYMENTS_SEO = {
   ogTitle: "Deployments - ZenML",
   ogDescription:
     "Flexible deployment for your MLOps needs. Streamline your ML workflows with ZenML.",
-  ogImage: `https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3ae53e01/64b9920cd04b7c4c0340ce50_og-img-0625.jpg`,
+  ogImage: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3ae53e01/64b9920cd04b7c4c0340ce50_og-img-0625.jpg`,
 } as const;
 
 // ---------------------------------------------------------------------------
@@ -41,7 +41,7 @@ export const DEPLOYMENTS_ARCHITECTURE = {
   headline: "Built on a Robust Client-Server Architecture",
   body: "ZenML is a metadata layer on top of your existing infrastructure, meaning all data and compute stays on your side.",
   image: {
-    url: `https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e19a8b4e/zenml-architecture.png`,
+    url: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e19a8b4e/zenml-architecture.png`,
     alt: "ZenML system architecture diagram showing connections between five main components: ZenML Client (Development Environment), ZenML Server, Database, MLOps Infrastructure (Cloud, Kubernetes, on-prem), and MLOps Tools (Experiment tracker, model deployer)",
   },
   features: [
@@ -95,7 +95,7 @@ export const DEPLOYMENTS_SCENARIOS = [
       "Uses a local SQLite database for storing metadata.",
     ],
     image: {
-      url: `https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7c72dd14/local-deployments.png`,
+      url: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7c72dd14/local-deployments.png`,
       alt: "ZenML Default Local Configuration architecture diagram showing User Code, CLI, ZenML Client, and Metadata Store (SQLite).",
     },
     learnMoreHref: "https://docs.zenml.io/deploying-zenml/deploying-zenml#deployment-scenarios",
@@ -108,7 +108,7 @@ export const DEPLOYMENTS_SCENARIOS = [
       "Suitable for production-level workloads.",
     ],
     image: {
-      url: `https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d201dea4/local_full.png`,
+      url: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d201dea4/local_full.png`,
       alt: "ZenML deployment architecture with centralized server, clients, and MySQL metadata store.",
     },
     learnMoreHref: "https://docs.zenml.io/getting-started/deploying-zenml",
@@ -121,7 +121,7 @@ export const DEPLOYMENTS_SCENARIOS = [
       "Seamlessly upgrade to ZenML Pro from OSS with one-click",
     ],
     image: {
-      url: `https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/39671462/02_pro_saas.png`,
+      url: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/39671462/02_pro_saas.png`,
       alt: "ZenML Pro Deployment architecture with Control Plane, Pro Tenants, Identity Provider, and Secrets Store.",
     },
     learnMoreHref: "/pro",
@@ -136,28 +136,28 @@ export const DEPLOYMENTS_METHODS = [
     title: "ZenML Pro",
     body: "One click deployment with a managed service",
     href: "https://docs.zenml.io/pro",
-    icon: `https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e2bdf58e/667037da03e4569db6e31135_zenml_icon.webp`,
+    icon: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e2bdf58e/667037da03e4569db6e31135_zenml_icon.webp`,
     iconAlt: "ZenML icon",
   },
   {
     title: "Docker",
     body: "Run ZenML Server in a container, optionally connecting to an external MySQL database.",
     href: "https://docs.zenml.io/getting-started/deploying-zenml/deploy-with-docker",
-    icon: `https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/856a483f/docker-icon-min.svg`,
+    icon: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/856a483f/docker-icon-min.svg`,
     iconAlt: "Docker",
   },
   {
     title: "Helm",
     body: "Deploy on a Kubernetes cluster using Helm charts for robust, production-ready setups.",
     href: "https://docs.zenml.io/getting-started/deploying-zenml/deploy-with-helm",
-    icon: `https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2f2edf64/kubernetes.png`,
+    icon: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2f2edf64/kubernetes.png`,
     iconAlt: "Kubernetes",
   },
   {
     title: "Hugging Face Spaces",
     body: "Quick and free deployment option, ideal for trying out ZenML.",
     href: "https://docs.zenml.io/getting-started/deploying-zenml/deploy-using-huggingface-spaces",
-    icon: `https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a01910fd/65df144133e3478a8bf66cd3_hugging-face-min.svg`,
+    icon: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a01910fd/65df144133e3478a8bf66cd3_hugging-face-min.svg`,
     iconAlt: "Hugging Face logo",
   },
 ] as const;
@@ -176,7 +176,7 @@ export const DEPLOYMENTS_TABS = {
       badgeVariant: "default" as const,
       description: "A FastAPI-based server managing metadata of pipelines, artifacts, and stacks. Free with Apache 2.0 license, perfect for individual projects and small teams starting their MLOps journey.",
       image: {
-        url: `https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a0c2a2dd/deployment_diagram_1.png`,
+        url: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a0c2a2dd/deployment_diagram_1.png`,
         alt: "ZenML OSS deployment architecture showing two user environments with ZenML Client connecting to a centralized ZenML OSS Server, Dashboard, and MySQL Metadata Store.",
       },
     },
@@ -186,7 +186,7 @@ export const DEPLOYMENTS_TABS = {
       badgeVariant: "pro" as const,
       description: "Fully managed ZenML deployment with enhanced collaboration features, RBAC, and enterprise support. Ideal for teams looking for a zero-maintenance MLOps solution.",
       image: {
-        url: `https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a44cd000/deployment_diagram_2.png`,
+        url: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a44cd000/deployment_diagram_2.png`,
         alt: "ZenML Pro Deployment architecture with control plane, identity provider, Pro Server, PostgreSQL, and two OSS Tenants with Pro Features.",
       },
     },
@@ -196,7 +196,7 @@ export const DEPLOYMENTS_TABS = {
       badgeVariant: "pro" as const,
       description: "Enterprise-grade deployment on your infrastructure. Complete control over data and secrets with all Pro features. Perfect for organizations with strict security requirements.",
       image: {
-        url: `https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/bac3ad93/deployment_diagram_3.png`,
+        url: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/bac3ad93/deployment_diagram_3.png`,
         alt: "Customer Environment architecture for ZenML Pro showing Pro Metadata Store, Pro Dashboard, ZenML Control Plane, and two Tenants with external service connections.",
       },
     },
@@ -224,7 +224,7 @@ export const DEPLOYMENTS_FINAL_CTA = {
   primaryCta: { label: "Book a Demo", href: "/book-your-demo" } as CtaLink,
   secondaryCta: { label: "Use Open Source", href: "/get-started" } as CtaLink,
   image: {
-    url: `https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/339bb62b/66e9556fd34d2791885b0c5f_model_control_plane_01.png`,
+    url: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/339bb62b/66e9556fd34d2791885b0c5f_model_control_plane_01.png`,
     alt: "Dashboard displaying machine learning models, including versions, authors, and tags.",
   },
 } as const;

@@ -12,7 +12,7 @@ webflow:
   createdOn: "2026-02-12T18:40:43.706Z"
 toolName: "Vertex AI"
 toolIcon:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/806d00f0/6996d9ed231345fcc1aa03b2_Vertex_AI_icon.avif"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/806d00f0/6996d9ed231345fcc1aa03b2_Vertex_AI_icon.avif"
 category: "e2e-platforms"
 integrationType: "e2e-platform"
 advantages:
@@ -26,12 +26,12 @@ ctaHeadline: "Ready to Build Portable ML Pipelines Beyond Google Cloud?"
 learnMoreUrl: "https://docs.zenml.io/user-guides/production-guide"
 seoDescription: "ZenML: an open-source alternative to Vertex AI Pipelines that keeps your MLOps stack portable across GCP, AWS, Azure, and on-prem"
 openGraphImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5cb64e6d/6996d9fb06f9fe50e6150890_compare-vertex-AI.avif"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5cb64e6d/6996d9fb06f9fe50e6150890_compare-vertex-AI.avif"
 seo:
   title: "ZenML vs Vertex AI - Portable ML Pipelines Without GCP Lock-In"
   description: "ZenML: an open-source alternative to Vertex AI Pipelines that keeps your MLOps stack portable across GCP, AWS, Azure, and on-prem"
   canonical: "https://www.zenml.io/compare/zenml-vs-vertex-ai"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5cb64e6d/6996d9fb06f9fe50e6150890_compare-vertex-AI.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5cb64e6d/6996d9fb06f9fe50e6150890_compare-vertex-AI.avif"
   ogTitle: "ZenML vs Vertex AI - Portable ML Pipelines Without GCP Lock-In"
   ogDescription: "ZenML: an open-source alternative to Vertex AI Pipelines that keeps your MLOps stack portable across GCP, AWS, Azure, and on-prem"
 ---

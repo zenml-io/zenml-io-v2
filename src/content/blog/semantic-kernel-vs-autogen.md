@@ -21,12 +21,12 @@ tags:
 date: "2025-08-28T00:00:00.000Z"
 readingTime: 13 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f36b2bbc/68afdda94c1f8d947a72a556_semantic-kernel-vs-autogen.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f36b2bbc/68afdda94c1f8d947a72a556_semantic-kernel-vs-autogen.png"
 seo:
   title: "Semantic Kernel vs AutoGen: Which Microsoft Framework Builds Better AI Agents - ZenML Blog"
   description: "In this Semantic Kernel vs Autogen article, we explain the differences between the two frameworks and conclude which one is best suited for building AI agents."
   canonical: "https://www.zenml.io/blog/semantic-kernel-vs-autogen"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f36b2bbc/68afdda94c1f8d947a72a556_semantic-kernel-vs-autogen.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f36b2bbc/68afdda94c1f8d947a72a556_semantic-kernel-vs-autogen.png"
   ogTitle: "Semantic Kernel vs AutoGen: Which Microsoft Framework Builds Better AI Agents - ZenML Blog"
   ogDescription: "In this Semantic Kernel vs Autogen article, we explain the differences between the two frameworks and conclude which one is best suited for building AI agents."
 ---
@@ -119,7 +119,7 @@ Once you have more than one agent, you need a way to orchestrate their interacti
 #### Semantic Kernel
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/750b20ec/68afd8c44e312c7adbf331fa_semnatic-kernel-concurrent-orchestration.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/750b20ec/68afd8c44e312c7adbf331fa_semnatic-kernel-concurrent-orchestration.png" alt="__wf_reserved_inherit" />
   <figcaption>Semantic Kernel concurrent orchestration</figcaption>
 </figure>
 
@@ -132,7 +132,7 @@ These patterns are available as classes in SK, for example, `SequentialOrchestra
 #### AutoGen
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/016fe60b/687c6ddad5e2d0a96f94e339_built-in-agents-in-autogen.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/016fe60b/687c6ddad5e2d0a96f94e339_built-in-agents-in-autogen.png" alt="__wf_reserved_inherit" />
   <figcaption>AutoGen multi-agent patterns</figcaption>
 </figure>
 
@@ -149,7 +149,7 @@ An agent's ability to access and remember information is critical. Retrieval-Aug
 #### Semantic Kernel
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c34f9dbe/68afd90531f06c3a0f52b58a_kernel-memory.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c34f9dbe/68afd90531f06c3a0f52b58a_kernel-memory.png" alt="__wf_reserved_inherit" />
   <figcaption>Kernel memory</figcaption>
 </figure>
 
@@ -162,7 +162,7 @@ Semantic Kernel's solution for RAG is `Kernel Memory`, a powerful and comprehens
 #### AutoGen
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/bf64a5e2/68afd934c3d8a769c77d0530_rag-applications-with-autogen.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/bf64a5e2/68afd934c3d8a769c77d0530_rag-applications-with-autogen.png" alt="__wf_reserved_inherit" />
   <figcaption>RAG applications with AutoGen</figcaption>
 </figure>
 
@@ -179,7 +179,7 @@ Human oversight remains crucial for reliable AI agent systems, and both framewor
 #### Semantic Kernel
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2511a80c/68afd94ef275989ebe983a8d_sk-human-in-the-loop.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2511a80c/68afd94ef275989ebe983a8d_sk-human-in-the-loop.png" alt="__wf_reserved_inherit" />
   <figcaption>SK human in the loop</figcaption>
 </figure>
 
@@ -194,7 +194,7 @@ The entire process remains in an idle state until the human provides a response 
 #### AutoGen
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/eb5eda0b/6896dfb1da58f454a68d7939_autogen-human-in-the-loop.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/eb5eda0b/6896dfb1da58f454a68d7939_autogen-human-in-the-loop.png" alt="__wf_reserved_inherit" />
   <figcaption>AutoGen human in the loop</figcaption>
 </figure>
 
@@ -225,7 +225,7 @@ AutoGen, while also a Microsoft project, is positioned as a more neutral, horizo
 This approach makes AutoGen an excellent choice for building a flexible, best-of-breed MLOps stack where you can pick and choose the best tool for each part of your application.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/139eee69/68afd990e7870b44c7238fc4_semantic-kernel-integrations.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/139eee69/68afd990e7870b44c7238fc4_semantic-kernel-integrations.png" alt="__wf_reserved_inherit" />
   <figcaption>Semantic Kernel integrations</figcaption>
 </figure>
 
@@ -287,7 +287,7 @@ Because ZenML tracks artifacts and metadata for each pipeline run, it gives you 
 This addresses a key pain point in agent development: things can be nondeterministic, so having robust logging and versioning via ZenML helps in understanding if an update to your agent or model made things better or worse.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f5ac652f/68ad360fb76242eb074a07a9_zenml-pipeline-dag-visualization.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f5ac652f/68ad360fb76242eb074a07a9_zenml-pipeline-dag-visualization.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML pipeline DAG visualization</figcaption>
 </figure>
 
@@ -312,7 +312,7 @@ This kind of end-to-end feedback loop is beyond the scope of Semantic Kernel or 
 Ultimately, ZenML complements both SK and AutoGen. Think of SK/AutoGen as the engine that defines what the AI agent does, and ZenML as the vehicle that carries that engine through the journey of development to deployment and iteration.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/bfea7a61/68ad362d9d17ed197069fd89_zenml-evaluation.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/bfea7a61/68ad362d9d17ed197069fd89_zenml-evaluation.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML evaluation</figcaption>
 </figure>
 

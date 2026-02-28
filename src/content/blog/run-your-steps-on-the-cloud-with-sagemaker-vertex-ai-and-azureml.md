@@ -20,12 +20,12 @@ tags:
 date: "2022-03-25T00:00:00.000Z"
 readingTime: 6 Mins Read
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/53e56e35/653177e4626cf16635f1d3ca_clouds.jpg"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/53e56e35/653177e4626cf16635f1d3ca_clouds.jpg"
 seo:
   title: "Run your steps on the cloud with Sagemaker, Vertex AI, and AzureML - ZenML Blog"
   description: "With ZenML 0.6.3, you can now run your ZenML steps on Sagemaker, Vertex AI, and AzureML! It’s normal to have certain steps that require specific infrastructure (e.g. a GPU-enabled environment) on which to run model training, and Step Operators give you the power to switch out infrastructure for individual steps to support this."
   canonical: "https://www.zenml.io/blog/run-your-steps-on-the-cloud-with-sagemaker-vertex-ai-and-azureml"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/574570f9/653177e4626cf16635f1d3ca_clouds.jpg"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/574570f9/653177e4626cf16635f1d3ca_clouds.jpg"
   ogTitle: "Run your steps on the cloud with Sagemaker, Vertex AI, and AzureML - ZenML Blog"
   ogDescription: "With ZenML 0.6.3, you can now run your ZenML steps on Sagemaker, Vertex AI, and AzureML! It’s normal to have certain steps that require specific infrastructure (e.g. a GPU-enabled environment) on which to run model training, and Step Operators give you the power to switch out infrastructure for individual steps to support this."
 ---
@@ -43,7 +43,7 @@ seo:
 The step operator defers the execution of individual steps in a pipeline to specialized runtime environments that are optimized for Machine Learning workloads. This is helpful when there is a requirement for specialized cloud backends ✨ for different steps. One example could be using powerful GPU instances for training jobs or distributed compute for ingestion streams.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/beb027cf/65315f56f7e61ff7b180417b_zen-in-the-clouds.gif" alt="ZenML step operators allow training in the cloud" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/beb027cf/65315f56f7e61ff7b180417b_zen-in-the-clouds.gif" alt="ZenML step operators allow training in the cloud" />
 </figure>
 
 # I’m confused 🤔. How is it different from an orchestrator?

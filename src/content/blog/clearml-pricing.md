@@ -21,12 +21,12 @@ tags:
 date: "2025-06-15T00:00:00.000Z"
 readingTime: 12 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/fface84e/6981d362e92aa039b696ad00_6981d2b28dd83b43e529f19a_clearml-pricing.avif"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/fface84e/6981d362e92aa039b696ad00_6981d2b28dd83b43e529f19a_clearml-pricing.avif"
 seo:
   title: "ClearML Pricing Breakdown: Is the Platform Worth the Investment? - ZenML Blog"
   description: "In this ClearML pricing breakdown, we discuss the costs, features, and value ClearML provides to help you decide if it’s the right investment for your business."
   canonical: "https://www.zenml.io/blog/clearml-pricing"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/fface84e/6981d362e92aa039b696ad00_6981d2b28dd83b43e529f19a_clearml-pricing.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/fface84e/6981d362e92aa039b696ad00_6981d2b28dd83b43e529f19a_clearml-pricing.avif"
   ogTitle: "ClearML Pricing Breakdown: Is the Platform Worth the Investment? - ZenML Blog"
   ogDescription: "In this ClearML pricing breakdown, we discuss the costs, features, and value ClearML provides to help you decide if it’s the right investment for your business."
 ---
@@ -71,14 +71,14 @@ The key idea is that ClearML lets you **‘pay as you grow.’** A small team ca
 Next, let’s look at some factors that influence how much you might end up paying for ClearML.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8735f30b/684e51974e98d225071c7f69_clearml-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8735f30b/684e51974e98d225071c7f69_clearml-pricing.png" alt="__wf_reserved_inherit" />
   <figcaption>ClearML pricing</figcaption>
 </figure>
 
 ## ClearML Pricing Factors to Consider
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c6847a9e/684e51b71bf42a2599a4618f_clearml-pricing-factors-to-consider.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c6847a9e/684e51b71bf42a2599a4618f_clearml-pricing-factors-to-consider.png" alt="__wf_reserved_inherit" />
   <figcaption>ClearML pricing factors to consider</figcaption>
 </figure>
 
@@ -129,7 +129,7 @@ For small-scale use, the provided free resources - around 100 GB of storage and 
 The Community plan is ideal for individuals, researchers, or small projects to get started with ClearML without any budget. Once you outgrow the user count or the usage limits, move up to a paid plan.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ad30b00a/684e51e2678f2c6331fe5516_clearml-community-plan.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ad30b00a/684e51e2678f2c6331fe5516_clearml-community-plan.png" alt="__wf_reserved_inherit" />
   <figcaption>ClearML Community plan</figcaption>
 </figure>
 
@@ -148,7 +148,7 @@ In terms of limits, the Pro plan increases your included usage. It offers ~120 G
 For most small-to-medium teams, ClearML’s Pro plan offers great value for the price, as long as extremely heavy experiment workloads are kept in check.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/bdc73c0a/684e51fa3b2eae38285d6727_clearml-pro-plan.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/bdc73c0a/684e51fa3b2eae38285d6727_clearml-pro-plan.png" alt="__wf_reserved_inherit" />
   <figcaption>ClearML Pro plan</figcaption>
 </figure>
 
@@ -163,7 +163,7 @@ Scale includes all Pro features plus further enhancements needed by growing team
 Essentially, it’s designed for mid-size companies or heavy ClearML users who want the convenience of a managed platform but deployed within their own cloud for data isolation. The usage-based model means if you ramp up your ML efforts, costs will ramp up too, but you’re also not paying for capacity you don’t use.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9e20eead/684e521233d439852194311b_clearml-scale-plan.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9e20eead/684e521233d439852194311b_clearml-scale-plan.png" alt="__wf_reserved_inherit" />
   <figcaption>ClearML Scale plan</figcaption>
 </figure>
 
@@ -182,7 +182,7 @@ Enterprise customers get ‘white-glove’ treatment: ClearML provides dedicated
 In short, this plan is for when ML is mission-critical and you need ClearML tailored exactly to your organization. If you’re a small company, you might not need this tier, but it’s yours if you do.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7db394b7/684e522b7f9cdeef8812e2a0_clearml-enterprise-plan.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7db394b7/684e522b7f9cdeef8812e2a0_clearml-enterprise-plan.png" alt="__wf_reserved_inherit" />
   <figcaption>ClearML Enterprise plan</figcaption>
 </figure>
 
@@ -199,7 +199,7 @@ Overall, ClearML’s pricing scales with usage, and many teams find it a worthwh
 ## ZenML – An Alternative to ClearML
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/950f57fd/684e52405d448aa8592676b3_zenml-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/950f57fd/684e52405d448aa8592676b3_zenml-homepage.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML homepage</figcaption>
 </figure>
 
@@ -251,7 +251,7 @@ Every ZenML pipeline you run tracks parameters, metrics, and artifacts automatic
 This covers the same experiment tracking needs as ClearML. Because ZenML’s tracking is built into pipeline execution, everything recorded is automatically tied to a reproducible run.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ce3ffe8a/681c8ff1cff78cabbca5d18f_a-flowchart-explaning-how-zenml-integrates-with-multiple-tools-and-platform.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ce3ffe8a/681c8ff1cff78cabbca5d18f_a-flowchart-explaning-how-zenml-integrates-with-multiple-tools-and-platform.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML experiment tracking</figcaption>
 </figure>
 
@@ -286,7 +286,7 @@ After your pipeline trains a model, you can register that model in a repository 
 In ZenML, [model registration](https://docs.zenml.io/stacks/stack-components/model-registries) is part of the normal workflow, so promoting a model from experiment to deployment is straightforward. Being open-source, ZenML also lets you choose where and how your models are stored, giving you full control.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/54d3bc5c/67b448e42a9d9bb96bd945af_EU_AI_Act_Models.gif" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/54d3bc5c/67b448e42a9d9bb96bd945af_EU_AI_Act_Models.gif" alt="__wf_reserved_inherit" />
   <figcaption>Model Control Plane Overview in ZenML Pro Dashboard</figcaption>
 </figure>
 
@@ -295,7 +295,7 @@ What’s more, ZenML offers several capabilities that extend beyond ClearML’s 
 <ul><li><strong>Smart Caching:</strong> If nothing changed in a step’s inputs or code since the last run, ZenML will skip that step and reuse its output, saving time and compute.</li><li><strong>Secret Management:</strong> Comes with a built-in secret management system for securely storing credentials (API keys, passwords, etc.) and injecting them into pipelines safely.</li><li><strong>Hyperparameter Tuning:</strong> The platform is capable of running hyperparameter search experiments as part of your pipelines, executing multiple runs with different parameters, and tracking each result.</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/cc5056e0/684e52da57705ed5f6d6a7b3_zenml-vs-clearml.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/cc5056e0/684e52da57705ed5f6d6a7b3_zenml-vs-clearml.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML vs ClearML</figcaption>
 </figure>
 
@@ -316,7 +316,7 @@ In the end, the best platform is one that saves you time and fits your budget. T
 If you think ClearML’s pricing isn’t justified, [you should book a demo with ZenML](https://www.zenml.io/book-your-demo) to learn how we can cater to your business in a better and more efficient way.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/08a67db5/684d0c7f8f1f6d02ce5767f4_book-your-personalized-demo.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/08a67db5/684d0c7f8f1f6d02ce5767f4_book-your-personalized-demo.png" alt="__wf_reserved_inherit" />
   <figcaption>Book your personalized demo</figcaption>
 </figure>
 

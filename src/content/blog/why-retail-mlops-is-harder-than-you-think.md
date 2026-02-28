@@ -18,12 +18,12 @@ tags:
 date: "2025-05-16T00:00:00.000Z"
 readingTime: 5 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ec9b6bb0/6827039afd629c8a0a47b4b7_Retail_MLOps_Insights__1_.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ec9b6bb0/6827039afd629c8a0a47b4b7_Retail_MLOps_Insights__1_.png"
 seo:
   title: "Why Retail MLOps Is Harder Than You Think - ZenML Blog"
   description: "An in-depth analysis of retail MLOps challenges, covering data complexity, edge computing, seasonality, and multi-cloud deployment, with real-world examples from major retailers like Wayfair and Starbucks, and practical solutions including ZenML's impact in reducing deployment time from 8.5 to 2 weeks at Adeo Leroy Merlin."
   canonical: "https://www.zenml.io/blog/why-retail-mlops-is-harder-than-you-think"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ec9b6bb0/6827039afd629c8a0a47b4b7_Retail_MLOps_Insights__1_.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ec9b6bb0/6827039afd629c8a0a47b4b7_Retail_MLOps_Insights__1_.png"
   ogTitle: "Why Retail MLOps Is Harder Than You Think - ZenML Blog"
   ogDescription: "An in-depth analysis of retail MLOps challenges, covering data complexity, edge computing, seasonality, and multi-cloud deployment, with real-world examples from major retailers like Wayfair and Starbucks, and practical solutions including ZenML's impact in reducing deployment time from 8.5 to 2 weeks at Adeo Leroy Merlin."
 ---
@@ -43,7 +43,7 @@ We saw these challenges first‑hand [while scaling pipelines for Adeo Leroy Mer
 ## Five pain points every retailer learns the hard way
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/682266ea/682703b29396a1570077debf_CleanShot_May_15_2025_from_Retail_MLOps.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/682266ea/682703b29396a1570077debf_CleanShot_May_15_2025_from_Retail_MLOps.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Omnichannel data entropy
@@ -75,7 +75,7 @@ Pricing and replenishment models touch the customer at every scan. The [UK Compe
 The custom `ProphetMaterializer` in our [open-source example](https://github.com/zenml-io/zenml-projects/tree/main/retail-forecast) shows how proper model serialization creates auditable artifacts - ensuring the same forecasts re-materialize identically across environments, critical when legal teams question how a price was calculated.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9fd4253f/682703dad09c690cf9941d17_ZenML_Dashboard_-_Retail_MLOps.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9fd4253f/682703dad09c690cf9941d17_ZenML_Dashboard_-_Retail_MLOps.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ## Three myths that keep biting retailers
@@ -149,13 +149,13 @@ The [RetailForecast project](https://github.com/zenml-io/zenml-projects/blob/mai
 Rather than forcing a one-size-fits-all approach, the system trains individual Prophet models for each store-item combination. This granular approach captures location-specific patterns while maintaining a unified orchestration framework.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/95aa9b83/6827042512b478521c8863bf_Training_Pipeline_-_Retail_MLOps.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/95aa9b83/6827042512b478521c8863bf_Training_Pipeline_-_Retail_MLOps.png" alt="__wf_reserved_inherit" />
 </figure>
 
 **Visualizing Uncertainty**
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8a559f88/68270433c390b84392277fe5_Retail_MLOps_Forecast_Dashboard.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8a559f88/68270433c390b84392277fe5_Retail_MLOps_Forecast_Dashboard.png" alt="__wf_reserved_inherit" />
 </figure>
 
 The dashboard's prediction intervals translate abstract "confidence scores" into actionable inventory buffers—crucial for the CFO conversations you mentioned.
@@ -165,7 +165,7 @@ The dashboard's prediction intervals translate abstract "confidence scores" into
 A [recent AI-inventory case study](https://www.infinitiresearch.com/casestudy/ai-in-action-infiniti-helped-a-retailer-solve-the-right-problems/) reports **≈ 15% fewer stock-outs and ≈ 20% less excess inventory**. That matters when a single allocation error can erase **$100m+** from a large retailer's bottom line—as [ASOS's £100m inventory write-off](https://www.punchline-gloucester.com/articles/aanews/fashion-giant-asos-to-write-off-100-million-pounds-of-stock) demonstrated.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f0c62f0f/68270728a3f90fb0fd56b9bf_Ezgif_1152x547.gif" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f0c62f0f/68270728a3f90fb0fd56b9bf_Ezgif_1152x547.gif" alt="__wf_reserved_inherit" />
 </figure>
 
 ## Ready to go from 8.5 weeks to 2?
@@ -175,5 +175,5 @@ Grab our [open-source RetailForecast project](https://github.com/zenml-io/zenml-
 Because in retail, it isn’t the big that eat the small—it’s the **fast that eat the slow**.  Let’s make you the fast fish.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ad6f5ab8/68270655ce22942447ee1eab_Why_Retail_MLOps_Is_Harder_Than_You_Think.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ad6f5ab8/68270655ce22942447ee1eab_Why_Retail_MLOps_Is_Harder_Than_You_Think.png" alt="__wf_reserved_inherit" />
 </figure>

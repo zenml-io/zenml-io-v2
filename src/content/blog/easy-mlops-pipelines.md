@@ -20,12 +20,12 @@ tags:
 date: "2024-07-10T00:00:00.000Z"
 readingTime: 7 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/45bdd3cd/668e3ebe04a81851b815076c_1-click-deployments.webp"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/45bdd3cd/668e3ebe04a81851b815076c_1-click-deployments.webp"
 seo:
   title: "Easy MLOps pipelines: 1-click deployments for AWS, GCP, and Azure - ZenML Blog"
   description: "Streamline your machine learning platform with ZenML. Learn how ZenML's 1-click cloud stack deployments simplify setting up MLOps pipelines on AWS, GCP, and Azure."
   canonical: "https://www.zenml.io/blog/easy-mlops-pipelines"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3a7188ef/668e3ebe04a81851b815076c_1-click-deployments.webp"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3a7188ef/668e3ebe04a81851b815076c_1-click-deployments.webp"
   ogTitle: "Easy MLOps pipelines: 1-click deployments for AWS, GCP, and Azure - ZenML Blog"
   ogDescription: "Streamline your machine learning platform with ZenML. Learn how ZenML's 1-click cloud stack deployments simplify setting up MLOps pipelines on AWS, GCP, and Azure."
 ---
@@ -68,7 +68,7 @@ So this month, we sat down and crafted out some features to solve it. The result
 This feature is for users who **do not have existing infrastructure features.** Here is how it works:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a862109d/668e3af06e2922c6c6f6100e_stacks_diagram.webp" alt="Select a cloud provider, ZenML generates a URL, user executes the template flow, the flow includes a step than deploys infrastructure. " />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a862109d/668e3af06e2922c6c6f6100e_stacks_diagram.webp" alt="Select a cloud provider, ZenML generates a URL, user executes the template flow, the flow includes a step than deploys infrastructure. " />
 </figure>
 
 The cool thing about this feature is that it uses native cloud technologies (like [AWS Cloudformation](https://aws.amazon.com/cloudformation/)) to give users a more controlled experience in their cloud accounts. We’ve also tried our best to make sure that the user is aware of what exactly is provisioned on their account along the way.
@@ -88,7 +88,7 @@ This will launch a CLI flow that will guide you through registering a stack.
 If you’d rather go via the dashboard, you can do by clicking on the `Stacks` section and creating a new stack, and then clicking on “Create Stack”:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8f249670/668e3ba72bd96c7de79e6c77_one-click-deployment.gif" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8f249670/668e3ba72bd96c7de79e6c77_one-click-deployment.gif" alt="__wf_reserved_inherit" />
 </figure>
 
 > ⚠️ We’ve deprecated the old zenml stack deploy command that used mlstacks as a backend and replaced it with this more native cloud implementation. To use mlstacks, you can do so directly.

@@ -19,12 +19,12 @@ tags:
 date: "2024-09-19T00:00:00.000Z"
 readingTime: 5 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/bd764d5e/66eb1ff816101b34cc1b42b4_zenml-comet__1___1_.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/bd764d5e/66eb1ff816101b34cc1b42b4_zenml-comet__1___1_.png"
 seo:
   title: "Boost Your MLOps Efficiency: Integrate ZenML and Comet for Better Experiment Tracking - ZenML Blog"
   description: "This blog post discusses the integration of ZenML and Comet, an open-source machine learning pipeline management platform, to enhance the experimentation process. ZenML is an extensible framework for creating portable, production-ready pipelines, while Comet is a platform for tracking, comparing, explaining, and optimizing experiments and models. The combination offers seamless experiment tracking, enhanced visibility, simplified workflow, improved collaboration, and flexible configuration. The process involves installing ZenML and enabling Comet integration, registering the Comet experiment tracker in the ZenML stack, and customizing experiment settings."
   canonical: "https://www.zenml.io/blog/integrate-zenml-and-comet-for-better-experiment-tracking"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/bd764d5e/66eb1ff816101b34cc1b42b4_zenml-comet__1___1_.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/bd764d5e/66eb1ff816101b34cc1b42b4_zenml-comet__1___1_.png"
   ogTitle: "Boost Your MLOps Efficiency: Integrate ZenML and Comet for Better Experiment Tracking - ZenML Blog"
   ogDescription: "This blog post discusses the integration of ZenML and Comet, an open-source machine learning pipeline management platform, to enhance the experimentation process. ZenML is an extensible framework for creating portable, production-ready pipelines, while Comet is a platform for tracking, comparing, explaining, and optimizing experiments and models. The combination offers seamless experiment tracking, enhanced visibility, simplified workflow, improved collaboration, and flexible configuration. The process involves installing ZenML and enabling Comet integration, registering the Comet experiment tracker in the ZenML stack, and customizing experiment settings."
 ---
@@ -187,13 +187,13 @@ In the Comet UI, you can:
 **          3. Analyze Metrics and Plots**: Visualize your logged metrics with Comet's built-in charting tools, helping you quickly              identify trends and anomalies.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/735e6c4c/66eb297f2d02c72aac2cdba9_66eb270744852340554d6597_Screenshot_202024-09-19_20001602.png" alt="A confusion matrix logged in the Comet UI" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/735e6c4c/66eb297f2d02c72aac2cdba9_66eb270744852340554d6597_Screenshot_202024-09-19_20001602.png" alt="A confusion matrix logged in the Comet UI" />
 </figure>
 
           **4. Examine Model Performance: **For steps that involve model training or evaluation, you can dive deep into model             performance metrics, confusion matrices, and more.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7eddc2af/66eb297f2d02c72aac2cdbad_66eb279ec86d2740981974a6_Screenshot_202024-09-19_20001839.png" alt="A screenshot of the Comet UI showing a model tracked via ZenML" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7eddc2af/66eb297f2d02c72aac2cdbad_66eb279ec86d2740981974a6_Screenshot_202024-09-19_20001839.png" alt="A screenshot of the Comet UI showing a model tracked via ZenML" />
 </figure>
 
 **          5. Collaborate with Team Members**: Share experiment results, add notes, and collaborate with your team directly              within the Comet interface.
@@ -212,7 +212,7 @@ print(tracking_url)
 Or directly from the ZenML dashboard. This will provide a direct link to the Comet experiment associated with a particular step in your ZenML pipeline.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/237f099c/66eb297f2d02c72aac2cdbb6_66eb27f421b7e1706614a8b8_Screenshot_202024-09-19_20002007.png" alt="A screenshot of a ZenML DAG with a comet experiment tracker url as metadata" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/237f099c/66eb297f2d02c72aac2cdbb6_66eb27f421b7e1706614a8b8_Screenshot_202024-09-19_20002007.png" alt="A screenshot of a ZenML DAG with a comet experiment tracker url as metadata" />
 </figure>
 
 Alternatively, you can see an overview of all experiments at `https://www.comet.com/&#123;WORKSPACE_NAME&#125;/&#123;PROJECT_NAME&#125;/experiments/`.

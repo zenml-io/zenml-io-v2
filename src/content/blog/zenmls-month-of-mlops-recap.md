@@ -19,12 +19,12 @@ tags:
 date: "2022-11-22T00:00:00.000Z"
 readingTime: 7 Mins Read
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/552f8a20/6531e8803397a782a5943bc7_Recap.gif"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/552f8a20/6531e8803397a782a5943bc7_Recap.gif"
 seo:
   title: "ZenML's Month of MLOps Recap - ZenML Blog"
   description: "The ZenML MLOps Competition ran from October 10 to November 11, 2022, and was a wonderful expression of open-source MLOps problem-solving."
   canonical: "https://www.zenml.io/blog/zenmls-month-of-mlops-recap"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/56ab60a1/6531e8803397a782a5943bc7_Recap.gif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/56ab60a1/6531e8803397a782a5943bc7_Recap.gif"
   ogTitle: "ZenML's Month of MLOps Recap - ZenML Blog"
   ogDescription: "The ZenML MLOps Competition ran from October 10 to November 11, 2022, and was a wonderful expression of open-source MLOps problem-solving."
 ---
@@ -34,13 +34,13 @@ seo:
 The inaugural ZenML [Month of MLOps](https://zenml.io/competition) ran from October 10 to November 11, 2022. ending recently with a [closing ceremony streamed live](https://www.youtube.com/watch?v=acLrHtjiN9A). The goal of the competition was to make the most creative and innovative showcase of a production-grade ZenML MLOps pipeline. Aside from the cash prizes, joining the competition was a great way to contribute to open-source software, build a machine learning portfolio, and learn MLOps best practices.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/626dbe60/6531e8bf75b7a86dde376586_Final.png" alt="Image showing final day" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/626dbe60/6531e8bf75b7a86dde376586_Final.png" alt="Image showing final day" />
 </figure>
 
 We were more than excited to welcome some of the most well-renowned experts of the MLOps world to judge over proceedings:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b0d47344/6531e8bf3397a782a59466f4_Judges.png" alt="Image showing our judging panel" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b0d47344/6531e8bf3397a782a59466f4_Judges.png" alt="Image showing our judging panel" />
 </figure>
 
 <ul><li><a href="https://twitter.com/charles_irl">Charles Frye</a>, core instructor at the amazing <a href="https://fullstackdeeplearning.com/">Full Stack Deep Learning</a> course</li><li><a href="https://www.linkedin.com/in/anthonygoldbloom">Anthony Goldbloom</a>, co-founder and former CEO of <a href="https://www.kaggle.com/">Kaggle</a></li><li><a href="https://www.linkedin.com/in/chiphuyen/">Chip Huyen</a>, author of ‘<a href="https://www.amazon.com/Designing-Machine-Learning-Systems-Huyen-ebook-dp-B0B1LGL2SR/dp/B0B1LGL2SR/ref=mt_other?qid=1653630445&amp;me=&amp;tag=soumet-20&amp;_encoding=UTF8">Designing Machine Learning Systems</a>’ and co-founder of Claypot AI</li><li><a href="https://www.linkedin.com/in/goku/">Goku Mohandas</a>, founder of <a href="https://madewithml.com/">MadeWithML</a>, another essential course in production ML</li></ul>
@@ -132,6 +132,6 @@ While the entire competition was a huge learning experience for everyone involve
 The Month of MLOps was one of the most enjoyable moments in the history of ZenML - and we had a blast hosting it. If you missed out on the prizes this time, or would like to participate in competitions like the Month of MLOps, join the [ZenML Slack Community](https://zenml.io/slack-invite), and keep an eye out for more exciting announcements coming soon!
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/626dbe60/6531e8bf75b7a86dde376586_Final.png" alt="image" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/626dbe60/6531e8bf75b7a86dde376586_Final.png" alt="image" />
 </figure>
 

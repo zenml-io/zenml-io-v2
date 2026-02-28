@@ -20,12 +20,12 @@ tags:
 date: "2025-03-07T00:00:00.000Z"
 readingTime: 7 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9b3fcf3b/67caa04e963f2a8f9892eee4_Hackathon_Winners_Newsletter__1_.jpeg"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9b3fcf3b/67caa04e963f2a8f9892eee4_Hackathon_Winners_Newsletter__1_.jpeg"
 seo:
   title: "Newsletter Edition #12 - Why Top Teams Are Replacing AI Agents (and What They're Choosing Instead) - ZenML Blog"
   description: "Our monthly roundup: Hamza visits the US, a new course built on ZenML and why workflows are better than autonomous agents!"
   canonical: "https://www.zenml.io/blog/newsletter-edition-12---why-top-teams-are-replacing-ai-agents-and-what-theyre-choosing-instead"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9b3fcf3b/67caa04e963f2a8f9892eee4_Hackathon_Winners_Newsletter__1_.jpeg"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9b3fcf3b/67caa04e963f2a8f9892eee4_Hackathon_Winners_Newsletter__1_.jpeg"
   ogTitle: "Newsletter Edition #12 - Why Top Teams Are Replacing AI Agents (and What They're Choosing Instead) - ZenML Blog"
   ogDescription: "Our monthly roundup: Hamza visits the US, a new course built on ZenML and why workflows are better than autonomous agents!"
 ---
@@ -41,7 +41,7 @@ The most transformative realization was seeing how a blend of engineering rigor 
 ## Product Updates
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1cdba83a/67c0652ebc6a88f864605a66_ScreenRecording2025-02-27at14.07.03-ezgif.com-crop.gif" alt="Screen recording of a user registering components on the ZenML dashboard using the UI" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1cdba83a/67c0652ebc6a88f864605a66_ScreenRecording2025-02-27at14.07.03-ezgif.com-crop.gif" alt="Screen recording of a user registering components on the ZenML dashboard using the UI" />
 </figure>
 
 We've been hard at work expanding ZenML's capabilities with our recent 0.74.0 and 0.75.0 releases, bringing several major features to enhance your ML workflows.
@@ -61,7 +61,7 @@ Of course, we've also made dozens of smaller improvements and bug fixes. For the
 ## Featured Course: Build Your Second Brain AI Assistant (Free, OSS)
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/43d20682/67ca9ff766f7870e79ee119e_Second_Brain_AI_Newsletter.png" alt="Architecture diagram of Paul Iusztin&#039;s free course &#039;Build your Second Brain&#039;" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/43d20682/67ca9ff766f7870e79ee119e_Second_Brain_AI_Newsletter.png" alt="Architecture diagram of Paul Iusztin&#039;s free course &#039;Build your Second Brain&#039;" />
 </figure>
 
 We're excited to highlight an outstanding new open-source course that's generating significant buzz in the AI community. Paul Iusztin recently released "[Building Your Second Brain AI Assistant Using Agents, LLMs and RAG](https://decodingml.substack.com/p/build-your-second-brain-ai-assistant)" - a comprehensive, production-focused course that teaches you how to build AI systems that connect to your personal knowledge base.
@@ -75,7 +75,7 @@ With six comprehensive modules and minimal cloud costs (you can complete it for 
 ## Bay Area Hackathon Winners
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9b3fcf3b/67caa04e963f2a8f9892eee4_Hackathon_Winners_Newsletter__1_.jpeg" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9b3fcf3b/67caa04e963f2a8f9892eee4_Hackathon_Winners_Newsletter__1_.jpeg" alt="__wf_reserved_inherit" />
 </figure>
 
 We recently co-sponsored a Bay Area hackathon where [Team Emoguardian took first place](https://www.linkedin.com/posts/harshrajjeripothula_ai-agents-llm-activity-7297418292149768193-Izze/?utm_source=share&utm_medium=member_desktop&rcm=ACoAABAwdVYB4B-i23zv5Gqmvs7qL8f07PBgg_o), winning a year of ZenML Pro Teams plan valued at $7,000 and $500 in cash. Harsh Jeripothula, Sai Naveen Chanumolu, and Sai Anuraghav Savadam built a multi-AI agent application using ZenML, Together AI, Agno, and HappyRobot. Their standout achievement was developing a custom Speech Emotion Recognition model trained on the RAVDESS dataset using ZenML pipelines, achieving state-of-the-art performance. The team plans to extend their architecture to train on multimodal data and leverage their ZenML Pro subscription to advance their work.
@@ -85,7 +85,7 @@ SchematiX, comprising Arka Serezh, Aaliya Jakir, Suraj Singireddy, and Bart van 
 ## New Blogs: AI Act, Multimodal Finetuning and adopting llms.txt
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b6c2e339/67caa05fab61d233ebded891_February_March_2025_Newsletter__1_.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b6c2e339/67caa05fab61d233ebded891_February_March_2025_Newsletter__1_.png" alt="__wf_reserved_inherit" />
 </figure>
 
 Alex [explored the EU's landmark AI Act](https://www.zenml.io/blog/understanding-the-ai-act-february-2025-updates-and-implications) which is now partially in effect, breaking down the key provisions based on risk categories. The article outlined prohibited AI practices, requirements for high-risk systems, and practical compliance steps including model versioning and data governance. With penalties reaching up to €35 million or 7% of global turnover, the guide helped teams prepare for upcoming deadlines through 2027, highlighting how ZenML's tracking capabilities support regulatory requirements.
@@ -97,7 +97,7 @@ Jayesh detailed [ZenML's adoption of the llms.txt standard](https://www.zenml.io
 ## 580+ entries in the LLMOps Database and growing
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2d812536/67caa06c0a41149a189731cc_CleanShot_Mar_5_Newsletter_from_TinyPNG.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2d812536/67caa06c0a41149a189731cc_CleanShot_Mar_5_Newsletter_from_TinyPNG.png" alt="__wf_reserved_inherit" />
 </figure>
 
 Our [LLMOps Database](https://www.zenml.io/llmops-database) continues to expand with practical implementations across different sectors. In the government sector, Propel built an [evaluation](https://www.zenml.io/llmops-database/building-a-systematic-snap-benefits-llm-evaluation-framework) [framework](https://www.zenml.io/llmops-database/building-and-automating-comprehensive-llm-evaluation-framework-for-snap-benefits) for LLMs handling SNAP benefit inquiries, using Promptfoo for automated testing and implementing a system where models evaluate other models' responses for quality and accessibility. In e-commerce, [Pattern](https://www.zenml.io/llmops-database/ai-powered-ecommerce-content-optimization-platform) developed a content optimization tool that processes marketplace data points to improve product listings, with one client reporting a 21% month-over-month revenue increase after implementation.
@@ -111,7 +111,7 @@ These cases demonstrate how organizations are implementing LLMs with practical e
 ## Rant's Corner: The Agent Hype Cycle
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2b3cf96d/67caa07e9e7c183c26ee18be_Latest_Newsletter_Image_from_TinyPNG.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2b3cf96d/67caa07e9e7c183c26ee18be_Latest_Newsletter_Image_from_TinyPNG.png" alt="__wf_reserved_inherit" />
 </figure>
 
 Most "agents" in enterprise today are just DAGs (Directed Acyclic Graphs) wearing fancy clothing - predetermined paths with minimal actual agency and worse predictability. They follow predefined steps but with more marketing hype and less reliability than traditional workflow systems. This rebranding doesn't change the underlying reality of what these systems actually do.
@@ -123,7 +123,7 @@ Your CIO isn't losing sleep over lack of agent "creativity" - they're concerned 
 ## AI World Roundup: February-March 2025
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2dcc3489/67caa0907687fb38f6db3476_AI_World_Roundup_Feb-Mar_2025__1___1_.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2dcc3489/67caa0907687fb38f6db3476_AI_World_Roundup_Feb-Mar_2025__1___1_.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Foundation Models Advancing Rapidly

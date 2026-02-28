@@ -17,7 +17,7 @@ tags:
 date: "2022-02-07T00:00:00.000Z"
 readingTime: 2 Mins Read
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7589acf4/65315a4350c7d3830935e53a_ankush-minda-4Xy08NbMBLM-unsplash.jpg"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7589acf4/65315a4350c7d3830935e53a_ankush-minda-4Xy08NbMBLM-unsplash.jpg"
 ---
 
 **Last updated:** November 3, 2022.

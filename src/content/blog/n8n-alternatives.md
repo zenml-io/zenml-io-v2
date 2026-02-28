@@ -20,12 +20,12 @@ tags:
 date: "2026-01-04T00:00:00.000Z"
 readingTime: 17 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b58c911b/695a4b8e72303659b0de3fc2_n8n-alternatives.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b58c911b/695a4b8e72303659b0de3fc2_n8n-alternatives.png"
 seo:
   title: "The Top 10 n8n Alternatives to Try for Workflow Automation - ZenML Blog"
   description: "In this article, you learn about the best n8n alternatives for workflow automation."
   canonical: "https://www.zenml.io/blog/n8n-alternatives"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b58c911b/695a4b8e72303659b0de3fc2_n8n-alternatives.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b58c911b/695a4b8e72303659b0de3fc2_n8n-alternatives.png"
   ogTitle: "The Top 10 n8n Alternatives to Try for Workflow Automation - ZenML Blog"
   ogDescription: "In this article, you learn about the best n8n alternatives for workflow automation."
 ---
@@ -49,7 +49,7 @@ We tested 10 of the best n8n alternatives for automating workflows at scale. In 
 While n8n is powerful for low-code automation, users have raised several concerns in production use.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a8f5c887/695a49b9a011b846bd5695ce_need-for-an-n8n-alternative.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a8f5c887/695a49b9a011b846bd5695ce_need-for-an-n8n-alternative.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 Some common concerns include:
@@ -67,7 +67,7 @@ This operational burden makes teams question whether a managed alternative would
 n8n has limited collaboration and team features. n8n Community Edition supports multiple users via User Management (Owner + Member accounts), but it does not include Projects or built-in sharing of workflows/credentials, so collaboration is limited without paid features.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/926f0ef4/695a49fdd73ce68e7340ba67_limited-collaboration.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/926f0ef4/695a49fdd73ce68e7340ba67_limited-collaboration.webp" alt="__wf_reserved_inherit" />
   <figcaption>Source</figcaption>
 </figure>
 
@@ -94,7 +94,7 @@ Here’s a quick table summarizing the top 10 n8n alternatives:
 ## 1. Zapier
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/0ea89516/695a4a26477a6b1c832e6db1_zapier-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0ea89516/695a4a26477a6b1c832e6db1_zapier-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [Zapier](https://zapier.com/agents) is the industry standard for no-code automation, making it a natural n8n alternative for those who want minimal setup. It’s a fully hosted SaaS offering with minimal setup and built-in integrations with thousands of apps.
@@ -112,7 +112,7 @@ Zapier offers a Free plan for basic use and three paid plans:
 <ul><li><strong>Professional:</strong> $29.99 per month</li><li><strong>Team:</strong> $103.50 per month</li><li><strong>Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8ea828e2/695a4a4b60de1349e7ba7afb_zapier-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8ea828e2/695a4a4b60de1349e7ba7afb_zapier-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -124,7 +124,7 @@ However, it gets expensive quickly as you scale. The logic limitations are also 
 ## 2. Make
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/48735032/695a4a573acd90a8aa8b3d26_make-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/48735032/695a4a573acd90a8aa8b3d26_make-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [Make](https://www.make.com/en) is the closest direct competitor to n8n in terms of visual layout. It offers a flowchart-style editor that allows for complex, non-linear workflows. Many think of Make as a middle tool with Zapier’s simplicity and n8n’s technical depth.
@@ -140,7 +140,7 @@ Make has a Free plan with 1k monthly credits. Other than that, it has four paid 
 <ul><li><strong>Core:</strong> $10.59 per month</li><li><strong>Pro:</strong> $18.82 per month</li><li><strong>Teams:</strong> $34.12 per month</li><li><strong>Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/83836f0b/695a4a625155908e8c5593cc_make-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/83836f0b/695a4a625155908e8c5593cc_make-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -152,7 +152,7 @@ On the downside, migration is a headache; moving from n8n to Make requires rebui
 ## 3. Microsoft Power Automate
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/df7d2331/695a4a6edcc9865a112ac106_microsoft-power-automate.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/df7d2331/695a4a6edcc9865a112ac106_microsoft-power-automate.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [Power Automate](https://www.microsoft.com/en-us/power-platform/products/power-automate) is the logical n8n alternative for teams deeply embedded in the Microsoft ecosystem. It integrates natively with Azure, Office 365, and Dynamics, and offers both cloud API orchestration and robotic process automation (RPA).
@@ -174,7 +174,7 @@ However, the interface can be clunky and slow compared to n8n’s snappy canvas.
 ## 4. Workato
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a4a1dc98/695a4a7cda213a1cb1a4c266_workato-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a4a1dc98/695a4a7cda213a1cb1a4c266_workato-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [Workato](https://www.workato.com/) is a leader in the enterprise iPaaS (Integration Platform as a Service) market. It combines integration and automation into a single platform. It makes a good n8n alternative for companies that need strong governance, a wide range of connectors, and the ability to embed integrations into products.
@@ -188,7 +188,7 @@ However, the interface can be clunky and slow compared to n8n’s snappy canvas.
 Workato uses a workspace-based pricing model rather than per-user or per-task. Pricing is custom and commonly reported in the five-figure range annually, targeting mid-to-large enterprises.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/bbcb97a7/695a4a89a1199ca8ea24bd1c_workato-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/bbcb97a7/695a4a89a1199ca8ea24bd1c_workato-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -200,7 +200,7 @@ The obvious con is cost. It’s prohibitively expensive for startups or individu
 ## 5. ZenML
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/81f5495d/695a4a98dcc9865a112ac360_zenml-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/81f5495d/695a4a98dcc9865a112ac360_zenml-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 If you’re using n8n to orchestrate AI agents, run ML experiments, or push long-running inference/data jobs into production, [ZenML](https://www.zenml.io/) is the **“graduation step”** from visual graphs to software-engineered pipelines.
@@ -216,7 +216,7 @@ The key shift: instead of dragging nodes, you define workflows as Python pipelin
 [ZenML is free and open-source](https://www.zenml.io/pricing) (Apache 2.0). You can self-host the core framework at no cost. For teams that want a managed control plane or advanced enterprise features, ZenML offers paid plans with custom pricing.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/08167b99/695a4ab105cfd4c7cb709fc9_zenml-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/08167b99/695a4ab105cfd4c7cb709fc9_zenml-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -228,7 +228,7 @@ But remember, ZenML is not a drop-in replacement for n8n if your main use case i
 ## 6. Temporal
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/79521abd/695a4ac880836a102f720895_temporal-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/79521abd/695a4ac880836a102f720895_temporal-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [Temporal](https://temporal.io/) is a code-first orchestration platform that helps you build reliable microservices and distributed systems, unlike n8n, where a server crash might kill a running workflow. Temporal guarantees resuming it exactly where it left off, even after a catastrophic failure.
@@ -250,7 +250,7 @@ On the con side, it requires a mindset shift for developers. You have to learn c
 ## 7. Apache Airflow
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c7f83c73/6942388ce61d06c97481baaf_apache-airflow-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c7f83c73/6942388ce61d06c97481baaf_apache-airflow-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [Airflow](https://airflow.apache.org/) is the standard for data engineering. If your n8n workflows are primarily moving and transforming large datasets (ETL), Airflow offers a more robust, scalable, and observable environment designed specifically for data pipelines.
@@ -272,7 +272,7 @@ Compared to n8n, Airflow has no GUI for building pipelines; you must write Pytho
 ## 8. Pipedream
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/60189b43/695a4af0fd0134227e18c3b0_pipedream-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/60189b43/695a4af0fd0134227e18c3b0_pipedream-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [Pipedream](https://pipedream.com/) is a developer-friendly integration platform that sits between n8n and Zapier. It offers a serverless environment where you can run Node.js or Python code steps with zero provisioning, with a focus on speed and connectivity.
@@ -288,7 +288,7 @@ Pipedream has a generous Free tier alongwith three paid plans:
 <ul><li><strong>Basic:</strong> $45 per month</li><li><strong>Advanced:</strong> $74 per month</li><li><strong>Connect:</strong> $150 per month</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9387bf24/695a4b149f270ee1d9701419_pipedream-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9387bf24/695a4b149f270ee1d9701419_pipedream-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -302,7 +302,7 @@ The code-first approach is powerful, but less friendly for non-technical users w
 ## 9. Tray.ai
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/59c04993/695a4b269f0d422b96e485cd_tray-ai-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/59c04993/695a4b269f0d422b96e485cd_tray-ai-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [Tray.ai](https://tray.ai/) is a low-code automation and integration platform known for its flexibility and enterprise capabilities. It provides a visual workflow builder and a rich set of connectors, similar to Workato, for targeting complex enterprise use cases.
@@ -316,7 +316,7 @@ The code-first approach is powerful, but less friendly for non-technical users w
 Tray.ai does not publish standard pricing. It operates on a custom-quote basis, typically suited to mid-market and enterprise budgets.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/788ed1d5/695a4b38f0fa7619c8cb7d94_tray-ai-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/788ed1d5/695a4b38f0fa7619c8cb7d94_tray-ai-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -328,7 +328,7 @@ However, the pricing is opaque and high, putting it out of reach for individuals
 ## 10. Activepieces
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/488b981e/695a4b481cc69ea7957d1586_activepieces-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/488b981e/695a4b481cc69ea7957d1586_activepieces-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [Activepieces](https://www.activepieces.com/) is an open-source, no-code business automation tool that positions itself as a lightweight, AI-first alternative to n8n. It is designed to be simpler and easier to self-host, with a focus on community-driven growth.
@@ -344,7 +344,7 @@ Activepieces offers an open-source version with all core features. Other than th
 <ul><li><strong>Standard:</strong> 10 free active workflows, then $5 per active flow per month</li><li><strong>Ultimate:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ca199203/695a4b5560de1349e7ba9046_activepieces-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ca199203/695a4b5560de1349e7ba9046_activepieces-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -376,7 +376,7 @@ No-code tools are typically built for short, transactional tasks.
 For instance, Zapier imposes a 30-second limit on most operations, including:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/682235f5/695a4b642378acf2b56acb7c_long-running-flow-timeouts.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/682235f5/695a4b642378acf2b56acb7c_long-running-flow-timeouts.webp" alt="__wf_reserved_inherit" />
   <figcaption>Source</figcaption>
 </figure>
 

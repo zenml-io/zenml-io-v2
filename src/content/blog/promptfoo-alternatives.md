@@ -20,12 +20,12 @@ tags:
 date: "2025-12-04T00:00:00.000Z"
 readingTime: 15 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/74aea145/69310b80cb8d2532f36704df_promptfoo-alternatives.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/74aea145/69310b80cb8d2532f36704df_promptfoo-alternatives.png"
 seo:
   title: "9 Best Promptfoo Alternatives: Which Frameworks are Better to Ship AI Agents - ZenML Blog"
   description: "In this article, you learn about the best Promptfoo alternatives that help you ship better AI agents."
   canonical: "https://www.zenml.io/blog/promptfoo-alternatives"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/74aea145/69310b80cb8d2532f36704df_promptfoo-alternatives.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/74aea145/69310b80cb8d2532f36704df_promptfoo-alternatives.png"
   ogTitle: "9 Best Promptfoo Alternatives: Which Frameworks are Better to Ship AI Agents - ZenML Blog"
   ogDescription: "In this article, you learn about the best Promptfoo alternatives that help you ship better AI agents."
 ---
@@ -45,7 +45,7 @@ In this article, we compare the 9 leading Promptfoo alternatives that provide mo
 While Promptfoo is lightweight and quick to set up, it has its own set of limitations:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f403d6b3/69310729100df67cfb63f972_need-for-promptfoo-alternatives.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f403d6b3/69310729100df67cfb63f972_need-for-promptfoo-alternatives.webp" alt="__wf_reserved_inherit" />
   <figcaption>Need for a promptfoo alternative</figcaption>
 </figure>
 
@@ -78,7 +78,7 @@ Here is a summary table of the best Promptfoo alternatives:
 ## 1. ZenML
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/09f03b74/68ef8fecaaa4ab4a11f6d502_zenml-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/09f03b74/68ef8fecaaa4ab4a11f6d502_zenml-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [ZenML](https://www.zenml.io/) is a pipeline-first MLOps + LLMOps framework that can replace Promptfoo when you want more than local YAML tests. Instead of running ad-hoc CLI experiments, you define reusable evaluation pipelines that track prompts, datasets, metrics, and agent runs end-to-end in a Python-native workflow with a UI, lineage, and governance built in.
@@ -96,7 +96,7 @@ ZenML is free and open-source under the Apache 2.0 license. The core framework, 
 Teams needing enterprise-grade collaboration, managed hosting, advanced governance features, and premium support can opt for ZenML’s custom business plans, which vary by deployment model, usage, and team size.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/58429906/68ef9022a21d3c5f7a09960a_zenml-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/58429906/68ef9022a21d3c5f7a09960a_zenml-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -108,7 +108,7 @@ The trade-off is that it introduces a pipeline and infrastructure layer, so ther
 ## 2. LangSmith
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c36fe06c/691e939afd6c1db474aabfc6_langsmith-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c36fe06c/691e939afd6c1db474aabfc6_langsmith-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [LangSmith](https://www.langchain.com/langsmith/observability) is an LLM observability and evaluation platform from the LangChain team. It helps developers debug, test, and monitor multi-step chains and agents built with LangChain (or any Python app) with built-in dashboards and evaluation tools.
@@ -124,7 +124,7 @@ The trade-off is that it introduces a pipeline and infrastructure layer, so ther
 <ul><li><strong>Plus:</strong> $39 per seat per month</li><li><strong>Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9e4fe787/692bde8912b03207aebc3447_langsmith-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9e4fe787/692bde8912b03207aebc3447_langsmith-pricing.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -138,7 +138,7 @@ However, the costs can scale unpredictably if you log every production trace. It
 ## 3. DeepEval + Confident AI
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/37dc2932/69310a062fada2db2ee9a642_confident-ai-by-deepeval-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/37dc2932/69310a062fada2db2ee9a642_confident-ai-by-deepeval-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [Confident AI](https://www.confident-ai.com/) is an open-source evaluation framework that allows you to unit test your LLMs as easily as you test Python code. Confident AI is the commercial platform built on top of DeepEval that provides a UI for these tests.
@@ -154,7 +154,7 @@ However, the costs can scale unpredictably if you log every production trace. It
 <ul><li><strong>Starter:</strong> $19.99 per user per month (for small teams)</li><li><strong>Premium:</strong> $79.99 per user per month (for mission-critical products)</li><li><strong>Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/73aac9d6/69310a15bde7c8a8d1432759_confident-ai-by-deepeval-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/73aac9d6/69310a15bde7c8a8d1432759_confident-ai-by-deepeval-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -166,7 +166,7 @@ On the downside, the system also adds some complexity compared to a pure CLI too
 ## 4. TruLens
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/58d1f620/691e9332310eac418375c528_trulens-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/58d1f620/691e9332310eac418375c528_trulens-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [TruLens](https://www.trulens.org/) is an open-source library (supported by Snowflake) for agentic evaluation. It introduces the concept of 'Feedback Functions,' which allows you to programmatically score your app's responses on quality, toxicity, and relevance.
@@ -188,7 +188,7 @@ However, it provides no built-in test dataset management or CI integration. Ther
 ## 5. RAGAS
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/16b60033/69310a9786d5543b3e50a798_ragas-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/16b60033/69310a9786d5543b3e50a798_ragas-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [RAGAS](https://www.ragas.io/) (Retrieval-Augmented Generation Assessment System) is an open-source Python toolkit specifically for evaluating RAG pipelines without needing ground truth data. It generates synthetic test data to help you bootstrap your evaluation process.
@@ -210,7 +210,7 @@ On the other hand, RAGAS is narrowly focused on RAG scenarios. It’s strictly a
 ## 6. Comet Opik
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/45c4d400/69310ab80cc1c05d990b1ce4_opik-by-comet-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/45c4d400/69310ab80cc1c05d990b1ce4_opik-by-comet-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [Comet Opik](https://www.comet.com/site/products/opik/) is an open-source LLM evaluation and monitoring platform from Comet. It aims to be an end-to-end tool for logging and testing LLM applications from a single, intuitive interface.
@@ -226,7 +226,7 @@ Opik is open-source (source-available) to self-host. For the hosted version:
 <ul><li><strong>Free:</strong> Generous tier for individuals</li><li><strong>Pro:</strong> $39/user per month</li><li><strong>Enterprise:</strong> Custom pricing for compliance and scale</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/007e0f15/69310ac7f2cc810bd63575f7_opik-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/007e0f15/69310ac7f2cc810bd63575f7_opik-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -238,7 +238,7 @@ As a newer tool, however, it may have fewer third-party integrations than establ
 ## 7. Weights & Biases Weave
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/22b3aac8/6922847efefb6c16f7a10c71_wandb-weave-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/22b3aac8/6922847efefb6c16f7a10c71_wandb-weave-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [Weave](https://wandb.ai/site/weave/) is the lightweight toolkit from Weights & Biases designed for tracking and evaluating LLM applications. It brings the familiar W&B experiment tracking philosophy to the world of prompts and agents.
@@ -254,7 +254,7 @@ W&B offers a free tier for personal projects and two paid plans:
 <ul><li><strong>Pro:</strong> $60/user per month</li><li><strong>Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e78576b8/69310af4a812992ec905c1ef_wandb-weave-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e78576b8/69310af4a812992ec905c1ef_wandb-weave-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -266,7 +266,7 @@ The downsides are that it is proprietary and requires using W&B’s cloud servic
 ## 8. Maxim AI
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/75718344/69310b1f0dce5428e377f728_maxim-ai-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/75718344/69310b1f0dce5428e377f728_maxim-ai-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [Maxim AI](https://www.getmaxim.ai/) is an end-to-end GenAI evaluation and observability platform designed to speed up agent development. It provides a collaborative environment where product managers and domain experts can review logs, curate datasets, and test prompts alongside engineers.
@@ -282,7 +282,7 @@ Maxim has a **Free Developer plan** for up to 3 seats, with 10k logs/month. To g
 <ul><li><strong>Professional:</strong> $29/seat per month</li><li><strong>Business:</strong> $49/seat per month</li><li><strong>Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d32b1681/69310b2dcd7934d4a7704344_maxim-ai-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d32b1681/69310b2dcd7934d4a7704344_maxim-ai-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -294,7 +294,7 @@ However, it is a closed ecosystem. Unlike open-source libraries, you are depende
 ## 9. Arize Phoenix
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a7745335/69310b3997461cdf37ca5ec4_arize-phoenix-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a7745335/69310b3997461cdf37ca5ec4_arize-phoenix-homepage.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [Phoenix](https://phoenix.arize.com/) is an open-source observability library from Arize AI. It is designed for ‘notebook-first’ development, allowing you to launch a local server to visualize traces and analyze embeddings without sending data to the cloud.
@@ -310,7 +310,7 @@ Phoenix is open-source and free to run locally. Arize offers a hosted platform (
 <ul><li><strong>AX Pro:</strong> $50 per month</li><li><strong>AX Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/40ec2c0c/69228451142e131cf0b104aa_arize-phoenix-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/40ec2c0c/69228451142e131cf0b104aa_arize-phoenix-pricing.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons

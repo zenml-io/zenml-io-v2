@@ -20,12 +20,12 @@ tags:
 date: "2025-04-08T00:00:00.000Z"
 readingTime: 13 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d41d51a7/67f54218b825510223a1669e_cover-image-kubeflow-alternatives.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d41d51a7/67f54218b825510223a1669e_cover-image-kubeflow-alternatives.png"
 seo:
   title: "8 Alternatives to Kubeflow for ML Workflow Orchestration (and Why You Might Switch) - ZenML Blog"
   description: "8 practical alternatives to Kubeflow that address its common challenges of complexity and operational overhead. From Argo Workflows' lightweight Kubernetes approach to ZenML's developer-friendly experience, we analyze each tool's strengths across infrastructure needs, developer experience, and ML-specific capabilities—helping you find the right orchestration solution that removes barriers rather than creating them for your ML workflows."
   canonical: "https://www.zenml.io/blog/8-alternatives-to-kubeflow-for-ml-workflow-orchestration-and-why-you-might-switch"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d41d51a7/67f54218b825510223a1669e_cover-image-kubeflow-alternatives.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d41d51a7/67f54218b825510223a1669e_cover-image-kubeflow-alternatives.png"
   ogTitle: "8 Alternatives to Kubeflow for ML Workflow Orchestration (and Why You Might Switch) - ZenML Blog"
   ogDescription: "8 practical alternatives to Kubeflow that address its common challenges of complexity and operational overhead. From Argo Workflows' lightweight Kubernetes approach to ZenML's developer-friendly experience, we analyze each tool's strengths across infrastructure needs, developer experience, and ML-specific capabilities—helping you find the right orchestration solution that removes barriers rather than creating them for your ML workflows."
 ---
@@ -37,7 +37,7 @@ In this post, we'll explore eight compelling alternatives to Kubeflow that addre
 ## Understanding the Kubeflow Problem Space
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d56e579d/67f54501ccb8d9a7e169c83f_kubeflow-problems.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d56e579d/67f54501ccb8d9a7e169c83f_kubeflow-problems.png" alt="__wf_reserved_inherit" />
 </figure>
 
 Kubeflow's challenges manifest across several critical dimensions:
@@ -65,13 +65,13 @@ While marketed as cloud-agnostic, certain Kubeflow distributions (particularly v
 These challenges explain why teams are increasingly exploring alternative orchestration platforms. In the sections that follow, we'll examine eight alternatives, evaluating how each addresses these pain points while introducing their own unique strengths and tradeoffs to help you make an informed choice that aligns with your team's ML maturity and objectives.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7bfe686e/67f544e805390463ef2a7e8b_comparison-table.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7bfe686e/67f544e805390463ef2a7e8b_comparison-table.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ## Argo Workflows
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/78ed4cac/67f5455a94d00c7a15322b70_argo.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/78ed4cac/67f5455a94d00c7a15322b70_argo.png" alt="__wf_reserved_inherit" />
 </figure>
 
 If Kubeflow's complexity feels overwhelming but you still need robust workflow orchestration on Kubernetes, [Argo Workflows](https://argoproj.github.io/workflows/) offers a compelling alternative. As a [Cloud Native Computing Foundation (CNCF)](https://www.cncf.io/) graduated project, Argo provides a streamlined approach to containerized task orchestration that appeals to teams with existing Kubernetes expertise.
@@ -111,7 +111,7 @@ For teams comfortable with Kubernetes seeking a streamlined, scalable orchestrat
 ## Apache Airflow
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5d403d13/67f5456a989cad71ef84eea0_airflow.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5d403d13/67f5456a989cad71ef84eea0_airflow.png" alt="__wf_reserved_inherit" />
 </figure>
 
 When ML platform teams need a proven orchestration solution with solid integration capabilities, [Apache Airflow](https://airflow.apache.org/) emerges as a pragmatic choice. Born at Airbnb in 2014 and now thriving as an Apache project, Airflow bridges traditional data pipelines with modern ML workflows through its Python-first approach.
@@ -145,7 +145,7 @@ This pragmatic approach delivers much of what teams seek from Kubeflow without t
 ## Prefect
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/91ed5740/67f5457a3982dc11f085f223_prefect.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/91ed5740/67f5457a3982dc11f085f223_prefect.png" alt="__wf_reserved_inherit" />
 </figure>
 
 For ML engineers battling workflow complexities instead of focusing on models, [Prefect](https://www.prefect.io/) offers a refreshingly Pythonic alternative to Kubeflow's infrastructure-heavy approach. Launched in 2018 with a significant 2.0 rewrite in 2022 ([followed by 3.0](https://docs.prefect.io/v3/get-started/whats-new-prefect-3) in 2024), Prefect embodies its mission to "eradicate negative engineering" by eliminating friction between development and production.
@@ -175,7 +175,7 @@ Prefect's "Python-first, not Python-only" philosophy creates a refreshing middle
 ## ZenML
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c3169fab/67f54587a2ce5a8f5e5db0d5_zenml-table.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c3169fab/67f54587a2ce5a8f5e5db0d5_zenml-table.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [ZenML](https://zenml.io) takes a fundamentally different approach to ML orchestration by prioritizing developer experience without sacrificing production readiness. Created specifically to address the friction between research prototypes and production systems, ZenML offers a lightweight yet powerful framework that integrates cleanly with existing ML infrastructure.
@@ -183,7 +183,7 @@ Prefect's "Python-first, not Python-only" philosophy creates a refreshing middle
 ### Simplified Pipeline Development With Production-Ready Outcomes
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/54d3bc5c/67b448e42a9d9bb96bd945af_EU_AI_Act_Models.gif" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/54d3bc5c/67b448e42a9d9bb96bd945af_EU_AI_Act_Models.gif" alt="__wf_reserved_inherit" />
 </figure>
 
 Unlike Kubeflow's complex component architecture, ZenML focuses on transforming standard Python code into reproducible pipelines through minimal annotations. This approach enables ML practitioners to maintain their natural development workflow while gaining critical MLOps capabilities:
@@ -203,7 +203,7 @@ Unlike Kubeflow, where artifact and metadata management often requires additiona
 ### The Model Control Plane: A Unified Model Management Approach
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ecafae62/67f546930d8f3520ea9836de_mcp-walkthrough.gif" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ecafae62/67f546930d8f3520ea9836de_mcp-walkthrough.gif" alt="__wf_reserved_inherit" />
 </figure>
 
 [ZenML's Model Control Plane](https://docs.zenml.io/how-to/model-management-metrics/model-control-plane) represents a significant advancement over traditional orchestration systems like Kubeflow:
@@ -239,7 +239,7 @@ For teams seeking to accelerate their ML delivery without the steep learning cur
 ## Flyte
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/87b6a9bd/67f54786fd2edf191d5fb085_flyte.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/87b6a9bd/67f54786fd2edf191d5fb085_flyte.png" alt="__wf_reserved_inherit" />
 </figure>
 
 Born from Lyft's need for reliable, scalable ML pipelines, [Flyte](https://flyte.org/) has emerged as a compelling alternative to Kubeflow for organizations that require production-grade orchestration with strong reliability guarantees. Now a [Linux Foundation AI & Data](https://lfaidata.foundation/) graduated project, Flyte brings software engineering principles to ML workflow management with a focus on reproducibility and robustness.
@@ -279,7 +279,7 @@ For ML platform teams seeking to build sustainable, production-grade infrastruct
 ## Metaflow
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8035f5bb/67f549dff657ffd3ef93cdbb_metaflow.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8035f5bb/67f549dff657ffd3ef93cdbb_metaflow.png" alt="__wf_reserved_inherit" />
 </figure>
 
 Developed at Netflix and now open-source, [Metaflow](https://www.metaflow.org/) tackles the ML orchestration challenge from a refreshingly different angle: focusing on data scientist productivity first, while seamlessly handling infrastructure scaling behind the scenes. This human-centric approach offers a compelling alternative to Kubeflow's infrastructure-first paradigm.
@@ -319,7 +319,7 @@ For organizations seeking to empower data scientists with infrastructure that ad
 ## Dagster
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2f5fe069/67f549edeed809860f9d6626_dagster.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2f5fe069/67f549edeed809860f9d6626_dagster.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [Dagster](https://dagster.io/) approaches the orchestration challenge from a fundamentally different perspective than Kubeflow, prioritizing data assets and developer experience over infrastructure primitives. Originally designed for data engineering but now widely adoptend for ML workflows, Dagster brings software engineering rigor to pipeline development while maintaining remarkable flexibility.
@@ -361,7 +361,7 @@ For teams that value software engineering principles, rapid iteration cycles, an
 ## Pachyderm
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1bc4f485/67f549f994d00c7a1535f41d_pachyderm.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1bc4f485/67f549f994d00c7a1535f41d_pachyderm.png" alt="__wf_reserved_inherit" />
 </figure>
 
 While most ML orchestration tools focus on workflow execution, [Pachyderm](https://www.pachyderm.com/) addresses a fundamental challenge that Kubeflow often overlooks: rigorous versioning and lineage of datasets throughout the ML lifecycle. Often described as "Git for data," Pachyderm brings software engineering principles to data management while providing powerful pipeline capabilities.

@@ -22,7 +22,7 @@ export const OSS_VS_PRO_SEO = {
   ogTitle: "ZenML Open Source vs Cloud",
   ogDescription:
     "Transform your ML workflows from single-player experiments to multiplayer production systems. Compare ZenML Open Source and ZenML Pro features.",
-  ogImage: `https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3ae53e01/64b9920cd04b7c4c0340ce50_og-img-0625.jpg`,
+  ogImage: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3ae53e01/64b9920cd04b7c4c0340ce50_og-img-0625.jpg`,
 } as const;
 
 // ---------------------------------------------------------------------------
@@ -64,7 +64,7 @@ export const OSS_VS_PRO_FEATURE_GRID = {
   primaryCta: { label: "Use Open Source", href: "/get-started" } as CtaLink,
   secondaryCta: { label: "Compare Plans", href: "/pricing" } as CtaLink,
   image: {
-    url: `https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e88e687c/65324d0f452d2d170268090d_opensource-cloud.svg`,
+    url: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e88e687c/65324d0f452d2d170268090d_opensource-cloud.svg`,
     alt: "ZenML Cloud toolbox emerging from a box, representing MLOps solutions and model deployment.",
   },
 } as const;
@@ -74,7 +74,7 @@ export const OSS_VS_PRO_FEATURE_GRID = {
 // ---------------------------------------------------------------------------
 export const OSS_VS_PRO_SUBWAY_MAP = {
   image: {
-    url: `https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7cca5359/zenml_metro-min.svg`,
+    url: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7cca5359/zenml_metro-min.svg`,
     alt: "A metro line map showing Collaboration, Governance, Automation and Reliability stations in the ZenML OSS line",
   },
   headline: "Is Your ML Team Ready for the Next Station?",

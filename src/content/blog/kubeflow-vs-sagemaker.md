@@ -21,12 +21,12 @@ tags:
 date: "2026-01-28T00:00:00.000Z"
 readingTime: 13 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a10c091c/6979925951b356c61c1a8ae2_kubeflow-vs-sagemaker.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a10c091c/6979925951b356c61c1a8ae2_kubeflow-vs-sagemaker.png"
 seo:
   title: "Kubeflow vs SageMaker vs ZenML: For Batch and Pipeline-Driven ML Systems - ZenML Blog"
   description: "This Kubeflow vs SageMaker vs ZenML article helps you choose the framework best for batch and pipeline-driven ML systems."
   canonical: "https://www.zenml.io/blog/kubeflow-vs-sagemaker"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a10c091c/6979925951b356c61c1a8ae2_kubeflow-vs-sagemaker.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a10c091c/6979925951b356c61c1a8ae2_kubeflow-vs-sagemaker.png"
   ogTitle: "Kubeflow vs SageMaker vs ZenML: For Batch and Pipeline-Driven ML Systems - ZenML Blog"
   ogDescription: "This Kubeflow vs SageMaker vs ZenML article helps you choose the framework best for batch and pipeline-driven ML systems."
 ---
@@ -58,7 +58,7 @@ For batch ML systems, the orchestration engine determines where computation runs
 #### Kubeflow
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5aeca1ac/6979902b69ee3dbf22c5bf8f_kubeflow-orchestration-engine.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5aeca1ac/6979902b69ee3dbf22c5bf8f_kubeflow-orchestration-engine.webp" alt="__wf_reserved_inherit" />
   <figcaption>Source</figcaption>
 </figure>
 
@@ -71,7 +71,7 @@ In many Kubernetes deployments, KFP uses a workflow engine (commonly Argo Workfl
 #### SageMaker
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e15ad9fb/69799043fbe229515b7da118_sagemaker-orchestration-engine.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e15ad9fb/69799043fbe229515b7da118_sagemaker-orchestration-engine.webp" alt="__wf_reserved_inherit" />
   <figcaption>Source</figcaption>
 </figure>
 
@@ -195,7 +195,7 @@ For any serious ML pipeline, keeping track of what you ran, with which data, par
 #### Kubeflow
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7c5a5408/69799069d1e2debf8a8a374c_kubeflow-model-registry.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7c5a5408/69799069d1e2debf8a8a374c_kubeflow-model-registry.webp" alt="__wf_reserved_inherit" />
   <figcaption>Source</figcaption>
 </figure>
 
@@ -210,7 +210,7 @@ While powerful, MLMD is complex to query and manage. The metadata is tightly cou
 #### SageMaker
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/695f9db2/6979907dec0aee8c51953638_sagemaker-pipeline-lineage-tracking.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/695f9db2/6979907dec0aee8c51953638_sagemaker-pipeline-lineage-tracking.webp" alt="__wf_reserved_inherit" />
   <figcaption>Track pipeline lineage with Amazon SageMaker AI</figcaption>
 </figure>
 
@@ -225,7 +225,7 @@ It’s very useful for compliance and reproducibility, and it’s nicely integra
 #### ZenML
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/94f15c4a/69799094f2ef8fff8c2f28ed_zenml-evaluation.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/94f15c4a/69799094f2ef8fff8c2f28ed_zenml-evaluation.webp" alt="__wf_reserved_inherit" />
   <figcaption>ZenML evaluation</figcaption>
 </figure>
 
@@ -270,7 +270,7 @@ External integrations typically run inside jobs via SDKs. The integration surfac
 ZenML centralizes configuration while execution happens in external systems. You are also free to write your own custom integrations to whatever tool we don’t support out of the box.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e6e914e2/69687450a636513a7712d11a_zenml-integration.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e6e914e2/69687450a636513a7712d11a_zenml-integration.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ## Kubeflow vs SageMaker vs ZenML: Pricing
@@ -290,7 +290,7 @@ SageMaker uses pay-as-you-go pricing. You pay depending on the Location type, Re
 Apart from these three inputs, there are slight overhead costs as well. For instance, Studio itself has no extra UI fee, but you pay for storage and any apps/jobs/instances you run from Studio.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/646f8336/696db15ea0912fe2f06229aa_sagemaker-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/646f8336/696db15ea0912fe2f06229aa_sagemaker-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### ZenML
@@ -300,7 +300,7 @@ ZenML is also open-source and free to start.
 <ul><li><strong>Community (Free):</strong> Full open-source framework. You can run it on your own infrastructure for free.</li><li><a href="https://www.zenml.io/pricing"><strong>ZenML Pro (Custom pricing)</strong></a><strong>:</strong> A managed control plane that handles the dashboard, user management, and stack configurations. This removes the burden of hosting the ZenML server yourself.</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c508fdf9/69686958bdf1b77d334d2876_zenml-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c508fdf9/69686958bdf1b77d334d2876_zenml-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ## Wrapping Up

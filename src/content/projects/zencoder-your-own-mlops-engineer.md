@@ -14,7 +14,7 @@ description: "Transform your ML workflow with an AI assistant that actually unde
 githubUrl: "https://github.com/zenml-io/zenml-projects/tree/main/zencoder"
 mainImageLink: "https://public-flavor-logos.s3.eu-central-1.amazonaws.com/projects/1.jpg"
 previewImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f9950d9f/67e244ba166bd7cc15142de1_zencoder_header.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f9950d9f/67e244ba166bd7cc15142de1_zencoder_header.png"
 tags:
   - "natural-language-processing"
   - "llm"
@@ -33,7 +33,7 @@ seo:
   title: "ZenCoder: Your Own MLOps Engineer"
   description: "Transform your ML workflow with an AI assistant that actually understands ZenML. This project fine-tunes open-source LLMs to generate production-ready MLOps pipelines."
   canonical: "https://www.zenml.io/projects/zencoder-your-own-mlops-engineer"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f9950d9f/67e244ba166bd7cc15142de1_zencoder_header.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f9950d9f/67e244ba166bd7cc15142de1_zencoder_header.png"
   ogTitle: "ZenCoder: Your Own MLOps Engineer"
   ogDescription: "Transform your ML workflow with an AI assistant that actually understands ZenML. This project fine-tunes open-source LLMs to generate production-ready MLOps pipelines."
 ---

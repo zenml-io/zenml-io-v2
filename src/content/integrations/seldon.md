@@ -12,17 +12,17 @@ webflow:
   createdOn: "2023-10-12T09:13:16.100Z"
 integrationType: "deployer"
 logo:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/61cf63b9/66d867fc21b538fc589f4961_seldon.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/61cf63b9/66d867fc21b538fc589f4961_seldon.png"
 shortDescription: "Deploy production-grade ML models on Kubernetes with Seldon Core and ZenML"
 docsUrl: "https://docs.zenml.io/stacks-and-components/component-guide/model-deployers/seldon"
 githubUrl: "https://github.com/SeldonIO/seldon-core"
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/33766a2c/6527e423e6b6cd263131262d_seldon_example_fab0d3e081.gif"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/33766a2c/6527e423e6b6cd263131262d_seldon_example_fab0d3e081.gif"
 seo:
   title: "Integrate Seldon with ZenML - Deployer Integrations"
   description: "Deploy production-grade ML models on Kubernetes with Seldon Core and ZenML"
   canonical: "https://www.zenml.io/integrations/seldon"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/33766a2c/6527e423e6b6cd263131262d_seldon_example_fab0d3e081.gif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/33766a2c/6527e423e6b6cd263131262d_seldon_example_fab0d3e081.gif"
   ogTitle: "Integrate Seldon with ZenML - Deployer Integrations"
   ogDescription: "Deploy production-grade ML models on Kubernetes with Seldon Core and ZenML"
 overviewTitle: "Deploy production-grade ML models on Kubernetes with Seldon Core and ZenML"

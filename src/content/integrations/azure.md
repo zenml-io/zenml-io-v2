@@ -12,16 +12,16 @@ webflow:
   createdOn: "2023-10-12T09:13:16.079Z"
 integrationType: "cloud-infrastructure"
 logo:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/0b467777/6527ce2024e7fba068681cae_azure.svg"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0b467777/6527ce2024e7fba068681cae_azure.svg"
 shortDescription: "Seamlessly Orchestrate ML Pipelines on Azure with ZenML"
 docsUrl: "https://docs.zenml.io/how-to/popular-integrations/azure-guide"
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ae821537/66e03182a8f04e71e997f5b5_azure_stack.PNG.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ae821537/66e03182a8f04e71e997f5b5_azure_stack.PNG.png"
 seo:
   title: "Integrate Microsoft Azure with ZenML - Cloud Infrastructure Integrations"
   description: "Seamlessly Orchestrate ML Pipelines on Azure with ZenML"
   canonical: "https://www.zenml.io/integrations/azure"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ae821537/66e03182a8f04e71e997f5b5_azure_stack.PNG.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ae821537/66e03182a8f04e71e997f5b5_azure_stack.PNG.png"
   ogTitle: "Integrate Microsoft Azure with ZenML - Cloud Infrastructure Integrations"
   ogDescription: "Seamlessly Orchestrate ML Pipelines on Azure with ZenML"
 overviewTitle: "Seamlessly Orchestrate ML Pipelines on Azure with ZenML"

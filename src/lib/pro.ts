@@ -16,7 +16,7 @@ export const PRO_SEO = {
   ogTitle: "Managed MLOps for your Cloud - ZenML Pro",
   ogDescription:
     "Supercharge your MLOps with a fully-managed control plane.",
-  ogImage: `https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3ae53e01/64b9920cd04b7c4c0340ce50_og-img-0625.jpg`,
+  ogImage: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3ae53e01/64b9920cd04b7c4c0340ce50_og-img-0625.jpg`,
 } as const;
 
 // ---------------------------------------------------------------------------
@@ -28,7 +28,7 @@ export const PRO_HERO: HeroData = {
   primaryCta: { label: "Book a Demo", href: "/book-your-demo" },
   secondaryCta: { label: "Compare OSS vs Pro", href: "/open-source-vs-pro" },
   image: {
-    url: `https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b6cd9240/652d14664e7b1ba97d692b8a_cloud_main-1.webp`,
+    url: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b6cd9240/652d14664e7b1ba97d692b8a_cloud_main-1.webp`,
     alt: "Dashboard displaying iris_logistic_regression model versioning with deployment status, highlighting machine learning and model monitoring.",
   },
 };
@@ -47,8 +47,8 @@ export const PRO_FEATURED_TESTIMONIAL = {
     '"ZenML cuts out a lot of the infrastructure busywork so I can focus more on the tasks relevant to me. ZenML Pro helps us to keep an overview, as all components we need for MLOps, including documentation and metrics are available in one place!"',
   name: "Florian Pfisterer",
   title: "ML Engineer, Hema.to",
-  avatar: `https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e2d8f6b9/652e39c2b024082004f60f7f_florian_hemato.webp`,
-  companyLogo: `https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a3d63b45/652d3ecc31a704eb20dc3fe0_hemato.png`,
+  avatar: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e2d8f6b9/652e39c2b024082004f60f7f_florian_hemato.webp`,
+  companyLogo: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a3d63b45/652d3ecc31a704eb20dc3fe0_hemato.png`,
 } as const;
 
 // ---------------------------------------------------------------------------
@@ -86,7 +86,7 @@ export const PRO_FEATURES = [
     body: "Safe, isolated environments to structure your projects and separate concerns between teams.",
     learnMoreHref: "/features/organize-assets-into-projects",
     image: {
-      url: `https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/25614cc0/features_projects.png`,
+      url: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/25614cc0/features_projects.png`,
       alt: "Dashboard mockup showing projects organization",
     },
   },
@@ -96,7 +96,7 @@ export const PRO_FEATURES = [
     body: "Enhanced pipeline controls including the ability to create run templates and trigger from the dashboard.",
     learnMoreHref: "/features/streamlined-pipeline-management",
     image: {
-      url: `https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/70ab3904/653249d5a55b6cc59610a9f2_20_CI_CD_CT_Showcase_95f04728ec.webp`,
+      url: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/70ab3904/653249d5a55b6cc59610a9f2_20_CI_CD_CT_Showcase_95f04728ec.webp`,
       alt: "Dashboard mockup showing CI/CD showcase",
     },
   },
@@ -106,7 +106,7 @@ export const PRO_FEATURES = [
     body: "Ensure high security standards by giving granular permissions and access to the entire team.",
     learnMoreHref: "/features/role-based-access-control-and-permissions",
     image: {
-      url: `https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/38a4394e/features_rbac_stacks.png`,
+      url: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/38a4394e/features_rbac_stacks.png`,
       alt: "Dashboard mockup showing RBAC and stacks",
     },
   },
@@ -116,7 +116,7 @@ export const PRO_FEATURES = [
     body: "Get access to our network of experts for advice on setting up your MLOps platform and onboarding onto ZenML.",
     learnMoreHref: "/features/enterprise-grade-support-and-onboarding",
     image: {
-      url: `https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/20f1bf87/features_onboarding.png`,
+      url: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/20f1bf87/features_onboarding.png`,
       alt: "Dashboard mockup showing onboarding flow",
     },
   },
@@ -131,21 +131,21 @@ export const PRO_COMPLIANCE = {
   body: "ZenML is a metadata layer on top of your existing infrastructure, meaning all data and compute stays on your side.",
   image: {
     desktop: {
-      url: `https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e68ec2dc/66c7398e738654118d4024fb_why-zenml-min.png`,
+      url: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e68ec2dc/66c7398e738654118d4024fb_why-zenml-min.png`,
       alt: "ZenML only has access to metadata; your data remains in your VPC",
     },
     mobile: {
-      url: `https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c5ce12a7/66c73e7cfd15ae9889f59705_why-zenml-mobile-min.webp`,
+      url: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c5ce12a7/66c73e7cfd15ae9889f59705_why-zenml-mobile-min.webp`,
       alt: "Diagram of ZenML setup with local environments for data scientists, ML engineers, and MLOps, integrating AWS, GCP, and Azure.",
     },
   },
   badges: [
     {
-      url: `https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/37007174/soc2type2_zenml.png`,
+      url: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/37007174/soc2type2_zenml.png`,
       alt: "SOC 2 Type II Badge",
     },
     {
-      url: `https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/959bbffc/66e9546d3b19094bf950273a_iso_certified.webp`,
+      url: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/959bbffc/66e9546d3b19094bf950273a_iso_certified.webp`,
       alt: "ISO/IEC 27001:2022 certification badge",
     },
   ],
@@ -183,7 +183,7 @@ export const PRO_OSS_GRID = {
   primaryCta: { label: "Book a Demo", href: "/book-your-demo" } as CtaLink,
   secondaryCta: { label: "Compare OSS vs Pro", href: "/open-source-vs-pro" } as CtaLink,
   image: {
-    url: `https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e88e687c/65324d0f452d2d170268090d_opensource-cloud.svg`,
+    url: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e88e687c/65324d0f452d2d170268090d_opensource-cloud.svg`,
     alt: "ZenML Cloud toolbox emerging from a box.",
   },
 } as const;
@@ -196,8 +196,8 @@ export const PRO_HASHICORP_TESTIMONIAL = {
     '"ZenML offers the capability to build end-to-end ML workflows that seamlessly integrate with various components of the ML stack, such as different providers, data stores, and orchestrators."',
   name: "Harold Gim\u00e9nez",
   title: "SVP R&D at HashiCorp",
-  avatar: `https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/31a5f8ee/653297b0b924af52998661bf_harold.webp`,
-  companyLogo: `https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a1791919/6536227667a9adb0f62aab6b_hashicorp_white.webp`,
+  avatar: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/31a5f8ee/653297b0b924af52998661bf_harold.webp`,
+  companyLogo: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a1791919/6536227667a9adb0f62aab6b_hashicorp_white.webp`,
 } as const;
 
 // ---------------------------------------------------------------------------
@@ -209,40 +209,40 @@ export const PRO_TESTIMONIALS = [
       '"ZenML allows you to quickly and responsibly go from POC to production ML systems while enabling reproducibility, flexibility, and above all, sanity."',
     name: "Goku Mohandas",
     title: "Founder of MadeWithML",
-    avatar: `https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8f1455a9/6532516584492916c998a6f1_goku.webp`,
-    companyLogo: `https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2c79ff75/6532516ecede3c4a7cbaa1bb_madewithml.webp`,
+    avatar: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8f1455a9/6532516584492916c998a6f1_goku.webp`,
+    companyLogo: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2c79ff75/6532516ecede3c4a7cbaa1bb_madewithml.webp`,
   },
   {
     quote:
       '"ZenML allows orchestrating ML pipelines independent of any infrastructure or tooling choices. ML teams can free their minds of tooling FOMO from the fast-moving MLOps space, with the simple and extensible ZenML interface."',
     name: "Richard Socher",
     title: "Former Chief Scientist Salesforce and Founder of You.com",
-    avatar: `https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/85cb011a/653251e92cb29c000a769f50_richard.webp`,
-    companyLogo: `https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8b24f1c8/65325223500e83c79114d877_salesforce.webp`,
+    avatar: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/85cb011a/653251e92cb29c000a769f50_richard.webp`,
+    companyLogo: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8b24f1c8/65325223500e83c79114d877_salesforce.webp`,
   },
   {
     quote:
       "A lot of our teams struggle to bring sanity to their model training processes. ZenML is built in a way that encourages good, maintainable pipelines.",
     name: "Matt Squire",
     title: "CTO at Fuzzy Labs",
-    avatar: `https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f135a881/6532529c769b1188056c3a64_matt.webp`,
-    companyLogo: `https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/43fb3e08/653252cf48491f2f0b6ec650_fuzzylabs.svg`,
+    avatar: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f135a881/6532529c769b1188056c3a64_matt.webp`,
+    companyLogo: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/43fb3e08/653252cf48491f2f0b6ec650_fuzzylabs.svg`,
   },
   {
     quote:
       "ZenML allows you to keep your ML pipeline code cloud-agnostic, enabling faster future migrations to another technology stack.",
     name: "Gabriel Martin",
     title: "Machine Learning Engineer at Frontiers",
-    avatar: `https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/54e7018e/65325388f530bbad5c385f8a_gabriel.webp`,
-    companyLogo: `https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6ea19d6f/6532545fe5afb00b2fd8b3fe_frontiers_small.webp`,
+    avatar: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/54e7018e/65325388f530bbad5c385f8a_gabriel.webp`,
+    companyLogo: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6ea19d6f/6532545fe5afb00b2fd8b3fe_frontiers_small.webp`,
   },
   {
     quote:
       "Thanks to ZenML we\u2019ve set up a pipeline where before we had only jupyter notebooks. It helped us tremendously with data and model versioning!",
     name: "Francesco Pudda",
     title: "Machine Learning Engineer at WiseTech Global",
-    avatar: `https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2d0a68a8/65327258ba7596c721021f2d_pudda.webp`,
-    companyLogo: `https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/bd49d62d/65327219e5955b1960af1e97_wisetech-global-logo.svg`,
+    avatar: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2d0a68a8/65327258ba7596c721021f2d_pudda.webp`,
+    companyLogo: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/bd49d62d/65327219e5955b1960af1e97_wisetech-global-logo.svg`,
   },
 ] as const;
 
@@ -301,7 +301,7 @@ export const PRO_FINAL_CTA = {
   primaryCta: { label: "Book a Demo", href: "/book-your-demo" } as CtaLink,
   secondaryCta: { label: "Use Open Source", href: "/get-started" } as CtaLink,
   image: {
-    url: `https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/339bb62b/66e9556fd34d2791885b0c5f_model_control_plane_01.png`,
+    url: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/339bb62b/66e9556fd34d2791885b0c5f_model_control_plane_01.png`,
     alt: "Dashboard displaying machine learning models, including versions, authors, and tags.",
   },
 } as const;

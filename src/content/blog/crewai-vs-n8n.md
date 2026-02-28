@@ -21,12 +21,12 @@ tags:
 date: "2025-08-30T00:00:00.000Z"
 readingTime: 18 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d84921f1/68b29865bab5327078f35bd3_crewai-vs-n8n.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d84921f1/68b29865bab5327078f35bd3_crewai-vs-n8n.png"
 seo:
   title: "CrewAI vs n8n: Key Differences and Which Platform Wins for AI Agents - ZenML Blog"
   description: "In this CrewAI vs n8n, we explain the difference between the two and conclude which one is the best to build AI agents."
   canonical: "https://www.zenml.io/blog/crewai-vs-n8n"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d84921f1/68b29865bab5327078f35bd3_crewai-vs-n8n.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d84921f1/68b29865bab5327078f35bd3_crewai-vs-n8n.png"
   ogTitle: "CrewAI vs n8n: Key Differences and Which Platform Wins for AI Agents - ZenML Blog"
   ogDescription: "In this CrewAI vs n8n, we explain the difference between the two and conclude which one is the best to build AI agents."
 ---
@@ -82,7 +82,7 @@ Agentic workflows refer to how each platform defines the behavior of an AI agent
 #### CrewAI
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ce4ddf87/6896df333567a52779e9486b_crewai-framework-overview.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ce4ddf87/6896df333567a52779e9486b_crewai-framework-overview.png" alt="__wf_reserved_inherit" />
   <figcaption>CrewAI framework overview</figcaption>
 </figure>
 
@@ -99,7 +99,7 @@ More recently, CrewAI introduced Flows, a feature that helps you build more stru
 #### n8n
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c44bd3c6/68b29649dc8cfe0821427566_n8n-ai-agentic-workflow.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c44bd3c6/68b29649dc8cfe0821427566_n8n-ai-agentic-workflow.png" alt="__wf_reserved_inherit" />
   <figcaption>n8n AI agentic workflow</figcaption>
 </figure>
 
@@ -158,7 +158,7 @@ Need a loop? CrewAI flows allow loops, or you can call `crew.run()` in a loop in
 #### n8n
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ca004219/68b29679af033e748b306cda_n8n-visual-editor.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ca004219/68b29679af033e748b306cda_n8n-visual-editor.png" alt="__wf_reserved_inherit" />
   <figcaption>n8n visual editor</figcaption>
 </figure>
 
@@ -219,7 +219,7 @@ Because the hierarchical pattern is so central, CrewAI encourages designing agen
 #### n8n
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/601cf889/68b296b19a6d018c67a5b878_n8n-multi-agent-functionality.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/601cf889/68b296b19a6d018c67a5b878_n8n-multi-agent-functionality.png" alt="__wf_reserved_inherit" />
   <figcaption>n8n multi-agent functionality</figcaption>
 </figure>
 
@@ -246,7 +246,7 @@ Human oversight is critical in many AI workflows – either to ensure quality, h
 #### CrewAI
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/39c2f85f/6896df9a929a7bb3ff6c26dd_crewai-human-in-the-loop.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/39c2f85f/6896df9a929a7bb3ff6c26dd_crewai-human-in-the-loop.png" alt="__wf_reserved_inherit" />
   <figcaption>CrewAI human in the loop</figcaption>
 </figure>
 
@@ -267,7 +267,7 @@ Once the human confirms, CrewAI takes that edited text and feeds it forward to p
 #### n8n
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/0e89f631/688c41b805b526050a8da0c6_n8n-human-in-the-loop.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0e89f631/688c41b805b526050a8da0c6_n8n-human-in-the-loop.png" alt="__wf_reserved_inherit" />
   <figcaption>n8n human in the loop</figcaption>
 </figure>
 
@@ -298,7 +298,7 @@ CrewAI comes with its own integrations and also uses external Python libraries. 
 <ul><li><strong>LLMs</strong>: Groq, OpenAI, Anthropic</li><li><strong>Services</strong>: Revium, RagaAI, StartSE</li><li><strong>Education</strong>: PWC, DeepLearning, K2 Consulting</li><li><strong>Applications</strong>: Composio, Chroma, Cloudera</li><li><strong>Integrations</strong>: Notion, Slack, Replit</li><li><strong>Infrastructure</strong>: Microsoft Azure, MongoDB, Nexla</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/72a6d841/685f793a57ab7985d1a245c4_crewai-ecosystem.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/72a6d841/685f793a57ab7985d1a245c4_crewai-ecosystem.png" alt="__wf_reserved_inherit" />
   <figcaption>CrewAI ecosystem</figcaption>
 </figure>
 
@@ -307,7 +307,7 @@ CrewAI comes with its own integrations and also uses external Python libraries. 
 n8n's core value proposition is its massive library of over 500 pre-built nodes for popular SaaS applications, databases, and APIs. These nodes abstract away the tedious work of handling authentication, managing API keys, dealing with pagination, and checking for errors.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/41a5072e/688c41f3c08b2393079ad766_n8n-integrations.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/41a5072e/688c41f3c08b2393079ad766_n8n-integrations.png" alt="__wf_reserved_inherit" />
   <figcaption>n8n integrations</figcaption>
 </figure>
 
@@ -326,7 +326,7 @@ CrewAI’s core framework is also MIT-licensed and open-source. But the platform
 <ul><li><strong>Basic</strong>: $99 per month</li><li><strong>Standard</strong>: $6,000 per year</li><li><strong>Pro</strong>: $12,000 per year</li><li><strong>Enterprise</strong>: $60,000 per year</li><li><strong>Ultra</strong>: $120,000 per year</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/202aa864/685f796d8b3afe4360b49a5d_crewai-pricing-plans.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/202aa864/685f796d8b3afe4360b49a5d_crewai-pricing-plans.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### n8n
@@ -336,7 +336,7 @@ n8n offers paid cloud plans with usage-based pricing and no active-workflow limi
 <ul><li><strong>Starter</strong>: €24 per month. 2.5k workflow executions.</li><li><strong>Pro</strong>: €60 per month. 10k workflow executions.</li><li><strong>Enterprise</strong>: Custom pricing.</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/faf13a87/68b297521a0f0ede927ff948_n8n-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/faf13a87/68b297521a0f0ede927ff948_n8n-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 **👀 Note:** n8n also has a **Community edition** - a basic version of n8n that’s available on GitHub.
@@ -344,7 +344,7 @@ n8n offers paid cloud plans with usage-based pricing and no active-workflow limi
 ## How ZenML Helps In Closing the Outer Loop Around Your Agents
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1aad74e0/687b1c29468fe4993262cdc5_zenML-helps-in-closing-the-outer-loop.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1aad74e0/687b1c29468fe4993262cdc5_zenML-helps-in-closing-the-outer-loop.png" alt="__wf_reserved_inherit" />
 </figure>
 
 Both CrewAI and n8n are excellent at what we might call the **‘inner loop’** of AI development – that is, creating and executing the agent workflows themselves.
@@ -358,7 +358,7 @@ However, deploying and managing these agents in production involves a bigger **�
 ### 1. Unified Orchestration
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f851cbbc/6892de675f3cdef5338b7153_zenml-architecture.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f851cbbc/6892de675f3cdef5338b7153_zenml-architecture.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML architecture</figcaption>
 </figure>
 
@@ -373,7 +373,7 @@ This means even if your inner logic is handled by CrewAI or n8n, the overall sch
 ### 2. Visibility and Monitoring
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c02f837d/6892de82198dfe9aa4d43687_zenml-visualization.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c02f837d/6892de82198dfe9aa4d43687_zenml-visualization.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML visualization</figcaption>
 </figure>
 
@@ -390,7 +390,7 @@ CrewAI and n8n by themselves will execute the logic, but they don’t automatica
 ### 3. Quality Control and Feedback
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a2d6f59d/6892de9d7a7c008a7dde8ba5_zenml-evaluation.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a2d6f59d/6892de9d7a7c008a7dde8ba5_zenml-evaluation.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML evaluation</figcaption>
 </figure>
 
@@ -403,7 +403,7 @@ If you’re using ZenML’s evaluation components or comparing across different 
 ### 4. Reproducibility and Versioning
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/54d3bc5c/67b448e42a9d9bb96bd945af_EU_AI_Act_Models.gif" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/54d3bc5c/67b448e42a9d9bb96bd945af_EU_AI_Act_Models.gif" alt="__wf_reserved_inherit" />
   <figcaption>ZenML artifacts management</figcaption>
 </figure>
 
@@ -416,7 +416,7 @@ This is crucial in an enterprise setting where you need to audit what your AI di
 **👀 Note:** At ZenML, we have built several such integrations with tools like CrewAI, LangGraph, LlamaIndex, and more. We are actively shipping new integrations that you can find on this GitHub page: [ZenML Agent Workflow Integrations](https://github.com/zenml-io/zenml/tree/main/examples/agent_framework_integrations).
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/4778ac4f/68b12e240fea7ec5057b6710_zenml-agent-workflow-integrations.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/4778ac4f/68b12e240fea7ec5057b6710_zenml-agent-workflow-integrations.png" alt="__wf_reserved_inherit" />
 </figure>
 
 **📚 Other comparison articles to read:**

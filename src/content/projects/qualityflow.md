@@ -14,7 +14,7 @@ description: "AI-powered automated test generation and coverage analysis pipelin
 githubUrl: "https://github.com/zenml-io/zenml-projects/tree/main/qualityflow"
 mainImageLink: "https://public-flavor-logos.s3.eu-central-1.amazonaws.com/projects/43.jpg"
 previewImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/097cf562/68ad717012deed5e31c07a97_architecture.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/097cf562/68ad717012deed5e31c07a97_architecture.png"
 tags:
   - "llm"
   - "test-generation"
@@ -33,7 +33,7 @@ seo:
   title: "QualityFlow"
   description: "AI-powered automated test generation and coverage analysis pipeline built with ZenML and LLMs."
   canonical: "https://www.zenml.io/projects/qualityflow"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/097cf562/68ad717012deed5e31c07a97_architecture.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/097cf562/68ad717012deed5e31c07a97_architecture.png"
   ogTitle: "QualityFlow"
   ogDescription: "AI-powered automated test generation and coverage analysis pipeline built with ZenML and LLMs."
 ---

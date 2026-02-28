@@ -12,17 +12,17 @@ webflow:
   createdOn: "2023-10-12T09:13:11.915Z"
 integrationType: "modeling"
 logo:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/722d116d/66d8698e9b17225aee5d3628_pytorch-light.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/722d116d/66d8698e9b17225aee5d3628_pytorch-light.png"
 shortDescription: "Train deep learning models with PyTorch Lightning."
 docsUrl: "https://github.com/zenml-io/zenml/tree/main"
 githubUrl: "https://github.com/zenml-io/zenml/tree/main"
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/fcc2d569/6527e397ffa25a6edf23d40c_pytorch_lightning_fcf5ae8eb7.webp"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/fcc2d569/6527e397ffa25a6edf23d40c_pytorch_lightning_fcf5ae8eb7.webp"
 seo:
   title: "Integrate PyTorch Lightning with ZenML - Modeling Integrations"
   description: "Train deep learning models with PyTorch Lightning."
   canonical: "https://www.zenml.io/integrations/pytorch-lightning"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/fcc2d569/6527e397ffa25a6edf23d40c_pytorch_lightning_fcf5ae8eb7.webp"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/fcc2d569/6527e397ffa25a6edf23d40c_pytorch_lightning_fcf5ae8eb7.webp"
   ogTitle: "Integrate PyTorch Lightning with ZenML - Modeling Integrations"
   ogDescription: "Train deep learning models with PyTorch Lightning."
 overviewTitle: "Train models with PyTorch Lightning in ZenML"

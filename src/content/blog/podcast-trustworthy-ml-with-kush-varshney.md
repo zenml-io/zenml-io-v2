@@ -23,12 +23,12 @@ tags:
 date: "2022-04-14T00:00:00.000Z"
 readingTime: 1 Min Read
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b764a31c/653119ea19f2fbd9d4e0fce3_kush.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b764a31c/653119ea19f2fbd9d4e0fce3_kush.png"
 seo:
   title: "Podcast: Trustworthy ML with Kush Varshney - ZenML Blog"
   description: "This week I spoke with Kush Varshney, author of 'Trustworthy Machine Learning', a fantastic guide and overview of all of the different ways machine learning can go wrong and an optimistic take on how to think about addressing those issues."
   canonical: "https://www.zenml.io/blog/podcast-trustworthy-ml-with-kush-varshney"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/465419b0/653119ea19f2fbd9d4e0fce3_kush.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/465419b0/653119ea19f2fbd9d4e0fce3_kush.png"
   ogTitle: "Podcast: Trustworthy ML with Kush Varshney - ZenML Blog"
   ogDescription: "This week I spoke with Kush Varshney, author of 'Trustworthy Machine Learning', a fantastic guide and overview of all of the different ways machine learning can go wrong and an optimistic take on how to think about addressing those issues."
 ---

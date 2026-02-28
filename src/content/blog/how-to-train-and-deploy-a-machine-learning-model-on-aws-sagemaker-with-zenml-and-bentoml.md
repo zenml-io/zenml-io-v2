@@ -21,12 +21,12 @@ tags:
 date: "2022-12-14T00:00:00.000Z"
 readingTime: 11 Mins Read
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f0717468/65300f5b14bb84cd42d75c12_zenml-bentoml.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f0717468/65300f5b14bb84cd42d75c12_zenml-bentoml.png"
 seo:
   title: "How to train and deploy a machine learning model on AWS Sagemaker with ZenML and BentoML - ZenML Blog"
   description: "Learn how to use ZenML pipelines and BentoML to easily deploy machine learning models, be it on local or cloud environments. We will show you how to train a model using ZenML, package it with BentoML, and deploy it to a local machine or cloud provider. By the end of this post, you will have a better understanding of how to streamline the deployment of your machine learning models using ZenML and BentoML."
   canonical: "https://www.zenml.io/blog/how-to-train-and-deploy-a-machine-learning-model-on-aws-sagemaker-with-zenml-and-bentoml"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c0418beb/65300f5b14bb84cd42d75c12_zenml-bentoml.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c0418beb/65300f5b14bb84cd42d75c12_zenml-bentoml.png"
   ogTitle: "How to train and deploy a machine learning model on AWS Sagemaker with ZenML and BentoML - ZenML Blog"
   ogDescription: "Learn how to use ZenML pipelines and BentoML to easily deploy machine learning models, be it on local or cloud environments. We will show you how to train a model using ZenML, package it with BentoML, and deploy it to a local machine or cloud provider. By the end of this post, you will have a better understanding of how to streamline the deployment of your machine learning models using ZenML and BentoML."
 ---
@@ -62,7 +62,7 @@ zenml up
 ```
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b4e3c14a/65300ff42053717e42576a82_zenml-dashboard.png" alt="ZenML Dashboard" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b4e3c14a/65300ff42053717e42576a82_zenml-dashboard.png" alt="ZenML Dashboard" />
 </figure>
 
 **BentoML:** is an open-source framework for machine learning model serving. It can be used to serve and deploy models locally, in a cloud environment, or on a Kubernetes cluster. BentoML standardizes the way that models are deployed to production within an organization, making it easier to manage and maintain them.
@@ -202,19 +202,19 @@ bentoml_model_deployer = bentoml_model_deployer_step(
 After defining all these steps and the pipeline we can run the pipeline which will give us the following:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2404a7e1/65300ff7b7b5d1193ed23b8f_pipeline-terminal-logs.png" alt="Pipeline terminal logs" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2404a7e1/65300ff7b7b5d1193ed23b8f_pipeline-terminal-logs.png" alt="Pipeline terminal logs" />
 </figure>
 
 In the ZenML dashboard we can see the pipeline DAG:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/85927bd0/65300ff6b7b5d1193ed23b2b_pipeline-dag.png" alt="Pipeline dag" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/85927bd0/65300ff6b7b5d1193ed23b2b_pipeline-dag.png" alt="Pipeline dag" />
 </figure>
 
 In the Swagger UI, we can see more details about the deployed Bento:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e4169e1f/65300ff7ff5787df85e6169b_swagger-ui.png" alt="Swagger UI" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e4169e1f/65300ff7ff5787df85e6169b_swagger-ui.png" alt="Swagger UI" />
 </figure>
 
 ## Inference Pipeline:
@@ -222,7 +222,7 @@ In the Swagger UI, we can see more details about the deployed Bento:
 To make use of our deployed model the example comes with an inference pipeline which is a set of steps that use some image samples to run predictions on. You can find the code of this pipeline and more in the [bentoml_deployment example](https://github.com/zenml-io/zenml/tree/main/examples/bentoml_deployment).
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/eda40921/65300ff733d73ed6541f7296_inference-pipeline.png" alt="Inference pipeline" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/eda40921/65300ff733d73ed6541f7296_inference-pipeline.png" alt="Inference pipeline" />
 </figure>
 
 ## From Local to Cloud:

@@ -21,12 +21,12 @@ tags:
 date: "2026-01-19T00:00:00.000Z"
 readingTime: 13 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a5854559/696db1ae4b2feecaa16c3343_mlflow-vs-sagemaker.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a5854559/696db1ae4b2feecaa16c3343_mlflow-vs-sagemaker.png"
 seo:
   title: "MLflow vs SageMaker vs ZenML: A Side-by-Side Features Comparison - ZenML Blog"
   description: "In this MLflow vs SageMaker vs ZenML article, we compare their experiment tracking, model registry, evaluation, integration, and more such capabilities."
   canonical: "https://www.zenml.io/blog/mlflow-vs-sagemaker"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a5854559/696db1ae4b2feecaa16c3343_mlflow-vs-sagemaker.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a5854559/696db1ae4b2feecaa16c3343_mlflow-vs-sagemaker.png"
   ogTitle: "MLflow vs SageMaker vs ZenML: A Side-by-Side Features Comparison - ZenML Blog"
   ogDescription: "In this MLflow vs SageMaker vs ZenML article, we compare their experiment tracking, model registry, evaluation, integration, and more such capabilities."
 ---
@@ -60,7 +60,7 @@ Experiment tracking captures each run so you can reproduce results later. It inc
 #### MLflow
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a1d27ba5/696db0623b6f59c51eaf944d_mlflow-experiment-tracking-and-run-metadata.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a1d27ba5/696db0623b6f59c51eaf944d_mlflow-experiment-tracking-and-run-metadata.webp" alt="__wf_reserved_inherit" />
   <figcaption>Source</figcaption>
 </figure>
 
@@ -116,7 +116,7 @@ SageMaker then tracks parameters, metrics, artifacts, and job context. It can al
 SageMaker Studio provides the UI for comparing experiments side by side and visualizing all your runs.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/cc25ea13/696db08ed14ea13882dbbcf0_amazon-sagemaker-studio.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/cc25ea13/696db08ed14ea13882dbbcf0_amazon-sagemaker-studio.webp" alt="__wf_reserved_inherit" />
   <figcaption>Amazon SageMaker Studio</figcaption>
 </figure>
 
@@ -125,7 +125,7 @@ If you’re already using AWS, there’s no extra server needed to maintain Sage
 #### ZenML
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/960c3349/696db09e9d13268360543143_zenml-experiment-tracker.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/960c3349/696db09e9d13268360543143_zenml-experiment-tracker.webp" alt="__wf_reserved_inherit" />
   <figcaption>ZenML experiment tracker</figcaption>
 </figure>
 
@@ -136,7 +136,7 @@ For example, if your pipeline has a data prep step and a training step, ZenML wi
 [You can inspect runs in the ZenML Dashboard](https://docs.zenml.io/concepts/dashboard-features) and compare executions across parameters and outputs.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/55929ab4/696db0ae081ed0c4bea49ded_zenml-pipeline-dag-visualization.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/55929ab4/696db0ae081ed0c4bea49ded_zenml-pipeline-dag-visualization.webp" alt="__wf_reserved_inherit" />
   <figcaption>Pipeline DAG visualization</figcaption>
 </figure>
 
@@ -172,7 +172,7 @@ Let’s see how all three tools approach this:
 #### MLflow
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/74681e26/696db0c0101e48a05b8310d0_mlflow-model-registry.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/74681e26/696db0c0101e48a05b8310d0_mlflow-model-registry.webp" alt="__wf_reserved_inherit" />
   <figcaption>MLflow model registry</figcaption>
 </figure>
 
@@ -185,7 +185,7 @@ Governance depends on how you host MLflow. The open-source registry provides the
 #### SageMaker
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9556df3b/696db0dc11085b8ea0122b5d_aws-sagemaker-model-registry.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9556df3b/696db0dc11085b8ea0122b5d_aws-sagemaker-model-registry.webp" alt="__wf_reserved_inherit" />
   <figcaption>AWS SageMaker model registry</figcaption>
 </figure>
 
@@ -202,7 +202,7 @@ The trade-off is tight coupling to AWS. Artifacts usually live in S3, and infere
 #### ZenML
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b3a414ae/696db0f27d67c82ba85fecfd_zenml-model-registry.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b3a414ae/696db0f27d67c82ba85fecfd_zenml-model-registry.webp" alt="__wf_reserved_inherit" />
   <figcaption>Source</figcaption>
 </figure>
 
@@ -223,7 +223,7 @@ Evaluation is not a one-off metric calculation. In production workflows, evaluat
 #### MLflow
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/53e24ae5/696db1056cfd52e1e1ecd76e_mlflow-evaluation.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/53e24ae5/696db1056cfd52e1e1ecd76e_mlflow-evaluation.webp" alt="__wf_reserved_inherit" />
   <figcaption>MLflow evaluation</figcaption>
 </figure>
 
@@ -238,7 +238,7 @@ Because MLflow does not orchestrate multi-step workflows, teams often pair it wi
 #### Sagemaker
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e9752f93/696db11aa3a61c55da64bea7_sagemaker-model-evaluation.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e9752f93/696db11aa3a61c55da64bea7_sagemaker-model-evaluation.webp" alt="__wf_reserved_inherit" />
   <figcaption>SageMaker model evaluation</figcaption>
 </figure>
 
@@ -251,7 +251,7 @@ SageMaker also includes purpose-built evaluation tooling, like Clarify for bias/
 #### ZenML
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/414be498/696db128864cfdab70bd56f9_zenml-evaluation.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/414be498/696db128864cfdab70bd56f9_zenml-evaluation.webp" alt="__wf_reserved_inherit" />
   <figcaption>ZenML evaluation</figcaption>
 </figure>
 
@@ -276,7 +276,7 @@ MLflow fits well in mixed stacks because it stays lightweight and tool-agnostic.
 <ul><li><strong>ML frameworks:</strong> scikit-learn, PyTorch, TensorFlow, XGBoost (via autologging)</li><li><strong>APIs:</strong> REST API for custom workflows and internal tooling</li><li><strong>Orchestrators/CI:</strong> Airflow, Jenkins, GitHub Actions (log runs from jobs)</li><li><strong>Serving/deployment:</strong> local REST server, Docker container deployment</li><li><strong>Cloud platforms:</strong> Databricks (managed MLflow), Azure ML integration</li><li><strong>AWS:</strong> Deploy models to SageMaker via <code>mlflow.sagemaker</code> (legacy, limited flexibility compared to native SageMaker Pipelines).</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d1ae5453/696db139dfcb368d2fca0897_mlflow-integrations.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d1ae5453/696db139dfcb368d2fca0897_mlflow-integrations.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### SageMaker
@@ -290,7 +290,7 @@ SageMaker integrates best when your stack already runs on AWS. It connects direc
 ### ZenML
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1d82b748/6946273b56bd53317bb529f0_zenml-integration-capabilities.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1d82b748/6946273b56bd53317bb529f0_zenml-integration-capabilities.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ZenML is built as an integration layer. You define pipelines once and swap tooling through [stack components](https://docs.zenml.io/concepts/stack_components).
@@ -306,7 +306,7 @@ Key ZenML integrations:
 MLflow is open-source and free to use. You can self-host it, which incurs infrastructure and maintenance costs. Managed MLflow services, like those on Databricks or AWS, charge based on the compute and storage resources you consume.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3aa0605a/696db14eed59466d7814453d_mlflow-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3aa0605a/696db14eed59466d7814453d_mlflow-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### SageMaker
@@ -316,7 +316,7 @@ SageMaker uses pay-as-you-go pricing. You pay depending on the Location type, Re
 Apart from these three inputs, there are slight overhead costs as well. For instance, Studio itself has no extra UI fee, but you pay for storage and any apps/jobs/instances you run from Studio.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/646f8336/696db15ea0912fe2f06229aa_sagemaker-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/646f8336/696db15ea0912fe2f06229aa_sagemaker-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### ZenML
@@ -326,7 +326,7 @@ ZenML is also open-source and free to start.
 <ul><li><strong>Community (Free):</strong> Full open-source framework. You can run it on your own infrastructure for free.</li><li><strong>ZenML Pro (Custom pricing):</strong> A managed control plane that handles the dashboard, user management, and stack configurations. This removes the burden of hosting the ZenML server yourself.</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c508fdf9/69686958bdf1b77d334d2876_zenml-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c508fdf9/69686958bdf1b77d334d2876_zenml-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ## How ZenML Takes Care of the MLOps Outer Loop

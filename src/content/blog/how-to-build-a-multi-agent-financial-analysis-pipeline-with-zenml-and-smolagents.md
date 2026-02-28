@@ -21,12 +21,12 @@ tags:
 date: "2025-09-19T00:00:00.000Z"
 readingTime: 15 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/dd796c84/6981d389ab6d2820d701bc0f_6981d2a915e5b1c9180d2898_multi-agent-financial-analysis-smolagents_1.avif"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/dd796c84/6981d389ab6d2820d701bc0f_6981d2a915e5b1c9180d2898_multi-agent-financial-analysis-smolagents_1.avif"
 seo:
   title: "How to Build a Multi-Agent Financial Analysis Pipeline with ZenML and SmolAgents - ZenML Blog"
   description: "How to build a production-ready financial report analysis pipeline using multiple specialized AI agents with ZenML for orchestration, SmolAgents for lightweight agent implementation, and LangFuse for observability and debugging."
   canonical: "https://www.zenml.io/blog/how-to-build-a-multi-agent-financial-analysis-pipeline-with-zenml-and-smolagents"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/dd796c84/6981d389ab6d2820d701bc0f_6981d2a915e5b1c9180d2898_multi-agent-financial-analysis-smolagents_1.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/dd796c84/6981d389ab6d2820d701bc0f_6981d2a915e5b1c9180d2898_multi-agent-financial-analysis-smolagents_1.avif"
   ogTitle: "How to Build a Multi-Agent Financial Analysis Pipeline with ZenML and SmolAgents - ZenML Blog"
   ogDescription: "How to build a production-ready financial report analysis pipeline using multiple specialized AI agents with ZenML for orchestration, SmolAgents for lightweight agent implementation, and LangFuse for observability and debugging."
 ---
@@ -40,7 +40,7 @@ A promising use case is financial report analysis, where a single LLM struggles 
 In this blog, we’ll show you how to build a financial report analysis pipeline using ZenML, SmolAgents, and LangFuse. Managing AI agents can be tricky, so it’s important to have good visibility into how they work. Proper tracking allows us to spot any issues and understand how the agents are performing. Using reproducible pipelines also allows teams to keep track of their experiments, improve performance, and figure out what works best.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2ef392bf/68cd2130214b0d9c6e7ef474_Pipelines_of_Financial_Report_Analysis.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2ef392bf/68cd2130214b0d9c6e7ef474_Pipelines_of_Financial_Report_Analysis.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ## TL;DR
@@ -58,7 +58,7 @@ Financial document analysis is tedious. You've got hundreds of pages of dense fi
 AI agents go beyond traditional LLMs by using tool calling, reasoning, and memory to complete complex tasks. Unlike standard chatbots that rely only on pre-trained data, AI agents can search the web, interact with APIs, and break problems into subtasks to improve accuracy.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/87515640/68cd2155c3809dbc5b285f3e_Components_of_an_AI_agent.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/87515640/68cd2155c3809dbc5b285f3e_Components_of_an_AI_agent.png" alt="__wf_reserved_inherit" />
   <figcaption>Components of an AI agent (Source: Nvidia)</figcaption>
 </figure>
 
@@ -133,7 +133,7 @@ In the next sections, we’ll break down how this works in practice, from datase
 The diagram below represents a financial report analysis pipeline using ZenML and SmolAgents.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2ef392bf/68cd2130214b0d9c6e7ef474_Pipelines_of_Financial_Report_Analysis.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2ef392bf/68cd2130214b0d9c6e7ef474_Pipelines_of_Financial_Report_Analysis.png" alt="__wf_reserved_inherit" />
   <figcaption>Architecture Diagram of Financial Report Analysis</figcaption>
 </figure>
 
@@ -584,7 +584,7 @@ def document_processing_pipeline(file_path: str):
 This pipeline ensures each step runs sequentially and tracks outputs for lineage and reproducibility. Here is the DAG (direct acyclic graph) for the pipeline:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/400f0f9d/68cd222967d844000ed456e9_DAG_for_the_Document_Pre-processing_Pipeline.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/400f0f9d/68cd222967d844000ed456e9_DAG_for_the_Document_Pre-processing_Pipeline.png" alt="__wf_reserved_inherit" />
   <figcaption>DAG for the Document Pre-processing Pipeline</figcaption>
 </figure>
 
@@ -603,7 +603,7 @@ In a multi-step agent system, an LLM (Large Language Model) writes an action at 
 However, research suggests that expressing these actions in executable code leads to more effective tool execution.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/82f8cd2d/68cd224ff8d61685834f871f_Internal_Working_of_Code_Agents.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/82f8cd2d/68cd224ff8d61685834f871f_Internal_Working_of_Code_Agents.png" alt="__wf_reserved_inherit" />
   <figcaption>Internal Working of Code Agents</figcaption>
 </figure>
 
@@ -854,7 +854,7 @@ def agent_analysis_pipeline(data: Dict):
 Here’s what the DAG looks like:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e61b566f/68cd2280a30d418181817bbe_DAG_of_Agent_Analysis_Pipeline.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e61b566f/68cd2280a30d418181817bbe_DAG_of_Agent_Analysis_Pipeline.png" alt="__wf_reserved_inherit" />
   <figcaption>DAG of Agent Analysis Pipeline</figcaption>
 </figure>
 
@@ -879,7 +879,7 @@ By regularly reviewing these metrics, developers can maintain optimal performanc
 After the pipeline run is completed, a trace of the run, including all the agents, will be produced. Here’s what it will look like:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/90076b72/68cd22a3dc3220f4b58c8932_Traces_on_LangFuse_of_the_Agent_Analysis_Pipeline.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/90076b72/68cd22a3dc3220f4b58c8932_Traces_on_LangFuse_of_the_Agent_Analysis_Pipeline.png" alt="__wf_reserved_inherit" />
   <figcaption>Traces on LangFuse of the Agent Analysis Pipeline</figcaption>
 </figure>
 
@@ -1191,7 +1191,7 @@ def agent_validation_pipeline(agent_responses: Dict, data: Dict) -> Annotated[Di
 Similar to the agent analysis, here’s how the DAG looks like for agent validation:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1c4684be/68cd22e9522b48ae92d28615_DAG_of_Agent_Validation_Pipeline.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1c4684be/68cd22e9522b48ae92d28615_DAG_of_Agent_Validation_Pipeline.png" alt="__wf_reserved_inherit" />
   <figcaption>DAG of Agent Validation Pipeline</figcaption>
 </figure>
 
@@ -1375,7 +1375,7 @@ Encapsulating the dashboard logic in a ZenML step ensures that this visualizatio
 To incorporate the dashboard into the pipeline, we define a simple ZenML pipeline function that executes the `financial_dashboard` step. This pipeline orchestrates the flow from raw report data to a finalized HTML dashboard, making financial insights easily interpretable. Here’s how the report looks like in the dashboard:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5938f644/68cd235c405e389390f3eb18_CleanShot_2025-09-19_at_11.32.26__1_.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5938f644/68cd235c405e389390f3eb18_CleanShot_2025-09-19_at_11.32.26__1_.png" alt="__wf_reserved_inherit" />
 </figure>
 
 Here, we have a complete rundown of the complex workflows involving multiple agents with ZenML and SmolAgents.

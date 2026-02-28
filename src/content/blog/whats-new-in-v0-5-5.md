@@ -17,7 +17,7 @@ tags:
 date: "2021-12-13T00:00:00.000Z"
 readingTime: 2 Mins Read
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/efc0b231/653127f345bd911f23c96907_balloons-pixabay_0_5_5.jpg"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/efc0b231/653127f345bd911f23c96907_balloons-pixabay_0_5_5.jpg"
 ---
 
 **Last updated:** November 3, 2022.
@@ -31,7 +31,7 @@ For a detailed look at what’s changed, give [our full release notes](https://g
 We are super excited about our integration of Kubeflow Pipelines into ZenML. With just a few lines of code you can now spin up your very own local deployment of Kubeflow Pipelines. With Kubeflow Pipelines running on your machine or even in the cloud, you change where to run your code with just a few commands.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/469a8659/653127fe87a749428b39b2fc_kubeflow.png" alt="Kubeflow pipeline" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/469a8659/653127fe87a749428b39b2fc_kubeflow.png" alt="Kubeflow pipeline" />
 </figure>
 
 ## CLI Support for Integrations

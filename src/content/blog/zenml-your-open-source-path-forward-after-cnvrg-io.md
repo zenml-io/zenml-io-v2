@@ -19,12 +19,12 @@ tags:
 date: "2025-02-18T00:00:00.000Z"
 readingTime: 3 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a836b243/67b49754f93ed8a37f2e8b88_Cnvrg_Positioning_Blog_Image__2_.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a836b243/67b49754f93ed8a37f2e8b88_Cnvrg_Positioning_Blog_Image__2_.png"
 seo:
   title: "ZenML: Your Open-Source Path Forward After cnvrg.io - ZenML Blog"
   description: "Learn how to migrate from cnvrg.io to ZenML's open-source MLOps framework. Discover a sustainable alternative before Intel Tiber AI Studio's 2025 end-of-life. Get started with your MLOps transition today."
   canonical: "https://www.zenml.io/blog/zenml-your-open-source-path-forward-after-cnvrg-io"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a836b243/67b49754f93ed8a37f2e8b88_Cnvrg_Positioning_Blog_Image__2_.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a836b243/67b49754f93ed8a37f2e8b88_Cnvrg_Positioning_Blog_Image__2_.png"
   ogTitle: "ZenML: Your Open-Source Path Forward After cnvrg.io - ZenML Blog"
   ogDescription: "Learn how to migrate from cnvrg.io to ZenML's open-source MLOps framework. Discover a sustainable alternative before Intel Tiber AI Studio's 2025 end-of-life. Get started with your MLOps transition today."
 ---
@@ -44,7 +44,7 @@ At its core, ZenML represents a fundamentally different approach to MLOps. As an
 ## Bridging Familiar Territory
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/86512d25/67b497e72694b479bd663b5f_Cnvrg_Positioning_Blog_Image__1___1_.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/86512d25/67b497e72694b479bd663b5f_Cnvrg_Positioning_Blog_Image__1___1_.png" alt="__wf_reserved_inherit" />
 </figure>
 
 If you're coming from [cnvrg.io](http://cnvrg.io/), you'll find that ZenML supports many of the workflows you've built, but with an important twist. Take pipeline orchestration, for instance. Where [cnvrg.io](http://cnvrg.io/) provided a unified but closed system, ZenML offers code-first pipeline definitions that are version-controlled and portable. Your pipelines become part of your codebase, versioned in Git alongside your model code, making them easier to review, share, and maintain.
@@ -56,7 +56,7 @@ For experiment tracking and model management, ZenML takes an integration-first a
 ## A Practical Path Forward
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a836b243/67b49754f93ed8a37f2e8b88_Cnvrg_Positioning_Blog_Image__2_.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a836b243/67b49754f93ed8a37f2e8b88_Cnvrg_Positioning_Blog_Image__2_.png" alt="__wf_reserved_inherit" />
 </figure>
 
 We understand that migrating from [cnvrg.io](http://cnvrg.io/) is no small undertaking. That's why we've designed ZenML to support a gradual transition. You can start with a single project or use case, running ZenML alongside your existing [cnvrg.io](http://cnvrg.io/) implementation as you migrate pipelines one at a time. This measured approach helps maintain production stability while you build confidence in your new stack.

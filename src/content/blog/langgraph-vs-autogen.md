@@ -21,12 +21,12 @@ tags:
 date: "2025-07-20T00:00:00.000Z"
 readingTime: 13 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/0c695a6d/687c77128ca7f3343767aba0_langgraph-vs-autogen.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0c695a6d/687c77128ca7f3343767aba0_langgraph-vs-autogen.png"
 seo:
   title: "LangGraph vs AutoGen: How are These LLM Workflow Orchestration Platforms Different? - ZenML Blog"
   description: "In this LangGraph vs Autogen article, we explain the difference between these platforms and when to use which one for the best results."
   canonical: "https://www.zenml.io/blog/langgraph-vs-autogen"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/0c695a6d/687c77128ca7f3343767aba0_langgraph-vs-autogen.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0c695a6d/687c77128ca7f3343767aba0_langgraph-vs-autogen.png"
   ogTitle: "LangGraph vs AutoGen: How are These LLM Workflow Orchestration Platforms Different? - ZenML Blog"
   ogDescription: "In this LangGraph vs Autogen article, we explain the difference between these platforms and when to use which one for the best results."
 ---
@@ -78,7 +78,7 @@ The table below provides a high-level summary of the key differences between Lan
 #### LangGraph
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/aa262e9f/687b199e0760b0d1fb35819e_how-ai-agents-are-connected-in-langgraph.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/aa262e9f/687b199e0760b0d1fb35819e_how-ai-agents-are-connected-in-langgraph.png" alt="__wf_reserved_inherit" />
   <figcaption>How AI agents are connected in LangGraph</figcaption>
 </figure>
 
@@ -145,7 +145,7 @@ graph = workflow.compile()
 #### AutoGen
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/016fe60b/687c6ddad5e2d0a96f94e339_built-in-agents-in-autogen.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/016fe60b/687c6ddad5e2d0a96f94e339_built-in-agents-in-autogen.png" alt="__wf_reserved_inherit" />
   <figcaption>Built-in agents in AutoGen</figcaption>
 </figure>
 
@@ -196,7 +196,7 @@ user_proxy.initiate_chat(manager, message="Research the current price of NVDA st
 #### LangGraph
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/eca57e4a/687c6e298a554ec3e828c5e5_langgraph-human-in-the-loop.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/eca57e4a/687c6e298a554ec3e828c5e5_langgraph-human-in-the-loop.png" alt="__wf_reserved_inherit" />
   <figcaption>LangGraph human in the loop</figcaption>
 </figure>
 
@@ -234,7 +234,7 @@ graph.invoke(None, {"configurable": {"thread_id": "1"}})
 #### AutoGen
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a33e9e19/687c6e75cb080c80226ada4c_autogen-human-in-the-loop.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a33e9e19/687c6e75cb080c80226ada4c_autogen-human-in-the-loop.png" alt="__wf_reserved_inherit" />
   <figcaption>AutoGen human in the loop</figcaption>
 </figure>
 
@@ -278,7 +278,7 @@ human_proxy.initiate_chat(
 #### LangGraph
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/718e6512/687b1b7ec161c85267291996_langgraph-state-and-memory-management.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/718e6512/687b1b7ec161c85267291996_langgraph-state-and-memory-management.png" alt="__wf_reserved_inherit" />
   <figcaption>LangGraph state and memory management</figcaption>
 </figure>
 
@@ -355,7 +355,7 @@ LangGraph's primary strength is its deep, native integration with the broader La
 This creates a vertically integrated, cohesive experience where all components are designed to work seamlessly together.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/86f7e780/687c6f66de8d851b3292b639_langchain-ecosystem.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/86f7e780/687c6f66de8d851b3292b639_langchain-ecosystem.png" alt="__wf_reserved_inherit" />
   <figcaption>LangGraph uses the LangChain ecosystem</figcaption>
 </figure>
 
@@ -382,7 +382,7 @@ Apart from the free plan, LangGraph offers three paid plans to choose from:
 <ul><li><strong>Developer</strong>: Includes up to 100K nodes executed per month</li><li><strong>Plus</strong>: $0.001 per node executed + standby charges</li><li><strong>Enterprise</strong>: Custom-built plan tailored to your business needs</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/97b85242/687b1c130365fe673ee85bab_langgraph-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/97b85242/687b1c130365fe673ee85bab_langgraph-pricing.png" alt="__wf_reserved_inherit" />
 </figure>
 
 **📚 Related article:**[LangGraph pricing guide](https://www.zenml.io/blog/langgraph-pricing)
@@ -398,7 +398,7 @@ The costs associated with using AutoGen are indirect and stem from the infrastru
 ## How ZenML Helps In Closing the Outer Loop Around Your Agents
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1aad74e0/687b1c29468fe4993262cdc5_zenML-helps-in-closing-the-outer-loop.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1aad74e0/687b1c29468fe4993262cdc5_zenML-helps-in-closing-the-outer-loop.png" alt="__wf_reserved_inherit" />
 </figure>
 
 While LangGraph and AutoGen are powerful frameworks for the ‘inner loop’ of development, defining, writing, and iterating on agentic behavior, they don’t, by themselves, solve the challenges of the ‘outer loop.’

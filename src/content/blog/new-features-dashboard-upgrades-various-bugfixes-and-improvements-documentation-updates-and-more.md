@@ -23,12 +23,12 @@ tags:
 date: "2025-02-27T00:00:00.000Z"
 readingTime: 3 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f9387c9d/67c06200c71cb71e5d245e37_zenml-release-7.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f9387c9d/67c06200c71cb71e5d245e37_zenml-release-7.png"
 seo:
   title: "New Features: Dashboard Upgrades, Various Bugfixes and Improvements, Documentation Updates and More! - ZenML Blog"
   description: "ZenML 0.75.0 introduces dashboard enhancements that allow users to create and update stack components directly from the dashboard, along with improvements to service connectors, model artifact handling, and documentation. This release streamlines ML workflows with better component management capabilities, enhanced SageMaker integration, and critical fixes for custom flavor components and sorting logic."
   canonical: "https://www.zenml.io/blog/new-features-dashboard-upgrades-various-bugfixes-and-improvements-documentation-updates-and-more"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f9387c9d/67c06200c71cb71e5d245e37_zenml-release-7.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f9387c9d/67c06200c71cb71e5d245e37_zenml-release-7.png"
   ogTitle: "New Features: Dashboard Upgrades, Various Bugfixes and Improvements, Documentation Updates and More! - ZenML Blog"
   ogDescription: "ZenML 0.75.0 introduces dashboard enhancements that allow users to create and update stack components directly from the dashboard, along with improvements to service connectors, model artifact handling, and documentation. This release streamlines ML workflows with better component management capabilities, enhanced SageMaker integration, and critical fixes for custom flavor components and sorting logic."
 ---
@@ -40,7 +40,7 @@ We are thrilled to announce the release of **ZenML 0.75.0**, bringing significan
 The highlight of this release is the enhanced dashboard functionality that now allows you to **create and update stack components directly from the dashboard**. This powerful addition streamlines your workflow by reducing the need to switch between the CLI and the dashboard when managing your ML infrastructure components.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1cdba83a/67c0652ebc6a88f864605a66_ScreenRecording2025-02-27at14.07.03-ezgif.com-crop.gif" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1cdba83a/67c0652ebc6a88f864605a66_ScreenRecording2025-02-27at14.07.03-ezgif.com-crop.gif" alt="__wf_reserved_inherit" />
 </figure>
 
 ##### Service Connector Improvements

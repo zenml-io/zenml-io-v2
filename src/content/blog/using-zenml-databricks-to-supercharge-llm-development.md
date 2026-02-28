@@ -18,12 +18,12 @@ tags:
 date: "2024-09-20T00:00:00.000Z"
 readingTime: 7 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ad90bdb9/66ed4494805650c66f282313_databricks_blog_cover.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ad90bdb9/66ed4494805650c66f282313_databricks_blog_cover.png"
 seo:
   title: "Using ZenML+ Databricks to Supercharge LLM Development - ZenML Blog"
   description: "The integration of ZenML and Databricks streamlines LLM development and deployment processes, offering scalability, reproducibility, efficiency, collaboration, and monitoring capabilities. This approach enables data scientists and ML engineers to focus on innovation."
   canonical: "https://www.zenml.io/blog/using-zenml-databricks-to-supercharge-llm-development"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ad90bdb9/66ed4494805650c66f282313_databricks_blog_cover.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ad90bdb9/66ed4494805650c66f282313_databricks_blog_cover.png"
   ogTitle: "Using ZenML+ Databricks to Supercharge LLM Development - ZenML Blog"
   ogDescription: "The integration of ZenML and Databricks streamlines LLM development and deployment processes, offering scalability, reproducibility, efficiency, collaboration, and monitoring capabilities. This approach enables data scientists and ML engineers to focus on innovation."
 ---
@@ -41,7 +41,7 @@ The synergy between these platforms is particularly powerful for LLM development
 <ul><li>🚀 Scalability: Databricks' distributed computing capabilities allow for efficient processing of large datasets and training of resource-intensive models with GPU's offering.</li><li>🔄 Reproducibility: ZenML's pipeline orchestration ensures that complex workflows are version-controlled and easily reproducible.</li><li>🧩 Flexibility: The integration supports various ML frameworks and libraries, allowing data scientists to use their preferred tools.</li><li>🤝 Collaboration: Databricks' collaborative notebooks and ZenML's shareable pipelines foster team collaboration and knowledge sharing.</li><li>🔁 End-to-end MLOps: From data preparation to model deployment, the integration covers the entire ML lifecycle.</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/4bb653aa/66ed49ca7483c89746805e3d_66ed44ac8ffbe346e7766ac4_image_20_15_.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/4bb653aa/66ed49ca7483c89746805e3d_66ed44ac8ffbe346e7766ac4_image_20_15_.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Setting Up the Integration
@@ -87,7 +87,7 @@ This configuration sets up a GPU-enabled cluster (A group of computers with spec
 With these steps completed, you're ready to leverage the combined power of ZenML and Databricks for your LLM projects.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/aa5ba3a6/66ed49cb7483c89746805e57_66ed4708dfba72ccfac162d2_image_20_16_.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/aa5ba3a6/66ed49cb7483c89746805e57_66ed4708dfba72ccfac162d2_image_20_16_.png" alt="__wf_reserved_inherit" />
 </figure>
 
 Now that we have our environment set up, let's design a ZenML pipeline for fine-tuning the Llama 3.1 model. Our pipeline will consist of several key steps:
@@ -149,7 +149,7 @@ This pipeline structure ensures that each step is executed in the correct order,
 The `databricks_settings` object we created earlier is passed to the pipeline, configuring it to run on our GPU-enabled Databricks cluster. This allows us to leverage Databricks' powerful computing resources for the resource-intensive task of fine-tuning an LLM.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/0ff654d9/66ed49cb7483c89746805e5c_66ed4774f4a21172a9d1fca2_image_20_18_.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0ff654d9/66ed49cb7483c89746805e5c_66ed4774f4a21172a9d1fca2_image_20_18_.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Running the Pipeline on Databricks
@@ -175,7 +175,7 @@ When you execute this code, ZenML performs several actions behind the scenes:
 This process allows you to leverage Databricks' distributed computing capabilities while maintaining the simplicity and reproducibility of ZenML pipelines. The GPU-enabled cluster we configured earlier ensures that the resource-intensive fine-tuning process can be completed efficiently.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/415da6f4/66ed49ca7483c89746805e43_66ed47d30e40449a74082313_image_20_19_.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/415da6f4/66ed49ca7483c89746805e43_66ed47d30e40449a74082313_image_20_19_.png" alt="__wf_reserved_inherit" />
 </figure>
 
 One of the key benefits of the ZenML-Databricks integration is seamless model tracking and registration using MLflow. As your pipeline runs, ZenML automatically logs metrics, parameters, and artifacts to MLflow, which is natively integrated with Databricks.
@@ -210,7 +210,7 @@ model_deployer.promote_model(
 This integration ensures that your fine-tuned LLM is properly versioned and easily accessible for deployment.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6b6f3fb1/66ed49cb7483c89746805e4f_66ed484e19660b8a1f518e8f_image_20_20_.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6b6f3fb1/66ed49cb7483c89746805e4f_66ed484e19660b8a1f518e8f_image_20_20_.png" alt="__wf_reserved_inherit" />
 </figure>
 
 With our Llama 3.1 model fine-tuned, evaluated, and registered, the final step is deployment. Databricks offers several options for model deployment, including Databricks Model Serving and MLflow Model Serving. ZenML can facilitate this process, making it easy to deploy your fine-tuned LLM.

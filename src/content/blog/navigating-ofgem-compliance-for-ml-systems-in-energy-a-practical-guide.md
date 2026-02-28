@@ -19,12 +19,12 @@ tags:
 date: "2025-04-28T00:00:00.000Z"
 readingTime: 8 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8d095a25/680fade5cf953c514827cc90_Ofgem_Compliance__1_.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8d095a25/680fade5cf953c514827cc90_Ofgem_Compliance__1_.png"
 seo:
   title: "Navigating Ofgem Compliance for ML Systems in Energy: A Practical Guide - ZenML Blog"
   description: "Explores how energy companies can leverage ZenML's MLOps framework to meet Ofgem's regulatory requirements for AI systems, ensuring fairness, transparency, accountability, and security while maintaining innovation in the rapidly evolving energy sector."
   canonical: "https://www.zenml.io/blog/navigating-ofgem-compliance-for-ml-systems-in-energy-a-practical-guide"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8d095a25/680fade5cf953c514827cc90_Ofgem_Compliance__1_.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8d095a25/680fade5cf953c514827cc90_Ofgem_Compliance__1_.png"
   ogTitle: "Navigating Ofgem Compliance for ML Systems in Energy: A Practical Guide - ZenML Blog"
   ogDescription: "Explores how energy companies can leverage ZenML's MLOps framework to meet Ofgem's regulatory requirements for AI systems, ensuring fairness, transparency, accountability, and security while maintaining innovation in the rapidly evolving energy sector."
 ---
@@ -34,7 +34,7 @@ The energy sector is experiencing a profound transformation driven by artificial
 This explosive growth is reflected in [McKinsey's 2024 tech-trends survey](https://www.mckinsey.com/capabilities/mckinsey-digital/our-insights/the-top-trends-in-tech), which places "Applied AI" at 35% penetration in utilities, outpacing even renewables adoption (28%). The applications are as diverse as they are impactful. Across the sector, we see neural networks ingesting billions of half-hourly smart-meter readings to optimize grid operations, ChatGPT-style copilots drafting approximately 50% of customer support emails, and sophisticated optimization engines orchestrating gigawatt-scale batteries and electric vehicle fleets.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/71a65a41/680fae3690674dc9e25ff2e2_CleanShot_Apr_28_2025_from_TinyPNG.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/71a65a41/680fae3690674dc9e25ff2e2_CleanShot_Apr_28_2025_from_TinyPNG.png" alt="__wf_reserved_inherit" />
 </figure>
 
 As a [Reuters report](https://www.reuters.com/business/energy/centerpoint-spend-more-meet-ai-power-demand-despite-fall-quarterly-profit-2025-04-24/) recently highlighted, "AI will add 7 GW of new grid demand in Texas alone, driven by data-center build-outs for LLMs." This isn't just a technological evolution; it's reshaping the fundamental dynamics of energy demand and supply.
@@ -60,7 +60,7 @@ Energy companies deploying ML systems must navigate a complex web of regulations
 Let's examine each of these requirements in more detail:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/57c3c597/680fae4a814716bdaefc43e9_Visual_Selection_from_Napkin_AI__2___1_.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/57c3c597/680fae4a814716bdaefc43e9_Visual_Selection_from_Napkin_AI__2___1_.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Standard License Conditions 0 & 0A: The Fairness Foundation
@@ -114,7 +114,7 @@ The complex regulatory landscape for energy ML systems may seem daunting, but [m
 Let's explore how ZenML, an open-source MLOps framework, implements these solutions to create Ofgem-ready ML systems.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/23f60e9c/680fae5812c68c05b2efbe6f_Visual_Selection_from_Napkin_AI__1___1___1_.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/23f60e9c/680fae5812c68c05b2efbe6f_Visual_Selection_from_Napkin_AI__1___1___1_.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pipeline-Based Development for Reproducibility

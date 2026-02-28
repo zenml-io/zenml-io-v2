@@ -19,12 +19,12 @@ tags:
 date: "2025-02-10T00:00:00.000Z"
 readingTime: 5 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ae684426/67a9c607b928c67f1a678408_Postimage_from_TinyPNG.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ae684426/67a9c607b928c67f1a678408_Postimage_from_TinyPNG.png"
 seo:
   title: "Making ML Documentation AI-Friendly: ZenML's Implementation of llms.txt - ZenML Blog"
   description: "Discover how ZenML implements the llms.txt standard to make ML documentation more accessible to both AI assistants and humans. Learn about our modular approach using specialized documentation files, practical integration with AI development tools, and how this structured format enhances the developer experience across different context window sizes."
   canonical: "https://www.zenml.io/blog/llms-txt"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ae684426/67a9c607b928c67f1a678408_Postimage_from_TinyPNG.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ae684426/67a9c607b928c67f1a678408_Postimage_from_TinyPNG.png"
   ogTitle: "Making ML Documentation AI-Friendly: ZenML's Implementation of llms.txt - ZenML Blog"
   ogDescription: "Discover how ZenML implements the llms.txt standard to make ML documentation more accessible to both AI assistants and humans. Learn about our modular approach using specialized documentation files, practical integration with AI development tools, and how this structured format enhances the developer experience across different context window sizes."
 ---
@@ -42,7 +42,7 @@ At its core, the `llms.txt` format follows a precise structure that begins with 
 You can get a sense of just how much the specification / standard took of by browsing one of the popular directories of codebases that support `llms.txt`, [llmstxt.site](https://llmstxt.site/):
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/79094d3c/67a9c45b7ab5f3e0c26d31f9_CleanShot_Feb_7_from_TinyPNG.png" alt="Screenshot of the llms.txt directory, showing a table with different implementations of the llms.txt file." />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/79094d3c/67a9c45b7ab5f3e0c26d31f9_CleanShot_Feb_7_from_TinyPNG.png" alt="Screenshot of the llms.txt directory, showing a table with different implementations of the llms.txt file." />
 </figure>
 
 ## Technical Specification

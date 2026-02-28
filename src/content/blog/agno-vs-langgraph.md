@@ -21,12 +21,12 @@ tags:
 date: "2025-09-18T00:00:00.000Z"
 readingTime: 14 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ac8447a4/6981d36ce92aa039b696b8a4_6981d2af7d412bd6382f5ba0_agno-vs-langgraph.avif"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ac8447a4/6981d36ce92aa039b696b8a4_6981d2af7d412bd6382f5ba0_agno-vs-langgraph.avif"
 seo:
   title: "Agno vs LangGraph: Best Framework to Build Multi-Agent Systems - ZenML Blog"
   description: "In this Agno vs LangGraph, we explain the difference between the two and conclude which one is the best to build multi-agent systems."
   canonical: "https://www.zenml.io/blog/agno-vs-langgraph"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ac8447a4/6981d36ce92aa039b696b8a4_6981d2af7d412bd6382f5ba0_agno-vs-langgraph.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ac8447a4/6981d36ce92aa039b696b8a4_6981d2af7d412bd6382f5ba0_agno-vs-langgraph.avif"
   ogTitle: "Agno vs LangGraph: Best Framework to Build Multi-Agent Systems - ZenML Blog"
   ogDescription: "In this Agno vs LangGraph, we explain the difference between the two and conclude which one is the best to build multi-agent systems."
 ---
@@ -101,7 +101,7 @@ On top of that, Agno’s team abstraction simplifies building multi-agent workfl
 #### LangGraph
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/aa262e9f/687b199e0760b0d1fb35819e_how-ai-agents-are-connected-in-langgraph.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/aa262e9f/687b199e0760b0d1fb35819e_how-ai-agents-are-connected-in-langgraph.png" alt="__wf_reserved_inherit" />
   <figcaption>How AI agents are connected in LangGraph</figcaption>
 </figure>
 
@@ -156,7 +156,7 @@ As tasks become complex, one agent isn’t enough. It becomes necessary to use m
 #### Agno
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/909da3e5/68cb9286e81611ba047816e5_agno-multi-agent-composition.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/909da3e5/68cb9286e81611ba047816e5_agno-multi-agent-composition.png" alt="__wf_reserved_inherit" />
 </figure>
 
 Similar to `Agent`class, Agno has a `Team` class for multi-agent systems. A team is a group of agents that can communicate and work together on tasks.
@@ -185,7 +185,7 @@ team = Team(members=[
 #### LangGraph
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8f25a78f/688c411bbd4ff15ceeea6954_langgraph-multi-agent-orchestration-patterns.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8f25a78f/688c411bbd4ff15ceeea6954_langgraph-multi-agent-orchestration-patterns.png" alt="__wf_reserved_inherit" />
   <figcaption>LangGraph’s multi-agent patterns</figcaption>
 </figure>
 
@@ -260,7 +260,7 @@ agent.print_response("Where do I live, and what's my name?", user_id=user)
 #### LangGraph
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/718e6512/687b1b7ec161c85267291996_langgraph-state-and-memory-management.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/718e6512/687b1b7ec161c85267291996_langgraph-state-and-memory-management.png" alt="__wf_reserved_inherit" />
   <figcaption>LangGraph’s Agent Memory</figcaption>
 </figure>
 
@@ -301,7 +301,7 @@ Agno has a way to integrate with frontend components (maybe through the control 
 #### LangGraph
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ee1ac081/68c7f1bc194725f4b99a4682_langgraph-human-in-the-loop.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ee1ac081/68c7f1bc194725f4b99a4682_langgraph-human-in-the-loop.png" alt="__wf_reserved_inherit" />
   <figcaption>LangGraph human in the loop</figcaption>
 </figure>
 
@@ -334,7 +334,7 @@ LangGraph’s strength lies in its deep, native integration with the broader Lan
 <ul><li><strong>LangChain Components:</strong> The vast library of LangChain integrations for LLMs, document loaders, text splitters, vector stores, and tools can be used directly as nodes within a LangGraph graph.</li><li><strong>LangSmith:</strong> A best-in-class platform for observability, tracing, and debugging. Traces from LangGraph are automatically visualized in LangSmith, showing the step-by-step execution of the graph, which is invaluable for understanding and improving complex agent behavior.</li><li><strong>Extensibility:</strong> As a Python library, LangGraph can be integrated with any other Python package or API, offering limitless extensibility for developers.</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/86f7e780/687c6f66de8d851b3292b639_langchain-ecosystem.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/86f7e780/687c6f66de8d851b3292b639_langchain-ecosystem.png" alt="__wf_reserved_inherit" />
   <figcaption>LangGraph uses the LangChain ecosystem</figcaption>
 </figure>
 
@@ -349,7 +349,7 @@ Apart from that, Agno has two paid plans:
 <ul><li><strong>Starter:</strong> $150 per month</li><li><strong>Custom:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ab9e4956/68cb9316f656cfd7ac815e7f_agno-pricing-plans.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ab9e4956/68cb9316f656cfd7ac815e7f_agno-pricing-plans.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### LangGraph
@@ -361,7 +361,7 @@ LangGraph’s open-source core is free, but it comes with an option of paid mana
 <ul><li><strong>Developer:</strong> Free</li><li><strong>Plus:</strong> $39 per month</li><li><strong>Enterprise:</strong> Custom</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/97b85242/687b1c130365fe673ee85bab_langgraph-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/97b85242/687b1c130365fe673ee85bab_langgraph-pricing.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ## How ZenML Manages the Outer Loop when Building Multi-Agent Systems
@@ -373,7 +373,7 @@ However, moving an agent into production requires solving the ‘outer loop,’ 
 This is where a dedicated MLOps and LLMOps platform like ZenML complements both these frameworks.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/cd6305e5/68c7f285dc31fb46675dfaad_zenml-unified-mlops-and-llmops-platform.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/cd6305e5/68c7f285dc31fb46675dfaad_zenml-unified-mlops-and-llmops-platform.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [ZenML](https://www.zenml.io/) is an open-source MLOps + [LLMOps framework](https://docs.zenml.io/user-guides/llmops-guide) that serves as the **unifying outer loop** for your AI agents. It complements agents built with Agno or LanGraph frameworks by governing the entire production lifecycle.
@@ -385,7 +385,7 @@ Here’s how ZenML adds value:
 **👀 Note:** At ZenML, we have built several agent workflow integrations with tools like [Semantic Kernel](https://www.zenml.io/blog/semantic-kernel-alternatives), [LangGraph](https://www.zenml.io/blog/langgraph-vs-autogen), [LlamaIndex](https://www.zenml.io/blog/llamaindex-vs-crewai), and more. We are actively shipping new integrations that you can find on this GitHub page: [ZenML Agent Workflow Integrations](https://github.com/zenml-io/zenml/tree/main/examples/agent_framework_integrations).
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c51a5e76/68b58a4795f60f9023d117eb_zenml-agent-workflow-integrations.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c51a5e76/68b58a4795f60f9023d117eb_zenml-agent-workflow-integrations.png" alt="__wf_reserved_inherit" />
 </figure>
 
 **📚 Related comparison article to read:**

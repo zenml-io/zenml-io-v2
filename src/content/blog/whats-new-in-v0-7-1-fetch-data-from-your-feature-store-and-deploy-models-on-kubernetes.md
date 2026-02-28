@@ -17,13 +17,13 @@ tags:
 date: "2022-04-11T00:00:00.000Z"
 readingTime: 3 Mins Read
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a928b6ad/65315fdb7f8d0747f9174c5d_ian-dooley-DuBNA1QMpPA-unsplash.jpg"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a928b6ad/65315fdb7f8d0747f9174c5d_ian-dooley-DuBNA1QMpPA-unsplash.jpg"
 ---
 
 **Last updated:** November 3, 2022.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/90671655/65315fe166586bd1687940ff_release-0-7-1.gif" alt="Seldon Core Logo" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/90671655/65315fe166586bd1687940ff_release-0-7-1.gif" alt="Seldon Core Logo" />
 </figure>
 
 The release introduces the [Seldon Core](https://github.com/SeldonIO/seldon-core) ZenML integration, featuring the *Seldon Core Model Deployer* and a *Seldon Core standard model deployer step*. The [Model Deployer](https://docs.zenml.io/getting-started/core-concepts#model-deployer) is a new type of stack component that enables you to develop continuous model deployment pipelines that train models and continuously deploy them to an external model serving tool, service, or platform. You can read more on deploying models to production with Seldon Core in our [Continuous Training and Deployment documentation section](https://zenml.io/features/ct-cd) and our [Seldon Core deployment example](https://docs.zenml.io/stacks-and-components/component-guide/model-deployers/seldon).
@@ -35,7 +35,7 @@ We also two new integrations: Feast and NeuralProphet. [Feast](https://feast.dev
 ## ☁️ Deploy models continuously on Kubernetes
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e06eb979/65315fe242154685ed3faa05_seldon-core-logo.png" alt="Seldon Core Logo" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e06eb979/65315fe242154685ed3faa05_seldon-core-logo.png" alt="Seldon Core Logo" />
 </figure>
 
 We are proud to release one of the most requested features from our [community roadmap](https://zenml.io/roadmap) today! With 0.7.1, you can serve your models continuously on Kubernetes using the Seldon Core integration!
@@ -53,7 +53,7 @@ After [serving models locally with MLflow](https://docs.zenml.io/stacks-and-comp
 0.7.1 introduces [Feast](https://feast.dev/) as ZenML’s first feature store integration. Feature stores allow data teams to serve data via an offline store and an online low-latency store where data is kept in sync between the two. It also offers a centralized registry where features (and feature schemas) are stored for use within a team or wider organization. ZenML currently supports connecting to a Redis-backed Feast feature store as a stack component integration. Check out the [full example](https://github.com/zenml-io/zenml/tree/release/0.7.1/examples/feature_store) to see it in action!
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9536bd7e/6531603af7e61ff7b180ef1e_download__15_.png" alt="" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9536bd7e/6531603af7e61ff7b180ef1e_download__15_.png" alt="" />
 </figure>
 
  Picture Source: [Feast website](https://feast.dev/)

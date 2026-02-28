@@ -12,16 +12,16 @@ webflow:
   createdOn: "2023-10-12T09:13:13.788Z"
 integrationType: "data-validator"
 logo:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/4700d856/66d868f3b9571c825b718744_whylogs.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/4700d856/66d868f3b9571c825b718744_whylogs.png"
 shortDescription: "Maintain data quality and detect drift with WhyLabs whylogs in ZenML pipelines"
 docsUrl: "https://sdkdocs.zenml.io/0.65.0/integration_code_docs/integrations-whylogs/"
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/cfe9e196/66dab4ef2b33e92c2eb200fc_whylogs_integration.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/cfe9e196/66dab4ef2b33e92c2eb200fc_whylogs_integration.png"
 seo:
   title: "Integrate WhyLabs whylogs with ZenML - Data Validator Integrations"
   description: "Maintain data quality and detect drift with WhyLabs whylogs in ZenML pipelines"
   canonical: "https://www.zenml.io/integrations/whylogs"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/cfe9e196/66dab4ef2b33e92c2eb200fc_whylogs_integration.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/cfe9e196/66dab4ef2b33e92c2eb200fc_whylogs_integration.png"
   ogTitle: "Integrate WhyLabs whylogs with ZenML - Data Validator Integrations"
   ogDescription: "Maintain data quality and detect drift with WhyLabs whylogs in ZenML pipelines"
 overviewTitle: "Maintain data quality and detect drift with WhyLabs whylogs in ZenML pipelines"

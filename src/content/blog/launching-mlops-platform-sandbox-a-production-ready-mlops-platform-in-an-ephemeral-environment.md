@@ -20,7 +20,7 @@ tags:
 date: "2023-05-31T00:00:00.000Z"
 readingTime: 4 Mins Read
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/09e3e5c8/653267fe56e423c5b451b1fb_Group_9309.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/09e3e5c8/653267fe56e423c5b451b1fb_Group_9309.png"
 ---
 
 **Last updated:** June 1st, 2023
@@ -44,7 +44,7 @@ Our [Stack Recipes](https://github.com/zenml-io/mlops-stacks) allow you to take 
 ## How to Use the Sandbox
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/223bed55/6530ae30534b0af06e727d5d_zenml_sandbox_step_3_commands.png" alt="Screenshot of the MLOps Platform Sandbox" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/223bed55/6530ae30534b0af06e727d5d_zenml_sandbox_step_3_commands.png" alt="Screenshot of the MLOps Platform Sandbox" />
 </figure>
 
 The Sandbox provides you with pre-built pipelines that you can easily re-run or modify to suit your needs, if you follow the steps on screen. Using these pre-built pipelines makes it incredibly easy to reproduce results and experiment with powerful tools integrated into the ZenML framework. By leveraging the MLOps Platform Sandbox, you can quickly explore the capabilities of a unified MLOps platform in the context of real ML pipelines without the hassle of setting up and managing your own infrastructure.
@@ -52,25 +52,25 @@ The Sandbox provides you with pre-built pipelines that you can easily re-run or 
 After you have run the pipelines, you can open the ZenML dashboard to see their status:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ed475f01/6530ae31bf5dfd68f80ff70d_zenml_sandbox_zenml.png" alt="Sandbox pipelines running on ZenML" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ed475f01/6530ae31bf5dfd68f80ff70d_zenml_sandbox_zenml.png" alt="Sandbox pipelines running on ZenML" />
 </figure>
 
 You can also check the corresponding stack components to see the various services used. For example, Kubeflow would show you a similar DAG as ZenML running on a Kubernetes cluster:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/0242089f/6530ae32a9b001c04cade09c_zenml_sandbox_kubeflow.png" alt="Sandbox pipelines running on Kubeflow" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0242089f/6530ae32a9b001c04cade09c_zenml_sandbox_kubeflow.png" alt="Sandbox pipelines running on Kubeflow" />
 </figure>
 
 Minio will show you the versioned artifacts:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7aa38d9e/6530ae31d25c27f91f999d88_zenml_sandbox_minio.png" alt="Sandbox pipelines running on Minio" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7aa38d9e/6530ae31d25c27f91f999d88_zenml_sandbox_minio.png" alt="Sandbox pipelines running on Minio" />
 </figure>
 
 And MLflow will show you the experiment metadata tracked as the pipeline ran through:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/30a06cc1/6530ae30dd17f8cd1a19bee2_zenml_sandbox_mlflow.png" alt="Sandbox pipelines running on MLflow" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/30a06cc1/6530ae30dd17f8cd1a19bee2_zenml_sandbox_mlflow.png" alt="Sandbox pipelines running on MLflow" />
 </figure>
 
 If you want to run your own custom code inside your sandbox, there are a few more steps you’ll have to do, all of which is [described in our dedicated documentation page](https://docs.zenml.io/user-guide/advanced-guide/sandbox).
@@ -78,7 +78,7 @@ If you want to run your own custom code inside your sandbox, there are a few mor
 ## What To Do After Your Sandbox Expires
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7725856d/6530ae31534b0af06e727de8_blupus_waiting.jpeg" alt="Blupus waits as sandbox expires" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7725856d/6530ae31534b0af06e727de8_blupus_waiting.jpeg" alt="Blupus waits as sandbox expires" />
 </figure>
 
 Once you have experimented with the MLOps Platform Sandbox and gained a better understanding of how the ZenML frameworks work, you may want to deploy your own MLOps stack tailored to your specific needs. To help you with this process, ZenML offers [Stack Recipes](https://github.com/zenml-io/mlops-stacks), which provide a starting point for deploying various MLOps stacks on different cloud providers and with different components. Our documentation also includes [a guide to the specific steps to follow](https://docs.zenml.io/platform-guide/set-up-your-mlops-platform/deploy-and-set-up-a-cloud-stack/deploy-a-stack-post-sandbox) for when your sandbox has expired and you want to create your own MLOps stack.

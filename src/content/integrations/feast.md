@@ -12,16 +12,16 @@ webflow:
   createdOn: "2023-10-12T09:13:13.459Z"
 integrationType: "feature-store"
 logo:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3a941d62/66d86908b9571c825b71a1fc_feast.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3a941d62/66d86908b9571c825b71a1fc_feast.png"
 shortDescription: "Seamlessly Integrate Feature Stores into ML Pipelines with Feast and ZenML"
 docsUrl: "https://docs.zenml.io/stack-components/feature-stores/feast"
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6a95c3bc/66e74ad7b746f3d2cf477755_feast_integration.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6a95c3bc/66e74ad7b746f3d2cf477755_feast_integration.png"
 seo:
   title: "Integrate Feast with ZenML - Feature Store Integrations"
   description: "Seamlessly Integrate Feature Stores into ML Pipelines with Feast and ZenML"
   canonical: "https://www.zenml.io/integrations/feast"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6a95c3bc/66e74ad7b746f3d2cf477755_feast_integration.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6a95c3bc/66e74ad7b746f3d2cf477755_feast_integration.png"
   ogTitle: "Integrate Feast with ZenML - Feature Store Integrations"
   ogDescription: "Seamlessly Integrate Feature Stores into ML Pipelines with Feast and ZenML"
 overviewTitle: "Seamlessly Integrate Feature Stores into ML Pipelines with Feast and ZenML"

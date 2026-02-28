@@ -19,12 +19,12 @@ tags:
 date: "2024-07-23T00:00:00.000Z"
 readingTime: 10 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f53ec631/669fb2b6fad44465b4d445d3_iterate-fast.webp"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f53ec631/669fb2b6fad44465b4d445d3_iterate-fast.webp"
 seo:
   title: "How to Iterate Fast with ZenML - ZenML Blog"
   description: "Learn how to leverage caching, parameterization, and smart infrastructure switching to iterate faster on machine learning projects while maintaining reproducibility."
   canonical: "https://www.zenml.io/blog/iterate-fast"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3ce304f9/669fb2b6fad44465b4d445d3_iterate-fast.webp"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3ce304f9/669fb2b6fad44465b4d445d3_iterate-fast.webp"
   ogTitle: "How to Iterate Fast with ZenML - ZenML Blog"
   ogDescription: "Learn how to leverage caching, parameterization, and smart infrastructure switching to iterate faster on machine learning projects while maintaining reproducibility."
 ---
@@ -77,7 +77,7 @@ You're using ZenML, so you'll be thinking about your code in terms of [pipelines
 Another benefit of using ZenML that you get for free is the cache. Intermediate results get [cached automatically](https://docs.zenml.io/user-guide/starter-guide/cache-previous-executions), so you don't have to re-run steps that have already been executed. This gives you the freedom to focus on the steps that are causing you problems and removes the need to rerun or spend time executing steps where there is no problem. This reduces overall execution time.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5910887c/669fb06d982fbf4e88680355_image0001.webp" alt="Screenshot highlighting the cache functionality of the ZenML dashboard. Data and steps are saved to an internal cache which means you don’t need to rerun long-running steps." />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5910887c/669fb06d982fbf4e88680355_image0001.webp" alt="Screenshot highlighting the cache functionality of the ZenML dashboard. Data and steps are saved to an internal cache which means you don’t need to rerun long-running steps." />
 </figure>
 
 For projects with significant infrastructure requirements, the cache will come in handy as you can run your pipeline in the cloud and then iterate on downstream steps using a local machine without having to rerun the whole pipeline. ZenML will just use the outputs of the cached steps (i.e. the ones that needed to be run on a remote machine, potentially with GPU acceleration) and you can continue your work locally. (Read the docs to learn more about [how to control caching behaviour](https://docs.zenml.io/how-to/build-pipelines/control-caching-behavior).)
@@ -211,7 +211,7 @@ This paradigm of using smaller slices of data, smaller models and lower values f
 > 📢 Tip: Using the same cloud/remote artifact store for both local and cloud stacks will mean that you can benefit from cached outputs and versioned code and logs across the full extent of your experimentation. If you're only using a local artifact store you'll lose some of these benefits and your ability to visualise what's going on through the Dashboard will be limited.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f36c63b9/669fb0fd9943a3dd651a0e87_local-vs-remote.png" alt="Diagram showing the paradigms of iterating using a small dataset and a small model using a local config, versus a full dataset and a large model using a remote config." />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f36c63b9/669fb0fd9943a3dd651a0e87_local-vs-remote.png" alt="Diagram showing the paradigms of iterating using a small dataset and a small model using a local config, versus a full dataset and a large model using a remote config." />
 </figure>
 
 Once you have this ability to quickly switch between infrastructures and configurations of data and models, you can then start to consider more involved or robust experimental setups like the one we showcase in [our Gitflow project](https://github.com/zenml-io/zenml-gitflow).
@@ -219,7 +219,7 @@ Once you have this ability to quickly switch between infrastructures and configu
 Parameterisation is, in general, a good way of thinking about how to make your experiments more robust and less brittle. You get your code set up in such a way that you're not fiddling with the step code itself to change parameters, but rather you're just passing in different parameters when you run the pipeline. It's also much more user-friendly and flexible to use with the ZenML dashboard as you can see the parameters for each run and you can also see the results of each run in the same place. (See our docs to learn about [all the parameters you can configure for your pipelines](https://docs.zenml.io/how-to/use-configuration-files/what-can-be-configured).)
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/012eb986/669fb1314c7bba712146ec9a_image0002.png" alt="Screenshot of part of the ZenML dashboard where configuration can be examined." />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/012eb986/669fb1314c7bba712146ec9a_image0002.png" alt="Screenshot of part of the ZenML dashboard where configuration can be examined." />
 </figure>
 
 [In the configs folder](https://github.com/zenml-io/zenml/blob/main/examples/llm_finetuning/configs/remote_finetune.yaml) for [our example of how to finetune a LLM using LoRA](https://github.com/zenml-io/zenml/blob/main/examples/llm_finetuning/) you can see how to specify which datasets get used for the finetuning, how many epochs to run, which environment variables get passed into the pipeline steps as well as configuration of which stack components (in this case an A100 GPU-accelerated machine hosted on GCP).
@@ -243,7 +243,7 @@ The [Model Control Plane](https://docs.zenml.io/user-guide/starter-guide/track-m
 Adding visualizations is also a way to make your experiments more reproducible and to make your results more accessible. [Our documentation](https://docs.zenml.io/how-to/visualize-artifacts) shows the different kinds of [custom visualizations that you can create](https://docs.zenml.io/how-to/visualize-artifacts/creating-custom-visualizations), but there are many [visualizations that happen by default](https://docs.zenml.io/how-to/visualize-artifacts/types-of-visualizations) (i.e. automatically) when you return certain types from your steps. Custom visualizations give you flexibility to create exactly the visualizations that you need and they're all stored in the Dashboard for you to inspect. You can even directly visualize assets like Hugging Face datasets.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b86c2b2f/669fb16194a8a01dd0363d2a_image0003.png" alt="Screenshot of the ZenML dashboard where a Hugging Face dataset is visualised and previewed." />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b86c2b2f/669fb16194a8a01dd0363d2a_image0003.png" alt="Screenshot of the ZenML dashboard where a Hugging Face dataset is visualised and previewed." />
 </figure>
 
 These inbuilt ZenML features will give you confidence in your iteration. Changing code and data and parameters is easy to do, but you need to be able to quickly reproduce those experiments without hassle. ZenML makes this easy for you and allows you to experiment without needing to fear that you'll break something or turn your pipeline into a state which is hard to reproduce.

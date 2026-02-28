@@ -17,7 +17,7 @@ tags:
 date: "2022-05-18T00:00:00.000Z"
 readingTime: 5 Mins Read
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/0d4f0275/65316c1fb883ff6e88e6f882_audrey-martin-FJpHcqMud_Y-unsplash.jpg"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0d4f0275/65316c1fb883ff6e88e6f882_audrey-martin-FJpHcqMud_Y-unsplash.jpg"
 ---
 
 **Last updated:** November 3, 2022.
@@ -53,7 +53,7 @@ We added some extra functionality that’s going to improve your quality of life
 <ul><li>We saw how it was sometimes difficult to see the full details of stack components and their configuration when using the CLI tool, so we made some fixes and tweaks to make sure text doesn’t get shortened. Instead, it just wraps onto the next line.</li><li>We added a zenml go command which launches an easy tutorial on how to get started with ZenML and some of its features.</li><li>We’ve noticed that the CLI has started to become a little sluggish and took the first steps towards adding some 🚄 speed back in.</li><li>We’ve been adding more and more stack components to handle the full MLOps story, so the list of options in the CLI has been growing and growing. With this release you’ll see that the CLI options are split into menu groups which should make everything a lot more comprehensible and navigable! Check it out! Doesn’t it look beautiful now?</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1e5b72eb/65316c2776785fb3e3304e1d_zenml-cli.png" alt="Screenshot of how our CLI looksnow" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1e5b72eb/65316c2776785fb3e3304e1d_zenml-cli.png" alt="Screenshot of how our CLI looksnow" />
 </figure>
 
 ## 🚀 New Integrations
@@ -77,7 +77,7 @@ We received a new community contribution during this release cycle, from Avram �
 Join our [Slack](https://zenml.io/slack-invite/) to let us know if you have an idea for a feature or something you’d like to contribute to the framework.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/bd349247/65316c27ed57d3587fa6da75_roadmap.png" alt="Screenshot of the new hub for ourroadmap" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/bd349247/65316c27ed57d3587fa6da75_roadmap.png" alt="Screenshot of the new hub for ourroadmap" />
 </figure>
 
 We’re super excited to be able to share [the new home for our roadmap](https://zenml.io/roadmap) where you can vote on your favorite upcoming feature or propose new ideas for what the core team should work on. You can vote without needing to log in, so please do let us know what you want us to build!

@@ -7,12 +7,12 @@ hub:
   cardTitle: "Creating a Unified AI Platform: How JetBrains Centralizes ML on Kubernetes with ZenML"
   order: 1
   logos:
-    - url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b6111e84/jetbrains-min.svg"
+    - url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b6111e84/jetbrains-min.svg"
       alt: "Jetbrains"
 
 hero:
   logos:
-    - url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b6111e84/jetbrains-min.svg"
+    - url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b6111e84/jetbrains-min.svg"
       alt: "Jetbrains"
 
 sidebar:
@@ -32,7 +32,7 @@ seo:
   description: "Creating a Unified AI Platform: How JetBrains Centralizes ML on Kubernetes with ZenML"
   ogTitle: "JetBrains and ZenML - Case Study"
   ogDescription: "Creating a Unified AI Platform: How JetBrains Centralizes ML on Kubernetes with ZenML"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a55cb241/691d99c3c52d7a40b4a25ed8_jetbrains-case-study.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a55cb241/691d99c3c52d7a40b4a25ed8_jetbrains-case-study.png"
 
 webflow:
   siteId: "64a817a2e7e2208272d1ce30"
@@ -45,7 +45,7 @@ webflow:
                 <p><em>A phased migration from Kubeflow and Prefect OSS to a single platform now managing a 170% month‑over‑month execution growth and complex 3,000+ node agentic pipelines.</em></p>
                 <h2><strong>🚀 At a Glance: The JetBrains Transformation</strong></h2>
                 <figure style="max-width:2472px" class="w-richtext-align-fullwidth w-richtext-figure-type-image">
-                  <div><img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/4d8e1599/jetbrains-summary.png" loading="lazy" alt="JetBrains and ZenML growth metrics April-October 2025: Active users 8→44 (450%), Unique Pipelines 3→49 (1,533%), Monthly Runs 150→2,765 (1,743%), Execution Time 845→247,966 min (29,250%)"></div>
+                  <div><img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/4d8e1599/jetbrains-summary.png" loading="lazy" alt="JetBrains and ZenML growth metrics April-October 2025: Active users 8→44 (450%), Unique Pipelines 3→49 (1,533%), Monthly Runs 150→2,765 (1,743%), Execution Time 845→247,966 min (29,250%)"></div>
                 </figure>
                 <ul role="list">
                   <li><strong>The Challenge:</strong> A ~200‑person AI organization—with ~100 hands‑on ML practitioners—was fragmented across multiple systems, creating a high maintenance burden and blocking code reuse.</li>
@@ -59,7 +59,7 @@ webflow:
                     <div class="uui-testimonial04_component margin-bottom">
                       <h3 class="uui-heading-small text-weight-medium">"ZenML has helped us to boost the collaboration and best practices exchange, while keeping the infrastructure burden as low as possible for the MLEs."</h3>
                       <div class="uui-testimonial04_client">
-                        <div class="uui-testimonial04_client-image-wrapper"><img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e47ff59e/vlad_jetbrains.jpg" loading="lazy" width="248" alt="Vladisnav Tankov" class="uui-testimonial04_client-image"></div>
+                        <div class="uui-testimonial04_client-image-wrapper"><img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e47ff59e/vlad_jetbrains.jpg" loading="lazy" width="248" alt="Vladisnav Tankov" class="uui-testimonial04_client-image"></div>
                         <div class="uui-testimonial04_client-info">
                           <div class="uui-heading-tiny">Vladislav Tankov</div>
                           <div class="uui-text-size-medium">AI Director, JetBrains</div>
@@ -125,7 +125,7 @@ webflow:
                 <h3><strong>The Department Dilemma</strong></h3>
                 <p>Initially, the MLOps team’s mandate was to support multiple teams within a single department. Even within that boundary, teams followed entirely different rules and architectural patterns—from monorepos to dedicated repositories—making a one‑size‑fits‑all solution unrealistic. This diversity of environments and requirements made a one-size-fits-all solution impossible and which meant the current model was fundamentally unsustainable.</p>
                 <figure style="max-width:2432px" class="w-richtext-align-fullwidth w-richtext-figure-type-image">
-                  <div><img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1829db9b/jetbrains-before_after.png" loading="lazy" alt="Comparison diagram showing fragmented tools before with high maintenance burden, low reuse, and limited lineage issues, versus a unified workflow using ZenML Unified Platform with shared artifacts, supporting models research, validation, and data logs, marked as vendor agnostic and Kubernetes native."></div>
+                  <div><img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1829db9b/jetbrains-before_after.png" loading="lazy" alt="Comparison diagram showing fragmented tools before with high maintenance burden, low reuse, and limited lineage issues, versus a unified workflow using ZenML Unified Platform with shared artifacts, supporting models research, validation, and data logs, marked as vendor agnostic and Kubernetes native."></div>
                 </figure>
                 <h2><strong>The Solution: Develop Locally, Scale on Kubernetes</strong></h2>
                 <h3><strong>Why ZenML Won the Evaluation</strong></h3>
@@ -140,7 +140,7 @@ webflow:
                   <li><strong>Cost‑effective enterprise footprint</strong>: Consolidates multiple orchestrators and homegrown glue into one platform, reducing maintenance burden while improving governance and observability.</li>
                 </ul>
                 <figure style="max-width:2568px" class="w-richtext-align-fullwidth w-richtext-figure-type-image">
-                  <div><img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/461b2150/jetbrains-stack.png" loading="lazy" alt="Diagram showing ZenML's orchestration, artifact versioning, secrets management, and projects/permissions connecting a developer to internal GKE and external GPU Kubernetes clusters, plus artifact store and data/logs."></div>
+                  <div><img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/461b2150/jetbrains-stack.png" loading="lazy" alt="Diagram showing ZenML's orchestration, artifact versioning, secrets management, and projects/permissions connecting a developer to internal GKE and external GPU Kubernetes clusters, plus artifact store and data/logs."></div>
                 </figure>
                 <h3><strong>The Phased Implementation Journey</strong></h3>
                 <p>Implementation was a phased and strategic journey, not a "big bang" migration. After a successful proof-of-concept in early 2025, the JetBrains teams with support from the MLOps team began methodically migrating workloads and implementing new complex pipelines for agent use-cases and beyond.</p>
@@ -159,7 +159,7 @@ webflow:
                 <h3><strong>Technical and Migration Wins</strong></h3>
                 <p>With a unified platform, JetBrains has unlocked significant technical victories. The MLOps team is successfully migrating complex workloads off of Kubeflow and Prefect OSS, eliminating a major maintenance burden and unifying their infrastructure. New platform capabilities like inline runtimes shorten feedback loops for simple pipelines by skipping per‑step container cold starts; the orchestrator still initializes as usual. Combined with completed stability improvements, this has shifted internal perception from early “low‑maturity” concerns to a stable, production‑grade platform with good standing internally.</p>
                 <figure style="max-width:3414px" class="w-richtext-align-fullwidth w-richtext-figure-type-image">
-                  <div><img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a7dcf8ee/jetbrains-timeline.png" loading="lazy" alt="Timeline from January to October 2025 showing phases: POC validated; Kubeflow pipeline migration; replacement with incremental wrapping; inline runtimes introduced; 63% MAU growth and 170% execution time improvement; and scaling to 150+ workshop invites and ZenML as default for new ML projects, with user growth from 8 to 44."></div>
+                  <div><img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a7dcf8ee/jetbrains-timeline.png" loading="lazy" alt="Timeline from January to October 2025 showing phases: POC validated; Kubeflow pipeline migration; replacement with incremental wrapping; inline runtimes introduced; 63% MAU growth and 170% execution time improvement; and scaling to 150+ workshop invites and ZenML as default for new ML projects, with user growth from 8 to 44."></div>
                 </figure>
                 <h2><strong>Looking Forward: A Strategic Partnership for the Next Wave of AI</strong></h2>
                 <p>The collaboration between JetBrains and ZenML has evolved from addressing initial infrastructure challenges to enabling future innovation. With a stable foundation, the focus is now on scaling the platform's impact across the entire company.</p>

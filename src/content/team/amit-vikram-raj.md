@@ -12,7 +12,7 @@ webflow:
   createdOn: "2026-01-28T12:53:47.449Z"
 position: "Solution Engineer"
 photo:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9d1cc153/697a069ac29241fd0f7eee24_amit-vikram-raj-bw.jpg_50.jpeg"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9d1cc153/697a069ac29241fd0f7eee24_amit-vikram-raj-bw.jpg_50.jpeg"
 email: "amit.ext@zenml.io"
 linkedin: "https://www.linkedin.com/in/avr27/"
 order: 6

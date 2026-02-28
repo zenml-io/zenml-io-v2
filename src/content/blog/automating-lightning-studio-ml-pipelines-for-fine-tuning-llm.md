@@ -18,12 +18,12 @@ tags:
 date: "2024-10-09T00:00:00.000Z"
 readingTime: 06 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/40392bd9/6981d352ce4b26d085d70402_6981d2b6acf92514df57e377_Blog_Lightning.avif"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/40392bd9/6981d352ce4b26d085d70402_6981d2b6acf92514df57e377_Blog_Lightning.avif"
 seo:
   title: "Automating Lightning Studio ML Pipelines For Fine Tuning LLM (s) - ZenML Blog"
   description: "In the AI world, fine-tuning Large Language Models (LLMs) for specific tasks is becoming a critical competitive advantage. Combining Lightning AI Studios with ZenML can streamline and automate the LLM fine-tuning process, enabling rapid iteration and deployment of task-specific models. This approach allows for the creation and serving of multiple fine-tuned variants of a model, with minimal computational resources. However, scaling the process requires resource management, data preparation, hyperparameter optimization, version control, deployment and serving, and cost management. This blog post explores the growing complexity of LLM fine-tuning at scale and introduces a solution that combines the flexibility of Lightning Studios with the automation capabilities of ZenML."
   canonical: "https://www.zenml.io/blog/automating-lightning-studio-ml-pipelines-for-fine-tuning-llm"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/40392bd9/6981d352ce4b26d085d70402_6981d2b6acf92514df57e377_Blog_Lightning.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/40392bd9/6981d352ce4b26d085d70402_6981d2b6acf92514df57e377_Blog_Lightning.avif"
   ogTitle: "Automating Lightning Studio ML Pipelines For Fine Tuning LLM (s) - ZenML Blog"
   ogDescription: "In the AI world, fine-tuning Large Language Models (LLMs) for specific tasks is becoming a critical competitive advantage. Combining Lightning AI Studios with ZenML can streamline and automate the LLM fine-tuning process, enabling rapid iteration and deployment of task-specific models. This approach allows for the creation and serving of multiple fine-tuned variants of a model, with minimal computational resources. However, scaling the process requires resource management, data preparation, hyperparameter optimization, version control, deployment and serving, and cost management. This blog post explores the growing complexity of LLM fine-tuning at scale and introduces a solution that combines the flexibility of Lightning Studios with the automation capabilities of ZenML."
 ---
@@ -53,7 +53,7 @@ As organizations scale up their LLM usage, these challenges compound. What's nee
 ### Lightning Studios: Your New ML Playground
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9b982d60/66e8580a9e2a50f0c71fa27a_66e8207a77db4a356cbadc11_66e818b42e154c9d9533ee77_Untitled_2520_11_.png" alt="A screenshot of a Lightning AI studio workspace. It showcases a VS Code instance. On the right you see the ability to change the Machine type to many different GPU configurations." />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9b982d60/66e8580a9e2a50f0c71fa27a_66e8207a77db4a356cbadc11_66e818b42e154c9d9533ee77_Untitled_2520_11_.png" alt="A screenshot of a Lightning AI studio workspace. It showcases a VS Code instance. On the right you see the ability to change the Machine type to many different GPU configurations." />
 </figure>
 
 [Lightning AI](https://lightning.ai/), the brainchild of the [PyTorch Lightning](https://lightning.ai/docs/pytorch/stable/) crew, has dropped a bomb on the ML world with their Studios concept. Think of it as your personal, scalable ML lab in the cloud. Need to switch from CPU to multi-GPU setups on the fly? Lightning's got you covered.
@@ -268,7 +268,7 @@ python run.py --config configs/config_small_cpu.yaml
 One of the key advantages of using ZenML is the ability to track and visualize your experiments. After running your fine-tuning pipeline, you can view the results in the ZenML dashboard:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5dba8303/66e8580a9e2a50f0c71fa274_66e8207a77db4a356cbadc0b_66e81bbdd4f3ff72906bb8d5_Untitled_2520_12_.png" alt="A screenshot of the ZenML directed acyclic graph visualizer, showcasing a LLM finetuning pipeline run" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5dba8303/66e8580a9e2a50f0c71fa274_66e8207a77db4a356cbadc0b_66e81bbdd4f3ff72906bb8d5_Untitled_2520_12_.png" alt="A screenshot of the ZenML directed acyclic graph visualizer, showcasing a LLM finetuning pipeline run" />
 </figure>
 
 This dashboard provides an overview of your pipeline runs, allowing you to compare different experiments and track your progress over time.
@@ -276,7 +276,7 @@ This dashboard provides an overview of your pipeline runs, allowing you to compa
 For ZenML Pro users, the Model section offers even more detailed metrics:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/243ad0b3/66e8580a9e2a50f0c71fa26c_66e8207a77db4a356cbadc14_66e81be57d11ed163379a615_Untitled_2520_13_.png" alt="A screenshot of the ZenML model control plane, with some metrics and metadata tracked for a finetuned LLM model." />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/243ad0b3/66e8580a9e2a50f0c71fa26c_66e8207a77db4a356cbadc14_66e81be57d11ed163379a615_Untitled_2520_13_.png" alt="A screenshot of the ZenML model control plane, with some metrics and metadata tracked for a finetuned LLM model." />
 </figure>
 
 These visualizations can be invaluable for understanding the performance of your fine-tuned models and making data-driven decisions about further improvements.
@@ -364,13 +364,13 @@ python run.py --config configs/config_large_gpu.yaml
 This will set off a run in the ZenML Dashboard using Lightning AI Studio as the orchestrator.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/4dc380b5/670503073fbd35e24d31c8fb_6705020c4946a0aac7f4b749_image_20_35_.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/4dc380b5/670503073fbd35e24d31c8fb_6705020c4946a0aac7f4b749_image_20_35_.png" alt="__wf_reserved_inherit" />
 </figure>
 
 You will now see a new studio spin up on your lightning studio account, which will execute the pipeline and then exit when the task finishes.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2773c59d/670503073fbd35e24d31c8e7_6705023a8576da228d2391b0_Screenshot_2024-10-07_at_09.05.27.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2773c59d/670503073fbd35e24d31c8e7_6705023a8576da228d2391b0_Screenshot_2024-10-07_at_09.05.27.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ## Why This Matters: The Future of AI is Task-Specific

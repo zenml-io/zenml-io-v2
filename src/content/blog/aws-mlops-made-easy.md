@@ -21,12 +21,12 @@ tags:
 date: "2024-09-11T00:00:00.000Z"
 readingTime: 17 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6cde7c69/66e05de05064adddc53313ef_zenml-aws.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6cde7c69/66e05de05064adddc53313ef_zenml-aws.png"
 seo:
   title: "AWS MLOps Made Easy: Integrating ZenML for Seamless Workflows - ZenML Blog"
   description: "Machine Learning Operations (MLOps) is crucial in today's tech landscape, even with the rise of Large Language Models (LLMs). Implementing MLOps on AWS, leveraging services like SageMaker, ECR, S3, EC2, and EKS, can enhance productivity and streamline workflows. ZenML, an open-source MLOps framework, simplifies the integration and management of these services, enabling seamless transitions between AWS components. MLOps pipelines consist of Orchestrators, Artifact Stores, Container Registry, Model Deployers, and Step Operators. AWS offers a suite of managed services, such as ECR, S3, and EC2, but careful planning and configuration are required for a cohesive MLOps workflow."
   canonical: "https://www.zenml.io/blog/aws-mlops-made-easy"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6cde7c69/66e05de05064adddc53313ef_zenml-aws.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6cde7c69/66e05de05064adddc53313ef_zenml-aws.png"
   ogTitle: "AWS MLOps Made Easy: Integrating ZenML for Seamless Workflows - ZenML Blog"
   ogDescription: "Machine Learning Operations (MLOps) is crucial in today's tech landscape, even with the rise of Large Language Models (LLMs). Implementing MLOps on AWS, leveraging services like SageMaker, ECR, S3, EC2, and EKS, can enhance productivity and streamline workflows. ZenML, an open-source MLOps framework, simplifies the integration and management of these services, enabling seamless transitions between AWS components. MLOps pipelines consist of Orchestrators, Artifact Stores, Container Registry, Model Deployers, and Step Operators. AWS offers a suite of managed services, such as ECR, S3, and EC2, but careful planning and configuration are required for a cohesive MLOps workflow."
 ---
@@ -38,7 +38,7 @@ In today’s rapidly evolving tech landscape, Machine Learning Operations (MLOps
 Similar to DevOps, and how it benefits software development, MLOps is a concept developed to benefit the development of ML systems. MLOps considers every stage of the ML lifecycle, from building, deploying, and serving to monitoring ML models, helping businesses get models to production faster and with higher success rates through the right platform, processes and people.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/522663b7/66db834f3bc9d6004dd29442_66db7858520084f5ca5e47a7_MLOps_cycle_20_1_.webp" alt="A diagram explaning what MLOps is" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/522663b7/66db834f3bc9d6004dd29442_66db7858520084f5ca5e47a7_MLOps_cycle_20_1_.webp" alt="A diagram explaning what MLOps is" />
   <figcaption>from Neptune AI</figcaption>
 </figure>
 
@@ -57,7 +57,7 @@ and many more.
 ZenML defines the concept of [Stacks and Stack Components](https://docs.zenml.io/user-guide/production-guide/understand-stacks) which represent these categories, each of which has a particular function in your MLOps pipeline.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3f767303/66db83503bc9d6004dd294b2_66db7989885a34873e7e357a_image.png" alt="ZenML has Stack Components to represent the tools used in an MLOps pipeline." />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3f767303/66db83503bc9d6004dd294b2_66db7989885a34873e7e357a_image.png" alt="ZenML has Stack Components to represent the tools used in an MLOps pipeline." />
 </figure>
 
 ## MLOps on AWS
@@ -65,7 +65,7 @@ ZenML defines the concept of [Stacks and Stack Components](https://docs.zenml.io
 AWS offers a comprehensive suite of managed services that can be directly utilized to build your MLOps solution without the need for manual deployment. These services cover various aspects of the MLOps pipeline, providing ready-to-use components. However, it's important to note that while AWS provides these individual services, integrating them into a cohesive MLOps workflow still requires careful planning and configuration on your part.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c727caf9/66db834f3bc9d6004dd29456_66db79f2fe514e19e48c128d_mlops-workload-orchestrator_reference-architecture.bcce31ccd7a387eb5f8b748d7607eeba222a1834.png" alt="an example pipeline in AWS to train and deploy ML models." />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c727caf9/66db834f3bc9d6004dd29456_66db79f2fe514e19e48c128d_mlops-workload-orchestrator_reference-architecture.bcce31ccd7a387eb5f8b748d7607eeba222a1834.png" alt="an example pipeline in AWS to train and deploy ML models." />
   <figcaption>an example pipeline in AWS to train and deploy ML models.</figcaption>
 </figure>
 
@@ -124,7 +124,7 @@ The integration of these AWS services facilitated a robust MLOps pipeline, ensur
 ## How to decide between EC2, EKS, or Sagemaker pipelines
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9f57d091/66db83503bc9d6004dd29471_66db7a4a943531b3a99c526a_giphy.webp" alt="A GIF of cookie monster choosing between options" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9f57d091/66db83503bc9d6004dd29471_66db7a4a943531b3a99c526a_giphy.webp" alt="A GIF of cookie monster choosing between options" />
 </figure>
 
 You must have noticed from the discussion above that you have multiple options for the orchestrator stack component. This section aims to help you choose from them, based on your needs and the strengths and weaknesses of the three services.
@@ -160,7 +160,7 @@ To summarize,
 In the real-life use cases section above, we noticed that although teams worldwide have made great progress by implementing AWS on MLOps, they also had to overcome many barriers similar to the ones we’ve discussed in this section.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7690f9d2/66db83503bc9d6004dd294af_66db7b428d653c73c6ab1843_giphy_20_1_.webp" alt="A GIF of a guy walking into a room on fire, holding a pizza" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7690f9d2/66db83503bc9d6004dd294af_66db7b428d653c73c6ab1843_giphy_20_1_.webp" alt="A GIF of a guy walking into a room on fire, holding a pizza" />
 </figure>
 
 Some concrete examples from the internet worth looking at:
@@ -184,7 +184,7 @@ ZenML simplifies the MLOps process, allowing data scientists and ML engineers to
 Let’s see how ZenML can help alleviate most of the challenges that we have listed above.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c410da6c/66db83503bc9d6004dd29474_66db7b81ddd2db4cb1f1458e_giphy_20_2_.webp" alt="ZenML helps you do MLOps with AWS" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c410da6c/66db83503bc9d6004dd29474_66db7b81ddd2db4cb1f1458e_giphy_20_2_.webp" alt="ZenML helps you do MLOps with AWS" />
 </figure>
 
 ### Service Integration
@@ -194,7 +194,7 @@ ZenML brings together all of the AWS services we have discussed so far, as stack
 The graphic below shows how the pipeline code is separate from the stack that it runs on, making it very simple to switch stacks, and consequently services, without having to change your code at all. For example, you may realize at some point in your MLOps journey that running workloads on SageMaker might work better than running them on EC2. Switching this environment is literally a single command away!
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ea612e1e/66db83503bc9d6004dd294cd_66db7bab66d3e7c9e1ba15c9_Untitled.png" alt="ZenML integrates all AWS services that you need for MLOps into a ZenML Stack, that you can use in a pipeline." />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ea612e1e/66db83503bc9d6004dd294cd_66db7bab66d3e7c9e1ba15c9_Untitled.png" alt="ZenML integrates all AWS services that you need for MLOps into a ZenML Stack, that you can use in a pipeline." />
 </figure>
 
 ### Managing Credentials
@@ -202,7 +202,7 @@ The graphic below shows how the pipeline code is separate from the stack that it
 Here’s a situation: you have developed a great MLOps pipeline that can train your model by reading data from an S3 bucket, loading the model, training it and storing it in the bucket. Now, you want others in your team to also be able to make changes to this pipeline and run it themselves. A common impediment to speedy execution here, is the local setup of credentials. In order to run this pipeline successfully, all team members would need to setup their `aws` config locally with the right role assumptions and secret keys. In addition to being very time-consuming, this also exposes your secrets to a greater attack surface.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/fe3c878d/66db834f3bc9d6004dd29459_66db7bde185f32d46e42b9b6_Untitled_20_1_.png" alt="Using your cloud infrastructure with ZenML as a Stack" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/fe3c878d/66db834f3bc9d6004dd29459_66db7bde185f32d46e42b9b6_Untitled_20_1_.png" alt="Using your cloud infrastructure with ZenML as a Stack" />
 </figure>
 
 With ZenML, you can leave credential management to your ZenML Server. ZenML has a concept of [Service Connectors](https://docs.zenml.io/how-to/auth-management/service-connectors-guide) which are a powerful way to store and manage credentials centrally. Users wanting to run a pipeline on some stack don’t need any credentials locally or even any additional libraries installed. ZenML knows how to connect to any stack components they might need, for example, the container registry through the service connectors you configure once on your server.
@@ -220,7 +220,7 @@ Here’s how the workflow for using multiple accounts with ZenML would look like
 <ul><li>You create a role in the development account that ZenML would use to talk to your services. This role might have access to S3, ECR, EKS and any other services you need.</li><li>Then, you register a service connector, let’s call it the <code>aws_dev_connector</code> using this IAM role as an authentication method.</li><li>You can now register your stack components on the ZenML Server using this connector. This ensures that these stack component objects are now firmly linked to your development account.</li><li>Any stack that you create with these components would now use resources only in the development account and any user that wants to use them doesn’t need to know the details of the IAM role that you configured in the first step.</li><li>You can repeat the process for the production account.</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/84b76f69/66db83513bc9d6004dd295e7_66db7c17adae877cbcbbf3e3_aws_account.png" alt="Using multiple AWS accounts for MLOps with ZenML" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/84b76f69/66db83513bc9d6004dd295e7_66db7c17adae877cbcbbf3e3_aws_account.png" alt="Using multiple AWS accounts for MLOps with ZenML" />
 </figure>
 
 You can also restrict access to stacks based on the users. For example, some users might only need access to the stacks that utilize the development account. You can accomplish this using ZenML’s RBAC features. Note that this is only available on [ZenML Pro](https://www.zenml.io/pro).
@@ -240,13 +240,13 @@ ZenML makes deploying your first cloud stack as easy as pressing a few buttons. 
 <ul><li>You would first need to have a deployed ZenML Server. If you don’t have one, follow the guide <a href="https://docs.zenml.io/getting-started/deploying-zenml">here</a>.</li><li>Go to “Stacks” and click “New Stack” and you’re greeted with the following screen that lets you choose between provisioning new components or reusing your existing resources (Scan your Cloud is one of my favorite features as it gives you an overview of what resources already exist in your account and can be used as ZenML stack components)</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8b0b553f/66db834f3bc9d6004dd29453_66db7c6b85b747dfed3c33d6_Untitled_20_2_.png" alt="ZenML helps you set up infrastructure to run your ML pipelines" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8b0b553f/66db834f3bc9d6004dd29453_66db7c6b85b747dfed3c33d6_Untitled_20_2_.png" alt="ZenML helps you set up infrastructure to run your ML pipelines" />
 </figure>
 
 If you choose the in-browser experience, you only have to provide a Location and a name for your stack. You can also review what resources are created and what service connector permissions are used before proceeding. You also get a cost estimate based on AWS pricing for the components being provisioned.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2c12c62f/66db83503bc9d6004dd29480_66db7c9ef87a945d0603f6e1_Untitled_20_3_.png" alt="ZenML Stack Infrastructure spin up page that shows components and how much they would cost." />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2c12c62f/66db83503bc9d6004dd29480_66db7c9ef87a945d0603f6e1_Untitled_20_3_.png" alt="ZenML Stack Infrastructure spin up page that shows components and how much they would cost." />
 </figure>
 
 <ul><li>This would ultimately take you to a CloudFormation page on your AWS account where you can review the script and then deploy your resources.</li></ul>
@@ -258,7 +258,7 @@ Now that you understand, at least in writing, how ZenML fast-tracks your MLOps a
 <ul><li>We first run this project on an EC2 instance on our development AWS account. This uses the <code>skypilot-aws-dev</code> stack, where all components are configured with a development service connector providing access to the dev account.</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/13283a48/66db834f3bc9d6004dd2945f_66db7cff0c45d4a7e79a78a0_Untitled_20_4_.png" alt="Looking at a stack description in the ZenML Dashboard" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/13283a48/66db834f3bc9d6004dd2945f_66db7cff0c45d4a7e79a78a0_Untitled_20_4_.png" alt="Looking at a stack description in the ZenML Dashboard" />
 </figure>
 
 <ul><li>We then run the same example on our production SageMaker, without having to make any changes to our existing code. All you need to do is switch your ZenML stack: <code>zenml stack set sagemaker-prod</code>.</li></ul>
@@ -270,7 +270,7 @@ Now that you understand, at least in writing, how ZenML fast-tracks your MLOps a
 </aside>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/61c59927/66db834f3bc9d6004dd2945c_66db7d47044a89416a04665b_Untitled_20_5_.png" alt="Looking at a stack description in the ZenML Dashboard" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/61c59927/66db834f3bc9d6004dd2945c_66db7d47044a89416a04665b_Untitled_20_5_.png" alt="Looking at a stack description in the ZenML Dashboard" />
 </figure>
 
 **What is a pipeline?**
@@ -336,19 +336,19 @@ Once a run has started, you can head to your ZenML Dashboard to now track it vis
 <ul><li>There’s a directed acyclic graph (DAG) of the pipeline that ZenML constructs based on the order of execution of steps.</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/fd037c70/66db834f3bc9d6004dd29462_66db7f10f87a945d06064554_Untitled_20_6_.png" alt="The pipeline run view on the ZenML Dashboard showing the DAG and relevant details." />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/fd037c70/66db834f3bc9d6004dd29462_66db7f10f87a945d06064554_Untitled_20_6_.png" alt="The pipeline run view on the ZenML Dashboard showing the DAG and relevant details." />
 </figure>
 
 You can click on any step to learn more about it. The step code, logs, metadata all show up in a side panel.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2653be34/66db83503bc9d6004dd2947a_66db7f4be59afb925a2027d7_Untitled_20_7_.png" alt="Step description on the ZenML Dashboard showing details like the start and end times." />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2653be34/66db83503bc9d6004dd2947a_66db7f4be59afb925a2027d7_Untitled_20_7_.png" alt="Step description on the ZenML Dashboard showing details like the start and end times." />
 </figure>
 
 You can also click any output of a step to know information like what artifact store path it is stored at and other metadata about it.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c8ac34ed/66db83503bc9d6004dd29477_66db7f872d24625a20ed0853_Untitled_20_8_.png" alt="The artifact view on the pipeline run page that shows you what step produced it and when, among other things." />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c8ac34ed/66db83503bc9d6004dd29477_66db7f872d24625a20ed0853_Untitled_20_8_.png" alt="The artifact view on the pipeline run page that shows you what step produced it and when, among other things." />
 </figure>
 
 **Model Control Plane**
@@ -356,13 +356,13 @@ You can also click any output of a step to know information like what artifact s
 This is a really powerful feature that [lets you bring together different pipelines, artifacts and models](https://docs.zenml.io/how-to/use-the-model-control-plane) that pertain to a single project. You can find all the versions that your pipeline executions produce and can promote/demote them to production/staging based on the information that you see.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5a1ad6e1/66db83503bc9d6004dd2947d_66db7fbf5cc8cd035fb0d526_Untitled_20_9_.png" alt="The Model page on the Model Control Plane showing how easy it is to promote model versions." />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5a1ad6e1/66db83503bc9d6004dd2947d_66db7fbf5cc8cd035fb0d526_Untitled_20_9_.png" alt="The Model page on the Model Control Plane showing how easy it is to promote model versions." />
 </figure>
 
 You can also log additional metadata essential to your application like metrics to a model version for easy comparisons.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/994a8a2f/66db83503bc9d6004dd294d0_66db7fe943c3d4df2373dfae_Untitled_20_10_.png" alt="You can log metadata like evaluation metrics on for each Model version and it shows up on the Model Control Plane." />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/994a8a2f/66db83503bc9d6004dd294d0_66db7fe943c3d4df2373dfae_Untitled_20_10_.png" alt="You can log metadata like evaluation metrics on for each Model version and it shows up on the Model Control Plane." />
 </figure>
 
 ## Conclusion

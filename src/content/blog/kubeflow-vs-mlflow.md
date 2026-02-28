@@ -21,12 +21,12 @@ tags:
 date: "2025-05-08T00:00:00.000Z"
 readingTime: 12 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7ce7b037/681c90c4cd7d5959657eceed_kubeflow-vs-mlflow.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7ce7b037/681c90c4cd7d5959657eceed_kubeflow-vs-mlflow.png"
 seo:
   title: "Kubeflow vs MLflow vs ZenML: Which MLOps Platform Is the Best? - ZenML Blog"
   description: "In this Kubeflow vs MLflow vs ZenML article, we explain the difference between the three platforms by comparing their features, integrations, and pricing."
   canonical: "https://www.zenml.io/blog/kubeflow-vs-mlflow"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7ce7b037/681c90c4cd7d5959657eceed_kubeflow-vs-mlflow.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7ce7b037/681c90c4cd7d5959657eceed_kubeflow-vs-mlflow.png"
   ogTitle: "Kubeflow vs MLflow vs ZenML: Which MLOps Platform Is the Best? - ZenML Blog"
   ogDescription: "In this Kubeflow vs MLflow vs ZenML article, we explain the difference between the three platforms by comparing their features, integrations, and pricing."
 ---
@@ -233,7 +233,7 @@ The Model Registry further enhances version control by allowing you to register 
 More importantly, integration between ZenML and MLflow allows you to leverage MLflow's powerful experiment tracking capabilities within your ZenML pipelines. This integration lets you effortlessly log and visualize models, parameters, metrics, and artifacts produced by your ZenML pipeline steps.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f0b23289/681c8ef42b8649f7f85ced46_graph-showing-how-experiment-tracking-is-done-in-mlflow.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f0b23289/681c8ef42b8649f7f85ced46_graph-showing-how-experiment-tracking-is-done-in-mlflow.png" alt="__wf_reserved_inherit" />
   <figcaption>Source: &quot;MLflow experiment tracking&quot;</figcaption>
 </figure>
 
@@ -268,7 +268,7 @@ It's the ideal choice if you want to serve predictions in a cloud-native way (fo
 Kubeflow’s Model Serving component is part of the end-to-end pipeline: after training in Kubeflow, you can use the pipeline to push the model to KServe.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/cd7ed110/681c8f2248b3e0ed06c21ac8_kserver-for-deploying-and-serving-models-on-kubernetes.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/cd7ed110/681c8f2248b3e0ed06c21ac8_kserver-for-deploying-and-serving-models-on-kubernetes.png" alt="__wf_reserved_inherit" />
   <figcaption>Source: “Kubeflow KServe&quot;</figcaption>
 </figure>
 
@@ -283,7 +283,7 @@ However, MLflow’s native serving is basic (suitable for testing or lightweight
 Many companies use MLflow’s model registry in combination with a separate serving infrastructure: for example, register a model in MLflow, then manually deploy it to a cloud service or via Kubernetes.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2d68f99a/681c8f55dcaeb51cf77e01a3_mlflow-deployment-overview.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2d68f99a/681c8f55dcaeb51cf77e01a3_mlflow-deployment-overview.png" alt="__wf_reserved_inherit" />
   <figcaption>Source: “MLflow serving”</figcaption>
 </figure>
 
@@ -302,7 +302,7 @@ This end-to-end flow demonstrates how easily ZenML can handle production-grade d
 Learn more about ZenML's Model Deployers [here](https://docs.zenml.io/stacks/stack-components/model-deployers).
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6a31870f/681c8f6c3d3e424f48bd21d0_a-process-showing-how-zenml-model-deployers-work.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6a31870f/681c8f6c3d3e424f48bd21d0_a-process-showing-how-zenml-model-deployers-work.png" alt="__wf_reserved_inherit" />
   <figcaption>Source: &quot;ZenML model deployers&quot;</figcaption>
 </figure>
 
@@ -321,7 +321,7 @@ Kubeflow, MLflow, and ZenML each offer distinct strengths in this area, from Kub
 ### Kubeflow
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5a918568/681c8fb4be93b9d42e75b0f0_key-components-that-make-up-kubernetes-cluster.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5a918568/681c8fb4be93b9d42e75b0f0_key-components-that-make-up-kubernetes-cluster.png" alt="__wf_reserved_inherit" />
   <figcaption>Source: &quot;Kubernetes components&quot;</figcaption>
 </figure>
 
@@ -342,7 +342,7 @@ So while it’s excellent for integrating various components within a cloud-nati
 ### MLflow
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/32634eab/681c8fc9e2848939c167dbcc_mlflows-integration-with-third-party-tools-and-platform.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/32634eab/681c8fc9e2848939c167dbcc_mlflows-integration-with-third-party-tools-and-platform.png" alt="__wf_reserved_inherit" />
   <figcaption>Source: &quot;MLflow integrations&quot;</figcaption>
 </figure>
 
@@ -359,7 +359,7 @@ Integration sum up:
 ### ZenML
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ce3ffe8a/681c8ff1cff78cabbca5d18f_a-flowchart-explaning-how-zenml-integrates-with-multiple-tools-and-platform.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ce3ffe8a/681c8ff1cff78cabbca5d18f_a-flowchart-explaning-how-zenml-integrates-with-multiple-tools-and-platform.png" alt="__wf_reserved_inherit" />
   <figcaption>Source: &quot;ZenML integrations&quot;</figcaption>
 </figure>
 
@@ -374,7 +374,7 @@ Similarly, ZenML already integrates with experiment trackers like MLflow – you
 Beyond Kubeflow and MLflow, ZenML provides **over 50 integration plugins** for data sources, feature stores, model deployment tools, cloud services, and more. This means you can mix and match components: for instance, use an [Airflow orchestrator](https://www.zenml.io/blog/zenml-vs-apache-airflow-a-comparative-analysis-for-mlops), MLflow tracking, Seldon Core for model deployment, and AWS S3 for artifact storage – all coordinated through ZenML.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/fdbf7908/681c900f26ebfa5fb5c525d6_zenml-list-of-integrations.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/fdbf7908/681c900f26ebfa5fb5c525d6_zenml-list-of-integrations.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML list of integrations</figcaption>
 </figure>
 
@@ -391,7 +391,7 @@ It also has managed services with:
 <ul><li><strong>Civo Kubeflow as a Service</strong>: Starts at $271.58 per month, providing a fully managed ML development environment with auto-scaling capabilities.</li><li><strong>Arrikto Kubeflow as a Service</strong>: Pricing begins at $2.06 per hour for active deployments and $0.20/hour when idle, offering a 7-day free trial.</li><li><strong>Canonical's Managed Kubeflow</strong>: Offers tailored solutions with a 99.9% uptime SLA, with pricing details available upon request.</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/94fbc780/681c902fac234b7fc3c5f3dd_kubeflow-as-a-service-by-civo-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/94fbc780/681c902fac234b7fc3c5f3dd_kubeflow-as-a-service-by-civo-pricing.png" alt="__wf_reserved_inherit" />
   <figcaption>Source: &quot;Civo Kubeflow as a Service&quot;</figcaption>
 </figure>
 
@@ -404,7 +404,7 @@ Managed services:
 <ul><li><strong>Databricks Managed MLflow</strong>: Integrated within the Databricks platform, pricing varies based on compute and storage usage.</li><li><strong>Amazon SageMaker with MLflow</strong>: Offers a fully managed MLflow experience, with costs based on the size and uptime of the tracking server (e.g., $0.642/hour for a small instance) and storage usage.</li><li><strong>Nebius Managed MLflow</strong>: Charges approximately $0.36/hour for a cluster with 6 vCPUs and 24 GiB RAM.</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9f92ad88/681c904025efe6e1a8dfb657_pricing-for-nebius-managed-mlflow.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9f92ad88/681c904025efe6e1a8dfb657_pricing-for-nebius-managed-mlflow.png" alt="__wf_reserved_inherit" />
   <figcaption>Source: &quot;Nebius managed MLflow&quot;</figcaption>
 </figure>
 
@@ -417,7 +417,7 @@ Apart from the free version, the managed platform offers three paid versions:
 <ul><li><strong>Starter</strong>: $99 per month</li><li><strong>Team</strong>: $499 per month</li><li><strong>Enterprise</strong>: Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/061b3eb3/681c9061aa5fa11677f30bf0_three-pricing-plans-that-zenml-offers.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/061b3eb3/681c9061aa5fa11677f30bf0_three-pricing-plans-that-zenml-offers.png" alt="__wf_reserved_inherit" />
   <figcaption>Source: &quot;ZenML pricing&quot;</figcaption>
 </figure>
 
@@ -472,6 +472,6 @@ ZenML uniquely bridges experimentation and production, which allows ML engineers
 [Book your personalized demo](https://www.zenml.io/book-your-demo) with us today. The demo gets you a 1on1 session with ZenML's founder. Book a call and know how ZenML uniquely bridges experimentation and production, which allows ML engineers and data scientists to switch seamlessly between local and cloud-based workflows without steep infrastructure learning curves.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/55428de0/684576e834000d9981f3b957_zenml-book-a-demo.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/55428de0/684576e834000d9981f3b957_zenml-book-a-demo.png" alt="__wf_reserved_inherit" />
   <figcaption>Book a personalized demo</figcaption>
 </figure>

@@ -21,12 +21,12 @@ tags:
 date: "2025-10-09T00:00:00.000Z"
 readingTime: 14 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2b9bab8d/6981d36ce92aa039b696b89b_6981d2afc033922ef315cd28_best-llm-evaluation-tools.avif"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2b9bab8d/6981d36ce92aa039b696b89b_6981d2afc033922ef315cd28_best-llm-evaluation-tools.avif"
 seo:
   title: "Best LLM Evaluation Tools: Top 9 Frameworks for Testing AI Models - ZenML Blog"
   description: "Discover the 9 best LLM evaluation tools to test your AI models before going live."
   canonical: "https://www.zenml.io/blog/best-llm-evaluation-tools"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2b9bab8d/6981d36ce92aa039b696b89b_6981d2afc033922ef315cd28_best-llm-evaluation-tools.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2b9bab8d/6981d36ce92aa039b696b89b_6981d2afc033922ef315cd28_best-llm-evaluation-tools.avif"
   ogTitle: "Best LLM Evaluation Tools: Top 9 Frameworks for Testing AI Models - ZenML Blog"
   ogDescription: "Discover the 9 best LLM evaluation tools to test your AI models before going live."
 ---
@@ -42,7 +42,7 @@ To build truly robust AI products, you need specialized tools designed to evalua
 The best tool is not the one with the longest feature list. It’s the one that aligns with your project's requirements across four key areas: metric coverage, RAG-specific capabilities, security testing, and reproducibility.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/884897c2/68e7456b6902091c23ffc889_factors-when-selecting-the-best-eval-tools.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/884897c2/68e7456b6902091c23ffc889_factors-when-selecting-the-best-eval-tools.webp" alt="__wf_reserved_inherit" />
   <figcaption>Factors to consider when selecting the best LLM evaluation tools</figcaption>
 </figure>
 
@@ -89,7 +89,7 @@ The top LLM eval tools provide features like versioned evaluation datasets, logg
 ## 1. ZenML
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/781eb685/68e7458807929b90da287661_zenml-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/781eb685/68e7458807929b90da287661_zenml-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [ZenML](https://www.zenml.io/) is more than just an MLOps + LLMOps platform; it’s a unified framework for evaluating, orchestrating, and scaling LLM systems. With built-in support for model evaluation, experiment tracking, and RAG-specific metrics, ZenML helps teams close the outer loop around their AI workflows, from data ingestion to post-deployment testing.
@@ -103,7 +103,7 @@ The top LLM eval tools provide features like versioned evaluation datasets, logg
 We are upgrading our platform to bring every ML and LLM workflow into one place for you to run, track, and improve. Think of processes like data preparation, training, RAG indexing, agent orchestration, and more, all in one place.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/fac127b2/68e745a16f605d54e2e74c37_zenml-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/fac127b2/68e745a16f605d54e2e74c37_zenml-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -115,7 +115,7 @@ But remember, ZenML is not a specialized LLM observability or a one-click QA sol
 ## 2. RAGAS
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5e34d4fa/68e745bd28bd020d56381e6e_ragas-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5e34d4fa/68e745bd28bd020d56381e6e_ragas-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [RAGAS](https://www.ragas.io/) is an open-source Python framework purpose-built for the nuanced tasks of evaluating RAG pipelines. It specializes in metrics for context-grounded QA and generative models, providing a programmatic toolkit to score how well an LLM uses retrieved context.
@@ -137,7 +137,7 @@ As a relatively new project, RAGAS is still evolving. Some users report that cer
 ## 3. Trulens
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e928615b/68e745cda182bfe16c805058_trulens-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e928615b/68e745cda182bfe16c805058_trulens-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [Trulens](https://www.trulens.org/) is an open-source library, originally from TruEra and now supported by Snowflake. It helps evaluate and trace AI agent behavior using feedback functions. Trulens is especially popular for agentic workflows and retrieval-augmented generation, where understanding why the model produced an answer is as important as the answer itself.
@@ -159,7 +159,7 @@ Its primary focus, however, is on local development and experimentation. For pro
 ## 4. LangSmith
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/093192ef/68e745da2fe2235badf69c27_langsmith-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/093192ef/68e745da2fe2235badf69c27_langsmith-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [LangSmith](https://www.langchain.com/langsmith) is the official observability and evaluation platform by the LangChain team. Although it’s deeply integrated with the LangChain ecosystem, it’s framework-agnostic and helps debug, test, monitor, and evaluate any LLM application, whether or not you built it with LangChain.
@@ -175,7 +175,7 @@ LangSmith offers a generous free 'Developer' plan for individuals and hobbyist p
 <ul><li><strong>Plus:</strong> $39 per month</li><li><strong>Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2ed5d201/68e745e544e8252880a674a8_langsmith-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2ed5d201/68e745e544e8252880a674a8_langsmith-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -187,7 +187,7 @@ However, its proprietary SaaS nature may not suit teams needing full data contro
 ## 5. DeepEval
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/59be0c35/68e745f5361d0ce75bfd3f6f_confident-ai-by-deepeval-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/59be0c35/68e745f5361d0ce75bfd3f6f_confident-ai-by-deepeval-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 Confident AI by [DeepEval](https://www.confident-ai.com/) is an open-source Python evaluation framework that brings the familiar unit testing paradigm to the world of LLMs. It is designed to be lightweight, developer-centric, and easy to integrate into a CI/CD pipeline, functioning much like Pytest but for AI models.
@@ -203,7 +203,7 @@ DeepEval core library is open-source and free to use. It integrates with an opti
 <ul><li><strong>Starter:</strong> $19.99 per user per month</li><li><strong>Premium:</strong> $79.99 per user per month</li><li><strong>Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b0ec0f88/68e74604bd8482e83e47b5cb_confident-ai-by-deepeval-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b0ec0f88/68e74604bd8482e83e47b5cb_confident-ai-by-deepeval-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -215,7 +215,7 @@ As a rapidly evolving project, its documentation and stability can sometimes lag
 ## 6. Weights & Biases Weave
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2831a5e0/68e7461326843ce4cd9a4c86_weights-and-biases-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2831a5e0/68e7461326843ce4cd9a4c86_weights-and-biases-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [W&B Weave](https://wandb.ai/site/weave/) is a new offering from Weights & Biases that’s built atop the popular W&B experiment tracking platform. It tightly integrates LLM evaluation into the experimentation workflow, enabling rigorous tracking, visualization, and comparison of prompts, models, and application logic.
@@ -231,7 +231,7 @@ Weights & Biases offers a free tier for individual developers and two premium pl
 <ul><li><strong>Pro:</strong> $60 per month</li><li><strong>Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1c633ee0/68e7461d9bbce0b2e32ff097_weights-and-biases-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1c633ee0/68e7461d9bbce0b2e32ff097_weights-and-biases-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -243,7 +243,7 @@ The main downside is that W&B is a comprehensive and heavy-duty platform. The co
 ## 7. Humanloop
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/64025613/68e7462973459f4feba494c8_humanloop-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/64025613/68e7462973459f4feba494c8_humanloop-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [Humanloop](https://humanloop.com/home)’s philosophy is to involve both developers and non-developers in the loop, hence the name. It’s an enterprise-grade platform designed to build, evaluate, and deploy LLM applications with a strong emphasis on collaboration and rapid iteration.
@@ -257,7 +257,7 @@ The main downside is that W&B is a comprehensive and heavy-duty platform. The co
 Humanloop offers a free plan for 2 members, 50 evaluations, and 10k logged interactions per month. Then it jumps straightaway to enterprise pricing.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e49727c8/68e7463326ac7224354dc8dc_humanloop-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e49727c8/68e7463326ac7224354dc8dc_humanloop-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -271,7 +271,7 @@ For small-scale or open-source aficionados, Humanloop might feel heavy. It’s a
 ## 8. OpenAI Evals
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7433c62b/68e74642142c21494e1dc0c7_openai-evals-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7433c62b/68e74642142c21494e1dc0c7_openai-evals-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [OpenAI Evals](https://evals.openai.com/) is an evaluation framework open-sourced by OpenAI. Its primary purpose is to provide a standardized way to evaluate LLMs' performance, particularly OpenAI's models, on a wide range of tasks.
@@ -293,7 +293,7 @@ The flip side of its flexibility is that OpenAI Evals is not the most user-frien
 ## 9. MLflow
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/fe8faabc/68e74650c34d215a3432184b_mlflow-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/fe8faabc/68e74650c34d215a3432184b_mlflow-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [MLflow](https://mlflow.org/) is a widely adopted open-source platform for managing the end-to-end machine learning lifecycle. Its capabilities extend to LLM evaluation, allowing teams to integrate testing into the broader MLOps context.

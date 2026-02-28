@@ -21,12 +21,12 @@ tags:
 date: "2025-09-19T00:00:00.000Z"
 readingTime: 14 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2440158f/6981d362e92aa039b696acfa_6981d2b52aa4c62721bf9950_google-adk-vs-langgraph.avif"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2440158f/6981d362e92aa039b696acfa_6981d2b52aa4c62721bf9950_google-adk-vs-langgraph.avif"
 seo:
   title: "Google ADK vs LangGraph: Which One Develops and Deploys AI Agents Better - ZenML Blog"
   description: "In this Google ADK vs LangGraph, we explain the difference between the two and conclude which one is the best to develop and deploy AI agents."
   canonical: "https://www.zenml.io/blog/google-adk-vs-langgraph"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2440158f/6981d362e92aa039b696acfa_6981d2b52aa4c62721bf9950_google-adk-vs-langgraph.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2440158f/6981d362e92aa039b696acfa_6981d2b52aa4c62721bf9950_google-adk-vs-langgraph.avif"
   ogTitle: "Google ADK vs LangGraph: Which One Develops and Deploys AI Agents Better - ZenML Blog"
   ogDescription: "In this Google ADK vs LangGraph, we explain the difference between the two and conclude which one is the best to develop and deploy AI agents."
 ---
@@ -72,7 +72,7 @@ LangGraph and Google ADK take fundamentally different approaches here: explicit 
 #### LangGraph
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9a6ea733/68ccd5ea2d3c5c7d1acdaab2_langgraph-agent-architecture.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9a6ea733/68ccd5ea2d3c5c7d1acdaab2_langgraph-agent-architecture.png" alt="__wf_reserved_inherit" />
   <figcaption>LangGraph agent architecture</figcaption>
 </figure>
 
@@ -137,7 +137,7 @@ Agent primitives and patterns define the fundamental building blocks and archite
 #### LangGraph
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/730a5531/68c7f14d610f2fa8b9e9c0d8_how-ai-agents-are-connected-in-langgraph.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/730a5531/68c7f14d610f2fa8b9e9c0d8_how-ai-agents-are-connected-in-langgraph.png" alt="__wf_reserved_inherit" />
   <figcaption>How AI agents are connected in LangGraph</figcaption>
 </figure>
 
@@ -154,7 +154,7 @@ For more complex multi-agent systems, the ‘supervisor’ pattern is a common a
 #### Google ADK
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7fc5b7e2/68ccd6a76eeb7c8cf956f518_google-adk-base-agent.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7fc5b7e2/68ccd6a76eeb7c8cf956f518_google-adk-base-agent.png" alt="__wf_reserved_inherit" />
   <figcaption>Google ADK base agent</figcaption>
 </figure>
 
@@ -181,7 +181,7 @@ For any production-ready agentic system, the ability to observe, debug, and eval
 #### LangGraph
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c08d7a2f/68ccd6d169d19b896479a1cc_langsmith-observability.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c08d7a2f/68ccd6d169d19b896479a1cc_langsmith-observability.png" alt="__wf_reserved_inherit" />
   <figcaption>Langsmith observability</figcaption>
 </figure>
 
@@ -198,7 +198,7 @@ While LangSmith is the flagship integration, LangGraph's callback system also al
 #### Google ADK
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d4ed16ae/68ccd6e9bfa6449536f9c11d_google-adk-observability.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d4ed16ae/68ccd6e9bfa6449536f9c11d_google-adk-observability.png" alt="__wf_reserved_inherit" />
   <figcaption>Google ADK observability</figcaption>
 </figure>
 
@@ -223,7 +223,7 @@ A common need when building AI agents is to get agents to produce predictable, m
 #### LangGraph
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/90a24d86/68ccd705ba532f220c08b0ab_langgraph-structured-outputs.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/90a24d86/68ccd705ba532f220c08b0ab_langgraph-structured-outputs.png" alt="__wf_reserved_inherit" />
   <figcaption>LangGraph structured outputs</figcaption>
 </figure>
 
@@ -268,7 +268,7 @@ You’ve access to hundreds of pre-built integrations for:
 Put simply, if a component exists in LangChain, it can be integrated as a node or tool within a LangGraph workflow.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e59c6a63/68c7f234ad68004ea9acb3a9_langraph-uses-the-langchain-ecosystem.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e59c6a63/68c7f234ad68004ea9acb3a9_langraph-uses-the-langchain-ecosystem.png" alt="__wf_reserved_inherit" />
   <figcaption>LangGraph uses the LangChain ecosystem</figcaption>
 </figure>
 
@@ -293,7 +293,7 @@ You can install the Python or JavaScript package and build and run agents on you
 <ul><li><strong>Plus:</strong> $39 per month</li><li><strong>Enterprise:</strong> Custom</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c2dc5e77/68ba62f138468c579932e7c7_langgraph-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c2dc5e77/68ba62f138468c579932e7c7_langgraph-pricing.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ## How Does ZenML Help You Use Both These Platforms with Ease
@@ -305,7 +305,7 @@ However, when it comes to the outer loop of deploying and managing these agents 
 [ZenML](https://www.zenml.io/) is an MLOps + LLMOps framework that complements ADK and LangGraph by handling the end-to-end lifecycle of your AI workflows.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5840ea3f/68ccd74fdfbfa193793ad066_zenml-unified-mlops-and-llmops-platform.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5840ea3f/68ccd74fdfbfa193793ad066_zenml-unified-mlops-and-llmops-platform.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 Here’s a quick peek at how ZenML helps:
@@ -317,7 +317,7 @@ You can embed your ADK or LangGraph agent as a step in a larger ZenML pipeline. 
 ZenML handles scheduling, running, and retrying these pipelines, ensuring the entire process is versioned, reproducible, and automated on any infrastructure.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/10ed37e0/68ccd78a709ca124cef348cc_zenml-orchestration-use-case.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/10ed37e0/68ccd78a709ca124cef348cc_zenml-orchestration-use-case.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML orchestration</figcaption>
 </figure>
 
@@ -330,7 +330,7 @@ ZenML automatically tracks and versions every component of your pipeline run, in
 It provides a single dashboard that visualizes the lineage of all artifacts and gives your team a complete and auditable picture of how your systems behave, making them easier to debug.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/83aa06c4/68ba650b4c60518ca7fe3027_zenml-pipeline-dag-visualization.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/83aa06c4/68ba650b4c60518ca7fe3027_zenml-pipeline-dag-visualization.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML end-to-end pipeline visibility</figcaption>
 </figure>
 
@@ -341,7 +341,7 @@ Inner-loop tools help you define an agent's behavior, but ZenML helps you unders
 A ZenML pipeline can include steps that automatically run evaluations after each agent execution. These steps can flag bad runs, detect performance regressions, and enable continuous quality monitoring in a production environment.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1a903333/68ccd7f0bfa6449536f9e75b_zenml-evaluation.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1a903333/68ccd7f0bfa6449536f9e75b_zenml-evaluation.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML evaluation</figcaption>
 </figure>
 

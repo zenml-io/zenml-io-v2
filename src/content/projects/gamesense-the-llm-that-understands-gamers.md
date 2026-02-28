@@ -14,7 +14,7 @@ description: "Elevate your gaming platform with an AI that translates player lan
 githubUrl: "https://github.com/zenml-io/zenml-projects/tree/main/gamesense"
 mainImageLink: "https://public-flavor-logos.s3.eu-central-1.amazonaws.com/projects/3.jpg"
 previewImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/249a7e5f/67e242f37f2c523b208b5046_pipeline.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/249a7e5f/67e242f37f2c523b208b5046_pipeline.png"
 tags:
   - "natural-language-processing"
   - "parameter-efficient-fine-tuning"
@@ -35,7 +35,7 @@ seo:
   title: "GameSense: The LLM That Understands Gamers"
   description: "Elevate your gaming platform with an AI that translates player language into actionable data. A model that understands gaming terminology, extracts key attributes, and structures conversations for intelligent recommendations and support."
   canonical: "https://www.zenml.io/projects/gamesense-the-llm-that-understands-gamers"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/249a7e5f/67e242f37f2c523b208b5046_pipeline.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/249a7e5f/67e242f37f2c523b208b5046_pipeline.png"
   ogTitle: "GameSense: The LLM That Understands Gamers"
   ogDescription: "Elevate your gaming platform with an AI that translates player language into actionable data. A model that understands gaming terminology, extracts key attributes, and structures conversations for intelligent recommendations and support."
 ---

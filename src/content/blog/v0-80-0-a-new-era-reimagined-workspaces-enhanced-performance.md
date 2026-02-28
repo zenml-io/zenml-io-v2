@@ -23,18 +23,18 @@ tags:
 date: "2025-03-21T00:00:00.000Z"
 readingTime: 6 min
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/735e319a/6981d36ce92aa039b696b894_6981d2af5c146b4b5a8cdcc3_zenml-release.avif"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/735e319a/6981d36ce92aa039b696b894_6981d2af5c146b4b5a8cdcc3_zenml-release.avif"
 seo:
   title: "ZenML 0.80.0: Workspace Hierarchy for Pro, Performance Gains for All - ZenML Blog"
   description: "ZenML 0.80.0 transforms tenant structures into workspace/project hierarchies with advanced RBAC for Pro users, while enhancing tagging, resource filtering, and dashboard design. Open-source improvements include Kubernetes security upgrades, SkyPilot integration, and significantly faster CLI operations. Both Pro and OSS users benefit from dramatic performance optimizations, GitLab improvements, and enhanced build tracking."
   canonical: "https://www.zenml.io/blog/v0-80-0-a-new-era-reimagined-workspaces-enhanced-performance"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/735e319a/6981d36ce92aa039b696b894_6981d2af5c146b4b5a8cdcc3_zenml-release.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/735e319a/6981d36ce92aa039b696b894_6981d2af5c146b4b5a8cdcc3_zenml-release.avif"
   ogTitle: "ZenML 0.80.0: Workspace Hierarchy for Pro, Performance Gains for All - ZenML Blog"
   ogDescription: "ZenML 0.80.0 transforms tenant structures into workspace/project hierarchies with advanced RBAC for Pro users, while enhancing tagging, resource filtering, and dashboard design. Open-source improvements include Kubernetes security upgrades, SkyPilot integration, and significantly faster CLI operations. Both Pro and OSS users benefit from dramatic performance optimizations, GitLab improvements, and enhanced build tracking."
 ---
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/fc4ef930/67dd31af6dc3ab266ec34552_Organization_-_Home.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/fc4ef930/67dd31af6dc3ab266ec34552_Organization_-_Home.png" alt="__wf_reserved_inherit" />
   <figcaption>Tenants are now Workspaces!</figcaption>
 </figure>
 
@@ -43,7 +43,7 @@ We're thrilled to announce the release of ZenML 0.80.0, one of our most signific
 ## ⭐ Pro Features: Redefining Resource Management with Projects
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/fdc3f7f7/67dd333134b4bd77e6d99b4d_org_hierarchy_pro.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/fdc3f7f7/67dd333134b4bd77e6d99b4d_org_hierarchy_pro.png" alt="__wf_reserved_inherit" />
   <figcaption>The new hierarchy introduced in ZenML 0.80.0. See a zoomed in version of the diagram here.</figcaption>
 </figure>
 
@@ -52,7 +52,7 @@ The standout feature for **ZenML Pro users** is our complete refactoring of work
 This architectural shift allows Pro users to subdivide a workspace into multiple logical namespaces, providing granular control over resources. Certain resources like Stacks and Secrets remain workspace-scoped, while others like pipelines, artifacts, and models become project-scoped. The result? Much more intuitive resource organization that scales with your team's growth.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/871499c6/67dd31d094daf71acca0333e_Workspace_-_Home.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/871499c6/67dd31d094daf71acca0333e_Workspace_-_Home.png" alt="__wf_reserved_inherit" />
   <figcaption>Users can create projects easily from the dashboard</figcaption>
 </figure>
 
@@ -89,7 +89,7 @@ These improvements represent our continued commitment to the open-source communi
 ## 📜Meet our new and shiny docs
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b37da05b/67dd33aab24227d87a98960a_docs_screenshot.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b37da05b/67dd33aab24227d87a98960a_docs_screenshot.png" alt="__wf_reserved_inherit" />
   <figcaption>Easier navigation for docs.zenml.io</figcaption>
 </figure>
 

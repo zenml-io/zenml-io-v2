@@ -19,12 +19,12 @@ tags:
 date: "2025-10-27T00:00:00.000Z"
 readingTime: 3 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/63db1ca8/6981cf0ef4f7a9ede9959a00_6981ce8f1464b7d7f6edb031_zenml-newsletter-18-1.avif"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/63db1ca8/6981cf0ef4f7a9ede9959a00_6981ce8f1464b7d7f6edb031_zenml-newsletter-18-1.avif"
 seo:
   title: "Newsletter 18: Real-Time AI, Zero Cold Starts - ZenML Blog"
   description: "ZenML launches Pipeline Deployments, a new feature that transforms any ML pipeline or AI agent into a persistent, high-performance HTTP service with no cold starts and full observability."
   canonical: "https://www.zenml.io/blog/newsletter-18-real-time-ai-zero-cold-starts"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/63db1ca8/6981cf0ef4f7a9ede9959a00_6981ce8f1464b7d7f6edb031_zenml-newsletter-18-1.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/63db1ca8/6981cf0ef4f7a9ede9959a00_6981ce8f1464b7d7f6edb031_zenml-newsletter-18-1.avif"
   ogTitle: "Newsletter 18: Real-Time AI, Zero Cold Starts - ZenML Blog"
   ogDescription: "ZenML launches Pipeline Deployments, a new feature that transforms any ML pipeline or AI agent into a persistent, high-performance HTTP service with no cold starts and full observability."
 ---
@@ -44,7 +44,7 @@ Let's get into it.
 ## ⚡ Unifying Batch and Real-Time: Introducing Pipeline Deployments
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6ba2a115/6904633302dfa3d044d85efc_image-6.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6ba2a115/6904633302dfa3d044d85efc_image-6.png" alt="__wf_reserved_inherit" />
 </figure>
 
 Pipelines have always been great for batch *training*, but what about real-time *serving*? The common approach—wrapping a model in FastAPI—works for simple inference, but it breaks down fast. As soon as you add multi-step logic, agentic orchestration, or stateful tools, you're back to building custom infrastructure, dealing with 30-second cold starts, and losing all traceability.
@@ -62,7 +62,7 @@ Hamza wrote a [blogpost about this new pipeline deployment feature](https://www.
 ## 🧑💻 New from the Community
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e8b8d4f9/69046341de09fe64328b50af_CleanShot_202025-10-27_20at_2014.20.20.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e8b8d4f9/69046341de09fe64328b50af_CleanShot_202025-10-27_20at_2014.20.20.png" alt="__wf_reserved_inherit" />
 </figure>
 
 We're excited to showcase two new blog posts from our community. First, Haziqa Sajid demonstrates how to build a [multi-agent financial analysis pipeline using ZenML and SmolAgents](https://www.zenml.io/blog/how-to-build-a-multi-agent-financial-analysis-pipeline-with-zenml-and-smolagents). Her project tackles the complexity of analyzing dense financial reports by assigning specialized tasks to different agents—like a metrics agent, context agent, and risk agent—all orchestrated as a reproducible ZenML pipeline with LangFuse for observability.
@@ -72,7 +72,7 @@ Next, Satya Patel writes about building and, more importantly, [evaluating a RAG
 ## 🚀 From 1 Week to 2 Hours: How Cross Screen Media Scaled
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/833ebe3c/69046355f70867eabe7408a6_image-7.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/833ebe3c/69046355f70867eabe7408a6_image-7.png" alt="__wf_reserved_inherit" />
 </figure>
 
 We just published [a new case study](https://www.zenml.io/case-study/cross-screen-media) detailing how Cross Screen Media's 3-person data science team tackled a massive bottleneck. They manage ML workflows across **210 local markets** on **trillions of rows** of data, and their core pipeline used to take **over a week** to run. This wasn't just slow; it forced them to simplify models and sacrifice accuracy just to get the job done.
@@ -86,7 +86,7 @@ It's a perfect example of how solid MLOps tooling doesn't just save time, it unl
 ## 🍿 Live Demo: The Unified AI Stack
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f4094b06/6904636737f2f61a342b6e4f_image-8-1.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f4094b06/6904636737f2f61a342b6e4f_image-8-1.png" alt="__wf_reserved_inherit" />
 </figure>
 
 To show you exactly what Pipeline Deployments can do, **Hamza and I (Alex) are hosting a live demo** this **Wednesday, October 29th, at 5:30 PM GMT+1**.

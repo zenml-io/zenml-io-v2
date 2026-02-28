@@ -5,9 +5,9 @@ text: "After a benchmark on several solutions, we choose ZenML for its stack fle
 author: "Clément Depraz"
 position: "Data Scientist at Brevo"
 avatar:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/dcc185c4/667bd86343a1f6fed8b01e79_clement.jpeg"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/dcc185c4/667bd86343a1f6fed8b01e79_clement.jpeg"
 companyLogo:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/59ebdf54/667bd89e8858ebeb4fc5891d_brevo_white.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/59ebdf54/667bd89e8858ebeb4fc5891d_brevo_white.png"
 webflow:
   siteId: "64a817a2e7e2208272d1ce30"
   itemId: "667bd8a4c13514a1d0723618"

@@ -19,12 +19,12 @@ tags:
 date: "2024-05-02T00:00:00.000Z"
 readingTime: 4 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6919b3f8/6630eab71c438233644ca654_old-new-v1-small.jpg"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6919b3f8/6630eab71c438233644ca654_old-new-v1-small.jpg"
 seo:
   title: "Embracing Open Source at ZenML - ZenML Blog"
   description: "We've open-sourced our new dashboard to unify the experience for OSS and cloud users, although some features are initially CLI-only. This launch enhances onboarding and simplifies maintenance. Cloud users will see no change, while OSS users can enjoy a new interface and DAG visualizer. We encourage community contributions to help us expand and refine this dashboard further, looking forward to integrating more features soon."
   canonical: "https://www.zenml.io/blog/oss-dashboard-release"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e2c2b074/6630eab71c438233644ca654_old-new-v1-small.jpg"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e2c2b074/6630eab71c438233644ca654_old-new-v1-small.jpg"
   ogTitle: "Embracing Open Source at ZenML - ZenML Blog"
   ogDescription: "We've open-sourced our new dashboard to unify the experience for OSS and cloud users, although some features are initially CLI-only. This launch enhances onboarding and simplifies maintenance. Cloud users will see no change, while OSS users can enjoy a new interface and DAG visualizer. We encourage community contributions to help us expand and refine this dashboard further, looking forward to integrating more features soon."
 ---
@@ -44,7 +44,7 @@ We're open-sourcing our dashboard for a few reasons:
 New users of the ZenML in the dashboard will have a better experience thanks to a much-improved onboarding sequence:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c4a95cab/66c604ea06feed491953b5d2_6630eb089887bb068cf30e50_CleanShot_202024-04-30_20at_2011.35.35_402x.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c4a95cab/66c604ea06feed491953b5d2_6630eb089887bb068cf30e50_CleanShot_202024-04-30_20at_2011.35.35_402x.png" alt="__wf_reserved_inherit" />
 </figure>
 
 The dashboard will guide you through connecting to your server, setting up a stack, connecting to service connectors as well as running a pipeline.
@@ -52,7 +52,7 @@ The dashboard will guide you through connecting to your server, setting up a sta
 We’ve also improved the ‘Settings’ section of the dashboard and this is the new home for configuration of your repositories, secrets, and connectors, along with some other options.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/66f70c3c/66c604ea06feed491953b5d6_6630ea5e9887bb068cf26bce_CleanShot_202024-04-30_20at_2011.39.26_402x.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/66f70c3c/66c604ea06feed491953b5d6_6630ea5e9887bb068cf26bce_CleanShot_202024-04-30_20at_2011.39.26_402x.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ## What it means for you
@@ -62,7 +62,7 @@ If you're already a **cloud user**, not much will change for you. You're already
 If you're an **open-source user**, the new dashboard is now available to you as part of our latest release (0.57.0). You'll notice a completely refreshed design and a new DAG visualizer.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d2f7d13a/66c604ea06feed491953b5ce_6630eab71c438233644ca654_old-new-v1-small.jpeg" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d2f7d13a/66c604ea06feed491953b5ce_6630eab71c438233644ca654_old-new-v1-small.jpeg" alt="__wf_reserved_inherit" />
 </figure>
 
 Unfortunately, some dashboard features are not yet ready so you'll see instructions on how to access them via the CLI. We hope to have these features returned into the product soon. (If you have a strong opinion as to which you'd like to see first, please let us know!) Specifically, secrets, stacks, and service connectors are not yet implemented in the new dashboard.

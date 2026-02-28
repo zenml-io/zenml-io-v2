@@ -20,12 +20,12 @@ tags:
 date: "2025-01-13T00:00:00.000Z"
 readingTime: 4 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2dba7ec3/678524f9be42385bc570eedf_Metadata_Comparison_Tool_Jan_13_2025.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2dba7ec3/678524f9be42385bc570eedf_Metadata_Comparison_Tool_Jan_13_2025.png"
 seo:
   title: "New Dashboard Feature: Compare Your Experiments - ZenML Blog"
   description: "ZenML's new Experiment Comparison Tool brings powerful experiment tracking capabilities to your ML pipelines. Compare up to 20 pipeline runs simultaneously through intuitive tabular and parallel coordinates visualizations, helping teams derive actionable insights from their pipeline metadata. Now available in the Pro tier dashboard."
   canonical: "https://www.zenml.io/blog/new-dashboard-feature-compare-your-experiments"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2dba7ec3/678524f9be42385bc570eedf_Metadata_Comparison_Tool_Jan_13_2025.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2dba7ec3/678524f9be42385bc570eedf_Metadata_Comparison_Tool_Jan_13_2025.png"
   ogTitle: "New Dashboard Feature: Compare Your Experiments - ZenML Blog"
   ogDescription: "ZenML's new Experiment Comparison Tool brings powerful experiment tracking capabilities to your ML pipelines. Compare up to 20 pipeline runs simultaneously through intuitive tabular and parallel coordinates visualizations, helping teams derive actionable insights from their pipeline metadata. Now available in the Pro tier dashboard."
 ---
@@ -47,7 +47,7 @@ The tool supports comparison of up to 20 pipeline runs simultaneously, accommoda
 ### Structured Tabular Analysis
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/450c5949/678525ed4a16785150e7f734_678524df5bdf915eb062b4a1_CleanShot_20Jan_2013_202025.png" alt="A tabular view comparing three rocket telemetry pipeline runs side by side. The table shows detailed information including run IDs, creation times, and author, followed by various environmental and engine metrics like visibility, humidity, and engine temperature. Each metric displays numerical values with percentage changes indicated by up/down arrows, allowing for easy comparison between runs. The interface includes model version tags and a search bar at the top." />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/450c5949/678525ed4a16785150e7f734_678524df5bdf915eb062b4a1_CleanShot_20Jan_2013_202025.png" alt="A tabular view comparing three rocket telemetry pipeline runs side by side. The table shows detailed information including run IDs, creation times, and author, followed by various environmental and engine metrics like visibility, humidity, and engine temperature. Each metric displays numerical values with percentage changes indicated by up/down arrows, allowing for easy comparison between runs. The interface includes model version tags and a search bar at the top." />
 </figure>
 
 The tabular view provides a methodical approach to run comparison:
@@ -57,7 +57,7 @@ The tabular view provides a methodical approach to run comparison:
 ### Advanced Parallel Coordinates View
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3f776b46/678525ed4a16785150e7f741_678524f9be42385bc570eedf_Metadata_20Comparison_20Tool_20Jan_2013_202025.png" alt="An interactive parallel coordinates plot showing multiple rocket telemetry metrics across different pipeline runs. The visualization displays various flight parameters like acceleration, altitude, drag coefficient, and fuel remaining on parallel vertical axes, with colored lines connecting related values across runs. Each run is represented by a different colored line, showing how values vary across parameters. On the right side, there&#039;s a parameters panel listing the different metrics that can be toggled, and below the graph is a table showing run details including pipeline and model versions." />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3f776b46/678525ed4a16785150e7f741_678524f9be42385bc570eedf_Metadata_20Comparison_20Tool_20Jan_2013_202025.png" alt="An interactive parallel coordinates plot showing multiple rocket telemetry metrics across different pipeline runs. The visualization displays various flight parameters like acceleration, altitude, drag coefficient, and fuel remaining on parallel vertical axes, with colored lines connecting related values across runs. Each run is represented by a different colored line, showing how values vary across parameters. On the right side, there&#039;s a parameters panel listing the different metrics that can be toggled, and below the graph is a table showing run details including pipeline and model versions." />
 </figure>
 
 The parallel coordinates visualization gives you the ability to do multi-dimensional analysis. It supports interactive parameter exploration as well as filtering and grouping. As long as the values are numeric, we'll plot them out for you here.

@@ -21,12 +21,12 @@ tags:
 date: "2025-10-26T00:00:00.000Z"
 readingTime: 12 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b5913251/68fd9b97a47c3cdf1b83de16_pydantic_ai_vs_crewai.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b5913251/68fd9b97a47c3cdf1b83de16_pydantic_ai_vs_crewai.png"
 seo:
   title: "Pydantic AI vs CrewAI: Which One’s Better to Build Production-Grade Workflows with Gen AI - ZenML Blog"
   description: "In this Pydantic AI vs CrewAI, we discuss which one is better at building production-grade workflows with generative AI."
   canonical: "https://www.zenml.io/blog/pydantic-ai-vs-crewai"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b5913251/68fd9b97a47c3cdf1b83de16_pydantic_ai_vs_crewai.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b5913251/68fd9b97a47c3cdf1b83de16_pydantic_ai_vs_crewai.png"
   ogTitle: "Pydantic AI vs CrewAI: Which One’s Better to Build Production-Grade Workflows with Gen AI - ZenML Blog"
   ogDescription: "In this Pydantic AI vs CrewAI, we discuss which one is better at building production-grade workflows with generative AI."
 ---
@@ -110,7 +110,7 @@ print(result.output)
 ### CrewAI
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f6a3c6f0/68fb56d78253f4ee12777163_crewai-primary-abstraction.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f6a3c6f0/68fb56d78253f4ee12777163_crewai-primary-abstraction.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 CrewAI takes a more architectural view. Each agent in CrewAI has a role, a goal, and even a backstory/persona to guide its behavior.
@@ -152,7 +152,7 @@ Orchestration defines how multiple agents communicate and work together to achie
 ### Pydantic AI
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6d91f7e1/68fb56e8471ea353a2def070_pydanitic-ai-multi-agent-orchestration.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6d91f7e1/68fb56e8471ea353a2def070_pydanitic-ai-multi-agent-orchestration.webp" alt="__wf_reserved_inherit" />
   <figcaption>Source</figcaption>
 </figure>
 
@@ -165,7 +165,7 @@ What you won’t find in Pydantic AI is a *native* concept of multi-agent orches
 ### CrewAI
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7c36b4d9/68fb5700d89132770c606061_crewai-multi-agent-orchestration.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7c36b4d9/68fb5700d89132770c606061_crewai-multi-agent-orchestration.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 CrewAI excels at multi-agent orchestration by providing built-in, high-level patterns through its `Process` types:
@@ -211,7 +211,7 @@ For production systems, the ability to observe, debug, and trace an agent's beha
 ### Pydantic AI
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/75fc9a39/68fb571e2d3b28e2907d098d_pydantic-ai-observability-and-tracing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/75fc9a39/68fb571e2d3b28e2907d098d_pydantic-ai-observability-and-tracing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 Pydantic AI integrates observability through [Pydantic Logfire](https://pydantic.dev/logfire), a lightweight tracing and logging service built by the same team.
@@ -225,7 +225,7 @@ It's OpenTelemetry-compatible and allows you to route traces to external systems
 ### CrewAI
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5ab64f5c/68fb572db834260608ef8ff9_crewai-tracing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5ab64f5c/68fb572db834260608ef8ff9_crewai-tracing.webp" alt="__wf_reserved_inherit" />
   <figcaption>CrewAI tracing</figcaption>
 </figure>
 
@@ -246,7 +246,7 @@ For interoperability, Pydantic AI supports open protocols such as Model Context 
 It also supports durable execution with platforms like Temporal, DBOS, or Prefect, ensuring long-running workflows can resume after failures. Plus, its FastAPI compatibility makes it simple to expose agents as APIs or event-driven webhooks.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f59f6a39/68fb5747f2e321c84dd63798_pydantic-ai-integration.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f59f6a39/68fb5747f2e321c84dd63798_pydantic-ai-integration.webp" alt="__wf_reserved_inherit" />
   <figcaption>Pydantic AI integrations</figcaption>
 </figure>
 
@@ -259,7 +259,7 @@ CrewAI comes with a library of over 40 built-in tools and integrations that comp
 Notably, while CrewAI was initially built on LangChain, it is now an independent framework, though it maintains compatibility with many tools from the broader AI ecosystem.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d143ba12/68fb5763166446546a255cb8_crewai-integrations.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d143ba12/68fb5763166446546a255cb8_crewai-integrations.webp" alt="__wf_reserved_inherit" />
   <figcaption>CrewAI integrations</figcaption>
 </figure>
 
@@ -274,7 +274,7 @@ Here are the plans it offers:
 <ul><li><strong>Pro:</strong> $2 per million spans/metrics</li><li><strong>Cloud Enterprise:</strong> Custom pricing</li><li><strong>Self-hosted Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c4e8a0a0/68fb577ae3365482b7e6e4e9_pydantic-ai-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c4e8a0a0/68fb577ae3365482b7e6e4e9_pydantic-ai-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 You can install it and build applications on your own infrastructure without any licensing fees or subscriptions. Your only costs will be for the underlying LLM API calls and your hosting infrastructure.
@@ -286,7 +286,7 @@ CrewAI's core framework is also open-source and free under an MIT license. For p
 <ul><li><strong>Professional:</strong> $25 per month</li><li><strong>Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/58c7b0c9/68fb578acab9db824f132e3f_crewai-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/58c7b0c9/68fb578acab9db824f132e3f_crewai-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ## How ZenML Manages the Outer Loop when Deploying Agentic AI Workflows
@@ -296,7 +296,7 @@ Pydantic AI vs CrewAI sounds like an either-or choice. One is a type-safe agent,
 **That’s where ZenML comes in.**
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/58c9eb74/68fd99948903b85db56b321b_zenml-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/58c9eb74/68fd99948903b85db56b321b_zenml-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [ZenML](https://www.zenml.io/) is an open-source MLOps + [LLMOps framework](https://docs.zenml.io/user-guides/llmops-guide) that acts as the glue unifying the ‘outer loop’ for your AI agents.
@@ -306,7 +306,7 @@ Rather than competing with Pydantic AI or CrewAI, ZenML complements them by hand
 ### 1. Pipeline Orchestration and Scheduling
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9717648c/68e5e22ed01ca1041177cb02_zenml-architecture.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9717648c/68e5e22ed01ca1041177cb02_zenml-architecture.webp" alt="__wf_reserved_inherit" />
   <figcaption>ZenML architecture</figcaption>
 </figure>
 
@@ -323,7 +323,7 @@ ZenML automatically tracks and versions every component of your pipeline. For ag
 So if a CrewAI agent made a decision that led to an error, you can trace back through the run logs and see exactly what happened. ZenML’s dashboard shows you these run histories, and you can compare outputs across different runs.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/38989dc1/68e5e241bdefc3bcb5d83cc0_zenml-pipeline-dag-visualization.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/38989dc1/68e5e241bdefc3bcb5d83cc0_zenml-pipeline-dag-visualization.webp" alt="__wf_reserved_inherit" />
   <figcaption>ZenML pipeline DAG visualization</figcaption>
 </figure>
 
@@ -338,7 +338,7 @@ What’s more, implement an A/B testing scheme: run the same query through both 
 This kind of automated evaluation loop helps ensure your agents maintain performance in production and allows you to systematically improve them.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/80868477/68e5e253d7792c0af434c5aa_zenml-evaluation.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/80868477/68e5e253d7792c0af434c5aa_zenml-evaluation.webp" alt="__wf_reserved_inherit" />
   <figcaption>ZenML evaluation</figcaption>
 </figure>
 

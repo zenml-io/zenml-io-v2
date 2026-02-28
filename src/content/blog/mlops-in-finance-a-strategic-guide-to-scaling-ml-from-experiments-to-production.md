@@ -18,12 +18,12 @@ tags:
 date: "2024-11-26T00:00:00.000Z"
 readingTime: 2 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5992e30f/6746d46c07aeedde155bb8d1_Gemini_Generated_Image__10_.jpeg"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5992e30f/6746d46c07aeedde155bb8d1_Gemini_Generated_Image__10_.jpeg"
 seo:
   title: "MLOps in Finance: A Strategic Guide to Scaling ML from Experiments to Production\" - ZenML Blog"
   description: "Discover how financial institutions can successfully transition their machine learning projects from experimental phases to robust production environments. This comprehensive guide explores critical challenges and strategic solutions in MLOps implementation, including regulatory compliance, team scaling, and infrastructure decisions. Learn practical approaches to building scalable ML systems while maintaining security and efficiency, with special focus on emerging technologies like RAG and their role in enterprise AI adoption. Perfect for ML practitioners, technical leaders, and decision-makers in the financial sector looking to scale their ML operations effectively."
   canonical: "https://www.zenml.io/blog/mlops-in-finance-a-strategic-guide-to-scaling-ml-from-experiments-to-production"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5992e30f/6746d46c07aeedde155bb8d1_Gemini_Generated_Image__10_.jpeg"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5992e30f/6746d46c07aeedde155bb8d1_Gemini_Generated_Image__10_.jpeg"
   ogTitle: "MLOps in Finance: A Strategic Guide to Scaling ML from Experiments to Production\" - ZenML Blog"
   ogDescription: "Discover how financial institutions can successfully transition their machine learning projects from experimental phases to robust production environments. This comprehensive guide explores critical challenges and strategic solutions in MLOps implementation, including regulatory compliance, team scaling, and infrastructure decisions. Learn practical approaches to building scalable ML systems while maintaining security and efficiency, with special focus on emerging technologies like RAG and their role in enterprise AI adoption. Perfect for ML practitioners, technical leaders, and decision-makers in the financial sector looking to scale their ML operations effectively."
 ---
@@ -43,7 +43,7 @@ Key considerations for growing ML teams include:
 ## Regulatory Compliance in Financial ML
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a4c28920/6746d4f0afefb6b6835cee74_6746d4a4227da381bfd38250_CleanShot_202024-11-26_20at_2016.11.53.png" alt="A diagram showing the intersection of Machine Learning Operations and Regulatory Requirements in financial services. Two main nodes, &#039;ML Operations&#039; and &#039;Regulatory Requirements&#039;, each connect to four shared components: Data Privacy, Model Governance, Risk Assessment, and Documentation. The diagram uses a color scheme where ML Operations is shown in light blue, Regulatory Requirements in light red, and the shared components in light green, illustrating how these aspects must satisfy both operational and regulatory needs." />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a4c28920/6746d4f0afefb6b6835cee74_6746d4a4227da381bfd38250_CleanShot_202024-11-26_20at_2016.11.53.png" alt="A diagram showing the intersection of Machine Learning Operations and Regulatory Requirements in financial services. Two main nodes, &#039;ML Operations&#039; and &#039;Regulatory Requirements&#039;, each connect to four shared components: Data Privacy, Model Governance, Risk Assessment, and Documentation. The diagram uses a color scheme where ML Operations is shown in light blue, Regulatory Requirements in light red, and the shared components in light green, illustrating how these aspects must satisfy both operational and regulatory needs." />
 </figure>
 
 Financial services organizations face unique challenges when implementing ML systems, particularly regarding regulatory compliance and data privacy. While many companies are excited about the possibilities of Large Language Models (LLMs), careful consideration must be given to:

@@ -11,7 +11,7 @@ webflow:
   createdOn: "2023-10-18T08:07:03.691Z"
 position: "Senior ML Engineer"
 photo:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7116219d/652f92132b5319754ca4d5a3_andrei.jpeg"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7116219d/652f92132b5319754ca4d5a3_andrei.jpeg"
 email: "andrei@zenml.io"
 linkedin: "https://www.linkedin.com/in/andrei-vishniakov/"
 order: 13

@@ -22,7 +22,7 @@ export const NEWSLETTER_SIGNUP_CONTENT = {
   privacyHtml:
     'We care about your data in our <a href="/privacy-policy" class="text-zenml-500 underline">privacy policy</a>.',
   image: {
-    url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/24ca24f7/65df440a6d555dbf511d93be_hero_process-min.png",
+    url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/24ca24f7/65df440a6d555dbf511d93be_hero_process-min.png",
     alt: "ZenML MLOps workflow illustration",
   },
 };

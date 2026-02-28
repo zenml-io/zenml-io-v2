@@ -12,7 +12,7 @@ webflow:
   createdOn: "2026-02-12T18:45:56.359Z"
 toolName: "KServe"
 toolIcon:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/40096634/6996da3f8bb56970592768e6_KServe_icon.avif"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/40096634/6996da3f8bb56970592768e6_KServe_icon.avif"
 category: "model-serving"
 integrationType: "deployer"
 advantages:
@@ -26,12 +26,12 @@ ctaHeadline: "Ready to Deliver Models to KServe with Reproducible Pipelines?"
 learnMoreUrl: "https://docs.zenml.io/user-guides/production-guide"
 seoDescription: "ZenML is the open-source alternative for end-to-end MLOps: train, evaluate, version, and ship models to KServe for scalable serving"
 openGraphImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/339035e8/6996da517c6f077586ba921d_compare-KServe.avif"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/339035e8/6996da517c6f077586ba921d_compare-KServe.avif"
 seo:
   title: "ZenML vs KServe - KServe Serves Models. ZenML Ships ML Systems."
   description: "ZenML is the open-source alternative for end-to-end MLOps: train, evaluate, version, and ship models to KServe for scalable serving"
   canonical: "https://www.zenml.io/compare/zenml-vs-kserve"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/339035e8/6996da517c6f077586ba921d_compare-KServe.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/339035e8/6996da517c6f077586ba921d_compare-KServe.avif"
   ogTitle: "ZenML vs KServe - KServe Serves Models. ZenML Ships ML Systems."
   ogDescription: "ZenML is the open-source alternative for end-to-end MLOps: train, evaluate, version, and ship models to KServe for scalable serving"
 ---

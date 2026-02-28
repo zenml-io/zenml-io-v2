@@ -14,7 +14,7 @@ description: "A robust MLOps pipeline for retail sales forecasting designed for 
 githubUrl: "https://github.com/zenml-io/zenml-projects/tree/main/retail-forecast"
 mainImageLink: "https://public-flavor-logos.s3.eu-central-1.amazonaws.com/projects/47.jpg"
 previewImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c44391c3/6852c9cd34af1ec86decfc4f_forecast_dashboard.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c44391c3/6852c9cd34af1ec86decfc4f_forecast_dashboard.png"
 tags:
   - "time-series"
   - "forecasting"
@@ -34,7 +34,7 @@ seo:
   title: "Retail Forecast"
   description: "A robust MLOps pipeline for retail sales forecasting designed for retail data scientists and ML engineers."
   canonical: "https://www.zenml.io/projects/retail-forecast"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c44391c3/6852c9cd34af1ec86decfc4f_forecast_dashboard.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c44391c3/6852c9cd34af1ec86decfc4f_forecast_dashboard.png"
   ogTitle: "Retail Forecast"
   ogDescription: "A robust MLOps pipeline for retail sales forecasting designed for retail data scientists and ML engineers."
 ---

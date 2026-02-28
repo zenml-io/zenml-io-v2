@@ -15,12 +15,12 @@ category: "mlops"
 date: "2026-02-03T00:00:00.000Z"
 readingTime: 6 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a4f6a45a/6981c01f0258a329385d038c_dynamic-pipelines-skeptics-guide.avif"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a4f6a45a/6981c01f0258a329385d038c_dynamic-pipelines-skeptics-guide.avif"
 seo:
   title: "Dynamic Pipelines: A Skeptic's Guide - ZenML Blog"
   description: "Agentic RAG without guardrails spirals out of control. Here's how ZenML's dynamic pipelines give you fan-out, budget limits, and lineage without limiting the LLMs."
   canonical: "https://www.zenml.io/blog/dynamic-pipelines-a-skeptics-guide"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a4f6a45a/6981c01f0258a329385d038c_dynamic-pipelines-skeptics-guide.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a4f6a45a/6981c01f0258a329385d038c_dynamic-pipelines-skeptics-guide.avif"
   ogTitle: "Dynamic Pipelines: A Skeptic's Guide - ZenML Blog"
   ogDescription: "Agentic RAG without guardrails spirals out of control. Here's how ZenML's dynamic pipelines give you fan-out, budget limits, and lineage without limiting the LLMs."
 ---
@@ -85,7 +85,7 @@ detect_intent
 Each `traverse_node` is a separate step, created at runtime, with its own artifacts, retries, and lineage. The agent decides "answer found" or "traverse deeper," and ZenML handles spawning the next round of steps.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/96f24367/6981c001b0bcc7c1a70ca612_CleanShot_2026-02-03_at_09.49.49-2.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/96f24367/6981c001b0bcc7c1a70ca612_CleanShot_2026-02-03_at_09.49.49-2.png" alt="__wf_reserved_inherit" />
 </figure>
 
 This is a toy example to demonstrate the patterns. For more complex real-world examples of companies running dynamic workflows in production, see the next section.
@@ -117,7 +117,7 @@ They also treat context as a budget problem:
 Cursor builds AI coding agents that need to understand large codebases. The challenge: how much context do you inject upfront versus letting the agent discover what it needs? This is a dynamic pipeline problem because the agent's trajectory through the codebase depends on what it finds at each step. You can't pre-define which files will be relevant.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6e1dcb31/6981c00f86b59c1a0b273ae8_CleanShot_2026-02-03_at_09.48.02-1.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6e1dcb31/6981c00f86b59c1a0b273ae8_CleanShot_2026-02-03_at_09.48.02-1.png" alt="__wf_reserved_inherit" />
 </figure>
 
 They chose dynamic discovery:

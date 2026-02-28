@@ -21,12 +21,12 @@ tags:
 date: "2022-07-07T00:00:00.000Z"
 readingTime: 1 Min Read
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/758ef948/653114a54cce349e9a3a17c3_1583238086348.jpeg"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/758ef948/653114a54cce349e9a3a17c3_1583238086348.jpeg"
 seo:
   title: "Podcast: ML Monitoring with Emeli Dral - ZenML Blog"
   description: "This week I spoke with Emeli Dral, co-founder and CTO of Evidently, an open-source tool tackling the problem of monitoring of models and data for machine learning. We discussed the challenges around building a tool that is both straightforward to use while also customizable and powerful."
   canonical: "https://www.zenml.io/blog/podcast-ml-monitoring-with-emeli-dral"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/be09363b/653114a54cce349e9a3a17c3_1583238086348.jpeg"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/be09363b/653114a54cce349e9a3a17c3_1583238086348.jpeg"
   ogTitle: "Podcast: ML Monitoring with Emeli Dral - ZenML Blog"
   ogDescription: "This week I spoke with Emeli Dral, co-founder and CTO of Evidently, an open-source tool tackling the problem of monitoring of models and data for machine learning. We discussed the challenges around building a tool that is both straightforward to use while also customizable and powerful."
 ---

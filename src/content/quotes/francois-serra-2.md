@@ -5,9 +5,9 @@ text: "Our data scientists are now autonomous in writing their pipelines & putti
 author: "François Serra"
 position: "ML Engineer / ML Ops / ML Solution architect at ADEO Services"
 avatar:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/56aef1bf/667bd578695e19dfb6293814_francois.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/56aef1bf/667bd578695e19dfb6293814_francois.png"
 companyLogo:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b8ed755a/667bd618ee6049af44ceb6e8_adeo_logo_white.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b8ed755a/667bd618ee6049af44ceb6e8_adeo_logo_white.png"
 webflow:
   siteId: "64a817a2e7e2208272d1ce30"
   itemId: "667bd78133410e8376d19293"

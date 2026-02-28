@@ -14,7 +14,7 @@ description: "A scalable multi-model OCR workflow framework for batch document p
 githubUrl: "https://github.com/zenml-io/zenml-projects/tree/main/omni-reader"
 mainImageLink: "https://public-flavor-logos.s3.eu-central-1.amazonaws.com/projects/9.jpg"
 previewImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/080f28b9/67f66f558c859106184bf49b_omni-reader-blog-cover.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/080f28b9/67f66f558c859106184bf49b_omni-reader-blog-cover.png"
 tags:
   - "ocr"
   - "computer-vision"
@@ -38,7 +38,7 @@ seo:
   title: "OmniReader"
   description: "A scalable multi-model OCR workflow framework for batch document processing and model evaluation."
   canonical: "https://www.zenml.io/projects/omnireader"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/080f28b9/67f66f558c859106184bf49b_omni-reader-blog-cover.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/080f28b9/67f66f558c859106184bf49b_omni-reader-blog-cover.png"
   ogTitle: "OmniReader"
   ogDescription: "A scalable multi-model OCR workflow framework for batch document processing and model evaluation."
 ---

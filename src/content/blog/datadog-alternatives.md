@@ -20,12 +20,12 @@ tags:
 date: "2025-10-31T00:00:00.000Z"
 readingTime: 14 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6832970e/69043d7716c54752d58a0368_datatdog-alternatives.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6832970e/69043d7716c54752d58a0368_datatdog-alternatives.png"
 seo:
   title: "We Tried and Tested 7 Best Datadog Alternatives for Full-Stack Observability - ZenML Blog"
   description: "In this article, you learn about the best Datadog alternatives you can use for full-stack observability."
   canonical: "https://www.zenml.io/blog/datadog-alternatives"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6832970e/69043d7716c54752d58a0368_datatdog-alternatives.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6832970e/69043d7716c54752d58a0368_datatdog-alternatives.png"
   ogTitle: "We Tried and Tested 7 Best Datadog Alternatives for Full-Stack Observability - ZenML Blog"
   ogDescription: "In this article, you learn about the best Datadog alternatives you can use for full-stack observability."
 ---
@@ -51,7 +51,7 @@ Datadog’s core observability fields: logs, metrics, and traces, have long set 
 ML systems are chatty. A single RAG pipeline can generate thousands of events, traces, and large text logs for every query. Datadog’s [billing model](https://docs.datadoghq.com/account_management/billing/custom_metrics/) for log ingestion and custom metrics can escalate quickly as data volume, cardinality, and retention grow. Users often report ‘sticker shock.’ For example, they hit a whopping six-figure monthly bill due to logs and metric cardinality.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/fbe41ddf/69043c145e513c9d5201d581_runaway-cost-of-ml-and-llms-at-scale.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/fbe41ddf/69043c145e513c9d5201d581_runaway-cost-of-ml-and-llms-at-scale.webp" alt="__wf_reserved_inherit" />
   <figcaption>Source</figcaption>
 </figure>
 
@@ -64,7 +64,7 @@ If you’re about to use Datadog or already using it for LLM observability, you�
 In short, teams needing months or years of data for compliance or analysis face a tough choice. Pay steeply or archive data externally and lose easy searchability.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/0c4c4529/69043c2916816acbf1b8916a_extra-charges-to-archive-or-rehydrate-workflows.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0c4c4529/69043c2916816acbf1b8916a_extra-charges-to-archive-or-rehydrate-workflows.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### 3. Great infra APM, thinner model-centric depth
@@ -76,7 +76,7 @@ Datadog now has LLM Observability and Experiments, yet many teams still want to 
 As one [Reddit user](https://www.reddit.com/r/learnmachinelearning/comments/1jqft6i/datadog_llm_observability_alternatives/) put it, Datadog is a ‘jack-of-all-trades,’ not built from the ground up for ML. It handles basic LLM metrics but doesn’t fully address prompt debugging or detailed tracing of model decisions.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c2dae27b/69043c367c61826389b2f590_thin-model-centric-depth.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c2dae27b/69043c367c61826389b2f590_thin-model-centric-depth.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ## Evaluation Criteria
@@ -96,7 +96,7 @@ Here is a quick summary of the seven best Datadog alternatives we tested:
 **Best For:** ML and LLM teams that want to unify pipeline orchestration, model tracking, and observability within one open-source framework.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/28feda72/68f85beef5122317b19fa759_zenml-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/28feda72/68f85beef5122317b19fa759_zenml-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [ZenML](https://www.zenml.io/) is an open-source MLOps and LLMOps framework that can partially replace Datadog for model-centric observability, not for traditional infrastructure or application monitoring. While Datadog focuses on logs, metrics, and traces for servers and apps, ZenML focuses on pipelines, experiments, and lineage for ML and LLM systems.
@@ -114,7 +114,7 @@ ZenML is free and open-source under the Apache 2.0 license. The core framework a
 For teams needing enterprise-grade collaboration, managed hosting, and premium support, ZenML offers custom business plans. These are typically usage- or seat-based and are tailored depending on your deployment model (cloud or on-prem).
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/960fbabe/69043c5ac2806809f28ffd85_zenml-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/960fbabe/69043c5ac2806809f28ffd85_zenml-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -126,7 +126,7 @@ However, ZenML doesn’t replace Datadog’s infrastructure observability; you w
 ## 2. Braintrust
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/0b9ab953/69043c65fe2c7df7fe7ec774_braintrust-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0b9ab953/69043c65fe2c7df7fe7ec774_braintrust-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [Braintrust](https://www.braintrust.dev/) is an AI-native observability and evaluation platform designed for LLM applications. It shifts the focus from generic logging toward a ‘test-driven’ workflow for LLMs: you can benchmark prompt/model changes, automate evaluations, and monitor quality over time.
@@ -144,7 +144,7 @@ Other than that, Braintrust has two paid plans:
 <ul><li><strong>Pro:</strong> $249 per month</li><li><strong>Enterprise:</strong> Custom</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1e5e3677/69043c741ea6bbab2c0ed069_braintrust-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1e5e3677/69043c741ea6bbab2c0ed069_braintrust-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pro and Cons
@@ -156,7 +156,7 @@ On the contrary, self-hosting is only for Enterprise, and relying on the SaaS mo
 ## 3. LangSmith
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9f0032ea/69043c7f432df05dbbb08892_langsmith-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9f0032ea/69043c7f432df05dbbb08892_langsmith-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [LangSmith](https://www.langchain.com/langsmith/observability) is an observability and evaluation platform from the creators of LangChain, built to debug, monitor, and test LLM applications. It provides full-trace visibility into every step of your agent or chain, making the 'black box' of complex LLM calls transparent.
@@ -172,7 +172,7 @@ LangSmith offers a free Developer Plan for individual use. Apart from that, it h
 <ul><li><strong>Plus:</strong> $39 per seat per month</li><li><strong>Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/62880a1d/69043c8962a8059a2863f279_langsmith-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/62880a1d/69043c8962a8059a2863f279_langsmith-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -184,7 +184,7 @@ While LangSmith has a UI, it’s still code-centric in setup – non-developers 
 ## 4. Arize Phoenix
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/462ac17e/69043c942890d0a82d062982_azire-phoenix-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/462ac17e/69043c942890d0a82d062982_azire-phoenix-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [Arize Phoenix](https://phoenix.arize.com/) is an open-source library for ML observability that runs in your own environment (like a Jupyter notebook or script). It's designed to help you find and fix problems with your LLM, RAG, and computer vision models *during development* before they ever reach production.
@@ -198,7 +198,7 @@ While LangSmith has a UI, it’s still code-centric in setup – non-developers 
 Arize Phoenix is completely open-source and free. Arize also offers Pro ($50 per month) and Enterprise (Custom pricing) with added benefits and features.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f9064df9/69043ca1273bc50fa297cb3a_azire-phoenix-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f9064df9/69043ca1273bc50fa297cb3a_azire-phoenix-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -210,7 +210,7 @@ The trade-off is a steep learning curve. It’s geared toward power users. Those
 ## 5. Elastic Observability
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9fe745d2/69043cec4fc9d4f73fd86634_elastic-observability-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9fe745d2/69043cec4fc9d4f73fd86634_elastic-observability-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [Elastic Observability](https://www.elastic.co/observability) is the monitoring solution built on top of the powerful Elastic Stack (formerly ELK). It unifies logs, metrics, and APM traces in one searchable datastore, making it a formidable and flexible open-source alternative to Datadog.
@@ -228,7 +228,7 @@ Elastic’s pricing depends on how you use it.
 As a ballpark, log ingestion might be ~$0.10/GB, similar to Datadog, but you have the flexibility to only pay for the components you use.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/cb6c3e7f/69043d111c9b491816f8cf26_elastic-observability-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/cb6c3e7f/69043d111c9b491816f8cf26_elastic-observability-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 👀 **Note:** Actual rates vary by region and tier.
@@ -242,7 +242,7 @@ The main con is its complexity. Managing a self-hosted Elastic cluster is a sign
 ## 6. IBM Instana Observability
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9c27de6f/69043d1cc13fbbfa445c060c_ibm-instana-observability-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9c27de6f/69043d1cc13fbbfa445c060c_ibm-instana-observability-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [IBM’s Instana Observability](https://www.ibm.com/products/instana), often just called Instana, is an enterprise-grade APM and observability platform. Instana specializes in automatic discovery and instrumentation. When you install it, it auto-detects all your services, applications, and their dependencies with minimal setup.
@@ -256,7 +256,7 @@ The main con is its complexity. Managing a self-hosted Elastic cluster is a sign
 Instana is priced per host, with both SaaS and self-hosted options available. Pricing is generally aimed at enterprise-level customers. So you must connect with their sales team to get a quote.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b5bd31fd/69043d317468ae406f3376d2_ibm-instana-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b5bd31fd/69043d317468ae406f3376d2_ibm-instana-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Pros and Cons
@@ -268,7 +268,7 @@ The downside is cost and complexity. Pricing per host can become steep if you ha
 ## 7. Chronosphere
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a34df40a/69043d3dd472fc1cbe5afb60_chronosphere-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a34df40a/69043d3dd472fc1cbe5afb60_chronosphere-homepage.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 [Chronosphere](https://chronosphere.io/) is a cloud-native observability platform built to tame high-cardinality metrics at scale, a notorious weak spot and cost driver for Datadog. It was founded by former Uber engineers behind the M3 metrics engine.

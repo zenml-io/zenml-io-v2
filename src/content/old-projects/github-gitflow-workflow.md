@@ -19,7 +19,7 @@ tags:
   - "github"
   - "deepchecks"
 image:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c49c80e3/65280bf28613658724db46e5_github_integration.jpg"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c49c80e3/65280bf28613658724db46e5_github_integration.jpg"
 description: "A GitHub workflow that automates CI/CD with continuous model training and continuous model deployment to production"
 seoTitle: "Use ZenML seamlessly with GitHub"
 seoDescription: "A GitHub workflow that automates CI/CD with continuous model training and continuous model deployment to production"
@@ -28,7 +28,7 @@ seo:
   title: "ZenML - One AI Platform - From Pipelines to Agents"
   description: "An open-source foundation to ship reliable AI products at scale - on any cloud, anywhere."
   canonical: "https://www.zenml.io"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/cb031609/695e2c1368a3480fb0daafc4_zenml-open-graph.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/cb031609/695e2c1368a3480fb0daafc4_zenml-open-graph.png"
   ogTitle: "ZenML - One AI Platform - From Pipelines to Agents"
   ogDescription: "An open-source foundation to ship reliable AI products at scale - on any cloud, anywhere."
 ---
@@ -44,7 +44,7 @@ This repository is also meant to be used as a template: you can fork it and easi
 Here's an architectural diagram of what this can look like:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c6966280/6528ff340b917ed50c8d94d1_pipeline_architecture_a8a212e2f8.png" alt="" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c6966280/6528ff340b917ed50c8d94d1_pipeline_architecture_a8a212e2f8.png" alt="" />
 </figure>
 
 ## Use case
@@ -72,7 +72,7 @@ The code to reproduce this project is available at the open-source [ZenML Gitflo
 The visualization for DAGs generated as part of this project can be viewed inside a demo version of the ZenML Dashboard.The following DAG shows the pipeline on the ZenML Dashboard:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a0bbf8d4/6528ff33364862915fc467af_gitflow_dag_88a28e0c14.png" alt="" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a0bbf8d4/6528ff33364862915fc467af_gitflow_dag_88a28e0c14.png" alt="" />
 </figure>
 
 You can access and interact with the DAGs [here](https://demo.zenml.io/workspaces/default/stacks/4906f671-e531-49d2-ba95-67af668137ac/runs/98be2f2d-db8f-4a74-96e4-f70bec92bd66/dag) on a shared ZenML Dashboard.

@@ -21,7 +21,7 @@ tags:
 date: "2026-02-20T00:00:00.000Z"
 readingTime: 12 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d9f7559b/6997da59d8b5dc1499472102_comet-vs-mlflow.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d9f7559b/6997da59d8b5dc1499472102_comet-vs-mlflow.png"
 ---
 
 The real struggle for ML teams isn’t coming up with modeling ideas. It’s producing evidence you can trust.
@@ -119,7 +119,7 @@ Experiment tracking is where most teams start. This is the system of record for 
 #### Comet
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/476d5b62/6997d95a1981d81112e50874_comet-experiment-tracking.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/476d5b62/6997d95a1981d81112e50874_comet-experiment-tracking.webp" alt="__wf_reserved_inherit" />
   <figcaption>Metrics displayed on Comet UI</figcaption>
 </figure>
 
@@ -134,7 +134,7 @@ On the UI side, the ‘single experiment’ page exposes automatically logged an
 #### MLflow
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ed0fec0a/6997d969fca13500fda00ad7_mlflow-experiment-tracking.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ed0fec0a/6997d969fca13500fda00ad7_mlflow-experiment-tracking.webp" alt="__wf_reserved_inherit" />
   <figcaption>MLflow experiment tracking</figcaption>
 </figure>
 
@@ -153,7 +153,7 @@ For run grouping, it supports parent and child runs as a way to organise many hy
 #### ZenML
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/62325c5b/6997d978c31cdf5d23ef7133_zenml-experiment-tracking.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/62325c5b/6997d978c31cdf5d23ef7133_zenml-experiment-tracking.webp" alt="__wf_reserved_inherit" />
   <figcaption>ZenML experiment tracking</figcaption>
 </figure>
 
@@ -176,7 +176,7 @@ Artifacts determine whether your ML system is reproducible or just logged. Let�
 #### Comet
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6602f97a/6997d988a8c4767c477942e1_comet-artifacts.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6602f97a/6997d988a8c4767c477942e1_comet-artifacts.webp" alt="__wf_reserved_inherit" />
   <figcaption>Comet artifacts</figcaption>
 </figure>
 
@@ -191,7 +191,7 @@ For ‘code-to-result traceability,’ Comet supports code logging. Unless disab
 #### MLflow
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2ef299fe/6997d9995249511323414fd2_mlflow-artifacts.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2ef299fe/6997d9995249511323414fd2_mlflow-artifacts.webp" alt="__wf_reserved_inherit" />
   <figcaption>MLflow artifacts</figcaption>
 </figure>
 
@@ -206,7 +206,7 @@ For dataset lineage, MLflow’s dataset tracking uses the `mlflow.data` module. 
 #### ZenML
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a7568721/69968d45ca92caf012720b8c_zenml-artifacts.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a7568721/69968d45ca92caf012720b8c_zenml-artifacts.webp" alt="__wf_reserved_inherit" />
   <figcaption>ZenML artifact tracking and visualization</figcaption>
 </figure>
 
@@ -229,7 +229,7 @@ As teams move into GenAI systems, tracing becomes more than logging metrics. Com
 #### Comet
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/0cf3ef2b/6997d9bbbf3f25090c3508c5_comet-tracing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0cf3ef2b/6997d9bbbf3f25090c3508c5_comet-tracing.webp" alt="__wf_reserved_inherit" />
   <figcaption>Comet tracing</figcaption>
 </figure>
 
@@ -244,7 +244,7 @@ For evaluation, it supports **‘task span metrics,’** which can access the fu
 #### MLflow
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/df44ea1e/6997d9cd970d8668179b0426_mlflow-tracing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/df44ea1e/6997d9cd970d8668179b0426_mlflow-tracing.webp" alt="__wf_reserved_inherit" />
   <figcaption>MLflow traces</figcaption>
 </figure>
 
@@ -279,7 +279,7 @@ Comet is a commercial experiment management platform that bundles experiment tra
 While it integrates with many frameworks like PyTorch and TensorFlow, it encourages a vertical stack where Comet handles the bulk of the research lifecycle.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d00f3d21/6997d9e01256255dd153bc6a_comet-integration.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d00f3d21/6997d9e01256255dd153bc6a_comet-integration.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### MLflow
@@ -301,7 +301,7 @@ Apart from MLflow and Comet, there is a whole list of MLOps tools that ZenML int
 <ul><li><strong>Orchestrators:</strong> Airflow, Kubeflow, AWS Step Functions, local execution</li><li><strong>Metadata stores:</strong> SQLite, PostgreSQL, MySQL</li><li><strong>Artifact stores:</strong> Amazon S3, Google Cloud Storage, Azure Blob, local files</li><li><strong>Experiment trackers:</strong> MLflow, Weights &amp; Biases, Comet</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8c7918fb/6997d9f2e9438f7068fe2f25_zenml-integration.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8c7918fb/6997d9f2e9438f7068fe2f25_zenml-integration.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ## Comet vs MLflow vs ZenML: Pricing
@@ -317,7 +317,7 @@ Comet Opik offers 4 plans to choose from:
 <ul><li><strong>Open source</strong></li><li><strong>Free Cloud</strong></li><li><strong>Pro Cloud:</strong> $19 per month</li><li><strong>Enterprise:</strong> Custom</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/df4407ef/6997d9fbe20fc5de2f038c25_comet-opik-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/df4407ef/6997d9fbe20fc5de2f038c25_comet-opik-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 MLOps offers three plans to choose from:
@@ -325,7 +325,7 @@ MLOps offers three plans to choose from:
 <ul><li><strong>Free</strong></li><li><strong>Pro:</strong> $19 per user per month</li><li><strong>Enterprise:</strong> Custom</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6872c7bc/6997da050306d60bd222415b_comet-mlops-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6872c7bc/6997da050306d60bd222415b_comet-mlops-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ### MLflow
@@ -337,7 +337,7 @@ Managed services:
 <ul><li><strong>Databricks Managed MLflow:</strong> Integrated within the Databricks platform, pricing varies based on compute and storage usage.</li><li><strong>Amazon SageMaker with MLflow:</strong> Amazon SageMaker AI provides a fully managed MLflow tracking server (MLflow 3.0). Pricing is based on the tracking server’s compute instance size and runtime, plus metadata storage. Artifact storage (e.g., model files) is billed separately in your own storage (such as Amazon S3). For current per-hour rates by instance size, refer to the SageMaker AI pricing page.</li><li><strong>Nebius Managed MLflow:</strong> Charges approximately $0.36/hour for a cluster with 6 vCPUs and 24 GiB RAM.</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ad6e118c/6997da34089709c3a3bfaa82_mlflow-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ad6e118c/6997da34089709c3a3bfaa82_mlflow-pricing.webp" alt="__wf_reserved_inherit" />
   <figcaption>Nebius managed MLflow</figcaption>
 </figure>
 
@@ -346,7 +346,7 @@ Managed services:
 [ZenML is open source and can be self-hosted](https://www.zenml.io/pricing) for free. In addition, ZenML offers managed plans (Starter, Growth, Scale) and an Enterprise tier for organizations that need advanced security, support, and deployment options.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/035a90c0/69968d791b75dfb3b3fd6d27_zenml-self-hosted.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/035a90c0/69968d791b75dfb3b3fd6d27_zenml-self-hosted.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 Both the plans above are self-hosted. ZenML now also has 4 paid SaaS plans:
@@ -354,7 +354,7 @@ Both the plans above are self-hosted. ZenML now also has 4 paid SaaS plans:
 <ul><li><strong>Starter:</strong> $399 per month</li><li><strong>Growth:</strong> $999 per month</li><li><strong>Scale:</strong> $2,499 per month</li><li><strong>Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/27fccb69/69968d84efffdca118fc04cd_zenml-saas-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/27fccb69/69968d84efffdca118fc04cd_zenml-saas-pricing.webp" alt="__wf_reserved_inherit" />
 </figure>
 
 ## Wrapping Up Comet vs MLflow vs ZenML Comparison

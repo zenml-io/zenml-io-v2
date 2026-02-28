@@ -11,7 +11,7 @@ webflow:
   createdOn: "2025-03-06T08:34:19.843Z"
 position: "AI Engineering Intern"
 photo:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/5200d26e/67c95db4dc432e8abbf94b63_marwan.jpg"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5200d26e/67c95db4dc432e8abbf94b63_marwan.jpg"
 email: "marwan.ext@zenml.io"
 linkedin: "https://www.linkedin.com/in/marwan-zaarab/"
 order: 16

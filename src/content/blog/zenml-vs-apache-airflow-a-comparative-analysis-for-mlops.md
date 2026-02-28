@@ -19,12 +19,12 @@ tags:
 date: "2024-08-20T00:00:00.000Z"
 readingTime: 10 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/25030b24/6981d389ab6d2820d701bc0b_6981d2abd805070f280af055_ZenML_vs_Apache_Airflow_1.avif"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/25030b24/6981d389ab6d2820d701bc0b_6981d2abd805070f280af055_ZenML_vs_Apache_Airflow_1.avif"
 seo:
   title: "ZenML vs. Apache Airflow: A Comparative Analysis for MLOps - ZenML Blog"
   description: "We compare ZenML with Apache Airflow, the popular data engineering pipeline tool. For machine learning workflows, using Airflow with ZenML will give you a more comprehensive solution."
   canonical: "https://www.zenml.io/blog/zenml-vs-apache-airflow-a-comparative-analysis-for-mlops"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/25030b24/6981d389ab6d2820d701bc0b_6981d2abd805070f280af055_ZenML_vs_Apache_Airflow_1.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/25030b24/6981d389ab6d2820d701bc0b_6981d2abd805070f280af055_ZenML_vs_Apache_Airflow_1.avif"
   ogTitle: "ZenML vs. Apache Airflow: A Comparative Analysis for MLOps - ZenML Blog"
   ogDescription: "We compare ZenML with Apache Airflow, the popular data engineering pipeline tool. For machine learning workflows, using Airflow with ZenML will give you a more comprehensive solution."
 ---
@@ -84,7 +84,7 @@ Both tools automate workflows but cater to different needs. ZenML is designed fo
 ### Architecture Diagram
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/72029abb/66c4571a5f131f90c2c3e991_66c452db1a442d155c08b4df_Untitled_20_1_.png" alt="Architecture diagram for Airflow" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/72029abb/66c4571a5f131f90c2c3e991_66c452db1a442d155c08b4df_Untitled_20_1_.png" alt="Architecture diagram for Airflow" />
 </figure>
 
 Apache Airflow’s architecture consists of several core components:
@@ -104,13 +104,13 @@ Apache Airflow’s architecture consists of several core components:
 Using Apache Airflow as an MLOps orchestrator presents several challenges, as it was not originally designed with machine learning workflows in mind. Commonly cited issues include the lack of native support for ML-specific tasks, the complexity of integrating machine learning libraries, and the manual effort required for experiment tracking, model versioning, and deployment. While Airflow's flexibility and extensibility make it a powerful tool for general workflow orchestration, these same features can make it cumbersome and inefficient for MLOps use cases, as discussed frequently in community forums like Reddit. In the following sections, we'll explore these challenges in detail and how they impact the effectiveness of using Airflow for machine learning operations.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a2dda230/66c457195f131f90c2c3e97e_66c453524cedcfecc181b977_Image_20from_20Notion.png" alt="Screenshot of a Reddit post" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a2dda230/66c457195f131f90c2c3e97e_66c453524cedcfecc181b977_Image_20from_20Notion.png" alt="Screenshot of a Reddit post" />
 </figure>
 
 1. [This Reddit post](https://www.reddit.com/r/dataengineering/comments/10ttbvl/why_everybodys_using_airflow_while_noone_seems_to/) discusses why Apache Airflow, despite being widely used in data engineering, often receives mixed reviews. Many users appreciate its capabilities but acknowledge that it was not designed with machine learning (ML) pipelines in mind. This can lead to frustration when using Airflow for ML workflows, which are typically more compute-intensive and have different requirements than the data pipelines Airflow excels at managing. As a result, there's growing interest in exploring tools better suited for ML tasks.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/67d41010/66c457195f131f90c2c3e97b_66c4538315ac3d1f2ce72817_Image_20from_20Notion_20_1_.png" alt="Screenshot of a reddit post about why people are unhappy with AirflowReddit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/67d41010/66c457195f131f90c2c3e97b_66c4538315ac3d1f2ce72817_Image_20from_20Notion_20_1_.png" alt="Screenshot of a reddit post about why people are unhappy with AirflowReddit" />
 </figure>
 
 2. In [this one](https://www.reddit.com/r/mlops/comments/11d7a8j/who_uses_apache_airflow_for_mlops_enlighten_me/), people share their experiences and opinions of using Airflow for production-grade (highly scalable) ML pipelines. They agree that Airflow is a great tool, but it’s excruciating to debug/run locally. Even though it was made with data scientists in mind, there had to be an IT guy to use it with new tech like Kubernetes. It can be complex, with many things to learn before use.
@@ -160,7 +160,7 @@ curl -LJO https://raw.githubusercontent.com/Sid-Lais/Airflow-Test/main/airflow_p
 **Open your web browser and go to localhost:8080. Both default username and password are airflow. The custom pipeline will be shown there.**
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/30923d7d/66c4571a5f131f90c2c3e9b7_66c45405628f556f8d92e7aa_Image_20from_20Notion_20_2_.png" alt="Screenshot of the Airflow UI" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/30923d7d/66c4571a5f131f90c2c3e9b7_66c45405628f556f8d92e7aa_Image_20from_20Notion_20_2_.png" alt="Screenshot of the Airflow UI" />
 </figure>
 
 ## Understanding ZenML
@@ -168,7 +168,7 @@ curl -LJO https://raw.githubusercontent.com/Sid-Lais/Airflow-Test/main/airflow_p
 [ZenML](https://github.com/zenml-io/zenml) is an open-source MLOps framework designed to simplify the development, deployment, and management of machine learning workflows. It emphasizes best reproducibility, scalability, and automation practices, making it easier for data scientists and ML engineers to build production-ready models.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b3d9cbf4/66c4571a5f131f90c2c3e98a_66c45421e6624470bdc0a911_Untitled_20_2_.png" alt="Flow and process diagram of how people use ZenML for machine learning pipelines" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b3d9cbf4/66c4571a5f131f90c2c3e98a_66c45421e6624470bdc0a911_Untitled_20_2_.png" alt="Flow and process diagram of how people use ZenML for machine learning pipelines" />
 </figure>
 
 ### Key Features
@@ -212,7 +212,7 @@ Once it is running, your dashboard will show all the details of the associated r
 and artifacts.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/01596b59/66c4571a5f131f90c2c3e98e_66c4546a51534407fe58e4ae_Image_20from_20Notion_20_3_.png" alt="Screenshot of the ZenML Pro dashboard for running machine learning pipelines" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/01596b59/66c4571a5f131f90c2c3e98e_66c4546a51534407fe58e4ae_Image_20from_20Notion_20_3_.png" alt="Screenshot of the ZenML Pro dashboard for running machine learning pipelines" />
 </figure>
 
 ## ZenML vs. Apache Airflow: Side-by-Side Code Comparison
@@ -330,19 +330,19 @@ This comparison showcases how ZenML offers a more streamlined and intuitive appr
 The main reasons why ML engineers should try ZenML over Apache Airflow are:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7bad010f/66c4571a5f131f90c2c3e9b4_66c454f6e5fee47d7111c904_Untitled_20_3_.png" alt="A chart showing the differences between ZenML and Apache Airflow" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7bad010f/66c4571a5f131f90c2c3e9b4_66c454f6e5fee47d7111c904_Untitled_20_3_.png" alt="A chart showing the differences between ZenML and Apache Airflow" />
 </figure>
 
 ## Cloud-Native Integration Comparison
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/cfe8bda8/66c457195f131f90c2c3e977_66c4552bcdb9d5d426180b92_Untitled_20_4_.png" alt="A chart comparing ZenML with Apache Airflow from the perspective of cloud-native integration" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/cfe8bda8/66c457195f131f90c2c3e977_66c4552bcdb9d5d426180b92_Untitled_20_4_.png" alt="A chart comparing ZenML with Apache Airflow from the perspective of cloud-native integration" />
 </figure>
 
 ## Choosing the Right Tool
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/99389dd0/66c4571a5f131f90c2c3e994_66c4555b029f885465f3c84d_Frame_201430107114.png" alt="Flowchart guiding you through the decision of whether to use Apache Airflow or ZenML or both" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/99389dd0/66c4571a5f131f90c2c3e994_66c4555b029f885465f3c84d_Frame_201430107114.png" alt="Flowchart guiding you through the decision of whether to use Apache Airflow or ZenML or both" />
 </figure>
 
 ## Airflow + ZenML = Airflow++
@@ -431,11 +431,11 @@ python file_that_runs_a_zenml_pipeline.py</airflow_dag_directory>
 <ul><li><strong>You can now run any ZenML pipeline using the Airflow orchestrator:</strong></li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/03d66b2d/66c4571a5f131f90c2c3e9ba_66c455a6e608879358c40b5f_Untitled_20_6_.png" alt="Screenshot of the Airflow UI" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/03d66b2d/66c4571a5f131f90c2c3e9ba_66c455a6e608879358c40b5f_Untitled_20_6_.png" alt="Screenshot of the Airflow UI" />
 </figure>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/087811c5/66c4571a5f131f90c2c3e987_66c455b172ae0423dd23cc8f_Untitled_20_7_.png" alt="Screenshot of the ZenML dashboard after running a pipeline using Airflow" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/087811c5/66c4571a5f131f90c2c3e987_66c455b172ae0423dd23cc8f_Untitled_20_7_.png" alt="Screenshot of the ZenML dashboard after running a pipeline using Airflow" />
 </figure>
 
 ## Conclusion

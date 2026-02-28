@@ -12,7 +12,7 @@ webflow:
   createdOn: "2026-02-12T18:51:21.425Z"
 toolName: "DVC"
 toolIcon:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/62bdeef6/6996da8348bc6d36ff3a15fa_DVC_icon.avif"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/62bdeef6/6996da8348bc6d36ff3a15fa_DVC_icon.avif"
 category: "data-model-versioning"
 integrationType: "artifact-store"
 advantages:
@@ -26,12 +26,12 @@ ctaHeadline: "Ready to move beyond Git-based experiments to portable production 
 learnMoreUrl: "https://docs.zenml.io/user-guides/production-guide"
 seoDescription: "Open-source DVC alternative: ZenML orchestrates portable ML pipelines and lifecycle tooling beyond Git-based data/model versioning."
 openGraphImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d4899454/6996da8bac608388f91bbf6f_compare-DVC.avif"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d4899454/6996da8bac608388f91bbf6f_compare-DVC.avif"
 seo:
   title: "ZenML vs DVC - DVC versions your data. ZenML runs your pipelines anywhere."
   description: "Open-source DVC alternative: ZenML orchestrates portable ML pipelines and lifecycle tooling beyond Git-based data/model versioning."
   canonical: "https://www.zenml.io/compare/zenml-vs-dvc"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d4899454/6996da8bac608388f91bbf6f_compare-DVC.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d4899454/6996da8bac608388f91bbf6f_compare-DVC.avif"
   ogTitle: "ZenML vs DVC - DVC versions your data. ZenML runs your pipelines anywhere."
   ogDescription: "Open-source DVC alternative: ZenML orchestrates portable ML pipelines and lifecycle tooling beyond Git-based data/model versioning."
 ---

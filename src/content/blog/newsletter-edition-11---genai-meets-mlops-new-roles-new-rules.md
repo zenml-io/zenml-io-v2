@@ -20,12 +20,12 @@ tags:
 date: "2025-01-22T00:00:00.000Z"
 readingTime: 6 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/efd3d7a9/6790e2de9fe4afcb90333e4c_New_Newsletter_Design.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/efd3d7a9/6790e2de9fe4afcb90333e4c_New_Newsletter_Design.png"
 seo:
   title: "Newsletter Edition #11 - GenAI Meets MLOps: New Roles, New Rules - ZenML Blog"
   description: "Our monthly roundup: AI Infrastructure Summit insights, new experiment comparison tools, and a deep dive into AI Engineering roles"
   canonical: "https://www.zenml.io/blog/newsletter-edition-11---genai-meets-mlops-new-roles-new-rules"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/efd3d7a9/6790e2de9fe4afcb90333e4c_New_Newsletter_Design.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/efd3d7a9/6790e2de9fe4afcb90333e4c_New_Newsletter_Design.png"
   ogTitle: "Newsletter Edition #11 - GenAI Meets MLOps: New Roles, New Rules - ZenML Blog"
   ogDescription: "Our monthly roundup: AI Infrastructure Summit insights, new experiment comparison tools, and a deep dive into AI Engineering roles"
 ---
@@ -39,7 +39,7 @@ At ZenML, we've been fascinated by the diverse paths people are taking into the 
 ## ⚡ Major Product Updates
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3f776b46/678525ed4a16785150e7f741_678524f9be42385bc570eedf_Metadata_20Comparison_20Tool_20Jan_2013_202025.png" alt="The new ZenML experiment comparison feature on our dashboard, allowing you to visualise cross-experiment changes in the dashboard" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3f776b46/678525ed4a16785150e7f741_678524f9be42385bc570eedf_Metadata_20Comparison_20Tool_20Jan_2013_202025.png" alt="The new ZenML experiment comparison feature on our dashboard, allowing you to visualise cross-experiment changes in the dashboard" />
 </figure>
 
 We've been busy building on the product side.
@@ -55,7 +55,7 @@ Of course there's a few dozen other smaller bug fixes, quality of life improveme
 ## 📈 Technical Deep Dives
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/689ed4b3/6790e45a842cdc8a2f6d18d0_6790e3d9b8fd1f283ec594e6_CleanShot_20Jan_2020_202025_20Newsletter_20_5_.gif" alt="A gif showing someone scrolling through the LLMOps Database summary blog post with all the different use cases" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/689ed4b3/6790e45a842cdc8a2f6d18d0_6790e3d9b8fd1f283ec594e6_CleanShot_20Jan_2020_202025_20Newsletter_20_5_.gif" alt="A gif showing someone scrolling through the LLMOps Database summary blog post with all the different use cases" />
 </figure>
 
 We've also been busy writing technical content around how people are working with GenAI and LLMs in production.
@@ -71,7 +71,7 @@ Finally, we closed up our ten-part series of topical summaries of the current st
 ## 💡 Community Showcase
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/4d442ca3/6790e45a842cdc8a2f6d18b2_6790e2de9fe4afcb90333e4c_New_20Newsletter_20Design.png" alt="Screenshots of all the community posts listed in the newsletter" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/4d442ca3/6790e45a842cdc8a2f6d18b2_6790e2de9fe4afcb90333e4c_New_20Newsletter_20Design.png" alt="Screenshots of all the community posts listed in the newsletter" />
 </figure>
 
 Since our last newsletter there's been a flurry of community content of various kinds. In no particular order, here are some of the ones that stood out for us!
@@ -97,7 +97,7 @@ We're lucky to be working in a field that not only has lots of practitioners who
 ## 🎭 Rants Corner
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3d76562b/6790e45a842cdc8a2f6d18bd_6790e42a669eda42c252fb73_CleanShot_20Jan_2022_202025_20from_20Newsletter.png" alt="Screenshot of Hamza&#039;s AI Engineering vs ML Engineering blog on the zenml website" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3d76562b/6790e45a842cdc8a2f6d18bd_6790e42a669eda42c252fb73_CleanShot_20Jan_2022_202025_20from_20Newsletter.png" alt="Screenshot of Hamza&#039;s AI Engineering vs ML Engineering blog on the zenml website" />
 </figure>
 
 In "[AI Engineering vs ML Engineering: Evolving Roles in the GenAI Era](https://www.zenml.io/blog/ai-engineering-vs-ml-engineering-evolving-roles-genai)", I tackle a growing misconception in our industry: the idea that traditional software engineers can seamlessly transition into AI engineering roles. While the "everyone's an AI engineer" narrative is appealing, the reality is more complex. What often starts as simple API calls to GPT-4 quickly evolves into sophisticated ML engineering challenges, especially in enterprise environments.

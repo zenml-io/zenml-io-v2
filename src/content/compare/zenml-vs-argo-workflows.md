@@ -12,7 +12,7 @@ webflow:
   createdOn: "2026-02-12T18:44:18.018Z"
 toolName: "Argo Workflows"
 toolIcon:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/10f300b4/6996da292c9dea137bf8cc68_Argo_Workflows_icon.avif"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/10f300b4/6996da292c9dea137bf8cc68_Argo_Workflows_icon.avif"
 category: "orchestrators"
 integrationType: "orchestrator"
 advantages:
@@ -26,12 +26,12 @@ ctaHeadline: "Ready to Turn Argo-Style Workflows into Portable ML Pipelines?"
 learnMoreUrl: "https://docs.zenml.io/user-guides/production-guide"
 seoDescription: "ZenML is an open-source alternative to Argo Workflows for ML pipelines with built-in metadata, lineage, and reproducibility"
 openGraphImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e714a227/6996da308d5e33e538d8aa52_compare-argo-workflows.avif"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e714a227/6996da308d5e33e538d8aa52_compare-argo-workflows.avif"
 seo:
   title: "ZenML vs Argo Workflows - Stop Building MLOps on Top of a Workflow Engine"
   description: "ZenML is an open-source alternative to Argo Workflows for ML pipelines with built-in metadata, lineage, and reproducibility"
   canonical: "https://www.zenml.io/compare/zenml-vs-argo-workflows"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e714a227/6996da308d5e33e538d8aa52_compare-argo-workflows.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e714a227/6996da308d5e33e538d8aa52_compare-argo-workflows.avif"
   ogTitle: "ZenML vs Argo Workflows - Stop Building MLOps on Top of a Workflow Engine"
   ogDescription: "ZenML is an open-source alternative to Argo Workflows for ML pipelines with built-in metadata, lineage, and reproducibility"
 ---

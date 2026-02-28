@@ -20,12 +20,12 @@ tags:
 date: "2025-03-27T00:00:00.000Z"
 readingTime: 7 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/0365e48f/67e5a7eaac078ed541114b34_Image_from_Notion__2_.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0365e48f/67e5a7eaac078ed541114b34_Image_from_Notion__2_.png"
 seo:
   title: "Newsletter Edition #13 - ZenML 0.80.0 just dropped - ZenML Blog"
   description: "Our monthly roundup: new features with 0.80.0 release, more new models, and an MCP server for ZenML"
   canonical: "https://www.zenml.io/blog/newsletter-edition-13-zenml-0-80-0-just-dropped-big-changes-to-your-workflows"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/0365e48f/67e5a7eaac078ed541114b34_Image_from_Notion__2_.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0365e48f/67e5a7eaac078ed541114b34_Image_from_Notion__2_.png"
   ogTitle: "Newsletter Edition #13 - ZenML 0.80.0 just dropped - ZenML Blog"
   ogDescription: "Our monthly roundup: new features with 0.80.0 release, more new models, and an MCP server for ZenML"
 ---
@@ -43,7 +43,7 @@ Here's what we've been building toward that vision:
 ### 🚀 Product Update: ZenML 0.80.0 Brings Workspace Hierarchy & Performance Gains
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d0126f36/67e5a7dce5ca0d074eb4f213_Image_from_Notion__1_.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d0126f36/67e5a7dce5ca0d074eb4f213_Image_from_Notion__1_.png" alt="__wf_reserved_inherit" />
 </figure>
 
 Our latest release, [ZenML 0.80.0](https://www.zenml.io/blog/v0-80-0-a-new-era-reimagined-workspaces-enhanced-performance), completely changes how you'll organize your ML projects while making everything run faster.
@@ -59,7 +59,7 @@ Ready to upgrade? Just run `pip install -U zenml` and [check the changelog](http
 ### 👥 Community Spotlight: Munich Meetup on Agents in Production
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/0365e48f/67e5a7eaac078ed541114b34_Image_from_Notion__2_.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0365e48f/67e5a7eaac078ed541114b34_Image_from_Notion__2_.png" alt="__wf_reserved_inherit" />
 </figure>
 
 Our first "Agents in Production" meetup in Munich brought together practitioners tackling real implementation challenges head-on. The event featured talks from [Felix Altenberger](https://www.linkedin.com/in/felix-altenberger/) on latency-critical video applications, [Denys Lazarenko](https://www.linkedin.com/in/denys-lazarenko/) demonstrating multi-agent systems, and [Sebastian Schuon](https://www.linkedin.com/in/schuon/) exploring medical workflows enhanced by agents.
@@ -71,7 +71,7 @@ Thanks to [Maltego Technologies](https://www.linkedin.com/company/maltego/) for 
 ### 🤖 Chat With Your ML Pipelines Using ZenML MCP Server
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/55a7e67a/67ce92f01cb444c9c5bf805d_CleanShot_Mar_9_from_ZenML_Chat.gif" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/55a7e67a/67ce92f01cb444c9c5bf805d_CleanShot_Mar_9_from_ZenML_Chat.gif" alt="__wf_reserved_inherit" />
   <figcaption>An example of the kinds of reports you can generate with Claude Desktop connected to your ZenML server using MCP</figcaption>
 </figure>
 
@@ -86,7 +86,7 @@ What's next? We're keeping an eye on how the MCP landscape evolves to potentiall
 ### ✍️ Latest MLOps & LLMOps Insights From Our Blog
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/bc8ed30d/67e5a87ea6ad758c892fc81c_CleanShot_Mar_26_2025.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/bc8ed30d/67e5a87ea6ad758c892fc81c_CleanShot_Mar_26_2025.png" alt="__wf_reserved_inherit" />
 </figure>
 
 Our team recently published several deep dives into the practical challenges of deploying AI systems in production environments. Here's what we've been writing about:
@@ -102,7 +102,7 @@ Dive into these articles for the technical details and implementation strategies
 ### 💼 Case Studies: LLMOps in Action Across Industries
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1c0b1d6d/67e5a860cc54d5ddb34d6ea0_CleanShot_Mar_26_2025__1_.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1c0b1d6d/67e5a860cc54d5ddb34d6ea0_CleanShot_Mar_26_2025__1_.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [Our LLMOps Database](https://www.zenml.io/llmops-database) continues to showcase innovative applications across industries. [Love Without Sound's modular NLP pipeline](https://explosion.ai/blog/love-without-sound-nlp-music-industry) standardizes music metadata and processes legal correspondence, helping recover millions in lost royalties with components achieving up to 99% accuracy at impressive speeds.
@@ -118,7 +118,7 @@ If you'd like to contribute your implementation story to our database, please [s
 ### 💡 Pro Tip: Speed Up Pipeline Startup with Persistent Resources
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f301527e/67e5a894c268a62919185e78_CleanShot_Mar_26_2025__2_.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f301527e/67e5a894c268a62919185e78_CleanShot_Mar_26_2025__2_.png" alt="__wf_reserved_inherit" />
 </figure>
 
 Tired of waiting for cloud resources to spin up during ML development? Both Vertex AI and SageMaker integrations in ZenML offer features that dramatically reduce this waiting time by keeping compute resources warm between runs.
@@ -130,7 +130,7 @@ These features deliver the greatest value during active development cycles where
 ### 📰 Industry Pulse: AI News Roundup for March 2025
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/55a63805/67e5a8a60708d80ec8796d3c_AI_World_Roundup_Mar_2025.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/55a63805/67e5a8a60708d80ec8796d3c_AI_World_Roundup_Mar_2025.png" alt="__wf_reserved_inherit" />
 </figure>
 
 March brought the usual flood of AI announcements. [Google's Gemini 2.5 Pro](https://blog.google/technology/google-deepmind/gemini-model-thinking-updates-march-2025/) boasts a massive 1-2 million token context window, while [DeepSeek's V3](https://api-docs.deepseek.com/news/news1226) claims better reasoning scores on benchmarks like MMLU-Pro. Google also dropped [Gemma 3](https://blog.google/technology/developers/gemma-3/), their open-source model family with 140-language support and 128k context windows. Let's be real though—these are mostly incremental upgrades to the same architectures we've been seeing since 2022.

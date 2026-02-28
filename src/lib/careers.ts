@@ -18,7 +18,7 @@ export const CAREERS_SEO = {
   ogTitle: "Careers - ZenML",
   ogDescription:
     "Join the ZenML team. We are quickly growing and looking for motivated team members.",
-  ogImage: `https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3ae53e01/64b9920cd04b7c4c0340ce50_og-img-0625.jpg`,
+  ogImage: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3ae53e01/64b9920cd04b7c4c0340ce50_og-img-0625.jpg`,
 } as const;
 
 // ---------------------------------------------------------------------------
@@ -39,7 +39,7 @@ export const CAREERS_MISSION = {
   headline: "Our mission",
   body: "<strong>ZenML's mission is to accelerate worldwide problem solving by making machine learning simple.</strong><br><br>Our open-source framework allows data scientists to write their code as automated pipelines from day 1. Our extensible framework also provides a path to an automated, production-ready software base that can be deployed on any cloud or backend service.",
   image: {
-    url: `https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7cea56ef/652ea57525920a782529bb0e_zenml_team_jul23.webp`,
+    url: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7cea56ef/652ea57525920a782529bb0e_zenml_team_jul23.webp`,
     alt: "Group of people posing in front of a historic statue and building under a blue sky.",
   },
   primaryCta: {

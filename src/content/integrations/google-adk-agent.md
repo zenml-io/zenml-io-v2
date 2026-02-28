@@ -12,12 +12,12 @@ webflow:
   createdOn: "2025-08-26T12:36:57.754Z"
 integrationType: "agents"
 logo:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7d912ea5/68adaa7150cb5160b3708993_google-adk.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7d912ea5/68adaa7150cb5160b3708993_google-adk.png"
 shortDescription: "Google Agent Development Kit integrated with ZenML"
 docsUrl: "https://docs.zenml.io"
 githubUrl: "https://github.com/zenml-io/zenml/tree/main/examples/agent_framework_integrations/google-adk"
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f9dcbd2a/68adab8d6ad81d3c14b9b59b_google-adk-img.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f9dcbd2a/68adab8d6ad81d3c14b9b59b_google-adk-img.png"
 relatedBlogPosts:
   - "best-agentic-ai-frameworks"
   - "production-ready-ai-agents-why-your-mlops-stack-is-missing-piece"
@@ -25,7 +25,7 @@ seo:
   title: "Integrate Google ADK Agent with ZenML - Agents Integrations"
   description: "Google Agent Development Kit integrated with ZenML"
   canonical: "https://www.zenml.io/integrations/google-adk-agent"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f9dcbd2a/68adab8d6ad81d3c14b9b59b_google-adk-img.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f9dcbd2a/68adab8d6ad81d3c14b9b59b_google-adk-img.png"
   ogTitle: "Integrate Google ADK Agent with ZenML - Agents Integrations"
   ogDescription: "Google Agent Development Kit integrated with ZenML"
 overviewTitle: "Conversational Agent Framework"

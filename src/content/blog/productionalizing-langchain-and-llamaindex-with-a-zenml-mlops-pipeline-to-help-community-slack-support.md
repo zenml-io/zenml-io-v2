@@ -23,12 +23,12 @@ tags:
 date: "2023-03-31T00:00:00.000Z"
 readingTime: 10 Mins Read
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9c990ced/6531260e8a46ccfa4b018510_slackbot-small.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9c990ced/6531260e8a46ccfa4b018510_slackbot-small.png"
 seo:
   title: "Productionalizing LangChain and LlamaIndex with a ZenML MLOps Pipeline to Help Community Slack Support - ZenML Blog"
   description: "We decided to explore how the emerging technologies around Large Language Models (LLMs) could seamlessly fit into ZenML's MLOps workflows and standards. We created and deployed a Slack bot to provide community support."
   canonical: "https://www.zenml.io/blog/productionalizing-langchain-and-llamaindex-with-a-zenml-mlops-pipeline-to-help-community-slack-support"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/258b46e9/6531260e8a46ccfa4b018510_slackbot-small.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/258b46e9/6531260e8a46ccfa4b018510_slackbot-small.png"
   ogTitle: "Productionalizing LangChain and LlamaIndex with a ZenML MLOps Pipeline to Help Community Slack Support - ZenML Blog"
   ogDescription: "We decided to explore how the emerging technologies around Large Language Models (LLMs) could seamlessly fit into ZenML's MLOps workflows and standards. We created and deployed a Slack bot to provide community support."
 ---
@@ -42,7 +42,7 @@ The ZenML Slack bot is [live](https://zenml.io/slack)! 🥳
 We couldn’t ignore the growing enthusiasm surrounding LLMs, so we decided to explore how these emerging technologies could seamlessly fit into ZenML’s MLOps workflows and standards. Our solution? We created and [deployed a Slack bot](https://zenml.io/slack) to provide community support. Feel free to @zenml-bot in our #general Slack channel to receive assistance with your ZenML-related queries.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/0c9abf1b/65312651fe67f2c6ddbcc30e_slackbot_support_redacted.png" alt="The ZenML Slack bot in action (screenshot)" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0c9abf1b/65312651fe67f2c6ddbcc30e_slackbot_support_redacted.png" alt="The ZenML Slack bot in action (screenshot)" />
 </figure>
 
 First, some context. Large language models (LLMs) have become a cornerstone of natural language processing, offering unparalleled capabilities for knowledge generation and reasoning. The past few weeks have seen a number of high profile releases of models and interfaces. However, despite their immense potential, incorporating custom, private data into these models [remains a challenge](https://docs.google.com/presentation/d/1VXQkR65ieROCmJP_ga09gGt8wkTGtTAdvaDRxMB67GI/edit#slide=id.p). This is where tools like [LangChain](https://github.com/hwchase17/langchain) and [LlamaIndex](https://github.com/jerryjliu/llama_index) (formerly ‘GPT Index’) come into play, offering innovative solutions for data ingestion and indexing, enabling developers to augment LLMs with their unique datasets.
@@ -64,7 +64,7 @@ In particular, we wanted to experience how users of ZenML might go about using o
 Starting out, we wanted to get a feel for the two well-known options for developing on top of large language models — that is, LangChain and Llama Index — by trying out some of their core functionality. In particular, loading a series of documents, doing some kind of querying of those documents and packaging this all up into some kind of frontend user experience seemed like good places to start.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b78c5fcb/653126510e6a32653e4fa4e9_big-picture-workflow.png" alt="The big-picture workflow" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b78c5fcb/653126510e6a32653e4fa4e9_big-picture-workflow.png" alt="The big-picture workflow" />
 </figure>
 
 We approached the problem by dividing it into two main parts, each addressing a specific aspect of the project. The first part focused on creating the ZenML pipeline, while the second part concentrated on the larger workflow that would automate the bot updates.
@@ -76,7 +76,7 @@ In the first part of the project, we built a ZenML pipeline to handle data inges
 <ul><li>Data Ingestion: We used the langchain and llama_index frameworks to load a series of documents from various sources such as GitHub and Slack. This data would serve as the basis for our vector store.</li><li>Vector Store Construction: Once the data was ingested, we applied the necessary preprocessing and transformed it into a suitable format for querying. We then used the large language models to create a vector store, which would enable us to search and retrieve relevant information efficiently.</li><li>Saving to ZenML Artifact Store: The final piece was to save the resulting vector store in the ZenML artifact store. This allowed us to have a versioned and easily accessible storage system for our indexed data.</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2bf15ec5/6531265266d1972f2dd0c604_slackbot_pipeline_project.png" alt="The steps run in our ZenML pipeline" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2bf15ec5/6531265266d1972f2dd0c604_slackbot_pipeline_project.png" alt="The steps run in our ZenML pipeline" />
 </figure>
 
 We thought about the kinds of data sources we’d want to be queried when users entered their queries. We take a lot of pride and effort to maintain our documentation so that was an obvious one to include. We considered adding [the README files of our examples](https://github.com/zenml-io/zenml/tree/main/examples) since that’s often a starting point for our users, and we thought [our release notes](https://github.com/zenml-io/zenml/blob/main/RELEASE_NOTES.md) would also be useful to be part of the context.
@@ -96,7 +96,7 @@ The second part of the project focused on setting up a continuous integration an
 <ul><li>Triggering the Pipeline: We configured the pipeline to run automatically whenever a new release was made, ensuring that the most up-to-date data would be used for the bot’s functionality.</li><li>Running the ZenML Pipeline: As part of the workflow, the ZenML pipeline would be executed, updating the vector store with the latest data and ensuring that the bot would be able to retrieve the most relevant information for user queries.</li><li>Deploying the Updated Bot: Once the pipeline had successfully run and the updated vector store was saved in the ZenML artifact store, the new version of the bot was automatically deployed to Slack. This ensured that users would always interact with the most current version of the bot, providing the best possible user experience.</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c8f42dbe/65312652276b64e1a0a29014_slack-automated-redeployment.png" alt="Our automated workflow for updating the Slack bot" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c8f42dbe/65312652276b64e1a0a29014_slack-automated-redeployment.png" alt="Our automated workflow for updating the Slack bot" />
 </figure>
 
 The Slack bot itself wasn’t too hard to put together. Our pattern of use was simple and well-defined. The only unusual part was using the vector store that had been generated in our pipeline as the basis for incoming Slack messages. We deployed our bot inside a container along with a way to query ZenML for the vector store on initialization. It’s now up and running courtesy of Google Cloud Run.

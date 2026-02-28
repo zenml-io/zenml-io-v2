@@ -19,12 +19,12 @@ tags:
 date: "2021-12-14T00:00:00.000Z"
 readingTime: 5 Mins Read
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d24b2809/653176b483442a634b088148_svg-image-1__8_.svg"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d24b2809/653176b483442a634b088148_svg-image-1__8_.svg"
 seo:
   title: "ZenML - Why we built it - ZenML Blog"
   description: "All the advantages that ZenML will bring you if you choose to use it to productionize your model development workflows."
   canonical: "https://www.zenml.io/blog/zenml-why-we-built-it"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8bc84b20/653176b483442a634b088148_svg-image-1__8_.svg"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8bc84b20/653176b483442a634b088148_svg-image-1__8_.svg"
   ogTitle: "ZenML - Why we built it - ZenML Blog"
   ogDescription: "All the advantages that ZenML will bring you if you choose to use it to productionize your model development workflows."
 ---
@@ -42,7 +42,7 @@ We didn’t wake up one day and get an epiphany: “Hey, let’s build an MLOps 
 There are an [increasing number of tools](https://huyenchip.com/2020/06/22/mlops.html) for all personas across the ML pipeline. However, we noticed that most tools separate workflows into islands that mainly concentrate on the early development phase for data scientists, or the later deployment phase which is largely owned by engineering. This causes systemic failures in the entire system like a lack of reproducibility or provenance across the pipeline.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/fb1486eb/653176bead82ce598a141d16_1-pipeline-hard-reproduce.png" alt="Problem: Non-reproducible ML" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/fb1486eb/653176bead82ce598a141d16_1-pipeline-hard-reproduce.png" alt="Problem: Non-reproducible ML" />
 </figure>
 
 Older principles like the division of labor in the [pin factory](https://multithreaded.stitchfix.com/blog/2019/03/11/FullStackDS-Generalists/) cannot be applied in machine learning as all inputs are changing constantly. We believe that the central focus should be the data scientist, the driving mind and the core creator of value of any ML project. Their skills concentrate on the creative stage of experimentation. But they are not trained to write, run, and maintain entire ML pipelines.
@@ -52,7 +52,7 @@ Older principles like the division of labor in the [pin factory](https://multith
 ZenML is built to tackle the ownership dilemma within ML teams. It is designed with higher level abstractions that enable the data scientist to [own the pipeline fully until production](https://eugeneyan.com/writing/end-to-end-data-science/). The data scientist won’t need to understand the details of the infrastructure or deployment tools but will be able to use them through ZenML.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/7f8991ec/653176be2dedee6dd94cedfd_sam-side-by-side-full-text.png" alt="The problem that ZenML seeks to solve" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7f8991ec/653176be2dedee6dd94cedfd_sam-side-by-side-full-text.png" alt="The problem that ZenML seeks to solve" />
 </figure>
 
 ZenML is written in Python, the lingua franca of data science. Workflows are standardized through simply Python functions linked together in a pipeline:
@@ -90,7 +90,7 @@ This sets ZenML apart from tools like Airflow/Luigi/Prefect that are focused on 
 All this is from the point of view of an application, but what about infrastructure? Even with all the advantages above, these pipelines and integrations need to work across varied environments and infrastructure requirements for any use-case. This is where the notion of a MLOps stack comes in.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/88cd9784/653176be517f2d442cf3edac_stack.png" alt="Registering a ZenML stack" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/88cd9784/653176be517f2d442cf3edac_stack.png" alt="Registering a ZenML stack" />
 </figure>
 
 Right now, the stack consists of:

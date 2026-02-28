@@ -12,7 +12,7 @@ webflow:
   createdOn: "2024-09-19T09:13:54.786Z"
 toolName: "ClearML"
 toolIcon:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/58411f92/66ebeb4882fa97b89b23d082_clearml.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/58411f92/66ebeb4882fa97b89b23d082_clearml.png"
 category: "e2e-platforms"
 integrationType: "e2e-platform"
 advantages:
@@ -26,12 +26,12 @@ ctaHeadline: "Experience the ZenML Difference: Elevate Your MLOps with Flexibili
 learnMoreUrl: "https://cloud.zenml.io/?utm_source=website&utm_medium=website_hero&utm_campaign=cloud_promotion&utm_content=signup_link"
 seoDescription: "ClearML alternative: Flexible MLOps framework with extensive integrations. Accelerate ML development using adaptable architecture and reduced lock-in, while simplifying infrastructure setup."
 openGraphImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/685ffa14/66ebeb4c31f301300c1368e4_compare-clearml-min.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/685ffa14/66ebeb4c31f301300c1368e4_compare-clearml-min.png"
 seo:
   title: "ZenML vs ClearML - Streamline Your ML Workflows"
   description: "ClearML alternative: Flexible MLOps framework with extensive integrations. Accelerate ML development using adaptable architecture and reduced lock-in, while simplifying infrastructure setup."
   canonical: "https://www.zenml.io/compare/zenml-vs-clearml"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/685ffa14/66ebeb4c31f301300c1368e4_compare-clearml-min.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/685ffa14/66ebeb4c31f301300c1368e4_compare-clearml-min.png"
   ogTitle: "ZenML vs ClearML - Streamline Your ML Workflows"
   ogDescription: "ClearML alternative: Flexible MLOps framework with extensive integrations. Accelerate ML development using adaptable architecture and reduced lock-in, while simplifying infrastructure setup."
 ---

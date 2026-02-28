@@ -17,7 +17,7 @@ tags:
 date: "2022-10-05T00:00:00.000Z"
 readingTime: 6 Mins Read
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ff2ed8d6/6531dc5b1a87b0b4bf7f9be6_Release_0.20.0.jpg"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ff2ed8d6/6531dc5b1a87b0b4bf7f9be6_Release_0.20.0.jpg"
 ---
 
 **Last updated:** October 17, 2022.
@@ -25,7 +25,7 @@ mainImage:
 [ZenML 0.20.0](https://github.com/zenml-io/zenml/releases/tag/0.20.0) is out, and marks the biggest release in the history of ZenML. The release follows ten months of the community’s feedback, a couple months of development effort, and literally [tens of thousands of lines of code changes](https://github.com/zenml-io/zenml/pull/879).
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2a31d0fc/6531dc681a87b0b4bf7fa623_pr_changes.png" alt="PR Changes" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2a31d0fc/6531dc681a87b0b4bf7fa623_pr_changes.png" alt="PR Changes" />
 </figure>
 
 So what has changed? The new release brings a complete [architectural shift](https://docs.zenml.io/v/0.20.0/getting-started/core-concepts) from previous versions of ZenML. It features a new way of [sharing and configuring pipelines and stacks](https://docs.zenml.io/v/0.20.0/advanced-guide/pipelines/settings). Perhaps most excitingly, it brings with it a brand-new look for ZenML, which now comes bundled with a [React-based, open-source dashboard](https://github.com/zenml-io/zenml-dashboard), which can be launched (and [deployed](https://docs.zenml.io/v/0.20.0/getting-started/deploying-zenml)) directly from the CLI!
@@ -41,7 +41,7 @@ For those who prefer video, we also showcased a demo on our Special Launch Day E
 ## 🤖 ZenML is now a server-based application (RIP Metadata Store 🪦)
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c6d24f29/6531dc6901620e4a2254a0ad_architecture_diagram.png" alt="Architecture Diagram" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c6d24f29/6531dc6901620e4a2254a0ad_architecture_diagram.png" alt="Architecture Diagram" />
 </figure>
 
 ZenML can now run as a server that can be accessed via REST API and comes with a dashboard. This server can be deployed in arbitrary environments (local, on-prem, via Docker, on AWS / GCP / Azure / …) and supports user management, project scoping, and more.
@@ -51,13 +51,13 @@ The Metadata Store stack component has been deprecated and is no longer required
 The architecture changes for the remote use-case are shown in the diagram below. This was the status quo before:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/033e36a4/6531dc68becfc0b0c523e15f_remote-metadata-pre-0.20.png" alt="ZenML remote metadata before 0.20.0" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/033e36a4/6531dc68becfc0b0c523e15f_remote-metadata-pre-0.20.png" alt="ZenML remote metadata before 0.20.0" />
 </figure>
 
 And now, with our 0.20.0 release, you can see how things look:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/6e5a7d1b/6531dc68a15ab6bdf4ccc042_remote-metadata-post-0.20.png" alt="ZenML remote metadata after 0.20.0" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6e5a7d1b/6531dc68a15ab6bdf4ccc042_remote-metadata-post-0.20.png" alt="ZenML remote metadata after 0.20.0" />
 </figure>
 
 Extensive community feedback and our own experience over time had revealed that the metadata store connection was proving a bottleneck. By replacing the metadata store database with a FastAPI application, performance is more secure and easier to use. It will also reduce the likelihood of breaking changes of this scale going forward.
@@ -69,13 +69,13 @@ Getting started with the new server is painless: zenml up will handle spinning u
 Changes on the backend are one thing, but we also added a whole new feature and experience to how you work with ZenML and with your team.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/63d43752/6531dc681a87b0b4bf7fa609_pipelines_dashboard.png" alt="Dashboard Screenshot" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/63d43752/6531dc681a87b0b4bf7fa609_pipelines_dashboard.png" alt="Dashboard Screenshot" />
 </figure>
 
 Our new dashboard gives you a way to view your pipelines, pipeline runs, stacks and stack components all from within ZenML. We even added a way for you to view the DAG of your steps from within the dashboard:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/fb892c0c/6531dc68ab8d6e5d316bef30_dag-visualizer-screenshot.png" alt="DAG visualizer screenshot" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/fb892c0c/6531dc68ab8d6e5d316bef30_dag-visualizer-screenshot.png" alt="DAG visualizer screenshot" />
 </figure>
 
 The new ZenML Dashboard build files are now bundled as part of all future releases and can be launched directly from within Python. The source code lives in the [ZenML Dashboard repository](https://github.com/zenml-io/zenml-dashboard) which we are also releasing open-source as usual.
@@ -87,7 +87,7 @@ One of the benefits of centralizing through the ZenML Server means that not only
 You can share your stacks and stack components at creation team (zenml stack register mystack ... --share) or afterwards using zenml stack share mystack. In this way, a common setup might look something like this:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/520a5138/6531dc68a79c7763af09e02a_stacks_shared.png" alt="Diagram showing shared cloud stacks" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/520a5138/6531dc68a79c7763af09e02a_stacks_shared.png" alt="Diagram showing shared cloud stacks" />
 </figure>
 
 The moment the stack is shared, other users who connect to the server will be able to see the stack and use it as well!
@@ -122,7 +122,7 @@ zenml <stack_component> flavor describe
 This gives the following output:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b52f0e46/6531dc68ab8d6e5d316bef45_flavor_describe.png" alt="Flavor Describe Usage" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b52f0e46/6531dc68ab8d6e5d316bef45_flavor_describe.png" alt="Flavor Describe Usage" />
 </figure>
 
 You can see how it’s now clear which properties are required and what types are expected for each flavor you choose for stack component registrations.

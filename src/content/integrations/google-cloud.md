@@ -12,11 +12,11 @@ webflow:
   createdOn: "2023-10-11T08:38:03.999Z"
 integrationType: "cloud-infrastructure"
 logo:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/cd11eb0d/66d8699796b1ab68e9913d06_cloud.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/cd11eb0d/66d8699796b1ab68e9913d06_cloud.png"
 shortDescription: "Streamline ML Operations with Google Cloud and ZenML"
 docsUrl: "https://docs.zenml.io/how-to/popular-integrations/gcp-guide"
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/521437de/66e734673d7856003ff191c2_image__12_.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/521437de/66e734673d7856003ff191c2_image__12_.png"
 relatedBlogPosts:
   - "cloud-composer-airflow-vs-vertex-ai-kubeflow"
   - "easy-mlops-pipelines"
@@ -25,7 +25,7 @@ seo:
   title: "Integrate Google Cloud with ZenML - Cloud Infrastructure Integrations"
   description: "Streamline ML Operations with Google Cloud and ZenML"
   canonical: "https://www.zenml.io/integrations/google-cloud"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/521437de/66e734673d7856003ff191c2_image__12_.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/521437de/66e734673d7856003ff191c2_image__12_.png"
   ogTitle: "Integrate Google Cloud with ZenML - Cloud Infrastructure Integrations"
   ogDescription: "Streamline ML Operations with Google Cloud and ZenML"
 overviewTitle: "Streamline ML Operations with Google Cloud and ZenML"

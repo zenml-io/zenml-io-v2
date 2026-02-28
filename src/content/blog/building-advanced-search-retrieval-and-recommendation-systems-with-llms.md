@@ -22,12 +22,12 @@ tags:
 date: "2024-12-06T00:00:00.000Z"
 readingTime: 8 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/22722195/6751845a9f3d6eccaacd9b11_Midjourney_Split_Screen_Composition.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/22722195/6751845a9f3d6eccaacd9b11_Midjourney_Split_Screen_Composition.png"
 seo:
   title: "Building Advanced Search, Retrieval, and Recommendation Systems with LLMs - ZenML Blog"
   description: "Discover how embeddings power modern search and recommendation systems with LLMs, using case studies from the LLMOps Database. From RAG systems to personalized recommendations, learn key strategies and best practices for building intelligent applications that truly understand user intent and deliver relevant results."
   canonical: "https://www.zenml.io/blog/building-advanced-search-retrieval-and-recommendation-systems-with-llms"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/22722195/6751845a9f3d6eccaacd9b11_Midjourney_Split_Screen_Composition.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/22722195/6751845a9f3d6eccaacd9b11_Midjourney_Split_Screen_Composition.png"
   ogTitle: "Building Advanced Search, Retrieval, and Recommendation Systems with LLMs - ZenML Blog"
   ogDescription: "Discover how embeddings power modern search and recommendation systems with LLMs, using case studies from the LLMOps Database. From RAG systems to personalized recommendations, learn key strategies and best practices for building intelligent applications that truly understand user intent and deliver relevant results."
 ---
@@ -69,7 +69,7 @@ While the basic RAG workflow is powerful, there are several techniques for optim
 Reranking is another powerful technique for refining search results. [LeBonCoin](https://www.zenml.io/llmops-database/llm-powered-search-relevance-re-ranking-system), a classifieds marketplace, implemented a two-tower neural architecture for retrieval and reranking. The initial retrieval step uses separate query and ad embeddings to efficiently generate a candidate set, while the reranking step employs a more computationally intensive cross-encoder to score and sort the results. This approach led to significant improvements in click-through and conversion rates.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/de34aae0/675185d3265d5e7931ae1206_675184e8095e4f260ab9be87_CleanShot_20Dec_205_202024_20_1_.png" alt="Flowchart of LeBonCoin&#039;s dual-pipeline search architecture for their 60M+ classified ads marketplace. The offline pipeline processes product catalog through an Ad Encoder to create embeddings stored in a vector database. The real-time search pipeline combines traditional Elasticsearch with neural reranking, using pre-computed embeddings and query encoding to produce final ranked results." />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/de34aae0/675185d3265d5e7931ae1206_675184e8095e4f260ab9be87_CleanShot_20Dec_205_202024_20_1_.png" alt="Flowchart of LeBonCoin&#039;s dual-pipeline search architecture for their 60M+ classified ads marketplace. The offline pipeline processes product catalog through an Ad Encoder to create embeddings stored in a vector database. The real-time search pipeline combines traditional Elasticsearch with neural reranking, using pre-computed embeddings and query encoding to produce final ranked results." />
 </figure>
 
 Context window limitations pose another challenge for RAG systems. Since LLMs have a fixed input size, there's a tradeoff between the number of retrieved chunks and the amount of context from each chunk. Hierarchical retrieval, where the system first retrieves larger document sections and then drills down into specific chunks, can help balance this tradeoff. Another solution is to use larger context window models like Claude (from Anthropic) or Gemini Pro (from Google) which can handle longer input sequences.
@@ -91,7 +91,7 @@ Embeddings are a natural fit for building recommendation engines that surface re
 [eBay employs embeddings](https://www.zenml.io/llmops-database/building-price-prediction-and-similar-item-search-models-for-e-commerce) for multiple recommendation tasks, from pricing guidance to similar item suggestions. Their hybrid model combines semantic similarity with direct price prediction, generating embeddings that balance relevance and price accuracy. The system ingests user interaction data like search queries, clicks, and purchases to continuously refine its understanding of user intent and item relationships.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1f0d2e5b/675185d3265d5e7931ae1203_6751852547bffe1317842cb5_CleanShot_20Dec_205_202024_20_2__20_1_.png" alt="Flowchart showing eBay&#039;s hybrid embedding system for trading cards. Training data from user interactions, sales history, and metadata feeds into a dual-task transformer model, which generates shared embeddings optimized for both semantic similarity and price prediction. These embeddings power real-time similar item search and pricing recommendations in the seller interface." />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1f0d2e5b/675185d3265d5e7931ae1203_6751852547bffe1317842cb5_CleanShot_20Dec_205_202024_20_2__20_1_.png" alt="Flowchart showing eBay&#039;s hybrid embedding system for trading cards. Training data from user interactions, sales history, and metadata feeds into a dual-task transformer model, which generates shared embeddings optimized for both semantic similarity and price prediction. These embeddings power real-time similar item search and pricing recommendations in the seller interface." />
 </figure>
 
 Other examples showcase the versatility of embeddings in recommendations. [Golden State Warriors](https://www.zenml.io/llmops-database/ai-powered-personalized-content-recommendations-for-sports-and-entertainment-venue) created personalized content suggestions, while [Nextdoor](https://www.zenml.io/llmops-database) used embeddings to optimize email subject lines for user engagement.
@@ -103,7 +103,7 @@ One of the key benefits of embeddings in recommendation systems is the ability t
 [Amazon](https://www.zenml.io/llmops-database/building-a-commonsense-knowledge-graph-for-e-commerce-product-recommendations) provides a compelling example with their use of embeddings in product recommendations. They constructed a knowledge graph that captures relationships between users, products, and broader concepts, allowing them to identify deeper connections and generate more relevant suggestions.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/0d7c73cd/675185d3265d5e7931ae1213_67518548532385f4de0149ee_CleanShot_20Dec_205_202024_20_3__20_1_.png" alt="Flowchart depicting Amazon&#039;s COSMO system for enhanced product recommendations. Customer interaction data (searches, purchases, and sessions) feeds into an LLM that generates relationship hypotheses. These pass through quality control with human annotation, building a knowledge graph that powers an enhanced recommendation engine." />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0d7c73cd/675185d3265d5e7931ae1213_67518548532385f4de0149ee_CleanShot_20Dec_205_202024_20_3__20_1_.png" alt="Flowchart depicting Amazon&#039;s COSMO system for enhanced product recommendations. Customer interaction data (searches, purchases, and sessions) feeds into an LLM that generates relationship hypotheses. These pass through quality control with human annotation, building a knowledge graph that powers an enhanced recommendation engine." />
 </figure>
 
 [Faber Labs](https://www.zenml.io/llmops-database/building-goal-oriented-retrieval-agents-for-low-latency-recommendations-at-scale) took personalization a step further by building LLM-powered agents that optimize for specific conversion goals. By combining user and item embeddings with reinforcement learning, their Gora system generates recommendations aimed at improving metrics like revenue and order value.
@@ -121,7 +121,7 @@ The potential of multimodal search extends beyond e-commerce. In healthcare, for
 ### Challenges and Best Practices
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/0fe536dd/675185d3265d5e7931ae1200_67518561db256c84ddac203c_CleanShot_20Dec_205_202024_20_4__20_1_.png" alt="Mindmap showing key challenges in production embedding systems. Four main branches cover Infrastructure (vector databases and data lakes), Data Freshness (change detection and updates), Scaling (both infrastructure and algorithmic solutions), and Evaluation (offline metrics, online metrics, and A/B testing)." />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0fe536dd/675185d3265d5e7931ae1200_67518561db256c84ddac203c_CleanShot_20Dec_205_202024_20_4__20_1_.png" alt="Mindmap showing key challenges in production embedding systems. Four main branches cover Infrastructure (vector databases and data lakes), Data Freshness (change detection and updates), Scaling (both infrastructure and algorithmic solutions), and Evaluation (offline metrics, online metrics, and A/B testing)." />
 </figure>
 
 ### Maintaining Embedding Freshness

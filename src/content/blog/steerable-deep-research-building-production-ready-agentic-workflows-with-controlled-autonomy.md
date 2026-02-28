@@ -20,12 +20,12 @@ tags:
 date: "2025-06-17T00:00:00.000Z"
 readingTime: 11 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/79fa389e/685109fa5cb09a438b2fbd8d_Deep_Research_ZenML__1_.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/79fa389e/685109fa5cb09a438b2fbd8d_Deep_Research_ZenML__1_.png"
 seo:
   title: "Steerable Deep Research: Building Production-Ready Agentic Workflows with Controlled Autonomy - ZenML Blog"
   description: "Learn how to build production-ready agentic AI workflows that combine powerful research capabilities with enterprise-grade observability, reproducibility, and cost control using ZenML's structured approach to controlled autonomy."
   canonical: "https://www.zenml.io/blog/steerable-deep-research-building-production-ready-agentic-workflows-with-controlled-autonomy"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/79fa389e/685109fa5cb09a438b2fbd8d_Deep_Research_ZenML__1_.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/79fa389e/685109fa5cb09a438b2fbd8d_Deep_Research_ZenML__1_.png"
   ogTitle: "Steerable Deep Research: Building Production-Ready Agentic Workflows with Controlled Autonomy - ZenML Blog"
   ogDescription: "Learn how to build production-ready agentic AI workflows that combine powerful research capabilities with enterprise-grade observability, reproducibility, and cost control using ZenML's structured approach to controlled autonomy."
 ---
@@ -43,7 +43,7 @@ We address the core challenge for AI engineering teams: building systems along a
 When we talk about GenAI systems, we're really talking about different points along a continuum of autonomy. At one end, you have highly structured **workflows**. Think of them as sophisticated pipelines where LLMs handle specific, well-defined tasks within a larger orchestrated process. At the other end, you have fully **autonomous agents** that can plan, reason, and execute complex tasks with minimal human oversight. (See the classic "[Building Effective Agents](https://www.anthropic.com/research/building-effective-agents)" blogpost from Anthropic if you haven't already read it!)
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/660db758/68510c47c8cb51ee43731d34_Deep_Research_Blog_Image.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/660db758/68510c47c8cb51ee43731d34_Deep_Research_Blog_Image.png" alt="__wf_reserved_inherit" />
   <figcaption>via Langchain docs</figcaption>
 </figure>
 
@@ -80,7 +80,7 @@ What we built is a production-ready research pipeline that generates comprehensi
 The [Deep Research pipeline](https://github.com/zenml-io/zenml-projects/tree/main/deep_research) integrates several core components into a unified workflow. Below, we outline each main part of the codebase and explain how they interact to deliver structured, reliable research automation.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a3005e31/68510c66a68bae26ba68e025_Deep_Research_Blog_Image__1_.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a3005e31/68510c66a68bae26ba68e025_Deep_Research_Blog_Image__1_.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Entry Point and Configuration (run.py)
@@ -96,7 +96,7 @@ The Deep Research pipeline uses ZenML's pipeline and step decorators. It follows
 <ul><li><strong>Initialize Prompts:</strong> Loads all prompt templates (for search queries, synthesis, viewpoint analysis, etc.) and returns them. Each prompt is tracked as a versioned artifact for reproducibility.</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/40a6c7ef/68510c93b53fe570a9b1a01a_CleanShot_Jun_16_2025_from_Deep_Research.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/40a6c7ef/68510c93b53fe570a9b1a01a_CleanShot_Jun_16_2025_from_Deep_Research.png" alt="__wf_reserved_inherit" />
 </figure>
 
 <ul><li><strong>Query Decomposition:</strong> An LLM analyzes the main research query to produce focused sub-questions. The <a href="https://github.com/zenml-io/zenml-projects/blob/main/deep_research/steps/query_decomposition_step.py"><code>initial_query_decomposition_step</code></a> prompts the model to break down the topic, limited by a maximum number of sub-questions. The result is stored in a <code>QueryContext</code> object with the main query and sub-questions. If the LLM fails, the step falls back to generic sub-questions. This step outlines the research into manageable pieces.</li></ul>
@@ -104,19 +104,19 @@ The Deep Research pipeline uses ZenML's pipeline and step decorators. It follows
 <ul><li><strong>Parallel Information Gathering:</strong> The pipeline spawns <strong>parallel steps</strong> for each sub-question. In a loop, it calls <a href="https://github.com/zenml-io/zenml-projects/blob/main/deep_research/steps/process_sub_question_step.py"><code>process_sub_question_step</code></a> for each sub-question index, all referencing the same <code>QueryContext</code>. Each parallel step generates a search query (via LLM prompt), performs a web search, and synthesizes the information with another LLM call. These steps fan out after decomposition. Up to N sub-questions are processed in parallel (N is configurable, e.g., 5 for rapid mode, 15 for deep mode). Each sub-question produces <strong>SearchData</strong> (raw search results and cost info) and <strong>SynthesisData</strong> (LLM-generated answer/summary).</li><li><strong>Merge Results:</strong> After the parallel search and synthesis steps, a <strong>merge step</strong> collates their outputs. The custom <a href="https://github.com/zenml-io/zenml-projects/blob/main/deep_research/steps/merge_results_step.py"><code>merge_sub_question_results_step</code></a> waits for all <code>process_sub_question_*</code> steps to finish and aggregates their results. This "fan-in" produces combined <code>SearchData</code> and <code>SynthesisData</code>, collecting all sub-answers and sources.</li><li><strong>Cross-Viewpoint Analysis:</strong> The pipeline analyzes all synthesized sub-answers. The <a href="https://github.com/zenml-io/zenml-projects/blob/main/deep_research/steps/cross_viewpoint_step.py"><code>cross_viewpoint_analysis_step</code></a> takes the merged synthesis output and uses an LLM to compare and analyze differences or commonalities from various perspectives. The prompt can ask for a cross-perspective critique or to identify gaps. The result is an <code>AnalysisData</code> object with insights such as agreements or contradictions between sub-answers.</li><li><strong>Reflection Generation:</strong> The pipeline refines the research with the <a href="https://github.com/zenml-io/zenml-projects/blob/main/deep_research/steps/generate_reflection_step.py"><code>generate_reflection_step</code></a>. The LLM reflects on the current state, identifying gaps or areas needing more research. This step produces an updated <code>AnalysisData</code> (including the AI's reflection) and a set of recommended follow-up queries for deeper research.</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ba1502ea/68510ca48d461923ec146a2b_CleanShot_Jun_16_2025_from_Deep_Research__1_.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ba1502ea/68510ca48d461923ec146a2b_CleanShot_Jun_16_2025_from_Deep_Research__1_.png" alt="__wf_reserved_inherit" />
 </figure>
 
 <ul><li><strong>Human Approval (Optional):</strong> If human-in-the-loop approval is required (<code>-require-approval</code> flag), the pipeline pauses for confirmation on recommended extra searches. The <a href="https://github.com/zenml-io/zenml-projects/blob/main/deep_research/steps/approval_step.py"><code>get_research_approval_step</code></a> can auto-approve or integrate with <a href="https://docs.zenml.io/stacks/stack-components/alerters">ZenML's alerters</a> (e.g., <a href="https://docs.zenml.io/stacks/stack-components/alerters/discord">Discord</a>/<a href="https://docs.zenml.io/stacks/stack-components/alerters/slack">Slack</a>) to let a person decide which additional queries to pursue. This step outputs an approval decision indicating which queries, if any, are approved to execute.</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/82a0b5fa/68510cb7ca436f353a5b873e_CleanShot_Jun_16_from_Deep_Research.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/82a0b5fa/68510cb7ca436f353a5b873e_CleanShot_Jun_16_from_Deep_Research.png" alt="__wf_reserved_inherit" />
 </figure>
 
 <ul><li><strong>Execute Approved Searches:</strong> For approved follow-up queries, the <a href="https://github.com/zenml-io/zenml-projects/blob/main/deep_research/steps/execute_approved_searches_step.py"><code>execute_approved_searches_step</code></a> performs those searches and incorporates the results. This is a second round of information gathering, focused on identified gaps. It returns enhanced <code>SearchData</code>, <code>SynthesisData</code>, and <code>AnalysisData</code>, merging new information with previous results. If no additional searches are needed, this step passes through the original data.</li><li><strong>MCP-Powered Agent Search:</strong> The pipeline includes an advanced research step using Anthropic's <strong>Model Context Protocol (MCP)</strong>. The <a href="https://github.com/zenml-io/zenml-projects/blob/main/deep_research/steps/mcp_step.py"><code>mcp_updates_step</code></a> invokes an Anthropic Claude model with instructions to perform tool-assisted searches via the Exa API. Claude receives the current context (main query, synthesized answers, analysis) and can access Exa's research tools (e.g., research paper search, company data lookup, Wikipedia search) through the MCP interface. The model can iteratively call these tools to fetch targeted information and incorporate it into its final answer. The pipeline limits allowed tools (passed in the <code>allowed_tools</code> list). The output is an <strong>MCPResult</strong> object with new findings, including both raw tool outputs and the model's final response. This step uses the Anthropic SDK directly, showing how the pipeline can integrate specialized LLM calls outside the standard <code>litellm</code> wrapper. (We do this since this is a very new feature just added to the Anthropic API and it isn't as easily available through <code>litellm</code> yet.)</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/a7c1d40a/68510cc5bd180ab291b62a69_CleanShot_Jun_16_from_Deep_Research__1_.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a7c1d40a/68510cc5bd180ab291b62a69_CleanShot_Jun_16_from_Deep_Research__1_.png" alt="__wf_reserved_inherit" />
 </figure>
 
 <ul><li><strong>Final Report Generation:</strong> The pipeline compiles a comprehensive <strong>final report</strong>. The <a href="https://github.com/zenml-io/zenml-projects/blob/main/deep_research/steps/pydantic_final_report_step.py"><code>pydantic_final_report_step</code></a> uses a Pydantic model (<code>FinalReport</code>) to organize report sections (introduction, per-sub-question sections, conclusion, etc.). It feeds the accumulated data (query context, all synthesis/analysis info, and any MCP findings) into prompts or templates. For example, it might use a prompt to generate the introduction and another for the conclusion, calling the LLM for each section. These pieces are assembled into a structured HTML report with citations or source attributions (from <code>SearchData</code>'s stored URLs) and cross-references between sections. This step returns the complete <code>FinalReport</code> artifact, typically as an HTML string or object.</li><li><strong>Collect Tracing Metadata:</strong> The final step, <a href="https://github.com/zenml-io/zenml-projects/blob/main/deep_research/steps/collect_tracing_metadata_step.py"><code>collect_tracing_metadata_step</code></a>, gathers observability data about the run. It collects metrics from the pipeline, focusing on LLM usage. This step queries the <a href="https://langfuse.com/">Langfuse</a> observability backend (if enabled) to retrieve a trace of all LLM calls made during the run. It computes totals such as input/output tokens used, total LLM API cost, latency per call, and organizes these into a <code>TracingMetadata</code> object. It also appends recorded search costs from SearchData so the final cost accounting includes both LLM and search API costs. This metadata supports monitoring and dashboard display. (See below for what this looks like inside the ZenML dashboard.)</li></ul>
@@ -130,7 +130,7 @@ The pipeline provides full observability for all LLM interactions using [Langfus
 At the end of a run, the `collect_tracing_metadata_step` retrieves aggregated metrics from Langfuse's API using utility functions like `get_trace_stats` and `get_prompt_type_statistics`. This provides insights such as total tokens used (input and output), total LLM cost (in USD), cost breakdown by model, and breakdown by prompt type or pipeline step. For example, "information_synthesis" calls might consume 70% of the tokens, or query decomposition might be the most expensive step. The pipeline logs per-step token counts and costs, so you can see, for instance, that cross-viewpoint analysis used 500 tokens and cost $0.02, while final report generation used 1500 tokens.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/827a407d/68510ce1049c553f93b70348_CleanShot_Jun_16_from_Deep_Research_repo_blog.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/827a407d/68510ce1049c553f93b70348_CleanShot_Jun_16_from_Deep_Research_repo_blog.png" alt="__wf_reserved_inherit" />
 </figure>
 
 Langfuse provides a dashboard where each pipeline run appears as an interactive trace. You can inspect prompts and model responses, measure latencies, and verify the chain-of-thought. The Deep Research pipeline's integration with Langfuse gives full visibility into the LLM reasoning process. All LLM usage is tracked and analyzed. This supports debugging (by inspecting the exact prompt used for any step) and cost management (by tracking model usage and costs). Each run yields both a research report and a detailed set of telemetry data about how the report was generated.
@@ -174,31 +174,31 @@ The project implements [custom visualizations](https://docs.zenml.io/concepts/ar
 <ul><li><strong>Query Context (Sub-questions) Visualization:</strong> The output of query decomposition is a <code>QueryContext</code> object with the main query and sub-questions. A custom <code>QueryContextMaterializer</code> generates an interactive mind-map style HTML view. The main query is at the center, sub-questions branch out, each numbered and styled, with a stats panel (number of sub-questions, query word count, etc.). If no sub-questions were generated, it displays a note.</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/0e61df08/68510cf80247cc56c7ad4d0b_CleanShot_Jun_16_from_Deep_Research__2_.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0e61df08/68510cf80247cc56c7ad4d0b_CleanShot_Jun_16_from_Deep_Research__2_.png" alt="__wf_reserved_inherit" />
 </figure>
 
 <ul><li><strong>Search Results Visualization:</strong> After parallel search steps, the merged SearchData artifact is visualized by <code>SearchDataMaterializer</code>. This produces an HTML report with a cost breakdown chart and a list of results per sub-question. Chart.js renders a doughnut chart of search cost by provider (e.g., $0.05 on Exa vs $0 on Tavily). Each sub-question lists top result titles, content snippets, and direct links. If there are more than 5 results, it indicates "[...and X more results]" for brevity. This serves as a mini "search report" showing what was found and where.</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/53168fba/68510d129544d2bd7ec47e87_CleanShot_Jun_16_from_Deep_Research__3_.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/53168fba/68510d129544d2bd7ec47e87_CleanShot_Jun_16_from_Deep_Research__3_.png" alt="__wf_reserved_inherit" />
 </figure>
 
 <ul><li><strong>Synthesis &amp; Analysis Visualization:</strong> The SynthesisData (answers for each sub-question) is visualized by <code>SynthesisDataMaterializer</code> as an HTML page. Each answer appears in a card with the model's confidence level and key source references. Information gaps noted by the model are highlighted with a warning box. If the model suggested improvements, these are listed. If the execute_approved_searches step provided an enhanced answer, both original and enhanced answers are shown side by side, with an "Enhanced" badge. At the top, stats are summarized (number of answers, enhanced answers, average sources per answer, count of high-confidence answers). This shows answer quality and highlights weak spots.</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8cf1ceed/68510d26687d6c802db09443_CleanShot_Jun_16_2025_from_Deep_Research__2_.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8cf1ceed/68510d26687d6c802db09443_CleanShot_Jun_16_2025_from_Deep_Research__2_.png" alt="__wf_reserved_inherit" />
 </figure>
 
 <ul><li><strong>Final Report:</strong> The final output is an HTML research report, saved by a <code>FinalReportMaterializer</code>. The report uses a consistent stylesheet and includes sections for introduction, executive summary, each sub-question with its answer, cross-analysis commentary, conclusion, and possibly an appendix of sources. The materializer passes through the HTML content. In the ZenML dashboard or artifact store, this report can be opened directly.</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d9e09536/684a9f0891fd5ba30f7b3b38_Newsletter_June_2025_Report.gif" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d9e09536/684a9f0891fd5ba30f7b3b38_Newsletter_June_2025_Report.gif" alt="__wf_reserved_inherit" />
 </figure>
 
 <ul><li><strong>Tracing Metadata Visualization:</strong> The telemetry from the tracing step is visualized by <code>TracingMetadataMaterializer</code> as a cost and usage report. The visualization includes key metrics (total LLM cost, total tokens, pipeline duration) and detailed breakdowns. It tabulates each model's token and dollar contribution, shows prompt-level metrics (bar chart for cost per prompt type, stacked bar for token usage, table with total cost, number of calls, average cost per call, percent of total cost). If search costs are present, it adds them, including a stat for total search cost and a pie slice comparing LLM vs search spend. This helps identify performance bottlenecks or expensive steps.</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/b3dc7d49/68510c0d4203b28e29bd77eb_CleanShot_Jun_16_2025_from_Deep_Research.gif" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b3dc7d49/68510c0d4203b28e29bd77eb_CleanShot_Jun_16_2025_from_Deep_Research.gif" alt="__wf_reserved_inherit" />
 </figure>
 
 All custom visualizations are rendered as HTML and saved as pipeline artifacts. In ZenML's UI (or in a Jupyter environment), you can click on each artifact to see these outputs. These visuals turn the pipeline run into an interactive report of both results and process. You can inspect how the query was broken down, what was searched, what was answered, and the costs involved. This level of introspection clarifies how each answer was produced.

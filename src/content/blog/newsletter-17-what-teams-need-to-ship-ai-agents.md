@@ -20,12 +20,12 @@ tags:
 date: "2025-09-08T00:00:00.000Z"
 readingTime: 4 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/820e840b/6981cf0ef4f7a9ede9959a07_6981ce8f749348ec2b82f3b1_zenml-newsletter-17_1.avif"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/820e840b/6981cf0ef4f7a9ede9959a07_6981ce8f749348ec2b82f3b1_zenml-newsletter-17_1.avif"
 seo:
   title: "Newsletter 17: What Teams Need to Ship AI Agents - ZenML Blog"
   description: "We're expanding ZenML beyond its original MLOps focus into the LLMOps space, recognizing the same fragmentation patterns that once plagued traditional machine learning operations. We're developing three core capabilities: native LLM components that provide unified APIs and management across providers like OpenAI and Anthropic, along with standardized prompt versioning and evaluation tools; applying established MLOps principles to agent development to bring systematic versioning, evaluation, and observability to what's currently a \"build it and pray\" approach; and enhancing orchestration to support both LLM framework integration and direct LLM calls within workflows. Central to our philosophy is the principle of starting simple before going autonomous, emphasizing controlled workflows over fully autonomous agents for enterprise production environments, and we're actively seeking community input through a survey to guide our development priorities, recognizing that today's infrastructure decisions will determine which organizations can successfully scale AI deployment versus remaining stuck in pilot phases."
   canonical: "https://www.zenml.io/blog/newsletter-17-what-teams-need-to-ship-ai-agents"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/820e840b/6981cf0ef4f7a9ede9959a07_6981ce8f749348ec2b82f3b1_zenml-newsletter-17_1.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/820e840b/6981cf0ef4f7a9ede9959a07_6981ce8f749348ec2b82f3b1_zenml-newsletter-17_1.avif"
   ogTitle: "Newsletter 17: What Teams Need to Ship AI Agents - ZenML Blog"
   ogDescription: "We're expanding ZenML beyond its original MLOps focus into the LLMOps space, recognizing the same fragmentation patterns that once plagued traditional machine learning operations. We're developing three core capabilities: native LLM components that provide unified APIs and management across providers like OpenAI and Anthropic, along with standardized prompt versioning and evaluation tools; applying established MLOps principles to agent development to bring systematic versioning, evaluation, and observability to what's currently a \"build it and pray\" approach; and enhancing orchestration to support both LLM framework integration and direct LLM calls within workflows. Central to our philosophy is the principle of starting simple before going autonomous, emphasizing controlled workflows over fully autonomous agents for enterprise production environments, and we're actively seeking community input through a survey to guide our development priorities, recognizing that today's infrastructure decisions will determine which organizations can successfully scale AI deployment versus remaining stuck in pilot phases."
 ---
@@ -41,7 +41,7 @@ Now, on to the updates.
 ## ⚡ Product Updates: Kubernetes that withstands failure, faster pipelines, and Pro service accounts (v0.84.0–0.84.3)
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/8502b5d6/68be94df5fe3aeca666d6cb0_CleanShot_2025-09-05_at_14.49.56__1_.gif" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8502b5d6/68be94df5fe3aeca666d6cb0_CleanShot_2025-09-05_at_14.49.56__1_.gif" alt="__wf_reserved_inherit" />
 </figure>
 
 Over July–August we shipped four releases focused on dependable orchestration. Kubernetes runs now restart cleanly and survive failures, pipelines compile faster, debugging is easier in the dashboard, and Pro introduces service accounts for automation.
@@ -63,7 +63,7 @@ For the full changelog and examples, see the [0.84.0–0.84.3 release notes](htt
 ## 🔍 Survey insights: What teams need in production
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/4aaeac5d/68be94efeb7151186f61ae0b_CleanShot_2025-09-05_at_14.09.11.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/4aaeac5d/68be94efeb7151186f61ae0b_CleanShot_2025-09-05_at_14.09.11.png" alt="__wf_reserved_inherit" />
 </figure>
 
 Across 37 responses — mostly hands‑on builders with a meaningful slice already in production — the message was clear: teams don’t want more autonomy, they want control. The biggest friction points are evaluation quality, debugging real production sessions, moving safely from dev → staging → prod, keeping prompts and artifacts versioned alongside code, and seeing (and capping) costs across providers.
@@ -81,7 +81,7 @@ You all signalled that you were essentially looking for these features *yesterda
 ## ✍️ Recent work: practical reads and runnable templates
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e30830dd/68be94fdb4737276a0e8d9e4_image__4_.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e30830dd/68be94fdb4737276a0e8d9e4_image__4_.png" alt="__wf_reserved_inherit" />
 </figure>
 
 We published a set of pieces focused on closing the gap between "works locally" and "runs reliably in production."
@@ -113,7 +113,7 @@ The takeaway: the frontier is reasoning, but production success still looks like
 ## ✈️ On the road: September–October
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/66d600c9/68be95121e561d10d979e430_Map_of_Key_US_Cities__1_.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/66d600c9/68be95121e561d10d979e430_Map_of_Key_US_Cities__1_.png" alt="__wf_reserved_inherit" />
 </figure>
 
 We’re taking ZenML on the road. Adam, Hamza, and the team will be in the Bay Area, New York, Munich, and Austin over the next few weeks. If you’d like a walkthrough of the latest Kubernetes reliability work, evaluation/observability workflows, or if you're building out agents — or just want to compare notes on your stack — let’s meet.

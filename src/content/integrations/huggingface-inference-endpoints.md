@@ -12,17 +12,17 @@ webflow:
   createdOn: "2024-05-29T11:41:20.431Z"
 integrationType: "deployer"
 logo:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/f6bd0bf5/66d86795fb809547dcae5c99_huggingface.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f6bd0bf5/66d86795fb809547dcae5c99_huggingface.png"
 shortDescription: "Effortlessly deploy Hugging Face models to production with ZenML"
 docsUrl: "https://docs.zenml.io/stack-components/model-deployers/huggingface"
 githubUrl: "https://github.com/zenml-io/zenml/blob/main/tests/integration/examples/huggingface/run.py"
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/cf23e4ac/66eb2fe7ff5d3a1b03a74048_Integration_image__1_.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/cf23e4ac/66eb2fe7ff5d3a1b03a74048_Integration_image__1_.png"
 seo:
   title: "Integrate Hugging Face (Inference Endpoints) with ZenML - Deployer Integrations"
   description: "Effortlessly deploy Hugging Face models to production with ZenML"
   canonical: "https://www.zenml.io/integrations/huggingface-inference-endpoints"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/cf23e4ac/66eb2fe7ff5d3a1b03a74048_Integration_image__1_.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/cf23e4ac/66eb2fe7ff5d3a1b03a74048_Integration_image__1_.png"
   ogTitle: "Integrate Hugging Face (Inference Endpoints) with ZenML - Deployer Integrations"
   ogDescription: "Effortlessly deploy Hugging Face models to production with ZenML"
 overviewTitle: "Effortlessly deploy Hugging Face models to production with ZenML"

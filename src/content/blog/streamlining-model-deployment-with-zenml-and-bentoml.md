@@ -19,12 +19,12 @@ tags:
 date: "2024-10-10T00:00:00.000Z"
 readingTime: 5 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/cf015114/670928e0f450ab54a976946c_bento_cover_image.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/cf015114/670928e0f450ab54a976946c_bento_cover_image.png"
 seo:
   title: "Streamlining Model Deployment with ZenML and BentoML - ZenML Blog"
   description: "This blog post discusses the integration of ZenML and BentoML in machine learning workflows, highlighting their synergy that simplifies and streamlines model deployment. ZenML is an open-source MLOps framework designed to create portable, production-ready pipelines, while BentoML is an open-source framework for machine learning model serving. When combined, these tools allow data scientists and ML engineers to streamline their workflows, focusing on building better models rather than managing deployment infrastructure. The combination offers several advantages, including simplified model packaging, local and container-based deployment, automatic versioning and tracking, cloud readiness, standardized deployment workflow, and framework-agnostic serving."
   canonical: "https://www.zenml.io/blog/streamlining-model-deployment-with-zenml-and-bentoml"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/cf015114/670928e0f450ab54a976946c_bento_cover_image.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/cf015114/670928e0f450ab54a976946c_bento_cover_image.png"
   ogTitle: "Streamlining Model Deployment with ZenML and BentoML - ZenML Blog"
   ogDescription: "This blog post discusses the integration of ZenML and BentoML in machine learning workflows, highlighting their synergy that simplifies and streamlines model deployment. ZenML is an open-source MLOps framework designed to create portable, production-ready pipelines, while BentoML is an open-source framework for machine learning model serving. When combined, these tools allow data scientists and ML engineers to streamline their workflows, focusing on building better models rather than managing deployment infrastructure. The combination offers several advantages, including simplified model packaging, local and container-based deployment, automatic versioning and tracking, cloud readiness, standardized deployment workflow, and framework-agnostic serving."
 ---
@@ -226,7 +226,7 @@ Make sure that the `service` parameter in the `bento_builder_step` has the right
 Once set up, your ZenML pipelines will seamlessly integrate with BentoML, allowing for efficient model packaging and deployment.  You can watch the pipeline on your ZenML Dashboard and inspect the step logs, metadata and also the outputs.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/41a56d42/6706572a688e87b11b0946a8_6706556b6f3052c5cdefb094_image_20_37_.png" alt="A pipeline page showing a prediction pipeline run with a stack wtih bentoml" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/41a56d42/6706572a688e87b11b0946a8_6706556b6f3052c5cdefb094_image_20_37_.png" alt="A pipeline page showing a prediction pipeline run with a stack wtih bentoml" />
 </figure>
 
 ### Accessing Your Deployed Model
@@ -234,13 +234,13 @@ Once set up, your ZenML pipelines will seamlessly integrate with BentoML, allowi
 After running the pipeline, you can access your deployed model using the URL of your deployed model. This URL is present in the logs after a successful pipeline run.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1fb5b9f9/6706572a688e87b11b0946b0_6706559f41c933b4b74ba595_image_20_38_.png" alt="The CLI output after running a training pipeline which ultimately packages your model into a bento and serves it locally" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1fb5b9f9/6706572a688e87b11b0946b0_6706559f41c933b4b74ba595_image_20_38_.png" alt="The CLI output after running a training pipeline which ultimately packages your model into a bento and serves it locally" />
 </figure>
 
 This URL will lead you to a docs page where you can find an OpenAPI specification of your BentoML service. You can also try out queries on your defined Service APIs.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/43baf1e0/6706572a688e87b11b0946ac_670655dfc2535658788c438b_msedge_l0vq6Lfnsj.png" alt="An OpenAPI specification page showing the deployed BentoML service with the available service APIs" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/43baf1e0/6706572a688e87b11b0946ac_670655dfc2535658788c438b_msedge_l0vq6Lfnsj.png" alt="An OpenAPI specification page showing the deployed BentoML service with the available service APIs" />
 </figure>
 
 You can also use ZenML’s model-deployers CLI to find details about your deployed model like the host and port, among other details like the status of the deployment.
@@ -254,7 +254,7 @@ zenml model-deployer models describe <ID>
 ```
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/1640011c/6706572a688e87b11b0946ba_6706562a713bd954bd29e018_image_20_39_.png" alt="CLI output of the zenml model-deployer models describe command showing all model details." />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1640011c/6706572a688e87b11b0946ba_6706562a713bd954bd29e018_image_20_39_.png" alt="CLI output of the zenml model-deployer models describe command showing all model details." />
 </figure>
 
 You can now send prediction requests to this model either directly or have a ZenML prediction pipeline that automatically detects what model to use based on the pipeline and step name information.

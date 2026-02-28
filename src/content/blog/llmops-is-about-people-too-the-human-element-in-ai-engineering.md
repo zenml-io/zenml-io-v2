@@ -19,12 +19,12 @@ tags:
 date: "2025-03-21T00:00:00.000Z"
 readingTime: 9 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d771078e/67dd5360c8261853d109ead7_LLMOps_People__1___1_.png"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d771078e/67dd5360c8261853d109ead7_LLMOps_People__1___1_.png"
 seo:
   title: "LLMOps Is About People Too: The Human Element in AI Engineering - ZenML Blog"
   description: "We explore how successful LLMOps implementation depends on human factors beyond just technical solutions. It addresses common challenges like misaligned executive expectations, siloed teams, and subject-matter expert resistance that often derail AI initiatives. The piece offers practical strategies for creating effective team structures (hub-and-spoke, horizontal teams, cross-functional squads), improving communication, and integrating domain experts early. With actionable insights from companies like TomTom, Uber, and Zalando, readers will learn how to balance technical excellence with organizational change management to unlock the full potential of generative AI deployments."
   canonical: "https://www.zenml.io/blog/llmops-is-about-people-too-the-human-element-in-ai-engineering"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/d771078e/67dd5360c8261853d109ead7_LLMOps_People__1___1_.png"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d771078e/67dd5360c8261853d109ead7_LLMOps_People__1___1_.png"
   ogTitle: "LLMOps Is About People Too: The Human Element in AI Engineering - ZenML Blog"
   ogDescription: "We explore how successful LLMOps implementation depends on human factors beyond just technical solutions. It addresses common challenges like misaligned executive expectations, siloed teams, and subject-matter expert resistance that often derail AI initiatives. The piece offers practical strategies for creating effective team structures (hub-and-spoke, horizontal teams, cross-functional squads), improving communication, and integrating domain experts early. With actionable insights from companies like TomTom, Uber, and Zalando, readers will learn how to balance technical excellence with organizational change management to unlock the full potential of generative AI deployments."
 ---
@@ -34,7 +34,7 @@ When teams deploy generative AI, it's easy to focus solely on models, pipelines,
 ## Misaligned Expectations and Siloed Teams
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/aa3d5e51/67dd40e7a91cdf8c7d7d40c2_LLMOps_is_about_people_too.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/aa3d5e51/67dd40e7a91cdf8c7d7d40c2_LLMOps_is_about_people_too.png" alt="__wf_reserved_inherit" />
 </figure>
 
 Navigating executive expectations, overcoming siloed teams, conducting readiness assessments, establishing champion networks, handling skeptical experts, and aligning on evaluation criteria often prove trickier than the technical challenges themselves.
@@ -88,7 +88,7 @@ Evaluations serve as a critical intersection point in LLM deployments, often hig
 ### Conflicting Evaluation Metrics and Expectations
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/4cc2e2c5/67dd4100916f6e9c25c432af_LLMOps_Human_Element_in_AI_Engineering__1___1_.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/4cc2e2c5/67dd4100916f6e9c25c432af_LLMOps_Human_Element_in_AI_Engineering__1___1_.png" alt="__wf_reserved_inherit" />
 </figure>
 
 [A Microsoft case study](https://devblogs.microsoft.com/ise/llmops-in-restricted-networks-and-continuous-evaluation-long-run-constraints/) on LLM deployment within restricted networks demonstrated how divergent expectations between Data Science and Engineering teams can significantly impede progress. Data scientists prioritized thorough evaluation runs, whereas engineers focused on the speed and frequency of CI/CD cycles. Addressing these tensions required introducing deliberate human decision-making into the evaluation process, underscoring that evaluations are as much about effective communication and collaboration as they are about technical assessments.
@@ -122,7 +122,7 @@ While initially valuable for rapidly prototyping and validating ideas, standalon
 Organizations have successfully adopted various detailed team configurations to structure their GenAI efforts:
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/57f9e8a1/67dd41187750eed060476882_LLMOps_is_About_People.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/57f9e8a1/67dd41187750eed060476882_LLMOps_is_About_People.png" alt="__wf_reserved_inherit" />
 </figure>
 
 ### Centralized Hub-and-Spoke Model
@@ -130,7 +130,7 @@ Organizations have successfully adopted various detailed team configurations to 
 [TomTom](https://engineering.tomtom.com/GenAI-journey/) implemented a strategic hub-and-spoke model to democratize generative AI innovation across their organization. At its core, this structure featured an innovation "hub," a compact central team of GenAI specialists tasked with overseeing strategic direction, managing GenAI proficiency, and supporting local initiatives across the organization. Complementing this central hub were numerous domain-specific "spokes," composed of local teams who leveraged their deep understanding of particular business areas to identify practical and impactful opportunities for generative AI.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/733dbe54/67dd412987f98cfcd24cdba3_TomTom_Hub_and_Spoke_Model__1_.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/733dbe54/67dd412987f98cfcd24cdba3_TomTom_Hub_and_Spoke_Model__1_.png" alt="__wf_reserved_inherit" />
 </figure>
 
 **Collaborative Ownership and Project Lifecycle**Initially, the central hub team maintained ownership of key AI projects, such as the ChatGPT location plugin and the Tommy in-car AI assistant, allowing for rapid prototyping and controlled innovation. However, as these solutions matured, ownership and maintenance responsibilities transitioned to dedicated spoke teams with greater domain knowledge. This transition ensured ongoing alignment with local business objectives while freeing the central specialists to pursue further innovation. The hub continued providing consultative support when necessary, promoting continuity and expertise sharing.
@@ -148,7 +148,7 @@ Through this centralized hub-and-spoke model, TomTom effectively scaled generati
 [Uber's approach](https://www.youtube.com/watch?v=jp-fBw07r7c&t=1s) to enhancing developer productivity through AI innovation is exemplified by their dedicated Horizontal AI Developer Experience Team. This team, comprised of experts drawn from diverse monorepos, focuses on understanding the nuances of developer workflows across various programming languages and environments. Not required to be deep ML specialists, these team members leverage their software engineering expertise to integrate AI solutions seamlessly into everyday developer tools.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9e3bc3e3/67dd413a34b4bd77e6e6e981_TomTom_Hub_and_Spoke_Model_for_AI.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9e3bc3e3/67dd413a34b4bd77e6e6e981_TomTom_Hub_and_Spoke_Model_for_AI.png" alt="__wf_reserved_inherit" />
 </figure>
 
 Working in tandem with a separate ML expert team responsible for core model hosting, fine-tuning, and maintaining model gateways, the Horizontal AI Developer Experience Team adopts a hybrid strategy.
@@ -162,7 +162,7 @@ Overall, the Horizontal AI Developer Experience Team serves as an innovation lay
 Inspired by Spotify's squad model, organizations like [Zalando](https://www.youtube.com/watch?v=6s9Y5fgP3dg) have increasingly adopted cross-functional virtual teams to drive successful AI deployments. Zalando transitioned from discrete, project-based approaches to ongoing product development, recognizing that the lifecycle of machine learning models begins rather than ends at deployment. This shift led to assembling teams that emphasize continuous feature delivery and iterative improvement rather than short-term milestones.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ad4a92a9/67dd417087f98cfcd24d3e76_LLMOps_is_about_people_too__1_.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ad4a92a9/67dd417087f98cfcd24d3e76_LLMOps_is_about_people_too__1_.png" alt="__wf_reserved_inherit" />
 </figure>
 
 Effective cross-functional squads at Zalando included diverse roles beyond traditional ML practitioners, integrating UX researchers, full-stack engineers, domain experts, and increasingly, specialized designers focused specifically on ML-driven user experiences. This varied composition ensured a comprehensive approach to AI development, balancing technical expertise with deep domain knowledge and usability considerations.
@@ -176,7 +176,7 @@ However, this structure was not without challenges. Balancing diverse expertise 
 Embedded teams integrate engineers directly into data science units or product teams to foster closer collaboration and mutual understanding. [Patrick Debois highlights](https://www.youtube.com/watch?v=5qNXdLbEdew) how embedding engineers within data science teams was pivotal in reducing friction and enhancing integration between traditionally separate domains. Initially, the push toward deploying generative AI heavily impacted data scientists, who found themselves struggling with production responsibilities outside their usual expertise. By gradually embedding engineers into the data science team, the company facilitated smoother operational integration, addressing both the practical deployment challenges and the inherent skill gaps.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/ac3cd678/67dd417f17208162d021c833_Embedded_Engineers_from_LLMOps.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ac3cd678/67dd417f17208162d021c833_Embedded_Engineers_from_LLMOps.png" alt="__wf_reserved_inherit" />
 </figure>
 
 Over time, Debois noted that this embedding strategy naturally shifted the composition and responsibilities within teams. Engineers, familiar with production concerns and infrastructure, began to play a larger role in operational aspects, while data scientists became increasingly focused on their core strengths in model development and experimentation. This gradual rebalancing significantly reduced friction by clearly delineating responsibilities according to expertise, leading to more efficient collaboration.

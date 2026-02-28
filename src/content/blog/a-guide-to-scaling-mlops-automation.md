@@ -21,12 +21,12 @@ tags:
 date: "2024-11-18T00:00:00.000Z"
 readingTime: 2 mins
 mainImage:
-  url: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e43bc13d/6746e065f6415829871f1390_Gemini_Generated_Image__13_.jpeg"
+  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e43bc13d/6746e065f6415829871f1390_Gemini_Generated_Image__13_.jpeg"
 seo:
   title: "From Chaos to Control: A Guide to Scaling MLOps Automation - ZenML Blog"
   description: "Discover how organizations can transform their machine learning operations from manual, time-consuming processes into streamlined, automated workflows. This comprehensive guide explores common challenges in scaling MLOps, including infrastructure management, model deployment, and monitoring across different modalities. Learn practical strategies for implementing reproducible workflows, infrastructure abstraction, and comprehensive observability while maintaining security and compliance. Whether you're dealing with growing pains in ML operations or planning for future scale, this article provides actionable insights for building a robust, future-proof MLOps foundation."
   canonical: "https://www.zenml.io/blog/a-guide-to-scaling-mlops-automation"
-  ogImage: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/e43bc13d/6746e065f6415829871f1390_Gemini_Generated_Image__13_.jpeg"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e43bc13d/6746e065f6415829871f1390_Gemini_Generated_Image__13_.jpeg"
   ogTitle: "From Chaos to Control: A Guide to Scaling MLOps Automation - ZenML Blog"
   ogDescription: "Discover how organizations can transform their machine learning operations from manual, time-consuming processes into streamlined, automated workflows. This comprehensive guide explores common challenges in scaling MLOps, including infrastructure management, model deployment, and monitoring across different modalities. Learn practical strategies for implementing reproducible workflows, infrastructure abstraction, and comprehensive observability while maintaining security and compliance. Whether you're dealing with growing pains in ML operations or planning for future scale, this article provides actionable insights for building a robust, future-proof MLOps foundation."
 ---
@@ -34,7 +34,7 @@ seo:
 In today's rapidly evolving ML landscape, organizations face a common challenge: transitioning from manual, ad-hoc machine learning workflows to scalable, automated MLOps practices. As projects grow from a handful of models to dozens, the complexity of managing training, deployment, and monitoring becomes exponentially more challenging.
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/2d7cec38/673b28b00470de0ec0c53ffa_673b26b8a9eae87f6699e33c_image_20_46_.png" alt="A diagram showing an MLOps abstraction layer concept. At the top is a simple illustration of a data scientist in a meditation pose. Below this is a purple-bordered section labeled &#039;MLOps Abstraction Layer&#039; containing three rows: the first shows various ML platform logos in gray, the second displays a linear ML pipeline workflow with stages from &#039;Preprocessing&#039; to &#039;Deployment&#039; in purple boxes, followed by cloud provider logos, and the third row shows DevOps and MLOps tool logos. The layout suggests how the abstraction layer sits between the data scientist and the complexity of underlying tools." />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2d7cec38/673b28b00470de0ec0c53ffa_673b26b8a9eae87f6699e33c_image_20_46_.png" alt="A diagram showing an MLOps abstraction layer concept. At the top is a simple illustration of a data scientist in a meditation pose. Below this is a purple-bordered section labeled &#039;MLOps Abstraction Layer&#039; containing three rows: the first shows various ML platform logos in gray, the second displays a linear ML pipeline workflow with stages from &#039;Preprocessing&#039; to &#039;Deployment&#039; in purple boxes, followed by cloud provider logos, and the third row shows DevOps and MLOps tool logos. The layout suggests how the abstraction layer sits between the data scientist and the complexity of underlying tools." />
 </figure>
 
 ## The Growing Pains of MLOps Adoption
@@ -44,7 +44,7 @@ Many organizations start their ML journey with a straightforward approach: data 
 <ul><li><strong>Manual Retraining Bottlenecks</strong>: Models need frequent retraining to maintain performance, but manual processes make this time-consuming and error-prone</li><li><strong>Limited Experimentation Velocity</strong>: Teams struggle to quickly iterate on new model architectures due to setup overhead</li><li><strong>Infrastructure Complexity</strong>: Managing multiple compute environments, from cloud providers to bare metal servers, creates operational overhead</li><li><strong>Observability Gaps</strong>: Tracking model performance, data drift, and debugging issues becomes increasingly difficult at scale</li></ul>
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/fd6c82a4/673b28af0470de0ec0c53fe4_673b26fb5ae1133d86a3826a_9aq1my.jpeg" alt="A two-panel version of the &#039;This is Fine&#039; dog meme. In the first panel, labeled &#039;ML Engineer&#039;, the cartoon dog sits in a room on fire. In the second panel, the dog says &#039;THIS IS FINE&#039; while holding a coffee cup, with text overlay reading &#039;Managing manual deployments&#039;. The meme suggests ML Engineers trying to stay calm while dealing with the chaos of manual deployment processes." />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/fd6c82a4/673b28af0470de0ec0c53fe4_673b26fb5ae1133d86a3826a_9aq1my.jpeg" alt="A two-panel version of the &#039;This is Fine&#039; dog meme. In the first panel, labeled &#039;ML Engineer&#039;, the cartoon dog sits in a room on fire. In the second panel, the dog says &#039;THIS IS FINE&#039; while holding a coffee cup, with text overlay reading &#039;Managing manual deployments&#039;. The meme suggests ML Engineers trying to stay calm while dealing with the chaos of manual deployment processes." />
 </figure>
 
 ## The Multi-Modal Challenge
@@ -62,7 +62,7 @@ As organizations scale their ML operations, security and compliance become param
 ## Building a Future-Proof MLOps Foundation
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/624ace10/673b28af0470de0ec0c53fe1_673b271be12b19ceac3dd7ab_image_20_47_.png" alt="A flowchart diagram showing a DevOps pipeline architecture. On the left are three user icons (likely representing different team roles) connected to their development workflows. The middle section, enclosed in a dotted border labeled &#039;DevOps&#039;, contains &#039;Pipelines&#039; and &#039;Stacks&#039; sections showing deployment and testing processes. Various tech stack icons including AWS are shown. The flow ends on the right with connections to what appears to be production deployment and user handoff. The diagram uses color coding to distinguish between different types of processes and connections." />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/624ace10/673b28af0470de0ec0c53fe1_673b271be12b19ceac3dd7ab_image_20_47_.png" alt="A flowchart diagram showing a DevOps pipeline architecture. On the left are three user icons (likely representing different team roles) connected to their development workflows. The middle section, enclosed in a dotted border labeled &#039;DevOps&#039;, contains &#039;Pipelines&#039; and &#039;Stacks&#039; sections showing deployment and testing processes. Various tech stack icons including AWS are shown. The flow ends on the right with connections to what appears to be production deployment and user handoff. The diagram uses color coding to distinguish between different types of processes and connections." />
   <figcaption>ZenML helps you build reproducible pipelines, and abstracts away infrastructure.</figcaption>
 </figure>
 
@@ -91,7 +91,7 @@ The key is finding the right balance between automation and flexibility, ensurin
 ## Conclusion
 
 <figure>
-  <img src="https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/3ea26e76/673b28af0470de0ec0c53fed_673b273e17134cf2844d3b68_image_20_48_.png" alt="Two triangular pyramids showing MLOps maturity levels. The left pyramid (in green) has three tiers from bottom to top: &#039;Manual Process&#039;, &#039;ML pipeline automation&#039;, and &#039;CI/CD pipeline automation&#039;. The right pyramid (in orange/coral shades) has five tiers from bottom to top: &#039;No MLOps (Manual Process)&#039;, &#039;Devops but no MLOps&#039;, &#039;Automated Training&#039;, &#039;Automated Model Deployment&#039;, and &#039;Full MLOps Automated Operations&#039;. Both pyramids illustrate the progression from basic manual processes to fully automated MLOps." />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3ea26e76/673b28af0470de0ec0c53fed_673b273e17134cf2844d3b68_image_20_48_.png" alt="Two triangular pyramids showing MLOps maturity levels. The left pyramid (in green) has three tiers from bottom to top: &#039;Manual Process&#039;, &#039;ML pipeline automation&#039;, and &#039;CI/CD pipeline automation&#039;. The right pyramid (in orange/coral shades) has five tiers from bottom to top: &#039;No MLOps (Manual Process)&#039;, &#039;Devops but no MLOps&#039;, &#039;Automated Training&#039;, &#039;Automated Model Deployment&#039;, and &#039;Full MLOps Automated Operations&#039;. Both pyramids illustrate the progression from basic manual processes to fully automated MLOps." />
   <figcaption>Google and Microsoft’s MLOps Maturity levels. Source: MLOps for Enterprise AI</figcaption>
 </figure>
 
