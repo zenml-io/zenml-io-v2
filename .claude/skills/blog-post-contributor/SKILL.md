@@ -91,7 +91,7 @@ Read the `.md` file. Notion exports typically include:
 
 Clean up:
 - Remove any Notion metadata lines (keyword, slug, meta description) from the top — these go into frontmatter instead
-- Remove duplicate H1s (keep one as the title)
+- **Remove ALL H1 headers (`# ...`) from the body.** The title lives in frontmatter and `BlogLayout` renders it — any H1 in the markdown body creates a duplicate heading on the page. The body should start directly with prose or an H2.
 - Strip Notion-specific formatting artifacts if any
 
 ### B3. Map images to their placeholders
@@ -232,6 +232,8 @@ Save to `src/content/blog/<slug>.md`:
 # The file path must match the slug
 src/content/blog/your-blog-post-slug.md
 ```
+
+**Important:** The markdown body must NOT contain an H1 (`# Title`). The title is rendered by `BlogLayout` from the frontmatter `title` field. The body should begin with prose or an H2 (`## ...`). Including an H1 creates a duplicate heading on the page.
 
 ### C7. Validate
 
