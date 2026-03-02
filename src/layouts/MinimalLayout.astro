@@ -49,8 +49,22 @@ const seo = resolveSeo(seoProps, Astro.url.pathname);
     {/* Favicon */}
     <link rel="icon" type="image/png" href="/favicon.png" />
 
-    {/* Analytics and third-party scripts are injected dynamically by the
-        CookieConsent island after user consent. See consentConfig.ts. */}
+    {/* Plausible — cookieless, GDPR-compliant analytics. Loaded directly
+        (not gated behind cookie consent) since it doesn't use cookies or
+        track personal data. Hostname-gated to prevent preview deploy noise. */}
+    <script is:inline>
+      if (["www.zenml.io","zenml.io"].includes(window.location.hostname)) {
+        var s = document.createElement("script");
+        s.defer = true;
+        s.setAttribute("data-domain", "zenml.io");
+        s.src = "https://plausible.io/js/script.js";
+        document.head.appendChild(s);
+      }
+    </script>
+
+    {/* Other analytics (GA4, Segment, etc.) and third-party scripts are
+        injected dynamically by the CookieConsent island after user consent.
+        See consentConfig.ts. */}
   </head>
   <body class:list={["min-h-screen bg-white text-gray-900 antialiased", bodyClass]}>
     <slot />

@@ -24,12 +24,9 @@ export interface ScriptDefinition {
 /** All third-party scripts organized by consent category. */
 export const TRACKING_SCRIPTS: ScriptDefinition[] = [
   // ── Analytics ────────────────────────────────────────────────
-  {
-    id: "plausible",
-    category: "analytics",
-    src: "https://plausible.io/js/script.js",
-    attrs: { defer: "", "data-domain": "zenml.io" },
-  },
+  // NOTE: Plausible is NOT listed here — it's cookieless and GDPR-compliant
+  // without consent, so it's loaded directly in BaseLayout/MinimalLayout
+  // as a server-rendered <script> tag (hostname-gated only).
   {
     id: "ga4",
     category: "analytics",
@@ -105,7 +102,7 @@ export const CONSENT_CATEGORIES: {
   {
     id: "analytics",
     label: "Analytics",
-    description: "Help us understand how visitors use our site (Plausible, GA4, Segment, Hotjar).",
+    description: "Help us understand how visitors use our site (GA4, Segment, Hotjar).",
     required: false,
   },
   {
