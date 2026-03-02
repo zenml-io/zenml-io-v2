@@ -2,10 +2,11 @@
 name: blog-post-contributor
 description: >-
   Add a new blog post to the ZenML website. Supports two workflows: (1) from a
-  local markdown file, or (2) from a Notion page via MCP. Handles frontmatter
-  validation, image processing (AVIF conversion + R2 upload), tag/author
-  creation, and feature branch setup. Triggers: "new blog post", "add blog",
-  "publish blog", "blog from Notion", "blog from markdown", "contribute blog".
+  local markdown file, or (2) from a Notion page exported as markdown. Handles
+  frontmatter validation, image processing (AVIF conversion + R2 upload),
+  tag/author creation, and feature branch setup. Triggers: "new blog post",
+  "add blog", "publish blog", "blog from Notion", "blog from markdown",
+  "contribute blog".
 ---
 
 # Blog Post Contributor
@@ -36,10 +37,10 @@ Use the blog post's slug as the branch name suffix (e.g., `blog/my-new-post-titl
 
 ## Choose Your Path
 
-Ask the user: **"Do you have a local markdown file, or should I fetch the post from Notion?"**
+Ask the user: **"Do you have a local markdown file, or is the content in Notion?"**
 
-- **Path A**: [From Markdown File](#path-a-from-markdown-file)
-- **Path B**: [From Notion Page](#path-b-from-notion-page)
+- **Path A**: [From Markdown File](#path-a-from-markdown-file) — user already has a `.md` file
+- **Path B**: [From Notion Export](#path-b-from-notion-export) — content lives in Notion, needs exporting
 
 ---
 
@@ -64,46 +65,40 @@ Derive the slug from the title:
 
 ---
 
-## Path B: From Notion Page
+## Path B: From Notion Export
 
-### B1. Fetch the Notion page
+**Do NOT use the Notion MCP server** to fetch blog content. Notion's MCP returns block-level JSON that loses formatting nuance, and Notion-hosted images use temporary CDN URLs that expire. Instead, have the user prepare two things manually:
 
-Ask the user for the Notion page URL or title to search for.
+### B1. Ask the user to export from Notion
 
-```
-# Search by title
-mcp__claude_ai_Notion__notion-search: { query: "blog post title" }
+The user should:
+1. **Export the page as Markdown** from Notion (⋯ menu → Export → Markdown & CSV)
+2. **Save all images manually** into a separate folder, **in the order they appear in the page** (top to bottom). This order matters because the Notion markdown export uses generic filenames like `image1.png`, `image2.png` — matching them to the right placeholder depends on save order.
 
-# Or fetch by URL (extract page ID from the URL)
-mcp__claude_ai_Notion__notion-fetch: { url: "https://notion.so/..." }
-```
+**Ask the user for:**
+- The path to the exported `.md` file (or the Notion page link for reference context)
+- The path to the folder containing the saved images
 
-### B2. Convert Notion content to markdown
+> **Tip for the user:** Open the Notion page, right-click each image from top to bottom, and "Save Image As..." into one folder. The file modification timestamps will preserve insertion order. Alternatively, the Notion markdown export includes images in a subfolder with matching filenames — if the user provides the full Notion export zip, the images will already be mapped.
 
-Transform the Notion block content into clean markdown:
-- Convert Notion headings → markdown headings (ensure single H1 for the title)
-- Convert Notion bullet/numbered lists → markdown lists
-- Convert Notion code blocks → fenced code blocks with language tags
-- Convert Notion callouts → blockquotes or `<aside>` elements
-- Convert Notion tables → markdown tables
-- Strip Notion-specific formatting artifacts
+### B2. Read the exported markdown
 
-### B3. Handle Notion images
+Read the `.md` file. Notion exports typically include:
+- A first H1 that is the page title (sometimes duplicated)
+- Metadata lines at the top (keyword, slug, meta description) if the author added them
+- Image references as `![](FolderName/imageN.png)` relative paths
+- Tables, bullet lists, code blocks — usually valid markdown
 
-Notion images are hosted on Notion's CDN (temporary URLs that expire). The user must download images to a local folder first.
+Clean up:
+- Remove any Notion metadata lines (keyword, slug, meta description) from the top — these go into frontmatter instead
+- Remove duplicate H1s (keep one as the title)
+- Strip Notion-specific formatting artifacts if any
 
-**Ask the user:** "Where is the folder containing the downloaded images?"
+### B3. Map images to their placeholders
 
-Then for each image:
-1. Convert to AVIF using the `avif-image-compressor` skill:
-   ```bash
-   ~/.claude/skills/avif-image-compressor/scripts/convert_to_avif.sh <image> --quality 25
-   ```
-2. Upload to R2 using the `r2-image-upload` skill:
-   ```bash
-   uv run scripts/r2-upload.py <image>.avif --prefix content/blog
-   ```
-3. Replace the Notion image reference in the markdown with the R2 URL
+The markdown will contain image references like `![](E2B%20alternatives/image17.png)`. Match each reference to the corresponding file in the user's image folder by filename. If filenames match directly (common with Notion exports), the mapping is straightforward.
+
+If the filenames don't match, use file modification timestamps (earliest saved = first image in the post) to establish the correct order.
 
 ### B4. Generate the slug
 
@@ -201,7 +196,7 @@ Assemble the complete frontmatter block:
 ---
 title: "Your Blog Post Title"
 slug: "your-blog-post-slug"
-draft: true
+draft: false
 author: "author-slug"
 category: "mlops"
 tags:
@@ -226,7 +221,7 @@ seo:
 - `readingTime` format: `"X mins"` — estimate ~200 words/minute
 - `mainImage.url` must be an absolute URL (R2-hosted)
 - `seo.canonical` must be `https://www.zenml.io/blog/<slug>`
-- `draft: true` initially — set to `false` when ready to publish
+- `draft: false` by default — only set `true` if the user specifically wants a draft
 - `webflow` field is NOT needed for new native posts
 
 ### C6. Write the blog post file
@@ -276,9 +271,9 @@ Print a summary:
 - Blog post file path
 - Branch name
 - Slug and URL it will live at: `https://www.zenml.io/blog/<slug>`
-- Hero image URL
+- Hero image URL (if set)
 - Any new tags/authors created
-- Reminder: set `draft: false` when ready to publish
+- Whether the post is published (`draft: false`) or draft (`draft: true`)
 - Reminder: create a PR for review
 
 ## Frontmatter Field Reference
@@ -287,7 +282,7 @@ Print a summary:
 |-------|----------|------|---------|
 | `title` | Yes | string | `"My Great Post"` |
 | `slug` | Yes | string | `"my-great-post"` |
-| `draft` | No | boolean | `true` (default: `false`) |
+| `draft` | No | boolean | `false` (set `true` only if user wants a draft) |
 | `featured` | No | boolean | `false` (default: `false`) |
 | `author` | Yes | slug ref | `"hamza-tahir"` |
 | `category` | No | slug ref | `"mlops"` |
