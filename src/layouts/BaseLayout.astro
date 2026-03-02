@@ -55,8 +55,21 @@ const seo = resolveSeo(seoProps, Astro.url.pathname);
     {/* Structured data (JSON-LD) — injected by child layouts */}
     <slot name="head" />
 
-    {/* Analytics (Plausible, GA4, etc.) and third-party scripts are injected
-        dynamically by the CookieConsent island after user consent is granted.
+    {/* Plausible — cookieless, GDPR-compliant analytics. Loaded directly
+        (not gated behind cookie consent) since it doesn't use cookies or
+        track personal data. Hostname-gated to prevent preview deploy noise. */}
+    <script is:inline>
+      if (["www.zenml.io","zenml.io"].includes(window.location.hostname)) {
+        var s = document.createElement("script");
+        s.defer = true;
+        s.setAttribute("data-domain", "zenml.io");
+        s.src = "https://plausible.io/js/script.js";
+        document.head.appendChild(s);
+      }
+    </script>
+
+    {/* Other analytics (GA4, Segment, etc.) and third-party scripts are
+        injected dynamically by the CookieConsent island after user consent.
         See src/lib/consentConfig.ts for the full script registry. */}
   </head>
   <body class:list={["min-h-screen bg-white text-gray-900 antialiased", bodyClass]}>

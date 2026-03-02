@@ -25,11 +25,28 @@ const DEFAULT_CONSENT: ConsentState = {
   personalization: false,
 };
 
+function isValidConsent(x: unknown): x is ConsentState {
+  if (!x || typeof x !== "object") return false;
+  const obj = x as Record<string, unknown>;
+  return (
+    typeof obj.essential === "boolean" &&
+    typeof obj.analytics === "boolean" &&
+    typeof obj.marketing === "boolean" &&
+    typeof obj.personalization === "boolean"
+  );
+}
+
 function readConsent(): ConsentState | null {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return null;
-    return JSON.parse(raw) as ConsentState;
+    const parsed: unknown = JSON.parse(raw);
+    if (!isValidConsent(parsed)) {
+      // Malformed or legacy value — clear it so the banner re-shows
+      localStorage.removeItem(STORAGE_KEY);
+      return null;
+    }
+    return parsed;
   } catch {
     return null;
   }
