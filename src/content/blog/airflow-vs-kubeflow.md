@@ -55,7 +55,7 @@ To understand the current capabilities of these tools, one must first understand
 
 [Kubeflow](https://www.zenml.io/blog/kubeflow-vs-mlflow) was announced/open-sourced in **December 2017**; its first release (0.1) was announced in **2018**. An ambitious effort to bring Google’s ML pipeline practices to the open-source Kubernetes world. Though its user base is more niche and often comprises large enterprises and teams heavily invested in K8s
 
-**ZenML** was released in early 2021. It’s the youngest and thus better reflects modern MLOps trends and challenges that neither Airflow nor Kubeflow has fully addressed. While new, its adoption is driven by the 'modern data stack' philosophy. More of why it’s a go-to tool for forward-thinking ML teams at Rivian, JetBrains, and more companies.
+**ZenML** was released in early 2021. It’s the youngest and thus better reflects modern MLOps trends and challenges that neither Airflow nor Kubeflow has fully addressed. While new, its adoption is driven by the 'modern data stack' philosophy. More of why it’s a go-to tool for forward-thinking ML teams at JetBrains and more companies.
 
 ## Airflow vs Kubeflow vs ZenML: Features Comparison
 
