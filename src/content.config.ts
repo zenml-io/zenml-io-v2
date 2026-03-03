@@ -508,8 +508,8 @@ const teamSchema = z.object({
   linkedin: z.string().url().optional(),
   order: z.number().optional(), // Display order
 
-  // Webflow metadata (no SEO for team pages)
-  webflow: webflowMetaSchema,
+  // Webflow metadata (optional — new native members won't have Webflow metadata)
+  webflow: webflowMetaSchema.optional(),
 });
 
 /**

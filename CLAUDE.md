@@ -79,7 +79,7 @@ customize freely.
 | Trailing slash | `never` — matches Webflow behavior, locked in `astro.config.ts` |
 | Canonical domain | `www.zenml.io` (bare `zenml.io` redirects to www) |
 | Migration strategy | Full cutover (not strangler) — build complete site, switch DNS |
-| Image optimization | Upload 1:1 for now; convert to WebP/AVIF post-launch |
+| Image optimization | **Always convert to AVIF** before uploading (see Images & Assets) |
 
 ## Migration Phases
 
@@ -128,12 +128,20 @@ Fixing visual parity gaps page-by-page against the Webflow original. Recent work
 
 **Tier A (static):** Just place the file in `public/images/` and reference it as `"/images/..."`.
 
-**Tier B (R2):** Upload using the one-off script:
+**Tier B (R2):** Always **convert to AVIF first**, then upload:
+
 ```bash
-uv run scripts/r2-upload.py path/to/image.avif                    # default prefix
-uv run scripts/r2-upload.py path/to/hero.webp --prefix content/blog  # custom prefix
-uv run scripts/r2-upload.py path/to/hero.webp --frontmatter          # print YAML snippet
+# Step 1: Convert to AVIF (use the avif-image-compressor skill)
+# For photos (team, blog heroes, screenshots): --quality 28, --resize 800
+# For larger hero/banner images: --quality 25, --resize 1200
+~/.claude/skills/avif-image-compressor/scripts/convert_to_avif.sh input.png --quality 28 --resize 800
+
+# Step 2: Upload the AVIF to R2
+uv run scripts/r2-upload.py output.avif --prefix content/blog       # custom prefix
+uv run scripts/r2-upload.py output.avif --frontmatter                # print YAML snippet
 ```
+
+**Never upload raw PNG/JPEG to R2** — AVIF typically achieves 50-250x compression. Use the `avif-image-compressor` Claude Code skill for conversion.
 
 Requires R2 credentials in `.env` — see `.env.example`.
 
