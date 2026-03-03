@@ -226,6 +226,8 @@ seo:
 
 ### C6. Write the blog post file
 
+**Token efficiency**: When the user provides a ready `.md` file, do NOT rewrite it through the Write tool (which outputs all content tokens). Instead, use bash: write the frontmatter to the target file with a heredoc, then `cat` the body (with H1 and metadata lines stripped via `tail -n +N`) and append with `>>`. This avoids duplicating thousands of tokens.
+
 Save to `src/content/blog/<slug>.md`:
 
 ```bash
