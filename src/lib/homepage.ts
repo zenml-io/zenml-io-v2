@@ -51,7 +51,6 @@ export const LOGO_CLOUD = {
     { name: "JetBrains", src: `${R2}/60b5e34d/670e2f23ee3f2feee5e7e7e2_jetbrains-min.svg` },
     { name: "Koble", src: `${R2}/db4b0c5a/670e2f2331d7f8f62e12458e_koble.svg` },
     { name: "Leroy Merlin", src: `${R2}/d28fbdf4/670e2f23e2b3ba3756fae38e_leroy_merlin_logo-min.svg` },
-    { name: "Rivian", src: `${R2}/e3f9dafd/670e2f233c0e2ef03c2dc810_rivian-min.svg` },
     { name: "ADEO", src: "/images/logos/adeo.png" },
     { name: "Devoteam", src: "/images/logos/devoteam.svg" },
     { name: "Frontiers", src: "/images/logos/frontiers.webp" },
