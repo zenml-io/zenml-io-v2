@@ -129,9 +129,9 @@ const SELF_HOSTED_COMPARE: PricingCompareTableData = {
           link: "https://docs.zenml.io/concepts/snapshots",
           values: [false, true],
         },
-        { feature: "Advanced Native Scheduling", values: [false, false] },
+        { feature: "Advanced Native Scheduling", values: [false, true] },
         { feature: "Webhooks & Triggers", values: [false, true] },
-        { feature: "Resource Management & Queueing", values: [false, false] },
+        { feature: "Resource Management & Queueing", values: [false, true] },
         { feature: "Codespaces (Remote IDE)", values: [false, true] },
         {
           feature: "Modern Server Side Dashboard",
@@ -293,10 +293,10 @@ const SAAS_COMPARE: PricingCompareTableData = {
     {
       heading: "Advanced Features",
       rows: [
-        { feature: "Advanced Native Scheduling", values: [false, false, false, false] },
-        { feature: "Webhooks & Triggers", values: [false, false, false, false] },
-        { feature: "Resource Management & Queueing", values: [false, false, false, false] },
-        { feature: "Codespaces (Remote IDE)", values: [false, false, false, false] },
+        { feature: "Advanced Native Scheduling", values: [false, false, false, true] },
+        { feature: "Webhooks & Triggers", values: [false, false, false, true] },
+        { feature: "Resource Management & Queueing", values: [false, false, false, true] },
+        { feature: "Codespaces (Remote IDE)", values: [false, false, false, true] },
       ],
     },
     {
