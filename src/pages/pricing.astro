@@ -123,7 +123,14 @@ import {
                         <svg class="mt-0.5 h-4 w-4 flex-shrink-0 text-zenml-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                           <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" />
                         </svg>
-                        {feature}
+                        <span class="flex items-center gap-2">
+                          {feature}
+                          {plan.comingSoon?.includes(feature) && (
+                            <span class="inline-block rounded bg-zenml-500 px-1.5 py-0.5 text-[10px] font-bold uppercase leading-tight text-white">
+                              Coming Soon
+                            </span>
+                          )}
+                        </span>
                       </li>
                     ))}
                   </ul>

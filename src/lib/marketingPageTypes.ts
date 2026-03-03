@@ -84,7 +84,8 @@ export interface PricingPlan {
   limits: { label: string; value: string }[];
   features: string[];
   featuresPrefix?: string;
-
+  /** Features that should show a "COMING SOON" badge next to them. */
+  comingSoon?: string[];
   cta: CtaLink;
   ctaVariant?: "primary" | "secondary";
   secondaryLink?: CtaLink;

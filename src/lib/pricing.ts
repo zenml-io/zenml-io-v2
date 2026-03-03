@@ -82,7 +82,7 @@ const SELF_HOSTED_PRO: PricingPlan = {
     "Air-gapped deployment support",
     "Priority support + custom SLA",
   ],
-
+  comingSoon: ["Advanced Native Scheduling", "Resource Management & Queueing"],
   cta: { label: "Talk to Sales", href: "/book-your-demo", analytics: "Enterpise-Self-Hosted-Book-Demo" },
   ctaVariant: "primary",
   secondaryLink: {
@@ -129,9 +129,9 @@ const SELF_HOSTED_COMPARE: PricingCompareTableData = {
           link: "https://docs.zenml.io/concepts/snapshots",
           values: [false, true],
         },
-        { feature: "Advanced Native Scheduling", values: [false, true] },
+        { feature: "Advanced Native Scheduling", values: [false, "COMING SOON"] },
         { feature: "Webhooks & Triggers", values: [false, true] },
-        { feature: "Resource Management & Queueing", values: [false, true] },
+        { feature: "Resource Management & Queueing", values: [false, "COMING SOON"] },
         { feature: "Codespaces (Remote IDE)", values: [false, true] },
         {
           feature: "Modern Server Side Dashboard",
@@ -293,10 +293,10 @@ const SAAS_COMPARE: PricingCompareTableData = {
     {
       heading: "Advanced Features",
       rows: [
-        { feature: "Advanced Native Scheduling", values: [false, false, false, true] },
-        { feature: "Webhooks & Triggers", values: [false, false, false, true] },
-        { feature: "Resource Management & Queueing", values: [false, false, false, true] },
-        { feature: "Codespaces (Remote IDE)", values: [false, false, false, true] },
+        { feature: "Advanced Native Scheduling", values: [false, false, false, "COMING SOON"] },
+        { feature: "Webhooks & Triggers", values: [false, false, false, "COMING SOON"] },
+        { feature: "Resource Management & Queueing", values: [false, false, false, "COMING SOON"] },
+        { feature: "Codespaces (Remote IDE)", values: [false, false, false, "COMING SOON"] },
       ],
     },
     {
