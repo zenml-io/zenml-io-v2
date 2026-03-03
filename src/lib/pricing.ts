@@ -293,10 +293,10 @@ const SAAS_COMPARE: PricingCompareTableData = {
     {
       heading: "Advanced Features",
       rows: [
-        { feature: "Advanced Native Scheduling", values: [false, "COMING SOON", "COMING SOON", "COMING SOON"] },
-        { feature: "Webhooks & Triggers", values: [false, "COMING SOON", "COMING SOON", "COMING SOON"] },
-        { feature: "Resource Management & Queueing", values: [false, false, "COMING SOON", "COMING SOON"] },
-        { feature: "Codespaces (Remote IDE)", values: [false, false, "COMING SOON", "COMING SOON"] },
+        { feature: "Advanced Native Scheduling", values: [false, false, false, "COMING SOON"] },
+        { feature: "Webhooks & Triggers", values: [false, false, false, "COMING SOON"] },
+        { feature: "Resource Management & Queueing", values: [false, false, false, "COMING SOON"] },
+        { feature: "Codespaces (Remote IDE)", values: [false, false, false, "COMING SOON"] },
       ],
     },
     {
