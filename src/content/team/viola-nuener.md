@@ -10,7 +10,7 @@ webflow:
   lastPublished: "2025-08-20T07:59:03.032Z"
   lastUpdated: "2025-08-18T10:59:40.097Z"
   createdOn: "2025-03-18T09:18:47.980Z"
-position: "Founder's Associate"
+position: "Chief of Staff"
 photo:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7c36e9e6/67d93a585bca5da2c282f411_viola.jpg"
 email: "viola@zenml.io"

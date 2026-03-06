@@ -103,4 +103,9 @@ export const OPEN_POSITIONS = [
     type: "Full-time",
     href: "https://zenml.notion.site/Solutions-Engineer-f-m-d-2e3f8dff2538809090badb94ca38c0d2?source=copy_link",
   },
+  {
+    title: "Founders Associate (f/m/d)",
+    type: "Full-time",
+    href: "https://zenml.notion.site/Founders-Associate-31bf8dff253880098260ed6cbb2980a3?source=copy_link",
+  },
 ] as const;
