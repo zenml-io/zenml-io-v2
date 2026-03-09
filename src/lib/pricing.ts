@@ -293,10 +293,10 @@ const SAAS_COMPARE: PricingCompareTableData = {
     {
       heading: "Advanced Features",
       rows: [
-        { feature: "Advanced Native Scheduling", values: [false, "COMING SOON", "COMING SOON", "COMING SOON"] },
-        { feature: "Webhooks & Triggers", values: [false, "COMING SOON", "COMING SOON", "COMING SOON"] },
-        { feature: "Resource Management & Queueing", values: [false, false, "COMING SOON", "COMING SOON"] },
-        { feature: "Codespaces (Remote IDE)", values: [false, false, "COMING SOON", "COMING SOON"] },
+        { feature: "Advanced Native Scheduling", values: [false, false, false, "COMING SOON"] },
+        { feature: "Webhooks & Triggers", values: [false, false, false, "COMING SOON"] },
+        { feature: "Resource Management & Queueing", values: [false, false, false, "COMING SOON"] },
+        { feature: "Codespaces (Remote IDE)", values: [false, false, false, "COMING SOON"] },
       ],
     },
     {
@@ -465,7 +465,6 @@ export const PRICING_STATS = {
     { src: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/86cd6b7b/cross-screen-media.png`, alt: "Cross Screen Media" },
     { src: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c110367c/65c498032806e2ff7daec2bf_ADEO.svg`, alt: "ADEO" },
     { src: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/356e9829/65c49832a235dab4e3e0a3ce_leroy-merlin.svg`, alt: "Leroy Merlin" },
-    { src: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/859309b9/652d3ecc040ac25a545c508f_rivian.png`, alt: "Rivian" },
     { src: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/cab0c1be/66c84308abf004bb1934e7d3_mann-hummel-min.svg`, alt: "Mann+Hummel" },
     { src: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e6c1fbb1/koble.svg`, alt: "Koble" },
   ],

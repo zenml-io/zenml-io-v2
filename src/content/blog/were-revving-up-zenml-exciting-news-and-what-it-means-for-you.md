@@ -56,7 +56,7 @@ ZenML Cloud isn’t your run-of-the-mill service; it’s an upgrade with bells a
 
 ## Shoutout to Our Current ZenML Superstars
 
-Our journey wouldn't be as fun without you, our users. Big names like Rivian, Playtika, and Leroy Merlin are already flexing their MLOps muscle using ZenML. And we're humbled by the sheer variety of ways you all are applying ZenML to make ML workflows smarter and smoother.
+Our journey wouldn't be as fun without you, our users. Big names like Playtika and Leroy Merlin are already flexing their MLOps muscle using ZenML. And we're humbled by the sheer variety of ways you all are applying ZenML to make ML workflows smarter and smoother.
 
 We're also buoyed by all the open-source contributions we receive, from the small bug fixes to bigger features, as well as all the suggestions on ways we can grow and make the core framework as versatile as it can possibly be.
 

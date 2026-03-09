@@ -94,18 +94,18 @@ export const COMPANY_VALUES = [
 // ---------------------------------------------------------------------------
 export const OPEN_POSITIONS = [
   {
-    title: "GTM Generalist (f/m/d)",
-    type: "Full-time",
-    href: "https://zenml.notion.site/GTM-Generalist-m-f-d-2fcf8dff2538800f9cc7d4c53f6f8b06",
-  },
-  {
-    title: "Head of Developer Marketing (f/m/d)",
-    type: "Full-time",
-    href: "https://zenml.notion.site/head-of-developer-marketing-f-m-d",
-  },
-  {
     title: "Senior Platform Engineer - Cloud & Infrastructure (f/m/d)",
     type: "Full-time",
     href: "https://zenml.notion.site/Senior-Platform-Engineer-Cloud-Infrastructure-f-m-d-2d2f8dff253880e3811deb82ecace05b",
+  },
+  {
+    title: "Solutions Engineer (f/m/d)",
+    type: "Full-time",
+    href: "https://zenml.notion.site/Solutions-Engineer-f-m-d-2e3f8dff2538809090badb94ca38c0d2?source=copy_link",
+  },
+  {
+    title: "Founders Associate (f/m/d)",
+    type: "Full-time",
+    href: "https://zenml.notion.site/Founders-Associate-f-m-d-31bf8dff253880fb8081cb53346330c8?source=copy_link",
   },
 ] as const;
