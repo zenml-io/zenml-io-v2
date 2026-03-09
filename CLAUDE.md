@@ -1,33 +1,31 @@
-# ZenML Website v2 — Migration from Webflow
+# ZenML Website — Production Astro Site
 
 ## Project Overview
 
-We are migrating zenml.io from Webflow to a self-hosted solution. The goal is
-a **1:1 copy** of the current site in a version we fully control and can
-customize freely.
+This repository powers the live [zenml.io](https://www.zenml.io) marketing
+website — an Astro v5 static site hosted on Cloudflare Pages. ~2,224 pages
+across 20 content collections, built in ~33 seconds.
 
-- **Current site**: www.zenml.io (Webflow)
-- **Hosting target**: Cloudflare Pages
-- **Context**: This is being built as part of a Claude hackathon using Opus 4.6
-- **Status**: **Phases 0–5 COMPLETE**. ~2,224 pages building in ~33s. All content migrated, all pages built, SEO infrastructure done, forms live, analytics tracking active. Currently in **Phase 6 (QA & Cutover)** — fixing visual parity gaps page-by-page against the Webflow original. **LLMOps Database redesign complete** (faceted sidebar, Pagefind search, AND/OR filtering, sorting, accessibility). **Blog redesign in progress** (sidebar browse, BlogCard component, reading progress).
-- **Private details**: See `CLAUDE.private.md` (gitignored) for infrastructure IDs, traffic numbers, and internal docs index.
+- **Production URL**: https://www.zenml.io
+- **Hosting**: Cloudflare Pages (edge CDN, branch previews, auto CI/CD)
+- **Scale**: 20 content collections, ~2,340 content items, ~2,551 assets on R2
+- **History**: Migrated from Webflow in Feb 2026. See `docs/MIGRATION.md` for the historical narrative
+- **Private details**: See `CLAUDE.private.md` (gitignored) for infrastructure IDs, traffic numbers, and internal docs index
 
-## Key Constraints
+## Operational Constraints
 
-- **No broken links** — all existing URLs must be preserved or 301-redirected
-- **SEO preservation** — keep slugs, meta tags, Open Graph data intact
-- **CMS data must migrate** — 20 collections, ~2,340 items total
-- **Largest collection**: LLMOps Database (1,453 items) — filter-heavy UI
-- **Blog**: 317 posts with categories, tags, and authors
-- **Asset migration**: all images/files must be re-hosted (Webflow URLs will
-  break if the site is deleted)
+- **No broken links** — all published URLs must be preserved or 301-redirected
+- **SEO stability** — keep slugs, meta tags, Open Graph data intact when editing content
+- **Content schema integrity** — 20 collections validated by Zod schemas in `src/content.config.ts`
+- **Static-first output** — the site is statically generated; only API routes in `src/pages/api/` run server-side
+- **Use Astro API routes, not `functions/`** — the Cloudflare adapter's `_worker.js` silently ignores hand-written `functions/` (see below)
 
-## Tech Stack (Decided)
+## Tech Stack
 
 | Layer | Choice |
 |-------|--------|
 | Framework | **Astro** (TypeScript) — static-first, content collections, islands |
-| Content | **Markdown (.md) in git** — Astro Content Collections with Zod schemas. **Use `.md` NOT `.mdx`** (MDX v2 breaks on Webflow-exported HTML) |
+| Content | **Markdown (.md) in git** — Astro Content Collections with Zod schemas. **Use `.md` NOT `.mdx`** (MDX v2 treats HTML as strict JSX, breaking raw HTML in content) |
 | Hosting | **Cloudflare Pages** — edge CDN, branch previews, auto CI/CD |
 | Assets | **Cloudflare R2** — object storage for images/files |
 | Styling | **Tailwind CSS** — utility-first |
@@ -41,10 +39,9 @@ customize freely.
 
 | Decision | Value |
 |----------|-------|
-| Trailing slash | `never` — matches Webflow behavior, locked in `astro.config.ts` |
+| Trailing slash | `never` — configured site-wide in `astro.config.ts`, canonicals strip trailing `/` |
 | Canonical domain | `www.zenml.io` (bare `zenml.io` redirects to www) |
-| Migration strategy | Full cutover (not strangler) — build complete site, switch DNS |
-| Image optimization | Upload 1:1 for now; convert to WebP/AVIF post-launch |
+| Build format | `file` — generates `.html` files (`buildCanonical()` in `seo.ts` strips the `.html` suffix) |
 
 ## Development Conventions
 
@@ -82,7 +79,7 @@ Requires R2 credentials in `.env` — see `.env.example`.
 
 **R2 key structure:**
 - New uploads: `content/uploads/{sha256_8}/{filename}` (or custom `--prefix`)
-- Webflow-migrated (existing): `webflow/{siteId}/{hash}/{filename}`
+- Legacy (from original migration): `webflow/{siteId}/{hash}/{filename}` — still served, do not move
 
 **In `src/lib/*.ts` data files:** Build URLs from the canonical constant, never hardcode the domain:
 ```ts
@@ -132,6 +129,16 @@ Instead, create server-side endpoints as **Astro API routes** in `src/pages/api/
 with `export const prerender = false`. These are compiled into the adapter's
 Worker and share access to Cloudflare runtime bindings via
 `(context.locals as Runtime).runtime` (env vars, `ctx.waitUntil()`, caches).
+
+## Legacy Terminology
+
+This site was migrated from Webflow in Feb 2026. Some naming and metadata from that era persists in the codebase:
+
+- **`scripts/phase2/validate-content.ts`** — still the active content validator (`pnpm validate:content`); the path is historical, the tool is current
+- **`webflow` frontmatter** in content `.md` files — retained for traceability on migrated content; not needed for new posts
+- **`R2_WEBFLOW_BASE`** in `src/lib/constants.ts` — references legacy asset namespaces still served from R2
+- **`.prose` CSS class** — styles raw HTML that originated from Webflow's CMS export
+- **`docs/MIGRATION.md`** — historical narrative of the migration; not current architecture authority
 
 ## Key Files
 
