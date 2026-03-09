@@ -22,39 +22,6 @@ customize freely.
 - **Asset migration**: all images/files must be re-hosted (Webflow URLs will
   break if the site is deleted)
 
-## Content Architecture (Webflow)
-
-### Major CMS Collections
-
-| Collection         | Items  | Slug              |
-|--------------------|--------|--------------------|
-| LLMOps Databases   | 1,453  | llmops-database    |
-| Blog Posts         | 317    | blog               |
-| Blog Tags          | 118    | tags               |
-| LLMOps Tags        | 107    | llmops-tags        |
-| Project Tags       | 80     | project-tags       |
-| Integrations       | 68     | integrations       |
-| Advantages         | 45     | advantages         |
-| Blog Authors       | 27     | author             |
-| Team Members       | 22     | team               |
-| VS Pages           | 17     | compare            |
-| Integration Types  | 17     | integration-type   |
-| Industry Tags      | 17     | industry-tags      |
-| Projects (new)     | 16     | projects           |
-| Blog Categories    | 14     | category           |
-| Old Projects       | 11     | old-projects       |
-| Quotes             | 6      | quotes             |
-| Product Categories | 5      | product-categories |
-
-### Page Types
-
-- **Static pages**: ~44 published (home, pricing, features, company, etc.)
-- **CMS template pages**: ~20 (one per collection)
-- **Draft pages**: ~13 (old versions, test pages, upcoming pricing)
-- **Case study pages**: 5 (under /case-study/)
-- **Feature detail pages**: ~12 (under /features/)
-- **VS comparison pages**: 3 static + 17 CMS-driven (under /vs/ and /compare/)
-
 ## Tech Stack (Decided)
 
 | Layer | Choice |
@@ -69,8 +36,6 @@ customize freely.
 | Forms | **ContactForm** Preact island → Astro API routes (`src/pages/api/forms/[formType].ts`, `prerender: false`) → Segment HTTP API (identify + track). Cal.com embeds for demo booking. Brevo for newsletter |
 | Analytics | **Plausible** + GA4 + Segment (hostname-gated to production domain to prevent preview pollution) |
 | Code highlighting | **Shiki** (custom `zenml-light`/`zenml-dark` themes) at build time + **JetBrains Mono** monospace font (self-hosted variable woff2) |
-| CRM | **Attio** (keep existing) |
-| Design approach | Pixel-perfect recreation first, then iterate |
 
 ## Key Technical Decisions
 
@@ -81,29 +46,6 @@ customize freely.
 | Migration strategy | Full cutover (not strangler) — build complete site, switch DNS |
 | Image optimization | Upload 1:1 for now; convert to WebP/AVIF post-launch |
 
-## Migration Phases
-
-### Phase 0 — Infrastructure
-Cloudflare Pages project, R2 bucket, GitHub Actions CI/CD, branch preview deploys.
-
-### Phase 1 — Content Export & Transform
-2,151 URLs crawled for SEO baseline. 2,340 CMS items exported. 2,397 assets downloaded and uploaded to R2 (384 MB). 1,904 content files generated with frontmatter + SEO metadata. 44 redirects normalized.
-
-### Phase 2 — Content Collections
-All 20 content collections defined with Zod schemas in `src/content.config.ts`. 2,392 content files validated. Astro Content Layer API with glob loaders.
-
-### Phase 3 — All Pages
-Layouts, blog (280 posts, 12/page pagination), all CMS templates, LLMOps filter island, 44+ static pages, homepage (13 section components), feature detail pages, case studies, VS comparison pages, form/conversion pages, ROI calculator, Storylane embeds.
-
-### Phase 4 — SEO & Redirects
-52 redirect rules in `public/_redirects`, RSS feeds (blog + LLMOps), auto-generated sitemap, OG images, JSON-LD structured data, `llms.txt`, favicon, parity testing at 3.27% gap.
-
-### Phase 5 — Forms & Interactive Features
-ContactForm Preact island, cookie consent (4 categories), analytics tracking with hostname gate, blog TOC with scroll-spy, Shiki code highlighting, security headers.
-
-### Phase 6 — QA & Cutover (In Progress)
-Fixing visual parity gaps page-by-page against the Webflow original. Recent work includes LLMOps Database redesign (faceted sidebar, Pagefind search, accessibility) and blog redesign (sidebar browse, reading progress).
-
 ## Development Conventions
 
 - **This is a public repository.** All commits, documentation, and code are visible to the public. Never commit secrets, API keys, infrastructure IDs, internal URLs, traffic numbers, or other sensitive information. Use `CLAUDE.private.md` (gitignored) for private details. The `design/` folder and `scripts/internal/` are also gitignored for internal-only artifacts
@@ -112,6 +54,7 @@ Fixing visual parity gaps page-by-page against the Webflow original. Recent work
 - After running tests, re-run them if you make subsequent changes
 - **Build output**: `pnpm build` generates ~2000+ lines of output listing every generated page. Always run it in background mode and use `tail` to check only the final lines for success/failure
 - **Credential management**: When you receive API credentials, tokens, or keys, **always add them to `.env`** for persistence across sessions. The `.env` file is gitignored and safe for secrets
+- VERY IMPORTANT: **Before opening a PR or making a large commit**, always run `/simplify` to review changed code for reuse opportunities, quality issues, and efficiency improvements. Fix any issues it finds before committing.
 
 ## Images & Assets
 
@@ -151,10 +94,7 @@ const url = `${ASSET_BASE_URL}/content/uploads/1a2b3c4d/hero.webp`;
 - `r2-image-upload` (`.claude/skills/r2-image-upload/SKILL.md`) — upload images to R2. Triggers: "upload image", "add image to R2", "new blog image".
 - `blog-post-contributor` (`.claude/skills/blog-post-contributor/SKILL.md`) — full blog post workflow from markdown or Notion. Triggers: "new blog post", "add blog", "blog from Notion".
 
-### Migration lessons (from Phase 1)
-
-These patterns caused silent runtime 404s that only showed up on the deployed
-site — no build errors, no type errors, just broken images.
+### Lessons Learned
 
 ### Always verify uploads via the public URL
 
@@ -174,12 +114,6 @@ template literal `${R2}/` references).
 Astro doesn't error when a component references `/images/logo.svg` but
 `public/images/logo.svg` doesn't exist — it just silently 404s at runtime.
 After adding `/images/*` references, verify the files exist in `public/images/`.
-
-### Webflow CDN may 403 on certain file IDs
-
-Some Webflow file IDs return 403 even with browser User-Agent headers. The
-Webflow HTML export often has equivalent files under older file IDs that
-download fine. Use local export files as source when the CDN blocks.
 
 ### Filenames with spaces break regex URL matching
 
@@ -235,7 +169,3 @@ Worker and share access to Cloudflare runtime bindings via
 - `src/layouts/BaseLayout.astro` — Main layout (nav, footer, head slots, analytics)
 - `src/layouts/BlogLayout.astro` — Blog post layout (conditional TOC sidebar)
 - `src/layouts/MinimalLayout.astro` — Lightweight shell (no nav/footer) for embeds
-
-### Webflow Reference (gitignored, local only)
-- `design/webflow-export/extracted/` — Original Webflow HTML + CSS export
-- `design/migration/phase1/runs/` — Phase 1 export run artifacts
