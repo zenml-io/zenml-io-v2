@@ -9,7 +9,7 @@
   - `styles/global.css` Tailwind v4 theme tokens and global styles.
 - `public/` stores static assets and edge config (`_redirects`, `_headers`).
 - `src/pages/api/` contains Astro server-side API routes (`prerender: false`) for forms, CSP reports, etc. **Do NOT use `functions/`** — the Cloudflare adapter silently ignores it.
-- `scripts/phase2`, `scripts/phase4`, `scripts/phase6` hold migration/validation utilities.
+- `scripts/` contains maintenance and validation tooling. Some directories retain legacy names (`phase2/`, `phase4/`, `phase6/`) from the original Webflow migration — these tools are still active (e.g., `pnpm validate:content` runs `scripts/phase2/validate-content.ts`).
 - `design/` and `scripts/internal/` are internal artifacts and are gitignored; do not commit from them.
 
 ## Build, Test, and Development Commands
@@ -46,7 +46,7 @@
 - **UI/static assets** (`public/images/`): logos, icons, favicons, backgrounds. Reference as `"/images/filename.svg"` (root-relative). Just place the file in `public/images/`.
 - **Content/CMS images** (R2 bucket): blog heroes, screenshots, team photos, OG images. Must be **absolute URLs** — content schemas enforce `z.string().url()`. Upload via `uv run scripts/r2-upload.py <file>`.
 - In `src/lib/*.ts` data files, build R2 URLs from `ASSET_BASE_URL` constant — never hardcode the R2 domain.
-- New R2 uploads use the key prefix `content/uploads/{sha8}/{filename}`. Existing Webflow-migrated images live under `webflow/...`.
+- New R2 uploads use the key prefix `content/uploads/{sha8}/{filename}`. Legacy assets from the original Webflow migration live under `webflow/...` and are still served.
 - After uploading, always verify the URL returns HTTP 200 before committing.
 - **Claude Code skill**: Use the `r2-image-upload` skill (`.claude/skills/r2-image-upload/SKILL.md`) for the full upload workflow.
 
@@ -61,3 +61,4 @@
 - Never commit secrets, API keys, infra IDs, or private notes.
 - Store local secrets in `.env` (gitignored). See `.env.example` for required variables.
 - Treat this repo as public by default.
+- `docs/MIGRATION.md` documents how the site was migrated from Webflow — it is historical context, not current architecture guidance.
