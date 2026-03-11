@@ -23,6 +23,7 @@ pnpm preview   # Serve production build locally
 ```bash
 pnpm check              # Astro + TypeScript type checking
 pnpm validate:content   # Content schema validation (Zod)
+pnpm validate:llmops    # LLMOps collection-focused validation
 pnpm lint               # Biome linter
 pnpm lint:fix           # Auto-fix lint issues
 pnpm format             # Biome formatter
@@ -45,6 +46,22 @@ Copy `.env.example` to `.env` and fill in what you need:
 The `.env` file is gitignored and safe for secrets.
 
 ## Common Workflows
+
+### LLMOpsDB ingest from `llmops-db-notion`
+
+New LLMOpsDB entries can now be published directly from the Notion pipeline into:
+
+```text
+src/content/llmops-database/*.md
+```
+
+The publishing happens in the sibling `llmops-db-notion` repo. After it writes new or updated `.md` files here, validate with:
+
+```bash
+pnpm validate:llmops
+pnpm check
+pnpm build
+```
 
 ### Adding a Blog Post
 

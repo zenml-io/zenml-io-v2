@@ -263,6 +263,7 @@ class ContentValidator {
     // Group C: Draft/source consistency
     this.validateDraftSourceConsistency();
     this.validateOldProjectsDrafts();
+    this.validateLLMOpsProvenanceAndDates();
 
     // Group D: Webflow CDN leakage
     this.validateWebflowCDNUrls();
@@ -284,6 +285,20 @@ class ContentValidator {
     const actualCollections = Array.from(this.collectionStats.keys());
     const expectedSet = new Set(EXPECTED_COLLECTIONS);
     const actualSet = new Set(actualCollections);
+
+    if (this.targetCollection) {
+      if (!actualSet.has(this.targetCollection)) {
+        this.addFinding({
+          severity: "error",
+          code: "MISSING_COLLECTION",
+          collection: this.targetCollection,
+          slug: "",
+          file: "",
+          message: `Expected collection directory missing: ${this.targetCollection}`,
+        });
+      }
+      return;
+    }
 
     // Check for unexpected directories
     for (const collection of actualCollections) {
@@ -433,6 +448,71 @@ class ContentValidator {
           slug: entry.fileSlug,
           file: entry.filePath,
           message: "old-projects entry must have draft: true",
+        });
+      }
+    }
+  }
+
+  private deriveLLMOpsPubDate(data: Record<string, any>): Date | null {
+    const candidates = [
+      data.webflow?.lastPublished,
+      data.notion?.publishedAt,
+      data.webflow?.lastUpdated,
+      data.notion?.lastEditedTime,
+      data.webflow?.createdOn,
+      data.notion?.createdTime,
+    ];
+
+    for (const raw of candidates) {
+      if (typeof raw !== "string" || !raw) continue;
+      const parsed = new Date(raw);
+      if (!Number.isNaN(parsed.getTime())) {
+        return parsed;
+      }
+    }
+
+    return null;
+  }
+
+  private validateLLMOpsProvenanceAndDates(): void {
+    for (const entry of this.entries) {
+      if (entry.collection !== "llmops-database") continue;
+
+      const { data, fileSlug, filePath } = entry;
+      const hasWebflow = Boolean(data.webflow);
+      const hasNotion = Boolean(data.notion);
+      const llmopsTags = Array.isArray(data.llmopsTags) ? data.llmopsTags : [];
+
+      if (!hasWebflow && !hasNotion) {
+        this.addFinding({
+          severity: "error",
+          code: "LLMOPS_MISSING_PROVENANCE",
+          collection: entry.collection,
+          slug: fileSlug,
+          file: filePath,
+          message: "LLMOps entries must include either webflow or notion provenance metadata",
+        });
+      }
+
+      if (llmopsTags.length === 0) {
+        this.addFinding({
+          severity: "warning",
+          code: "LLMOPS_EMPTY_TAGS",
+          collection: entry.collection,
+          slug: fileSlug,
+          file: filePath,
+          message: "LLMOps entry has no llmopsTags; publish is allowed but discoverability will suffer",
+        });
+      }
+
+      if (!this.deriveLLMOpsPubDate(data)) {
+        this.addFinding({
+          severity: "error",
+          code: "LLMOPS_MISSING_PUBLISH_DATE",
+          collection: entry.collection,
+          slug: fileSlug,
+          file: filePath,
+          message: "LLMOps entry has no parseable publish/update/create timestamp in webflow/notion provenance",
         });
       }
     }

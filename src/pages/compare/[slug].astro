@@ -26,7 +26,7 @@ import CompareRelatedBlog from "../../components/sections/compare/CompareRelated
 import FeatureValueSection from "../../components/sections/FeatureValueSection.astro";
 import VsTestimonial from "../../components/sections/VsTestimonial.astro";
 import VsCta02 from "../../components/sections/VsCta02.astro";
-import { getCategoryDefaults, ZENML_ICON_URL, formatCategoryLabel } from "../../lib/compareDefaults";
+import { getCategoryDefaults, ZENML_ICON_URL } from "../../lib/compareDefaults";
 import { getMainFeedPosts } from "../../lib/blog";
 
 export async function getStaticPaths() {
@@ -43,8 +43,6 @@ const { item } = Astro.props;
 // Category defaults
 // ---------------------------------------------------------------------------
 const categoryDefaults = getCategoryDefaults(item.data.category);
-const categoryLabel = item.data.category ? formatCategoryLabel(item.data.category) : "Tool";
-
 // ---------------------------------------------------------------------------
 // Resolve advantages
 // ---------------------------------------------------------------------------

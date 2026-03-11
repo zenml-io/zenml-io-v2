@@ -6,7 +6,7 @@
  * and related entries ("More Like This").
  * Generates /llmops-database/<slug> for each published entry.
  */
-import { getCollection, getEntry, render } from "astro:content";
+import { getEntry, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Badge from "../../components/Badge.astro";
 import { getAllPublishedEntries, buildRelatedIndex, getRelatedFromIndex } from "../../lib/llmops";

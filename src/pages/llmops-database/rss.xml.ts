@@ -18,15 +18,28 @@ function escapeXml(s: string): string {
     .replace(/'/g, "&apos;");
 }
 
-/** Derive a Date from the webflow metadata fallback chain. */
-function derivePubDate(
-  webflow?: { lastPublished?: string; lastUpdated?: string; createdOn?: string }
-): Date | null {
-  const raw =
-    webflow?.lastPublished ?? webflow?.lastUpdated ?? webflow?.createdOn;
-  if (!raw) return null;
-  const d = new Date(raw);
-  return isNaN(d.getTime()) ? null : d;
+type LLMOpsProvenance = {
+  webflow?: { lastPublished?: string; lastUpdated?: string; createdOn?: string };
+  notion?: { publishedAt?: string; lastEditedTime?: string; createdTime?: string };
+};
+
+/** Derive a Date from the website-native/Webflow provenance fallback chain. */
+function derivePubDate(data: LLMOpsProvenance): Date | null {
+  const candidates = [
+    data.webflow?.lastPublished,
+    data.notion?.publishedAt,
+    data.webflow?.lastUpdated,
+    data.notion?.lastEditedTime,
+    data.webflow?.createdOn,
+    data.notion?.createdTime,
+  ];
+
+  for (const raw of candidates) {
+    if (!raw) continue;
+    const d = new Date(raw);
+    if (!isNaN(d.getTime())) return d;
+  }
+  return null;
 }
 
 export const GET: APIRoute = async () => {
@@ -38,7 +51,7 @@ export const GET: APIRoute = async () => {
   // Derive pubDate for sorting + feed
   const withDates = entries.map((entry) => ({
     entry,
-    pubDate: derivePubDate(entry.data.webflow),
+    pubDate: derivePubDate(entry.data),
   }));
 
   // Sort by date desc, stable tie-break on slug

@@ -16,7 +16,7 @@ export default defineConfig({
     format: "file",
   },
   markdown: {
-    remarkPlugins: [remarkDefaultLang()],
+    remarkPlugins: [remarkDefaultLang() as any],
     shikiConfig: {
       theme: zenmlLight as any,
     },

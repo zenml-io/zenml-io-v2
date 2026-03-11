@@ -68,6 +68,14 @@ export const webflowMetaSchema = z.object({
   createdOn: z.string().optional(),
 });
 
+const notionMetaSchema = z.object({
+  pageId: z.string(),
+  databaseId: z.string().optional(),
+  createdTime: z.string().optional(),
+  lastEditedTime: z.string().optional(),
+  publishedAt: z.string().optional(),
+});
+
 /**
  * CTA button schema
  * Used by: compare pages, feature pages, VS pages
@@ -373,11 +381,11 @@ const integrationSchema = z.object({
  * Route: /llmops-database/<slug>
  * Count: 1,453 items
  *
- * CRITICAL DISCREPANCIES FROM PLAN:
- * - Field is "llmopsTags" (not "tags")
- * - NO "industryTags" field exists in actual output!
- * - Phase 2A claimed to fix these field names but didn't
- * - Additional fields: company, summary, link, year
+ * Supports both:
+ * - historical Webflow-migrated entries (`webflow` provenance)
+ * - native entries published from the Notion pipeline (`notion` provenance)
+ *
+ * Validation for provenance/date presence is enforced in scripts/phase2/validate-content.ts
  */
 const llmopsSchema = z.object({
   title: z.string(),
@@ -392,9 +400,10 @@ const llmopsSchema = z.object({
   link: z.string().url().optional(),
   year: z.number().optional(),
 
-  // SEO & Webflow
+  // SEO & provenance
   seo: seoSchema,
-  webflow: webflowMetaSchema,
+  webflow: webflowMetaSchema.optional(),
+  notion: notionMetaSchema.optional(),
 });
 
 /**

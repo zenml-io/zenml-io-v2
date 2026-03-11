@@ -9,6 +9,7 @@
     "preview": "astro preview",
     "check": "astro check --tsconfig ./tsconfig.check.json",
     "validate:content": "tsx scripts/phase2/validate-content.ts",
+    "validate:llmops": "tsx scripts/phase2/validate-content.ts --collection=llmops-database",
     "lint": "biome check src/",
     "lint:fix": "biome check --fix src/",
     "format": "biome format --write src/",

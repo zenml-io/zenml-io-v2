@@ -3,6 +3,7 @@
  * Ported from the Webflow site's embedded calculator widget.
  */
 import { useState, useCallback } from "preact/hooks";
+import type { CSSProperties } from "preact";
 import { calculateRoi, type RoiOutputs } from "../../lib/roiCalculator";
 
 // ── Slider config ──────────────────────────────────────────────────
@@ -198,7 +199,7 @@ function ResultRow({ label, value, isLast }: ResultRowProps) {
 
 // ── Styles ─────────────────────────────────────────────────────────
 
-const styles: Record<string, preact.JSX.CSSProperties> = {
+const styles: Record<string, CSSProperties> = {
   container: {
     maxWidth: "800px",
     margin: "0 auto",

@@ -226,14 +226,6 @@ function handleFacetListKeyDown(e: KeyboardEvent): void {
 
 // ── SVG Icons ─────────────────────────────────────────────────────
 
-function ChevronIcon({ class: c }: { class?: string }) {
-  return (
-    <svg class={c || "h-4 w-4"} viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M7.5 5L12.5 10L7.5 15" />
-    </svg>
-  );
-}
-
 function SearchIcon() {
   return (
     <svg class="h-4 w-4 text-gray-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.67">
@@ -255,14 +247,6 @@ function FilterIcon() {
   return (
     <svg class="h-4 w-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
       <path d="M3 5h14M5 10h10M7 15h6" />
-    </svg>
-  );
-}
-
-function ExternalIcon() {
-  return (
-    <svg class="h-3.5 w-3.5" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M6 3H3v10h10v-3M9 2h5v5M14 2L7 9" />
     </svg>
   );
 }

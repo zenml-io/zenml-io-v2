@@ -5,7 +5,7 @@
  * Generates a static page for each published blog post.
  * Resolves author, category, tags, and computes prev/next + related posts.
  */
-import { getCollection, getEntry, render } from "astro:content";
+import { getEntry, render } from "astro:content";
 import BlogLayout from "../../layouts/BlogLayout.astro";
 import Badge from "../../components/Badge.astro";
 import {
@@ -52,8 +52,6 @@ const tags = tagEntries.filter(Boolean).map((t) => ({
 }));
 
 // Resolve prev/next/related metadata for cards
-const prevAuthor = prev ? await resolveAuthor(prev.data.author) : undefined;
-const nextAuthor = next ? await resolveAuthor(next.data.author) : undefined;
 const relatedAuthors = new Map<string, { name: string; slug: string }>();
 const relatedCategories = new Map<string, { name: string; slug: string }>();
 for (const r of related) {

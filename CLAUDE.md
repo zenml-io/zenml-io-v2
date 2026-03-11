@@ -148,6 +148,22 @@ This site was migrated from Webflow in Feb 2026. Some naming and metadata from t
 - **`.prose` CSS class** — styles raw HTML that originated from Webflow's CMS export
 - **`docs/MIGRATION.md`** — historical narrative of the migration; not current architecture authority
 
+## LLMOpsDB Native Publish Workflow
+
+LLMOps database entries are no longer only historical Webflow-migration artifacts. New entries can now be published natively from the sibling `llmops-db-notion` repo into:
+
+- `src/content/llmops-database/*.md`
+
+Important rules:
+
+- New native LLMOps entries may use a `notion:` provenance block instead of `webflow:`
+- Existing migrated entries still use `webflow:` provenance
+- RSS date derivation for LLMOps entries is source-agnostic (`webflow` first, then `notion`)
+- After new LLMOps entries land, validate with:
+  - `pnpm validate:llmops`
+  - `pnpm check`
+  - `pnpm build`
+
 ## Key Files
 
 ### Core Architecture
