@@ -190,7 +190,7 @@ const SAAS_STARTER: PricingPlan = {
     "Unlimited team members",
     "Basic support",
   ],
-  cta: { label: "Free Trial", href: "https://cloud.zenml.io/signup", analytics: "Starter-Free-Trial" },
+  cta: { label: "Start Free Trial", href: "https://cloud.zenml.io/signup", analytics: "Starter-Free-Trial" },
   ctaVariant: "secondary",
 };
 
@@ -211,7 +211,7 @@ const SAAS_GROWTH: PricingPlan = {
     "Webhooks & Triggers",
     "Priority support",
   ],
-  cta: { label: "Free Trial", href: "https://cloud.zenml.io/signup", analytics: "Growth-Free-Trial" },
+  cta: { label: "Start Free Trial", href: "https://cloud.zenml.io/signup", analytics: "Growth-Free-Trial" },
   ctaVariant: "primary",
 };
 
@@ -231,7 +231,7 @@ const SAAS_SCALE: PricingPlan = {
     "Codespaces (Remote IDE)",
     "Priority support",
   ],
-  cta: { label: "Free Trial", href: "https://cloud.zenml.io/signup", analytics: "Scale-Free-Trial" },
+  cta: { label: "Start Free Trial", href: "https://cloud.zenml.io/signup", analytics: "Scale-Free-Trial" },
   ctaVariant: "primary",
 };
 
@@ -476,6 +476,6 @@ export const PRICING_STATS = {
 export const PRICING_FINAL_CTA = {
   headline: "Start deploying reproducible AI workflows today",
   body: "Enterprise-grade MLOps platform trusted by thousands of companies in production.",
-  primaryCta: { label: "Free Trial", href: "https://cloud.zenml.io/signup" } as CtaLink,
+  primaryCta: { label: "Start Free Trial", href: "https://cloud.zenml.io/signup" } as CtaLink,
   secondaryCta: { label: "Use Open Source", href: "/get-started" } as CtaLink,
 } as const;
