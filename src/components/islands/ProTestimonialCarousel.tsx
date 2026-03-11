@@ -30,7 +30,7 @@ export default function ProTestimonialCarousel({
 }: Props) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [slidesPerView, setSlidesPerView] = useState(3);
-  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [, setIsTransitioning] = useState(false);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const totalSlides = testimonials.length;
