@@ -153,5 +153,5 @@ export const GET_STARTED_FINAL_CTA = {
   headline: "Ready for the next level?",
   body: "Go beyond open source with ZenML Pro. Get enterprise features, managed infrastructure, RBAC, enhanced security, dedicated support, and more.",
   primaryCta: { label: "Compare OSS vs Pro", href: "/open-source-vs-pro" } as CtaLink,
-  secondaryCta: { label: "Book a demo", href: "/book-your-demo" } as CtaLink,
+  secondaryCta: { label: "Free Trial", href: "https://cloud.zenml.io/signup" } as CtaLink,
 } as const;

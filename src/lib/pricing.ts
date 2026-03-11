@@ -190,7 +190,7 @@ const SAAS_STARTER: PricingPlan = {
     "Unlimited team members",
     "Basic support",
   ],
-  cta: { label: "Book a Demo", href: "/book-your-demo", analytics: "Starter-Book-Demo" },
+  cta: { label: "Free Trial", href: "https://cloud.zenml.io/signup", analytics: "Starter-Free-Trial" },
   ctaVariant: "secondary",
 };
 
@@ -211,7 +211,7 @@ const SAAS_GROWTH: PricingPlan = {
     "Webhooks & Triggers",
     "Priority support",
   ],
-  cta: { label: "Book a Demo", href: "/book-your-demo", analytics: "Growth-Book-Demo" },
+  cta: { label: "Free Trial", href: "https://cloud.zenml.io/signup", analytics: "Growth-Free-Trial" },
   ctaVariant: "primary",
 };
 
@@ -231,7 +231,7 @@ const SAAS_SCALE: PricingPlan = {
     "Codespaces (Remote IDE)",
     "Priority support",
   ],
-  cta: { label: "Book a Demo", href: "/book-your-demo", analytics: "Scale-Book-Demo" },
+  cta: { label: "Free Trial", href: "https://cloud.zenml.io/signup", analytics: "Scale-Free-Trial" },
   ctaVariant: "primary",
 };
 
@@ -338,16 +338,16 @@ const INFO_BLOCK =
 
 export const PRICING_TABS: readonly PricingTab[] = [
   {
-    label: "Self-Hosted",
-    plans: [SELF_HOSTED_OSS, SELF_HOSTED_PRO],
-    infoBlock: INFO_BLOCK,
-    compareTable: SELF_HOSTED_COMPARE,
-  },
-  {
     label: "SaaS",
     plans: [SAAS_STARTER, SAAS_GROWTH, SAAS_SCALE, SAAS_ENTERPRISE],
     infoBlock: INFO_BLOCK,
     compareTable: SAAS_COMPARE,
+  },
+  {
+    label: "Self-Hosted",
+    plans: [SELF_HOSTED_OSS, SELF_HOSTED_PRO],
+    infoBlock: INFO_BLOCK,
+    compareTable: SELF_HOSTED_COMPARE,
   },
 ];
 
@@ -476,6 +476,6 @@ export const PRICING_STATS = {
 export const PRICING_FINAL_CTA = {
   headline: "Start deploying reproducible AI workflows today",
   body: "Enterprise-grade MLOps platform trusted by thousands of companies in production.",
-  primaryCta: { label: "Book a Demo", href: "/book-your-demo" } as CtaLink,
+  primaryCta: { label: "Free Trial", href: "https://cloud.zenml.io/signup" } as CtaLink,
   secondaryCta: { label: "Use Open Source", href: "/get-started" } as CtaLink,
 } as const;
