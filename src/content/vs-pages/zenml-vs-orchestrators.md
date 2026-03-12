@@ -8,8 +8,8 @@ hero:
   headline: "More Than an Orchestrator"
   deck: "ZenML vs Airflow, Kubeflow, Kedro and moreUnderstand how ZenML stands apart from traditional orchestrators"
   primaryCta:
-    label: "Book a Demo"
-    href: "/book-your-demo"
+    label: "Start Free Trial"
+    href: "https://cloud.zenml.io/signup"
   secondaryCta:
     label: "Use Open Source"
     href: "/get-started"
@@ -68,8 +68,8 @@ blocks:
       - "Works with any infrastructure"
       - "Upgrade to managed Pro features"
     primaryCta:
-      label: "Book a Demo"
-      href: "/book-your-demo"
+      label: "Start Free Trial"
+      href: "https://cloud.zenml.io/signup"
     secondaryCta:
       label: "Use Open Source"
       href: "/get-started"

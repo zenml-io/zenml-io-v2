@@ -232,7 +232,7 @@ const SAAS_SCALE: PricingPlan = {
     "Priority support",
   ],
   cta: { label: "Start Free Trial", href: "https://cloud.zenml.io/signup", analytics: "Scale-Free-Trial" },
-  ctaVariant: "primary",
+  ctaVariant: "secondary",
 };
 
 const SAAS_ENTERPRISE: PricingPlan = {
@@ -256,7 +256,7 @@ const SAAS_ENTERPRISE: PricingPlan = {
     "Dedicated support + SLA",
   ],
   cta: { label: "Book a Demo", href: "/book-your-demo", analytics: "Enterprise-Book-Demo" },
-  ctaVariant: "primary",
+  ctaVariant: "secondary",
   secondaryLink: {
     label: "Or talk to an engineer about deployment",
     href: "/book-your-demo",

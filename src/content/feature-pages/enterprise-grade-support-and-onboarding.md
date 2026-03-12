@@ -15,8 +15,8 @@ hero:
     url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/339bb62b/66e9556fd34d2791885b0c5f_model_control_plane_01.png"
     alt: Dashboard displaying machine learning models, including versions, authors, and tags. Relevant to model monitoring and ML pipelines.
   primaryCta:
-    label: Book a demo
-    href: /book-your-demo
+    label: Start Free Trial
+    href: https://cloud.zenml.io/signup
   secondaryCta:
     label: Read the documentation
     href: https://docs.zenml.io
