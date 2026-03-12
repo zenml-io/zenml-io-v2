@@ -15,8 +15,8 @@ hero:
     url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f74b42dd/66c74b8f2f2804e73e8592b2_iterate00-min.png"
     alt: Flowchart of a ZenML machine learning pipeline from experiment to production with cloud integrations like AWS.
   primaryCta:
-    label: Book a demo
-    href: /book-your-demo
+    label: Start Free Trial
+    href: https://cloud.zenml.io/signup
   secondaryCta:
     label: Read the documentation
     href: https://docs.zenml.io

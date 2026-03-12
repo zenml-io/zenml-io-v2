@@ -294,7 +294,7 @@ export const NAV_LINKS: NavLink[] = [
 
 export const NAV_CTAS: NavLink[] = [
   { label: "Get Started", href: "/get-started" },
-  { label: "Book a demo", href: "/book-your-demo" },
+  { label: "Start Free Trial", href: "https://cloud.zenml.io/signup" },
 ];
 
 // ---------------------------------------------------------------------------

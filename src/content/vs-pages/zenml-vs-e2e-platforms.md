@@ -8,8 +8,8 @@ hero:
   headline: "More Than a E2E Platform"
   deck: "ZenML vs AWS Sagemaker, GCP Vertex AI, ClearML and moreUnderstand how ZenML stands apart from traditional e2e platforms"
   primaryCta:
-    label: "Book a Demo"
-    href: "/book-your-demo"
+    label: "Start Free Trial"
+    href: "https://cloud.zenml.io/signup"
   secondaryCta:
     label: "Use Open Source"
     href: "/get-started"
@@ -56,8 +56,8 @@ blocks:
       - "Works with any infrastructure"
       - "Upgrade to managed Pro features"
     primaryCta:
-      label: "Book a Demo"
-      href: "/book-your-demo"
+      label: "Start Free Trial"
+      href: "https://cloud.zenml.io/signup"
     secondaryCta:
       label: "Use Open Source"
       href: "/get-started"

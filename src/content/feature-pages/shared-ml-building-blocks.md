@@ -15,8 +15,8 @@ hero:
     url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b7d6eb47/6526ae31bf639b6c8874a597_05_Integrations_showcase.webp"
     alt: Illustration of a person meditating, surrounded by logos of MLOps tools like ZenML and Kubeflow, symbolizing harmony in machine learning operations.
   primaryCta:
-    label: Book a demo
-    href: /book-your-demo
+    label: Start Free Trial
+    href: https://cloud.zenml.io/signup
   secondaryCta:
     label: Read the documentation
     href: https://docs.zenml.io

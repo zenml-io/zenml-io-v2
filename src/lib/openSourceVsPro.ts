@@ -32,7 +32,7 @@ export const OSS_VS_PRO_HERO: HeroData = {
   eyebrow: "From Solo Science to Team Engineering",
   headline: "ZenML Open Source vs Pro",
   deck: "Transform your ML workflows from single-player experiments to multiplayer production systems. ZenML Pro builds on the same open-source foundation you trust: no code rewrites, no metadata migrations required.",
-  primaryCta: { label: "Book a Demo", href: "/book-your-demo" },
+  primaryCta: { label: "Start Free Trial", href: "https://cloud.zenml.io/signup" },
   secondaryCta: { label: "Use Open Source", href: "/get-started" },
 };
 
@@ -228,6 +228,6 @@ export const OSS_VS_PRO_COMPARISON: ComparisonTableData = {
 export const OSS_VS_PRO_FINAL_CTA = {
   headline: "Start deploying reproducible AI workflows today",
   body: "Enterprise-grade MLOps platform trusted by thousands of companies in production.",
-  primaryCta: { label: "Book a Demo", href: "/book-your-demo" },
+  primaryCta: { label: "Start Free Trial", href: "https://cloud.zenml.io/signup" },
   secondaryCta: { label: "Use Open Source", href: "https://cloud.zenml.io" },
 } as const;

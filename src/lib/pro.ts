@@ -25,7 +25,7 @@ export const PRO_SEO = {
 export const PRO_HERO: HeroData = {
   headline: "Supercharge your MLOps with a fully-managed control plane",
   deck: "Forget the infrastructure setup and security concerns. Get a single pane of glass view into your entire organization.",
-  primaryCta: { label: "Book a Demo", href: "/book-your-demo" },
+  primaryCta: { label: "Start Free Trial", href: "https://cloud.zenml.io/signup" },
   secondaryCta: { label: "Compare OSS vs Pro", href: "/open-source-vs-pro" },
   image: {
     url: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b6cd9240/652d14664e7b1ba97d692b8a_cloud_main-1.webp`,
@@ -72,7 +72,7 @@ export const PRO_ONBOARDING = {
       body: "Our experts will help your teams to connect your workflow and set up initial automations, streamlining your operations.",
     },
   ] satisfies FeatureGridItem[],
-  primaryCta: { label: "Book a Demo", href: "/book-your-demo" } as CtaLink,
+  primaryCta: { label: "Start Free Trial", href: "https://cloud.zenml.io/signup" } as CtaLink,
   secondaryCta: { label: "See Plans", href: "/pricing" } as CtaLink,
 } as const;
 
@@ -180,7 +180,7 @@ export const PRO_OSS_GRID = {
       body: "ZenML Pro tenants have an enhanced dashboard with more features including a model control plane to view all your ML models, and the ability to trigger pipelines, do CI/CD and lots more.",
     },
   ] satisfies FeatureGridItem[],
-  primaryCta: { label: "Book a Demo", href: "/book-your-demo" } as CtaLink,
+  primaryCta: { label: "Start Free Trial", href: "https://cloud.zenml.io/signup" } as CtaLink,
   secondaryCta: { label: "Compare OSS vs Pro", href: "/open-source-vs-pro" } as CtaLink,
   image: {
     url: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e88e687c/65324d0f452d2d170268090d_opensource-cloud.svg`,
@@ -283,8 +283,8 @@ export const PRO_FAQ: FaqData = {
     },
   ],
   slackCta: {
-    label: "Still not clear? Book a demo now",
-    href: "/book-your-demo",
+    label: "Still not clear? Start a free trial",
+    href: "https://cloud.zenml.io/signup",
   },
 };
 
@@ -298,7 +298,7 @@ export const PRO_FINAL_CTA = {
     "Works with any infrastructure",
     "Upgrade to managed Pro features",
   ],
-  primaryCta: { label: "Book a Demo", href: "/book-your-demo" } as CtaLink,
+  primaryCta: { label: "Start Free Trial", href: "https://cloud.zenml.io/signup" } as CtaLink,
   secondaryCta: { label: "Use Open Source", href: "/get-started" } as CtaLink,
   image: {
     url: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/339bb62b/66e9556fd34d2791885b0c5f_model_control_plane_01.png`,
