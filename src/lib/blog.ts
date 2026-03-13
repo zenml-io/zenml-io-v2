@@ -7,6 +7,7 @@
  */
 import type { CollectionEntry } from "astro:content";
 import { getCollection, getEntry } from "astro:content";
+import type { CtaLink } from "./marketingPageTypes";
 
 export type BlogPost = CollectionEntry<"blog">;
 
@@ -220,3 +221,24 @@ export async function buildBlogSearchIndex(posts: BlogPost[]): Promise<BlogSearc
     category: catMap.get(p.data.category || "") || "",
   }));
 }
+
+// ---------------------------------------------------------------------------
+// Blog CTAs — sidebar + bottom banner
+// ---------------------------------------------------------------------------
+
+export const BLOG_SIDEBAR_CTA = {
+  headline: "Get started with ZenML today",
+  bullets: [
+    "Begin with open source tools",
+    "Works with any infrastructure",
+    "Secure, metadata-only tracking",
+  ],
+  cta: { label: "Start Free Trial", href: "https://cloud.zenml.io/signup", analytics: "Blog-Sidebar-Free-Trial" } as CtaLink,
+} as const;
+
+export const BLOG_FINAL_CTA = {
+  headline: "Start deploying AI workflows in production today",
+  body: "Enterprise-grade AI platform trusted by thousands of companies in production",
+  primaryCta: { label: "Start Free Trial", href: "https://cloud.zenml.io/signup", analytics: "Blog-CTA-Free-Trial" } as CtaLink,
+  secondaryCta: { label: "Book a Demo", href: "/book-your-demo", analytics: "Blog-CTA-Book-Demo" } as CtaLink,
+} as const;
