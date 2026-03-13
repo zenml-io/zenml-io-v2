@@ -357,7 +357,7 @@ export const PRICING_TABS: readonly PricingTab[] = [
 export const PRICING_STARTUP_BANNER = {
   headline: "Are you startup or academic?",
   body: "Apply for a special price to access ZenML Pro features for early-stage companies building ML-powered products, universities, research institutions, and educational use cases.",
-  cta: { label: "Apply Now", href: "/startups-and-academics" } as CtaLink,
+  cta: { label: "Apply Now", href: "/startups-and-academics", analytics: "Pricing-Startup-Apply" } as CtaLink,
 } as const;
 
 // ---------------------------------------------------------------------------
@@ -476,6 +476,6 @@ export const PRICING_STATS = {
 export const PRICING_FINAL_CTA = {
   headline: "Start deploying reproducible AI workflows today",
   body: "Enterprise-grade MLOps platform trusted by thousands of companies in production.",
-  primaryCta: { label: "Start Free Trial", href: "https://cloud.zenml.io/signup" } as CtaLink,
-  secondaryCta: { label: "Use Open Source", href: "/get-started" } as CtaLink,
+  primaryCta: { label: "Start Free Trial", href: "https://cloud.zenml.io/signup", analytics: "Pricing-CTA-Free-Trial" } as CtaLink,
+  secondaryCta: { label: "Use Open Source", href: "/get-started", analytics: "Pricing-CTA-Open-Source" } as CtaLink,
 } as const;

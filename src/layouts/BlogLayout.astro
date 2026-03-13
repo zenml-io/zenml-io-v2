@@ -18,6 +18,9 @@ import JsonLd from "../components/seo/JsonLd.astro";
 import BlogTOC from "../components/BlogTOC.astro";
 import BlogCard from "../components/blog/BlogCard.astro";
 import CategoryBar from "../components/blog/CategoryBar.astro";
+import Button from "../components/Button.astro";
+import FeaturesHubCTA from "../components/sections/FeaturesHubCTA.astro";
+import { BLOG_SIDEBAR_CTA, BLOG_FINAL_CTA } from "../lib/blog";
 import type { SEOProps } from "../lib/seo";
 import { SITE_URL } from "../lib/constants";
 
@@ -330,10 +333,41 @@ const articleJsonLd = {
       <aside class="hidden xl:block">
         <div class="sticky top-32 max-h-[calc(100vh-9rem)] overflow-y-auto">
           <BlogTOC headings={tocHeadings} />
+
+          {/* Sidebar CTA */}
+          <div class="mt-8 rounded-lg border border-gray-200 bg-gray-50 p-4">
+            <p class="text-sm font-semibold text-gray-900">{BLOG_SIDEBAR_CTA.headline}</p>
+            <ul class="mt-3 space-y-2">
+              {BLOG_SIDEBAR_CTA.bullets.map((text) => (
+                <li class="flex items-start gap-2 text-xs text-gray-600">
+                  <svg class="mt-0.5 h-4 w-4 flex-shrink-0 text-zenml-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" />
+                  </svg>
+                  <span>{text}</span>
+                </li>
+              ))}
+            </ul>
+            <Button
+              href={BLOG_SIDEBAR_CTA.cta.href}
+              size="sm"
+              class="mt-4 w-full"
+              dataAnalytics={BLOG_SIDEBAR_CTA.cta.analytics}
+            >
+              {BLOG_SIDEBAR_CTA.cta.label}
+            </Button>
+          </div>
         </div>
       </aside>
     )}
   </div>
+
+  {/* Blog CTA — full-width banner */}
+  <FeaturesHubCTA
+    headline={BLOG_FINAL_CTA.headline}
+    body={BLOG_FINAL_CTA.body}
+    primaryCta={BLOG_FINAL_CTA.primaryCta}
+    secondaryCta={BLOG_FINAL_CTA.secondaryCta}
+  />
 
   {/* Continue Reading — related posts (full width, outside the article grid) */}
   {relatedPosts.length > 0 && (
