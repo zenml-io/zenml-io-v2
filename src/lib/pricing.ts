@@ -227,7 +227,6 @@ const SAAS_SCALE: PricingPlan = {
   ],
   featuresPrefix: "Everything in Growth, plus:",
   features: [
-    "Resource Management & Queueing",
     "Codespaces (Remote IDE)",
     "Priority support",
   ],
