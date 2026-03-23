@@ -12,11 +12,12 @@ import type { Runtime } from "@astrojs/cloudflare";
 
 export const prerender = false;
 
-type FormType = "demo-request" | "whitepaper" | "startup-academic";
+type FormType = "demo-request" | "whitepaper" | "brick-manual" | "startup-academic";
 
 const VALID_FORM_TYPES = new Set<FormType>([
   "demo-request",
   "whitepaper",
+  "brick-manual",
   "startup-academic",
 ]);
 
@@ -32,6 +33,10 @@ const REQUIRED_FIELDS: Record<FormType, Record<string, { pattern?: RegExp; messa
   whitepaper: {
     fullName: { message: "Full name is required" },
     email: { pattern: EMAIL_RE, message: "Valid work email is required" },
+  },
+  "brick-manual": {
+    fullName: { message: "Full name is required" },
+    email: { pattern: EMAIL_RE, message: "Valid email is required" },
   },
   "startup-academic": {
     fullName: { message: "Full name is required" },
@@ -49,6 +54,7 @@ const EXCLUDED_FIELDS = new Set(["cf-turnstile-response", "privacy"]);
 const IDENTIFY_TRAITS: Record<FormType, string[]> = {
   "demo-request": ["fullName", "email", "company"],
   whitepaper: ["fullName", "email"],
+  "brick-manual": ["fullName", "email"],
   "startup-academic": ["fullName", "email", "company"],
 };
 
