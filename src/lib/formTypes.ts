@@ -43,15 +43,17 @@ export interface PlaceholderField {
 
 /** Configuration for the ContactForm Preact island. */
 export interface ContactFormConfig {
-  formType: "demo-request" | "whitepaper" | "startup-academic";
+  formType: "demo-request" | "whitepaper" | "brick-manual" | "startup-academic";
   endpoint: string;
   fields: PlaceholderField[];
   submitLabel: string;
   loadingLabel: string;
   successMessage: string;
   successCta?: CtaLink;
-  /** URL to reveal on whitepaper form success (PDF download) */
+  /** URL to reveal on form success (PDF download) */
   successDownloadUrl?: string;
+  /** Label for the download button (defaults to "Download Whitepaper") */
+  successDownloadLabel?: string;
 }
 
 /** Data for the SuccessPanel component. */
