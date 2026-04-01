@@ -9,7 +9,7 @@
  */
 
 import type { SEOProps } from "./seo";
-import type { PlaceholderField } from "./formTypes";
+import type { PlaceholderField, CalEmbedConfig } from "./formTypes";
 
 import { R2_WEBFLOW_BASE } from "./constants";
 const R2 = R2_WEBFLOW_BASE;
@@ -74,6 +74,9 @@ export const BOOK_YOUR_DEMO_LOGOS = [
 export const BOOK_YOUR_DEMO_FORM = {
   headline: "Book your demo",
   deck: "We'll follow up within 1 business day.",
+  /** Heading shown after form submits and calendar appears. Keep in sync with the inline script in book-your-demo.astro. */
+  calHeadline: "Pick a time that works for you",
+  calDeck: "Select a 30-minute slot for your personalized walkthrough.",
 };
 
 export const BOOK_YOUR_DEMO_FIELDS: PlaceholderField[] = [
@@ -99,13 +102,6 @@ export const BOOK_YOUR_DEMO_FIELDS: PlaceholderField[] = [
     placeholder: "Company / Project",
   },
   {
-    name: "users",
-    label: "How many users are you planning to onboard to ZenML in the next 6 months?",
-    type: "text",
-    required: true,
-    placeholder: "Users",
-  },
-  {
     name: "privacy",
     label: "Privacy agreement",
     type: "checkbox",
@@ -114,6 +110,17 @@ export const BOOK_YOUR_DEMO_FIELDS: PlaceholderField[] = [
       'You agree to our <a href="/privacy-policy" class="text-zenml-500 underline">privacy policy</a>.',
   },
 ];
+
+// ---------------------------------------------------------------------------
+// Cal.com embed (shown inline after form submission)
+// ---------------------------------------------------------------------------
+
+export const BOOK_YOUR_DEMO_CAL: CalEmbedConfig = {
+  namespace: "discovery-call",
+  calLink: "zenml/discovery-call",
+  elementId: "cal-inline-book-your-demo",
+  layout: "month_view",
+};
 
 // ---------------------------------------------------------------------------
 // Testimonial
