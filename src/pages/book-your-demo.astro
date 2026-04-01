@@ -48,9 +48,9 @@ import {
     {/* Two-column section */}
     <section class="py-12 sm:py-16 lg:py-20">
       <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div class="grid items-start gap-12 lg:grid-cols-2 lg:gap-16">
+        <div id="demo-form-grid" class="grid items-start gap-12 lg:grid-cols-2 lg:gap-16">
           {/* ── Left column: marketing copy ── */}
-          <div>
+          <div id="demo-form-marketing">
             <h1 class="text-3xl font-bold text-gray-900 sm:text-4xl">
               {BOOK_YOUR_DEMO_HERO.headlinePrefix}<span class="text-zenml-500">{BOOK_YOUR_DEMO_HERO.headlineHighlight}</span>{BOOK_YOUR_DEMO_HERO.headlineSuffix}
             </h1>
@@ -149,6 +149,16 @@ import {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
+    /* Applied by JS when calendar replaces the form */
+    #demo-form-grid.demo-cal-active {
+      grid-template-columns: 1fr;
+      max-width: 56rem;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    #demo-form-marketing.demo-cal-hidden {
+      display: none;
+    }
   </style>
 
   {/* Transition: update heading & hide privacy note when calendar appears */}
@@ -163,14 +173,19 @@ import {
           var heading = document.getElementById("demo-form-heading");
           var deck = document.getElementById("demo-form-deck");
           var privacy = document.getElementById("demo-form-privacy");
+          var grid = document.getElementById("demo-form-grid");
+          var marketing = document.getElementById("demo-form-marketing");
           if (heading) { heading.style.transition = "opacity 0.3s"; heading.style.opacity = "0"; }
           if (deck) { deck.style.transition = "opacity 0.3s"; deck.style.opacity = "0"; }
           if (privacy) { privacy.style.transition = "opacity 0.3s"; privacy.style.opacity = "0"; }
-          // Timeout matches the 0.3s CSS transition so text swaps after fade-out completes
+          if (marketing) { marketing.style.transition = "opacity 0.3s"; marketing.style.opacity = "0"; }
+          // Timeout matches the 0.3s CSS transition so layout changes after fade-out completes
           setTimeout(function () {
             if (heading) { heading.textContent = calHeadline; heading.style.opacity = "1"; }
             if (deck) { deck.textContent = calDeck; deck.style.opacity = "1"; }
             if (privacy) privacy.style.display = "none";
+            if (marketing) { marketing.style.opacity = ""; marketing.style.transition = ""; marketing.classList.add("demo-cal-hidden"); }
+            if (grid) grid.classList.add("demo-cal-active");
           }, 300);
           observer.disconnect();
         }

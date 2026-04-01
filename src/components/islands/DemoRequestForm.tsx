@@ -46,6 +46,7 @@ export default function DemoRequestForm({
   const [serverError, setServerError] = useState("");
   const turnstileRef = useRef<HTMLDivElement>(null);
   const turnstileWidgetId = useRef<string | null>(null);
+  const submittedDataRef = useRef<{ name: string; email: string } | null>(null);
   // Fire "Demo Form Viewed" on mount
   useEffect(() => {
     getPlausible()?.("Demo Form Viewed");
@@ -138,9 +139,13 @@ export default function DemoRequestForm({
     const calLayout = layout ?? "month_view";
 
     win.Cal("init", namespace, { origin: calOrigin });
+    const prefill = submittedDataRef.current;
     win.Cal.ns[namespace]("inline", {
       elementOrSelector: `#${elementId}`,
-      config: { layout: calLayout },
+      config: {
+        layout: calLayout,
+        ...(prefill && { name: prefill.name, email: prefill.email }),
+      },
       calLink,
     });
     win.Cal.ns[namespace]("ui", { hideEventTypeDetails: false, layout: calLayout });
@@ -221,6 +226,10 @@ export default function DemoRequestForm({
           setState("error");
           return;
         }
+        submittedDataRef.current = {
+          name: data.fullName || "",
+          email: data.email || "",
+        };
         setState("success");
       } catch {
         setServerError("Network error. Please check your connection and try again.");
