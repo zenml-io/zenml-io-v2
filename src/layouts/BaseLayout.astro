@@ -77,6 +77,24 @@ const seo = resolveSeo(seoProps, Astro.url.pathname);
       }
     </script>
 
+    {/* Scarf — cookieless company-level analytics pixel. Tracks page views
+        via a transparent 1x1 image with IP-based company attribution.
+        No cookies or JS execution. Hostname-gated to prevent preview noise. */}
+    <script is:inline>
+      if (["www.zenml.io","zenml.io"].includes(window.location.hostname)) {
+        var img = document.createElement("img");
+        img.src = "https://static.scarf.sh/a.png?x-pxid=af73c4bc-4298-4759-a03c-378b9a1ef1ba";
+        img.referrerPolicy = "no-referrer-when-downgrade";
+        img.width = 1;
+        img.height = 1;
+        img.alt = "";
+        img.setAttribute("aria-hidden", "true");
+        img.style.position = "absolute";
+        img.style.left = "-9999px";
+        document.body.appendChild(img);
+      }
+    </script>
+
     {/* Other analytics (GA4, Segment, etc.) and third-party scripts are
         injected dynamically by the CookieConsent island after user consent.
         See src/lib/consentConfig.ts for the full script registry. */}
