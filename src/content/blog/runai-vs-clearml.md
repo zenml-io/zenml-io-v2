@@ -12,13 +12,13 @@ tags:
 date: "2026-04-06T00:00:00.000Z"
 readingTime: "14 mins"
 mainImage:
-  url: "https://assets.zenml.io/content/blog/runai-vs-clearml/06feec87/image7-clearml-resource-config.avif"
-  alt: "ClearML resource configuration dashboard showing GPU orchestration settings"
+  url: "https://assets.zenml.io/content/blog/runai-vs-clearml/0fc015f2/runai-vs-clearml-cover.avif"
+  alt: "Run:ai vs ClearML comparison cover image"
 seo:
   title: "Run:ai vs ClearML: Which AI Infrastructure Platform Fits Your MLOps Stack?"
   description: "In this Run:ai vs ClearML comparison, we break down GPU orchestration, workload scheduling, resource policies, RBAC, integrations, and pricing to help you pick the right platform for your AI infrastructure."
   canonical: "https://www.zenml.io/blog/runai-vs-clearml"
-  ogImage: "https://assets.zenml.io/content/blog/runai-vs-clearml/06feec87/image7-clearml-resource-config.avif"
+  ogImage: "https://assets.zenml.io/content/blog/runai-vs-clearml/0fc015f2/runai-vs-clearml-cover.avif"
 ---
 
 GPU clusters are expensive, but you know what's even more expensive? Underutilized GPU clusters.
