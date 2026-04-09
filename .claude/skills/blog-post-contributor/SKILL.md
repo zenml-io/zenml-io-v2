@@ -277,7 +277,7 @@ seo:
 - `mainImage.url` must be an absolute URL (R2-hosted)
 - `seo.canonical` must be `https://www.zenml.io/blog/<slug>`
 - `seo.description` can come from the Notion "Meta description:" line if present
-- `draft: false` by default — only set `true` if the user specifically wants a draft
+- `draft: false` always — new blog posts are never drafts, even if a cover image is missing
 - `webflow` field is NOT needed for new native posts
 
 ### C7. Write the blog post file
