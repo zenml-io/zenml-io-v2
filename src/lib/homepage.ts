@@ -7,9 +7,9 @@
 /*  Announcement Banner                                               */
 /* ------------------------------------------------------------------ */
 export const ANNOUNCEMENT_BANNER = {
-  text: "The demo era is over. Real LLM production insights from 1,200 cases.",
-  linkText: "Explore the findings →",
-  href: "/blog/the-experimentation-phase-is-over-key-findings-from-1-200-production-deployments",
+  text: "Introducing Kitaru — durable execution for AI agents, from the makers of ZenML.",
+  linkText: "Star it on GitHub →",
+  href: "https://github.com/zenml-io/kitaru",
 };
 
 /* ------------------------------------------------------------------ */
