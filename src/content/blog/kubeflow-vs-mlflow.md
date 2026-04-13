@@ -53,11 +53,6 @@ PS. We built ZenML as an MLOps platform for your MLOps team. It offers a lightwe
 
 A TL;DR for the feature comparison:
 
-    
-    
-    
-    
-
 <table> <thead> <tr> <th>Capability</th> <th>Best-suited</th> </tr> </thead> <tbody> <tr> <td class="capability-cell">Pipeline orchestration &amp; workflow automation</td> <td class="best-suited-cell"> <ul> <li>ZenML for flexibility</li> <li>Kubeflow for pure K8s scale</li> </ul> </td> </tr> <tr> <td class="capability-cell">Experiment tracking &amp; metadata</td> <td class="best-suited-cell"> <ul> <li>MLflow</li> </ul> </td> </tr> <tr> <td class="capability-cell">Artifact versioning</td> <td class="best-suited-cell"> <ul> <li>ZenML for end-to-end lineage</li> <li>MLflow for turnkey registry</li> </ul> </td> </tr> <tr> <td class="capability-cell">Batch inference (offline scoring)</td> <td class="best-suited-cell"> <ul> <li>ZenML</li> </ul> </td> </tr> <tr> <td class="capability-cell">Real-time model serving</td> <td class="best-suited-cell"> <ul> <li>ZenML for multi-backend choice</li> <li>Kubeflow for K8s shops</li> </ul> </td> </tr> <tr> <td class="capability-cell">Integration</td> <td class="best-suited-cell"> <ul> <li>ZenML</li> </ul> </td> </tr> <tr> <td class="capability-cell">Ease of use/learning curve</td> <td class="best-suited-cell"> <ul> <li>MLflow for fastest start</li> <li>ZenML balances ease &amp; scale</li> </ul> </td> </tr> </tbody></table>
 
 If you want to look at how we came to the conclusions above, read on.
@@ -113,7 +108,7 @@ client.create_run_from_pipeline_func(my_pipeline, arguments={})
 
 ### MLflow
 
-MLflow is primarily a tracking tool; it doesn’t schedule or run multi-step workflows on its own. If you need to orchestrate steps (for example, train, then validate, then deploy automatically), you would have to use MLflow in tandem with another orchestration tool (like Apache Airflow, Prefect, or even Kubeflow or ZenML itself).
+MLflow is primarily a tracking tool; it doesn’t schedule or run multi-step workflows on its own. If you need to orchestrate steps (for example, train, then validate, then deploy automatically), you would have to use MLflow in tandem with another orchestration tool (like Apache Airflow, [Prefect](https://www.zenml.io/blog/prefect-vs-airflow), or even Kubeflow or ZenML itself).
 
 The advantage of MLflow's approach is its simplicity and flexibility. It's easy to set up and use, making it accessible for data scientists without extensive infrastructure knowledge.
 
@@ -223,6 +218,7 @@ def training_component(dataset: Input[Dataset], model: Output[Model]):
     tf_model.save(model.path)
     model.metadata['framework'] = 'tensorflow'
 ```
+Kubeflow 1.11 introduced a Model Catalog that enables teams to define validated, approved models for discovery and sharing across the org. Think of it as a governed model marketplace inside your cluster.
 
 ### MLflow
 
@@ -236,6 +232,8 @@ More importantly, integration between ZenML and MLflow allows you to leverage ML
   <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f0b23289/681c8ef42b8649f7f85ced46_graph-showing-how-experiment-tracking-is-done-in-mlflow.png" alt="__wf_reserved_inherit" />
   <figcaption>Source: &quot;MLflow experiment tracking&quot;</figcaption>
 </figure>
+
+MLflow 3.10 added multi-workspace support, letting teams separate dev, staging, and production tracking within a single MLflow deployment. No more messy shared experiment namespaces.
 
 ### ZenML
 
@@ -259,7 +257,7 @@ ZenML now offers artifact versioning and experiment tracking through its built-i
 
 ### Kubeflow
 
-Kubeflow includes KServe (formerly KFServing) for deploying and serving models on Kubernetes clusters.
+Kubeflow includes KServe (formerly KFServing) for deploying and serving models on Kubernetes clusters. KServe now integrates with KEDA for event-driven autoscaling, giving you flexible scaling options beyond Knative and HPA. If your serving workload is event-driven (think: queue-based inference), this is a big deal.
 
 With Kubeflow, you can deploy a trained model as a microservice (container) that auto-scales, has HTTP endpoints, and leverages Kubernetes features for resilience.
 
@@ -356,6 +354,8 @@ Integration sum up:
 
 <ul><li><strong>API Support</strong>: Python, Java, R, and REST APIs.</li><li><strong>ML Frameworks</strong>: Native integration with TensorFlow, PyTorch, scikit-learn, XGBoost, and others with auto-logging capabilities.</li><li><strong>Storage Options</strong>: Flexible backends including local filesystems, SQL databases (like PostgreSQL), and cloud storage solutions.</li><li><strong>Deployment Methods</strong>:<ul><li>REST API endpoints for model serving</li><li>Docker containerization for portable deployment</li><li>Integration with various container orchestration platforms</li></ul></li><li><strong>Cloud Platforms</strong>: AWS SageMaker, Azure ML, and Databricks with specialized deployment workflows.</li></ul>
 
+📚 **Relevant read**: [MLflow alternatives](https://www.zenml.io/blog/mlflow-alternatives)
+
 ### ZenML
 
 <figure>
@@ -377,6 +377,8 @@ Beyond Kubeflow and MLflow, ZenML provides **over 50 integration plugins** for d
   <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/fdbf7908/681c900f26ebfa5fb5c525d6_zenml-list-of-integrations.png" alt="__wf_reserved_inherit" />
   <figcaption>ZenML list of integrations</figcaption>
 </figure>
+
+ZenML now integrates with [Anthropic's Model Context Protocol (MCP)](https://github.com/zenml-io/mcp-zenml), turning your pipeline metadata into conversational insights. Query your runs, analyze pipeline performance, and trigger deployments through natural language via Claude Desktop or Cursor.
 
 ## Kubeflow vs MLflow vs ZenML: Pricing
 
@@ -410,7 +412,7 @@ Managed services:
 
 ### ZenML
 
-ZenML is free to use under an open-source license, which allows you and your team to self-host and manage MLOps pipelines independently.
+[ZenML](https://www.zenml.io/pricing) is free to use under an open-source license, which allows you and your team to self-host and manage MLOps pipelines independently.
 
 Apart from the free version, the managed platform offers three paid versions:
 
@@ -423,17 +425,19 @@ Apart from the free version, the managed platform offers three paid versions:
 
 **Note:** Every paid plan comes with a [14-day free trial](https://cloud.zenml.io/signup?utm_source=website&utm_medium=website_nav&utm_campaign=cloud_promotion&utm_content=signup_link); no credit card required.
 
-## The Shift to LLMOps in 2025
+## The Shift to LLMOps in 2026
 
 The MLOps landscape has evolved significantly in 2025, with both Kubeflow and MLflow expanding their capabilities to address the unique challenges of Large Language Models and AI agents.
 
 **Kubeflow's LLMOps Evolution**
 
-Kubeflow 1.10, released in March 2025, introduced critical features for LLM operations. The platform now includes hyperparameter optimization specifically designed for LLM fine-tuning through Katib, enabling teams to efficiently tune foundation models at scale. The new Trainer 2.0 component streamlines distributed training workflows for large models, while enhanced Model Registry integrations with KServe simplify the deployment of LLM-powered applications. Security improvements, including rootless containers and enhanced CISO compatibility, address the governance requirements that enterprises face when deploying AI agents in production.
+Kubeflow 1.11, released in December 2025, pushed the platform further into LLM territory. The update ships with KServe 0.15.2 featuring vLLM v0.8.1+ support (reasoning models, tool calling, Llama 4, Qwen 3), a brand new Model Catalog for governed model discovery, and KEDA event-driven autoscaling. Trainer v2.2 now natively supports JAX, XGBoost, and Flux workloads. The platform now includes hyperparameter optimization specifically designed for LLM fine-tuning through Katib, enabling teams to efficiently tune foundation models at scale. Trainer has evolved since 2.0; Trainer v2.2 now includes native support for JAX and XGBoost runtimes, Flux for HPC workloads, and deeper observability into training jobs with progress tracking and metrics reporting. Security improvements, like rootless containers and enhanced CISO compatibility, address the governance requirements that enterprises face when deploying AI agents in production.
+
+KServe's vLLM runtime was upgraded to v0.8.1+ with support for reasoning models, tool calling, embeddings, reranking, and models like Llama 4 and Qwen 3. If you're serving LLMs on Kubernetes, this is the real deal.
 
 **MLflow 3: Built for the GenAI Era**
 
-MLflow 3, launched in June 2025, represents a fundamental shift toward generative AI operations. The platform now treats prompts and AI agents as first-class citizens alongside traditional models. Key features include comprehensive tracing powered by OpenTelemetry for debugging complex agent workflows, a LoggedModel entity that tracks entire GenAI application versions (not just model artifacts), and native support for popular frameworks like LangChain, LlamaIndex, and AutoGen. MLflow 3.5 added Claude Code SDK tracing support and flexible prompt optimization APIs, making it the go-to platform for teams building conversational AI and agent-based systems.
+MLflow 3 launched in June 2025 and has evolved fast. The current stable release is MLflow 3.10.1 (March 2026), which now includes multi-workspace support, cost tracking for traces, a GenAI Overview dashboard with pre-built charts, and MemAlign, a new evaluation algorithm that learns from human feedback patterns. The platform now treats prompts and AI agents as first-class citizens alongside traditional models. Key features include comprehensive tracing powered by OpenTelemetry for debugging complex agent workflows, a LoggedModel entity that tracks entire GenAI application versions (not just model artifacts), and native support for popular frameworks like LangChain, LlamaIndex, and AutoGen. MLflow 3.5 added Claude Code SDK tracing support and flexible prompt optimization APIs, making it the go-to platform for teams building conversational AI and agent-based systems. MLflow now tracks token usage and cost per trace. When you're running hundreds of agent calls a day, knowing what each one costs is important.
 
 **ZenML: Bridging Traditional ML and LLMOps**
 
