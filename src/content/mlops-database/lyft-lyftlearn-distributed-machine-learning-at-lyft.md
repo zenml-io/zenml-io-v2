@@ -21,7 +21,7 @@ mlops:
   source: "sqlite"
   entryId: 86
   sourceUrl: "https://databricks.com/dataaisummit/session/distributed-machine-learning-lyft"
-  exportedAt: "2026-04-14T12:26:23Z"
+  exportedAt: "2026-04-14T19:56:19Z"
   createdAt: "2026-02-05T11:03:51.061241"
   lastUpdated: "2026-04-14 10:01:48"
 ---

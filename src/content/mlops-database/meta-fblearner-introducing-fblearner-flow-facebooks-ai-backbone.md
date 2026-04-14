@@ -32,7 +32,7 @@ mlops:
   source: "sqlite"
   entryId: 1
   sourceUrl: "https://engineering.fb.com/2016/05/04/core-infra/introducing-fblearner-flow-facebook-s-ai-backbone/"
-  exportedAt: "2026-04-14T12:26:23Z"
+  exportedAt: "2026-04-14T19:56:19Z"
   createdAt: "2026-02-05T11:03:51.060019"
   lastUpdated: "2026-04-14 10:01:48"
 ---

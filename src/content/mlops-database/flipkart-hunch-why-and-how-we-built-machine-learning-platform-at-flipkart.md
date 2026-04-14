@@ -21,7 +21,7 @@ mlops:
   source: "sqlite"
   entryId: 28
   sourceUrl: "https://www.linkedin.com/pulse/why-how-we-built-machine-learning-platform-flipkart-manish-jain/"
-  exportedAt: "2026-04-14T12:26:23Z"
+  exportedAt: "2026-04-14T19:56:19Z"
   createdAt: "2026-02-05T11:03:51.060611"
   lastUpdated: "2026-04-14 10:01:48"
 ---

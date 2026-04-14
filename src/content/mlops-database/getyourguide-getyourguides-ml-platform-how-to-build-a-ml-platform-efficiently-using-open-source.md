@@ -33,7 +33,7 @@ mlops:
   source: "sqlite"
   entryId: 123
   sourceUrl: "https://www.databricks.com/session_na21/how-to-build-a-ml-platform-efficiently-using-open-source"
-  exportedAt: "2026-04-14T12:26:23Z"
+  exportedAt: "2026-04-14T19:56:19Z"
   createdAt: "2026-02-05T11:03:51.061644"
   lastUpdated: "2026-04-14 10:01:48"
 ---
