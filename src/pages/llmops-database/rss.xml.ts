@@ -8,6 +8,7 @@
 import type { APIRoute } from "astro";
 import { getCollection } from "astro:content";
 import { SITE_URL } from "../../lib/constants";
+import type { LLMOpsProvenance } from "../../lib/llmops";
 
 function escapeXml(s: string): string {
   return s
@@ -17,11 +18,6 @@ function escapeXml(s: string): string {
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&apos;");
 }
-
-type LLMOpsProvenance = {
-  webflow?: { lastPublished?: string; lastUpdated?: string; createdOn?: string };
-  notion?: { publishedAt?: string; lastEditedTime?: string; createdTime?: string };
-};
 
 /** Derive a Date from the website-native/Webflow provenance fallback chain. */
 function derivePubDate(data: LLMOpsProvenance): Date | null {
