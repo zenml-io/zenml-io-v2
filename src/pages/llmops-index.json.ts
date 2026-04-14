@@ -8,6 +8,7 @@
  */
 import type { APIRoute } from "astro";
 import { getCollection } from "astro:content";
+import { deriveAddedDate } from "../lib/llmops";
 
 // Ensure this is pre-rendered at build time
 export const prerender = true;
@@ -23,6 +24,7 @@ export const GET: APIRoute = async () => {
     llmopsTags: entry.data.llmopsTags,
     industryTags: entry.data.industryTags || null,
     year: entry.data.year || null,
+    addedAt: deriveAddedDate(entry.data)?.getTime() ?? null,
     link: entry.data.link || null,
   }));
 

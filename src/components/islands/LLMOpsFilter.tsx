@@ -26,6 +26,8 @@ export interface LLMOpsIndexItem {
   llmopsTags: string[];
   industryTags: string | null;
   year: number | null;
+  /** Epoch ms for when the entry was added to the DB (derived from provenance). */
+  addedAt: number | null;
   link: string | null;
 }
 
@@ -175,10 +177,13 @@ function sortItems(items: ProcessedItem[], sort: SortMode, q: string): Processed
   const sorted = [...items];
   switch (sort) {
     case "newest":
+      // Order by when an entry was added to our DB, not the source material's year
+      // (a 2024 blog post added yesterday should rank above a 2024 post added a year ago).
       sorted.sort((a, b) => {
-        const yearDiff = (b.year ?? 0) - (a.year ?? 0);
-        if (yearDiff !== 0) return yearDiff;
-        return a.title.localeCompare(b.title);
+        const ta = a.addedAt ?? 0;
+        const tb = b.addedAt ?? 0;
+        if (tb !== ta) return tb - ta;
+        return a.slug.localeCompare(b.slug);
       });
       break;
     case "az":

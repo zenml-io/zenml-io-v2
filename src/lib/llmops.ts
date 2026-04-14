@@ -28,6 +28,35 @@ export function sortByYearDesc(entries: LLMOpsEntry[]): LLMOpsEntry[] {
   });
 }
 
+export type LLMOpsProvenance = {
+  webflow?: { lastPublished?: string; lastUpdated?: string; createdOn?: string };
+  notion?: { publishedAt?: string; lastEditedTime?: string; createdTime?: string };
+};
+
+/**
+ * Derive the date an entry was *added* to the LLMOps DB.
+ *
+ * Prefers creation timestamps so edits never re-float an entry.
+ * Distinct from the floating chain in rss.xml.ts: a feed wants
+ * "recently touched", a reference library wants "recently added".
+ */
+export function deriveAddedDate(data: LLMOpsProvenance): Date | null {
+  const candidates = [
+    data.notion?.createdTime,
+    data.webflow?.createdOn,
+    data.notion?.publishedAt,
+    data.webflow?.lastPublished,
+    data.notion?.lastEditedTime,
+    data.webflow?.lastUpdated,
+  ];
+  for (const raw of candidates) {
+    if (!raw) continue;
+    const d = new Date(raw);
+    if (!isNaN(d.getTime())) return d;
+  }
+  return null;
+}
+
 // ---------------------------------------------------------------------------
 // Related entries (by shared tags, industry, company)
 // ---------------------------------------------------------------------------
