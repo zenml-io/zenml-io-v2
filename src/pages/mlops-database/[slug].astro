@@ -63,6 +63,13 @@ if (redirectTo) {
   return Astro.redirect(redirectTo, 301);
 }
 
+// getStaticPaths returns a mixed union — entry routes vs redirect routes —
+// so after the redirect branch above, entry/related are always defined.
+// TS can't infer this across the union, so assert it explicitly to narrow.
+if (!entry || !related) {
+  throw new Error(`Missing MLOps entry props for ${Astro.url.pathname}`);
+}
+
 const { Content } = await render(entry);
 
 const tagEntries = await Promise.all(

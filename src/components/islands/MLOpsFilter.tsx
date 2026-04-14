@@ -210,13 +210,15 @@ function sortItems(
   const sorted = [...items];
   switch (sort) {
     case "newest":
-      // Order by when an entry was added to our DB, not the source material's year
-      // (a 2024 blog post added yesterday should rank above a 2024 post added a year ago).
+      // Order by source-material year first so a 2025 write-up always outranks
+      // a 2022 one, regardless of import order. Within the same year, newer
+      // additions to our DB float up; title A-Z is the final tiebreaker.
       sorted.sort((a, b) => {
-        const ta = a.addedAt ?? 0;
-        const tb = b.addedAt ?? 0;
-        if (tb !== ta) return tb - ta;
-        return a.slug.localeCompare(b.slug);
+        const yearDiff = (b.year ?? 0) - (a.year ?? 0);
+        if (yearDiff !== 0) return yearDiff;
+        const addedDiff = (b.addedAt ?? 0) - (a.addedAt ?? 0);
+        if (addedDiff !== 0) return addedDiff;
+        return a.title.localeCompare(b.title);
       });
       break;
     case "az":
@@ -686,10 +688,15 @@ export default function MLOpsFilter({
             Industry
           </h3>
           <ul class="space-y-1" onKeyDown={handleFacetListKeyDown}>
-            {industries.map((ind) => {
+            {industries.flatMap((ind) => {
               const count = industryCounts.get(ind.slug) || 0;
               const isSelected = selectedIndustry === ind.slug;
-              return (
+              // Industry is single-select: once one is chosen, all others
+              // necessarily have count 0. Hide empty industries to avoid
+              // a sidebar full of dead rows — but always keep the selected
+              // one visible so the user can deselect it.
+              if (count === 0 && !isSelected) return [];
+              return [
                 <li key={ind.slug}>
                   <button
                     type="button"
@@ -698,11 +705,8 @@ export default function MLOpsFilter({
                     class={`flex w-full items-center justify-between rounded-md px-2 py-1.5 text-sm transition-colors ${FOCUS_RING} ${
                       isSelected
                         ? "bg-purple-50 font-medium text-purple-700"
-                        : count > 0
-                          ? "text-gray-700 hover:bg-gray-50"
-                          : "text-gray-400"
+                        : "text-gray-700 hover:bg-gray-50"
                     }`}
-                    disabled={count === 0 && !isSelected}
                   >
                     <span class="truncate">{ind.name}</span>
                     <span
@@ -711,8 +715,8 @@ export default function MLOpsFilter({
                       {count}
                     </span>
                   </button>
-                </li>
-              );
+                </li>,
+              ];
             })}
           </ul>
         </div>
