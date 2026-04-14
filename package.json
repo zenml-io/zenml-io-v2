@@ -5,11 +5,12 @@
   "private": true,
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build && pagefind --site dist --glob 'llmops-database/*.html'",
+    "build": "astro build && pagefind --site dist --glob '*ops-database/*.html'",
     "preview": "astro preview",
     "check": "astro check --tsconfig ./tsconfig.check.json",
     "validate:content": "tsx scripts/phase2/validate-content.ts",
     "validate:llmops": "tsx scripts/phase2/validate-content.ts --collection=llmops-database",
+    "validate:mlops": "tsx scripts/phase2/validate-content.ts --collection=mlops-database",
     "lint": "biome check src/",
     "lint:fix": "biome check --fix src/",
     "format": "biome format --write src/",

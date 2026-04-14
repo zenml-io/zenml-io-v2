@@ -89,6 +89,34 @@
 /llmops-waitlist /llmops-database 301
 /llmops-waitlist/ /llmops-database 301
 
+# ── MLOps Database stale slug repairs ─────────────────────────────
+# These Ray Summit URLs were generated briefly before the MLOps metadata
+# parser learned to infer real company/platform names from generic video
+# headings. Keep redirects so stale browser tabs, diffs, and shared links
+# do not 404 after the corrected content slugs are exported.
+/mlops-database/ray-summit-talks-that-are-explicitly-internal-ml-platform-oriented-2025-an-overview-of-cloudkitchenss-ray-powered-ml-pla /mlops-database/cloudkitchens-ray-powered-ml-platform-an-overview-of-cloudkitchenss-ray-powered-ml-platform-ray-summit-2024 301
+/mlops-database/ray-summit-talks-that-are-explicitly-internal-ml-platform-oriented-2025-an-overview-of-cloudkitchenss-ray-powered-ml-pla/ /mlops-database/cloudkitchens-ray-powered-ml-platform-an-overview-of-cloudkitchenss-ray-powered-ml-platform-ray-summit-2024 301
+/mlops-database/ray-summit-talks-that-are-explicitly-internal-ml-platform-oriented-2025-apples-approach-to-building-scalable-ml-infrastr /mlops-database/apple-approach-to-building-scalable-ml-infrastructure-on-ray-apples-approach-to-building-scalable-ml-infrastructure-on-r 301
+/mlops-database/ray-summit-talks-that-are-explicitly-internal-ml-platform-oriented-2025-apples-approach-to-building-scalable-ml-infrastr/ /mlops-database/apple-approach-to-building-scalable-ml-infrastructure-on-ray-apples-approach-to-building-scalable-ml-infrastructure-on-r 301
+/mlops-database/ray-summit-talks-that-are-explicitly-internal-ml-platform-oriented-2025-coinbases-ml-training-evolution-from-sagemaker-t /mlops-database/coinbase-ml-training-evolution-from-sagemaker-to-ray-coinbases-ml-training-evolution-from-sagemaker-to-ray-ray-summit-20 301
+/mlops-database/ray-summit-talks-that-are-explicitly-internal-ml-platform-oriented-2025-coinbases-ml-training-evolution-from-sagemaker-t/ /mlops-database/coinbase-ml-training-evolution-from-sagemaker-to-ray-coinbases-ml-training-evolution-from-sagemaker-to-ray-ray-summit-20 301
+/mlops-database/ray-summit-talks-that-are-explicitly-internal-ml-platform-oriented-2025-distributed-ml-training-with-kuberay-at-robinhoo /mlops-database/robinhood-distributed-ml-training-with-kuberay-distributed-ml-training-with-kuberay-at-robinhood-ray-summit-2025 301
+/mlops-database/ray-summit-talks-that-are-explicitly-internal-ml-platform-oriented-2025-distributed-ml-training-with-kuberay-at-robinhoo/ /mlops-database/robinhood-distributed-ml-training-with-kuberay-distributed-ml-training-with-kuberay-at-robinhood-ray-summit-2025 301
+/mlops-database/ray-summit-talks-that-are-explicitly-internal-ml-platform-oriented-2025-distributed-model-training-with-ray-at-capital-o /mlops-database/capital-one-distributed-model-training-with-ray-distributed-model-training-with-ray-at-capital-one-ray-summit-2025 301
+/mlops-database/ray-summit-talks-that-are-explicitly-internal-ml-platform-oriented-2025-distributed-model-training-with-ray-at-capital-o/ /mlops-database/capital-one-distributed-model-training-with-ray-distributed-model-training-with-ray-at-capital-one-ray-summit-2025 301
+/mlops-database/ray-summit-talks-that-are-explicitly-internal-ml-platform-oriented-2025-exploring-hinges-ml-platform-evolution-with-ray /mlops-database/hinge-ml-platform-evolution-with-ray-exploring-hinges-ml-platform-evolution-with-ray-ray-summit-2024 301
+/mlops-database/ray-summit-talks-that-are-explicitly-internal-ml-platform-oriented-2025-exploring-hinges-ml-platform-evolution-with-ray/ /mlops-database/hinge-ml-platform-evolution-with-ray-exploring-hinges-ml-platform-evolution-with-ray-ray-summit-2024 301
+/mlops-database/ray-summit-talks-that-are-explicitly-internal-ml-platform-oriented-2025-netflixs-ray-platform-from-deep-learning-to-gena /mlops-database/netflix-ray-platform-from-deep-learning-to-genai-netflixs-ray-platform-from-deep-learning-to-genai-ray-summit-2024 301
+/mlops-database/ray-summit-talks-that-are-explicitly-internal-ml-platform-oriented-2025-netflixs-ray-platform-from-deep-learning-to-gena/ /mlops-database/netflix-ray-platform-from-deep-learning-to-genai-netflixs-ray-platform-from-deep-learning-to-genai-ray-summit-2024 301
+/mlops-database/ray-summit-talks-that-are-explicitly-internal-ml-platform-oriented-2025-panel-ml-platform-on-ray-ray-summit-2024 /mlops-database/ray-summit-ml-platform-on-ray-panel-ml-platform-on-ray-ray-summit-2024 301
+/mlops-database/ray-summit-talks-that-are-explicitly-internal-ml-platform-oriented-2025-panel-ml-platform-on-ray-ray-summit-2024/ /mlops-database/ray-summit-ml-platform-on-ray-panel-ml-platform-on-ray-ray-summit-2024 301
+/mlops-database/ray-summit-talks-that-are-explicitly-internal-ml-platform-oriented-2025-raylab-autodesks-internal-platform-for-scalable /mlops-database/autodesk-raylab-raylab-autodesks-internal-platform-for-scalable-trainingdataserving-ray-summit-2025 301
+/mlops-database/ray-summit-talks-that-are-explicitly-internal-ml-platform-oriented-2025-raylab-autodesks-internal-platform-for-scalable/ /mlops-database/autodesk-raylab-raylab-autodesks-internal-platform-for-scalable-trainingdataserving-ray-summit-2025 301
+/mlops-database/ray-summit-talks-that-are-explicitly-internal-ml-platform-oriented-2025-reddits-ml-evolution-scaling-with-ray-and-kubera /mlops-database/reddit-ml-evolution-scaling-with-ray-and-kuberay-reddits-ml-evolution-scaling-with-ray-and-kuberay-ray-summit-2024 301
+/mlops-database/ray-summit-talks-that-are-explicitly-internal-ml-platform-oriented-2025-reddits-ml-evolution-scaling-with-ray-and-kubera/ /mlops-database/reddit-ml-evolution-scaling-with-ray-and-kuberay-reddits-ml-evolution-scaling-with-ray-and-kuberay-ray-summit-2024 301
+/mlops-database/ray-summit-talks-that-are-explicitly-internal-ml-platform-oriented-2025-spotify-harnesses-ray-for-next-gen-ai-infrastruc /mlops-database/spotify-next-gen-ai-infrastructure-spotify-harnesses-ray-for-next-gen-ai-infrastructure-ray-summit-2024 301
+/mlops-database/ray-summit-talks-that-are-explicitly-internal-ml-platform-oriented-2025-spotify-harnesses-ray-for-next-gen-ai-infrastruc/ /mlops-database/spotify-next-gen-ai-infrastructure-spotify-harnesses-ray-for-next-gen-ai-infrastructure-ray-summit-2024 301
+
 # ── External redirects (from Webflow) ─────────────────────────────
 /p4t78tnt73bkujthrd1zausuvs9advz3.txt https://uploads-ssl.webflow.com/64a817a2e7e2208272d1ce30/668bef7ef310b0fd5e7b5d00_p4t78tnt73bkujthrd1zausuvs9advz3.txt 301
 /llmops-guide https://docs.zenml.io/user-guide/llmops-guide 301

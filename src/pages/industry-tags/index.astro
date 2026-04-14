@@ -2,17 +2,27 @@
 /**
  * Industry tags index page.
  *
- * Lists all industries with entry counts, sorted by popularity.
+ * Lists all industries with combined LLMOps + MLOps entry counts, sorted by popularity.
  * Route: /industry-tags
  */
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { getAllPublishedEntries, getIndustryTagCounts } from "../../lib/llmops";
 import type { TaxonomyCount } from "../../lib/llmops";
+import { getAllPublishedEntries, getIndustryTagCounts } from "../../lib/llmops";
+import {
+  getAllPublishedMLOpsEntries,
+  getMLOpsIndustryTagCounts,
+} from "../../lib/mlops";
 
-const entries = await getAllPublishedEntries();
-const usedCounts = await getIndustryTagCounts(entries);
-const usedMap = new Map(usedCounts.map((t) => [t.slug, t.count]));
+const llmopsEntries = await getAllPublishedEntries();
+const mlopsEntries = await getAllPublishedMLOpsEntries();
+const llmopsCounts = await getIndustryTagCounts(llmopsEntries);
+const mlopsCounts = await getMLOpsIndustryTagCounts(mlopsEntries);
+const usedMap = new Map<string, number>();
+
+for (const item of [...llmopsCounts, ...mlopsCounts]) {
+  usedMap.set(item.slug, (usedMap.get(item.slug) ?? 0) + item.count);
+}
 
 // Merge all taxonomy terms with used counts (include zero-count industries)
 const allIndustries = await getCollection("industry-tags");
@@ -26,18 +36,23 @@ const industries: TaxonomyCount[] = allIndustries
 ---
 
 <BaseLayout
-  title="Industries - ZenML LLMOps Database"
-  description="Browse all industries represented in the ZenML LLMOps Database."
+  title="Industries - ZenML Databases"
+  description="Browse all industries represented in the ZenML LLMOps and MLOps databases."
 >
   <div class="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
     <header class="mb-10">
       <h1 class="text-4xl font-bold tracking-tight text-gray-900">Industries</h1>
       <p class="mt-3 text-lg text-gray-600">
-        {industries.length} {industries.length === 1 ? "industry" : "industries"} in the database
+        {industries.length} {industries.length === 1 ? "industry" : "industries"} across the LLMOps and MLOps databases
       </p>
-      <a href="/llmops-database" class="mt-2 inline-block text-sm text-primary-600 hover:text-primary-700">
-        &larr; Back to LLMOps Database
-      </a>
+      <div class="mt-2 flex flex-wrap gap-4 text-sm">
+        <a href="/llmops-database" class="text-primary-600 hover:text-primary-700">
+          &larr; LLMOps Database
+        </a>
+        <a href="/mlops-database" class="text-primary-600 hover:text-primary-700">
+          &larr; MLOps Database
+        </a>
+      </div>
     </header>
 
     <nav aria-label="All industries">

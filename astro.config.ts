@@ -28,8 +28,10 @@ export default defineConfig({
         // Exclude non-indexable pages from the sitemap
         const excludePaths = [
           "/llmops-index.json",
+          "/mlops-index.json",
           "/blog/rss.xml",
           "/llmops-database/rss.xml",
+          "/mlops-database/rss.xml",
           "/book-success",
           "/booked",
           "/book-a-demo-success",
