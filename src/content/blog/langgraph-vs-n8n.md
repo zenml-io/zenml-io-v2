@@ -54,7 +54,7 @@ The maturity and development history of LangGraph vs n8n provide important conte
   
   
 
-<table class="comparison-table"> <thead> <tr> <th>Metric</th> <th>LangGraph</th> <th>n8n</th> </tr> </thead> <tbody> <tr> <td>First public release</td> <td>v0.0.9 – Jan 2024</td> <td>v0.1 – Jun 2019</td> </tr> <tr> <td>GitHub stars</td> <td>~16,400</td> <td>~124,000</td> </tr> <tr> <td>Forks</td> <td>~2,800</td> <td>~37,600</td> </tr> <tr> <td>Commits (total)</td> <td>6,000+</td> <td>14,700+</td> </tr> <tr> <td>LangChain dependency</td> <td>Built on LangChain core</td> <td>Independent platform (LangChain integrated via nodes)</td> </tr> <tr> <td>Notable users/proof points</td> <td>Used by Klarna, Replit, Elastic, LinkedIn, Uber, and others</td> <td>Used widely in industry (e.g., Wayfair, Microsoft, Twilio, Zendesk), with a large automation community</td> </tr> </tbody></table>
+<table class="comparison-table"> <thead> <tr> <th>Metric</th> <th>LangGraph</th> <th>n8n</th> </tr> </thead> <tbody> <tr> <td>First public release</td> <td>v0.0.9 – Jan 2024</td> <td>v0.1 – Jun 2019</td> </tr> <tr> <td>GitHub stars</td> <td>~29,200</td> <td>~184,000</td> </tr> <tr> <td>Forks</td> <td>~5,000</td> <td>~56,800</td> </tr> <tr> <td>Commits (total)</td> <td>6,000+</td> <td>18,900+</td> </tr> <tr> <td>LangChain dependency</td> <td>Built on LangChain core</td> <td>Independent platform (LangChain integrated via nodes)</td> </tr> <tr> <td>Notable users/proof points</td> <td>Used by Klarna, Replit, Elastic, LinkedIn, Uber, and others</td> <td>Used widely in industry (e.g., Wayfair, Microsoft, Twilio, Zendesk), with a large automation community</td> </tr> </tbody></table>
 
 **👀 Note:*** The data in the table above is current as of July 2025 (metrics may change over time).*
 
@@ -130,6 +130,8 @@ The handoff mechanism uses Command objects. When an agent finishes a step, it re
 This pattern decouples agents and lets you add new specializations without rewriting the orchestration logic.
 
 The graph includes synchronous or asynchronous nodes, and lets you persist state to a database or vector store so that agents recover their context after a crash or across sessions.
+
+Deep Agents (v0.5 as of 2026) is LangChain’s middleware-based pattern on top of LangGraph. It wires up three middleware: a todo-list tool for explicit planning, a filesystem tool for offloading notes, and a subagent tool for delegating work with isolated context. Think of it as the ‘pre-wired’ counterpart to the raw network/supervisor/hierarchical patterns. Good if you want fewer moving parts and don’t need custom orchestration.
 
 #### n8n
 
@@ -225,6 +227,8 @@ Here are the actions a human can take:
 
 **👀 Note:** Because interrupts are built into the runtime, you don’t have to manage threads or manual pauses. The graph can be suspended and resumed across machines or time intervals, making it practical for long‑running, human‑supervised workflows.
 
+LangChain 1.0 ships a create_agent abstraction on top of LangGraph’s runtime, plus a middleware system with built-ins for human-in-the-loop approvals, message-history summarization, and PII redaction. So when we say ‘LangGraph handles HITL,’ that often means: you wire up create_agent with the HITL middleware and go. Python 3.10+ required.”
+
 #### n8n
 
 <figure>
@@ -232,7 +236,7 @@ Here are the actions a human can take:
   <figcaption>n8n human in the loop</figcaption>
 </figure>
 
-n8n brings humans into the loop with general‑purpose nodes instead of agent‑level interrupts. A Wait node pauses the workflow until a time you set, a webhook fires, or a form arrives.
+n8n now has two layers of human-in-the-loop. At the workflow level, a Wait node pauses until a time you set, a webhook fires, or a form arrives. On top of that, n8n added HITL at the AI tool-call level: you can require explicit human approval before an AI Agent executes a specific tool, which is closer in spirit to LangGraph interrupts than the old Wait-node workaround. The Chat node also ships two Actions (send a message, then continue the workflow), so an agent triggered by Chat Trigger can ask a human for clarification mid-run.
 
 When waiting for a webhook, n8n generates a unique resume URL, and you can configure authentication, HTTP method, response code, and timeouts.
 
@@ -250,7 +254,9 @@ The agentic AI landscape has shifted dramatically in the latter half of 2025, wi
 
 **LangGraph's Stable 1.0 Release**
 
-In October 2025, LangGraph reached version 1.0, becoming the first stable major release in the durable agent framework space. This milestone represents LangChain's commitment to production stability, with a promise of no breaking changes until version 2.0. The release came alongside LangChain 1.0, streamlining the entire ecosystem after three years of community feedback.
+LangGraph 1.0 shipped on October 22, 2025, alongside LangChain 1.0. It's the first stable major release in the durable agent framework space, with a no-breaking-changes commitment until v2.0. The 1.1.x line is already in active development (1.1.7a1 as of April 2026), and the old langgraph.prebuilt module is deprecated, with its functionality moved into langchain.agents. Real talk: if you're still on 0.x, the migration is mostly a namespace swap.
+
+This milestone represents LangChain's commitment to production stability, with a promise of no breaking changes until version 2.0. The release came alongside LangChain 1.0, streamlining the entire ecosystem after three years of community feedback.
 
 Recent additions to LangGraph include:
 
@@ -264,7 +270,7 @@ n8n fundamentally restructured its pricing model in August 2025, removing all li
 
 Key 2025 additions to n8n include:
 
-<ul><li><strong>Evaluations for AI Workflows</strong>: A dedicated Evaluation node allows systematic testing of AI logic against datasets, with scoring capabilities using LLMs as judges</li><li><strong>Workflow organization features</strong>: Unlimited nested folders with drag-and-drop organization, plus workflow archiving for safe removal without permanent deletion</li><li><strong>Python task runner (beta)</strong>: Secure Python sandbox built on isolated execution environments, replacing the previous Pyodide implementation</li><li><strong>Partial execution for AI tools</strong>: Test individual workflow segments without running the entire automation</li><li><strong>Auto-naming nodes</strong>: Automatically generate descriptive node names based on configuration</li><li><strong>Convert to sub-workflow</strong>: Extract workflow segments into reusable sub-workflows with a single click</li></ul>
+<ul><li><strong>Evaluations for AI Workflows</strong>: A dedicated Evaluation node allows systematic testing of AI logic against datasets, with scoring capabilities using LLMs as judges</li><li><strong>Workflow organization features</strong>: Unlimited nested folders with drag-and-drop organization, plus workflow archiving for safe removal without permanent deletion</li><li><strong>Python execution now runs through task runners by default. In n8n 2.x, the native Python Code node only works in task-runner external mode, and isolation is the expected behavior, no more an opt-in beta.</strong>: Secure Python sandbox built on isolated execution environments, replacing the previous Pyodide implementation</li><li><strong>Partial execution for AI tools</strong>: Test individual workflow segments without running the entire automation</li><li><strong>Auto-naming nodes</strong>: Automatically generate descriptive node names based on configuration</li><li><strong>Convert to sub-workflow</strong>: Extract workflow segments into reusable sub-workflows with a single click</li></ul>
 
 **Industry Context: Multi-Agent Adoption Accelerates**
 
@@ -277,6 +283,8 @@ Both LangGraph and n8n have positioned themselves as complementary tools in mode
 ## LangGraph vs n8n: Integration Capabilities
 
 *The ability to connect with other models, data sources, and tools is crucial for building real-world applications.*
+
+MCP (Model Context Protocol) has become the default interop layer in 2026, and both sides now play in it. LangGraph exposes every agent as an MCP endpoint out of the box; n8n users can plug MCP servers in via community nodes and external connectors. If interop with Claude Desktop, Cursor, or other MCP clients matters for your stack, that’s no longer a deciding factor between the two.
 
 ### LangGraph
 
@@ -318,10 +326,10 @@ The `langgraph` Python and JavaScript libraries are completely free (MIT license
 
 This is the managed commercial offering with a tiered structure designed to scale with your needs and has three plans to choose from:
 
-<ul><li><strong>Developer</strong>: Includes up to 100K nodes executed per month</li><li><strong>Plus</strong>: $0.001 per node executed + standby charges</li><li><strong>Enterprise</strong>: Custom-built plan tailored to your business needs</li></ul>
+<ul><li><strong>Developer</strong>: $0/seat, with the first 100,000 node executions per month free, then $0.001 per node. Includes one free dev-sized deployment and up to 5,000 base traces/month via LangSmith.</li><li><strong>Plus</strong>: $39/seat/month (this is a LangSmith Plus seat, which covers the Platform), with the same $0.001/node rate, $0.0036/minute for production deployment standby, and $0.0007/minute for dev deployments. Includes 10,000 base traces/month.</li><li><strong>Enterprise</strong>: Custom pricing with hybrid and self-hosted hosting options, so data doesn't have to leave your VPC.</li></ul>
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/97b85242/687b1c130365fe673ee85bab_langgraph-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/content/blog/47eded61/langgraph-pricing-2026.avif" alt="LangGraph Platform pricing tiers (2026): Developer, Plus at $39/seat/month, and Enterprise" />
 </figure>
 
 **📚 Related article:**[LangGraph pricing guide](https://www.zenml.io/blog/langgraph-pricing)
@@ -330,13 +338,12 @@ This is the managed commercial offering with a tiered structure designed to scal
 
 n8n offers three paid plans to choose from. Each plan comes with a 14-day free trial, no credit card required.
 
-<ul><li><strong>Starter</strong>: €24 per month. 2.5k workflow executions and 5 active workflows.</li><li><strong>Pro</strong>: €60 per month. 10k workflow executions and 15 active workflows.</li><li><strong>Enterprise</strong>: Custom pricing. Custom number of workflow executions and infinite active workflows.</li></ul>
-
+<ul><li><strong>Starter</strong>: €24 per month. 2.5k workflow executions and 5 active workflows.</li><li><strong>Pro</strong>: €60 per month. 10k workflow executions and 15 active workflows.</li><li><li><li><strong>Business</strong>: €800 per month. 40,000 executions plus SSO, LDAP, Git-based version control, and advanced collaboration features.</li><li><strong>Enterprise</strong>: Custom pricing. Custom number of workflow executions and infinite active workflows.</li></ul>
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9ecaa979/688c422733359befadf2b831_n8n-pricing-plans.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/content/blog/35d73b6a/n8n-pricing-2026.avif" alt="n8n pricing plans (2026): Starter €24, Pro €60, Business €800, Enterprise" />
 </figure>
 
-**👀 Note:** n8n also has a **Community edition** - a basic version of n8n that’s available on GitHub.
+**👀 Note:** n8n also has a **Community Edition**: the full self-hosted n8n, free and open source on GitHub, with unlimited executions on your own infrastructure.
 
 ## How ZenML Helps In Closing the Outer Loop Around Your Agents
 
@@ -392,7 +399,7 @@ The choice between LangGraph and n8n depends entirely on your project's goals, y
 
 ✅ **Choose n8n if:**
 
-<ul><li>Rapid development and visual workflow design are priorities</li><li>Your team prefers low-code/no-code development with optional coding flexibility</li><li>The primary goal is connecting AI agents to business tools (Slack, databases, CRMs, APIs)</li><li>You need to automate processes across 400+ pre-built integrations</li><li>Unlimited workflow creation without cost penalties matters to your use case</li><li>Your organization prefers self-hosting for data privacy and security control</li><li><strong>New in 2025</strong>: You want systematic AI workflow evaluation with dedicated testing nodes</li><li><strong>New in 2025</strong>: Execution-based pricing with no limits on active workflows better fits your cost model</li><li><strong>New in 2025</strong>: Python sandbox capabilities for secure code execution within workflows are valuable</li></ul>
+<ul><li>Rapid development and visual workflow design are priorities</li><li>Your team prefers low-code/no-code development with optional coding flexibility</li><li>The primary goal is connecting AI agents to business tools (Slack, databases, CRMs, APIs)</li><li>You need to automate processes across 1,200+ pre-built integrations</li><li>Unlimited workflow creation without cost penalties matters to your use case</li><li>Your organization prefers self-hosting for data privacy and security control</li><li><strong>New in 2025</strong>: You want systematic AI workflow evaluation with dedicated testing nodes</li><li><strong>New in 2025</strong>: Execution-based pricing with no limits on active workflows better fits your cost model</li><li><strong>New in 2025</strong>: Python sandbox capabilities for secure code execution within workflows are valuable</li></ul>
 
 ✅ **Use both frameworks together when:**
 
