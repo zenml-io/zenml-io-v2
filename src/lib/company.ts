@@ -94,6 +94,11 @@ export const COMPANY_VALUES = [
 // ---------------------------------------------------------------------------
 export const OPEN_POSITIONS = [
   {
+    title: "Product Engineer - ZenML/Kitaru (f/m/d)",
+    type: "Full-time",
+    href: "https://zenml.notion.site/Product-Engineer-ZenML-Kitaru-341f8dff2538800aa826c2624894dfc8",
+  },
+  {
     title: "Senior Platform Engineer - Cloud & Infrastructure (f/m/d)",
     type: "Full-time",
     href: "https://zenml.notion.site/Senior-Platform-Engineer-Cloud-Infrastructure-f-m-d-2d2f8dff253880e3811deb82ecace05b",
