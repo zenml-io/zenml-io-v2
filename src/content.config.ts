@@ -76,6 +76,15 @@ const notionMetaSchema = z.object({
   publishedAt: z.string().optional(),
 });
 
+const mlopsMetaSchema = z.object({
+  source: z.literal('sqlite'),
+  entryId: z.number(),
+  sourceUrl: z.string().url(),
+  exportedAt: z.string(),
+  createdAt: z.string().optional(),
+  lastUpdated: z.string().optional(),
+});
+
 /**
  * CTA button schema
  * Used by: compare pages, feature pages, VS pages
@@ -141,6 +150,7 @@ const referenceSlugSets = {
   categories: loadSlugSetFromCollectionDir('categories'),
   tags: loadSlugSetFromCollectionDir('tags'),
   'llmops-tags': loadSlugSetFromCollectionDir('llmops-tags'),
+  'mlops-tags': loadSlugSetFromCollectionDir('mlops-tags'),
   'industry-tags': loadSlugSetFromCollectionDir('industry-tags'),
   'project-tags': loadSlugSetFromCollectionDir('project-tags'),
   'product-categories': loadSlugSetFromCollectionDir('product-categories'),
@@ -227,6 +237,16 @@ const tagSchema = simpleTagSchema;
  * Used by: llmops database items
  */
 const llmopsTagSchema = simpleTagSchema;
+
+/**
+ * MLOps Tags schema
+ * Used by: mlops database items
+ */
+const mlopsTagSchema = z.object({
+  name: z.string(),
+  slug: z.string(),
+  categories: z.array(z.enum(['platform', 'tool', 'lifecycle', 'extra'])).default([]),
+});
 
 /**
  * Industry Tags schema
@@ -404,6 +424,33 @@ const llmopsSchema = z.object({
   seo: seoSchema,
   webflow: webflowMetaSchema.optional(),
   notion: notionMetaSchema.optional(),
+});
+
+/**
+ * MLOps Database schema
+ * Route: /mlops-database/<slug>
+ *
+ * Generated from llmops-db-notion/mlops/data/mlops.db by mlops.export_website.
+ */
+const mlopsDatabaseSchema = z.object({
+  title: z.string(),
+  slug: z.string(),
+  draft: z.boolean().default(false),
+
+  // MLOps-specific fields
+  mlopsTags: slugReferenceArray('mlops-tags', referenceSlugSets['mlops-tags']),
+  industryTags: slugReference('industry-tags', referenceSlugSets['industry-tags']),
+  company: z.string(),
+  companySlug: z.string(),
+  platformName: z.string(),
+  contentType: z.enum(['blog', 'video', 'paper', 'slides', 'podcast', 'transcript']),
+  summary: z.string(),
+  link: z.string().url(),
+  year: z.number().optional(),
+
+  // SEO & provenance
+  seo: seoSchema,
+  mlops: mlopsMetaSchema,
 });
 
 /**
@@ -782,6 +829,10 @@ export const collections = {
     loader: glob({ pattern: '**/*.md', base: './src/content/llmops-tags' }),
     schema: llmopsTagSchema,
   }),
+  'mlops-tags': defineCollection({
+    loader: glob({ pattern: '**/*.md', base: './src/content/mlops-tags' }),
+    schema: mlopsTagSchema,
+  }),
   'industry-tags': defineCollection({
     loader: glob({ pattern: '**/*.md', base: './src/content/industry-tags' }),
     schema: industryTagSchema,
@@ -819,6 +870,10 @@ export const collections = {
   'llmops-database': defineCollection({
     loader: glob({ pattern: '**/*.md', base: './src/content/llmops-database' }),
     schema: llmopsSchema,
+  }),
+  'mlops-database': defineCollection({
+    loader: glob({ pattern: '**/*.md', base: './src/content/mlops-database' }),
+    schema: mlopsDatabaseSchema,
   }),
   compare: defineCollection({
     loader: glob({ pattern: '**/*.md', base: './src/content/compare' }),

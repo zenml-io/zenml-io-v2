@@ -30,6 +30,7 @@ const EXPECTED_COLLECTIONS = [
   "blog",
   "integrations",
   "llmops-database",
+  "mlops-database",
   "compare",
   "team",
   "projects",
@@ -43,6 +44,7 @@ const EXPECTED_COLLECTIONS = [
   "categories",
   "tags",
   "llmops-tags",
+  "mlops-tags",
   "industry-tags",
   "integration-types",
   "advantages",
@@ -58,6 +60,7 @@ const ROUTE_PATTERNS: Record<string, string> = {
   blog: "/blog",
   integrations: "/integrations",
   "llmops-database": "/llmops-database",
+  "mlops-database": "/mlops-database",
   compare: "/compare",
   team: "/team",
   projects: "/projects",
@@ -264,6 +267,7 @@ class ContentValidator {
     this.validateDraftSourceConsistency();
     this.validateOldProjectsDrafts();
     this.validateLLMOpsProvenanceAndDates();
+    this.validateMLOpsProvenanceAndDates();
 
     // Group D: Webflow CDN leakage
     this.validateWebflowCDNUrls();
@@ -513,6 +517,101 @@ class ContentValidator {
           slug: fileSlug,
           file: filePath,
           message: "LLMOps entry has no parseable publish/update/create timestamp in webflow/notion provenance",
+        });
+      }
+    }
+  }
+
+  private deriveMLOpsPubDate(data: Record<string, any>): Date | null {
+    const candidates = [
+      data.mlops?.lastUpdated,
+      data.mlops?.createdAt,
+      data.mlops?.exportedAt,
+    ];
+
+    for (const raw of candidates) {
+      if (typeof raw !== "string" || !raw) continue;
+      const parsed = new Date(raw);
+      if (!Number.isNaN(parsed.getTime())) {
+        return parsed;
+      }
+    }
+
+    return null;
+  }
+
+  private validateMLOpsProvenanceAndDates(): void {
+    for (const entry of this.entries) {
+      if (entry.collection !== "mlops-database") continue;
+
+      const { data, fileSlug, filePath } = entry;
+      const mlops = data.mlops;
+      const mlopsTags = Array.isArray(data.mlopsTags) ? data.mlopsTags : [];
+
+      if (!mlops) {
+        this.addFinding({
+          severity: "error",
+          code: "MLOPS_MISSING_PROVENANCE",
+          collection: entry.collection,
+          slug: fileSlug,
+          file: filePath,
+          message: "MLOps entries must include mlops provenance metadata",
+        });
+        continue;
+      }
+
+      if (mlops.source !== "sqlite") {
+        this.addFinding({
+          severity: "error",
+          code: "MLOPS_INVALID_SOURCE",
+          collection: entry.collection,
+          slug: fileSlug,
+          file: filePath,
+          message: `MLOps provenance source must be sqlite, got: ${mlops.source}`,
+        });
+      }
+
+      if (typeof mlops.entryId !== "number") {
+        this.addFinding({
+          severity: "error",
+          code: "MLOPS_MISSING_ENTRY_ID",
+          collection: entry.collection,
+          slug: fileSlug,
+          file: filePath,
+          message: "MLOps entry is missing numeric mlops.entryId",
+        });
+      }
+
+      if (typeof mlops.sourceUrl !== "string" || !mlops.sourceUrl) {
+        this.addFinding({
+          severity: "error",
+          code: "MLOPS_MISSING_SOURCE_URL",
+          collection: entry.collection,
+          slug: fileSlug,
+          file: filePath,
+          message: "MLOps entry is missing mlops.sourceUrl",
+        });
+      }
+
+      if (mlopsTags.length === 0) {
+        this.addFinding({
+          severity: "warning",
+          code: "MLOPS_EMPTY_TAGS",
+          collection: entry.collection,
+          slug: fileSlug,
+          file: filePath,
+          message: "MLOps entry has no mlopsTags; publish is allowed but discoverability will suffer",
+        });
+      }
+
+      if (!this.deriveMLOpsPubDate(data)) {
+        this.addFinding({
+          severity: "error",
+          code: "MLOPS_MISSING_PUBLISH_DATE",
+          collection: entry.collection,
+          slug: fileSlug,
+          file: filePath,
+          message: "MLOps entry has no parseable publish/update/create timestamp in mlops provenance",
         });
       }
     }

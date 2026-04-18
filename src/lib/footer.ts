@@ -44,8 +44,16 @@ export const FOOTER_PRIMARY: FooterColumn[] = [
     links: [
       { label: "Newsletter", href: "/newsletter-signup", badge: "New" },
       { label: "Blog", href: "/blog" },
-      { label: "Docs", href: "https://docs.zenml.io/getting-started/introduction", external: true },
-      { label: "Changelog", href: "https://docs.zenml.io/changelog", external: true },
+      {
+        label: "Docs",
+        href: "https://docs.zenml.io/getting-started/introduction",
+        external: true,
+      },
+      {
+        label: "Changelog",
+        href: "https://docs.zenml.io/changelog",
+        external: true,
+      },
       { label: "Roadmap", href: "/roadmap" },
       { label: "Slack", href: "/slack" },
     ],
@@ -128,27 +136,72 @@ export const FOOTER_EXTENDED: FooterColumn[] = [
     title: "GenAI & LLMs",
     links: [
       { label: "LLMOps Database", href: "/llmops-database" },
-      { label: "Finetuning LLMs", href: "https://github.com/zenml-io/zenml-projects/tree/main/llm-complete-guide", external: true },
-      { label: "Creating a code copilot", href: "https://github.com/zenml-io/zenml-projects/tree/main/zencoder", external: true },
-      { label: "Cheap GPU compute", href: "https://docs.zenml.io/stacks/orchestrators/skypilot-vm", external: true },
+      {
+        label: "Finetuning LLMs",
+        href: "https://github.com/zenml-io/zenml-projects/tree/main/llm-complete-guide",
+        external: true,
+      },
+      {
+        label: "Creating a code copilot",
+        href: "https://github.com/zenml-io/zenml-projects/tree/main/zencoder",
+        external: true,
+      },
+      {
+        label: "Cheap GPU compute",
+        href: "https://docs.zenml.io/stacks/orchestrators/skypilot-vm",
+        external: true,
+      },
     ],
   },
   {
     title: "MLOps Platform",
     links: [
-      { label: "Mix and match tools", href: "https://docs.zenml.io/stacks", external: true },
-      { label: "Create alerting", href: "https://docs.zenml.io/stacks/alerters", external: true },
-      { label: "Plugin custom stack components", href: "https://docs.zenml.io/how-to/infrastructure-deployment/stack-deployment/implement-a-custom-stack-component", external: true },
+      { label: "MLOps Database", href: "/mlops-database" },
+      {
+        label: "Mix and match tools",
+        href: "https://docs.zenml.io/stacks",
+        external: true,
+      },
+      {
+        label: "Create alerting",
+        href: "https://docs.zenml.io/stacks/alerters",
+        external: true,
+      },
+      {
+        label: "Plugin custom stack components",
+        href: "https://docs.zenml.io/how-to/infrastructure-deployment/stack-deployment/implement-a-custom-stack-component",
+        external: true,
+      },
     ],
   },
   {
     title: "Leveraging Hyperscalers",
     links: [
-      { label: "Train on Spot VMs", href: "https://docs.zenml.io/stacks/orchestrators/skypilot-vm", external: true },
-      { label: "Deploying Sagemaker Endpoints", href: "https://github.com/zenml-io/zenml-projects/tree/main/huggingface-sagemaker", external: true },
-      { label: "Managing GCP Vertex AI", href: "https://docs.zenml.io/how-to/popular-integrations/gcp-guide", external: true },
-      { label: "Training on Kubernetes", href: "https://docs.zenml.io/how-to/popular-integrations/kubernetes", external: true },
-      { label: "Local to Sagemaker Pipelines", href: "https://docs.zenml.io/how-to/popular-integrations/aws-guide", external: true },
+      {
+        label: "Train on Spot VMs",
+        href: "https://docs.zenml.io/stacks/orchestrators/skypilot-vm",
+        external: true,
+      },
+      {
+        label: "Deploying Sagemaker Endpoints",
+        href: "https://github.com/zenml-io/zenml-projects/tree/main/huggingface-sagemaker",
+        external: true,
+      },
+      {
+        label: "Managing GCP Vertex AI",
+        href: "https://docs.zenml.io/how-to/popular-integrations/gcp-guide",
+        external: true,
+      },
+      {
+        label: "Training on Kubernetes",
+        href: "https://docs.zenml.io/how-to/popular-integrations/kubernetes",
+        external: true,
+      },
+      {
+        label: "Local to Sagemaker Pipelines",
+        href: "https://docs.zenml.io/how-to/popular-integrations/aws-guide",
+        external: true,
+      },
     ],
   },
 ];
@@ -158,10 +211,18 @@ export const FOOTER_EXTENDED: FooterColumn[] = [
 // ---------------------------------------------------------------------------
 
 export const FOOTER_SOCIAL: SocialLink[] = [
-  { platform: "linkedin", href: "https://www.linkedin.com/company/zenml", label: "LinkedIn" },
+  {
+    platform: "linkedin",
+    href: "https://www.linkedin.com/company/zenml",
+    label: "LinkedIn",
+  },
   { platform: "x", href: "https://twitter.com/zenml_io", label: "X (Twitter)" },
   { platform: "slack", href: "https://zenml.io/slack-invite", label: "Slack" },
-  { platform: "youtube", href: "https://www.youtube.com/@ZenML", label: "YouTube" },
+  {
+    platform: "youtube",
+    href: "https://www.youtube.com/@ZenML",
+    label: "YouTube",
+  },
 ];
 
 // ---------------------------------------------------------------------------
@@ -172,5 +233,9 @@ export const FOOTER_LEGAL: FooterLink[] = [
   { label: "Imprint", href: "/imprint" },
   { label: "Privacy Policy", href: "/privacy-policy" },
   { label: "Terms of Service", href: "/terms-of-service" },
-  { label: "ZenML Pro Status", href: "https://status.zenml.io", external: true },
+  {
+    label: "ZenML Pro Status",
+    href: "https://status.zenml.io",
+    external: true,
+  },
 ];

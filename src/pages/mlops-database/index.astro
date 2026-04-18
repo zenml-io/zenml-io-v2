@@ -1,0 +1,100 @@
+---
+/**
+ * MLOps Database listing page.
+ *
+ * Server-side: resolves tag/industry display names, passes them to a Preact island.
+ * Client-side: MLOpsFilter fetches /mlops-index.json and handles filtering,
+ * search, sorting, pagination, and URL state in the browser.
+ *
+ * Route: /mlops-database
+ */
+import { getCollection } from "astro:content";
+import MLOpsFilter from "../../components/islands/MLOpsFilter";
+import BrevoNewsletterForm from "../../components/sections/BrevoNewsletterForm.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { BREVO_LLMOPS_CONFIG } from "../../lib/formConstants";
+
+const allTags = (await getCollection("mlops-tags"))
+  .map((tag) => ({ slug: tag.data.slug, name: tag.data.name }))
+  .sort((a, b) => a.name.localeCompare(b.name));
+
+const allIndustries = (await getCollection("industry-tags"))
+  .map((industry) => ({ slug: industry.data.slug, name: industry.data.name }))
+  .sort((a, b) => a.name.localeCompare(b.name));
+
+const entryCount = (
+  await getCollection("mlops-database", ({ data }) => !data.draft)
+).length;
+---
+
+<BaseLayout
+  title="MLOps Database - ZenML"
+  description={`Explore ${entryCount} real-world MLOps case studies, platforms, and production machine learning implementations. Filter by topic, industry, content type, and more.`}
+>
+  <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+    <header class="mb-10">
+      <p class="mb-3 text-sm font-semibold uppercase tracking-wider text-success-700">Machine Learning Operations</p>
+      <h1 class="text-4xl font-bold tracking-tight text-gray-900">MLOps Database</h1>
+      <p class="mt-4 max-w-2xl text-lg text-gray-600">
+        Explore {entryCount} real-world MLOps case studies, platforms, and production ML systems.
+        Filter by topic, industry, or search for specific companies and platforms.
+      </p>
+    </header>
+
+    <MLOpsFilter
+      client:load
+      tags={allTags}
+      industries={allIndustries}
+      pageSize={24}
+    />
+
+    <noscript>
+      <div class="mt-8 rounded-lg border border-gray-200 bg-gray-50 p-6">
+        <p class="mb-4 text-sm text-gray-700">
+          JavaScript is required for the interactive filter. Browse by category instead:
+        </p>
+        <div class="space-y-4">
+          <div>
+            <h2 class="mb-2 text-sm font-semibold text-gray-900">Browse by MLOps Topic</h2>
+            <div class="flex flex-wrap gap-2">
+              {allTags.slice(0, 20).map((tag) => (
+                <a
+                  href={`/mlops-tags/${tag.slug}`}
+                  class="rounded-full bg-success-50 px-3 py-1 text-xs font-medium text-success-700 hover:bg-success-100"
+                >
+                  {tag.name}
+                </a>
+              ))}
+              {allTags.length > 20 && (
+                <span class="text-xs text-gray-400">+{allTags.length - 20} more</span>
+              )}
+            </div>
+          </div>
+          <div>
+            <h2 class="mb-2 text-sm font-semibold text-gray-900">Browse by Industry</h2>
+            <div class="flex flex-wrap gap-2">
+              {allIndustries.map((industry) => (
+                <a
+                  href={`/industry-tags/${industry.slug}`}
+                  class="rounded-full bg-purple-50 px-3 py-1 text-xs font-medium text-purple-700 hover:bg-purple-100"
+                >
+                  {industry.name}
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </noscript>
+
+    <section class="mt-16 rounded-md border border-gray-200 bg-gray-50 px-8 py-10 sm:px-12">
+      <h2 class="text-xl font-semibold text-gray-900">Looking to Get Ahead in MLOps?</h2>
+      <p class="mt-2 max-w-xl text-sm text-gray-600">
+        Subscribe to the ZenML newsletter and receive regular product updates, tutorials, examples, and more.
+      </p>
+      <div class="mt-6">
+        <BrevoNewsletterForm config={BREVO_LLMOPS_CONFIG} />
+      </div>
+    </section>
+  </div>
+</BaseLayout>
