@@ -64,16 +64,22 @@ But there are some use cases where you'd better rely on an alternative and not i
 
 ## Update: Outerbounds Was Acquired by Anaconda (April 29, 2026)
 
-On April 29, 2026, Anaconda announced its acquisition of Outerbounds, the company behind the open-source Metaflow framework. Anaconda is positioning the combined company as "the first unified platform spanning the entire AI-native development lifecycle" — pairing Anaconda's package management, environments, and AI Catalyst foundation with Outerbounds' workflow orchestration, artifact tracking, and governed deployment.
+On April 29, 2026, Anaconda announced its acquisition of Outerbounds, the company behind the open-source Metaflow framework. Anaconda is positioning the combined company as "the first unified platform spanning the entire AI-native development lifecycle," pairing Anaconda's package management, environments, and AI Catalyst foundation with Outerbounds' workflow orchestration, artifact tracking, and governed deployment.
 
 Two things were confirmed in the announcement:
 
 - **Metaflow stays open source.** Anaconda explicitly committed to continued Metaflow development as an open-source project.
-- **Integration details aren't finalized.** Anaconda is publicly asking enterprises to [sign up for updates on product timelines and integration details](https://www.anaconda.com/lp/anaconda-and-outerbounds) — a clear signal that the long-term roadmap, pricing, and combined product surface are still being worked out.
+- **Integration details aren't finalized.** Anaconda is publicly asking enterprises to [sign up for updates on product timelines and integration details](https://www.anaconda.com/lp/anaconda-and-outerbounds), a clear signal that the long-term roadmap, pricing, and combined product surface are still being worked out.
 
-That last point is the one to flag if you're mid-evaluation. Acquisitions of this size almost always come with eventual repackaging, repricing, or product realignment. The product you sign a 12-month Outerbounds contract for today may not be the product you're using in 18 months.
+That last point is the one to flag if you're mid-evaluation. Anaconda's stated strategy is to fold Outerbounds into "a unified platform," and integrations of this size usually mean three things over the next 12 to 24 months:
 
-If you'd rather bet on a roadmap that isn't being re-drawn, it's worth comparing [ZenML](https://www.zenml.io) before you sign — same cloud-agnostic, bring-your-own-infrastructure model, no lock-in to a post-acquisition transition. We're happy to walk through the trade-offs on a [demo call](https://www.zenml.io/book-your-demo).
+- **Pricing structure shifts.** Outerbounds today is a predictable flat-fee MLOps platform. Anaconda's commercial model is a broader bundled platform spanning package governance, model catalog, and now orchestration. Standalone tiers like the $1,199 to $2,499/mo Starter rarely survive integrations of this kind without being repackaged, repriced, or rolled into a wider "Platform" contract at renewal. That renewal is typically at a higher number, since you're now paying for the whole stack instead of just orchestration.
+- **Migration paths appear.** Even if the current Outerbounds product keeps running, you might be steered toward the unified platform within a year or two. That's a re-architecture, not a config change. It will take a lot of resources.
+- **Roadmap priorities reset.** Whatever was on the Outerbounds roadmap last quarter now competes with everything Anaconda needs to ship to make the integration story land. Features specific to standalone Outerbounds workflows tend to drop a notch in priority.
+
+It's just how integrations of this size typically play out. But if you're about to sign a 12-month Outerbounds contract, it's worth knowing the product you renew on may not be the product you bought.
+
+If you'd rather bet on a roadmap that isn't being re-drawn, it's worth comparing [ZenML](https://www.zenml.io) before you sign. It's the same cloud-agnostic, bring-your-own-infrastructure model, no lock-in to a post-acquisition transition. We're happy to walk through the trade-offs on a [demo call](https://www.zenml.io/book-your-demo).
 
 ## Outerbounds Pricing Plans
 
@@ -249,7 +255,7 @@ Again, it’s the standard fully-managed Outerbounds install deployed inside you
 
 Whether Outerbounds is ‘expensive’ depends on your perspective and needs. Let’s break it down:
 
-At $2,499 per month for the Starter plan — or $1,199/month if you prepay the year — Outerbounds asks for a significant investment from a small team or individual. That’s roughly $14.4k to $30k per year, depending on which billing option you take.
+At $2,499 per month for the Starter plan, or $1,199/month if you prepay the year, Outerbounds asks for a significant investment from a small team or individual. That’s roughly $14.4k to $30k per year, depending on which billing option you take.
 
 If you’re a lone data scientist or a tiny startup with just a couple of ML projects, paying this flat fee isn’t an ideal solution, especially when compared to the $0 cost of using purely open-source tools like Metaflow or ZenML by yourself (aside from cloud bills).
 
@@ -266,7 +272,7 @@ For larger enterprises, the question is not the absolute cost, but the value. Ou
   <figcaption>ZenML’s homepage</figcaption>
 </figure>
 
-While Outerbounds offers a powerful managed platform, not every team has the budget for it — and after the Anaconda acquisition, not every team wants to bet on a roadmap that’s about to be re-drawn. ZenML is an open-source AI Control Plane that can serve as a more accessible alternative. It orchestrates both classic ML pipelines and modern GenAI/LLM agent workflows, runs on your existing infrastructure rather than imposing new infrastructure, and is trusted by teams at Airbus, AXA, JetBrains, and Enel.
+While Outerbounds offers a powerful managed platform, not every team has the budget for it, and after the Anaconda acquisition, not every team wants to bet on a roadmap that’s about to be re-drawn. ZenML is an open-source AI Control Plane that can serve as a more accessible alternative. It orchestrates both classic ML pipelines and modern GenAI/LLM agent workflows, runs on your existing infrastructure rather than imposing new infrastructure, and is trusted by teams at Airbus, AXA, JetBrains, and Enel.
 
 Let’s look at how ZenML can replace or augment key aspects of Outerbounds’ functionality, often at a more accessible price point.
 
@@ -317,9 +323,9 @@ ZenML's pricing is structured differently from Outerbounds'. There's a fully fre
 
 <table class="outerbounds-table"> <thead> <tr> <th>ZenML plan</th> <th>Best for</th> <th>Pricing</th> </tr> </thead> <tbody> <tr> <td>Open Source</td> <td>Solo developers, research teams, anyone running their own infrastructure</td> <td>$0 (Apache 2.0, unlimited)</td> </tr> <tr> <td>Starter</td> <td>Small teams getting started with managed MLOps (500 pipeline runs/mo, 1 project)</td> <td>$399/month</td> </tr> <tr> <td>Growth</td> <td>Teams scaling across multiple projects (2,000 runs/mo, 3 projects, webhooks &amp; triggers)</td> <td>$999/month</td> </tr> <tr> <td>Scale</td> <td>Mid-size teams that need Codespaces and more workspaces (5,000 runs/mo, 10 projects)</td> <td>$2,499/month</td> </tr> <tr> <td>Enterprise</td> <td>Regulated orgs needing SAML/OIDC SSO, custom RBAC, audit logs, regional or on-prem/hybrid deployment, SOC 2 + GDPR</td> <td>Custom</td> </tr> <tr> <td>Pro Self-Hosted</td> <td>Teams that need ZenML Pro features inside their own infrastructure, including air-gapped</td> <td>Custom annual</td> </tr> </tbody></table>
 
-The Starter plan ($399/month) gets you 500 pipeline runs, the Model Control Plane, the Artifact Control Plane, unlimited team members, and a free trial — at roughly **one-sixth** the cost of Outerbounds' equivalent Starter tier.
+The Starter plan ($399/month) gets you 500 pipeline runs, the Model Control Plane, the Artifact Control Plane, unlimited team members, and a free trial, at roughly **one-sixth** the cost of Outerbounds' equivalent Starter tier.
 
-For larger orgs, the Enterprise plan covers SOC 2, GDPR, SAML/OIDC SSO, custom RBAC, audit logs, regional deployment, and on-prem/hybrid — the same compliance bar enterprises evaluate Outerbounds for, just without the post-acquisition uncertainty.
+For larger orgs, the Enterprise plan covers SOC 2, GDPR, SAML/OIDC SSO, custom RBAC, audit logs, regional deployment, and on-prem/hybrid. It's the same compliance bar enterprises evaluate Outerbounds for, just without the post-acquisition uncertainty.
 
 ZenML comes with other capabilities that cover much of what Outerbounds does and more:
 
@@ -339,7 +345,7 @@ ZenML’s framework lets you craft an MLOps stack tailored to your needs, tappin
 
 It’s a solution that grows with you – use it for free, plug in the platforms you want, and only pay if you opt for additional managed services down the line.
 
-If you’re evaluating Outerbounds and wondering about the trade-offs — especially now that the platform is part of Anaconda and the integrated roadmap is still being shaped — we encourage you to talk to us. [Book a personalized demo call](https://www.zenml.io/book-your-demo) with ZenML’s Founder. With our platform, you can define your ML and GenAI pipelines once and let the framework handle experiment tracking, versioning, snapshots, and deployments for you — all while staying cloud-agnostic, compliance-ready, and cost-effective.
+If you’re evaluating Outerbounds and wondering about the trade-offs, especially now that the platform is part of Anaconda and the integrated roadmap is still being shaped, we encourage you to talk to us. [Book a demo](https://www.zenml.io/book-your-demo) with the ZenML founding team. With our platform, you can define your ML and GenAI pipelines once and let the framework handle experiment tracking, versioning, snapshots, and deployments for you. You stay cloud-agnostic, compliance-ready, and cost-effective.
 
 <figure>
   <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/55428de0/684576e834000d9981f3b957_zenml-book-a-demo.png" alt="__wf_reserved_inherit" />
