@@ -35,6 +35,8 @@ When evaluating MLOps platforms, pricing transparency plays a crucial role in de
 
 In this Outerbounds pricing guide, we talk about all the pricing plans the platform offers, key cost factors, and conclude whether the platform is worth investing in. We'll also look at an alternative, ZenML, that might better suit your requirements and budget.
 
+**Recently Updated (April 2026):** This pricing guide has been refreshed to cover the April 29, 2026 Anaconda acquisition of Outerbounds, the new annual-prepay option on the Outerbounds Starter plan, and the latest ZenML pricing tiers.
+
 ## TL;DR
 
 Here’s an overview of all the plans Outerbounds offers:
@@ -44,7 +46,7 @@ Here’s an overview of all the plans Outerbounds offers:
   
   
 
-<table class="outerbounds-table"> <thead> <tr> <th>Outerbounds plans</th> <th>Best for</th> <th>Key features</th> <th>Pricing</th> </tr> </thead> <tbody> <!-- Community (Open Source) Row --> <tr> <td>Community (Open Source)</td> <td>Individual developers or early-stage teams</td> <td> <ul class="bullet-list"> <li>100% free, Apache-2.0 Metaflow</li> <li>Unlimited users &amp; runs</li> <li>Community Slack support only</li> </ul> </td> <td>$0</td> </tr> <!-- Starter (Managed) Row --> <tr> <td>Starter (Managed)</td> <td>Small and mid-sized teams</td> <td> <ul class="bullet-list"> <li>Fully managed control plane</li> <li>3 compute nodes, up to 3 cloud workstations</li> <li>Unlimited seats and pipeline runs</li> <li>Basic SSO (Google, GitHub, GitLab)</li> <li>Dedicated support and 30-day free trial</li> </ul> </td> <td>$2,499 per month (annual contract)</td> </tr> <!-- Enterprise (Managed) Row --> <tr> <td>Enterprise (Managed)</td> <td>Larger orgs or regulated industries</td> <td> <ul class="bullet-list"> <li>Unlimited compute nodes and workstations</li> <li>Okta/Azure AD SSO, fine-grained RBAC, audit logs</li> <li>Multi-region and private networking options</li> <li>24×7 support, custom uptime SLA</li> </ul> </td> <td>Custom pricing (contact sales)</td> </tr> <!-- AWS Marketplace Bundle Row --> <tr> <td>AWS Marketplace bundle (Starter + 2 extra nodes)</td> <td>Teams already on AWS that want to pay via their AWS bill or burn EDP/committed-use credits</td> <td> <ul class="bullet-list"> <li>Same features as the Starter plan</li> <li>5 managed compute nodes (3 base + 2 add-ons)</li> <li>Unlimited seats; up to 3 workstations</li> </ul> </td> <td>≈ $60,000 per year (public 12-month contract)</td> </tr> <!-- Google Cloud Marketplace Row --> <tr> <td>Google Cloud Marketplace</td> <td>GCP customers who prefer marketplace procurement and want to apply committed-use discounts or promo credits</td> <td> <ul class="bullet-list"> <li>Choose Starter or Enterprise feature set at checkout (identical to direct plans)</li> <li>Deployment on GKE inside your GCP project</li> <li>Billing via Google Cloud invoice</li> </ul> </td> <td>Offers the official Starter and Enterprise plans</td> </tr> <!-- Azure Marketplace Row --> <tr> <td>Azure Marketplace</td> <td>Organizations with Azure consumption commitments that need Outerbounds deployed on AKS and billed via Azure</td> <td> <ul class="bullet-list"> <li>Same features as Starter and Enterprise plans</li> <li>Runs in your Azure subscription; ARM template &amp; AKS setup automated</li> <li>Supports Azure AD SSO, RBAC, SOC-2 controls</li> </ul> </td> <td>Offers the official Starter and Enterprise plans</td> </tr> </tbody></table>
+<table class="outerbounds-table"> <thead> <tr> <th>Outerbounds plans</th> <th>Best for</th> <th>Key features</th> <th>Pricing</th> </tr> </thead> <tbody> <!-- Community (Open Source) Row --> <tr> <td>Community (Open Source)</td> <td>Individual developers or early-stage teams</td> <td> <ul class="bullet-list"> <li>100% free, Apache-2.0 Metaflow</li> <li>Unlimited users &amp; runs</li> <li>Community Slack support only</li> </ul> </td> <td>$0</td> </tr> <!-- Starter (Managed) Row --> <tr> <td>Starter (Managed)</td> <td>Small and mid-sized teams</td> <td> <ul class="bullet-list"> <li>Fully managed control plane</li> <li>3 compute nodes, up to 3 cloud workstations</li> <li>Unlimited seats and pipeline runs</li> <li>Basic SSO (Google, GitHub, GitLab)</li> <li>Dedicated support and 30-day free trial</li> </ul> </td> <td>From $1,199/mo (annual prepay) or $2,499/mo (annual contract)</td> </tr> <!-- Enterprise (Managed) Row --> <tr> <td>Enterprise (Managed)</td> <td>Larger orgs or regulated industries</td> <td> <ul class="bullet-list"> <li>Unlimited compute nodes and workstations</li> <li>Okta/Azure AD SSO, fine-grained RBAC, audit logs</li> <li>Multi-region and private networking options</li> <li>24×7 support, custom uptime SLA</li> </ul> </td> <td>Custom pricing (contact sales)</td> </tr> <!-- AWS Marketplace Bundle Row --> <tr> <td>AWS Marketplace bundle (Starter + 2 extra nodes)</td> <td>Teams already on AWS that want to pay via their AWS bill or burn EDP/committed-use credits</td> <td> <ul class="bullet-list"> <li>Same features as the Starter plan</li> <li>5 managed compute nodes (3 base + 2 add-ons)</li> <li>Unlimited seats; up to 3 workstations</li> </ul> </td> <td>≈ $60,000 per year (public 12-month contract)</td> </tr> <!-- Google Cloud Marketplace Row --> <tr> <td>Google Cloud Marketplace</td> <td>GCP customers who prefer marketplace procurement and want to apply committed-use discounts or promo credits</td> <td> <ul class="bullet-list"> <li>Choose Starter or Enterprise feature set at checkout (identical to direct plans)</li> <li>Deployment on GKE inside your GCP project</li> <li>Billing via Google Cloud invoice</li> </ul> </td> <td>Offers the official Starter and Enterprise plans</td> </tr> <!-- Azure Marketplace Row --> <tr> <td>Azure Marketplace</td> <td>Organizations with Azure consumption commitments that need Outerbounds deployed on AKS and billed via Azure</td> <td> <ul class="bullet-list"> <li>Same features as Starter and Enterprise plans</li> <li>Runs in your Azure subscription; ARM template &amp; AKS setup automated</li> <li>Supports Azure AD SSO, RBAC, SOC-2 controls</li> </ul> </td> <td>Offers the official Starter and Enterprise plans</td> </tr> </tbody></table>
 
 Outerbounds is worth investing in when:
 
@@ -59,6 +61,19 @@ But there are some use cases where you'd better rely on an alternative and not i
 ❌ You're a small team or solo developer with limited workflows. Paying $2,499/month (nearly $30,000/year) is steep compared to free or cheaper open-source tools, especially if your compute needs remain modest.
 
 ❌ You prefer completely vendor-managed infrastructure (SaaS-style) rather than managing a platform deployed in your own cloud environment, even if deployment itself is managed.
+
+## Update: Outerbounds Was Acquired by Anaconda (April 29, 2026)
+
+On April 29, 2026, Anaconda announced its acquisition of Outerbounds, the company behind the open-source Metaflow framework. Anaconda is positioning the combined company as "the first unified platform spanning the entire AI-native development lifecycle" — pairing Anaconda's package management, environments, and AI Catalyst foundation with Outerbounds' workflow orchestration, artifact tracking, and governed deployment.
+
+Two things were confirmed in the announcement:
+
+- **Metaflow stays open source.** Anaconda explicitly committed to continued Metaflow development as an open-source project.
+- **Integration details aren't finalized.** Anaconda is publicly asking enterprises to [sign up for updates on product timelines and integration details](https://www.anaconda.com/lp/anaconda-and-outerbounds) — a clear signal that the long-term roadmap, pricing, and combined product surface are still being worked out.
+
+That last point is the one to flag if you're mid-evaluation. Acquisitions of this size almost always come with eventual repackaging, repricing, or product realignment. The product you sign a 12-month Outerbounds contract for today may not be the product you're using in 18 months.
+
+If you'd rather bet on a roadmap that isn't being re-drawn, it's worth comparing [ZenML](https://www.zenml.io) before you sign — same cloud-agnostic, bring-your-own-infrastructure model, no lock-in to a post-acquisition transition. We're happy to walk through the trade-offs on a [demo call](https://www.zenml.io/book-your-demo).
 
 ## Outerbounds Pricing Plans
 
@@ -146,9 +161,9 @@ There are some drawbacks of Metaflow due to which engineering teams tend to [loo
 
 All these drawbacks are taken care of by Outerbounds’ Starter and Enterprise plans, as well as by the plans that different marketplaces offer.
 
-### Starter Plan – $2,499 per Month (billed annually)
+### Starter Plan – From $1,199 per Month (annual prepay) or $2,499 per Month (billed annually)
 
-The Starter plan is the entry point to Outerbounds’ fully managed platform. At $2,499 per month (with annual commitment), it’s aimed at small-to-medium teams that want a turnkey MLOps solution.
+The Starter plan is the entry point to Outerbounds’ fully managed platform. As of April 2026, Outerbounds lists two pricing options: $2,499 per month on a standard annual contract, or $1,199 per month if you prepay the full year up front. It’s aimed at small-to-medium teams that want a turnkey MLOps solution.
 
 Here’s what the plan offers:
 
@@ -234,7 +249,7 @@ Again, it’s the standard fully-managed Outerbounds install deployed inside you
 
 Whether Outerbounds is ‘expensive’ depends on your perspective and needs. Let’s break it down:
 
-At $2,499 per month for the Starter plan, Outerbounds certainly asks for a significant investment from a small team or individual. That’s about $30k per year.
+At $2,499 per month for the Starter plan — or $1,199/month if you prepay the year — Outerbounds asks for a significant investment from a small team or individual. That’s roughly $14.4k to $30k per year, depending on which billing option you take.
 
 If you’re a lone data scientist or a tiny startup with just a couple of ML projects, paying this flat fee isn’t an ideal solution, especially when compared to the $0 cost of using purely open-source tools like Metaflow or ZenML by yourself (aside from cloud bills).
 
@@ -251,7 +266,7 @@ For larger enterprises, the question is not the absolute cost, but the value. Ou
   <figcaption>ZenML’s homepage</figcaption>
 </figure>
 
-While Outerbounds offers a powerful managed platform, not every team will have the budget or need for it. ZenML is an MLOps framework that can serve as a more accessible alternative in many scenarios. Like Outerbounds, ZenML is designed to help you orchestrate and manage ML pipelines.
+While Outerbounds offers a powerful managed platform, not every team has the budget for it — and after the Anaconda acquisition, not every team wants to bet on a roadmap that’s about to be re-drawn. ZenML is an open-source AI Control Plane that can serve as a more accessible alternative. It orchestrates both classic ML pipelines and modern GenAI/LLM agent workflows, runs on your existing infrastructure rather than imposing new infrastructure, and is trusted by teams at Airbus, AXA, JetBrains, and Enel.
 
 Let’s look at how ZenML can replace or augment key aspects of Outerbounds’ functionality, often at a more accessible price point.
 
@@ -296,9 +311,19 @@ ZenML’s customizability is a big plus if you need something beyond what typica
   <figcaption>Stacks as a way to organize your execution environment</figcaption>
 </figure>
 
+### ZenML Pricing
+
+ZenML's pricing is structured differently from Outerbounds'. There's a fully free open-source tier, a managed SaaS plan that starts well below Outerbounds' Starter, and a self-hosted Pro option for teams that need to stay inside their own VPC.
+
+<table class="outerbounds-table"> <thead> <tr> <th>ZenML plan</th> <th>Best for</th> <th>Pricing</th> </tr> </thead> <tbody> <tr> <td>Open Source</td> <td>Solo developers, research teams, anyone running their own infrastructure</td> <td>$0 (Apache 2.0, unlimited)</td> </tr> <tr> <td>Starter</td> <td>Small teams getting started with managed MLOps (500 pipeline runs/mo, 1 project)</td> <td>$399/month</td> </tr> <tr> <td>Growth</td> <td>Teams scaling across multiple projects (2,000 runs/mo, 3 projects, webhooks &amp; triggers)</td> <td>$999/month</td> </tr> <tr> <td>Scale</td> <td>Mid-size teams that need Codespaces and more workspaces (5,000 runs/mo, 10 projects)</td> <td>$2,499/month</td> </tr> <tr> <td>Enterprise</td> <td>Regulated orgs needing SAML/OIDC SSO, custom RBAC, audit logs, regional or on-prem/hybrid deployment, SOC 2 + GDPR</td> <td>Custom</td> </tr> <tr> <td>Pro Self-Hosted</td> <td>Teams that need ZenML Pro features inside their own infrastructure, including air-gapped</td> <td>Custom annual</td> </tr> </tbody></table>
+
+The Starter plan ($399/month) gets you 500 pipeline runs, the Model Control Plane, the Artifact Control Plane, unlimited team members, and a free trial — at roughly **one-sixth** the cost of Outerbounds' equivalent Starter tier.
+
+For larger orgs, the Enterprise plan covers SOC 2, GDPR, SAML/OIDC SSO, custom RBAC, audit logs, regional deployment, and on-prem/hybrid — the same compliance bar enterprises evaluate Outerbounds for, just without the post-acquisition uncertainty.
+
 ZenML comes with other capabilities that cover much of what Outerbounds does and more:
 
-<ul><li>Offers a built-in registry for models to version and manage model deployments.</li><li>Automatically version-controls data artifacts produced in pipelines, ensuring reproducibility.</li><li>Integrate with hyperparameter optimization libraries or orchestrate parallel runs for tuning.</li><li>The platform is developer-friendly (just Python code to write pipelines) and has an active community and comprehensive documentation.</li></ul>
+<ul><li>Built-in Model Control Plane and Artifact Control Plane for versioning, lineage, and managed deployments.</li><li>Automatic snapshotting of pipeline runs and artifacts so any run is reproducible end-to-end.</li><li>Native support for both classic ML pipelines and GenAI/LLM agent workflows in the same orchestration layer.</li><li>SOC 2 Type II and ISO 27001 certified, with on-prem, hybrid, and air-gapped deployment options for regulated industries.</li></ul>
 
 In short, ZenML can replace much of Outerbounds’ functionality at a fraction of the cost, especially for teams with the technical ability to manage their own stack or are willing to use ZenML Cloud. You get orchestration, experiment tracking, model registry, etc., all under one roof.
 
@@ -314,7 +339,7 @@ ZenML’s framework lets you craft an MLOps stack tailored to your needs, tappin
 
 It’s a solution that grows with you – use it for free, plug in the platforms you want, and only pay if you opt for additional managed services down the line.
 
-If you’re evaluating Outerbounds and wondering about the trade-offs, we encourage you to talk to us. [Book a personalized demo call](https://www.zenml.io/book-your-demo) with ZenML's Founder. With our platform, you can define your ML pipelines once and let the framework handle experiment tracking, versioning, and even deployments for you – all while staying cloud-agnostic and cost-effective.
+If you’re evaluating Outerbounds and wondering about the trade-offs — especially now that the platform is part of Anaconda and the integrated roadmap is still being shaped — we encourage you to talk to us. [Book a personalized demo call](https://www.zenml.io/book-your-demo) with ZenML’s Founder. With our platform, you can define your ML and GenAI pipelines once and let the framework handle experiment tracking, versioning, snapshots, and deployments for you — all while staying cloud-agnostic, compliance-ready, and cost-effective.
 
 <figure>
   <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/55428de0/684576e834000d9981f3b957_zenml-book-a-demo.png" alt="__wf_reserved_inherit" />
