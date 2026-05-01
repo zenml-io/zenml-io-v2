@@ -16,6 +16,7 @@ llmopsTags:
   - "open-source"
   - "fastapi"
   - "anthropic"
+  - "memory"
 industryTags: "tech"
 company: "Lerim"
 summary: "Lerim, an open-source memory system for coding agents, faced challenges with memory extraction quality and accuracy. The solution involved using Claude Code (Opus 4.6) in an AutoResearch pattern to systematically optimize Lerim's prompts, DSPy signatures, tool descriptions, and schema definitions through automated experiments with comprehensive evaluation harnesses. Over two optimization rounds comprising 24 experiments, the system achieved a 41% improvement in composite quality score, with the single biggest win coming from a one-line code change (switching from dspy.Predict to dspy.ChainOfThought). The experiments revealed that schema-level changes outperformed prompt engineering, that positive guidance beats restrictive rules, and that component-level optimizations cascade into end-to-end improvements across the entire system."

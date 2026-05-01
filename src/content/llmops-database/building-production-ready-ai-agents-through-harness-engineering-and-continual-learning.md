@@ -34,6 +34,7 @@ llmopsTags:
   - "google-gcp"
   - "amazon-aws"
   - "hugging-face"
+  - "harness-engineering"
 industryTags: "tech"
 company: "Langchain"
 summary: "Langchain's approach to production AI agents focuses on \"harness engineering\" - the practice of wrapping LLMs with context engineering, prompting, tools, verification systems, and orchestration logic to solve specific tasks. The team has developed open-source infrastructure including Deep Agents and comprehensive evaluation frameworks to help developers build task-specific agents that improve over time through continual learning loops. By treating agents as \"model plus harness,\" they've achieved significant improvements on benchmarks like SWE-bench (moving from top 30 to top 5 on Terminal Bench 2.0 through harness optimization alone) while emphasizing that production success requires custom harnesses tailored to specific customer use cases rather than relying solely on frontier model capabilities."

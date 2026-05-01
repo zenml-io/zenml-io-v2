@@ -28,6 +28,8 @@ llmopsTags:
   - "databases"
   - "anthropic"
   - "openai"
+  - "memory"
+  - "harness-engineering"
 industryTags: "tech"
 company: "Hex"
 summary: "Hex, a data analytics platform, evolved from single-shot text-to-SQL features to building sophisticated multi-agent systems that operate across entire data notebooks and conversational threads. The company faced challenges with model context limitations, tool proliferation, and evaluation of iterative data work that doesn't lend itself to simple pass/fail metrics. Their solution involved building custom orchestration infrastructure on Temporal, implementing dynamic context retrieval systems, creating specialized agents (notebook agent, threads agent, semantic modeling agent, context agent) that are now converging into unified capabilities, and developing novel evaluation approaches including a 90-day simulation benchmark. Results include widespread internal adoption where users described the experience as transformative, differentiation through context accumulation over time creating a flywheel effect, and the ability to handle complex multi-step data analysis tasks that require 20+ minutes of agent work with sophisticated error detection and iterative refinement."

@@ -25,6 +25,7 @@ llmopsTags:
   - "cache"
   - "monitoring"
   - "anthropic"
+  - "harness-engineering"
 industryTags: "tech"
 company: "Stripe"
 summary: "Stripe has deployed an internal AI agent system called \"Minions\" that autonomously handles software development tasks, landing approximately 1,300 pull requests per week with no human assistance beyond code review. Engineers can initiate development work from Slack by simply adding an emoji reaction, which provisions cloud-based development environments and uses AI agents built on the Goose harness to implement features, update documentation, and make code changes. The system leverages Stripe's existing developer productivity infrastructure including hosted development environments, comprehensive CI/CD pipelines, and internal tooling accessible through MCP servers. Additionally, Stripe is pioneering machine-to-machine payment capabilities that allow AI agents to act as economic actors, autonomously purchasing services from third-party APIs to complete tasks, demonstrated through an agent that planned a birthday party by paying for browser automation, venue search, and mail services."

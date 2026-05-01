@@ -42,6 +42,7 @@ llmopsTags:
   - "anthropic"
   - "openai"
   - "meta"
+  - "memory"
 industryTags: "tech"
 company: "Cursor"
 summary: "Cursor, a developer tool company, shares their journey of building what they call a \"software factory\" where AI agents handle increasingly autonomous software development tasks. The presentation outlines how they progressed through levels of autonomy from basic autocomplete to spawning hundreds of agents working asynchronously across their codebase. Their solution involves establishing guardrails through rules that emerge dynamically, creating verifiable systems with automated testing, and building skills and integrations that enable agents to work independently. Results include engineers managing fleets of agents rather than writing code directly, with some features being developed entirely by agents from feature flagging through testing to deployment, though significant work remains in observability, orchestration, and preventing agents from going off-track."

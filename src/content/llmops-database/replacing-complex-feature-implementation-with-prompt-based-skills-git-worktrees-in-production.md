@@ -15,6 +15,7 @@ llmopsTags:
   - "open-source"
   - "anthropic"
   - "openai"
+  - "harness-engineering"
 industryTags: "tech"
 company: "Cursor"
 summary: "Cursor replaced a complex git worktrees feature consisting of approximately 15,000 lines of code with a markdown-based skill implementation of roughly 40 lines. The original feature enabled parallel agent work across isolated git checkouts with sophisticated management, judging, and cleanup systems. By leveraging two existing primitives—agent skills and sub-agents—the team reimplemented both the worktree and best-of-n features using primarily prompt engineering. While the new approach significantly reduced maintenance burden and enabled new capabilities like multi-repo support and mid-chat switching, it introduced challenges around model reliability in staying within designated worktrees, particularly for smaller models and longer sessions. The team is addressing these limitations through evaluation frameworks, reinforcement learning improvements, and continued prompt refinement."

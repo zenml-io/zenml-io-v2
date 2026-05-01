@@ -22,6 +22,7 @@ llmopsTags:
   - "google-gcp"
   - "anthropic"
   - "meta"
+  - "memory"
 industryTags: "tech"
 company: "Mastra"
 summary: "Mastra developed an observational memory system for LLM agents that compresses conversations 5-40x while maintaining temporal awareness and contextual relevance. The system uses two background agents (observer and reflector) to extract meaningful information from conversations while intelligently discarding noise, modeling how human memory retains what matters and lets details fade. The solution achieved 94.87% on the LongMemEval benchmark with GPT-5-mini and 84.23% with GPT-4o, outperforming existing approaches. Deployed in production across hiring and healthcare applications within the Mastra TypeScript agent framework, the system leverages prompt caching for cost efficiency and runs background compression to avoid blocking user interactions."

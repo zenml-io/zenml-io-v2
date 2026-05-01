@@ -36,6 +36,7 @@ llmopsTags:
   - "openai"
   - "google-gcp"
   - "cloudflare"
+  - "harness-engineering"
 industryTags: "tech"
 company: "Vercel"
 summary: "Vercel developed two significant production AI applications: DZ, an internal text-to-SQL data agent that enables employees to query Snowflake using natural language in Slack, and V0, a public-facing AI tool for generating full-stack web applications. The company initially built DZ as a traditional tool-based agent but completely rebuilt it as a coding-style agent with simplified architecture (just two tools: bash and SQL execution), dramatically improving performance by leveraging models' native coding capabilities. V0 evolved from a 2023 prototype targeting frontend engineers into a comprehensive full-stack development tool as models improved, finding strong product-market fit with tech-adjacent users and enabling significant internal productivity gains. Both products demonstrate Vercel's philosophy that building custom agents is straightforward and preferable to buying off-the-shelf solutions, with the company successfully deploying these AI systems at scale while maintaining reliability and supporting their core infrastructure business."

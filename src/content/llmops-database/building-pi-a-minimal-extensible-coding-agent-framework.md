@@ -25,6 +25,7 @@ llmopsTags:
   - "google-gcp"
   - "amazon-aws"
   - "microsoft-azure"
+  - "harness-engineering"
 industryTags: "tech"
 company: "Pi"
 summary: "The presenter, Mario, describes the development of Pi, a minimal and extensible coding agent framework designed to address limitations in existing tools like Claude Code, Cursor, and OpenCode. Frustrated by feature bloat, poor context management, lack of model choice, and insufficient observability in commercial coding agents, Mario built Pi as a stripped-down core that provides only four basic tools (read, write, edit, bash) with extensive customization capabilities through TypeScript extensions. Pi achieved competitive performance on the TerminalBench coding benchmark, ranking second only to Terminus while maintaining a system prompt of just a few tokens. The framework emphasizes developer control, hot-reloading extensions, and adaptability to individual workflows rather than forcing users to conform to opinionated agent designs."

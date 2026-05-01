@@ -34,6 +34,7 @@ llmopsTags:
   - "openai"
   - "hugging-face"
   - "circleci"
+  - "harness-engineering"
 industryTags: "tech"
 company: "Browserbase"
 summary: "Browserbase built an internal generalized agent called \"bb\" to automate knowledge work across engineering, operations, sales, support, and executive functions. The problem was that many internal tasks—from investigating production sessions to logging feature requests—required manual effort and coordination across multiple systems, many of which lacked clean APIs. The solution involved creating a single agent loop that runs in isolated cloud sandboxes with credential brokering, a skills-based system for domain-specific workflows, and integration via Slack for natural interaction. The results included 100% feature request pipeline coverage with zero human effort, 99% of support tickets receiving first response in under 24 hours, session investigation time dropping from 30-60 minutes to a single Slack message, and engineers shifting from writing PRs to reviewing agent-generated ones."

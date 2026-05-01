@@ -10,6 +10,7 @@ llmopsTags:
   - "human-in-the-loop"
   - "error-handling"
   - "monitoring"
+  - "memory"
 industryTags: "tech"
 company: "Cleric"
 summary: "Cleric, an AI-powered Site Reliability Engineering platform, addresses the fundamental limitation of stateless AI agents by building a learning agent that accumulates knowledge over time. The problem Cleric tackles is that most AI agents operate without memory or context from past interactions, limiting their effectiveness in complex production environments. Their solution centers on three core principles: making it easy for users to correct the agent through persistent memories and self-harvested skills, rewarding corrections with visibly better performance that persists and compounds across sessions, and continuously absorbing context from infrastructure, observability tools, and incident channels without requiring explicit user direction. Deployed to dozens of customers, Cleric has demonstrated that stateful agents that complete the full learning loop—acting, learning, and adapting—build user trust and deliver higher utility than stateless alternatives."

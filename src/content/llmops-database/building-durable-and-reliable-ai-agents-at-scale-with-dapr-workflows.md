@@ -40,6 +40,7 @@ llmopsTags:
   - "google-gcp"
   - "meta"
   - "anthropic"
+  - "memory"
 industryTags: "tech"
 company: "HumanLayer"
 summary: "This case study presents Dapr, a CNCF graduated project, and its application to production AI agent systems through the Dapr Agents framework. The core problem addressed is the unreliability of current agent frameworks when running at scale in production environments, particularly the challenge of state loss during failures that forces expensive re-execution of long-running agentic workflows. Dapr Agents provides a durable agent framework with built-in workflow orchestration, automatic failure detection and recovery, exactly-once execution guarantees, and support for over 30 different state stores. The solution was demonstrated through live examples showing agents automatically resuming from their exact point of failure without manual intervention, multi-agent collaboration using pub/sub mechanisms, and complete observability through OpenTelemetry integration. Contributed by Nvidia to the Dapr project and reaching 1.0 stability in 2026, the framework addresses critical production gaps in existing agent frameworks like LangChain and LangGraph."

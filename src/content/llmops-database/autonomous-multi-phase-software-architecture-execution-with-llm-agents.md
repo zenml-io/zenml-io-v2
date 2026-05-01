@@ -31,6 +31,7 @@ llmopsTags:
   - "anthropic"
   - "openai"
   - "google-gcp"
+  - "memory"
 industryTags: "healthcare"
 company: "Cara"
 summary: "Cara, a healthcare software platform company, used Claude Code (Opus 4.6) to autonomously execute 66 software tickets across 2 repositories, write 536 tests, and deliver a composable 5-layer architecture for their healthcare app platform in under 4 hours. The problem was a flat list of 25 scaffolds with no composition model, making it impossible to automatically assemble applications from component parts. The solution involved implementing a structured execution framework called RePPITS (Research, Propose, Plan, Implement, Test, Secure) with persistent memory, parallel subagents, phase gates, and comprehensive security audits. This required approximately 20-25 hours of preparation including codebase structuring, instruction file refinement, and epic planning. The autonomous execution produced approximately 20,000 lines of code organized into 53 scaffolds across 5 architectural layers (Foundation, Runtime, Capability, Adapter, Specialty), with 2 critical bugs and 10 other issues caught and fixed through automated security audits, resulting in zero deferred issues and only one minor production incident that was resolved in under 5 minutes."

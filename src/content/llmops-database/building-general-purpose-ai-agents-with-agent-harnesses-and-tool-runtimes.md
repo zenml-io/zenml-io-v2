@@ -32,6 +32,7 @@ llmopsTags:
   - "openai"
   - "microsoft-azure"
   - "google-gcp"
+  - "harness-engineering"
 industryTags: "tech"
 company: "Langchain / Arcade"
 summary: "LangChain and Arcade collaborated to demonstrate how general-purpose AI agents can be built for enterprise deployment by combining two critical components: an agent harness (like LangChain's Deep Agents) that provides the scaffolding for LLM-powered agents to interact with file systems and execute code, and a secure tool runtime (like Arcade) that handles authentication, authorization, and integration with over 8,000 third-party services. The solution addresses the gap between single-user coding agents running locally and multi-user enterprise agents that require proper security controls, delegated authorization, and the ability to perform actions as specific users across multiple services. The approach enables organizations to deploy agents that can handle complex workflows like flight booking, email management, and LinkedIn recruiting while maintaining enterprise-grade security and compliance requirements."

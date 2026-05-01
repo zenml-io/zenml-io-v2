@@ -26,6 +26,7 @@ llmopsTags:
   - "openai"
   - "google-gcp"
   - "hugging-face"
+  - "memory"
 industryTags: "tech"
 company: "Paperclip"
 summary: "Paperclip is an open-source agent orchestration platform designed to manage AI agents in production environments for business automation. The platform addresses the challenge of coordinating multiple AI agents across different organizational functions by providing a centralized control plane with organizational hierarchies, task management, quality assurance workflows, and vendor-neutral agent integration. The creator demonstrates using Paperclip to manage its own development, including creating marketing videos through agent collaboration, managing code reviews, and coordinating work across engineering and marketing teams. The platform achieved rapid adoption with 50,000 GitHub stars within approximately two months of release, though it remains in early stages with planned features for multi-user support, cloud deployment, and improved organizational learning."

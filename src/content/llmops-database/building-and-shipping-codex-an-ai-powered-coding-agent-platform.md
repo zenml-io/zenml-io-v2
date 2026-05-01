@@ -18,6 +18,7 @@ llmopsTags:
   - "monitoring"
   - "openai"
   - "meta"
+  - "harness-engineering"
 industryTags: "tech"
 company: "OpenAI"
 summary: "OpenAI's Codex team demonstrates how they built and operate a production AI coding agent platform that enables developers to delegate complex software development tasks to LLMs. The team leverages their own product extensively in development, with designers writing more code than engineers did six months prior, and product managers submitting PRs directly. The solution includes multiple model tiers (GPT-5.4 for complex tasks, Codex Spark for rapid iteration at 1,200 tokens/second), a multi-agent architecture that allows parallel task execution, and an open-source harness that powers CLI, IDE extensions, and a standalone app. Results include 20-30x user growth in months, adoption across OpenAI internally as a primary development tool, and a development workflow where specs are minimal (around 10 bullets) with emphasis on rapid prototyping and community-driven iteration."

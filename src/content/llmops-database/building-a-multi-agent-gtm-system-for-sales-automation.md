@@ -27,6 +27,8 @@ llmopsTags:
   - "meta"
   - "anthropic"
   - "openai"
+  - "memory"
+  - "harness-engineering"
 industryTags: "tech"
 company: "Langchain"
 summary: "LangChain built an end-to-end GTM (Go-To-Market) agent to automate outbound sales research and email drafting, addressing the problem of sales reps spending excessive time toggling between multiple systems and manually researching leads. The agent triggers on new Salesforce leads, performs multi-source research, checks contact history, and generates personalized email drafts with reasoning for rep approval via Slack. The solution increased lead-to-qualified-opportunity conversion by 250%, saved each sales rep 40 hours per month (1,320 hours team-wide), increased follow-up rates by 97% for lower-intent leads and 18% for higher-intent leads, and achieved 50% daily and 86% weekly active usage across the GTM team."
