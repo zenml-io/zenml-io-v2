@@ -126,12 +126,16 @@ const commonMLOpsTags = (await getMLOpsTagCounts(mlopsEntries)).slice(0, 8);
         <h2 class="mb-6 text-2xl font-bold tracking-tight text-gray-900">LLMOps entries</h2>
         <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {llmopsEntries.map((entry) => (
-            <a
-              href={`/llmops-database/${entry.data.slug}`}
-              class="group flex flex-col rounded-lg border border-gray-200 bg-white p-5 transition-shadow hover:shadow-md"
+            <div
+              class="group relative flex flex-col rounded-lg border border-gray-200 bg-white p-5 transition-shadow hover:shadow-md"
             >
               <h3 class="text-lg font-semibold text-gray-900 group-hover:text-primary-600">
-                {entry.data.title}
+                <a
+                  href={`/llmops-database/${entry.data.slug}`}
+                  class="before:absolute before:inset-0 before:content-['']"
+                >
+                  {entry.data.title}
+                </a>
               </h3>
               {entry.data.company && (
                 <p class="mt-1 text-sm text-gray-500">{entry.data.company}</p>
@@ -141,13 +145,13 @@ const commonMLOpsTags = (await getMLOpsTagCounts(mlopsEntries)).slice(0, 8);
               )}
               <div class="mt-auto flex flex-wrap gap-1.5 pt-4">
                 {entry.data.llmopsTags.slice(0, 4).map((tagSlug: string) => (
-                  <Badge variant="blue" href={`/llmops-tags/${tagSlug}`}>{llmopsTagMap[tagSlug] || tagSlug}</Badge>
+                  <Badge variant="blue" href={`/llmops-tags/${tagSlug}`} class="relative">{llmopsTagMap[tagSlug] || tagSlug}</Badge>
                 ))}
                 {entry.data.llmopsTags.length > 4 && (
                   <Badge variant="gray">+{entry.data.llmopsTags.length - 4}</Badge>
                 )}
               </div>
-            </a>
+            </div>
           ))}
         </div>
       </section>
@@ -158,12 +162,16 @@ const commonMLOpsTags = (await getMLOpsTagCounts(mlopsEntries)).slice(0, 8);
         <h2 class="mb-6 text-2xl font-bold tracking-tight text-gray-900">MLOps entries</h2>
         <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {mlopsEntries.map((entry) => (
-            <a
-              href={`/mlops-database/${entry.data.slug}`}
-              class="group flex flex-col rounded-lg border border-gray-200 bg-white p-5 transition-shadow hover:shadow-md"
+            <div
+              class="group relative flex flex-col rounded-lg border border-gray-200 bg-white p-5 transition-shadow hover:shadow-md"
             >
               <h3 class="text-lg font-semibold text-gray-900 group-hover:text-primary-600">
-                {entry.data.title}
+                <a
+                  href={`/mlops-database/${entry.data.slug}`}
+                  class="before:absolute before:inset-0 before:content-['']"
+                >
+                  {entry.data.title}
+                </a>
               </h3>
               <div class="mt-1 flex flex-wrap items-center gap-2 text-sm text-gray-500">
                 <span>{entry.data.company}</span>
@@ -181,13 +189,13 @@ const commonMLOpsTags = (await getMLOpsTagCounts(mlopsEntries)).slice(0, 8);
               <p class="mt-2 line-clamp-3 text-sm text-gray-600">{entry.data.summary}</p>
               <div class="mt-auto flex flex-wrap gap-1.5 pt-4">
                 {entry.data.mlopsTags.slice(0, 4).map((tagSlug: string) => (
-                  <Badge variant="success" href={`/mlops-tags/${tagSlug}`}>{mlopsTagMap[tagSlug] || tagSlug}</Badge>
+                  <Badge variant="success" href={`/mlops-tags/${tagSlug}`} class="relative">{mlopsTagMap[tagSlug] || tagSlug}</Badge>
                 ))}
                 {entry.data.mlopsTags.length > 4 && (
                   <Badge variant="gray">+{entry.data.mlopsTags.length - 4}</Badge>
                 )}
               </div>
-            </a>
+            </div>
           ))}
         </div>
       </section>
