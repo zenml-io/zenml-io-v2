@@ -91,9 +91,9 @@ const commonIndustries = (await getIndustryTagCounts(allEntries)).slice(0, 8);
           {entry.data.summary && (
             <p class="mt-2 line-clamp-3 text-sm text-gray-600">{entry.data.summary}</p>
           )}
-          <div class="relative mt-auto flex flex-wrap gap-1.5 pt-4">
+          <div class="mt-auto flex flex-wrap gap-1.5 pt-4">
             {entry.data.llmopsTags.slice(0, 4).map((tagSlug: string) => (
-              <Badge variant="blue" href={`/llmops-tags/${tagSlug}`}>{tagMap[tagSlug] || tagSlug}</Badge>
+              <Badge variant="blue" href={`/llmops-tags/${tagSlug}`} class="relative">{tagMap[tagSlug] || tagSlug}</Badge>
             ))}
             {entry.data.llmopsTags.length > 4 && (
               <Badge variant="gray">+{entry.data.llmopsTags.length - 4}</Badge>

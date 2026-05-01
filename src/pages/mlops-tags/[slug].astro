@@ -104,9 +104,9 @@ const commonIndustries = (await getMLOpsIndustryTagCounts(allEntries)).slice(
             </>
           </div>
           <p class="mt-2 line-clamp-3 text-sm text-gray-600">{entry.data.summary}</p>
-          <div class="relative mt-auto flex flex-wrap gap-1.5 pt-4">
+          <div class="mt-auto flex flex-wrap gap-1.5 pt-4">
             {entry.data.mlopsTags.slice(0, 4).map((tagSlug: string) => (
-              <Badge variant="success" href={`/mlops-tags/${tagSlug}`}>{tagMap[tagSlug] || tagSlug}</Badge>
+              <Badge variant="success" href={`/mlops-tags/${tagSlug}`} class="relative">{tagMap[tagSlug] || tagSlug}</Badge>
             ))}
             {entry.data.mlopsTags.length > 4 && (
               <Badge variant="gray">+{entry.data.mlopsTags.length - 4}</Badge>

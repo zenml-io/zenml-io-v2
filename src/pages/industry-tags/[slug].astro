@@ -143,9 +143,9 @@ const commonMLOpsTags = (await getMLOpsTagCounts(mlopsEntries)).slice(0, 8);
               {entry.data.summary && (
                 <p class="mt-2 line-clamp-3 text-sm text-gray-600">{entry.data.summary}</p>
               )}
-              <div class="relative mt-auto flex flex-wrap gap-1.5 pt-4">
+              <div class="mt-auto flex flex-wrap gap-1.5 pt-4">
                 {entry.data.llmopsTags.slice(0, 4).map((tagSlug: string) => (
-                  <Badge variant="blue" href={`/llmops-tags/${tagSlug}`}>{llmopsTagMap[tagSlug] || tagSlug}</Badge>
+                  <Badge variant="blue" href={`/llmops-tags/${tagSlug}`} class="relative">{llmopsTagMap[tagSlug] || tagSlug}</Badge>
                 ))}
                 {entry.data.llmopsTags.length > 4 && (
                   <Badge variant="gray">+{entry.data.llmopsTags.length - 4}</Badge>
@@ -187,9 +187,9 @@ const commonMLOpsTags = (await getMLOpsTagCounts(mlopsEntries)).slice(0, 8);
                 </>
               </div>
               <p class="mt-2 line-clamp-3 text-sm text-gray-600">{entry.data.summary}</p>
-              <div class="relative mt-auto flex flex-wrap gap-1.5 pt-4">
+              <div class="mt-auto flex flex-wrap gap-1.5 pt-4">
                 {entry.data.mlopsTags.slice(0, 4).map((tagSlug: string) => (
-                  <Badge variant="success" href={`/mlops-tags/${tagSlug}`}>{mlopsTagMap[tagSlug] || tagSlug}</Badge>
+                  <Badge variant="success" href={`/mlops-tags/${tagSlug}`} class="relative">{mlopsTagMap[tagSlug] || tagSlug}</Badge>
                 ))}
                 {entry.data.mlopsTags.length > 4 && (
                   <Badge variant="gray">+{entry.data.mlopsTags.length - 4}</Badge>
