@@ -48,6 +48,7 @@ llmopsTags:
   - "google-gcp"
   - "microsoft-azure"
   - "hugging-face"
+  - "memory"
 industryTags: "tech"
 company: "Opendev"
 summary: "OpenDev is an open-source, command-line AI coding agent written in Rust that addresses the fundamental challenges of building production-ready autonomous software engineering systems. The agent tackles three critical problems: managing finite context windows over long sessions, preventing destructive operations while maintaining developer productivity, and extending capabilities without overwhelming token budgets. The solution employs a compound AI system architecture with per-workflow LLM binding, dual-agent separation of planning from execution, adaptive context compaction that progressively reduces older observations, lazy tool discovery via Model Context Protocol (MCP), and a defense-in-depth safety architecture. Results demonstrate approximately 54% reduction in peak context consumption, session lengths extending from 15-20 turns to 30-40 turns without emergency compaction, and a robust framework for terminal-first AI assistance that operates where developers manage source control, execute builds, and deploy environments."

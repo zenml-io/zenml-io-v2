@@ -28,6 +28,7 @@ llmopsTags:
   - "elasticsearch"
   - "guardrails"
   - "openai"
+  - "harness-engineering"
 industryTags: "tech"
 company: "OpenAI"
 summary: "OpenAI's Frontier Product Exploration team conducted a five-month experiment building an internal beta product with zero manually written code, generating over 1 million lines of code across thousands of PRs while processing approximately 1 billion tokens per day. The team developed \"Symphony,\" an Elixir-based orchestration system that manages multiple Codex agents autonomously, removing humans from the code review and merge loop entirely. By shifting focus from prompt engineering to \"harness engineering\"—building systems, observability, and context that enable agents to work independently—the team achieved 5-10 PRs per engineer per day and established a new paradigm where software is optimized for agent legibility rather than human readability."

@@ -27,6 +27,7 @@ llmopsTags:
   - "continuous-integration"
   - "continuous-deployment"
   - "anthropic"
+  - "harness-engineering"
 industryTags: "tech"
 company: "Twin Sun"
 summary: "Twin Sun, a Nashville-based software development agency, built an autonomous software development factory called Scarif that uses Claude Code agents to handle the majority of the software development lifecycle. The system addresses the challenge of scaling development capacity while maintaining code quality and consistency across multiple concurrent client projects. By introducing AI agents incrementally into their existing disciplined development workflow—starting with PR review and gradually expanding to code generation, testing, and deployment—they achieved a 70% autonomous approval rate on pull requests while maintaining their high standards for code quality and design patterns."

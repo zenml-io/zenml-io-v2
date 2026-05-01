@@ -50,6 +50,7 @@ llmopsTags:
   - "anthropic"
   - "meta"
   - "google-gcp"
+  - "memory"
 industryTags: "e-commerce"
 company: "Doordash"
 summary: "DoorDash faced the challenge of personalizing experiences across a massive, diverse catalog spanning restaurants, grocery, retail, and other local commerce categories for millions of users with rapidly shifting intents. Traditional collaborative filtering and deep learning approaches could not adapt quickly enough to short-lived, high-context moments like Black Friday or individual life events. DoorDash developed a hybrid architecture that leverages LLMs for product understanding, consumer profile generation in natural language, and content blueprint creation, while maintaining traditional deep learning models for efficient last-mile ranking and retrieval. This approach enables the platform to serve dynamic, moment-aware personalization that adapts to real-time user intent while managing latency and cost constraints. The system uses GEPA optimization within DSPy for compound AI system tuning, combines offline LLM processing with online signal blending, and evaluates performance through quantitative metrics, LLM-as-judge, and human feedback."

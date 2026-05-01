@@ -22,6 +22,7 @@ llmopsTags:
   - "security"
   - "anthropic"
   - "google-gcp"
+  - "harness-engineering"
 industryTags: "tech"
 company: "Warp"
 summary: "Warp, a terminal software company, developed a cloud-based agent orchestration platform called Oz to address the limitations of running multiple AI coding agents on local laptops. The problem emerged as developers increasingly shifted from writing code by hand to writing by prompt, creating laptop capacity constraints, lack of visibility into agent work across teams, and inability to run agents when laptops are offline. Warp's solution provides cloud-hosted agent execution with automatic tracking, team visibility, programmable APIs, and support for multiple agent harnesses, enabling developers to parallelize coding tasks across multiple cloud agents, create scheduled automations, and embed agent capabilities into internal applications. The platform demonstrates successful use cases including parallel feature implementation, automated issue triage, and team-wide agent coordination."

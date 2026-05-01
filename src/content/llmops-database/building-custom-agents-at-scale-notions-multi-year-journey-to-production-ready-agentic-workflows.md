@@ -56,6 +56,8 @@ llmopsTags:
   - "meta"
   - "microsoft-azure"
   - "amazon-aws"
+  - "memory"
+  - "harness-engineering"
 industryTags: "tech"
 company: "Notion"
 summary: "Notion, a knowledge work platform serving enterprise customers, spent multiple years (2022-2026) iterating through four to five complete rebuilds of their agent infrastructure before shipping Custom Agents to production. The core problem was enabling users to automate complex workflows across their workspaces while maintaining enterprise-grade reliability, security, and cost efficiency. Their solution involved building a sophisticated agent harness with progressive tool disclosure, SQL-like database abstractions, markdown-based interfaces optimized for LLM consumption, and a comprehensive evaluation framework. The result was a production system handling over 100 tools, serving majority-agent traffic for search, and enabling workflows like automated bug triaging, email processing, and meeting notes capture that fundamentally changed how their company and customers operate."

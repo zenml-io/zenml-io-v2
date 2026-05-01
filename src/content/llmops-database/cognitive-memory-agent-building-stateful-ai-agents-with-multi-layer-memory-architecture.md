@@ -37,6 +37,7 @@ llmopsTags:
   - "databases"
   - "orchestration"
   - "hugging-face"
+  - "memory"
 industryTags: "tech"
 company: "LinkedIn"
 summary: "LinkedIn developed the Cognitive Memory Agent (CMA), a horizontal memory platform designed to enable stateful and context-aware AI agents at scale, initially deployed within their Hiring Assistant product. The problem addressed was that delivering truly agentic experiences required more than capable models—agents needed domain intelligence, organizational context, and the ability to improve over time through personalized memory. CMA solves this by intelligently storing and retrieving contextually relevant information across multiple memory layers (conversational, episodic, semantic, and procedural), enabling agents to maintain continuity beyond context windows, learn from interactions, and provide deeply personalized experiences. The solution has been successfully integrated into Hiring Assistant, where it helps recruiters by suggesting roles based on past projects, auto-populating hiring requirements, and providing insights from historical activities, thereby reducing user friction and increasing productivity."

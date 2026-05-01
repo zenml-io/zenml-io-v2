@@ -17,6 +17,7 @@ llmopsTags:
   - "fastapi"
   - "documentation"
   - "meta"
+  - "memory"
 industryTags: "tech"
 company: "Meta"
 summary: "Meta built Analytics Agent to address the repetitive nature of data analysis work, where 88% of queries by data scientists rely on tables they've queried in the preceding 90 days. Starting from a weekend prototype that could execute SQL autonomously, the agent evolved through rapid iteration from a single devserver to a production system used by 77% of Meta's data scientists and engineers within six months. The solution combines personalized context (through query history analysis), an iterative reasoning loop that allows the agent to write and execute code autonomously, transparent output showing all SQL queries, and a layered knowledge system (Cookbooks, Recipes, Ingredients) that encodes team-specific analytical best practices. The agent scales data scientists by handling routine analyses while maintaining transparency and verification capabilities."

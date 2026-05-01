@@ -31,6 +31,7 @@ llmopsTags:
   - "reliability"
   - "scalability"
   - "openai"
+  - "harness-engineering"
 industryTags: "tech"
 company: "OpenAI"
 summary: "Ryan Leopo, a member of technical staff at OpenAI, describes his team's approach to building software exclusively with AI coding agents over a nine-month period, where human engineers were banned from directly editing code. The problem was how to productively deploy abundant AI coding capacity while shifting engineering roles toward systems thinking, delegation, and defining what constitutes good code. Their solution involved creating a comprehensive harness engineering approach with skills, documentation, automated review agents, linting, and testing frameworks that provide just-in-time context to agents, enabling them to write, test, and deploy production code autonomously. The results included dramatically increased velocity with 3-5 PRs per engineer per day, reduced merge conflicts, automated code reviews, and the ability to complete large-scale migrations and maintain high code quality standards while human engineers focused on higher-leverage activities like architecture, delegation, and defining system requirements."

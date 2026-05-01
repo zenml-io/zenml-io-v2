@@ -41,6 +41,7 @@ llmopsTags:
   - "nvidia"
   - "microsoft-azure"
   - "google-gcp"
+  - "memory"
 industryTags: "tech"
 company: "Komodor"
 summary: "Komodor introduced Klaudia AI, a multi-agent architecture designed to address the complexity of modern cloud-native infrastructure incident management. The problem stems from contemporary systems running hundreds of microservices across multi-cloud environments where symptoms appear in one place while root causes exist elsewhere, making single-agent AI tools ineffective. Klaudia's solution employs a three-layer architecture with over 50 domain-specific expert agents (covering Kubernetes, GPU/NVIDIA, AWS, ArgoCD, Istio, and more) coordinated by workflow orchestrators, all underpinned by a knowledge graph that maps entity relationships across the stack. The system demonstrated significant results including 80% reduction in MTTR for Kubernetes issues at Cisco Outshift, 55% faster pipeline failure diagnosis with the Airflow agent, and the ability to ship new domain agents in 2-4 weeks through its extensible platform architecture."

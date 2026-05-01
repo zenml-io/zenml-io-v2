@@ -31,6 +31,7 @@ llmopsTags:
   - "documentation"
   - "anthropic"
   - "google-gcp"
+  - "memory"
 industryTags: "tech"
 company: "Daily.dev"
 summary: "Daily.dev built \"Smith,\" an internal AI agent deployed in their Slack workspace that provides autonomous access to databases, GitHub repositories, browser automation, and scheduled tasks across the organization. Initially developed in four days using AI coding assistants (Codex and Claude Code), the team spent three subsequent weeks addressing critical production issues including credential leakage, event-loop hangs, memory overflow from long conversations, and security vulnerabilities in a shared runtime environment. The agent now runs in production with 60 tools, 25 self-authored skills, progressive tool disclosure, containerized execution, and defense-in-depth security layers, though several challenges remain unresolved including mysterious crashes from power users and the inherent difficulty of verifying autonomous agent behavior in production systems."

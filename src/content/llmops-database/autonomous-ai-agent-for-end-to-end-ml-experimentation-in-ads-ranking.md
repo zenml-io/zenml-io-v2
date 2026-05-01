@@ -21,6 +21,7 @@ llmopsTags:
   - "guardrails"
   - "reliability"
   - "meta"
+  - "memory"
 industryTags: "tech"
 company: "Meta"
 summary: "Meta developed the Ranking Engineer Agent (REA), an autonomous AI agent designed to manage the complete machine learning lifecycle for ads ranking models across billions of users on Facebook, Instagram, Messenger, and WhatsApp. Traditional ML experimentation at Meta was bottlenecked by manual, sequential workflows where engineers spent days to weeks per iteration crafting hypotheses, launching training jobs, debugging failures, and analyzing results. REA addresses this by autonomously executing the full experimentation cycle through a hibernate-and-wake mechanism for multi-day workflows, a dual-source hypothesis engine combining historical insights with ML research, and a three-phase planning framework operating within predefined compute budgets. In its initial production deployment, REA doubled average model accuracy improvements compared to baseline approaches across six models and achieved 5x engineering productivity gains, enabling three engineers to deliver improvement proposals for eight models—work that historically required two engineers per model."

@@ -35,6 +35,8 @@ llmopsTags:
   - "devops"
   - "anthropic"
   - "openai"
+  - "memory"
+  - "harness-engineering"
 industryTags: "tech"
 company: "ListenLabs"
 summary: "ListenLabs, a platform for analyzing user research at scale, built a sophisticated multi-agent system that processes hundreds to thousands of user interviews, surveys, and focus group feedback. The company evolved from basic retrieval-augmented generation to a complex architecture featuring three primary agents: a study creation agent (Composer) that collaboratively builds discussion guides with users through an artifact-based interface, an interview agent that conducts voice-based multimodal conversations with participants, and a research agent that analyzes large volumes of qualitative data to generate insights, charts, video clips, and PowerPoint presentations. Their system demonstrates advanced LLMOps practices including parallelized sub-agent execution for processing hundreds of interviews simultaneously, custom evaluation agents for quality control, contextual prompt engineering, code execution in sandboxes, and sophisticated trace analysis for continuous improvement. The platform handles the complete lifecycle from study design through data collection to automated analysis and reporting."

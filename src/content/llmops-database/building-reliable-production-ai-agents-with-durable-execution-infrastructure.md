@@ -43,6 +43,7 @@ llmopsTags:
   - "microsoft-azure"
   - "google-gcp"
   - "amazon-aws"
+  - "memory"
 industryTags: "tech"
 company: "Temporal"
 summary: "This case study explores how Temporal provides durable execution infrastructure for building reliable, long-running AI agents in production environments. The problem addressed is that traditional approaches to building production systems—whether through manual retry logic, event-driven architectures, or checkpoint-based solutions—require significant engineering effort to handle failures common in cloud environments and agentic workflows. Temporal solves this through a deterministic execution model that separates business logic from reliability concerns, allowing developers to write regular code in their preferred language while automatically handling crashes, retries, and state management. The solution has been adopted by companies like OpenAI (Codex on the web), Replit, and Lovable, with integrations across major AI frameworks including OpenAI Agents SDK, Pydantic AI, Vercel AI SDK, BrainTrust, and LangFuse, enabling developers to build production-grade agentic systems with significantly reduced complexity."

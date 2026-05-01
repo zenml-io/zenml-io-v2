@@ -33,6 +33,7 @@ llmopsTags:
   - "anthropic"
   - "meta"
   - "google-gcp"
+  - "harness-engineering"
 industryTags: "tech"
 company: "OpenAI"
 summary: "OpenAI's Frontier Product Exploration team conducted a five-month experiment building an internal Electron application with zero lines of human-written code, generating over one million lines of code across thousands of pull requests. The team developed \"harness engineering\" principles and Symphony, an Elixir-based orchestration system, to manage multiple coding agents at scale. By removing humans from the code authorship loop and focusing on building infrastructure, observability, and context for agents to operate autonomously, the team achieved 5-10 PRs per engineer per day with agents handling the full PR lifecycle including review, merge conflict resolution, and deployment, ultimately demonstrating that software can be built and maintained entirely by AI agents when proper systems and guardrails are in place."

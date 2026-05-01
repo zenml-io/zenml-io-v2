@@ -25,6 +25,8 @@ llmopsTags:
   - "anthropic"
   - "openai"
   - "meta"
+  - "memory"
+  - "harness-engineering"
 industryTags: "tech"
 company: "Boundary / LangChain / HumanLayer"
 summary: "This case study presents a comprehensive discussion between engineers from LangChain and creators of the Ralph/Wim Loop system about the evolution of production LLM systems from basic agent loops to sophisticated harness engineering. The discussion addresses the fundamental shift from context engineering (where developers manually craft prompts and tool calls) to harness engineering (where models are reinforcement-learned to work optimally with specific tool sets and execution environments). The participants explore the tradeoffs between building custom harnesses versus using existing frameworks, the importance of evaluation-driven development, and the ongoing tension between automated code generation and deep systems understanding. They conclude that while newer abstraction layers provide faster time-to-value, understanding the underlying primitives remains essential for production engineering excellence."

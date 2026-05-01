@@ -33,6 +33,8 @@ llmopsTags:
   - "scalability"
   - "anthropic"
   - "microsoft-azure"
+  - "memory"
+  - "harness-engineering"
 industryTags: "healthcare"
 company: "Madrigal"
 summary: "Madrigal Pharmaceuticals built an enterprise multi-agent platform to integrate, search, and synthesize information from diverse pharmaceutical datasets scattered across structured systems, unstructured documents, and external sources. Using LangChain's DeepAgents framework and LangSmith for observability, evaluation, and deployment, they created a modular skills-based architecture where specialized agents work in parallel under an orchestrator, with all data normalized through consistent tool interfaces. The system reduced development time for new use cases from weeks to hours, achieved production deployment in weeks rather than months, and enabled domain experts to contribute directly to agent skill development while maintaining pharmaceutical-grade accuracy and governance."
