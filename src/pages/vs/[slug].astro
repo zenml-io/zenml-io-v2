@@ -11,16 +11,19 @@
  * Generates /vs/<slug> for each of the 3 VS category pages.
  */
 import { getCollection } from "astro:content";
-import BaseLayout from "../../layouts/BaseLayout.astro";
-import VsHero from "../../components/sections/VsHero.astro";
 import FeatureValueSection from "../../components/sections/FeatureValueSection.astro";
-import VsTestimonial from "../../components/sections/VsTestimonial.astro";
-import VsRelatedCompareGrid from "../../components/sections/VsRelatedCompareGrid.astro";
 import VsCta02 from "../../components/sections/VsCta02.astro";
+import VsHero from "../../components/sections/VsHero.astro";
+import VsRelatedCompareGrid from "../../components/sections/VsRelatedCompareGrid.astro";
+import VsTestimonial from "../../components/sections/VsTestimonial.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
 
 export async function getStaticPaths() {
   const vsPages = await getCollection("vs-pages", ({ data }) => !data.draft);
-  const compareEntries = await getCollection("compare", ({ data }) => !data.draft);
+  const compareEntries = await getCollection(
+    "compare",
+    ({ data }) => !data.draft,
+  );
 
   return vsPages.map((page) => {
     // Filter compare entries by this page's category

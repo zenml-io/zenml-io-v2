@@ -8,7 +8,7 @@
  * - Click on a tab resets the timer and progress animation
  * - Respects prefers-reduced-motion
  */
-import { useEffect, useRef, useState, useCallback } from "preact/hooks";
+import { useCallback, useEffect, useRef, useState } from "preact/hooks";
 
 export interface FeatureTab {
   title: string;
@@ -36,7 +36,7 @@ export default function FeatureTabsSlider({
   // Check reduced-motion preference once on mount
   useEffect(() => {
     prefersReducedMotion.current = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
+      "(prefers-reduced-motion: reduce)",
     ).matches;
   }, []);
 
@@ -56,7 +56,9 @@ export default function FeatureTabsSlider({
       // Reset all progress bars
       barRefs.current.forEach((bar) => {
         if (!bar) return;
-        bar.getAnimations().forEach((a) => a.cancel());
+        bar.getAnimations().forEach((a) => {
+          a.cancel();
+        });
         bar.style.width = "0%";
       });
 
@@ -77,7 +79,7 @@ export default function FeatureTabsSlider({
         }, autoDurationMs);
       }
     },
-    [autoDurationMs, clearAutoplay, tabs.length]
+    [autoDurationMs, clearAutoplay, tabs.length],
   );
 
   // Restart cycle whenever activeIndex changes
@@ -87,17 +89,18 @@ export default function FeatureTabsSlider({
   }, [activeIndex, startCycle, clearAutoplay]);
 
   // Click handler — switch tab and restart cycle
-  const selectTab = useCallback(
-    (index: number) => {
-      setActiveIndex(index);
-    },
-    []
-  );
+  const selectTab = useCallback((index: number) => {
+    setActiveIndex(index);
+  }, []);
 
   return (
     <div class="tab-slider">
       {/* Left: vertical tab menu */}
-      <div class="tab-slider-menu" role="tablist" aria-label="The ZenML Advantage">
+      <div
+        class="tab-slider-menu"
+        role="tablist"
+        aria-label="The ZenML Advantage"
+      >
         {tabs.map((tab, i) => (
           <button
             key={i}

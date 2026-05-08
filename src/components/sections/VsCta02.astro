@@ -20,11 +20,20 @@ interface Props {
   padded?: boolean;
 }
 
-const { headline, bullets, primaryCta, secondaryCta, image, variant = "dark", padded = false } = Astro.props;
+const {
+  headline,
+  bullets,
+  primaryCta,
+  secondaryCta,
+  image,
+  variant = "dark",
+  padded = false,
+} = Astro.props;
 
-const bgClass = variant === "gradient"
-  ? "bg-primary-700 bg-[url('/images/gradient_01.webp')] bg-cover bg-center"
-  : "bg-gray-900";
+const bgClass =
+  variant === "gradient"
+    ? "bg-primary-700 bg-[url('/images/gradient_01.webp')] bg-cover bg-center"
+    : "bg-gray-900";
 const paddingClass = padded ? "py-20 sm:py-28" : "py-16 sm:py-20";
 ---
 

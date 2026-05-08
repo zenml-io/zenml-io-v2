@@ -8,19 +8,22 @@
  * a banner link to the LLMOps database, and a dark CTA band.
  */
 import { getCollection } from "astro:content";
-import BaseLayout from "../../layouts/BaseLayout.astro";
+import Button from "../../components/Button.astro";
 import CaseStudyCard from "../../components/sections/CaseStudyCard.astro";
 import FeaturesHubCTA from "../../components/sections/FeaturesHubCTA.astro";
-import Button from "../../components/Button.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
 import {
-  CASE_STUDIES_HUB_HERO,
   CASE_STUDIES_HUB_BANNER,
   CASE_STUDIES_HUB_CTA,
+  CASE_STUDIES_HUB_HERO,
 } from "../../lib/case-studies";
 
-const allCaseStudies = await getCollection("case-studies", ({ data }) => !data.draft);
+const allCaseStudies = await getCollection(
+  "case-studies",
+  ({ data }) => !data.draft,
+);
 const caseStudies = allCaseStudies.sort(
-  (a, b) => (a.data.hub.order ?? 99) - (b.data.hub.order ?? 99)
+  (a, b) => (a.data.hub.order ?? 99) - (b.data.hub.order ?? 99),
 );
 ---
 

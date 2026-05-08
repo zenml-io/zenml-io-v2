@@ -19,7 +19,12 @@ interface Props {
   breadcrumbTitle?: string;
 }
 
-const { categories = [], activeCategory, backLink = false, breadcrumbTitle } = Astro.props;
+const {
+  categories = [],
+  activeCategory,
+  backLink = false,
+  breadcrumbTitle,
+} = Astro.props;
 
 const topCategories = categories.slice(0, 8);
 ---

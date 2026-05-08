@@ -1,4 +1,8 @@
 ---
+import Button from "../components/Button.astro";
+import FaqSection from "../components/sections/FaqSection.astro";
+import FeaturesHubCTA from "../components/sections/FeaturesHubCTA.astro";
+import PricingComparisonTable from "../components/sections/PricingComparisonTable.astro";
 /**
  * Pricing page.
  *
@@ -10,19 +14,15 @@
  * stats/trust, and final CTA.
  */
 import BaseLayout from "../layouts/BaseLayout.astro";
-import Button from "../components/Button.astro";
-import PricingComparisonTable from "../components/sections/PricingComparisonTable.astro";
-import FaqSection from "../components/sections/FaqSection.astro";
-import FeaturesHubCTA from "../components/sections/FeaturesHubCTA.astro";
 import {
-  PRICING_SEO,
-  PRICING_HERO,
-  PRICING_TABS,
-  PRICING_STARTUP_BANNER,
   PRICING_COMPLIANCE,
   PRICING_FAQ,
-  PRICING_STATS,
   PRICING_FINAL_CTA,
+  PRICING_HERO,
+  PRICING_SEO,
+  PRICING_STARTUP_BANNER,
+  PRICING_STATS,
+  PRICING_TABS,
 } from "../lib/pricing";
 ---
 

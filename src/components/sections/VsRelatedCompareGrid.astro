@@ -9,7 +9,11 @@
 interface Props {
   eyebrow?: string;
   headline?: string;
-  items: { title: string; href: string; toolIcon?: { url: string; alt?: string } }[];
+  items: {
+    title: string;
+    href: string;
+    toolIcon?: { url: string; alt?: string };
+  }[];
 }
 
 const { eyebrow, headline, items } = Astro.props;

@@ -16,21 +16,24 @@
  * 9. VsCta02 (gradient final CTA)
  */
 import { getCollection, getEntry } from "astro:content";
-import BaseLayout from "../../layouts/BaseLayout.astro";
-import CompareHero from "../../components/sections/compare/CompareHero.astro";
-import CompareFeatureHeader from "../../components/sections/compare/CompareFeatureHeader.astro";
 import CompareCodeComparison from "../../components/sections/compare/CompareCodeComparison.astro";
-import CompareStrategyCta from "../../components/sections/compare/CompareStrategyCta.astro";
-import CompareRelatedShowdown from "../../components/sections/compare/CompareRelatedShowdown.astro";
+import CompareFeatureHeader from "../../components/sections/compare/CompareFeatureHeader.astro";
+import CompareHero from "../../components/sections/compare/CompareHero.astro";
 import CompareRelatedBlog from "../../components/sections/compare/CompareRelatedBlog.astro";
+import CompareRelatedShowdown from "../../components/sections/compare/CompareRelatedShowdown.astro";
+import CompareStrategyCta from "../../components/sections/compare/CompareStrategyCta.astro";
 import FeatureValueSection from "../../components/sections/FeatureValueSection.astro";
-import VsTestimonial from "../../components/sections/VsTestimonial.astro";
 import VsCta02 from "../../components/sections/VsCta02.astro";
-import { getCategoryDefaults, ZENML_ICON_URL } from "../../lib/compareDefaults";
+import VsTestimonial from "../../components/sections/VsTestimonial.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getMainFeedPosts } from "../../lib/blog";
+import { getCategoryDefaults, ZENML_ICON_URL } from "../../lib/compareDefaults";
 
 export async function getStaticPaths() {
-  const compareItems = await getCollection("compare", ({ data }) => !data.draft);
+  const compareItems = await getCollection(
+    "compare",
+    ({ data }) => !data.draft,
+  );
   return compareItems.map((item) => ({
     params: { slug: item.data.slug },
     props: { item },
@@ -47,15 +50,19 @@ const categoryDefaults = getCategoryDefaults(item.data.category);
 // Resolve advantages
 // ---------------------------------------------------------------------------
 const advantageEntries = await Promise.all(
-  item.data.advantages.map((slug: string) => getEntry("advantages", slug))
+  item.data.advantages.map((slug: string) => getEntry("advantages", slug)),
 );
-const advantages = advantageEntries
-  .filter(Boolean)
-  .map((adv) => ({
-    title: adv!.data.title,
-    content: adv!.data.content,
-    image: adv!.data.image,
-  }));
+const advantages = advantageEntries.flatMap((adv) =>
+  adv
+    ? [
+        {
+          title: adv.data.title,
+          content: adv.data.content,
+          image: adv.data.image,
+        },
+      ]
+    : [],
+);
 
 // ---------------------------------------------------------------------------
 // Resolve quote / testimonial
@@ -67,9 +74,15 @@ const quoteEntry = item.data.quote
 // ---------------------------------------------------------------------------
 // Resolve related compare items (same category, excluding self)
 // ---------------------------------------------------------------------------
-const allCompareItems = await getCollection("compare", ({ data }) => !data.draft);
+const allCompareItems = await getCollection(
+  "compare",
+  ({ data }) => !data.draft,
+);
 const relatedCompareItems = allCompareItems
-  .filter((c) => c.data.category === item.data.category && c.data.slug !== item.data.slug)
+  .filter(
+    (c) =>
+      c.data.category === item.data.category && c.data.slug !== item.data.slug,
+  )
   .map((c) => ({
     slug: c.data.slug,
     toolName: c.data.toolName || c.data.title.replace("ZenML vs ", ""),
@@ -88,14 +101,20 @@ let blogPosts: Array<{
 
 if (item.data.relatedBlogSlugs && item.data.relatedBlogSlugs.length > 0) {
   const entries = await Promise.all(
-    item.data.relatedBlogSlugs.map((slug: string) => getEntry("blog", slug))
+    item.data.relatedBlogSlugs.map((slug: string) => getEntry("blog", slug)),
   );
-  blogPosts = entries.filter(Boolean).map((e) => ({
-    slug: e!.data.slug,
-    title: e!.data.title,
-    mainImage: e!.data.mainImage,
-    seoDescription: e!.data.seo?.description,
-  }));
+  blogPosts = entries.flatMap((e) =>
+    e
+      ? [
+          {
+            slug: e.data.slug,
+            title: e.data.title,
+            mainImage: e.data.mainImage,
+            seoDescription: e.data.seo?.description,
+          },
+        ]
+      : [],
+  );
 } else {
   const recentPosts = await getMainFeedPosts();
   blogPosts = recentPosts.slice(0, 3).map((p) => ({
@@ -119,7 +138,9 @@ const rawBody = item.body || "";
 // Extract table HTML (first <table>...</table>, optionally wrapped in div)
 let tableHtml = item.data.featureTableHtml || "";
 if (!tableHtml && rawBody) {
-  const tableMatch = rawBody.match(/(?:<div[^>]*>\s*)?<table[\s\S]*?<\/table>\s*(?:<\/div>)?/i);
+  const tableMatch = rawBody.match(
+    /(?:<div[^>]*>\s*)?<table[\s\S]*?<\/table>\s*(?:<\/div>)?/i,
+  );
   if (tableMatch) tableHtml = tableMatch[0];
 }
 
@@ -160,20 +181,28 @@ if (item.data.finalCta?.bullets?.length) {
 // ---------------------------------------------------------------------------
 // Hero CTAs
 // ---------------------------------------------------------------------------
-const heroPrimaryCta = item.data.heroPrimaryCta || { label: "Start Free Trial", href: "https://cloud.zenml.io/signup" };
-const heroSecondaryCta = item.data.heroSecondaryCta || { label: "Learn More", href: "#feature-comparison" };
+const heroPrimaryCta = item.data.heroPrimaryCta || {
+  label: "Start Free Trial",
+  href: "https://cloud.zenml.io/signup",
+};
+const heroSecondaryCta = item.data.heroSecondaryCta || {
+  label: "Learn More",
+  href: "#feature-comparison",
+};
 
 // ---------------------------------------------------------------------------
 // Strategy CTA headline
 // ---------------------------------------------------------------------------
-const strategyCtaHeadline = item.data.strategyCtaHeadline || categoryDefaults.strategyCtaHeadline;
+const strategyCtaHeadline =
+  item.data.strategyCtaHeadline || categoryDefaults.strategyCtaHeadline;
 
 // ---------------------------------------------------------------------------
 // Final CTA
 // ---------------------------------------------------------------------------
 const finalCta = item.data.finalCta || {
   headline: categoryDefaults.finalCta.headline,
-  bullets: ctaBullets.length > 0 ? ctaBullets : categoryDefaults.finalCta.bullets,
+  bullets:
+    ctaBullets.length > 0 ? ctaBullets : categoryDefaults.finalCta.bullets,
   primaryCta: categoryDefaults.finalCta.primaryCta,
   secondaryCta: categoryDefaults.finalCta.secondaryCta,
   image: categoryDefaults.finalCta.image,
@@ -183,7 +212,8 @@ const finalCta = item.data.finalCta || {
 // SEO
 // ---------------------------------------------------------------------------
 const seoTitle = item.data.seo?.title || `${item.data.title} - ZenML`;
-const seoDescription = item.data.seo?.description || item.data.seoDescription || item.data.heroText;
+const seoDescription =
+  item.data.seo?.description || item.data.seoDescription || item.data.heroText;
 const ogImage = item.data.seo?.ogImage || item.data.openGraphImage?.url;
 ---
 

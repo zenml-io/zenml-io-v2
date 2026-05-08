@@ -5,11 +5,11 @@
  * Content extracted from Webflow HTML snapshot + SEO baseline.
  */
 import type {
-  FaqData,
   CtaLink,
-  PricingTab,
-  PricingPlan,
+  FaqData,
   PricingCompareTableData,
+  PricingPlan,
+  PricingTab,
 } from "./marketingPageTypes";
 
 // ---------------------------------------------------------------------------
@@ -53,7 +53,11 @@ const SELF_HOSTED_OSS: PricingPlan = {
     "Basic model registry",
     "Self-managed infrastructure",
   ],
-  cta: { label: "Get Started", href: "/get-started", analytics: "OSS-Get-Started" },
+  cta: {
+    label: "Get Started",
+    href: "/get-started",
+    analytics: "OSS-Get-Started",
+  },
   ctaVariant: "secondary",
 };
 
@@ -83,7 +87,11 @@ const SELF_HOSTED_PRO: PricingPlan = {
     "Priority support + custom SLA",
   ],
   comingSoon: ["Advanced Native Scheduling", "Resource Management & Queueing"],
-  cta: { label: "Talk to Sales", href: "/book-your-demo", analytics: "Enterpise-Self-Hosted-Book-Demo" },
+  cta: {
+    label: "Talk to Sales",
+    href: "/book-your-demo",
+    analytics: "Enterpise-Self-Hosted-Book-Demo",
+  },
   ctaVariant: "primary",
   secondaryLink: {
     label: "Or talk to an engineer about deployment",
@@ -129,9 +137,15 @@ const SELF_HOSTED_COMPARE: PricingCompareTableData = {
           link: "https://docs.zenml.io/concepts/snapshots",
           values: [false, true],
         },
-        { feature: "Advanced Native Scheduling", values: [false, "COMING SOON"] },
+        {
+          feature: "Advanced Native Scheduling",
+          values: [false, "COMING SOON"],
+        },
         { feature: "Webhooks & Triggers", values: [false, true] },
-        { feature: "Resource Management & Queueing", values: [false, "COMING SOON"] },
+        {
+          feature: "Resource Management & Queueing",
+          values: [false, "COMING SOON"],
+        },
         { feature: "Codespaces (Remote IDE)", values: [false, true] },
         {
           feature: "Modern Server Side Dashboard",
@@ -160,13 +174,24 @@ const SELF_HOSTED_COMPARE: PricingCompareTableData = {
     {
       heading: "Support",
       rows: [
-        { feature: "Support Level", values: ["Community", "24/7 Priority + SLA"] },
+        {
+          feature: "Support Level",
+          values: ["Community", "24/7 Priority + SLA"],
+        },
       ],
     },
   ],
   ctaButtons: [
-    { label: "Get Started", href: "/get-started", analytics: "OSS-Get-Started" },
-    { label: "Talk to Sales", href: "/book-your-demo", analytics: "Enterpise-Self-Hosted-Book-Demo" },
+    {
+      label: "Get Started",
+      href: "/get-started",
+      analytics: "OSS-Get-Started",
+    },
+    {
+      label: "Talk to Sales",
+      href: "/book-your-demo",
+      analytics: "Enterpise-Self-Hosted-Book-Demo",
+    },
   ],
 };
 
@@ -190,7 +215,11 @@ const SAAS_STARTER: PricingPlan = {
     "Unlimited team members",
     "Basic support",
   ],
-  cta: { label: "Start Free Trial", href: "https://cloud.zenml.io/signup", analytics: "Starter-Free-Trial" },
+  cta: {
+    label: "Start Free Trial",
+    href: "https://cloud.zenml.io/signup",
+    analytics: "Starter-Free-Trial",
+  },
   ctaVariant: "secondary",
 };
 
@@ -211,7 +240,11 @@ const SAAS_GROWTH: PricingPlan = {
     "Webhooks & Triggers",
     "Priority support",
   ],
-  cta: { label: "Start Free Trial", href: "https://cloud.zenml.io/signup", analytics: "Growth-Free-Trial" },
+  cta: {
+    label: "Start Free Trial",
+    href: "https://cloud.zenml.io/signup",
+    analytics: "Growth-Free-Trial",
+  },
   ctaVariant: "primary",
 };
 
@@ -226,11 +259,12 @@ const SAAS_SCALE: PricingPlan = {
     { label: "snapshots", value: "20" },
   ],
   featuresPrefix: "Everything in Growth, plus:",
-  features: [
-    "Codespaces (Remote IDE)",
-    "Priority support",
-  ],
-  cta: { label: "Start Free Trial", href: "https://cloud.zenml.io/signup", analytics: "Scale-Free-Trial" },
+  features: ["Codespaces (Remote IDE)", "Priority support"],
+  cta: {
+    label: "Start Free Trial",
+    href: "https://cloud.zenml.io/signup",
+    analytics: "Scale-Free-Trial",
+  },
   ctaVariant: "secondary",
 };
 
@@ -254,7 +288,11 @@ const SAAS_ENTERPRISE: PricingPlan = {
     "Professional Services",
     "Dedicated support + SLA",
   ],
-  cta: { label: "Book a Demo", href: "/book-your-demo", analytics: "Enterprise-Book-Demo" },
+  cta: {
+    label: "Book a Demo",
+    href: "/book-your-demo",
+    analytics: "Enterprise-Book-Demo",
+  },
   ctaVariant: "secondary",
   secondaryLink: {
     label: "Or talk to an engineer about deployment",
@@ -269,8 +307,14 @@ const SAAS_COMPARE: PricingCompareTableData = {
     {
       heading: "Feature",
       rows: [
-        { feature: "Price", values: ["$399/mo", "$999/mo", "$2,499/mo", "Custom"] },
-        { feature: "Pipeline Runs/mo", values: ["500", "2,000", "5,000", "Unlimited"] },
+        {
+          feature: "Price",
+          values: ["$399/mo", "$999/mo", "$2,499/mo", "Custom"],
+        },
+        {
+          feature: "Pipeline Runs/mo",
+          values: ["500", "2,000", "5,000", "Unlimited"],
+        },
         { feature: "Projects", values: ["1", "3", "10", "Unlimited"] },
         {
           feature: "Snapshots",
@@ -278,7 +322,10 @@ const SAAS_COMPARE: PricingCompareTableData = {
           values: ["1", "5", "20", "Unlimited"],
         },
         { feature: "Workspaces", values: ["1", "1", "1", "Custom"] },
-        { feature: "Team members", values: ["Unlimited", "Unlimited", "Unlimited", "Unlimited"] },
+        {
+          feature: "Team members",
+          values: ["Unlimited", "Unlimited", "Unlimited", "Unlimited"],
+        },
       ],
     },
     {
@@ -292,10 +339,22 @@ const SAAS_COMPARE: PricingCompareTableData = {
     {
       heading: "Advanced Features",
       rows: [
-        { feature: "Advanced Native Scheduling", values: [false, false, false, "COMING SOON"] },
-        { feature: "Webhooks & Triggers", values: [false, false, false, "COMING SOON"] },
-        { feature: "Resource Management & Queueing", values: [false, false, false, "COMING SOON"] },
-        { feature: "Codespaces (Remote IDE)", values: [false, false, false, "COMING SOON"] },
+        {
+          feature: "Advanced Native Scheduling",
+          values: [false, false, false, "COMING SOON"],
+        },
+        {
+          feature: "Webhooks & Triggers",
+          values: [false, false, false, "COMING SOON"],
+        },
+        {
+          feature: "Resource Management & Queueing",
+          values: [false, false, false, "COMING SOON"],
+        },
+        {
+          feature: "Codespaces (Remote IDE)",
+          values: [false, false, false, "COMING SOON"],
+        },
       ],
     },
     {
@@ -311,21 +370,43 @@ const SAAS_COMPARE: PricingCompareTableData = {
           link: "https://security.zenml.io/",
           values: [false, false, false, true],
         },
-        { feature: "Professional Services", values: [false, false, false, "Workshops & Architecture Reviews"] },
+        {
+          feature: "Professional Services",
+          values: [false, false, false, "Workshops & Architecture Reviews"],
+        },
       ],
     },
     {
       heading: "Support",
       rows: [
-        { feature: "Support Level", values: ["Basic", "Priority", "Priority", "Dedicated + SLA"] },
+        {
+          feature: "Support Level",
+          values: ["Basic", "Priority", "Priority", "Dedicated + SLA"],
+        },
       ],
     },
   ],
   ctaButtons: [
-    { label: "Talk to Sales", href: "/book-your-demo", analytics: "Starter-Book-Demo" },
-    { label: "Talk to Sales", href: "/book-your-demo", analytics: "Growth-Book-Demo" },
-    { label: "Talk to Sales", href: "/book-your-demo", analytics: "Scale-Book-Demo" },
-    { label: "Talk to Sales", href: "/book-your-demo", analytics: "Enterprise-Book-Demo" },
+    {
+      label: "Talk to Sales",
+      href: "/book-your-demo",
+      analytics: "Starter-Book-Demo",
+    },
+    {
+      label: "Talk to Sales",
+      href: "/book-your-demo",
+      analytics: "Growth-Book-Demo",
+    },
+    {
+      label: "Talk to Sales",
+      href: "/book-your-demo",
+      analytics: "Scale-Book-Demo",
+    },
+    {
+      label: "Talk to Sales",
+      href: "/book-your-demo",
+      analytics: "Enterprise-Book-Demo",
+    },
   ],
 };
 
@@ -356,7 +437,11 @@ export const PRICING_TABS: readonly PricingTab[] = [
 export const PRICING_STARTUP_BANNER = {
   headline: "Are you startup or academic?",
   body: "Apply for a special price to access ZenML Pro features for early-stage companies building ML-powered products, universities, research institutions, and educational use cases.",
-  cta: { label: "Apply Now", href: "/startups-and-academics", analytics: "Pricing-Startup-Apply" } as CtaLink,
+  cta: {
+    label: "Apply Now",
+    href: "/startups-and-academics",
+    analytics: "Pricing-Startup-Apply",
+  } as CtaLink,
 } as const;
 
 // ---------------------------------------------------------------------------
@@ -419,7 +504,7 @@ export const PRICING_FAQ: FaqData = {
       question:
         "What\u2019s the difference between the managed plans and the open source version?",
       answer:
-        'The open source version gives you complete control but requires you to manage your own infrastructure. Our managed plans (Community and Team) provide a fully hosted environment, automatic updates, guaranteed uptime, and dedicated support. It also includes pro-only features like run templates, model control plane, and RBAC. The Scale plan offers enterprise features on top of either option.',
+        "The open source version gives you complete control but requires you to manage your own infrastructure. Our managed plans (Community and Team) provide a fully hosted environment, automatic updates, guaranteed uptime, and dedicated support. It also includes pro-only features like run templates, model control plane, and RBAC. The Scale plan offers enterprise features on top of either option.",
     },
     {
       question: "What kind of support is included in each plan?",
@@ -455,17 +540,50 @@ export const PRICING_STATS = {
     companyLogo: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/33303c0d/6532977ff6458771fb59387e_hashicorp.webp`,
   },
   logos: [
-    { src: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/da72cb24/652d3ecd4d162d2290427dfe_airbus_defence_space.png`, alt: "Airbus" },
-    { src: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/4ae61c3a/66c84308916684f0d07b57ff_axa-min.svg`, alt: "AXA" },
-    { src: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5cc09160/bundeswehr.svg`, alt: "Bundeswehr" },
-    { src: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/4ad1f760/66c84308b1e802ab9a246134_enel-min.svg`, alt: "Enel" },
-    { src: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b6111e84/jetbrains-min.svg`, alt: "JetBrains" },
-    { src: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/52a636b6/66c74d825fbc26b4d09823d1_Brevo-Logo-transparent.webp`, alt: "Brevo" },
-    { src: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/86cd6b7b/cross-screen-media.png`, alt: "Cross Screen Media" },
-    { src: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c110367c/65c498032806e2ff7daec2bf_ADEO.svg`, alt: "ADEO" },
-    { src: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/356e9829/65c49832a235dab4e3e0a3ce_leroy-merlin.svg`, alt: "Leroy Merlin" },
-    { src: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/cab0c1be/66c84308abf004bb1934e7d3_mann-hummel-min.svg`, alt: "Mann+Hummel" },
-    { src: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e6c1fbb1/koble.svg`, alt: "Koble" },
+    {
+      src: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/da72cb24/652d3ecd4d162d2290427dfe_airbus_defence_space.png`,
+      alt: "Airbus",
+    },
+    {
+      src: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/4ae61c3a/66c84308916684f0d07b57ff_axa-min.svg`,
+      alt: "AXA",
+    },
+    {
+      src: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5cc09160/bundeswehr.svg`,
+      alt: "Bundeswehr",
+    },
+    {
+      src: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/4ad1f760/66c84308b1e802ab9a246134_enel-min.svg`,
+      alt: "Enel",
+    },
+    {
+      src: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b6111e84/jetbrains-min.svg`,
+      alt: "JetBrains",
+    },
+    {
+      src: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/52a636b6/66c74d825fbc26b4d09823d1_Brevo-Logo-transparent.webp`,
+      alt: "Brevo",
+    },
+    {
+      src: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/86cd6b7b/cross-screen-media.png`,
+      alt: "Cross Screen Media",
+    },
+    {
+      src: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c110367c/65c498032806e2ff7daec2bf_ADEO.svg`,
+      alt: "ADEO",
+    },
+    {
+      src: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/356e9829/65c49832a235dab4e3e0a3ce_leroy-merlin.svg`,
+      alt: "Leroy Merlin",
+    },
+    {
+      src: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/cab0c1be/66c84308abf004bb1934e7d3_mann-hummel-min.svg`,
+      alt: "Mann+Hummel",
+    },
+    {
+      src: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e6c1fbb1/koble.svg`,
+      alt: "Koble",
+    },
   ],
 } as const;
 
@@ -475,6 +593,14 @@ export const PRICING_STATS = {
 export const PRICING_FINAL_CTA = {
   headline: "Start deploying reproducible AI workflows today",
   body: "Enterprise-grade MLOps platform trusted by thousands of companies in production.",
-  primaryCta: { label: "Start Free Trial", href: "https://cloud.zenml.io/signup", analytics: "Pricing-CTA-Free-Trial" } as CtaLink,
-  secondaryCta: { label: "Use Open Source", href: "/get-started", analytics: "Pricing-CTA-Open-Source" } as CtaLink,
+  primaryCta: {
+    label: "Start Free Trial",
+    href: "https://cloud.zenml.io/signup",
+    analytics: "Pricing-CTA-Free-Trial",
+  } as CtaLink,
+  secondaryCta: {
+    label: "Use Open Source",
+    href: "/get-started",
+    analytics: "Pricing-CTA-Open-Source",
+  } as CtaLink,
 } as const;

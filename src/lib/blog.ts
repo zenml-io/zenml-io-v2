@@ -47,7 +47,7 @@ export function getPrevNext(
   const idx = sortedPosts.findIndex((p) => p.data.slug === currentSlug);
   if (idx === -1) return {};
   return {
-    prev: idx > 0 ? sortedPosts[idx - 1] : undefined,           // newer
+    prev: idx > 0 ? sortedPosts[idx - 1] : undefined, // newer
     next: idx < sortedPosts.length - 1 ? sortedPosts[idx + 1] : undefined, // older
   };
 }
@@ -77,7 +77,11 @@ export function getRelatedPosts(
       return { post: p, score };
     })
     .filter(({ score }) => score > 0)
-    .sort((a, b) => b.score - a.score || b.post.data.date.getTime() - a.post.data.date.getTime());
+    .sort(
+      (a, b) =>
+        b.score - a.score ||
+        b.post.data.date.getTime() - a.post.data.date.getTime(),
+    );
 
   return scored.slice(0, limit).map(({ post }) => post);
 }
@@ -88,7 +92,9 @@ export function getRelatedPosts(
 
 export type TaxonomyCount = { slug: string; name: string; count: number };
 
-export async function getCategoryCounts(posts: BlogPost[]): Promise<TaxonomyCount[]> {
+export async function getCategoryCounts(
+  posts: BlogPost[],
+): Promise<TaxonomyCount[]> {
   const countMap = new Map<string, number>();
   for (const p of posts) {
     if (p.data.category) {
@@ -108,7 +114,9 @@ export async function getCategoryCounts(posts: BlogPost[]): Promise<TaxonomyCoun
   return result.sort((a, b) => b.count - a.count);
 }
 
-export async function getTagCounts(posts: BlogPost[]): Promise<TaxonomyCount[]> {
+export async function getTagCounts(
+  posts: BlogPost[],
+): Promise<TaxonomyCount[]> {
   const countMap = new Map<string, number>();
   for (const p of posts) {
     for (const tag of p.data.tags) {
@@ -139,7 +147,9 @@ export interface ResolvedAuthor {
   bio?: string;
 }
 
-export async function resolveAuthor(authorSlug?: string): Promise<ResolvedAuthor | undefined> {
+export async function resolveAuthor(
+  authorSlug?: string,
+): Promise<ResolvedAuthor | undefined> {
   if (!authorSlug) return undefined;
   const entry = await getEntry("authors", authorSlug);
   if (!entry) return undefined;
@@ -181,7 +191,8 @@ export function getPaginationItems(
 
   // Adjust if near edges
   if (currentPage - half <= 2) end = Math.min(totalPages - 1, maxVisible - 2);
-  if (currentPage + half >= totalPages - 1) start = Math.max(2, totalPages - maxVisible + 3);
+  if (currentPage + half >= totalPages - 1)
+    start = Math.max(2, totalPages - maxVisible + 3);
 
   if (start > 2) items.push("ellipsis");
   for (let i = start; i <= end; i++) items.push(i);
@@ -209,7 +220,9 @@ export interface BlogSearchEntry {
 }
 
 /** Build the search index payload for all given posts. */
-export async function buildBlogSearchIndex(posts: BlogPost[]): Promise<BlogSearchEntry[]> {
+export async function buildBlogSearchIndex(
+  posts: BlogPost[],
+): Promise<BlogSearchEntry[]> {
   const allCategories = await getCollection("categories");
   const catMap = new Map(allCategories.map((c) => [c.data.slug, c.data.name]));
 
@@ -233,12 +246,24 @@ export const BLOG_SIDEBAR_CTA = {
     "Works with any infrastructure",
     "Secure, metadata-only tracking",
   ],
-  cta: { label: "Start Free Trial", href: "https://cloud.zenml.io/signup", analytics: "Blog-Sidebar-Free-Trial" } as CtaLink,
+  cta: {
+    label: "Start Free Trial",
+    href: "https://cloud.zenml.io/signup",
+    analytics: "Blog-Sidebar-Free-Trial",
+  } as CtaLink,
 } as const;
 
 export const BLOG_FINAL_CTA = {
   headline: "Start deploying AI workflows in production today",
   body: "Enterprise-grade AI platform trusted by thousands of companies in production",
-  primaryCta: { label: "Start Free Trial", href: "https://cloud.zenml.io/signup", analytics: "Blog-CTA-Free-Trial" } as CtaLink,
-  secondaryCta: { label: "Book a Demo", href: "/book-your-demo", analytics: "Blog-CTA-Book-Demo" } as CtaLink,
+  primaryCta: {
+    label: "Start Free Trial",
+    href: "https://cloud.zenml.io/signup",
+    analytics: "Blog-CTA-Free-Trial",
+  } as CtaLink,
+  secondaryCta: {
+    label: "Book a Demo",
+    href: "/book-your-demo",
+    analytics: "Blog-CTA-Book-Demo",
+  } as CtaLink,
 } as const;

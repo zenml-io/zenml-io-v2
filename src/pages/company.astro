@@ -1,4 +1,5 @@
 ---
+import { getCollection, render } from "astro:content";
 /**
  * Company page.
  *
@@ -8,11 +9,10 @@
  * team member grid (CMS), and open positions.
  */
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { getCollection, render } from "astro:content";
 import {
-  COMPANY_SEO,
-  COMPANY_HERO,
   COMPANY_ABOUT,
+  COMPANY_HERO,
+  COMPANY_SEO,
   COMPANY_VALUES,
   OPEN_POSITIONS,
 } from "../lib/company";
@@ -20,15 +20,15 @@ import {
 // Pull team members from CMS collection, sorted by order
 const allTeam = await getCollection("team");
 const teamMembers = allTeam
-  .filter((m) => !(m.data as any).draft)
-  .sort((a, b) => ((a.data as any).order ?? 99) - ((b.data as any).order ?? 99));
+  .filter((m) => !m.data.draft)
+  .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
 
 // Pre-render team member body content (fun facts) — render() is async
 const teamCards = await Promise.all(
   teamMembers.map(async (member) => {
     const { Content } = await render(member);
     return { member, Content };
-  })
+  }),
 );
 
 // Speech bubbles SVG — extracted from Webflow company page (same icon for all 5 values)

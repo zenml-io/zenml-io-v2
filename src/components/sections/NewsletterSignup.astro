@@ -1,4 +1,5 @@
 ---
+import { BREVO_MAIN_CONFIG } from "../../lib/formConstants";
 /**
  * NewsletterSignup — email signup in a purple rounded card matching Webflow.
  *
@@ -6,7 +7,6 @@
  * Used on the homepage and potentially other pages.
  */
 import { NEWSLETTER } from "../../lib/homepage";
-import { BREVO_MAIN_CONFIG } from "../../lib/formConstants";
 import BrevoNewsletterForm from "./BrevoNewsletterForm.astro";
 
 const privacyHtml = `${NEWSLETTER.privacyNote} <a href="${NEWSLETTER.privacyLink.href}" class="text-white/90 underline hover:text-white">${NEWSLETTER.privacyLink.label}</a>.`;

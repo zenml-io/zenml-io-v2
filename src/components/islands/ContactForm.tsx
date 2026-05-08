@@ -7,10 +7,10 @@
  * Supports optional Cloudflare Turnstile bot protection — pass `turnstileSiteKey`
  * to enable the invisible challenge widget.
  */
-import { useState, useCallback, useEffect, useRef } from "preact/hooks";
+import { useCallback, useEffect, useRef, useState } from "preact/hooks";
 import type { PlaceholderField } from "../../lib/formTypes";
+import { type FormType, validateForm } from "../../lib/formValidation";
 import type { CtaLink } from "../../lib/marketingPageTypes";
-import { validateForm, type FormType } from "../../lib/formValidation";
 
 interface Props {
   formType: FormType;
@@ -50,11 +50,16 @@ export default function ContactForm({
     if (!turnstileSiteKey) return;
 
     const SCRIPT_ID = "cf-turnstile-script";
-    const scriptUrl = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=onTurnstileLoad";
+    const scriptUrl =
+      "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=onTurnstileLoad";
 
     function renderWidget() {
       if (!turnstileRef.current || turnstileWidgetId.current != null) return;
-      const w = window as unknown as { turnstile?: { render: (el: HTMLElement, opts: Record<string, unknown>) => string } };
+      const w = window as unknown as {
+        turnstile?: {
+          render: (el: HTMLElement, opts: Record<string, unknown>) => string;
+        };
+      };
       if (!w.turnstile) return;
       turnstileWidgetId.current = w.turnstile.render(turnstileRef.current, {
         sitekey: turnstileSiteKey,
@@ -70,7 +75,8 @@ export default function ContactForm({
     }
 
     // Register global callback for script load
-    (window as unknown as Record<string, unknown>).onTurnstileLoad = renderWidget;
+    (window as unknown as Record<string, unknown>).onTurnstileLoad =
+      renderWidget;
 
     const script = document.createElement("script");
     script.id = SCRIPT_ID;
@@ -83,7 +89,9 @@ export default function ContactForm({
   /** Reset the Turnstile widget so the user gets a fresh token for retry. */
   const resetTurnstile = useCallback(() => {
     if (turnstileWidgetId.current == null) return;
-    const w = window as unknown as { turnstile?: { reset: (id: string) => void } };
+    const w = window as unknown as {
+      turnstile?: { reset: (id: string) => void };
+    };
     w.turnstile?.reset(turnstileWidgetId.current);
   }, []);
 
@@ -132,7 +140,7 @@ export default function ContactForm({
         });
 
         if (!res.ok) {
-          const body = await res.json().catch(() => ({})) as {
+          const body = (await res.json().catch(() => ({}))) as {
             error?: string;
             errors?: Record<string, string>;
           };
@@ -152,7 +160,9 @@ export default function ContactForm({
 
         setState("success");
       } catch {
-        setServerError("Network error. Please check your connection and try again.");
+        setServerError(
+          "Network error. Please check your connection and try again.",
+        );
         resetTurnstile();
         setState("error");
       }
@@ -165,8 +175,19 @@ export default function ContactForm({
     return (
       <div class="rounded-md border border-green-200 bg-green-50 p-6 text-center sm:p-8">
         <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
-          <svg class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+          <svg
+            class="h-6 w-6 text-green-600"
+            aria-hidden="true"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M5 13l4 4L19 7"
+            />
           </svg>
         </div>
         <p class="text-lg font-semibold text-gray-900">{successMessage}</p>
@@ -179,8 +200,19 @@ export default function ContactForm({
                 rel="noopener noreferrer"
                 class="inline-flex items-center gap-2 rounded-lg bg-zenml-500 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-zenml-600 transition-colors"
               >
-                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                <svg
+                  class="h-4 w-4"
+                  aria-hidden="true"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                  />
                 </svg>
                 {successDownloadLabel ?? "Download Whitepaper"}
               </a>
@@ -217,13 +249,17 @@ export default function ContactForm({
       >
         {fields.map((field) => (
           <div key={field.name}>
-            <label class="mb-1 block text-sm font-medium text-gray-700">
+            <label
+              for={field.name}
+              class="mb-1 block text-sm font-medium text-gray-700"
+            >
               {field.label}
               {field.required && <span class="text-red-500"> *</span>}
             </label>
 
             {field.type === "select" && field.options ? (
               <select
+                id={field.name}
                 name={field.name}
                 required={field.required}
                 class={`w-full rounded-md border px-4 py-2.5 text-sm focus:border-zenml-500 focus:ring-1 focus:ring-zenml-500 outline-none transition-colors ${
@@ -242,6 +278,7 @@ export default function ContactForm({
             ) : field.type === "checkbox" ? (
               <label class="flex items-start gap-2 text-sm text-gray-600">
                 <input
+                  id={field.name}
                   type="checkbox"
                   name={field.name}
                   value="on"
@@ -257,6 +294,7 @@ export default function ContactForm({
               </label>
             ) : (
               <input
+                id={field.name}
                 type={field.type}
                 name={field.name}
                 required={field.required}
@@ -288,9 +326,25 @@ export default function ContactForm({
         >
           {state === "submitting" ? (
             <span class="inline-flex items-center gap-2">
-              <svg class="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none">
-                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
-                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+              <svg
+                class="h-4 w-4 animate-spin"
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+                fill="none"
+              >
+                <circle
+                  class="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  stroke-width="4"
+                />
+                <path
+                  class="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                />
               </svg>
               {loadingLabel}
             </span>
