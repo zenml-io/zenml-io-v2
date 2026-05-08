@@ -402,7 +402,7 @@ export const FAQ = {
   subheadline: "Everything you need to know about the product.",
   slackCta: {
     label: "Still not clear? Ask us on Slack",
-    href: "https://zenml.io/slack",
+    href: "/slack",
   },
   items: [
     {

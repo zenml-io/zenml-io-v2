@@ -429,7 +429,7 @@ export const PRICING_FAQ: FaqData = {
   ],
   slackCta: {
     label: "Still not clear? Ask us on Slack",
-    href: "https://zenml.io/slack",
+    href: "/slack",
     external: true,
   },
 };

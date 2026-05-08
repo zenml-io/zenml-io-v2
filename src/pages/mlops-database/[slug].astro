@@ -13,35 +13,11 @@ import {
   getAllPublishedMLOpsEntries,
   getMLOpsRelatedFromIndex,
 } from "../../lib/mlops";
+import { STALE_RAY_SUMMIT_REDIRECTS } from "../../lib/mlopsRaySummitRedirects";
 
 export async function getStaticPaths() {
   const allEntries = await getAllPublishedMLOpsEntries();
   const relatedIndex = buildMLOpsRelatedIndex(allEntries);
-  const staleRaySummitRedirects: Record<string, string> = {
-    "ray-summit-talks-that-are-explicitly-internal-ml-platform-oriented-2025-an-overview-of-cloudkitchenss-ray-powered-ml-pla":
-      "cloudkitchens-ray-powered-ml-platform-an-overview-of-cloudkitchenss-ray-powered-ml-platform-ray-summit-2024",
-    "ray-summit-talks-that-are-explicitly-internal-ml-platform-oriented-2025-apples-approach-to-building-scalable-ml-infrastr":
-      "apple-approach-to-building-scalable-ml-infrastructure-on-ray-apples-approach-to-building-scalable-ml-infrastructure-on-r",
-    "ray-summit-talks-that-are-explicitly-internal-ml-platform-oriented-2025-coinbases-ml-training-evolution-from-sagemaker-t":
-      "coinbase-ml-training-evolution-from-sagemaker-to-ray-coinbases-ml-training-evolution-from-sagemaker-to-ray-ray-summit-20",
-    "ray-summit-talks-that-are-explicitly-internal-ml-platform-oriented-2025-distributed-ml-training-with-kuberay-at-robinhoo":
-      "robinhood-distributed-ml-training-with-kuberay-distributed-ml-training-with-kuberay-at-robinhood-ray-summit-2025",
-    "ray-summit-talks-that-are-explicitly-internal-ml-platform-oriented-2025-distributed-model-training-with-ray-at-capital-o":
-      "capital-one-distributed-model-training-with-ray-distributed-model-training-with-ray-at-capital-one-ray-summit-2025",
-    "ray-summit-talks-that-are-explicitly-internal-ml-platform-oriented-2025-exploring-hinges-ml-platform-evolution-with-ray":
-      "hinge-ml-platform-evolution-with-ray-exploring-hinges-ml-platform-evolution-with-ray-ray-summit-2024",
-    "ray-summit-talks-that-are-explicitly-internal-ml-platform-oriented-2025-netflixs-ray-platform-from-deep-learning-to-gena":
-      "netflix-ray-platform-from-deep-learning-to-genai-netflixs-ray-platform-from-deep-learning-to-genai-ray-summit-2024",
-    "ray-summit-talks-that-are-explicitly-internal-ml-platform-oriented-2025-panel-ml-platform-on-ray-ray-summit-2024":
-      "ray-summit-ml-platform-on-ray-panel-ml-platform-on-ray-ray-summit-2024",
-    "ray-summit-talks-that-are-explicitly-internal-ml-platform-oriented-2025-raylab-autodesks-internal-platform-for-scalable":
-      "autodesk-raylab-raylab-autodesks-internal-platform-for-scalable-trainingdataserving-ray-summit-2025",
-    "ray-summit-talks-that-are-explicitly-internal-ml-platform-oriented-2025-reddits-ml-evolution-scaling-with-ray-and-kubera":
-      "reddit-ml-evolution-scaling-with-ray-and-kuberay-reddits-ml-evolution-scaling-with-ray-and-kuberay-ray-summit-2024",
-    "ray-summit-talks-that-are-explicitly-internal-ml-platform-oriented-2025-spotify-harnesses-ray-for-next-gen-ai-infrastruc":
-      "spotify-next-gen-ai-infrastructure-spotify-harnesses-ray-for-next-gen-ai-infrastructure-ray-summit-2024",
-  };
-
   return [
     ...allEntries.map((entry) => {
       const related = getMLOpsRelatedFromIndex(relatedIndex, entry, 3);
@@ -50,7 +26,7 @@ export async function getStaticPaths() {
         props: { entry, related },
       };
     }),
-    ...Object.entries(staleRaySummitRedirects).map(([oldSlug, targetSlug]) => ({
+    ...Object.entries(STALE_RAY_SUMMIT_REDIRECTS).map(([oldSlug, targetSlug]) => ({
       params: { slug: oldSlug },
       props: { redirectTo: `/mlops-database/${targetSlug}` },
     })),

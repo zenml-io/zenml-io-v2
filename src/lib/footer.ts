@@ -217,7 +217,7 @@ export const FOOTER_SOCIAL: SocialLink[] = [
     label: "LinkedIn",
   },
   { platform: "x", href: "https://twitter.com/zenml_io", label: "X (Twitter)" },
-  { platform: "slack", href: "https://zenml.io/slack-invite", label: "Slack" },
+  { platform: "slack", href: "/slack-invite", label: "Slack" },
   {
     platform: "youtube",
     href: "https://www.youtube.com/@ZenML",
