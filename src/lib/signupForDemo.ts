@@ -5,8 +5,8 @@
  * Shares field definitions and fallback CTA from bookADemo module.
  */
 
+import { BOOK_A_DEMO_FALLBACK_CTA, BOOK_A_DEMO_FIELDS } from "./bookADemo";
 import type { SEOProps } from "./seo";
-import { BOOK_A_DEMO_FIELDS, BOOK_A_DEMO_FALLBACK_CTA } from "./bookADemo";
 
 export const SIGNUP_FOR_DEMO_SEO: SEOProps = {
   title: "Signup for Demo | ZenML",

@@ -5,18 +5,20 @@
  * Preferences modal allows per-category toggles.
  * Stores consent in localStorage and dynamically injects scripts.
  */
-import { useState, useEffect, useCallback } from "preact/hooks";
+import { useCallback, useEffect, useState } from "preact/hooks";
 import {
   CONSENT_CATEGORIES,
-  TRACKING_SCRIPTS,
   type ConsentCategory,
   type ScriptDefinition,
+  TRACKING_SCRIPTS,
 } from "../../lib/consentConfig";
 import { isProdHostname } from "../../lib/constants";
 
 const STORAGE_KEY = "cookie_consent";
 
 type ConsentState = Record<ConsentCategory, boolean>;
+type CookieConsentWindow = Window &
+  typeof globalThis & { __cookieConsent?: ConsentState };
 
 const DEFAULT_CONSENT: ConsentState = {
   essential: true,
@@ -52,10 +54,14 @@ function readConsent(): ConsentState | null {
   }
 }
 
+function exposeConsent(consent: ConsentState): void {
+  (window as CookieConsentWindow).__cookieConsent = consent;
+}
+
 function writeConsent(consent: ConsentState): void {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(consent));
   // Expose globally so other scripts can check consent
-  (window as any).__cookieConsent = consent;
+  exposeConsent(consent);
 }
 
 /** Inject a script tag if it hasn't been injected yet. */
@@ -86,7 +92,10 @@ function injectScript(script: ScriptDefinition): void {
 /** Inject all scripts for consented categories. */
 function applyConsent(consent: ConsentState): void {
   // Only inject on production domain (www.zenml.io or apex zenml.io)
-  if (typeof window !== "undefined" && !isProdHostname(window.location.hostname)) {
+  if (
+    typeof window !== "undefined" &&
+    !isProdHostname(window.location.hostname)
+  ) {
     return;
   }
 
@@ -107,7 +116,7 @@ export default function CookieConsent() {
     if (saved) {
       setConsent(saved);
       // Expose saved consent globally so other scripts can read it
-      (window as any).__cookieConsent = saved;
+      exposeConsent(saved);
       applyConsent(saved);
       // Don't show banner — already consented
     } else {
@@ -144,12 +153,9 @@ export default function CookieConsent() {
     setShowPrefs(false);
   }, [consent]);
 
-  const toggleCategory = useCallback(
-    (cat: ConsentCategory) => {
-      setConsent((prev) => ({ ...prev, [cat]: !prev[cat] }));
-    },
-    [],
-  );
+  const toggleCategory = useCallback((cat: ConsentCategory) => {
+    setConsent((prev) => ({ ...prev, [cat]: !prev[cat] }));
+  }, []);
 
   if (!visible) return null;
 
@@ -160,13 +166,24 @@ export default function CookieConsent() {
         <div
           class="fixed inset-0 z-[9998] bg-black/40"
           onClick={() => setShowPrefs(false)}
+          aria-hidden="true"
         />
       )}
 
       {/* Preferences modal */}
       {showPrefs && (
-        <div class="fixed inset-x-4 bottom-4 top-auto z-[9999] mx-auto max-w-lg rounded-md border border-gray-200 bg-white p-6 shadow-large sm:inset-x-auto sm:bottom-auto sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2">
-          <h2 class="text-lg font-bold text-gray-900">Cookie Preferences</h2>
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="cookie-preferences-title"
+          class="fixed inset-x-4 bottom-4 top-auto z-[9999] mx-auto max-w-lg rounded-md border border-gray-200 bg-white p-6 shadow-large sm:inset-x-auto sm:bottom-auto sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2"
+        >
+          <h2
+            id="cookie-preferences-title"
+            class="text-lg font-bold text-gray-900"
+          >
+            Cookie Preferences
+          </h2>
           <p class="mt-1 text-sm text-gray-500">
             Choose which categories of cookies you'd like to allow.
           </p>
@@ -188,7 +205,9 @@ export default function CookieConsent() {
                   <span class="text-sm font-medium text-gray-900">
                     {cat.label}
                     {cat.required && (
-                      <span class="ml-1 text-xs text-gray-400">(always on)</span>
+                      <span class="ml-1 text-xs text-gray-400">
+                        (always on)
+                      </span>
                     )}
                   </span>
                   <p class="text-xs text-gray-500">{cat.description}</p>
@@ -199,12 +218,14 @@ export default function CookieConsent() {
 
           <div class="mt-5 flex gap-3">
             <button
+              type="button"
               onClick={savePreferences}
               class="flex-1 rounded-lg bg-zenml-500 px-4 py-2.5 text-sm font-semibold text-white hover:bg-zenml-600 transition-colors"
             >
               Save preferences
             </button>
             <button
+              type="button"
               onClick={() => setShowPrefs(false)}
               class="rounded-lg border border-gray-300 px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
             >
@@ -219,8 +240,8 @@ export default function CookieConsent() {
         <div class="fixed inset-x-0 bottom-0 z-[9998] border-t border-gray-200 bg-white px-4 py-4 shadow-large sm:px-6">
           <div class="mx-auto flex max-w-5xl flex-col items-center gap-4 sm:flex-row">
             <p class="flex-1 text-sm text-gray-600">
-              We use cookies to improve your experience and analyze site traffic.
-              See our{" "}
+              We use cookies to improve your experience and analyze site
+              traffic. See our{" "}
               <a href="/privacy-policy" class="text-zenml-500 underline">
                 privacy policy
               </a>
@@ -228,18 +249,21 @@ export default function CookieConsent() {
             </p>
             <div class="flex gap-3">
               <button
+                type="button"
                 onClick={() => setShowPrefs(true)}
                 class="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
               >
                 Manage
               </button>
               <button
+                type="button"
                 onClick={rejectAll}
                 class="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
               >
                 Reject all
               </button>
               <button
+                type="button"
                 onClick={acceptAll}
                 class="rounded-lg bg-zenml-500 px-4 py-2 text-sm font-semibold text-white hover:bg-zenml-600 transition-colors"
               >

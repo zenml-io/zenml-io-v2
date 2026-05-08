@@ -5,7 +5,7 @@
  * Consumed by the BlogSearch Preact island on demand (lazy-fetched on focus).
  */
 import type { APIRoute } from "astro";
-import { getMainFeedPosts, buildBlogSearchIndex } from "../../lib/blog";
+import { buildBlogSearchIndex, getMainFeedPosts } from "../../lib/blog";
 
 export const prerender = true;
 

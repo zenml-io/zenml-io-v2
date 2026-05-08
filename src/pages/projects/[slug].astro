@@ -16,8 +16,8 @@
  * Route: /projects/<slug>
  */
 import { getCollection } from "astro:content";
-import BaseLayout from "../../layouts/BaseLayout.astro";
 import Button from "../../components/Button.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
 
 export async function getStaticPaths() {
   const projects = await getCollection("projects", ({ data }) => !data.draft);
@@ -29,14 +29,19 @@ export async function getStaticPaths() {
 
 const { project } = Astro.props;
 
-const seoTitle = project.data.seo?.title || `${project.data.title} - ZenML Projects`;
-const seoDescription = project.data.seo?.description || project.data.description;
+const seoTitle =
+  project.data.seo?.title || `${project.data.title} - ZenML Projects`;
+const seoDescription =
+  project.data.seo?.description || project.data.description;
 
 /**
  * Parse the raw markdown body into three sections matching Webflow's CMS fields.
  * Pattern: #### Pipeline headings → #### Stack Components <ul> → main description
  */
-interface Pipeline { name: string; description: string }
+interface Pipeline {
+  name: string;
+  description: string;
+}
 
 function splitBody(body: string): {
   pipelines: Pipeline[];
@@ -44,39 +49,44 @@ function splitBody(body: string): {
   detailsHtml: string;
 } {
   const pipelines: Pipeline[] = [];
-  let stackHtml = '';
-  let detailsRaw = '';
+  let stackHtml = "";
+  let detailsRaw = "";
 
   // Find the Stack Components marker
-  const stackIdx = body.indexOf('#### Stack Components');
+  const stackIdx = body.indexOf("#### Stack Components");
 
   if (stackIdx === -1) {
     // No pipelines/stack section — entire body is details
-    return { pipelines: [], stackHtml: '', detailsHtml: markdownToHtml(body.trim()) };
+    return {
+      pipelines: [],
+      stackHtml: "",
+      detailsHtml: markdownToHtml(body.trim()),
+    };
   }
 
   // Everything before Stack Components is pipeline entries
   const pipelinesRaw = body.substring(0, stackIdx);
   const pipelineRegex = /####\s+(.+)\n\n([\s\S]*?)(?=####|\s*$)/g;
-  let match;
-  while ((match = pipelineRegex.exec(pipelinesRaw)) !== null) {
+  let match: RegExpExecArray | null = pipelineRegex.exec(pipelinesRaw);
+  while (match !== null) {
     pipelines.push({
       name: match[1].trim(),
       description: match[2].trim(),
     });
+    match = pipelineRegex.exec(pipelinesRaw);
   }
 
   // Extract stack HTML (<ul>...</ul>) and everything after it
   const afterStack = body.substring(stackIdx);
-  const ulStart = afterStack.indexOf('<ul>');
-  const ulEnd = afterStack.indexOf('</ul>');
+  const ulStart = afterStack.indexOf("<ul>");
+  const ulEnd = afterStack.indexOf("</ul>");
 
   if (ulStart !== -1 && ulEnd !== -1) {
     stackHtml = afterStack.substring(ulStart, ulEnd + 5);
     detailsRaw = afterStack.substring(ulEnd + 5).trim();
   } else {
     // No <ul> found — rest is details
-    detailsRaw = afterStack.replace(/####\s+Stack Components\s*/, '').trim();
+    detailsRaw = afterStack.replace(/####\s+Stack Components\s*/, "").trim();
   }
 
   return {
@@ -88,26 +98,28 @@ function splitBody(body: string): {
 
 /** Minimal markdown-to-HTML for the details section (headings + paragraphs). */
 function markdownToHtml(md: string): string {
-  if (!md) return '';
-  return md
-    // Convert ### headings
-    .replace(/^### (.+)$/gm, '<h3>$1</h3>')
-    // Convert #### headings
-    .replace(/^#### (.+)$/gm, '<h4>$1</h4>')
-    // Wrap plain text paragraphs (lines not starting with < or empty)
-    .split('\n\n')
-    .map(block => {
-      const trimmed = block.trim();
-      if (!trimmed) return '';
-      // Already HTML (starts with < tag)
-      if (trimmed.startsWith('<')) return trimmed;
-      return `<p>${trimmed}</p>`;
-    })
-    .filter(Boolean)
-    .join('\n');
+  if (!md) return "";
+  return (
+    md
+      // Convert ### headings
+      .replace(/^### (.+)$/gm, "<h3>$1</h3>")
+      // Convert #### headings
+      .replace(/^#### (.+)$/gm, "<h4>$1</h4>")
+      // Wrap plain text paragraphs (lines not starting with < or empty)
+      .split("\n\n")
+      .map((block) => {
+        const trimmed = block.trim();
+        if (!trimmed) return "";
+        // Already HTML (starts with < tag)
+        if (trimmed.startsWith("<")) return trimmed;
+        return `<p>${trimmed}</p>`;
+      })
+      .filter(Boolean)
+      .join("\n")
+  );
 }
 
-const { pipelines, stackHtml, detailsHtml } = splitBody(project.body || '');
+const { pipelines, stackHtml, detailsHtml } = splitBody(project.body || "");
 ---
 
 <BaseLayout

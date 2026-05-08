@@ -5,8 +5,8 @@
  * noindex: true (success page, not a landing page)
  */
 
-import type { SEOProps } from "./seo";
 import type { CalEmbedConfig } from "./formTypes";
+import type { SEOProps } from "./seo";
 
 export const SUCCESS_CALENDAR_SEO: SEOProps = {
   title: "Success - Request a Call | ZenML",

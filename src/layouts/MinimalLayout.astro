@@ -1,4 +1,6 @@
 ---
+import PlausibleBridge from "../components/analytics/PlausibleBridge.astro";
+import CookieConsent from "../components/islands/CookieConsent.tsx";
 /**
  * MinimalLayout — lightweight HTML shell WITHOUT Navigation/Footer chrome.
  *
@@ -9,8 +11,6 @@
  * Shares the same <head> SEO contract as BaseLayout via SEOProps.
  */
 import { resolveSeo, type SEOProps } from "../lib/seo";
-import PlausibleBridge from "../components/analytics/PlausibleBridge.astro";
-import CookieConsent from "../components/islands/CookieConsent.tsx";
 import "../styles/global.css";
 
 interface Props extends SEOProps {

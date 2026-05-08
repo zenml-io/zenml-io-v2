@@ -4,8 +4,8 @@
  * Route: /newsletter-success (noindex)
  */
 
-import type { SEOProps } from "./seo";
 import type { SuccessPageData } from "./formTypes";
+import type { SEOProps } from "./seo";
 
 export const NEWSLETTER_SUCCESS_SEO: SEOProps = {
   title: "ZenML - You've successfully subscribed to our newsletter",

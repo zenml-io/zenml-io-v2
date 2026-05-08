@@ -6,7 +6,11 @@
  * which scripts to inject) and TrackingScripts (for SSR list).
  */
 
-export type ConsentCategory = "essential" | "analytics" | "marketing" | "personalization";
+export type ConsentCategory =
+  | "essential"
+  | "analytics"
+  | "marketing"
+  | "personalization";
 
 export interface ScriptDefinition {
   /** Unique identifier for deduplication */
@@ -99,19 +103,22 @@ export const CONSENT_CATEGORIES: {
   {
     id: "analytics",
     label: "Analytics",
-    description: "Help us understand how visitors use our site (GA4, Segment, Hotjar).",
+    description:
+      "Help us understand how visitors use our site (GA4, Segment, Hotjar).",
     required: false,
   },
   {
     id: "marketing",
     label: "Marketing",
-    description: "Enable targeted advertising and lead identification (HubSpot, Reo, Apollo).",
+    description:
+      "Enable targeted advertising and lead identification (HubSpot, Reo, Apollo).",
     required: false,
   },
   {
     id: "personalization",
     label: "Personalization",
-    description: "Customize content and experiences (GitHub star count, HubSpot chat).",
+    description:
+      "Customize content and experiences (GitHub star count, HubSpot chat).",
     required: false,
   },
 ];

@@ -34,12 +34,15 @@ const AVG_HOURLY_RATE = 150;
  * Calculate monthly ZenML platform cost based on team size and model count.
  * Uses power-function scaling with tier snapping.
  */
-export function calculateZenMLCost(teamSize: number, numModels: number): number {
+export function calculateZenMLCost(
+  teamSize: number,
+  numModels: number,
+): number {
   // Smallest teams get the starter tier
   if (teamSize <= 2 && numModels <= 3) return 99;
 
-  const baseTeamCost = Math.pow(teamSize, 1.2) * 50;
-  const baseModelCost = Math.pow(numModels, 1.1) * 30;
+  const baseTeamCost = teamSize ** 1.2 * 50;
+  const baseModelCost = numModels ** 1.1 * 30;
   const totalCost = baseTeamCost + baseModelCost;
 
   // Snap to pricing tiers
@@ -85,10 +88,7 @@ export function calculateRoi(inputs: RoiInputs): RoiOutputs {
     1 - Math.log10(models || 1) / Math.log10(1000),
   );
   const performanceImpactMonthly = Math.round(
-    models *
-      baseValuePerModel *
-      scaleFactor *
-      Math.min(1.5, 1 + teamSize / 50),
+    models * baseValuePerModel * scaleFactor * Math.min(1.5, 1 + teamSize / 50),
   );
 
   // ROI: annual benefits vs annual cost

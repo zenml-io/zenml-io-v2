@@ -5,7 +5,11 @@
  * the Cloudflare Pages Function (server-side).
  */
 
-export type FormType = "demo-request" | "whitepaper" | "brick-manual" | "startup-academic";
+export type FormType =
+  | "demo-request"
+  | "whitepaper"
+  | "brick-manual"
+  | "startup-academic";
 
 interface FieldRule {
   required?: boolean;
@@ -20,20 +24,40 @@ const URL_RE = /^https?:\/\/.+/;
 export const FORM_RULES: Record<FormType, Record<string, FieldRule>> = {
   "demo-request": {
     fullName: { required: true, message: "Full name is required" },
-    email: { required: true, pattern: EMAIL_RE, message: "Valid work email is required" },
+    email: {
+      required: true,
+      pattern: EMAIL_RE,
+      message: "Valid work email is required",
+    },
   },
   whitepaper: {
     fullName: { required: true, message: "Full name is required" },
-    email: { required: true, pattern: EMAIL_RE, message: "Valid work email is required" },
+    email: {
+      required: true,
+      pattern: EMAIL_RE,
+      message: "Valid work email is required",
+    },
   },
   "brick-manual": {
     fullName: { required: true, message: "Full name is required" },
-    email: { required: true, pattern: EMAIL_RE, message: "Valid email is required" },
+    email: {
+      required: true,
+      pattern: EMAIL_RE,
+      message: "Valid email is required",
+    },
   },
   "startup-academic": {
     fullName: { required: true, message: "Full name is required" },
-    email: { required: true, pattern: EMAIL_RE, message: "Valid email is required" },
-    linkedin: { required: true, pattern: URL_RE, message: "LinkedIn URL is required" },
+    email: {
+      required: true,
+      pattern: EMAIL_RE,
+      message: "Valid email is required",
+    },
+    linkedin: {
+      required: true,
+      pattern: URL_RE,
+      message: "LinkedIn URL is required",
+    },
     company: { required: true, message: "Organization name is required" },
     role: { required: true, message: "Please select a role" },
   },

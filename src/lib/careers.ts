@@ -88,8 +88,10 @@ export const CAREERS_WHY = {
 // ---------------------------------------------------------------------------
 export const CAREERS_HIRING_PROCESS = {
   headline: "Our hiring process",
-  intro: "We understand the hiring process can be super tough for candidates. Therefore, we are working hard to make it as transparent and lean as possible for anyone who applies at ZenML. So, if you are hesitating due to the overhead, don't! We will treat your application with the utmost respect and priority.",
-  afterIntro: "Once you apply our team will carefully review your CV and application in an initial screening. After that your journey with us will follow this outline:",
+  intro:
+    "We understand the hiring process can be super tough for candidates. Therefore, we are working hard to make it as transparent and lean as possible for anyone who applies at ZenML. So, if you are hesitating due to the overhead, don't! We will treat your application with the utmost respect and priority.",
+  afterIntro:
+    "Once you apply our team will carefully review your CV and application in an initial screening. After that your journey with us will follow this outline:",
   steps: [
     {
       number: 1,

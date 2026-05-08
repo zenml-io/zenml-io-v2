@@ -6,7 +6,7 @@
  * meta resolution with sensible fallbacks.
  */
 
-import { SITE_URL, DEFAULT_DESCRIPTION, DEFAULT_OG_IMAGE } from "./constants";
+import { DEFAULT_DESCRIPTION, DEFAULT_OG_IMAGE, SITE_URL } from "./constants";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -72,10 +72,7 @@ export function buildCanonical(pathname: string, override?: string): string {
  * - twitterCard → summary_large_image (if ogImage exists), else summary
  * - noindex → false
  */
-export function resolveSeo(
-  props: SEOProps,
-  pathname: string,
-): ResolvedSEO {
+export function resolveSeo(props: SEOProps, pathname: string): ResolvedSEO {
   const description = props.description || DEFAULT_DESCRIPTION;
   const canonical = buildCanonical(pathname, props.canonical);
   const rawOgImage = props.ogImage || DEFAULT_OG_IMAGE || undefined;
@@ -83,7 +80,8 @@ export function resolveSeo(
   const ogImage = rawOgImage?.startsWith("/")
     ? `${SITE_URL}${rawOgImage}`
     : rawOgImage;
-  const twitterCard = props.twitterCard ?? (ogImage ? "summary_large_image" : "summary");
+  const twitterCard =
+    props.twitterCard ?? (ogImage ? "summary_large_image" : "summary");
 
   return {
     title: props.title,

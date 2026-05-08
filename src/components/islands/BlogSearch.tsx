@@ -5,7 +5,7 @@
  * JSON endpoint on first interaction (focus or typing). Supports Cmd+K /
  * Ctrl+K focus, arrow key navigation, Escape to clear.
  */
-import { useState, useRef, useEffect, useCallback } from "preact/hooks";
+import { useCallback, useEffect, useRef, useState } from "preact/hooks";
 
 interface PostEntry {
   title: string;
@@ -51,14 +51,18 @@ export default function BlogSearch({ searchIndexUrl }: Props) {
     }
   }, [searchIndexUrl]);
 
-  const results = query.trim().length >= 2
-    ? posts
-        .filter((p) => {
-          const q = query.toLowerCase();
-          return p.title.toLowerCase().includes(q) || p.excerpt.toLowerCase().includes(q);
-        })
-        .slice(0, 6)
-    : [];
+  const results =
+    query.trim().length >= 2
+      ? posts
+          .filter((p) => {
+            const q = query.toLowerCase();
+            return (
+              p.title.toLowerCase().includes(q) ||
+              p.excerpt.toLowerCase().includes(q)
+            );
+          })
+          .slice(0, 6)
+      : [];
 
   const showDropdown = isOpen && query.trim().length >= 2;
 
@@ -77,7 +81,10 @@ export default function BlogSearch({ searchIndexUrl }: Props) {
   // Close on outside click
   useEffect(() => {
     const handler = (e: MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(e.target as Node)
+      ) {
         setIsOpen(false);
       }
     };
@@ -101,7 +108,11 @@ export default function BlogSearch({ searchIndexUrl }: Props) {
       } else if (e.key === "ArrowUp") {
         e.preventDefault();
         setActiveIndex((i) => (i > 0 ? i - 1 : results.length - 1));
-      } else if (e.key === "Enter" && activeIndex >= 0 && results[activeIndex]) {
+      } else if (
+        e.key === "Enter" &&
+        activeIndex >= 0 &&
+        results[activeIndex]
+      ) {
         e.preventDefault();
         window.location.href = `/blog/${results[activeIndex].slug}`;
       }
@@ -111,9 +122,10 @@ export default function BlogSearch({ searchIndexUrl }: Props) {
 
   const formatDate = (dateStr: string) => {
     try {
-      return new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric" }).format(
-        new Date(dateStr),
-      );
+      return new Intl.DateTimeFormat("en-US", {
+        month: "short",
+        day: "numeric",
+      }).format(new Date(dateStr));
     } catch {
       return "";
     }
@@ -125,6 +137,7 @@ export default function BlogSearch({ searchIndexUrl }: Props) {
         {/* Search icon */}
         <svg
           class="pointer-events-none absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400"
+          aria-hidden="true"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -172,9 +185,13 @@ export default function BlogSearch({ searchIndexUrl }: Props) {
           class="absolute right-0 top-full z-50 mt-1.5 w-80 overflow-hidden rounded-md border border-gray-200 bg-white shadow-lg"
         >
           {isLoading ? (
-            <div class="px-4 py-6 text-center text-sm text-gray-500">Loading…</div>
+            <div class="px-4 py-6 text-center text-sm text-gray-500">
+              Loading…
+            </div>
           ) : loadError ? (
-            <div class="px-4 py-6 text-center text-sm text-gray-500">Search unavailable</div>
+            <div class="px-4 py-6 text-center text-sm text-gray-500">
+              Search unavailable
+            </div>
           ) : results.length > 0 ? (
             results.map((post, i) => (
               <a
@@ -187,7 +204,9 @@ export default function BlogSearch({ searchIndexUrl }: Props) {
                 }`}
                 onMouseEnter={() => setActiveIndex(i)}
               >
-                <div class="line-clamp-1 text-sm font-medium text-gray-900">{post.title}</div>
+                <div class="line-clamp-1 text-sm font-medium text-gray-900">
+                  {post.title}
+                </div>
                 <div class="mt-0.5 flex items-center gap-2 text-xs text-gray-500">
                   {post.category && <span>{post.category}</span>}
                   {post.category && post.date && (
@@ -200,7 +219,9 @@ export default function BlogSearch({ searchIndexUrl }: Props) {
               </a>
             ))
           ) : (
-            <div class="px-4 py-6 text-center text-sm text-gray-500">No posts found</div>
+            <div class="px-4 py-6 text-center text-sm text-gray-500">
+              No posts found
+            </div>
           )}
         </div>
       )}

@@ -6,13 +6,15 @@
  * Generates /llmops-tags/<slug> for each tag in the collection.
  */
 import { getCollection } from "astro:content";
-import BaseLayout from "../../layouts/BaseLayout.astro";
 import Badge from "../../components/Badge.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getIndustryTagCounts } from "../../lib/llmops";
 
 export async function getStaticPaths() {
   const llmopsTags = await getCollection("llmops-tags");
-  const tagMap = Object.fromEntries(llmopsTags.map((t) => [t.data.slug, t.data.name]));
+  const tagMap = Object.fromEntries(
+    llmopsTags.map((t) => [t.data.slug, t.data.name]),
+  );
   return llmopsTags.map((tag) => ({
     params: { slug: tag.data.slug },
     props: { tag, tagMap },
@@ -23,7 +25,10 @@ const { tag, tagMap } = Astro.props;
 
 // Get all published LLMOps entries with this tag
 const allEntries = (
-  await getCollection("llmops-database", ({ data }) => !data.draft && data.llmopsTags.includes(tag.data.slug))
+  await getCollection(
+    "llmops-database",
+    ({ data }) => !data.draft && data.llmopsTags.includes(tag.data.slug),
+  )
 ).sort((a, b) => a.data.title.localeCompare(b.data.title));
 
 // Compute top co-occurring industries among entries with this tag

@@ -8,8 +8,8 @@
  * Generates /integration-type/<slug> for each integration type.
  */
 import { getCollection } from "astro:content";
-import BaseLayout from "../../layouts/BaseLayout.astro";
 import IntegrationCard from "../../components/integrations/IntegrationCard.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
 
 export async function getStaticPaths() {
   const integrationTypes = await getCollection("integration-types");
@@ -23,7 +23,11 @@ const { integrationType } = Astro.props;
 
 // Get all published integrations of this type
 const allIntegrations = (
-  await getCollection("integrations", ({ data }) => !data.draft && data.integrationType === integrationType.data.slug)
+  await getCollection(
+    "integrations",
+    ({ data }) =>
+      !data.draft && data.integrationType === integrationType.data.slug,
+  )
 ).sort((a, b) => a.data.title.localeCompare(b.data.title));
 ---
 

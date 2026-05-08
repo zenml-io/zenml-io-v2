@@ -4,8 +4,9 @@
  * highlighting works on Webflow-migrated content where language
  * identifiers were stripped.
  */
+
+import type { Code, Root } from "mdast";
 import { visit } from "unist-util-visit";
-import type { Root, Code } from "mdast";
 
 export function remarkDefaultLang(defaultLang = "python") {
   return () => (tree: Root) => {

@@ -1,4 +1,5 @@
 ---
+import ContactForm from "../components/islands/ContactForm.tsx";
 /**
  * Whitepaper Landing Page — gated content with form.
  *
@@ -7,12 +8,11 @@
  * On success, reveals PDF download link.
  */
 import BaseLayout from "../layouts/BaseLayout.astro";
-import ContactForm from "../components/islands/ContactForm.tsx";
 import { TURNSTILE_SITE_KEY } from "../lib/formConstants";
 import {
-  WHITEPAPER_SEO,
   WHITEPAPER_CONTENT,
   WHITEPAPER_FIELDS,
+  WHITEPAPER_SEO,
 } from "../lib/whitepaper";
 ---
 

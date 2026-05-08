@@ -16,7 +16,10 @@ export type LLMOpsEntry = CollectionEntry<"llmops-database">;
 
 /** All published entries, sorted by year descending then title A-Z. */
 export async function getAllPublishedEntries(): Promise<LLMOpsEntry[]> {
-  const entries = await getCollection("llmops-database", ({ data }) => !data.draft);
+  const entries = await getCollection(
+    "llmops-database",
+    ({ data }) => !data.draft,
+  );
   return sortByYearDesc(entries);
 }
 
@@ -29,8 +32,16 @@ export function sortByYearDesc(entries: LLMOpsEntry[]): LLMOpsEntry[] {
 }
 
 export type LLMOpsProvenance = {
-  webflow?: { lastPublished?: string; lastUpdated?: string; createdOn?: string };
-  notion?: { publishedAt?: string; lastEditedTime?: string; createdTime?: string };
+  webflow?: {
+    lastPublished?: string;
+    lastUpdated?: string;
+    createdOn?: string;
+  };
+  notion?: {
+    publishedAt?: string;
+    lastEditedTime?: string;
+    createdTime?: string;
+  };
 };
 
 /**
@@ -52,7 +63,7 @@ export function deriveAddedDate(data: LLMOpsProvenance): Date | null {
   for (const raw of candidates) {
     if (!raw) continue;
     const d = new Date(raw);
-    if (!isNaN(d.getTime())) return d;
+    if (!Number.isNaN(d.getTime())) return d;
   }
   return null;
 }
@@ -66,10 +77,10 @@ export function deriveAddedDate(data: LLMOpsProvenance): Date | null {
  * Build once via `buildRelatedIndex()`, then call `getRelatedFromIndex()` per entry.
  */
 export interface RelatedIndex {
-  byTag: Map<string, Set<string>>;       // tag slug → set of entry slugs
-  byIndustry: Map<string, Set<string>>;  // industry slug → set of entry slugs
-  byCompany: Map<string, Set<string>>;   // company name → set of entry slugs
-  entryMap: Map<string, LLMOpsEntry>;    // slug → entry (for lookup)
+  byTag: Map<string, Set<string>>; // tag slug → set of entry slugs
+  byIndustry: Map<string, Set<string>>; // industry slug → set of entry slugs
+  byCompany: Map<string, Set<string>>; // company name → set of entry slugs
+  entryMap: Map<string, LLMOpsEntry>; // slug → entry (for lookup)
 }
 
 /** Build inverted indexes from all entries — call once in getStaticPaths. */
@@ -85,17 +96,26 @@ export function buildRelatedIndex(entries: LLMOpsEntry[]): RelatedIndex {
 
     for (const tag of e.data.llmopsTags) {
       let set = byTag.get(tag);
-      if (!set) { set = new Set(); byTag.set(tag, set); }
+      if (!set) {
+        set = new Set();
+        byTag.set(tag, set);
+      }
       set.add(slug);
     }
     if (e.data.industryTags) {
       let set = byIndustry.get(e.data.industryTags);
-      if (!set) { set = new Set(); byIndustry.set(e.data.industryTags, set); }
+      if (!set) {
+        set = new Set();
+        byIndustry.set(e.data.industryTags, set);
+      }
       set.add(slug);
     }
     if (e.data.company) {
       let set = byCompany.get(e.data.company);
-      if (!set) { set = new Set(); byCompany.set(e.data.company, set); }
+      if (!set) {
+        set = new Set();
+        byCompany.set(e.data.company, set);
+      }
       set.add(slug);
     }
   }
@@ -152,7 +172,10 @@ export function getRelatedFromIndex(
     }
   }
 
-  return topK.map(({ slug }) => index.entryMap.get(slug)!);
+  return topK.flatMap(({ slug }) => {
+    const entry = index.entryMap.get(slug);
+    return entry ? [entry] : [];
+  });
 }
 
 /** @deprecated Use buildRelatedIndex + getRelatedFromIndex for batch lookups. */
@@ -174,13 +197,18 @@ export function getRelatedEntries(
         if (currentTags.has(tag)) score += 3;
       }
       // +2 for same industry
-      if (currentIndustry && e.data.industryTags === currentIndustry) score += 2;
+      if (currentIndustry && e.data.industryTags === currentIndustry)
+        score += 2;
       // +1 for same company
       if (currentCompany && e.data.company === currentCompany) score += 1;
       return { entry: e, score };
     })
     .filter(({ score }) => score > 0)
-    .sort((a, b) => b.score - a.score || a.entry.data.title.localeCompare(b.entry.data.title));
+    .sort(
+      (a, b) =>
+        b.score - a.score ||
+        a.entry.data.title.localeCompare(b.entry.data.title),
+    );
 
   return scored.slice(0, limit).map(({ entry }) => entry);
 }
@@ -191,7 +219,9 @@ export function getRelatedEntries(
 
 export type TaxonomyCount = { slug: string; name: string; count: number };
 
-export async function getLLMOpsTagCounts(entries: LLMOpsEntry[]): Promise<TaxonomyCount[]> {
+export async function getLLMOpsTagCounts(
+  entries: LLMOpsEntry[],
+): Promise<TaxonomyCount[]> {
   const countMap = new Map<string, number>();
   for (const e of entries) {
     for (const tag of e.data.llmopsTags) {
@@ -207,11 +237,16 @@ export async function getLLMOpsTagCounts(entries: LLMOpsEntry[]): Promise<Taxono
   return result.sort((a, b) => b.count - a.count);
 }
 
-export async function getIndustryTagCounts(entries: LLMOpsEntry[]): Promise<TaxonomyCount[]> {
+export async function getIndustryTagCounts(
+  entries: LLMOpsEntry[],
+): Promise<TaxonomyCount[]> {
   const countMap = new Map<string, number>();
   for (const e of entries) {
     if (e.data.industryTags) {
-      countMap.set(e.data.industryTags, (countMap.get(e.data.industryTags) || 0) + 1);
+      countMap.set(
+        e.data.industryTags,
+        (countMap.get(e.data.industryTags) || 0) + 1,
+      );
     }
   }
 

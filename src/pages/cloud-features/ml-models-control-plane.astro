@@ -1,4 +1,7 @@
 ---
+import FeatureHero from "../../components/sections/FeatureHero.astro";
+import FeaturesHubCTA from "../../components/sections/FeaturesHubCTA.astro";
+import FeatureValueSection from "../../components/sections/FeatureValueSection.astro";
 /**
  * /cloud-features/ml-models-control-plane — ML Model Control Plane page.
  *
@@ -7,9 +10,6 @@
  * detail pages but with hardcoded content extracted from the Webflow snapshot.
  */
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import FeatureHero from "../../components/sections/FeatureHero.astro";
-import FeatureValueSection from "../../components/sections/FeatureValueSection.astro";
-import FeaturesHubCTA from "../../components/sections/FeaturesHubCTA.astro";
 
 // ── Page data ──────────────────────────────────────────────────────
 
@@ -21,7 +21,10 @@ const hero = {
     url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/cc7b88fb/6525599588d1d0f3aeb57a6b_03.01.  Models - List.webp",
     alt: "Dashboard displaying machine learning models with versioning, owners, and tags",
   },
-  primaryCta: { label: "Start Free Trial", href: "https://cloud.zenml.io/signup" },
+  primaryCta: {
+    label: "Start Free Trial",
+    href: "https://cloud.zenml.io/signup",
+  },
   secondaryCta: { label: "Use Open Source", href: "/get-started" },
 };
 

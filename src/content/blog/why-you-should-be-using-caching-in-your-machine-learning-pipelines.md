@@ -93,7 +93,7 @@ Caching is turned on by default. The cache for that particular step’s artifact
 
 ## Plug
 
-If you like the thoughts here, we’d love to hear your feedback on ZenML. It is [open-source](https://github.com/zenml-io/zenml) and we are looking for early adopters and [contributors](https://github.com/zenml-io/zenml)! And if you find it is the right order of abstraction for you/your data scientists, then let us know as well via [our Slack](http://zenml.io/slack-invite) — looking forward to hearing from you!
+If you like the thoughts here, we’d love to hear your feedback on ZenML. It is [open-source](https://github.com/zenml-io/zenml) and we are looking for early adopters and [contributors](https://github.com/zenml-io/zenml)! And if you find it is the right order of abstraction for you/your data scientists, then let us know as well via [our Slack](/slack-invite) — looking forward to hearing from you!
 
 [Photo by [Juliana Kozoski](https://unsplash.com/@jkozoski?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com/s/photos/pipes?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)]
 

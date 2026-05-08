@@ -15,7 +15,12 @@ interface Props {
   ariaLabel?: string;
 }
 
-const { currentPage, totalPages, getHref, ariaLabel = "Pagination" } = Astro.props;
+const {
+  currentPage,
+  totalPages,
+  getHref,
+  ariaLabel = "Pagination",
+} = Astro.props;
 
 if (totalPages <= 1) return;
 

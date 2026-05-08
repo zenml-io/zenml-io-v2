@@ -182,7 +182,7 @@ Cloudflare Pages (and similar platforms) run `astro build` for every deploy, inc
 
 ### 4. The Webflow CDN Isn't Always Cooperative
 
-When migrating 2,397 assets, I needed to download every image from Webflow's CDN (`uploads-ssl.webflow.com`). Most worked fine, but some file IDs consistently returned 403 Forbidden, even with browser-like User-Agent headers. These weren't rate limits; the same IDs failed every time. The workaround was the Webflow code export I'd downloaded as a reference: it contains the same images under older file IDs that still download fine. So the local export became the fallback source for anything the CDN blocked. If you're planning a similar migration, download the code export before you start, even if you think you won't need it.
+When migrating 2,397 assets, I needed to download every image from Webflow's legacy upload CDN. Most worked fine, but some file IDs consistently returned 403 Forbidden, even with browser-like User-Agent headers. These weren't rate limits; the same IDs failed every time. The workaround was the Webflow code export I'd downloaded as a reference: it contains the same images under older file IDs that still download fine. So the local export became the fallback source for anything the CDN blocked. If you're planning a similar migration, download the code export before you start, even if you think you won't need it.
 
 ### 5. Plan Before You Build
 

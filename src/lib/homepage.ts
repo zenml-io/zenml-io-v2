@@ -19,7 +19,10 @@ export const HERO = {
   headline: "The AI Control Plane",
   subheadline:
     "One layer for orchestration, versioning, and governance — from training pipelines to agent evals, local to Kubernetes.",
-  primaryCta: { label: "Start Free Trial", href: "https://cloud.zenml.io/signup" },
+  primaryCta: {
+    label: "Start Free Trial",
+    href: "https://cloud.zenml.io/signup",
+  },
   secondaryCta: { label: "Use Open Source", href: "/get-started" },
   githubUrl: "https://github.com/zenml-io/zenml",
   /** Lottie JSON for hero animation (autoplay, no loop, 6.4s, SVG renderer).
@@ -39,18 +42,34 @@ export interface LogoItem {
 }
 
 import { R2_WEBFLOW_BASE } from "./constants";
+
 const R2 = R2_WEBFLOW_BASE;
 
 export const LOGO_CLOUD = {
   label: "Trusted by 1,000s of top companies to standardize their AI workflows",
   logos: [
-    { name: "Airbus", src: `${R2}/6a2ae7e3/670e2f23d254a9be9e02e50f_airbus.svg` },
+    {
+      name: "Airbus",
+      src: `${R2}/6a2ae7e3/670e2f23d254a9be9e02e50f_airbus.svg`,
+    },
     { name: "AXA", src: `${R2}/5f1b0e8a/670e2f23b0b89bea22ecee3c_axa-min.svg` },
-    { name: "Bundeswehr", src: `${R2}/e8e86576/670e2f2398fcad5e2e8f2775_bundeswehr.svg` },
-    { name: "Enel", src: `${R2}/4f6e5fe1/670e2f2349aab64d5e4eeeb3_enel-min.svg` },
-    { name: "JetBrains", src: `${R2}/60b5e34d/670e2f23ee3f2feee5e7e7e2_jetbrains-min.svg` },
+    {
+      name: "Bundeswehr",
+      src: `${R2}/e8e86576/670e2f2398fcad5e2e8f2775_bundeswehr.svg`,
+    },
+    {
+      name: "Enel",
+      src: `${R2}/4f6e5fe1/670e2f2349aab64d5e4eeeb3_enel-min.svg`,
+    },
+    {
+      name: "JetBrains",
+      src: `${R2}/60b5e34d/670e2f23ee3f2feee5e7e7e2_jetbrains-min.svg`,
+    },
     { name: "Koble", src: `${R2}/db4b0c5a/670e2f2331d7f8f62e12458e_koble.svg` },
-    { name: "Leroy Merlin", src: `${R2}/d28fbdf4/670e2f23e2b3ba3756fae38e_leroy_merlin_logo-min.svg` },
+    {
+      name: "Leroy Merlin",
+      src: `${R2}/d28fbdf4/670e2f23e2b3ba3756fae38e_leroy_merlin_logo-min.svg`,
+    },
     { name: "ADEO", src: "/images/logos/adeo.png" },
     { name: "Devoteam", src: "/images/logos/devoteam.svg" },
     { name: "Frontiers", src: "/images/logos/frontiers.webp" },
@@ -63,7 +82,10 @@ export const LOGO_CLOUD = {
     { name: "ALKi", src: "/images/logos/alki.webp" },
     { name: "Altenar", src: "/images/logos/altenar.svg" },
     { name: "Brevo", src: "/images/logos/brevo.webp", maxWidth: "80px" },
-    { name: "Digital Diagnostics", src: "/images/logos/digital-diagnostics.svg" },
+    {
+      name: "Digital Diagnostics",
+      src: "/images/logos/digital-diagnostics.svg",
+    },
     { name: "EarthDaily Agro", src: "/images/logos/earthdaily-agro.png" },
     { name: "Eikon Therapeutics", src: "/images/logos/eikon-therapeutics.svg" },
     { name: "Hemato", src: "/images/logos/hemato.png" },
@@ -209,7 +231,10 @@ export const VALUE_PROPS_CTA = {
   headline: "Ready to Unify Your AI Platform?",
   subtext:
     "Join thousands of teams using ZenML to eliminate chaos and accelerate AI delivery",
-  primaryCta: { label: "Start Free Trial", href: "https://cloud.zenml.io/signup" },
+  primaryCta: {
+    label: "Start Free Trial",
+    href: "https://cloud.zenml.io/signup",
+  },
   secondaryCta: { label: "Use Open Source", href: "/get-started" },
 };
 
@@ -402,7 +427,7 @@ export const FAQ = {
   subheadline: "Everything you need to know about the product.",
   slackCta: {
     label: "Still not clear? Ask us on Slack",
-    href: "https://zenml.io/slack",
+    href: "/slack",
   },
   items: [
     {
@@ -422,8 +447,7 @@ export const FAQ = {
         'Yes, ZenML is fully compatible and intended for productionalizing LLM applications. We have examples with <a href="https://www.llamaindex.ai/" class="text-zenml-500 underline" target="_blank" rel="noopener noreferrer">LlamaIndex</a>, <a href="https://openai.com/" class="text-zenml-500 underline" target="_blank" rel="noopener noreferrer">OpenAI</a>, <a href="https://www.langchain.com/" class="text-zenml-500 underline" target="_blank" rel="noopener noreferrer">LangChain</a>, and more. Check out our <a href="/projects" class="text-zenml-500 underline">projects</a> for real-world examples.',
     },
     {
-      question:
-        "How can I build my MLOps/LLMOps platform using ZenML?",
+      question: "How can I build my MLOps/LLMOps platform using ZenML?",
       answer:
         'Start simple with our <a href="https://docs.zenml.io/user-guides" class="text-zenml-500 underline" target="_blank" rel="noopener noreferrer">user guides</a>, then extend with experiment trackers, model deployers, model registries and more from the <a href="https://docs.zenml.io/stacks" class="text-zenml-500 underline" target="_blank" rel="noopener noreferrer">stack components</a> library.',
     },
@@ -446,7 +470,10 @@ export const FINAL_CTA = {
     "Works with any infrastructure",
     "Upgrade to managed Pro features",
   ],
-  primaryCta: { label: "Start Free Trial", href: "https://cloud.zenml.io/signup" },
+  primaryCta: {
+    label: "Start Free Trial",
+    href: "https://cloud.zenml.io/signup",
+  },
   secondaryCta: { label: "Use Open Source", href: "/get-started" },
   image: `${R2}/4ab5ef16/66e9556fd34d2791885b0c5f_model_control_plane_01.png`,
   imageAlt:

@@ -4,8 +4,8 @@
  * Route: /booked (noindex)
  */
 
-import type { SEOProps } from "./seo";
 import type { SuccessPageData } from "./formTypes";
+import type { SEOProps } from "./seo";
 
 export const BOOKED_SEO: SEOProps = {
   title: "Thank you for booking a demo!",

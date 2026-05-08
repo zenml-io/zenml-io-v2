@@ -41,7 +41,11 @@ const {
 } = Astro.props;
 
 const formattedDate = publishedDate
-  ? new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric" }).format(publishedDate)
+  ? new Intl.DateTimeFormat("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    }).format(publishedDate)
   : undefined;
 ---
 

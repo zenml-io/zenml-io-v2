@@ -5,11 +5,11 @@
  * Content extracted from Webflow HTML snapshot + SEO baseline.
  */
 import type {
-  HeroData,
-  FeatureGridItem,
-  SubwayMapCard,
   ComparisonTableData,
   CtaLink,
+  FeatureGridItem,
+  HeroData,
+  SubwayMapCard,
 } from "./marketingPageTypes";
 
 // ---------------------------------------------------------------------------
@@ -32,7 +32,10 @@ export const OSS_VS_PRO_HERO: HeroData = {
   eyebrow: "From Solo Science to Team Engineering",
   headline: "ZenML Open Source vs Pro",
   deck: "Transform your ML workflows from single-player experiments to multiplayer production systems. ZenML Pro builds on the same open-source foundation you trust: no code rewrites, no metadata migrations required.",
-  primaryCta: { label: "Start Free Trial", href: "https://cloud.zenml.io/signup" },
+  primaryCta: {
+    label: "Start Free Trial",
+    href: "https://cloud.zenml.io/signup",
+  },
   secondaryCta: { label: "Use Open Source", href: "/get-started" },
 };
 
@@ -134,9 +137,13 @@ export const OSS_VS_PRO_COMPARISON: ComparisonTableData = {
   rows: [
     {
       feature: "Pipelines",
-      description: "ML pipelines are Python workflows that execute a machine learning task",
+      description:
+        "ML pipelines are Python workflows that execute a machine learning task",
       icon: ICON_PIPELINES,
-      columns: ["Basic Controls with legacy dashboard", "Advanced Controls and modern dashboard"],
+      columns: [
+        "Basic Controls with legacy dashboard",
+        "Advanced Controls and modern dashboard",
+      ],
     },
     {
       feature: "Artifact and Model Control Plane",
@@ -228,6 +235,9 @@ export const OSS_VS_PRO_COMPARISON: ComparisonTableData = {
 export const OSS_VS_PRO_FINAL_CTA = {
   headline: "Start deploying reproducible AI workflows today",
   body: "Enterprise-grade MLOps platform trusted by thousands of companies in production.",
-  primaryCta: { label: "Start Free Trial", href: "https://cloud.zenml.io/signup" },
+  primaryCta: {
+    label: "Start Free Trial",
+    href: "https://cloud.zenml.io/signup",
+  },
   secondaryCta: { label: "Use Open Source", href: "https://cloud.zenml.io" },
 } as const;

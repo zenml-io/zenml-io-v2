@@ -95,7 +95,7 @@ This step can be easily adapted for other use cases by modifying the input param
 
 ### Using the GPT-4 API to Summarize Data
 
-The second step in the pipeline passes the latest data to [OpenAI GPT-4](https://zenml.io/project/supabase-openai-summary) to summarize it. It also compares it to the last summary that was created, ensuring we have some historic comparison.
+The second step in the pipeline passes the latest data to [OpenAI GPT-4](https://github.com/zenml-io/zenml-projects/tree/main/supabase-openai-summary) to summarize it. It also compares it to the last summary that was created, ensuring we have some historic comparison.
 
 ```
 @step(enable_cache=True)

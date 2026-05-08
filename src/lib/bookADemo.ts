@@ -5,10 +5,10 @@
  * Renders form UI but doesn't submit. Primary CTA links to /book-your-demo.
  */
 
-import type { SEOProps } from "./seo";
+import { JOB_TITLE_OPTIONS } from "./formConstants";
 import type { PlaceholderField } from "./formTypes";
 import type { CtaLink } from "./marketingPageTypes";
-import { JOB_TITLE_OPTIONS } from "./formConstants";
+import type { SEOProps } from "./seo";
 
 export const BOOK_A_DEMO_SEO: SEOProps = {
   title: "Book a Demo | ZenML",
@@ -25,8 +25,20 @@ export const BOOK_A_DEMO_HERO = {
 };
 
 export const BOOK_A_DEMO_FIELDS: PlaceholderField[] = [
-  { name: "fullName", label: "Full name", type: "text", required: true, placeholder: "Full name" },
-  { name: "email", label: "Work Email", type: "email", required: true, placeholder: "you@company.inc" },
+  {
+    name: "fullName",
+    label: "Full name",
+    type: "text",
+    required: true,
+    placeholder: "Full name",
+  },
+  {
+    name: "email",
+    label: "Work Email",
+    type: "email",
+    required: true,
+    placeholder: "you@company.inc",
+  },
   {
     name: "jobTitle",
     label: "Job Title",
@@ -38,7 +50,8 @@ export const BOOK_A_DEMO_FIELDS: PlaceholderField[] = [
     label: "Privacy agreement",
     type: "checkbox",
     required: true,
-    placeholder: 'You agree to our <a href="/privacy-policy" class="text-zenml-500 underline">privacy policy</a>.',
+    placeholder:
+      'You agree to our <a href="/privacy-policy" class="text-zenml-500 underline">privacy policy</a>.',
   },
 ];
 

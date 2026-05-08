@@ -8,12 +8,15 @@
  * Generates /case-study/<slug> for each of the 5 published case studies.
  */
 import { getCollection, render } from "astro:content";
-import BaseLayout from "../../layouts/BaseLayout.astro";
 import CaseStudySidebar from "../../components/sections/CaseStudySidebar.astro";
 import FinalCTA from "../../components/sections/FinalCTA.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
 
 export async function getStaticPaths() {
-  const caseStudies = await getCollection("case-studies", ({ data }) => !data.draft);
+  const caseStudies = await getCollection(
+    "case-studies",
+    ({ data }) => !data.draft,
+  );
   return caseStudies.map((cs) => ({
     params: { slug: cs.data.slug },
     props: { cs },
@@ -26,7 +29,9 @@ const { Content } = await render(cs);
 
 // SEO
 const seoTitle = data.seo?.title || `${data.title} - ZenML Case Study`;
-const seoDescription = data.seo?.description || `How ${data.sidebar.company} uses ZenML to build production AI workflows.`;
+const seoDescription =
+  data.seo?.description ||
+  `How ${data.sidebar.company} uses ZenML to build production AI workflows.`;
 const ogImage = data.seo?.ogImage;
 ---
 

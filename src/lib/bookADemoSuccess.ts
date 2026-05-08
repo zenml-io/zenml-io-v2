@@ -5,8 +5,8 @@
  * Similar to /success-calendar: shows thank-you copy + Cal.com widget.
  */
 
-import type { SEOProps } from "./seo";
 import type { CalEmbedConfig } from "./formTypes";
+import type { SEOProps } from "./seo";
 
 export const BOOK_A_DEMO_SUCCESS_SEO: SEOProps = {
   title: "Book a Demo Success | ZenML",
