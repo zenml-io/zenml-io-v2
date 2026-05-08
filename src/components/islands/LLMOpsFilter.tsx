@@ -1167,27 +1167,13 @@ export default function LLMOpsFilter({
         ) : (
           <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
             {paged.map((item) => (
-              // biome-ignore lint/a11y/useSemanticElements: This clickable card contains tag buttons, so it cannot safely become a single anchor.
               <div
                 key={item.slug}
-                class="group flex cursor-pointer flex-col rounded-lg border border-gray-200 bg-white p-5 transition-shadow hover:shadow-md"
-                role="link"
-                tabIndex={0}
-                onClick={() => {
-                  window.location.href = `/llmops-database/${item.slug}`;
-                }}
-                onKeyDown={(e: KeyboardEvent) => {
-                  if (e.target !== e.currentTarget) return;
-                  if (e.key === "Enter" || e.key === " ") {
-                    e.preventDefault();
-                    window.location.href = `/llmops-database/${item.slug}`;
-                  }
-                }}
+                class="group flex flex-col rounded-lg border border-gray-200 bg-white p-5 transition-shadow hover:shadow-md"
               >
                 <a
                   href={`/llmops-database/${item.slug}`}
                   class={`font-semibold text-gray-900 group-hover:text-primary-600 line-clamp-2 ${FOCUS_RING}`}
-                  onClick={(e: MouseEvent) => e.stopPropagation()}
                 >
                   {item.title}
                 </a>
@@ -1210,8 +1196,7 @@ export default function LLMOpsFilter({
                       <button
                         type="button"
                         class={`rounded-full bg-purple-50 px-2 py-0.5 text-purple-700 transition-colors hover:bg-purple-100 ${FOCUS_RING}`}
-                        onClick={(e: MouseEvent) => {
-                          e.stopPropagation();
+                        onClick={() => {
                           const industryTag = item.industryTags;
                           if (industryTag) selectIndustry(industryTag);
                         }}
@@ -1245,8 +1230,7 @@ export default function LLMOpsFilter({
                               ? `Remove filter ${tagMap.get(tagSlug) || tagSlug}`
                               : `Filter by ${tagMap.get(tagSlug) || tagSlug}`
                           }
-                          onClick={(e: MouseEvent) => {
-                            e.stopPropagation();
+                          onClick={() => {
                             toggleTag(tagSlug);
                           }}
                           class={`rounded-full px-2 py-0.5 text-xs transition-colors ${FOCUS_RING} ${
