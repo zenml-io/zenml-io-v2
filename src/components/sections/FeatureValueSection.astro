@@ -19,7 +19,16 @@ interface Props {
   imageSide?: "left" | "right";
 }
 
-const { eyebrow, title, body, bullets, learnMoreHref, learnMoreLabel = "Learn More", image, imageSide = "right" } = Astro.props;
+const {
+  eyebrow,
+  title,
+  body,
+  bullets,
+  learnMoreHref,
+  learnMoreLabel = "Learn More",
+  image,
+  imageSide = "right",
+} = Astro.props;
 const isImageLeft = imageSide === "left";
 ---
 

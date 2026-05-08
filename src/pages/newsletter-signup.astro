@@ -1,15 +1,15 @@
 ---
+import BrevoNewsletterForm from "../components/sections/BrevoNewsletterForm.astro";
 /**
  * Newsletter Signup — dedicated page with Brevo form.
  *
  * Route: /newsletter-signup
  */
 import BaseLayout from "../layouts/BaseLayout.astro";
-import BrevoNewsletterForm from "../components/sections/BrevoNewsletterForm.astro";
 import { BREVO_MAIN_CONFIG } from "../lib/formConstants";
 import {
-  NEWSLETTER_SIGNUP_SEO,
   NEWSLETTER_SIGNUP_CONTENT,
+  NEWSLETTER_SIGNUP_SEO,
 } from "../lib/newsletterSignup";
 
 const { headline, body, privacyHtml, image } = NEWSLETTER_SIGNUP_CONTENT;

@@ -7,9 +7,9 @@
  * Route: /integrations
  */
 import { getCollection } from "astro:content";
-import BaseLayout from "../../layouts/BaseLayout.astro";
 import Button from "../../components/Button.astro";
 import IntegrationCard from "../../components/integrations/IntegrationCard.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
 import { R2_WEBFLOW_BASE } from "../../lib/constants";
 
 // Get all published integrations + types
@@ -18,7 +18,7 @@ const allIntegrations = (
 ).sort((a, b) => a.data.title.localeCompare(b.data.title));
 
 const allTypes = (await getCollection("integration-types")).sort((a, b) =>
-  a.data.name.localeCompare(b.data.name)
+  a.data.name.localeCompare(b.data.name),
 );
 const typeMap = new Map(allTypes.map((t) => [t.data.slug, t.data.name]));
 

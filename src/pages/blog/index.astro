@@ -6,20 +6,20 @@
  * Page 2+ handled by blog/page/[page].astro.
  */
 import { getEntry } from "astro:content";
-import BaseLayout from "../../layouts/BaseLayout.astro";
 import BlogCard from "../../components/blog/BlogCard.astro";
 import BlogHero from "../../components/blog/BlogHero.astro";
 import CategoryBar from "../../components/blog/CategoryBar.astro";
 import TagCloud from "../../components/blog/TagCloud.astro";
 import Pagination from "../../components/Pagination.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
 import {
-  getMainFeedPosts,
-  getCategoryCounts,
-  getTagCounts,
-  resolveAuthor,
-  PAGE_SIZE,
-  PAGE_1_GRID_COUNT,
   blogPageHref,
+  getCategoryCounts,
+  getMainFeedPosts,
+  getTagCounts,
+  PAGE_1_GRID_COUNT,
+  PAGE_SIZE,
+  resolveAuthor,
 } from "../../lib/blog";
 
 const allPosts = await getMainFeedPosts();
@@ -30,7 +30,9 @@ const remainingPosts = allPosts.filter((p) => p !== featuredPost);
 
 // Grid posts — fill rest of page 1 (multiple of 3 for clean 3-col grid)
 const gridPosts = remainingPosts.slice(0, PAGE_1_GRID_COUNT);
-const totalPages = 1 + Math.ceil(Math.max(remainingPosts.length - PAGE_1_GRID_COUNT, 0) / PAGE_SIZE);
+const totalPages =
+  1 +
+  Math.ceil(Math.max(remainingPosts.length - PAGE_1_GRID_COUNT, 0) / PAGE_SIZE);
 
 // Taxonomy data
 const categories = await getCategoryCounts(allPosts);
@@ -52,10 +54,13 @@ for (const post of gridPosts) {
   }
   if (post.data.category && !categoryMap.has(post.data.category)) {
     const cat = await getEntry("categories", post.data.category);
-    if (cat) categoryMap.set(post.data.category, { name: cat.data.name, slug: cat.data.slug });
+    if (cat)
+      categoryMap.set(post.data.category, {
+        name: cat.data.name,
+        slug: cat.data.slug,
+      });
   }
 }
-
 ---
 
 <BaseLayout

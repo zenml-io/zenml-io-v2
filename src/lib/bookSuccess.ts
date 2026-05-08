@@ -4,8 +4,8 @@
  * Route: /book-success (noindex)
  */
 
-import type { SEOProps } from "./seo";
 import type { SuccessPageData } from "./formTypes";
+import type { SEOProps } from "./seo";
 
 export const BOOK_SUCCESS_SEO: SEOProps = {
   title: "Demo Booked | ZenML",

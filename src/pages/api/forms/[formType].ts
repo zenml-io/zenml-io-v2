@@ -7,45 +7,20 @@
  * (fire-and-forget via waitUntil), and returns success to the user.
  * Segment routes form data to CRM destinations (Attio, Apollo).
  */
-import type { APIContext } from "astro";
+
 import type { Runtime } from "@astrojs/cloudflare";
+import type { APIContext } from "astro";
+import {
+  FORM_RULES,
+  type FormType,
+  validateForm,
+} from "../../../lib/formValidation";
 
 export const prerender = false;
 
-type FormType = "demo-request" | "whitepaper" | "brick-manual" | "startup-academic";
-
-const VALID_FORM_TYPES = new Set<FormType>([
-  "demo-request",
-  "whitepaper",
-  "brick-manual",
-  "startup-academic",
-]);
-
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const URL_RE = /^https?:\/\/.+/;
-
-/** Per-form required field rules (mirrors src/lib/formValidation.ts). */
-const REQUIRED_FIELDS: Record<FormType, Record<string, { pattern?: RegExp; message: string }>> = {
-  "demo-request": {
-    fullName: { message: "Full name is required" },
-    email: { pattern: EMAIL_RE, message: "Valid work email is required" },
-  },
-  whitepaper: {
-    fullName: { message: "Full name is required" },
-    email: { pattern: EMAIL_RE, message: "Valid work email is required" },
-  },
-  "brick-manual": {
-    fullName: { message: "Full name is required" },
-    email: { pattern: EMAIL_RE, message: "Valid email is required" },
-  },
-  "startup-academic": {
-    fullName: { message: "Full name is required" },
-    email: { pattern: EMAIL_RE, message: "Valid email is required" },
-    linkedin: { pattern: URL_RE, message: "LinkedIn URL is required" },
-    company: { message: "Organization name is required" },
-    role: { message: "Please select a role" },
-  },
-};
+const VALID_FORM_TYPES = new Set<FormType>(
+  Object.keys(FORM_RULES) as FormType[],
+);
 
 /** Fields excluded from the Segment track payload (sensitive or irrelevant for CRM). */
 const EXCLUDED_FIELDS = new Set(["cf-turnstile-response", "privacy"]);
@@ -75,7 +50,7 @@ async function segmentCall(
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Basic ${btoa(writeKey + ":")}`,
+      Authorization: `Basic ${btoa(`${writeKey}:`)}`,
     },
     body: JSON.stringify(body),
   });
@@ -106,21 +81,12 @@ export async function POST(context: APIContext): Promise<Response> {
     if (typeof value === "string") data[key] = value;
   }
 
-  // Validate required fields
-  const rules = REQUIRED_FIELDS[formType as FormType];
-  const errors: Record<string, string> = {};
+  const typedFormType = formType as FormType;
 
-  for (const [field, rule] of Object.entries(rules)) {
-    const val = (data[field] ?? "").trim();
-    if (!val) {
-      errors[field] = rule.message;
-    } else if (rule.pattern && !rule.pattern.test(val)) {
-      errors[field] = rule.message;
-    }
-  }
-
-  if (Object.keys(errors).length > 0) {
-    return jsonResponse({ success: false, errors }, 422);
+  // Validate required fields using shared client/server rules
+  const validation = validateForm(typedFormType, data);
+  if (!validation.valid) {
+    return jsonResponse({ success: false, errors: validation.errors }, 422);
   }
 
   // Access Cloudflare runtime for env vars and waitUntil
@@ -133,7 +99,10 @@ export async function POST(context: APIContext): Promise<Response> {
 
   if (turnstileSecret) {
     if (!turnstileToken) {
-      return jsonResponse({ success: false, error: "Bot verification is required" }, 403);
+      return jsonResponse(
+        { success: false, error: "Bot verification is required" },
+        403,
+      );
     }
     const verifyResponse = await fetch(
       "https://challenges.cloudflare.com/turnstile/v0/siteverify",
@@ -148,7 +117,10 @@ export async function POST(context: APIContext): Promise<Response> {
     );
     const result = (await verifyResponse.json()) as { success: boolean };
     if (!result.success) {
-      return jsonResponse({ success: false, error: "Bot verification failed. Please try again." }, 403);
+      return jsonResponse(
+        { success: false, error: "Bot verification failed. Please try again." },
+        403,
+      );
     }
   }
 
@@ -156,7 +128,10 @@ export async function POST(context: APIContext): Promise<Response> {
   const privacyValue = (data.privacy ?? "").trim().toLowerCase();
   if (!/^(on|true|1)$/.test(privacyValue)) {
     return jsonResponse(
-      { success: false, errors: { privacy: "You must agree to the privacy policy" } },
+      {
+        success: false,
+        errors: { privacy: "You must agree to the privacy policy" },
+      },
       422,
     );
   }
@@ -175,7 +150,7 @@ export async function POST(context: APIContext): Promise<Response> {
     const segmentContext = { page: { url: referer }, userAgent };
 
     // Build traits for identify (name, email, company where available)
-    const traitFields = IDENTIFY_TRAITS[formType as FormType] ?? [];
+    const traitFields = IDENTIFY_TRAITS[typedFormType] ?? [];
     const traits: Record<string, string> = {};
     for (const field of traitFields) {
       const val = (data[field] ?? "").trim();

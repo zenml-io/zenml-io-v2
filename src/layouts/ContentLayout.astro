@@ -1,4 +1,5 @@
 ---
+import type { SEOProps } from "../lib/seo";
 /**
  * ContentLayout — generic prose wrapper for content pages.
  *
@@ -9,7 +10,6 @@
  * Pages that need custom chrome (like BlogLayout) compose over this layout.
  */
 import BaseLayout from "./BaseLayout.astro";
-import type { SEOProps } from "../lib/seo";
 
 interface Props extends SEOProps {
   /** Narrow content column (default) or wide (for pages with sidebars) */

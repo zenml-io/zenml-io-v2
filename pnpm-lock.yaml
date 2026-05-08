@@ -51,6 +51,9 @@ importers:
       '@biomejs/biome':
         specifier: ^2.3.14
         version: 2.3.14
+      '@types/mdast':
+        specifier: ^4.0.4
+        version: 4.0.4
       '@types/node':
         specifier: ^22.19.11
         version: 22.19.11

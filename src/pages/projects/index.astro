@@ -8,8 +8,8 @@
  * Route: /projects
  */
 import { getCollection } from "astro:content";
-import BaseLayout from "../../layouts/BaseLayout.astro";
 import Button from "../../components/Button.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
 
 const allProjects = (
   await getCollection("projects", ({ data }) => !data.draft)

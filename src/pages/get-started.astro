@@ -1,4 +1,8 @@
 ---
+import { getCollection } from "astro:content";
+import { createHighlighter } from "shiki";
+import Button from "../components/Button.astro";
+import FeaturesHubCTA from "../components/sections/FeaturesHubCTA.astro";
 /**
  * Get Started page.
  *
@@ -8,24 +12,24 @@
  * architecture diagram, projects showcase, resources grid, and CTA.
  */
 import BaseLayout from "../layouts/BaseLayout.astro";
-import Button from "../components/Button.astro";
-import FeaturesHubCTA from "../components/sections/FeaturesHubCTA.astro";
-import { getCollection } from "astro:content";
-import { createHighlighter } from "shiki";
-import zenmlDark from "../styles/zenml-dark.json";
 import {
-  GET_STARTED_SEO,
-  GET_STARTED_HERO,
-  GET_STARTED_STEPS,
   GET_STARTED_ARCHITECTURE,
+  GET_STARTED_FINAL_CTA,
+  GET_STARTED_HERO,
   GET_STARTED_PROJECTS,
   GET_STARTED_RESOURCES,
-  GET_STARTED_FINAL_CTA,
+  GET_STARTED_SEO,
+  GET_STARTED_STEPS,
 } from "../lib/getStarted";
+import zenmlDark from "../styles/zenml-dark.json";
+
+type HighlighterTheme = NonNullable<
+  Parameters<typeof createHighlighter>[0]["themes"]
+>[number];
 
 // Highlight code steps at build time with dark theme
 const highlighter = await createHighlighter({
-  themes: [zenmlDark as any],
+  themes: [zenmlDark as HighlighterTheme],
   langs: ["python", "bash"],
 });
 
@@ -39,19 +43,19 @@ const highlightedSteps = GET_STARTED_STEPS.items.map((step) => {
 });
 
 // Pull projects from the CMS collection if it exists
-let projects: { data: { title: string; description?: string; mainImage?: string }; id: string }[] = [];
+let projects: {
+  data: { title: string; description?: string };
+  id: string;
+}[] = [];
 try {
   const allProjects = await getCollection("projects");
-  projects = allProjects
-    .slice(0, 6)
-    .map((p) => ({
-      data: {
-        title: (p.data as any).title ?? p.id,
-        description: (p.data as any).description,
-        mainImage: (p.data as any).mainImage,
-      },
-      id: p.id,
-    }));
+  projects = allProjects.slice(0, 6).map((p) => ({
+    data: {
+      title: p.data.title ?? p.id,
+      description: p.data.description,
+    },
+    id: p.id,
+  }));
 } catch {
   // Collection may not exist yet — show empty state
 }

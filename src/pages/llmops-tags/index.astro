@@ -7,8 +7,8 @@
  */
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { getAllPublishedEntries, getLLMOpsTagCounts } from "../../lib/llmops";
 import type { TaxonomyCount } from "../../lib/llmops";
+import { getAllPublishedEntries, getLLMOpsTagCounts } from "../../lib/llmops";
 
 const entries = await getAllPublishedEntries();
 const usedCounts = await getLLMOpsTagCounts(entries);

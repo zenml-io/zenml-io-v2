@@ -7,7 +7,7 @@
  *  - arrow buttons (bottom-right) + dot indicators
  *  - card: white bg, primary-50 border, 1rem radius, 2rem padding
  */
-import { useState, useEffect, useRef, useCallback } from "preact/hooks";
+import { useCallback, useEffect, useRef, useState } from "preact/hooks";
 
 export interface CarouselTestimonial {
   quote: string;
@@ -92,8 +92,9 @@ export default function ProTestimonialCarousel({
   const slideWidthPercent = 100 / slidesPerView;
 
   return (
-    <div
+    <section
       class="relative"
+      aria-label="Testimonials carousel"
       onMouseEnter={pauseAutoplay}
       onMouseLeave={resumeAutoplay}
     >
@@ -150,6 +151,7 @@ export default function ProTestimonialCarousel({
           {Array.from({ length: dotCount }).map((_, i) => (
             <button
               key={i}
+              type="button"
               onClick={() => goTo(i)}
               aria-label={`Go to slide ${i + 1}`}
               class={`h-2.5 w-2.5 rounded-full transition-colors ${
@@ -164,12 +166,14 @@ export default function ProTestimonialCarousel({
         {/* Arrows */}
         <div class="flex items-center gap-2">
           <button
+            type="button"
             onClick={prev}
             aria-label="Previous testimonials"
             class="flex h-12 w-12 items-center justify-center rounded-full border border-gray-200 bg-white transition-colors hover:bg-gray-50"
           >
             <svg
               class="h-5 w-5 text-gray-700"
+              aria-hidden="true"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -183,12 +187,14 @@ export default function ProTestimonialCarousel({
             </svg>
           </button>
           <button
+            type="button"
             onClick={next}
             aria-label="Next testimonials"
             class="flex h-12 w-12 items-center justify-center rounded-full border border-gray-200 bg-white transition-colors hover:bg-gray-50"
           >
             <svg
               class="h-5 w-5 text-gray-700"
+              aria-hidden="true"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -203,6 +209,6 @@ export default function ProTestimonialCarousel({
           </button>
         </div>
       </div>
-    </div>
+    </section>
   );
 }

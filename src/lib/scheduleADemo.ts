@@ -5,8 +5,8 @@
  * Uses the "discovery-call-reschedule" Cal.com link.
  */
 
-import type { SEOProps } from "./seo";
 import type { CalEmbedConfig } from "./formTypes";
+import type { SEOProps } from "./seo";
 
 export const SCHEDULE_A_DEMO_SEO: SEOProps = {
   title: "Schedule a Demo | ZenML",

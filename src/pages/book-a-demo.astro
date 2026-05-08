@@ -1,17 +1,17 @@
 ---
+import ContactForm from "../components/islands/ContactForm.tsx";
 /**
  * Book a Demo — demo request form.
  *
  * Route: /book-a-demo
  */
 import BaseLayout from "../layouts/BaseLayout.astro";
-import ContactForm from "../components/islands/ContactForm.tsx";
-import { TURNSTILE_SITE_KEY } from "../lib/formConstants";
 import {
-  BOOK_A_DEMO_SEO,
-  BOOK_A_DEMO_HERO,
   BOOK_A_DEMO_FIELDS,
+  BOOK_A_DEMO_HERO,
+  BOOK_A_DEMO_SEO,
 } from "../lib/bookADemo";
+import { TURNSTILE_SITE_KEY } from "../lib/formConstants";
 ---
 
 <BaseLayout

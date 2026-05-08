@@ -6,10 +6,10 @@
  * Two-column: left = marketing copy + image, right = form placeholder.
  */
 
-import type { SEOProps } from "./seo";
+import { JOB_TITLE_OPTIONS } from "./formConstants";
 import type { PlaceholderField } from "./formTypes";
 import type { CtaLink } from "./marketingPageTypes";
-import { JOB_TITLE_OPTIONS } from "./formConstants";
+import type { SEOProps } from "./seo";
 
 export const WHITEPAPER_SEO: SEOProps = {
   title: "Architecting an Enterprise-Grade MLOps Platform | ZenML Whitepaper",
@@ -34,21 +34,39 @@ export const WHITEPAPER_CONTENT = {
 };
 
 export const WHITEPAPER_FIELDS: PlaceholderField[] = [
-  { name: "fullName", label: "Full name", type: "text", required: true, placeholder: "Full name" },
-  { name: "email", label: "Work Email", type: "email", required: true, placeholder: "you@company.inc" },
+  {
+    name: "fullName",
+    label: "Full name",
+    type: "text",
+    required: true,
+    placeholder: "Full name",
+  },
+  {
+    name: "email",
+    label: "Work Email",
+    type: "email",
+    required: true,
+    placeholder: "you@company.inc",
+  },
   {
     name: "jobTitle",
     label: "Job Title (optional)",
     type: "select",
     options: JOB_TITLE_OPTIONS,
   },
-  { name: "company", label: "Company (optional)", type: "text", placeholder: "Company" },
+  {
+    name: "company",
+    label: "Company (optional)",
+    type: "text",
+    placeholder: "Company",
+  },
   {
     name: "privacy",
     label: "Privacy agreement",
     type: "checkbox",
     required: true,
-    placeholder: 'You agree to our <a href="/privacy-policy" class="text-zenml-500 underline">privacy policy</a>.',
+    placeholder:
+      'You agree to our <a href="/privacy-policy" class="text-zenml-500 underline">privacy policy</a>.',
   },
 ];
 

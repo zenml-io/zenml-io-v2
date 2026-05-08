@@ -14,7 +14,13 @@
  * - Paginated results grid
  * - URL state sync for shareability
  */
-import { useEffect, useMemo, useState, useCallback, useRef } from "preact/hooks";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "preact/hooks";
 
 // ── Types ──────────────────────────────────────────────────────────
 
@@ -102,7 +108,10 @@ function getPagefind(): Promise<PagefindInstance | null> {
 
 /** Extract slug from a Pagefind result URL like "/llmops-database/my-slug" */
 function slugFromUrl(url: string): string {
-  return url.replace(/^\/llmops-database\//, "").replace(/\.html$/, "").replace(/\/$/, "");
+  return url
+    .replace(/^\/llmops-database\//, "")
+    .replace(/\.html$/, "")
+    .replace(/\/$/, "");
 }
 
 // ── URL State ──────────────────────────────────────────────────────
@@ -117,7 +126,15 @@ interface FilterState {
 }
 
 function parseStateFromUrl(): FilterState {
-  if (typeof window === "undefined") return { q: "", tags: [], industry: "", page: 1, tagMode: "and", sort: "newest" };
+  if (typeof window === "undefined")
+    return {
+      q: "",
+      tags: [],
+      industry: "",
+      page: 1,
+      tagMode: "and",
+      sort: "newest",
+    };
   const params = new URLSearchParams(window.location.search);
   return {
     q: params.get("q") || "",
@@ -125,7 +142,9 @@ function parseStateFromUrl(): FilterState {
     industry: params.get("industry") || "",
     page: Math.max(1, parseInt(params.get("page") || "1", 10) || 1),
     tagMode: (params.get("tagMode") === "or" ? "or" : "and") as TagMode,
-    sort: (["newest", "az", "relevance"].includes(params.get("sort") || "") ? params.get("sort") : "newest") as SortMode,
+    sort: (["newest", "az", "relevance"].includes(params.get("sort") || "")
+      ? params.get("sort")
+      : "newest") as SortMode,
   };
 }
 
@@ -150,7 +169,11 @@ function matchesQuery(item: ProcessedItem, q: string): boolean {
   return item.searchText.includes(q.toLowerCase());
 }
 
-function matchesTags(item: LLMOpsIndexItem, selected: string[], mode: TagMode): boolean {
+function matchesTags(
+  item: LLMOpsIndexItem,
+  selected: string[],
+  mode: TagMode,
+): boolean {
   if (!selected.length) return true;
   return mode === "and"
     ? selected.every((tag) => item.llmopsTags.includes(tag))
@@ -173,7 +196,11 @@ function scoreRelevance(item: ProcessedItem, q: string): number {
 
 // ── Sort Logic ────────────────────────────────────────────────────
 
-function sortItems(items: ProcessedItem[], sort: SortMode, q: string): ProcessedItem[] {
+function sortItems(
+  items: ProcessedItem[],
+  sort: SortMode,
+  q: string,
+): ProcessedItem[] {
   const sorted = [...items];
   switch (sort) {
     case "newest":
@@ -208,10 +235,18 @@ function sortItems(items: ProcessedItem[], sort: SortMode, q: string): Processed
 /** Arrow-key navigation within a facet list (ul > li > button). */
 function handleFacetListKeyDown(e: KeyboardEvent): void {
   const { key } = e;
-  if (key !== "ArrowDown" && key !== "ArrowUp" && key !== "Home" && key !== "End") return;
+  if (
+    key !== "ArrowDown" &&
+    key !== "ArrowUp" &&
+    key !== "Home" &&
+    key !== "End"
+  )
+    return;
 
   const list = e.currentTarget as HTMLElement;
-  const buttons = [...list.querySelectorAll<HTMLButtonElement>("button:not([disabled])")];
+  const buttons = [
+    ...list.querySelectorAll<HTMLButtonElement>("button:not([disabled])"),
+  ];
   if (!buttons.length) return;
 
   const idx = buttons.indexOf(document.activeElement as HTMLButtonElement);
@@ -220,11 +255,20 @@ function handleFacetListKeyDown(e: KeyboardEvent): void {
   e.preventDefault();
   let next: number;
   switch (key) {
-    case "ArrowDown": next = (idx + 1) % buttons.length; break;
-    case "ArrowUp": next = (idx - 1 + buttons.length) % buttons.length; break;
-    case "Home": next = 0; break;
-    case "End": next = buttons.length - 1; break;
-    default: return;
+    case "ArrowDown":
+      next = (idx + 1) % buttons.length;
+      break;
+    case "ArrowUp":
+      next = (idx - 1 + buttons.length) % buttons.length;
+      break;
+    case "Home":
+      next = 0;
+      break;
+    case "End":
+      next = buttons.length - 1;
+      break;
+    default:
+      return;
   }
   buttons[next].focus();
 }
@@ -233,7 +277,14 @@ function handleFacetListKeyDown(e: KeyboardEvent): void {
 
 function SearchIcon() {
   return (
-    <svg class="h-4 w-4 text-gray-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.67">
+    <svg
+      class="h-4 w-4 text-gray-400"
+      aria-hidden="true"
+      viewBox="0 0 20 20"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.67"
+    >
       <circle cx="9" cy="9" r="6" />
       <path d="M13.5 13.5L17 17" stroke-linecap="round" />
     </svg>
@@ -242,7 +293,14 @@ function SearchIcon() {
 
 function CloseIcon() {
   return (
-    <svg class="h-4 w-4" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2">
+    <svg
+      class="h-4 w-4"
+      aria-hidden="true"
+      viewBox="0 0 12 12"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+    >
       <path d="M3 9L9 3M3 3l6 6" />
     </svg>
   );
@@ -250,7 +308,15 @@ function CloseIcon() {
 
 function FilterIcon() {
   return (
-    <svg class="h-4 w-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+    <svg
+      class="h-4 w-4"
+      aria-hidden="true"
+      viewBox="0 0 20 20"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.5"
+      stroke-linecap="round"
+    >
       <path d="M3 5h14M5 10h10M7 15h6" />
     </svg>
   );
@@ -258,11 +324,16 @@ function FilterIcon() {
 
 // ── Focus ring class (DRY) ────────────────────────────────────────
 
-const FOCUS_RING = "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:ring-offset-1";
+const FOCUS_RING =
+  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:ring-offset-1";
 
 // ── Component ──────────────────────────────────────────────────────
 
-export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOpsFilterProps) {
+export default function LLMOpsFilter({
+  tags,
+  industries,
+  pageSize = 24,
+}: LLMOpsFilterProps) {
   const [items, setItems] = useState<ProcessedItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -292,8 +363,14 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
   const drawerCloseRef = useRef<HTMLButtonElement | null>(null);
 
   // Lookup maps
-  const tagMap = useMemo(() => new Map(tags.map((t) => [t.slug, t.name])), [tags]);
-  const industryMap = useMemo(() => new Map(industries.map((i) => [i.slug, i.name])), [industries]);
+  const tagMap = useMemo(
+    () => new Map(tags.map((t) => [t.slug, t.name])),
+    [tags],
+  );
+  const industryMap = useMemo(
+    () => new Map(industries.map((i) => [i.slug, i.name])),
+    [industries],
+  );
 
   // Fetch data
   useEffect(() => {
@@ -305,7 +382,10 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
       .then((data: LLMOpsIndexItem[]) => {
         const processed = data.map((item) => ({
           ...item,
-          searchText: [item.title, item.company, item.summary].filter(Boolean).join(" ").toLowerCase(),
+          searchText: [item.title, item.company, item.summary]
+            .filter(Boolean)
+            .join(" ")
+            .toLowerCase(),
         }));
         setItems(processed);
         setLoading(false);
@@ -316,7 +396,9 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
       });
 
     // Pre-warm Pagefind (non-blocking)
-    getPagefind().then((pf) => { if (pf) setPagefindAvailable(true); });
+    getPagefind().then((pf) => {
+      if (pf) setPagefindAvailable(true);
+    });
   }, []);
 
   // Pagefind search: query changes → debounced full-text search → relevance-ranked slugs
@@ -345,7 +427,10 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
       setPagefindSlugs(slugs);
     }, 200);
 
-    return () => { cancelled = true; clearTimeout(timer); };
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+    };
   }, [query]);
 
   // Close mobile drawer on escape + restore focus
@@ -365,14 +450,18 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
     } else {
       document.body.style.overflow = "";
     }
-    return () => { document.body.style.overflow = ""; };
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [mobileDrawerOpen]);
 
   // Focus management: focus close button on open, restore on close
   useEffect(() => {
     if (mobileDrawerOpen) {
       // Focus the close button after the drawer animates in
-      requestAnimationFrame(() => { drawerCloseRef.current?.focus(); });
+      requestAnimationFrame(() => {
+        drawerCloseRef.current?.focus();
+      });
     } else {
       // Restore focus to the filter button when drawer closes
       mobileFiltersButtonRef.current?.focus();
@@ -396,7 +485,7 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
   const tagCounts = useMemo(() => {
     const usePagefind = pagefindAvailable && query && pagefindSlugSet !== null;
     const base = items.filter((item) => {
-      if (usePagefind && !pagefindSlugSet!.has(item.slug)) return false;
+      if (usePagefind && !pagefindSlugSet?.has(item.slug)) return false;
       if (!usePagefind && !matchesQuery(item, query)) return false;
       return matchesIndustry(item, selectedIndustry);
     });
@@ -413,7 +502,7 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
   const industryCounts = useMemo(() => {
     const usePagefind = pagefindAvailable && query && pagefindSlugSet !== null;
     const base = items.filter((item) => {
-      if (usePagefind && !pagefindSlugSet!.has(item.slug)) return false;
+      if (usePagefind && !pagefindSlugSet?.has(item.slug)) return false;
       if (!usePagefind && !matchesQuery(item, query)) return false;
       return matchesTags(item, selectedTags, tagMode);
     });
@@ -431,7 +520,8 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
   // slugs as the primary result set; apply tag/industry filters on top.
   // When Pagefind is unavailable (dev mode), fall back to substring matchesQuery().
   const filtered = useMemo(() => {
-    const usePagefindResults = pagefindAvailable && query && pagefindSlugs !== null;
+    const usePagefindResults =
+      pagefindAvailable && query && pagefindSlugs !== null;
 
     let matched: ProcessedItem[];
     if (usePagefindResults) {
@@ -455,15 +545,27 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
     }
 
     // Sort — for relevance with Pagefind, preserve Pagefind's ordering
-    if (usePagefindResults && sort === "relevance") {
-      const slugOrder = new Map(pagefindSlugs!.map((s, i) => [s, i]));
-      matched.sort((a, b) => (slugOrder.get(a.slug) ?? 9999) - (slugOrder.get(b.slug) ?? 9999));
+    if (usePagefindResults && pagefindSlugs && sort === "relevance") {
+      const slugOrder = new Map(pagefindSlugs.map((s, i) => [s, i]));
+      matched.sort(
+        (a, b) =>
+          (slugOrder.get(a.slug) ?? 9999) - (slugOrder.get(b.slug) ?? 9999),
+      );
     } else {
       matched = sortItems(matched, sort, query);
     }
 
     return matched;
-  }, [items, query, selectedTags, selectedIndustry, tagMode, sort, pagefindSlugs, pagefindAvailable]);
+  }, [
+    items,
+    query,
+    selectedTags,
+    selectedIndustry,
+    tagMode,
+    sort,
+    pagefindSlugs,
+    pagefindAvailable,
+  ]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
   const safePage = Math.min(page, totalPages);
@@ -493,7 +595,14 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
 
   // Sync URL
   useEffect(() => {
-    writeStateToUrl({ q: query, tags: selectedTags, industry: selectedIndustry, page: safePage, tagMode, sort });
+    writeStateToUrl({
+      q: query,
+      tags: selectedTags,
+      industry: selectedIndustry,
+      page: safePage,
+      tagMode,
+      sort,
+    });
   }, [query, selectedTags, selectedIndustry, safePage, tagMode, sort]);
 
   // Helpers
@@ -503,14 +612,17 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
     const newQuery = (e.target as HTMLInputElement).value;
     setQuery(newQuery);
     // Auto-switch to relevance sort when user starts typing (if Pagefind available)
-    if (newQuery && pagefindAvailable && sort !== "relevance") setSort("relevance");
+    if (newQuery && pagefindAvailable && sort !== "relevance")
+      setSort("relevance");
     // Revert to newest when query is cleared
     if (!newQuery && sort === "relevance") setSort("newest");
     resetPage();
   };
 
   const toggleTag = (slug: string) => {
-    setSelectedTags((prev) => (prev.includes(slug) ? prev.filter((t) => t !== slug) : [...prev, slug]));
+    setSelectedTags((prev) =>
+      prev.includes(slug) ? prev.filter((t) => t !== slug) : [...prev, slug],
+    );
     resetPage();
   };
 
@@ -533,7 +645,9 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
   // Tags to show in sidebar (with search + expand)
   const sidebarTags = useMemo(() => {
     // Sort tags by contextual count descending
-    const sorted = [...tags].sort((a, b) => (tagCounts.get(b.slug) || 0) - (tagCounts.get(a.slug) || 0));
+    const sorted = [...tags].sort(
+      (a, b) => (tagCounts.get(b.slug) || 0) - (tagCounts.get(a.slug) || 0),
+    );
 
     if (sidebarTagSearch) {
       const lower = sidebarTagSearch.toLowerCase();
@@ -552,7 +666,9 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
       <div class="space-y-6">
         {/* Industry facet */}
         <div>
-          <h3 class="mb-3 text-xs font-semibold uppercase tracking-wider text-gray-400">Industry</h3>
+          <h3 class="mb-3 text-xs font-semibold uppercase tracking-wider text-gray-400">
+            Industry
+          </h3>
           <ul class="space-y-1" onKeyDown={handleFacetListKeyDown}>
             {industries.map((ind) => {
               const count = industryCounts.get(ind.slug) || 0;
@@ -573,7 +689,9 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
                     disabled={count === 0 && !isSelected}
                   >
                     <span class="truncate">{ind.name}</span>
-                    <span class={`ml-2 text-xs tabular-nums ${isSelected ? "text-purple-500" : "text-gray-400"}`}>
+                    <span
+                      class={`ml-2 text-xs tabular-nums ${isSelected ? "text-purple-500" : "text-gray-400"}`}
+                    >
                       {count}
                     </span>
                   </button>
@@ -585,19 +703,26 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
 
         {/* Technology facet */}
         <div>
-          <h3 class="mb-3 text-xs font-semibold uppercase tracking-wider text-gray-400">Technologies</h3>
+          <h3 class="mb-3 text-xs font-semibold uppercase tracking-wider text-gray-400">
+            Technologies
+          </h3>
 
           {/* Tag search within sidebar */}
           <div class="relative mb-2">
             <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2.5">
               <SearchIcon />
             </div>
-            <label for={tagSearchId} class="sr-only">Search technologies</label>
+            <label for={tagSearchId} class="sr-only">
+              Search technologies
+            </label>
             <input
               id={tagSearchId}
               type="search"
               value={sidebarTagSearch}
-              onInput={(e) => { setSidebarTagSearch((e.target as HTMLInputElement).value); setShowAllTags(true); }}
+              onInput={(e) => {
+                setSidebarTagSearch((e.target as HTMLInputElement).value);
+                setShowAllTags(true);
+              }}
               placeholder="Search tags..."
               class={`w-full rounded-md border border-gray-200 py-1.5 pl-8 pr-3 text-sm placeholder-gray-400 focus:border-primary-600 focus:outline-none focus:ring-1 focus:ring-primary-600`}
             />
@@ -622,7 +747,9 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
                     }`}
                   >
                     <span class="truncate">{tag.name}</span>
-                    <span class={`ml-2 text-xs tabular-nums ${isSelected ? "text-blue-500" : "text-gray-400"}`}>
+                    <span
+                      class={`ml-2 text-xs tabular-nums ${isSelected ? "text-blue-500" : "text-gray-400"}`}
+                    >
                       {count}
                     </span>
                   </button>
@@ -664,14 +791,16 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
     const isAndMode = tagMode === "and";
 
     return (
-      <div class="rounded-lg border border-gray-200 bg-gray-50 py-16 text-center" role="status">
+      <output class="block rounded-lg border border-gray-200 bg-gray-50 py-16 text-center">
         <div class="mx-auto max-w-md px-4">
-          <p class="text-lg font-medium text-gray-700">No entries match your filters</p>
+          <p class="text-lg font-medium text-gray-700">
+            No entries match your filters
+          </p>
           <p class="mt-2 text-sm text-gray-500">
             {hasTags && hasIndustry && hasQuery
               ? "Try removing some filters to broaden your search."
               : hasTags && isAndMode && selectedTags.length > 1
-                ? "These tags don't overlap. Try switching to \"Match Any\" mode."
+                ? 'These tags don\'t overlap. Try switching to "Match Any" mode.'
                 : hasQuery
                   ? `No results for "${query}". Try different search terms.`
                   : "Try adjusting your filter selections."}
@@ -681,7 +810,10 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
               <button
                 type="button"
                 class={`rounded-md border border-primary-200 bg-primary-50 px-3 py-1.5 text-sm font-medium text-primary-700 hover:bg-primary-100 ${FOCUS_RING}`}
-                onClick={() => { setTagMode("or"); resetPage(); }}
+                onClick={() => {
+                  setTagMode("or");
+                  resetPage();
+                }}
               >
                 Switch to Match Any
               </button>
@@ -690,7 +822,10 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
               <button
                 type="button"
                 class={`rounded-md border border-gray-200 px-3 py-1.5 text-sm font-medium text-gray-600 hover:bg-gray-100 ${FOCUS_RING}`}
-                onClick={() => { setSelectedTags([]); resetPage(); }}
+                onClick={() => {
+                  setSelectedTags([]);
+                  resetPage();
+                }}
               >
                 Clear tags
               </button>
@@ -699,7 +834,10 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
               <button
                 type="button"
                 class={`rounded-md border border-gray-200 px-3 py-1.5 text-sm font-medium text-gray-600 hover:bg-gray-100 ${FOCUS_RING}`}
-                onClick={() => { setSelectedIndustry(""); resetPage(); }}
+                onClick={() => {
+                  setSelectedIndustry("");
+                  resetPage();
+                }}
               >
                 Clear industry
               </button>
@@ -708,7 +846,10 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
               <button
                 type="button"
                 class={`rounded-md border border-gray-200 px-3 py-1.5 text-sm font-medium text-gray-600 hover:bg-gray-100 ${FOCUS_RING}`}
-                onClick={() => { setQuery(""); resetPage(); }}
+                onClick={() => {
+                  setQuery("");
+                  resetPage();
+                }}
               >
                 Clear search
               </button>
@@ -725,13 +866,18 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
           {/* Suggest popular tags */}
           {popularTags.length > 0 && (
             <div class="mt-6">
-              <p class="mb-2 text-xs font-medium text-gray-400">Popular tags to explore:</p>
+              <p class="mb-2 text-xs font-medium text-gray-400">
+                Popular tags to explore:
+              </p>
               <div class="flex flex-wrap justify-center gap-1.5">
                 {popularTags.slice(0, 6).map((slug) => (
                   <button
                     key={slug}
                     type="button"
-                    onClick={() => { clearAll(); toggleTag(slug); }}
+                    onClick={() => {
+                      clearAll();
+                      toggleTag(slug);
+                    }}
                     class={`rounded-full bg-blue-50 px-2.5 py-1 text-xs font-medium text-blue-700 hover:bg-blue-100 ${FOCUS_RING}`}
                   >
                     {tagMap.get(slug) || slug}
@@ -741,7 +887,7 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
             </div>
           )}
         </div>
-      </div>
+      </output>
     );
   };
 
@@ -749,18 +895,21 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
 
   if (loading) {
     return (
-      <div class="flex items-center justify-center py-20" role="status">
+      <output class="flex items-center justify-center py-20">
         <div class="text-center">
           <div class="mx-auto h-8 w-8 animate-spin rounded-full border-2 border-gray-300 border-t-primary-600" />
           <p class="mt-4 text-sm text-gray-500">Loading LLMOps database...</p>
         </div>
-      </div>
+      </output>
     );
   }
 
   if (error) {
     return (
-      <div class="rounded-lg border border-red-200 bg-red-50 p-6 text-center" role="alert">
+      <div
+        class="rounded-lg border border-red-200 bg-red-50 p-6 text-center"
+        role="alert"
+      >
         <p class="text-sm text-red-700">Failed to load data: {error}</p>
         <button
           type="button"
@@ -786,9 +935,11 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
 
       {/* Mobile drawer backdrop */}
       {mobileDrawerOpen && (
-        <div
+        <button
+          type="button"
           class="fixed inset-0 z-40 bg-black/30 lg:hidden"
           onClick={() => setMobileDrawerOpen(false)}
+          aria-label="Close filters"
         />
       )}
 
@@ -806,7 +957,9 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
       >
         <div class="flex h-full flex-col">
           <div class="flex items-center justify-between border-b border-gray-200 px-4 py-3">
-            <h2 id={MOBILE_DRAWER_TITLE_ID} class="font-semibold text-gray-900">Filters</h2>
+            <h2 id={MOBILE_DRAWER_TITLE_ID} class="font-semibold text-gray-900">
+              Filters
+            </h2>
             <button
               ref={drawerCloseRef}
               type="button"
@@ -859,7 +1012,9 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
             <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
               <SearchIcon />
             </div>
-            <label for="llmops-search" class="sr-only">Search</label>
+            <label for="llmops-search" class="sr-only">
+              Search
+            </label>
             <input
               id="llmops-search"
               type="search"
@@ -871,11 +1026,16 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
           </div>
 
           {/* AND/OR toggle — native radio inputs for accessibility */}
-          <fieldset class="flex items-center gap-1 rounded-lg border border-gray-300 p-1" aria-label="Tag match mode">
+          <fieldset
+            class="flex items-center gap-1 rounded-lg border border-gray-300 p-1"
+            aria-label="Tag match mode"
+          >
             <legend class="sr-only">Tag match mode</legend>
             <label
               class={`cursor-pointer rounded-md px-3 py-1.5 text-xs font-medium transition-colors has-[:focus-visible]:outline-none has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-primary-600 ${
-                tagMode === "and" ? "bg-gray-900 text-white" : "text-gray-600 hover:bg-gray-100"
+                tagMode === "and"
+                  ? "bg-gray-900 text-white"
+                  : "text-gray-600 hover:bg-gray-100"
               }`}
             >
               <input
@@ -883,14 +1043,19 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
                 name="tagMode"
                 value="and"
                 checked={tagMode === "and"}
-                onChange={() => { setTagMode("and"); resetPage(); }}
+                onChange={() => {
+                  setTagMode("and");
+                  resetPage();
+                }}
                 class="sr-only"
               />
               Match All
             </label>
             <label
               class={`cursor-pointer rounded-md px-3 py-1.5 text-xs font-medium transition-colors has-[:focus-visible]:outline-none has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-primary-600 ${
-                tagMode === "or" ? "bg-gray-900 text-white" : "text-gray-600 hover:bg-gray-100"
+                tagMode === "or"
+                  ? "bg-gray-900 text-white"
+                  : "text-gray-600 hover:bg-gray-100"
               }`}
             >
               <input
@@ -898,7 +1063,10 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
                 name="tagMode"
                 value="or"
                 checked={tagMode === "or"}
-                onChange={() => { setTagMode("or"); resetPage(); }}
+                onChange={() => {
+                  setTagMode("or");
+                  resetPage();
+                }}
                 class="sr-only"
               />
               Match Any
@@ -907,11 +1075,16 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
 
           {/* Sort dropdown */}
           <div class="sm:w-40">
-            <label for="llmops-sort" class="sr-only">Sort</label>
+            <label for="llmops-sort" class="sr-only">
+              Sort
+            </label>
             <select
               id="llmops-sort"
               value={sort}
-              onChange={(e) => { setSort((e.target as HTMLSelectElement).value as SortMode); resetPage(); }}
+              onChange={(e) => {
+                setSort((e.target as HTMLSelectElement).value as SortMode);
+                resetPage();
+              }}
               class="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm text-gray-700 transition-colors focus:border-primary-600 focus:outline-none focus:ring-1 focus:ring-primary-600"
             >
               <option value="newest">Newest first</option>
@@ -975,14 +1148,18 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
         )}
 
         {/* Results count — live region for screen readers */}
-        <div class="mb-4 text-sm text-gray-500" role="status" aria-live="polite" aria-atomic="true">
+        <output
+          class="mb-4 block text-sm text-gray-500"
+          aria-live="polite"
+          aria-atomic="true"
+        >
           <span aria-hidden="true">
             {filtered.length === items.length
               ? `${items.length} entries`
               : `${filtered.length} of ${items.length} entries`}
           </span>
           <span class="sr-only">{resultsStatusText}</span>
-        </div>
+        </output>
 
         {/* Results grid */}
         {paged.length === 0 ? (
@@ -990,10 +1167,22 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
         ) : (
           <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
             {paged.map((item) => (
+              // biome-ignore lint/a11y/useSemanticElements: This clickable card contains tag buttons, so it cannot safely become a single anchor.
               <div
                 key={item.slug}
                 class="group flex cursor-pointer flex-col rounded-lg border border-gray-200 bg-white p-5 transition-shadow hover:shadow-md"
-                onClick={() => { window.location.href = `/llmops-database/${item.slug}`; }}
+                role="link"
+                tabIndex={0}
+                onClick={() => {
+                  window.location.href = `/llmops-database/${item.slug}`;
+                }}
+                onKeyDown={(e: KeyboardEvent) => {
+                  if (e.target !== e.currentTarget) return;
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    window.location.href = `/llmops-database/${item.slug}`;
+                  }
+                }}
               >
                 <a
                   href={`/llmops-database/${item.slug}`}
@@ -1004,7 +1193,11 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
                 </a>
 
                 <div class="mt-2 flex flex-wrap items-center gap-2 text-xs text-gray-500">
-                  {item.company && <span class="font-medium text-gray-700">{item.company}</span>}
+                  {item.company && (
+                    <span class="font-medium text-gray-700">
+                      {item.company}
+                    </span>
+                  )}
                   {item.year && (
                     <>
                       {item.company && <span aria-hidden="true">&middot;</span>}
@@ -1017,17 +1210,24 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
                       <button
                         type="button"
                         class={`rounded-full bg-purple-50 px-2 py-0.5 text-purple-700 transition-colors hover:bg-purple-100 ${FOCUS_RING}`}
-                        onClick={(e: MouseEvent) => { e.stopPropagation(); selectIndustry(item.industryTags!); }}
+                        onClick={(e: MouseEvent) => {
+                          e.stopPropagation();
+                          const industryTag = item.industryTags;
+                          if (industryTag) selectIndustry(industryTag);
+                        }}
                         aria-label={`Filter by ${industryMap.get(item.industryTags) || item.industryTags}`}
                       >
-                        {industryMap.get(item.industryTags) || item.industryTags}
+                        {industryMap.get(item.industryTags) ||
+                          item.industryTags}
                       </button>
                     </>
                   )}
                 </div>
 
                 {item.summary && (
-                  <p class="mt-2 text-sm text-gray-600 line-clamp-2">{item.summary}</p>
+                  <p class="mt-2 text-sm text-gray-600 line-clamp-2">
+                    {item.summary}
+                  </p>
                 )}
 
                 {item.llmopsTags.length > 0 && (
@@ -1040,8 +1240,15 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
                           type="button"
                           data-tag-chip
                           aria-pressed={isSelected}
-                          aria-label={isSelected ? `Remove filter ${tagMap.get(tagSlug) || tagSlug}` : `Filter by ${tagMap.get(tagSlug) || tagSlug}`}
-                          onClick={(e: MouseEvent) => { e.stopPropagation(); toggleTag(tagSlug); }}
+                          aria-label={
+                            isSelected
+                              ? `Remove filter ${tagMap.get(tagSlug) || tagSlug}`
+                              : `Filter by ${tagMap.get(tagSlug) || tagSlug}`
+                          }
+                          onClick={(e: MouseEvent) => {
+                            e.stopPropagation();
+                            toggleTag(tagSlug);
+                          }}
                           class={`rounded-full px-2 py-0.5 text-xs transition-colors ${FOCUS_RING} ${
                             isSelected
                               ? "bg-primary-600 text-white"
@@ -1066,7 +1273,10 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
 
         {/* Pagination */}
         {totalPages > 1 && (
-          <nav class="mt-8 flex items-center justify-center gap-2" aria-label="Pagination">
+          <nav
+            class="mt-8 flex items-center justify-center gap-2"
+            aria-label="Pagination"
+          >
             <button
               type="button"
               disabled={safePage <= 1}
@@ -1092,7 +1302,13 @@ export default function LLMOpsFilter({ tags, industries, pageSize = 24 }: LLMOps
               }
               return pages.map((p, i) =>
                 p === "..." ? (
-                  <span key={`e${i}`} class="px-1 text-gray-400" aria-hidden="true">&hellip;</span>
+                  <span
+                    key={`e${i}`}
+                    class="px-1 text-gray-400"
+                    aria-hidden="true"
+                  >
+                    &hellip;
+                  </span>
                 ) : (
                   <button
                     key={p}

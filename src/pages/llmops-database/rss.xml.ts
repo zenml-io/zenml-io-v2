@@ -5,8 +5,9 @@
  * LLMOps has no top-level `date` field — timestamps come from
  * webflow.lastPublished → lastUpdated → createdOn (all optional strings).
  */
-import type { APIRoute } from "astro";
+
 import { getCollection } from "astro:content";
+import type { APIRoute } from "astro";
 import { SITE_URL } from "../../lib/constants";
 import type { LLMOpsProvenance } from "../../lib/llmops";
 
@@ -33,7 +34,7 @@ function derivePubDate(data: LLMOpsProvenance): Date | null {
   for (const raw of candidates) {
     if (!raw) continue;
     const d = new Date(raw);
-    if (!isNaN(d.getTime())) return d;
+    if (!Number.isNaN(d.getTime())) return d;
   }
   return null;
 }
@@ -41,7 +42,7 @@ function derivePubDate(data: LLMOpsProvenance): Date | null {
 export const GET: APIRoute = async () => {
   const entries = await getCollection(
     "llmops-database",
-    ({ data }) => !data.draft
+    ({ data }) => !data.draft,
   );
 
   // Derive pubDate for sorting + feed

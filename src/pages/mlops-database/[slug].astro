@@ -26,10 +26,12 @@ export async function getStaticPaths() {
         props: { entry, related },
       };
     }),
-    ...Object.entries(STALE_RAY_SUMMIT_REDIRECTS).map(([oldSlug, targetSlug]) => ({
-      params: { slug: oldSlug },
-      props: { redirectTo: `/mlops-database/${targetSlug}` },
-    })),
+    ...Object.entries(STALE_RAY_SUMMIT_REDIRECTS).map(
+      ([oldSlug, targetSlug]) => ({
+        params: { slug: oldSlug },
+        props: { redirectTo: `/mlops-database/${targetSlug}` },
+      }),
+    ),
   ];
 }
 

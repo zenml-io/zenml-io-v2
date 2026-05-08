@@ -10,7 +10,8 @@ import type { ComparisonTableData } from "../../lib/marketingPageTypes";
 
 interface Props extends ComparisonTableData {}
 
-const { eyebrow, headline, subheadline, columnHeaders, headerColors, rows } = Astro.props;
+const { eyebrow, headline, subheadline, columnHeaders, headerColors, rows } =
+  Astro.props;
 const hasIcons = rows.some((r) => r.icon);
 ---
 

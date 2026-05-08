@@ -9,9 +9,9 @@
  * Route: /llmops-database
  */
 import { getCollection } from "astro:content";
-import BaseLayout from "../../layouts/BaseLayout.astro";
 import LLMOpsFilter from "../../components/islands/LLMOpsFilter";
 import BrevoNewsletterForm from "../../components/sections/BrevoNewsletterForm.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
 import { BREVO_LLMOPS_CONFIG } from "../../lib/formConstants";
 
 // Resolve tag + industry display names for the filter UI
@@ -24,7 +24,9 @@ const allIndustries = (await getCollection("industry-tags"))
   .sort((a, b) => a.name.localeCompare(b.name));
 
 // Count for hero text (non-draft entries)
-const entryCount = (await getCollection("llmops-database", ({ data }) => !data.draft)).length;
+const entryCount = (
+  await getCollection("llmops-database", ({ data }) => !data.draft)
+).length;
 ---
 
 <BaseLayout
