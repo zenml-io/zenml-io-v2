@@ -149,7 +149,7 @@ ZenML also supports [dynamic pipelines](https://docs.zenml.io/concepts/steps_and
 
 Visualization means different things on each of these platforms.
 
-### Dataiku
+#### Dataiku
 
 ![Dataiku Flow visualization with charts and dashboards](https://assets.zenml.io/content/blog/dataiku-vs-databricks/7164b2e9/dataiku-visualization.avif)
 
@@ -165,7 +165,7 @@ The result is a platform that not only shows pipeline execution but it also give
 
 **Where it can feel limiting:** the visualization experience is centered on Dataiku projects. If your ML workloads span many external systems, you may still need separate observability and lineage layers.
 
-### Databricks
+#### Databricks
 
 ![Databricks dashboard and notebook visualization](https://assets.zenml.io/content/blog/dataiku-vs-databricks/2eb723d7/databricks-visualization.avif)
 
@@ -181,7 +181,7 @@ Second, Databricks provides [visualizations in notebooks and the SQL editor](htt
 
 **Where it can feel limiting:** Databricks visualization is excellent for Databricks-native workloads, but less ideal as a neutral cross-stack ML pipeline dashboard if your workflows run across many tools outside Databricks.
 
-### ZenML
+#### ZenML
 
 ![ZenML dashboard pipeline run view](https://assets.zenml.io/content/blog/dataiku-vs-databricks/e3448645/zenml-dashboard.avif)
 
@@ -205,7 +205,7 @@ Why does this matter? Because ML teams often need to debug more than whether a t
 
 Experiment tracking helps you record parameters, metrics, datasets, models, artifacts, code versions, and evaluation results so you can compare runs and reproduce outcomes. 
 
-### Dataiku
+#### Dataiku
 
 ![Dataiku DSS experiment tracking interface](https://assets.zenml.io/content/blog/dataiku-vs-databricks/369ea248/dataiku-experiment-tracking.avif)
 
@@ -219,7 +219,7 @@ This is useful if you already work in Dataiku and want experiment tracking to li
 
 **Where it can feel limiting:** if your ML platform team wants experiment tracking to be one **interchangeable component** in a broader MLOps stack, Dataiku’s model is more platform-centered.
 
-### Databricks
+#### Databricks
 
 ![Databricks managed MLflow experiment tracking](https://assets.zenml.io/content/blog/dataiku-vs-databricks/18091cc5/databricks-mlflow.avif)
 
@@ -233,7 +233,7 @@ Databricks also benefits from being the home of managed MLflow in many enterpris
 
 **Where it can feel limiting:** the deeper your lifecycle becomes tied to Databricks, the harder it may be to keep your ML workflow portable across non-Databricks infrastructure.
 
-### ZenML
+#### ZenML
 
 ![ZenML pipeline stack with experiment tracker components](https://assets.zenml.io/content/blog/dataiku-vs-databricks/65c27d19/zenml-stack.avif)
 
@@ -259,7 +259,7 @@ You could use ZenML to define the pipeline, store artifacts in S3, run steps on 
 
 Governance matters in all three platforms, but the scope differs: Dataiku and Databricks cover broad enterprise governance, while ZenML is strongest around ML pipeline lineage, artifact traceability, reproducibility, and Pro RBAC.
 
-### Dataiku
+#### Dataiku
 
 Dataiku’s governance story has several layers.
 
@@ -275,7 +275,7 @@ Third, Dataiku uses a group-based permissions model. Project permissions can con
 
 **Where it can feel limiting:** Dataiku governance is strongest **inside** the Dataiku environment. If your workflows span many independent ML systems, you may need extra lineage and access controls outside Dataiku.
 
-### Databricks
+#### Databricks
 
 Databricks governance is centered on [Unity Catalog](https://docs.databricks.com/aws/en/data-governance/) that provides a hierarchical privilege model for users, groups, and service principals across data and AI assets. It governs access from the account level down to table rows and columns.
 
@@ -289,7 +289,7 @@ If your main challenge is governed access to tables, models, features, dashboard
 
 **Where it can feel limiting:** governance is strongest for Databricks-managed or Unity Catalog-connected assets. If the ML workflow spans external tools and orchestrators, some governance context may live outside Databricks.
 
-### ZenML
+#### ZenML
 
 ![ZenML pipeline artifact lineage and governance](https://assets.zenml.io/content/blog/dataiku-vs-databricks/474546c8/zenml-governance.avif)
 
