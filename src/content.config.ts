@@ -15,11 +15,11 @@
  * - References use slug-based lookups (not IDs)
  */
 
-import { defineCollection, z } from 'astro:content';
-import { glob } from 'astro/loaders';
-import { readdirSync, existsSync } from 'node:fs';
-import { join, extname, basename } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { defineCollection, z } from "astro:content";
+import { existsSync, readdirSync } from "node:fs";
+import { basename, extname, join } from "node:path";
+import { fileURLToPath } from "node:url";
+import { glob } from "astro/loaders";
 
 // ============================================================================
 // Reusable Schema Helpers
@@ -41,14 +41,16 @@ export const imageSchema = z.object({
  * IMPORTANT: Optional at top level (73+ items don't have SEO data)
  * All fields inside are also optional for flexibility
  */
-export const seoSchema = z.object({
-  title: z.string().optional(),
-  description: z.string().optional(),
-  canonical: z.string().url().optional(),
-  ogImage: z.string().url().optional(),
-  ogTitle: z.string().optional(),
-  ogDescription: z.string().optional(),
-}).optional();
+export const seoSchema = z
+  .object({
+    title: z.string().optional(),
+    description: z.string().optional(),
+    canonical: z.string().url().optional(),
+    ogImage: z.string().url().optional(),
+    ogTitle: z.string().optional(),
+    ogDescription: z.string().optional(),
+  })
+  .optional();
 
 /**
  * Webflow metadata schema
@@ -62,7 +64,7 @@ export const webflowMetaSchema = z.object({
   collectionId: z.string().optional(), // Omitted if null in Webflow export
   itemId: z.string(),
   exportedAt: z.string(),
-  source: z.enum(['live', 'staged-only']),
+  source: z.enum(["live", "staged-only"]),
   lastPublished: z.string().optional(),
   lastUpdated: z.string().optional(),
   createdOn: z.string().optional(),
@@ -77,7 +79,7 @@ const notionMetaSchema = z.object({
 });
 
 const mlopsMetaSchema = z.object({
-  source: z.literal('sqlite'),
+  source: z.literal("sqlite"),
   entryId: z.number(),
   sourceUrl: z.string().url(),
   exportedAt: z.string(),
@@ -116,7 +118,7 @@ export const baseContentSchema = z.object({
  * Uses import.meta.url for robust path resolution
  */
 function getContentDirAbs(): string {
-  return fileURLToPath(new URL('./content', import.meta.url));
+  return fileURLToPath(new URL("./content", import.meta.url));
 }
 
 /**
@@ -136,8 +138,8 @@ function loadSlugSetFromCollectionDir(collectionDirName: string): Set<string> {
 
   return new Set(
     readdirSync(absDir)
-      .filter((f) => extname(f) === '.md')
-      .map((f) => basename(f, '.md'))
+      .filter((f) => extname(f) === ".md")
+      .map((f) => basename(f, ".md")),
   );
 }
 
@@ -146,17 +148,17 @@ function loadSlugSetFromCollectionDir(collectionDirName: string): Set<string> {
  * Built at config evaluation time by reading filesystem
  */
 const referenceSlugSets = {
-  authors: loadSlugSetFromCollectionDir('authors'),
-  categories: loadSlugSetFromCollectionDir('categories'),
-  tags: loadSlugSetFromCollectionDir('tags'),
-  'llmops-tags': loadSlugSetFromCollectionDir('llmops-tags'),
-  'mlops-tags': loadSlugSetFromCollectionDir('mlops-tags'),
-  'industry-tags': loadSlugSetFromCollectionDir('industry-tags'),
-  'project-tags': loadSlugSetFromCollectionDir('project-tags'),
-  'product-categories': loadSlugSetFromCollectionDir('product-categories'),
-  'integration-types': loadSlugSetFromCollectionDir('integration-types'),
-  advantages: loadSlugSetFromCollectionDir('advantages'),
-  quotes: loadSlugSetFromCollectionDir('quotes'),
+  authors: loadSlugSetFromCollectionDir("authors"),
+  categories: loadSlugSetFromCollectionDir("categories"),
+  tags: loadSlugSetFromCollectionDir("tags"),
+  "llmops-tags": loadSlugSetFromCollectionDir("llmops-tags"),
+  "mlops-tags": loadSlugSetFromCollectionDir("mlops-tags"),
+  "industry-tags": loadSlugSetFromCollectionDir("industry-tags"),
+  "project-tags": loadSlugSetFromCollectionDir("project-tags"),
+  "product-categories": loadSlugSetFromCollectionDir("product-categories"),
+  "integration-types": loadSlugSetFromCollectionDir("integration-types"),
+  advantages: loadSlugSetFromCollectionDir("advantages"),
+  quotes: loadSlugSetFromCollectionDir("quotes"),
 } as const;
 
 /**
@@ -167,14 +169,21 @@ const referenceSlugSets = {
  * @param validSlugs - Optional Set of valid slugs for runtime validation
  * @returns Zod schema that validates slug format and optionally checks existence
  */
-export function slugReference(collectionName: string, validSlugs?: Set<string>) {
-  const base = z.string().describe(`Slug reference to ${collectionName} collection`);
+export function slugReference(
+  collectionName: string,
+  validSlugs?: Set<string>,
+) {
+  const base = z
+    .string()
+    .describe(`Slug reference to ${collectionName} collection`);
 
   if (!validSlugs) return base;
 
   return base.refine(
     (slug) => validSlugs.has(slug),
-    (slug) => ({ message: `Invalid reference: "${slug}" not found in ${collectionName}` })
+    (slug) => ({
+      message: `Invalid reference: "${slug}" not found in ${collectionName}`,
+    }),
   );
 }
 
@@ -186,7 +195,10 @@ export function slugReference(collectionName: string, validSlugs?: Set<string>) 
  * @param validSlugs - Optional Set of valid slugs for runtime validation
  * @returns Zod schema that validates array of slugs
  */
-export function slugReferenceArray(collectionName: string, validSlugs?: Set<string>) {
+export function slugReferenceArray(
+  collectionName: string,
+  validSlugs?: Set<string>,
+) {
   return z.array(slugReference(collectionName, validSlugs)).default([]);
 }
 
@@ -245,7 +257,9 @@ const llmopsTagSchema = simpleTagSchema;
 const mlopsTagSchema = z.object({
   name: z.string(),
   slug: z.string(),
-  categories: z.array(z.enum(['platform', 'tool', 'lifecycle', 'extra'])).default([]),
+  categories: z
+    .array(z.enum(["platform", "tool", "lifecycle", "extra"]))
+    .default([]),
 });
 
 /**
@@ -324,9 +338,12 @@ const blogSchema = z.object({
   featured: z.boolean().default(false),
 
   // Blog-specific fields
-  author: slugReference('authors', referenceSlugSets.authors),
-  category: slugReference('categories', referenceSlugSets.categories).optional(), // 8 posts have no category in Webflow
-  tags: slugReferenceArray('tags', referenceSlugSets.tags),
+  author: slugReference("authors", referenceSlugSets.authors),
+  category: slugReference(
+    "categories",
+    referenceSlugSets.categories,
+  ).optional(), // 8 posts have no category in Webflow
+  tags: slugReferenceArray("tags", referenceSlugSets.tags),
   date: z.coerce.date(),
   readingTime: z.string().optional(),
 
@@ -371,13 +388,16 @@ const integrationSchema = z.object({
   draft: z.boolean().default(false),
 
   // Integration-specific fields
-  integrationType: slugReference('integration-types', referenceSlugSets['integration-types']),
+  integrationType: slugReference(
+    "integration-types",
+    referenceSlugSets["integration-types"],
+  ),
   logo: imageSchema.optional(),
   shortDescription: z.string().optional(),
   docsUrl: z.string().url().optional(),
   githubUrl: z.string().url().optional(),
   mainImage: imageSchema.optional(),
-  relatedBlogPosts: slugReferenceArray('blog'),
+  relatedBlogPosts: slugReferenceArray("blog"),
 
   // Structured detail page fields (all optional for backward compat)
   overviewTitle: z.string().optional(),
@@ -413,8 +433,14 @@ const llmopsSchema = z.object({
   draft: z.boolean().default(false),
 
   // LLMOps-specific fields (ACTUAL field names from transform)
-  llmopsTags: slugReferenceArray('llmops-tags', referenceSlugSets['llmops-tags']),
-  industryTags: slugReference('industry-tags', referenceSlugSets['industry-tags']).optional(),
+  llmopsTags: slugReferenceArray(
+    "llmops-tags",
+    referenceSlugSets["llmops-tags"],
+  ),
+  industryTags: slugReference(
+    "industry-tags",
+    referenceSlugSets["industry-tags"],
+  ).optional(),
   company: z.string().optional(),
   summary: z.string().optional(),
   link: z.string().url().optional(),
@@ -438,12 +464,22 @@ const mlopsDatabaseSchema = z.object({
   draft: z.boolean().default(false),
 
   // MLOps-specific fields
-  mlopsTags: slugReferenceArray('mlops-tags', referenceSlugSets['mlops-tags']),
-  industryTags: slugReference('industry-tags', referenceSlugSets['industry-tags']),
+  mlopsTags: slugReferenceArray("mlops-tags", referenceSlugSets["mlops-tags"]),
+  industryTags: slugReference(
+    "industry-tags",
+    referenceSlugSets["industry-tags"],
+  ),
   company: z.string(),
   companySlug: z.string(),
   platformName: z.string(),
-  contentType: z.enum(['blog', 'video', 'paper', 'slides', 'podcast', 'transcript']),
+  contentType: z.enum([
+    "blog",
+    "video",
+    "paper",
+    "slides",
+    "podcast",
+    "transcript",
+  ]),
   summary: z.string(),
   link: z.string().url(),
   year: z.number().optional(),
@@ -472,7 +508,7 @@ const compareValueSectionSchema = z.object({
   title: z.string(),
   bullets: z.array(z.string()),
   image: imageSchema.optional(),
-  imageSide: z.enum(['left', 'right']).default('right'),
+  imageSide: z.enum(["left", "right"]).default("right"),
 });
 
 /**
@@ -481,9 +517,9 @@ const compareValueSectionSchema = z.object({
  */
 const compareCodeComparisonSchema = z.object({
   zenmlCode: z.string(),
-  zenmlLanguage: z.string().default('python'),
+  zenmlLanguage: z.string().default("python"),
   toolCode: z.string(),
-  toolLanguage: z.string().default('python'),
+  toolLanguage: z.string().default("python"),
 });
 
 /**
@@ -506,9 +542,12 @@ const compareSchema = z.object({
   toolName: z.string().optional(),
   toolIcon: imageSchema.optional(),
   category: z.string().optional(),
-  integrationType: slugReference('integration-types', referenceSlugSets['integration-types']).optional(),
-  advantages: slugReferenceArray('advantages', referenceSlugSets.advantages),
-  quote: slugReference('quotes', referenceSlugSets.quotes).optional(),
+  integrationType: slugReference(
+    "integration-types",
+    referenceSlugSets["integration-types"],
+  ).optional(),
+  advantages: slugReferenceArray("advantages", referenceSlugSets.advantages),
+  quote: slugReference("quotes", referenceSlugSets.quotes).optional(),
   headline: z.string().optional(),
   heroText: z.string().optional(),
   ctaHeadline: z.string().optional(),
@@ -585,7 +624,7 @@ const projectSchema = z.object({
 
   // Project-specific fields
   description: z.string().optional(),
-  tags: slugReferenceArray('project-tags', referenceSlugSets['project-tags']),
+  tags: slugReferenceArray("project-tags", referenceSlugSets["project-tags"]),
   mainImageLink: z.string().url().optional(), // Note: NOT "coverImage"
   previewImage: imageSchema.optional(), // Larger preview image for detail page header
   githubUrl: z.string().url().optional(),
@@ -642,7 +681,7 @@ const featureHubSchema = z.object({
   title: z.string(),
   summary: z.string().optional(),
   category: z.string(),
-  badge: z.enum(['PRO']).optional(),
+  badge: z.enum(["PRO"]).optional(),
   order: z.number().optional(),
 });
 
@@ -654,16 +693,16 @@ const featureHeroSchema = z.object({
 });
 
 const valueBlockSchema = z.object({
-  kind: z.literal('value'),
+  kind: z.literal("value"),
   title: z.string(),
   body: z.string().optional(),
   bullets: z.array(z.string()).optional(),
   image: imageSchema.optional(),
-  imageSide: z.enum(['left', 'right']).optional(),
+  imageSide: z.enum(["left", "right"]).optional(),
 });
 
 const complianceBannerBlockSchema = z.object({
-  kind: z.literal('complianceBanner'),
+  kind: z.literal("complianceBanner"),
   eyebrow: z.string().optional(),
   headline: z.string().optional(),
   body: z.string().optional(),
@@ -690,10 +729,12 @@ const featureTestimonialSchema = z.object({
 const featurePageSchema = baseContentSchema.extend({
   hub: featureHubSchema,
   hero: featureHeroSchema,
-  blocks: z.array(z.discriminatedUnion('kind', [
-    valueBlockSchema,
-    complianceBannerBlockSchema,
-  ])),
+  blocks: z.array(
+    z.discriminatedUnion("kind", [
+      valueBlockSchema,
+      complianceBannerBlockSchema,
+    ]),
+  ),
   testimonial: featureTestimonialSchema.optional(),
   showFinalCta: z.boolean().default(true),
 });
@@ -710,18 +751,22 @@ const caseStudyHubSchema = z.object({
 
 const caseStudySidebarSchema = z.object({
   company: z.string(),
-  website: z.object({
-    label: z.string(),
-    href: z.string().url(),
-  }).optional(),
+  website: z
+    .object({
+      label: z.string(),
+      href: z.string().url(),
+    })
+    .optional(),
   mlTeamSize: z.string().optional(),
   cloudProvider: z.string().optional(),
   industry: z.string().optional(),
   useCases: z.array(z.string()).default([]),
-  pdfDownload: z.object({
-    label: z.string(),
-    href: z.string(),
-  }).optional(),
+  pdfDownload: z
+    .object({
+      label: z.string(),
+      href: z.string(),
+    })
+    .optional(),
 });
 
 /**
@@ -754,12 +799,12 @@ const vsHeroSchema = z.object({
 });
 
 const vsIntroBlockSchema = z.object({
-  kind: z.literal('intro'),
+  kind: z.literal("intro"),
   body: z.string(),
 });
 
 const vsTestimonialBlockSchema = z.object({
-  kind: z.literal('testimonial'),
+  kind: z.literal("testimonial"),
   quote: z.string(),
   name: z.string(),
   title: z.string().optional(),
@@ -768,13 +813,13 @@ const vsTestimonialBlockSchema = z.object({
 });
 
 const vsRelatedCompareBlockSchema = z.object({
-  kind: z.literal('relatedCompare'),
+  kind: z.literal("relatedCompare"),
   eyebrow: z.string().optional(),
   headline: z.string().optional(),
 });
 
 const vsCta02BlockSchema = z.object({
-  kind: z.literal('cta02'),
+  kind: z.literal("cta02"),
   headline: z.string(),
   bullets: z.array(z.string()).default([]),
   primaryCta: ctaSchema,
@@ -792,13 +837,15 @@ const vsCta02BlockSchema = z.object({
  */
 const vsPageSchema = baseContentSchema.extend({
   hero: vsHeroSchema,
-  blocks: z.array(z.discriminatedUnion('kind', [
-    vsIntroBlockSchema,
-    valueBlockSchema,
-    vsTestimonialBlockSchema,
-    vsRelatedCompareBlockSchema,
-    vsCta02BlockSchema,
-  ])),
+  blocks: z.array(
+    z.discriminatedUnion("kind", [
+      vsIntroBlockSchema,
+      valueBlockSchema,
+      vsTestimonialBlockSchema,
+      vsRelatedCompareBlockSchema,
+      vsCta02BlockSchema,
+    ]),
+  ),
 });
 
 // ============================================================================
@@ -814,93 +861,99 @@ const vsPageSchema = baseContentSchema.extend({
 export const collections = {
   // Reference collections (Phase 2D)
   authors: defineCollection({
-    loader: glob({ pattern: '**/*.md', base: './src/content/authors' }),
+    loader: glob({ pattern: "**/*.md", base: "./src/content/authors" }),
     schema: authorSchema,
   }),
   categories: defineCollection({
-    loader: glob({ pattern: '**/*.md', base: './src/content/categories' }),
+    loader: glob({ pattern: "**/*.md", base: "./src/content/categories" }),
     schema: categorySchema,
   }),
   tags: defineCollection({
-    loader: glob({ pattern: '**/*.md', base: './src/content/tags' }),
+    loader: glob({ pattern: "**/*.md", base: "./src/content/tags" }),
     schema: tagSchema,
   }),
-  'llmops-tags': defineCollection({
-    loader: glob({ pattern: '**/*.md', base: './src/content/llmops-tags' }),
+  "llmops-tags": defineCollection({
+    loader: glob({ pattern: "**/*.md", base: "./src/content/llmops-tags" }),
     schema: llmopsTagSchema,
   }),
-  'mlops-tags': defineCollection({
-    loader: glob({ pattern: '**/*.md', base: './src/content/mlops-tags' }),
+  "mlops-tags": defineCollection({
+    loader: glob({ pattern: "**/*.md", base: "./src/content/mlops-tags" }),
     schema: mlopsTagSchema,
   }),
-  'industry-tags': defineCollection({
-    loader: glob({ pattern: '**/*.md', base: './src/content/industry-tags' }),
+  "industry-tags": defineCollection({
+    loader: glob({ pattern: "**/*.md", base: "./src/content/industry-tags" }),
     schema: industryTagSchema,
   }),
-  'project-tags': defineCollection({
-    loader: glob({ pattern: '**/*.md', base: './src/content/project-tags' }),
+  "project-tags": defineCollection({
+    loader: glob({ pattern: "**/*.md", base: "./src/content/project-tags" }),
     schema: projectTagSchema,
   }),
-  'product-categories': defineCollection({
-    loader: glob({ pattern: '**/*.md', base: './src/content/product-categories' }),
+  "product-categories": defineCollection({
+    loader: glob({
+      pattern: "**/*.md",
+      base: "./src/content/product-categories",
+    }),
     schema: productCategorySchema,
   }),
-  'integration-types': defineCollection({
-    loader: glob({ pattern: '**/*.md', base: './src/content/integration-types' }),
+  "integration-types": defineCollection({
+    loader: glob({
+      pattern: "**/*.md",
+      base: "./src/content/integration-types",
+    }),
     schema: integrationTypeSchema,
   }),
   advantages: defineCollection({
-    loader: glob({ pattern: '**/*.md', base: './src/content/advantages' }),
+    loader: glob({ pattern: "**/*.md", base: "./src/content/advantages" }),
     schema: advantageSchema,
   }),
   quotes: defineCollection({
-    loader: glob({ pattern: '**/*.md', base: './src/content/quotes' }),
+    loader: glob({ pattern: "**/*.md", base: "./src/content/quotes" }),
     schema: quoteSchema,
   }),
 
   // Main collection loaders (Phase 2F)
   blog: defineCollection({
-    loader: glob({ pattern: '**/*.md', base: './src/content/blog' }),
+    loader: glob({ pattern: "**/*.md", base: "./src/content/blog" }),
     schema: blogSchema,
   }),
   integrations: defineCollection({
-    loader: glob({ pattern: '**/*.md', base: './src/content/integrations' }),
+    loader: glob({ pattern: "**/*.md", base: "./src/content/integrations" }),
     schema: integrationSchema,
   }),
-  'llmops-database': defineCollection({
-    loader: glob({ pattern: '**/*.md', base: './src/content/llmops-database' }),
+  "llmops-database": defineCollection({
+    loader: glob({ pattern: "**/*.md", base: "./src/content/llmops-database" }),
     schema: llmopsSchema,
   }),
-  'mlops-database': defineCollection({
-    loader: glob({ pattern: '**/*.md', base: './src/content/mlops-database' }),
+  "mlops-database": defineCollection({
+    loader: glob({ pattern: "**/*.md", base: "./src/content/mlops-database" }),
     schema: mlopsDatabaseSchema,
   }),
   compare: defineCollection({
-    loader: glob({ pattern: '**/*.md', base: './src/content/compare' }),
+    loader: glob({ pattern: "**/*.md", base: "./src/content/compare" }),
     schema: compareSchema,
   }),
   team: defineCollection({
-    loader: glob({ pattern: '**/*.md', base: './src/content/team' }),
+    loader: glob({ pattern: "**/*.md", base: "./src/content/team" }),
     schema: teamSchema,
   }),
   projects: defineCollection({
-    loader: glob({ pattern: '**/*.md', base: './src/content/projects' }),
+    loader: glob({ pattern: "**/*.md", base: "./src/content/projects" }),
     schema: projectSchema,
   }),
-  'old-projects': defineCollection({
-    loader: glob({ pattern: '**/*.md', base: './src/content/old-projects' }),
+  "old-projects": defineCollection({
+    loader: glob({ pattern: "**/*.md", base: "./src/content/old-projects" }),
     schema: oldProjectSchema,
   }),
-  'feature-pages': defineCollection({
-    loader: glob({ pattern: '**/*.md', base: './src/content/feature-pages' }),
+  "feature-pages": defineCollection({
+    loader: glob({ pattern: "**/*.md", base: "./src/content/feature-pages" }),
     schema: featurePageSchema,
   }),
-  'case-studies': defineCollection({
-    loader: glob({ pattern: '**/*.md', base: './src/content/case-studies' }),
+  "case-studies": defineCollection({
+    loader: glob({ pattern: "**/*.md", base: "./src/content/case-studies" }),
     schema: caseStudySchema,
   }),
-  'vs-pages': defineCollection({
-    loader: glob({ pattern: '**/*.md', base: './src/content/vs-pages' }),
+  "vs-pages": defineCollection({
+    loader: glob({ pattern: "**/*.md", base: "./src/content/vs-pages" }),
     schema: vsPageSchema,
   }),
 };

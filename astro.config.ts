@@ -4,8 +4,24 @@ import preact from "@astrojs/preact";
 import sitemap from "@astrojs/sitemap";
 import mdx from "@astrojs/mdx";
 import tailwindcss from "@tailwindcss/vite";
-import zenmlLight from "./src/styles/zenml-light.json";
+import { STALE_RAY_SUMMIT_REDIRECT_PATHS } from "./src/lib/mlopsRaySummitRedirects";
 import { remarkDefaultLang } from "./src/lib/remark-default-lang";
+import zenmlLight from "./src/styles/zenml-light.json";
+
+const sitemapExcludePaths = new Set([
+  "/llmops-index.json",
+  "/mlops-index.json",
+  "/blog/rss.xml",
+  "/llmops-database/rss.xml",
+  "/mlops-database/rss.xml",
+  "/book-success",
+  "/booked",
+  "/book-a-demo-success",
+  "/newsletter-success",
+  "/success-calendar",
+  "/404",
+  ...STALE_RAY_SUMMIT_REDIRECT_PATHS,
+]);
 
 export default defineConfig({
   site: "https://www.zenml.io",
@@ -25,22 +41,8 @@ export default defineConfig({
     preact(),
     sitemap({
       filter: (page) => {
-        // Exclude non-indexable pages from the sitemap
-        const excludePaths = [
-          "/llmops-index.json",
-          "/mlops-index.json",
-          "/blog/rss.xml",
-          "/llmops-database/rss.xml",
-          "/mlops-database/rss.xml",
-          "/book-success",
-          "/booked",
-          "/book-a-demo-success",
-          "/newsletter-success",
-          "/success-calendar",
-          "/404",
-        ];
         const url = new URL(page);
-        return !excludePaths.includes(url.pathname);
+        return !sitemapExcludePaths.has(url.pathname);
       },
     }),
     mdx(),

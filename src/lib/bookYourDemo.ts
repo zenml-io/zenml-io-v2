@@ -8,10 +8,10 @@
  * Below: testimonial + minimal footer.
  */
 
-import type { SEOProps } from "./seo";
-import type { PlaceholderField, CalEmbedConfig } from "./formTypes";
-
 import { R2_WEBFLOW_BASE } from "./constants";
+import type { CalEmbedConfig, PlaceholderField } from "./formTypes";
+import type { SEOProps } from "./seo";
+
 const R2 = R2_WEBFLOW_BASE;
 
 export const BOOK_YOUR_DEMO_SEO: SEOProps = {

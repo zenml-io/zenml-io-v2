@@ -7,6 +7,7 @@
  *
  * Uses Astro's built-in Code component for Shiki syntax highlighting.
  */
+// biome-ignore lint/style/useImportType: Astro component import is used in the template below.
 import { Code } from "astro:components";
 
 type CodeLang = Parameters<typeof Code>[0]["lang"];

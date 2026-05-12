@@ -1,4 +1,5 @@
 ---
+import DemoRequestForm from "../components/islands/DemoRequestForm.tsx";
 /**
  * Book Your Demo — conversion-optimized two-column layout.
  *
@@ -9,18 +10,21 @@
  * Below: testimonial + simple footer.
  */
 import MinimalLayout from "../layouts/MinimalLayout.astro";
-import DemoRequestForm from "../components/islands/DemoRequestForm.tsx";
-import { TURNSTILE_SITE_KEY, CAL_ORIGIN, CAL_EMBED_SCRIPT } from "../lib/formConstants";
 import {
-  BOOK_YOUR_DEMO_SEO,
-  BOOK_YOUR_DEMO_HERO,
-  BOOK_YOUR_DEMO_STATS,
-  BOOK_YOUR_DEMO_LOGOS,
-  BOOK_YOUR_DEMO_FORM,
-  BOOK_YOUR_DEMO_FIELDS,
   BOOK_YOUR_DEMO_CAL,
+  BOOK_YOUR_DEMO_FIELDS,
+  BOOK_YOUR_DEMO_FORM,
+  BOOK_YOUR_DEMO_HERO,
+  BOOK_YOUR_DEMO_LOGOS,
+  BOOK_YOUR_DEMO_SEO,
+  BOOK_YOUR_DEMO_STATS,
   BOOK_YOUR_DEMO_TESTIMONIAL,
 } from "../lib/bookYourDemo";
+import {
+  CAL_EMBED_SCRIPT,
+  CAL_ORIGIN,
+  TURNSTILE_SITE_KEY,
+} from "../lib/formConstants";
 ---
 
 <MinimalLayout

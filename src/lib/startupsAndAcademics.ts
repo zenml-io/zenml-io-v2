@@ -5,10 +5,10 @@
  * Unique field set (LinkedIn, org, role dropdown).
  */
 
-import type { SEOProps } from "./seo";
+import { STARTUP_ROLE_OPTIONS } from "./formConstants";
 import type { PlaceholderField } from "./formTypes";
 import type { CtaLink } from "./marketingPageTypes";
-import { STARTUP_ROLE_OPTIONS } from "./formConstants";
+import type { SEOProps } from "./seo";
 
 export const STARTUPS_SEO: SEOProps = {
   title: "ZenML for Startups and Academics",
@@ -26,7 +26,13 @@ export const STARTUPS_HERO = {
 };
 
 export const STARTUPS_FIELDS: PlaceholderField[] = [
-  { name: "fullName", label: "Full name", type: "text", required: true, placeholder: "Full name" },
+  {
+    name: "fullName",
+    label: "Full name",
+    type: "text",
+    required: true,
+    placeholder: "Full name",
+  },
   {
     name: "email",
     label: "Company / Organization Email",

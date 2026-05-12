@@ -8,15 +8,18 @@
  * Generates /features/<slug> for each of the 12 published feature pages.
  */
 import { getCollection } from "astro:content";
-import BaseLayout from "../../layouts/BaseLayout.astro";
-import FeatureHero from "../../components/sections/FeatureHero.astro";
-import FeatureValueSection from "../../components/sections/FeatureValueSection.astro";
 import FeatureComplianceBanner from "../../components/sections/FeatureComplianceBanner.astro";
+import FeatureHero from "../../components/sections/FeatureHero.astro";
 import FeatureTestimonial from "../../components/sections/FeatureTestimonial.astro";
+import FeatureValueSection from "../../components/sections/FeatureValueSection.astro";
 import FinalCTA from "../../components/sections/FinalCTA.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
 
 export async function getStaticPaths() {
-  const features = await getCollection("feature-pages", ({ data }) => !data.draft);
+  const features = await getCollection(
+    "feature-pages",
+    ({ data }) => !data.draft,
+  );
   return features.map((feature) => ({
     params: { slug: feature.data.slug },
     props: { feature },

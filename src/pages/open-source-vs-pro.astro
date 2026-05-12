@@ -1,4 +1,8 @@
 ---
+import Button from "../components/Button.astro";
+import ComparisonTable from "../components/sections/ComparisonTable.astro";
+import FeaturesCTA05 from "../components/sections/FeaturesCTA05.astro";
+import VsHero from "../components/sections/VsHero.astro";
 /**
  * Open Source vs Pro page.
  *
@@ -8,17 +12,13 @@
  * subway map readiness section, feature comparison table, final CTA.
  */
 import BaseLayout from "../layouts/BaseLayout.astro";
-import VsHero from "../components/sections/VsHero.astro";
-import ComparisonTable from "../components/sections/ComparisonTable.astro";
-import FeaturesCTA05 from "../components/sections/FeaturesCTA05.astro";
-import Button from "../components/Button.astro";
 import {
-  OSS_VS_PRO_SEO,
-  OSS_VS_PRO_HERO,
-  OSS_VS_PRO_FEATURE_GRID,
-  OSS_VS_PRO_SUBWAY_MAP,
   OSS_VS_PRO_COMPARISON,
+  OSS_VS_PRO_FEATURE_GRID,
   OSS_VS_PRO_FINAL_CTA,
+  OSS_VS_PRO_HERO,
+  OSS_VS_PRO_SEO,
+  OSS_VS_PRO_SUBWAY_MAP,
 } from "../lib/openSourceVsPro";
 
 /* Subway card SVG icons — extracted from Webflow original (40×40, orange #FA9E33) */

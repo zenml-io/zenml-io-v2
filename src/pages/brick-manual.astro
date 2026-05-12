@@ -1,4 +1,5 @@
 ---
+import ContactForm from "../components/islands/ContactForm.tsx";
 /**
  * Brick Manual — email-gated PDF download for conference brick sets.
  *
@@ -6,14 +7,13 @@
  * Flow: QR code scan → email capture → instant PDF download link.
  */
 import BaseLayout from "../layouts/BaseLayout.astro";
-import ContactForm from "../components/islands/ContactForm.tsx";
-import { TURNSTILE_SITE_KEY } from "../lib/formConstants";
 import {
-  BRICK_MANUAL_SEO,
-  BRICK_MANUAL_HERO,
-  BRICK_MANUAL_FIELDS,
   BRICK_MANUAL_DOWNLOAD_URL,
+  BRICK_MANUAL_FIELDS,
+  BRICK_MANUAL_HERO,
+  BRICK_MANUAL_SEO,
 } from "../lib/brickManual";
+import { TURNSTILE_SITE_KEY } from "../lib/formConstants";
 ---
 
 <BaseLayout

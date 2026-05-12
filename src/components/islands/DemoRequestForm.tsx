@@ -11,14 +11,25 @@
  * - "Cal: Embed Failed" — if Cal.com widget fails to load
  * - "Cal: Booking Confirmed" { date, duration } — on successful booking
  */
-import { useState, useCallback, useEffect, useRef } from "preact/hooks";
-import type { PlaceholderField, CalEmbedConfig } from "../../lib/formTypes";
+import { useCallback, useEffect, useRef, useState } from "preact/hooks";
+import type { CalEmbedConfig, PlaceholderField } from "../../lib/formTypes";
 import { validateForm } from "../../lib/formValidation";
 
 type FormState = "idle" | "submitting" | "success" | "error";
 
-type PlausibleFn = (name: string, opts?: { props?: Record<string, string> }) => void;
-const getPlausible = () => (window as unknown as { plausible?: PlausibleFn }).plausible;
+type PlausibleFn = (
+  name: string,
+  opts?: { props?: Record<string, string> },
+) => void;
+type CalNamespaceApi = ((...args: unknown[]) => void) & { q: unknown[][] };
+type CalApi = ((...args: unknown[]) => void) & {
+  loaded: boolean;
+  ns: Record<string, CalNamespaceApi>;
+  q: unknown[][];
+};
+type CalWindow = Window & typeof globalThis & { Cal?: CalApi };
+const getPlausible = () =>
+  (window as unknown as { plausible?: PlausibleFn }).plausible;
 
 interface Props {
   endpoint: string;
@@ -57,7 +68,8 @@ export default function DemoRequestForm({
     if (!turnstileSiteKey) return;
     const SCRIPT_ID = "cf-turnstile-script";
     if (document.getElementById(SCRIPT_ID)) return;
-    const scriptUrl = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=onTurnstileLoad";
+    const scriptUrl =
+      "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=onTurnstileLoad";
     const script = document.createElement("script");
     script.id = SCRIPT_ID;
     script.src = scriptUrl;
@@ -73,7 +85,11 @@ export default function DemoRequestForm({
 
     function renderWidget() {
       if (!turnstileRef.current || turnstileWidgetId.current != null) return;
-      const w = window as unknown as { turnstile?: { render: (el: HTMLElement, opts: Record<string, unknown>) => string } };
+      const w = window as unknown as {
+        turnstile?: {
+          render: (el: HTMLElement, opts: Record<string, unknown>) => string;
+        };
+      };
       if (!w.turnstile) return;
       turnstileWidgetId.current = w.turnstile.render(turnstileRef.current, {
         sitekey: turnstileSiteKey,
@@ -86,7 +102,8 @@ export default function DemoRequestForm({
     if (w.turnstile) {
       renderWidget();
     } else {
-      (window as unknown as Record<string, unknown>).onTurnstileLoad = renderWidget;
+      (window as unknown as Record<string, unknown>).onTurnstileLoad =
+        renderWidget;
     }
   }, [turnstileSiteKey]);
 
@@ -97,12 +114,12 @@ export default function DemoRequestForm({
     // Bootstrap Cal.com's queuing API (same IIFE pattern as CalEmbed.astro).
     // Cal.com's embed uses a command-queue pattern: we define a lightweight
     // Cal() function that queues commands, then the real embed.js replays them.
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const win = window as any;
+    const win = window as CalWindow;
 
     if (!win.Cal) {
-      const calFn = function (...args: unknown[]) {
+      const calFn = ((...args: unknown[]) => {
         const cal = win.Cal;
+        if (!cal) return;
         if (!cal.loaded) {
           cal.ns = {};
           cal.q = cal.q || [];
@@ -114,11 +131,11 @@ export default function DemoRequestForm({
         }
         if (args[0] === "init") {
           const ns = args[1] as string;
-          const api = function (...innerArgs: unknown[]) {
+          const api = ((...innerArgs: unknown[]) => {
             api.q = api.q || [];
             api.q.push(innerArgs);
-          };
-          api.q = [] as unknown[][];
+          }) as CalNamespaceApi;
+          api.q = [];
           if (typeof ns === "string") {
             cal.ns[ns] = cal.ns[ns] || api;
             cal.ns[ns].q = cal.ns[ns].q || [];
@@ -128,19 +145,22 @@ export default function DemoRequestForm({
           return;
         }
         cal.q.push(args);
-      };
+      }) as CalApi;
       calFn.loaded = false;
       calFn.ns = {};
-      calFn.q = [] as unknown[];
+      calFn.q = [];
       win.Cal = calFn;
     }
+
+    const cal = win.Cal;
+    if (!cal) return;
 
     const { namespace, elementId, calLink, layout } = calConfig;
     const calLayout = layout ?? "month_view";
 
-    win.Cal("init", namespace, { origin: calOrigin });
+    cal("init", namespace, { origin: calOrigin });
     const prefill = submittedDataRef.current;
-    win.Cal.ns[namespace]("inline", {
+    cal.ns[namespace]("inline", {
       elementOrSelector: `#${elementId}`,
       config: {
         layout: calLayout,
@@ -148,31 +168,42 @@ export default function DemoRequestForm({
       },
       calLink,
     });
-    win.Cal.ns[namespace]("ui", { hideEventTypeDetails: false, layout: calLayout });
+    cal.ns[namespace]("ui", {
+      hideEventTypeDetails: false,
+      layout: calLayout,
+    });
 
     // Plausible tracking callbacks
-    win.Cal.ns[namespace]("on", {
+    cal.ns[namespace]("on", {
       action: "bookingSuccessful",
       callback: (e: unknown) => {
-        const detail = (e as { detail?: { data?: { date?: string; duration?: string } } })?.detail?.data;
+        const detail = (
+          e as { detail?: { data?: { date?: string; duration?: string } } }
+        )?.detail?.data;
         getPlausible()?.("Cal: Booking Confirmed", {
           props: { date: detail?.date || "", duration: detail?.duration || "" },
         });
       },
     });
-    win.Cal.ns[namespace]("on", {
+    cal.ns[namespace]("on", {
       action: "linkReady",
-      callback: () => { getPlausible()?.("Cal: Embed Loaded"); },
+      callback: () => {
+        getPlausible()?.("Cal: Embed Loaded");
+      },
     });
-    win.Cal.ns[namespace]("on", {
+    cal.ns[namespace]("on", {
       action: "linkFailed",
-      callback: () => { getPlausible()?.("Cal: Embed Failed"); },
+      callback: () => {
+        getPlausible()?.("Cal: Embed Failed");
+      },
     });
   }, [state, calConfig, calOrigin, calEmbedScript]);
 
   const resetTurnstile = useCallback(() => {
     if (turnstileWidgetId.current == null) return;
-    const w = window as unknown as { turnstile?: { reset: (id: string) => void } };
+    const w = window as unknown as {
+      turnstile?: { reset: (id: string) => void };
+    };
     w.turnstile?.reset(turnstileWidgetId.current);
   }, []);
 
@@ -188,7 +219,8 @@ export default function DemoRequestForm({
       }
       // Handle unchecked checkboxes
       for (const field of fields) {
-        if (field.type === "checkbox" && !(field.name in data)) data[field.name] = "";
+        if (field.type === "checkbox" && !(field.name in data))
+          data[field.name] = "";
       }
 
       const result = validateForm("demo-request", data);
@@ -221,7 +253,9 @@ export default function DemoRequestForm({
             setState("idle");
             return;
           }
-          setServerError(body.error || "Something went wrong. Please try again.");
+          setServerError(
+            body.error || "Something went wrong. Please try again.",
+          );
           resetTurnstile();
           setState("error");
           return;
@@ -232,7 +266,9 @@ export default function DemoRequestForm({
         };
         setState("success");
       } catch {
-        setServerError("Network error. Please check your connection and try again.");
+        setServerError(
+          "Network error. Please check your connection and try again.",
+        );
         resetTurnstile();
         setState("error");
       }
@@ -243,10 +279,12 @@ export default function DemoRequestForm({
   // ── Success state: seamless Cal.com transition ──
   if (state === "success") {
     return (
-      <div class="demo-form-calendar-transition" style={{ animation: "demoFormSlideUp 0.5s ease both" }}>
+      <div
+        class="demo-form-calendar-transition"
+        style={{ animation: "demoFormSlideUp 0.5s ease both" }}
+      >
         <div
           id={calConfig.elementId}
-
           class="min-h-[600px] w-full overflow-auto"
         />
         <p class="mt-4 text-center text-sm text-gray-500">
@@ -273,12 +311,25 @@ export default function DemoRequestForm({
         </div>
       )}
 
-      <form method="POST" action={endpoint} class="space-y-4" onSubmit={handleSubmit} noValidate>
+      <form
+        method="POST"
+        action={endpoint}
+        class="space-y-4"
+        onSubmit={handleSubmit}
+        noValidate
+      >
         {fields.map((field) => (
-          <FieldRenderer key={field.name} field={field} errors={errors} disabled={state === "submitting"} />
+          <FieldRenderer
+            key={field.name}
+            field={field}
+            errors={errors}
+            disabled={state === "submitting"}
+          />
         ))}
 
-        {turnstileSiteKey && <div ref={turnstileRef} class="flex justify-center" />}
+        {turnstileSiteKey && (
+          <div ref={turnstileRef} class="flex justify-center" />
+        )}
 
         <button
           type="submit"
@@ -287,9 +338,25 @@ export default function DemoRequestForm({
         >
           {state === "submitting" ? (
             <span class="inline-flex items-center gap-2">
-              <svg class="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none">
-                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
-                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+              <svg
+                class="h-4 w-4 animate-spin"
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+                fill="none"
+              >
+                <circle
+                  class="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  stroke-width="4"
+                />
+                <path
+                  class="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                />
               </svg>
               {loadingLabel}
             </span>
@@ -324,16 +391,22 @@ function FieldRenderer({
 }) {
   return (
     <div>
-      <label class="mb-1 block text-sm font-medium text-gray-700">
+      <label
+        for={field.name}
+        class="mb-1 block text-sm font-medium text-gray-700"
+      >
         {field.label}
         {field.required && <span class="text-red-500"> *</span>}
       </label>
       {field.type === "select" && field.options ? (
         <select
+          id={field.name}
           name={field.name}
           required={field.required}
           class={`w-full rounded-md border px-4 py-2.5 text-sm focus:border-zenml-500 focus:ring-1 focus:ring-zenml-500 outline-none transition-colors ${
-            errors[field.name] ? "border-red-400 bg-red-50" : "border-gray-300 bg-white"
+            errors[field.name]
+              ? "border-red-400 bg-red-50"
+              : "border-gray-300 bg-white"
           }`}
           disabled={disabled}
         >
@@ -346,6 +419,7 @@ function FieldRenderer({
       ) : field.type === "checkbox" ? (
         <label class="flex items-start gap-2 text-sm text-gray-600">
           <input
+            id={field.name}
             type="checkbox"
             name={field.name}
             value="on"
@@ -353,21 +427,30 @@ function FieldRenderer({
             class="mt-0.5 rounded border-gray-300 text-zenml-500 focus:ring-zenml-500"
             disabled={disabled}
           />
-          <span dangerouslySetInnerHTML={{ __html: field.placeholder ?? field.label }} />
+          <span
+            dangerouslySetInnerHTML={{
+              __html: field.placeholder ?? field.label,
+            }}
+          />
         </label>
       ) : (
         <input
+          id={field.name}
           type={field.type}
           name={field.name}
           required={field.required}
           placeholder={field.placeholder}
           class={`w-full rounded-md border px-4 py-2.5 text-sm focus:border-zenml-500 focus:ring-1 focus:ring-zenml-500 outline-none transition-colors ${
-            errors[field.name] ? "border-red-400 bg-red-50" : "border-gray-300 bg-white"
+            errors[field.name]
+              ? "border-red-400 bg-red-50"
+              : "border-gray-300 bg-white"
           }`}
           disabled={disabled}
         />
       )}
-      {errors[field.name] && <p class="mt-1 text-xs text-red-600">{errors[field.name]}</p>}
+      {errors[field.name] && (
+        <p class="mt-1 text-xs text-red-600">{errors[field.name]}</p>
+      )}
     </div>
   );
 }

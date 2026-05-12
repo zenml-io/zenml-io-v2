@@ -56,7 +56,9 @@ let compareName: string | undefined;
 if (d.compareSlug) {
   try {
     const compareEntryResult = getEntry("compare", d.compareSlug);
-    const compareEntry = compareEntryResult ? await compareEntryResult : undefined;
+    const compareEntry = compareEntryResult
+      ? await compareEntryResult
+      : undefined;
     if (compareEntry?.data?.toolName) {
       compareName = `ZenML vs ${compareEntry.data.toolName}`;
     }

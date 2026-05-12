@@ -6,15 +6,19 @@
  *
  * Target: <500KB for 1,453 entries (~300 bytes each).
  */
-import type { APIRoute } from "astro";
+
 import { getCollection } from "astro:content";
+import type { APIRoute } from "astro";
 import { deriveAddedDate } from "../lib/llmops";
 
 // Ensure this is pre-rendered at build time
 export const prerender = true;
 
 export const GET: APIRoute = async () => {
-  const entries = await getCollection("llmops-database", ({ data }) => !data.draft);
+  const entries = await getCollection(
+    "llmops-database",
+    ({ data }) => !data.draft,
+  );
 
   const index = entries.map((entry) => ({
     slug: entry.data.slug,

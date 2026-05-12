@@ -54,7 +54,7 @@ There are three stages to the above process:
 
 ## Productionalization & Maintenance:
 
-<ul><li><strong>Technologies</strong>: Flask/FastAPI, Kubernetes, Docker, <a href="http://cortex.dev/">Cortex</a>, <a href="https://www.seldon.io/">Seldon</a></li><li><strong>Persona</strong>: ML Engineers / Ops</li><li><strong>Description</strong>: This is the phase that starts at the deployment of the model, and spans monitoring, retraining, and maintenance. The core focus of this phase is to keep the model healthy and serving at any scale, all the while accounting for drift.</li></ul>
+<ul><li><strong>Technologies</strong>: Flask/FastAPI, Kubernetes, Docker, <a href="https://cortex.dev/">Cortex</a>, <a href="https://www.seldon.io/">Seldon</a></li><li><strong>Persona</strong>: ML Engineers / Ops</li><li><strong>Description</strong>: This is the phase that starts at the deployment of the model, and spans monitoring, retraining, and maintenance. The core focus of this phase is to keep the model healthy and serving at any scale, all the while accounting for drift.</li></ul>
 
 Each of these stages requires different skills, tooling, and organization. Therefore, it is only natural that there are many potholes that an organization can run into along the way. Inevitably things that are important downstream are not accounted for in the earlier stages. E.g. If training happens in isolation from the deployment strategy, that is never going to translate well in production scenarios — leading to inconsistencies, silent failures, and eventually failed model deployments.
 
@@ -102,5 +102,5 @@ This is a win-win-win for every persona involved, and ultimately a big win for a
 
 # Plug
 
-If you like the thoughts here, we’d love to hear your feedback on ZenML. It is [open-source](https://github.com/zenml-io/zenml) and we are looking for early adopters and [contributors](https://github.com/zenml-io/zenml)! And if you find it is the right order of abstraction for you/your data scientists, then let us know as well via [our Slack](http://zenml.io/slack-invite) — looking forward to hearing from you!
+If you like the thoughts here, we’d love to hear your feedback on ZenML. It is [open-source](https://github.com/zenml-io/zenml) and we are looking for early adopters and [contributors](https://github.com/zenml-io/zenml)! And if you find it is the right order of abstraction for you/your data scientists, then let us know as well via [our Slack](/slack-invite) — looking forward to hearing from you!
 

@@ -4,8 +4,9 @@
  * Generates RSS 2.0 matching the feed Webflow auto-generated.
  * Includes atom:link self-reference for feed readers.
  */
-import type { APIRoute } from "astro";
+
 import { getCollection } from "astro:content";
+import type { APIRoute } from "astro";
 import { SITE_URL } from "../../lib/constants";
 
 function escapeXml(s: string): string {
@@ -20,21 +21,19 @@ function escapeXml(s: string): string {
 export const GET: APIRoute = async () => {
   const posts = await getCollection("blog", ({ data }) => !data.draft);
   posts.sort(
-    (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+    (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime(),
   );
 
   const feedUrl = `${SITE_URL}/blog/rss.xml`;
   const now = new Date().toUTCString();
-  const newestDate = posts.length > 0
-    ? new Date(posts[0].data.date).toUTCString()
-    : now;
+  const newestDate =
+    posts.length > 0 ? new Date(posts[0].data.date).toUTCString() : now;
 
   const items = posts
     .map((post) => {
       const link = `${SITE_URL}/blog/${post.data.slug}`;
       const pubDate = new Date(post.data.date).toUTCString();
-      const description =
-        post.data.seo?.description ?? post.data.title;
+      const description = post.data.seo?.description ?? post.data.title;
 
       return `    <item>
       <title>${escapeXml(post.data.title)}</title>

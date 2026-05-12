@@ -6,15 +6,15 @@
  * and TagCloud at the bottom.
  */
 import { getCollection, getEntry } from "astro:content";
-import BaseLayout from "../../layouts/BaseLayout.astro";
 import BlogCard from "../../components/blog/BlogCard.astro";
 import CategoryBar from "../../components/blog/CategoryBar.astro";
 import TagCloud from "../../components/blog/TagCloud.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
 import {
-  resolveAuthor,
-  getMainFeedPosts,
   getCategoryCounts,
+  getMainFeedPosts,
   getTagCounts,
+  resolveAuthor,
 } from "../../lib/blog";
 
 export async function getStaticPaths() {
@@ -28,8 +28,13 @@ export async function getStaticPaths() {
 const { tag } = Astro.props;
 
 const allPosts = (
-  await getCollection("blog", ({ data }) => !data.draft && data.tags.includes(tag.data.slug))
-).sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+  await getCollection(
+    "blog",
+    ({ data }) => !data.draft && data.tags.includes(tag.data.slug),
+  )
+).sort(
+  (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime(),
+);
 
 // CategoryBar needs all main feed posts for counts
 const mainFeedPosts = await getMainFeedPosts();
@@ -46,10 +51,13 @@ for (const post of allPosts) {
   }
   if (post.data.category && !categoryMap.has(post.data.category)) {
     const cat = await getEntry("categories", post.data.category);
-    if (cat) categoryMap.set(post.data.category, { name: cat.data.name, slug: cat.data.slug });
+    if (cat)
+      categoryMap.set(post.data.category, {
+        name: cat.data.name,
+        slug: cat.data.slug,
+      });
   }
 }
-
 ---
 
 <BaseLayout

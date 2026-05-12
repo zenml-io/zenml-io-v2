@@ -141,7 +141,8 @@ export const NAV_DROPDOWNS: NavDropdown[] = [
           {
             label: "LLMOps Database",
             href: "/llmops-database",
-            description: "A curated knowledge base of real-world implementations",
+            description:
+              "A curated knowledge base of real-world implementations",
             icon: '<path d="M21 5C21 6.65685 16.9706 8 12 8C7.02944 8 3 6.65685 3 5M21 5C21 3.34315 16.9706 2 12 2C7.02944 2 3 3.34315 3 5M21 5V19C21 20.66 17 22 12 22C7 22 3 20.66 3 19V5M21 9.72021C21 11.3802 17 12.7202 12 12.7202C7 12.7202 3 11.3802 3 9.72021M21 14.44C21 16.1 17 17.44 12 17.44C7 17.44 3 16.1 3 14.44"/>',
           },
         ],
@@ -178,19 +179,22 @@ export const NAV_DROPDOWNS: NavDropdown[] = [
           label: "JetBrains",
           href: "/case-study/jetbrains",
           subtitle: "Software",
-          logoUrl: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/60b5e34d/670e2f23ee3f2feee5e7e7e2_jetbrains-min.svg",
+          logoUrl:
+            "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/60b5e34d/670e2f23ee3f2feee5e7e7e2_jetbrains-min.svg",
         },
         {
           label: "Adeo Leroy Merlin",
           href: "/case-study/adeo-leroy-merlin",
           subtitle: "Retail",
-          logoUrl: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c110367c/65c498032806e2ff7daec2bf_ADEO.svg",
+          logoUrl:
+            "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/c110367c/65c498032806e2ff7daec2bf_ADEO.svg",
         },
         {
           label: "Cross Screen Media",
           href: "/case-study/cross-screen-media",
           subtitle: "Media",
-          logoUrl: "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9f8b5324/68d6a84a1761cbf9538efefa_cross-screen-media.png",
+          logoUrl:
+            "https://pub-41d587b95acb4b579d9280542922084b.r2.dev/webflow/64a817a2e7e2208272d1ce30/9f8b5324/68d6a84a1761cbf9538efefa_cross-screen-media.png",
         },
       ],
       ctaLabel: "View All Case Studies",
@@ -307,6 +311,6 @@ export function isActivePath(currentPath: string, href: string): boolean {
   // Exact match
   if (currentPath === href) return true;
   // Section match: /blog/some-post matches /blog
-  if (currentPath.startsWith(href + "/")) return true;
+  if (currentPath.startsWith(`${href}/`)) return true;
   return false;
 }

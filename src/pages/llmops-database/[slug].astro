@@ -7,9 +7,13 @@
  * Generates /llmops-database/<slug> for each published entry.
  */
 import { getEntry, render } from "astro:content";
-import BaseLayout from "../../layouts/BaseLayout.astro";
 import Badge from "../../components/Badge.astro";
-import { getAllPublishedEntries, buildRelatedIndex, getRelatedFromIndex } from "../../lib/llmops";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import {
+  buildRelatedIndex,
+  getAllPublishedEntries,
+  getRelatedFromIndex,
+} from "../../lib/llmops";
 
 export async function getStaticPaths() {
   const allEntries = await getAllPublishedEntries();
@@ -29,12 +33,11 @@ const { Content } = await render(entry);
 
 // Resolve llmops tags for display names
 const tagEntries = await Promise.all(
-  entry.data.llmopsTags.map((slug: string) => getEntry("llmops-tags", slug))
+  entry.data.llmopsTags.map((slug: string) => getEntry("llmops-tags", slug)),
 );
-const tags = tagEntries.filter(Boolean).map((t) => ({
-  name: t!.data.name,
-  slug: t!.data.slug,
-}));
+const tags = tagEntries.flatMap((t) =>
+  t ? [{ name: t.data.name, slug: t.data.slug }] : [],
+);
 
 // Resolve industry tag
 const industryEntry = entry.data.industryTags
@@ -45,7 +48,9 @@ const industryEntry = entry.data.industryTags
 const relatedWithTags = await Promise.all(
   related.map(async (r) => {
     const rTags = await Promise.all(
-      r.data.llmopsTags.slice(0, 3).map((s: string) => getEntry("llmops-tags", s))
+      r.data.llmopsTags
+        .slice(0, 3)
+        .map((s: string) => getEntry("llmops-tags", s)),
     );
     return {
       slug: r.data.slug,
@@ -53,14 +58,17 @@ const relatedWithTags = await Promise.all(
       company: r.data.company,
       year: r.data.year,
       summary: r.data.summary,
-      tags: rTags.filter(Boolean).map((t) => ({ name: t!.data.name, slug: t!.data.slug })),
+      tags: rTags.flatMap((t) =>
+        t ? [{ name: t.data.name, slug: t.data.slug }] : [],
+      ),
       extraTagCount: Math.max(0, r.data.llmopsTags.length - 3),
     };
-  })
+  }),
 );
 
 // SEO
-const seoTitle = entry.data.seo?.title || `${entry.data.title} - ZenML LLMOps Database`;
+const seoTitle =
+  entry.data.seo?.title || `${entry.data.title} - ZenML LLMOps Database`;
 const seoDescription = entry.data.seo?.description || entry.data.summary;
 const ogImage = entry.data.seo?.ogImage;
 ---

@@ -1,4 +1,7 @@
 ---
+import Button from "../../components/Button.astro";
+import FeatureCard from "../../components/sections/FeatureCard.astro";
+import FeaturesCTA05 from "../../components/sections/FeaturesCTA05.astro";
 /**
  * Features hub page — grid of 7 feature category cards.
  *
@@ -8,10 +11,11 @@
  * cards (hardcoded from HUB_CARDS), and a CTA05-style purple panel.
  */
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import FeatureCard from "../../components/sections/FeatureCard.astro";
-import FeaturesCTA05 from "../../components/sections/FeaturesCTA05.astro";
-import Button from "../../components/Button.astro";
-import { FEATURES_HUB_HERO, FEATURES_HUB_CTA, HUB_CARDS } from "../../lib/features";
+import {
+  FEATURES_HUB_CTA,
+  FEATURES_HUB_HERO,
+  HUB_CARDS,
+} from "../../lib/features";
 ---
 
 <BaseLayout

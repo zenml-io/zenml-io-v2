@@ -6,8 +6,8 @@
  * Resolves author, category, tags, and computes prev/next + related posts.
  */
 import { getEntry, render } from "astro:content";
-import BlogLayout from "../../layouts/BlogLayout.astro";
 import Badge from "../../components/Badge.astro";
+import BlogLayout from "../../layouts/BlogLayout.astro";
 import {
   getAllPublishedPosts,
   getMainFeedPosts,
@@ -46,10 +46,9 @@ const categoryEntry = post.data.category
 const tagEntries = await Promise.all(
   post.data.tags.map((tagSlug: string) => getEntry("tags", tagSlug)),
 );
-const tags = tagEntries.filter(Boolean).map((t) => ({
-  name: t!.data.name,
-  slug: t!.data.slug,
-}));
+const tags = tagEntries.flatMap((t) =>
+  t ? [{ name: t.data.name, slug: t.data.slug }] : [],
+);
 
 // Resolve prev/next/related metadata for cards
 const relatedAuthors = new Map<string, { name: string; slug: string }>();
@@ -61,7 +60,11 @@ for (const r of related) {
   }
   if (r.data.category && !relatedCategories.has(r.data.category)) {
     const cat = await getEntry("categories", r.data.category);
-    if (cat) relatedCategories.set(r.data.category, { name: cat.data.name, slug: cat.data.slug });
+    if (cat)
+      relatedCategories.set(r.data.category, {
+        name: cat.data.name,
+        slug: cat.data.slug,
+      });
   }
 }
 

@@ -5,8 +5,8 @@
  * Flow: email capture → Segment lead → immediate PDF download link.
  */
 
-import type { SEOProps } from "./seo";
 import type { PlaceholderField } from "./formTypes";
+import type { SEOProps } from "./seo";
 
 export const BRICK_MANUAL_SEO: SEOProps = {
   title: "Get Your Build Instructions | ZenML",

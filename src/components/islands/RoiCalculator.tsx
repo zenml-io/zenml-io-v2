@@ -2,8 +2,9 @@
  * ROI Calculator — interactive Preact island with three sliders and a results panel.
  * Ported from the Webflow site's embedded calculator widget.
  */
-import { useState, useCallback } from "preact/hooks";
+
 import type { CSSProperties } from "preact";
+import { useCallback, useState } from "preact/hooks";
 import { calculateRoi, type RoiOutputs } from "../../lib/roiCalculator";
 
 // ── Slider config ──────────────────────────────────────────────────
@@ -71,12 +72,9 @@ export default function RoiCalculator() {
     cloudSpendMonthly: values.spend,
   });
 
-  const handleChange = useCallback(
-    (id: string, val: number) => {
-      setValues((prev) => ({ ...prev, [id]: val }));
-    },
-    [],
-  );
+  const handleChange = useCallback((id: string, val: number) => {
+    setValues((prev) => ({ ...prev, [id]: val }));
+  }, []);
 
   return (
     <div style={styles.container}>
@@ -142,8 +140,7 @@ interface SliderInputProps {
 }
 
 function SliderInput({ config, value, onChange }: SliderInputProps) {
-  const pct =
-    ((value - config.min) / (config.max - config.min)) * 100;
+  const pct = ((value - config.min) / (config.max - config.min)) * 100;
 
   return (
     <div style={styles.inputGroup}>
@@ -159,7 +156,7 @@ function SliderInput({ config, value, onChange }: SliderInputProps) {
           step={config.step}
           value={value}
           onInput={(e) =>
-            onChange(parseInt((e.target as HTMLInputElement).value))
+            onChange(parseInt((e.target as HTMLInputElement).value, 10))
           }
           style={{
             ...styles.slider,
