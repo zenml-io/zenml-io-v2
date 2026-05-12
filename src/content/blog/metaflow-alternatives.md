@@ -39,6 +39,8 @@ In this article, we introduce 8 alternatives that take care of the drawbacks Met
 
 <ul><li><strong>Why look for alternatives:</strong> Metaflow comes with a few significant constraints – it’s tightly coupled with the AWS service, requires command-line invocation for most operations, and lacks native Windows support.</li><li><strong>Who might want to use these alternatives:</strong> MLOps engineers, data scientists, and technical decision-makers who need a more accessible, cloud-agnostic, or collaboration-friendly platform for ML pipelines and experiments.</li><li><strong>What to expect:</strong> The 8 alternatives below span different aspects of the ML workflow – from specialized pipeline orchestration frameworks like ZenML to experiment tracking platforms like MLflow. We’ve grouped these tools into 3 different categories so you can identify which best suits your team’s needs.</li></ul>
 
+**Recently Updated (May 2026):** This guide has been refreshed to reflect three industry shifts since original publication: Anaconda's April 2026 acquisition of Outerbounds (the company behind Metaflow), CoreWeave's $1.7B acquisition of Weights & Biases, and the release of MLflow 3 with native GenAI agent support. All eight alternatives below reflect their current state as of May 2026.
+
 ## The Need for a Metaflow Alternative
 
 There are three core reasons why you might need to switch from Metaflow to an alternative.
@@ -67,6 +69,22 @@ If your development environment or user base includes Windows machines, Metaflow
 If you’re a Windows user, you’re forced to use workarounds like WSL (Windows Subsystem for Linux) to run Metaflow, which adds complexity and potential performance overhead.
 
 This limitation can fragment a team’s workflow and is especially problematic if you have Windows as the standard OS for data scientists.
+
+## What the Anaconda Acquisition Means for Metaflow Users
+
+On April 29, 2026, Anaconda announced its acquisition of Outerbounds, the company behind the open-source Metaflow framework. Anaconda is positioning the combined company as “the first unified platform spanning the entire AI-native development lifecycle,” pairing Anaconda’s package management, environments, and AI Catalyst foundation with Outerbounds’ workflow orchestration, artifact tracking, and governed deployment.
+
+Two things were confirmed in the announcement:
+
+<ul><li><strong>Metaflow stays open source.</strong> Anaconda explicitly committed to continued Metaflow development as an open-source project.</li><li><strong>Integration details aren’t finalized.</strong> Anaconda is publicly asking enterprises to sign up for updates on product timelines and integration details, a clear signal that the long-term roadmap, pricing, and combined product surface are still being worked out.</li></ul>
+
+That last point is the one to flag if you’re mid-evaluation. Anaconda’s stated strategy is to fold Outerbounds into “a unified platform,” and integrations of this size often mean three things over the next 12 to 24 months:
+
+<ul><li><strong>Pricing structure shifts.</strong> Outerbounds today is a predictable flat-fee MLOps platform. Anaconda’s commercial model is a broader bundled platform spanning package governance, model catalog, and now orchestration. Standalone tiers like the $1,199 to $2,499/mo Starter rarely survive integrations of this kind without being repackaged, repriced, or rolled into a wider “Platform” contract at renewal. That renewal is typically at a higher number, since you’re now paying for the whole stack instead of just orchestration.</li><li><strong>Migration paths appear.</strong> Even if the current Outerbounds product keeps running, you might be steered toward the unified platform within a year or two. That’s a re-architecture, not a config change. It will take a lot of resources.</li><li><strong>Roadmap priorities reset.</strong> Whatever was on the Outerbounds roadmap last quarter now competes with everything Anaconda needs to ship to make the integration story land. Features specific to standalone Outerbounds workflows might drop a notch in priority.</li></ul>
+
+It’s just how integrations of this size typically play out. But if you’re already evaluating Metaflow alternatives, the Anaconda news is a reason to make that decision sooner rather than later. The product you choose today should be one whose roadmap isn’t being re-drawn around someone else’s strategy.
+
+If you’d rather bet on a roadmap that isn’t in flux, [ZenML](https://www.zenml.io/) offers the same cloud-agnostic, bring-your-own-infrastructure model with no lock-in to a post-acquisition transition. The eight alternatives below cover the rest of the landscape so you can compare in context.
 
 ## Evaluation Criteria
 
@@ -115,6 +133,87 @@ Some of the best Metaflow competitors and alternatives are:
         
 
 <table> <thead> <tr> <th>Category</th> <th>Alternatives</th> <th>Key Features</th> </tr> </thead> <tbody> <tr> <td class="category-cell">1. Workflow Orchestration and Deployment</td> <td class="alternatives-cell">ZenML, Kubeflow, Prefect</td> <td class="features-cell"> <span class="bullet">•</span>Build scalable, production-grade ML pipelines <span class="bullet">•</span>Supports multi-cloud and hybrid deployments </td> </tr> <tr> <td class="category-cell">2. Experiment Tracking</td> <td class="alternatives-cell">Neptune, MLflow, DagsHub</td> <td class="features-cell"> <span class="bullet">•</span>Log and compare parameters, metrics, and artifacts <span class="bullet">•</span>Integrated or built-in model registry support </td> </tr> <tr> <td class="category-cell">3. Visualization and Collaboration</td> <td class="alternatives-cell">Comet, Weights &amp; Biases</td> <td class="features-cell"> <span class="bullet">•</span>Real-time training dashboards and metrics visualization <span class="bullet">•</span>Team collaboration with shared projects and reports </td> </tr> </tbody></table>
+
+For a more detailed side-by-side view, here is how each tool compares across the criteria above:
+
+<table>
+  <thead>
+    <tr>
+      <th>Tool</th>
+      <th>Category</th>
+      <th>Best For</th>
+      <th>Native Windows</th>
+      <th>Pipelines + Tracking</th>
+      <th>2025-2026 Notable Change</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>ZenML</td>
+      <td>Orchestration + Tracking</td>
+      <td>Teams wanting one tool for classical ML and agent workflows across any cloud</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>50+ integrations, agent-aware steps</td>
+    </tr>
+    <tr>
+      <td>Kubeflow</td>
+      <td>Orchestration</td>
+      <td>Kubernetes-native enterprises with a platform team</td>
+      <td>No (needs K8s)</td>
+      <td>Partial (via add-ons)</td>
+      <td>1.10+ improved IAM and multi-tenancy</td>
+    </tr>
+    <tr>
+      <td>Prefect</td>
+      <td>Orchestration</td>
+      <td>Python-first teams wanting hybrid SaaS or self-host</td>
+      <td>Yes</td>
+      <td>No (orchestration only)</td>
+      <td>Prefect 3 reduces pipeline-to-prod friction</td>
+    </tr>
+    <tr>
+      <td>MLflow</td>
+      <td>Experiment Tracking</td>
+      <td>Open-source tracking, now also agent observability</td>
+      <td>Yes</td>
+      <td>Tracking only</td>
+      <td>MLflow 3 adds ResponsesAgent and GenAI scorers</td>
+    </tr>
+    <tr>
+      <td>Neptune</td>
+      <td>Experiment Tracking</td>
+      <td>Lightweight tracking with strong comparison views</td>
+      <td>Yes</td>
+      <td>Tracking only</td>
+      <td>Continued framework callback expansion</td>
+    </tr>
+    <tr>
+      <td>DagsHub</td>
+      <td>Tracking + Versioning</td>
+      <td>Git-style versioning for code, data, and models</td>
+      <td>Yes</td>
+      <td>Tracking only</td>
+      <td>Tighter MLflow + DVC integration</td>
+    </tr>
+    <tr>
+      <td>Comet</td>
+      <td>Visualization</td>
+      <td>Real-time dashboards with rich plotting</td>
+      <td>Yes</td>
+      <td>Tracking only</td>
+      <td>Steady release cadence</td>
+    </tr>
+    <tr>
+      <td>Weights &amp; Biases</td>
+      <td>Visualization</td>
+      <td>Hosted collaboration, now on CoreWeave's GPU stack</td>
+      <td>Yes</td>
+      <td>Tracking only</td>
+      <td>Acquired by CoreWeave May 2025 ($1.7B)</td>
+    </tr>
+  </tbody>
+</table>
 
 ## Category 1. For Workflow Orchestrations and Deployment
 
@@ -437,11 +536,37 @@ However, the free tier of W&B is good for personal projects and research, but te
 
 **📚 Learn more:** [WandB documentation](https://docs.wandb.ai/).
 
+## Common Questions About Metaflow Alternatives
+
+**Is Metaflow still being actively developed in 2026?**
+
+Yes. Metaflow 2.18 added recursive steps and conditional step transitions for agentic workflows, and Anaconda acquired Outerbounds (Metaflow’s commercial sponsor) in April 2026. Active development is not a reason to migrate away on its own, but the AWS coupling, CLI-only workflow, and lack of native Windows support are still the same trade-offs called out earlier in this guide.
+
+**Which Metaflow alternative supports Windows natively?**
+
+ZenML and Prefect both run natively on Windows without WSL. Kubeflow does not, since it requires a Kubernetes cluster. The tracking-only tools (MLflow, Neptune, Comet, W&B) have native Windows clients but cover only part of the workflow.
+
+**What is the closest Metaflow alternative for AWS-heavy teams?**
+
+ZenML and Kubeflow are the closest functional equivalents for AWS-centric MLOps. ZenML offers AWS integration without the AWS lock-in, so you can change orchestrators or clouds without rewriting pipelines. Kubeflow on EKS gives you a Kubernetes-native equivalent if your team has the ops capacity to run it.
+
+**Which Metaflow alternative is best for agentic or GenAI workflows?**
+
+ZenML and MLflow 3 have the most direct agent-workflow story today. MLflow 3 added the ResponsesAgent class and session-level scorers for evaluating conversational agents. ZenML’s pipeline-centric model treats agent loops as composable steps with full lineage, which suits teams running both classical ML and agent workloads on one platform.
+
+**Should I switch from Metaflow now that Anaconda owns Outerbounds?**
+
+The acquisition itself is not a reason to switch. The reasons to evaluate alternatives are the same as before: cloud lock-in, missing UI, no Windows support, or wanting integrated tracking and orchestration. If those pain points have not affected your team, Metaflow under Anaconda is a stable choice. But if you’re already evaluating, the integration uncertainty over the next 12 to 24 months is a reason to make that decision sooner rather than later.
+
 ## Which is the Best Metaflow Alternative for You?
 
 When selecting the best Metaflow alternative, consider your team's specific needs and constraints. Each tool offers unique advantages:
 
 <ul><li><strong>For teams seeking end-to-end MLOps with minimal infrastructure management</strong>: ZenML offers a balance of simplicity and extensibility, allowing you to start locally and scale to production.</li><li><strong>For enterprise teams with Kubernetes expertise</strong>: Kubeflow provides production-grade reliability and scalability for complex ML workflows.</li><li><strong>For teams prioritizing developer experience</strong>: Prefect offers an intuitive Python API with excellent observability and failure handling.</li><li><strong>For teams focused on experiment tracking and visualization</strong>: Weights &amp; Biases and Comet provide powerful tools for tracking, visualizing, and comparing experiments.</li></ul>
+
+**Quick Selection Guide by Use Case (May 2026):**
+
+<ul><li><strong>Drop-in alternative for AWS-first MLOps:</strong> ZenML or Kubeflow</li><li><strong>Pipelines plus tracking in one tool:</strong> ZenML</li><li><strong>Native Windows support required:</strong> ZenML or Prefect</li><li><strong>Agentic or GenAI workflows:</strong> ZenML or MLflow 3</li><li><strong>Kubernetes-native at enterprise scale:</strong> Kubeflow</li><li><strong>Experiment tracking only, not orchestration:</strong> MLflow (open source) or Neptune (managed)</li><li><strong>Hosted dashboards and team collaboration:</strong> Weights &amp; Biases or Comet</li><li><strong>Code, data, and experiment versioning together:</strong> DagsHub</li></ul>
 
 Still confused about where to get started? [Book a personalized demo call](https://www.zenml.io/book-your-demo) with our Founder and discover how ZenML breaks you free from AWS lock-in while delivering production-ready ML pipelines with true multi-cloud flexibility.
 
