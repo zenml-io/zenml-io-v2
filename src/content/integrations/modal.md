@@ -14,7 +14,7 @@ integrationType: "orchestrator"
 logo:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7b15a9ae/66d8676b68691b668b69e839_modal.png"
 shortDescription: "The Modal step operator is a lightweight alternative to other distributed orchestrators like Airflow or Kubeflow that gives our users the ability to run pipelines on Modal's managed platform without having to install and manage additional tools or components."
-docsUrl: "https://docs.zenml.io/stack-components/step-operator/modal"
+docsUrl: "https://docs.zenml.io/stack-components/step-operators/modal"
 githubUrl: "https://docs.zenml.io/stack-components/step-operators/modal"
 mainImage:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/4c71532a/66cc77aa422292234dd3f326_CleanShot_2024-08-25_at_17.18.35_2x.png"
