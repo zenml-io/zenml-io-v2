@@ -56,6 +56,13 @@ const { Content } = await render(entry);
   </div>
 </BaseLayout>
 
+{/* IntersectionObserver-driven [data-reveal] fade-in. Without it, every
+    Kitaru component (FeatureWithGraphic, WhenToUseEach, CodeCompare, ...)
+    stays opacity:0 — the whole article body looks blank. */}
+<script>
+  import "../../../scripts/kitaru/scroll-reveal";
+</script>
+
 <style>
   /* Match Kitaru's pages/compare/[slug].astro page-scoped layout rules,
    * scoped here to the data-app wrapper so they don't leak to other pages. */
