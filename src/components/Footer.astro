@@ -3,6 +3,7 @@
  * Footer — multi-column footer matching the zenml.io Webflow site.
  * Structure: brand/social | primary columns | VS columns | extended columns | legal
  */
+import ZenmlLogo from "./brand/ZenmlLogo.astro";
 import {
   FOOTER_EXTENDED,
   FOOTER_LEGAL,
@@ -30,14 +31,8 @@ const SOCIAL_ICONS: Record<SocialPlatform, string> = {
       <div class="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-12">
         {/* Brand column — stays top-left with whitespace below */}
         <div class="lg:col-span-3">
-          <a href="/" class="inline-block">
-            <img
-              src="/images/zenml-logo.svg"
-              alt="ZenML"
-              width="115"
-              height="28"
-              class="h-7 w-auto"
-            />
+          <a href="/" class="inline-block text-foreground" aria-label="ZenML">
+            <ZenmlLogo class="h-7 w-auto" />
           </a>
           <p class="mt-4 text-sm text-gray-600">Simplify MLOps</p>
 
