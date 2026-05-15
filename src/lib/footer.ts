@@ -32,11 +32,14 @@ export const FOOTER_PRIMARY: FooterColumn[] = [
   {
     title: "Product",
     links: [
-      { label: "Features", href: "/features" },
+      { label: "ZenML", href: "/" },
+      { label: "Kitaru", href: "https://kitaru.ai", external: true },
       { label: "ZenML Pro", href: "/pro", badge: "New" },
-      { label: "OSS vs Managed", href: "/open-source-vs-pro" },
-      { label: "Integrations", href: "/integrations" },
       { label: "Pricing", href: "/pricing" },
+      { label: "OSS vs Managed", href: "/open-source-vs-pro" },
+      { label: "Features", href: "/features" },
+      { label: "Deployments", href: "/deployments" },
+      { label: "Integrations", href: "/integrations" },
     ],
   },
   {

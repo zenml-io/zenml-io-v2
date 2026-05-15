@@ -42,7 +42,49 @@ const headerStarsFallback = formatStars(FALLBACK_STARS);
       {/* Desktop Nav */}
       <nav class="hidden lg:flex lg:items-center lg:gap-1 lg:ml-12 h-full" role="navigation" aria-label="Main navigation">
         {/* Dropdown menus */}
-        {NAV_DROPDOWNS.map((dropdown) => (
+        {NAV_DROPDOWNS.map((dropdown) => dropdown.compact ? (
+          <div class="group relative flex h-full items-center">
+            <button
+              class="flex items-center gap-1 rounded-md px-3 py-2 text-sm font-semibold text-gray-900 transition-colors hover:bg-gray-50"
+              aria-expanded="false"
+              aria-haspopup="true"
+            >
+              {dropdown.label}
+              <svg class="h-4 w-4 text-gray-400 transition-transform group-hover:rotate-180" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 7.5L10 12.5L15 7.5" />
+              </svg>
+            </button>
+            {/* Compact dropdown — narrow box anchored under the button */}
+            <div class="pointer-events-none invisible absolute left-0 top-full z-50 w-[320px] pt-2 opacity-0 transition-[opacity,visibility] duration-200 group-hover:pointer-events-auto group-hover:visible group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:visible group-focus-within:opacity-100">
+              <div class="rounded-lg bg-white shadow-large border border-gray-100 p-2">
+                {dropdown.sections[0].links.map((link) => (
+                  <a
+                    href={link.href}
+                    class="group/link flex items-center gap-3 rounded-md p-2 transition-colors hover:bg-gray-50"
+                    target={link.external ? "_blank" : undefined}
+                    rel={link.external ? "noopener noreferrer" : undefined}
+                  >
+                    <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-zenml-25 text-zenml-500">
+                      <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <Fragment set:html={link.icon || '<path d="M13 2L4.09 12.69a.5.5 0 00.41.81H12l-1 10 8.91-10.69a.5.5 0 00-.41-.81H12l1-10z"/>'} />
+                      </svg>
+                    </div>
+                    <div class="min-w-0">
+                      <div class="text-sm font-medium text-gray-900 group-hover/link:text-zenml-500">
+                        {link.label}
+                      </div>
+                      {link.description && (
+                        <div class="mt-0.5 text-xs text-gray-500 leading-snug">
+                          {link.description}
+                        </div>
+                      )}
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
+        ) : (
           <div class="group flex h-full items-center">
             <button
               class="flex items-center gap-1 rounded-md px-3 py-2 text-sm font-semibold text-gray-900 transition-colors hover:bg-gray-50"
