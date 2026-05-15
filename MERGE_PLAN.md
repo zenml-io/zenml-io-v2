@@ -16,7 +16,7 @@ at the end. Each phase = one or more commits on that branch.
 | Phase | Status | Branch / PR | Notes |
 |-------|--------|-------------|-------|
 | **1. Nav + footer restructure** | ✅ Shipped (commits `020d2fd`, `b361f99`) | `merge/zenml-kitaru-unification` | Desktop + mobile verified via Playwright. |
-| **2a. Brand tokens (unified)** | ✅ Prototyped, uncommitted | `merge/zenml-kitaru-unification` | Site-wide brand swap landed: purple → sage green primary, body bg → warm cream, Plus Jakarta Sans → Inter. `[data-app="zenml" \| "kitaru"]` theme switching on `<html>`. Legacy `--color-zenml-*` aliased to new green. Per D15. |
+| **2a. Brand tokens (unified)** | ✅ Shipped | `merge/zenml-kitaru-unification` | Site-wide brand swap + proper centralization. Purple → sage green. White → warm cream. Plus Jakarta Sans → Inter. Honest token naming (purple-* reverted to actual purple; brand uses zenml-* / semantic). `[data-app="zenml" \| "kitaru"]` switching on `<html>`. Brand assets recolored: Lottie hero animation, `tab_bg.avif`, `gradient_01.webp`, `grid_bg_02.webp`, `zenml_light_bg-02.avif`, `why-zenml.avif`. Hero copy + IntegrationsMarquee polish. |
 | 2b. Port Kitaru landing → `/product/kitaru` | ⏳ Next | — | Hero, Features, PlatformBuilder, CodeShowcase from kitaru/site. Will use `data-app="kitaru"` for warm/orange theme. |
 | 3. Compare landing expansion | ⏳ Pending | — | — |
 | 4. `/get-started` ML/Agent chooser | ⏳ Pending | — | Needs design input |
@@ -73,14 +73,25 @@ After initial alias-based swap, the system was reorganized for honest naming + c
 - `public/images/zenml_light_bg-02.avif` regenerated as a soft sage/cream blur (was purple/pink). Used by NewsSection, CustomerStories, IntegrationsMarquee, pricing page hero — auto-updates without source edits.
 
 ### Phase 2a — known punchlist (post-Phase 2 polish, not blocking)
-- **ZenML logo + display font deferred to Zuri.** User tried a placeholder hex+serif logo and DM Serif Display font; rejected. Decision: wait for Zuri's actual logo SVG and font files before re-attempting. Until then, legacy purple `zenml-logo.svg` + Inter for everything.
-- **Reference images preserved at repo root:** `0017109a-4dd0-11f1-8e68-a22cd0578fcd.avif` (hero composition) and `72e9edec-4f13-11f1-bf6b-0242ac120003 (1).avif` (Option #02 brand exploration with palette stripes). Use as North Star when Zuri's files land.
-- **R2-hosted content images still carry the old purple brand.** Affected (non-exhaustive):
-  - `why-zenml-min.png` / `why-zenml-mobile-min.webp` — architecture diagram inside the "Your VPC, your data" section
-  - Webflow-migrated advantage illustrations (e.g. `streamlined-ml-workflow-initialization`'s `img01.png`)
-  - Some blog post hero images
-  - Need green-rebranded replacements from design. CSS changes won't fix these.
-- Fixed in follow-up commits: `FinalCTA`, `WhitepaperCTA`, `VsCta02`, `projects/index`, `projects/[slug]` all had hardcoded `/images/gradient_01.webp` purple gradient backgrounds → replaced with CSS linear-gradients using aliased green tokens. Footer `[linear-gradient(171deg,#f6f2ff,#fff)]` → uses `var(--color-zenml-50)` + `var(--background)`.
+- **ZenML logo + display font deferred to Zuri.** User tried a placeholder hex+serif logo and DM Serif Display font; rejected. Subsequent attempt to use DM Serif Display on the hero h1 alone was also reverted — user wanted *just* a copy refresh, not a font change. DM Serif Display *is* loaded in `global.css` and exposed via `--font-display` + Tailwind `font-display` utility, so future opt-in is one-class away. Logo asset still legacy purple `zenml-logo.svg` until Zuri delivers a green variant.
+- **Reference images preserved at repo root:** `0017109a-4dd0-11f1-8e68-a22cd0578fcd.avif` (hero composition) and `72e9edec-4f13-11f1-bf6b-0242ac120003 (1).avif` (Option #02 brand exploration with palette stripes). Use as North Star when Zuri's files land. **Note:** these prototypes show a more *editorial* direction (cream + black + serif, sage as accent role) than what we shipped (sage green primary, sans typography). A full visual match to Zuri's prototypes requires more than token swaps — needs page-by-page redesign + final assets. Honest gap acknowledged.
+- **R2-hosted blog hero images** likely still carry old purple brand in some posts. Need a per-post audit + design-side replacements. CSS won't fix raster content.
+- **Webflow-migrated advantage illustrations** (e.g. `streamlined-ml-workflow-initialization`'s `img01.png`, similar) still old brand on R2. Each is a small raster panel — easy to swap once design provides updated versions.
+
+### Phase 2a — extended polish log (follow-up commits on the branch)
+Several follow-up commits chased remaining purple bleed-through after the initial brand swap:
+
+- **`FinalCTA`, `WhitepaperCTA`, `VsCta02`, `projects/index`, `projects/[slug]`** — hardcoded `/images/gradient_01.webp` purple gradient backgrounds → CSS linear-gradients using zenml-* tokens (then `gradient_01.webp` itself was regenerated as sage so the references still work in any other consumer).
+- **`Footer.astro`** — `[linear-gradient(171deg,#f6f2ff,#fff)]` → `var(--color-zenml-50)` + `var(--background)`.
+- **`AnnouncementBanner.astro`** — `from-purple-700 to-purple-600` gradient → `bg-primary` (themed).
+- **`global.css` BRAND CONFIG refactor** — reorganized into clearly-labeled top section. `--color-purple-*` reverted to real Untitled UI purple (was being aliased to green — dishonest naming). Brand expressed only through `--color-zenml-*` + semantic `--primary`/`--background`/etc.
+- **Source migrations** — every component using `bg-purple-*` / `text-purple-*` / `from-purple-*` for brand-accent intent → `bg-zenml-*` etc. Files touched: Badge, Button, FeatureCard, ComparisonTable, FeaturesCTA05, FeatureTestimonial, ValueProps, CompareStrategyCta, MLOpsFilter, LLMOpsFilter, ProTestimonialCarousel, llmops-database/index, mlops-database/index, company, projects/[slug].
+- **Hex sweep** — literal purple hex values in component CSS (`#7a3ef4`, `#53389e`, `#f6f2ff`, `#7C3AED`/`#8B5CF6`/`#A78BFA`, etc.) → `var(--color-zenml-*)` tokens. Dead `var(--color-X, #hex)` fallback hexes cleaned up.
+- **Background assets regenerated** as sage/cream gaussian blurs (purple originals replaced in-place at same path, so all 5+ consumers update without source edits): `zenml_light_bg-02.avif`, `tab_bg.avif`, `gradient_01.webp`, `grid_bg_02.webp`.
+- **`why-zenml.avif` / `why-zenml-mobile.avif`** — pulled the R2 architecture diagram, ran a targeted HSV hue shift on purple-range pixels only (preserving cloud-logo colors), saved local AVIFs, switched `homepage.ts` reference from R2 to local. The "Your VPC, your data" section now in green.
+- **Hero copy unification** — headline "The AI Control Plane" → "The single layer for ML and AI." Subheadline rewritten to Focus Lab USP language: *"Orchestrate ML and Agent workloads on your infrastructure. Modular, flexible, and open-source — always."*
+- **Lottie hero animation (`/lottie/hero-0925.json`)** — walked the JSON, found 115 color stops in the purple range (incl. animated keyframes + gradient stops). Differentiated shift: saturated purples → sage green (h=0.36, s×0.70); pale lavenders (s<0.12) → cream/sage to blend with body bg (h=0.27, low sat). Cloud logos, Git/Docker icons untouched. Last pass dropped sat cutoff to 0.008 to catch a stubborn 1.6%-sat lavender rectangle bg behind the pipeline cards.
+- **`IntegrationsMarquee.astro`** — dropped the sage/cream bg image; section now plain cream. Fixes green-on-green banding above the WhitepaperCTA dark sage banner.
 
 ### Phase 1 — known cosmetic punchlist (not blocking)
 - Kitaru nav icon is a placeholder (sun-radial glyph). User chose to leave it for now.
