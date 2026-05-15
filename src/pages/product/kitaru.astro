@@ -3,35 +3,64 @@
  * /product/kitaru — landing page introducing Kitaru as a sub-product
  * under the unified ZenML umbrella.
  *
- * Uses our shared BaseLayout (nav + footer) but overrides the theme by
- * wrapping all page content in <div data-app="kitaru">. Because our
- * token CSS targets `[data-app="kitaru"]` (not just html[data-app]),
- * adding the attribute on a div re-roots --primary, --background, etc.
- * to Kitaru's warm-cream + orange palette for descendants only.
+ * Deep port from `kitaru/site/src/pages/index.astro`. All 9 sections
+ * ported verbatim with original scoped CSS preserved. Kitaru-era CSS
+ * tokens (--color-bg, --color-accent, --font-ui) are bridged onto our
+ * unified tokens by `src/styles/kitaru-compat.css`, scoped to the
+ * `[data-app="kitaru"]` wrapper that flips the theme.
  *
- * Kitaru-era components reference legacy var names (--color-bg,
- * --color-accent, --font-ui, etc.) — those are bridged onto our tokens
- * by `src/styles/kitaru-compat.css`, scoped to the same selector.
+ * Sections (in source order, matching kitaru.ai/):
+ *   Hero            → WebGL ASCII dot-grid + mesh gradient + replay panel
+ *   PlatformBuilder → 3 image-card problem statement grid
+ *   OneImport       → single-import code window
+ *   Features        → scroll-stacking feature cards (6 primitives)
+ *   CodeShowcase    → dark code panel + 8 hoverable primitives
+ *   Deploy          → deployment targets (K8s/Vertex/SageMaker/AzureML)
+ *   Architecture    → system architecture diagram
+ *   SocialProof     → testimonials + logos
+ *   Cta             → closing CTA band
  *
  * See MERGE_PLAN.md §4 (Phase 2b).
  */
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Hero from "../../components/kitaru/Hero.astro";
+import PlatformBuilder from "../../components/kitaru/PlatformBuilder.astro";
+import OneImport from "../../components/kitaru/OneImport.astro";
+import Features from "../../components/kitaru/Features.astro";
 import CodeShowcase from "../../components/kitaru/CodeShowcase.astro";
+import Deploy from "../../components/kitaru/Deploy.astro";
+import Architecture from "../../components/kitaru/Architecture.astro";
+import SocialProof from "../../components/kitaru/SocialProof.astro";
 import Cta from "../../components/kitaru/Cta.astro";
 import "../../styles/kitaru-compat.css";
 
 const seo = {
   title: "Kitaru — Durable runtime for AI agents | ZenML",
   description:
-    "Kitaru is the open-source durable runtime for production AI agents. Checkpoints, replay, and human-in-the-loop gates as first-class primitives. Built by the ZenML team.",
+    "Open-source runtime for long-running Python agents. Add checkpoints, replay, wait/resume, isolated execution, artifacts, and versioned deployments on your own cloud. Built by the ZenML team.",
 };
 ---
 
 <BaseLayout {...seo}>
   <div data-app="kitaru" class="bg-background text-foreground">
-    <Hero />
-    <CodeShowcase />
-    <Cta />
+    <main id="kitaru-main">
+      <Hero />
+      <PlatformBuilder />
+      <OneImport />
+      <Features />
+      <CodeShowcase />
+      <Deploy />
+      <Architecture />
+      <div class="gradient-divider"></div>
+      <SocialProof />
+      <div class="gradient-divider"></div>
+      <Cta />
+    </main>
   </div>
 </BaseLayout>
+
+{/* Scroll-reveal observer — drives the [data-reveal] fade-in animations on
+    every Kitaru section. Loaded once for the whole page. */}
+<script>
+  import "../../scripts/kitaru/scroll-reveal";
+</script>
