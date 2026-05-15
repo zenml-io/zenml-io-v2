@@ -38,7 +38,7 @@ export const FOOTER_PRIMARY: FooterColumn[] = [
       { label: "Pricing", href: "/pricing" },
       { label: "OSS vs Managed", href: "/open-source-vs-pro" },
       { label: "Features", href: "/features" },
-      { label: "Deployments", href: "/deployments" },
+      { label: "Deployment scenarios", href: "/deployments" },
       { label: "Integrations", href: "/integrations" },
     ],
   },
