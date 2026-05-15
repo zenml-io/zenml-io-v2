@@ -8,7 +8,6 @@
 import { Code } from 'astro:components';
 import type { ThemeRegistrationRaw } from 'shiki';
 import kitaruLight from '../../../styles/kitaru-light.json';
-import kitaruDark from '../../../styles/kitaru-dark.json';
 
 interface Props {
   code: string;
@@ -22,8 +21,7 @@ const { code, lang = 'python' } = Astro.props;
   <Code
     code={code}
     lang={lang}
-    themes={{ light: kitaruLight as ThemeRegistrationRaw, dark: kitaruDark as ThemeRegistrationRaw }}
-    defaultColor="light"
+    theme={kitaruLight as ThemeRegistrationRaw}
   />
 </article>
 

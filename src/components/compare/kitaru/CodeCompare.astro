@@ -1,13 +1,11 @@
 ---
 import { Code } from 'astro:components';
 import type { ThemeRegistrationRaw } from 'shiki';
-import kitaruLight from '../../../styles/kitaru-light.json';
 import kitaruDark from '../../../styles/kitaru-dark.json';
 
-const codeThemes = {
-  light: kitaruLight as ThemeRegistrationRaw,
-  dark: kitaruDark as ThemeRegistrationRaw,
-};
+// CodeCompare lives in a dark band — use the dark Kitaru theme directly.
+// CodePane (light bg) uses kitaruLight; they're separate by design.
+const codeTheme = kitaruDark as ThemeRegistrationRaw;
 
 interface Props {
   title?: string;
@@ -42,7 +40,7 @@ const {
         <span class="codecompare-pill">Recommended</span>
       </header>
       <div class="codecompare-code">
-        <Code code={kitaruCode} lang={lang} themes={codeThemes} defaultColor="light" />
+        <Code code={kitaruCode} lang={lang} theme={codeTheme} />
       </div>
     </article>
     <article class="codecompare-pane">
@@ -51,7 +49,7 @@ const {
         <span class="codecompare-label">{competitorLabel}</span>
       </header>
       <div class="codecompare-code">
-        <Code code={competitorCode} lang={lang} themes={codeThemes} defaultColor="light" />
+        <Code code={competitorCode} lang={lang} theme={codeTheme} />
       </div>
     </article>
   </div>
@@ -196,15 +194,9 @@ const {
     font-family: inherit;
     color: var(--code-var);
   }
-  /* Shiki ships tokens with both themes baked in (light default + `--shiki-dark`
-     variable). CodeCompare lives inside a dark band, so force every token to
-     render its dark-theme value. */
-  .codecompare-code :global(pre span) {
-    color: var(--shiki-dark) !important;
-    font-style: var(--shiki-dark-font-style, inherit) !important;
-    font-weight: var(--shiki-dark-font-weight, inherit) !important;
-    text-decoration: var(--shiki-dark-text-decoration, inherit) !important;
-  }
+  /* Tokens emit their kitaruDark colors directly (we pass the dark theme
+     as `theme={...}` on <Code>) so no --shiki-dark variable indirection
+     is needed. */
 
   @media (max-width: 900px) {
     .codecompare-grid { grid-template-columns: 1fr; }
