@@ -1,8 +1,10 @@
 @import "tailwindcss";
 
-/* Inter — body UI font for the unified brand.
-   Loaded from Google Fonts. Self-host in a future polish pass. */
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+/* Inter — body UI font. DM Serif Display — editorial display font.
+   Loaded from Google Fonts. Self-host in a future polish pass.
+   Note: font-display is applied per-element via `class="font-display"`,
+   NOT globally to h1/h2 — only where editorial serif fits the design. */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=DM+Serif+Display&display=swap");
 
 html { scroll-behavior: smooth; }
 
@@ -83,6 +85,7 @@ html { scroll-behavior: smooth; }
   --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
     sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --font-display: "DM Serif Display", Georgia, "Times New Roman", serif;
 
   /* Shape */
   --radius: 0.5rem;
@@ -155,9 +158,10 @@ html { scroll-behavior: smooth; }
   --color-warning: var(--warning);
   --color-info: var(--info);
 
-  /* Fonts — tracks --font-sans / --font-mono in :root above */
+  /* Fonts — tracks --font-* in :root above */
   --font-sans: var(--font-sans);
   --font-mono: var(--font-mono);
+  --font-display: var(--font-display);
 }
 
 @theme inline {
