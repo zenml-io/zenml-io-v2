@@ -397,8 +397,8 @@ export const COMPLIANCE = {
   badgeSubheadline: "We Take Security Seriously",
   badgeBody:
     "ZenML is SOC2 and ISO 27001 compliant, validating our adherence to industry-leading standards for data security, availability, and confidentiality in our ongoing commitment to protecting your ML workflows and data.",
-  architectureImage: `${R2}/68b844a2/66c7398e738654118d4024fb_why-zenml-min.png`,
-  architectureImageMobile: `${R2}/8978f34c/66c73e7cfd15ae9889f59705_why-zenml-mobile-min.webp`,
+  architectureImage: "/images/why-zenml.avif",
+  architectureImageMobile: "/images/why-zenml-mobile.avif",
   soc2Badge: `${R2}/f7e1dfa3/67ae0f84d539a001cc441a43_soc2type2_zenml.png`,
   iso27001Badge: `${R2}/f62e5def/66e9546d3b19094bf950273a_iso_certified.webp`,
 };
