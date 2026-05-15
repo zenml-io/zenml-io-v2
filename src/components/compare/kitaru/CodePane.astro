@@ -7,9 +7,11 @@
  */
 import { Code } from 'astro:components';
 
+type CodeLang = Parameters<typeof Code>[0]["lang"];
+
 interface Props {
   code: string;
-  lang?: string;
+  lang?: CodeLang;
 }
 
 const { code, lang = 'python' } = Astro.props;

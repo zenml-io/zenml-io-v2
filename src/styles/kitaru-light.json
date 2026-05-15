@@ -1,6 +1,7 @@
 {
   "name": "kitaru-light",
   "type": "light",
+  "settings": [],
   "colors": {
     "editor.background": "#FAF6EF",
     "editor.foreground": "#1A1310"

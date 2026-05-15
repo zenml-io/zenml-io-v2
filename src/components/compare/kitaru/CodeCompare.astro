@@ -3,9 +3,13 @@ import { Code } from 'astro:components';
 import type { ThemeRegistrationRaw } from 'shiki';
 import kitaruDark from '../../../styles/kitaru-dark.json';
 
-// CodeCompare lives in a dark band — use the dark Kitaru theme directly.
-// CodePane (light bg) uses kitaruLight; they're separate by design.
-const codeTheme = kitaruDark as ThemeRegistrationRaw;
+type CodeLang = Parameters<typeof Code>[0]["lang"];
+
+// CodeCompare lives in a dark band, so it uses the high-contrast Kitaru theme.
+const codeTheme = {
+  ...kitaruDark,
+  type: kitaruDark.type as "light" | "dark",
+} satisfies ThemeRegistrationRaw;
 
 interface Props {
   title?: string;
@@ -14,7 +18,7 @@ interface Props {
   competitorLabel?: string;
   kitaruCode: string;
   competitorCode: string;
-  lang?: string;
+  lang?: CodeLang;
 }
 const {
   title = 'Code comparison',
@@ -62,12 +66,15 @@ const {
      repeats the sRGB-converted equivalents of these oklch values — comments
      in the JSON map each hex back to a token here. Keep in sync if edited. */
   .codecompare {
-    --code-kw:   oklch(0.73 0.08 70);   /* keywords, imports    → #C89F70 */
-    --code-fn:   oklch(0.68 0.12 50);   /* functions, decorators → #D38151 */
-    --code-str:  oklch(0.72 0.1 155);   /* strings, builtins    → #6FB789 */
-    --code-var:  oklch(0.92 0.01 70);   /* default text         → #E9E4DE */
-    --code-op:   oklch(0.72 0.02 65);   /* operators, punctuation → #AEA298 */
-    --code-cmt:  oklch(0.67 0.015 60);  /* comments             → #9C938C */
+    --code-kw:   #FFD38A;
+    --code-fn:   #FFB36B;
+    --code-str:  #7EE2A3;
+    --code-var:  #FFF7EC;
+    --code-op:   #D9C9BC;
+    --code-cmt:  #B7AAA0;
+    --code-bg:   #17120E;
+    --code-pane: #211913;
+    --code-line: oklch(1 0 0 / 0.12);
   }
   /* Full-bleed dark band — breaks out of the .compare-body article column
      (max-width 1192px) to the viewport edges so the section reads as its own
@@ -78,23 +85,26 @@ const {
     width: 100vw;
     margin-left: calc(50% - 50vw);
     margin-right: calc(50% - 50vw);
-    margin-top: 64px;
-    margin-bottom: 64px;
-    padding: 56px 24px;
+    margin-top: 72px;
+    margin-bottom: 72px;
+    padding: 64px 24px;
     /* Same dark surface as the homepage "See the code" section. */
-    background: oklch(0.13 0.015 60);
+    background:
+      radial-gradient(circle at 12% 10%, oklch(0.68 0.17 48 / 0.18), transparent 34rem),
+      radial-gradient(circle at 88% 0%, oklch(0.78 0.1 76 / 0.12), transparent 30rem),
+      var(--code-bg);
     color: var(--code-var);
-    border-top: 1px solid oklch(1 0 0 / 0.06);
-    border-bottom: 1px solid oklch(1 0 0 / 0.06);
+    border-top: 1px solid var(--code-line);
+    border-bottom: 1px solid var(--code-line);
   }
   @media (min-width: 820px) {
-    .codecompare { padding: 72px 32px; }
+    .codecompare { padding: 80px 32px; }
   }
   /* Heading that lives inside the dark band so the section reads as its own
      dark chapter on the page (not a floating pair of cards). */
   .codecompare-inner {
-    max-width: 1128px;
-    margin: 0 auto 28px;
+    max-width: 1280px;
+    margin: 0 auto 32px;
     text-align: left;
   }
   .codecompare-eyebrow {
@@ -110,54 +120,60 @@ const {
   /* Extra specificity beats the page-level `.compare-body-inner h2` rule
      defined in [slug].astro which sets a dark color. */
   .codecompare .codecompare-title {
-    font-size: clamp(26px, 3vw, 34px);
+    max-width: 820px;
+    font-size: clamp(30px, 3.2vw, 42px);
     font-weight: 700;
-    letter-spacing: -0.01em;
-    line-height: 1.2;
-    color: oklch(0.95 0.01 75);
+    letter-spacing: -0.025em;
+    line-height: 1.12;
+    color: var(--code-var);
     margin: 0;
   }
   /* Inner max-width matches the rest of the article column so the two panes
      align with the surrounding prose. */
   .codecompare-grid {
-    max-width: 1128px;
+    max-width: 1280px;
     margin: 0 auto;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 16px;
+    gap: 20px;
   }
   /* Each pane uses the homepage code-window surface. */
   .codecompare-pane {
-    border: 1px solid oklch(1 0 0 / 0.08);
-    border-radius: 12px;
-    background: oklch(0.16 0.015 60);
+    min-width: 0;
+    border: 1px solid var(--code-line);
+    border-radius: 16px;
+    background: color-mix(in srgb, var(--code-pane) 94%, white 6%);
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    box-shadow:
+      0 28px 70px -42px oklch(0 0 0 / 0.75),
+      inset 0 1px 0 oklch(1 0 0 / 0.06);
   }
   .codecompare-pane--kitaru {
-    border-color: oklch(0.65 0.16 45 / 0.35);
+    border-color: oklch(0.72 0.16 48 / 0.52);
   }
   .codecompare-pane header {
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 12px 18px;
-    border-bottom: 1px solid oklch(1 0 0 / 0.06);
-    background: oklch(1 0 0 / 0.02);
+    min-height: 52px;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--code-line);
+    background: linear-gradient(180deg, oklch(1 0 0 / 0.055), oklch(1 0 0 / 0.02));
   }
   .codecompare-dot {
-    width: 8px;
-    height: 8px;
+    width: 9px;
+    height: 9px;
     border-radius: 50%;
-    background: oklch(1 0 0 / 0.35);
+    background: oklch(1 0 0 / 0.45);
   }
   .codecompare-dot--kitaru { background: var(--color-accent); }
-  .codecompare-dot--competitor { background: oklch(0.78 0.09 65); }
+  .codecompare-dot--competitor { background: #FFD38A; }
   .codecompare-label {
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 600;
-    color: oklch(0.95 0.01 75);
+    color: var(--code-var);
     letter-spacing: 0.02em;
   }
   .codecompare-pill {
@@ -166,8 +182,8 @@ const {
     align-items: center;
     padding: 3px 10px;
     border-radius: 999px;
-    background: oklch(0.65 0.16 45 / 0.18);
-    color: oklch(0.85 0.12 55);
+    background: oklch(0.72 0.16 48 / 0.2);
+    color: #FFD38A;
     font-size: 11px;
     font-weight: 600;
     letter-spacing: 0.06em;
@@ -178,10 +194,10 @@ const {
   }
   .codecompare-code :global(pre) {
     margin: 0;
-    padding: 20px;
+    padding: 22px 24px 24px;
     font-family: var(--font-mono);
-    font-size: 13px;
-    line-height: 1.6;
+    font-size: 14px;
+    line-height: 1.72;
     background: transparent !important;
     /* Default color for text nodes Shiki didn't wrap (whitespace, commas).
        Without this the page-level `.compare-body-inner code` rule sets them
@@ -189,16 +205,30 @@ const {
        Uses --code-var from @theme — same token the homepage reads. */
     color: var(--code-var) !important;
     overflow-x: auto;
+    scrollbar-color: oklch(1 0 0 / 0.28) transparent;
   }
   .codecompare-code :global(code) {
     font-family: inherit;
     color: var(--code-var);
+    tab-size: 2;
   }
   /* Tokens emit their kitaruDark colors directly (we pass the dark theme
      as `theme={...}` on <Code>) so no --shiki-dark variable indirection
      is needed. */
 
-  @media (max-width: 900px) {
+  @media (max-width: 1180px) {
     .codecompare-grid { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 640px) {
+    .codecompare {
+      margin-top: 56px;
+      margin-bottom: 56px;
+      padding: 48px 16px;
+    }
+    .codecompare-code :global(pre) {
+      padding: 18px;
+      font-size: 13px;
+    }
   }
 </style>
