@@ -18,7 +18,7 @@ export const ANNOUNCEMENT_BANNER = {
 export const HERO = {
   headline: "The single layer for ML and AI.",
   subheadline:
-    "Orchestrate training pipelines with ZenML and durable AI agents with Kitaru — across your tools, clouds, and environments. Open source. Enterprise-ready. No vendor lock-in.",
+    "Orchestrate ML and Agent workloads on your infrastructure. Modular, flexible, and open-source — always.",
   primaryCta: {
     label: "Start Free Trial",
     href: "https://cloud.zenml.io/signup",
