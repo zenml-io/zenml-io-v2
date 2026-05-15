@@ -60,9 +60,10 @@ at the end. Each phase = one or more commits on that branch.
 - Body background switched to warm cream sitewide.
 
 ### Phase 2a — known punchlist (post-Phase 2 polish, not blocking)
-- **ZenML logo SVG** at top-left is still the purple wordmark (raster/SVG asset, not CSS). Needs Zuri to deliver a green variant. Until then, slight visual mismatch between logo and the rest of the green chrome.
+- **ZenML logo + display font deferred to Zuri.** User tried a placeholder hex+serif logo and DM Serif Display font; rejected. Decision: wait for Zuri's actual logo SVG and font files before re-attempting. Until then, legacy purple `zenml-logo.svg` + Inter for everything.
+- **Reference images preserved at repo root:** `0017109a-4dd0-11f1-8e68-a22cd0578fcd.avif` (hero composition) and `72e9edec-4f13-11f1-bf6b-0242ac120003 (1).avif` (Option #02 brand exploration with palette stripes). Use as North Star when Zuri's files land.
 - Some legacy `bg-purple-*` / `from-purple-*` utilities still in component files (e.g. blog post hero overlays, certain card variants). These resolve to the unchanged Untitled UI purple scale — not blocking but creates visual flecks of purple. Sweep in a polish pass.
-- Cookie consent banner CTA color tracks (now green) — but its internal palette has both styles. Visually OK; review for consistency.
+- Fixed in follow-up commits: `FinalCTA`, `WhitepaperCTA`, `VsCta02`, `projects/index`, `projects/[slug]` all had hardcoded `/images/gradient_01.webp` purple gradient backgrounds → replaced with CSS linear-gradients using aliased green tokens. Footer `[linear-gradient(171deg,#f6f2ff,#fff)]` → uses `var(--color-zenml-50)` + `var(--background)`.
 
 ### Phase 1 — known cosmetic punchlist (not blocking)
 - Kitaru nav icon is a placeholder (sun-radial glyph). User chose to leave it for now.
