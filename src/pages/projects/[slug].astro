@@ -17,6 +17,7 @@
  */
 import { getCollection } from "astro:content";
 import Button from "../../components/Button.astro";
+import MeshGradientBg from "../../components/brand/MeshGradientBg.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
 export async function getStaticPaths() {
@@ -289,9 +290,10 @@ const { pipelines, stackHtml, detailsHtml } = splitBody(project.body || "");
     </div>
   </div>
 
-  {/* CTA section — unified-brand sage-green gradient banner */}
-  <section class="bg-zenml-700">
-    <div style="background:linear-gradient(135deg, var(--color-zenml-700) 0%, var(--color-zenml-600) 55%, var(--color-zenml-500) 100%);">
+  {/* CTA section — unified-brand sage-green mesh gradient banner */}
+  <section class="relative overflow-hidden bg-zenml-700">
+    <MeshGradientBg tone="dark" />
+    <div class="relative">
       <div class="mx-auto max-w-7xl px-8 sm:px-12">
         <div class="grid items-center gap-10 py-16 sm:py-20 lg:grid-cols-2 lg:gap-8">
           <div>

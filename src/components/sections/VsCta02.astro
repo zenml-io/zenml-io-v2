@@ -7,6 +7,7 @@
  * dashboard screenshot on the right.
  */
 import Button from "../Button.astro";
+import MeshGradientBg from "../brand/MeshGradientBg.astro";
 
 interface Props {
   headline: string;
@@ -30,15 +31,14 @@ const {
   padded = false,
 } = Astro.props;
 
-const bgClass =
-  variant === "gradient"
-    ? "bg-[linear-gradient(135deg,var(--color-zenml-700)_0%,var(--color-zenml-600)_55%,var(--color-zenml-500)_100%)]"
-    : "bg-gray-900";
+const isGradient = variant === "gradient";
+const bgClass = isGradient ? "bg-zenml-700" : "bg-gray-900";
 const paddingClass = padded ? "py-20 sm:py-28" : "py-16 sm:py-20";
 ---
 
-<section class:list={[bgClass, paddingClass]}>
-  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+<section class:list={["relative overflow-hidden", bgClass, paddingClass]}>
+  {isGradient && <MeshGradientBg tone="dark" />}
+  <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
     <div class="grid items-center gap-10 lg:grid-cols-2">
       <div>
         <h2 class="text-2xl font-bold text-white sm:text-3xl">{headline}</h2>
