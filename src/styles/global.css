@@ -1,44 +1,54 @@
 @import "tailwindcss";
 
-/* Inter — UI font for the unified brand (loaded from Google Fonts).
-   See "BRAND TOKENS" section below for theme switching. */
+/* Inter — body UI font for the unified brand.
+   Loaded from Google Fonts. Self-host in a future polish pass. */
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
 
-html {
-  scroll-behavior: smooth;
-}
+html { scroll-behavior: smooth; }
 
-/* ============================================================================
- * BRAND TOKENS — unified ZenML × Kitaru system (Zuri, 2026)
- * ----------------------------------------------------------------------------
- * Single source of truth for visual identity. To tweak the brand, edit these
- * OKLch values. Every consuming page picks up the change.
+/* ╔════════════════════════════════════════════════════════════════════════╗
+ * ║                          BRAND CONFIG                                  ║
+ * ║          Single source of truth for visual identity                    ║
+ * ║                                                                        ║
+ * ║  EDIT ONLY THIS SECTION to change brand colors, fonts, or surfaces.    ║
+ * ║  Every page picks up the change automatically. No source edits needed. ║
+ * ╚════════════════════════════════════════════════════════════════════════╝
  *
  * Theme switching via [data-app] on <html>:
- *   - :root              → defaults (warm cream ground, orange primary)
- *   - [data-app="kitaru"] → same as :root (explicit)
- *   - [data-app="zenml"]  → ZenML overrides (sage green primary)
+ *   - :root                 → Kitaru theme (warm orange primary, cream ground)
+ *   - [data-app="kitaru"]   → same as :root (explicit override)
+ *   - [data-app="zenml"]    → ZenML theme (sage green primary, cream ground)
  *
- * BaseLayout sets data-app="zenml" by default. Per-page overrides (e.g.
- * /product/kitaru) set data-app="kitaru" to flip the theme.
+ * BaseLayout.astro sets data-app="zenml" by default for the whole site.
+ * Per-page overrides (e.g. /product/kitaru) set data-app="kitaru".
  *
- * Naming convention (shadcn-inspired):
- *   --background / --foreground   page surface and main text
- *   --card / --card-foreground    elevated surface (cards, panels)
- *   --primary / --primary-fg      brand accent (buttons, links, focus)
- *   --secondary, --muted, --accent   de-emphasized surfaces
- *   --border, --input, --ring     interactive chrome
- *   --success / --warning / --info / --destructive   semantic status
+ * VOCABULARY for component code (Tailwind utilities):
+ *   Semantic (preferred — auto-themes by data-app):
+ *     bg-primary / text-primary            brand color
+ *     bg-background / text-foreground      page surface + text
+ *     bg-card / text-card-foreground       elevated surface
+ *     bg-muted / text-muted-foreground     de-emphasized
+ *     bg-accent / text-accent-foreground   tinted accent surface
+ *     bg-secondary                         de-emphasized surface
+ *     border-border, ring-ring             interactive chrome
+ *     bg-success / bg-warning / bg-info / bg-destructive  status
  *
- * The legacy --color-zenml-*, --color-purple-*, --color-gray-* tokens are
- * preserved below in @theme for backward compatibility with existing
- * components. Migrate to the semantic tokens (bg-primary, bg-card, etc.)
- * as pages are rewritten.
- * ============================================================================ */
+ *   Scale (always sage green for ZenML, regardless of data-app):
+ *     bg-zenml-{25,50,100,300,400,500,600,700,800}
+ *     text-zenml-{...}  border-zenml-{...}
+ *
+ *   Other:
+ *     bg-purple-{...}   Untitled UI legacy purple (NOT brand) — for purple UI accents only
+ *     bg-gray-{...}     neutrals
+ *
+ * RULE: never hardcode hex values in component code. Always reference a token.
+ */
+
+/* ─── 1. Kitaru theme (default for :root) ──────────────────────────────────── */
 :root {
-  /* Surfaces (Kitaru / default) — warm cream ground */
-  --background: oklch(0.9796 0.0057 84.5661);
-  --foreground: oklch(0.2576 0.0281 56.6469);
+  /* Surfaces */
+  --background: oklch(0.9796 0.0057 84.5661); /* warm cream */
+  --foreground: oklch(0.2576 0.0281 56.6469); /* brown carbon */
   --card: oklch(0.992 0.0034 67.7841);
   --card-foreground: oklch(0.2576 0.0281 56.6469);
   --popover: oklch(0.992 0.0034 67.7841);
@@ -69,19 +79,19 @@ html {
   --destructive: oklch(0.5796 0.1405 19.7837);
   --destructive-foreground: oklch(1 0 0);
 
-  /* Fonts */
+  /* Typography */
   --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
     sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
 
+  /* Shape */
   --radius: 0.5rem;
 }
 
-/* ZenML theme — overrides primary + secondary surfaces to sage-green identity.
-   Background stays warm cream (shared with Kitaru) for visual continuity. */
+/* ─── 2. ZenML theme (sage green) ──────────────────────────────────────────── */
 [data-app="zenml"] {
-  --primary: oklch(0.53 0.075 130); /* sage green */
-  --primary-foreground: oklch(0.9738 0.0045 134.85);
+  --primary: oklch(0.53 0.075 130); /* sage green — ZenML brand */
+  --primary-foreground: oklch(0.9738 0.0045 134.85); /* brown porcelain */
   --ring: oklch(0.53 0.075 130);
 
   --accent: oklch(0.9324 0.0173 84.59); /* soft linen */
@@ -100,10 +110,27 @@ html {
   --input: oklch(0.92 0.012 78.17);
 }
 
-/* ============================================================================
- * Tailwind utility binding for semantic tokens.
- * Exposes utilities like bg-background, text-foreground, bg-primary, etc.
- * ============================================================================ */
+/* ─── 3. ZenML brand scale (always sage green, theme-independent) ───────────
+ * Used by components that need an explicit shade from the ZenML brand ladder
+ * (e.g. badges, hover backgrounds, dark-section grounds). To rebrand, edit
+ * the OKLch values below. */
+:root {
+  --color-zenml-25:  oklch(0.9776 0.011 123.45);  /* lightest */
+  --color-zenml-50:  oklch(0.945 0.0321 116.58);
+  --color-zenml-100: oklch(0.92 0.0362 115.63);
+  --color-zenml-300: oklch(0.8202 0.0506 122.5);
+  --color-zenml-400: oklch(0.7215 0.0637 127.3);
+  --color-zenml-500: oklch(0.53 0.075 130);       /* brand primary */
+  --color-zenml-600: oklch(0.5457 0.0448 139.43);
+  --color-zenml-700: oklch(0.3964 0.0387 139.44);
+  --color-zenml-800: oklch(0.3964 0.0387 139.44); /* darkest */
+}
+
+/* ╔════════════════════════════════════════════════════════════════════════╗
+ * ║                  TAILWIND UTILITY BINDING                              ║
+ * ║   Exposes semantic vars from BRAND CONFIG above as Tailwind utilities  ║
+ * ║   (bg-primary, text-foreground, bg-card, border-border, etc.)          ║
+ * ╚════════════════════════════════════════════════════════════════════════╝ */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -127,39 +154,35 @@ html {
   --color-success: var(--success);
   --color-warning: var(--warning);
   --color-info: var(--info);
+
+  /* Fonts — tracks --font-sans / --font-mono in :root above */
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
 }
 
-/* ============================================================================
- * Legacy tokens (Webflow-era) — kept for backward compatibility.
- *
- * 200+ existing components use bg-zenml-500, text-zenml-500, etc.
- * Aliasing those to the new sage-green primary keeps them rendering
- * correctly without a global search-replace. Migrate to semantic
- * (bg-primary, text-primary) on a per-page basis.
- *
- * The zenml-* scale below is the OLD scale repurposed to the NEW green
- * lightness ladder — so existing UI keeps its shading nuance.
- * ============================================================================ */
+@theme inline {
+  /* zenml-* utilities pull from the brand scale in :root above */
+  --color-zenml-25:  var(--color-zenml-25);
+  --color-zenml-50:  var(--color-zenml-50);
+  --color-zenml-100: var(--color-zenml-100);
+  --color-zenml-300: var(--color-zenml-300);
+  --color-zenml-400: var(--color-zenml-400);
+  --color-zenml-500: var(--color-zenml-500);
+  --color-zenml-600: var(--color-zenml-600);
+  --color-zenml-700: var(--color-zenml-700);
+  --color-zenml-800: var(--color-zenml-800);
+
+  /* primary-* (Webflow-era aliases) — mirror zenml-* */
+  --color-primary-50:  var(--color-zenml-50);
+  --color-primary-100: var(--color-zenml-100);
+  --color-primary-300: var(--color-zenml-300);
+  --color-primary-600: var(--color-zenml-600);
+  --color-primary-700: var(--color-zenml-700);
+  --color-primary-800: var(--color-zenml-800);
+}
+
+/* Static utility tokens (no theming, no semantic role — just literal scales) */
 @theme {
-  /* === ZenML brand scale — re-mapped to sage green for unified brand === */
-  --color-zenml-25: oklch(0.9776 0.011 123.45); /* green porcelain */
-  --color-zenml-50: oklch(0.945 0.0321 116.58); /* green beige */
-  --color-zenml-100: oklch(0.92 0.0362 115.63); /* green beige 2 */
-  --color-zenml-300: oklch(0.8202 0.0506 122.5); /* dry sage */
-  --color-zenml-400: oklch(0.7215 0.0637 127.3); /* muted olive */
-  --color-zenml-500: oklch(0.53 0.075 130); /* primary (sage green) */
-  --color-zenml-600: oklch(0.5457 0.0448 139.43); /* dusty olive */
-  --color-zenml-700: oklch(0.3964 0.0387 139.44); /* granite */
-  --color-zenml-800: oklch(0.3964 0.0387 139.44); /* granite */
-
-  /* === Primary aliases (Webflow-era, mirror zenml scale) === */
-  --color-primary-50: oklch(0.945 0.0321 116.58);
-  --color-primary-100: oklch(0.92 0.0362 115.63);
-  --color-primary-300: oklch(0.8202 0.0506 122.5);
-  --color-primary-600: oklch(0.53 0.075 130);
-  --color-primary-700: oklch(0.3964 0.0387 139.44);
-  --color-primary-800: oklch(0.3964 0.0387 139.44);
-
   /* === Gray Scale (from Untitled UI design system) === */
   --color-gray-25: #fcfcfd;
   --color-gray-50: #f9fafb;
@@ -173,7 +196,9 @@ html {
   --color-gray-800: #1f2937;
   --color-gray-900: #111827;
 
-  /* === Legacy Purple Scale (Untitled UI) === */
+  /* === Legacy Purple Scale (Untitled UI) ===
+   * Real purple. Used by misc UI accents (status pills, focus rings, etc.)
+   * NOT brand color. To express the brand, use --color-zenml-* tokens above. */
   --color-purple-25: #fcfaff;
   --color-purple-50: #f9f5ff;
   --color-purple-100: #f4ebff;
@@ -202,13 +227,6 @@ html {
   --color-pink-500: #ee46bc;
   --color-pink-700: #c11574;
   --color-light-green: #dbf2ec;
-
-  /* === Typography === */
-  /* font-sans/font-mono mirror the :root semantic tokens above.
-     Inter from Google Fonts is loaded via @import at the top of this file. */
-  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
-    sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, monospace;
 
   /* === Custom Spacing === */
   --spacing-space-xxs: 0.5rem;

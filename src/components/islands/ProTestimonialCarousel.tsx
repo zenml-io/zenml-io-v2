@@ -156,7 +156,7 @@ export default function ProTestimonialCarousel({
               aria-label={`Go to slide ${i + 1}`}
               class={`h-2.5 w-2.5 rounded-full transition-colors ${
                 i === currentIndex
-                  ? "bg-purple-700"
+                  ? "bg-zenml-700"
                   : "bg-gray-300 hover:bg-gray-400"
               }`}
             />

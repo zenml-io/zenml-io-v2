@@ -37,7 +37,7 @@ const hasIcons = rows.some((r) => r.icon);
       <table class="w-full min-w-[600px] border-collapse text-left">
         <thead>
           <tr class="border-b-2 border-gray-200">
-            <th class="py-3 pr-4 pl-6 text-sm font-semibold text-purple-700">Feature</th>
+            <th class="py-3 pr-4 pl-6 text-sm font-semibold text-zenml-700">Feature</th>
             {columnHeaders.map((header, idx) => (
               <th class:list={[
                 "py-3 px-4 text-center text-sm font-bold",
@@ -82,9 +82,9 @@ const hasIcons = rows.some((r) => r.icon);
 
 <style>
   .comparison-icon {
-    border: 0.5rem solid var(--color-purple-50, #f9f5ff);
-    background-color: var(--color-purple-100, #f4ebff);
-    color: var(--color-purple-600, #7f56d9);
+    border: 0.5rem solid var(--color-zenml-50, #f9f5ff);
+    background-color: var(--color-zenml-100);
+    color: var(--color-zenml-600);
     border-radius: 100%;
     width: 3.5rem;
     height: 3.5rem;

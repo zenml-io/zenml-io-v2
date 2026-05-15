@@ -59,10 +59,27 @@ at the end. Each phase = one or more commits on that branch.
 - Buttons, badges, active nav states all picked up new green.
 - Body background switched to warm cream sitewide.
 
+### Phase 2a — proper brand refactor (follow-up commit)
+After initial alias-based swap, the system was reorganized for honest naming + central editability:
+
+- `src/styles/global.css` restructured with a clearly-labeled "BRAND CONFIG" section at the top — colors, surfaces, fonts, all in one place. Documented vocabulary for component code. Easy single-file edits to rebrand.
+- `--color-purple-*` reverted to **actual purple** (Untitled UI legacy, NOT brand). Comment makes intent explicit.
+- `--color-zenml-*` scale defined in `:root` (single source) and exposed via `@theme inline` to Tailwind utilities.
+- `--font-sans` / `--font-mono` now flow `:root → @theme inline → Tailwind`. Changing them once propagates everywhere.
+- **Source-migrated** all `bg-purple-*` / `text-purple-*` / `from-purple-*` brand-accent usages → `bg-zenml-*` etc. (Badge, Button, FeatureCard, ComparisonTable, FeaturesCTA05, FeatureTestimonial, MLOpsFilter, LLMOpsFilter, ProTestimonialCarousel, llmops-database/index, mlops-database/index, company, projects/[slug]).
+- **Eliminated hardcoded purple hex** values from source — every component now references `var(--color-zenml-*)` tokens.
+- `ValueProps.astro` CTA gradient `from-[#7C3AED] via-[#8B5CF6] to-[#A78BFA]` → CSS gradient using `var(--color-zenml-{600,500,400})`.
+- `CompareStrategyCta.astro` `bg-[#F4EBFF]` → `bg-zenml-50`.
+- `public/images/zenml_light_bg-02.avif` regenerated as a soft sage/cream blur (was purple/pink). Used by NewsSection, CustomerStories, IntegrationsMarquee, pricing page hero — auto-updates without source edits.
+
 ### Phase 2a — known punchlist (post-Phase 2 polish, not blocking)
 - **ZenML logo + display font deferred to Zuri.** User tried a placeholder hex+serif logo and DM Serif Display font; rejected. Decision: wait for Zuri's actual logo SVG and font files before re-attempting. Until then, legacy purple `zenml-logo.svg` + Inter for everything.
 - **Reference images preserved at repo root:** `0017109a-4dd0-11f1-8e68-a22cd0578fcd.avif` (hero composition) and `72e9edec-4f13-11f1-bf6b-0242ac120003 (1).avif` (Option #02 brand exploration with palette stripes). Use as North Star when Zuri's files land.
-- Some legacy `bg-purple-*` / `from-purple-*` utilities still in component files (e.g. blog post hero overlays, certain card variants). These resolve to the unchanged Untitled UI purple scale — not blocking but creates visual flecks of purple. Sweep in a polish pass.
+- **R2-hosted content images still carry the old purple brand.** Affected (non-exhaustive):
+  - `why-zenml-min.png` / `why-zenml-mobile-min.webp` — architecture diagram inside the "Your VPC, your data" section
+  - Webflow-migrated advantage illustrations (e.g. `streamlined-ml-workflow-initialization`'s `img01.png`)
+  - Some blog post hero images
+  - Need green-rebranded replacements from design. CSS changes won't fix these.
 - Fixed in follow-up commits: `FinalCTA`, `WhitepaperCTA`, `VsCta02`, `projects/index`, `projects/[slug]` all had hardcoded `/images/gradient_01.webp` purple gradient backgrounds → replaced with CSS linear-gradients using aliased green tokens. Footer `[linear-gradient(171deg,#f6f2ff,#fff)]` → uses `var(--color-zenml-50)` + `var(--background)`.
 
 ### Phase 1 — known cosmetic punchlist (not blocking)

@@ -30,13 +30,13 @@ const {
 } = Astro.props;
 ---
 
-<section class="strategy-cta-section bg-[#F4EBFF] py-16 sm:py-20">
+<section class="strategy-cta-section bg-zenml-50 py-16 sm:py-20">
   <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
     {/* Advantages grid */}
     {advantages.length > 0 && (
       <div class="mb-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {advantages.map((adv) => (
-          <div class="fade-in-element bg-[#F4EBFF] text-left">
+          <div class="fade-in-element bg-zenml-50 text-left">
             {adv.image && (
               <img
                 src={adv.image.url}
