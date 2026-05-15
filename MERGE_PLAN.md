@@ -15,8 +15,9 @@ at the end. Each phase = one or more commits on that branch.
 
 | Phase | Status | Branch / PR | Notes |
 |-------|--------|-------------|-------|
-| **1. Nav + footer restructure** | ✅ Prototyped, uncommitted | `merge/zenml-kitaru-unification` | Desktop + mobile verified via Playwright. Awaiting commit + review. |
-| 2. Port Kitaru landing → `/product/kitaru` | ⏳ Next | — | — |
+| **1. Nav + footer restructure** | ✅ Shipped (commits `020d2fd`, `b361f99`) | `merge/zenml-kitaru-unification` | Desktop + mobile verified via Playwright. |
+| **2a. Brand tokens (unified)** | ✅ Prototyped, uncommitted | `merge/zenml-kitaru-unification` | Site-wide brand swap landed: purple → sage green primary, body bg → warm cream, Plus Jakarta Sans → Inter. `[data-app="zenml" \| "kitaru"]` theme switching on `<html>`. Legacy `--color-zenml-*` aliased to new green. Per D15. |
+| 2b. Port Kitaru landing → `/product/kitaru` | ⏳ Next | — | Hero, Features, PlatformBuilder, CodeShowcase from kitaru/site. Will use `data-app="kitaru"` for warm/orange theme. |
 | 3. Compare landing expansion | ⏳ Pending | — | — |
 | 4. `/get-started` ML/Agent chooser | ⏳ Pending | — | Needs design input |
 | 5. Kitaru blog migration | ⏳ Pending | — | — |
@@ -41,6 +42,27 @@ at the end. Each phase = one or more commits on that branch.
 - `pnpm install` + `pnpm dev` ran clean (only pre-existing Cloudflare/Shiki warnings).
 - Playwright screenshots confirmed: desktop nav (Product / Docs / Case Studies dropdowns render as compact 320px anchored boxes), mobile menu (accordion expands all 3 dropdowns with sub-items, direct links + CTAs below).
 - No content collection schemas touched. No page URLs removed.
+
+### Phase 2a — what landed (brand tokens)
+- **`src/styles/global.css`** — full restructure:
+  - Inter font imported from Google Fonts (replaces Plus Jakarta Sans)
+  - New "BRAND TOKENS" section at top with `:root` (Kitaru defaults) and `[data-app="zenml"]` (sage green overrides)
+  - `@theme inline` block exposes semantic shadcn tokens as Tailwind utilities (`bg-primary`, `bg-card`, `text-foreground`, `border-border`, etc.)
+  - Legacy `--color-zenml-*` scale repurposed to new sage-green lightness ladder — 200+ existing `bg-zenml-500` / `text-zenml-500` usages auto-pick up the new color
+  - Documentation block at top explains the theme-switch mechanism
+- **`src/layouts/BaseLayout.astro`** — added `data-app="zenml"` to `<html>` (default theme for all pages)
+- **`src/layouts/MinimalLayout.astro`** — same `data-app="zenml"` addition for consistency
+- **`src/components/sections/AnnouncementBanner.astro`** — gradient `from-purple-700 to-purple-600` replaced with `bg-primary` so the banner tracks the active theme
+
+### Phase 2a — verification
+- Playwright before/after screenshots captured for: homepage, pricing, pro, blog, llmops-database, compare, case-studies. All 7 transitioned cleanly.
+- Buttons, badges, active nav states all picked up new green.
+- Body background switched to warm cream sitewide.
+
+### Phase 2a — known punchlist (post-Phase 2 polish, not blocking)
+- **ZenML logo SVG** at top-left is still the purple wordmark (raster/SVG asset, not CSS). Needs Zuri to deliver a green variant. Until then, slight visual mismatch between logo and the rest of the green chrome.
+- Some legacy `bg-purple-*` / `from-purple-*` utilities still in component files (e.g. blog post hero overlays, certain card variants). These resolve to the unchanged Untitled UI purple scale — not blocking but creates visual flecks of purple. Sweep in a polish pass.
+- Cookie consent banner CTA color tracks (now green) — but its internal palette has both styles. Visually OK; review for consistency.
 
 ### Phase 1 — known cosmetic punchlist (not blocking)
 - Kitaru nav icon is a placeholder (sun-radial glyph). User chose to leave it for now.
@@ -85,6 +107,7 @@ These are settled. Any change requires explicit re-decision.
 | **D12** | `/compare` landing page expanded to do heavy lifting. Port Kitaru's competitor pages into the same `/compare/*` collection. Group by ML vs Agent on landing. | Compare is now top-nav; it must work harder. |
 | **D13** | **Top nav (6 items):** `Product ▾  Docs ▾  Compare  Pricing  Blog  Case Studies ▾` | Astral-like leanness, all critical pages surfaced. |
 | **D14** | Pages NOT moved to `/legacy` — existing URLs stay live. "Legacy" = removed-from-nav, not removed-from-site. | Preserves SEO and inbound links. |
+| **D15** | Unified brand applied **site-wide in Phase 2**, not deferred to Phase 9. Tokens from `kitaru-test-prototypes` (Zuri) land in `src/styles/global.css`. ZenML brand shifts purple → sage green. Body background → warm cream. Font Plus Jakarta Sans → Inter. Theme switching via `[data-app="zenml" \| "kitaru"]` on `<html>`. Legacy `--color-zenml-*` tokens **aliased** to new primary so existing utility classes (200+ uses) keep working. | Avoids double-porting Kitaru's old brand then redoing it. Single source of truth for future tweaks. |
 
 ---
 
@@ -152,7 +175,7 @@ production. Phases 1–8 do not require Zuri's final brand.
 | **6. Unified pricing** | Merge kitaru pricing into `/pricing`. Same $; surface workspace differences subtly. URL stable. | ~half day | Phase 2 |
 | **7. /pro unified pitch** | Rewrite `/pro` as managed-plane + enterprise pitch. Sub-sections. | ~half day | Phase 2 |
 | **8. Analytics surface prop** | Plausible custom prop `surface: ml \| agent \| unified` wired in BaseLayout. | ~2h | Phase 2 |
-| **9. Unified homepage + brand tokens** | Port OKLch tokens from `kitaru-test-prototypes`. Rewrite `/` with Focus Lab messaging. Move current homepage to `/product/zenml`. | ~2 days | **Zuri's brand finalization** |
+| **9. Unified homepage rewrite** | Rewrite `/` with Focus Lab messaging on the unified brand (brand tokens already landed in Phase 2). Move current homepage to `/product/zenml`. | ~1 day | Phase 8 |
 | **10. kitaru.ai → 301 redirects** | DNS/Cloudflare-level 301s from kitaru.ai → zenml.io/product/kitaru. | ~hours | Phase 2 parity confirmed |
 | **11. Docs + skills refresh** | **Final stage.** Update `CLAUDE.md` (Product Overview, content collections, key files, legacy terminology), `AGENTS.md` (if it diverges from CLAUDE.md). Audit `.claude/skills/blog-post-contributor` and `.claude/skills/r2-image-upload` for Kitaru-aware behavior (e.g. blog post `surface: kitaru` tag, Kitaru R2 prefixes if any). | ~half day | All prior phases shipped |
 

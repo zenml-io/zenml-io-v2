@@ -1,29 +1,164 @@
 @import "tailwindcss";
 
+/* Inter — UI font for the unified brand (loaded from Google Fonts).
+   See "BRAND TOKENS" section below for theme switching. */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
 html {
   scroll-behavior: smooth;
 }
 
-/*
- * ZenML design tokens — extracted from the Webflow production site.
- * See docs/design-tokens.md for full reference.
- */
-@theme {
-  /* === Brand Colors === */
-  --color-zenml-25: #f1ebfe;
-  --color-zenml-50: #f6f2ff;
-  --color-zenml-500: #7a3ef4;
-  --color-zenml-600: #361776;
-  --color-zenml-700: #281158;
-  --color-zenml-800: #1b0c3b;
+/* ============================================================================
+ * BRAND TOKENS — unified ZenML × Kitaru system (Zuri, 2026)
+ * ----------------------------------------------------------------------------
+ * Single source of truth for visual identity. To tweak the brand, edit these
+ * OKLch values. Every consuming page picks up the change.
+ *
+ * Theme switching via [data-app] on <html>:
+ *   - :root              → defaults (warm cream ground, orange primary)
+ *   - [data-app="kitaru"] → same as :root (explicit)
+ *   - [data-app="zenml"]  → ZenML overrides (sage green primary)
+ *
+ * BaseLayout sets data-app="zenml" by default. Per-page overrides (e.g.
+ * /product/kitaru) set data-app="kitaru" to flip the theme.
+ *
+ * Naming convention (shadcn-inspired):
+ *   --background / --foreground   page surface and main text
+ *   --card / --card-foreground    elevated surface (cards, panels)
+ *   --primary / --primary-fg      brand accent (buttons, links, focus)
+ *   --secondary, --muted, --accent   de-emphasized surfaces
+ *   --border, --input, --ring     interactive chrome
+ *   --success / --warning / --info / --destructive   semantic status
+ *
+ * The legacy --color-zenml-*, --color-purple-*, --color-gray-* tokens are
+ * preserved below in @theme for backward compatibility with existing
+ * components. Migrate to the semantic tokens (bg-primary, bg-card, etc.)
+ * as pages are rewritten.
+ * ============================================================================ */
+:root {
+  /* Surfaces (Kitaru / default) — warm cream ground */
+  --background: oklch(0.9796 0.0057 84.5661);
+  --foreground: oklch(0.2576 0.0281 56.6469);
+  --card: oklch(0.992 0.0034 67.7841);
+  --card-foreground: oklch(0.2576 0.0281 56.6469);
+  --popover: oklch(0.992 0.0034 67.7841);
+  --popover-foreground: oklch(0.2576 0.0281 56.6469);
 
-  /* === Primary Palette (aliases to zenml brand for utility classes) === */
-  --color-primary-50: #f6f2ff;
-  --color-primary-100: #f1ebfe;
-  --color-primary-300: #d6bbfb;
-  --color-primary-600: #7a3ef4;
-  --color-primary-700: #361776;
-  --color-primary-800: #281158;
+  /* Brand */
+  --primary: oklch(0.7171 0.1347 57.2915); /* Kitaru orange */
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.9629 0.0079 73.7438);
+  --secondary-foreground: oklch(0.4903 0.035 58.6942);
+  --muted: oklch(0.9392 0.0136 60.5651);
+  --muted-foreground: oklch(0.629 0.035 65.5858);
+  --accent: oklch(0.9353 0.0128 63.9151);
+  --accent-foreground: oklch(0.4903 0.035 58.6942);
+
+  /* Chrome */
+  --border: oklch(0.9097 0.0183 78.2362);
+  --input: oklch(0.9097 0.0183 78.2362);
+  --ring: oklch(0.6992 0.105 59.9944);
+
+  /* Status */
+  --success: oklch(0.55 0.14 145);
+  --success-foreground: oklch(1 0 0);
+  --warning: oklch(0.68 0.15 70);
+  --warning-foreground: oklch(1 0 0);
+  --info: oklch(0.55 0.15 260);
+  --info-foreground: oklch(1 0 0);
+  --destructive: oklch(0.5796 0.1405 19.7837);
+  --destructive-foreground: oklch(1 0 0);
+
+  /* Fonts */
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  --radius: 0.5rem;
+}
+
+/* ZenML theme — overrides primary + secondary surfaces to sage-green identity.
+   Background stays warm cream (shared with Kitaru) for visual continuity. */
+[data-app="zenml"] {
+  --primary: oklch(0.53 0.075 130); /* sage green */
+  --primary-foreground: oklch(0.9738 0.0045 134.85);
+  --ring: oklch(0.53 0.075 130);
+
+  --accent: oklch(0.9324 0.0173 84.59); /* soft linen */
+  --accent-foreground: oklch(0.4821 0.0167 74.26);
+  --secondary: oklch(0.985 0.005 80);
+  --secondary-foreground: oklch(0.4821 0.0167 74.26);
+  --muted: oklch(0.9324 0.0173 84.59);
+  --muted-foreground: oklch(0.5 0.025 63);
+
+  --card: oklch(0.985 0.005 80);
+  --card-foreground: oklch(0.362 0.0115 78.17);
+  --popover: oklch(0.985 0.005 80);
+  --popover-foreground: oklch(0.362 0.0115 78.17);
+  --foreground: oklch(0.362 0.0115 78.17);
+  --border: oklch(0.92 0.012 78.17);
+  --input: oklch(0.92 0.012 78.17);
+}
+
+/* ============================================================================
+ * Tailwind utility binding for semantic tokens.
+ * Exposes utilities like bg-background, text-foreground, bg-primary, etc.
+ * ============================================================================ */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-info: var(--info);
+}
+
+/* ============================================================================
+ * Legacy tokens (Webflow-era) — kept for backward compatibility.
+ *
+ * 200+ existing components use bg-zenml-500, text-zenml-500, etc.
+ * Aliasing those to the new sage-green primary keeps them rendering
+ * correctly without a global search-replace. Migrate to semantic
+ * (bg-primary, text-primary) on a per-page basis.
+ *
+ * The zenml-* scale below is the OLD scale repurposed to the NEW green
+ * lightness ladder — so existing UI keeps its shading nuance.
+ * ============================================================================ */
+@theme {
+  /* === ZenML brand scale — re-mapped to sage green for unified brand === */
+  --color-zenml-25: oklch(0.9776 0.011 123.45); /* green porcelain */
+  --color-zenml-50: oklch(0.945 0.0321 116.58); /* green beige */
+  --color-zenml-100: oklch(0.92 0.0362 115.63); /* green beige 2 */
+  --color-zenml-300: oklch(0.8202 0.0506 122.5); /* dry sage */
+  --color-zenml-400: oklch(0.7215 0.0637 127.3); /* muted olive */
+  --color-zenml-500: oklch(0.53 0.075 130); /* primary (sage green) */
+  --color-zenml-600: oklch(0.5457 0.0448 139.43); /* dusty olive */
+  --color-zenml-700: oklch(0.3964 0.0387 139.44); /* granite */
+  --color-zenml-800: oklch(0.3964 0.0387 139.44); /* granite */
+
+  /* === Primary aliases (Webflow-era, mirror zenml scale) === */
+  --color-primary-50: oklch(0.945 0.0321 116.58);
+  --color-primary-100: oklch(0.92 0.0362 115.63);
+  --color-primary-300: oklch(0.8202 0.0506 122.5);
+  --color-primary-600: oklch(0.53 0.075 130);
+  --color-primary-700: oklch(0.3964 0.0387 139.44);
+  --color-primary-800: oklch(0.3964 0.0387 139.44);
 
   /* === Gray Scale (from Untitled UI design system) === */
   --color-gray-25: #fcfcfd;
@@ -69,8 +204,11 @@ html {
   --color-light-green: #dbf2ec;
 
   /* === Typography === */
-  --font-sans: "Plus Jakarta Sans", sans-serif;
-  --font-mono: "JetBrains Mono", monospace;
+  /* font-sans/font-mono mirror the :root semantic tokens above.
+     Inter from Google Fonts is loaded via @import at the top of this file. */
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
 
   /* === Custom Spacing === */
   --spacing-space-xxs: 0.5rem;
