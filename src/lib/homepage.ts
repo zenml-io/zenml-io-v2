@@ -16,9 +16,9 @@ export const ANNOUNCEMENT_BANNER = {
 /*  Hero                                                              */
 /* ------------------------------------------------------------------ */
 export const HERO = {
-  headline: "The AI Control Plane",
+  headline: "The single layer for ML and AI.",
   subheadline:
-    "One layer for orchestration, versioning, and governance — from training pipelines to agent evals, local to Kubernetes.",
+    "Orchestrate training pipelines with ZenML and durable AI agents with Kitaru — across your tools, clouds, and environments. Open source. Enterprise-ready. No vendor lock-in.",
   primaryCta: {
     label: "Start Free Trial",
     href: "https://cloud.zenml.io/signup",
