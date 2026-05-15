@@ -1,6 +1,6 @@
 # ZenML × Kitaru Website Merge Plan
 
-> **Status:** Phase 1 prototyped on branch `merge/phase-1-nav-restructure`. Ready to proceed to Phase 2.
+> **Status:** Phase 1 prototyped on branch `merge/zenml-kitaru-unification`. Ready to proceed to Phase 2.
 > **Owner of prototyping:** Claude (in this repo)
 > **Owner of production shipping:** Codex (will pick up from this doc)
 > **Last updated:** 2026-05-15
@@ -9,9 +9,13 @@
 
 ## Progress Log
 
+**Branching strategy:** all phases land on the single long-lived branch
+`merge/zenml-kitaru-unification`. The full merge ships as one PR to `main`
+at the end. Each phase = one or more commits on that branch.
+
 | Phase | Status | Branch / PR | Notes |
 |-------|--------|-------------|-------|
-| **1. Nav + footer restructure** | ✅ Prototyped, uncommitted | `merge/phase-1-nav-restructure` | Desktop + mobile verified via Playwright. Awaiting commit + review. |
+| **1. Nav + footer restructure** | ✅ Prototyped, uncommitted | `merge/zenml-kitaru-unification` | Desktop + mobile verified via Playwright. Awaiting commit + review. |
 | 2. Port Kitaru landing → `/product/kitaru` | ⏳ Next | — | — |
 | 3. Compare landing expansion | ⏳ Pending | — | — |
 | 4. `/get-started` ML/Agent chooser | ⏳ Pending | — | Needs design input |
