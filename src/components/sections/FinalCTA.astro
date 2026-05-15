@@ -5,13 +5,12 @@
  */
 import { FINAL_CTA } from "../../lib/homepage";
 import Button from "../Button.astro";
+import MeshGradientBg from "../brand/MeshGradientBg.astro";
 ---
 
-<section
-  class="overflow-hidden py-16 sm:py-24"
-  style="background:linear-gradient(135deg, var(--color-zenml-700) 0%, var(--color-zenml-600) 55%, var(--color-zenml-500) 100%);"
->
-  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+<section class="relative overflow-hidden bg-zenml-700 py-16 sm:py-24">
+  <MeshGradientBg tone="dark" />
+  <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
     <div class="grid items-center gap-12 lg:grid-cols-2">
       <!-- Text column -->
       <div>

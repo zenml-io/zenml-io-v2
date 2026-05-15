@@ -8,12 +8,12 @@
  * Eyebrow "Whitepaper" is lighter purple (#9e77ed), body text is #f4ebff.
  */
 import { WHITEPAPER_CTA } from "../../lib/homepage";
+import MeshGradientBg from "../brand/MeshGradientBg.astro";
 ---
 
-<section class="bg-zenml-700">
-  <div
-    style="background:linear-gradient(135deg, var(--color-zenml-700) 0%, var(--color-zenml-600) 55%, var(--color-zenml-500) 100%);"
-  >
+<section class="relative overflow-hidden bg-zenml-700">
+  <MeshGradientBg tone="dark" />
+  <div class="relative">
     <div class="mx-auto max-w-7xl px-8 sm:px-12">
       <div class="py-20 sm:py-28">
         <div class="max-w-3xl">
