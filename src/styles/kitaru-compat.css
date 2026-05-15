@@ -1,0 +1,86 @@
+/**
+ * kitaru-compat.css
+ *
+ * Compatibility shim mapping Kitaru-era CSS variable names (--color-bg,
+ * --color-accent, --color-surface, --font-ui, etc.) onto our unified
+ * shadcn-style design tokens (--background, --primary, --card, --font-sans).
+ *
+ * Imported only on pages that host ported Kitaru components — currently
+ * `src/pages/product/kitaru.astro`. The mapping is scoped to
+ * `[data-app="kitaru"]` so it activates inside the page wrapper without
+ * leaking into the rest of the site.
+ *
+ * To phase this out: rewrite ported components to use the canonical token
+ * names directly (--primary, --foreground, etc.) and delete this file.
+ */
+
+/* ─── 1. Re-assert Kitaru theme tokens ────────────────────────────────────
+ * BaseLayout sets <html data-app="zenml"> which switches tokens to sage
+ * green. To activate Kitaru's warm-cream + orange palette on a specific
+ * page, we wrap content in <div data-app="kitaru">. This block restates
+ * the :root (Kitaru) defaults so descendants override the sage tokens
+ * inherited from <html>. Keep in sync with `:root` block in global.css. */
+[data-app="kitaru"] {
+  /* Surfaces */
+  --background: oklch(0.9796 0.0057 84.5661);
+  --foreground: oklch(0.2576 0.0281 56.6469);
+  --card: oklch(0.992 0.0034 67.7841);
+  --card-foreground: oklch(0.2576 0.0281 56.6469);
+  --popover: oklch(0.992 0.0034 67.7841);
+  --popover-foreground: oklch(0.2576 0.0281 56.6469);
+
+  /* Brand */
+  --primary: oklch(0.7171 0.1347 57.2915);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.9629 0.0079 73.7438);
+  --secondary-foreground: oklch(0.4903 0.035 58.6942);
+  --muted: oklch(0.9392 0.0136 60.5651);
+  --muted-foreground: oklch(0.629 0.035 65.5858);
+  --accent: oklch(0.9353 0.0128 63.9151);
+  --accent-foreground: oklch(0.4903 0.035 58.6942);
+
+  /* Chrome */
+  --border: oklch(0.9097 0.0183 78.2362);
+  --input: oklch(0.9097 0.0183 78.2362);
+  --ring: oklch(0.6992 0.105 59.9944);
+}
+
+/* ─── 2. Legacy Kitaru-era var aliases (compat) ───────────────────────────
+ * Maps Kitaru's pre-merge vocabulary onto our unified tokens, so ported
+ * components that reference --color-bg / --color-accent / --font-ui keep
+ * working until they're rewritten to use canonical names. */
+[data-app="kitaru"] {
+  /* Surfaces */
+  --color-bg: var(--background);
+  --color-surface: var(--card);
+  --color-surface-warm: var(--card);
+  --color-surface-subtle: var(--card);
+
+  /* Text */
+  --color-primary: var(--foreground);
+  --color-secondary: var(--muted-foreground);
+  --color-muted: var(--muted-foreground);
+
+  /* Brand accent (Kitaru orange via --primary in :root) */
+  --color-accent: var(--primary);
+  --color-accent-warm: var(--primary);
+  --color-accent-deep: var(--primary);
+  --color-accent-light: var(--accent);
+
+  /* Chrome */
+  --color-border: var(--border);
+  --color-border-light: var(--border);
+  --color-border-accent: var(--border);
+
+  /* Status */
+  --color-success: var(--success);
+  --color-success-bg: var(--accent);
+
+  /* Dark surfaces (used by code-showcase / CTA bands) */
+  --color-dark-bg: oklch(0.13 0.015 60);
+  --color-dark-surface: oklch(0.16 0.015 60);
+  --color-dark-text: oklch(0.92 0.01 70);
+
+  /* Typography */
+  --font-ui: var(--font-sans);
+}

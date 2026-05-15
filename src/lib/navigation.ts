@@ -90,9 +90,8 @@ export const NAV_DROPDOWNS: NavDropdown[] = [
           },
           {
             label: "Kitaru",
-            href: "https://kitaru.ai",
+            href: "/product/kitaru",
             description: "Durable runtime for AI agents",
-            external: true,
             icon: ICON_AGENT,
           },
           {

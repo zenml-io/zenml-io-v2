@@ -1,0 +1,37 @@
+---
+/**
+ * /product/kitaru — landing page introducing Kitaru as a sub-product
+ * under the unified ZenML umbrella.
+ *
+ * Uses our shared BaseLayout (nav + footer) but overrides the theme by
+ * wrapping all page content in <div data-app="kitaru">. Because our
+ * token CSS targets `[data-app="kitaru"]` (not just html[data-app]),
+ * adding the attribute on a div re-roots --primary, --background, etc.
+ * to Kitaru's warm-cream + orange palette for descendants only.
+ *
+ * Kitaru-era components reference legacy var names (--color-bg,
+ * --color-accent, --font-ui, etc.) — those are bridged onto our tokens
+ * by `src/styles/kitaru-compat.css`, scoped to the same selector.
+ *
+ * See MERGE_PLAN.md §4 (Phase 2b).
+ */
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Hero from "../../components/kitaru/Hero.astro";
+import CodeShowcase from "../../components/kitaru/CodeShowcase.astro";
+import Cta from "../../components/kitaru/Cta.astro";
+import "../../styles/kitaru-compat.css";
+
+const seo = {
+  title: "Kitaru — Durable runtime for AI agents | ZenML",
+  description:
+    "Kitaru is the open-source durable runtime for production AI agents. Checkpoints, replay, and human-in-the-loop gates as first-class primitives. Built by the ZenML team.",
+};
+---
+
+<BaseLayout {...seo}>
+  <div data-app="kitaru" class="bg-background text-foreground">
+    <Hero />
+    <CodeShowcase />
+    <Cta />
+  </div>
+</BaseLayout>

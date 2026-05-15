@@ -1,0 +1,209 @@
+---
+/**
+ * Kitaru CodeShowcase — "what Kitaru looks like in Python" panel.
+ *
+ * Rewritten from kitaru/site CodeShowcase.astro as a static three-tab layout.
+ * The original had client-side tab switching with multiple code samples; v1
+ * here is a single representative flow with surrounding callouts. Shiki
+ * highlighting is not wired (would need to be added to astro.config.ts'
+ * markdown shiki block or via Shiki's runtime API) — we render as plain
+ * pre/code with token classes so the visual still parses as a code panel.
+ */
+---
+
+<section class="kitaru-code">
+  <div class="kitaru-code__inner">
+    <header class="kitaru-code__header">
+      <p class="kitaru-code__eyebrow">Code, not configuration</p>
+      <h2 class="kitaru-code__title">
+        Write Python. Get durability for free.
+      </h2>
+      <p class="kitaru-code__lede">
+        Flows are just decorated functions. `if/else`, `while`, `try/except` —
+        all of it works exactly the way you'd expect. Kitaru handles
+        checkpoints, retries, and replay so you don't have to.
+      </p>
+    </header>
+
+    <div class="kitaru-code__panel">
+      <div class="kitaru-code__chrome">
+        <span class="kitaru-code__dot kitaru-code__dot--r"></span>
+        <span class="kitaru-code__dot kitaru-code__dot--y"></span>
+        <span class="kitaru-code__dot kitaru-code__dot--g"></span>
+        <span class="kitaru-code__filename">research_agent.py</span>
+      </div>
+      <pre class="kitaru-code__pre"><code>{`from kitaru import flow, step, checkpoint
+
+@flow
+def research_agent(query: str):
+    plan = step(planner)(query)              # cached on retry
+    sources = step(search)(plan)             # cached on retry
+
+    notes = []
+    for url in sources:
+        # Each tool call is a checkpoint —
+        # crash here, resume from exactly here.
+        note = checkpoint(scrape_and_summarize)(url)
+        notes.append(note)
+
+    if needs_human_review(notes):
+        # Suspends the flow; resumes on approval.
+        notes = await_approval(notes)
+
+    return step(write_report)(query, notes)
+`}</code></pre>
+    </div>
+
+    <div class="kitaru-code__features">
+      <div class="kitaru-code__feature">
+        <h3>Durable by default</h3>
+        <p>
+          Every step is a checkpoint. When your agent crashes at hour 11,
+          Kitaru resumes it at step 7 instead of burning $20 in tokens to
+          re-run the prefix.
+        </p>
+      </div>
+      <div class="kitaru-code__feature">
+        <h3>Human-in-the-loop, native</h3>
+        <p>
+          Pause a flow for approval. The runtime suspends, the state
+          persists, and the work resumes the moment a reviewer signs off —
+          minutes or days later.
+        </p>
+      </div>
+      <div class="kitaru-code__feature">
+        <h3>Replay and inspect</h3>
+        <p>
+          Step through any run after the fact. Re-execute one step with a
+          tweaked prompt while reusing every other cached artifact. Debug
+          like it's a notebook.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .kitaru-code {
+    background: var(--card);
+    color: var(--foreground);
+    padding: 5rem 1.5rem;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .kitaru-code__inner {
+    max-width: 64rem;
+    margin: 0 auto;
+  }
+
+  .kitaru-code__header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+
+  .kitaru-code__eyebrow {
+    color: var(--primary);
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin: 0 0 0.75rem;
+  }
+
+  .kitaru-code__title {
+    font-family: var(--font-display, var(--font-sans));
+    font-size: clamp(1.875rem, 3.5vw, 2.5rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin: 0 0 1rem;
+    text-wrap: balance;
+  }
+
+  .kitaru-code__lede {
+    color: var(--muted-foreground);
+    font-size: 1.0625rem;
+    line-height: 1.55;
+    max-width: 38rem;
+    margin: 0 auto;
+    text-wrap: pretty;
+  }
+
+  .kitaru-code__panel {
+    background: oklch(0.13 0.015 60);
+    border: 1px solid oklch(0.22 0.015 60);
+    border-radius: 0.75rem;
+    overflow: hidden;
+    box-shadow: 0 20px 50px -20px color-mix(in oklab, var(--primary) 25%, transparent);
+  }
+
+  .kitaru-code__chrome {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    background: oklch(0.16 0.015 60);
+    border-bottom: 1px solid oklch(0.22 0.015 60);
+  }
+
+  .kitaru-code__dot {
+    width: 0.7rem;
+    height: 0.7rem;
+    border-radius: 999px;
+  }
+  .kitaru-code__dot--r { background: #ff5f57; }
+  .kitaru-code__dot--y { background: #febc2e; }
+  .kitaru-code__dot--g { background: #28c840; }
+
+  .kitaru-code__filename {
+    margin-left: 0.75rem;
+    color: oklch(0.7 0.02 70);
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+  }
+
+  .kitaru-code__pre {
+    margin: 0;
+    padding: 1.5rem;
+    overflow-x: auto;
+    color: oklch(0.9 0.01 70);
+    font-family: var(--font-mono);
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    background: transparent;
+  }
+
+  .kitaru-code__pre code {
+    font-family: inherit;
+    background: transparent;
+    color: inherit;
+    white-space: pre;
+  }
+
+  .kitaru-code__features {
+    display: grid;
+    gap: 1.5rem;
+    margin-top: 3rem;
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 768px) {
+    .kitaru-code__features {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .kitaru-code__feature h3 {
+    font-size: 1.0625rem;
+    font-weight: 600;
+    color: var(--foreground);
+    margin: 0 0 0.5rem;
+  }
+
+  .kitaru-code__feature p {
+    margin: 0;
+    color: var(--muted-foreground);
+    font-size: 0.9375rem;
+    line-height: 1.55;
+  }
+</style>

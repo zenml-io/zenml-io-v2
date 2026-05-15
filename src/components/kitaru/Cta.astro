@@ -1,0 +1,106 @@
+---
+/**
+ * Kitaru CTA — closing call-to-action for /product/kitaru.
+ *
+ * Inspired by kitaru/site Cta.astro. v1 is a centered band on dark surface
+ * with two CTAs. Form endpoints (/api/get-started, /api/waitlist,
+ * /api/newsletter) are NOT wired yet — buttons link to /book-your-demo
+ * and the external Kitaru docs. See MERGE_PLAN.md §D5.
+ */
+import Button from "../Button.astro";
+---
+
+<section class="kitaru-cta" id="contact">
+  <div class="kitaru-cta__inner">
+    <h2 class="kitaru-cta__title">
+      Ship agents that actually run in production.
+    </h2>
+    <p class="kitaru-cta__lede">
+      Talk to the team about your agent workload — orchestration, durability,
+      and the path from prototype to production.
+    </p>
+    <div class="kitaru-cta__buttons">
+      <Button href="/book-your-demo" size="lg" class="kitaru-cta__primary">
+        Book a demo
+      </Button>
+      <Button
+        href="https://kitaru.ai/docs"
+        variant="secondaryGray"
+        size="lg"
+        target="_blank"
+        rel="noopener"
+      >
+        Read the docs
+      </Button>
+    </div>
+  </div>
+</section>
+
+<style>
+  .kitaru-cta {
+    position: relative;
+    background: oklch(0.16 0.015 60);
+    color: oklch(0.92 0.01 70);
+    padding: 6rem 1.5rem;
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .kitaru-cta::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(
+        50% 60% at 50% 100%,
+        color-mix(in oklab, var(--primary) 30%, transparent) 0%,
+        transparent 70%
+      );
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  .kitaru-cta__inner {
+    max-width: 44rem;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .kitaru-cta__title {
+    font-family: var(--font-display, var(--font-sans));
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: oklch(0.98 0.005 80);
+    margin: 0 0 1rem;
+    text-wrap: balance;
+  }
+
+  .kitaru-cta__lede {
+    color: oklch(0.75 0.015 70);
+    font-size: 1.125rem;
+    line-height: 1.55;
+    margin: 0 0 2rem;
+    max-width: 32rem;
+    margin-inline: auto;
+    text-wrap: pretty;
+  }
+
+  .kitaru-cta__buttons {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  /* Override Button primary to use --primary (Kitaru orange) instead of
+     the sage-green scale baked into Button.astro. */
+  :global(.kitaru-cta__primary) {
+    background: var(--primary) !important;
+    border-color: color-mix(in oklab, var(--primary) 80%, black) !important;
+    color: var(--primary-foreground) !important;
+  }
+  :global(.kitaru-cta__primary:hover) {
+    background: color-mix(in oklab, var(--primary) 88%, black) !important;
+  }
+</style>

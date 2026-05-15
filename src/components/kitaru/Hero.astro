@@ -1,0 +1,203 @@
+---
+/**
+ * Kitaru Hero — landing page hero for /product/kitaru.
+ *
+ * Ported / rewritten from kitaru/site Hero.astro. The canvas/WebGL backdrop
+ * and scroll-reveal scripts from the original have been intentionally
+ * dropped for v1: this version is plain semantic markup styled with our
+ * unified tokens (warm cream ground, Kitaru-orange accent via --primary
+ * when the parent wrapper sets data-app="kitaru").
+ */
+import Button from "../Button.astro";
+import KitaruLogo from "../brand/KitaruLogo.astro";
+---
+
+<section class="kitaru-hero">
+  <div class="kitaru-hero__inner">
+    <div class="kitaru-hero__eyebrow">
+      <span class="kitaru-hero__pill">
+        <span class="kitaru-hero__pill-dot" aria-hidden="true"></span>
+        From the ZenML team · Open source
+      </span>
+    </div>
+
+    <div class="kitaru-hero__wordmark">
+      <KitaruLogo class="kitaru-hero__logo" />
+    </div>
+
+    <h1 class="kitaru-hero__title">
+      The durable runtime for production AI agents.
+    </h1>
+
+    <p class="kitaru-hero__subtitle">
+      Build agents that survive restarts, network failures, and 12-hour
+      tool calls. Kitaru gives you checkpoints, replay, and human-in-the-loop
+      gates as first-class primitives — not afterthoughts.
+    </p>
+
+    <div class="kitaru-hero__ctas">
+      <Button href="/book-your-demo" size="lg">Book a demo</Button>
+      <Button
+        href="https://kitaru.ai/docs"
+        variant="secondary"
+        size="lg"
+        target="_blank"
+        rel="noopener"
+      >
+        Read the docs
+      </Button>
+    </div>
+
+    <ul class="kitaru-hero__bullets">
+      <li>Crash-recovery via checkpoints</li>
+      <li>Replay from any step</li>
+      <li>Human-in-the-loop approval gates</li>
+      <li>Run anywhere — your VPC, our cloud</li>
+    </ul>
+  </div>
+</section>
+
+<style>
+  .kitaru-hero {
+    position: relative;
+    padding: 6rem 1.5rem 4rem;
+    background: var(--background);
+    color: var(--foreground);
+    isolation: isolate;
+    overflow: hidden;
+  }
+
+  /* soft radial warmth behind the headline */
+  .kitaru-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(
+        60% 50% at 50% 0%,
+        color-mix(in oklab, var(--primary) 18%, transparent) 0%,
+        transparent 70%
+      );
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  .kitaru-hero__inner {
+    max-width: 56rem;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .kitaru-hero__eyebrow {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1.75rem;
+  }
+
+  .kitaru-hero__pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.85rem;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--muted-foreground);
+    border-radius: 999px;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+  }
+
+  .kitaru-hero__pill-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: var(--primary);
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--primary) 20%, transparent);
+  }
+
+  .kitaru-hero__wordmark {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+  }
+
+  .kitaru-hero__logo {
+    height: 2.5rem;
+    width: auto;
+    color: var(--foreground);
+  }
+
+  @media (min-width: 768px) {
+    .kitaru-hero__logo {
+      height: 3.25rem;
+    }
+  }
+
+  .kitaru-hero__title {
+    font-family: var(--font-display, var(--font-sans));
+    font-size: clamp(2.25rem, 5vw, 3.75rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--foreground);
+    margin: 0 0 1.25rem;
+    text-wrap: balance;
+  }
+
+  .kitaru-hero__subtitle {
+    font-size: 1.125rem;
+    line-height: 1.55;
+    color: var(--muted-foreground);
+    max-width: 38rem;
+    margin: 0 auto 2rem;
+    text-wrap: pretty;
+  }
+
+  @media (min-width: 768px) {
+    .kitaru-hero__subtitle {
+      font-size: 1.25rem;
+    }
+  }
+
+  .kitaru-hero__ctas {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-bottom: 3rem;
+  }
+
+  .kitaru-hero__bullets {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem 1.5rem;
+    color: var(--muted-foreground);
+    font-size: 0.9375rem;
+  }
+
+  .kitaru-hero__bullets li {
+    position: relative;
+    padding-left: 1.25rem;
+  }
+
+  .kitaru-hero__bullets li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.55em;
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: var(--primary);
+  }
+
+  @media (min-width: 1024px) {
+    .kitaru-hero {
+      padding: 8rem 2rem 5rem;
+    }
+  }
+</style>
