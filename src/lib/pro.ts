@@ -27,8 +27,8 @@ export const PRO_SEO = {
 // Hero
 // ---------------------------------------------------------------------------
 export const PRO_HERO: HeroData = {
-  headline: "Supercharge your MLOps with a fully-managed control plane",
-  deck: "Forget the infrastructure setup and security concerns. Get a single pane of glass view into your entire organization.",
+  headline: "A managed control plane for ML pipelines and AI agents",
+  deck: "ZenML Pro runs both workspaces under one paid product: ZenML for ML pipelines, Kitaru for durable agents. Single pane of glass, enterprise governance, no infrastructure setup.",
   primaryCta: {
     label: "Start Free Trial",
     href: "https://cloud.zenml.io/signup",
@@ -39,6 +39,59 @@ export const PRO_HERO: HeroData = {
     alt: "Dashboard displaying iris_logistic_regression model versioning with deployment status, highlighting machine learning and model monitoring.",
   },
 };
+
+// ---------------------------------------------------------------------------
+// Unified pitch — managed plane + enterprise (Phase 7, D10)
+// ---------------------------------------------------------------------------
+/**
+ * Two-section unified pitch rendered between hero and the existing trust bar.
+ * Section A: managed control plane covering both ZenML and Kitaru workspaces.
+ * Section B: enterprise governance — SSO, RBAC, audit, SLA, dedicated support.
+ * Keeps the buyer-vs-developer split clear without confusing the pricing tiers.
+ */
+export const PRO_UNIFIED_PITCH = {
+  eyebrow: "ZenML Pro · two sub-products, one plan",
+  sections: [
+    {
+      kind: "managed-plane",
+      heading: "Managed control plane",
+      lede: "Hosted infrastructure across both workspaces. You ship workflows; we run the plane.",
+      items: [
+        {
+          name: "ZenML workspace",
+          body: "Pipeline DAGs, artifact store, model registry, and a shared stack abstraction. Run on Kubernetes, Vertex, SageMaker, AzureML.",
+        },
+        {
+          name: "Kitaru workspace",
+          body: "Durable execution for Python agents. Distributed replay, scheduled / API / webhook triggers, dashboard control over wait/resume.",
+        },
+        {
+          name: "Single pane of glass",
+          body: "One control plane spans both workspaces. Per-project surface; ML and Agent runs side by side in the dashboard.",
+        },
+      ],
+    },
+    {
+      kind: "enterprise",
+      heading: "Enterprise governance",
+      lede: "What buyers need to ship in regulated environments — across both workspaces.",
+      items: [
+        {
+          name: "SSO + RBAC + audit",
+          body: "SAML / OIDC SSO and SCIM provisioning. Custom RBAC roles and org-wide audit logs. Same controls on ML and Agent workloads.",
+        },
+        {
+          name: "Compliance",
+          body: "SOC 2 Type II and ISO 27001. BYOK encryption. Multi-region and air-gapped deployment available.",
+        },
+        {
+          name: "Support + SLA",
+          body: "24/7 dedicated support with a named solutions engineer and an SLA on response and resolution times.",
+        },
+      ],
+    },
+  ],
+} as const;
 
 // ---------------------------------------------------------------------------
 // Logo trust bar
@@ -270,6 +323,11 @@ export const PRO_FAQ: FaqData = {
   headline: "Frequently asked questions",
   subheadline: "Everything you need to know about ZenML Pro",
   items: [
+    {
+      question: "Does ZenML Pro cover the Kitaru agent workspace too?",
+      answer:
+        "Yes. ZenML Pro is the paid plane over both sub-products — ZenML for ML pipelines and Kitaru for durable AI agents. Same control plane, same SSO/RBAC/audit, same compliance posture (SOC 2, ISO 27001, BYOK, multi-region). Per-project: pick the ML workspace, the Agent workspace, or both.",
+    },
     {
       question: "What about data security and compliance?",
       answer:
