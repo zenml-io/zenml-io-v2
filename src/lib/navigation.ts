@@ -84,7 +84,7 @@ export const NAV_DROPDOWNS: NavDropdown[] = [
         links: [
           {
             label: "ZenML",
-            href: "/",
+            href: "/product/zenml",
             description: "Pipelines for ML workflows",
             icon: ICON_LIGHTNING,
           },

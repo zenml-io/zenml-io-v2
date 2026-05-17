@@ -38,7 +38,7 @@ export const FOOTER_COLUMNS: FooterColumn[] = [
   {
     title: "Product",
     links: [
-      { label: "ZenML", href: "/" },
+      { label: "ZenML", href: "/product/zenml" },
       { label: "Kitaru", href: "/product/kitaru" },
       { label: "ZenML Pro", href: "/pro", badge: "New" },
       { label: "Pricing", href: "/pricing" },
