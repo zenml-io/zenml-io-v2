@@ -35,8 +35,8 @@ The site markets **two sub-products under one paid umbrella (ZenML Pro)**:
 | Styling | **Tailwind CSS** — utility-first |
 | Interactive | **Preact islands** — 9 islands: LLMOpsFilter, ContactForm, DemoRequestFormAB, BlogSearch, CookieConsent, FeatureTabsSlider, LottieHero, ProTestimonialCarousel, RoiCalculator |
 | Search | **Pagefind** — build-time full-text search index (1,453 LLMOps pages indexed, hybrid with JSON faceted filtering) |
-| Forms | ZenML-surface: `ContactForm` island → `src/pages/api/forms/[formType].ts` (`prerender: false`) → Segment HTTP API. Kitaru-surface: dedicated routes ported from kitaru.ai → `src/pages/api/{get-started,waitlist,newsletter}.ts` → Cloudflare KV + Kitaru's Segment write key. Cal.com for demo booking. Brevo for newsletter. |
-| Analytics | **Plausible** (`script.pageview-props.js` with `event-surface`) + GA4 + **two Segment write keys** routed by surface (D4). Hostname-gated to production. See "Unified Brand & Surface" below. |
+| Forms | `ContactForm` / `DemoRequestForm` Preact islands → `src/pages/api/forms/[formType].ts` (`prerender: false`) → Segment HTTP API. Cal.com for demo booking (`/book-your-demo` is the canonical URL). Brevo for newsletter. The Kitaru landing surfaces all share these flows; the standalone kitaru.ai endpoints were never wired into the merged site. |
+| Analytics | **Plausible** (`script.pageview-props.js` with `event-surface`) + GA4 + **single Segment workspace** (D4 was superseded — audit showed the Kitaru-side write key had no callers in the merged site). The Segment `analytics.page()` call still receives `{surface}` as a property so downstream segmentation/CRM routing can filter by it. Hostname-gated to production. See "Unified Brand & Surface" below. |
 | Code highlighting | **Shiki** (custom `zenml-light`/`zenml-dark` themes) at build time + **JetBrains Mono** monospace font (self-hosted variable woff2) |
 
 ## Key Technical Decisions
@@ -54,14 +54,14 @@ Two attributes on `<html>` carry the unified-product state to every page:
 | Attribute | Values | Drives | Set by |
 |-----------|--------|--------|--------|
 | `data-app` | `zenml` (default) \| `kitaru` | CSS brand-token switching in `src/styles/global.css` (sage green vs warm orange) | `<html data-app="zenml">` in BaseLayout/MinimalLayout; Kitaru pages wrap content in `<div data-app="kitaru">` for scoped override |
-| `data-surface` | `ml` (default) \| `agent` \| `unified` | Plausible `surface` custom prop (D3); Segment write-key selection (D4) | BaseLayout/MinimalLayout accept a `surface?` prop; passed by page templates |
+| `data-surface` | `ml` (default) \| `agent` \| `unified` | Plausible `surface` custom prop on every pageview + custom event (D3); included as a property on Segment page events for downstream segmentation | BaseLayout/MinimalLayout accept a `surface?` prop; passed by page templates |
 
 **Surface taxonomy** (`src/lib/analytics.ts`):
 - **`ml`** — ZenML-side pages (homepage, `/features/*`, integrations, MLOps content, `/get-started/zenml`)
 - **`agent`** — Kitaru-side pages (`/product/kitaru`, `/compare/kitaru-vs-*`, Kitaru-origin blog posts inherit from layout)
 - **`unified`** — cross-product pages (`/compare`, `/pricing`, `/get-started` chooser, `/pro`)
 
-Segment write keys live in `SEGMENT_WRITE_KEYS` in `analytics.ts`. The consent-gated Segment loader in `consentConfig.ts` reads `document.documentElement.dataset.surface` and picks the right key at runtime. `PlausibleBridge.astro` merges `surface` into every custom event so click-tracking matches pageview tagging.
+The Segment loader in `consentConfig.ts` runs a single ZenML write key (D4 was superseded after audit — the standalone kitaru.ai routes that needed the Kitaru key turned out to be dead code and were removed). The page-init call passes `{surface}` as a property so the same dimension is queryable in Segment, Plausible, and downstream CRM tools. `PlausibleBridge.astro` merges `surface` into every custom event so click-tracking matches pageview tagging.
 
 **When adding a page that pitches both products** (cross-workspace marketing): pass `surface="unified"`. When adding a Kitaru-only page (e.g., a future `/product/kitaru/...` subpath): pass `surface="agent"`. Don't omit the prop on cross-product pages — the default is `ml`, which silently misattributes traffic.
 

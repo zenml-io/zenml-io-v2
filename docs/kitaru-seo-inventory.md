@@ -25,7 +25,7 @@ Three URL classes on kitaru.ai today:
 | Blog | `/blog/*` (10 posts as of 2026-05-17) | `/blog/<slug>` (Phase 5; 11/10 done counting `kitaru-launch`) |
 | Compare | `/compare/kitaru-vs-*` (8 pages) | `/compare/kitaru-vs-*` (Phase 3 done) |
 | Docs | `/docs/*` | **Stays external on kitaru.ai for now** (D2-adjacent — docs migration is out of scope for this merge). Redirect `/docs/*` → `https://kitaru.ai/docs/*` is a no-op until docs move. |
-| API | `/api/{get-started,waitlist,newsletter}` | `/api/{get-started,waitlist,newsletter}` (ported; same paths) |
+| API | `/api/{get-started,waitlist,newsletter}` | Not ported (D5 superseded). Anyone POSTing to `kitaru.ai/api/*` from an old form embed gets a 404 post-cutover; expected to be ~zero traffic but worth a Cloudflare access-log scan during the freeze window. |
 | Assets | `assets.kitaru.ai/*` (R2 bucket) | `assets.zenml.io/*` after image migration (currently hotlinked) |
 
 ---
@@ -103,10 +103,10 @@ kitaru.ai/compare/kitaru-vs-pydantic-ai           → zenml.io/compare/kitaru-vs
 ## Docs — keep as-is for now (D2)
 kitaru.ai/docs/*                       → kitaru.ai/docs/*   (no redirect; docs still live there)
 
-## API — port paths preserved
-kitaru.ai/api/get-started              → zenml.io/api/get-started   (POST passthrough)
-kitaru.ai/api/waitlist                 → zenml.io/api/waitlist
-kitaru.ai/api/newsletter               → zenml.io/api/newsletter
+## API — no longer ported (D5 superseded)
+# kitaru.ai/api/{get-started,waitlist,newsletter} → 404 post-cutover.
+# Pre-cutover: scan Cloudflare access logs for residual POST traffic; if any,
+# add a 410 (Gone) rule or front a stub responder. Expected to be ~zero.
 
 ## Catch-all
 kitaru.ai/*                            → zenml.io/product/kitaru   (last-resort, only after all above lines)
@@ -114,9 +114,8 @@ kitaru.ai/*                            → zenml.io/product/kitaru   (last-resor
 
 **Caveats:**
 
-1. **POST passthrough on API routes.** Cloudflare 301 turns POST into GET by default. For `/api/*`, use a 307 or 308 instead, OR have the kitaru.ai worker reverse-proxy directly to zenml.io's endpoint (preserves method + body).
-2. **Wildcard order matters.** Specific rules must precede the catch-all.
-3. **Trailing slash policy.** zenml.io is `trailingSlash: never` (see `astro.config.ts`). Make sure redirect rules strip trailing slashes from `kitaru.ai/foo/` → `zenml.io/foo`.
+1. **Wildcard order matters.** Specific rules must precede the catch-all.
+2. **Trailing slash policy.** zenml.io is `trailingSlash: never` (see `astro.config.ts`). Make sure redirect rules strip trailing slashes from `kitaru.ai/foo/` → `zenml.io/foo`.
 
 ---
 
@@ -127,10 +126,10 @@ Before activating any redirect:
 - [ ] All 11 blog posts return HTTP 200 on zenml.io (verified locally: ✅ as of 2026-05-17)
 - [ ] All 8 compare-kitaru pages return HTTP 200 on zenml.io
 - [ ] `/product/kitaru` returns HTTP 200 with Kitaru-branded OG image (currently missing — see Phase 2b known gaps)
-- [ ] `/api/get-started`, `/api/waitlist`, `/api/newsletter` are bound to KV namespaces in Cloudflare Pages dashboard
+- [x] ~~`/api/get-started`, `/api/waitlist`, `/api/newsletter` are bound to KV namespaces~~ — N/A, routes deleted (D5 superseded; Kitaru landing uses ZenML's `/book-your-demo` and Brevo newsletter flows).
 - [ ] All cover images migrated from `assets.kitaru.ai` → zenml R2 (or CNAME aliased)
 - [ ] Plausible `surface` prop verified flowing on `/product/kitaru` and `/compare/kitaru-vs-*` in production
-- [ ] Segment loader confirmed picking Kitaru write key (`MMarT0XoV4LJH8wR7wpmkTbF7txc9Bsg`) on `surface=agent` pages in production
+- [x] ~~Segment loader confirmed picking Kitaru write key~~ — N/A, dual-key plan dropped (D4 superseded). Single ZenML write key flows from all surfaces; `surface` passed as a property on `analytics.page()`.
 - [ ] Cloudflare CNAME or page-rule access for `kitaru.ai` confirmed (who controls the DNS today?)
 
 Once all green: activate redirects, monitor 4xx rate for 24h, validate top backlinks resolve.

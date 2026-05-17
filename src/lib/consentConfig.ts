@@ -45,12 +45,11 @@ export const TRACKING_SCRIPTS: ScriptDefinition[] = [
   {
     id: "segment",
     category: "analytics",
-    // Surface-aware Segment loader (D4): reads `data-surface` from <html>
-    // and selects the matching write key. Two warehouses, one snippet.
-    //   - "agent"          → Kitaru workspace
-    //   - "ml" / "unified" → ZenML workspace
-    // Keys mirror src/lib/analytics.ts SEGMENT_WRITE_KEYS — keep in sync.
-    inline: `!function(){var i="analytics",analytics=window[i]=window[i]||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","debug","page","screen","once","off","on","addSourceMiddleware","addIntegrationMiddleware","setAnonymousId","addDestinationMiddleware","register"];analytics.factory=function(e){return function(){var t=Array.prototype.slice.call(arguments);t.unshift(e);analytics.push(t);return analytics}};for(var e=0;e<analytics.methods.length;e++){var key=analytics.methods[e];analytics[key]=analytics.factory(key)}analytics.load=function(key,e){var t=document.createElement("script");t.type="text/javascript";t.async=!0;t.src="https://cdn.segment.com/analytics.js/v1/"+key+"/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(t,n);analytics._loadOptions=e};var __surface=document.documentElement.dataset.surface||"ml";var __wk=__surface==="agent"?"MMarT0XoV4LJH8wR7wpmkTbF7txc9Bsg":"Q9Gsmet5Uo67D8HIEk4pj5vUOalWu4iT";analytics._writeKey=__wk;analytics.SNIPPET_VERSION="5.2.0";analytics.load(__wk);analytics.page({surface:__surface})}}();`,
+    // Single Segment workspace (D4 superseded). The Kitaru-side write key
+    // was retired after audit — every page funnels into the ZenML workspace.
+    // The page-init call still passes `surface` (read from <html data-surface>)
+    // as a property so downstream segmentation/CRM routing can filter by it.
+    inline: `!function(){var i="analytics",analytics=window[i]=window[i]||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","debug","page","screen","once","off","on","addSourceMiddleware","addIntegrationMiddleware","setAnonymousId","addDestinationMiddleware","register"];analytics.factory=function(e){return function(){var t=Array.prototype.slice.call(arguments);t.unshift(e);analytics.push(t);return analytics}};for(var e=0;e<analytics.methods.length;e++){var key=analytics.methods[e];analytics[key]=analytics.factory(key)}analytics.load=function(key,e){var t=document.createElement("script");t.type="text/javascript";t.async=!0;t.src="https://cdn.segment.com/analytics.js/v1/"+key+"/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(t,n);analytics._loadOptions=e};analytics._writeKey="Q9Gsmet5Uo67D8HIEk4pj5vUOalWu4iT";analytics.SNIPPET_VERSION="5.2.0";analytics.load("Q9Gsmet5Uo67D8HIEk4pj5vUOalWu4iT");analytics.page({surface:document.documentElement.dataset.surface||"ml"})}}();`,
   },
   {
     id: "hotjar",
