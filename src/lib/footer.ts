@@ -33,7 +33,7 @@ export const FOOTER_PRIMARY: FooterColumn[] = [
     title: "Product",
     links: [
       { label: "ZenML", href: "/" },
-      { label: "Kitaru", href: "https://kitaru.ai", external: true },
+      { label: "Kitaru", href: "/product/kitaru" },
       { label: "ZenML Pro", href: "/pro", badge: "New" },
       { label: "Pricing", href: "/pricing" },
       { label: "OSS vs Managed", href: "/open-source-vs-pro" },
