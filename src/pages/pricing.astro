@@ -23,6 +23,7 @@ import {
   PRICING_STARTUP_BANNER,
   PRICING_STATS,
   PRICING_TABS,
+  PRICING_WORKSPACES,
 } from "../lib/pricing";
 ---
 
@@ -42,6 +43,36 @@ import {
           {PRICING_HERO.headline}
         </h1>
         <p class="mt-4 text-lg text-gray-600">{PRICING_HERO.deck}</p>
+      </div>
+    </section>
+
+    {/* Workspace explainer (Phase 6) */}
+    <section class="bg-white pt-4 pb-10 sm:pt-6 sm:pb-12">
+      <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+        <p class="text-center text-sm font-semibold uppercase tracking-wider text-zenml-500">
+          {PRICING_WORKSPACES.eyebrow}
+        </p>
+        <div class="mt-6 grid gap-4 sm:grid-cols-2">
+          {PRICING_WORKSPACES.items.map((ws) => (
+            <a
+              href={ws.href}
+              class="group rounded-xl border border-gray-200 bg-white p-6 transition hover:border-zenml-300 hover:shadow-md"
+            >
+              <div class="flex items-baseline justify-between gap-3">
+                <h3 class="text-lg font-semibold text-gray-900">{ws.name}</h3>
+                <span class="text-xs font-semibold uppercase tracking-wider text-zenml-500">
+                  {ws.tagline}
+                </span>
+              </div>
+              <p class="mt-2 text-sm leading-relaxed text-gray-600">{ws.body}</p>
+              <span class="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-zenml-600 group-hover:gap-2 transition-all">
+                {ws.cta}
+                <span aria-hidden="true">→</span>
+              </span>
+            </a>
+          ))}
+        </div>
+        <p class="mt-4 text-center text-xs text-gray-500">{PRICING_WORKSPACES.note}</p>
       </div>
     </section>
 

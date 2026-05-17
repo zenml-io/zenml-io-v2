@@ -29,8 +29,30 @@ export const PRICING_SEO = {
 // Hero
 // ---------------------------------------------------------------------------
 export const PRICING_HERO = {
-  headline: "Ship ML pipelines with confidence",
-  deck: "Predictable, transparent pricing that scales with value.",
+  headline: "Ship ML pipelines and AI agents with confidence",
+  deck: "Predictable, transparent pricing that scales with value. Same plans, two workspaces — pick ML, Agent, or both.",
+} as const;
+
+/** Short workspace explainer rendered between hero and pricing tabs. */
+export const PRICING_WORKSPACES = {
+  eyebrow: "Two workspaces, one product",
+  items: [
+    {
+      name: "ZenML workspace",
+      tagline: "ML pipelines",
+      body: "Reproducible training, batch inference, evaluation, and deployment. Pipeline DAGs with typed step interfaces.",
+      href: "/get-started/zenml",
+      cta: "Start with ZenML",
+    },
+    {
+      name: "Kitaru workspace",
+      tagline: "AI agents",
+      body: "Long-running Python agents with durable execution. Add checkpoints, replay, wait/resume — no rewrites.",
+      href: "/product/kitaru",
+      cta: "Start with Kitaru",
+    },
+  ],
+  note: "Same $; different SDKs and UI. Pro plans include both.",
 } as const;
 
 // ---------------------------------------------------------------------------
@@ -485,6 +507,16 @@ export const PRICING_FAQ: FaqData = {
   headline: "Frequently asked questions",
   subheadline: "Everything you need to know about the product.",
   items: [
+    {
+      question: "ZenML and Kitaru \u2014 same plan?",
+      answer:
+        "Yes. Pricing is unified across both workspaces. The ZenML workspace runs ML pipelines (typed step DAGs, training, batch inference). The Kitaru workspace runs durable AI agents (checkpoints, replay, wait/resume). You pick the workspace per project; Pro plans include both. Same $, same support tier, different SDKs and UI.",
+    },
+    {
+      question: "Can I self-host Kitaru like ZenML?",
+      answer:
+        "Yes. Kitaru is open source under Apache 2.0 \u2014 same model as ZenML. Self-host the server in your own VPC, point it at S3/GCS/Azure Blob, and run flows on Kubernetes, Vertex, SageMaker, or AzureML. Pro adds distributed execution, dashboard/API/scheduled/webhook triggers, SSO, audit, and a hosted control plane.",
+    },
     {
       question: "What happens if I exceed my plan\u2019s limits?",
       answer:
