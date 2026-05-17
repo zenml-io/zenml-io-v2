@@ -18,13 +18,14 @@
   if (!window.__zenmlPlausibleBridgeInstalled) {
     window.__zenmlPlausibleBridgeInstalled = true;
 
+    // Read `surface` once from <html data-surface> (set by BaseLayout/MinimalLayout)
+    // so every custom event carries the surface prop alongside pageviews (D3).
+    var __surface = document.documentElement.dataset.surface || "ml";
+
     window.__zenmlPlausibleTrack = function (eventName, props) {
       if (!window.plausible || !eventName) return;
-      if (props && typeof props === "object") {
-        window.plausible(eventName, { props: props });
-      } else {
-        window.plausible(eventName);
-      }
+      var merged = Object.assign({ surface: __surface }, props || {});
+      window.plausible(eventName, { props: merged });
     };
 
     document.addEventListener("click", function (e) {
