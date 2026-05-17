@@ -55,6 +55,16 @@ export const PRICING_WORKSPACES = {
   note: "Same $; different SDKs and UI. Pro plans include both.",
 } as const;
 
+/**
+ * Inline "what's an execution?" explainer for the unified pricing table.
+ * The Executions/mo row counts both ZenML pipeline runs and Kitaru flow
+ * executions against a single pooled quota — this clarifies that.
+ */
+export const PRICING_EXECUTIONS_NOTE = {
+  label: "What counts as an execution?",
+  body: "One execution = one ZenML pipeline run OR one Kitaru flow execution. Same quota; spend it across either workspace.",
+} as const;
+
 // ---------------------------------------------------------------------------
 // Self-Hosted plans
 // ---------------------------------------------------------------------------
@@ -64,7 +74,7 @@ const SELF_HOSTED_OSS: PricingPlan = {
   price: "Free",
   priceSuffix: "Self-hosted, forever",
   limits: [
-    { label: "pipeline runs", value: "Unlimited" },
+    { label: "executions", value: "Unlimited" },
     { label: "projects & snapshots", value: "Unlimited" },
     { label: "support", value: "Community" },
   ],
@@ -90,7 +100,7 @@ const SELF_HOSTED_PRO: PricingPlan = {
   priceSuffix: "Annual contract",
   badge: "Enterprise",
   limits: [
-    { label: "pipeline runs", value: "Unlimited" },
+    { label: "executions", value: "Unlimited" },
     { label: "projects & snapshots", value: "Unlimited" },
     { label: "dedicated support", value: "24/7" },
   ],
@@ -129,7 +139,7 @@ const SELF_HOSTED_COMPARE: PricingCompareTableData = {
       heading: "Feature",
       rows: [
         { feature: "Price", values: ["Free", "Custom"] },
-        { feature: "Pipeline Runs", values: ["Unlimited", "Unlimited"] },
+        { feature: "Executions", values: ["Unlimited", "Unlimited"] },
       ],
     },
     {
@@ -226,7 +236,7 @@ const SAAS_STARTER: PricingPlan = {
   price: "$399",
   priceSuffix: "/month",
   limits: [
-    { label: "pipeline runs", value: "500" },
+    { label: "executions", value: "500" },
     { label: "project", value: "1" },
     { label: "snapshot", value: "1" },
   ],
@@ -252,7 +262,7 @@ const SAAS_GROWTH: PricingPlan = {
   priceSuffix: "/month",
   badge: "Most Popular",
   limits: [
-    { label: "pipeline runs", value: "2,000" },
+    { label: "executions", value: "2,000" },
     { label: "projects", value: "3" },
     { label: "snapshots", value: "5" },
   ],
@@ -276,7 +286,7 @@ const SAAS_SCALE: PricingPlan = {
   price: "$2,499",
   priceSuffix: "/month",
   limits: [
-    { label: "pipeline runs", value: "5,000" },
+    { label: "executions", value: "5,000" },
     { label: "projects", value: "10" },
     { label: "snapshots", value: "20" },
   ],
@@ -295,7 +305,7 @@ const SAAS_ENTERPRISE: PricingPlan = {
   subtitle: "For organizations",
   price: "Custom",
   limits: [
-    { label: "pipeline runs", value: "Unlimited" },
+    { label: "executions", value: "Unlimited" },
     { label: "projects", value: "Unlimited" },
     { label: "snapshots", value: "Unlimited" },
   ],
@@ -334,7 +344,7 @@ const SAAS_COMPARE: PricingCompareTableData = {
           values: ["$399/mo", "$999/mo", "$2,499/mo", "Custom"],
         },
         {
-          feature: "Pipeline Runs/mo",
+          feature: "Executions/mo",
           values: ["500", "2,000", "5,000", "Unlimited"],
         },
         { feature: "Projects", values: ["1", "3", "10", "Unlimited"] },
@@ -530,7 +540,7 @@ export const PRICING_FAQ: FaqData = {
     {
       question: "How do Run Template Triggers work?",
       answer:
-        "Run Template Triggers allow you to automate pipeline runs based on events or schedules. The Community plan includes 5 triggers, while the Team plan includes 50, enabling more complex automation workflows for production environments.",
+        "Run Template Triggers automate executions (ZenML pipeline runs and Kitaru flow executions) based on events or schedules. The Community plan includes 5 triggers, while the Team plan includes 50, enabling more complex automation workflows for production environments.",
     },
     {
       question:
