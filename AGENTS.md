@@ -1,15 +1,22 @@
 # Repository Guidelines
 
 ## Project Structure & Module Organization
+This is the unified ZenML × Kitaru marketing site. ZenML pages are the
+default; Kitaru content lives under `/product/kitaru`, `/compare/kitaru-vs-*`,
+and Kitaru-origin blog posts. See `CLAUDE.md` for the brand/surface model
+and `MERGE_PLAN.md` for the merge plan + progress log.
+
 - `src/` contains the Astro app:
   - `pages/` route files (`.astro`) and dynamic templates.
-  - `components/` shared UI and `components/islands/` for hydrated Preact interactivity.
-  - `content/` markdown CMS content (all collections, validated by `src/content.config.ts`).
-  - `lib/` typed utilities/data contracts (SEO, navigation, domain helpers).
-  - `styles/global.css` Tailwind v4 theme tokens and global styles.
+  - `pages/api/` server-side API routes (`prerender: false`). ZenML-side: `forms/[formType].ts`. Kitaru-side: `get-started.ts`, `waitlist.ts`, `newsletter.ts`. **Do NOT use `functions/`** — the Cloudflare adapter silently ignores it.
+  - `components/` shared UI and `components/islands/` for hydrated Preact interactivity. Kitaru landing sections live in `components/kitaru/`; Kitaru-vs-X compare components in `components/compare/kitaru/`.
+  - `content/` markdown CMS content (21 collections, validated by `src/content.config.ts`). Two compare collections: `compare/` (ZenML-vs-X, MLOps) and `compare-kitaru/` (Kitaru-vs-X, agents).
+  - `lib/` typed utilities/data contracts. `analytics.ts` defines the surface taxonomy; `kitaru-segment.ts` / `kitaru-form-types.ts` support the Kitaru-side API routes.
+  - `scripts/kitaru/` client-side scripts the Kitaru landing relies on.
+  - `styles/global.css` Tailwind v4 theme tokens. `kitaru-compat.css` scopes Kitaru's OKLch tokens to `[data-app="kitaru"]`.
 - `public/` stores static assets and edge config (`_redirects`, `_headers`).
-- `src/pages/api/` contains Astro server-side API routes (`prerender: false`) for forms, CSP reports, etc. **Do NOT use `functions/`** — the Cloudflare adapter silently ignores it.
 - `scripts/` contains maintenance and validation tooling. Some directories retain legacy names (`phase2/`, `phase4/`, `phase6/`) from the original Webflow migration — these tools are still active (e.g., `pnpm validate:content` runs `scripts/phase2/validate-content.ts`).
+- `docs/MIGRATION.md` (Webflow → Astro, Feb 2026) and `docs/kitaru-seo-inventory.md` (Phase 10a redirect audit template) are historical / operational docs, not architecture authority.
 - `design/` and `scripts/internal/` are internal artifacts and are gitignored; do not commit from them.
 
 ## Build, Test, and Development Commands
@@ -28,7 +35,7 @@
 - Keep components in PascalCase (for example `BlogCard.astro`, `LLMOpsFilter.tsx`).
 - Use kebab-case for content slugs/filenames in `src/content/`.
 - Prefer typed data modules in `src/lib/` over hardcoded copy in components.
-- Use `.md` for content files (not `.mdx`).
+- Use `.md` for content files (not `.mdx`). The `compare-kitaru/` collection is the documented exception (inline component imports inherited from the Kitaru port).
 
 ## Testing Guidelines
 - There is no dedicated unit-test suite in root scripts yet.
@@ -53,7 +60,8 @@
 ## Contributing Blog Posts
 - New blog posts go in `src/content/blog/<slug>.md` on a feature branch (`blog/<slug>`).
 - Frontmatter must match the `blogSchema` in `src/content.config.ts`. The `webflow` field is NOT needed for new native posts.
-- Author, category, and tag fields are slug references to their respective collections. If a referenced tag or author doesn't exist, create the `.md` file first.
+- Author, category, and tag fields are slug references to their respective collections. If a referenced tag or author doesn't exist, create the `.md` file first. **Note:** adding a new file under `src/content/categories/` or `src/content/tags/` requires a `pnpm dev` restart — `referenceSlugSets` reads the directory at config eval time.
+- For **Kitaru-themed posts** (anything about agents, durable execution, Kitaru launches/features), use `category: "kitaru"` and prepend `"kitaru"` to the tags array — that surfaces them on `/category/kitaru` and in the unified blog sidebar.
 - All content images must be absolute R2 URLs. Upload via `uv run scripts/r2-upload.py`.
 - **Claude Code skill**: Use the `blog-post-contributor` skill (`.claude/skills/blog-post-contributor/SKILL.md`) for the full workflow — supports both local markdown files and Notion pages as sources.
 

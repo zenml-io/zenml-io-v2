@@ -1,6 +1,10 @@
 # ZenML Website (zenml.io)
 
-The [zenml.io](https://www.zenml.io) marketing website — an Astro static site hosted on Cloudflare Pages. ~2,224 pages across 20 content collections, built in ~33 seconds.
+The [zenml.io](https://www.zenml.io) marketing website — an Astro static site hosted on Cloudflare Pages. ~2,200 pages across 21 content collections, built in ~33 seconds.
+
+Markets two sub-products under one paid umbrella (ZenML Pro):
+- **ZenML** — ML workflow orchestration
+- **Kitaru** — durable runtime for AI agents (folded in May 2026; see `MERGE_PLAN.md`)
 
 ## Quick Start
 
@@ -14,7 +18,7 @@ The [zenml.io](https://www.zenml.io) marketing website — an Astro static site 
 ```bash
 pnpm install
 pnpm dev       # Dev server at http://localhost:4321
-pnpm build     # Production build (~2,224 pages)
+pnpm build     # Production build (~2,200 pages)
 pnpm preview   # Serve production build locally
 ```
 
@@ -163,8 +167,9 @@ src/
 │   ├── sections/        # Homepage + shared section components
 │   ├── seo/             # JsonLd, meta tag components
 │   └── *.astro          # Shared components (Button, Nav, Footer, etc.)
-├── content/             # 20 content collections (~2,400 .md files)
-│   ├── blog/            # 280 blog posts
+├── content/             # 21 content collections (~2,410 .md files)
+│   ├── blog/            # 290+ blog posts (incl. Kitaru-origin)
+│   ├── compare-kitaru/  # 8 Kitaru-vs-X compare pages (the only .mdx collection)
 │   ├── llmops-database/ # 1,453 LLMOps entries
 │   ├── integrations/    # 68 integrations
 │   ├── compare/         # 17 VS comparison pages
@@ -312,8 +317,11 @@ See `docs/branch-protection-spec.md` for the full governance spec.
 | Resource | What's in it |
 |----------|-------------|
 | `CLAUDE.md` | Project conventions, architecture decisions, gotchas (read this if using Claude Code) |
-| `docs/MIGRATION.md` | How the site was migrated from Webflow |
+| `AGENTS.md` | Repository contribution guidelines (mirrors CLAUDE.md, shorter) |
+| `MERGE_PLAN.md` | ZenML × Kitaru merge plan, phase log, decisions log |
+| `docs/MIGRATION.md` | How the site was migrated from Webflow (Feb 2026) |
+| `docs/kitaru-seo-inventory.md` | Phase 10a SEO inventory + redirect audit template |
 | `docs/branch-protection-spec.md` | Branch protection rules and reviewer configuration |
 | `.claude/skills/` | Claude Code automation skills (blog posts, image uploads) |
 | `.env.example` | All available environment variables with documentation |
-| `src/content.config.ts` | All 20 content collection schemas (Zod) |
+| `src/content.config.ts` | All 21 content collection schemas (Zod) |

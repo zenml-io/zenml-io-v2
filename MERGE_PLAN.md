@@ -1,6 +1,6 @@
 # ZenML × Kitaru Website Merge Plan
 
-> **Status:** Phases 1, 2a, 2b, 3 landed on branch `merge/zenml-kitaru-unification`. Phase 8 (analytics surface prop) is the next blocker for prod cutover — see "Known gaps" below.
+> **Status:** Phases 1, 2a, 2b, 3, 4, 5, 6, 7, 8, 11 landed on branch `merge/zenml-kitaru-unification`. Phase 10a is scaffolded. Phase 9 (unified homepage) is the remaining design-blocked phase; Phase 10 (kitaru.ai 301s) is the remaining ops phase, blocked on 10a completion (D16) and the deployment-side Cloudflare KV bindings for the ported Kitaru API routes.
 > **Owner of prototyping:** Claude (in this repo)
 > **Owner of production shipping:** Codex (will pick up from this doc)
 > **Last updated:** 2026-05-17
@@ -27,7 +27,7 @@ at the end. Each phase = one or more commits on that branch.
 | 9. Unified homepage + brand tokens | 🚧 Blocked | — | Waiting on Zuri's brand finalization |
 | **10a. SEO inventory + redirect audit** | 🟡 Scaffolded (template in `docs/kitaru-seo-inventory.md`); crawl pending | `merge/zenml-kitaru-unification` | Doc structure + redirect-mapping template in place with placeholders for the actual Screaming Frog / Ahrefs / Plausible exports. Owner needs to fill §3.1–3.5 before activating Phase 10. |
 | 10. kitaru.ai → 301 redirects | ⏳ Pending | — | Blocked on 10a + Phase 2b parity. |
-| **11. Docs + skills refresh** | ⏳ Pending | — | **Last stage.** Update CLAUDE.md, AGENTS.md, and Claude Code skills to reflect post-merge reality. |
+| **11. Docs + skills refresh** | ✅ Shipped | `merge/zenml-kitaru-unification` | `CLAUDE.md`: new "Unified Brand & Analytics Surface" section, key files updated (analytics.ts, Kitaru components/scripts/API routes, /get-started split), Legacy Terminology split into Webflow + Kitaru sub-sections, content-collection count bumped to 21, .md-not-.mdx rule documents the `compare-kitaru` exception. `AGENTS.md`: same updates, shorter. `README.md`: front-matter blurb + further-reading pointers. `.claude/skills/blog-post-contributor`: kitaru category added to taxonomy table with "when to use" hints, frontmatter reference updated, Step 0 asks which workspace. `.claude/skills/r2-image-upload`: unchanged (generic). |
 
 ### Phase 1 — what landed
 - **`src/lib/navigation.ts`** — completely restructured. New 6-item nav: Product ▾ / Docs ▾ / Compare / Pricing / Blog / Case Studies ▾.
