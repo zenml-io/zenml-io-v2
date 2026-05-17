@@ -12,13 +12,13 @@ tags:
   - "thought-leadership"
 date: "2026-03-12T00:00:00.000Z"
 mainImage:
-  url: "https://assets.kitaru.ai/content/blog/c01bae00/from-pipelines-to-agents.avif"
+  url: "https://assets.zenml.io/content/blog/c01bae00/from-pipelines-to-agents.avif"
   alt: "From pipelines to agents: how orchestration is being rewritten"
 seo:
   title: "From Pipelines to Agents: How Orchestration is Being Rewritten - ZenML Blog"
   description: "ML pipelines were DAGs. Agents are loops. The orchestration layer that worked for training jobs doesn't work for autonomous systems, and the industry is scrambling to catch up."
   canonical: "https://www.zenml.io/blog/from-pipelines-to-agents"
-  ogImage: "https://assets.kitaru.ai/content/blog/c01bae00/from-pipelines-to-agents.avif"
+  ogImage: "https://assets.zenml.io/content/blog/c01bae00/from-pipelines-to-agents.avif"
 ---
 
 For the last five years, "**orchestration**" in ML meant one thing: DAGs. You defined your steps, drew the arrows, and a scheduler ran them in order - Airflow ➡️ Kubeflow ➡️ Prefect ➡️ ZenML ➡️ Argo ➡️ Dagster. The details varied but the model was the same: a directed acyclic graph of tasks.

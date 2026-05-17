@@ -12,13 +12,13 @@ tags:
   - "release"
 date: "2026-03-21T00:00:00.000Z"
 mainImage:
-  url: "https://assets.kitaru.ai/content/blog/9f8bd61e/kit-launch.avif"
+  url: "https://assets.zenml.io/content/blog/9f8bd61e/kit-launch.avif"
   alt: "Kitaru is open source and ready to use"
 seo:
   title: "Kitaru is open source and ready to use - ZenML Blog"
   description: "Kitaru is live: open-source infrastructure platform for running Python agents in production."
   canonical: "https://www.zenml.io/blog/kitaru-open-source"
-  ogImage: "https://assets.kitaru.ai/content/blog/9f8bd61e/kit-launch.avif"
+  ogImage: "https://assets.zenml.io/content/blog/9f8bd61e/kit-launch.avif"
 ---
 
 tldr; Kitaru *(来る, Japanese for "to arrive.")* is now open source and free for everyone. It offers robust, durable execution for async Python agents on any infrastructure backend. Kitaru is built on top of ZenML, leveraging five years of experience developing one of the world’s top [open source MLOps workflow orchestration tools](https://zenml.io).
@@ -35,7 +35,7 @@ But it feels like since the beginning of this year, something has truly clicked.
 
 The METR task-completion time horizon clearly showcases where the puck is going:
 
-![Time horizon of software tasks different LLMs can complete with 50% of the time](https://assets.kitaru.ai/content/blog/metr_benchmark_march_2026.png)
+![Time horizon of software tasks different LLMs can complete with 50% of the time](https://assets.zenml.io/content/blog/metr_benchmark_march_2026.png)
 
 Agents doing long-horizon, deep work in the background, while you're in a meeting, having coffee, or asleep, is where every serious engineering team is heading. 
 

@@ -11,13 +11,13 @@ tags:
   - "open-source"
 date: "2026-04-13T00:00:00.000Z"
 mainImage:
-  url: "https://assets.kitaru.ai/content/blog/502b228d/kitaru-memory.avif"
+  url: "https://assets.zenml.io/content/blog/502b228d/kitaru-memory.avif"
   alt: "Kitaru agents now have memory"
 seo:
   title: "Kitaru agents now have memory - ZenML Blog"
   description: "Durable, versioned memory for agents is now built into Kitaru — across Python, the typed client, the CLI, and MCP."
   canonical: "https://www.zenml.io/blog/kitaru-agents-now-have-memory"
-  ogImage: "https://assets.kitaru.ai/content/blog/502b228d/kitaru-memory.avif"
+  ogImage: "https://assets.zenml.io/content/blog/502b228d/kitaru-memory.avif"
 ---
 
 You build an agent that works beautifully for one session.
@@ -54,7 +54,7 @@ As Sarah Wooders [put it](https://x.com/sarahwooders/status/2040121230473457921)
 
 That is why we built memory into Kitaru's durability layer. Not as a separate database. Not as a bolt-on scratchpad. Memory uses the same artifact-backed storage substrate that already backs checkpoint outputs, with a retrieval model designed for durable agent state.
 
-![Kitaru dashboard execution view: the middle pane lists an execution's checkpoints — LLM calls and tool calls including kitaru_memory_set — and the right pane shows the Memory tab with namespaces, the active key's scope, version, and the JSON value the agent stored.](https://assets.kitaru.ai/content/blog/bcd04b33/dashboard-execution-with-memory.avif)
+![Kitaru dashboard execution view: the middle pane lists an execution's checkpoints — LLM calls and tool calls including kitaru_memory_set — and the right pane shows the Memory tab with namespaces, the active key's scope, version, and the JSON value the agent stored.](https://assets.zenml.io/content/blog/bcd04b33/dashboard-execution-with-memory.avif)
 
 ## What shipped
 
@@ -227,7 +227,7 @@ After a delete, `get()` returns `None` and `list()` hides the key. `history()` s
 
 That gives you an audit trail today and leaves room for richer workflows later. You can ask what the agent believed three runs ago. You can see when a value changed. You can tell whether a key disappeared because it was explicitly deleted, not because somebody lost a file.
 
-![Kitaru dashboard memory namespace view: a single sessions/pending_compact entry shown alongside its full version history sidebar, listing every previous version with timestamps so you can see exactly when each value was written.](https://assets.kitaru.ai/content/blog/c586cc55/dashboard-memory-version-history.avif)
+![Kitaru dashboard memory namespace view: a single sessions/pending_compact entry shown alongside its full version history sidebar, listing every previous version with timestamps so you can see exactly when each value was written.](https://assets.zenml.io/content/blog/c586cc55/dashboard-memory-version-history.avif)
 
 ## Four surfaces, one memory
 
@@ -265,7 +265,7 @@ kitaru memory list --scope repo_docs --scope-type namespace
 kitaru memory get style/release_notes --scope repo_docs --scope-type namespace
 ```
 
-![Terminal output of `kitaru memory history sessions/pending_compact`: a versioned table of values for one memory key, with a hint pointing at how to replay the specific run that wrote a given version.](https://assets.kitaru.ai/content/blog/2076ba51/cli-memory-history.avif)
+![Terminal output of `kitaru memory history sessions/pending_compact`: a versioned table of values for one memory key, with a hint pointing at how to replay the specific run that wrote a given version.](https://assets.zenml.io/content/blog/2076ba51/cli-memory-history.avif)
 
 MCP tools:
 

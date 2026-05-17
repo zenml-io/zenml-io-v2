@@ -11,13 +11,13 @@ tags:
   - "thought-leadership"
 date: "2026-04-22T00:00:00.000Z"
 mainImage:
-  url: "https://assets.kitaru.ai/content/blog/49da6231/arch_blog.avif"
+  url: "https://assets.zenml.io/content/blog/49da6231/arch_blog.avif"
   alt: "The runtime layer underneath your agent stack"
 seo:
   title: "The runtime layer underneath your agent stack - ZenML Blog"
   description: "What people call the agent stack is really four layers: model, harness, runtime, platform. Conflating them costs durability. The runtime layer, and one split inside it, gets the least attention."
   canonical: "https://www.zenml.io/blog/the-runtime-layer-underneath-your-agent-stack"
-  ogImage: "https://assets.kitaru.ai/content/blog/49da6231/arch_blog.avif"
+  ogImage: "https://assets.zenml.io/content/blog/49da6231/arch_blog.avif"
 ---
 
 The agent stack has four layers: the model (the LLM itself), the harness (the loop around the model), the runtime (how it survives and executes over time), and the platform (how the org governs it). They usually get collapsed into one.

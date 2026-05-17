@@ -58,10 +58,8 @@ Before activating Phase 10, complete each of the following. **Do not check off i
 
 ### 3.5 R2 / asset migration
 
-- [ ] List every `assets.kitaru.ai/...` URL referenced by ported content. Sources known to hotlink:
-  - `src/components/kitaru/PlatformBuilder.astro:94-107` (why-card images)
-  - The 11 ported blog posts (cover images via `mainImage.url` and `seo.ogImage`)
-- [ ] Decide migration strategy: download AVIFs → upload to zenml R2 via `scripts/r2-upload.py` → rewrite URLs in-source. Or keep CNAME `assets.kitaru.ai` aliased to the zenml R2 bucket forever (simpler but leaves the Kitaru-brand domain on the public asset URLs).
+- [x] **DONE.** All 30 unique kitaru-assets R2 keys mirrored to zenml-assets (server-side copy via wrangler) preserving the same key paths. Source rewritten `assets.kitaru.ai` → `assets.zenml.io` across 18 files. `kitaru-assets` bucket left intact so the live kitaru.ai site keeps working until the DNS cutover.
+- [ ] Post-cutover: GC the `kitaru-assets` R2 bucket once kitaru.ai 301s are confirmed working and no inbound social cards / backlinks point at the old domain.
 
 ---
 

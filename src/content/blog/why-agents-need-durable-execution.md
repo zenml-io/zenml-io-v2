@@ -11,13 +11,13 @@ tags:
   - "open-source"
 date: "2026-03-01T00:00:00.000Z"
 mainImage:
-  url: "https://assets.kitaru.ai/content/blog/8975e15d/why-agents-need-durable-execution.avif"
+  url: "https://assets.zenml.io/content/blog/8975e15d/why-agents-need-durable-execution.avif"
   alt: "Why agents need durable execution"
 seo:
   title: "Why Your AI Agents Need Durable Execution - ZenML Blog"
   description: "AI agents fail — they timeout, hit rate limits, crash on bad API responses. Without durable execution, every failure means starting over from scratch."
   canonical: "https://www.zenml.io/blog/why-agents-need-durable-execution"
-  ogImage: "https://assets.kitaru.ai/content/blog/8975e15d/why-agents-need-durable-execution.avif"
+  ogImage: "https://assets.zenml.io/content/blog/8975e15d/why-agents-need-durable-execution.avif"
 ---
 
 Your agent just spent 45 minutes and $30 in API calls researching a topic. It made it through 23 tool calls, synthesized data from 8 sources, and was about to write the final summary.

@@ -11,13 +11,13 @@ tags:
   - "open-source"
 date: "2026-03-08T00:00:00.000Z"
 mainImage:
-  url: "https://assets.kitaru.ai/content/blog/a1cd18e3/agents-need-more-than-traces.avif"
+  url: "https://assets.zenml.io/content/blog/a1cd18e3/agents-need-more-than-traces.avif"
   alt: "Agents need more than traces"
 seo:
   title: "Your Agents Need More Than Just Traces - ZenML Blog"
   description: "Tracing shows you what went wrong. But what if you could go back, fix the input, and resume from where it failed — without re-running everything?"
   canonical: "https://www.zenml.io/blog/agents-need-more-than-traces"
-  ogImage: "https://assets.kitaru.ai/content/blog/a1cd18e3/agents-need-more-than-traces.avif"
+  ogImage: "https://assets.zenml.io/content/blog/a1cd18e3/agents-need-more-than-traces.avif"
 ---
 
 You're building an agent that does deep research. It runs for an hour, makes 40 tool calls, burns $25 in tokens. At step 38, it hits a rate limit and crashes.
