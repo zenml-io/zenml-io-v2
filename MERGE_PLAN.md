@@ -1,9 +1,9 @@
 # ZenML × Kitaru Website Merge Plan
 
-> **Status:** Phase 1 prototyped on branch `merge/zenml-kitaru-unification`. Ready to proceed to Phase 2.
+> **Status:** Phases 1, 2a, 2b, 3 landed on branch `merge/zenml-kitaru-unification`. Phase 8 (analytics surface prop) is the next blocker for prod cutover — see "Known gaps" below.
 > **Owner of prototyping:** Claude (in this repo)
 > **Owner of production shipping:** Codex (will pick up from this doc)
-> **Last updated:** 2026-05-15
+> **Last updated:** 2026-05-17
 
 ---
 
@@ -17,15 +17,16 @@ at the end. Each phase = one or more commits on that branch.
 |-------|--------|-------------|-------|
 | **1. Nav + footer restructure** | ✅ Shipped (commits `020d2fd`, `b361f99`) | `merge/zenml-kitaru-unification` | Desktop + mobile verified via Playwright. |
 | **2a. Brand tokens (unified)** | ✅ Shipped | `merge/zenml-kitaru-unification` | Site-wide brand swap + proper centralization. Purple → sage green. White → warm cream. Plus Jakarta Sans → Inter. Honest token naming (purple-* reverted to actual purple; brand uses zenml-* / semantic). `[data-app="zenml" \| "kitaru"]` switching on `<html>`. Brand assets recolored: Lottie hero animation, `tab_bg.avif`, `gradient_01.webp`, `grid_bg_02.webp`, `zenml_light_bg-02.avif`, `why-zenml.avif`. Hero copy + IntegrationsMarquee polish. |
-| 2b. Port Kitaru landing → `/product/kitaru` | ⏳ Next | — | Hero, Features, PlatformBuilder, CodeShowcase from kitaru/site. Will use `data-app="kitaru"` for warm/orange theme. |
-| 3. Compare landing expansion | ⏳ Pending | — | — |
+| **2b. Port Kitaru landing → `/product/kitaru`** | ✅ Shipped (commits `a7e1665`, `1dfaf4f`, `378e0ce`, `150504c`) | `merge/zenml-kitaru-unification` | Hero, Features, PlatformBuilder, CodeShowcase, Architecture, Deploy, OneImport, Cta, SocialProof ported. `data-app="kitaru"` wrapper flips theme. Real Zuri logos wired. **Gates:** Phase 5 (blog post links), Phase 8 (analytics surface), `/api/{get-started,waitlist,newsletter}` endpoints not yet ported. |
+| **3. Compare landing expansion** | ✅ Shipped (commits `d704f59`, `03a5825`, `6d829d9`, `910aab6`, `a4e652f`) | `merge/zenml-kitaru-unification` | Dual-collection `/compare` index with MLOps + Agents sections. 8 Kitaru competitor pages ported (`compare-kitaru` collection). scroll-reveal observer wired, Shiki theme issue fixed (CodePane uses `github-light`, CodeCompare uses local `kitaru-dark.json`). |
 | 4. `/get-started` ML/Agent chooser | ⏳ Pending | — | Needs design input |
-| 5. Kitaru blog migration | ⏳ Pending | — | — |
+| **5. Kitaru blog migration** | ✅ Shipped (content); 🟡 cover images pending R2 migration | `merge/zenml-kitaru-unification` | All 11 Kitaru blog posts now on zenml.io (10 Kitaru-origin + `kitaru-launch.md` native). New `src/content/categories/kitaru.md` + `src/content/tags/kitaru.md`; all Kitaru-related posts re-tagged `category: "kitaru"` and `kitaru` prepended to tags array (previously all forced to `category: "zenml"` because `kitaru` didn't exist as a slug). `building-a-news-scout-on-kitaru` preserved as `draft: true`. **Cover images still hotlink to `assets.kitaru.ai`** — migrate to zenml R2 before Phase 10 cutover (see `docs/kitaru-seo-inventory.md` §3.5). |
 | 6. Unified pricing | ⏳ Pending | — | — |
 | 7. `/pro` unified pitch | ⏳ Pending | — | — |
-| 8. Analytics surface prop | ⏳ Pending | — | — |
+| **8. Analytics surface prop** | ✅ Shipped | `merge/zenml-kitaru-unification` | `src/lib/analytics.ts` defines `Surface` + write-key map. BaseLayout/MinimalLayout accept `surface?` prop and stamp `<html data-surface>`. Plausible switched to `script.pageview-props.js` with `event-surface`. PlausibleBridge merges surface into custom events. Segment loader picks key by surface (Kitaru key for `agent`). Pages tagged: kitaru landing, kitaru compare pages = `agent`; compare landing, pricing, get-started = `unified`; everything else defaults to `ml`. |
 | 9. Unified homepage + brand tokens | 🚧 Blocked | — | Waiting on Zuri's brand finalization |
-| 10. kitaru.ai → 301 redirects | ⏳ Pending | — | Triggers when Phase 2 reaches parity |
+| **10a. SEO inventory + redirect audit** | 🟡 Scaffolded (template in `docs/kitaru-seo-inventory.md`); crawl pending | `merge/zenml-kitaru-unification` | Doc structure + redirect-mapping template in place with placeholders for the actual Screaming Frog / Ahrefs / Plausible exports. Owner needs to fill §3.1–3.5 before activating Phase 10. |
+| 10. kitaru.ai → 301 redirects | ⏳ Pending | — | Blocked on 10a + Phase 2b parity. |
 | **11. Docs + skills refresh** | ⏳ Pending | — | **Last stage.** Update CLAUDE.md, AGENTS.md, and Claude Code skills to reflect post-merge reality. |
 
 ### Phase 1 — what landed
@@ -97,6 +98,36 @@ Several follow-up commits chased remaining purple bleed-through after the initia
 - Kitaru nav icon is a placeholder (sun-radial glyph). User chose to leave it for now.
 - Single-section Product dropdown lost the visual hierarchy of separating "Sub-products" vs. "Unified offering" (ZenML/Kitaru/Pro now in one flat list). If we want that split back, would need to either reintroduce 2-section non-compact, or add a divider mid-list.
 
+### Phase 2b — what landed
+- **`src/pages/product/kitaru.astro`** — new page composed from 9 ported sections: Hero, Features, PlatformBuilder, CodeShowcase, Architecture, Deploy, OneImport, Cta, SocialProof. Wrapped in `<div data-app="kitaru">` so Kitaru's warm-cream/orange tokens activate without bleeding into ZenML chrome (Nav, Footer render outside the wrapper).
+- **`src/components/kitaru/*`** — direct ports from `kitaru/site/src/components/`. Card-glow hover, WebGL2 dot-grid hero animation (with mesh-gradient blob fallback), clipboard copy buttons.
+- **`src/scripts/kitaru/*`** — supporting client scripts (canvas-utils, card-glow, clipboard, hero-gl, scroll-reveal).
+- **`src/styles/kitaru-compat.css`** — Kitaru OKLch tokens scoped to `[data-app="kitaru"]`.
+- **Footer Kitaru link flipped** — `src/lib/footer.ts:36` now points to `/product/kitaru` (was external `https://kitaru.ai`).
+- **Phase 2b fixes** (4 follow-ups): scroll-reveal observer load on detail pages (`03a5825`), Shiki theme readability swap (`6d829d9`, `910aab6`), compare-kitaru code-pane polish (`a4e652f`).
+
+### Phase 2b — known gaps (must clear before prod cutover)
+- ~~**Plausible `surface` prop not wired anywhere**~~ — **DONE.** `<html>` now carries `data-surface={surface}`. BaseLayout / MinimalLayout accept a `surface?: 'ml' \| 'agent' \| 'unified'` prop (default `'ml'`) defined in `src/lib/analytics.ts`. Plausible script switched from `script.js` to `script.pageview-props.js` with `event-surface` attribute (D3). PlausibleBridge merges the surface into every custom event. Tagged: `/product/kitaru` + `/compare/kitaru-vs-*` = `agent`; `/compare` + `/pricing` + `/get-started` = `unified`; everything else defaults to `ml`.
+- ~~**Segment write key hardcoded to ZenML**~~ — **DONE.** `src/lib/consentConfig.ts` Segment snippet now reads `document.documentElement.dataset.surface` and selects the Kitaru key (`MMarT0XoV4LJH8wR7wpmkTbF7txc9Bsg`) for `agent` pages, ZenML key for `ml`/`unified` (D4). Page-init call now passes `{surface}` as a property.
+- ~~**`/api/{get-started,waitlist,newsletter}` endpoints not ported**~~ — **DONE.** All three routes ported as-is from `kitaru/site/src/pages/api/` to `src/pages/api/{get-started,waitlist,newsletter}.ts`, with supporting libs `src/lib/kitaru-segment.ts` and `src/lib/kitaru-form-types.ts`. Routes 500 cleanly in dev with `"KV not configured"`; validation paths (`400 Invalid email`, `400 Name is required`) work. **Operational follow-up (deployment-side, not code):** create `GET_STARTED_KV`, `WAITLIST_KV`, `NEWSLETTER_KV` namespaces in the zenml.io Cloudflare Pages project; bind them; set `SEGMENT_WRITE_KEY` env var (waitlist; others use hardcoded Kitaru key) and optionally `TURNSTILE_SECRET_KEY` + `PUBLIC_TURNSTILE_SITE_KEY` for the get-started bot-check.
+- **`/product/kitaru` has no Kitaru-specific OG image** — falls back to `DEFAULT_OG_IMAGE` (generic ZenML asset). Social shares for Kitaru landing get ZenML-branded card.
+- **PlatformBuilder why-card images hotlink to `assets.kitaru.ai`** (`PlatformBuilder.astro:94-107`). When Phase 10 sunsets kitaru.ai the images silently vanish (`onerror="this.style.display='none'"`, no fallback). Re-host to zenml.io's R2 before Phase 10 fires.
+- ~~**SocialProof "From the blog" section gated off**~~ — **DONE.** Three referenced posts ported (`src/content/blog/{from-zenml-to-kitaru,why-agents-need-durable-execution,agents-need-more-than-traces}.md`); MDX→MD per CLAUDE.md, frontmatter remapped to ZenML's `blogSchema` (slug, author `hamza-tahir`, category `zenml`, tags `agents`+`infrastructure`+`open-source`, full `seo` block). `showBlogTeasers=true` in `SocialProof.astro`. Internal `/docs/...` links rewritten to `https://kitaru.ai/docs/...` (external until Phase 10).
+- **Removed `/roadmap` CTA from Deploy.astro** — was a dead link (kitaru.ai source has no `/roadmap` either). If a roadmap page is desired, add as separate scope.
+
+### Phase 3 — what landed
+- **Dual-collection `/compare`** — `src/pages/compare/index.astro` renders MLOps (existing `compare` collection, sage-green section) above Agents (new `compare-kitaru` collection, warm-orange section).
+- **`compare-kitaru` collection schema** — `src/content.config.ts:941-959`, `pattern: "**/*.{md,mdx}"`. Ports 8 Kitaru-vs-X pages (claude-agent-sdk, dbos, inngest, langgraph-deep-agents, openai-agents-sdk, pydantic-ai, restate, temporal).
+- **Dispatching route** — `src/pages/compare/[slug].astro` routes both collections via the `[slug]` param. Today's filenames don't collide (`zenml-vs-*` vs `kitaru-vs-*`).
+- **`src/components/compare/_layouts/KitaruCompare.astro`** — wraps each Kitaru-vs-X page in `<div data-app="kitaru">` so the warm tokens activate. Renders MDX body inside `<article class="compare-body-inner">`.
+- **Kitaru compare components** — ComparisonHero (dropdown nav), ComparisonTable, CodeCompare, FeatureWithGraphic, WhenToUseEach, ComparisonCta, CodePane.
+
+### Phase 3 — known gaps
+- **`.mdx` chosen over `.md` against CLAUDE.md guidance** — the kitaru source used inline `import` statements that `.md` can't carry. Either document the exception in CLAUDE.md, or strip imports + convert. (Compare-kitaru schema's `pattern: "**/*.{md,mdx}"` is the current opt-in.)
+- **`compare-kitaru` schema has no explicit `slug` field** — routing works today because filenames are unique across the two collections, but a single naming collision would silently shadow. Adding `slug: z.string()` and keying the route on it is a small hardening pass.
+- **3 of 8 entries missing `ogImage`** — claude-agent-sdk, pydantic-ai, openai-agents-sdk fall back to default.
+- **`/compare/index` and `/compare/kitaru-vs-*` need analytics `surface=unified` and `surface=agent` respectively** — same Phase 8 dependency.
+
 ---
 
 ## 0. Context (the why)
@@ -137,6 +168,7 @@ These are settled. Any change requires explicit re-decision.
 | **D13** | **Top nav (6 items):** `Product ▾  Docs ▾  Compare  Pricing  Blog  Case Studies ▾` | Astral-like leanness, all critical pages surfaced. |
 | **D14** | Pages NOT moved to `/legacy` — existing URLs stay live. "Legacy" = removed-from-nav, not removed-from-site. | Preserves SEO and inbound links. |
 | **D15** | Unified brand applied **site-wide in Phase 2**, not deferred to Phase 9. Tokens from `kitaru-test-prototypes` (Zuri) land in `src/styles/global.css`. ZenML brand shifts purple → sage green. Body background → warm cream. Font Plus Jakarta Sans → Inter. Theme switching via `[data-app="zenml" \| "kitaru"]` on `<html>`. Legacy `--color-zenml-*` tokens **aliased** to new primary so existing utility classes (200+ uses) keep working. | Avoids double-porting Kitaru's old brand then redoing it. Single source of truth for future tweaks. |
+| **D16** | **Phase 10 cannot fire until Phase 10a (SEO inventory + redirect audit) is complete and reviewed.** | Webflow-migration lesson: the per-URL inventory at the start of that cutover was what prevented dropped pages and broken backlinks. Repeat the pattern for kitaru.ai → zenml.io. `docs/MIGRATION.md` is the precedent format. |
 
 ---
 
@@ -203,9 +235,10 @@ production. Phases 1–8 do not require Zuri's final brand.
 | **5. Kitaru blog migration** | Port 10 MDX posts → this repo's blog collection. Convert MDX→MD per CLAUDE.md. | ~2h | Phase 1 |
 | **6. Unified pricing** | Merge kitaru pricing into `/pricing`. Same $; surface workspace differences subtly. URL stable. | ~half day | Phase 2 |
 | **7. /pro unified pitch** | Rewrite `/pro` as managed-plane + enterprise pitch. Sub-sections. | ~half day | Phase 2 |
-| **8. Analytics surface prop** | Plausible custom prop `surface: ml \| agent \| unified` wired in BaseLayout. | ~2h | Phase 2 |
+| **8. Analytics surface prop** | Plausible custom prop `surface: ml \| agent \| unified` wired in BaseLayout. Segment write-key selection switches on surface (D4). **Promoted to a blocker for Phase 2b prod cutover** — without it, Kitaru traffic silently merges into ZenML analytics. | ~half day | Phase 2 |
 | **9. Unified homepage rewrite** | Rewrite `/` with Focus Lab messaging on the unified brand (brand tokens already landed in Phase 2). Move current homepage to `/product/zenml`. | ~1 day | Phase 8 |
-| **10. kitaru.ai → 301 redirects** | DNS/Cloudflare-level 301s from kitaru.ai → zenml.io/product/kitaru. | ~hours | Phase 2 parity confirmed |
+| **10a. SEO inventory + redirect audit** | Crawl kitaru.ai → snapshot every URL with traffic + backlinks. Map each to a zenml.io target. Stage redirect rules in `public/_redirects` and/or Cloudflare. Snapshot Kitaru's current OG/canonical tags for social audit before flip. Output: `docs/kitaru-seo-inventory.md` checked into the branch. | ~half day | Phase 2 parity confirmed (D16) |
+| **10. kitaru.ai → 301 redirects** | DNS/Cloudflare-level 301s from kitaru.ai → zenml.io/product/kitaru. | ~hours | **Phase 10a complete** (D16), Phase 2 parity |
 | **11. Docs + skills refresh** | **Final stage.** Update `CLAUDE.md` (Product Overview, content collections, key files, legacy terminology), `AGENTS.md` (if it diverges from CLAUDE.md). Audit `.claude/skills/blog-post-contributor` and `.claude/skills/r2-image-upload` for Kitaru-aware behavior (e.g. blog post `surface: kitaru` tag, Kitaru R2 prefixes if any). | ~half day | All prior phases shipped |
 
 ---
