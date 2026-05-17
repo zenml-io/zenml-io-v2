@@ -110,5 +110,5 @@ Despite the ever growing MLOps landscape, there is still plenty of room for impr
 
 This is where [ZenML](https://zenml.io/) comes in. Built as an end-to-end MLOps framework, it provides developers easy interfaces to production-ready data manipulation, training, serving, experiment tracking and orchestration layers. In addition, we put a focus on standardization, automation and comparability of ML pipelines.
 
-To read more about ZenML head over to our [website ](https://zenml.io/)for more details. If you want to start using ZenML for your own ML production environment, [contact us](https://zenml.io/book-a-demo)!
+To read more about ZenML head over to our [website ](https://zenml.io/)for more details. If you want to start using ZenML for your own ML production environment, [contact us](https://www.zenml.io/book-your-demo)!
 

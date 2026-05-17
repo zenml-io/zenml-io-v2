@@ -43,3 +43,6 @@ scripts/internal/
 
 # Private Claude instructions (contains infra IDs, traffic numbers)
 CLAUDE.private.md
+
+# Playwright MCP scratch (screenshots, transient artifacts)
+.playwright-mcp/
