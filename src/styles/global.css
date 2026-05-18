@@ -1,10 +1,9 @@
 @import "tailwindcss";
 
-/* Inter — body UI font. DM Serif Display — editorial display font.
-   Loaded from Google Fonts. Self-host in a future polish pass.
-   Note: font-display is applied per-element via `class="font-display"`,
-   NOT globally to h1/h2 — only where editorial serif fits the design. */
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=DM+Serif+Display&display=swap");
+/* Plus Jakarta Sans — original ZenML body UI font.
+   Inter — Kitaru body UI font (kept for [data-app="kitaru"]).
+   DM Serif Display — editorial display font, opt-in via `font-display`. */
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=DM+Serif+Display&display=swap");
 
 html { scroll-behavior: smooth; }
 
@@ -19,7 +18,7 @@ html { scroll-behavior: smooth; }
  * Theme switching via [data-app] on <html>:
  *   - :root                 → Kitaru theme (warm orange primary, cream ground)
  *   - [data-app="kitaru"]   → same as :root (explicit override)
- *   - [data-app="zenml"]    → ZenML theme (sage green primary, cream ground)
+ *   - [data-app="zenml"]    → ZenML theme (purple primary, white ground — original brand)
  *
  * BaseLayout.astro sets data-app="zenml" by default for the whole site.
  * Per-page overrides (e.g. /product/kitaru) set data-app="kitaru".
@@ -91,42 +90,50 @@ html { scroll-behavior: smooth; }
   --radius: 0.5rem;
 }
 
-/* ─── 2. ZenML theme (sage green) ──────────────────────────────────────────── */
+/* ─── 2. ZenML theme (original purple) ─────────────────────────────────────── */
 [data-app="zenml"] {
-  --primary: oklch(0.53 0.075 130); /* sage green — ZenML brand */
-  --primary-foreground: oklch(0.9738 0.0045 134.85); /* brown porcelain */
-  --ring: oklch(0.53 0.075 130);
+  /* Surfaces — original white ground */
+  --background: #ffffff;
+  --foreground: #111827;
+  --card: #ffffff;
+  --card-foreground: #111827;
+  --popover: #ffffff;
+  --popover-foreground: #111827;
 
-  --accent: oklch(0.9324 0.0173 84.59); /* soft linen */
-  --accent-foreground: oklch(0.4821 0.0167 74.26);
-  --secondary: oklch(0.985 0.005 80);
-  --secondary-foreground: oklch(0.4821 0.0167 74.26);
-  --muted: oklch(0.9324 0.0173 84.59);
-  --muted-foreground: oklch(0.5 0.025 63);
+  /* Brand — original ZenML purple */
+  --primary: #7a3ef4;
+  --primary-foreground: #ffffff;
+  --ring: #7a3ef4;
 
-  --card: oklch(0.985 0.005 80);
-  --card-foreground: oklch(0.362 0.0115 78.17);
-  --popover: oklch(0.985 0.005 80);
-  --popover-foreground: oklch(0.362 0.0115 78.17);
-  --foreground: oklch(0.362 0.0115 78.17);
-  --border: oklch(0.92 0.012 78.17);
-  --input: oklch(0.92 0.012 78.17);
+  --secondary: #f9fafb;
+  --secondary-foreground: #4b5563;
+  --muted: #f2f4f7;
+  --muted-foreground: #6b7280;
+  --accent: #f6f2ff;
+  --accent-foreground: #361776;
+
+  /* Chrome */
+  --border: #e5e7eb;
+  --input: #e5e7eb;
+
+  /* Typography — original ZenML font */
+  --font-sans: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
 }
 
-/* ─── 3. ZenML brand scale (always sage green, theme-independent) ───────────
+/* ─── 3. ZenML brand scale (original purple, theme-independent) ─────────────
  * Used by components that need an explicit shade from the ZenML brand ladder
- * (e.g. badges, hover backgrounds, dark-section grounds). To rebrand, edit
- * the OKLch values below. */
+ * (e.g. badges, hover backgrounds, dark-section grounds). */
 :root {
-  --color-zenml-25:  oklch(0.9776 0.011 123.45);  /* lightest */
-  --color-zenml-50:  oklch(0.945 0.0321 116.58);
-  --color-zenml-100: oklch(0.92 0.0362 115.63);
-  --color-zenml-300: oklch(0.8202 0.0506 122.5);
-  --color-zenml-400: oklch(0.7215 0.0637 127.3);
-  --color-zenml-500: oklch(0.53 0.075 130);       /* brand primary */
-  --color-zenml-600: oklch(0.5457 0.0448 139.43);
-  --color-zenml-700: oklch(0.3964 0.0387 139.44);
-  --color-zenml-800: oklch(0.3964 0.0387 139.44); /* darkest */
+  --color-zenml-25:  #f1ebfe;  /* lightest */
+  --color-zenml-50:  #f6f2ff;
+  --color-zenml-100: #f4ebff;
+  --color-zenml-300: #d6bbfb;
+  --color-zenml-400: #b692f6;
+  --color-zenml-500: #7a3ef4;  /* brand primary */
+  --color-zenml-600: #361776;
+  --color-zenml-700: #281158;
+  --color-zenml-800: #1b0c3b;  /* darkest */
 }
 
 /* ╔════════════════════════════════════════════════════════════════════════╗
