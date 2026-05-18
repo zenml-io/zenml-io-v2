@@ -10,7 +10,6 @@ import Button from "../components/Button.astro";
  * methods grid, tabbed architecture diagrams, and final CTA.
  */
 import BaseLayout from "../layouts/BaseLayout.astro";
-import MeshGradientBg from "../components/brand/MeshGradientBg.astro";
 import {
   DEPLOYMENTS_ARCHITECTURE,
   DEPLOYMENTS_COMPARISON,
@@ -311,9 +310,8 @@ import {
     </section>
 
     {/* Final CTA (dark) */}
-    <section class="deployments-final-cta-section relative overflow-hidden py-20 sm:py-24">
-      <MeshGradientBg tone="dark" />
-      <div class="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+    <section class="deployments-final-cta-section py-20 sm:py-24">
+      <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div class="deployments-final-cta-component" data-reveal>
           <div>
             <h2 class="text-2xl font-bold text-white sm:text-3xl">
@@ -524,6 +522,9 @@ import {
 
   [data-page="deployments"] .deployments-final-cta-section {
     background-color: var(--color-zenml-700);
+    background-image: radial-gradient(circle at 80% 20%, rgba(122, 62, 244, 0.4) 0%, rgba(122, 62, 244, 0) 38%),
+      linear-gradient(180deg, var(--color-zenml-700) 0%, var(--color-zenml-800) 100%);
+    overflow: hidden;
   }
 
   [data-page="deployments"] .deployments-final-cta-component {

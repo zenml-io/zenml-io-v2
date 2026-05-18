@@ -17,7 +17,6 @@
  */
 import { getCollection } from "astro:content";
 import Button from "../../components/Button.astro";
-import MeshGradientBg from "../../components/brand/MeshGradientBg.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
 export async function getStaticPaths() {
@@ -189,7 +188,7 @@ const { pipelines, stackHtml, detailsHtml } = splitBody(project.body || "");
             {project.data.projectId && (
               <div class="px-4 py-3">
                 <div class="text-xs font-semibold uppercase tracking-wider text-gray-400">Project ID</div>
-                <div class="mt-1 font-mono text-lg text-zenml-600">{project.data.projectId}</div>
+                <div class="mt-1 font-mono text-lg text-[#7f56d9]">{project.data.projectId}</div>
                 <p class="mt-0.5 text-xs text-gray-500">Use this id to create a new project in ZenML</p>
               </div>
             )}
@@ -290,10 +289,9 @@ const { pipelines, stackHtml, detailsHtml } = splitBody(project.body || "");
     </div>
   </div>
 
-  {/* CTA section — unified-brand sage-green mesh gradient banner */}
-  <section class="relative overflow-hidden bg-zenml-700">
-    <MeshGradientBg tone="dark" />
-    <div class="relative">
+  {/* CTA section — same dark purple banner as listing page */}
+  <section class="bg-[#281158]">
+    <div class="bg-[url('/images/gradient_01.webp')] bg-cover bg-center">
       <div class="mx-auto max-w-7xl px-8 sm:px-12">
         <div class="grid items-center gap-10 py-16 sm:py-20 lg:grid-cols-2 lg:gap-8">
           <div>

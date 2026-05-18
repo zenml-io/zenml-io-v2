@@ -9,7 +9,6 @@
  */
 import { getCollection } from "astro:content";
 import Button from "../../components/Button.astro";
-import MeshGradientBg from "../../components/brand/MeshGradientBg.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
 const allProjects = (
@@ -76,10 +75,9 @@ const allProjects = (
     </div>
   </div>
 
-  {/* CTA section — unified-brand sage-green mesh gradient banner */}
-  <section class="relative overflow-hidden bg-zenml-700">
-    <MeshGradientBg tone="dark" />
-    <div class="relative">
+  {/* CTA section — dark purple banner matching Webflow's uui-section_cta02 */}
+  <section class="bg-[#281158]">
+    <div class="bg-[url('/images/gradient_01.webp')] bg-cover bg-center">
       <div class="mx-auto max-w-7xl px-8 sm:px-12">
         <div class="grid items-center gap-10 py-16 sm:py-20 lg:grid-cols-2 lg:gap-8">
           <div>

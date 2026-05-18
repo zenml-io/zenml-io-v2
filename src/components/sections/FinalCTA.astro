@@ -5,12 +5,13 @@
  */
 import { FINAL_CTA } from "../../lib/homepage";
 import Button from "../Button.astro";
-import MeshGradientBg from "../brand/MeshGradientBg.astro";
 ---
 
-<section class="relative overflow-hidden bg-zenml-700 py-16 sm:py-24">
-  <MeshGradientBg tone="dark" />
-  <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+<section
+  class="overflow-hidden py-16 sm:py-24"
+  style="background-color:var(--color-primary-700);background-image:url('/images/gradient_01.webp');background-size:cover;background-position:center;"
+>
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
     <div class="grid items-center gap-12 lg:grid-cols-2">
       <!-- Text column -->
       <div>
@@ -21,7 +22,7 @@ import MeshGradientBg from "../brand/MeshGradientBg.astro";
           {FINAL_CTA.bullets.map((bullet) => (
             <li class="flex items-start gap-3 text-lg text-white">
               <svg
-                class="mt-0.5 h-7 w-7 flex-shrink-0 text-white/90"
+                class="mt-0.5 h-7 w-7 flex-shrink-0 text-zenml-500"
                 viewBox="0 0 28 28"
                 fill="none"
               >

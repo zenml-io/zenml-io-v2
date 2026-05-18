@@ -7,7 +7,6 @@
  * dark/ghost button variants designed for purple backgrounds.
  */
 import Button from "../Button.astro";
-import MeshGradientBg from "../brand/MeshGradientBg.astro";
 
 interface Props {
   headline: string;
@@ -21,9 +20,8 @@ const { headline, body, primaryCta, secondaryCta } = Astro.props;
 
 <section class="bg-white py-16 sm:py-20">
   <div class="mx-auto max-w-[80rem] px-8">
-    <div class="cta05-panel relative overflow-hidden">
-      <MeshGradientBg tone="dark" />
-      <div class="relative grid items-center gap-8 lg:grid-cols-[1fr_max-content]">
+    <div class="cta05-panel">
+      <div class="grid items-center gap-8 lg:grid-cols-[1fr_max-content]">
         <div>
           <h3 class="text-[30px] font-bold leading-snug text-white">
             {headline}
@@ -47,7 +45,10 @@ const { headline, body, primaryCta, secondaryCta } = Astro.props;
 
 <style>
   .cta05-panel {
-    background-color: var(--color-zenml-700);
+    background-color: #53389e;
+    background-image: url("/images/grid_bg_02.webp");
+    background-size: cover;
+    background-position: center;
     border-radius: var(--radius-xl);
     padding: 4rem;
   }
