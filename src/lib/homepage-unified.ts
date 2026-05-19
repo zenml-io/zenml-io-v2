@@ -14,8 +14,9 @@
  * brand strategy — USP, value prop, elevator pitch).
  *
  * Style notes (intentional choices, push back if wrong):
- *   - Headline leans on Focus Lab's load-bearing differentiator:
- *     "single layer". That's the one phrase we can't drop.
+ *   - Headline uses "unified layer" — matches the Variant C Paper
+ *     artboard and reads cleaner against the "one platform, two
+ *     workspaces" framing than Focus Lab's "single layer" draft.
  *   - Two-workspace explainer sits high (between hero and trust bar)
  *     because it's the structural thing that's new vs the old homepage.
  *     If a visitor leaves after seeing only Hero + this, they should
@@ -29,7 +30,7 @@
 import type { Surface } from "./analytics";
 
 export const HOMEPAGE_UNIFIED_SEO = {
-  title: "ZenML — The single layer for ML and AI",
+  title: "ZenML — The unified layer for ML and AI",
   description:
     "Open-source infrastructure for teams shipping ML pipelines and AI agents on their own stack. Modular, vendor-neutral, runs anywhere — always.",
   surface: "unified" satisfies Surface,
@@ -40,9 +41,9 @@ export const HOMEPAGE_UNIFIED_SEO = {
 /* ---------------------------------------------------------------------- */
 
 export const HOMEPAGE_UNIFIED_HERO = {
-  headlinePrefix: "The single layer for ",
+  headlinePrefix: "The unified layer for ",
   headlineAccent: "ML and AI",
-  headlineSuffix: ".",
+  headlineSuffix: "",
   /**
    * Lead phrase + body. Focus Lab's USP language transposed into hero
    * copy. Keep it specific to "your stack" so the message lands for
