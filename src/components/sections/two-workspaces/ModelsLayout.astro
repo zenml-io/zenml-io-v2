@@ -1,0 +1,268 @@
+---
+/**
+ * Models subtab — "One registry, every env" (artboard 8TW-0).
+ * Left: registered models with env status pills.
+ * Right: detail header + version evolution sparkline + 3-env strip.
+ */
+
+type EnvTag = "PROD" | "STAGE" | "DEV" | "ARCH" | "CANARY";
+
+type Row = {
+  initial: string;
+  initialTone?: "purple" | "purple-300" | "dark";
+  name: string;
+  meta: string;
+  envTag: EnvTag;
+  selected?: boolean;
+};
+
+type EnvCard = {
+  label: EnvTag | string;
+  version: string;
+  detail: string;
+  tone: "dark" | "white" | "purple-tint";
+  dot: "success" | "warning" | "zenml";
+};
+
+interface Props {
+  title: string;
+  subheader: string;
+  countLabel: string;
+  rows: ReadonlyArray<Row>;
+  modelName: string;
+  modelMeta: string;
+  versionBadge: string;
+  evolutionEyebrow: string;
+  evolutionSubhead: string;
+  envStripEyebrow: string;
+  envStripSubhead: string;
+  envs: ReadonlyArray<EnvCard>;
+  footerMeta: string;
+}
+
+const {
+  title,
+  subheader,
+  countLabel,
+  rows,
+  modelName,
+  modelMeta,
+  versionBadge,
+  evolutionEyebrow,
+  evolutionSubhead,
+  envStripEyebrow,
+  envStripSubhead,
+  envs,
+  footerMeta,
+} = Astro.props;
+
+const glyphTone = (tone?: Row["initialTone"]) => {
+  if (tone === "dark") return "bg-gray-900 text-white";
+  if (tone === "purple-300") return "bg-[#d6c0ff] text-[#5b2bbf]";
+  return "bg-zenml-500 text-white";
+};
+
+const envTagClass = (tag: EnvTag) => {
+  switch (tag) {
+    case "PROD":
+      return "bg-gray-900 text-white";
+    case "STAGE":
+      return "bg-[#fef3c7] text-[#92400e]";
+    case "DEV":
+      return "bg-[#dbeafe] text-[#1d4ed8]";
+    case "ARCH":
+      return "bg-gray-100 text-gray-600";
+    case "CANARY":
+      return "bg-zenml-50 text-zenml-600";
+  }
+};
+
+const envCardClass = (tone: EnvCard["tone"]) => {
+  if (tone === "dark") return "bg-[#0F0F12] text-white border-transparent";
+  if (tone === "purple-tint")
+    return "bg-zenml-50 text-zenml-600 border-zenml-300";
+  return "bg-white text-gray-900 border-gray-200";
+};
+
+const dotClass = (dot: EnvCard["dot"]) => {
+  if (dot === "success") return "bg-success-500";
+  if (dot === "warning") return "bg-[#fbbf24]";
+  return "bg-zenml-500";
+};
+---
+
+<div class="grid grid-cols-1 gap-4 lg:grid-cols-[360px_1fr]">
+  {/* Left pane */}
+  <aside class="flex flex-col gap-2.5 rounded-md border border-gray-200 bg-white p-4">
+    <div class="flex items-start justify-between gap-3 border-b border-gray-100 pb-2">
+      <div class="flex flex-col gap-0.5">
+        <span class="font-mono text-[11px] uppercase leading-[14px] tracking-[0.08em] text-gray-500">
+          {title}
+        </span>
+        <span class="text-[12px] leading-4 text-gray-500">{subheader}</span>
+      </div>
+      <span class="font-mono text-[11px] leading-[14px] text-gray-500">
+        {countLabel}
+      </span>
+    </div>
+
+    <div class="flex flex-col gap-1">
+      {rows.map((row) => (
+        <div
+          class:list={[
+            "flex items-center gap-2.5 rounded-md px-2 py-2",
+            row.selected && "border border-zenml-300 bg-zenml-50",
+          ]}
+        >
+          <span
+            class:list={[
+              "inline-flex size-7 shrink-0 items-center justify-center rounded-md font-mono text-[12px] font-semibold leading-none",
+              glyphTone(row.initialTone),
+            ]}
+            aria-hidden="true"
+          >
+            {row.initial}
+          </span>
+          <div class="flex min-w-0 flex-1 flex-col gap-0.5">
+            <span
+              class:list={[
+                "truncate text-[13px] leading-4",
+                row.selected
+                  ? "font-semibold text-zenml-600"
+                  : "font-semibold text-gray-900",
+              ]}
+            >
+              {row.name}
+            </span>
+            <span class="truncate font-mono text-[10.5px] leading-[14px] text-gray-500">
+              {row.meta}
+            </span>
+          </div>
+          <span
+            class:list={[
+              "inline-flex shrink-0 items-center rounded-full px-2 py-0.5 font-mono text-[9.5px] font-semibold leading-3 tracking-wide",
+              envTagClass(row.envTag),
+            ]}
+          >
+            {row.envTag}
+          </span>
+        </div>
+      ))}
+    </div>
+  </aside>
+
+  {/* Right pane */}
+  <section class="flex flex-col gap-4 rounded-md border border-gray-200 bg-white p-4">
+    {/* Header */}
+    <div class="flex items-center gap-3 border-b border-gray-100 pb-3">
+      <span
+        class="inline-flex size-9 shrink-0 items-center justify-center rounded-md bg-zenml-500 text-[14px] font-semibold leading-none text-white"
+        aria-hidden="true"
+      >
+        C
+      </span>
+      <div class="flex min-w-0 flex-1 flex-col gap-0.5">
+        <div class="flex items-center gap-2">
+          <span class="text-[15px] font-semibold leading-5 text-gray-900">
+            {modelName}
+          </span>
+          <span class="font-mono text-[11px] font-medium leading-[14px] text-zenml-600">
+            {versionBadge}
+          </span>
+        </div>
+        <span class="truncate font-mono text-[11px] leading-[14px] text-gray-500">
+          {modelMeta}
+        </span>
+      </div>
+    </div>
+
+    {/* Version evolution sparkline */}
+    <div class="flex flex-col gap-2 rounded-md border border-gray-100 bg-[#fafaf7] p-4">
+      <div class="flex flex-col gap-0.5">
+        <span class="font-mono text-[11px] uppercase leading-[14px] tracking-[0.08em] text-gray-500">
+          {evolutionEyebrow}
+        </span>
+        <span class="text-[12px] leading-4 text-gray-600">{evolutionSubhead}</span>
+      </div>
+
+      <svg viewBox="0 0 720 96" width="100%" height="96" preserveAspectRatio="none" aria-hidden="true">
+        {/* Guidelines */}
+        <line x1="280" y1="0" x2="280" y2="96" stroke="#e5e7eb" stroke-dasharray="2 3" />
+        <line x1="450" y1="0" x2="450" y2="96" stroke="#e5e7eb" stroke-dasharray="2 3" />
+        <line x1="700" y1="0" x2="700" y2="96" stroke="#7a3ef4" stroke-dasharray="3 3" opacity="0.6" />
+
+        {/* Curve */}
+        <path d="M 10,78 C 80,76 120,68 180,58 C 230,50 260,46 310,42 C 360,38 400,34 450,30 C 510,26 560,24 620,22 C 660,21 685,20 700,20" fill="none" stroke="#7a3ef4" stroke-width="1.75" stroke-linecap="round" />
+
+        {/* Dots — 8 versions */}
+        <circle cx="10" cy="78" r="3.5" fill="#7a3ef4" />
+        <circle cx="105" cy="65" r="3" fill="#ffffff" stroke="#7a3ef4" stroke-width="1.5" />
+        <circle cx="180" cy="58" r="3" fill="#7a3ef4" />
+        <circle cx="280" cy="46" r="3" fill="#ffffff" stroke="#7a3ef4" stroke-width="1.5" />
+        <circle cx="360" cy="38" r="3" fill="#7a3ef4" />
+        <circle cx="450" cy="30" r="3" fill="#ffffff" stroke="#7a3ef4" stroke-width="1.5" />
+        <circle cx="560" cy="24" r="3" fill="#7a3ef4" />
+        <circle cx="700" cy="20" r="5" fill="#7a3ef4" stroke="#ffffff" stroke-width="2" />
+      </svg>
+
+      <div class="flex items-center justify-between font-mono text-[10px] leading-3 text-gray-500">
+        <span>v1</span>
+        <span>v8 · DEV</span>
+        <span>v12 · STAGE</span>
+        <span class="font-semibold text-zenml-600">v18 · PROD</span>
+      </div>
+    </div>
+
+    {/* Env strip */}
+    <div class="flex flex-col gap-2.5">
+      <div class="flex items-end justify-between">
+        <span class="font-mono text-[11px] uppercase leading-[14px] tracking-[0.08em] text-gray-500">
+          {envStripEyebrow}
+        </span>
+        <span class="font-mono text-[10.5px] leading-[14px] text-gray-500">
+          {envStripSubhead}
+        </span>
+      </div>
+      <div class="grid grid-cols-3 gap-3">
+        {envs.map((env) => (
+          <div
+            class:list={[
+              "flex flex-col gap-1.5 rounded-md border p-3",
+              envCardClass(env.tone),
+            ]}
+          >
+            <div class="flex items-center gap-1.5">
+              <span
+                class:list={["inline-block size-2 rounded-full", dotClass(env.dot)]}
+                aria-hidden="true"
+              ></span>
+              <span class:list={[
+                "font-mono text-[10px] font-semibold uppercase leading-3 tracking-[0.08em]",
+                env.tone === "dark" ? "text-white/70" : "text-gray-500",
+              ]}>
+                {env.label}
+              </span>
+              <span class="ml-auto font-mono text-[11px] font-semibold leading-[14px]">
+                {env.version}
+              </span>
+            </div>
+            <span class:list={[
+              "font-mono text-[10.5px] leading-[14px]",
+              env.tone === "dark" ? "text-white/60" : "text-gray-500",
+            ]}>
+              {env.detail}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    {/* Footer meta */}
+    <div class="mt-auto flex items-center gap-3 border-t border-gray-200 pt-2">
+      <span class="font-mono text-[11px] uppercase leading-[14px] tracking-[0.04em] text-gray-600">
+        <span class="mr-2 inline-block size-1.5 rounded-full bg-success-500 align-middle" aria-hidden="true"></span>
+        {footerMeta}
+      </span>
+    </div>
+  </section>
+</div>

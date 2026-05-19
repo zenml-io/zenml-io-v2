@@ -3,6 +3,11 @@ import { HOMEPAGE_UNIFIED_WIDGET } from "../../lib/homepage-unified";
 import ListCodeLayout from "./two-workspaces/ListCodeLayout.astro";
 import CardsGridLayout from "./two-workspaces/CardsGridLayout.astro";
 import TimelineLayout from "./two-workspaces/TimelineLayout.astro";
+import ArtifactDetailLayout from "./two-workspaces/ArtifactDetailLayout.astro";
+import StacksTableLayout from "./two-workspaces/StacksTableLayout.astro";
+import PipelinesLayout from "./two-workspaces/PipelinesLayout.astro";
+import ModelsLayout from "./two-workspaces/ModelsLayout.astro";
+import IntegrationsMLLayout from "./two-workspaces/IntegrationsMLLayout.astro";
 
 /**
  * TwoWorkspaces — Variant C workspace widget (ElevenLabs-style).
@@ -12,10 +17,11 @@ import TimelineLayout from "./two-workspaces/TimelineLayout.astro";
  *   2. Inner subtabs strip per tab: Pipelines/Artifacts/Stacks/Models/Integrations
  *      (ML) and Flows/Checkpoints/Replay/Deployments/Integrations (Agents)
  *
- * Three layout components handle the 10 subtab views:
- *   - ListCodeLayout   — Pipelines, Flows (recent runs + Python definition)
- *   - CardsGridLayout  — Artifacts, Models, Integrations × 2, Deployments
- *   - TimelineLayout   — Stacks, Checkpoints, Replay
+ * ZenML subtabs render bespoke product surfaces (PipelinesLayout,
+ * ArtifactDetailLayout, StacksTableLayout, ModelsLayout, IntegrationsMLLayout).
+ * Kitaru subtabs still use the three original generic layouts
+ * (ListCodeLayout, CardsGridLayout, TimelineLayout) until they're
+ * migrated in a follow-up commit.
  *
  * All 10 body panels + 10 surface labels are server-rendered and
  * grid-stacked. A single `data-active-view="tab.subtab"` attribute on the
@@ -51,10 +57,11 @@ const defaultView = allViews[0];
       data-active-view={defaultView.view}
       class="mx-auto flex max-w-[1280px] flex-col gap-4 rounded-2xl border border-gray-200 bg-gray-50 p-5 shadow-[0_1px_0_rgba(15,15,18,0.04),_0_24px_48px_-24px_rgba(15,15,18,0.12)]"
     >
-      {/* Top bar — tabs + active surface label */}
-      <div class="flex flex-col items-start justify-between gap-3 px-1 pt-1 sm:flex-row sm:items-start">
-        {/* Pill switcher (outer tab) — 8px outer radius; buttons baseline-
-            align their label + sublabel so "ML" / "ZenML" sit on one line. */}
+      {/* Top bar — workspace pill (left) + subtab pill (right).
+          Stacks vertically on narrow viewports. */}
+      <div class="flex flex-col items-start justify-between gap-3 px-1 pt-1 sm:flex-row sm:items-center">
+        {/* Pill switcher (outer tab) — buttons baseline-align their label
+            + sublabel so "ML" / "ZenML" sit on one line. */}
         <div
           role="tablist"
           aria-label="Workspace"
@@ -83,19 +90,38 @@ const defaultView = allViews[0];
           ))}
         </div>
 
-        {/* Active surface label (right) — stacked, swaps per active view */}
-        <div class="workspace-stack items-start sm:items-end sm:pt-1">
-          {allViews.map(({ sub, view }) => (
+        {/* Subtabs strip — one per tab, grid-stacked so they overlay in
+            the same slot. Each strip is its own tablist; arrow-key nav
+            rotates focus within the active strip. Right-aligned in the
+            top bar so it floats opposite the workspace switcher. */}
+        <div class="workspace-stack sm:justify-items-end">
+          {tabs.map((tab) => (
             <div
-              data-view={view}
-              class="flex flex-col items-start sm:items-end"
+              role="tablist"
+              aria-label={`${tab.label} views`}
+              data-subtabs={tab.id}
+              class="inline-flex flex-wrap items-center gap-1 rounded-md border border-gray-200 bg-white p-1.5 shadow-[0_1px_2px_rgba(15,15,18,0.04)]"
             >
-              <p class="text-xl font-medium leading-6 tracking-[-0.015em] text-gray-900">
-                {sub.surfaceTitle}
-              </p>
-              <p class="max-w-[420px] text-[13px] leading-4 text-gray-500 sm:text-right">
-                {sub.surfaceSubtitle}
-              </p>
+              {tab.subtabs.map((sub) => (
+                <button
+                  type="button"
+                  role="tab"
+                  id={`workspace-subtab-${tab.id}-${sub.id}`}
+                  data-subtab-trigger={`${tab.id}.${sub.id}`}
+                  aria-controls={`workspace-panel-${tab.id}-${sub.id}`}
+                  aria-selected={
+                    `${tab.id}.${sub.id}` === defaultView.view ? "true" : "false"
+                  }
+                  tabindex={
+                    tab.id === defaultView.tab.id && sub.id === defaultView.sub.id
+                      ? 0
+                      : -1
+                  }
+                  class="inline-flex cursor-pointer items-center gap-1.5 rounded-sm px-3 py-1 text-xs font-medium text-gray-500 transition-colors hover:text-gray-900 aria-selected:bg-gray-900 aria-selected:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zenml-500"
+                >
+                  {sub.label}
+                </button>
+              ))}
             </div>
           ))}
         </div>
@@ -137,43 +163,107 @@ const defaultView = allViews[0];
                 footerMeta={sub.footerMeta}
               />
             )}
+            {sub.layout === "pipelines" && (
+              <PipelinesLayout
+                title={sub.title}
+                countLabel={sub.countLabel}
+                subheader={sub.subheader}
+                rows={sub.rows}
+                fileName={sub.fileName}
+                rightEyebrow={sub.rightEyebrow}
+                rightSubhead={sub.rightSubhead}
+                targets={sub.targets}
+                activeTarget={sub.activeTarget}
+                steps={sub.steps as any}
+                inputs={sub.inputs as any}
+                output={sub.output}
+                footerMeta={sub.footerMeta}
+              />
+            )}
+            {sub.layout === "models" && (
+              <ModelsLayout
+                title={sub.title}
+                subheader={sub.subheader}
+                countLabel={sub.countLabel}
+                rows={sub.rows}
+                modelName={sub.modelName}
+                modelMeta={sub.modelMeta}
+                versionBadge={sub.versionBadge}
+                evolutionEyebrow={sub.evolutionEyebrow}
+                evolutionSubhead={sub.evolutionSubhead}
+                envStripEyebrow={sub.envStripEyebrow}
+                envStripSubhead={sub.envStripSubhead}
+                envs={sub.envs}
+                footerMeta={sub.footerMeta}
+              />
+            )}
+            {sub.layout === "integrations-ml" && (
+              <IntegrationsMLLayout
+                title={sub.title}
+                subheader={sub.subheader}
+                rows={sub.rows}
+                rightEyebrow={sub.rightEyebrow}
+                rightSubhead={sub.rightSubhead}
+                satellites={sub.satellites}
+                footerMeta={sub.footerMeta}
+              />
+            )}
+            {sub.layout === "stacks-table" && (
+              <StacksTableLayout
+                tabId={tab.id}
+                title={sub.title}
+                subtitle={sub.subtitle}
+                countLabel={sub.countLabel}
+                columns={sub.columns}
+                rows={sub.rows}
+                cliLabel={sub.cliLabel}
+                cliCommand={sub.cliCommand}
+                codeTitle={sub.codeTitle}
+                codeFile={sub.codeFile}
+                code={sub.code}
+                footerMeta={sub.footerMeta}
+              />
+            )}
+            {sub.layout === "artifact-detail" && (
+              <ArtifactDetailLayout
+                tabId={tab.id}
+                versions={sub.versions}
+                versionsCount={sub.versionsCount}
+                chartTitle={sub.chartTitle}
+                chartSubtitle={sub.chartSubtitle}
+                chartFile={sub.chartFile}
+                chartFileMeta={sub.chartFileMeta}
+                mean={sub.mean}
+                std={sub.std}
+                minLabel={sub.minLabel}
+                maxLabel={sub.maxLabel}
+                evolutionPoints={sub.evolutionPoints}
+                evolutionNote={sub.evolutionNote}
+                metaFields={sub.metaFields}
+                lineageStep={sub.lineageStep}
+                lineageDetail={sub.lineageDetail}
+                listFooter={sub.listFooter}
+                footerMeta={sub.footerMeta}
+              />
+            )}
           </div>
         ))}
       </div>
 
-      {/* Subtabs strip — one per tab, grid-stacked. Each strip is its own
-          tablist; arrow-key nav rotates focus within the active strip. */}
-      <div class="workspace-stack px-1 pt-1.5 pb-0.5">
-        {tabs.map((tab) => (
-          <div
-            role="tablist"
-            aria-label={`${tab.label} views`}
-            data-subtabs={tab.id}
-            class="flex flex-wrap items-center justify-center gap-2 sm:gap-3"
+      {/* Active-view subtitle — sits bottom-left as a quiet caption.
+          The title is omitted because the subtab pill already labels the
+          active view. */}
+      <div class="workspace-stack px-1 pb-0.5">
+        {allViews.map(({ sub, view }) => (
+          <p
+            data-view={view}
+            class="max-w-[640px] text-[13px] leading-5 text-gray-500"
           >
-            {tab.subtabs.map((sub) => (
-              <button
-                type="button"
-                role="tab"
-                id={`workspace-subtab-${tab.id}-${sub.id}`}
-                data-subtab-trigger={`${tab.id}.${sub.id}`}
-                aria-controls={`workspace-panel-${tab.id}-${sub.id}`}
-                aria-selected={
-                  `${tab.id}.${sub.id}` === defaultView.view ? "true" : "false"
-                }
-                tabindex={
-                  tab.id === defaultView.tab.id && sub.id === defaultView.sub.id
-                    ? 0
-                    : -1
-                }
-                class="inline-flex cursor-pointer items-center gap-2 rounded-full px-3.5 py-1.5 text-sm font-medium text-gray-500 transition-colors hover:text-gray-900 aria-selected:bg-gray-900 aria-selected:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zenml-500"
-              >
-                {sub.label}
-              </button>
-            ))}
-          </div>
+            {sub.surfaceSubtitle}
+          </p>
         ))}
       </div>
+
     </div>
   </div>
 </section>

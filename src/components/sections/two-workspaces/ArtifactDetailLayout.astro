@@ -1,0 +1,261 @@
+---
+/**
+ * Layout for Artifacts — control-plane detail view for a single artifact.
+ * Three columns: versions rail (left), distribution chart (center),
+ * metadata rail (right). All cards share the gray-200 / white shell used
+ * by the other layouts so the widget reads as one system.
+ */
+
+type Version = {
+  index: number;
+  hash: string;
+  timestamp: string;
+  selected?: boolean;
+};
+
+type MetaField = {
+  label: string;
+  value: string;
+  highlight?: boolean;
+};
+
+type ChartPoint = { v: 1 | 2 | 3 | 4; label: string; active?: boolean };
+
+interface Props {
+  tabId: "zenml" | "kitaru";
+  versions: ReadonlyArray<Version>;
+  versionsCount: number;
+  chartTitle: string;
+  chartSubtitle: string;
+  chartFile: string;
+  chartFileMeta: string;
+  mean: string;
+  std: string;
+  minLabel: string;
+  maxLabel: string;
+  evolutionPoints: ReadonlyArray<ChartPoint>;
+  evolutionNote: string;
+  metaFields: ReadonlyArray<MetaField>;
+  lineageStep: string;
+  lineageDetail: string;
+  listFooter: string;
+  footerMeta: string;
+}
+
+const {
+  tabId,
+  versions,
+  versionsCount,
+  chartTitle,
+  chartSubtitle,
+  chartFile,
+  chartFileMeta,
+  mean,
+  std,
+  minLabel,
+  maxLabel,
+  evolutionPoints,
+  evolutionNote,
+  metaFields,
+  lineageStep,
+  lineageDetail,
+  listFooter,
+  footerMeta,
+} = Astro.props;
+
+const brandBg = tabId === "zenml" ? "bg-zenml-50" : "bg-orange-50";
+const brandBorder = tabId === "zenml" ? "border-zenml-300" : "border-orange-300";
+const brandText = tabId === "zenml" ? "text-zenml-500" : "text-orange-500";
+const brandDot = tabId === "zenml" ? "bg-zenml-500" : "bg-orange-400";
+const statusDot = tabId === "zenml" ? "bg-success-500" : "bg-orange-400";
+
+/* Stroke + fill for the distribution chart — hex pinned to brand tokens
+   so the inline SVG renders the same in light and dark contexts. */
+const chartStroke = tabId === "zenml" ? "#7a3ef4" : "#fb923c";
+const chartFillId = `artifact-curve-${tabId}`;
+---
+
+<div class="flex h-full flex-col gap-3 rounded-md border border-gray-200 bg-white p-3">
+  <div class="grid flex-1 grid-cols-1 gap-3 lg:grid-cols-[200px_1fr_240px]">
+    {/* Versions rail */}
+    <aside class="flex flex-col gap-2.5 rounded-md border border-gray-200 bg-white p-3">
+      <div class="flex items-center justify-between border-b border-gray-100 pb-1.5">
+        <span class="font-mono text-[11px] uppercase leading-[14px] tracking-[0.08em] text-gray-500">
+          Versions
+        </span>
+        <span class="font-mono text-[10px] leading-3 text-gray-400">
+          {versionsCount}
+        </span>
+      </div>
+      <div class="flex flex-col gap-0.5">
+        {versions.map((v) => (
+          <div
+            class={`flex items-center gap-2 rounded-md py-2 pr-2 pl-1.5 ${
+              v.selected ? `${brandBg} border ${brandBorder}` : ""
+            }`}
+          >
+            <span
+              class={`w-3.5 shrink-0 text-center font-mono text-[10px] leading-3 ${
+                v.selected ? `font-semibold ${brandText}` : "text-gray-400"
+              }`}
+              aria-hidden="true"
+            >
+              {v.index}
+            </span>
+            <div class="flex min-w-0 flex-1 flex-col gap-0.5">
+              <div class="flex items-center gap-1.5">
+                <span
+                  class={`inline-block size-1.5 shrink-0 rounded-full ${
+                    v.selected ? brandDot : "bg-gray-300"
+                  }`}
+                  aria-hidden="true"
+                ></span>
+                <span
+                  class={`truncate font-mono text-[12px] leading-4 text-gray-900 ${
+                    v.selected ? "font-semibold" : "font-medium"
+                  }`}
+                >
+                  {v.hash}
+                </span>
+              </div>
+              <span class="pl-3 text-[10px] leading-3 text-gray-500">
+                {v.timestamp}
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </aside>
+
+    {/* Chart panel */}
+    <section class="flex flex-col gap-3 rounded-md border border-gray-200 bg-white p-4">
+      <div class="flex items-center justify-between gap-3">
+        <div class="flex items-center gap-2.5 min-w-0">
+          <svg viewBox="0 0 24 24" class="size-3.5 shrink-0 text-gray-500" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="m6 9 6 6 6-6" />
+          </svg>
+          <span class="truncate font-mono text-[12px] font-medium leading-4 text-gray-900">
+            {chartFile}
+          </span>
+          <span class="hidden truncate text-[11px] leading-[14px] text-gray-400 sm:inline">
+            {chartFileMeta}
+          </span>
+        </div>
+        <div class="flex shrink-0 items-center gap-1">
+          <span class="inline-flex items-center rounded-full border border-gray-200 bg-white px-2.5 py-1 font-mono text-[11px] font-medium leading-[14px] text-gray-900">
+            Distribution
+          </span>
+          <span class="hidden items-center rounded-full px-2.5 py-1 font-mono text-[11px] font-medium leading-[14px] text-gray-500 sm:inline-flex">
+            Schema
+          </span>
+          <span class="hidden items-center rounded-full px-2.5 py-1 font-mono text-[11px] font-medium leading-[14px] text-gray-500 sm:inline-flex">
+            Preview
+          </span>
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-2.5 rounded-md border border-gray-100 bg-gradient-to-b from-white to-gray-50 px-5 pt-4 pb-3">
+        <div class="flex items-baseline justify-between gap-3">
+          <div class="flex flex-col gap-0.5 min-w-0">
+            <span class="font-mono text-[11px] uppercase leading-[14px] tracking-[0.08em] text-gray-500">
+              Value distribution
+            </span>
+            <span class="truncate text-[13px] leading-4 text-gray-600">
+              {chartSubtitle}
+            </span>
+          </div>
+          <div class="flex shrink-0 items-baseline gap-4">
+            <div class="flex flex-col items-end">
+              <span class="font-mono text-[9px] uppercase leading-3 tracking-[0.08em] text-gray-400">
+                mean
+              </span>
+              <span class="font-mono text-[13px] font-semibold leading-4 text-gray-900">
+                {mean}
+              </span>
+            </div>
+            <div class="flex flex-col items-end">
+              <span class="font-mono text-[9px] uppercase leading-3 tracking-[0.08em] text-gray-400">
+                std
+              </span>
+              <span class="font-mono text-[13px] font-semibold leading-4 text-gray-900">
+                {std}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="min-h-0 flex-1">
+          <svg viewBox="0 0 640 220" width="100%" height="100%" preserveAspectRatio="none" aria-hidden="true">
+            <defs>
+              <linearGradient id={chartFillId} x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color={chartStroke} stop-opacity="0.32" />
+                <stop offset="100%" stop-color={chartStroke} stop-opacity="0.02" />
+              </linearGradient>
+            </defs>
+            <line x1="0" y1="200" x2="640" y2="200" stroke="#e5e7eb" />
+            <line x1="0" y1="150" x2="640" y2="150" stroke="#f3f4f6" stroke-dasharray="2 4" />
+            <line x1="0" y1="100" x2="640" y2="100" stroke="#f3f4f6" stroke-dasharray="2 4" />
+            <line x1="0" y1="50" x2="640" y2="50" stroke="#f3f4f6" stroke-dasharray="2 4" />
+            <line x1="2" y1="0" x2="2" y2="200" stroke={chartStroke} stroke-width="1.5" stroke-dasharray="3 3" opacity="0.45" />
+            <line x1="345" y1="0" x2="345" y2="200" stroke={chartStroke} stroke-width="1.5" stroke-dasharray="3 3" opacity="0.65" />
+            <line x1="638" y1="0" x2="638" y2="200" stroke={chartStroke} stroke-width="1.5" stroke-dasharray="3 3" opacity="0.45" />
+            <path d="M 0,200 C 40,200 70,182 110,162 C 150,142 180,90 220,72 C 260,54 290,108 330,128 C 370,148 400,142 440,124 C 480,106 510,58 550,52 C 590,46 615,130 640,180 L 640,200 L 0,200 Z" fill={`url(#${chartFillId})`} />
+            <path d="M 0,200 C 40,200 70,182 110,162 C 150,142 180,90 220,72 C 260,54 290,108 330,128 C 370,148 400,142 440,124 C 480,106 510,58 550,52 C 590,46 615,130 640,180" fill="none" stroke={chartStroke} stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            <circle cx="2" cy="200" r="3.5" fill="#ffffff" stroke={chartStroke} stroke-width="1.5" />
+            <circle cx="345" cy="138" r="4.5" fill={chartStroke} stroke="#ffffff" stroke-width="2" />
+            <circle cx="638" cy="180" r="3.5" fill="#ffffff" stroke={chartStroke} stroke-width="1.5" />
+          </svg>
+        </div>
+
+        <div class="flex items-center justify-between">
+          <div class="flex flex-col items-start gap-px">
+            <span class="font-mono text-[10px] font-medium leading-3 text-gray-600">min</span>
+            <span class="font-mono text-[10px] leading-3 text-gray-400">{minLabel}</span>
+          </div>
+          <div class="flex flex-col items-center gap-px">
+            <span class={`font-mono text-[10px] font-semibold leading-3 ${brandText}`}>μ — mean</span>
+            <span class="font-mono text-[10px] leading-3 text-gray-600">{mean}</span>
+          </div>
+          <div class="flex flex-col items-end gap-px">
+            <span class="font-mono text-[10px] font-medium leading-3 text-gray-600">max</span>
+            <span class="font-mono text-[10px] leading-3 text-gray-400">{maxLabel}</span>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    {/* Metadata rail */}
+    <aside class="flex flex-col gap-2.5 rounded-md border border-gray-200 bg-white p-3">
+      <div class="flex items-center justify-between border-b border-gray-100 pb-1.5">
+        <div class="flex items-center gap-1.5">
+          <svg viewBox="0 0 24 24" class="size-3 text-gray-900" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="m6 9 6 6 6-6" />
+          </svg>
+          <span class="font-mono text-[11px] uppercase leading-[14px] tracking-[0.08em] text-gray-500">
+            Metadata
+          </span>
+        </div>
+        <span class="font-mono text-[10px] leading-3 text-gray-400">
+          {metaFields.length} fields
+        </span>
+      </div>
+
+      <div class="flex flex-col gap-2.5 pt-1">
+        {metaFields.map((field) => (
+          <div class="flex flex-col gap-0.5">
+            <span class="text-[11px] leading-[14px] text-gray-500">{field.label}</span>
+            <span
+              class={`truncate font-mono text-[12px] leading-4 ${
+                field.highlight ? `font-semibold ${brandText}` : "text-gray-900"
+              }`}
+            >
+              {field.value}
+            </span>
+          </div>
+        ))}
+      </div>
+
+    </aside>
+  </div>
+</div>

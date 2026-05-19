@@ -1,0 +1,200 @@
+---
+import { Code } from "astro:components";
+import zenmlLight from "../../../styles/zenml-light.json";
+
+/**
+ * Layout for the Stacks subtab — table of registered stacks on the
+ * left, same Pipelines code panel on the right.
+ *
+ * Mirrors ListCodeLayout's two-column structure (used by Pipelines /
+ * Flows) so the Stacks subtab reads as a peer view: same skeleton,
+ * just a denser left pane.
+ */
+
+type StackRow = {
+  initial: string;
+  name: string;
+  orchestrator: string;
+  store: string;
+  tracker: string;
+  registry: string;
+  selected?: boolean;
+};
+
+interface Props {
+  tabId: "zenml" | "kitaru";
+  title: string;
+  subtitle: string;
+  countLabel: string;
+  columns: ReadonlyArray<string>;
+  rows: ReadonlyArray<StackRow>;
+  cliLabel: string;
+  cliCommand: string;
+  codeTitle: string;
+  codeFile: string;
+  code: string;
+  footerMeta: string;
+}
+
+const {
+  tabId,
+  title,
+  subtitle,
+  countLabel,
+  columns,
+  rows,
+  cliLabel,
+  cliCommand,
+  codeTitle,
+  codeFile,
+  code,
+  footerMeta,
+} = Astro.props;
+
+const brandBg = tabId === "zenml" ? "bg-zenml-50" : "bg-orange-50";
+const brandBorder =
+  tabId === "zenml" ? "border-zenml-300" : "border-orange-300";
+const brandGlyphBg = tabId === "zenml" ? "bg-zenml-500" : "bg-orange-400";
+const brandText = tabId === "zenml" ? "text-zenml-600" : "text-orange-600";
+const statusDotClass =
+  tabId === "zenml" ? "bg-success-500" : "bg-orange-400";
+---
+
+<div class="grid grid-cols-1 gap-4 lg:grid-cols-2">
+  {/* Left pane — stacks table */}
+  <div class="flex flex-col gap-2.5 rounded-md border border-gray-200 bg-white p-4">
+    <div class="flex items-start justify-between gap-3">
+      <div class="flex flex-col">
+        <span class="font-mono text-[11px] uppercase leading-[14px] tracking-[0.08em] text-gray-500">
+          {title}
+        </span>
+        <span class="text-[13px] leading-[18px] text-gray-700">
+          {subtitle}
+        </span>
+      </div>
+      <span class="font-mono text-[11px] leading-[14px] text-gray-500">
+        {countLabel}
+      </span>
+    </div>
+
+    {/* Column headers */}
+    <div class="grid grid-cols-[26px_minmax(0,1.6fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)] items-center gap-x-2 border-b border-gray-100 px-2 pb-1.5 font-mono text-[10px] uppercase leading-3 tracking-[0.08em] text-gray-400">
+      <span></span>
+      <span>{columns[0]}</span>
+      <span>{columns[1]}</span>
+      <span>{columns[2]}</span>
+      <span>{columns[3]}</span>
+      <span>{columns[4]}</span>
+    </div>
+
+    {/* Rows */}
+    <div class="flex flex-col gap-0.5">
+      {rows.map((row) => (
+        <div
+          class:list={[
+            "grid grid-cols-[26px_minmax(0,1.6fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)] items-center gap-x-2 rounded-md px-2 py-2",
+            row.selected && `border ${brandBorder} ${brandBg}`,
+          ]}
+        >
+          <span
+            class:list={[
+              "inline-flex size-[22px] shrink-0 items-center justify-center rounded-md font-mono text-[11px] font-semibold leading-none",
+              row.selected
+                ? `${brandGlyphBg} text-white`
+                : "bg-gray-100 text-gray-500",
+            ]}
+            aria-hidden="true"
+          >
+            {row.initial}
+          </span>
+          <span
+            class:list={[
+              "truncate font-mono text-[12px] leading-4",
+              row.selected ? `font-semibold ${brandText}` : "text-gray-900",
+            ]}
+          >
+            {row.name}
+          </span>
+          <span
+            class:list={[
+              "truncate font-mono text-[12px] leading-4",
+              row.selected ? brandText : "text-gray-600",
+            ]}
+          >
+            {row.orchestrator}
+          </span>
+          <span
+            class:list={[
+              "truncate font-mono text-[12px] leading-4",
+              row.selected ? brandText : "text-gray-600",
+            ]}
+          >
+            {row.store}
+          </span>
+          <span
+            class:list={[
+              "truncate font-mono text-[12px] leading-4",
+              row.selected ? brandText : "text-gray-600",
+            ]}
+          >
+            {row.tracker}
+          </span>
+          <span
+            class:list={[
+              "truncate font-mono text-[12px] leading-4",
+              row.selected ? brandText : "text-gray-600",
+            ]}
+          >
+            {row.registry}
+          </span>
+        </div>
+      ))}
+    </div>
+
+    {/* CLI hint */}
+    <div class="mt-auto flex flex-col gap-1 rounded-md border border-gray-100 bg-gray-50 p-3">
+      <span class="font-mono text-[10px] uppercase leading-3 tracking-[0.08em] text-gray-500">
+        {cliLabel}
+      </span>
+      <span class="font-mono text-[12px] leading-[18px] text-gray-900">
+        {cliCommand}
+      </span>
+    </div>
+  </div>
+
+  {/* Right pane — code (matches Pipelines panel exactly) */}
+  <div class="flex flex-col gap-3 rounded-md border border-gray-200 bg-white p-4">
+    <div class="flex items-center justify-between">
+      <span class="text-[13px] text-gray-500">{codeTitle}</span>
+      <span class="inline-block rounded-md border border-gray-200 bg-gray-50 px-2.5 py-1 font-mono text-[11px] leading-[14px] text-gray-600">
+        {codeFile}
+      </span>
+    </div>
+    <div class="workspace-code min-w-0 flex-1 overflow-x-auto">
+      <Code code={code} lang="python" theme={zenmlLight as any} />
+    </div>
+    <div class="flex items-center gap-3 border-t border-gray-200 pt-2.5">
+      <span class="font-mono text-[11px] uppercase leading-[14px] tracking-[0.04em] text-gray-600">
+        <span
+          class={`mr-2 inline-block size-1.5 rounded-full align-middle ${statusDotClass}`}
+          aria-hidden="true"
+        ></span>
+        {footerMeta}
+      </span>
+    </div>
+  </div>
+</div>
+
+<style>
+  .workspace-code :global(pre) {
+    margin: 0;
+    padding: 0;
+    background: transparent !important;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.55;
+  }
+  .workspace-code :global(code) {
+    font-family: inherit;
+  }
+</style>
