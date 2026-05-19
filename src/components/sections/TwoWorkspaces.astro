@@ -1,4 +1,6 @@
 ---
+import { Code } from "astro:components";
+import zenmlLight from "../../styles/zenml-light.json";
 import { HOMEPAGE_UNIFIED_WIDGET } from "../../lib/homepage-unified";
 
 /**
@@ -11,6 +13,10 @@ import { HOMEPAGE_UNIFIED_WIDGET } from "../../lib/homepage-unified";
  *
  * Per-brand restraint: violet (ZenML) and orange (Kitaru) appear only
  * inside their own tab. The shared surface stays neutral.
+ *
+ * Code blocks render through Astro's `<Code>` component with the site's
+ * `zenml-light` Shiki theme — same theme as blog/docs/get-started so
+ * tokens read consistently across the surface.
  *
  * Reads from `HOMEPAGE_UNIFIED_WIDGET` in src/lib/homepage-unified.ts.
  */
@@ -32,14 +38,14 @@ const selectedRowClass = (tab: Tab) =>
 ---
 
 <section class="bg-white">
-  <div class="mx-auto max-w-[1440px] px-6 pt-8 pb-24 sm:px-10 lg:pb-32">
+  <div class="mx-auto max-w-[1440px] px-6 pt-6 pb-20 sm:px-10 lg:pb-28">
     <div
       id="two-workspaces"
       data-active-tab="zenml"
-      class="mx-auto flex max-w-[1280px] flex-col gap-5 rounded-2xl border border-gray-200 bg-gray-50 p-6 shadow-[0_1px_0_rgba(15,15,18,0.04),_0_24px_48px_-24px_rgba(15,15,18,0.12)]"
+      class="mx-auto flex max-w-[1280px] flex-col gap-4 rounded-2xl border border-gray-200 bg-gray-50 p-5 shadow-[0_1px_0_rgba(15,15,18,0.04),_0_24px_48px_-24px_rgba(15,15,18,0.12)]"
     >
       {/* Top bar — tabs + active surface label */}
-      <div class="flex flex-col items-start justify-between gap-4 px-1 pt-1 sm:flex-row sm:items-start">
+      <div class="flex flex-col items-start justify-between gap-3 px-1 pt-1 sm:flex-row sm:items-start">
         {/* Pill switcher */}
         <div
           role="tablist"
@@ -50,27 +56,34 @@ const selectedRowClass = (tab: Tab) =>
             <button
               type="button"
               role="tab"
+              id={`workspace-tab-${tab.id}`}
               data-tab-trigger={tab.id}
               aria-controls={`workspace-panel-${tab.id}`}
-              class="group inline-flex cursor-pointer items-center gap-2.5 rounded-full px-3.5 py-2 text-sm font-medium text-gray-900 transition-colors aria-selected:bg-gray-900 aria-selected:text-white"
+              aria-selected={tab.id === "zenml" ? "true" : "false"}
+              tabindex={tab.id === "zenml" ? 0 : -1}
+              class="group inline-flex cursor-pointer items-center gap-2 rounded-full px-3.5 py-1.5 text-sm font-medium text-gray-900 transition-colors aria-selected:bg-gray-900 aria-selected:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zenml-500"
             >
               <span
-                class={`inline-block size-2.5 shrink-0 rounded-full ${dotClass(tab)}`}
+                class={`inline-block size-2 shrink-0 rounded-full ${dotClass(tab)}`}
                 aria-hidden="true"
               ></span>
               <span>{tab.label}</span>
+              <span class="text-[11px] font-normal text-gray-400 group-aria-selected:text-white/60">
+                {tab.sublabel}
+              </span>
             </button>
           ))}
         </div>
 
-        {/* Active surface label (right) — swaps per tab */}
-        <div class="flex flex-col items-start sm:items-end sm:pt-1.5">
+        {/* Active surface label (right) — swaps per tab, grid-stacked so the
+            row height stays constant when the active tab changes */}
+        <div class="workspace-stack items-start sm:items-end sm:pt-1">
           {tabs.map((tab) => (
             <div
               data-surface-label={tab.id}
               class="flex flex-col items-start sm:items-end"
             >
-              <p class="text-2xl font-medium leading-7 tracking-[-0.015em] text-gray-900">
+              <p class="text-xl font-medium leading-6 tracking-[-0.015em] text-gray-900">
                 {tab.surfaceTitle}
               </p>
               <p class="text-[13px] leading-4 text-gray-500">
@@ -81,8 +94,10 @@ const selectedRowClass = (tab: Tab) =>
         </div>
       </div>
 
-      {/* Body — two panes per tab; only the active tab's body is shown */}
-      <div class="px-1">
+      {/* Body — two panes per tab; both panels are rendered (grid-stacked)
+          so the widget keeps the taller variant's height and the layout
+          never shifts when the active tab changes */}
+      <div class="workspace-stack px-1">
         {tabs.map((tab) => (
           <div
             id={`workspace-panel-${tab.id}`}
@@ -92,28 +107,28 @@ const selectedRowClass = (tab: Tab) =>
             class="grid grid-cols-1 gap-4 lg:grid-cols-2"
           >
             {/* Left pane — list */}
-            <div class="flex flex-col rounded-md border border-gray-200 bg-white p-2">
+            <div class="flex flex-col rounded-md border border-gray-200 bg-white p-1.5">
               {tab.rows.map((row) =>
                 isSelected(row) ? (
                   <div
-                    class={`flex items-center gap-3.5 rounded-md border p-4 ${selectedRowClass(tab)}`}
+                    class={`flex items-center gap-3 rounded-md border p-3 ${selectedRowClass(tab)}`}
                   >
                     <span
-                      class={`inline-block size-[26px] shrink-0 rounded-full ${dotClass(tab)}`}
+                      class={`inline-block size-5 shrink-0 rounded-full ${dotClass(tab)}`}
                       aria-hidden="true"
                     ></span>
                     <div class="flex min-w-0 flex-1 flex-col">
                       <span class="truncate text-[15px] font-medium leading-[18px] text-gray-900">
                         {row.name}
                       </span>
-                      <span class="truncate font-mono text-[11px] leading-[14px] text-gray-500">
+                      <span class="truncate font-mono text-[11px] leading-[14px] text-gray-600">
                         {row.meta}
                       </span>
                     </div>
                     <button
                       type="button"
                       aria-label={`Run ${row.name}`}
-                      class="inline-flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-full bg-gray-900 text-white transition-colors hover:bg-gray-800"
+                      class="inline-flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-full bg-gray-900 text-white transition-colors hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zenml-500 sm:size-8"
                     >
                       <svg
                         viewBox="0 0 12 12"
@@ -126,16 +141,16 @@ const selectedRowClass = (tab: Tab) =>
                     </button>
                   </div>
                 ) : (
-                  <div class="flex items-center gap-3.5 px-4 py-3.5">
+                  <div class="flex items-center gap-3 px-3 py-2.5">
                     <span
-                      class="inline-block size-[26px] shrink-0 rounded-full bg-gray-700"
+                      class="inline-block size-5 shrink-0 rounded-full bg-gray-400"
                       aria-hidden="true"
                     ></span>
                     <div class="flex min-w-0 flex-1 flex-col">
                       <span class="truncate text-[15px] font-medium leading-[18px] text-gray-900">
                         {row.name}
                       </span>
-                      <span class="truncate font-mono text-[11px] leading-[14px] text-gray-500">
+                      <span class="truncate font-mono text-[11px] leading-[14px] text-gray-600">
                         {row.meta}
                       </span>
                     </div>
@@ -149,7 +164,7 @@ const selectedRowClass = (tab: Tab) =>
               )}
 
               {/* List footer */}
-              <div class="mt-2 flex items-center justify-between border-t border-gray-200 px-4 pt-3 pb-1.5">
+              <div class="mt-1.5 flex items-center justify-between border-t border-gray-200 px-3 pt-2.5 pb-1">
                 <span class="text-[13px] font-medium text-gray-900">
                   {tab.listFooter}
                 </span>
@@ -157,7 +172,7 @@ const selectedRowClass = (tab: Tab) =>
                   <button
                     type="button"
                     aria-label="Previous page"
-                    class="inline-flex size-8 cursor-pointer items-center justify-center rounded-full text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-900"
+                    class="inline-flex size-9 cursor-pointer items-center justify-center rounded-full text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zenml-500 sm:size-8"
                   >
                     <svg viewBox="0 0 16 16" class="size-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                       <path d="M10 12L6 8l4-4" />
@@ -166,7 +181,7 @@ const selectedRowClass = (tab: Tab) =>
                   <button
                     type="button"
                     aria-label="Next page"
-                    class="inline-flex size-8 cursor-pointer items-center justify-center rounded-full text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-900"
+                    class="inline-flex size-9 cursor-pointer items-center justify-center rounded-full text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zenml-500 sm:size-8"
                   >
                     <svg viewBox="0 0 16 16" class="size-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                       <path d="M6 4l4 4-4 4" />
@@ -177,15 +192,17 @@ const selectedRowClass = (tab: Tab) =>
             </div>
 
             {/* Right pane — code definition */}
-            <div class="flex flex-col gap-4 rounded-md border border-gray-200 bg-white p-6">
+            <div class="flex flex-col gap-3 rounded-md border border-gray-200 bg-white p-4">
               <div class="flex items-center justify-between">
                 <span class="text-[13px] text-gray-500">{tab.codeTitle}</span>
                 <span class="inline-block rounded-md border border-gray-200 bg-gray-50 px-2.5 py-1 font-mono text-[11px] leading-[14px] text-gray-500">
                   {tab.codeFile}
                 </span>
               </div>
-              <pre class="m-0 flex-1 overflow-x-auto bg-transparent p-0"><code class="block font-mono text-[13.5px] leading-[22px] text-gray-900">{tab.code}</code></pre>
-              <div class="flex items-center justify-between gap-3 border-t border-gray-200 pt-3">
+              <div class="workspace-code min-w-0 flex-1 overflow-x-auto">
+                <Code code={tab.code} lang="python" theme={zenmlLight as any} />
+              </div>
+              <div class="flex items-center gap-3 border-t border-gray-200 pt-2.5">
                 <span class="font-mono text-[11px] uppercase leading-[14px] tracking-[0.04em] text-gray-500">
                   <span
                     class={`mr-2 inline-block size-1.5 rounded-full align-middle ${tab.id === "zenml" ? "bg-success-500" : "bg-orange-400"}`}
@@ -193,31 +210,23 @@ const selectedRowClass = (tab: Tab) =>
                   ></span>
                   {tab.footerMeta}
                 </span>
-                <button
-                  type="button"
-                  class="inline-flex cursor-pointer items-center gap-2 rounded-full bg-gray-900 px-4 py-2 text-[13px] font-medium text-white transition-colors hover:bg-gray-800"
-                >
-                  <svg viewBox="0 0 12 12" class="size-2.5" fill="currentColor" aria-hidden="true">
-                    <path d="M2 1.5v9l8-4.5z" />
-                  </svg>
-                  {tab.runLabel}
-                </button>
               </div>
             </div>
           </div>
         ))}
       </div>
 
-      {/* Feature subtabs — first is the active surface */}
-      <div class="flex flex-wrap items-center justify-center gap-6 px-1 pt-2 pb-1">
+      {/* Feature subtabs — first is the active surface. Grid-stacked so
+          the row height stays constant on tab switch. */}
+      <div class="workspace-stack px-1 pt-1.5 pb-0.5">
         {tabs.map((tab) => (
           <div
             data-subtabs={tab.id}
-            class="flex flex-wrap items-center justify-center gap-6"
+            class="flex flex-wrap items-center justify-center gap-5"
           >
             {tab.subtabs.map((label, idx) =>
               idx === 0 ? (
-                <span class="inline-flex items-center gap-2.5 rounded-full bg-gray-900 px-[18px] py-2 text-sm font-medium text-white">
+                <span class="inline-flex items-center gap-2 rounded-full bg-gray-900 px-4 py-1.5 text-sm font-medium text-white">
                   <svg viewBox="0 0 14 14" class="size-3.5" fill="none" stroke="currentColor" stroke-width="1.25" aria-hidden="true">
                     <circle cx="3" cy="3" r="1.5" fill="currentColor" />
                     <circle cx="11" cy="3" r="1.5" fill="currentColor" />
@@ -242,45 +251,88 @@ const selectedRowClass = (tab: Tab) =>
 </section>
 
 <style>
-  /* Hide inactive tab content + surface label + subtabs row */
-  #two-workspaces[data-active-tab="zenml"] [data-tab-content="kitaru"],
-  #two-workspaces[data-active-tab="zenml"] [data-surface-label="kitaru"],
-  #two-workspaces[data-active-tab="zenml"] [data-subtabs="kitaru"] {
-    display: none;
+  /* Grid-stack the three swap surfaces (tab body, surface label, subtabs)
+     so the widget always reserves the height of the taller variant —
+     switching tabs doesn't shift the page layout. The inactive variant
+     stays in the DOM but hides via visibility so it still claims space. */
+  .workspace-stack {
+    display: grid;
+    grid-template-areas: "stack";
+  }
+  .workspace-stack > * {
+    grid-area: stack;
+    min-width: 0;
+  }
+  .workspace-stack > [data-tab-content],
+  .workspace-stack > [data-surface-label],
+  .workspace-stack > [data-subtabs] {
+    visibility: hidden;
+    pointer-events: none;
+  }
+  #two-workspaces[data-active-tab="zenml"] .workspace-stack > [data-tab-content="zenml"],
+  #two-workspaces[data-active-tab="zenml"] .workspace-stack > [data-surface-label="zenml"],
+  #two-workspaces[data-active-tab="zenml"] .workspace-stack > [data-subtabs="zenml"],
+  #two-workspaces[data-active-tab="kitaru"] .workspace-stack > [data-tab-content="kitaru"],
+  #two-workspaces[data-active-tab="kitaru"] .workspace-stack > [data-surface-label="kitaru"],
+  #two-workspaces[data-active-tab="kitaru"] .workspace-stack > [data-subtabs="kitaru"] {
+    visibility: visible;
+    pointer-events: auto;
   }
 
-  #two-workspaces[data-active-tab="kitaru"] [data-tab-content="zenml"],
-  #two-workspaces[data-active-tab="kitaru"] [data-surface-label="zenml"],
-  #two-workspaces[data-active-tab="kitaru"] [data-subtabs="zenml"] {
-    display: none;
+  /* Strip Shiki defaults so its <pre> lays flush inside our panel */
+  .workspace-code :global(pre) {
+    margin: 0;
+    padding: 0;
+    background: transparent !important;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.55;
+  }
+  .workspace-code :global(code) {
+    font-family: inherit;
   }
 </style>
 
 <script>
   const root = document.getElementById("two-workspaces");
   if (root) {
-    const setActive = (id: string) => {
+    const triggers = Array.from(
+      root.querySelectorAll<HTMLButtonElement>("[data-tab-trigger]"),
+    );
+
+    const setActive = (id: string, focus = false) => {
       root.dataset.activeTab = id;
-      root
-        .querySelectorAll<HTMLButtonElement>("[data-tab-trigger]")
-        .forEach((btn) => {
-          btn.setAttribute(
-            "aria-selected",
-            btn.dataset.tabTrigger === id ? "true" : "false",
-          );
-        });
+      triggers.forEach((btn) => {
+        const isActive = btn.dataset.tabTrigger === id;
+        btn.setAttribute("aria-selected", isActive ? "true" : "false");
+        // Roving tabindex: only the active tab is in the sequential tab order.
+        btn.tabIndex = isActive ? 0 : -1;
+        if (isActive && focus) btn.focus();
+      });
     };
 
-    // Initial selected state
+    // Sync initial state (SSR sets a default; this normalizes after hydration).
     setActive(root.dataset.activeTab || "zenml");
 
-    root
-      .querySelectorAll<HTMLButtonElement>("[data-tab-trigger]")
-      .forEach((btn) => {
-        btn.addEventListener("click", () => {
-          const next = btn.dataset.tabTrigger;
-          if (next) setActive(next);
-        });
+    triggers.forEach((btn, idx) => {
+      btn.addEventListener("click", () => {
+        const next = btn.dataset.tabTrigger;
+        if (next) setActive(next);
       });
+
+      // ARIA tab-pattern keyboard nav: Arrow keys + Home/End rotate focus.
+      btn.addEventListener("keydown", (e: KeyboardEvent) => {
+        let nextIdx: number | null = null;
+        if (e.key === "ArrowRight") nextIdx = (idx + 1) % triggers.length;
+        else if (e.key === "ArrowLeft")
+          nextIdx = (idx - 1 + triggers.length) % triggers.length;
+        else if (e.key === "Home") nextIdx = 0;
+        else if (e.key === "End") nextIdx = triggers.length - 1;
+        if (nextIdx === null) return;
+        e.preventDefault();
+        const target = triggers[nextIdx]?.dataset.tabTrigger;
+        if (target) setActive(target, true);
+      });
+    });
   }
 </script>

@@ -80,16 +80,28 @@ export const HOMEPAGE_UNIFIED_WIDGET = {
   tabs: [
     {
       id: "zenml" as const,
-      label: "ZenML workspace",
+      /** Workload-first label so newcomers grok the tab in one glance. */
+      label: "ML",
+      /** Quiet brand chip rendered next to the label inside the same pill. */
+      sublabel: "ZenML",
       /** Big right-aligned title above the panes. */
       surfaceTitle: "Pipelines",
       surfaceSubtitle:
-        "Reproducible ML from your laptop to production · runs anywhere",
-      /** Left pane — list of pipelines. First row is the selected one. */
+        "Reproducible ML from your laptop to production — runs anywhere",
+      /**
+       * Left pane — list of pipelines. First row is the selected one.
+       * Names sourced from real ZenML content in this repo:
+       *   - breast_cancer_classifier → canonical ZenML quickstart
+       *   - fraud_detection         → src/content/case-studies/adeo-leroy-merlin.md
+       *   - recommendation_system   → src/content/case-studies/brevo.md
+       *   - fashion_mnist_trainer   → SageMaker + BentoML blog
+       *   - llm_fine_tuning         → ZenML fine-tuning blog series
+       * Badges = real ZenML orchestrator integrations (src/content/integrations/).
+       */
       rows: [
         {
-          name: "churn_training",
-          meta: "v32 · 8 steps · 4m 12s · ✓ completed",
+          name: "breast_cancer_classifier",
+          meta: "v32 · 4 steps · 2m 51s · ✓ completed",
           badge: null,
           selected: true,
         },
@@ -99,107 +111,114 @@ export const HOMEPAGE_UNIFIED_WIDGET = {
           badge: "Kubeflow",
         },
         {
-          name: "sentiment_classifier",
-          meta: "v07 · 6 steps · 2m 41s",
+          name: "recommendation_system",
+          meta: "v44 · 9 steps · 47m 21s",
           badge: "Vertex AI",
         },
         {
-          name: "image_segmentation",
-          meta: "v44 · 24 steps · 1h 12m",
+          name: "fashion_mnist_trainer",
+          meta: "v07 · 6 steps · 4m 18s",
           badge: "SageMaker",
         },
         {
-          name: "recsys_nightly",
-          meta: "v121 · 9 steps · 18m 33s",
+          name: "llm_fine_tuning",
+          meta: "v03 · 14 steps · 3h 12m",
           badge: "Airflow",
         },
       ],
       listFooter: "Explore 200+ pipelines",
-      /** Right pane — the selected definition. */
+      /** Right pane — the selected definition. Modelled on ZenML integration docs. */
       codeTitle: "Pipeline definition",
-      codeFile: "churn_training.py",
+      codeFile: "breast_cancer_classifier.py",
       code: [
+        "import pandas as pd",
         "from zenml import pipeline, step",
         "from sklearn.ensemble import RandomForestClassifier",
         "",
         "@step",
         "def load_data() -> pd.DataFrame:",
-        "    return read_csv(\"s3://churn/raw.csv\")",
+        "    return pd.read_csv(\"data/breast_cancer.csv\")",
         "",
         "@step(enable_cache=True)",
-        "def train(X: pd.DataFrame) -> Model:",
-        "    return RandomForestClassifier().fit(X.drop(\"y\", axis=1), X.y)",
+        "def train(df: pd.DataFrame) -> RandomForestClassifier:",
+        "    return RandomForestClassifier().fit(df.drop(\"y\", axis=1), df.y)",
         "",
         "@pipeline",
-        "def churn_training():",
-        "    data = load_data()",
-        "    model = train(data)",
+        "def breast_cancer_classifier():",
+        "    train(load_data())",
       ].join("\n"),
-      footerMeta: "Stack: kubernetes-prod · 7 steps · 2 cached · 4m 12s",
-      runLabel: "Run pipeline",
+      footerMeta: "Stack: kubernetes-prod · 4 steps · 1 cached · 2m 51s",
       /** Bottom row — context-specific feature subtabs. */
       subtabs: ["Pipelines", "Artifacts", "Stacks", "Models", "Integrations"],
     },
     {
       id: "kitaru" as const,
-      label: "Kitaru workspace",
+      label: "Agents",
+      sublabel: "Kitaru",
       surfaceTitle: "Flows",
       surfaceSubtitle:
-        "Durable execution for long-running Python agents · resumes anywhere",
+        "Durable execution for long-running Python agents — resumes anywhere",
+      /**
+       * Flow names + code sample sourced from canonical Kitaru content:
+       *   - report_agent     → src/components/kitaru/CodeShowcase.astro (blessed)
+       *   - writing_agent    → src/content/blog/kitaru-launch.md
+       *   - coding_agent     → src/components/kitaru/Architecture.astro
+       *   - research_flow    → src/components/kitaru/OneImport.astro
+       *   - claims_triage    → durability-realistic
+       * Badges = deployment targets from src/components/kitaru/Deploy.astro.
+       */
       rows: [
         {
-          name: "nightly_news_scout",
+          name: "report_agent",
           meta: "v22 · 6 checkpoints · 38m 12s · ✓ resumed",
           badge: null,
           selected: true,
         },
         {
-          name: "claims_triage",
+          name: "writing_agent",
           meta: "v07 · 4 checkpoints · 11m 19s",
-          badge: "Kitaru Cloud",
+          badge: "Kubernetes",
         },
         {
-          name: "support_replier",
+          name: "coding_agent",
           meta: "v45 · 9 checkpoints · 47m 02s",
-          badge: "AWS Lambda",
+          badge: "Vertex AI",
         },
         {
-          name: "doc_indexer",
+          name: "research_flow",
           meta: "v09 · 3 checkpoints · 6m 51s",
-          badge: "Kitaru Cloud",
+          badge: "SageMaker",
         },
         {
-          name: "release_notes_bot",
+          name: "claims_triage",
           meta: "v03 · 5 checkpoints · 2m 18s",
-          badge: "Fly.io",
+          badge: "Azure ML",
         },
       ],
       listFooter: "Explore 40+ flows",
       codeTitle: "Flow definition",
-      codeFile: "nightly_news_scout.py",
+      codeFile: "report_agent.py",
       code: [
-        "from kitaru import flow, checkpoint, wait",
-        "from anthropic import Anthropic",
+        "import kitaru",
+        "from kitaru import flow, checkpoint",
         "",
         "@checkpoint",
-        "def fetch_articles() -> list[Article]:",
-        "    return rss.pull(\"https://news.ycombinator.com/rss\")",
+        "def research(topic: str) -> dict:",
+        "    return run_agent_search(topic)",
         "",
-        "@checkpoint(retry=3)",
-        "def summarize(article: Article) -> str:",
-        "    return Anthropic().messages.create(",
-        "        model=\"claude-opus-4-7\",",
-        "        messages=[{\"role\": \"user\", \"content\": article.body}],",
-        "    ).content[0].text",
+        "@checkpoint(runtime=\"isolated\")",
+        "def write_draft(context: str) -> str:",
+        "    return kitaru.llm(\"Draft a report on: \" + context, model=\"gpt-4o\")",
         "",
         "@flow",
-        "def nightly_news_scout():",
-        "    for article in fetch_articles():",
-        "        wait(seconds=10)",
-        "        post_to_slack(summarize(article))",
+        "def report_agent(topic: str) -> str:",
+        "    data = research(topic)",
+        "    draft = write_draft(str(data))",
+        "    if kitaru.wait(schema=bool, question=\"Publish?\"):",
+        "        publish(draft)",
+        "    return draft",
       ].join("\n"),
-      footerMeta: "Runtime: kitaru-cloud · 6 checkpoints · 38m 12s · resumed twice",
-      runLabel: "Run flow",
+      footerMeta: "Runtime: kubernetes · 6 checkpoints · 38m 12s · resumed twice",
       subtabs: ["Flows", "Checkpoints", "Replay", "Deployments", "Integrations"],
     },
   ],
