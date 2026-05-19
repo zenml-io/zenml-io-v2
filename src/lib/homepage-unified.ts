@@ -76,150 +76,256 @@ export const HOMEPAGE_UNIFIED_ANNOUNCEMENT = {
 /*   agent flows. The widget is the centerpiece of the unified `/`.        */
 /* ---------------------------------------------------------------------- */
 
+/**
+ * Each subtab declares its `layout` (list-code | cards-grid | timeline) plus
+ * the data fields that layout consumes. Three reusable layouts cover the
+ * 10 subtab views so we get variety without writing 10 bespoke templates.
+ *
+ * - list-code  → Pipelines, Flows. The original "definition + recent runs"
+ *                view. Selected row gets a play button (execution affordance).
+ * - cards-grid → Artifacts, Models, Integrations × 2, Deployments. A 5-card
+ *                grid showing items with type glyphs and small status tags.
+ * - timeline   → Stacks, Checkpoints, Replay. Vertical step view — natural
+ *                for "layered composition" (Stacks) and "execution trace"
+ *                (Checkpoints, Replay).
+ *
+ * Real data sources:
+ *   - ZenML rows/code: src/content/integrations/, src/content/case-studies/,
+ *     src/content/blog/, official ZenML quickstart conventions
+ *   - Kitaru rows/code: src/components/kitaru/CodeShowcase.astro (canonical),
+ *     Architecture.astro, OneImport.astro, Deploy.astro, blog/kitaru-launch.md
+ */
 export const HOMEPAGE_UNIFIED_WIDGET = {
   tabs: [
     {
       id: "zenml" as const,
-      /** Workload-first label so newcomers grok the tab in one glance. */
       label: "ML",
-      /** Quiet brand chip rendered next to the label inside the same pill. */
       sublabel: "ZenML",
-      /** Big right-aligned title above the panes. */
-      surfaceTitle: "Pipelines",
-      surfaceSubtitle:
-        "Reproducible ML from your laptop to production — runs anywhere",
-      /**
-       * Left pane — list of pipelines. First row is the selected one.
-       * Names sourced from real ZenML content in this repo:
-       *   - breast_cancer_classifier → canonical ZenML quickstart
-       *   - fraud_detection         → src/content/case-studies/adeo-leroy-merlin.md
-       *   - recommendation_system   → src/content/case-studies/brevo.md
-       *   - fashion_mnist_trainer   → SageMaker + BentoML blog
-       *   - llm_fine_tuning         → ZenML fine-tuning blog series
-       * Badges = real ZenML orchestrator integrations (src/content/integrations/).
-       */
-      rows: [
+      subtabs: [
         {
-          name: "breast_cancer_classifier",
-          meta: "v32 · 4 steps · 2m 51s · ✓ completed",
-          badge: null,
-          selected: true,
+          id: "pipelines" as const,
+          label: "Pipelines",
+          layout: "list-code" as const,
+          surfaceTitle: "Pipelines",
+          surfaceSubtitle:
+            "Reproducible ML from your laptop to production — runs anywhere",
+          listFooter: "Explore 200+ pipelines",
+          rows: [
+            {
+              name: "breast_cancer_classifier",
+              meta: "v32 · 4 steps · 2m 51s · ✓ completed",
+              badge: null,
+              selected: true,
+            },
+            { name: "fraud_detection", meta: "v18 · 12 steps · 11m 04s", badge: "Kubeflow" },
+            { name: "recommendation_system", meta: "v44 · 9 steps · 47m 21s", badge: "Vertex AI" },
+            { name: "fashion_mnist_trainer", meta: "v07 · 6 steps · 4m 18s", badge: "SageMaker" },
+            { name: "llm_fine_tuning", meta: "v03 · 14 steps · 3h 12m", badge: "Airflow" },
+          ],
+          codeTitle: "Pipeline definition",
+          codeFile: "breast_cancer_classifier.py",
+          code: [
+            "import pandas as pd",
+            "from zenml import pipeline, step",
+            "from sklearn.ensemble import RandomForestClassifier",
+            "",
+            "@step",
+            "def load_data() -> pd.DataFrame:",
+            "    return pd.read_csv(\"data/breast_cancer.csv\")",
+            "",
+            "@step(enable_cache=True)",
+            "def train(df: pd.DataFrame) -> RandomForestClassifier:",
+            "    return RandomForestClassifier().fit(df.drop(\"y\", axis=1), df.y)",
+            "",
+            "@pipeline",
+            "def breast_cancer_classifier():",
+            "    train(load_data())",
+          ].join("\n"),
+          footerMeta: "Stack: kubernetes-prod · 4 steps · 1 cached · 2m 51s",
         },
         {
-          name: "fraud_detection",
-          meta: "v18 · 12 steps · 11m 04s",
-          badge: "Kubeflow",
+          id: "artifacts" as const,
+          label: "Artifacts",
+          layout: "cards-grid" as const,
+          surfaceTitle: "Artifacts",
+          surfaceSubtitle: "Versioned data, models, and metrics from every run",
+          listFooter: "Browse all artifacts",
+          cards: [
+            { glyph: "M", glyphTone: "brand" as const, tag: "MODEL", name: "breast_cancer_model", meta: "v32 · 148 MB · 4h ago", selected: true },
+            { glyph: "D", glyphTone: "neutral" as const, tag: "DATASET", name: "preprocessed_data", meta: "v31 · 892 MB · 8h ago" },
+            { glyph: "📊", glyphTone: "neutral" as const, tag: "METRIC", name: "evaluation_metrics", meta: "v30 · 84 KB · 12h ago" },
+            { glyph: "E", glyphTone: "neutral" as const, tag: "EMBED", name: "embedding_vectors", meta: "v29 · 3.2 GB · 1d ago" },
+            { glyph: "D", glyphTone: "neutral" as const, tag: "DATASET", name: "training_dataset", meta: "v28 · 1.4 GB · 2d ago" },
+          ],
+          footerMeta: "Artifact store: s3://zenml-prod · 5.7 GB · 32 versions",
         },
         {
-          name: "recommendation_system",
-          meta: "v44 · 9 steps · 47m 21s",
-          badge: "Vertex AI",
+          id: "stacks" as const,
+          label: "Stacks",
+          layout: "timeline" as const,
+          surfaceTitle: "Stacks",
+          surfaceSubtitle: "Compose orchestrator, store, tracker, and registry — swap any layer",
+          listFooter: "5 stacks registered",
+          /** Steps = layers of the active stack, top-to-bottom. */
+          steps: [
+            { status: "done" as const, name: "Orchestrator", detail: "Kubeflow · kubernetes-prod cluster", meta: "active" },
+            { status: "done" as const, name: "Artifact store", detail: "S3 · s3://zenml-prod/artifacts", meta: "5.7 GB" },
+            { status: "done" as const, name: "Experiment tracker", detail: "MLflow · mlflow.internal.zenml.io", meta: "linked" },
+            { status: "done" as const, name: "Model registry", detail: "MLflow · 5 registered models", meta: "linked" },
+            { status: "pending" as const, name: "Alerter", detail: "Slack — not configured", meta: "optional" },
+          ],
+          footerMeta: "Active: kubernetes-prod · 4 of 5 components configured",
         },
         {
-          name: "fashion_mnist_trainer",
-          meta: "v07 · 6 steps · 4m 18s",
-          badge: "SageMaker",
+          id: "models" as const,
+          label: "Models",
+          layout: "cards-grid" as const,
+          surfaceTitle: "Models",
+          surfaceSubtitle: "Promote, version, and track every model through prod",
+          listFooter: "Open model registry",
+          cards: [
+            { glyph: "●", glyphTone: "success" as const, tag: "PROD", name: "fraud_classifier", meta: "v07 · 2.1M params", selected: true },
+            { glyph: "●", glyphTone: "success" as const, tag: "PROD", name: "sentiment_analyzer", meta: "v05 · 184M params" },
+            { glyph: "◐", glyphTone: "warning" as const, tag: "STAGE", name: "image_classifier", meta: "v04 · 185M params" },
+            { glyph: "○", glyphTone: "neutral" as const, tag: "DEV", name: "nlp_tokenizer", meta: "v01 · 847 KB" },
+            { glyph: "□", glyphTone: "muted" as const, tag: "ARCH", name: "recommendation_engine", meta: "v03 · archived" },
+          ],
+          footerMeta: "Registry: 5 models · last promoted 3h ago",
         },
         {
-          name: "llm_fine_tuning",
-          meta: "v03 · 14 steps · 3h 12m",
-          badge: "Airflow",
+          id: "integrations" as const,
+          label: "Integrations",
+          layout: "cards-grid" as const,
+          surfaceTitle: "Integrations",
+          surfaceSubtitle: "Plug in any orchestrator, store, tracker, or alerter — 40+ supported",
+          listFooter: "Browse 40+ integrations",
+          cards: [
+            { glyph: "G", glyphTone: "brand" as const, tag: "INSTALLED", name: "gcp", meta: "Vertex orchestrator · GCS store", selected: true },
+            { glyph: "A", glyphTone: "neutral" as const, tag: "INSTALLED", name: "aws", meta: "SageMaker · S3 · Bedrock" },
+            { glyph: "M", glyphTone: "neutral" as const, tag: "INSTALLED", name: "mlflow", meta: "Experiment tracker · Model registry" },
+            { glyph: "S", glyphTone: "neutral" as const, tag: "INSTALLED", name: "slack", meta: "Alerter · human-in-the-loop" },
+            { glyph: "E", glyphTone: "neutral" as const, tag: "INSTALLED", name: "evidently", meta: "Data + model validator" },
+          ],
+          footerMeta: "5 of 40+ installed · last updated 1 week ago",
         },
       ],
-      listFooter: "Explore 200+ pipelines",
-      /** Right pane — the selected definition. Modelled on ZenML integration docs. */
-      codeTitle: "Pipeline definition",
-      codeFile: "breast_cancer_classifier.py",
-      code: [
-        "import pandas as pd",
-        "from zenml import pipeline, step",
-        "from sklearn.ensemble import RandomForestClassifier",
-        "",
-        "@step",
-        "def load_data() -> pd.DataFrame:",
-        "    return pd.read_csv(\"data/breast_cancer.csv\")",
-        "",
-        "@step(enable_cache=True)",
-        "def train(df: pd.DataFrame) -> RandomForestClassifier:",
-        "    return RandomForestClassifier().fit(df.drop(\"y\", axis=1), df.y)",
-        "",
-        "@pipeline",
-        "def breast_cancer_classifier():",
-        "    train(load_data())",
-      ].join("\n"),
-      footerMeta: "Stack: kubernetes-prod · 4 steps · 1 cached · 2m 51s",
-      /** Bottom row — context-specific feature subtabs. */
-      subtabs: ["Pipelines", "Artifacts", "Stacks", "Models", "Integrations"],
     },
     {
       id: "kitaru" as const,
       label: "Agents",
       sublabel: "Kitaru",
-      surfaceTitle: "Flows",
-      surfaceSubtitle:
-        "Durable execution for long-running Python agents — resumes anywhere",
-      /**
-       * Flow names + code sample sourced from canonical Kitaru content:
-       *   - report_agent     → src/components/kitaru/CodeShowcase.astro (blessed)
-       *   - writing_agent    → src/content/blog/kitaru-launch.md
-       *   - coding_agent     → src/components/kitaru/Architecture.astro
-       *   - research_flow    → src/components/kitaru/OneImport.astro
-       *   - claims_triage    → durability-realistic
-       * Badges = deployment targets from src/components/kitaru/Deploy.astro.
-       */
-      rows: [
+      subtabs: [
         {
-          name: "report_agent",
-          meta: "v22 · 6 checkpoints · 38m 12s · ✓ resumed",
-          badge: null,
-          selected: true,
+          id: "flows" as const,
+          label: "Flows",
+          layout: "list-code" as const,
+          surfaceTitle: "Flows",
+          surfaceSubtitle:
+            "Durable execution for long-running Python agents — resumes anywhere",
+          listFooter: "Explore 40+ flows",
+          rows: [
+            {
+              name: "report_agent",
+              meta: "v22 · 6 checkpoints · 38m 12s · ✓ resumed",
+              badge: null,
+              selected: true,
+            },
+            { name: "writing_agent", meta: "v07 · 4 checkpoints · 11m 19s", badge: "Kubernetes" },
+            { name: "coding_agent", meta: "v45 · 9 checkpoints · 47m 02s", badge: "Vertex AI" },
+            { name: "research_flow", meta: "v09 · 3 checkpoints · 6m 51s", badge: "SageMaker" },
+            { name: "claims_triage", meta: "v03 · 5 checkpoints · 2m 18s", badge: "Azure ML" },
+          ],
+          codeTitle: "Flow definition",
+          codeFile: "report_agent.py",
+          code: [
+            "import kitaru",
+            "from kitaru import flow, checkpoint",
+            "",
+            "@checkpoint",
+            "def research(topic: str) -> dict:",
+            "    return run_agent_search(topic)",
+            "",
+            "@checkpoint(runtime=\"isolated\")",
+            "def write_draft(context: str) -> str:",
+            "    return kitaru.llm(\"Draft a report on: \" + context, model=\"gpt-4o\")",
+            "",
+            "@flow",
+            "def report_agent(topic: str) -> str:",
+            "    data = research(topic)",
+            "    draft = write_draft(str(data))",
+            "    if kitaru.wait(schema=bool, question=\"Publish?\"):",
+            "        publish(draft)",
+            "    return draft",
+          ].join("\n"),
+          footerMeta: "Runtime: kubernetes · 6 checkpoints · 38m 12s · resumed twice",
         },
         {
-          name: "writing_agent",
-          meta: "v07 · 4 checkpoints · 11m 19s",
-          badge: "Kubernetes",
+          id: "checkpoints" as const,
+          label: "Checkpoints",
+          layout: "timeline" as const,
+          surfaceTitle: "Checkpoints",
+          surfaceSubtitle: "Every checkpoint persists. Crash, resume, replay — no rework",
+          listFooter: "View execution history",
+          /** Steps = checkpoints inside one execution of report_agent (ex_8a2f). */
+          steps: [
+            { status: "done" as const, name: "research", detail: "sources: 12 articles · 4.2 KB", meta: "✓ 4h ago" },
+            { status: "done" as const, name: "summarize", detail: "summary: 487 tokens · 1.2 KB", meta: "✓ 4h ago" },
+            { status: "done" as const, name: "write_draft", detail: "draft: 1,847 tokens · 12 KB", meta: "✓ 4h ago" },
+            { status: "active" as const, name: "approve_publish", detail: "kitaru.wait(schema=bool, question=\"Publish?\")", meta: "⏸ waiting" },
+            { status: "pending" as const, name: "publish", detail: "post to Slack #digest", meta: "pending" },
+          ],
+          footerMeta: "ex_8a2f · 6 checkpoints · 38m 12s · resumed twice",
         },
         {
-          name: "coding_agent",
-          meta: "v45 · 9 checkpoints · 47m 02s",
-          badge: "Vertex AI",
+          id: "replay" as const,
+          label: "Replay",
+          layout: "timeline" as const,
+          surfaceTitle: "Replay",
+          surfaceSubtitle: "Resume any past run from the checkpoint it stopped at",
+          listFooter: "View resumable runs",
+          /** Steps = a failed flow being resumed checkpoint-by-checkpoint. */
+          steps: [
+            { status: "done" as const, name: "fetch_articles", detail: "loaded from cache · 47 articles", meta: "✓ replayed" },
+            { status: "done" as const, name: "summarize", detail: "12 summaries · 4.8k tokens", meta: "✓ resumed" },
+            { status: "done" as const, name: "write_draft", detail: "regenerated · 1,920 tokens", meta: "✓ resumed" },
+            { status: "active" as const, name: "post_to_slack", detail: "rate-limited · backoff 30s", meta: "↻ retry 3 / 5" },
+            { status: "pending" as const, name: "archive", detail: "persist final state to s3://kitaru-archive", meta: "pending" },
+          ],
+          footerMeta: "6 runs resumed this week · avg recovery 42s",
         },
         {
-          name: "research_flow",
-          meta: "v09 · 3 checkpoints · 6m 51s",
-          badge: "SageMaker",
+          id: "deployments" as const,
+          label: "Deployments",
+          layout: "cards-grid" as const,
+          surfaceTitle: "Deployments",
+          surfaceSubtitle: "Deploy your flows to any runtime — the same code, anywhere",
+          listFooter: "Manage deployment targets",
+          cards: [
+            { glyph: "K", glyphTone: "brand" as const, tag: "ACTIVE", name: "kubernetes-prod", meta: "12 flows · 99.9% uptime", selected: true },
+            { glyph: "V", glyphTone: "neutral" as const, tag: "ACTIVE", name: "vertex-ai", meta: "8 flows · autoscaling" },
+            { glyph: "S", glyphTone: "neutral" as const, tag: "ACTIVE", name: "sagemaker", meta: "5 flows · p3.8xlarge" },
+            { glyph: "A", glyphTone: "neutral" as const, tag: "ACTIVE", name: "azure-ml", meta: "3 flows · container-instances" },
+            { glyph: "D", glyphTone: "muted" as const, tag: "LOCAL", name: "docker-local", meta: "2 flows · dev only" },
+          ],
+          footerMeta: "4 production targets · 28 flows deployed · last deploy 5m ago",
         },
         {
-          name: "claims_triage",
-          meta: "v03 · 5 checkpoints · 2m 18s",
-          badge: "Azure ML",
+          id: "integrations" as const,
+          label: "Integrations",
+          layout: "cards-grid" as const,
+          surfaceTitle: "Integrations",
+          surfaceSubtitle: "Wire in LLMs, observability, alerts, code, and tickets — your stack",
+          listFooter: "Configure integrations",
+          cards: [
+            { glyph: "A", glyphTone: "brand" as const, tag: "LLM", name: "anthropic", meta: "Claude Opus 4.7 · primary", selected: true },
+            { glyph: "O", glyphTone: "neutral" as const, tag: "LLM", name: "openai", meta: "GPT-4o · fallback" },
+            { glyph: "S", glyphTone: "neutral" as const, tag: "ALERT", name: "slack", meta: "#agent-alerts · approvals" },
+            { glyph: "G", glyphTone: "neutral" as const, tag: "CODE", name: "github", meta: "zenml-io · 4 repos" },
+            { glyph: "L", glyphTone: "neutral" as const, tag: "TICKETS", name: "linear", meta: "auto-triage bot · ENG team" },
+          ],
+          footerMeta: "5 services configured · anthropic active · last rotation 1d ago",
         },
       ],
-      listFooter: "Explore 40+ flows",
-      codeTitle: "Flow definition",
-      codeFile: "report_agent.py",
-      code: [
-        "import kitaru",
-        "from kitaru import flow, checkpoint",
-        "",
-        "@checkpoint",
-        "def research(topic: str) -> dict:",
-        "    return run_agent_search(topic)",
-        "",
-        "@checkpoint(runtime=\"isolated\")",
-        "def write_draft(context: str) -> str:",
-        "    return kitaru.llm(\"Draft a report on: \" + context, model=\"gpt-4o\")",
-        "",
-        "@flow",
-        "def report_agent(topic: str) -> str:",
-        "    data = research(topic)",
-        "    draft = write_draft(str(data))",
-        "    if kitaru.wait(schema=bool, question=\"Publish?\"):",
-        "        publish(draft)",
-        "    return draft",
-      ].join("\n"),
-      footerMeta: "Runtime: kubernetes · 6 checkpoints · 38m 12s · resumed twice",
-      subtabs: ["Flows", "Checkpoints", "Replay", "Deployments", "Integrations"],
     },
   ],
 } as const;

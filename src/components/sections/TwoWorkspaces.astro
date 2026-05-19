@@ -1,22 +1,29 @@
 ---
-import { Code } from "astro:components";
-import zenmlLight from "../../styles/zenml-light.json";
 import { HOMEPAGE_UNIFIED_WIDGET } from "../../lib/homepage-unified";
+import ListCodeLayout from "./two-workspaces/ListCodeLayout.astro";
+import CardsGridLayout from "./two-workspaces/CardsGridLayout.astro";
+import TimelineLayout from "./two-workspaces/TimelineLayout.astro";
 
 /**
  * TwoWorkspaces — Variant C workspace widget (ElevenLabs-style).
  *
- * Pill switcher + active surface label + two-column body (pipelines/flows
- * list left, code definition right) + feature subtabs row. Both tab
- * variants are server-rendered; a tiny vanilla-JS handler flips a
- * `data-active-tab` attribute on the root to swap which is visible.
+ * Two axes of switching:
+ *   1. Outer tab pill: ML (ZenML) ↔ Agents (Kitaru)
+ *   2. Inner subtabs strip per tab: Pipelines/Artifacts/Stacks/Models/Integrations
+ *      (ML) and Flows/Checkpoints/Replay/Deployments/Integrations (Agents)
  *
- * Per-brand restraint: violet (ZenML) and orange (Kitaru) appear only
- * inside their own tab. The shared surface stays neutral.
+ * Three layout components handle the 10 subtab views:
+ *   - ListCodeLayout   — Pipelines, Flows (recent runs + Python definition)
+ *   - CardsGridLayout  — Artifacts, Models, Integrations × 2, Deployments
+ *   - TimelineLayout   — Stacks, Checkpoints, Replay
  *
- * Code blocks render through Astro's `<Code>` component with the site's
- * `zenml-light` Shiki theme — same theme as blog/docs/get-started so
- * tokens read consistently across the surface.
+ * All 10 body panels + 10 surface labels are server-rendered and
+ * grid-stacked. A single `data-active-view="tab.subtab"` attribute on the
+ * root drives visibility via attribute selectors — the widget always
+ * reserves the height of the tallest panel so switching never shifts the
+ * page layout.
+ *
+ * Per-brand restraint: zenml-500 / orange-400 stay inside their own tab.
  *
  * Reads from `HOMEPAGE_UNIFIED_WIDGET` in src/lib/homepage-unified.ts.
  */
@@ -24,29 +31,29 @@ import { HOMEPAGE_UNIFIED_WIDGET } from "../../lib/homepage-unified";
 const { tabs } = HOMEPAGE_UNIFIED_WIDGET;
 
 type Tab = (typeof tabs)[number];
-type Row = Tab["rows"][number];
-
-const isSelected = (row: Row) => "selected" in row && row.selected === true;
 
 const dotClass = (tab: Tab) =>
   tab.id === "zenml" ? "bg-zenml-500" : "bg-orange-400";
 
-const selectedRowClass = (tab: Tab) =>
-  tab.id === "zenml"
-    ? "border-zenml-300 bg-zenml-50"
-    : "border-orange-300 bg-orange-50";
+const allViews = tabs.flatMap((tab) =>
+  tab.subtabs.map((sub) => ({ tab, sub, view: `${tab.id}.${sub.id}` as const })),
+);
+
+/** Default view = first subtab of the first tab (ML.Pipelines). */
+const defaultView = allViews[0];
 ---
 
 <section class="bg-white">
   <div class="mx-auto max-w-[1440px] px-6 pt-6 pb-20 sm:px-10 lg:pb-28">
     <div
       id="two-workspaces"
-      data-active-tab="zenml"
+      data-active-tab={defaultView.tab.id}
+      data-active-view={defaultView.view}
       class="mx-auto flex max-w-[1280px] flex-col gap-4 rounded-2xl border border-gray-200 bg-gray-50 p-5 shadow-[0_1px_0_rgba(15,15,18,0.04),_0_24px_48px_-24px_rgba(15,15,18,0.12)]"
     >
       {/* Top bar — tabs + active surface label */}
       <div class="flex flex-col items-start justify-between gap-3 px-1 pt-1 sm:flex-row sm:items-start">
-        {/* Pill switcher */}
+        {/* Pill switcher (outer tab) */}
         <div
           role="tablist"
           aria-label="Workspace"
@@ -58,9 +65,9 @@ const selectedRowClass = (tab: Tab) =>
               role="tab"
               id={`workspace-tab-${tab.id}`}
               data-tab-trigger={tab.id}
-              aria-controls={`workspace-panel-${tab.id}`}
-              aria-selected={tab.id === "zenml" ? "true" : "false"}
-              tabindex={tab.id === "zenml" ? 0 : -1}
+              aria-controls={`workspace-panel-${tab.id}-${tab.subtabs[0].id}`}
+              aria-selected={tab.id === defaultView.tab.id ? "true" : "false"}
+              tabindex={tab.id === defaultView.tab.id ? 0 : -1}
               class="group inline-flex cursor-pointer items-center gap-2 rounded-full px-3.5 py-1.5 text-sm font-medium text-gray-900 transition-colors aria-selected:bg-gray-900 aria-selected:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zenml-500"
             >
               <span
@@ -75,174 +82,94 @@ const selectedRowClass = (tab: Tab) =>
           ))}
         </div>
 
-        {/* Active surface label (right) — swaps per tab, grid-stacked so the
-            row height stays constant when the active tab changes */}
+        {/* Active surface label (right) — stacked, swaps per active view */}
         <div class="workspace-stack items-start sm:items-end sm:pt-1">
-          {tabs.map((tab) => (
+          {allViews.map(({ sub, view }) => (
             <div
-              data-surface-label={tab.id}
+              data-view={view}
               class="flex flex-col items-start sm:items-end"
             >
               <p class="text-xl font-medium leading-6 tracking-[-0.015em] text-gray-900">
-                {tab.surfaceTitle}
+                {sub.surfaceTitle}
               </p>
-              <p class="text-[13px] leading-4 text-gray-500">
-                {tab.surfaceSubtitle}
+              <p class="max-w-[420px] text-[13px] leading-4 text-gray-500 sm:text-right">
+                {sub.surfaceSubtitle}
               </p>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Body — two panes per tab; both panels are rendered (grid-stacked)
-          so the widget keeps the taller variant's height and the layout
-          never shifts when the active tab changes */}
+      {/* Body — all 10 subtab panels grid-stacked so height stays constant */}
       <div class="workspace-stack px-1">
-        {tabs.map((tab) => (
+        {allViews.map(({ tab, sub, view }) => (
           <div
-            id={`workspace-panel-${tab.id}`}
+            id={`workspace-panel-${tab.id}-${sub.id}`}
             role="tabpanel"
-            data-tab-content={tab.id}
-            aria-labelledby={`workspace-tab-${tab.id}`}
-            class="grid grid-cols-1 gap-4 lg:grid-cols-2"
+            data-view={view}
+            aria-labelledby={`workspace-subtab-${tab.id}-${sub.id}`}
           >
-            {/* Left pane — list */}
-            <div class="flex flex-col rounded-md border border-gray-200 bg-white p-1.5">
-              {tab.rows.map((row) =>
-                isSelected(row) ? (
-                  <div
-                    class={`flex items-center gap-3 rounded-md border p-3 ${selectedRowClass(tab)}`}
-                  >
-                    <span
-                      class={`inline-block size-5 shrink-0 rounded-full ${dotClass(tab)}`}
-                      aria-hidden="true"
-                    ></span>
-                    <div class="flex min-w-0 flex-1 flex-col">
-                      <span class="truncate text-[15px] font-medium leading-[18px] text-gray-900">
-                        {row.name}
-                      </span>
-                      <span class="truncate font-mono text-[11px] leading-[14px] text-gray-600">
-                        {row.meta}
-                      </span>
-                    </div>
-                    <button
-                      type="button"
-                      aria-label={`Run ${row.name}`}
-                      class="inline-flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-full bg-gray-900 text-white transition-colors hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zenml-500 sm:size-8"
-                    >
-                      <svg
-                        viewBox="0 0 12 12"
-                        class="size-2.5"
-                        fill="currentColor"
-                        aria-hidden="true"
-                      >
-                        <path d="M2 1.5v9l8-4.5z" />
-                      </svg>
-                    </button>
-                  </div>
-                ) : (
-                  <div class="flex items-center gap-3 px-3 py-2.5">
-                    <span
-                      class="inline-block size-5 shrink-0 rounded-full bg-gray-400"
-                      aria-hidden="true"
-                    ></span>
-                    <div class="flex min-w-0 flex-1 flex-col">
-                      <span class="truncate text-[15px] font-medium leading-[18px] text-gray-900">
-                        {row.name}
-                      </span>
-                      <span class="truncate font-mono text-[11px] leading-[14px] text-gray-600">
-                        {row.meta}
-                      </span>
-                    </div>
-                    {row.badge && (
-                      <span class="inline-block shrink-0 rounded-full border border-gray-200 bg-gray-50 px-2.5 py-1 font-mono text-[11px] leading-[14px] tracking-[0.04em] text-gray-500">
-                        {row.badge}
-                      </span>
-                    )}
-                  </div>
-                )
-              )}
-
-              {/* List footer */}
-              <div class="mt-1.5 flex items-center justify-between border-t border-gray-200 px-3 pt-2.5 pb-1">
-                <span class="text-[13px] font-medium text-gray-900">
-                  {tab.listFooter}
-                </span>
-                <div class="flex items-center gap-1">
-                  <button
-                    type="button"
-                    aria-label="Previous page"
-                    class="inline-flex size-9 cursor-pointer items-center justify-center rounded-full text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zenml-500 sm:size-8"
-                  >
-                    <svg viewBox="0 0 16 16" class="size-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                      <path d="M10 12L6 8l4-4" />
-                    </svg>
-                  </button>
-                  <button
-                    type="button"
-                    aria-label="Next page"
-                    class="inline-flex size-9 cursor-pointer items-center justify-center rounded-full text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zenml-500 sm:size-8"
-                  >
-                    <svg viewBox="0 0 16 16" class="size-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                      <path d="M6 4l4 4-4 4" />
-                    </svg>
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {/* Right pane — code definition */}
-            <div class="flex flex-col gap-3 rounded-md border border-gray-200 bg-white p-4">
-              <div class="flex items-center justify-between">
-                <span class="text-[13px] text-gray-500">{tab.codeTitle}</span>
-                <span class="inline-block rounded-md border border-gray-200 bg-gray-50 px-2.5 py-1 font-mono text-[11px] leading-[14px] text-gray-500">
-                  {tab.codeFile}
-                </span>
-              </div>
-              <div class="workspace-code min-w-0 flex-1 overflow-x-auto">
-                <Code code={tab.code} lang="python" theme={zenmlLight as any} />
-              </div>
-              <div class="flex items-center gap-3 border-t border-gray-200 pt-2.5">
-                <span class="font-mono text-[11px] uppercase leading-[14px] tracking-[0.04em] text-gray-500">
-                  <span
-                    class={`mr-2 inline-block size-1.5 rounded-full align-middle ${tab.id === "zenml" ? "bg-success-500" : "bg-orange-400"}`}
-                    aria-hidden="true"
-                  ></span>
-                  {tab.footerMeta}
-                </span>
-              </div>
-            </div>
+            {sub.layout === "list-code" && (
+              <ListCodeLayout
+                tabId={tab.id}
+                rows={sub.rows}
+                listFooter={sub.listFooter}
+                codeTitle={sub.codeTitle}
+                codeFile={sub.codeFile}
+                code={sub.code}
+                footerMeta={sub.footerMeta}
+              />
+            )}
+            {sub.layout === "cards-grid" && (
+              <CardsGridLayout
+                tabId={tab.id}
+                cards={sub.cards}
+                listFooter={sub.listFooter}
+                footerMeta={sub.footerMeta}
+              />
+            )}
+            {sub.layout === "timeline" && (
+              <TimelineLayout
+                tabId={tab.id}
+                steps={sub.steps}
+                listFooter={sub.listFooter}
+                footerMeta={sub.footerMeta}
+              />
+            )}
           </div>
         ))}
       </div>
 
-      {/* Feature subtabs — first is the active surface. Grid-stacked so
-          the row height stays constant on tab switch. */}
+      {/* Subtabs strip — one per tab, grid-stacked. Each strip is its own
+          tablist; arrow-key nav rotates focus within the active strip. */}
       <div class="workspace-stack px-1 pt-1.5 pb-0.5">
         {tabs.map((tab) => (
           <div
+            role="tablist"
+            aria-label={`${tab.label} views`}
             data-subtabs={tab.id}
-            class="flex flex-wrap items-center justify-center gap-5"
+            class="flex flex-wrap items-center justify-center gap-2 sm:gap-3"
           >
-            {tab.subtabs.map((label, idx) =>
-              idx === 0 ? (
-                <span class="inline-flex items-center gap-2 rounded-full bg-gray-900 px-4 py-1.5 text-sm font-medium text-white">
-                  <svg viewBox="0 0 14 14" class="size-3.5" fill="none" stroke="currentColor" stroke-width="1.25" aria-hidden="true">
-                    <circle cx="3" cy="3" r="1.5" fill="currentColor" />
-                    <circle cx="11" cy="3" r="1.5" fill="currentColor" />
-                    <circle cx="3" cy="11" r="1.5" fill="currentColor" />
-                    <circle cx="11" cy="11" r="1.5" fill="currentColor" />
-                    <line x1="3" y1="3" x2="11" y2="3" />
-                    <line x1="3" y1="3" x2="3" y2="11" />
-                  </svg>
-                  {label}
-                </span>
-              ) : (
-                <span class="px-1 py-2 text-sm font-medium text-gray-500">
-                  {label}
-                </span>
-              )
-            )}
+            {tab.subtabs.map((sub) => (
+              <button
+                type="button"
+                role="tab"
+                id={`workspace-subtab-${tab.id}-${sub.id}`}
+                data-subtab-trigger={`${tab.id}.${sub.id}`}
+                aria-controls={`workspace-panel-${tab.id}-${sub.id}`}
+                aria-selected={
+                  `${tab.id}.${sub.id}` === defaultView.view ? "true" : "false"
+                }
+                tabindex={
+                  tab.id === defaultView.tab.id && sub.id === defaultView.sub.id
+                    ? 0
+                    : -1
+                }
+                class="inline-flex cursor-pointer items-center gap-2 rounded-full px-3.5 py-1.5 text-sm font-medium text-gray-500 transition-colors hover:text-gray-900 aria-selected:bg-gray-900 aria-selected:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zenml-500"
+              >
+                {sub.label}
+              </button>
+            ))}
           </div>
         ))}
       </div>
@@ -251,10 +178,9 @@ const selectedRowClass = (tab: Tab) =>
 </section>
 
 <style>
-  /* Grid-stack the three swap surfaces (tab body, surface label, subtabs)
-     so the widget always reserves the height of the taller variant —
-     switching tabs doesn't shift the page layout. The inactive variant
-     stays in the DOM but hides via visibility so it still claims space. */
+  /* Grid-stack: render all variants in the same grid cell so the parent
+     always reserves the height of the tallest child. Inactive variants
+     stay in the DOM but hide via visibility so they still claim space. */
   .workspace-stack {
     display: grid;
     grid-template-areas: "stack";
@@ -263,76 +189,130 @@ const selectedRowClass = (tab: Tab) =>
     grid-area: stack;
     min-width: 0;
   }
-  .workspace-stack > [data-tab-content],
-  .workspace-stack > [data-surface-label],
+  .workspace-stack > [data-view],
   .workspace-stack > [data-subtabs] {
     visibility: hidden;
     pointer-events: none;
   }
-  #two-workspaces[data-active-tab="zenml"] .workspace-stack > [data-tab-content="zenml"],
-  #two-workspaces[data-active-tab="zenml"] .workspace-stack > [data-surface-label="zenml"],
-  #two-workspaces[data-active-tab="zenml"] .workspace-stack > [data-subtabs="zenml"],
-  #two-workspaces[data-active-tab="kitaru"] .workspace-stack > [data-tab-content="kitaru"],
-  #two-workspaces[data-active-tab="kitaru"] .workspace-stack > [data-surface-label="kitaru"],
-  #two-workspaces[data-active-tab="kitaru"] .workspace-stack > [data-subtabs="kitaru"] {
+
+  /* Show whichever view matches the root's data-active-view. Ten rules
+     (one per view) — verbose but pure CSS, works without JS. */
+  #two-workspaces[data-active-view="zenml.pipelines"] .workspace-stack > [data-view="zenml.pipelines"],
+  #two-workspaces[data-active-view="zenml.artifacts"] .workspace-stack > [data-view="zenml.artifacts"],
+  #two-workspaces[data-active-view="zenml.stacks"] .workspace-stack > [data-view="zenml.stacks"],
+  #two-workspaces[data-active-view="zenml.models"] .workspace-stack > [data-view="zenml.models"],
+  #two-workspaces[data-active-view="zenml.integrations"] .workspace-stack > [data-view="zenml.integrations"],
+  #two-workspaces[data-active-view="kitaru.flows"] .workspace-stack > [data-view="kitaru.flows"],
+  #two-workspaces[data-active-view="kitaru.checkpoints"] .workspace-stack > [data-view="kitaru.checkpoints"],
+  #two-workspaces[data-active-view="kitaru.replay"] .workspace-stack > [data-view="kitaru.replay"],
+  #two-workspaces[data-active-view="kitaru.deployments"] .workspace-stack > [data-view="kitaru.deployments"],
+  #two-workspaces[data-active-view="kitaru.integrations"] .workspace-stack > [data-view="kitaru.integrations"] {
     visibility: visible;
     pointer-events: auto;
   }
 
-  /* Strip Shiki defaults so its <pre> lays flush inside our panel */
-  .workspace-code :global(pre) {
-    margin: 0;
-    padding: 0;
-    background: transparent !important;
-    font-family: var(--font-mono);
-    font-size: 13px;
-    line-height: 1.55;
-  }
-  .workspace-code :global(code) {
-    font-family: inherit;
+  /* The subtabs strip swaps on the tab dimension only (5 buttons per tab). */
+  #two-workspaces[data-active-tab="zenml"] .workspace-stack > [data-subtabs="zenml"],
+  #two-workspaces[data-active-tab="kitaru"] .workspace-stack > [data-subtabs="kitaru"] {
+    visibility: visible;
+    pointer-events: auto;
   }
 </style>
 
 <script>
   const root = document.getElementById("two-workspaces");
   if (root) {
-    const triggers = Array.from(
+    const tabTriggers = Array.from(
       root.querySelectorAll<HTMLButtonElement>("[data-tab-trigger]"),
     );
+    const subTriggers = Array.from(
+      root.querySelectorAll<HTMLButtonElement>("[data-subtab-trigger]"),
+    );
 
-    const setActive = (id: string, focus = false) => {
-      root.dataset.activeTab = id;
-      triggers.forEach((btn) => {
-        const isActive = btn.dataset.tabTrigger === id;
+    // Per-tab memory of the last-active subtab — lets the user resume where
+    // they were when they swing back to a tab.
+    const lastSubtab: Record<string, string> = {};
+    subTriggers.forEach((btn) => {
+      const view = btn.dataset.subtabTrigger;
+      if (!view) return;
+      const [tabId, subId] = view.split(".");
+      if (!(tabId in lastSubtab)) lastSubtab[tabId] = subId;
+    });
+
+    const applyView = (view: string, focus = false) => {
+      const [tabId] = view.split(".");
+      root.dataset.activeTab = tabId;
+      root.dataset.activeView = view;
+      lastSubtab[tabId] = view.split(".")[1];
+
+      tabTriggers.forEach((btn) => {
+        const isActive = btn.dataset.tabTrigger === tabId;
         btn.setAttribute("aria-selected", isActive ? "true" : "false");
-        // Roving tabindex: only the active tab is in the sequential tab order.
         btn.tabIndex = isActive ? 0 : -1;
-        if (isActive && focus) btn.focus();
+      });
+
+      subTriggers.forEach((btn) => {
+        const isActiveView = btn.dataset.subtabTrigger === view;
+        btn.setAttribute("aria-selected", isActiveView ? "true" : "false");
+        // Roving tabindex inside the active strip only.
+        const isInActiveStrip = btn.dataset.subtabTrigger?.startsWith(`${tabId}.`);
+        btn.tabIndex = isInActiveStrip && isActiveView ? 0 : -1;
+        if (isActiveView && focus) btn.focus();
       });
     };
 
-    // Sync initial state (SSR sets a default; this normalizes after hydration).
-    setActive(root.dataset.activeTab || "zenml");
-
-    triggers.forEach((btn, idx) => {
+    // Tab click: swap to the tab's last-active subtab (or its default).
+    tabTriggers.forEach((btn, idx) => {
       btn.addEventListener("click", () => {
-        const next = btn.dataset.tabTrigger;
-        if (next) setActive(next);
+        const tabId = btn.dataset.tabTrigger;
+        if (!tabId) return;
+        applyView(`${tabId}.${lastSubtab[tabId]}`);
       });
-
-      // ARIA tab-pattern keyboard nav: Arrow keys + Home/End rotate focus.
       btn.addEventListener("keydown", (e: KeyboardEvent) => {
         let nextIdx: number | null = null;
-        if (e.key === "ArrowRight") nextIdx = (idx + 1) % triggers.length;
+        if (e.key === "ArrowRight") nextIdx = (idx + 1) % tabTriggers.length;
         else if (e.key === "ArrowLeft")
-          nextIdx = (idx - 1 + triggers.length) % triggers.length;
+          nextIdx = (idx - 1 + tabTriggers.length) % tabTriggers.length;
         else if (e.key === "Home") nextIdx = 0;
-        else if (e.key === "End") nextIdx = triggers.length - 1;
+        else if (e.key === "End") nextIdx = tabTriggers.length - 1;
         if (nextIdx === null) return;
         e.preventDefault();
-        const target = triggers[nextIdx]?.dataset.tabTrigger;
-        if (target) setActive(target, true);
+        const targetTab = tabTriggers[nextIdx]?.dataset.tabTrigger;
+        if (targetTab) {
+          applyView(`${targetTab}.${lastSubtab[targetTab]}`);
+          tabTriggers[nextIdx].focus();
+        }
       });
     });
+
+    // Subtab click + keyboard nav (rotates inside the same strip).
+    subTriggers.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const view = btn.dataset.subtabTrigger;
+        if (view) applyView(view);
+      });
+      btn.addEventListener("keydown", (e: KeyboardEvent) => {
+        const view = btn.dataset.subtabTrigger;
+        if (!view) return;
+        const [tabId] = view.split(".");
+        const strip = subTriggers.filter((b) =>
+          b.dataset.subtabTrigger?.startsWith(`${tabId}.`),
+        );
+        const idx = strip.indexOf(btn);
+        let nextIdx: number | null = null;
+        if (e.key === "ArrowRight") nextIdx = (idx + 1) % strip.length;
+        else if (e.key === "ArrowLeft")
+          nextIdx = (idx - 1 + strip.length) % strip.length;
+        else if (e.key === "Home") nextIdx = 0;
+        else if (e.key === "End") nextIdx = strip.length - 1;
+        if (nextIdx === null) return;
+        e.preventDefault();
+        const target = strip[nextIdx]?.dataset.subtabTrigger;
+        if (target) applyView(target, true);
+      });
+    });
+
+    // Normalize after hydration in case SSR + JS drift.
+    applyView(root.dataset.activeView || `${tabTriggers[0].dataset.tabTrigger}.${lastSubtab[tabTriggers[0].dataset.tabTrigger || ""]}`);
   }
 </script>
