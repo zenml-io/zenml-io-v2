@@ -1,0 +1,294 @@
+---
+/**
+ * Replay subtab — FLAGSHIP "Replay, don't guess" (artboard 9I0-0).
+ * Left: frozen packs.
+ * Right: DiffView (baseline cream / candidate white) with step deltas,
+ * then ship strip (verdict + Promote CTA).
+ */
+
+type Pack = {
+  name: string;
+  pillLabel: string;
+  pillTone: "active" | "frozen";
+  summary: string;
+  detail: string;
+  selected?: boolean;
+};
+
+type Variant = {
+  eyebrow: string;
+  filename: string;
+  model: string;
+  runs: string;
+  cost: string;
+  duration: string;
+};
+
+type Step = {
+  name: string;
+  baseline: { dur: string; cost: string; tokens: string };
+  candidate: { dur: string; cost: string; tokens: string };
+  deltas: { dur?: string; cost?: string; tokens?: string };
+};
+
+interface Props {
+  title: string;
+  subheader: string;
+  countLabel: string;
+  packs: ReadonlyArray<Pack>;
+  rightEyebrow: string;
+  headline: string;
+  subhead: string;
+  winsPill: string;
+  baseline: Variant;
+  candidate: Variant;
+  deltaChips: ReadonlyArray<{ label: string; delta: string; tone: "success" | "neutral" }>;
+  replayedLabel: string;
+  steps: ReadonlyArray<Step>;
+  verdictEyebrow: string;
+  verdictHeadline: string;
+  verdictSummary: string;
+  promoteLabel: string;
+}
+
+const {
+  title,
+  subheader,
+  countLabel,
+  packs,
+  rightEyebrow,
+  headline,
+  subhead,
+  winsPill,
+  baseline,
+  candidate,
+  deltaChips,
+  replayedLabel,
+  steps,
+  verdictEyebrow,
+  verdictHeadline,
+  verdictSummary,
+  promoteLabel,
+} = Astro.props;
+
+const pillClass = (tone: Pack["pillTone"]) =>
+  tone === "active"
+    ? "bg-orange-400 text-white"
+    : "bg-gray-100 text-gray-600";
+---
+
+<div class="grid grid-cols-1 gap-4 lg:grid-cols-[360px_1fr]">
+  {/* Left pane — frozen packs */}
+  <aside class="flex flex-col gap-2.5 rounded-md border border-gray-200 bg-white p-4">
+    <div class="flex items-start justify-between gap-3 border-b border-gray-100 pb-2">
+      <div class="flex flex-col gap-0.5">
+        <span class="font-mono text-[11px] uppercase leading-[14px] tracking-[0.08em] text-gray-500">
+          {title}
+        </span>
+        <span class="text-[12px] leading-4 text-gray-500">{subheader}</span>
+      </div>
+      <span class="font-mono text-[10.5px] leading-[14px] text-gray-500">{countLabel}</span>
+    </div>
+
+    <div class="flex flex-col gap-1.5">
+      {packs.map((pack) => (
+        <div
+          class:list={[
+            "flex flex-col gap-1.5 rounded-md p-3",
+            pack.selected
+              ? "border border-[#fed7aa] bg-[#fff4ec]"
+              : "border border-gray-100 bg-white",
+          ]}
+        >
+          <div class="flex items-center justify-between gap-2">
+            <span
+              class:list={[
+                "truncate text-[13px] font-semibold leading-4",
+                pack.selected ? "text-[#ea580c]" : "text-gray-900",
+              ]}
+            >
+              {pack.name}
+            </span>
+            <span
+              class:list={[
+                "inline-flex shrink-0 items-center rounded-full px-2 py-0.5 font-mono text-[9px] font-semibold uppercase leading-3 tracking-wide",
+                pillClass(pack.pillTone),
+              ]}
+            >
+              {pack.pillLabel}
+            </span>
+          </div>
+          <span class="font-mono text-[10.5px] leading-[14px] text-gray-600">{pack.summary}</span>
+          <span class="font-mono text-[10px] leading-[14px] text-gray-400">{pack.detail}</span>
+        </div>
+      ))}
+    </div>
+  </aside>
+
+  {/* Right pane — DiffView + Ship strip */}
+  <section class="flex flex-col gap-4">
+    {/* Header */}
+    <div class="flex items-start justify-between gap-4">
+      <div class="flex flex-col gap-1">
+        <span class="font-mono text-[11px] uppercase leading-[14px] tracking-[0.08em] text-gray-500">
+          {rightEyebrow}
+        </span>
+        <h3 class="text-[24px] font-semibold leading-[30px] tracking-[-0.01em] text-gray-900">
+          {headline}
+        </h3>
+        <p class="text-[13px] leading-[18px] text-gray-600">{subhead}</p>
+      </div>
+      <span class="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-success-50 px-3 py-1.5 font-mono text-[10.5px] font-semibold uppercase leading-3 tracking-wide text-success-700">
+        <span class="inline-block size-1.5 rounded-full bg-success-500" aria-hidden="true"></span>
+        {winsPill}
+      </span>
+    </div>
+
+    {/* DiffView */}
+    <div class="overflow-hidden rounded-md border border-gray-200 bg-white">
+      {/* Compare header — 2 cols */}
+      <div class="grid grid-cols-2 border-b border-gray-200">
+        <div class="flex flex-col gap-1 bg-[#faf5e6] px-5 py-3.5">
+          <span class="font-mono text-[10px] font-semibold uppercase leading-3 tracking-wide text-[#92400e]">
+            {baseline.eyebrow}
+          </span>
+          <span class="font-mono text-[14.5px] font-semibold leading-[18px] text-gray-900">
+            {baseline.filename}
+          </span>
+          <span class="font-mono text-[10.5px] font-medium leading-[14px] text-gray-500">
+            {baseline.model} · {baseline.runs} · {baseline.cost} · {baseline.duration} avg
+          </span>
+        </div>
+        <div class="flex flex-col gap-1 border-l border-gray-200 bg-white px-5 py-3.5">
+          <span class="font-mono text-[10px] font-semibold uppercase leading-3 tracking-wide text-[#ea580c]">
+            {candidate.eyebrow}
+          </span>
+          <span class="font-mono text-[14.5px] font-semibold leading-[18px] text-gray-900">
+            {candidate.filename}
+          </span>
+          <span class="font-mono text-[10.5px] font-medium leading-[14px] text-gray-500">
+            {candidate.model} · {candidate.runs} · {candidate.cost} · {candidate.duration} avg
+          </span>
+        </div>
+      </div>
+
+      {/* Delta strip */}
+      <div class="flex items-center justify-between gap-3 border-b border-gray-200 bg-[#fafaf7] px-5 py-2.5">
+        <div class="flex flex-wrap items-center gap-1.5">
+          {deltaChips.map((chip) => (
+            <span class="inline-flex items-center gap-1.5 rounded-full bg-white border border-gray-200 px-2.5 py-1 font-mono text-[10.5px] font-medium leading-3 text-gray-700">
+              {chip.label}
+              <span
+                class:list={[
+                  "inline-flex items-center rounded-full px-1.5 py-0.5 font-semibold",
+                  chip.tone === "success"
+                    ? "bg-success-50 text-success-700"
+                    : "bg-gray-100 text-gray-600",
+                ]}
+              >
+                {chip.delta}
+              </span>
+            </span>
+          ))}
+        </div>
+        <span class="shrink-0 font-mono text-[10.5px] leading-3 text-gray-500">{replayedLabel}</span>
+      </div>
+
+      {/* Step rows */}
+      <div>
+        {steps.map((step, i) => (
+          <div
+            class:list={[
+              "grid grid-cols-[180px_1fr_1fr]",
+              i !== steps.length - 1 && "border-b border-gray-100",
+            ]}
+          >
+            {/* Name col */}
+            <div class="flex items-center px-5 py-3">
+              <span class="truncate font-mono text-[12px] font-semibold leading-4 text-gray-900">
+                {step.name}
+              </span>
+            </div>
+
+            {/* Baseline cell */}
+            <div class="flex flex-col gap-1 bg-[#faf5e6] px-4 py-3">
+              <div class="flex items-center justify-between">
+                <span class="font-mono text-[10px] leading-3 text-gray-500">duration</span>
+                <span class="font-mono text-[11px] font-medium leading-3 text-gray-900">{step.baseline.dur}</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="font-mono text-[10px] leading-3 text-gray-500">cost</span>
+                <span class="font-mono text-[11px] font-medium leading-3 text-gray-900">{step.baseline.cost}</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="font-mono text-[10px] leading-3 text-gray-500">tokens</span>
+                <span class="font-mono text-[11px] font-medium leading-3 text-gray-900">{step.baseline.tokens}</span>
+              </div>
+            </div>
+
+            {/* Candidate cell */}
+            <div class="flex flex-col gap-1 border-l border-gray-100 bg-white px-4 py-3">
+              <div class="flex items-center justify-between gap-2">
+                <span class="font-mono text-[10px] leading-3 text-gray-500">duration</span>
+                <div class="flex items-center gap-1.5">
+                  <span class="font-mono text-[11px] font-semibold leading-3 text-gray-900">{step.candidate.dur}</span>
+                  {step.deltas.dur && (
+                    <span class="inline-flex items-center rounded-full bg-success-50 px-1.5 py-0.5 font-mono text-[9px] font-semibold leading-3 text-success-700">
+                      {step.deltas.dur}
+                    </span>
+                  )}
+                </div>
+              </div>
+              <div class="flex items-center justify-between gap-2">
+                <span class="font-mono text-[10px] leading-3 text-gray-500">cost</span>
+                <div class="flex items-center gap-1.5">
+                  <span class="font-mono text-[11px] font-semibold leading-3 text-gray-900">{step.candidate.cost}</span>
+                  {step.deltas.cost && (
+                    <span class="inline-flex items-center rounded-full bg-success-50 px-1.5 py-0.5 font-mono text-[9px] font-semibold leading-3 text-success-700">
+                      {step.deltas.cost}
+                    </span>
+                  )}
+                </div>
+              </div>
+              <div class="flex items-center justify-between gap-2">
+                <span class="font-mono text-[10px] leading-3 text-gray-500">tokens</span>
+                <div class="flex items-center gap-1.5">
+                  <span class="font-mono text-[11px] font-semibold leading-3 text-gray-900">{step.candidate.tokens}</span>
+                  {step.deltas.tokens && (
+                    <span class="inline-flex items-center rounded-full bg-success-50 px-1.5 py-0.5 font-mono text-[9px] font-semibold leading-3 text-success-700">
+                      {step.deltas.tokens}
+                    </span>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    {/* Ship strip */}
+    <div class="flex flex-col gap-3 lg:flex-row">
+      <div class="flex flex-1 flex-col gap-1.5 rounded-md bg-[#0F0F12] px-4 py-3.5">
+        <span class="font-mono text-[10px] font-semibold uppercase leading-3 tracking-wide text-orange-400">
+          {verdictEyebrow}
+        </span>
+        <span class="text-[17px] font-semibold leading-[22px] text-white">
+          {verdictHeadline}
+        </span>
+        <span class="font-mono text-[10.5px] font-medium leading-[14px] text-white/60">
+          {verdictSummary}
+        </span>
+      </div>
+      <button
+        type="button"
+        class="inline-flex w-full shrink-0 cursor-pointer items-center justify-center rounded-md bg-orange-400 px-6 py-3.5 text-[13px] font-semibold text-white shadow-[0_1px_2px_rgba(15,15,18,0.18)] transition-colors hover:bg-[#ea580c] lg:w-[220px]"
+      >
+        {promoteLabel}
+        <svg viewBox="0 0 24 24" class="ml-2 size-3.5" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M5 12h14M13 5l7 7-7 7" />
+        </svg>
+      </button>
+    </div>
+  </section>
+</div>

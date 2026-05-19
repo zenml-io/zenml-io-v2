@@ -1,13 +1,15 @@
 ---
 import { HOMEPAGE_UNIFIED_WIDGET } from "../../lib/homepage-unified";
-import ListCodeLayout from "./two-workspaces/ListCodeLayout.astro";
-import CardsGridLayout from "./two-workspaces/CardsGridLayout.astro";
-import TimelineLayout from "./two-workspaces/TimelineLayout.astro";
 import ArtifactDetailLayout from "./two-workspaces/ArtifactDetailLayout.astro";
 import StacksTableLayout from "./two-workspaces/StacksTableLayout.astro";
 import PipelinesLayout from "./two-workspaces/PipelinesLayout.astro";
 import ModelsLayout from "./two-workspaces/ModelsLayout.astro";
 import IntegrationsMLLayout from "./two-workspaces/IntegrationsMLLayout.astro";
+import FlowsLayout from "./two-workspaces/FlowsLayout.astro";
+import CheckpointsLayout from "./two-workspaces/CheckpointsLayout.astro";
+import ReplayLayout from "./two-workspaces/ReplayLayout.astro";
+import DeploymentsLayout from "./two-workspaces/DeploymentsLayout.astro";
+import IntegrationsAgentsLayout from "./two-workspaces/IntegrationsAgentsLayout.astro";
 
 /**
  * TwoWorkspaces — Variant C workspace widget (ElevenLabs-style).
@@ -17,11 +19,12 @@ import IntegrationsMLLayout from "./two-workspaces/IntegrationsMLLayout.astro";
  *   2. Inner subtabs strip per tab: Pipelines/Artifacts/Stacks/Models/Integrations
  *      (ML) and Flows/Checkpoints/Replay/Deployments/Integrations (Agents)
  *
- * ZenML subtabs render bespoke product surfaces (PipelinesLayout,
- * ArtifactDetailLayout, StacksTableLayout, ModelsLayout, IntegrationsMLLayout).
- * Kitaru subtabs still use the three original generic layouts
- * (ListCodeLayout, CardsGridLayout, TimelineLayout) until they're
- * migrated in a follow-up commit.
+ * Each of the 10 subtab views has its own bespoke layout component
+ * (PipelinesLayout, ArtifactDetailLayout, StacksTableLayout, ModelsLayout,
+ * IntegrationsMLLayout / FlowsLayout, CheckpointsLayout, ReplayLayout,
+ * DeploymentsLayout, IntegrationsAgentsLayout). All ten render real
+ * ZenML / Kitaru product surfaces — the homepage hero stops being a
+ * marketing illustration and starts looking like the actual product.
  *
  * All 10 body panels + 10 surface labels are server-rendered and
  * grid-stacked. A single `data-active-view="tab.subtab"` attribute on the
@@ -136,33 +139,6 @@ const defaultView = allViews[0];
             data-view={view}
             aria-labelledby={`workspace-subtab-${tab.id}-${sub.id}`}
           >
-            {sub.layout === "list-code" && (
-              <ListCodeLayout
-                tabId={tab.id}
-                rows={sub.rows}
-                listFooter={sub.listFooter}
-                codeTitle={sub.codeTitle}
-                codeFile={sub.codeFile}
-                code={sub.code}
-                footerMeta={sub.footerMeta}
-              />
-            )}
-            {sub.layout === "cards-grid" && (
-              <CardsGridLayout
-                tabId={tab.id}
-                cards={sub.cards}
-                listFooter={sub.listFooter}
-                footerMeta={sub.footerMeta}
-              />
-            )}
-            {sub.layout === "timeline" && (
-              <TimelineLayout
-                tabId={tab.id}
-                steps={sub.steps}
-                listFooter={sub.listFooter}
-                footerMeta={sub.footerMeta}
-              />
-            )}
             {sub.layout === "pipelines" && (
               <PipelinesLayout
                 title={sub.title}
@@ -205,6 +181,95 @@ const defaultView = allViews[0];
                 rightEyebrow={sub.rightEyebrow}
                 rightSubhead={sub.rightSubhead}
                 satellites={sub.satellites}
+                footerMeta={sub.footerMeta}
+              />
+            )}
+            {sub.layout === "flows" && (
+              <FlowsLayout
+                title={sub.title}
+                subheader={sub.subheader}
+                countLabel={sub.countLabel}
+                rows={sub.rows}
+                fileName={sub.fileName}
+                rightEyebrow={sub.rightEyebrow}
+                rightSubhead={sub.rightSubhead}
+                code={sub.code}
+                flowNodes={sub.flowNodes}
+                footerMeta={sub.footerMeta}
+              />
+            )}
+            {sub.layout === "checkpoints" && (
+              <CheckpointsLayout
+                title={sub.title}
+                subheader={sub.subheader}
+                countLabel={sub.countLabel}
+                rows={sub.rows}
+                rightEyebrow={sub.rightEyebrow}
+                rightSubhead={sub.rightSubhead}
+                recoveredPill={sub.recoveredPill}
+                marks={sub.marks}
+                failureCard={sub.failureCard}
+                resumeCard={sub.resumeCard}
+                footerMeta={sub.footerMeta}
+              />
+            )}
+            {sub.layout === "replay" && (
+              <ReplayLayout
+                title={sub.title}
+                subheader={sub.subheader}
+                countLabel={sub.countLabel}
+                packs={sub.packs}
+                rightEyebrow={sub.rightEyebrow}
+                headline={sub.headline}
+                subhead={sub.subhead}
+                winsPill={sub.winsPill}
+                baseline={sub.baseline}
+                candidate={sub.candidate}
+                deltaChips={sub.deltaChips}
+                replayedLabel={sub.replayedLabel}
+                steps={sub.steps}
+                verdictEyebrow={sub.verdictEyebrow}
+                verdictHeadline={sub.verdictHeadline}
+                verdictSummary={sub.verdictSummary}
+                promoteLabel={sub.promoteLabel}
+              />
+            )}
+            {sub.layout === "deployments" && (
+              <DeploymentsLayout
+                title={sub.title}
+                subheader={sub.subheader}
+                countLabel={sub.countLabel}
+                rows={sub.rows}
+                rightEyebrow={sub.rightEyebrow}
+                rightSubhead={sub.rightSubhead}
+                inboundLabel={sub.inboundLabel}
+                inboundMeta={sub.inboundMeta}
+                runtimePills={sub.runtimePills}
+                substrateName={sub.substrateName}
+                substrateRegion={sub.substrateRegion}
+                podsActive={sub.podsActive}
+                podsTotal={sub.podsTotal}
+                footerMeta={sub.footerMeta}
+              />
+            )}
+            {sub.layout === "integrations-agents" && (
+              <IntegrationsAgentsLayout
+                title={sub.title}
+                subheader={sub.subheader}
+                countLabel={sub.countLabel}
+                rows={sub.rows}
+                rightEyebrow={sub.rightEyebrow}
+                rightSubhead={sub.rightSubhead}
+                wrapEyebrow={sub.wrapEyebrow}
+                wrapMeta={sub.wrapMeta}
+                wrapRight={sub.wrapRight}
+                activeFrameworkName={sub.activeFrameworkName}
+                activeFrameworkInitial={sub.activeFrameworkInitial}
+                activeFrameworkColor={sub.activeFrameworkColor}
+                code={sub.code}
+                swapEyebrow={sub.swapEyebrow}
+                swapCaption={sub.swapCaption}
+                swapChips={sub.swapChips}
                 footerMeta={sub.footerMeta}
               />
             )}
