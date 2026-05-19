@@ -40,12 +40,10 @@ export const HOMEPAGE_UNIFIED_SEO = {
 /* ---------------------------------------------------------------------- */
 
 export const HOMEPAGE_UNIFIED_HERO = {
-  /** Two badges next to the hero — sub-product framing. */
-  badges: [
-    "One platform, two workspaces",
-    "Open source · Apache 2.0",
-  ],
+  /** Single eyebrow pill above the headline. */
+  eyebrow: "One platform · two workspaces · Apache 2.0",
   headlinePrefix: "The single layer for ",
+  /** Rendered in Instrument Serif italic. */
   headlineAccent: "ML and AI",
   headlineSuffix: ".",
   /**
@@ -56,8 +54,157 @@ export const HOMEPAGE_UNIFIED_HERO = {
   subtitleLead: "Built for engineers, ready for enterprise.",
   subtitle:
     "ZenML is open source infrastructure for production ML/AI. Orchestrate training pipelines and durable AI agents on the tools, clouds, and environments you already use — without rewriting your stack.",
-  primaryCta: { label: "Start free trial", href: "https://cloud.zenml.io/signup" },
-  secondaryCta: { label: "View on GitHub", href: "https://github.com/zenml-io/zenml", external: true },
+  primaryCta: { label: "Get started", href: "/get-started" },
+  secondaryCta: { label: "Book a demo", href: "/book-your-demo" },
+} as const;
+
+/* ---------------------------------------------------------------------- */
+/* Announcement banner (Variant C — dark band above the nav)               */
+/*   Thin ink band, Kitaru-amber NEW eyebrow, single line of body copy,    */
+/*   underlined "Read the docs →" link. Lives only on the unified `/`      */
+/*   surface; the site-wide AnnouncementBanner is unchanged.               */
+/* ---------------------------------------------------------------------- */
+
+export const HOMEPAGE_UNIFIED_ANNOUNCEMENT = {
+  eyebrow: "NEW",
+  body: "Build an agent factory with Kitaru — our durable runtime for production AI agents.",
+  linkText: "Read the docs",
+  linkHref: "https://kitaru.ai/docs",
+} as const;
+
+/* ---------------------------------------------------------------------- */
+/* Workspace widget — ElevenLabs-pattern tabbed demo                       */
+/*   ZenML tab shows reproducible ML pipelines; Kitaru tab shows durable   */
+/*   agent flows. The widget is the centerpiece of the unified `/`.        */
+/* ---------------------------------------------------------------------- */
+
+export const HOMEPAGE_UNIFIED_WIDGET = {
+  tabs: [
+    {
+      id: "zenml" as const,
+      label: "ZenML workspace",
+      /** Big right-aligned title above the panes. */
+      surfaceTitle: "Pipelines",
+      surfaceSubtitle:
+        "Reproducible ML from your laptop to production · runs anywhere",
+      /** Left pane — list of pipelines. First row is the selected one. */
+      rows: [
+        {
+          name: "churn_training",
+          meta: "v32 · 8 steps · 4m 12s · ✓ completed",
+          badge: null,
+          selected: true,
+        },
+        {
+          name: "fraud_detection",
+          meta: "v18 · 12 steps · 11m 04s",
+          badge: "Kubeflow",
+        },
+        {
+          name: "sentiment_classifier",
+          meta: "v07 · 6 steps · 2m 41s",
+          badge: "Vertex AI",
+        },
+        {
+          name: "image_segmentation",
+          meta: "v44 · 24 steps · 1h 12m",
+          badge: "SageMaker",
+        },
+        {
+          name: "recsys_nightly",
+          meta: "v121 · 9 steps · 18m 33s",
+          badge: "Airflow",
+        },
+      ],
+      listFooter: "Explore 200+ pipelines",
+      /** Right pane — the selected definition. */
+      codeTitle: "Pipeline definition",
+      codeFile: "churn_training.py",
+      code: [
+        "from zenml import pipeline, step",
+        "from sklearn.ensemble import RandomForestClassifier",
+        "",
+        "@step",
+        "def load_data() -> pd.DataFrame:",
+        "    return read_csv(\"s3://churn/raw.csv\")",
+        "",
+        "@step(enable_cache=True)",
+        "def train(X: pd.DataFrame) -> Model:",
+        "    return RandomForestClassifier().fit(X.drop(\"y\", axis=1), X.y)",
+        "",
+        "@pipeline",
+        "def churn_training():",
+        "    data = load_data()",
+        "    model = train(data)",
+      ].join("\n"),
+      footerMeta: "Stack: kubernetes-prod · 7 steps · 2 cached · 4m 12s",
+      runLabel: "Run pipeline",
+      /** Bottom row — context-specific feature subtabs. */
+      subtabs: ["Pipelines", "Artifacts", "Stacks", "Models", "Integrations"],
+    },
+    {
+      id: "kitaru" as const,
+      label: "Kitaru workspace",
+      surfaceTitle: "Flows",
+      surfaceSubtitle:
+        "Durable execution for long-running Python agents · resumes anywhere",
+      rows: [
+        {
+          name: "nightly_news_scout",
+          meta: "v22 · 6 checkpoints · 38m 12s · ✓ resumed",
+          badge: null,
+          selected: true,
+        },
+        {
+          name: "claims_triage",
+          meta: "v07 · 4 checkpoints · 11m 19s",
+          badge: "Kitaru Cloud",
+        },
+        {
+          name: "support_replier",
+          meta: "v45 · 9 checkpoints · 47m 02s",
+          badge: "AWS Lambda",
+        },
+        {
+          name: "doc_indexer",
+          meta: "v09 · 3 checkpoints · 6m 51s",
+          badge: "Kitaru Cloud",
+        },
+        {
+          name: "release_notes_bot",
+          meta: "v03 · 5 checkpoints · 2m 18s",
+          badge: "Fly.io",
+        },
+      ],
+      listFooter: "Explore 40+ flows",
+      codeTitle: "Flow definition",
+      codeFile: "nightly_news_scout.py",
+      code: [
+        "from kitaru import flow, checkpoint, wait",
+        "from anthropic import Anthropic",
+        "",
+        "@checkpoint",
+        "def fetch_articles() -> list[Article]:",
+        "    return rss.pull(\"https://news.ycombinator.com/rss\")",
+        "",
+        "@checkpoint(retry=3)",
+        "def summarize(article: Article) -> str:",
+        "    return Anthropic().messages.create(",
+        "        model=\"claude-opus-4-7\",",
+        "        messages=[{\"role\": \"user\", \"content\": article.body}],",
+        "    ).content[0].text",
+        "",
+        "@flow",
+        "def nightly_news_scout():",
+        "    for article in fetch_articles():",
+        "        wait(seconds=10)",
+        "        post_to_slack(summarize(article))",
+      ].join("\n"),
+      footerMeta: "Runtime: kitaru-cloud · 6 checkpoints · 38m 12s · resumed twice",
+      runLabel: "Run flow",
+      subtabs: ["Flows", "Checkpoints", "Replay", "Deployments", "Integrations"],
+    },
+  ],
 } as const;
 
 /* ---------------------------------------------------------------------- */
@@ -95,7 +242,7 @@ export const HOMEPAGE_UNIFIED_WORKSPACES = {
     },
   ],
   /** Subtle note under the cards — clarifies the commercial framing. */
-  note: "Same plans, same control plane, different SDKs and UI. Pro plans include both.",
+  note: "Same plans, same control plane. Pro covers both workspaces.",
 } as const;
 
 /* ---------------------------------------------------------------------- */
@@ -103,7 +250,7 @@ export const HOMEPAGE_UNIFIED_WORKSPACES = {
 /* ---------------------------------------------------------------------- */
 
 export const HOMEPAGE_UNIFIED_VALUES = {
-  eyebrow: "Why teams pick ZenML",
+  eyebrow: "What stays true across both workspaces",
   headline: "Own your infrastructure. Build it the way you want. Keep pace as you evolve.",
   items: [
     {
