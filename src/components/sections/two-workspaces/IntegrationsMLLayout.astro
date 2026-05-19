@@ -26,16 +26,18 @@ type Satellite = {
 interface Props {
   title: string;
   subheader: string;
+  countLabel?: string;
   rows: ReadonlyArray<Row>;
   rightEyebrow: string;
   rightSubhead: string;
   satellites: ReadonlyArray<Satellite>;
-  footerMeta: string;
+  footerMeta?: string;
 }
 
 const {
   title,
   subheader,
+  countLabel,
   rows,
   rightEyebrow,
   rightSubhead,
@@ -57,6 +59,11 @@ const glyphTone = (tone?: Row["tone"]) =>
         </span>
         <span class="text-[12px] leading-4 text-gray-500">{subheader}</span>
       </div>
+      {countLabel && (
+        <span class="font-mono text-[11px] leading-[14px] text-gray-500">
+          {countLabel}
+        </span>
+      )}
     </div>
 
     <div class="flex flex-col gap-1">
@@ -162,11 +169,13 @@ const glyphTone = (tone?: Row["tone"]) =>
       ))}
     </div>
 
-    <div class="flex items-center gap-3 border-t border-gray-200 pt-2">
-      <span class="font-mono text-[11px] uppercase leading-[14px] tracking-[0.04em] text-gray-600">
-        <span class="mr-2 inline-block size-1.5 rounded-full bg-success-500 align-middle" aria-hidden="true"></span>
-        {footerMeta}
-      </span>
-    </div>
+    {footerMeta && (
+      <div class="flex items-center gap-3 border-t border-gray-200 pt-2">
+        <span class="font-mono text-[11px] uppercase leading-[14px] tracking-[0.04em] text-gray-600">
+          <span class="mr-2 inline-block size-1.5 rounded-full bg-success-500 align-middle" aria-hidden="true"></span>
+          {footerMeta}
+        </span>
+      </div>
+    )}
   </section>
 </div>

@@ -37,7 +37,6 @@ interface Props {
   countLabel: string;
   packs: ReadonlyArray<Pack>;
   rightEyebrow: string;
-  headline: string;
   subhead: string;
   winsPill: string;
   baseline: Variant;
@@ -47,7 +46,6 @@ interface Props {
   steps: ReadonlyArray<Step>;
   verdictEyebrow: string;
   verdictHeadline: string;
-  verdictSummary: string;
   promoteLabel: string;
 }
 
@@ -57,7 +55,6 @@ const {
   countLabel,
   packs,
   rightEyebrow,
-  headline,
   subhead,
   winsPill,
   baseline,
@@ -67,7 +64,6 @@ const {
   steps,
   verdictEyebrow,
   verdictHeadline,
-  verdictSummary,
   promoteLabel,
 } = Astro.props;
 
@@ -104,7 +100,7 @@ const pillClass = (tone: Pack["pillTone"]) =>
             <span
               class:list={[
                 "truncate text-[13px] font-semibold leading-4",
-                pack.selected ? "text-[#ea580c]" : "text-gray-900",
+                pack.selected ? "text-orange-600" : "text-gray-900",
               ]}
             >
               {pack.name}
@@ -133,9 +129,6 @@ const pillClass = (tone: Pack["pillTone"]) =>
         <span class="font-mono text-[11px] uppercase leading-[14px] tracking-[0.08em] text-gray-500">
           {rightEyebrow}
         </span>
-        <h3 class="text-[24px] font-semibold leading-[30px] tracking-[-0.01em] text-gray-900">
-          {headline}
-        </h3>
         <p class="text-[13px] leading-[18px] text-gray-600">{subhead}</p>
       </div>
       <span class="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-success-50 px-3 py-1.5 font-mono text-[10.5px] font-semibold uppercase leading-3 tracking-wide text-success-700">
@@ -148,11 +141,11 @@ const pillClass = (tone: Pack["pillTone"]) =>
     <div class="overflow-hidden rounded-md border border-gray-200 bg-white">
       {/* Compare header — 2 cols */}
       <div class="grid grid-cols-2 border-b border-gray-200">
-        <div class="flex flex-col gap-1 bg-[#faf5e6] px-5 py-3.5">
-          <span class="font-mono text-[10px] font-semibold uppercase leading-3 tracking-wide text-[#92400e]">
+        <div class="flex flex-col gap-1 bg-cream-page px-5 py-3.5">
+          <span class="font-mono text-[10px] font-semibold uppercase leading-3 tracking-wide text-stage-fg">
             {baseline.eyebrow}
           </span>
-          <span class="font-mono text-[14.5px] font-semibold leading-[18px] text-gray-900">
+          <span class="font-mono text-[14px] font-semibold leading-[18px] text-gray-900">
             {baseline.filename}
           </span>
           <span class="font-mono text-[10.5px] font-medium leading-[14px] text-gray-500">
@@ -160,10 +153,10 @@ const pillClass = (tone: Pack["pillTone"]) =>
           </span>
         </div>
         <div class="flex flex-col gap-1 border-l border-gray-200 bg-white px-5 py-3.5">
-          <span class="font-mono text-[10px] font-semibold uppercase leading-3 tracking-wide text-[#ea580c]">
+          <span class="font-mono text-[10px] font-semibold uppercase leading-3 tracking-wide text-orange-600">
             {candidate.eyebrow}
           </span>
-          <span class="font-mono text-[14.5px] font-semibold leading-[18px] text-gray-900">
+          <span class="font-mono text-[14px] font-semibold leading-[18px] text-gray-900">
             {candidate.filename}
           </span>
           <span class="font-mono text-[10.5px] font-medium leading-[14px] text-gray-500">
@@ -173,7 +166,7 @@ const pillClass = (tone: Pack["pillTone"]) =>
       </div>
 
       {/* Delta strip */}
-      <div class="flex items-center justify-between gap-3 border-b border-gray-200 bg-[#fafaf7] px-5 py-2.5">
+      <div class="flex items-center justify-between gap-3 border-b border-gray-200 bg-cream-canvas px-5 py-2.5">
         <div class="flex flex-wrap items-center gap-1.5">
           {deltaChips.map((chip) => (
             <span class="inline-flex items-center gap-1.5 rounded-full bg-white border border-gray-200 px-2.5 py-1 font-mono text-[10.5px] font-medium leading-3 text-gray-700">
@@ -211,7 +204,7 @@ const pillClass = (tone: Pack["pillTone"]) =>
             </div>
 
             {/* Baseline cell */}
-            <div class="flex flex-col gap-1 bg-[#faf5e6] px-4 py-3">
+            <div class="flex flex-col gap-1 bg-cream-page px-4 py-3">
               <div class="flex items-center justify-between">
                 <span class="font-mono text-[10px] leading-3 text-gray-500">duration</span>
                 <span class="font-mono text-[11px] font-medium leading-3 text-gray-900">{step.baseline.dur}</span>
@@ -276,13 +269,10 @@ const pillClass = (tone: Pack["pillTone"]) =>
         <span class="text-[17px] font-semibold leading-[22px] text-white">
           {verdictHeadline}
         </span>
-        <span class="font-mono text-[10.5px] font-medium leading-[14px] text-white/60">
-          {verdictSummary}
-        </span>
       </div>
       <button
         type="button"
-        class="inline-flex w-full shrink-0 cursor-pointer items-center justify-center rounded-md bg-orange-400 px-6 py-3.5 text-[13px] font-semibold text-white shadow-[0_1px_2px_rgba(15,15,18,0.18)] transition-colors hover:bg-[#ea580c] lg:w-[220px]"
+        class="inline-flex w-full shrink-0 cursor-pointer items-center justify-center rounded-md border border-orange-600 bg-transparent px-6 py-3.5 text-[13px] font-semibold text-orange-700 transition-colors hover:bg-orange-50 lg:w-[220px]"
       >
         {promoteLabel}
         <svg viewBox="0 0 24 24" class="ml-2 size-3.5" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">

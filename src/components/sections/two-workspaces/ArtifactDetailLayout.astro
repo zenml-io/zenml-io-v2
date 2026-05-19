@@ -39,7 +39,7 @@ interface Props {
   lineageStep: string;
   lineageDetail: string;
   listFooter: string;
-  footerMeta: string;
+  footerMeta?: string;
 }
 
 const {
@@ -118,7 +118,7 @@ const chartFillId = `artifact-curve-${tabId}`;
                   {v.hash}
                 </span>
               </div>
-              <span class="pl-3 text-[10px] leading-3 text-gray-500">
+              <span class="pl-3 text-[11px] leading-3 text-gray-500">
                 {v.timestamp}
               </span>
             </div>
@@ -154,7 +154,7 @@ const chartFillId = `artifact-curve-${tabId}`;
         </div>
       </div>
 
-      <div class="flex flex-col gap-2.5 rounded-md border border-gray-100 bg-gradient-to-b from-white to-gray-50 px-5 pt-4 pb-3">
+      <div class="flex flex-col gap-2.5 rounded-md border border-gray-100 bg-cream-canvas px-5 pt-4 pb-3">
         <div class="flex items-baseline justify-between gap-3">
           <div class="flex flex-col gap-0.5 min-w-0">
             <span class="font-mono text-[11px] uppercase leading-[14px] tracking-[0.08em] text-gray-500">
@@ -164,24 +164,7 @@ const chartFillId = `artifact-curve-${tabId}`;
               {chartSubtitle}
             </span>
           </div>
-          <div class="flex shrink-0 items-baseline gap-4">
-            <div class="flex flex-col items-end">
-              <span class="font-mono text-[9px] uppercase leading-3 tracking-[0.08em] text-gray-400">
-                mean
-              </span>
-              <span class="font-mono text-[13px] font-semibold leading-4 text-gray-900">
-                {mean}
-              </span>
-            </div>
-            <div class="flex flex-col items-end">
-              <span class="font-mono text-[9px] uppercase leading-3 tracking-[0.08em] text-gray-400">
-                std
-              </span>
-              <span class="font-mono text-[13px] font-semibold leading-4 text-gray-900">
-                {std}
-              </span>
-            </div>
-          </div>
+
         </div>
 
         <div class="min-h-0 flex-1">
@@ -242,7 +225,7 @@ const chartFillId = `artifact-curve-${tabId}`;
       </div>
 
       <div class="flex flex-col gap-2.5 pt-1">
-        {metaFields.map((field) => (
+        {metaFields.filter((f) => ["dtype", "shape", "mean", "std"].includes(f.label.toLowerCase())).map((field) => (
           <div class="flex flex-col gap-0.5">
             <span class="text-[11px] leading-[14px] text-gray-500">{field.label}</span>
             <span

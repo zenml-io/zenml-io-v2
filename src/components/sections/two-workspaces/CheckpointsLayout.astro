@@ -132,7 +132,7 @@ const STEP_X = [40, 130, 220, 325, 430, 520, 615, 710];
               <div
                 class:list={[
                   "absolute inset-y-0 left-0 rounded-full",
-                  row.selected ? "bg-orange-400" : "bg-gray-300",
+                  row.selected ? "bg-gray-400" : "bg-gray-300",
                 ]}
                 style={`width:${Math.round((row.progress.done / row.progress.total) * 100)}%`}
               ></div>
@@ -250,7 +250,6 @@ const STEP_X = [40, 130, 220, 325, 430, 520, 615, 710];
           <span class="font-mono text-[10px] leading-3 text-[#b91c1c]/70">{failureCard.timestamp}</span>
         </div>
         <span class="text-[12px] leading-4 text-[#b91c1c]">{failureCard.message}</span>
-        <span class="font-mono text-[10px] leading-[14px] text-[#b91c1c]/70">{failureCard.subtext}</span>
       </div>
 
       {/* Resume card */}

@@ -124,7 +124,7 @@ const pods = Array.from({ length: podsTotal }, (_, i) => i + 1);
         <span class="font-mono text-[11px] uppercase leading-[14px] tracking-[0.08em] text-gray-500">
           {rightEyebrow}
         </span>
-        <span class="text-[13px] leading-[18px] text-gray-700">{rightSubhead}</span>
+        {rightSubhead && <span class="text-[13px] leading-[18px] text-gray-700">{rightSubhead}</span>}
       </div>
     </div>
 
@@ -160,7 +160,7 @@ const pods = Array.from({ length: podsTotal }, (_, i) => i + 1);
         </div>
         <div class="flex flex-wrap gap-1.5">
           {runtimePills.map((pill) => (
-            <span class="inline-flex items-center rounded-full bg-white/15 px-2 py-0.5 font-mono text-[10px] font-medium leading-3 text-white">
+            <span class="inline-flex items-center rounded-full bg-white/15 px-2.5 py-1 font-mono text-[11px] font-semibold leading-3 text-white">
               {pill}
             </span>
           ))}
@@ -188,11 +188,11 @@ const pods = Array.from({ length: podsTotal }, (_, i) => i + 1);
             {podsActive} / {podsTotal} PODS
           </span>
         </div>
-        <div class="grid grid-cols-8 gap-1.5">
+        <div class="grid grid-cols-8 gap-1">
           {pods.map((n) => (
             <div
               class:list={[
-                "flex aspect-square items-center justify-center rounded font-mono text-[10px] font-semibold leading-none",
+                "flex aspect-square items-center justify-center rounded font-mono text-[9px] font-medium leading-none",
                 podsActive >= n
                   ? "border border-orange-400 bg-[#fed7aa] text-[#ea580c]"
                   : "border border-dashed border-gray-300 bg-white text-gray-400",

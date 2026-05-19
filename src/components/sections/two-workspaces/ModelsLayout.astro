@@ -170,9 +170,7 @@ const dotClass = (dot: EnvCard["dot"]) => {
             {versionBadge}
           </span>
         </div>
-        <span class="truncate font-mono text-[11px] leading-[14px] text-gray-500">
-          {modelMeta}
-        </span>
+
       </div>
     </div>
 
@@ -215,14 +213,7 @@ const dotClass = (dot: EnvCard["dot"]) => {
 
     {/* Env strip */}
     <div class="flex flex-col gap-2.5">
-      <div class="flex items-end justify-between">
-        <span class="font-mono text-[11px] uppercase leading-[14px] tracking-[0.08em] text-gray-500">
-          {envStripEyebrow}
-        </span>
-        <span class="font-mono text-[10.5px] leading-[14px] text-gray-500">
-          {envStripSubhead}
-        </span>
-      </div>
+
       <div class="grid grid-cols-3 gap-3">
         {envs.map((env) => (
           <div

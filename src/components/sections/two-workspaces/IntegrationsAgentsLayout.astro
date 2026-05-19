@@ -5,7 +5,7 @@ import zenmlLight from "../../../styles/zenml-light.json";
 /**
  * Integrations · Agents subtab — "Framework-agnostic" (artboard 9F8-0).
  * Left: frameworks list.
- * Right: wrap-sandwich diagram (Kitaru boundary, framework slot w/ active card + swap chips).
+ * Right: wrap-sandwich diagram (Kitaru boundary, framework slot w/ active card).
  */
 
 type Row = {
@@ -38,8 +38,6 @@ interface Props {
   activeFrameworkInitial: string;
   activeFrameworkColor: string;
   code: string;
-  swapEyebrow: string;
-  swapCaption: string;
   swapChips: ReadonlyArray<SwapChip>;
   footerMeta: string;
 }
@@ -58,8 +56,6 @@ const {
   activeFrameworkInitial,
   activeFrameworkColor,
   code,
-  swapEyebrow,
-  swapCaption,
   swapChips,
   footerMeta,
 } = Astro.props;
@@ -98,7 +94,7 @@ const {
               class:list={[
                 "truncate text-[13px] leading-4",
                 row.selected
-                  ? "font-semibold text-[#ea580c]"
+                  ? "font-semibold text-orange-600"
                   : "font-semibold text-gray-900",
               ]}
             >
@@ -109,7 +105,7 @@ const {
             </span>
           </div>
           {row.active && (
-            <span class="inline-flex shrink-0 items-center rounded-full bg-white px-2 py-0.5 font-mono text-[9.5px] font-semibold uppercase leading-3 tracking-wide text-[#ea580c]">
+            <span class="inline-flex shrink-0 items-center rounded-full bg-white px-2 py-0.5 font-mono text-[9.5px] font-semibold uppercase leading-3 tracking-wide text-orange-600">
               ACTIVE
             </span>
           )}
@@ -129,23 +125,25 @@ const {
       </div>
     </div>
 
-    <div class="flex flex-col gap-0 rounded-md border border-gray-100 bg-[#fafaf7] p-3.5">
+    <div class="flex flex-col gap-0 rounded-md border border-gray-100 bg-cream-canvas p-3.5">
       {/* Top Kitaru boundary */}
       <div class="flex flex-wrap items-center justify-between gap-2 rounded-t-md border border-[#fed7aa] bg-[#fff4ec] px-3.5 py-2">
         <div class="flex items-center gap-2">
           <span class="inline-flex size-5 items-center justify-center rounded bg-orange-400 font-mono text-[10px] font-semibold leading-none text-white">
             K
           </span>
-          <span class="font-mono text-[11px] font-semibold leading-3 text-[#ea580c]">{wrapEyebrow}</span>
+          <span class="font-mono text-[11px] font-semibold leading-3 text-orange-600">{wrapEyebrow}</span>
           <span class="font-mono text-[10.5px] leading-3 text-gray-500">— {wrapMeta}</span>
         </div>
-        <span class="font-mono text-[10px] leading-3 text-[#ea580c]">{wrapRight}</span>
+        {wrapRight && (
+          <span class="font-mono text-[10px] leading-3 text-orange-600">{wrapRight}</span>
+        )}
       </div>
 
       {/* Framework slot */}
       <div class="flex flex-col gap-3 rounded-b-md border-x border-b border-[#fed7aa] bg-white p-4 lg:flex-row">
         {/* Active framework card */}
-        <div class="flex flex-1 flex-col gap-2.5 rounded-lg bg-[#0F0F12] px-4 py-3.5">
+        <div class="flex flex-1 flex-col gap-2.5 rounded-md bg-[#0F0F12] px-4 py-3.5">
           <div class="flex items-center gap-2">
             <span
               class="inline-flex size-5 items-center justify-center rounded font-mono text-[10px] font-semibold leading-none text-white"
@@ -156,21 +154,17 @@ const {
             </span>
             <span class="text-[13px] font-semibold leading-4 text-white">{activeFrameworkName}</span>
             <span class="font-mono text-[10.5px] leading-3 text-orange-400">· your inner loop</span>
-            <span class="ml-auto inline-flex items-center rounded-full bg-orange-400 px-2 py-0.5 font-mono text-[9px] font-semibold uppercase leading-3 tracking-wide text-white">
+            <span class="ml-auto inline-flex items-center rounded-full bg-orange-400 px-2 py-0.5 font-mono text-[9.5px] font-semibold uppercase leading-3 tracking-wide text-white">
               ACTIVE
             </span>
           </div>
-          <div class="workspace-code-dark min-w-0 overflow-x-auto">
-            <Code code={code} lang="python" theme="github-dark" />
+          <div class="workspace-code-light min-w-0 overflow-x-auto">
+            <Code code={code} lang="python" theme={zenmlLight as any} />
           </div>
         </div>
 
         {/* Swap slot */}
         <div class="flex w-full shrink-0 flex-col gap-2 lg:w-[180px]">
-          <span class="font-mono text-[10px] font-semibold uppercase leading-3 tracking-wide text-gray-500">
-            {swapEyebrow}
-          </span>
-          <span class="font-mono text-[10.5px] leading-[14px] text-gray-500">{swapCaption}</span>
           <div class="flex flex-wrap gap-1.5">
             {swapChips.map((chip) => (
               <div
@@ -206,7 +200,7 @@ const {
 </div>
 
 <style>
-  .workspace-code-dark :global(pre) {
+  .workspace-code-light :global(pre) {
     margin: 0;
     padding: 0;
     background: transparent !important;
@@ -214,7 +208,7 @@ const {
     font-size: 11.5px;
     line-height: 1.65;
   }
-  .workspace-code-dark :global(code) {
+  .workspace-code-light :global(code) {
     font-family: inherit;
   }
 </style>
