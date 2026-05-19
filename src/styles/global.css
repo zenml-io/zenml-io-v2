@@ -228,9 +228,16 @@ html { scroll-behavior: smooth; }
   --color-blue-50: #eff8ff;
   --color-blue-500: #2e90fa;
   --color-blue-700: #175cd3;
-  --color-orange-50: #fef6ee;
+  --color-orange-50: #fff4ec;   /* Kitaru-aligned (was #fef6ee — see two-workspaces handoff) */
+  --color-orange-100: #ffe6d4;
+  --color-orange-200: #fed7aa;
+  --color-orange-300: #fdba74;
   --color-orange-400: #fb923c;
+  --color-orange-500: #f97316;
+  --color-orange-600: #ea580c;  /* Kitaru brand primary */
   --color-orange-700: #b93815;
+  --color-orange-800: #9a3412;  /* Kitaru deep brand text */
+  --color-orange-900: #7c2d12;
   --color-indigo-50: #eef4ff;
   --color-indigo-500: #6172f3;
   --color-indigo-700: #3538cd;
@@ -238,6 +245,30 @@ html { scroll-behavior: smooth; }
   --color-pink-500: #ee46bc;
   --color-pink-700: #c11574;
   --color-light-green: #dbf2ec;
+
+  /* === Ink scale (TwoWorkspaces handoff §design-tokens) === */
+  --color-ink:        #0F0F12;
+  --color-ink-mid:    #2a2a30;
+  --color-ink-muted:  #5a5a64;
+  --color-ink-light:  #8a8a94;
+
+  /* === Cream / bookish surface palette (TwoWorkspaces handoff) === */
+  --color-cream-canvas: #fafaf7;  /* widget inner ground */
+  --color-cream-page:   #faf5e6;  /* baseline column in Replay */
+  --color-cream-paper:  #f5f4ef;
+
+  /* === Destructive ramp (TwoWorkspaces audit §kitaru.checkpoints) === */
+  --color-error-50:  #fef2f2;
+  --color-error-100: #fee2e2;
+  --color-error-200: #fecaca;
+  --color-error-500: #ef4444;
+  --color-error-700: #b91c1c;
+
+  /* === STAGE / DEV semantic pill tokens === */
+  --color-stage-bg:  #fef3c7;
+  --color-stage-fg:  #92400e;
+  --color-dev-bg:    #dbeafe;
+  --color-dev-fg:    #1d4ed8;
 
   /* === Custom Spacing === */
   --spacing-space-xxs: 0.5rem;
