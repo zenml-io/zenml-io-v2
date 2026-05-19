@@ -1,0 +1,44 @@
+---
+/**
+ * Reusable ZenML artifact pill — purple-tinted oval with database icon.
+ * Inter font intentionally used here only (matches real product UI).
+ */
+
+interface Props {
+  name: string;
+  type: string;
+  width?: string;
+}
+
+const { name, type, width = "160px" } = Astro.props;
+---
+
+<div
+  style={`width:${width}`}
+  class="flex items-center gap-2 rounded-full border border-[#CAB1FB] bg-[#F1ECFE] py-1.5 pl-1.5 pr-3"
+>
+  <div class="flex shrink-0 items-center justify-center rounded-full bg-[#E4D8FD] p-1">
+    <svg viewBox="0 0 24 24" class="size-4" aria-hidden="true">
+      <path
+        fill-rule="evenodd"
+        d="M4 5q0 .002.003.015a.3.3 0 0 0 .032.066c.043.07.13.174.291.301.33.26.87.539 1.626.79C7.454 6.674 9.592 7 12 7s4.546-.327 6.048-.827c.756-.252 1.296-.53 1.626-.79.162-.128.248-.232.29-.302a.3.3 0 0 0 .033-.066L20 5l-.003-.015a.3.3 0 0 0-.032-.066 1.2 1.2 0 0 0-.291-.301c-.33-.26-.87-.539-1.626-.79C16.546 3.326 14.408 3 12 3s-4.546.327-6.048.827c-.756.252-1.296.53-1.626.79a1.2 1.2 0 0 0-.29.302.3.3 0 0 0-.033.066zm16 2.527a9.5 9.5 0 0 1-1.32.543C16.925 8.655 14.563 9 12 9s-4.925-.345-6.68-.93A9.5 9.5 0 0 1 4 7.527V12q0 .002.003.018a.3.3 0 0 0 .033.067c.042.07.127.173.288.3.328.26.864.537 1.618.789 1.497.5 3.635.826 6.058.826s4.561-.326 6.058-.826c.754-.252 1.29-.53 1.618-.789.16-.127.246-.23.288-.3a.3.3 0 0 0 .033-.067L20 12zM22 5c0-.852-.519-1.504-1.088-1.953-.581-.458-1.36-.826-2.232-1.117C16.925 1.345 14.563 1 12 1s-4.925.345-6.68.93c-.873.29-1.651.66-2.232 1.117C2.518 3.496 2 4.148 2 5v14c0 .85.513 1.502 1.082 1.953.579.459 1.355.827 2.226 1.118C7.061 22.656 9.423 23 12 23s4.939-.344 6.692-.929c.87-.29 1.647-.66 2.226-1.118C21.487 20.502 22 19.849 22 19zm-2 9.532c-.398.203-.84.383-1.308.539-1.753.585-4.115.929-6.692.929s-4.939-.344-6.692-.929A9.5 9.5 0 0 1 4 14.531V19q0 .002.003.018a.3.3 0 0 0 .033.067c.042.07.127.173.288.3.328.26.864.537 1.618.789 1.497.5 3.635.826 6.058.826s4.561-.326 6.058-.826c.754-.252 1.29-.53 1.618-.789.16-.127.246-.23.288-.3a.3.3 0 0 0 .033-.067L20 19z"
+        clip-rule="evenodd"
+        fill="#7B3EF4"
+      ></path>
+    </svg>
+  </div>
+  <div class="flex min-w-0 flex-col">
+    <span
+      class="truncate text-[13px] font-semibold leading-[18px] text-[#431D95]"
+      style="font-family: Inter, -apple-system, BlinkMacSystemFont, sans-serif"
+    >
+      {name}
+    </span>
+    <span
+      class="truncate text-[11px] font-medium leading-[14px] text-[#6b7280]"
+      style="font-family: Inter, -apple-system, BlinkMacSystemFont, sans-serif"
+    >
+      {type}
+    </span>
+  </div>
+</div>
