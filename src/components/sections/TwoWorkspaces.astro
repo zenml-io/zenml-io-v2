@@ -69,7 +69,7 @@ const defaultView = allViews[0];
               aria-controls={`workspace-panel-${tab.id}-${tab.subtabs[0].id}`}
               aria-selected={tab.id === defaultView.tab.id ? "true" : "false"}
               tabindex={tab.id === defaultView.tab.id ? 0 : -1}
-              class="group inline-flex cursor-pointer items-baseline gap-2 rounded-md px-3 py-1.5 text-sm font-medium text-gray-900 transition-colors aria-selected:bg-gray-900 aria-selected:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zenml-500"
+              class="group inline-flex cursor-pointer items-baseline gap-2 rounded-sm px-3 py-1.5 text-sm font-medium text-gray-900 transition-colors aria-selected:bg-gray-900 aria-selected:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zenml-500"
             >
               <span
                 class={`inline-block size-2 shrink-0 self-center rounded-full ${dotClass(tab)}`}
