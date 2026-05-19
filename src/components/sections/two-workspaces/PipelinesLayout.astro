@@ -54,7 +54,7 @@ const {
 
 const glyphTone = (tone?: Row["initialTone"]) => {
   if (tone === "dark") return "bg-gray-900 text-white";
-  if (tone === "purple-300") return "bg-[#d6c0ff] text-[#5b2bbf]";
+  if (tone === "purple-300") return "bg-zenml-300/40 text-zenml-600";
   return "bg-zenml-500 text-white"; // default purple
 };
 ---
@@ -178,15 +178,15 @@ const glyphTone = (tone?: Row["initialTone"]) => {
     </div>
 
     {/* DAG */}
-    <div class="flex flex-1 items-center justify-center rounded-md border border-gray-100 bg-[#fafaf7] px-6 py-6">
+    <div class="flex flex-1 items-center justify-center rounded-md border border-gray-100 bg-cream-canvas px-6 py-6">
       <div class="flex flex-col items-center gap-0">
         {/* Step 1: load_data */}
         <StepNode name={steps[0].name} duration={steps[0].duration} width="240px" />
 
         {/* Fork connector */}
         <svg width="240" height="56" viewBox="0 0 240 56" aria-hidden="true">
-          <path d="M120 0 L120 18 Q120 28 110 28 L60 28 Q50 28 50 38 L50 56" stroke="#d1d5db" stroke-width="1" fill="none" />
-          <path d="M120 18 Q120 28 130 28 L180 28 Q190 28 190 38 L190 56" stroke="#d1d5db" stroke-width="1" fill="none" />
+          <path d="M120 0 L120 18 Q120 28 110 28 L60 28 Q50 28 50 38 L50 56" stroke="var(--color-gray-300)" stroke-width="1" fill="none" />
+          <path d="M120 18 Q120 28 130 28 L180 28 Q190 28 190 38 L190 56" stroke="var(--color-gray-300)" stroke-width="1" fill="none" />
         </svg>
 
         {/* Two artifact pills side-by-side */}
@@ -197,8 +197,8 @@ const glyphTone = (tone?: Row["initialTone"]) => {
 
         {/* Merge connector */}
         <svg width="240" height="56" viewBox="0 0 240 56" aria-hidden="true">
-          <path d="M50 0 L50 18 Q50 28 60 28 L110 28 Q120 28 120 38 L120 56" stroke="#d1d5db" stroke-width="1" fill="none" />
-          <path d="M190 0 L190 18 Q190 28 180 28 L130 28 Q120 28 120 38 L120 56" stroke="#d1d5db" stroke-width="1" fill="none" />
+          <path d="M50 0 L50 18 Q50 28 60 28 L110 28 Q120 28 120 38 L120 56" stroke="var(--color-gray-300)" stroke-width="1" fill="none" />
+          <path d="M190 0 L190 18 Q190 28 180 28 L130 28 Q120 28 120 38 L120 56" stroke="var(--color-gray-300)" stroke-width="1" fill="none" />
         </svg>
 
         {/* Step 2: train_model */}
@@ -206,7 +206,7 @@ const glyphTone = (tone?: Row["initialTone"]) => {
 
         {/* Down connector */}
         <svg width="2" height="28" viewBox="0 0 2 28" aria-hidden="true">
-          <line x1="1" y1="0" x2="1" y2="28" stroke="#d1d5db" stroke-width="1" />
+          <line x1="1" y1="0" x2="1" y2="28" stroke="var(--color-gray-300)" stroke-width="1" />
         </svg>
 
         {/* Output artifact */}

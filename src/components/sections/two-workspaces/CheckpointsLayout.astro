@@ -60,12 +60,12 @@ const {
 
 const glyphTone = (tone?: Row["initialTone"]) => {
   if (tone === "dark") return "bg-gray-900 text-white";
-  if (tone === "yellow") return "bg-[#fbbf24] text-[#92400e]";
+  if (tone === "yellow") return "bg-[#fbbf24] text-stage-fg";
   return "bg-orange-400 text-white";
 };
 
 const pillClass = (tone?: "warning" | "success" | "neutral") => {
-  if (tone === "warning") return "bg-[#fef3c7] text-[#92400e]";
+  if (tone === "warning") return "bg-stage-bg text-stage-fg";
   if (tone === "success") return "bg-success-50 text-success-700";
   return "bg-gray-100 text-gray-600";
 };
@@ -97,7 +97,7 @@ const STEP_X = [40, 130, 220, 325, 430, 520, 615, 710];
         <div
           class:list={[
             "flex flex-col gap-1.5 rounded-md px-2 py-2",
-            row.selected && "border border-[#fed7aa] bg-[#fff4ec]",
+            row.selected && "border border-orange-200 bg-orange-50",
           ]}
         >
           <div class="flex items-center gap-2.5">
@@ -114,7 +114,7 @@ const STEP_X = [40, 130, 220, 325, 430, 520, 615, 710];
               <div class="flex items-center gap-1.5">
                 <span class:list={[
                   "truncate text-[13px] font-semibold leading-4",
-                  row.selected ? "text-[#ea580c]" : "text-gray-900",
+                  row.selected ? "text-orange-600" : "text-gray-900",
                 ]}>
                   {row.name}
                 </span>
@@ -170,7 +170,7 @@ const STEP_X = [40, 130, 220, 325, 430, 520, 615, 710];
     </div>
 
     {/* Timeline card */}
-    <div class="rounded-md border border-gray-100 bg-[#fafaf7] px-5 py-4">
+    <div class="rounded-md border border-gray-100 bg-cream-canvas px-5 py-4">
       <svg viewBox="0 0 760 180" width="100%" height="180" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
         <defs>
           <marker id="ck-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
@@ -242,29 +242,29 @@ const STEP_X = [40, 130, 220, 325, 430, 520, 615, 710];
     {/* Detail strip — failure + resume cards */}
     <div class="grid grid-cols-1 gap-3 lg:grid-cols-2">
       {/* Failure card */}
-      <div class="flex flex-col gap-1.5 rounded-md border border-[#fecaca] bg-[#fef2f2] p-3">
+      <div class="flex flex-col gap-1.5 rounded-md border border-error-200 bg-error-50 p-3">
         <div class="flex items-center justify-between">
-          <span class="font-mono text-[10px] font-semibold uppercase leading-3 tracking-wide text-[#b91c1c]">
+          <span class="font-mono text-[10px] font-semibold uppercase leading-3 tracking-wide text-error-700">
             {failureCard.eyebrow}
           </span>
-          <span class="font-mono text-[10px] leading-3 text-[#b91c1c]/70">{failureCard.timestamp}</span>
+          <span class="font-mono text-[10px] leading-3 text-error-700/70">{failureCard.timestamp}</span>
         </div>
-        <span class="text-[12px] leading-4 text-[#b91c1c]">{failureCard.message}</span>
+        <span class="text-[12px] leading-4 text-error-700">{failureCard.message}</span>
       </div>
 
       {/* Resume card */}
-      <div class="flex flex-col gap-1.5 rounded-md border border-[#fed7aa] bg-[#fff4ec] p-3">
+      <div class="flex flex-col gap-1.5 rounded-md border border-orange-200 bg-orange-50 p-3">
         <div class="flex items-center justify-between">
-          <span class="font-mono text-[10px] font-semibold uppercase leading-3 tracking-wide text-[#ea580c]">
+          <span class="font-mono text-[10px] font-semibold uppercase leading-3 tracking-wide text-orange-600">
             {resumeCard.eyebrow}
           </span>
-          <span class="font-mono text-[10px] leading-3 text-[#ea580c]/70">{resumeCard.timestamp}</span>
+          <span class="font-mono text-[10px] leading-3 text-orange-600/70">{resumeCard.timestamp}</span>
         </div>
-        <span class="text-[12px] leading-4 text-[#9a3412]">{resumeCard.message}</span>
-        <span class="font-mono text-[10px] leading-[14px] text-[#ea580c]/80">{resumeCard.subtext}</span>
-        <div class="mt-1 rounded border border-[#fed7aa] bg-white px-2.5 py-1.5 font-mono text-[10.5px] leading-[16px]">
-          <span class="text-[#0F0F12]">{resumeCard.cliPrefix} </span>
-          <span class="text-[#ea580c]">{resumeCard.cliArgs}</span>
+        <span class="text-[12px] leading-4 text-orange-800">{resumeCard.message}</span>
+        <span class="font-mono text-[10px] leading-[14px] text-orange-600/80">{resumeCard.subtext}</span>
+        <div class="mt-1 rounded border border-orange-200 bg-white px-2.5 py-1.5 font-mono text-[10.5px] leading-[16px]">
+          <span class="text-ink">{resumeCard.cliPrefix} </span>
+          <span class="text-orange-600">{resumeCard.cliArgs}</span>
         </div>
       </div>
     </div>
