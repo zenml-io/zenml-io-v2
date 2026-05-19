@@ -1,0 +1,56 @@
+---
+import { HOMEPAGE_UNIFIED_HERO } from "../../lib/homepage-unified";
+
+/**
+ * UnifiedHero — Variant C hero for the unified `/`.
+ *
+ * Eyebrow pill (mono, violet dot) + centered headline + subhead + dual CTAs.
+ * Pure ZenML brand vocabulary — no new fonts, no cross-brand accents.
+ *
+ * Reads from `HOMEPAGE_UNIFIED_HERO` in src/lib/homepage-unified.ts.
+ */
+
+const { eyebrow, headlinePrefix, headlineAccent, headlineSuffix, subtitle, primaryCta, secondaryCta } =
+  HOMEPAGE_UNIFIED_HERO;
+---
+
+<section class="bg-white">
+  <div class="mx-auto flex max-w-[1440px] flex-col items-center gap-8 px-6 pt-24 pb-16 sm:px-10 sm:pt-32 sm:pb-20 lg:pt-[120px]">
+    {/* Eyebrow */}
+    <div class="inline-flex items-center gap-2.5 rounded-full border border-gray-200 bg-gray-50 px-3.5 py-1.5">
+      <span class="inline-block size-[7px] shrink-0 rounded-full bg-zenml-500" aria-hidden="true"></span>
+      <span class="font-mono text-[12px] leading-4 tracking-[0.04em] text-gray-500">
+        {eyebrow}
+      </span>
+    </div>
+
+    {/* Headline */}
+    <h1
+      class="max-w-[1080px] text-balance text-center text-5xl font-bold leading-[1.04] tracking-[-0.035em] text-gray-900 sm:text-6xl lg:text-[72px]"
+    >
+      {headlinePrefix}<span class="whitespace-nowrap">{headlineAccent}</span>{headlineSuffix}
+    </h1>
+
+    {/* Subhead */}
+    <p class="max-w-[720px] text-pretty text-center text-[17px] leading-[1.55] text-gray-500 sm:text-[19px]">
+      {subtitle}
+    </p>
+
+    {/* CTAs */}
+    <div class="flex flex-wrap items-center justify-center gap-3.5 pt-2">
+      <a
+        href={primaryCta.href}
+        class="inline-flex cursor-pointer items-center gap-2 rounded-full bg-gray-900 px-[22px] py-[13px] text-[13px] font-medium text-white transition-colors hover:bg-gray-800"
+      >
+        {primaryCta.label}
+        <span aria-hidden="true">→</span>
+      </a>
+      <a
+        href={secondaryCta.href}
+        class="inline-flex cursor-pointer items-center rounded-full border border-gray-200 bg-white px-[22px] py-[13px] text-[13px] font-medium text-gray-900 transition-colors hover:bg-gray-50"
+      >
+        {secondaryCta.label}
+      </a>
+    </div>
+  </div>
+</section>
