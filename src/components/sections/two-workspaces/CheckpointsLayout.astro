@@ -85,9 +85,9 @@ const STEP_X = [40, 130, 220, 325, 430, 520, 615, 710];
         <span class="font-mono text-[11px] uppercase leading-[14px] tracking-[0.08em] text-gray-500">
           {title}
         </span>
-        <span class="text-[12px] leading-4 text-gray-500">{subheader}</span>
+        <span class="text-[13px] leading-4 text-gray-500">{subheader}</span>
       </div>
-      <span class="font-mono text-[10.5px] leading-[14px] text-gray-500">
+      <span class="font-mono text-[11px] leading-[14px] text-gray-500">
         {countLabel}
       </span>
     </div>
@@ -103,7 +103,7 @@ const STEP_X = [40, 130, 220, 325, 430, 520, 615, 710];
           <div class="flex items-center gap-2.5">
             <span
               class:list={[
-                "inline-flex size-7 shrink-0 items-center justify-center rounded-md font-mono text-[12px] font-semibold leading-none",
+                "inline-flex size-7 shrink-0 items-center justify-center rounded-md font-mono text-[13px] font-semibold leading-none",
                 glyphTone(row.initialTone),
               ]}
               aria-hidden="true"
@@ -120,7 +120,7 @@ const STEP_X = [40, 130, 220, 325, 430, 520, 615, 710];
                 </span>
                 <span class="font-mono text-[10px] leading-3 text-gray-400">{row.runId}</span>
               </div>
-              <span class="truncate font-mono text-[10.5px] leading-[14px] text-gray-500">
+              <span class="truncate font-mono text-[11px] leading-[14px] text-gray-500">
                 {row.meta}
               </span>
             </div>
@@ -139,7 +139,7 @@ const STEP_X = [40, 130, 220, 325, 430, 520, 615, 710];
             </div>
             {row.statusPill && (
               <span class:list={[
-                "inline-flex shrink-0 items-center rounded-full px-1.5 py-0.5 font-mono text-[9px] font-semibold uppercase leading-3 tracking-wide",
+                "inline-flex shrink-0 items-center rounded-full px-1.5 py-0.5 font-mono text-[10px] font-semibold uppercase leading-3 tracking-wide",
                 pillClass(row.statusPill.tone),
               ]}>
                 {row.statusPill.label}
@@ -249,7 +249,7 @@ const STEP_X = [40, 130, 220, 325, 430, 520, 615, 710];
           </span>
           <span class="font-mono text-[10px] leading-3 text-error-700/70">{failureCard.timestamp}</span>
         </div>
-        <span class="text-[12px] leading-4 text-error-700">{failureCard.message}</span>
+        <span class="text-[13px] leading-4 text-error-700">{failureCard.message}</span>
       </div>
 
       {/* Resume card */}
@@ -260,9 +260,9 @@ const STEP_X = [40, 130, 220, 325, 430, 520, 615, 710];
           </span>
           <span class="font-mono text-[10px] leading-3 text-orange-600/70">{resumeCard.timestamp}</span>
         </div>
-        <span class="text-[12px] leading-4 text-orange-800">{resumeCard.message}</span>
+        <span class="text-[13px] leading-4 text-orange-800">{resumeCard.message}</span>
         <span class="font-mono text-[10px] leading-[14px] text-orange-600/80">{resumeCard.subtext}</span>
-        <div class="mt-1 rounded border border-orange-200 bg-white px-2.5 py-1.5 font-mono text-[10.5px] leading-[16px]">
+        <div class="mt-1 rounded border border-orange-200 bg-white px-2.5 py-1.5 font-mono text-[11px] leading-[16px]">
           <span class="text-ink">{resumeCard.cliPrefix} </span>
           <span class="text-orange-600">{resumeCard.cliArgs}</span>
         </div>

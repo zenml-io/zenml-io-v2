@@ -99,7 +99,7 @@ const dotClass = (dot: EnvCard["dot"]) => {
         <span class="font-mono text-[11px] uppercase leading-[14px] tracking-[0.08em] text-gray-500">
           {title}
         </span>
-        <span class="text-[12px] leading-4 text-gray-500">{subheader}</span>
+        <span class="text-[13px] leading-4 text-gray-500">{subheader}</span>
       </div>
       <span class="font-mono text-[11px] leading-[14px] text-gray-500">
         {countLabel}
@@ -116,7 +116,7 @@ const dotClass = (dot: EnvCard["dot"]) => {
         >
           <span
             class:list={[
-              "inline-flex size-7 shrink-0 items-center justify-center rounded-md font-mono text-[12px] font-semibold leading-none",
+              "inline-flex size-7 shrink-0 items-center justify-center rounded-md font-mono text-[13px] font-semibold leading-none",
               glyphTone(row.initialTone),
             ]}
             aria-hidden="true"
@@ -134,13 +134,13 @@ const dotClass = (dot: EnvCard["dot"]) => {
             >
               {row.name}
             </span>
-            <span class="truncate font-mono text-[10.5px] leading-[14px] text-gray-500">
+            <span class="truncate font-mono text-[11px] leading-[14px] text-gray-500">
               {row.meta}
             </span>
           </div>
           <span
             class:list={[
-              "inline-flex shrink-0 items-center rounded-full px-2 py-0.5 font-mono text-[9.5px] font-semibold leading-3 tracking-wide",
+              "inline-flex shrink-0 items-center rounded-full px-2 py-0.5 font-mono text-[10px] font-semibold leading-3 tracking-wide",
               envTagClass(row.envTag),
             ]}
           >
@@ -180,7 +180,7 @@ const dotClass = (dot: EnvCard["dot"]) => {
         <span class="font-mono text-[11px] uppercase leading-[14px] tracking-[0.08em] text-gray-500">
           {evolutionEyebrow}
         </span>
-        <span class="text-[12px] leading-4 text-gray-600">{evolutionSubhead}</span>
+        <span class="text-[13px] leading-4 text-gray-600">{evolutionSubhead}</span>
       </div>
 
       <svg viewBox="0 0 720 96" width="100%" height="96" preserveAspectRatio="none" aria-hidden="true">
@@ -238,7 +238,7 @@ const dotClass = (dot: EnvCard["dot"]) => {
               </span>
             </div>
             <span class:list={[
-              "font-mono text-[10.5px] leading-[14px]",
+              "font-mono text-[11px] leading-[14px]",
               env.tone === "dark" ? "text-white/60" : "text-gray-500",
             ]}>
               {env.detail}

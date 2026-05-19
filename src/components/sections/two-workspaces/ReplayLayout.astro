@@ -81,9 +81,9 @@ const pillClass = (tone: Pack["pillTone"]) =>
         <span class="font-mono text-[11px] uppercase leading-[14px] tracking-[0.08em] text-gray-500">
           {title}
         </span>
-        <span class="text-[12px] leading-4 text-gray-500">{subheader}</span>
+        <span class="text-[13px] leading-4 text-gray-500">{subheader}</span>
       </div>
-      <span class="font-mono text-[10.5px] leading-[14px] text-gray-500">{countLabel}</span>
+      <span class="font-mono text-[11px] leading-[14px] text-gray-500">{countLabel}</span>
     </div>
 
     <div class="flex flex-col gap-1.5">
@@ -107,14 +107,14 @@ const pillClass = (tone: Pack["pillTone"]) =>
             </span>
             <span
               class:list={[
-                "inline-flex shrink-0 items-center rounded-full px-2 py-0.5 font-mono text-[9px] font-semibold uppercase leading-3 tracking-wide",
+                "inline-flex shrink-0 items-center rounded-full px-2 py-0.5 font-mono text-[10px] font-semibold uppercase leading-3 tracking-wide",
                 pillClass(pack.pillTone),
               ]}
             >
               {pack.pillLabel}
             </span>
           </div>
-          <span class="font-mono text-[10.5px] leading-[14px] text-gray-600">{pack.summary}</span>
+          <span class="font-mono text-[11px] leading-[14px] text-gray-600">{pack.summary}</span>
           <span class="font-mono text-[10px] leading-[14px] text-gray-400">{pack.detail}</span>
         </div>
       ))}
@@ -131,7 +131,7 @@ const pillClass = (tone: Pack["pillTone"]) =>
         </span>
         <p class="text-[13px] leading-[18px] text-gray-600">{subhead}</p>
       </div>
-      <span class="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-success-50 px-3 py-1.5 font-mono text-[10.5px] font-semibold uppercase leading-3 tracking-wide text-success-700">
+      <span class="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-success-50 px-3 py-1.5 font-mono text-[11px] font-semibold uppercase leading-3 tracking-wide text-success-700">
         <span class="inline-block size-1.5 rounded-full bg-success-500" aria-hidden="true"></span>
         {winsPill}
       </span>
@@ -148,7 +148,7 @@ const pillClass = (tone: Pack["pillTone"]) =>
           <span class="font-mono text-[14px] font-semibold leading-[18px] text-gray-900">
             {baseline.filename}
           </span>
-          <span class="font-mono text-[10.5px] font-medium leading-[14px] text-gray-500">
+          <span class="font-mono text-[11px] font-medium leading-[14px] text-gray-500">
             {baseline.model} · {baseline.runs} · {baseline.cost} · {baseline.duration} avg
           </span>
         </div>
@@ -159,7 +159,7 @@ const pillClass = (tone: Pack["pillTone"]) =>
           <span class="font-mono text-[14px] font-semibold leading-[18px] text-gray-900">
             {candidate.filename}
           </span>
-          <span class="font-mono text-[10.5px] font-medium leading-[14px] text-gray-500">
+          <span class="font-mono text-[11px] font-medium leading-[14px] text-gray-500">
             {candidate.model} · {candidate.runs} · {candidate.cost} · {candidate.duration} avg
           </span>
         </div>
@@ -169,7 +169,7 @@ const pillClass = (tone: Pack["pillTone"]) =>
       <div class="flex items-center justify-between gap-3 border-b border-gray-200 bg-cream-canvas px-5 py-2.5">
         <div class="flex flex-wrap items-center gap-1.5">
           {deltaChips.map((chip) => (
-            <span class="inline-flex items-center gap-1.5 rounded-full bg-white border border-gray-200 px-2.5 py-1 font-mono text-[10.5px] font-medium leading-3 text-gray-700">
+            <span class="inline-flex items-center gap-1.5 rounded-full bg-white border border-gray-200 px-2.5 py-1 font-mono text-[11px] font-medium leading-3 text-gray-700">
               {chip.label}
               <span
                 class:list={[
@@ -184,7 +184,7 @@ const pillClass = (tone: Pack["pillTone"]) =>
             </span>
           ))}
         </div>
-        <span class="shrink-0 font-mono text-[10.5px] leading-3 text-gray-500">{replayedLabel}</span>
+        <span class="shrink-0 font-mono text-[11px] leading-3 text-gray-500">{replayedLabel}</span>
       </div>
 
       {/* Step rows */}
@@ -198,7 +198,7 @@ const pillClass = (tone: Pack["pillTone"]) =>
           >
             {/* Name col */}
             <div class="flex items-center px-5 py-3">
-              <span class="truncate font-mono text-[12px] font-semibold leading-4 text-gray-900">
+              <span class="truncate font-mono text-[13px] font-semibold leading-4 text-gray-900">
                 {step.name}
               </span>
             </div>
@@ -226,7 +226,7 @@ const pillClass = (tone: Pack["pillTone"]) =>
                 <div class="flex items-center gap-1.5">
                   <span class="font-mono text-[11px] font-semibold leading-3 text-gray-900">{step.candidate.dur}</span>
                   {step.deltas.dur && (
-                    <span class="inline-flex items-center rounded-full bg-success-50 px-1.5 py-0.5 font-mono text-[9px] font-semibold leading-3 text-success-700">
+                    <span class="inline-flex items-center rounded-full bg-success-50 px-1.5 py-0.5 font-mono text-[10px] font-semibold leading-3 text-success-700">
                       {step.deltas.dur}
                     </span>
                   )}
@@ -237,7 +237,7 @@ const pillClass = (tone: Pack["pillTone"]) =>
                 <div class="flex items-center gap-1.5">
                   <span class="font-mono text-[11px] font-semibold leading-3 text-gray-900">{step.candidate.cost}</span>
                   {step.deltas.cost && (
-                    <span class="inline-flex items-center rounded-full bg-success-50 px-1.5 py-0.5 font-mono text-[9px] font-semibold leading-3 text-success-700">
+                    <span class="inline-flex items-center rounded-full bg-success-50 px-1.5 py-0.5 font-mono text-[10px] font-semibold leading-3 text-success-700">
                       {step.deltas.cost}
                     </span>
                   )}
@@ -248,7 +248,7 @@ const pillClass = (tone: Pack["pillTone"]) =>
                 <div class="flex items-center gap-1.5">
                   <span class="font-mono text-[11px] font-semibold leading-3 text-gray-900">{step.candidate.tokens}</span>
                   {step.deltas.tokens && (
-                    <span class="inline-flex items-center rounded-full bg-success-50 px-1.5 py-0.5 font-mono text-[9px] font-semibold leading-3 text-success-700">
+                    <span class="inline-flex items-center rounded-full bg-success-50 px-1.5 py-0.5 font-mono text-[10px] font-semibold leading-3 text-success-700">
                       {step.deltas.tokens}
                     </span>
                   )}

@@ -57,7 +57,7 @@ const glyphTone = (tone?: Row["tone"]) =>
         <span class="font-mono text-[11px] uppercase leading-[14px] tracking-[0.08em] text-gray-500">
           {title}
         </span>
-        <span class="text-[12px] leading-4 text-gray-500">{subheader}</span>
+        <span class="text-[13px] leading-4 text-gray-500">{subheader}</span>
       </div>
       {countLabel && (
         <span class="font-mono text-[11px] leading-[14px] text-gray-500">
@@ -76,7 +76,7 @@ const glyphTone = (tone?: Row["tone"]) =>
         >
           <span
             class:list={[
-              "inline-flex size-7 shrink-0 items-center justify-center rounded-md font-mono text-[12px] font-semibold leading-none",
+              "inline-flex size-7 shrink-0 items-center justify-center rounded-md font-mono text-[13px] font-semibold leading-none",
               glyphTone(row.tone),
             ]}
             aria-hidden="true"
@@ -94,11 +94,11 @@ const glyphTone = (tone?: Row["tone"]) =>
             >
               {row.name}
             </span>
-            <span class="truncate font-mono text-[10.5px] leading-[14px] text-gray-500">
+            <span class="truncate font-mono text-[11px] leading-[14px] text-gray-500">
               {row.meta}
             </span>
           </div>
-          <span class="inline-flex shrink-0 items-center gap-1 rounded-full bg-success-50 px-2 py-0.5 font-mono text-[9.5px] font-semibold leading-3 tracking-wide text-success-700">
+          <span class="inline-flex shrink-0 items-center gap-1 rounded-full bg-success-50 px-2 py-0.5 font-mono text-[10px] font-semibold leading-3 tracking-wide text-success-700">
             <span class="inline-block size-1.5 rounded-full bg-success-500" aria-hidden="true"></span>
             INSTALLED
           </span>

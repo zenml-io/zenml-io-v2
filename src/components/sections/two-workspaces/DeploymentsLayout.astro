@@ -73,9 +73,9 @@ const pods = Array.from({ length: podsTotal }, (_, i) => i + 1);
         <span class="font-mono text-[11px] uppercase leading-[14px] tracking-[0.08em] text-gray-500">
           {title}
         </span>
-        <span class="text-[12px] leading-4 text-gray-500">{subheader}</span>
+        <span class="text-[13px] leading-4 text-gray-500">{subheader}</span>
       </div>
-      <span class="font-mono text-[10.5px] leading-[14px] text-gray-500">{countLabel}</span>
+      <span class="font-mono text-[11px] leading-[14px] text-gray-500">{countLabel}</span>
     </div>
 
     <div class="flex flex-col gap-1">
@@ -87,7 +87,7 @@ const pods = Array.from({ length: podsTotal }, (_, i) => i + 1);
           ]}
         >
           <span
-            class="inline-flex size-7 shrink-0 items-center justify-center rounded-md font-mono text-[12px] font-semibold leading-none text-white"
+            class="inline-flex size-7 shrink-0 items-center justify-center rounded-md font-mono text-[13px] font-semibold leading-none text-white"
             style={`background:${row.initialColor}`}
             aria-hidden="true"
           >
@@ -104,11 +104,11 @@ const pods = Array.from({ length: podsTotal }, (_, i) => i + 1);
             >
               {row.name}
             </span>
-            <span class="truncate font-mono text-[10.5px] leading-[14px] text-gray-500">
+            <span class="truncate font-mono text-[11px] leading-[14px] text-gray-500">
               {row.meta}
             </span>
           </div>
-          <span class="inline-flex shrink-0 items-center gap-1 font-mono text-[9.5px] font-semibold leading-3 tracking-wide">
+          <span class="inline-flex shrink-0 items-center gap-1 font-mono text-[10px] font-semibold leading-3 tracking-wide">
             <span class:list={["inline-block size-1.5 rounded-full", statusDot(row.statusLabel)]} aria-hidden="true"></span>
             <span class={statusText(row.statusLabel)}>{row.statusLabel}</span>
           </span>
@@ -132,7 +132,7 @@ const pods = Array.from({ length: podsTotal }, (_, i) => i + 1);
     <div class="flex flex-col items-stretch gap-0 rounded-md border border-gray-100 bg-cream-canvas p-4">
       {/* Inbound */}
       <div class="flex items-center justify-between rounded-md border border-gray-200 bg-white px-3.5 py-2.5">
-        <span class="font-mono text-[10.5px] font-semibold uppercase leading-3 tracking-wide text-gray-500">
+        <span class="font-mono text-[11px] font-semibold uppercase leading-3 tracking-wide text-gray-500">
           {inboundLabel}
         </span>
         <span class="font-mono text-[11px] leading-3 text-gray-400">{inboundMeta}</span>
@@ -154,7 +154,7 @@ const pods = Array.from({ length: podsTotal }, (_, i) => i + 1);
               Kitaru durable runtime
             </span>
           </div>
-          <span class="font-mono text-[9.5px] font-semibold uppercase leading-3 tracking-wide text-white/80">
+          <span class="font-mono text-[10px] font-semibold uppercase leading-3 tracking-wide text-white/80">
             PORTABLE LAYER
           </span>
         </div>
@@ -192,7 +192,7 @@ const pods = Array.from({ length: podsTotal }, (_, i) => i + 1);
           {pods.map((n) => (
             <div
               class:list={[
-                "flex aspect-square items-center justify-center rounded font-mono text-[9px] font-medium leading-none",
+                "flex aspect-square items-center justify-center rounded font-mono text-[10px] font-medium leading-none",
                 podsActive >= n
                   ? "border border-orange-400 bg-orange-200 text-orange-600"
                   : "border border-dashed border-gray-300 bg-white text-gray-400",

@@ -69,9 +69,9 @@ const {
         <span class="font-mono text-[11px] uppercase leading-[14px] tracking-[0.08em] text-gray-500">
           {title}
         </span>
-        <span class="text-[12px] leading-4 text-gray-500">{subheader}</span>
+        <span class="text-[13px] leading-4 text-gray-500">{subheader}</span>
       </div>
-      <span class="font-mono text-[10.5px] leading-[14px] text-gray-500">{countLabel}</span>
+      <span class="font-mono text-[11px] leading-[14px] text-gray-500">{countLabel}</span>
     </div>
 
     <div class="flex flex-col gap-1">
@@ -83,7 +83,7 @@ const {
           ]}
         >
           <span
-            class="inline-flex size-7 shrink-0 items-center justify-center rounded-md font-mono text-[12px] font-semibold leading-none text-white"
+            class="inline-flex size-7 shrink-0 items-center justify-center rounded-md font-mono text-[13px] font-semibold leading-none text-white"
             style={`background:${row.initialColor}`}
             aria-hidden="true"
           >
@@ -100,12 +100,12 @@ const {
             >
               {row.name}
             </span>
-            <span class="truncate font-mono text-[10.5px] leading-[14px] text-gray-500">
+            <span class="truncate font-mono text-[11px] leading-[14px] text-gray-500">
               {row.meta}
             </span>
           </div>
           {row.active && (
-            <span class="inline-flex shrink-0 items-center rounded-full bg-white px-2 py-0.5 font-mono text-[9.5px] font-semibold uppercase leading-3 tracking-wide text-orange-600">
+            <span class="inline-flex shrink-0 items-center rounded-full bg-white px-2 py-0.5 font-mono text-[10px] font-semibold uppercase leading-3 tracking-wide text-orange-600">
               ACTIVE
             </span>
           )}
@@ -133,7 +133,7 @@ const {
             K
           </span>
           <span class="font-mono text-[11px] font-semibold leading-3 text-orange-600">{wrapEyebrow}</span>
-          <span class="font-mono text-[10.5px] leading-3 text-gray-500">— {wrapMeta}</span>
+          <span class="font-mono text-[11px] leading-3 text-gray-500">— {wrapMeta}</span>
         </div>
         {wrapRight && (
           <span class="font-mono text-[10px] leading-3 text-orange-600">{wrapRight}</span>
@@ -153,8 +153,8 @@ const {
               {activeFrameworkInitial}
             </span>
             <span class="text-[13px] font-semibold leading-4 text-white">{activeFrameworkName}</span>
-            <span class="font-mono text-[10.5px] leading-3 text-orange-400">· your inner loop</span>
-            <span class="ml-auto inline-flex items-center rounded-full bg-orange-400 px-2 py-0.5 font-mono text-[9.5px] font-semibold uppercase leading-3 tracking-wide text-white">
+            <span class="font-mono text-[11px] leading-3 text-orange-400">· your inner loop</span>
+            <span class="ml-auto inline-flex items-center rounded-full bg-orange-400 px-2 py-0.5 font-mono text-[10px] font-semibold uppercase leading-3 tracking-wide text-white">
               ACTIVE
             </span>
           </div>
