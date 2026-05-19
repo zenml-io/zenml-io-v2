@@ -1,56 +1,40 @@
 ---
+import Button from "../Button.astro";
 import { HOMEPAGE_UNIFIED_HERO } from "../../lib/homepage-unified";
 
 /**
- * UnifiedHero — Variant C hero for the unified `/`.
+ * UnifiedHero — hero for the unified `/` (Variant C copy).
  *
- * Eyebrow pill (mono, violet dot) + centered headline + subhead + dual CTAs.
- * Pure ZenML brand vocabulary — no new fonts, no cross-brand accents.
+ * Matches the existing homepage Hero.astro structure exactly — same
+ * gradient surface, container widths, type scale, and Button component
+ * — but renders the unified copy (no Lottie below; the
+ * TwoWorkspaces widget plays that role on the unified page).
  *
  * Reads from `HOMEPAGE_UNIFIED_HERO` in src/lib/homepage-unified.ts.
  */
 
-const { eyebrow, headlinePrefix, headlineAccent, headlineSuffix, subtitle, primaryCta, secondaryCta } =
+const { headlinePrefix, headlineAccent, headlineSuffix, subtitle, primaryCta, secondaryCta } =
   HOMEPAGE_UNIFIED_HERO;
+const headline = `${headlinePrefix}${headlineAccent}${headlineSuffix}`;
 ---
 
-<section class="bg-white">
-  <div class="mx-auto flex max-w-[1440px] flex-col items-center gap-8 px-6 pt-24 pb-16 sm:px-10 sm:pt-32 sm:pb-20 lg:pt-[120px]">
-    {/* Eyebrow */}
-    <div class="inline-flex items-center gap-2.5 rounded-full border border-gray-200 bg-gray-50 px-3.5 py-1.5">
-      <span class="inline-block size-[7px] shrink-0 rounded-full bg-zenml-500" aria-hidden="true"></span>
-      <span class="font-mono text-[12px] leading-4 tracking-[0.04em] text-gray-500">
-        {eyebrow}
-      </span>
-    </div>
-
-    {/* Headline */}
-    <h1
-      class="max-w-[1080px] text-balance text-center text-5xl font-bold leading-[1.04] tracking-[-0.035em] text-gray-900 sm:text-6xl lg:text-[72px]"
-    >
-      {headlinePrefix}<span class="whitespace-nowrap">{headlineAccent}</span>{headlineSuffix}
-    </h1>
-
-    {/* Subhead */}
-    <p class="max-w-[720px] text-pretty text-center text-[17px] leading-[1.55] text-gray-500 sm:text-[19px]">
-      {subtitle}
-    </p>
-
-    {/* CTAs */}
-    <div class="flex flex-wrap items-center justify-center gap-3.5 pt-2">
-      <a
-        href={primaryCta.href}
-        class="inline-flex cursor-pointer items-center gap-2 rounded-full bg-gray-900 px-[22px] py-[13px] text-[13px] font-medium text-white transition-colors hover:bg-gray-800"
-      >
-        {primaryCta.label}
-        <span aria-hidden="true">→</span>
-      </a>
-      <a
-        href={secondaryCta.href}
-        class="inline-flex cursor-pointer items-center rounded-full border border-gray-200 bg-white px-[22px] py-[13px] text-[13px] font-medium text-gray-900 transition-colors hover:bg-gray-50"
-      >
-        {secondaryCta.label}
-      </a>
+<header class="relative overflow-hidden bg-linear-to-t from-zenml-50 to-white border-b border-gray-200 pb-8 pt-12 sm:pb-12 sm:pt-16">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-3xl text-center">
+      <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl lg:text-[3.5rem] lg:leading-[1.1]">
+        {headline}
+      </h1>
+      <p class="mt-5 text-lg leading-relaxed text-gray-600 sm:text-xl">
+        {subtitle}
+      </p>
+      <div class="mt-8 flex flex-wrap justify-center gap-4">
+        <Button href={primaryCta.href} size="lg">
+          {primaryCta.label}
+        </Button>
+        <Button href={secondaryCta.href} variant="secondary" size="lg">
+          {secondaryCta.label}
+        </Button>
+      </div>
     </div>
   </div>
-</section>
+</header>

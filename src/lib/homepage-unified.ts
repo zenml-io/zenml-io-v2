@@ -40,8 +40,6 @@ export const HOMEPAGE_UNIFIED_SEO = {
 /* ---------------------------------------------------------------------- */
 
 export const HOMEPAGE_UNIFIED_HERO = {
-  /** Single eyebrow pill above the headline. */
-  eyebrow: "One platform · two workspaces · Apache 2.0",
   headlinePrefix: "The single layer for ",
   headlineAccent: "ML and AI",
   headlineSuffix: ".",
