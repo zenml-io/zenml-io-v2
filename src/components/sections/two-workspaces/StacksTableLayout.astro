@@ -33,7 +33,6 @@ interface Props {
   codeTitle: string;
   codeFile: string;
   code: string;
-  footerMeta: string;
 }
 
 const {
@@ -48,7 +47,6 @@ const {
   codeTitle,
   codeFile,
   code,
-  footerMeta,
 } = Astro.props;
 
 const brandBg = tabId === "zenml" ? "bg-zenml-50" : "bg-orange-50";
@@ -60,9 +58,9 @@ const statusDotClass =
   tabId === "zenml" ? "bg-success-500" : "bg-orange-400";
 ---
 
-<div class="grid grid-cols-1 gap-4 lg:grid-cols-2">
+<div class="grid grid-cols-1 gap-3 lg:grid-cols-2">
   {/* Left pane — stacks table */}
-  <div class="flex flex-col gap-2.5 rounded-md border border-gray-200 bg-white p-4">
+  <div class="flex flex-col gap-2 rounded-md border border-gray-200 bg-white p-3">
     <div class="flex items-start justify-between gap-3">
       <div class="flex flex-col">
         <span class="font-mono text-[11px] uppercase leading-[14px] tracking-[0.08em] text-gray-500">
@@ -163,7 +161,7 @@ const statusDotClass =
   </div>
 
   {/* Right pane — code (matches Pipelines panel exactly) */}
-  <div class="flex flex-col gap-3 rounded-md border border-gray-200 bg-white p-4">
+  <div class="flex flex-col gap-3 rounded-md border border-gray-200 bg-white p-3">
     <div class="flex items-center justify-between">
       <span class="text-[13px] text-gray-500">{codeTitle}</span>
       <span class="inline-block rounded-md border border-gray-200 bg-gray-50 px-2.5 py-1 font-mono text-[11px] leading-[14px] text-gray-600">
@@ -173,15 +171,7 @@ const statusDotClass =
     <div class="workspace-code min-w-0 flex-1 overflow-x-auto">
       <Code code={code} lang="python" theme={zenmlLight as any} />
     </div>
-    <div class="flex items-center gap-3 border-t border-gray-200 pt-2.5">
-      <span class="font-mono text-[11px] uppercase leading-[14px] tracking-[0.04em] text-gray-600">
-        <span
-          class={`mr-2 inline-block size-1.5 rounded-full align-middle ${statusDotClass}`}
-          aria-hidden="true"
-        ></span>
-        {footerMeta}
-      </span>
-    </div>
+
   </div>
 </div>
 
