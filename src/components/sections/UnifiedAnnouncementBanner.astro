@@ -1,0 +1,30 @@
+---
+/**
+ * UnifiedAnnouncementBanner — Variant C announcement band above the nav.
+ *
+ * Visual: thin ink band, Kitaru-amber NEW eyebrow, single line of body
+ * copy, underlined "Read the docs →" link. Rendered only on the unified
+ * homepage `/`. The site-wide `AnnouncementBanner.astro` stays untouched
+ * for every other route.
+ *
+ * Data: HOMEPAGE_UNIFIED_ANNOUNCEMENT in src/lib/homepage-unified.ts.
+ */
+import { HOMEPAGE_UNIFIED_ANNOUNCEMENT } from "../../lib/homepage-unified";
+
+const { eyebrow, body, linkText, linkHref } = HOMEPAGE_UNIFIED_ANNOUNCEMENT;
+---
+
+<div class="bg-ink px-4 py-2 text-center text-[13px] leading-5 text-white/90">
+  <span
+    class="mr-2 inline-flex items-center rounded-full bg-orange-400/20 px-2 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-wide text-orange-200"
+  >
+    {eyebrow}
+  </span>
+  <span>{body}</span>
+  <a
+    href={linkHref}
+    class="ml-2 inline-flex items-center font-medium underline decoration-white/40 underline-offset-2 hover:decoration-white"
+  >
+    {linkText} →
+  </a>
+</div>
