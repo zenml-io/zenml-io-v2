@@ -121,8 +121,6 @@ export const HOMEPAGE_UNIFIED_WIDGET = {
           ],
           fileName: "churn_training.py",
           rightSubhead: "Same code. Local, Kubernetes, or Vertex.",
-          targets: ["Local laptop", "Kubernetes", "Vertex AI"],
-          activeTarget: "Kubernetes",
           steps: [
             { name: "load_data", duration: "7s" },
             { name: "train_model", duration: "4m 5s" },
@@ -132,7 +130,6 @@ export const HOMEPAGE_UNIFIED_WIDGET = {
             { name: "labels", type: "ndarray" },
           ] as const,
           output: { name: "churn_predictor", type: "sklearn · v18" },
-          footerMeta: "kubernetes-prod · 12 pods",
         },
         {
           id: "artifacts" as const,
