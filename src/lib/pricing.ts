@@ -33,36 +33,77 @@ export const PRICING_HERO = {
   deck: "Predictable, transparent pricing that scales with value. Same plans, two workspaces — pick ML, Agent, or both.",
 } as const;
 
-/** Short workspace explainer rendered between hero and pricing tabs. */
-export const PRICING_WORKSPACES = {
-  eyebrow: "Two workspaces, one product",
-  items: [
+/**
+ * "What's included in Pro" block rendered between the plan cards and the
+ * comparison table. Two cards — ML pipelines (ZenML side, purple) and
+ * Agent runtime (Kitaru side, orange) — each with three bullet pairings.
+ * Icons are inline SVG strings so the card component stays declarative.
+ */
+export const PRICING_PRO_INCLUSIONS = {
+  eyebrow: "What's included in Pro",
+  headline: "Two workspaces, one bill.",
+  deck: "Switch SDKs without switching tools, billing, or governance. ZenML for reproducible ML. Kitaru for durable AI agents. Same control plane underneath.",
+  cards: [
     {
-      name: "ZenML workspace",
-      tagline: "ML pipelines",
-      body: "Reproducible training, batch inference, evaluation, and deployment. Pipeline DAGs with typed step interfaces.",
-      href: "/get-started/zenml",
-      cta: "Start with ZenML",
+      side: "zenml" as const,
+      eyebrow: "ML pipelines",
+      title: "Pipelines & artifacts",
+      body: "Reproducible training, batch inference, evaluation. One DAG, versioned artifacts, every orchestrator.",
+      bullets: [
+        {
+          icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="6" y1="3" x2="6" y2="15" /><circle cx="18" cy="6" r="3" /><circle cx="6" cy="18" r="3" /><path d="M18 9a9 9 0 0 1-9 9" /></svg>',
+          title: "Pipeline DAGs, artifact store, model registry",
+          detail: "Version every step, every dataset, every model.",
+        },
+        {
+          icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2" /><polyline points="2 17 12 22 22 17" /><polyline points="2 12 12 17 22 12" /></svg>',
+          title: "Run on Kubernetes, Vertex, SageMaker, AzureML",
+          detail: "One pipeline, any orchestrator — no rewrites.",
+        },
+        {
+          icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10" /><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" /></svg>',
+          title: "Reproducible by default, replayable on demand",
+          detail: "Re-run any historical pipeline with one command.",
+        },
+      ],
+      learn: { label: "Learn about ZenML", href: "/product/zenml" },
+      cta: {
+        label: "Book a Demo",
+        href: "/book-your-demo",
+        analytics: "Pricing-Pro-Inclusions-ZenML-Demo",
+      } as CtaLink,
     },
     {
-      name: "Kitaru workspace",
-      tagline: "AI agents",
-      body: "Long-running Python agents with durable execution. Add checkpoints, replay, wait/resume — no rewrites.",
-      href: "/product/kitaru",
-      cta: "Start with Kitaru",
+      side: "kitaru" as const,
+      eyebrow: "Agent runtime",
+      title: "Replay & checkpoints",
+      body: "Long-running Python agents with checkpoints, replay, wait/resume. Two decorators, no rewrites.",
+      bullets: [
+        {
+          icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18.178 8c5.096 0 5.096 8 0 8-5.095 0-7.133-8-12.739-8-4.585 0-4.585 8 0 8 5.606 0 7.644-8 12.74-8z" /></svg>',
+          title: "Durable execution for long-running Python agents",
+          detail: "Hours-long workflows survive restarts and failures.",
+        },
+        {
+          icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" /><line x1="10" y1="15" x2="10" y2="9" /><line x1="14" y1="15" x2="14" y2="9" /></svg>',
+          title: "Checkpoints, replay, wait/resume — two decorators",
+          detail: "Pause for human review, replay from any step.",
+        },
+        {
+          icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><line x1="8.59" y1="13.51" x2="15.42" y2="17.49" /><line x1="15.41" y1="6.51" x2="8.59" y2="11.49" /></svg>',
+          title: "Distributed scheduling, API and webhook triggers",
+          detail: "Fan out across workers, trigger from any source.",
+        },
+      ],
+      learn: { label: "Learn about Kitaru", href: "/product/kitaru" },
+      cta: {
+        label: "Book a Demo",
+        href: "/book-your-demo",
+        analytics: "Pricing-Pro-Inclusions-Kitaru-Demo",
+      } as CtaLink,
     },
   ],
-  note: "Same $; different SDKs and UI. Pro plans include both.",
-} as const;
-
-/**
- * Inline "what's an execution?" explainer for the unified pricing table.
- * The Executions/mo row counts both ZenML pipeline runs and Kitaru flow
- * executions against a single pooled quota — this clarifies that.
- */
-export const PRICING_EXECUTIONS_NOTE = {
-  label: "What counts as an execution?",
-  body: "One execution = one ZenML pipeline run OR one Kitaru flow execution. Same quota; spend it across either workspace.",
+  caption: "Same control plane. Same governance. Same bill.",
 } as const;
 
 // ---------------------------------------------------------------------------

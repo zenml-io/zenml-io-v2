@@ -1,0 +1,115 @@
+---
+import Button from "../Button.astro";
+import { PRICING_PRO_INCLUSIONS } from "../../lib/pricing";
+
+/**
+ * "What's included in Pro" — two-workspace breakdown rendered between
+ * the plan cards and the comparison table. ZenML side (purple) and
+ * Kitaru side (orange) each get a card with three bullet pairings and
+ * a Learn / Book a Demo footer.
+ */
+
+const { eyebrow, headline, deck, cards, caption } = PRICING_PRO_INCLUSIONS;
+
+const sideTokens = {
+  zenml: {
+    dotBg: "bg-zenml-500",
+    eyebrowText: "text-zenml-500",
+    learnText: "text-zenml-500 hover:text-zenml-600",
+  },
+  kitaru: {
+    dotBg: "bg-orange-400",
+    eyebrowText: "text-orange-500",
+    learnText: "text-orange-500 hover:text-orange-600",
+  },
+} as const;
+---
+
+<section class="bg-white pt-12 pb-10 sm:pt-16 sm:pb-12">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    {/* Section header */}
+    <div class="mx-auto flex max-w-3xl flex-col items-center gap-3 text-center">
+      <div class="flex items-center gap-2">
+        <span class="size-1.5 rounded-full bg-zenml-500" aria-hidden="true"></span>
+        <span class="text-xs font-semibold uppercase tracking-[0.08em] text-gray-700">
+          {eyebrow}
+        </span>
+      </div>
+      <h2 class="text-3xl font-semibold tracking-tight text-gray-900 sm:text-4xl">
+        {headline}
+      </h2>
+      <p class="text-base leading-6 text-gray-600">{deck}</p>
+    </div>
+
+    {/* Two cards */}
+    <div class="mx-auto mt-10 grid max-w-6xl gap-6 sm:grid-cols-2">
+      {cards.map((card) => {
+        const tokens = sideTokens[card.side];
+        return (
+          <article class="flex flex-col gap-6 rounded-md border border-gray-200 bg-gradient-to-br from-white to-gray-50 p-8">
+            <header class="flex flex-col gap-3">
+              <div class="flex items-center gap-2">
+                <span
+                  class={`size-1.5 shrink-0 rounded-full ${tokens.dotBg}`}
+                  aria-hidden="true"
+                ></span>
+                <span
+                  class={`text-xs font-semibold uppercase tracking-[0.1em] ${tokens.eyebrowText}`}
+                >
+                  {card.eyebrow}
+                </span>
+              </div>
+              <h3 class="text-2xl font-semibold tracking-tight text-gray-900 sm:text-[26px] sm:leading-8">
+                {card.title}
+              </h3>
+              <p class="text-[15px] leading-6 text-gray-600">{card.body}</p>
+            </header>
+
+            <ul class="flex flex-col gap-4 border-t border-gray-100 pt-5">
+              {card.bullets.map((bullet) => (
+                <li class="flex items-start gap-3.5">
+                  <span
+                    class="mt-px flex size-5 shrink-0 items-center justify-center text-gray-500"
+                    aria-hidden="true"
+                  >
+                    <Fragment set:html={bullet.icon} />
+                  </span>
+                  <div class="flex flex-col gap-0.5">
+                    <span class="text-[15px] font-semibold leading-5 text-gray-900">
+                      {bullet.title}
+                    </span>
+                    <span class="text-sm leading-5 text-gray-500">
+                      {bullet.detail}
+                    </span>
+                  </div>
+                </li>
+              ))}
+            </ul>
+
+            <footer class="mt-auto flex items-center justify-between gap-3 pt-1">
+              <a
+                href={card.learn.href}
+                class={`inline-flex items-center gap-1.5 text-sm font-semibold transition-colors ${tokens.learnText}`}
+              >
+                {card.learn.label}
+                <span aria-hidden="true">→</span>
+              </a>
+              <Button
+                href={card.cta.href}
+                variant="secondary"
+                dataAnalytics={card.cta.analytics}
+              >
+                {card.cta.label}
+              </Button>
+            </footer>
+          </article>
+        );
+      })}
+    </div>
+
+    {/* Caption */}
+    <p class="mt-10 text-center text-sm font-medium text-gray-500">
+      {caption}
+    </p>
+  </div>
+</section>
