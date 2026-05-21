@@ -117,15 +117,17 @@ const {
     text-transform: uppercase;
     margin-bottom: 10px;
   }
-  /* Extra specificity beats the page-level `.compare-body-inner h2` rule
-     defined in [slug].astro which sets a dark color. */
+  /* The title sits inside the dark band and must stay light. KitaruCompare's
+     `[data-app="kitaru"] .compare-body-inner h2` rule (specificity 0,2,1)
+     out-weighs this selector (0,2,0) and would tint it dark, so the light
+     color is forced here. */
   .codecompare .codecompare-title {
     max-width: 820px;
     font-size: clamp(30px, 3.2vw, 42px);
     font-weight: 700;
     letter-spacing: -0.025em;
     line-height: 1.12;
-    color: var(--code-var);
+    color: var(--code-var) !important;
     margin: 0;
   }
   /* Inner max-width matches the rest of the article column so the two panes

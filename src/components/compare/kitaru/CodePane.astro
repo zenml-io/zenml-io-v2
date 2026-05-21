@@ -4,19 +4,19 @@
  *
  * Use inside a FeatureWithGraphic `graphic` slot when a feature row should
  * pair prose with a code block instead of a custom graphic.
+ *
+ * Kitaru compare pages use the Kitaru code styling — the `kitaru-light` /
+ * `kitaru-dark` Shiki themes on a warm cream panel, matching the kitaru.ai
+ * site. ZenML-side pages keep the `zenml-light` theme via the site-wide
+ * markdown Shiki config in `astro.config.ts` — the two are intentionally
+ * kept separate so each product's code blocks stay on-brand.
  */
 import { Code } from 'astro:components';
-import type { ThemeRegistrationRaw } from 'shiki';
-import zenmlLight from '../../../styles/zenml-light.json';
+import type { ThemeRegistration } from 'shiki';
+import kitaruLight from '../../../styles/kitaru-light.json';
+import kitaruDark from '../../../styles/kitaru-dark.json';
 
 type CodeLang = Parameters<typeof Code>[0]["lang"];
-
-// Reuse the site's standard light Shiki theme for consistency with
-// blog/docs/feature-page code blocks.
-const codeTheme = {
-  ...zenmlLight,
-  type: zenmlLight.type as "light" | "dark",
-} satisfies ThemeRegistrationRaw;
 
 interface Props {
   code: string;
@@ -27,20 +27,22 @@ const { code, lang = 'python' } = Astro.props;
 ---
 
 <article class="codepane">
-  <Code code={code} lang={lang} theme={codeTheme} />
+  <Code
+    code={code}
+    lang={lang}
+    themes={{ light: kitaruLight as ThemeRegistration, dark: kitaruDark as ThemeRegistration }}
+    defaultColor="light"
+  />
 </article>
 
 <style>
-  /* Light panel matching the rest of the article column. Uses the site's
-   * standard Shiki theme (zenml-light) so code reads consistently with
-   * blog/docs/blog post code blocks. The Kitaru-themed kitaru-light has
-   * very dark token colors (#1A1310 fg, #9A3F10 keywords) that read too
-   * dense on the cream panel — zenml-light has proper contrast. */
+  /* Warm cream panel matching the Kitaru site's code surface — the
+   * kitaru-light theme's editor.background (#FAF6EF) is the same value. */
   .codepane {
     width: 100%;
-    border: 1px solid var(--color-border);
+    border: 1px solid oklch(0.85 0.08 60);
     border-radius: 12px;
-    background: var(--color-surface);
+    background: #FAF6EF;
     overflow: hidden;
   }
   .codepane :global(pre) {
