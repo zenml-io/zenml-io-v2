@@ -97,8 +97,8 @@ const idlePillStyle = (status: string) => {
           const pill = isSelected ? null : idlePillStyle(run.status);
           return (
             <div
-              class="ckpt-row flex w-full items-center gap-3 cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500"
-              aria-pressed={isSelected ? "true" : "false"}
+              class="ckpt-row flex w-full items-center gap-3"
+              aria-current={isSelected ? "true" : undefined}
             >
               {/* Letter badge */}
               <span
@@ -508,21 +508,19 @@ const idlePillStyle = (status: string) => {
 </div>
 
 <style>
-  /* ── Selected-row spec (mirrors FlowsLayout kitaru-row pattern) ────────── */
+  /* ── Selected-row spec ────────────────────────────────────────────────── */
+  /* Static layout — the highlight marks which run the right pane details;
+     rows are not interactive, so no cursor/hover/focus affordances. */
   .ckpt-row {
     border-radius: 8px;
     padding: 10px 12px;
     background-color: transparent;
     border: 1px solid transparent;
-    /* cursor-pointer set inline on each element already */
   }
-  .ckpt-row[aria-pressed="true"] {
+  .ckpt-row[aria-current="true"] {
     background-color: #fff4ec; /* orange-50 */
     border-color: #ffd7b5;     /* --kitaru-selected-row-border */
     /* Keep stable by matching the same box model — 1px border, 10px block padding */
-  }
-  .ckpt-row:not([aria-pressed="true"]):hover {
-    background-color: #fdf4ec22;
   }
   .ckpt-row-badge {
     border-radius: 8px;

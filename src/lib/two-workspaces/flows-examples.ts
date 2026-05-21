@@ -39,8 +39,9 @@ export type Timeline = {
   spans: ReadonlyArray<TimelineSpan>;
   axisTicks: ReadonlyArray<string>;
   totalRuntimeLabel: string;
-  /** Bottom-right "● LIVE · 2m 12s" chip when a span is running; omit
-   *  on completed timelines. */
+  /** Bottom-right "LIVE · 2m 12s" chip when a span is running; omit
+   *  on completed timelines. The status dot is rendered by the layout —
+   *  the label must not include a leading bullet character. */
   liveLabel?: string;
 };
 
@@ -118,7 +119,7 @@ export const FLOW_EXAMPLES: ReadonlyArray<FlowExample> = [
       ],
       axisTicks: ["0s", "30s", "1m", "1m30s", "2m"],
       totalRuntimeLabel: "1m 47s",
-      liveLabel: "● LIVE · 1m 47s",
+      liveLabel: "LIVE · 1m 47s",
     },
     footerMeta: "runtime: kubernetes · 1 checkpoint persisted · resumable",
     sourceCitation: "kitaru/examples/basic_flow/first_working_flow.py",
@@ -163,7 +164,7 @@ export const FLOW_EXAMPLES: ReadonlyArray<FlowExample> = [
       ],
       axisTicks: ["0s", "3s", "6s", "9s", "12s"],
       totalRuntimeLabel: "11s",
-      liveLabel: "● COMPLETED · 11s",
+      liveLabel: "COMPLETED · 11s",
     },
     footerMeta: "runtime: kubernetes · 2 checkpoints persisted · resumable",
     sourceCitation: "kitaru/examples/llm/flow_with_llm.py",
@@ -211,7 +212,7 @@ export const FLOW_EXAMPLES: ReadonlyArray<FlowExample> = [
       ],
       axisTicks: ["0s", "2m", "4m", "6m", "8m"],
       totalRuntimeLabel: "6m 18s",
-      liveLabel: "● LIVE · 6m 18s",
+      liveLabel: "LIVE · 6m 18s",
     },
     footerMeta: "runtime: kubernetes · 4 checkpoints persisted · resumable",
     sourceCitation: "kitaru/examples/compliance_review/stage_2_multi_domain.py",
@@ -259,7 +260,7 @@ export const FLOW_EXAMPLES: ReadonlyArray<FlowExample> = [
       ],
       axisTicks: ["0s", "30s", "1m", "1m30s", "2m"],
       totalRuntimeLabel: "2m 04s",
-      liveLabel: "● PAUSED · awaiting input",
+      liveLabel: "PAUSED · awaiting input",
     },
     footerMeta: "runtime: kubernetes · compute released · resumable via CLI",
     sourceCitation: "kitaru/examples/execution_management/wait_and_resume.py",
@@ -313,7 +314,7 @@ export const FLOW_EXAMPLES: ReadonlyArray<FlowExample> = [
       ],
       axisTicks: ["0s", "1m", "2m", "3m", "3m30s"],
       totalRuntimeLabel: "3m 22s",
-      liveLabel: "● COMPLETED · 3m 22s",
+      liveLabel: "COMPLETED · 3m 22s",
     },
     footerMeta: "runtime: kubernetes · 12 checkpoints persisted · replayable",
     sourceCitation: "kitaru/examples/news_scout/scout.py",
