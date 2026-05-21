@@ -195,6 +195,81 @@ const statusDotColor = (status: DeploymentStatus) =>
         ))}
       </div>
 
+      {/* ── Versioned deployment lifecycle (item 9) ─────────────────── */}
+      {/* v1 → v2 → v3 (rolled back) → v4 (current). Each bubble is a
+          version node connected by a horizontal track line. v3 shows a
+          red-tinted "ROLLED BACK" pill; v4 is the active orange node.
+          Layout: two rows — labels row (fixed 25px height so connectors
+          align) then bubbles row — keeps connectors pixel-perfect. */}
+      <div
+        class="flex flex-col"
+        style="border-radius: 8px; border: 1px solid #EFE7DA; background-color: #FFFFFF; padding: 14px 16px; gap: 10px;"
+      >
+        <span
+          class="font-sans uppercase"
+          style="font-size: 9px; font-weight: 600; letter-spacing: 0.1em; line-height: 12px; color: #9C8060; font-family: 'Plus Jakarta Sans', system-ui, sans-serif;"
+        >
+          VERSION HISTORY
+        </span>
+        {/* Labels row — fixed 25px so all columns are the same height */}
+        <div class="flex" style="gap: 0;">
+          <div class="flex flex-col items-center" style="flex:1; height:25px; justify-content:flex-end; padding-bottom:0;">
+            <span class="font-mono" style="font-size:9px; font-weight:500; line-height:12px; color:#B9A98C;">v1</span>
+          </div>
+          <div style="flex:1;"></div>
+          <div class="flex flex-col items-center" style="flex:1; height:25px; justify-content:flex-end;">
+            <span class="font-mono" style="font-size:9px; font-weight:500; line-height:12px; color:#B9A98C;">v2</span>
+          </div>
+          <div style="flex:1;"></div>
+          <div class="flex flex-col items-center" style="flex:1; height:25px; justify-content:flex-end; gap:2px;">
+            <span class="font-mono" style="font-size:9px; font-weight:500; line-height:12px; color:#DC2626;">v3</span>
+            <span class="font-mono uppercase" style="font-size:7px; font-weight:600; letter-spacing:0.04em; line-height:10px; color:#DC2626; white-space:nowrap;">rolled back</span>
+          </div>
+          <div style="flex:1;"></div>
+          <div class="flex flex-col items-center" style="flex:1; height:25px; justify-content:flex-end;">
+            <span class="font-mono" style="font-size:9px; font-weight:700; line-height:12px; color:#C2410C;">v4</span>
+          </div>
+        </div>
+        {/* Bubbles + connector row — items-center aligns connectors with bubble midpoints */}
+        <div class="flex items-center" style="gap: 0;">
+          {/* v1 */}
+          <span
+            style="width:28px; height:28px; border-radius:999px; background-color:#F5EFE6; border:1.5px solid #E8DBC8; display:flex; align-items:center; justify-content:center; flex-shrink:0;"
+          >
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+              <path d="M2 6.5L4.5 9L10 3" stroke="#9C8060" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <div style="flex:1; height:1.5px; background-color:#E8DBC8;"></div>
+          {/* v2 */}
+          <span
+            style="width:28px; height:28px; border-radius:999px; background-color:#F5EFE6; border:1.5px solid #E8DBC8; display:flex; align-items:center; justify-content:center; flex-shrink:0;"
+          >
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+              <path d="M2 6.5L4.5 9L10 3" stroke="#9C8060" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <div style="flex:1; height:1.5px; background-color:#FECACA;"></div>
+          {/* v3 — rolled back */}
+          <span
+            style="width:28px; height:28px; border-radius:999px; background-color:#FEF2F2; border:1.5px solid #FECACA; display:flex; align-items:center; justify-content:center; flex-shrink:0;"
+          >
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+              <path d="M3 3L9 9M9 3L3 9" stroke="#DC2626" stroke-width="1.4" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <div style="flex:1; height:1.5px; background-color:#FB923C;"></div>
+          {/* v4 — current */}
+          <span
+            style="width:28px; height:28px; border-radius:999px; background-color:#FB923C; border:1.5px solid #EA580C; display:flex; align-items:center; justify-content:center; flex-shrink:0; box-shadow:0 0 0 3px rgba(251,146,60,0.18);"
+          >
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+              <path d="M2 6.5L4.5 9L10 3" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        </div>
+      </div>
+
       {/* 3-env card grid */}
       <div class="grid" style="grid-template-columns: repeat(3, 1fr); gap: 14px;">
         {ENV_CARDS.map((card) => (

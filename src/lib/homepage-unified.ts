@@ -48,12 +48,15 @@ export const HOMEPAGE_UNIFIED_HERO = {
    * Lead phrase + body. Focus Lab's USP language transposed into hero
    * copy. Keep it specific to "your stack" so the message lands for
    * the buyer who's worried about vendor lock-in.
+   *
+   * Notion feedback (item 1): subtitle shortened to the single crisp sentence.
+   * Notion feedback (item 2): CTAs → "Book a demo" primary, "Read docs" secondary.
    */
   subtitleLead: "Built for engineers, ready for enterprise.",
   subtitle:
-    "ZenML is open source infrastructure for production ML/AI. Orchestrate training pipelines and durable AI agents on the tools, clouds, and environments you already use — without rewriting your stack.",
-  primaryCta: { label: "Get started", href: "/get-started" },
-  secondaryCta: { label: "Book a demo", href: "/book-your-demo" },
+    "Orchestrate training pipelines and durable AI agents on the tools, clouds, and environments you already use — without rewriting your stack.",
+  primaryCta: { label: "Book a demo", href: "/book-your-demo" },
+  secondaryCta: { label: "Read docs", href: "/docs" },
 } as const;
 
 /* ---------------------------------------------------------------------- */
