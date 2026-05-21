@@ -1,0 +1,165 @@
+---
+/**
+ * /docs — Documentation hub landing page.
+ *
+ * Cross-product chooser routing visitors to the correct product docs:
+ *   - ZenML Docs  → https://docs.zenml.io
+ *   - Kitaru Docs → https://kitaru.ai/docs
+ *
+ * Surface: "unified" (cross-product page — see CLAUDE.md analytics taxonomy)
+ * Modeled on docs.astral.sh: minimal, editorial, zero clutter.
+ */
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const SEO = {
+  title: "ZenML Documentation Hub — ML Workflows & Agent Runtime",
+  description:
+    "Documentation for ZenML and Kitaru. Build production ML workflows or durable agent runtimes — both under ZenML Pro.",
+};
+
+const CARDS = [
+  {
+    title: "ZenML Docs",
+    description:
+      "Orchestrate ML workflows across any stack — from local experiments to production pipelines.",
+    href: "https://docs.zenml.io",
+    label: "ZenML · ML workspace",
+    cta: "Open ZenML docs",
+    analytics: "DocsHub:ZenML",
+  },
+  {
+    title: "Kitaru Docs",
+    description:
+      "Build agents that resume where they left off — durable execution for long-running, autonomous workflows.",
+    href: "https://kitaru.ai/docs",
+    label: "Kitaru · Agent workspace",
+    cta: "Open Kitaru docs",
+    analytics: "DocsHub:Kitaru",
+  },
+] as const;
+---
+
+<BaseLayout
+  title={SEO.title}
+  description={SEO.description}
+  surface="unified"
+>
+  <main class="bg-linear-to-b from-zenml-50 to-white">
+    <section class="docs-hub scroll-reveal-section mx-auto max-w-6xl px-4 pt-16 pb-20 sm:px-6 sm:pt-24 sm:pb-28 lg:px-8">
+
+      {/* ── Hero ── */}
+      <header class="scroll-slide-top mx-auto max-w-2xl text-center">
+        <p class="text-sm font-semibold uppercase tracking-wider text-zenml-500">
+          Documentation
+        </p>
+        <h1 class="mt-3 text-balance text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl lg:text-5xl">
+          Everything you need to build with ZenML Pro
+        </h1>
+        <p class="mt-4 text-pretty text-lg leading-relaxed text-gray-600">
+          Guides, references, and examples for both products. Pick your starting
+          point below.
+        </p>
+      </header>
+
+      {/* ── Product cards ── */}
+      <div class="scroll-fade-in stagger-1 mt-12 grid gap-6 sm:mt-16 lg:grid-cols-2 lg:gap-8">
+        {CARDS.map((card) => (
+          <a
+            href={card.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group flex flex-col rounded-md border border-gray-200 bg-white p-8 transition-shadow hover:shadow-md sm:p-10"
+            data-analytics={card.analytics}
+          >
+            <p class="text-sm font-semibold uppercase tracking-wider text-zenml-500">
+              {card.label}
+            </p>
+            <h2 class="mt-2 text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
+              {card.title}
+            </h2>
+            <p class="mt-4 text-pretty text-base leading-relaxed text-gray-600">
+              {card.description}
+            </p>
+            <span class="mt-8 inline-flex items-center gap-2 text-sm font-semibold text-zenml-600">
+              {card.cta}
+              <svg
+                aria-hidden="true"
+                class="transition-transform duration-200 ease-out group-hover:translate-x-1"
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M7 7h10v10" />
+                <path d="M7 17 17 7" />
+              </svg>
+            </span>
+          </a>
+        ))}
+      </div>
+
+      {/* ── Footer note ── */}
+      <p class="scroll-fade-in stagger-2 mt-12 text-center text-sm text-gray-500">
+        Both products ship under{" "}
+        <a href="/pro" class="font-semibold text-zenml-600 hover:text-zenml-700">
+          ZenML Pro
+        </a>
+        . One subscription, two workspaces.
+      </p>
+
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  /* ── Scroll-reveal animations (canonical site pattern — see FeatureTabs.astro) ── */
+  .scroll-slide-top {
+    opacity: 0;
+    transform: translateY(-30px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  }
+
+  .scroll-fade-in {
+    opacity: 0;
+    transition: opacity 0.8s ease-out;
+  }
+
+  .stagger-1 { transition-delay: 0.15s; }
+  .stagger-2 { transition-delay: 0.3s; }
+
+  .scroll-reveal-section.in-view .scroll-slide-top,
+  .scroll-reveal-section.in-view .scroll-fade-in {
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .scroll-slide-top,
+    .scroll-fade-in {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  // One-shot IntersectionObserver — same pattern as FeatureTabs.astro
+  document.querySelectorAll<HTMLElement>(".scroll-reveal-section").forEach((section) => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          section.classList.add("in-view");
+          observer.unobserve(section);
+        }
+      },
+      { threshold: 0.1 },
+    );
+    observer.observe(section);
+  });
+</script>
