@@ -2,6 +2,12 @@
 /**
  * IntegrationsMarquee — infinite horizontal scroll of integration logos.
  *
+ * Pattern A (two-product, unified section):
+ * - Headline and subheadline are product-neutral ("any framework", both ecosystems).
+ * - ZenML integrations marquee (60+ from the integrations collection).
+ * - Kitaru agent frameworks listed as a compact labeled pill row below.
+ * - Single CTA pair pointing to /get-started and /integrations.
+ *
  * Fetches logos from the integrations content collection and renders
  * them in a CSS-animated marquee strip. The strip is duplicated for
  * seamless looping. Pauses on hover.
@@ -43,16 +49,22 @@ const marqueeItems = [
 ];
 ---
 
-<section class="relative overflow-hidden bg-white bg-cover bg-center border-t border-gray-200 pt-16 pb-16 sm:pt-20 sm:pb-20" style="background-image: url('/images/zenml_light_bg-02.avif')">
+<section class="relative overflow-hidden bg-white bg-cover bg-center border-t border-gray-200 pt-16 pb-16 sm:pt-20 sm:pb-20 scroll-reveal-section" style="background-image: url('/images/zenml_light_bg-02.avif')">
   <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
-    <h2 class="text-3xl font-bold text-gray-900 sm:text-4xl">
-      {INTEGRATIONS_MARQUEE.headline}
-    </h2>
-    <p class="mt-3 text-lg text-gray-600">{INTEGRATIONS_MARQUEE.subheadline}</p>
+    <div class="scroll-slide-top">
+      <h2 class="text-3xl font-bold text-gray-900 sm:text-4xl">
+        {INTEGRATIONS_MARQUEE.headline}
+      </h2>
+      <p class="mt-3 text-lg text-gray-600">{INTEGRATIONS_MARQUEE.subheadline}</p>
+    </div>
   </div>
 
-  <!-- Marquee strip -->
-  <div class="group relative mt-10">
+  <!-- ZenML integrations marquee -->
+  <div class="group relative mt-10 scroll-fade-in stagger-1">
+    <!-- Product label -->
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <p class="mb-4 text-xs font-semibold uppercase tracking-wider text-zenml-500">ZenML — 60+ ML integrations</p>
+    </div>
     <!-- Fade edges -->
     <div class="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-white/80 to-transparent"></div>
     <div class="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-white/80 to-transparent"></div>
@@ -81,8 +93,20 @@ const marqueeItems = [
     </div>
   </div>
 
+  <!-- Kitaru agent frameworks — text pill row -->
+  <div class="mx-auto mt-8 max-w-7xl px-4 sm:px-6 lg:px-8 scroll-fade-in stagger-2">
+    <p class="mb-3 text-xs font-semibold uppercase tracking-wider text-orange-700">Kitaru — agent framework compatible</p>
+    <div class="flex flex-wrap gap-2">
+      {INTEGRATIONS_MARQUEE.agentFrameworks.map((name) => (
+        <span class="inline-flex items-center rounded-md border border-gray-200 bg-white px-3 py-1 text-sm font-medium text-gray-700">
+          {name}
+        </span>
+      ))}
+    </div>
+  </div>
+
   <!-- CTAs -->
-  <div class="mt-10 flex flex-wrap justify-center gap-4">
+  <div class="mt-10 flex flex-wrap justify-center gap-4 scroll-fade-in stagger-2">
     <Button href={INTEGRATIONS_MARQUEE.primaryCta.href} size="lg">
       {INTEGRATIONS_MARQUEE.primaryCta.label}
     </Button>
@@ -106,9 +130,49 @@ const marqueeItems = [
   .group:focus-within .animate-marquee {
     animation-play-state: paused;
   }
+
+  /* Scroll reveal */
+  .scroll-slide-top {
+    opacity: 0;
+    transform: translateY(-24px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  }
+  .scroll-fade-in {
+    opacity: 0;
+    transition: opacity 0.8s ease-out;
+  }
+  .stagger-1 { transition-delay: 0.15s; }
+  .stagger-2 { transition-delay: 0.3s; }
+  .scroll-reveal-section.in-view .scroll-slide-top,
+  .scroll-reveal-section.in-view .scroll-fade-in {
+    opacity: 1;
+    transform: none;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .animate-marquee {
       animation: none;
     }
+    .scroll-slide-top,
+    .scroll-fade-in {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
   }
 </style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.scroll-reveal-section').forEach((section) => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          section.classList.add('in-view');
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1 }
+    );
+    observer.observe(section);
+  });
+</script>
