@@ -1,155 +1,352 @@
 ---
 import { Code } from "astro:components";
 import zenmlLight from "../../../styles/zenml-light.json";
+import {
+  FLOW_EXAMPLES,
+  DEFAULT_FLOW_EXAMPLE_ID,
+  type SpanType,
+  type SpanState,
+  type TimelineSpan,
+} from "../../../lib/two-workspaces/flows-examples";
 
 /**
- * Flows subtab — "Two decorators. That's the whole API." (artboard 93H-0).
- * Left: agent flows list.
- * Right: code panel + 3-node flow diagram side-by-side.
+ * Flows subtab — "Wrap your harness with one line · for deploying agents
+ * at scale." (artboard A3O-0, v2 redesign).
+ *
+ * Interactive: click any row in the AGENT FLOWS list to swap the right
+ * pane to that example. All 5 examples are server-rendered; visibility
+ * is driven by a `data-active-example` attribute on the layout root.
+ * No Preact island — a small scoped script wires the click/keyboard
+ * handlers (same pattern TwoWorkspaces.astro uses for outer tabs).
+ *
+ * Every code excerpt comes from a real Kitaru SDK example (paths
+ * recorded in `flows-examples.ts` under `sourceCitation`).
+ *
+ * Layout:
+ *   Left pane: AGENT FLOWS list, 5 rows with letter-badge icon (active
+ *     row uses orange-400 bg + orange-50 row fill + RUNNING pill; idle
+ *     rows use ink/gray-900 bg + neutral status pill).
+ *   Right pane: header strip (eyebrow + title + context chip), then a
+ *     side-by-side row: code card on the left + execution timeline on
+ *     the right.
+ *   Footer: thin meta strip with runtime + status dot.
  */
-
-type Row = {
-  initial: string;
-  initialTone?: "orange" | "dark" | "yellow" | "orange-faded";
-  name: string;
-  meta: string;
-  selected?: boolean;
-};
-
-type FlowNode = {
-  kind: "flow" | "checkpoint";
-  name: string;
-  status?: "running" | "done" | "pending";
-};
 
 interface Props {
   title: string;
   subheader: string;
   countLabel: string;
-  rows: ReadonlyArray<Row>;
-  fileName: string;
+  /** Per-tab header copy that doesn't change between examples. */
   rightEyebrow: string;
   rightSubhead: string;
-  code: string;
-  flowNodes: ReadonlyArray<FlowNode>;
 }
 
 const {
   title,
   subheader,
   countLabel,
-  rows,
-  fileName,
   rightEyebrow,
   rightSubhead,
-  code,
-  flowNodes,
 } = Astro.props;
 
-const glyphTone = (tone?: Row["initialTone"]) => {
-  if (tone === "dark") return "bg-gray-900 text-white";
-  if (tone === "yellow") return "bg-[#fbbf24] text-stage-fg";
-  if (tone === "orange-faded") return "bg-orange-200 text-orange-800";
-  return "bg-orange-400 text-white";
-};
+const defaultExampleId = DEFAULT_FLOW_EXAMPLE_ID;
 
+/** Bar fill color per span type. Kept inline because these are 4
+ *  distinct tokens — extracting feels like over-abstraction. */
+const barColor = (t: SpanType) =>
+  ({
+    flow: "bg-[#FDD9A8]",      // orange-200, faint parent track
+    llm: "bg-orange-400",
+    tool: "bg-orange-500",
+    checkpoint: "bg-[#9A3412]", // orange-800
+  })[t];
+
+/** Status dot in the timeline row LHS. */
+const dotClass = (s: SpanState) =>
+  s === "running"
+    ? "bg-orange-500"
+    : s === "queued"
+      ? "bg-[#A89B8C]"
+      : "bg-[#308639]"; // small calm green for completed children
+
+const dotRingStyle = (s: SpanState) =>
+  s === "running" ? "box-shadow:0 0 0 3px rgba(249, 115, 22, 0.18)" : "";
+
+/** Live-tick color for running non-parent spans. */
+const liveTickColor = "#C2410C"; // orange-700
+
+/** Whether to render a live tick — only running, non-parent spans. */
+const showLiveTick = (span: TimelineSpan) =>
+  span.state === "running" && !span.parent;
 ---
 
-<div class="grid grid-cols-1 gap-3 lg:grid-cols-[360px_1fr]">
-  {/* Left pane */}
-  <aside class="flex flex-col gap-2 rounded-md border border-gray-200 bg-white p-3">
-    <div class="flex items-start justify-between gap-3 border-b border-gray-100 pb-2">
-      <div class="flex flex-col gap-0.5">
-        <span class="font-mono text-[11px] uppercase leading-[14px] tracking-[0.08em] text-gray-500">
-          {title}
-        </span>
-        <span class="text-[13px] leading-4 text-gray-500">{subheader}</span>
-      </div>
-      <span class="font-mono text-[11px] leading-[14px] text-gray-500">
-        {countLabel}
-      </span>
-    </div>
-
-    <div class="flex flex-col gap-1">
-      {rows.map((row) => (
-        <div
-          class:list={[
-            "flex items-center gap-2.5 rounded-md px-2 py-2",
-            row.selected && "border border-orange-200 bg-orange-50",
-          ]}
-        >
-          <span
-            class:list={[
-              "inline-flex size-7 shrink-0 items-center justify-center rounded-md font-mono text-[13px] font-semibold leading-none",
-              glyphTone(row.initialTone),
-            ]}
-            aria-hidden="true"
-          >
-            {row.initial}
+<div class="flex flex-col gap-3" data-active-example={defaultExampleId}>
+  <div class="grid grid-cols-1 gap-3 lg:grid-cols-[360px_1fr]">
+    {/* Left pane — flows list */}
+    <aside class="flex flex-col rounded-md border border-gray-200 bg-cream-warm p-3.5">
+      <div class="flex items-start justify-between gap-3 border-b border-gray-100 pb-3">
+        <div class="flex flex-col gap-0.5">
+          <span class="font-mono text-[10px] uppercase leading-[14px] tracking-[0.08em] text-gray-500">
+            {title}
           </span>
-          <div class="flex min-w-0 flex-1 flex-col gap-0.5">
-            <span
-              class:list={[
-                "truncate text-[13px] leading-4",
-                row.selected
-                  ? "font-semibold text-orange-600"
-                  : "font-semibold text-gray-900",
-              ]}
-            >
-              {row.name}
-            </span>
-            <span class="truncate font-mono text-[11px] leading-[14px] text-gray-500">
-              {row.meta}
-            </span>
-          </div>
-          {row.selected ? (
-            <button
-              type="button"
-              class="inline-flex size-6 shrink-0 cursor-pointer items-center justify-center rounded-full bg-orange-400 text-white shadow-[0_1px_2px_rgba(15,15,18,0.18)]"
-              aria-label={`Run ${row.name}`}
-            >
-              <svg viewBox="0 0 24 24" class="size-3" fill="currentColor" aria-hidden="true">
-                <path d="M8 5v14l11-7z" />
-              </svg>
-            </button>
-          ) : (
-            <span class="font-mono text-[14px] leading-[14px] text-gray-300">···</span>
-          )}
+          <span class="text-xs leading-4 text-gray-400">{subheader}</span>
         </div>
-      ))}
-    </div>
-  </aside>
-
-  {/* Right pane */}
-  <section class="flex flex-col gap-3 rounded-md border border-gray-200 bg-white p-3">
-    <div class="flex items-start justify-between gap-3 border-b border-gray-100 pb-2">
-      <div class="flex flex-col gap-0.5">
-        <span class="font-mono text-[11px] uppercase leading-[14px] tracking-[0.08em] text-gray-500">
-          {rightEyebrow}
-        </span>
-        <span class="text-[13px] leading-[18px] text-gray-700">{rightSubhead}</span>
-      </div>
-      <span class="inline-flex items-center gap-1.5 rounded-full border border-gray-200 bg-white px-2.5 py-1 font-mono text-[11px] font-medium leading-[14px] text-gray-900">
-        <span class="inline-block size-1.5 rounded-full bg-orange-400" aria-hidden="true"></span>
-        {fileName}
-      </span>
-    </div>
-
-    <div class="flex flex-1 flex-col gap-2 rounded-md border border-gray-100 bg-cream-canvas p-3">
-      <div class="flex items-center gap-1.5">
-        <span class="inline-flex items-center rounded-full border border-orange-200 bg-orange-50 px-2 py-0.5 font-mono text-[10px] font-semibold leading-3 text-orange-600">
-          @flow
-        </span>
-        <span class="inline-flex items-center rounded-full border border-orange-200 bg-orange-50 px-2 py-0.5 font-mono text-[10px] font-semibold leading-3 text-orange-600">
-          @checkpoint
+        <span class="font-mono text-[10px] leading-[14px] tracking-[0.04em] text-gray-400">
+          {countLabel}
         </span>
       </div>
-      <div class="workspace-code min-w-0 flex-1 overflow-x-auto">
-        <Code code={code} lang="python" theme={zenmlLight as any} />
-      </div>
-    </div>
 
-  </section>
+      <div class="flex flex-col pt-2 gap-1">
+        {FLOW_EXAMPLES.map((ex) => (
+          <button
+            type="button"
+            data-flow-row={ex.id}
+            class="kitaru-row flex w-full items-center gap-3 text-left transition-colors hover:bg-[#FDF4EC] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500"
+            aria-pressed={ex.id === defaultExampleId ? "true" : "false"}
+          >
+            <span
+              class="kitaru-row-badge inline-flex size-8 shrink-0 items-center justify-center font-mono text-[13px] font-semibold leading-none text-white"
+              data-flow-row-badge
+              aria-hidden="true"
+            >
+              {ex.rowLetter}
+            </span>
+            <div class="flex min-w-0 flex-1 flex-col gap-0.5">
+              <span
+                class="kitaru-row-name truncate text-[13px] leading-[18px] text-ink"
+                data-flow-row-name
+              >
+                {ex.rowLabel}
+              </span>
+              <span class="kitaru-row-meta truncate font-mono text-[10px] font-normal leading-[14px] text-gray-500">
+                {ex.rowSubtitle}
+              </span>
+            </div>
+            {/* Both pills are rendered; CSS hides the inactive one based on
+                the row's aria-pressed state. Avoids a JS swap. */}
+            <span class="kitaru-pill inline-flex shrink-0 items-center gap-1.5" data-flow-pill="active">
+              <span class="kitaru-pill-dot" aria-hidden="true"></span>
+              <span class="kitaru-pill-text font-mono uppercase">
+                {ex.rowStatusPill.label}
+              </span>
+            </span>
+            <span class="neutral-pill inline-flex shrink-0 items-center rounded-full border border-gray-200 px-2 py-0.75" data-flow-pill="idle">
+              <span class="font-mono text-[9px] font-medium uppercase leading-3 text-gray-600">
+                {ex.rowStatusPill.label}
+              </span>
+            </span>
+          </button>
+        ))}
+      </div>
+    </aside>
+
+    {/* Right pane — all five examples stacked; CSS reveals the active one */}
+    <section class="flex flex-col gap-3.5 rounded-md border border-gray-200 bg-cream-warm p-4">
+      {/* Header strip — eyebrow + subhead are shared across examples;
+          the right chip swaps per example. */}
+      <div class="flex items-start justify-between gap-3 border-b border-gray-100 pb-3">
+        <div class="flex min-w-0 flex-col gap-0.75">
+          <span class="font-mono text-[10px] uppercase leading-[14px] tracking-[0.12em] text-orange-600">
+            {rightEyebrow}
+          </span>
+          <span class="text-sm font-semibold leading-5 text-ink">{rightSubhead}</span>
+        </div>
+        <div class="flow-context-stack relative">
+          {FLOW_EXAMPLES.map((ex) => (
+            <span
+              data-flow-pane={ex.id}
+              data-flow-context-chip
+              class="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-gray-200 bg-white px-2.5 py-1"
+            >
+              <span class="size-1.5 rounded-full bg-orange-500" aria-hidden="true"></span>
+              <span class="font-mono text-[10px] font-medium leading-[14px] text-gray-600">
+                {ex.contextChip}
+              </span>
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* Code + Timeline panes — one panel per example, stacked.
+          The `data-flow-pane` attribute matches up with `data-active-example`
+          on the layout root. */}
+      <div class="flow-example-stack">
+        {FLOW_EXAMPLES.map((ex) => (
+          <div data-flow-pane={ex.id} class="flow-example-pane flex flex-col gap-3.5">
+            <div class="flex flex-col items-stretch gap-3.5 self-stretch lg:flex-row">
+              {/* Code card */}
+              <div class="flex shrink-0 flex-col self-stretch overflow-hidden rounded-md border border-gray-200 bg-cream-lift lg:w-[340px]">
+                <div class="flex items-center gap-2 border-b border-gray-200 bg-[#F4EFE7] px-3 py-2">
+                  <div class="flex gap-1">
+                    <span class="size-2 shrink-0 rounded-full bg-[#E0D5C0]" aria-hidden="true"></span>
+                    <span class="size-2 shrink-0 rounded-full bg-[#E0D5C0]" aria-hidden="true"></span>
+                    <span class="size-2 shrink-0 rounded-full bg-[#E0D5C0]" aria-hidden="true"></span>
+                  </div>
+                  <span class="pl-1.5 font-mono text-[11px] font-medium leading-[14px] text-gray-600">
+                    {ex.codeFilename}
+                  </span>
+                  <span class="flex-1"></span>
+                  <span class="inline-flex items-center gap-1 rounded-full border border-orange-200 bg-orange-50 px-1.75 py-0.5">
+                    <span class="size-1.25 rounded-full bg-orange-500" aria-hidden="true"></span>
+                    <span class="font-mono text-[9px] font-semibold leading-3 tracking-[0.06em] text-orange-600">
+                      KITARU
+                    </span>
+                  </span>
+                </div>
+                <div class="workspace-code min-w-0 flex-1 overflow-x-auto bg-white px-3.5 py-3">
+                  <Code code={ex.codeSource} lang="python" theme={zenmlLight as any} />
+                </div>
+              </div>
+
+              {/* Execution timeline */}
+              <div class="flex flex-1 flex-col overflow-hidden self-stretch rounded-md border border-gray-200 bg-cream-lift">
+                {/* Header: label + summary stripe + legend */}
+                <div class="flex flex-col gap-1.5 px-3.5 pt-3.5">
+                  <div class="flex items-center justify-between gap-3">
+                    <span class="font-sans text-[10px] font-semibold uppercase leading-3 tracking-[0.08em] text-warm-taupe">
+                      Execution timeline
+                    </span>
+                    <div class="flex items-center gap-2.5">
+                      <span class="inline-flex items-center gap-1">
+                        <span class="size-2 shrink-0 rounded-xs bg-[#FDD9A8]" aria-hidden="true"></span>
+                        <span class="font-sans text-[10px] font-medium leading-3 text-warm-taupe">flow</span>
+                      </span>
+                      <span class="inline-flex items-center gap-1">
+                        <span class="size-2 shrink-0 rounded-xs bg-orange-400" aria-hidden="true"></span>
+                        <span class="font-sans text-[10px] font-medium leading-3 text-warm-taupe">llm</span>
+                      </span>
+                      <span class="inline-flex items-center gap-1">
+                        <span class="size-2 shrink-0 rounded-xs bg-orange-500" aria-hidden="true"></span>
+                        <span class="font-sans text-[10px] font-medium leading-3 text-warm-taupe">tool</span>
+                      </span>
+                      <span class="inline-flex items-center gap-1">
+                        <span class="size-2 shrink-0 rounded-xs bg-[#9A3412]" aria-hidden="true"></span>
+                        <span class="font-sans text-[10px] font-medium leading-3 text-warm-taupe">checkpoint</span>
+                      </span>
+                    </div>
+                  </div>
+                  {/* 6-segment summary stripe — purely decorative summary. */}
+                  <div class="flex h-2 overflow-hidden rounded-[3px] bg-warm-taupe-track">
+                    <div class="bg-orange-500" style="width:9%"></div>
+                    <div class="bg-orange-400" style="width:25%"></div>
+                    <div class="bg-[#9A3412]" style="width:0.5%"></div>
+                    <div class="bg-orange-400" style="width:50%"></div>
+                    <div class="bg-[#9A3412]" style="width:0.5%"></div>
+                    <div class="bg-orange-500" style="width:15%"></div>
+                  </div>
+                </div>
+
+                {/* Time axis row — ticks come from the example. */}
+                <div class="flex items-center px-3.5 pt-3.5">
+                  <div class="flex w-[180px] shrink-0 items-center px-1">
+                    <span class="font-sans text-[10px] font-semibold uppercase leading-3 tracking-[0.08em] text-warm-taupe">Span</span>
+                  </div>
+                  <div class="relative h-3.5 flex-1">
+                    {ex.timeline.axisTicks.map((tick, i) => {
+                      const positions = ["left-[0%]", "left-[20%]", "left-[40%]", "left-[60%]", "right-0"];
+                      const translate = i > 0 && i < positions.length - 1 ? "translate-x-[-50%]" : "";
+                      return (
+                        <span
+                          class:list={[
+                            "absolute top-0 w-max font-sans text-[11px] font-medium leading-[14px] text-warm-taupe-light",
+                            positions[i],
+                            translate,
+                          ]}
+                        >
+                          {tick}
+                        </span>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Span rows */}
+                <div class="flex flex-col pb-3.5 px-3.5 pt-1.5">
+                  {ex.timeline.spans.map((span) => {
+                    const isParent = span.parent;
+                    const isQueued = span.state === "queued";
+                    const opacity = isQueued ? 0.35 : isParent ? 0.18 : 1;
+                    return (
+                      <div class="flex h-[26px] shrink-0 items-center">
+                        <div class="flex w-[180px] shrink-0 items-center gap-1.5 px-1">
+                          {/* Indent column: chevron for parents, blank for children */}
+                          <span class="w-2.75 shrink-0">
+                            {isParent && (
+                              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#705C4D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <polyline points="6 9 12 15 18 9" />
+                              </svg>
+                            )}
+                          </span>
+                          <span class="w-3.5 shrink-0">
+                            {isParent && (
+                              <span class="block size-1.5 rounded-[1px] bg-warm-taupe"></span>
+                            )}
+                          </span>
+                          <span
+                            class:list={["size-1.5 shrink-0 rounded-full", dotClass(span.state)]}
+                            style={dotRingStyle(span.state)}
+                            aria-hidden="true"
+                          ></span>
+                          <span
+                            class:list={[
+                              "min-w-0 flex-1 truncate font-mono text-[11px] leading-[14px]",
+                              isParent
+                                ? "font-semibold text-warm-taupe-ink"
+                                : span.state === "running"
+                                  ? "font-semibold text-warm-taupe-ink"
+                                  : isQueued
+                                    ? "font-medium text-warm-taupe"
+                                    : "font-medium text-warm-taupe-dark",
+                            ]}
+                          >
+                            {span.name}
+                          </span>
+                        </div>
+                        <div class="relative h-4 flex-1 px-1">
+                          <div
+                            class:list={[
+                              "absolute top-1 h-2 rounded-[3px]",
+                              barColor(span.type),
+                            ]}
+                            style={`left:calc(${span.leftPct}% + 4px); width:max(3px, ${span.widthPct}%); opacity:${opacity}`}
+                            aria-hidden="true"
+                          ></div>
+                          {showLiveTick(span) && (
+                            <div
+                              class="absolute top-0.5 h-3 w-0.5"
+                              style={`left:calc(${span.leftPct + span.widthPct}% + 3px); opacity:0.6; background-color:${liveTickColor}`}
+                              aria-hidden="true"
+                            ></div>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+
+            {/* Footer meta strip — sits inside the right pane card, per example. */}
+            <div class="flex items-center justify-between gap-3 border-t border-gray-100 pt-2">
+              <span class="font-mono text-[10px] font-medium leading-[14px] tracking-[0.02em] text-gray-500">
+                {ex.footerMeta}
+              </span>
+              <span class="inline-flex items-center gap-1.5">
+                <span
+                  class="size-1.5 rounded-full bg-orange-500"
+                  style="box-shadow:0 0 0 3px rgba(249, 115, 22, 0.15)"
+                  aria-hidden="true"
+                ></span>
+                <span class="font-mono text-[10px] font-medium leading-[14px] text-orange-600">
+                  {ex.timeline.liveLabel ?? "completed"}
+                </span>
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  </div>
 </div>
 
 <style>
@@ -158,10 +355,149 @@ const glyphTone = (tone?: Row["initialTone"]) => {
     padding: 0;
     background: transparent !important;
     font-family: var(--font-mono);
-    font-size: 12px;
-    line-height: 1.7;
+    font-size: 10px;
+    line-height: 16px;
   }
   .workspace-code :global(code) {
     font-family: inherit;
   }
+
+  /* Grid-stack the per-example right-pane panels so they share one cell
+   * (constant card height as you click through rows). */
+  .flow-example-stack {
+    display: grid;
+    grid-template-areas: "stack";
+  }
+  .flow-example-stack > .flow-example-pane {
+    grid-area: stack;
+    min-width: 0;
+    display: none;
+  }
+  [data-active-example="research_agent"] .flow-example-stack > [data-flow-pane="research_agent"],
+  [data-active-example="llm_writer"] .flow-example-stack > [data-flow-pane="llm_writer"],
+  [data-active-example="audit_company"] .flow-example-stack > [data-flow-pane="audit_company"],
+  [data-active-example="wait_for_approval_flow"] .flow-example-stack > [data-flow-pane="wait_for_approval_flow"],
+  [data-active-example="news_scout"] .flow-example-stack > [data-flow-pane="news_scout"] {
+    display: flex;
+  }
+
+  /* Header context chip — same grid-stack trick so only the active chip
+   * is visible. */
+  .flow-context-stack {
+    display: grid;
+    grid-template-areas: "stack";
+  }
+  .flow-context-stack > [data-flow-context-chip] {
+    grid-area: stack;
+    display: none;
+  }
+  [data-active-example="research_agent"] .flow-context-stack > [data-flow-pane="research_agent"],
+  [data-active-example="llm_writer"] .flow-context-stack > [data-flow-pane="llm_writer"],
+  [data-active-example="audit_company"] .flow-context-stack > [data-flow-pane="audit_company"],
+  [data-active-example="wait_for_approval_flow"] .flow-context-stack > [data-flow-pane="wait_for_approval_flow"],
+  [data-active-example="news_scout"] .flow-context-stack > [data-flow-pane="news_scout"] {
+    display: inline-flex;
+  }
+
+  /* Canonical Kitaru row + pill (Paper artboard AP9-0).
+   * Tokens mirror kitaru-compat.css `--kitaru-selected-row-*` and
+   * `--kitaru-pill-*`. */
+  .kitaru-row {
+    border-radius: 8px;
+    padding: 14px;
+    background-color: transparent;
+    border: 1px solid transparent;
+    cursor: pointer;
+  }
+  .kitaru-row[aria-pressed="true"] {
+    background-color: #fff4ec; /* --kitaru-selected-row-bg / orange-50 */
+    border-color: #ffd7b5;      /* --kitaru-selected-row-border */
+    /* Selected: keep inner baseline by subtracting 1px from padding (border
+       grows the row by 1px otherwise). */
+    padding: 13px 13px 13px 13px;
+  }
+  /* Pill swap — selected row shows orange RUNNING; idle rows show the
+     small gray-bordered pill with no dot. */
+  .kitaru-row [data-flow-pill="active"] {
+    display: none;
+  }
+  .kitaru-row [data-flow-pill="idle"] {
+    display: inline-flex;
+  }
+  .kitaru-row[aria-pressed="true"] [data-flow-pill="active"] {
+    display: inline-flex;
+  }
+  .kitaru-row[aria-pressed="true"] [data-flow-pill="idle"] {
+    display: none;
+  }
+  /* Letter badge color — orange-400 on selected, ink elsewhere. */
+  .kitaru-row[aria-pressed="true"] [data-flow-row-badge] {
+    background-color: #fb923c; /* orange-400 */
+  }
+  .kitaru-row [data-flow-row-badge] {
+    background-color: #101828; /* ink */
+  }
+  .kitaru-row-badge {
+    border-radius: 8px;
+  }
+  /* Row name: bumps to semibold on selected. */
+  .kitaru-row[aria-pressed="true"] [data-flow-row-name] {
+    font-weight: 600;
+  }
+  .kitaru-row [data-flow-row-name] {
+    font-weight: 500;
+  }
+
+  .kitaru-pill {
+    border-radius: 999px;
+    padding: 3px 8px;
+    background-color: #fff4ec; /* --kitaru-pill-bg */
+    border: 1px solid #fed7aa; /* --kitaru-pill-border / orange-200 */
+  }
+  .kitaru-pill-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 999px;
+    background-color: #f97316; /* --kitaru-pill-dot / orange-500 */
+    flex-shrink: 0;
+  }
+  .kitaru-pill-text {
+    font-size: 9px;
+    font-weight: 500;
+    line-height: 12px;
+    letter-spacing: 0.02em;
+    color: #c2410c; /* --kitaru-pill-text / orange-700 */
+  }
 </style>
+
+<script>
+  /**
+   * Wire row clicks → swap the active example on the FlowsLayout root.
+   *
+   * Scoped to whichever FlowsLayout instance contains the click target,
+   * so multiple instances (defensive — there's only one in TwoWorkspaces
+   * today) don't cross-talk.
+   */
+  const rowButtons = document.querySelectorAll<HTMLButtonElement>(
+    "[data-flow-row]",
+  );
+
+  const applyExample = (root: HTMLElement, exampleId: string) => {
+    root.dataset.activeExample = exampleId;
+    const rowsInRoot = root.querySelectorAll<HTMLButtonElement>("[data-flow-row]");
+    rowsInRoot.forEach((row) => {
+      row.setAttribute(
+        "aria-pressed",
+        row.dataset.flowRow === exampleId ? "true" : "false",
+      );
+    });
+  };
+
+  rowButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const root = btn.closest<HTMLElement>("[data-active-example]");
+      const id = btn.dataset.flowRow;
+      if (root && id) applyExample(root, id);
+    });
+  });
+</script>

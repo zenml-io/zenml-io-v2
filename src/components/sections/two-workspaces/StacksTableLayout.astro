@@ -1,190 +1,437 @@
 ---
-import { Code } from "astro:components";
-import zenmlLight from "../../../styles/zenml-light.json";
+import {
+  STACK_EXAMPLES,
+  DEFAULT_STACK_EXAMPLE_ID,
+} from "../../../lib/two-workspaces/stacks-examples";
 
 /**
- * Layout for the Stacks subtab — table of registered stacks on the
- * left, same Pipelines code panel on the right.
+ * StacksTableLayout — TwoWorkspaces v2 · ZenML · artboard A3K-0.
  *
- * Mirrors ListCodeLayout's two-column structure (used by Pipelines /
- * Flows) so the Stacks subtab reads as a peer view: same skeleton,
- * just a denser left pane.
+ * "6 stacks · one pipeline definition"
+ * "Swap orchestrator, store, tracker — same pipeline code."
+ *
+ * Interactivity:
+ *   Left pane: clickable STACKS list — 6 rows, each with a letter badge,
+ *   stack name, orchestrator subtitle, and idle/active status pill.
+ *   Clicking a row sets `data-active-example` on the layout root; CSS
+ *   attribute selectors highlight the matching table row in the right pane
+ *   and update the CLI commands in the REGISTER THE STACK band.
+ *   No Preact island — pure DOM + scoped script (same pattern as
+ *   PipelinesLayout.astro).
+ *
+ * Layout (mirrors artboard exactly):
+ *   Root: flex flex-col gap-3 → grid grid-cols-[376px_1fr]
+ *   Left: border card — eyebrow + title + column headers + 6 clickable rows
+ *   Right: border card — eyebrow + title + "● N COMPONENTS" pill, then a
+ *     6-row table (header + rows), then spacer, then dark CLI band.
+ *
+ * Selected-row spec (HARD RAIL — no thick left border antipattern):
+ *   Every row has `border: 1px solid transparent` by default (no layout
+ *   shift). Selected: background zenml-50, border-color zenml-300,
+ *   label font-weight 600. Matches PipelinesLayout exactly.
  */
-
-type StackRow = {
-  initial: string;
-  name: string;
-  orchestrator: string;
-  store: string;
-  tracker: string;
-  registry: string;
-  selected?: boolean;
-};
-
-interface Props {
-  tabId: "zenml" | "kitaru";
-  title: string;
-  subtitle: string;
-  countLabel: string;
-  columns: ReadonlyArray<string>;
-  rows: ReadonlyArray<StackRow>;
-  cliLabel: string;
-  cliCommand: string;
-  codeTitle: string;
-  codeFile: string;
-  code: string;
-}
-
-const {
-  tabId,
-  title,
-  subtitle,
-  countLabel,
-  columns,
-  rows,
-  cliLabel,
-  cliCommand,
-  codeTitle,
-  codeFile,
-  code,
-} = Astro.props;
-
-const brandBg = tabId === "zenml" ? "bg-zenml-50" : "bg-orange-50";
-const brandBorder =
-  tabId === "zenml" ? "border-zenml-300" : "border-orange-300";
-const brandGlyphBg = tabId === "zenml" ? "bg-zenml-500" : "bg-orange-400";
-const brandText = tabId === "zenml" ? "text-zenml-600" : "text-orange-600";
-const statusDotClass =
-  tabId === "zenml" ? "bg-success-500" : "bg-orange-400";
 ---
 
-<div class="grid grid-cols-1 gap-3 lg:grid-cols-2">
-  {/* Left pane — stacks table */}
-  <div class="flex flex-col gap-2 rounded-md border border-gray-200 bg-white p-3">
-    <div class="flex items-start justify-between gap-3">
-      <div class="flex flex-col">
-        <span class="font-mono text-[11px] uppercase leading-[14px] tracking-[0.08em] text-gray-500">
-          {title}
+<div
+  class="stacks-layout flex flex-col gap-3"
+  data-active-example={DEFAULT_STACK_EXAMPLE_ID}
+>
+  <div class="grid grid-cols-1 gap-3 lg:grid-cols-[376px_1fr]">
+
+    {/* ------------------------------------------------------------------ */}
+    {/* Left pane — clickable stacks list                                   */}
+    {/* ------------------------------------------------------------------ */}
+    <aside
+      class="flex flex-col gap-3.5 rounded-md border border-gray-200 bg-white p-[18px]"
+    >
+      {/* Header: eyebrow + title */}
+      <div class="flex flex-col gap-1">
+        <span
+          class="font-mono text-[11px] font-semibold uppercase leading-[14px] tracking-[0.08em] text-gray-500"
+        >
+          Stacks
         </span>
-        <span class="text-[13px] leading-[18px] text-gray-700">
-          {subtitle}
+        <span
+          class="text-sm font-semibold leading-5 text-gray-900"
+          style="font-family: 'Plus Jakarta Sans', system-ui, sans-serif;"
+        >
+          6 stacks · one pipeline definition
         </span>
       </div>
-      <span class="font-mono text-[11px] leading-[14px] text-gray-500">
-        {countLabel}
-      </span>
-    </div>
 
-    {/* Column headers */}
-    <div class="grid grid-cols-[26px_minmax(0,1.6fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)] items-center gap-x-2 border-b border-gray-100 px-2 pb-1.5 font-mono text-[10px] uppercase leading-3 tracking-[0.08em] text-gray-400">
-      <span></span>
-      <span>{columns[0]}</span>
-      <span>{columns[1]}</span>
-      <span>{columns[2]}</span>
-      <span>{columns[3]}</span>
-      <span>{columns[4]}</span>
-    </div>
-
-    {/* Rows */}
-    <div class="flex flex-col gap-0.5">
-      {rows.slice(0, 3).map((row) => (
-        <div
-          class:list={[
-            "grid grid-cols-[26px_minmax(0,1.6fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)] items-center gap-x-2 rounded-md px-2 py-2",
-            row.selected && `border ${brandBorder} ${brandBg}`,
-          ]}
+      {/* Column headers */}
+      <div
+        class="flex items-center border-b border-gray-100 pb-1.5 pl-1 pr-1"
+      >
+        <span
+          class="flex-[1.6] font-mono text-[10px] font-semibold uppercase leading-3 tracking-[0.08em] text-gray-300"
         >
+          Stack
+        </span>
+        <span
+          class="flex-1 text-right font-mono text-[10px] font-semibold uppercase leading-3 tracking-[0.08em] text-gray-300"
+        >
+          Active
+        </span>
+      </div>
+
+      {/* Rows */}
+      <div class="flex flex-col gap-0.5">
+        {STACK_EXAMPLES.map((stack) => {
+          const isActive = stack.status === "active";
+          return (
+            <button
+              type="button"
+              data-example-id={stack.id}
+              data-stack-row
+              aria-label={`Select ${stack.name} stack`}
+              class="stack-row group flex w-full cursor-pointer items-center gap-2.5 rounded-md px-2 py-2 text-left transition-colors hover:bg-gray-50"
+            >
+              {/* Letter badge */}
+              {isActive ? (
+                <span
+                  class="stack-row-badge-active inline-flex size-[22px] shrink-0 items-center justify-center rounded-[5px] bg-zenml-500"
+                  aria-hidden="true"
+                >
+                  <span class="font-mono text-[10px] font-bold leading-3 text-white">
+                    {stack.badge}
+                  </span>
+                </span>
+              ) : (
+                <span
+                  class="stack-row-badge-idle inline-flex size-[22px] shrink-0 items-center justify-center rounded-[5px] border border-gray-200 bg-gray-50"
+                  aria-hidden="true"
+                >
+                  <span class="font-mono text-[10px] font-bold leading-3 text-gray-600">
+                    {stack.badge}
+                  </span>
+                </span>
+              )}
+
+              {/* Name + subtitle */}
+              <div class="flex min-w-0 flex-[1.6] flex-col gap-px">
+                <span
+                  class="stack-row-label truncate text-[13px] leading-[18px] text-gray-900"
+                  style="font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-weight: 600;"
+                >
+                  {stack.name}
+                </span>
+                <span
+                  class:list={[
+                    "truncate font-mono text-[10.5px] leading-[14px]",
+                    isActive ? "text-zenml-600" : "text-gray-400",
+                  ]}
+                >
+                  {stack.orchestratorLabel}
+                </span>
+              </div>
+
+              {/* Status column */}
+              {isActive ? (
+                <span class="stack-row-active-pill inline-flex shrink-0 items-center gap-1 text-right">
+                  <span
+                    class="size-1.5 rounded-full bg-zenml-500"
+                    aria-hidden="true"
+                  ></span>
+                  <span
+                    class="text-[11px] font-semibold leading-[14px] text-zenml-600"
+                    style="font-family: 'Plus Jakarta Sans', system-ui, sans-serif;"
+                  >
+                    active
+                  </span>
+                </span>
+              ) : (
+                <span
+                  class="stack-row-idle-status shrink-0 text-right text-[11px] font-medium leading-[14px] text-gray-400"
+                  style="font-family: 'Plus Jakarta Sans', system-ui, sans-serif;"
+                >
+                  idle
+                </span>
+              )}
+            </button>
+          );
+        })}
+      </div>
+    </aside>
+
+    {/* ------------------------------------------------------------------ */}
+    {/* Right pane — Stack Composer                                         */}
+    {/* ------------------------------------------------------------------ */}
+    <section
+      class="flex flex-col gap-3.5 rounded-md border border-gray-200 bg-white px-5 py-[18px]"
+    >
+      {/* Header: eyebrow + title + "● N COMPONENTS" pill */}
+      <div class="flex items-end justify-between gap-3">
+        <div class="flex flex-col gap-1">
           <span
-            class:list={[
-              "inline-flex size-[22px] shrink-0 items-center justify-center rounded-md font-mono text-[11px] font-semibold leading-none",
-              row.selected
-                ? `${brandGlyphBg} text-white`
-                : "bg-gray-100 text-gray-500",
-            ]}
-            aria-hidden="true"
+            class="font-mono text-[10px] font-medium uppercase leading-[14px] tracking-[0.1em] text-zenml-500"
           >
-            {row.initial}
+            Stack composer
           </span>
           <span
-            class:list={[
-              "truncate font-sans text-[13px] font-medium leading-4 text-gray-900",
-              row.selected && `font-semibold ${brandText}`,
-            ]}
+            class="text-base font-semibold leading-[22px] text-gray-900"
+            style="font-family: 'Plus Jakarta Sans', system-ui, sans-serif;"
           >
-            {row.name}
-          </span>
-          <span
-            class:list={[
-              "truncate font-mono text-[13px] leading-4",
-              row.selected ? brandText : "text-gray-600",
-            ]}
-          >
-            {row.orchestrator}
-          </span>
-          <span
-            class:list={[
-              "truncate font-mono text-[13px] leading-4",
-              row.selected ? brandText : "text-gray-600",
-            ]}
-          >
-            {row.store}
-          </span>
-          <span
-            class:list={[
-              "truncate font-mono text-[13px] leading-4",
-              row.selected ? brandText : "text-gray-600",
-            ]}
-          >
-            {row.tracker}
-          </span>
-          <span
-            class:list={[
-              "truncate font-mono text-[13px] leading-4",
-              row.selected ? brandText : "text-gray-600",
-            ]}
-          >
-            {row.registry}
+            Swap orchestrator, store, tracker — same pipeline code.
           </span>
         </div>
+        <span
+          class="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-zenml-100 bg-zenml-50 px-2 py-1"
+        >
+          <span
+            class="size-[5px] rounded-full bg-zenml-500"
+            aria-hidden="true"
+          ></span>
+          <span
+            class="font-mono text-[10.5px] font-semibold uppercase leading-[14px] tracking-[0.04em] text-zenml-600"
+          >
+            5 components
+          </span>
+        </span>
+      </div>
+
+      {/* Composer table — scrolls horizontally below lg so the 5 columns
+          stay readable instead of cramping. */}
+      <div class="overflow-x-auto rounded-md border border-gray-200">
+        {/* Table header */}
+        <div
+          class="flex min-w-[560px] items-center border-b border-gray-200 bg-gray-50 px-3.5 py-2.5"
+        >
+          <span
+            class="flex-[1.4] font-mono text-[10px] font-semibold uppercase leading-3 tracking-[0.08em] text-gray-400 min-w-0"
+          >
+            Stack
+          </span>
+          <span
+            class="flex-1 font-mono text-[10px] font-semibold uppercase leading-3 tracking-[0.08em] text-gray-400 min-w-0"
+          >
+            Orchestrator
+          </span>
+          <span
+            class="flex-1 font-mono text-[10px] font-semibold uppercase leading-3 tracking-[0.08em] text-gray-400 min-w-0"
+          >
+            Artifact store
+          </span>
+          <span
+            class="flex-1 font-mono text-[10px] font-semibold uppercase leading-3 tracking-[0.08em] text-gray-400 min-w-0"
+          >
+            Container reg
+          </span>
+          <span
+            class="flex-1 font-mono text-[10px] font-semibold uppercase leading-3 tracking-[0.08em] text-gray-400 min-w-0"
+          >
+            Tracker
+          </span>
+        </div>
+
+        {/* Table rows — all rendered, selected row highlighted via CSS */}
+        {STACK_EXAMPLES.map((stack, idx) => {
+          const isLast = idx === STACK_EXAMPLES.length - 1;
+          return (
+            <div
+              data-example-id={stack.id}
+              class:list={[
+                "stack-table-row flex min-w-[560px] items-center px-3.5 py-3",
+                !isLast && "border-b border-gray-100",
+              ]}
+            >
+              {/* Stack name cell with dot indicator */}
+              <div class="flex min-w-0 flex-[1.4] items-center gap-2">
+                <span
+                  class="stack-table-dot size-[5px] shrink-0 rounded-full bg-gray-300"
+                  aria-hidden="true"
+                ></span>
+                <span
+                  class="stack-table-name text-[13px] font-semibold leading-[18px] text-gray-900"
+                  style="font-family: 'Plus Jakarta Sans', system-ui, sans-serif;"
+                >
+                  {stack.name}
+                </span>
+              </div>
+              {/* Orchestrator */}
+              <span
+                class="stack-table-cell min-w-0 flex-1 font-mono text-[11.5px] leading-4 text-gray-600"
+              >
+                {stack.orchestrator.label}
+              </span>
+              {/* Artifact store */}
+              <span
+                class="stack-table-cell min-w-0 flex-1 font-mono text-[11.5px] leading-4 text-gray-600"
+              >
+                {stack.artifactStore.label}
+              </span>
+              {/* Container registry */}
+              <span
+                class="stack-table-cell min-w-0 flex-1 font-mono text-[11.5px] leading-4 text-gray-600"
+              >
+                {stack.containerRegistry.label}
+              </span>
+              {/* Experiment tracker */}
+              <span
+                class="stack-table-cell min-w-0 flex-1 font-mono text-[11.5px] leading-4 text-gray-600"
+              >
+                {stack.experimentTracker.label}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Spacer — pushes CLI band to bottom */}
+      <div class="flex-1"></div>
+
+      {/* REGISTER THE STACK — dark CLI band */}
+      {/* One block per example; CSS swaps which command set is visible */}
+      {STACK_EXAMPLES.map((stack) => (
+        <div
+          data-example-id={stack.id}
+          class="stack-cli-band rounded-md border border-[#2A1F4A] bg-[#0F0F12] px-4 py-3.5"
+        >
+          <div class="mb-2 flex items-center justify-between">
+            <span
+              class="font-mono text-[10px] font-semibold uppercase leading-3 tracking-[0.08em] text-gray-500"
+            >
+              Register the stack
+            </span>
+            <span
+              class="font-mono text-[10px] font-semibold uppercase leading-3 tracking-[0.04em] text-zenml-300"
+            >
+              {stack.registerCommands.length === 1
+                ? "1 command"
+                : `${stack.registerCommands.length} commands`}
+            </span>
+          </div>
+          {/* min-height holds a 3-line slot so switching to the single-line
+              local-dev stack doesn't snap the widget height. */}
+          <div class="flex min-h-[66px] flex-col gap-1.5">
+            {stack.registerCommands.map((cmd) => (
+              <div class="flex items-baseline gap-2">
+                <span
+                  class="shrink-0 font-mono text-[13px] font-semibold leading-[18px] text-zenml-500"
+                >
+                  $
+                </span>
+                <span
+                  class="font-mono text-[13px] font-medium leading-[18px] text-white break-words"
+                >
+                  {cmd}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
       ))}
-    </div>
-
-    {/* CLI hint */}
-    <div class="mt-auto flex flex-col gap-1 rounded-md border border-gray-100 bg-cream-canvas p-3">
-      <span class="font-mono text-[10px] uppercase leading-3 tracking-[0.08em] text-gray-500">
-        {cliLabel}
-      </span>
-      <span class="font-mono text-[13px] leading-[18px] text-gray-900">
-        {cliCommand}
-      </span>
-    </div>
-  </div>
-
-  {/* Right pane — code (matches Pipelines panel exactly) */}
-  <div class="flex flex-col gap-3 rounded-md border border-gray-200 bg-white p-3">
-    <div class="flex items-center justify-between">
-      <span class="text-[13px] text-gray-500">{codeTitle}</span>
-      <span class="inline-block rounded-md border border-gray-200 bg-gray-50 px-2.5 py-1 font-mono text-[11px] leading-[14px] text-gray-600">
-        {codeFile}
-      </span>
-    </div>
-    <div class="workspace-code min-w-0 flex-1 overflow-x-auto">
-      <Code code={code} lang="python" theme={zenmlLight as any} />
-    </div>
-
+    </section>
   </div>
 </div>
 
 <style>
-  .workspace-code :global(pre) {
-    margin: 0;
-    padding: 0;
-    background: transparent !important;
-    font-family: var(--font-mono);
-    font-size: 13px;
-    line-height: 1.55;
+  /* -----------------------------------------------------------------------
+   * SELECTED ROW SPEC (PipelinesLayout pattern — copy exactly):
+   *   - Every left-list row carries border: 1px solid transparent by default
+   *     (reserves box → no layout shift when selected border appears).
+   *   - Selected: bg zenml-50, border-color zenml-300, label font-weight 600.
+   *   - No thick left rail — that is a banned antipattern in this codebase.
+   * --------------------------------------------------------------------- */
+  .stack-row[data-example-id] {
+    border: 1px solid transparent;
   }
-  .workspace-code :global(code) {
-    font-family: inherit;
+
+  /* Selected left-list row: zenml-50 fill, zenml-300 border */
+  .stacks-layout[data-active-example="local-dev"]       .stack-row[data-example-id="local-dev"],
+  .stacks-layout[data-active-example="kubernetes-prod"] .stack-row[data-example-id="kubernetes-prod"],
+  .stacks-layout[data-active-example="vertex-gcp"]      .stack-row[data-example-id="vertex-gcp"],
+  .stacks-layout[data-active-example="sagemaker-aws"]   .stack-row[data-example-id="sagemaker-aws"],
+  .stacks-layout[data-active-example="airflow-staging"] .stack-row[data-example-id="airflow-staging"],
+  .stacks-layout[data-active-example="azureml-eu"]      .stack-row[data-example-id="azureml-eu"] {
+    background: var(--color-zenml-50);
+    border-color: var(--color-zenml-300);
+  }
+
+  /* Selected row label: boost to semibold */
+  .stacks-layout[data-active-example="local-dev"]       .stack-row[data-example-id="local-dev"]       .stack-row-label,
+  .stacks-layout[data-active-example="kubernetes-prod"] .stack-row[data-example-id="kubernetes-prod"] .stack-row-label,
+  .stacks-layout[data-active-example="vertex-gcp"]      .stack-row[data-example-id="vertex-gcp"]      .stack-row-label,
+  .stacks-layout[data-active-example="sagemaker-aws"]   .stack-row[data-example-id="sagemaker-aws"]   .stack-row-label,
+  .stacks-layout[data-active-example="airflow-staging"] .stack-row[data-example-id="airflow-staging"] .stack-row-label,
+  .stacks-layout[data-active-example="azureml-eu"]      .stack-row[data-example-id="azureml-eu"]      .stack-row-label {
+    font-weight: 600;
+  }
+
+  /* -----------------------------------------------------------------------
+   * TABLE ROW HIGHLIGHTING — selected stack row in the composer table
+   * Selected: zenml-50 background, bottom border uses zenml-100 (soft divider)
+   * --------------------------------------------------------------------- */
+  .stacks-layout[data-active-example="local-dev"]       .stack-table-row[data-example-id="local-dev"],
+  .stacks-layout[data-active-example="kubernetes-prod"] .stack-table-row[data-example-id="kubernetes-prod"],
+  .stacks-layout[data-active-example="vertex-gcp"]      .stack-table-row[data-example-id="vertex-gcp"],
+  .stacks-layout[data-active-example="sagemaker-aws"]   .stack-table-row[data-example-id="sagemaker-aws"],
+  .stacks-layout[data-active-example="airflow-staging"] .stack-table-row[data-example-id="airflow-staging"],
+  .stacks-layout[data-active-example="azureml-eu"]      .stack-table-row[data-example-id="azureml-eu"] {
+    background: var(--color-zenml-50);
+    border-bottom-color: #ece5fb;
+  }
+
+  /* Selected table row: dot turns purple, name + cells turn zenml-700 semibold */
+  .stacks-layout[data-active-example="local-dev"]       .stack-table-row[data-example-id="local-dev"]       .stack-table-dot,
+  .stacks-layout[data-active-example="kubernetes-prod"] .stack-table-row[data-example-id="kubernetes-prod"] .stack-table-dot,
+  .stacks-layout[data-active-example="vertex-gcp"]      .stack-table-row[data-example-id="vertex-gcp"]      .stack-table-dot,
+  .stacks-layout[data-active-example="sagemaker-aws"]   .stack-table-row[data-example-id="sagemaker-aws"]   .stack-table-dot,
+  .stacks-layout[data-active-example="airflow-staging"] .stack-table-row[data-example-id="airflow-staging"] .stack-table-dot,
+  .stacks-layout[data-active-example="azureml-eu"]      .stack-table-row[data-example-id="azureml-eu"]      .stack-table-dot {
+    background-color: var(--color-zenml-500);
+  }
+
+  .stacks-layout[data-active-example="local-dev"]       .stack-table-row[data-example-id="local-dev"]       .stack-table-name,
+  .stacks-layout[data-active-example="kubernetes-prod"] .stack-table-row[data-example-id="kubernetes-prod"] .stack-table-name,
+  .stacks-layout[data-active-example="vertex-gcp"]      .stack-table-row[data-example-id="vertex-gcp"]      .stack-table-name,
+  .stacks-layout[data-active-example="sagemaker-aws"]   .stack-table-row[data-example-id="sagemaker-aws"]   .stack-table-name,
+  .stacks-layout[data-active-example="airflow-staging"] .stack-table-row[data-example-id="airflow-staging"] .stack-table-name,
+  .stacks-layout[data-active-example="azureml-eu"]      .stack-table-row[data-example-id="azureml-eu"]      .stack-table-name {
+    font-weight: 600;
+    color: var(--color-zenml-900, #101828);
+  }
+
+  .stacks-layout[data-active-example="local-dev"]       .stack-table-row[data-example-id="local-dev"]       .stack-table-cell,
+  .stacks-layout[data-active-example="kubernetes-prod"] .stack-table-row[data-example-id="kubernetes-prod"] .stack-table-cell,
+  .stacks-layout[data-active-example="vertex-gcp"]      .stack-table-row[data-example-id="vertex-gcp"]      .stack-table-cell,
+  .stacks-layout[data-active-example="sagemaker-aws"]   .stack-table-row[data-example-id="sagemaker-aws"]   .stack-table-cell,
+  .stacks-layout[data-active-example="airflow-staging"] .stack-table-row[data-example-id="airflow-staging"] .stack-table-cell,
+  .stacks-layout[data-active-example="azureml-eu"]      .stack-table-row[data-example-id="azureml-eu"]      .stack-table-cell {
+    color: var(--color-zenml-600);
+    font-weight: 600;
+  }
+
+  /* -----------------------------------------------------------------------
+   * CLI BAND — only the selected stack's CLI band is visible
+   * --------------------------------------------------------------------- */
+  .stack-cli-band[data-example-id] {
+    display: none;
+  }
+
+  .stacks-layout[data-active-example="local-dev"]       .stack-cli-band[data-example-id="local-dev"],
+  .stacks-layout[data-active-example="kubernetes-prod"] .stack-cli-band[data-example-id="kubernetes-prod"],
+  .stacks-layout[data-active-example="vertex-gcp"]      .stack-cli-band[data-example-id="vertex-gcp"],
+  .stacks-layout[data-active-example="sagemaker-aws"]   .stack-cli-band[data-example-id="sagemaker-aws"],
+  .stacks-layout[data-active-example="airflow-staging"] .stack-cli-band[data-example-id="airflow-staging"],
+  .stacks-layout[data-active-example="azureml-eu"]      .stack-cli-band[data-example-id="azureml-eu"] {
+    display: block;
   }
 </style>
+
+<script>
+  /* Row-click handler — sets `data-active-example` on the layout root.
+     CSS attribute selectors take care of: highlighting the selected left-list
+     row, tinting the matching table row purple, and showing the correct CLI
+     command. Pure DOM, no Preact island. Same pattern as PipelinesLayout. */
+  const layouts = document.querySelectorAll<HTMLElement>(".stacks-layout");
+  layouts.forEach((layout) => {
+    const rows = layout.querySelectorAll<HTMLButtonElement>("[data-stack-row]");
+    rows.forEach((row) => {
+      row.addEventListener("click", () => {
+        const id = row.dataset.exampleId;
+        if (id) layout.dataset.activeExample = id;
+      });
+    });
+  });
+</script>

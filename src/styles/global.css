@@ -256,6 +256,15 @@ html { scroll-behavior: smooth; }
   --color-cream-canvas: #fafaf7;  /* widget inner ground */
   --color-cream-page:   #faf5e6;  /* baseline column in Replay */
   --color-cream-paper:  #f5f4ef;
+  --color-cream-warm:   #FAF8F4;  /* v2-Flows artboard ground (warmer than cream-canvas) */
+  --color-cream-lift:   #FEFCF8;  /* lighter cream — Flows timeline cards lift off the cream-warm ground */
+
+  /* === Warm-taupe scale — Kitaru timeline labels (v2-Flows artboard A3O-0) === */
+  --color-warm-taupe:        #988573;  /* timeline label color */
+  --color-warm-taupe-dark:   #705C4D;  /* span name color */
+  --color-warm-taupe-light:  #A89B8C;  /* tick / muted */
+  --color-warm-taupe-ink:    #2E2016;  /* parent span text (e.g. report_agent / draft) */
+  --color-warm-taupe-track:  #F2E9E2;  /* segmented summary stripe ground */
 
   /* === Destructive ramp (TwoWorkspaces audit §kitaru.checkpoints) === */
   --color-error-50:  #fef2f2;

@@ -1,271 +1,530 @@
 ---
 /**
- * Checkpoints subtab — "Resume from any checkpoint" (artboard 96B-0).
- * Left: recent runs with progress bars.
- * Right: 8-step timeline with rate-limit→resume arc, then paired failure + resume cards.
+ * CheckpointsLayout — TwoWorkspaces v2 · Kitaru · artboard A3P-0.
+ *
+ * STATIC port — no interactivity, no JS, single state.
+ *
+ * Layout:
+ *   Left pane: RECENT RUNS list — 5 rows with letter badge, run name,
+ *     subtitle, status pill. Selected row uses orange-50 bg + #FFD7B5
+ *     border + RESUMED pill (orange). Idle rows use ink bg + neutral pill.
+ *
+ *   Right pane: header strip (eyebrow + title + context chip), then a
+ *     white card containing the EXECUTION TIMELINE — horizontal circular-
+ *     node track with 8 nodes (hollow / done / failure / resume / pending)
+ *     and a dashed rate-limit arc above the failure→resume span. Then a
+ *     paired failure card + resume card (with CLI line). Footer meta strip.
+ *
+ * The circular-node timeline is bespoke to this tab — built as inline SVG
+ * arcs and HTML nodes here. No shared component extracted.
+ *
+ * Data: src/lib/two-workspaces/checkpoints-data.ts (all copy + node list).
  */
 
-type Row = {
-  initial: string;
-  initialTone?: "orange" | "dark" | "yellow";
-  name: string;
-  runId: string;
-  meta: string;
-  statusPill?: { label: string; tone: "warning" | "success" | "neutral" };
-  progress: { done: number; total: number };
-  statusDot: "success" | "warning";
-  selected?: boolean;
-};
+import { CHECKPOINTS_DATA } from "../../../lib/two-workspaces/checkpoints-data";
 
-type CheckpointMark = {
-  kind: "done" | "failed" | "resume" | "pending";
-  label?: string;
-  index: number; // 1-based for the bottom label
-};
+const d = CHECKPOINTS_DATA;
 
-interface Props {
-  title: string;
-  subheader: string;
-  countLabel: string;
-  rows: ReadonlyArray<Row>;
-  rightEyebrow: string;
-  rightSubhead: string;
-  recoveredPill: string;
-  marks: ReadonlyArray<CheckpointMark>;
-  failureCard: { eyebrow: string; timestamp: string; message: string; subtext: string };
-  resumeCard: {
-    eyebrow: string;
-    timestamp: string;
-    message: string;
-    subtext: string;
-    cliPrefix: string;
-    cliArgs: string;
+/** Pill tone map for status pills on non-selected rows */
+const idlePillStyle = (status: string) => {
+  if (status === "ACTIVE") {
+    return {
+      bg: "#FFFFFF",
+      border: "#E7E2D6",
+      dot: "#101828",
+      text: "#101828",
+    };
+  }
+  if (status === "PAUSED") {
+    return {
+      bg: "#FFFFFF",
+      border: "#E7E2D6",
+      dot: "#B6AC97",
+      text: "#7A6F5C",
+    };
+  }
+  // IDLE
+  return {
+    bg: "#FFFFFF",
+    border: "#E7E2D6",
+    dot: "#B6AC97",
+    text: "#7A6F5C",
   };
-}
-
-const {
-  title,
-  subheader,
-  countLabel,
-  rows,
-  rightEyebrow,
-  rightSubhead,
-  recoveredPill,
-  marks,
-  failureCard,
-  resumeCard,
-} = Astro.props;
-
-const glyphTone = (tone?: Row["initialTone"]) => {
-  if (tone === "dark") return "bg-gray-900 text-white";
-  if (tone === "yellow") return "bg-[#fbbf24] text-stage-fg";
-  return "bg-orange-400 text-white";
 };
 
-const pillClass = (tone?: "warning" | "success" | "neutral") => {
-  if (tone === "warning") return "bg-stage-bg text-stage-fg";
-  if (tone === "success") return "bg-success-50 text-success-700";
-  return "bg-gray-100 text-gray-600";
-};
-
-const dotClass = (s: Row["statusDot"]) =>
-  s === "success" ? "bg-success-500" : "bg-[#fbbf24]";
-
-// SVG horizontal positions for the 8 checkpoint marks (x coordinate)
-const STEP_X = [40, 130, 220, 325, 430, 520, 615, 710];
+/**
+ * Node layout note:
+ * The track is evenly spaced (justify-between) across the full width.
+ * Arc positions are hard-coded in the SVG viewBox coordinates
+ * (failure = slot 3/7, resume = slot 4/7 of the 700-unit track).
+ * Matches artboard: failure at index 3 (llm.write), resume at index 4.
+ */
 ---
 
-<div class="grid grid-cols-1 gap-3 lg:grid-cols-[360px_1fr]">
-  {/* Left pane — recent runs */}
-  <aside class="flex flex-col gap-2 rounded-md border border-gray-200 bg-white p-3">
-    <div class="flex items-start justify-between gap-3 border-b border-gray-100 pb-2">
-      <div class="flex flex-col gap-0.5">
-        <span class="font-mono text-[11px] uppercase leading-[14px] tracking-[0.08em] text-gray-500">
-          {title}
-        </span>
-        <span class="text-[13px] leading-4 text-gray-500">{subheader}</span>
-      </div>
-      <span class="font-mono text-[11px] leading-[14px] text-gray-500">
-        {countLabel}
-      </span>
-    </div>
+<div class="flex flex-col gap-3">
+  <div class="grid grid-cols-1 gap-3 lg:grid-cols-[360px_1fr]">
 
-    <div class="flex flex-col gap-1">
-      {rows.map((row) => (
-        <div
-          class:list={[
-            "flex flex-col gap-1.5 rounded-md px-2 py-2",
-            row.selected && "border border-orange-200 bg-orange-50",
-          ]}
-        >
-          <div class="flex items-center gap-2.5">
-            <span
-              class:list={[
-                "inline-flex size-7 shrink-0 items-center justify-center rounded-md font-mono text-[13px] font-semibold leading-none",
-                glyphTone(row.initialTone),
-              ]}
-              aria-hidden="true"
-            >
-              {row.initial}
-            </span>
-            <div class="flex min-w-0 flex-1 flex-col gap-0.5">
-              <div class="flex items-center gap-1.5">
-                <span class:list={[
-                  "truncate text-[13px] font-semibold leading-4",
-                  row.selected ? "text-orange-600" : "text-gray-900",
-                ]}>
-                  {row.name}
-                </span>
-                <span class="font-mono text-[10px] leading-3 text-gray-400">{row.runId}</span>
-              </div>
-              <span class="truncate font-mono text-[11px] leading-[14px] text-gray-500">
-                {row.meta}
-              </span>
-            </div>
-            <span class:list={["inline-block size-1.5 shrink-0 rounded-full", dotClass(row.statusDot)]} aria-hidden="true"></span>
-          </div>
-
-          <div class="flex items-center gap-2">
-            <div class="relative h-1 flex-1 overflow-hidden rounded-full bg-gray-100">
-              <div
-                class:list={[
-                  "absolute inset-y-0 left-0 rounded-full",
-                  row.selected ? "bg-gray-400" : "bg-gray-300",
-                ]}
-                style={`width:${Math.round((row.progress.done / row.progress.total) * 100)}%`}
-              ></div>
-            </div>
-            {row.statusPill && (
-              <span class:list={[
-                "inline-flex shrink-0 items-center rounded-full px-1.5 py-0.5 font-mono text-[10px] font-semibold uppercase leading-3 tracking-wide",
-                pillClass(row.statusPill.tone),
-              ]}>
-                {row.statusPill.label}
-              </span>
-            )}
-            <span class="shrink-0 font-mono text-[10px] leading-3 text-gray-500">
-              {row.progress.done}/{row.progress.total}
-            </span>
-          </div>
+    {/* ── Left pane — RECENT RUNS ── */}
+    <aside class="flex flex-col rounded-md border border-[#EFE8DC] bg-cream-warm p-5" style="gap:14px">
+      {/* Header */}
+      <div class="flex items-start justify-between gap-3">
+        <div class="flex flex-col gap-0.5">
+          <span
+            class="font-sans text-[10px] font-semibold uppercase leading-3 tracking-[0.08em]"
+            style="color:#7A6F5C; font-family:'Plus Jakarta Sans',system-ui,sans-serif"
+          >
+            {d.leftHeader.title}
+          </span>
+          <span
+            class="font-mono text-[10px] leading-3"
+            style="color:#9A8E78"
+          >
+            {d.leftHeader.subtitle}
+          </span>
         </div>
-      ))}
-    </div>
-  </aside>
-
-  {/* Right pane — timeline + detail cards */}
-  <section class="flex flex-col gap-3 rounded-md border border-gray-200 bg-white p-3">
-    <div class="flex items-start justify-between gap-3 border-b border-gray-100 pb-2">
-      <div class="flex flex-col gap-0.5">
-        <span class="font-mono text-[11px] uppercase leading-[14px] tracking-[0.08em] text-gray-500">
-          {rightEyebrow}
+        <span
+          class="font-mono text-[10px] leading-3"
+          style="color:#9A8E78; padding-top:2px"
+        >
+          {d.leftHeader.countLabel}
         </span>
-        <span class="text-[13px] leading-[18px] text-gray-700">{rightSubhead}</span>
       </div>
-      <span class="inline-flex items-center gap-1.5 rounded-full bg-success-50 px-2.5 py-1 font-mono text-[10px] font-semibold leading-3 text-success-700">
-        <span class="inline-block size-1.5 rounded-full bg-success-500" aria-hidden="true"></span>
-        {recoveredPill}
-      </span>
-    </div>
 
-    {/* Timeline card */}
-    <div class="rounded-md border border-gray-100 bg-cream-canvas px-4 py-3">
-      <svg viewBox="0 0 760 150" width="100%" height="150" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-        <defs>
-          <marker id="ck-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-            <path d="M 0 0 L 10 5 L 0 10 z" fill="#fb923c" />
-          </marker>
-        </defs>
-
-        {/* Track segments */}
-        <line x1="40" y1="100" x2="320" y2="100" stroke="#fb923c" stroke-width="2" />
-        <line x1="320" y1="100" x2="430" y2="100" stroke="#e5e7eb" stroke-width="2" />
-        <line x1="430" y1="100" x2="720" y2="100" stroke="#fb923c" stroke-width="2" />
-
-        {/* Curved arrow from failure to resume */}
-        <path d="M 325 70 Q 380 25, 430 70" stroke="#fb923c" stroke-width="2" stroke-dasharray="5 4" fill="none" marker-end="url(#ck-arrow)" />
-
-        {/* Marks */}
-        {marks.map((m, i) => {
-          const x = STEP_X[i];
+      {/* Run rows */}
+      <div class="flex flex-col gap-1.5">
+        {d.runs.map((run) => {
+          const isSelected = run.selected;
+          const pill = isSelected ? null : idlePillStyle(run.status);
           return (
-            <>
-              {m.kind === "done" && (
-                <>
-                  <circle cx={x} cy="100" r="9" fill="#fb923c" />
-                  <circle cx={x} cy="100" r="4" fill="#ffffff" />
-                </>
-              )}
-              {m.kind === "failed" && (
-                <>
-                  <circle cx={x} cy="100" r="13" fill="#ffffff" stroke="#ef4444" stroke-width="2" />
-                  <path d={`M ${x - 4} 96 L ${x + 4} 104 M ${x - 4} 104 L ${x + 4} 96`} stroke="#ef4444" stroke-width="2" stroke-linecap="round" />
-                  <text x={x} y="60" text-anchor="middle" fill="#b91c1c" font-family="JetBrains Mono, ui-monospace, monospace" font-size="11" font-weight="600">{m.label}</text>
-                </>
-              )}
-              {m.kind === "resume" && (
-                <>
-                  <circle cx={x} cy="100" r="13" fill="#fff4ec" stroke="#fb923c" stroke-width="2" />
-                  <circle cx={x} cy="100" r="5" fill="#fb923c" />
-                  <text x={x} y="60" text-anchor="middle" fill="#ea580c" font-family="JetBrains Mono, ui-monospace, monospace" font-size="11" font-weight="600">{m.label}</text>
-                </>
-              )}
-              {m.kind === "pending" && (
-                <circle cx={x} cy="100" r="9" fill="#ffffff" stroke="#fb923c" stroke-width="1.5" />
-              )}
-              <text
-                x={x}
-                y="138"
-                text-anchor="middle"
-                font-family="JetBrains Mono, ui-monospace, monospace"
-                font-size="10"
-                font-weight={m.kind === "failed" ? "700" : "500"}
-                fill={
-                  m.kind === "failed"
-                    ? "#b91c1c"
-                    : m.kind === "resume"
-                      ? "#ea580c"
-                      : m.kind === "pending"
-                        ? "#9ca3af"
-                        : "#6b7280"
-                }
+            <div
+              class="ckpt-row flex w-full items-center gap-3 cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500"
+              aria-pressed={isSelected ? "true" : "false"}
+            >
+              {/* Letter badge */}
+              <span
+                class="ckpt-row-badge inline-flex size-8 shrink-0 items-center justify-center font-sans text-sm font-bold leading-none text-white"
+                style={`font-family:'Plus Jakarta Sans',system-ui,sans-serif; border-radius:8px; background-color:${isSelected ? "#FB923C" : "#101828"}`}
+                aria-hidden="true"
               >
-                {m.index}
-              </text>
-            </>
+                {run.letter}
+              </span>
+
+              {/* Name + subtitle */}
+              <div class="flex min-w-0 flex-1 flex-col gap-[3px]">
+                <span
+                  class="ckpt-row-name truncate text-[14px] leading-[18px]"
+                  style={`font-family:'Plus Jakarta Sans',system-ui,sans-serif; font-weight:${isSelected ? 600 : 500}; color:${isSelected ? "#101828" : "#1F2937"}`}
+                >
+                  {run.name}
+                </span>
+                <span
+                  class="truncate font-mono text-[10px] leading-3"
+                  style="color:#6B7280"
+                >
+                  {run.subtitle}
+                </span>
+              </div>
+
+              {/* Status pill */}
+              {isSelected ? (
+                <span
+                  class="ckpt-pill inline-flex shrink-0 items-center gap-1.5 rounded-full"
+                  style="background-color:#FFF4EC; border:1px solid #FFD7B5; padding:3px 8px"
+                >
+                  <span
+                    class="size-1.5 shrink-0 rounded-full"
+                    style="background-color:#FB923C"
+                    aria-hidden="true"
+                  ></span>
+                  <span
+                    class="font-mono font-semibold uppercase"
+                    style="font-size:9px; line-height:12px; letter-spacing:0.04em; color:#C2410C"
+                  >
+                    {run.status}
+                  </span>
+                </span>
+              ) : (
+                <span
+                  class="inline-flex shrink-0 items-center gap-1.5 rounded-full"
+                  style={`background-color:${pill!.bg}; border:1px solid ${pill!.border}; padding:3px 8px`}
+                >
+                  <span
+                    class="size-1.5 shrink-0 rounded-full"
+                    style={`background-color:${pill!.dot}`}
+                    aria-hidden="true"
+                  ></span>
+                  <span
+                    class="font-mono font-semibold uppercase"
+                    style={`font-size:9px; line-height:12px; letter-spacing:0.04em; color:${pill!.text}`}
+                  >
+                    {run.status}
+                  </span>
+                </span>
+              )}
+            </div>
           );
         })}
-      </svg>
-    </div>
+      </div>
+    </aside>
 
-    {/* Detail strip — failure + resume cards */}
-    <div class="grid grid-cols-1 gap-2 lg:grid-cols-2">
-      {/* Failure card */}
-      <div class="flex flex-col gap-1.5 rounded-md border border-error-200 bg-error-50 p-3">
-        <div class="flex items-center justify-between">
-          <span class="font-mono text-[10px] font-semibold uppercase leading-3 tracking-wide text-error-700">
-            {failureCard.eyebrow}
+    {/* ── Right pane — EXECUTION CHECKPOINTS ── */}
+    <section
+      class="flex flex-col rounded-md border border-[#EFE8DC] bg-cream-warm"
+      style="padding:22px 24px; gap:16px"
+    >
+      {/* Header strip */}
+      <div class="flex items-start justify-between gap-4">
+        <div class="flex min-w-0 flex-1 flex-col gap-1.5">
+          <span
+            class="font-sans font-semibold uppercase leading-3"
+            style="font-family:'Plus Jakarta Sans',system-ui,sans-serif; font-size:10px; letter-spacing:0.08em; color:#C2410C"
+          >
+            {d.rightEyebrow}
           </span>
-          <span class="font-mono text-[10px] leading-3 text-error-700/70">{failureCard.timestamp}</span>
+          <span
+            class="font-sans font-semibold leading-6"
+            style="font-family:'Plus Jakarta Sans',system-ui,sans-serif; font-size:17px; color:#101828; max-width:560px"
+          >
+            {d.rightTitle}
+          </span>
         </div>
-        <span class="text-[13px] leading-4 text-error-700">{failureCard.message}</span>
+        {/* Context chip */}
+        <span
+          class="inline-flex shrink-0 items-center gap-1.5 rounded-full"
+          style="background-color:#FFF4EC; border:1px solid #FFD7B5; padding:4px 9px; margin-top:2px; height:22px"
+        >
+          <span
+            class="size-1.5 shrink-0 rounded-full"
+            style="background-color:#FB923C"
+            aria-hidden="true"
+          ></span>
+          <span
+            class="font-mono font-semibold"
+            style="font-size:10px; line-height:12px; color:#C2410C"
+          >
+            {d.contextChip}
+          </span>
+        </span>
       </div>
 
-      {/* Resume card */}
-      <div class="flex flex-col gap-1.5 rounded-md border border-orange-200 bg-orange-50 p-3">
+      {/* ── Timeline card ── */}
+      <div
+        class="flex flex-col rounded-md border border-[#EFE8DC] bg-white"
+        style="padding:18px 16px 14px; gap:12px"
+      >
+        {/* Card header: label + legend */}
         <div class="flex items-center justify-between">
-          <span class="font-mono text-[10px] font-semibold uppercase leading-3 tracking-wide text-orange-600">
-            {resumeCard.eyebrow}
+          <span
+            class="font-sans font-semibold uppercase leading-3"
+            style="font-family:'Plus Jakarta Sans',system-ui,sans-serif; font-size:10px; letter-spacing:0.08em; color:#7A6F5C"
+          >
+            {d.timelineLabel}
           </span>
-          <span class="font-mono text-[10px] leading-3 text-orange-600/70">{resumeCard.timestamp}</span>
+          {/* Legend */}
+          <div class="flex items-center gap-3.5">
+            {/* checkpoint */}
+            <span class="inline-flex items-center gap-1.5">
+              <span
+                class="size-1.5 shrink-0 rounded-full"
+                style="background-color:#FB923C"
+                aria-hidden="true"
+              ></span>
+              <span class="font-mono" style="font-size:9px; line-height:12px; color:#6B7280">
+                checkpoint
+              </span>
+            </span>
+            {/* failure */}
+            <span class="inline-flex items-center gap-1.5">
+              <span
+                class="shrink-0"
+                style="display:inline-block; width:6px; height:6px; border-radius:1px; background-color:#EF4444"
+                aria-hidden="true"
+              ></span>
+              <span class="font-mono" style="font-size:9px; line-height:12px; color:#6B7280">
+                failure
+              </span>
+            </span>
+            {/* resume */}
+            <span class="inline-flex items-center gap-1.5">
+              <span
+                class="font-mono font-bold"
+                style="font-size:11px; line-height:14px; color:#FB923C"
+                aria-hidden="true"
+              >&#x203A;</span>
+              <span class="font-mono" style="font-size:9px; line-height:12px; color:#6B7280">
+                resume
+              </span>
+            </span>
+          </div>
         </div>
-        <span class="text-[13px] leading-4 text-orange-800">{resumeCard.message}</span>
-        <span class="font-mono text-[10px] leading-[14px] text-orange-600/80">{resumeCard.subtext}</span>
-        <div class="mt-1 rounded border border-orange-200 bg-white px-2.5 py-1.5 font-mono text-[11px] leading-[16px]">
-          <span class="text-ink">{resumeCard.cliPrefix} </span>
-          <span class="text-orange-600">{resumeCard.cliArgs}</span>
+
+        {/* Node track: baseline + SVG dashed arc + 8 circular nodes (justify-between) + labels row */}
+        <div style="padding:4px 4px 0; gap:10px; display:flex; flex-direction:column">
+          {/* Track area with SVG arc overlay */}
+          <div class="relative" style="height:40px">
+            {/* Baseline rule */}
+            <div
+              class="absolute"
+              style="left:0; right:0; top:50%; height:2px; background-color:#FFE3CC; border-radius:1px; transform:translateY(-50%)"
+              aria-hidden="true"
+            ></div>
+
+            {/* Dashed arc SVG — rate-limit: semicircle above baseline, failure idx3 to resume idx4 */}
+            <svg
+              class="absolute inset-0 w-full h-full overflow-visible"
+              preserveAspectRatio="none"
+              viewBox="0 0 700 40"
+              aria-hidden="true"
+            >
+              <path
+                d="M 300 20 A 50 22 0 0 1 400 20"
+                fill="none"
+                stroke="#FB923C"
+                stroke-width="1.5"
+                stroke-dasharray="3 3"
+                stroke-linecap="round"
+              />
+              <text
+                x="350"
+                y="1"
+                text-anchor="middle"
+                fill="#C2410C"
+                font-family='"JetBrains Mono", system-ui, sans-serif'
+                font-size="8"
+                font-style="italic"
+              >
+                rate-limit
+              </text>
+            </svg>
+
+            {/* Node row */}
+            <div class="absolute inset-0 flex items-center justify-between px-0">
+              {d.nodes.map((node) => {
+                if (node.kind === "failure") {
+                  return (
+                    <div
+                      class="inline-flex shrink-0 items-center justify-center"
+                      style="width:18px; height:18px; border-radius:999px; background-color:#FEF2F2; border:2px solid #EF4444"
+                      aria-label={`Failure: ${node.label}`}
+                    >
+                      <svg width="9" height="9" viewBox="0 0 9 9" fill="none" aria-hidden="true">
+                        <path d="M1.5 1.5 L7.5 7.5 M7.5 1.5 L1.5 7.5" stroke="#EF4444" stroke-width="1.6" stroke-linecap="round" />
+                      </svg>
+                    </div>
+                  );
+                }
+                if (node.kind === "resume") {
+                  return (
+                    <div
+                      class="inline-flex shrink-0 items-center justify-center"
+                      style="width:18px; height:18px; border-radius:999px; background-color:#FB923C; border:2px solid #C2410C"
+                      aria-label={`Resume: ${node.label}`}
+                    >
+                      <svg width="9" height="9" viewBox="0 0 9 9" fill="none" aria-hidden="true">
+                        <path d="M2 1.5 L6.5 4.5 L2 7.5 Z" fill="#FFFFFF" />
+                      </svg>
+                    </div>
+                  );
+                }
+                if (node.kind === "done") {
+                  return (
+                    <div
+                      class="inline-flex shrink-0 items-center justify-center"
+                      style="width:14px; height:14px; border-radius:999px; background-color:#FB923C; border:2px solid #C2410C"
+                      aria-label={node.label}
+                    ></div>
+                  );
+                }
+                if (node.kind === "pending") {
+                  return (
+                    <div
+                      class="inline-flex shrink-0 items-center justify-center"
+                      style="width:14px; height:14px; border-radius:999px; background-color:#FFFFFF; border:2px solid #C2410C; opacity:0.55"
+                      aria-label={`Pending: ${node.label}`}
+                    ></div>
+                  );
+                }
+                // hollow
+                return (
+                  <div
+                    class="inline-flex shrink-0 items-center justify-center"
+                    style="width:14px; height:14px; border-radius:999px; background-color:#FFFFFF; border:2px solid #C2410C"
+                    aria-label={node.label}
+                  ></div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Labels row — matches node positions */}
+          <div class="flex items-start justify-between">
+            {d.nodes.map((node) => {
+              const isOrange = node.kind === "done" || node.kind === "resume";
+              const isRed    = node.kind === "failure";
+              const isMuted  = node.kind === "pending";
+              const labelColor = isOrange ? "#C2410C" : isRed ? "#B91C1C" : isMuted ? "#9A8E78" : "#1F2937";
+              const labelWeight = isOrange || isRed ? 600 : 500;
+              const durColor    = isOrange ? "#C2410C" : isRed ? "#B91C1C" : "#9A8E78";
+              return (
+                <div
+                  class="flex flex-col items-center gap-[3px] shrink-0"
+                  style="width:80px"
+                >
+                  <span
+                    class="font-mono text-center leading-3"
+                    style={`font-size:10px; font-weight:${labelWeight}; color:${labelColor}`}
+                  >
+                    {node.label}
+                  </span>
+                  <span
+                    class="font-mono text-center leading-3"
+                    style={`font-size:9px; color:${durColor}`}
+                  >
+                    {node.duration}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
-    </div>
 
-  </section>
+      {/* ── Paired cards ── */}
+      <div class="flex gap-3">
+        {/* Failure card */}
+        <div
+          class="flex flex-1 flex-col rounded-md"
+          style="background-color:#FEF2F2; border:1px solid #FECACA; padding:14px 16px; gap:6px"
+        >
+          <div class="flex items-center justify-between">
+            <span
+              class="font-mono font-semibold"
+              style="font-size:11px; line-height:14px; letter-spacing:0.04em; color:#B91C1C"
+            >
+              {d.failureCard.title}
+            </span>
+            <span
+              class="font-mono"
+              style="font-size:10px; line-height:12px; color:#B91C1C; opacity:0.7"
+            >
+              {d.failureCard.timestamp}
+            </span>
+          </div>
+          <span
+            class="font-mono"
+            style="font-size:10px; line-height:12px; color:#7F1D1D"
+          >
+            {d.failureCard.body}
+          </span>
+        </div>
+
+        {/* Resume card */}
+        <div
+          class="flex flex-1 flex-col rounded-md"
+          style="background-color:#FFF4EC; border:1px solid #FFD7B5; padding:14px 16px; gap:10px"
+        >
+          <div class="flex items-center justify-between">
+            <span
+              class="font-sans font-semibold"
+              style="font-family:'Plus Jakarta Sans',system-ui,sans-serif; font-size:12px; line-height:16px; letter-spacing:0.04em; color:#C2410C"
+            >
+              {d.resumeCard.title}
+            </span>
+            <span
+              class="font-mono"
+              style="font-size:10px; line-height:12px; color:#C2410C; opacity:0.75"
+            >
+              {d.resumeCard.timestamp}
+            </span>
+          </div>
+          {/* CLI block */}
+          <div
+            class="flex items-center gap-2 rounded-[6px]"
+            style="background-color:#FFFFFF; border:1px solid #FFD7B5; padding:9px 12px"
+          >
+            <span
+              class="font-mono font-semibold shrink-0"
+              style="font-size:11px; line-height:14px; color:#C2410C"
+            >
+              $
+            </span>
+            <span
+              class="font-mono"
+              style="font-size:11px; line-height:14px; color:#1F2937"
+            >
+              {d.resumeCard.cliCommand}
+            </span>
+          </div>
+          {/* Savings */}
+          <div class="flex items-center gap-1.5" style="padding-top:2px">
+            <span class="font-mono" style="font-size:10px; line-height:12px; color:#374151">Saved</span>
+            <span class="font-mono font-semibold" style="font-size:10px; line-height:12px; color:#C2410C">
+              {d.resumeCard.savings.savedTime}
+            </span>
+            <span class="font-mono" style="font-size:10px; line-height:12px; color:#9A8E78">·</span>
+            <span class="font-mono font-semibold" style="font-size:10px; line-height:12px; color:#C2410C">
+              {d.resumeCard.savings.callsSkipped}
+            </span>
+            <span class="font-mono" style="font-size:10px; line-height:12px; color:#374151">not re-issued</span>
+          </div>
+        </div>
+      </div>
+
+      {/* ── Footer meta strip ── */}
+      <div
+        class="flex items-center justify-between"
+        style="border-top:1px solid #EFE8DC; padding-top:8px"
+      >
+        <div class="flex items-center gap-2">
+          <span class="font-mono" style="font-size:11px; line-height:14px; color:#374151">
+            {d.footer.runId}
+          </span>
+          <span class="font-mono" style="font-size:11px; line-height:14px; color:#9A8E78">·</span>
+          <span class="font-mono" style="font-size:11px; line-height:14px; color:#374151">
+            {d.footer.checkpointsLabel}
+          </span>
+          <span class="font-mono" style="font-size:11px; line-height:14px; color:#9A8E78">·</span>
+          <span class="font-mono" style="font-size:11px; line-height:14px; color:#374151">
+            {d.footer.duration}
+          </span>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <span
+            class="shrink-0 rounded-full"
+            style="width:7px; height:7px; background-color:#FB923C; display:inline-block"
+            aria-hidden="true"
+          ></span>
+          <span
+            class="font-mono font-semibold"
+            style="font-size:11px; line-height:14px; color:#C2410C"
+          >
+            {d.footer.statusLabel}
+          </span>
+        </div>
+      </div>
+    </section>
+
+  </div>
 </div>
+
+<style>
+  /* ── Selected-row spec (mirrors FlowsLayout kitaru-row pattern) ────────── */
+  .ckpt-row {
+    border-radius: 8px;
+    padding: 10px 12px;
+    background-color: transparent;
+    border: 1px solid transparent;
+    /* cursor-pointer set inline on each element already */
+  }
+  .ckpt-row[aria-pressed="true"] {
+    background-color: #fff4ec; /* orange-50 */
+    border-color: #ffd7b5;     /* --kitaru-selected-row-border */
+    /* Keep stable by matching the same box model — 1px border, 10px block padding */
+  }
+  .ckpt-row:not([aria-pressed="true"]):hover {
+    background-color: #fdf4ec22;
+  }
+  .ckpt-row-badge {
+    border-radius: 8px;
+  }
+</style>

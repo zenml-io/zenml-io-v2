@@ -1,177 +1,380 @@
 ---
 import StepNode from "./_StepNode.astro";
 import ArtifactPill from "./_ArtifactPill.astro";
+import {
+  PIPELINE_EXAMPLES,
+  DEFAULT_PIPELINE_EXAMPLE_ID,
+  type PipelineExample,
+} from "../../../lib/two-workspaces/pipelines-examples";
 
 /**
- * Pipelines subtab — "Same code, three destinations" (artboard 8OJ-0).
- * Left: recent pipelines list. Right: target switcher + vertical DAG with
- * fork/merge connectors illustrating data flow through artifacts.
+ * Pipelines subtab — "Integrate your MLOps stack · for compute-intense,
+ * distributed ML pipelines." (artboard A3J-0, v2 redesign).
+ *
+ * Interactivity:
+ *   The left pane shows the 5 real-pipeline runs as clickable rows. Clicking
+ *   a row sets `data-active-example` on the layout root; CSS attribute
+ *   selectors then reveal the matching right-pane content (header chip,
+ *   target switcher, code card, DAG, footer meta) and hide the other four.
+ *   No Preact island needed — same pattern as the outer tab/subtab
+ *   switching in TwoWorkspaces.astro.
+ *
+ * Layout:
+ *   Left pane: RECENT RUNS list, 5 rows with green ZenML brand-mark icon
+ *     (the same fork/branch path used on the original homepage). Selected
+ *     row gets purple zenml-50 bg + 1px zenml-300 border + DONE green
+ *     pill. Others show a target-name pill (Kubeflow / Vertex AI / etc).
+ *   Right pane: header strip (eyebrow + title + context chip), then a
+ *     side-by-side row: code card on the left + DAG on the right (reuses
+ *     _StepNode + _ArtifactPill).
+ *   Footer: thin meta strip with substrate target + status dot.
  */
-
-type Row = {
-  initial: string;
-  initialTone?: "purple" | "dark" | "purple-300";
-  status?: "success" | "failed";
-  name: string;
-  meta: string;
-  target: string;
-  selected?: boolean;
-};
-
-type StepSpec = { name: string; duration: string };
-type ArtifactSpec = { name: string; type: string };
 
 interface Props {
   title: string;
   countLabel: string;
   subheader: string;
-  rows: ReadonlyArray<Row>;
-  fileName: string;
+  rightEyebrow: string;
   rightSubhead: string;
-  steps: [StepSpec, StepSpec]; // [load_data, train_model]
-  inputs: [ArtifactSpec, ArtifactSpec]; // [features, labels]
-  output: ArtifactSpec; // churn_predictor
 }
 
 const {
   title,
   countLabel,
   subheader,
-  rows,
-  fileName,
+  rightEyebrow,
   rightSubhead,
-  steps,
-  inputs,
-  output,
 } = Astro.props;
 
-const statusTone = (status?: Row["status"]) =>
-  status === "failed"
-    ? "bg-error-50 text-error-500"
-    : "bg-success-50 text-success-500";
+const examples = PIPELINE_EXAMPLES;
+const defaultId = DEFAULT_PIPELINE_EXAMPLE_ID;
+
+/**
+ * Parse the code source into syntax-highlighted lines. We do this inline
+ * rather than via Shiki because Paper specifies very specific decorator /
+ * function-name colors (#F53D81 / #7F56D9) that the project's Shiki
+ * theme doesn't quite match. Static rendering only — no JS needed.
+ */
+type Token = { text: string; cls: string };
+const TOKEN_CLASS = {
+  keyword: "text-[#F53D81]",       // @step, def, return
+  fn: "text-zenml-600 font-semibold", // load_data, train_model
+  ident: "text-gray-900",
+  muted: "text-gray-500",
+};
+const highlightLine = (line: string): Token[] => {
+  const trimmed = line.replace(/\s+$/, "");
+  if (trimmed.length === 0) return [{ text: "", cls: "" }];
+  // @step / @pipeline / @checkpoint decorators — capture full line so
+  //   @pipeline(...) keeps its args in the keyword color.
+  if (trimmed.trimStart().startsWith("@")) {
+    const indent = trimmed.match(/^\s*/)?.[0] ?? "";
+    return [
+      { text: indent, cls: "" },
+      { text: trimmed.trim(), cls: TOKEN_CLASS.keyword },
+    ];
+  }
+  // def fn(args) -> Ret:
+  const defMatch = trimmed.match(/^(\s*)(def)\s+(\w+)(.*)$/);
+  if (defMatch) {
+    return [
+      { text: defMatch[1], cls: "" },
+      { text: "def ", cls: TOKEN_CLASS.keyword },
+      { text: defMatch[3], cls: TOKEN_CLASS.fn },
+      { text: defMatch[4], cls: TOKEN_CLASS.ident },
+    ];
+  }
+  // return ...
+  const retMatch = trimmed.match(/^(\s*)(return)\s+(.+)$/);
+  if (retMatch) {
+    return [
+      { text: retMatch[1], cls: "" },
+      { text: "return ", cls: TOKEN_CLASS.keyword },
+      { text: retMatch[3], cls: TOKEN_CLASS.muted },
+    ];
+  }
+  // from X import Y / import X — keep tokens muted, "from"/"import"
+  //   colored. Detect a leading "from" or "import" word.
+  const importMatch = trimmed.match(/^(\s*)(from|import)\s+(.+)$/);
+  if (importMatch) {
+    return [
+      { text: importMatch[1], cls: "" },
+      { text: `${importMatch[2]} `, cls: TOKEN_CLASS.keyword },
+      { text: importMatch[3], cls: TOKEN_CLASS.muted },
+    ];
+  }
+  return [{ text: trimmed, cls: TOKEN_CLASS.ident }];
+};
+
+const tokenize = (source: string) => source.split("\n").map(highlightLine);
+
+const ZENML_GLYPH_SVG = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M5 3C4.448 3 4 3.448 4 4C4 4.552 4.448 5 5 5C5.552 5 6 4.552 6 4C6 3.448 5.552 3 5 3ZM2 4C2 2.343 3.343 1 5 1C6.306 1 7.417 1.835 7.829 3L16.171 3C16.582 1.835 17.694 1 19 1C20.657 1 22 2.343 22 4C22 5.657 20.657 7 19 7C17.694 7 16.582 6.165 16.171 5L13 5V11H16.171C16.582 9.835 17.694 9 19 9C20.657 9 22 10.343 22 12C22 13.657 20.657 15 19 15C17.694 15 16.582 14.165 16.171 13H13V15.2C13 16.057 13.001 16.639 13.038 17.089C13.073 17.527 13.138 17.752 13.218 17.908C13.41 18.284 13.716 18.59 14.092 18.782C14.248 18.862 14.473 18.927 14.911 18.962C15.241 18.989 15.643 18.997 16.171 18.999C16.583 17.834 17.694 17 19 17C20.657 17 22 18.343 22 20C22 21.657 20.657 23 19 23C17.694 23 16.582 22.165 16.171 20.999C15.623 20.997 15.152 20.989 14.748 20.956C14.186 20.91 13.669 20.811 13.184 20.564C12.431 20.18 11.819 19.569 11.436 18.816C11.189 18.331 11.09 17.814 11.044 17.252C11 16.711 11 16.046 11 15.241V5L7.829 5C7.417 6.165 6.306 7 5 7C3.343 7 2 5.657 2 4ZM19 3C18.448 3 18 3.448 18 4C18 4.552 18.448 5 19 5C19.552 5 20 4.552 20 4C20 3.448 19.552 3 19 3ZM19 11C18.448 11 18 11.448 18 12C18 12.552 18.448 13 19 13C19.552 13 20 12.552 20 12C20 11.448 19.552 11 19 11ZM19 19C18.448 19 18 19.448 18 20C18 20.552 18.448 21 19 21C19.552 21 20 20.552 20 20C20 19.448 19.552 19 19 19Z" fill="#17B26A" /></svg>`;
+
+/* Status-pill tone map. The "active" row always shows the example's own
+   status pill in zenml-tinted purple (selected-row spec). Non-selected
+   rows show a neutral target chip. */
+const statusPillForActive = (ex: PipelineExample) => {
+  const base =
+    ex.rowStatusPill === "DONE"
+      ? { bg: "bg-success-50", border: "border-success-500/30", dot: "bg-success-500", text: "text-success-700" }
+      : ex.rowStatusPill === "RUNNING"
+        ? { bg: "bg-amber-50", border: "border-amber-500/30", dot: "bg-amber-500", text: "text-amber-700" }
+        : ex.rowStatusPill === "FAILED"
+          ? { bg: "bg-error-50", border: "border-error-500/30", dot: "bg-error-500", text: "text-error-700" }
+          : { bg: "bg-gray-50", border: "border-gray-300", dot: "bg-gray-400", text: "text-gray-700" };
+  return base;
+};
+
+const footerDotClass = (color: "healthy" | "warning" | "error") =>
+  color === "healthy"
+    ? { dot: "bg-success-500", ring: "ring-success-500/15", text: "text-success-700" }
+    : color === "warning"
+      ? { dot: "bg-amber-500", ring: "ring-amber-500/15", text: "text-amber-700" }
+      : { dot: "bg-error-500", ring: "ring-error-500/15", text: "text-error-700" };
 ---
 
-<div class="grid grid-cols-1 gap-3 lg:grid-cols-[360px_1fr]">
-  {/* Left pane — recent pipelines */}
-  <aside class="flex flex-col gap-2 rounded-md border border-gray-200 bg-white p-3">
-    <div class="flex items-start justify-between gap-3 border-b border-gray-100 pb-2">
-      <div class="flex flex-col gap-0.5">
-        <span class="font-mono text-[11px] uppercase leading-[14px] tracking-[0.08em] text-gray-500">
-          {title}
+<div class="pipelines-layout flex flex-col gap-3" data-active-example={defaultId}>
+  <div class="grid grid-cols-1 gap-3 lg:grid-cols-[360px_1fr]">
+    {/* Left pane — recent runs */}
+    <aside class="flex flex-col gap-2 rounded-md border border-gray-200 bg-white p-3.5">
+      <div class="flex items-start justify-between gap-3 border-b border-gray-100 pb-3">
+        <div class="flex flex-col gap-0.5">
+          <span class="font-mono text-[10px] uppercase leading-[14px] tracking-[0.08em] text-gray-500">
+            {title}
+          </span>
+          <span class="text-xs leading-4 text-gray-400">{subheader}</span>
+        </div>
+        <span class="font-mono text-[10px] leading-[14px] text-gray-400">
+          {countLabel}
         </span>
-        <span class="text-[13px] leading-4 text-gray-500">{subheader}</span>
       </div>
-      <span class="font-mono text-[11px] leading-[14px] text-gray-500">
-        {countLabel}
-      </span>
-    </div>
 
-    <div class="flex flex-col gap-1">
-      {rows.map((row) => (
-        <div
-          class:list={[
-            "flex items-center gap-2.5 rounded-md px-2 py-2",
-            row.selected && "border border-zenml-300 bg-zenml-50",
-          ]}
-        >
-          <span
-            class:list={[
-              "inline-flex size-7 shrink-0 items-center justify-center rounded-md",
-              statusTone(row.status),
-            ]}
-            aria-hidden="true"
-          >
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              xmlns="http://www.w3.org/2000/svg"
+      <div class="flex flex-col pt-2 gap-1">
+        {examples.map((ex) => {
+          const pill = statusPillForActive(ex);
+          return (
+            <button
+              type="button"
+              data-example-id={ex.id}
+              data-pipeline-row
+              aria-label={`Show ${ex.rowLabel} pipeline`}
+              class="pipeline-row group flex w-full items-center gap-3 rounded-md px-3 py-3 text-left transition-colors hover:bg-gray-50 cursor-pointer"
             >
-              <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
-                d="M5 3C4.44772 3 4 3.44772 4 4C4 4.55228 4.44772 5 5 5C5.55228 5 6 4.55228 6 4C6 3.44772 5.55228 3 5 3ZM2 4C2 2.34315 3.34315 1 5 1C6.30622 1 7.41746 1.83481 7.82929 3L16.1707 3C16.5825 1.83481 17.6938 1 19 1C20.6569 1 22 2.34315 22 4C22 5.65685 20.6569 7 19 7C17.6938 7 16.5825 6.16519 16.1707 5L13 5V11H16.1707C16.5825 9.83481 17.6938 9 19 9C20.6569 9 22 10.3431 22 12C22 13.6569 20.6569 15 19 15C17.6938 15 16.5825 14.1652 16.1707 13H13V15.2C13 16.0566 13.0008 16.6389 13.0376 17.089C13.0734 17.5274 13.1383 17.7516 13.218 17.908C13.4097 18.2843 13.7157 18.5903 14.092 18.782C14.2484 18.8617 14.4726 18.9266 14.911 18.9624C15.2412 18.9894 15.6425 18.997 16.171 18.9992C16.5831 17.8344 17.6941 17 19 17C20.6569 17 22 18.3431 22 20C22 21.6569 20.6569 23 19 23C17.6935 23 16.5821 22.1648 16.1705 20.9993C15.6232 20.9971 15.1515 20.9888 14.7482 20.9558C14.1861 20.9099 13.6694 20.8113 13.184 20.564C12.4314 20.1805 11.8195 19.5686 11.436 18.816C11.1887 18.3306 11.0901 17.8139 11.0442 17.2518C11 16.7106 11 16.0463 11 15.2413V5L7.82929 5C7.41746 6.16519 6.30622 7 5 7C3.34315 7 2 5.65685 2 4ZM19 3C18.4477 3 18 3.44771 18 4C18 4.55228 18.4477 5 19 5C19.5523 5 20 4.55228 20 4C20 3.44772 19.5523 3 19 3ZM19 11C18.4477 11 18 11.4477 18 12C18 12.5523 18.4477 13 19 13C19.5523 13 20 12.5523 20 12C20 11.4477 19.5523 11 19 11ZM19 19C18.4477 19 18 19.4477 18 20C18 20.5523 18.4477 21 19 21C19.5523 21 20 20.5523 20 20C20 19.4477 19.5523 19 19 19Z"
+              <span
+                class="inline-flex size-8 shrink-0 items-center justify-center rounded-md bg-success-50"
+                aria-hidden="true"
+                set:html={ZENML_GLYPH_SVG}
               />
-            </svg>
-          </span>
-          <div class="flex min-w-0 flex-1 flex-col gap-0.5">
-            <span
-              class:list={[
-                "truncate text-[13px] leading-4",
-                row.selected
-                  ? "font-semibold text-zenml-600"
-                  : "font-semibold text-gray-900",
-              ]}
-            >
-              {row.name}
-            </span>
-            <span class="truncate font-mono text-[11px] leading-[14px] text-gray-500">
-              {row.meta}
-            </span>
-          </div>
-          <span
-            class:list={[
-              "inline-flex shrink-0 items-center rounded-full border px-2 py-0.5 font-mono text-[10px] font-medium leading-3",
-              row.selected
-                ? "border-zenml-300 bg-white text-zenml-600"
-                : "border-gray-200 bg-white text-gray-600",
-            ]}
-          >
-            {row.target}
-          </span>
-        </div>
-      ))}
-    </div>
-  </aside>
-
-  {/* Right pane — DAG */}
-  <section class="flex flex-col gap-3 rounded-md border border-gray-200 bg-white p-3">
-    <div class="flex items-start justify-between gap-3 border-b border-gray-100 pb-2">
-      <span class="text-[13px] leading-[18px] text-gray-700">
-        {rightSubhead}
-      </span>
-      <span class="inline-flex items-center gap-1.5 rounded-full border border-gray-200 bg-white px-2.5 py-1 font-mono text-[11px] font-medium leading-[14px] text-gray-900">
-        <span class="inline-block size-1.5 rounded-full bg-zenml-500" aria-hidden="true"></span>
-        {fileName}
-      </span>
-    </div>
-
-    {/* DAG */}
-    <div class="flex flex-1 items-center justify-center rounded-md border border-gray-100 bg-cream-canvas px-4 py-3">
-      <div class="flex flex-col items-center gap-0">
-        {/* Step 1: load_data */}
-        <StepNode name={steps[0].name} duration={steps[0].duration} width="240px" />
-
-        {/* Fork connector */}
-        <svg width="240" height="32" viewBox="0 0 240 32" aria-hidden="true">
-          <path d="M120 0 L120 10 Q120 16 110 16 L60 16 Q50 16 50 22 L50 32" stroke="var(--color-gray-300)" stroke-width="1" fill="none" />
-          <path d="M120 10 Q120 16 130 16 L180 16 Q190 16 190 22 L190 32" stroke="var(--color-gray-300)" stroke-width="1" fill="none" />
-        </svg>
-
-        {/* Two artifact pills side-by-side */}
-        <div class="flex items-center gap-10">
-          <ArtifactPill name={inputs[0].name} type={inputs[0].type} width="160px" />
-          <ArtifactPill name={inputs[1].name} type={inputs[1].type} width="160px" />
-        </div>
-
-        {/* Merge connector */}
-        <svg width="240" height="32" viewBox="0 0 240 32" aria-hidden="true">
-          <path d="M50 0 L50 10 Q50 16 60 16 L110 16 Q120 16 120 22 L120 32" stroke="var(--color-gray-300)" stroke-width="1" fill="none" />
-          <path d="M190 0 L190 10 Q190 16 180 16 L130 16 Q120 16 120 22 L120 32" stroke="var(--color-gray-300)" stroke-width="1" fill="none" />
-        </svg>
-
-        {/* Step 2: train_model */}
-        <StepNode name={steps[1].name} duration={steps[1].duration} width="240px" />
-
-        {/* Down connector */}
-        <svg width="2" height="20" viewBox="0 0 2 20" aria-hidden="true">
-          <line x1="1" y1="0" x2="1" y2="20" stroke="var(--color-gray-300)" stroke-width="1" />
-        </svg>
-
-        {/* Output artifact */}
-        <ArtifactPill name={output.name} type={output.type} width="180px" />
+              <div class="flex min-w-0 flex-1 flex-col gap-0.5">
+                <span class="truncate text-[13px] leading-[18px] font-medium text-gray-900 pipeline-row-label">
+                  {ex.rowLabel}
+                </span>
+                <span class="truncate font-mono text-[10px] leading-[14px] text-gray-500">
+                  {ex.rowSubtitle}
+                </span>
+              </div>
+              {/* Active row → status pill ; non-active → target chip */}
+              <span
+                class:list={[
+                  "pipeline-row-active-pill inline-flex shrink-0 items-center gap-1.5 rounded-full border px-2 py-0.5",
+                  pill.bg,
+                  pill.border,
+                ]}
+              >
+                <span class:list={["size-1.5 rounded-full", pill.dot]} aria-hidden="true"></span>
+                <span class:list={["font-mono text-[9px] font-medium uppercase tracking-[0.02em] leading-3", pill.text]}>
+                  {ex.rowStatusPill}
+                </span>
+              </span>
+              <span class="pipeline-row-target-pill inline-flex shrink-0 items-center rounded-full border border-gray-200 px-2 py-0.5">
+                <span class="font-mono text-[10px] font-medium leading-3 text-gray-600">
+                  {ex.rowTargetChip ?? ex.activeTarget}
+                </span>
+              </span>
+            </button>
+          );
+        })}
       </div>
-    </div>
-  </section>
+    </aside>
+
+    {/* Right pane — 5 stacked panes, only one visible per `data-active-example` */}
+    <section class="flex flex-col gap-3.5 rounded-md border border-gray-200 bg-white p-4">
+      {examples.map((ex) => {
+        const codeLines = tokenize(ex.codeSource);
+        const stepA = ex.dag.steps[0];
+        const stepB = ex.dag.steps[1];
+        const artifacts = ex.dag.artifacts;
+        const out = ex.dag.output;
+        const footer = footerDotClass(ex.footerStatus.color);
+        return (
+          <div data-example-id={ex.id} class="pipeline-pane flex flex-col gap-3.5">
+            {/* Header strip */}
+            <div class="flex items-start justify-between gap-3 border-b border-gray-100 pb-3">
+              <div class="flex min-w-0 flex-col gap-0.75">
+                <span class="font-mono text-[10px] uppercase leading-[14px] tracking-[0.12em] text-zenml-500">
+                  {rightEyebrow}
+                </span>
+                <span class="text-sm font-semibold leading-5 text-gray-900">
+                  {rightSubhead}
+                </span>
+              </div>
+              <span class="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-gray-200 bg-white px-2.5 py-1">
+                <span class="size-1.5 rounded-full bg-zenml-500" aria-hidden="true"></span>
+                <span class="font-mono text-[10px] font-medium leading-[14px] text-gray-600">
+                  {ex.contextChip}
+                </span>
+              </span>
+            </div>
+
+            {/* Code + DAG side-by-side */}
+            <div class="flex flex-col items-stretch gap-3.5 self-stretch lg:flex-row">
+              {/* Code card */}
+              <div class="flex shrink-0 flex-col overflow-hidden rounded-md border border-gray-200 bg-white lg:w-[326px]">
+                <div class="flex items-center gap-2 border-b border-gray-200 bg-gray-50 px-3 py-2">
+                  <div class="flex gap-1">
+                    <span class="size-2 shrink-0 rounded-full bg-gray-200" aria-hidden="true"></span>
+                    <span class="size-2 shrink-0 rounded-full bg-gray-200" aria-hidden="true"></span>
+                    <span class="size-2 shrink-0 rounded-full bg-gray-200" aria-hidden="true"></span>
+                  </div>
+                  <span class="pl-1.5 font-mono text-[11px] font-medium leading-[14px] text-gray-600">
+                    {ex.codeFilename}
+                  </span>
+                  <span class="flex-1"></span>
+                  <span class="inline-flex items-center gap-1 rounded-full border border-zenml-300 bg-zenml-50 px-1.75 py-0.5">
+                    <span class="size-1.25 rounded-full bg-zenml-500" aria-hidden="true"></span>
+                    <span class="font-mono text-[9px] font-semibold leading-3 tracking-[0.04em] text-zenml-700">
+                      ZENML
+                    </span>
+                  </span>
+                </div>
+                <pre class="flex flex-1 flex-col overflow-x-auto bg-white px-3.5 py-3 font-mono text-[10px] leading-[16px]"><code>{codeLines.map((tokens) => (<span class="block">{tokens.length === 1 && tokens[0].text === "" ? <span>&nbsp;</span> : tokens.map((t) => (<span class={t.cls}>{t.text}</span>))}</span>))}</code></pre>
+              </div>
+
+              {/* DAG visual */}
+              <div class="flex flex-1 flex-col items-center gap-0 rounded-md border border-gray-200 bg-gray-50 p-4">
+                <StepNode name={stepA.name} duration={stepA.duration} state={stepA.status === "running" ? "running" : "completed"} width="auto" />
+
+                {/* Fork connector — single line down, then splits left + right */}
+                <svg width="100%" height="42" viewBox="0 0 480 42" preserveAspectRatio="none" aria-hidden="true">
+                  <line x1="240" y1="0" x2="240" y2="16" stroke="#D1D5DB" stroke-width="1" />
+                  <line x1="120" y1="16" x2="360" y2="16" stroke="#D1D5DB" stroke-width="1" />
+                  <line x1="120" y1="16" x2="120" y2="42" stroke="#D1D5DB" stroke-width="1" />
+                  <line x1="360" y1="16" x2="360" y2="42" stroke="#D1D5DB" stroke-width="1" />
+                </svg>
+
+                {/* Two artifact pills */}
+                <div class="flex w-full items-center justify-around">
+                  <ArtifactPill name={artifacts[0].name} type={artifacts[0].type} width="auto" />
+                  <ArtifactPill name={artifacts[1]?.name ?? artifacts[0].name} type={artifacts[1]?.type ?? artifacts[0].type} width="auto" />
+                </div>
+
+                {/* Merge connector */}
+                <svg width="100%" height="42" viewBox="0 0 480 42" preserveAspectRatio="none" aria-hidden="true">
+                  <line x1="120" y1="0" x2="120" y2="26" stroke="#D1D5DB" stroke-width="1" />
+                  <line x1="360" y1="0" x2="360" y2="26" stroke="#D1D5DB" stroke-width="1" />
+                  <line x1="120" y1="26" x2="360" y2="26" stroke="#D1D5DB" stroke-width="1" />
+                  <line x1="240" y1="26" x2="240" y2="42" stroke="#D1D5DB" stroke-width="1" />
+                </svg>
+
+                <StepNode name={stepB.name} duration={stepB.duration} state={stepB.status === "running" ? "running" : "completed"} width="auto" />
+
+                {/* Down connector */}
+                <svg width="2" height="22" viewBox="0 0 2 22" aria-hidden="true">
+                  <line x1="1" y1="0" x2="1" y2="22" stroke="#D1D5DB" stroke-width="1" />
+                </svg>
+
+                {out && <ArtifactPill name={out.name} type={out.framework} width="auto" />}
+              </div>
+            </div>
+
+            {/* Footer meta strip */}
+            <div class="flex items-center justify-between gap-3 px-1 pt-1">
+              <span class="font-mono text-[10px] font-medium leading-[14px] text-gray-500">
+                {ex.footerMeta}
+              </span>
+              <span class="inline-flex items-center gap-1.5">
+                <span class:list={["size-1.5 rounded-full ring-3", footer.dot, footer.ring]} aria-hidden="true"></span>
+                <span class:list={["font-mono text-[10px] font-medium leading-[14px]", footer.text]}>
+                  {ex.footerStatus.label}
+                </span>
+              </span>
+            </div>
+          </div>
+        );
+      })}
+    </section>
+  </div>
 </div>
+
+<style>
+  /* Hide all right-pane example panes by default; show only the one
+     matching the layout root's `data-active-example`. Pure CSS — same
+     pattern as the outer tab switching. */
+  .pipelines-layout [data-example-id].pipeline-pane {
+    display: none;
+  }
+  .pipelines-layout[data-active-example="quickstart"] [data-example-id="quickstart"].pipeline-pane,
+  .pipelines-layout[data-active-example="mlops_starter"] [data-example-id="mlops_starter"].pipeline-pane,
+  .pipelines-layout[data-active-example="llm_finetuning"] [data-example-id="llm_finetuning"].pipeline-pane,
+  .pipelines-layout[data-active-example="churn_inference"] [data-example-id="churn_inference"].pipeline-pane,
+  .pipelines-layout[data-active-example="computer_vision"] [data-example-id="computer_vision"].pipeline-pane {
+    display: flex;
+  }
+
+  /* Selected row: zenml-50 fill, 1px zenml-300 border, bold label,
+     show the status pill (DONE/RUNNING) and hide the target chip.
+     Non-selected rows show the target chip and hide the status pill.
+     Every row carries a transparent 1px border so the selected state
+     never shifts layout (no thick left rail — house antipattern). */
+  .pipeline-row[data-example-id] {
+    border: 1px solid transparent;
+  }
+  .pipeline-row[data-example-id] .pipeline-row-active-pill {
+    display: none;
+  }
+  .pipelines-layout[data-active-example="quickstart"] .pipeline-row[data-example-id="quickstart"],
+  .pipelines-layout[data-active-example="mlops_starter"] .pipeline-row[data-example-id="mlops_starter"],
+  .pipelines-layout[data-active-example="llm_finetuning"] .pipeline-row[data-example-id="llm_finetuning"],
+  .pipelines-layout[data-active-example="churn_inference"] .pipeline-row[data-example-id="churn_inference"],
+  .pipelines-layout[data-active-example="computer_vision"] .pipeline-row[data-example-id="computer_vision"] {
+    background: var(--color-zenml-50);
+    border-color: var(--color-zenml-300);
+  }
+  .pipelines-layout[data-active-example="quickstart"] .pipeline-row[data-example-id="quickstart"] .pipeline-row-label,
+  .pipelines-layout[data-active-example="mlops_starter"] .pipeline-row[data-example-id="mlops_starter"] .pipeline-row-label,
+  .pipelines-layout[data-active-example="llm_finetuning"] .pipeline-row[data-example-id="llm_finetuning"] .pipeline-row-label,
+  .pipelines-layout[data-active-example="churn_inference"] .pipeline-row[data-example-id="churn_inference"] .pipeline-row-label,
+  .pipelines-layout[data-active-example="computer_vision"] .pipeline-row[data-example-id="computer_vision"] .pipeline-row-label {
+    font-weight: 600;
+  }
+  .pipelines-layout[data-active-example="quickstart"] .pipeline-row[data-example-id="quickstart"] .pipeline-row-active-pill,
+  .pipelines-layout[data-active-example="mlops_starter"] .pipeline-row[data-example-id="mlops_starter"] .pipeline-row-active-pill,
+  .pipelines-layout[data-active-example="llm_finetuning"] .pipeline-row[data-example-id="llm_finetuning"] .pipeline-row-active-pill,
+  .pipelines-layout[data-active-example="churn_inference"] .pipeline-row[data-example-id="churn_inference"] .pipeline-row-active-pill,
+  .pipelines-layout[data-active-example="computer_vision"] .pipeline-row[data-example-id="computer_vision"] .pipeline-row-active-pill {
+    display: inline-flex;
+  }
+  .pipelines-layout[data-active-example="quickstart"] .pipeline-row[data-example-id="quickstart"] .pipeline-row-target-pill,
+  .pipelines-layout[data-active-example="mlops_starter"] .pipeline-row[data-example-id="mlops_starter"] .pipeline-row-target-pill,
+  .pipelines-layout[data-active-example="llm_finetuning"] .pipeline-row[data-example-id="llm_finetuning"] .pipeline-row-target-pill,
+  .pipelines-layout[data-active-example="churn_inference"] .pipeline-row[data-example-id="churn_inference"] .pipeline-row-target-pill,
+  .pipelines-layout[data-active-example="computer_vision"] .pipeline-row[data-example-id="computer_vision"] .pipeline-row-target-pill {
+    display: none;
+  }
+</style>
+
+<script>
+  /* Row-click handler — sets `data-active-example` on the layout root.
+     CSS attribute selectors take care of swapping the right-pane content
+     and the selected-row chrome. Pure DOM, no Preact island. */
+  const layouts = document.querySelectorAll<HTMLElement>(".pipelines-layout");
+  layouts.forEach((layout) => {
+    const rows = layout.querySelectorAll<HTMLButtonElement>("[data-pipeline-row]");
+    rows.forEach((row) => {
+      row.addEventListener("click", () => {
+        const id = row.dataset.exampleId;
+        if (id) layout.dataset.activeExample = id;
+      });
+    });
+  });
+</script>
