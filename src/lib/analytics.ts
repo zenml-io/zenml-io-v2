@@ -16,5 +16,3 @@
  */
 
 export type Surface = "ml" | "agent" | "unified";
-
-export const DEFAULT_SURFACE: Surface = "ml";

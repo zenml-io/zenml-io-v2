@@ -1,5 +1,6 @@
 ---
 import type { SEOProps } from "../lib/seo";
+import type { Surface } from "../lib/analytics";
 /**
  * ContentLayout — generic prose wrapper for content pages.
  *
@@ -20,7 +21,7 @@ interface Props extends SEOProps {
    * Analytics surface — forwarded to BaseLayout. Content pages (legal, etc.)
    * are product-agnostic; defaults to "ml" (acceptable per SURFACE-AUDIT.md).
    */
-  surface?: "ml" | "agent" | "unified";
+  surface?: Surface;
 }
 
 const { wide = false, class: className, surface = "ml", ...seoProps } = Astro.props;

@@ -20,7 +20,7 @@
  *   3. Report violations and exit non-zero.
  */
 
-import { readdirSync, readFileSync, statSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import { join, relative, resolve } from "node:path";
 
 const ROOT = resolve(process.cwd());
@@ -28,10 +28,12 @@ const ROOT = resolve(process.cwd());
 // Detect files that import the layout directly (rules out re-exports)
 const IMPORT_RE = /import\s+(?:BaseLayout|MinimalLayout)\s+from/;
 
-// Pattern: opening <BaseLayout or <MinimalLayout tag, capturing props block
-// until the closing >. Handles multi-line props (most common case).
+// Pattern: opening <BaseLayout or <MinimalLayout tag, capturing the props
+// block until the closing >. Skips over quoted strings and {...} expressions
+// so a `>` inside a prop value doesn't truncate the match (template literals
+// with nested ${...} braces remain an edge case; none exist today).
 const LAYOUT_OPEN_TAG_RE =
-  /<(BaseLayout|MinimalLayout)\b([^>]*(?:\n[^>]*)*?)>/gm;
+  /<(BaseLayout|MinimalLayout)\b((?:"[^"]*"|'[^']*'|\{[^{}]*\}|[^>])*?)>/gm;
 
 /** Recursively collect all .astro files under a directory. */
 function collectAstroFiles(dir: string): string[] {

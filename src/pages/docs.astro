@@ -155,7 +155,7 @@ const CARDS = [
       ([entry]) => {
         if (entry.isIntersecting) {
           section.classList.add("in-view");
-          observer.unobserve(section);
+          observer.disconnect();
         }
       },
       { threshold: 0.1 },

@@ -9,6 +9,7 @@ import JsonLd from "../components/seo/JsonLd.astro";
 import { BLOG_FINAL_CTA, BLOG_SIDEBAR_CTA } from "../lib/blog";
 import { SITE_URL } from "../lib/constants";
 import type { SEOProps } from "../lib/seo";
+import type { Surface } from "../lib/analytics";
 /**
  * BlogLayout — chrome for blog post detail pages.
  *
@@ -59,7 +60,7 @@ interface Props extends SEOProps {
    * Analytics surface — forwarded to BaseLayout. Blog posts are ZenML-origin
    * content; defaults to "ml". Future Kitaru blog posts may override this.
    */
-  surface?: "ml" | "agent" | "unified";
+  surface?: Surface;
   /** Display title (shown as h1 — may differ from SEO title) */
   postTitle?: string;
   /** Subtitle/excerpt shown under the title */
