@@ -16,13 +16,18 @@ interface Props extends SEOProps {
   wide?: boolean;
   /** Additional classes on the <main> element */
   class?: string;
+  /**
+   * Analytics surface — forwarded to BaseLayout. Content pages (legal, etc.)
+   * are product-agnostic; defaults to "ml" (acceptable per SURFACE-AUDIT.md).
+   */
+  surface?: "ml" | "agent" | "unified";
 }
 
-const { wide = false, class: className, ...seoProps } = Astro.props;
+const { wide = false, class: className, surface = "ml", ...seoProps } = Astro.props;
 const maxWidth = wide ? "max-w-[var(--container-lg)]" : "max-w-3xl";
 ---
 
-<BaseLayout {...seoProps}>
+<BaseLayout {...seoProps} surface={surface}>
   <main class:list={["mx-auto px-4 py-12 sm:px-6 lg:px-8 lg:py-16", maxWidth, className]}>
     <article class="prose">
       <slot />

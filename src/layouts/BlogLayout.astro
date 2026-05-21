@@ -55,6 +55,11 @@ interface RelatedPost {
 }
 
 interface Props extends SEOProps {
+  /**
+   * Analytics surface — forwarded to BaseLayout. Blog posts are ZenML-origin
+   * content; defaults to "ml". Future Kitaru blog posts may override this.
+   */
+  surface?: "ml" | "agent" | "unified";
   /** Display title (shown as h1 — may differ from SEO title) */
   postTitle?: string;
   /** Subtitle/excerpt shown under the title */
@@ -94,6 +99,7 @@ const {
   prev,
   next,
   relatedPosts = [],
+  surface = "ml",
   ...seoProps
 } = Astro.props;
 
@@ -137,7 +143,7 @@ const articleJsonLd = {
 };
 ---
 
-<BaseLayout {...seoProps}>
+<BaseLayout {...seoProps} surface={surface}>
   <JsonLd data={articleJsonLd} slot="head" />
   <JsonLd data={breadcrumbJsonLd} slot="head" />
 

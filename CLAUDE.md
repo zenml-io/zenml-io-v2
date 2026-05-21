@@ -63,7 +63,13 @@ Two attributes on `<html>` carry the unified-product state to every page:
 
 The Segment loader in `consentConfig.ts` runs a single ZenML write key (D4 was superseded after audit — the standalone kitaru.ai routes that needed the Kitaru key turned out to be dead code and were removed). The page-init call passes `{surface}` as a property so the same dimension is queryable in Segment, Plausible, and downstream CRM tools. `PlausibleBridge.astro` merges `surface` into every custom event so click-tracking matches pageview tagging.
 
-**When adding a page that pitches both products** (cross-workspace marketing): pass `surface="unified"`. When adding a Kitaru-only page (e.g., a future `/product/kitaru/...` subpath): pass `surface="agent"`. Don't omit the prop on cross-product pages — the default is `ml`, which silently misattributes traffic.
+**`surface` is a required prop** (as of #64). `BaseLayout` and `MinimalLayout` no longer have a default — every page template must pass an explicit value. `BlogLayout` and `ContentLayout` accept an optional `surface?` prop that they forward to `BaseLayout` (both default to `"ml"`, which is correct for their content types).
+
+**Enforcement:** `pnpm check:surface` (`scripts/check-surface-coverage.ts`) scans all `.astro` files in `src/pages/` and `src/components/` and fails if any `<BaseLayout>` or `<MinimalLayout>` usage omits `surface=`. Run this before committing page changes. Note: `astro check` alone does NOT catch missing required props on `.astro` components — the grep check is the enforcing mechanism.
+
+**When adding a new page:** always pass an explicit `surface=` to the layout. Use the taxonomy below. Don't omit it — there is no default fallback any more.
+
+**When adding a page that pitches both products** (cross-workspace marketing): pass `surface="unified"`. When adding a Kitaru-only page (e.g., a future `/product/kitaru/...` subpath): pass `surface="agent"`. For ZenML-specific pages (features, integrations, blog, etc.): pass `surface="ml"`.
 
 ## Development Conventions
 
