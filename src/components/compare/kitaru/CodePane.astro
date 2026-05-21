@@ -6,8 +6,17 @@
  * pair prose with a code block instead of a custom graphic.
  */
 import { Code } from 'astro:components';
+import type { ThemeRegistrationRaw } from 'shiki';
+import zenmlLight from '../../../styles/zenml-light.json';
 
 type CodeLang = Parameters<typeof Code>[0]["lang"];
+
+// Reuse the site's standard light Shiki theme for consistency with
+// blog/docs/feature-page code blocks.
+const codeTheme = {
+  ...zenmlLight,
+  type: zenmlLight.type as "light" | "dark",
+} satisfies ThemeRegistrationRaw;
 
 interface Props {
   code: string;
@@ -18,7 +27,7 @@ const { code, lang = 'python' } = Astro.props;
 ---
 
 <article class="codepane">
-  <Code code={code} lang={lang} theme="github-light" />
+  <Code code={code} lang={lang} theme={codeTheme} />
 </article>
 
 <style>
