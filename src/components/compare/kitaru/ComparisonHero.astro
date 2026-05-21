@@ -97,7 +97,7 @@ const hasOptions = competitorOptions.length > 0;
             {competitorOptions.map((opt) => (
               <li role="none">
                 <a
-                  href={`/compare/${opt.slug}/`}
+                  href={`/compare/${opt.slug}`}
                   role="menuitem"
                   class="chero-chip-menu-item"
                   aria-current={opt.slug === currentSlug ? 'page' : undefined}

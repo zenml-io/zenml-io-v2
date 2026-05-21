@@ -145,13 +145,14 @@ const isList = layout === "list" || hasBulletsSlot;
     margin-bottom: 0;
   }
 
-  /* Break out of the 820px prose cap applied by .compare-body-inner :global(ul)
-     so the bullet grid can fill the full 1192px content column. */
+  /* Break out of the 820px prose cap applied by KitaruCompare's
+     `[data-app="kitaru"] .compare-body-inner ul` rule (specificity 0,2,1) so the
+     bullet grid fills the full content column — `!important` wins the tie. */
   .feature-graphic-bullets :global(ul) {
     list-style: none;
     padding: 0;
     margin: 0;
-    max-width: none;
+    max-width: none !important;
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     column-gap: 48px;

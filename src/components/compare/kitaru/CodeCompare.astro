@@ -1,15 +1,18 @@
 ---
 import { Code } from 'astro:components';
-import type { ThemeRegistrationRaw } from 'shiki';
+import type { ThemeRegistration } from 'shiki';
+import kitaruLight from '../../../styles/kitaru-light.json';
 import kitaruDark from '../../../styles/kitaru-dark.json';
 
 type CodeLang = Parameters<typeof Code>[0]["lang"];
 
-// CodeCompare lives in a dark band, so it uses the high-contrast Kitaru theme.
-const codeTheme = {
-  ...kitaruDark,
-  type: kitaruDark.type as "light" | "dark",
-} satisfies ThemeRegistrationRaw;
+// CodeCompare lives in a dark band. Shiki bakes both themes into each token
+// (the light value inline, the dark value in the `--shiki-dark` CSS var); the
+// `pre span` rule below forces every token to its dark (kitaru-dark) value.
+const codeThemes = {
+  light: kitaruLight as ThemeRegistration,
+  dark: kitaruDark as ThemeRegistration,
+};
 
 interface Props {
   title?: string;
@@ -44,7 +47,7 @@ const {
         <span class="codecompare-pill">Recommended</span>
       </header>
       <div class="codecompare-code">
-        <Code code={kitaruCode} lang={lang} theme={codeTheme} />
+        <Code code={kitaruCode} lang={lang} themes={codeThemes} defaultColor="light" />
       </div>
     </article>
     <article class="codecompare-pane">
@@ -53,7 +56,7 @@ const {
         <span class="codecompare-label">{competitorLabel}</span>
       </header>
       <div class="codecompare-code">
-        <Code code={competitorCode} lang={lang} theme={codeTheme} />
+        <Code code={competitorCode} lang={lang} themes={codeThemes} defaultColor="light" />
       </div>
     </article>
   </div>
@@ -214,9 +217,15 @@ const {
     color: var(--code-var);
     tab-size: 2;
   }
-  /* Tokens emit their kitaruDark colors directly (we pass the dark theme
-     as `theme={...}` on <Code>) so no --shiki-dark variable indirection
-     is needed. */
+  /* Shiki bakes both themes into every token — the light value inline and the
+     dark value in `--shiki-dark`. CodeCompare lives in a dark band, so force
+     every token to its dark-theme (kitaru-dark) value. */
+  .codecompare-code :global(pre span) {
+    color: var(--shiki-dark) !important;
+    font-style: var(--shiki-dark-font-style, inherit) !important;
+    font-weight: var(--shiki-dark-font-weight, inherit) !important;
+    text-decoration: var(--shiki-dark-text-decoration, inherit) !important;
+  }
 
   @media (max-width: 1180px) {
     .codecompare-grid { grid-template-columns: 1fr; }
